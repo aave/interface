@@ -13,6 +13,7 @@ import { useApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { useRootStore } from 'src/store/root';
+import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { findByChainId } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
@@ -37,6 +38,7 @@ interface SwitchProps {
   //setShowGasStation: (showGasStation: boolean) => void;
   poolReserve?: ComputedReserveData;
   targetReserve?: ComputedReserveData;
+  expirationTime: number;
   // setIsExecutingActions?: (isExecuting: boolean) => void;
 }
 
@@ -50,6 +52,7 @@ export const SwitchLimitOrdersActions = ({
   isWrongNetwork,
   chainId,
   outputAmount,
+  expirationTime,
 }: // setShowGasStation,
 // setIsExecutingActions,
 SwitchProps) => {
@@ -74,6 +77,7 @@ SwitchProps) => {
     setMainTxState,
     //setGasLimit,
     setLoadingTxns,
+    setTxError,
   } = useModalContext();
 
   const queryClient = useQueryClient();
@@ -142,26 +146,35 @@ SwitchProps) => {
   };
 
   const action = async () => {
-    setMainTxState({ ...mainTxState, loading: true });
-    invalidate();
-    const provider = getEthersProvider(wagmiConfig, { chainId });
-    const signer = (await provider).getSigner();
-    const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
-    const receipt = await tradingSdk.postLimitOrder({
-      sellAmount: parseUnits(inputAmount, inputToken.decimals).toString(),
-      buyAmount: parseUnits(outputAmount, outputToken.decimals).toString(),
-      kind: OrderKind.SELL,
-      sellToken: inputToken.address,
-      buyToken: outputToken.address,
-      sellTokenDecimals: inputToken.decimals,
-      buyTokenDecimals: outputToken.decimals,
-      validFor: 86400, // 24 hours
-    });
-    setMainTxState({
-      loading: false,
-      success: true,
-      txHash: receipt.orderId ?? undefined,
-    });
+    try {
+      setMainTxState({ ...mainTxState, loading: true });
+      invalidate();
+      const provider = getEthersProvider(wagmiConfig, { chainId });
+      const signer = (await provider).getSigner();
+      const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
+      const receipt = await tradingSdk.postLimitOrder({
+        sellAmount: parseUnits(inputAmount, inputToken.decimals).toString(),
+        buyAmount: parseUnits(outputAmount, outputToken.decimals).toString(),
+        kind: OrderKind.SELL,
+        sellToken: inputToken.address,
+        buyToken: outputToken.address,
+        sellTokenDecimals: inputToken.decimals,
+        buyTokenDecimals: outputToken.decimals,
+        validFor: expirationTime,
+      });
+      setMainTxState({
+        loading: false,
+        success: true,
+        txHash: receipt.orderId ?? undefined,
+      });
+    } catch (error) {
+      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+      setTxError(parsedError);
+      setMainTxState({
+        txHash: undefined,
+        loading: false,
+      });
+    }
     try {
       const baseTrackingData: Record<string, string | number | undefined> = {
         chainId,

@@ -391,7 +391,7 @@ msgstr "Transactions"
 msgid "For swapping safety module assets please unstake your position <0>here</0>."
 msgstr "For swapping safety module assets please unstake your position <0>here</0>."
 
-#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/infoTooltips/SwapFeeTooltip.tsx
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 msgstr "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 
@@ -1124,8 +1124,7 @@ msgstr "Reload"
 msgid "sGHO"
 msgstr "sGHO"
 
-#: src/components/transactions/Switch/BaseSwitchModal.tsx
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+#: src/components/transactions/Switch/SwitchModal.tsx
 msgid "Please connect your wallet to swap tokens."
 msgstr "Please connect your wallet to swap tokens."
 
@@ -1643,8 +1642,8 @@ msgstr "Disable fork"
 msgid "Borrow apy"
 msgstr "Borrow apy"
 
+#: src/components/infoTooltips/SwapFeeTooltip.tsx
 #: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
-#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
 msgid "Fee"
 msgstr "Fee"
 
@@ -2267,7 +2266,7 @@ msgstr "Isolated assets have limited borrowing power and other assets cannot be 
 msgid "Addresses"
 msgstr "Addresses"
 
-#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/infoTooltips/NetworkCostTooltip.tsx
 msgid "Network costs"
 msgstr "Network costs"
 
@@ -2608,7 +2607,7 @@ msgstr "Representing smart contract wallet (ie. Safe) addresses on other chains.
 msgid ".CSV"
 msgstr ".CSV"
 
-#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/infoTooltips/NetworkCostTooltip.tsx
 msgid "This is the cost of settling your order on-chain, including gas and any LP fees."
 msgstr "This is the cost of settling your order on-chain, including gas and any LP fees."
 

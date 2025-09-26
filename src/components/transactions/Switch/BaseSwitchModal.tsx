@@ -1,8 +1,6 @@
-import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
 import { supportedNetworksWithEnabledMarket } from 'src/components/transactions/Switch/common';
-import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -49,7 +47,6 @@ export const BaseSwitchModal = ({
   forcedChainId,
 }: SwitchModalCustomizableProps) => {
   const {
-    close,
     args: { chainId },
   } = useModalContext();
 
@@ -90,7 +87,7 @@ export const BaseSwitchModal = ({
     } else {
       setSelectedChainId(defaultNetwork.chainId);
     }
-  }, [overallAppChainId, chainId, connectedChainId]);
+  }, [overallAppChainId, chainId, connectedChainId, forcedChainId]);
 
   const initialDefaultTokens = useMemo(
     () => getFilteredTokensForSwitch(selectedChainId),
@@ -102,17 +99,6 @@ export const BaseSwitchModal = ({
     refetch: refetchInitialTokens,
     isFetching: tokensLoading,
   } = useTokensBalance(initialDefaultTokens, selectedChainId, user);
-
-  if (!user) {
-    return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
-        <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
-          <Trans>Please connect your wallet to swap tokens.</Trans>
-        </Typography>
-        <ConnectWalletButton onClick={() => close()} />
-      </Box>
-    );
-  }
 
   if (tokensLoading) {
     return (

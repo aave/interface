@@ -10,7 +10,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
-import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
@@ -848,176 +847,159 @@ export const BaseSwitchModalContent = ({
             </>
           )}
 
-          {user ? (
-            <>
-              {(selectedInputToken.extensions?.isUserCustom ||
-                selectedOutputToken.extensions?.isUserCustom) && (
-                <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
-                  <Typography variant="caption">
-                    You selected a custom imported token. Make sure it&apos;s the right token.
-                  </Typography>
-                </Warning>
-              )}
+          <>
+            {(selectedInputToken.extensions?.isUserCustom ||
+              selectedOutputToken.extensions?.isUserCustom) && (
+              <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
+                <Typography variant="caption">
+                  You selected a custom imported token. Make sure it&apos;s the right token.
+                </Typography>
+              </Warning>
+            )}
 
-              {isSwapFlowSelected && swapDetailsComponent}
+            {isSwapFlowSelected && swapDetailsComponent}
 
-              {showSlippageWarning && (
-                <Warning severity="warning" icon={false} sx={{ mt: 5 }}>
-                  <Typography variant="caption">
-                    Slippage is lower than recommended. The swap may be delayed or fail.
-                  </Typography>
-                </Warning>
-              )}
+            {showSlippageWarning && (
+              <Warning severity="warning" icon={false} sx={{ mt: 5 }}>
+                <Typography variant="caption">
+                  Slippage is lower than recommended. The swap may be delayed or fail.
+                </Typography>
+              </Warning>
+            )}
 
-              {showUSDTResetWarning && (
-                <Warning severity="info" sx={{ mt: 5 }}>
-                  <Typography variant="caption">
-                    <Trans>
-                      USDT on Ethereum requires approval reset before a new approval. This will
-                      require an additional transaction.
-                    </Trans>
-                  </Typography>
-                </Warning>
-              )}
+            {showUSDTResetWarning && (
+              <Warning severity="info" sx={{ mt: 5 }}>
+                <Typography variant="caption">
+                  <Trans>
+                    USDT on Ethereum requires approval reset before a new approval. This will
+                    require an additional transaction.
+                  </Trans>
+                </Typography>
+              </Warning>
+            )}
 
-              {modalType === ModalType.CollateralSwap && isHFLow && (
-                <Warning severity="error" icon={false} sx={{ mt: 5 }}>
-                  <Typography variant="caption">
-                    <Trans>
-                      Low health factor after swap. Please select a different asset or lower the
-                      amount.
-                    </Trans>
-                  </Typography>
-                </Warning>
-              )}
+            {modalType === ModalType.CollateralSwap && isHFLow && (
+              <Warning severity="error" icon={false} sx={{ mt: 5 }}>
+                <Typography variant="caption">
+                  <Trans>
+                    Low health factor after swap. Please select a different asset or lower the
+                    amount.
+                  </Trans>
+                </Typography>
+              </Warning>
+            )}
 
-              <SwitchErrors
-                ratesError={ratesError}
-                balance={selectedInputToken.balance}
-                inputAmount={debounceInputAmount}
-                sx={{ mb: !isSwapFlowSelected ? 0 : 4 }}
-              />
+            <SwitchErrors
+              ratesError={ratesError}
+              balance={selectedInputToken.balance}
+              inputAmount={debounceInputAmount}
+              sx={{ mb: !isSwapFlowSelected ? 0 : 4 }}
+            />
 
-              {txError && <ParaswapErrorDisplay txError={txError} />}
+            {txError && <ParaswapErrorDisplay txError={txError} />}
 
-              {showWarning && isSwapFlowSelected && (
-                <Warning
-                  severity="warning"
-                  icon={false}
-                  sx={{
-                    mt: 2,
-                    mb: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Typography variant="caption">
-                    <Trans>
-                      High price impact. This route may return less due to low liquidity.
-                    </Trans>
-                  </Typography>
-                  {requireConfirmation && (
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        mt: 2,
-                      }}
-                    >
-                      <Typography variant="caption">
-                        <Trans>
-                          I confirm the swap with a potential {(lostValue * 100).toFixed(0)}% value
-                          loss
-                        </Trans>
-                      </Typography>
-                      <Checkbox
-                        checked={highPriceImpactConfirmed}
-                        onChange={() => {
-                          setHighPriceImpactConfirmed(!highPriceImpactConfirmed);
-                        }}
-                        size="small"
-                        data-cy={'high-price-impact-checkbox'}
-                      />
-                    </Box>
-                  )}
-                </Warning>
-              )}
-
-              {isSwappingSafetyModuleToken && (
-                <Warning severity="error" icon={false} sx={{ mt: 2, mb: 2 }}>
-                  <Typography variant="caption">
-                    <Trans>
-                      For swapping safety module assets please unstake your position{' '}
-                      <Link href="/safety-module" onClick={() => close()}>
-                        here
-                      </Link>
-                      .
-                    </Trans>
-                  </Typography>
-                </Warning>
-              )}
-
-              {isSwapFlowSelected && (
-                <SwitchActions
-                  isWrongNetwork={isWrongNetwork.isWrongNetwork}
-                  inputAmount={debounceInputAmount}
-                  inputToken={
-                    modalType === ModalType.CollateralSwap && shouldUseFlashloan === true
-                      ? selectedInputToken.address
-                      : modalType === ModalType.CollateralSwap
-                      ? selectedInputToken.aToken ?? selectedInputToken.address
-                      : selectedInputToken.address
-                  }
-                  outputToken={
-                    modalType === ModalType.CollateralSwap && shouldUseFlashloan === true
-                      ? selectedOutputToken.address
-                      : modalType === ModalType.CollateralSwap
-                      ? selectedOutputToken.aToken ?? selectedOutputToken.address
-                      : selectedOutputToken.address
-                  }
-                  loading={ratesLoading || !isSwapFlowSelected}
-                  setShowUSDTResetWarning={setShowUSDTResetWarning}
-                  inputSymbol={selectedInputToken.symbol}
-                  outputSymbol={selectedOutputToken.symbol}
-                  slippage={safeSlippage.toString()}
-                  setShowGasStation={setShowGasStation}
-                  useFlashloan={shouldUseFlashloan === true}
-                  poolReserve={poolReserve}
-                  targetReserve={targetReserve}
-                  isMaxSelected={inputAmount === selectedInputToken.balance}
-                  blocked={
-                    !switchRates ||
-                    Number(debounceInputAmount) > Number(selectedInputToken.balance) ||
-                    !user ||
-                    slippageValidation?.severity === ValidationSeverity.ERROR ||
-                    isSwappingSafetyModuleToken ||
-                    (requireConfirmation && !highPriceImpactConfirmed) ||
-                    (shouldUseFlashloan === true &&
-                      !!poolReserve &&
-                      !poolReserve.flashLoanEnabled) ||
-                    (modalType === ModalType.CollateralSwap && isHFLow)
-                  }
-                  chainId={selectedChainId}
-                  switchRates={switchRates}
-                  modalType={modalType}
-                  setIsExecutingActions={setIsExecutingActions}
-                />
-              )}
-            </>
-          ) : (
-            <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
-              <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
-                <Trans>Please connect your wallet to swap tokens.</Trans>
-              </Typography>
-              <ConnectWalletButton
-                onClick={() => {
-                  close();
+            {showWarning && isSwapFlowSelected && (
+              <Warning
+                severity="warning"
+                icon={false}
+                sx={{
+                  mt: 2,
+                  mb: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
                 }}
+              >
+                <Typography variant="caption">
+                  <Trans>High price impact. This route may return less due to low liquidity.</Trans>
+                </Typography>
+                {requireConfirmation && (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      mt: 2,
+                    }}
+                  >
+                    <Typography variant="caption">
+                      <Trans>
+                        I confirm the swap with a potential {(lostValue * 100).toFixed(0)}% value
+                        loss
+                      </Trans>
+                    </Typography>
+                    <Checkbox
+                      checked={highPriceImpactConfirmed}
+                      onChange={() => {
+                        setHighPriceImpactConfirmed(!highPriceImpactConfirmed);
+                      }}
+                      size="small"
+                      data-cy={'high-price-impact-checkbox'}
+                    />
+                  </Box>
+                )}
+              </Warning>
+            )}
+
+            {isSwappingSafetyModuleToken && (
+              <Warning severity="error" icon={false} sx={{ mt: 2, mb: 2 }}>
+                <Typography variant="caption">
+                  <Trans>
+                    For swapping safety module assets please unstake your position{' '}
+                    <Link href="/safety-module" onClick={() => close()}>
+                      here
+                    </Link>
+                    .
+                  </Trans>
+                </Typography>
+              </Warning>
+            )}
+
+            {isSwapFlowSelected && (
+              <SwitchActions
+                isWrongNetwork={isWrongNetwork.isWrongNetwork}
+                inputAmount={debounceInputAmount}
+                inputToken={
+                  modalType === ModalType.CollateralSwap && shouldUseFlashloan === true
+                    ? selectedInputToken.address
+                    : modalType === ModalType.CollateralSwap
+                    ? selectedInputToken.aToken ?? selectedInputToken.address
+                    : selectedInputToken.address
+                }
+                outputToken={
+                  modalType === ModalType.CollateralSwap && shouldUseFlashloan === true
+                    ? selectedOutputToken.address
+                    : modalType === ModalType.CollateralSwap
+                    ? selectedOutputToken.aToken ?? selectedOutputToken.address
+                    : selectedOutputToken.address
+                }
+                loading={ratesLoading || !isSwapFlowSelected}
+                setShowUSDTResetWarning={setShowUSDTResetWarning}
+                inputSymbol={selectedInputToken.symbol}
+                outputSymbol={selectedOutputToken.symbol}
+                slippage={safeSlippage.toString()}
+                setShowGasStation={setShowGasStation}
+                useFlashloan={shouldUseFlashloan === true}
+                poolReserve={poolReserve}
+                targetReserve={targetReserve}
+                isMaxSelected={inputAmount === selectedInputToken.balance}
+                blocked={
+                  !switchRates ||
+                  Number(debounceInputAmount) > Number(selectedInputToken.balance) ||
+                  !user ||
+                  slippageValidation?.severity === ValidationSeverity.ERROR ||
+                  isSwappingSafetyModuleToken ||
+                  (requireConfirmation && !highPriceImpactConfirmed) ||
+                  (shouldUseFlashloan === true && !!poolReserve && !poolReserve.flashLoanEnabled) ||
+                  (modalType === ModalType.CollateralSwap && isHFLow)
+                }
+                chainId={selectedChainId}
+                switchRates={switchRates}
+                modalType={modalType}
+                setIsExecutingActions={setIsExecutingActions}
               />
-            </Box>
-          )}
+            )}
+          </>
         </>
       )}
     </>

@@ -46,9 +46,10 @@ export interface AssetInputProps {
   rateUsd: string;
   originAsset: TokenInfoWithBalance;
   targetAsset: TokenInfoWithBalance;
-  switchRate: () => void;
   disabled?: boolean;
   onChangeRate: (newRate: string) => void;
+  isInvertedRate: boolean;
+  setIsInvertedRate: (isInverted: boolean) => void;
 }
 
 export const PriceInput = ({
@@ -58,11 +59,23 @@ export const PriceInput = ({
   originAsset,
   targetAsset,
   originalRate,
-  switchRate,
   onChangeRate,
   disabled = false,
+  isInvertedRate,
+  setIsInvertedRate,
 }: AssetInputProps) => {
   const inputRef = useRef<HTMLDivElement>(null);
+
+  const handleRateSwith = () => {
+    setIsInvertedRate(!isInvertedRate);
+    onChangeRate((1 / Number(rate)).toString());
+  };
+
+  const marketRate = originalRate
+    ? isInvertedRate
+      ? (1 / Number(originalRate.rate)).toString()
+      : originalRate.rate
+    : rate;
 
   return (
     <Box
@@ -77,7 +90,7 @@ export const PriceInput = ({
       })}
     >
       <Typography variant="secondary12" color="text.muted">
-        When 1 {originAsset.symbol} is worth:
+        When 1 {isInvertedRate ? targetAsset.symbol : originAsset.symbol} is worth:
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {loading ? (
@@ -114,7 +127,7 @@ export const PriceInput = ({
 
         <Button
           disableRipple
-          onClick={switchRate}
+          onClick={() => handleRateSwith()}
           data-cy={`assetSelect`}
           sx={{
             p: 0,
@@ -126,17 +139,19 @@ export const PriceInput = ({
           }}
         >
           <ExternalTokenIcon
-            symbol={targetAsset.symbol}
-            logoURI={targetAsset.logoURI}
+            symbol={isInvertedRate ? originAsset.symbol : targetAsset.symbol}
+            logoURI={isInvertedRate ? originAsset.logoURI : targetAsset.logoURI}
             sx={{ mr: 2, ml: 3, fontSize: '24px' }}
           />
           <Typography
-            data-cy={`assetsSelectedOption_${targetAsset.symbol.toUpperCase()}`}
+            data-cy={`assetsSelectedOption_${
+              isInvertedRate ? originAsset.symbol.toUpperCase() : targetAsset.symbol.toUpperCase()
+            }`}
             variant="main16"
             color="text.primary"
             sx={{ fontWeight: 500 }}
           >
-            {targetAsset.symbol}
+            {isInvertedRate ? originAsset.symbol : targetAsset.symbol}
           </Typography>
           {targetAsset.extensions?.isUserCustom && (
             <SvgIcon sx={{ fontSize: 16, ml: 1 }} color="warning">
@@ -163,7 +178,7 @@ export const PriceInput = ({
 
         <Typography component="div" variant="secondary12" color="text.secondary">
           <FormattedNumber
-            value={originalRate?.rate || '0'}
+            value={marketRate}
             compact
             variant="secondary12"
             color="text.secondary"
@@ -175,7 +190,7 @@ export const PriceInput = ({
           size="small"
           sx={{ minWidth: 0, ml: '7px', p: 0 }}
           onClick={() => {
-            onChangeRate(originalRate?.rate || rate);
+            onChangeRate(marketRate);
           }}
           disabled={disabled}
         >

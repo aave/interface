@@ -1,13 +1,12 @@
-import { normalize } from '@aave/math-utils';
+import { normalize, normalizeBN } from '@aave/math-utils';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useCowSwitchRates } from 'src/hooks/switch/useCowSwitchRates';
 import { useGetConnectedWalletType } from 'src/hooks/useGetConnectedWalletType';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
-import { ModalType } from 'src/hooks/useModal';
+import { useModalContext } from 'src/hooks/useModal';
 import { StaticRate, useStaticRate } from 'src/hooks/useStaticRate';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -16,6 +15,7 @@ import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { parseUnits } from 'viem';
 
+import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { getFilteredTokensForSwitch } from './BaseSwitchModal';
 import { supportedNetworksWithEnabledMarketLimit } from './common';
@@ -26,7 +26,8 @@ import { PriceInput } from './PriceInput';
 import { SwitchAssetInput } from './SwitchAssetInput';
 import { SwitchErrors } from './SwitchErrors';
 import { SwitchLimitOrdersActions } from './SwitchLimitOrdersActions';
-import { SwitchModalTxDetails } from './SwitchModalTxDetails';
+import { IntentTxDetails } from './SwitchModalTxDetails';
+import { SwitchTxSuccessView } from './SwitchTxSuccessView';
 
 const calculateMaxAmount = (token: TokenInfoWithBalance, chainId: number) => {
   const nativeDecimals = 18;
@@ -46,6 +47,7 @@ interface SwitchLimitOrdersInputsProps {
   tokens: TokenInfoWithBalance[];
   inputToken: TokenInfoWithBalance;
   inputAmount: string;
+  outputAmount: string;
   handleInputAmountChange: (value: string) => void;
   handleInputTokenChange: (token: TokenInfoWithBalance) => void;
   outputToken: TokenInfoWithBalance;
@@ -54,6 +56,8 @@ interface SwitchLimitOrdersInputsProps {
   handleRateChange: (value: string) => void;
   initialRate?: StaticRate;
   rateLoading: boolean;
+  isInvertedRate: boolean;
+  setIsInvertedRate: (isInverted: boolean) => void;
 }
 
 export const SwitchLimitOrdersInputs = ({
@@ -69,13 +73,18 @@ export const SwitchLimitOrdersInputs = ({
   handleRateChange,
   initialRate,
   rateLoading,
+  isInvertedRate,
+  setIsInvertedRate,
+  outputAmount,
 }: SwitchLimitOrdersInputsProps) => {
   const { isSmartContractWallet } = useGetConnectedWalletType();
   const maxInputAmount = isSmartContractWallet
     ? calculateMaxAmount(inputToken, chainId)
     : inputToken.balance;
 
-  const outputAmount = Number(inputAmount) * Number(rate);
+  const rateUsd = isInvertedRate
+    ? Number(rate) * Number(initialRate?.inputUsdPrice || '0')
+    : Number(rate) * Number(initialRate?.outputUsdPrice || '0');
 
   return (
     <Box
@@ -129,10 +138,11 @@ export const SwitchLimitOrdersInputs = ({
         targetAsset={outputToken}
         loading={rateLoading}
         rate={rate}
-        rateUsd={'0'}
-        switchRate={console.log}
+        rateUsd={rateUsd.toString()}
         onChangeRate={handleRateChange}
         originalRate={initialRate}
+        isInvertedRate={isInvertedRate}
+        setIsInvertedRate={setIsInvertedRate}
       />
     </Box>
   );
@@ -157,7 +167,8 @@ export const SwitchLimitOrdersInner = ({
     ) || tokens[0]
   );
 
-  const { user } = useAppDataContext();
+  const { mainTxState } = useModalContext();
+
   const userAddress = useRootStore((store) => store.account);
 
   const [expiry, setExpiry] = useState(Expiry['One week']);
@@ -165,12 +176,17 @@ export const SwitchLimitOrdersInner = ({
   const [inputAmount, setInputAmount] = useState('');
   // const [outputAmount, setOutputAmount] = useState('');
   const [rate, setRate] = useState('');
+  const [isInvertedRate, setIsInvertedRate] = useState(false);
 
   const [outputToken, setOutputToken] = useState(
     tokens.find((token) => token.symbol == 'GHO') || tokens[1]
   );
 
-  const { data: staticRate } = useStaticRate({ chainId, inputToken, outputToken });
+  const { data: staticRate, isLoading: staticRateLoading } = useStaticRate({
+    chainId,
+    inputToken,
+    outputToken,
+  });
   const {
     data: quote,
     isLoading: quoteLoading,
@@ -190,6 +206,13 @@ export const SwitchLimitOrdersInner = ({
     isTxSuccess: false,
   });
 
+  const outputAmount =
+    inputAmount && rate
+      ? isInvertedRate
+        ? (Number(inputAmount) * (1 / Number(rate))).toString()
+        : (Number(inputAmount) * Number(rate)).toString()
+      : '';
+
   const isWrongNetwork = useIsWrongNetwork(chainId);
   const { isSmartContractWallet } = useGetConnectedWalletType();
 
@@ -201,6 +224,26 @@ export const SwitchLimitOrdersInner = ({
       setRate(staticRate.rate);
     }
   }, [staticRate]);
+
+  if (quote && mainTxState.success) {
+    return (
+      <SwitchTxSuccessView
+        txHash={mainTxState.txHash}
+        amount={normalize(quote.srcAmount, quote.srcDecimals).toString()}
+        symbol={inputToken.symbol}
+        iconSymbol={inputToken.symbol}
+        iconUri={inputToken.logoURI}
+        outSymbol={outputToken.symbol}
+        outIconSymbol={outputToken.symbol}
+        outIconUri={outputToken.logoURI}
+        provider={'cowprotocol'}
+        chainId={chainId}
+        destDecimals={outputToken.decimals}
+        srcDecimals={inputToken.decimals}
+        outAmount={normalizeBN(outputAmount, outputToken.decimals).toString()}
+      />
+    );
+  }
 
   return (
     <>
@@ -240,23 +283,27 @@ export const SwitchLimitOrdersInner = ({
         handleOutputTokenChange={setOutputToken}
         rate={rate || '0'}
         handleRateChange={setRate}
-        rateLoading={false}
+        rateLoading={staticRateLoading}
         initialRate={staticRate}
+        isInvertedRate={isInvertedRate}
+        setIsInvertedRate={setIsInvertedRate}
+        outputAmount={outputAmount}
       />
-      <SwitchModalTxDetails
-        switchRates={quote}
-        selectedOutputToken={outputToken}
-        safeSlippage={0}
-        gasLimit="0"
-        selectedChainId={chainId}
-        customReceivedTitle={'Min received'}
-        reserves={[]}
-        selectedInputToken={inputToken}
-        loading={quoteLoading}
-        modalType={ModalType.SwitchLimitOrder}
-        showGasStation={false}
-        user={user}
-      />
+      {quote && (
+        <TxModalDetails showGasStation={false}>
+          <IntentTxDetails
+            selectedOutputToken={outputToken}
+            selectedInputToken={inputToken}
+            safeSlippage={0}
+            networkFee={quote.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString()}
+            partnerFee={quote.amountAndCosts.costs.partnerFee.amount.toString()}
+            outputAmount={parseUnits(outputAmount, outputToken.decimals).toString()}
+            inputTokenPriceUsd={quote.srcTokenPriceUsd}
+            outputTokenPriceUsd={quote.destTokenPriceUsd}
+            inputAmount={quote.srcAmount}
+          />
+        </TxModalDetails>
+      )}
       <SwitchErrors
         ratesError={quoteError}
         balance={inputToken.balance}
@@ -268,11 +315,12 @@ export const SwitchLimitOrdersInner = ({
         inputAmount={inputAmount}
         outputToken={outputToken}
         // setIsExecutingActions={setIsExecutingActions}
-        outputAmount={inputAmount && rate ? (Number(inputAmount) * Number(rate)).toString() : ''}
+        outputAmount={outputAmount}
         // setShowGasStation={setShowGasStation}
         isWrongNetwork={isWrongNetwork.isWrongNetwork}
         loading={quoteLoading}
         blocked={!!quoteError}
+        expirationTime={expiry}
       />
     </>
   );

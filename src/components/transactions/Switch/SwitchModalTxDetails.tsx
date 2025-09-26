@@ -11,11 +11,11 @@ import {
 } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { useState } from 'react';
+import { NetworkCostTooltip } from 'src/components/infoTooltips/NetworkCostTooltip';
+import { SwapFeeTooltip } from 'src/components/infoTooltips/SwapFeeTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { CollateralType } from 'src/helpers/types';
 import {
   ComputedReserveData,
@@ -30,7 +30,7 @@ import { calculateHFAfterSwap } from 'src/utils/hfUtils';
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { getAssetCollateralType } from '../utils';
 import { CollateralSwapModalDetails } from './CollateralSwap/CollateralSwapModalDetails';
-import { isCowProtocolRates, SwitchRatesType } from './switch.types';
+import { SwitchRatesType } from './switch.types';
 
 export const SwitchModalTxDetails = ({
   switchRates,
@@ -108,10 +108,16 @@ export const SwitchModalTxDetails = ({
 
       {switchRates.provider === 'cowprotocol' ? (
         <IntentTxDetails
-          switchRates={switchRates}
           selectedOutputToken={selectedOutputToken}
           safeSlippage={safeSlippage}
           customReceivedTitle={customReceivedTitle}
+          networkFee={switchRates.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString()}
+          partnerFee={switchRates.amountAndCosts.costs.partnerFee.amount.toString()}
+          outputAmount={switchRates.destAmount}
+          inputTokenPriceUsd={switchRates.srcTokenPriceUsd}
+          outputTokenPriceUsd={switchRates.destTokenPriceUsd}
+          inputAmount={switchRates.srcAmount}
+          selectedInputToken={selectedInputToken}
         />
       ) : (
         <MarketOrderTxDetails
@@ -124,64 +130,54 @@ export const SwitchModalTxDetails = ({
     </TxModalDetails>
   );
 };
-const IntentTxDetails = ({
-  switchRates,
+export const IntentTxDetails = ({
   selectedOutputToken,
+  selectedInputToken,
   safeSlippage,
   customReceivedTitle,
+  networkFee,
+  partnerFee,
+  outputTokenPriceUsd,
+  inputTokenPriceUsd,
+  outputAmount,
+  inputAmount,
 }: {
-  switchRates: SwitchRatesType;
   selectedOutputToken: TokenInfoWithBalance;
+  selectedInputToken: TokenInfoWithBalance;
   safeSlippage: number;
   customReceivedTitle?: React.ReactNode;
+  networkFee: string;
+  partnerFee: string;
+  outputTokenPriceUsd: number;
+  inputTokenPriceUsd: number;
+  outputAmount: string;
+  inputAmount: string;
 }) => {
   const [costBreakdownExpanded, setCostBreakdownExpanded] = useState(false);
 
-  if (!isCowProtocolRates(switchRates)) {
-    throw new Error('Invalid switch rates');
-  }
+  const networkFeeFormatted = normalize(networkFee, selectedOutputToken.decimals);
+  const networkFeeUsd = Number(networkFeeFormatted) * outputTokenPriceUsd;
 
-  const networkFee = switchRates.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString();
-  const networkFeeFormatted = normalize(networkFee, switchRates.destDecimals);
-  const networkFeeUsd = Number(networkFeeFormatted) * switchRates.destTokenPriceUsd;
-
-  const partnerFee = switchRates.amountAndCosts.costs.partnerFee.amount.toString();
-  const partnerFeeFormatted = normalize(partnerFee, switchRates.destDecimals);
-  const partnerFeeUsd = Number(partnerFeeFormatted) * switchRates.destTokenPriceUsd;
+  const partnerFeeFormatted = normalize(partnerFee, selectedOutputToken.decimals);
+  const partnerFeeUsd = Number(partnerFeeFormatted) * outputTokenPriceUsd;
 
   const totalCostsInUsd = networkFeeUsd + partnerFeeUsd; // + costs.slippageInUsd;
 
-  const receivingInUsd = Number(switchRates?.destUSD) * (1 - safeSlippage);
-  const sendingInUsd = Number(switchRates?.srcUSD);
+  const destUsd = normalizeBN(outputAmount, selectedOutputToken.decimals)
+    .multipliedBy(outputTokenPriceUsd)
+    .toNumber();
+  const srcUsd = normalizeBN(inputAmount, selectedInputToken.decimals)
+    .multipliedBy(inputTokenPriceUsd)
+    .toNumber();
 
-  const priceImpact = !switchRates ? undefined : (1 - receivingInUsd / sendingInUsd) * 100;
+  const receivingInUsd = destUsd * (1 - safeSlippage);
+  const sendingInUsd = srcUsd;
 
-  const networkCostsTooltip = (
-    <TextWithTooltip variant="caption" text={<Trans>Network costs</Trans>}>
-      <Trans>
-        This is the cost of settling your order on-chain, including gas and any LP fees.
-      </Trans>
-    </TextWithTooltip>
-  );
+  const priceImpact = (1 - receivingInUsd / sendingInUsd) * 100;
 
-  const feeTooltip = (
-    <TextWithTooltip variant="caption" text={<Trans>Fee</Trans>}>
-      <Trans>
-        Fees help support the user experience and security of the Aave application.{' '}
-        <Link
-          href="https://aave.com/docs/developers/smart-contracts/swap-features"
-          target="_blank"
-          rel="noopener"
-        >
-          Learn more.
-        </Link>
-      </Trans>
-    </TextWithTooltip>
-  );
-
-  const destAmountAfterSlippage = normalizeBN(switchRates.destAmount, switchRates.destDecimals)
+  const destAmountAfterSlippage = normalizeBN(outputAmount, selectedOutputToken.decimals)
     .multipliedBy(1 - safeSlippage)
-    .decimalPlaces(switchRates.destDecimals, BigNumber.ROUND_UP)
+    .decimalPlaces(selectedOutputToken.decimals, BigNumber.ROUND_UP)
     .toString();
 
   return (
@@ -232,7 +228,7 @@ const IntentTxDetails = ({
             mx={2}
             mb={2}
             mt={2}
-            caption={networkCostsTooltip}
+            caption={<NetworkCostTooltip />}
             captionVariant="caption"
             align="flex-start"
           >
@@ -264,7 +260,13 @@ const IntentTxDetails = ({
               />
             </Box>
           </Row>
-          <Row mx={2} mb={2} caption={feeTooltip} captionVariant="caption" align="flex-start">
+          <Row
+            mx={2}
+            mb={2}
+            caption={<SwapFeeTooltip />}
+            captionVariant="caption"
+            align="flex-start"
+          >
             <Box
               sx={{
                 display: 'flex',
@@ -329,7 +331,7 @@ const IntentTxDetails = ({
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <FormattedNumber
-              value={Number(switchRates.destUSD) * (1 - safeSlippage)}
+              value={Number(destUsd) * (1 - safeSlippage)}
               variant="helperText"
               compact
               symbol="USD"
