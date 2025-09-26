@@ -18,6 +18,7 @@ const ETHERFI_DATA_MAP: Map<string, number> = new Map([
   [`${CustomMarket.proto_scroll_v3}-${ProtocolAction.supply}-weETH`, 3],
   [`${CustomMarket.proto_zksync_v3}-${ProtocolAction.supply}-weETH`, 3],
   [`${CustomMarket.proto_linea_v3}-${ProtocolAction.supply}-weETH`, 3],
+  [`${CustomMarket.proto_plasma_v3}-${ProtocolAction.supply}-weETH`, 3],
 ]);
 
 export const useEtherfiIncentives = (
