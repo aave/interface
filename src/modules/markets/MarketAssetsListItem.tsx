@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
@@ -12,10 +13,12 @@ import { NoData } from 'src/components/primitives/NoData';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useRootStore } from 'src/store/root';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { MARKETS } from 'src/utils/events';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
+import { mapAaveProtocolIncentives } from '../../components/incentives/incentives.helper';
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
 import { ListColumn } from '../../components/lists/ListColumn';
@@ -23,25 +26,34 @@ import { ListItem } from '../../components/lists/ListItem';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
-import { ComputedReserveData } from '../../hooks/app-data-provider/useAppDataProvider';
+import { ReserveWithId } from '../../hooks/app-data-provider/useAppDataProvider';
 
-export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
+export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
   const router = useRouter();
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
-
-  const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
+  const [useFetchIcon, setUseFetchIcon] = useState(false);
+  const offboardingDiscussion =
+    AssetsBeingOffboarded[currentMarket]?.[reserve.underlyingToken.symbol];
   const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
-    reserve.symbol,
+    reserve.underlyingToken.symbol,
     currentMarket,
     ProtocolAction.supply
   );
   const externalIncentivesTooltipsBorrowSide = showExternalIncentivesTooltip(
-    reserve.symbol,
+    reserve.underlyingToken.symbol,
     currentMarket,
     ProtocolAction.borrow
   );
+  const { iconSymbol } = fetchIconSymbolAndName({
+    underlyingAsset: reserve.underlyingToken.address,
+    symbol: reserve.underlyingToken.symbol,
+    name: reserve.underlyingToken.name,
+  });
+
+  const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
+  const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
 
   return (
     <ListItem
@@ -50,21 +62,33 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       onClick={() => {
         trackEvent(MARKETS.DETAILS_NAVIGATION, {
           type: 'Row',
-          assetName: reserve.name,
-          asset: reserve.underlyingAsset,
+          assetName: reserve.underlyingToken.name,
+          asset: reserve.underlyingToken.address.toLowerCase(),
           market: currentMarket,
         });
-        router.push(ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket));
+        router.push(
+          ROUTES.reserveOverview(reserve.underlyingToken.address.toLowerCase(), currentMarket)
+        );
       }}
       sx={{ cursor: 'pointer' }}
       button
-      data-cy={`marketListItemListItem_${reserve.symbol.toUpperCase()}`}
+      data-cy={`marketListItemListItem_${reserve.underlyingToken.symbol.toUpperCase()}`}
     >
       <ListColumn isRow maxWidth={280}>
-        <TokenIcon symbol={reserve.iconSymbol} fontSize="large" />
+        {!useFetchIcon ? (
+          <TokenIcon
+            symbol={reserve.underlyingToken.symbol}
+            fontSize="large"
+            onError={() => {
+              setUseFetchIcon(true);
+            }}
+          />
+        ) : (
+          <TokenIcon symbol={iconSymbol} fontSize="large" />
+        )}
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
           <Typography variant="h4" noWrap>
-            {reserve.name}
+            {reserve.underlyingToken.name}
           </Typography>
 
           <Box
@@ -73,8 +97,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             }}
           >
             <Typography variant="subheader2" color="text.muted" noWrap>
-              {reserve.symbol}
-              {reserve.isIsolated && (
+              {reserve.underlyingToken.symbol}
+              {reserve.isolationModeConfig?.canBeCollateral && (
                 <span style={{ marginLeft: '8px' }}>
                   <IsolatedEnabledBadge />
                 </span>
@@ -82,22 +106,22 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
             </Typography>
           </Box>
         </Box>
-        {reserve.symbol === 'AMPL' && <AMPLToolTip />}
-        {reserve.symbol === 'renFIL' && <RenFILToolTip />}
+        {reserve.underlyingToken.symbol === 'AMPL' && <AMPLToolTip />}
+        {reserve.underlyingToken.symbol === 'renFIL' && <RenFILToolTip />}
         {offboardingDiscussion && <OffboardingTooltip discussionLink={offboardingDiscussion} />}
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
-        <ReserveSubheader value={reserve.totalLiquidityUSD} />
+        <FormattedNumber compact value={reserve.size.amount.value} variant="main16" />
+        <ReserveSubheader value={reserve.size.usd} />
       </ListColumn>
 
       <ListColumn>
         <IncentivesCard
-          value={reserve.supplyAPY}
-          incentives={reserve.aIncentivesData || []}
-          address={reserve.aTokenAddress}
-          symbol={reserve.symbol}
+          value={reserve.supplyInfo.apy.value}
+          incentives={supplyProtocolIncentives}
+          address={reserve.aToken.address}
+          symbol={reserve.underlyingToken.symbol}
           variant="main16"
           symbolsVariant="secondary16"
           tooltip={
@@ -113,10 +137,14 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        {reserve.borrowingEnabled || Number(reserve.totalDebt) > 0 ? (
+        {reserve.borrowInfo ? (
           <>
-            <FormattedNumber compact value={reserve.totalDebt} variant="main16" />{' '}
-            <ReserveSubheader value={reserve.totalDebtUSD} />
+            <FormattedNumber
+              compact
+              value={Number(reserve.borrowInfo?.total.amount.value)}
+              variant="main16"
+            />{' '}
+            <ReserveSubheader value={String(reserve.borrowInfo?.total.usd)} />
           </>
         ) : (
           <NoData variant={'secondary14'} color="text.secondary" />
@@ -125,10 +153,14 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
 
       <ListColumn>
         <IncentivesCard
-          value={Number(reserve.totalVariableDebtUSD) > 0 ? reserve.variableBorrowAPY : '-1'}
-          incentives={reserve.vIncentivesData || []}
-          address={reserve.variableDebtTokenAddress}
-          symbol={reserve.symbol}
+          value={
+            Number(reserve.borrowInfo?.total.amount.value) > 0
+              ? String(reserve.borrowInfo?.apy.value)
+              : '-1'
+          }
+          incentives={borrowProtocolIncentives}
+          address={reserve.vToken.address}
+          symbol={reserve.underlyingToken.symbol}
           variant="main16"
           symbolsVariant="secondary16"
           tooltip={
@@ -140,21 +172,24 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />
-        {!reserve.borrowingEnabled &&
-          Number(reserve.totalVariableDebt) > 0 &&
-          !reserve.isFrozen && <ReserveSubheader value={'Disabled'} />}
+        {reserve.borrowInfo?.borrowingState === 'DISABLED' && !reserve.isFrozen && (
+          <ReserveSubheader value={'Disabled'} />
+        )}
       </ListColumn>
 
       <ListColumn minWidth={95} maxWidth={95} align="right">
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(reserve.underlyingAsset, currentMarket)}
+          href={ROUTES.reserveOverview(
+            reserve.underlyingToken.address.toLowerCase(),
+            currentMarket
+          )}
           onClick={() =>
             trackEvent(MARKETS.DETAILS_NAVIGATION, {
               type: 'Button',
-              assetName: reserve.name,
-              asset: reserve.underlyingAsset,
+              assetName: reserve.underlyingToken.name,
+              asset: reserve.underlyingToken.address.toLowerCase(),
               market: currentMarket,
             })
           }

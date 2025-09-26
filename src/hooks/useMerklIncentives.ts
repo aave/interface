@@ -1,5 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
+import { AaveV3Plasma } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
 import { convertAprToApy } from 'src/utils/utils';
@@ -99,7 +100,27 @@ type WhitelistApiResponse = {
   additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData>;
 };
 
-const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {};
+const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {
+  [AaveV3Plasma.ASSETS.USDe.A_TOKEN]: {
+    incentiveAPR: '0.12',
+    rewardTokenAddress: AaveV3Plasma.ASSETS.USDe.A_TOKEN,
+    rewardTokenSymbol: 'aPlaUSDe',
+    customMessage:
+      'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate for the forseeable future.',
+    breakdown: {
+      protocolAPY: 0,
+      protocolIncentivesAPR: 0,
+      merklIncentivesAPR: 0,
+      totalAPY: 0,
+      isBorrow: false,
+      breakdown: {
+        protocol: 0,
+        protocolIncentives: 0,
+        merklIncentives: 0,
+      },
+    },
+  },
+};
 
 const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
@@ -158,7 +179,19 @@ export const useMerklIncentives = ({
       const hardcodedIncentive = rewardedAsset ? hardcodedIncentives[rewardedAsset] : undefined;
 
       if (hardcodedIncentive) {
-        return hardcodedIncentive;
+        const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
+          return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
+        }, 0);
+        const merklIncentivesAPY = convertAprToApy(0.1);
+        return {
+          ...hardcodedIncentive,
+          breakdown: {
+            protocolAPY,
+            protocolIncentivesAPR,
+            merklIncentivesAPR: merklIncentivesAPY,
+            totalAPY: protocolAPY + protocolIncentivesAPR + merklIncentivesAPY,
+          } as MerklIncentivesBreakdown,
+        } as ExtendedReserveIncentiveResponse;
       }
 
       const opportunities = merklOpportunities.filter(

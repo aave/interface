@@ -5,8 +5,8 @@ import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYToolt
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
+import { ReserveWithId } from '../../hooks/app-data-provider/useAppDataProvider';
 import { MarketAssetsListItem } from './MarketAssetsListItem';
 import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
 import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
@@ -15,19 +15,19 @@ import { MarketAssetsListMobileItemLoader } from './MarketAssetsListMobileItemLo
 const listHeaders = [
   {
     title: <Trans>Asset</Trans>,
-    sortKey: 'symbol',
+    sortKey: 'underlyingToken.symbol', // Cambiado de 'symbol'
   },
   {
     title: <Trans>Total supplied</Trans>,
-    sortKey: 'totalLiquidityUSD',
+    sortKey: 'size.usd', // Cambiado de 'totalLiquidityUSD'
   },
   {
     title: <Trans>Supply APY</Trans>,
-    sortKey: 'supplyAPY',
+    sortKey: 'supplyInfo.apy.value', // Cambiado de 'supplyAPY'
   },
   {
     title: <Trans>Total borrowed</Trans>,
-    sortKey: 'totalDebtUSD',
+    sortKey: 'borrowInfo.total.usd', // Cambiado de 'totalDebtUSD'
   },
   {
     title: (
@@ -37,12 +37,12 @@ const listHeaders = [
         variant="subheader2"
       />
     ),
-    sortKey: 'variableBorrowAPY',
+    sortKey: 'borrowInfo.apy.value',
   },
 ];
 
 type MarketAssetsListProps = {
-  reserves: ComputedReserveData[];
+  reserves: ReserveWithId[];
   loading: boolean;
 };
 
@@ -50,21 +50,40 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
+  const getValue = (obj: ReserveWithId, path: string): unknown => {
+    return path.split('.').reduce((current: unknown, key: string) => {
+      return current && typeof current === 'object' && key in current
+        ? (current as Record<string, unknown>)[key]
+        : undefined;
+    }, obj);
+  };
   if (sortDesc) {
-    if (sortName === 'symbol') {
-      reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
+    if (sortName === 'underlyingToken.symbol') {
+      reserves.sort((a, b) =>
+        a.underlyingToken.symbol.toUpperCase() < b.underlyingToken.symbol.toUpperCase() ? -1 : 1
+      );
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      reserves.sort((a, b) => a[sortName] - b[sortName]);
+      reserves.sort((a, b) => {
+        const aValue = Number(getValue(a, sortName)) || 0;
+        const bValue = Number(getValue(b, sortName)) || 0;
+        return aValue - bValue;
+      });
     }
   } else {
-    if (sortName === 'symbol') {
-      reserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
+    if (sortName === 'underlyingToken.symbol') {
+      reserves.sort((a, b) =>
+        b.underlyingToken.symbol.toUpperCase() < a.underlyingToken.symbol.toUpperCase() ? -1 : 1
+      );
     } else {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      reserves.sort((a, b) => b[sortName] - a[sortName]);
+      reserves.sort((a, b) => {
+        const aValue = Number(getValue(a, sortName)) || 0;
+        const bValue = Number(getValue(b, sortName)) || 0;
+        return bValue - aValue;
+      });
     }
   }
 
@@ -95,8 +114,8 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         <ListHeaderWrapper px={6}>
           {listHeaders.map((col) => (
             <ListColumn
-              isRow={col.sortKey === 'symbol'}
-              maxWidth={col.sortKey === 'symbol' ? 280 : undefined}
+              isRow={col.sortKey === 'underlyingToken.symbol'}
+              maxWidth={col.sortKey === 'underlyingToken.symbol' ? 280 : undefined}
               key={col.sortKey}
             >
               <ListHeaderTitle
