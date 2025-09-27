@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import {
+  ADAPTER_APP_CODE,
+  HEADER_WIDGET_APP_CODE,
+} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
+import {
   MultiProviderRatesParams,
   SwitchRatesType,
 } from 'src/components/transactions/Switch/switch.types';
@@ -71,6 +75,9 @@ export const useMultiProviderSwitchRates = ({
       : destUnderlyingToken;
   }, [destAToken, destUnderlyingToken, provider, modalType, shouldUseFlashloan]);
 
+  const appCode =
+    modalType === ModalType.CollateralSwap ? ADAPTER_APP_CODE : HEADER_WIDGET_APP_CODE;
+
   return useQuery<SwitchRatesType>({
     queryFn: async () => {
       if (!provider) {
@@ -95,6 +102,7 @@ export const useMultiProviderSwitchRates = ({
             outputSymbol,
             isInputTokenCustom,
             isOutputTokenCustom,
+            appCode,
           });
         case 'paraswap':
           return await getParaswapSellRates({
@@ -111,7 +119,14 @@ export const useMultiProviderSwitchRates = ({
           });
       }
     },
-    queryKey: queryKeysFactory.cowProtocolRates(chainId, amount, srcToken, destToken, user),
+    queryKey: queryKeysFactory.cowProtocolRates(
+      chainId,
+      amount,
+      srcToken,
+      destToken,
+      user,
+      appCode
+    ),
     enabled: amount !== '0' && !isTxSuccess,
     retry: 0,
     throwOnError: false,
