@@ -159,19 +159,28 @@ export const CollateralSwapModal = () => {
     tokensFrom.length > 0
       ? tokensFrom[0]
       : undefined);
+
   const defaultOutputToken =
     tokensTo.length > 0
-      ? tokensTo.filter((token) => token.address !== defaultInputToken?.address)[0]
+      ? tokensTo.filter(
+          (token) =>
+            token.address !== defaultInputToken?.address &&
+            token.symbol !== defaultInputToken?.symbol
+        )[0]
       : undefined;
+  console.log('Default Input Token: ', defaultInputToken);
+  console.log('Default Output Token: ', defaultOutputToken);
 
   return (
+    // Only forcedDefaultInputToken forced
     <BaseSwitchModal
       modalType={ModalType.CollateralSwap}
       switchDetails={switchDetails}
       tokensFrom={tokensFrom}
       tokensTo={tokensTo}
       forcedDefaultInputToken={defaultInputToken}
-      forcedDefaultOutputToken={defaultOutputToken}
+      forcedDefaultOutputToken={undefined}
+      suggestedDefaultOutputToken={defaultOutputToken}
       showSwitchInputAndOutputAssetsButton={false}
       forcedChainId={currentNetworkConfig.wagmiChain.id}
     />

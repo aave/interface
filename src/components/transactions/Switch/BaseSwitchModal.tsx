@@ -24,6 +24,8 @@ export const BaseSwitchModal = ({
   inputBalanceTitle: balanceTitle,
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
+  suggestedDefaultInputToken,
+  suggestedDefaultOutputToken,
   tokensFrom: forcedTokensFrom,
   tokensTo: forcedTokensTo,
   showSwitchInputAndOutputAssetsButton = true,
@@ -116,6 +118,8 @@ export const BaseSwitchModal = ({
           inputBalanceTitle={balanceTitle}
           forcedDefaultInputToken={forcedDefaultInputToken}
           forcedDefaultOutputToken={forcedDefaultOutputToken}
+          suggestedDefaultInputToken={suggestedDefaultInputToken}
+          suggestedDefaultOutputToken={suggestedDefaultOutputToken}
           showSwitchInputAndOutputAssetsButton={showSwitchInputAndOutputAssetsButton}
           selectedChainId={selectedChainId}
           setSelectedChainId={setSelectedChainId}
