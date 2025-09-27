@@ -7,6 +7,7 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
   [ModalType.CollateralSwap]: {
     [SupportedChainId.POLYGON]: 'ALL', // Polygon not supported for collateral swap, waiting better solvers support
     [SupportedChainId.AVALANCHE]: 'ALL', // Disabled until we have better solvers liquidity
+    [SupportedChainId.BNB]: 'ALL', // Disabled until we have better solvers liquidity
     [SupportedChainId.GNOSIS_CHAIN]: [
       '0xedbc7449a9b594ca4e053d9737ec5dc4cbccbfb2'.toLowerCase(), // EURe USD Price not supported
     ],
