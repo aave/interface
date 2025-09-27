@@ -1,3 +1,4 @@
+import { AaveV3InkWhitelabel } from '@bgd-labs/aave-address-book';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -24,7 +25,7 @@ import {
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { NetworkSelect } from 'src/components/transactions/NetworkSelect';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { useBridgeTokens } from 'src/hooks/bridge/useBridgeWalletBalance';
+import { useBridgeTokens, UseBridgeTokensParams } from 'src/hooks/bridge/useBridgeWalletBalance';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -53,7 +54,34 @@ import { useGetBridgeMessage } from './useGetBridgeMessage';
 import { useTimeToDestination } from './useGetFinalityTime';
 
 const defaultNetwork = supportedNetworksWithBridge[0];
-const defaultNetworkMarket = marketsData[defaultNetwork.chainId];
+
+function getUseBridgeTokensParams(chainId: number): UseBridgeTokensParams {
+  const tokenOracle = getConfigFor(chainId).tokenOracle;
+
+  if (chainId === 57073) {
+    // no market config available yet for ink, so values are set here
+    return {
+      chainId,
+      ghoTokenAddress: '0xfc421aD3C883Bf9E7C4f42dE845C4e4405799e73',
+      tokenOracle,
+      walletBalanceProviderAddress: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
+    };
+  }
+
+  const market = Object.values(marketsData).filter(
+    (md) => md.chainId === chainId && md.v3 === true && md.addresses.GHO_TOKEN_ADDRESS
+  )[0];
+  if (!market || !market.addresses.GHO_TOKEN_ADDRESS) {
+    throw new Error('Market not found');
+  }
+
+  return {
+    chainId,
+    ghoTokenAddress: market.addresses.GHO_TOKEN_ADDRESS,
+    tokenOracle: getConfigFor(chainId).tokenOracle,
+    walletBalanceProviderAddress: market.addresses.WALLET_BALANCE_PROVIDER,
+  };
+}
 
 export const BridgeModalContent = () => {
   const { mainTxState: bridgeTxState, txError, close, gasLimit } = useModalContext();
@@ -121,19 +149,8 @@ export const BridgeModalContent = () => {
     setMaxSelected(false);
   }, [sourceNetworkObj]);
 
-  // Find v3 market for briding as all markets are on v3
-  const findMarketData = (chainId: number) => {
-    const allMarkets = Object.values(marketsData).filter((elem) => elem.chainId === chainId);
-    const v3Market = allMarkets.find((market) => market.v3 === true);
-    return v3Market || allMarkets[0] || defaultNetworkMarket;
-  };
-
-  const selectedMarketData = findMarketData(sourceNetworkObj.chainId);
-
-  const { data: sourceTokenInfo, isFetching: fetchingBridgeTokenBalance } = useBridgeTokens(
-    selectedMarketData,
-    getConfigFor(sourceNetworkObj.chainId).tokenOracle
-  );
+  const params = getUseBridgeTokensParams(sourceNetworkObj.chainId);
+  const { data: sourceTokenInfo, isFetching: fetchingBridgeTokenBalance } = useBridgeTokens(params);
 
   const isWrongNetwork = currentChainId !== sourceNetworkObj.chainId;
 
@@ -306,6 +323,9 @@ export const BridgeModalContent = () => {
     </TextWithTooltip>
   );
 
+  // There's no market config available for ink yet, so skip showing gas station since it relies on having a market
+  const showGasStation = sourceNetworkObj.chainId !== 57073;
+
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -419,7 +439,11 @@ export const BridgeModalContent = () => {
               sourceChainId={sourceNetworkObj.chainId}
             />
           </Box>
-          <TxModalDetails gasLimit={gasLimit} chainId={sourceNetworkObj.chainId}>
+          <TxModalDetails
+            gasLimit={gasLimit}
+            chainId={sourceNetworkObj.chainId}
+            showGasStation={showGasStation}
+          >
             <BridgeAmount
               amount={amount}
               maxAmountToBridgeFormatted={maxAmountToBridgeFormatted}
