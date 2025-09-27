@@ -200,6 +200,7 @@ export const BaseSwitchModalContent = ({
 
   const [userIsSmartContractWallet, setUserIsSmartContractWallet] = useState(false);
   const [userIsSafeWallet, setUserIsSafeWallet] = useState(false);
+
   useEffect(() => {
     try {
       if (user && connectedChainId) {
@@ -684,9 +685,21 @@ export const BaseSwitchModalContent = ({
           .multipliedBy(1 - safeSlippage)
           .decimalPlaces(switchRates.destDecimals, BigNumber.ROUND_UP)
           .toString()}
+        amountUsd={Number(switchRates.srcUSD)}
+        outAmountUSD={Number(
+          switchRates.provider === 'cowprotocol' ? switchRates.destSpotInUsd : switchRates.destUSD
+        )}
+        addToken={{
+          address: selectedOutputToken.aToken ?? selectedOutputToken.address,
+          symbol: selectedOutputToken.symbol,
+          decimals: selectedOutputToken.decimals,
+          aToken: selectedOutputToken.aToken ? true : false,
+        }}
       />
     );
   }
+  console.log('output token', `a${selectedOutputToken.symbol}`);
+  console.log('atoken token', selectedOutputToken.aToken);
 
   // Eth-Flow requires to leave some assets for gas
   const nativeDecimals = 18;
