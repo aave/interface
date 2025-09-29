@@ -181,15 +181,9 @@ export const createAnalyticsSlice: StateCreator<
 
       // Only track the consent event once per user per consent version
       const alreadyCounted = localStorage.getItem(CONSENT_COUNTED_KEY) === 'true';
-      console.log('alreadyCounted', alreadyCounted);
-      console.log('AMPLITUDE_API_KEY exists?', !!AMPLITUDE_API_KEY);
-      console.log('AMPLITUDE_API_KEY value:', AMPLITUDE_API_KEY ? 'SET' : 'NOT_SET');
 
       if (!alreadyCounted && AMPLITUDE_API_KEY) {
         localStorage.setItem(CONSENT_COUNTED_KEY, 'true');
-
-        console.log('tracking opt-out event');
-        console.log('eventsTrackingInitialized:', get().eventsTrackingInitialized);
 
         if (!get().eventsTrackingInitialized) {
           // Initialize minimal tracking just for this one event
@@ -213,8 +207,6 @@ export const createAnalyticsSlice: StateCreator<
           track('analytics_consent_declined', {
             app_context: 'app',
           });
-          console.log('tracking opt-out event 3');
-          console.log('✅ Opt-out event sent to Amplitude!');
 
           // Immediately disable tracking again
           setOptOut(true);
