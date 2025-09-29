@@ -12,7 +12,8 @@ function normalizeStableSymbol(symbol: string): string {
     .replace(/^M\./, '')
     .replace(/^W/, '')
     .replace(/USD₮0/g, 'USDT')
-    .replace(/USD₮/g, 'USDT');
+    .replace(/USD₮/g, 'USDT')
+    .replace(/USDT0/g, 'USDT');
 }
 function normalizeEthCorrelatedSymbol(symbol: string): string {
   return symbol
