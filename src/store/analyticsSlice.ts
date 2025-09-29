@@ -3,6 +3,45 @@ import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
 
+/**
+ * ANALYTICS CONSENT SYSTEM
+ *
+ * This system provides privacy-friendly analytics consent with opt-out counting.
+ * Key features:
+ * - Versioned consent (increment version to reset all users)
+ * - Counts both opt-ins and opt-outs for accurate metrics
+ * - Respects user privacy while measuring consent rates
+ *
+ * HOW IT WORKS:
+ *
+ * 1. VERSIONED CONSENT
+ *    - CONSENT_KEY: Stores user choice (true/false)
+ *    - CONSENT_COUNTED_KEY: Prevents duplicate counting
+ *    - Increment CONSENT_VERSION to force re-consent
+ *
+ * 2. OPT-IN FLOW
+ *    - User accepts → Full analytics enabled
+ *    - Count sent via trackEvent() (normal flow)
+ *
+ * 3. OPT-OUT FLOW (Privacy-friendly counting)
+ *    - Initialize minimal Amplitude (no personal data)
+ *    - Temporarily enable tracking
+ *    - Send anonymous count event
+ *    - Immediately disable all tracking
+ *    - User stays opted out, but we count the choice
+ *
+ * 4. PRIVACY GUARANTEES
+ *    - Opt-out users: Only 1 anonymous event (the count)
+ *    - No IP, language, or behavioral data for opt-outs
+ *    - Minimal tracking configuration
+ *    - Tracking disabled immediately after count
+ *
+ * 5. DUPLICATE PREVENTION
+ *    - alreadyCounted flag prevents multiple events per user
+ *    - Works across browser sessions
+ *    - Reset when consent version changes
+ */
+
 // Plugin to ensure all events have app_context
 const createAppContextPlugin = (context: string) => ({
   name: 'app-context-plugin',
@@ -150,6 +189,7 @@ export const createAnalyticsSlice: StateCreator<
         localStorage.setItem(CONSENT_COUNTED_KEY, 'true');
 
         console.log('tracking opt-out event');
+        console.log('eventsTrackingInitialized:', get().eventsTrackingInitialized);
 
         if (!get().eventsTrackingInitialized) {
           // Initialize minimal tracking just for this one event
@@ -163,18 +203,21 @@ export const createAnalyticsSlice: StateCreator<
           });
           add(createAppContextPlugin('app'));
           set({ eventsTrackingInitialized: true });
-
-          console.log('tracking opt-out event 2');
         }
 
         try {
-          // Call track() directly to bypass the isTrackingEnabled guard
-          // This ensures the opt-out event is sent even for first-time visitors
+          // Temporarily enable tracking to send the opt-out event
+          // This ensures the event is sent even if Amplitude is in opt-out mode
+          setOptOut(false);
+
           track('analytics_consent_declined', {
             app_context: 'app',
           });
           console.log('tracking opt-out event 3');
           console.log('✅ Opt-out event sent to Amplitude!');
+
+          // Immediately disable tracking again
+          setOptOut(true);
         } catch (err) {
           console.log('Error tracking opt-out event', err);
         }
