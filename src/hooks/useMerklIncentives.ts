@@ -182,7 +182,7 @@ export const useMerklIncentives = ({
         const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
           return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
         }, 0);
-        const merklIncentivesAPY = convertAprToApy(0.1);
+        const merklIncentivesAPY = convertAprToApy(0.06);
         return {
           ...hardcodedIncentive,
           breakdown: {
