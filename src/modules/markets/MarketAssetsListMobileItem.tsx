@@ -1,7 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
-import { useState } from 'react';
 import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
@@ -26,7 +25,6 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithId) => {
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
-  const [useFetchIcon, setUseFetchIcon] = useState(false);
 
   const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
     reserve.underlyingToken.symbol,
@@ -44,13 +42,18 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithId) => {
     name: reserve.underlyingToken.name,
   });
 
+  const displayIconSymbol =
+    iconSymbol?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
+      ? iconSymbol
+      : reserve.underlyingToken.symbol;
+
   const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
   const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
 
   return (
     <ListMobileItemWrapper
       symbol={reserve.underlyingToken.symbol}
-      iconSymbol={!useFetchIcon ? reserve.underlyingToken.symbol : iconSymbol}
+      iconSymbol={displayIconSymbol}
       name={reserve.underlyingToken.name}
       underlyingAsset={reserve.underlyingToken.address}
       currentMarket={currentMarket}
@@ -61,9 +64,6 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithId) => {
         superFestRewards: externalIncentivesTooltipsSupplySide.superFestRewards,
         spkAirdrop: externalIncentivesTooltipsSupplySide.spkAirdrop,
         kernelPoints: externalIncentivesTooltipsSupplySide.kernelPoints,
-      }}
-      onIconError={() => {
-        setUseFetchIcon(true);
       }}
     >
       <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>

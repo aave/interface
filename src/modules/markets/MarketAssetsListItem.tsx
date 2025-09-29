@@ -2,7 +2,6 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
@@ -33,7 +32,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
-  const [useFetchIcon, setUseFetchIcon] = useState(false);
   const offboardingDiscussion =
     AssetsBeingOffboarded[currentMarket]?.[reserve.underlyingToken.symbol];
   const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
@@ -51,6 +49,11 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
     symbol: reserve.underlyingToken.symbol,
     name: reserve.underlyingToken.name,
   });
+
+  const displayIconSymbol =
+    iconSymbol?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
+      ? iconSymbol
+      : reserve.underlyingToken.symbol;
 
   const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
   const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
@@ -75,17 +78,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
       data-cy={`marketListItemListItem_${reserve.underlyingToken.symbol.toUpperCase()}`}
     >
       <ListColumn isRow maxWidth={280}>
-        {!useFetchIcon ? (
-          <TokenIcon
-            symbol={reserve.underlyingToken.symbol}
-            fontSize="large"
-            onError={() => {
-              setUseFetchIcon(true);
-            }}
-          />
-        ) : (
-          <TokenIcon symbol={iconSymbol} fontSize="large" />
-        )}
+        <TokenIcon symbol={displayIconSymbol} fontSize="large" />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
           <Typography variant="h4" noWrap>
             {reserve.underlyingToken.name}
