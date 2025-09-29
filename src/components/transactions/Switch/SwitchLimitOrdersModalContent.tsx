@@ -1,4 +1,4 @@
-import { normalize, normalizeBN } from '@aave/math-utils';
+import { normalize } from '@aave/math-utils';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
@@ -17,6 +17,7 @@ import { parseUnits } from 'viem';
 
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { USDTResetWarning } from '../Warnings/USDTResetWarning';
 import { getFilteredTokensForSwitch } from './BaseSwitchModal';
 import { supportedNetworksWithEnabledMarketLimit } from './common';
 import { isNativeToken } from './cowprotocol/cowprotocol.helpers';
@@ -181,6 +182,7 @@ export const SwitchLimitOrdersInner = ({
   const [outputToken, setOutputToken] = useState(
     tokens.find((token) => token.symbol == 'GHO') || tokens[1]
   );
+  const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
 
   const { data: staticRate, isLoading: staticRateLoading } = useStaticRate({
     chainId,
@@ -240,7 +242,7 @@ export const SwitchLimitOrdersInner = ({
         chainId={chainId}
         destDecimals={outputToken.decimals}
         srcDecimals={inputToken.decimals}
-        outAmount={normalizeBN(outputAmount, outputToken.decimals).toString()}
+        outAmount={outputAmount}
       />
     );
   }
@@ -304,6 +306,7 @@ export const SwitchLimitOrdersInner = ({
           />
         </TxModalDetails>
       )}
+      {showUSDTResetWarning && <USDTResetWarning />}
       <SwitchErrors
         ratesError={quoteError}
         balance={inputToken.balance}
@@ -316,11 +319,11 @@ export const SwitchLimitOrdersInner = ({
         outputToken={outputToken}
         // setIsExecutingActions={setIsExecutingActions}
         outputAmount={outputAmount}
-        // setShowGasStation={setShowGasStation}
         isWrongNetwork={isWrongNetwork.isWrongNetwork}
         loading={quoteLoading}
         blocked={!!quoteError}
         expirationTime={expiry}
+        setShowUSDTResetWarning={setShowUSDTResetWarning}
       />
     </>
   );

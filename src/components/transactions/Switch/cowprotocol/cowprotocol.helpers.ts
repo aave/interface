@@ -4,6 +4,7 @@ import {
   BuyTokenDestination,
   MAX_VALID_TO_EPOCH,
   OrderBookApi,
+  OrderClass,
   OrderKind,
   OrderParameters,
   OrderStatus,
@@ -82,17 +83,19 @@ export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) 
   volumeBps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
   recipient: COW_EVM_RECIPIENT,
 });
+
 export const COW_APP_DATA = (
   tokenFromSymbol: string,
   tokenToSymbol: string,
   slippageBips: number,
   smartSlippage: boolean,
+  orderClass: OrderClass,
   appCode?: string
 ) => ({
   appCode: appCode || HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
   version: '1.4.0',
   metadata: {
-    orderClass: { orderClass: 'market' as const }, // for CoW Swap UI & Analytics
+    orderClass: { orderClass: orderClass }, // for CoW Swap UI & Analytics
     quote: {
       slippageBips,
       smartSlippage,
@@ -151,7 +154,14 @@ export const getPreSignTransaction = async ({
     additionalParams: {
       signingScheme: SigningScheme.PRESIGN,
     },
-    appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
+    appData: COW_APP_DATA(
+      inputSymbol,
+      outputSymbol,
+      slippageBps,
+      smartSlippage,
+      OrderClass.MARKET,
+      appCode
+    ),
   });
 
   const preSignTransaction = await tradingSdk.getPreSignTransaction({
@@ -194,7 +204,14 @@ export const sendOrder = async ({
 
   return orderBookQuote
     .postSwapOrderFromQuote({
-      appData: COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage, appCode),
+      appData: COW_APP_DATA(
+        inputSymbol,
+        outputSymbol,
+        slippageBps,
+        smartSlippage,
+        OrderClass.MARKET,
+        appCode
+      ),
     })
     .then((orderResult) => orderResult.orderId);
 };
@@ -258,7 +275,14 @@ export const getUnsignerOrder = async (
 ): Promise<UnsignedOrder> => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
-    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage, appCode)
+    COW_APP_DATA(
+      tokenFromSymbol,
+      tokenToSymbol,
+      slippageBps,
+      smartSlippage,
+      OrderClass.MARKET,
+      appCode
+    )
   );
 
   return {
@@ -291,7 +315,7 @@ export const populateEthFlowTx = async (
 ): Promise<PopulatedTransaction> => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
-    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage)
+    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage, OrderClass.MARKET)
   );
 
   const orderData = {

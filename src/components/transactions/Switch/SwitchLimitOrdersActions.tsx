@@ -1,5 +1,6 @@
 import {
   COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
+  OrderClass,
   OrderKind,
   SupportedChainId,
   TradingSdk,
@@ -23,14 +24,18 @@ import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { checkRequiresApproval } from '../utils';
-import { HEADER_WIDGET_APP_CODE } from './cowprotocol/cowprotocol.helpers';
+import {
+  COW_APP_DATA,
+  COW_PARTNER_FEE,
+  HEADER_WIDGET_APP_CODE,
+} from './cowprotocol/cowprotocol.helpers';
 
 interface SwitchProps {
   inputAmount: string;
   inputToken: TokenInfoWithBalance;
   outputToken: TokenInfoWithBalance;
   outputAmount: string;
-  //setShowUSDTResetWarning: (showUSDTResetWarning: boolean) => void;
+  setShowUSDTResetWarning?: (showUSDTResetWarning: boolean) => void;
   blocked: boolean;
   loading?: boolean;
   isWrongNetwork: boolean;
@@ -46,7 +51,7 @@ export const SwitchLimitOrdersActions = ({
   inputAmount,
   inputToken,
   outputToken,
-  //setShowUSDTResetWarning,
+  setShowUSDTResetWarning,
   blocked,
   loading,
   isWrongNetwork,
@@ -70,15 +75,8 @@ SwitchProps) => {
     ])
   );
 
-  const {
-    approvalTxState,
-    mainTxState,
-    loadingTxns,
-    setMainTxState,
-    //setGasLimit,
-    setLoadingTxns,
-    setTxError,
-  } = useModalContext();
+  const { approvalTxState, mainTxState, loadingTxns, setMainTxState, setLoadingTxns, setTxError } =
+    useModalContext();
 
   const queryClient = useQueryClient();
 
@@ -117,6 +115,7 @@ SwitchProps) => {
     decimals: inputToken.decimals,
     signatureAmount: inputAmount,
     onApprovalTxConfirmed: () => fetchApprovedAmount(),
+    setShowUSDTResetWarning,
   });
 
   const invalidate = () => {
@@ -152,16 +151,30 @@ SwitchProps) => {
       const provider = getEthersProvider(wagmiConfig, { chainId });
       const signer = (await provider).getSigner();
       const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
-      const receipt = await tradingSdk.postLimitOrder({
-        sellAmount: parseUnits(inputAmount, inputToken.decimals).toString(),
-        buyAmount: parseUnits(outputAmount, outputToken.decimals).toString(),
-        kind: OrderKind.SELL,
-        sellToken: inputToken.address,
-        buyToken: outputToken.address,
-        sellTokenDecimals: inputToken.decimals,
-        buyTokenDecimals: outputToken.decimals,
-        validFor: expirationTime,
-      });
+      const receipt = await tradingSdk.postLimitOrder(
+        {
+          sellAmount: parseUnits(inputAmount, inputToken.decimals).toString(),
+          buyAmount: parseUnits(outputAmount, outputToken.decimals).toString(),
+          kind: OrderKind.SELL,
+          sellToken: inputToken.address,
+          buyToken: outputToken.address,
+          sellTokenDecimals: inputToken.decimals,
+          buyTokenDecimals: outputToken.decimals,
+          slippageBps: 0,
+          partnerFee: COW_PARTNER_FEE(inputToken.symbol, outputToken.symbol),
+          validFor: expirationTime,
+        },
+        {
+          appData: COW_APP_DATA(
+            inputToken.symbol,
+            outputToken.symbol,
+            0,
+            false,
+            OrderClass.LIMIT,
+            HEADER_WIDGET_APP_CODE
+          ),
+        }
+      );
       setMainTxState({
         loading: false,
         success: true,
