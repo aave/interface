@@ -208,7 +208,7 @@ const prodConfig: Config[] = [
     router: '0xca7c90A52B44E301AC01Cb5EB99b2fD99339433A',
     tokenOracle: '0x20fd5f3FCac8883a3A0A2bBcD658A2d2c6EFa6B6',
     wrappedNativeOracle: '0xA17887fd35B14A4c6e6ec87458591941934d444c',
-    subgraphUrl: '',
+    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/CZxebNCRkL9RHpFcQcDnRdQMB4yBM8PFgz5NKEHKtrw6`,
     feeTokens: [
       {
         name: 'Ethereum',
