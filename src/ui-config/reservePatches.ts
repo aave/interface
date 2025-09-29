@@ -84,6 +84,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   ZRX: '0x Coin',
   '1INCH': '1inch Network',
   LUSD: 'LUSD Stablecoin',
+  FBTC: 'Function FBTC',
 };
 
 export interface IconSymbolInterface {
