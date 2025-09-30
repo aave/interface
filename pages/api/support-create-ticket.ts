@@ -155,7 +155,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             },
           },
         ],
-        labelTypeIds: ['lt_01K36FQ2J7ZGXQ55RV769TJHYN'],
       },
     };
     const result = await makeGraphQLRequest(CREATE_THREAD_MUTATION, createThreadVariables);

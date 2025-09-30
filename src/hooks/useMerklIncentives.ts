@@ -99,8 +99,6 @@ type WhitelistApiResponse = {
   additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData>;
 };
 
-const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {};
-
 const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
 const checkOpportunityAction = (
@@ -155,12 +153,6 @@ export const useMerklIncentives = ({
     queryKey: ['merklIncentives', market],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
-      const hardcodedIncentive = rewardedAsset ? hardcodedIncentives[rewardedAsset] : undefined;
-
-      if (hardcodedIncentive) {
-        return hardcodedIncentive;
-      }
-
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
           rewardedAsset &&
