@@ -61,13 +61,20 @@ const sendRequestsQuery = gql`
 `;
 
 const getSendRequests = async (url: string, sender: string) => {
-  const result = await request<{ ccipsendRequests: SubgraphBridgeTransaction[] }>(
+  let result: { ccipsendRequests: SubgraphBridgeTransaction[] } = { ccipsendRequests: [] };
+  try {
+   result = await request<{ ccipsendRequests: SubgraphBridgeTransaction[] }>(
     url,
     sendRequestsQuery,
     {
       sender,
-    }
-  );
+      }
+    );
+  } catch (e) {
+    console.error(e);
+    // silently fail so other network txs are still shown
+    return [];
+  }
 
   return result.ccipsendRequests
     .map((tx) => {
