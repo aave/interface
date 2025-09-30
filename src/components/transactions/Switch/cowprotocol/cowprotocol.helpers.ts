@@ -140,7 +140,11 @@ export const getPreSignTransaction = async ({
     throw new Error('No signer found in provider');
   }
 
-  const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
+  const tradingSdk = new TradingSdk({
+    chainId,
+    signer,
+    appCode: appCode || HEADER_WIDGET_APP_CODE,
+  });
 
   const isSmartContract = await isSmartContractWallet(user, provider);
   if (!isSmartContract) {
@@ -287,11 +291,12 @@ export const populateEthFlowTx = async (
   tokenToSymbol: string,
   slippageBps: number,
   smartSlippage: boolean,
-  quoteId?: number
+  quoteId?: number,
+  appCode?: string
 ): Promise<PopulatedTransaction> => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
-    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage)
+    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage, appCode)
   );
 
   const orderData = {
