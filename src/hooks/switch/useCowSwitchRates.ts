@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { HEADER_WIDGET_APP_CODE } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import {
   CowProtocolRatesType,
   MultiProviderRatesParams,
@@ -39,6 +40,7 @@ export const useCowSwitchRates = ({
         outputSymbol,
         isInputTokenCustom,
         isOutputTokenCustom,
+        appCode: HEADER_WIDGET_APP_CODE,
       });
     },
     queryKey: queryKeysFactory.cowProtocolRates(

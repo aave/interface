@@ -1253,6 +1253,7 @@ msgid "Manage analytics"
 msgstr "Manage analytics"
 
 #: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
+#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
 msgid "Create limit order"
 msgstr "Create limit order"
 
@@ -3653,7 +3654,6 @@ msgstr "Restaked"
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
 #: src/components/transactions/Switch/SwitchActions.tsx
-#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx

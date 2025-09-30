@@ -248,7 +248,7 @@ SwitchProps) => {
       errorParams={{
         loading: false,
         disabled: blocked || (!approvalTxState.success && requiresApproval),
-        content: <Trans>Swap</Trans>,
+        content: <Trans>Create limit order</Trans>,
         handleClick: action,
       }}
       fetchingData={loading}
