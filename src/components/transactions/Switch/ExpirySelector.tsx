@@ -36,40 +36,43 @@ export const ExpirySelector = ({ selectedExpiry, setSelectedExpiry }: ExpirySele
     setSelectedExpiry(Number(event.target.value));
   };
   return (
-    <FormControl sx={{ minWidth: 'unset', width: 'unset' }}>
-      <Select
-        native={false}
-        value={String(selectedExpiry)}
-        onChange={handleChange}
-        IconComponent={(props) => (
-          <SvgIcon sx={{ fontSize: '14px' }} {...props}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        )}
-        sx={{
-          '&.MuiInputBase-root': {
-            border: 0,
-            '.MuiSelect-select': {
-              display: 'flex',
-              backgroundColor: 'transparent',
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Typography color="text.secondary">Expires in</Typography>
+      <FormControl sx={{ minWidth: 'unset', width: 'unset' }}>
+        <Select
+          native={false}
+          value={String(selectedExpiry)}
+          onChange={handleChange}
+          IconComponent={(props) => (
+            <SvgIcon sx={{ fontSize: '14px' }} {...props}>
+              <ChevronDownIcon />
+            </SvgIcon>
+          )}
+          sx={{
+            '&.MuiInputBase-root': {
               border: 0,
+              '.MuiSelect-select': {
+                display: 'flex',
+                backgroundColor: 'transparent',
+                border: 0,
+              },
             },
-          },
-          '& .MuiOutlinedInput-notchedOutline': {
-            border: 'none',
-          },
-        }}
-      >
-        {Object.entries(Expiry).map(([key, value]) => (
-          <MenuItem value={value} key={`${key}`}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Typography variant="subheader2" color="text.secondary">
-                <Trans>{key}</Trans>
-              </Typography>
-            </Box>
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+            '& .MuiOutlinedInput-notchedOutline': {
+              border: 'none',
+            },
+          }}
+        >
+          {Object.entries(Expiry).map(([key, value]) => (
+            <MenuItem value={value} key={`${key}`}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Typography variant="subheader2" color="text.secondary">
+                  <Trans>{key}</Trans>
+                </Typography>
+              </Box>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
   );
 };

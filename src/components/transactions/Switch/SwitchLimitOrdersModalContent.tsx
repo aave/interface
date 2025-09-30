@@ -1,6 +1,7 @@
 import { normalize } from '@aave/math-utils';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
-import { Box, CircularProgress } from '@mui/material';
+import { Trans } from '@lingui/macro';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useCowSwitchRates } from 'src/hooks/switch/useCowSwitchRates';
@@ -96,44 +97,50 @@ export const SwitchLimitOrdersInputs = ({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
+        mt: 1,
       }}
     >
-      <SwitchAssetInput
-        chainId={chainId}
-        balanceTitle={'from'}
-        assets={tokens.filter(
-          (token) => token.address !== outputToken.address && !token.extensions?.isNative
-        )}
-        value={inputAmount}
-        onChange={handleInputAmountChange}
-        usdValue={(Number(initialRate?.inputUsdPrice) * Number(inputAmount)).toString() || '0'}
-        onSelect={handleInputTokenChange}
-        selectedAsset={inputToken}
-        forcedMaxValue={maxInputAmount}
-        allowCustomTokens={true}
-      />
-      <SwitchAssetInput
-        chainId={chainId}
-        balanceTitle={'to'}
-        assets={tokens.filter(
-          (token) =>
-            token.address !== inputToken.address &&
-            // Avoid wrapping
-            !(
-              isNativeToken(inputToken.address) &&
-              token.address.toLowerCase() ===
-                WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address.toLowerCase()
-            )
-        )}
-        value={outputAmount.toString()}
-        usdValue={(Number(initialRate?.outputUsdPrice) * Number(outputAmount)).toString() || '0'}
-        loading={rateLoading}
-        onSelect={handleOutputTokenChange}
-        disableInput={true}
-        selectedAsset={outputToken}
-        showBalance={false}
-        allowCustomTokens={true}
-      />
+      <Box sx={{ display: 'flex', mb: 1, flexDirection: 'column' }}>
+        <Typography color="text.secondary">{<Trans>Sell</Trans>}</Typography>
+        <SwitchAssetInput
+          chainId={chainId}
+          assets={tokens.filter(
+            (token) => token.address !== outputToken.address && !token.extensions?.isNative
+          )}
+          value={inputAmount}
+          onChange={handleInputAmountChange}
+          usdValue={(Number(initialRate?.inputUsdPrice) * Number(inputAmount)).toString() || '0'}
+          onSelect={handleInputTokenChange}
+          selectedAsset={inputToken}
+          forcedMaxValue={maxInputAmount}
+          allowCustomTokens={true}
+        />
+      </Box>
+      <Box sx={{ display: 'flex', mb: 1, flexDirection: 'column' }}>
+        <Typography color="text.secondary">{<Trans>Receive at least</Trans>}</Typography>
+        <SwitchAssetInput
+          chainId={chainId}
+          balanceTitle={'to'}
+          assets={tokens.filter(
+            (token) =>
+              token.address !== inputToken.address &&
+              // Avoid wrapping
+              !(
+                isNativeToken(inputToken.address) &&
+                token.address.toLowerCase() ===
+                  WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address.toLowerCase()
+              )
+          )}
+          value={outputAmount.toString()}
+          usdValue={(Number(initialRate?.outputUsdPrice) * Number(outputAmount)).toString() || '0'}
+          loading={rateLoading}
+          onSelect={handleOutputTokenChange}
+          disableInput={true}
+          selectedAsset={outputToken}
+          showBalance={false}
+          allowCustomTokens={true}
+        />
+      </Box>
       <PriceInput
         originAsset={inputToken}
         targetAsset={outputToken}

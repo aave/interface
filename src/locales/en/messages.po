@@ -1067,6 +1067,10 @@ msgstr "Linked addresses"
 msgid "on"
 msgstr "on"
 
+#: src/components/transactions/Switch/SwitchLimitOrdersModalContent.tsx
+msgid "Receive at least"
+msgstr "Receive at least"
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets to supply"
@@ -3788,6 +3792,10 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
 msgstr "tokens, please go to the"
+
+#: src/components/transactions/Switch/SwitchLimitOrdersModalContent.tsx
+msgid "Sell"
+msgstr "Sell"
 
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
