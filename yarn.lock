@@ -3508,19 +3508,18 @@
     "@metamask/abi-utils" "^2.0.4"
     ethereum-cryptography "^3.0.0"
 
-"@paraswap/core@2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@paraswap/core/-/core-2.2.0.tgz#848175c7729f1064e715019269b1c193a23a5be8"
-  integrity sha512-aENl5zjS0y4ag7PLEq/hHgaAH4XpN5M4Zc7Igt/03D+W6t6tgScG9on2gXKkEUErcgnZ79qnvzKhaU6QgzoBAQ==
+"@paraswap/core@2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@paraswap/core/-/core-2.4.0.tgz#82dac1f2eb5622b90eec352031f0711037bd8eff"
+  integrity sha512-msv0Etc5f7H2UDnDd23wKzNnx64fj1iwt8IlBORTFIpxJ1+fa+TqNO7lhtohfRiVmU3dnnAMcjEi4D+WHSWpvw==
 
-"@paraswap/sdk@6.10.0":
-  version "6.10.0"
-  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-6.10.0.tgz#fffba05a8ecc0bda91cc2ee07c0f5a4a79ff53f2"
-  integrity sha512-FhzJs1HYTGDnjYOxJmZ0+Qk0WHnshTgHpP2QdhiJYIkIF/2zYzI1OLTseO3XXhkQfmg4ZmZbTm6ZuutTg6c3zg==
+"@paraswap/sdk@7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@paraswap/sdk/-/sdk-7.3.1.tgz#0e101cf9130e3c72ca94275c782ebb642dfa63f1"
+  integrity sha512-Abz5T8xFqEM+t5XZwloMQjmt6DvOrM9tpdT6HFx91rlf02wdmluTXNKIc+N8EkZb2SuHBHiPvxfeqMb9pF5BCA==
   dependencies:
-    "@paraswap/core" "2.2.0"
-    bignumber.js "^9.0.2"
-    ts-essentials "^9.1.2"
+    "@paraswap/core" "2.4.0"
+    ts-essentials "^10.0.3"
 
 "@parcel/watcher-android-arm64@2.5.0":
   version "2.5.0"
@@ -5672,11 +5671,6 @@ big.js@6.2.2:
   version "6.2.2"
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-6.2.2.tgz#be3bb9ac834558b53b099deef2a1d06ac6368e1a"
   integrity sha512-y/ie+Faknx7sZA5MfGA2xKlu0GDv8RWrXGsmlteyJQ2lvoKv9GBK/fpRMc2qlSoBAgNxrixICFCBefIq8WCQpQ==
-
-bignumber.js@^9.0.2:
-  version "9.1.2"
-  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.2.tgz#b7c4242259c008903b13707983b5f4bbd31eda0c"
-  integrity sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==
 
 binary-extensions@^2.0.0:
   version "2.3.0"
@@ -12964,10 +12958,10 @@ trough@^2.0.0:
   resolved "https://registry.yarnpkg.com/trough/-/trough-2.2.0.tgz#94a60bd6bd375c152c1df911a4b11d5b0256f50f"
   integrity sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==
 
-ts-essentials@^9.1.2:
-  version "9.4.2"
-  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-9.4.2.tgz#6d4bd23b46b61bf3e031816cc887e839eb62c33c"
-  integrity sha512-mB/cDhOvD7pg3YCLk2rOtejHjjdSi9in/IBYE13S+8WA5FBSraYf4V/ws55uvs0IvQ/l0wBOlXy5yBNZ9Bl8ZQ==
+ts-essentials@^10.0.3:
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-10.1.1.tgz#4e1d29b7c9b33c1a2744482376634c4fafba5210"
+  integrity sha512-4aTB7KLHKmUvkjNj8V+EdnmuVTiECzn3K+zIbRthumvHu+j44x3w63xpfs0JL3NGIzGXqoQ7AV591xHO+XrOTw==
 
 ts-node@^10.8.1:
   version "10.9.2"
