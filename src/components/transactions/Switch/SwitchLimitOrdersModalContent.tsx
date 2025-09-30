@@ -116,7 +116,7 @@ export const SwitchLimitOrdersInputs = ({
           allowCustomTokens={true}
         />
       </Box>
-      <Box sx={{ display: 'flex', mb: 1, flexDirection: 'column' }}>
+      <Box sx={{ display: 'flex', mb: 1, flexDirection: 'column', width: '100%' }}>
         <Typography color="text.secondary">{<Trans>Receive at least</Trans>}</Typography>
         <SwitchAssetInput
           chainId={chainId}
