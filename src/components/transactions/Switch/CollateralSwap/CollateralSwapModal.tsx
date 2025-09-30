@@ -168,8 +168,6 @@ export const CollateralSwapModal = () => {
             token.symbol !== defaultInputToken?.symbol
         )[0]
       : undefined;
-  console.log('Default Input Token: ', defaultInputToken);
-  console.log('Default Output Token: ', defaultOutputToken);
 
   return (
     // Only forcedDefaultInputToken forced
