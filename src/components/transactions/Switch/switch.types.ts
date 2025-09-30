@@ -52,6 +52,7 @@ export type BaseSwitchRates = {
 export type ParaswapRatesType = BaseSwitchRates & {
   optimalRateData: OptimalRate;
   provider: 'paraswap';
+  suggestedSlippage?: number;
 };
 
 export type CowProtocolRatesType = BaseSwitchRates & {
