@@ -1106,6 +1106,10 @@ msgstr "ends"
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
+msgstr "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
+
 #: src/components/AssetCategoryMultiselect.tsx
 msgid "{selectedCount} Categories"
 msgstr "{selectedCount} Categories"
@@ -1978,6 +1982,10 @@ msgstr "Reserve factor"
 msgid "Migration risks"
 msgstr "Migration risks"
 
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "I understand the liquidation risk and want to proceed"
+msgstr "I understand the liquidation risk and want to proceed"
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Covered debt"
 msgstr "Covered debt"
@@ -2132,6 +2140,10 @@ msgstr "The total amount bridged minus CCIP fees. Paying in network token does n
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Stake token shares"
 msgstr "Stake token shares"
+
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Default slippage"
+msgstr "Default slippage"
 
 #: src/layouts/AppHeader.tsx
 msgid "Testnet mode is ON"
@@ -2396,6 +2408,10 @@ msgstr "Available"
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
 msgstr "You did not participate in this proposal"
+
+#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+msgid "Low health factor after swap. Your position will carry a higher risk of liquidation."
+msgstr "Low health factor after swap. Your position will carry a higher risk of liquidation."
 
 #: src/components/AssetCategoryMultiselect.tsx
 msgid "Principle Tokens"
@@ -2942,10 +2958,6 @@ msgstr "and about SPK program"
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
-msgid "Low health factor after swap. Please select a different asset or lower the amount."
-msgstr "Low health factor after swap. Please select a different asset or lower the amount."
-
 #: src/components/transactions/DebtSwitch/DebtSwitchModalContent.tsx
 msgid "Select an asset"
 msgstr "Select an asset"
@@ -3181,6 +3193,10 @@ msgstr "Available to supply"
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Claiming all protocol rewards and merit rewards together"
 msgstr "Claiming all protocol rewards and merit rewards together"
+
+#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+msgid "Default"
+msgstr "Default"
 
 #: src/components/transactions/Warnings/MarketWarning.tsx
 msgid "Per the community, the {market} has been frozen."
