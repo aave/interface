@@ -15,19 +15,19 @@ import { MarketAssetsListMobileItemLoader } from './MarketAssetsListMobileItemLo
 const listHeaders = [
   {
     title: <Trans>Asset</Trans>,
-    sortKey: 'underlyingToken.symbol', // Cambiado de 'symbol'
+    sortKey: 'underlyingToken.symbol',
   },
   {
     title: <Trans>Total supplied</Trans>,
-    sortKey: 'size.usd', // Cambiado de 'totalLiquidityUSD'
+    sortKey: 'size.usd',
   },
   {
     title: <Trans>Supply APY</Trans>,
-    sortKey: 'supplyInfo.apy.value', // Cambiado de 'supplyAPY'
+    sortKey: 'supplyInfo.apy.value',
   },
   {
     title: <Trans>Total borrowed</Trans>,
-    sortKey: 'borrowInfo.total.usd', // Cambiado de 'totalDebtUSD'
+    sortKey: 'borrowInfo.total.usd',
   },
   {
     title: (
