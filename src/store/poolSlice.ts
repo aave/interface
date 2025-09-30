@@ -56,6 +56,7 @@ import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
+import { rwaAssetDomains } from 'src/ui-config/permitConfig';
 
 // TODO: what is the better name for this type?
 export type PoolReserve = {
@@ -722,37 +723,14 @@ export const createPoolSlice: StateCreator<
         AaveSafetyModule.STK_AAVE.toLowerCase(),
       ];
 
-      const rwaDomains: { [key: string]: { name: string; version: string } } = {  
-        '0x14d60e7fdc0d71d8611742720e4c50e7a974020c': { // USCC AaveV3Horizon
-          name: 'Superstate Crypto Carry Fund',
-          version: '5',
-        },
-        '0x43415eb6ff9db7e26a15b704e7a3edce97d31c4e': { // USTB AaveV3Horizon
-          name: 'Superstate Short Duration US Government Securities Fund',
-          version: '5',
-        },
-        '0x5a0f93d040de44e78f251b03c43be9cf317dcf64': { // JAAA AaveV3Horizon
-          name: 'Centrifuge',
-          version: '1',
-        },
-        '0x8c213ee79581ff4984583c6a801e5263418c4b86': { // JTSRY AaveV3Horizon
-          name: 'Centrifuge',
-          version: '1',
-        },
-        '0x136471a34f6ef19fe571effc1ca711fdb8e49f2b': { // USYC AaveV3Horizon
-          name: 'US Yield Coin',
-          version: '2',
-        },
-      }
-
       const provider = get().jsonRpcProvider(opts.chainId);
 
       let name = '';
       let version = '1';
 
-      if (rwaDomains[token.toLowerCase()]) {
-        name = rwaDomains[token.toLowerCase()].name;
-        version = rwaDomains[token.toLowerCase()].version;
+      if (rwaAssetDomains[token.toLowerCase()]) {
+        name = rwaAssetDomains[token.toLowerCase()].name;
+        version = rwaAssetDomains[token.toLowerCase()].version;
       } else if (v3TokensWithEip712DomainSupport.includes(token.toLowerCase())) {
         const aaveV3TokenService = new AaveTokenV3Service(token, provider);
         const domain = await aaveV3TokenService.getEip712Domain();
