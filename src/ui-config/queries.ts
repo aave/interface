@@ -101,8 +101,17 @@ export const queryKeysFactory = {
     amount: string,
     srcToken: string,
     destToken: string,
-    user: string
-  ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'cowProtocolRates'],
+    user: string,
+    appCode?: string
+  ) => [
+    ...queryKeysFactory.user(user),
+    chainId,
+    amount,
+    srcToken,
+    destToken,
+    appCode,
+    'cowProtocolRates',
+  ],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],
   poolReservesIncentiveDataHumanized: (marketData: MarketDataType) => [
     ...queryKeysFactory.pool,
