@@ -107,7 +107,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
             >
               Dashboard
             </Link>
-            . To learn more about E-Mode and applied restriction, see the{' '}
+            . To learn more about E-Mode and applied restrictions, see the{' '}
             <Link
               href="https://aave.com/help/borrowing/e-mode"
               sx={{ textDecoration: 'underline' }}
