@@ -1,4 +1,5 @@
 import { Stake } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
@@ -140,10 +141,6 @@ const SGhoHeaderUserDetails = ({
 
   const symbolsColor = theme.palette.text.muted;
   const iconSize = valueTypographyVariant === 'main21' ? 20 : 16;
-  const fontSize =
-    valueTypographyVariant === 'main21'
-      ? theme.typography.main21.fontSize
-      : theme.typography.main16.fontSize;
 
   useEffect(() => {
     setDisplayedWeeklyRewards(Math.max(0, weeklyRewardsEstimate));
@@ -153,7 +150,7 @@ const SGhoHeaderUserDetails = ({
     <>
       <TopInfoPanelItem hideIcon title={<Trans>APY</Trans>} loading={isLoadingStakeAPR}>
         <FormattedNumber
-          value={stakeAPR?.apr ? convertAprToApy(new BigNumber(stakeAPR.apr).toNumber()) : 0}
+          value={stakeAPR?.apr ? convertAprToApy(valueToBigNumber(stakeAPR.apr).toNumber()) : 0}
           variant={valueTypographyVariant}
           symbolsColor={symbolsColor}
           visibleDecimals={2}
@@ -213,7 +210,26 @@ const SGhoHeaderUserDetails = ({
         loading={isLoadingStakeAPR}
       >
         {balanceBN.gt(0) ? (
-          <Stack direction="row" alignItems="baseline" spacing={0.5}>
+          <Typography
+            variant={valueTypographyVariant}
+            sx={{
+              display: 'inline-flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              position: 'relative',
+              '& number-flow-react.custom-number-flow': {
+                '--number-flow-mask-height': '0',
+                '--number-flow-char-height': '1em',
+                fontVariantNumeric: 'tabular-nums',
+                display: 'inline-block',
+                verticalAlign: 'baseline',
+                paddingLeft: '12px',
+                paddingRight: '12px',
+                paddingTop: '2px',
+              },
+            }}
+            noWrap
+          >
             <NumberFlow
               value={displayedWeeklyRewards}
               format={{
@@ -221,22 +237,23 @@ const SGhoHeaderUserDetails = ({
                 maximumFractionDigits: 2,
               }}
               style={{
-                fontSize: fontSize,
-                fontWeight: theme.typography.fontWeightMedium || 600,
                 color: 'inherit',
-                fontFamily: theme.typography.fontFamily,
+                fontFamily: 'inherit',
+                fontSize: 'inherit',
+                fontWeight: 'inherit',
+                lineHeight: 'inherit',
               }}
+              className="custom-number-flow"
             />
             <TokenIcon
               symbol="sgho"
               sx={{
+                ml: 0.5,
                 width: iconSize,
                 height: iconSize,
-                pt: theme.spacing(0.3),
-                pb: theme.spacing(0.3),
               }}
             />
-          </Stack>
+          </Typography>
         ) : (
           <Typography variant={valueTypographyVariant} color={symbolsColor}>
             —
