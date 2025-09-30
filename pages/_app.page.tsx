@@ -85,6 +85,11 @@ const StakingMigrateModal = dynamic(() =>
     (module) => module.StakingMigrateModal
   )
 );
+const CancelCowOrderModal = dynamic(() =>
+  import('src/components/transactions/CancelCowOrder/CancelCowOrderModal').then(
+    (module) => module.CancelCowOrderModal
+  )
+);
 const ReadOnlyModal = dynamic(() =>
   import('src/components/WalletConnection/ReadOnlyModal').then((module) => module.ReadOnlyModal)
 );
@@ -177,6 +182,7 @@ export default function MyApp(props: MyAppProps) {
                                   <BridgeModal />
                                   <ReadOnlyModal />
                                   <CowOrderToast />
+                                  <CancelCowOrderModal />
                                 </GasStationProvider>
                               </AppDataProvider>
                             </SharedDependenciesProvider>

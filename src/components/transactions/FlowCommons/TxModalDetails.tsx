@@ -5,6 +5,10 @@ import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@m
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import {
+  CompactableTypography,
+  CompactableTypographyProps,
+} from 'src/components/CompactableTypography';
+import {
   IsolatedDisabledBadge,
   IsolatedEnabledBadge,
   UnavailableDueToIsolationBadge,
@@ -398,9 +402,15 @@ interface DetailsTextLineProps {
   description: string;
   text: string;
   loading?: boolean;
+  compactedProps?: Omit<CompactableTypographyProps, 'children'>;
 }
 
-export const DetailsTextLine = ({ description, text, loading = false }: DetailsTextLineProps) => {
+export const DetailsTextLine = ({
+  description,
+  text,
+  loading = false,
+  compactedProps,
+}: DetailsTextLineProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -408,7 +418,13 @@ export const DetailsTextLine = ({ description, text, loading = false }: DetailsT
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
         ) : (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="secondary14">{text}</Typography>
+            {compactedProps ? (
+              <CompactableTypography variant="secondary14" {...compactedProps}>
+                {text}
+              </CompactableTypography>
+            ) : (
+              <Typography variant="secondary14">{text}</Typography>
+            )}
           </Box>
         )}
       </Box>

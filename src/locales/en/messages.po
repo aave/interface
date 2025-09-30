@@ -232,6 +232,10 @@ msgstr "Withdrawing and Switching"
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
+#: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
+msgid "Cancellation submited"
+msgstr "Cancellation submited"
+
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -1058,6 +1062,10 @@ msgstr "Assets to supply"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Restake"
 msgstr "Restake"
+
+#: src/components/transactions/CancelCowOrder/CancelCowOrderActions.tsx
+msgid "Sending cancel..."
+msgstr "Sending cancel..."
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
@@ -1915,6 +1923,10 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 msgid "Transaction history is not currently available for this market"
 msgstr "Transaction history is not currently available for this market"
 
+#: src/components/transactions/CancelCowOrder/CancelCowOrderActions.tsx
+msgid "Send cancel"
+msgstr "Send cancel"
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -2384,6 +2396,7 @@ msgstr "Governance"
 #: src/components/TitleWithFiltersAndSearchBar.tsx
 #: src/components/TitleWithSearchBar.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
+#: src/modules/history/TransactionRowItem.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
