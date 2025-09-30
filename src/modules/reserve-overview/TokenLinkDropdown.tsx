@@ -52,7 +52,7 @@ export const TokenLinkDropdown = ({
   const showVariableDebtToken =
     !hideVariableDebtToken &&
     (poolReserve.borrowingEnabled || Number(poolReserve.totalVariableDebt) > 0);
-  console.log('poolReserve', poolReserve.totalVariableDebt);
+
   return (
     <>
       <Box onClick={handleClick}>
