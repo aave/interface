@@ -32,7 +32,7 @@ const defaultSlippageOptions = (suggested?: string) => {
 
   const suggestedNumber = Number(suggested);
   if (suggestedNumber <= 0.1) {
-    return ['0.20', '0.50', 'Auto'];
+    return ['0.03', '0.07', 'Auto'];
   }
   if (suggestedNumber < 1) {
     return ['0.10', '0.50', 'Auto'];
