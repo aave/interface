@@ -21,6 +21,7 @@ export type ProviderRatesParams = {
 
   isInputTokenCustom?: boolean;
   isOutputTokenCustom?: boolean;
+  appCode?: string;
 
   setError?: (error: TxErrorType) => void;
 };
@@ -51,6 +52,7 @@ export type BaseSwitchRates = {
 export type ParaswapRatesType = BaseSwitchRates & {
   optimalRateData: OptimalRate;
   provider: 'paraswap';
+  suggestedSlippage?: number;
 };
 
 export type CowProtocolRatesType = BaseSwitchRates & {

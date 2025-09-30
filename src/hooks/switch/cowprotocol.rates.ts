@@ -8,7 +8,6 @@ import {
 import { BigNumber } from 'bignumber.js';
 import {
   COW_PARTNER_FEE,
-  HEADER_WIDGET_APP_CODE,
   isNativeToken,
 } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
@@ -63,6 +62,7 @@ export async function getCowProtocolSellRates({
   setError,
   isInputTokenCustom,
   isOutputTokenCustom,
+  appCode,
 }: ProviderRatesParams): Promise<CowProtocolRatesType> {
   const tradingSdk = new TradingSdk({ chainId });
 
@@ -106,7 +106,7 @@ export async function getCowProtocolSellRates({
           buyToken: destTokenWrapped,
           buyTokenDecimals: destDecimals,
           signer,
-          appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
+          appCode: appCode,
           partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
         })
         .catch((cowError) => {

@@ -403,7 +403,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           setType(ModalType.V3Migration);
         },
         openSwitch: (underlyingAsset, chainId) => {
-          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Switch' });
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Swap' });
           setType(ModalType.Switch);
           setArgs({ underlyingAsset, chainId });
         },

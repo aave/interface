@@ -20,6 +20,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { isSmartContractWallet } from 'src/helpers/provider';
 
+import { getAssetGroup } from '../assetCorrelation.helpers';
 import { isChainIdSupportedByCoWProtocol } from '../switch.constants';
 
 export const COW_EVM_RECIPIENT = '0xC542C2F197c4939154017c802B0583C596438380';
@@ -28,59 +29,10 @@ export const COW_PROTOCOL_ETH_FLOW_ADDRESS = '0xbA3cB449bD2B4ADddBc894D8697F5170
 const COW_CREATE_ORDER_ABI =
   'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
 
-// Until CoW shares a more sophisticated way to recognize token groups, we'll maintain a lists with popular tokens
-// Set all tokens to uppercase to avoid case sensitivity issues
-const TOKEN_GROUPS: Record<'stable' | 'correlatedEth' | 'correlatedBtc', string[]> = {
-  stable: [
-    'USDC',
-    'USDT',
-    'DAI',
-    'GHO',
-    'EURC',
-    'USDBC',
-    'USDE',
-    'USDS',
-    'SUSDE',
-    'RLUSD',
-    'PYUSD',
-    'LUSD',
-    'SDAI',
-    'CRVUSD',
-    'USD₮0',
-    'USDC.E',
-    'EURE',
-    'XDAI',
-    'WXDAI',
-  ],
-  correlatedEth: [
-    'WEETH',
-    'ETH',
-    'WETH',
-    'WSTETH',
-    'CBETH',
-    'EZETH',
-    'WRSETH',
-    'OSETH',
-    'RETH',
-    'ETHX',
-  ],
-  correlatedBtc: ['CBBTC', 'WBTC', 'LBTC', 'TBTC', 'EBTC'],
-} as const;
-
-const cowSymbolGroup = (symbol: string): keyof typeof TOKEN_GROUPS | 'unknown' => {
-  for (const [groupName, tokens] of Object.entries(TOKEN_GROUPS)) {
-    // Allow for prefix matching e.g. aTokens
-    if (tokens.some((token) => symbol.toUpperCase().endsWith(token))) {
-      return groupName as keyof typeof TOKEN_GROUPS;
-    }
-  }
-  return 'unknown';
-};
-
 export const HEADER_WIDGET_APP_CODE = 'aave-v3-interface-widget';
 export const ADAPTER_APP_CODE = 'aave-v3-interface-aps'; // Use this one for contract adapters so we have different dashboards
 export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) => ({
-  volumeBps: cowSymbolGroup(tokenFromSymbol) == cowSymbolGroup(tokenToSymbol) ? 15 : 25,
+  volumeBps: getAssetGroup(tokenFromSymbol) == getAssetGroup(tokenToSymbol) ? 15 : 25,
   recipient: COW_EVM_RECIPIENT,
 });
 
@@ -143,7 +95,11 @@ export const getPreSignTransaction = async ({
     throw new Error('No signer found in provider');
   }
 
-  const tradingSdk = new TradingSdk({ chainId, signer, appCode: HEADER_WIDGET_APP_CODE });
+  const tradingSdk = new TradingSdk({
+    chainId,
+    signer,
+    appCode: appCode || HEADER_WIDGET_APP_CODE,
+  });
 
   const isSmartContract = await isSmartContractWallet(user, provider);
   if (!isSmartContract) {
@@ -311,11 +267,19 @@ export const populateEthFlowTx = async (
   tokenToSymbol: string,
   slippageBps: number,
   smartSlippage: boolean,
-  quoteId?: number
+  quoteId?: number,
+  appCode?: string
 ): Promise<PopulatedTransaction> => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
-    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage, OrderClass.MARKET)
+    COW_APP_DATA(
+      tokenFromSymbol,
+      tokenToSymbol,
+      slippageBps,
+      smartSlippage,
+      OrderClass.MARKET,
+      appCode
+    )
   );
 
   const orderData = {

@@ -1,9 +1,10 @@
 import { ChevronDownIcon } from '@heroicons/react/outline';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
+import { ExternalLinkIcon, StarIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
+  IconButton,
   ListItemText,
   MenuItem,
   SvgIcon,
@@ -111,6 +112,36 @@ enum SelectedMarketVersion {
   V3,
 }
 
+// Custom market order requested by BD - TODO: move logic to the backend base on TVL
+const MARKET_ORDER_BY_TITLE: { [title: string]: number } = {
+  Core: 0,
+  Prime: 1,
+  Plasma: 2,
+  Base: 3,
+  Arbitrum: 4,
+  Avalanche: 5,
+  Linea: 6,
+  'Horizon RWA': 7,
+  Sonic: 8,
+  OP: 9,
+  Gnosis: 10,
+  Aptos: 11,
+  'BNB Chain': 12,
+  Polygon: 13,
+  Scroll: 14,
+  ZKsync: 15,
+  Celo: 16,
+  Metis: 17,
+  Soneium: 18,
+  EtherFi: 19,
+};
+
+const getMarketOrder = (marketId: CustomMarket): number => {
+  const { market } = getMarketInfoById(marketId);
+  const marketTitle = market.marketTitle;
+  return MARKET_ORDER_BY_TITLE[marketTitle] ?? 999; // Default to end if not found
+};
+
 export const MarketSwitcher = () => {
   const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
     SelectedMarketVersion.V3
@@ -121,6 +152,10 @@ export const MarketSwitcher = () => {
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   );
+  const isFavoriteMarket = useRootStore((store) => store.isFavoriteMarket);
+  const toggleFavoriteMarket = useRootStore((store) => store.toggleFavoriteMarket);
+  // Subscribe to favoriteMarkets to trigger re-renders when favorites change
+  useRootStore((store) => store.favoriteMarkets);
 
   const isV3MarketsAvailable = availableMarkets
     .map((marketId: CustomMarket) => {
@@ -141,6 +176,12 @@ export const MarketSwitcher = () => {
     }
 
     setCurrentMarket(selectedMarket);
+  };
+
+  const handleStarClick = (e: React.MouseEvent, marketId: CustomMarket) => {
+    e.stopPropagation();
+    e.preventDefault();
+    toggleFavoriteMarket(marketId);
   };
 
   const marketBlurbs: { [key: string]: JSX.Element } = {
@@ -385,53 +426,94 @@ export const MarketSwitcher = () => {
           </StyledToggleButtonGroup>
         </Box>
       )}
-      {availableMarkets.map((marketId: CustomMarket) => {
-        const { market, logo } = getMarketInfoById(marketId);
-        const marketNaming = getMarketHelpData(market.marketTitle);
-        return (
-          <MenuItem
-            key={marketId}
-            data-cy={`marketSelector_${marketId}`}
-            value={marketId}
-            sx={{
-              '.MuiListItemIcon-root': { minWidth: 'unset' },
-              display:
-                (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
-                (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
-                  ? 'none'
-                  : 'flex',
-            }}
-          >
-            <MarketLogo size={32} logo={logo} testChainName={marketNaming.testChainName} />
-            <ListItemText sx={{ mr: 0 }}>
-              {marketNaming.name} {market.isFork ? 'Fork' : ''}
-            </ListItemText>
-            <ListItemText
+      {availableMarkets
+        .slice() // Create a copy to avoid mutating the original array
+        .sort((a, b) => {
+          const aIsFavorite = isFavoriteMarket(a);
+          const bIsFavorite = isFavoriteMarket(b);
+
+          // If both are favorites or both are not favorites, maintain custom order
+          if (aIsFavorite === bIsFavorite) {
+            return getMarketOrder(a) - getMarketOrder(b);
+          }
+
+          // Otherwise, favorites come first
+          return aIsFavorite ? -1 : 1;
+        })
+        .map((marketId: CustomMarket) => {
+          const { market, logo } = getMarketInfoById(marketId);
+          const marketNaming = getMarketHelpData(market.marketTitle);
+          const isFavorite = isFavoriteMarket(marketId);
+          return (
+            <MenuItem
+              key={marketId}
+              data-cy={`marketSelector_${marketId}`}
+              value={marketId}
               sx={{
-                textAlign: 'right',
-                display: 'flex',
-                alignItems: 'center',
-                flexDirection: 'row-reverse',
-                gap: 1,
+                '.MuiListItemIcon-root': { minWidth: 'unset' },
+                display:
+                  (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
+                  (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
+                    ? 'none'
+                    : 'flex',
               }}
             >
-              <Typography color="text.muted" variant="description">
-                {marketNaming.testChainName}
-              </Typography>
-              {market.externalUrl && (
-                <SvgIcon
-                  sx={{
-                    fontSize: '16px',
-                    color: 'text.muted',
-                  }}
-                >
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              )}
-            </ListItemText>
-          </MenuItem>
-        );
-      })}
+              <MarketLogo size={32} logo={logo} testChainName={marketNaming.testChainName} />
+              <ListItemText sx={{ mr: 0 }}>
+                {marketNaming.name} {market.isFork ? 'Fork' : ''}
+              </ListItemText>
+              <ListItemText
+                sx={{
+                  textAlign: 'right',
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'row-reverse',
+                  gap: 1,
+                }}
+              >
+                <Typography color="text.muted" variant="description">
+                  {marketNaming.testChainName}
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  {market.externalUrl && (
+                    <SvgIcon
+                      sx={{
+                        fontSize: '16px',
+                        color: 'text.muted',
+                      }}
+                    >
+                      <ExternalLinkIcon />
+                    </SvgIcon>
+                  )}
+                  <Tooltip title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
+                    <IconButton
+                      size="small"
+                      onClick={(e) => handleStarClick(e, marketId)}
+                      sx={{
+                        padding: '2px',
+                        '&:hover': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        },
+                      }}
+                    >
+                      <SvgIcon
+                        sx={{
+                          fontSize: '18px',
+                          color: isFavorite ? '#FBCC5F' : 'text.disabled',
+                          '&:hover': {
+                            color: isFavorite ? '#FBCC5F' : 'text.secondary',
+                          },
+                        }}
+                      >
+                        <StarIcon />
+                      </SvgIcon>
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </ListItemText>
+            </MenuItem>
+          );
+        })}
     </TextField>
   );
 };
