@@ -74,25 +74,30 @@ export const permitByChainAndToken: {
   },
 };
 
-export const rwaAssetDomains: { [key: string]: { name: string; version: string } } = {  
-  '0x14d60e7fdc0d71d8611742720e4c50e7a974020c': { // USCC AaveV3Horizon
+export const rwaAssetDomains: { [key: string]: { name: string; version: string } } = {
+  '0x14d60e7fdc0d71d8611742720e4c50e7a974020c': {
+    // USCC AaveV3Horizon
     name: 'Superstate Crypto Carry Fund',
     version: '5',
   },
-  '0x43415eb6ff9db7e26a15b704e7a3edce97d31c4e': { // USTB AaveV3Horizon
+  '0x43415eb6ff9db7e26a15b704e7a3edce97d31c4e': {
+    // USTB AaveV3Horizon
     name: 'Superstate Short Duration US Government Securities Fund',
     version: '5',
   },
-  '0x5a0f93d040de44e78f251b03c43be9cf317dcf64': { // JAAA AaveV3Horizon
+  '0x5a0f93d040de44e78f251b03c43be9cf317dcf64': {
+    // JAAA AaveV3Horizon
     name: 'Centrifuge',
     version: '1',
   },
-  '0x8c213ee79581ff4984583c6a801e5263418c4b86': { // JTSRY AaveV3Horizon
+  '0x8c213ee79581ff4984583c6a801e5263418c4b86': {
+    // JTSRY AaveV3Horizon
     name: 'Centrifuge',
     version: '1',
   },
-  '0x136471a34f6ef19fe571effc1ca711fdb8e49f2b': { // USYC AaveV3Horizon
+  '0x136471a34f6ef19fe571effc1ca711fdb8e49f2b': {
+    // USYC AaveV3Horizon
     name: 'US Yield Coin',
     version: '2',
   },
-}
+};

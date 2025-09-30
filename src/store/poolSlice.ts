@@ -52,11 +52,11 @@ import { SwapActionProps } from 'src/components/transactions/Switch/CollateralSw
 import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { rwaAssetDomains } from 'src/ui-config/permitConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
 import { RootStore } from './root';
-import { rwaAssetDomains } from 'src/ui-config/permitConfig';
 
 // TODO: what is the better name for this type?
 export type PoolReserve = {
