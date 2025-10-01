@@ -9,6 +9,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Base64Token, ExternalTokenIcon, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
 import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
+import { ModalType } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { networkConfigs } from 'src/ui-config/networksConfig';
@@ -44,6 +45,7 @@ export type SwitchTxSuccessViewProps = {
   amountUsd: number;
   outAmountUSD: number;
   addToken?: ERC20TokenType;
+  modalType: ModalType;
 };
 
 export const SwitchWithSurplusTooltip = ({
@@ -92,6 +94,7 @@ export const SwitchTxSuccessView = ({
   amountUsd,
   outAmountUSD,
   addToken,
+  modalType,
 }: SwitchTxSuccessViewProps) => {
   const { trackOrder, setHasActiveOrders } = useCowOrderToast();
   const { addERC20Token } = useWeb3Context();
@@ -105,8 +108,7 @@ export const SwitchTxSuccessView = ({
 
   // Market for chain id
   const networkConfig = networkConfigs[chainId].explorerLink;
-  const marketName = networkConfigs[chainId].name;
-  console.log('networkConfig', marketName);
+
   // Start tracking the order when the component mounts
   useEffect(() => {
     if (provider === 'cowprotocol' && txHashOrOrderId) {
@@ -207,17 +209,9 @@ export const SwitchTxSuccessView = ({
       )
     ) : undefined;
   }, [provider, txHashOrOrderId]);
-  const isEthereum = networkConfigs[chainId]?.name === 'Ethereum';
-  const getATokenSymbol = (marketName: string, tokenSymbol: string) => {
-    const marketPrefix = marketName.slice(0, 3).toLowerCase();
-    return `a${marketPrefix}${tokenSymbol}`;
-  };
-  const finalTokenSymbol: string =
-    addToken?.aToken && addToken
-      ? isEthereum
-        ? `a${addToken.symbol}`
-        : getATokenSymbol(networkConfigs[chainId].name, addToken.symbol)
-      : addToken?.symbol ?? '';
+
+  const shouldShowATokenCta = modalType === ModalType.CollateralSwap && addToken?.aToken;
+  const watchedTokenSymbol = shouldShowATokenCta ? '' : addToken?.symbol ?? '';
 
   return (
     <View
@@ -246,7 +240,7 @@ export const SwitchTxSuccessView = ({
       <Box
         sx={{
           background: 'background.default',
-          borderRadius: '8px',
+          borderRadius: 2,
           border: '1px solid',
           borderColor: 'divider',
           p: 3,
@@ -367,12 +361,12 @@ export const SwitchTxSuccessView = ({
           </Typography>
         )}
       </Box>
-      {addToken && addToken.aToken && (
+      {shouldShowATokenCta && (
         <Box
           sx={(theme) => ({
             border: theme.palette.mode === 'dark' ? `1px solid ${theme.palette.divider}` : 'none',
             background: theme.palette.mode === 'dark' ? 'none' : '#F7F7F9',
-            borderRadius: '8px',
+            borderRadius: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -397,7 +391,7 @@ export const SwitchTxSuccessView = ({
               addERC20Token({
                 address: addToken.address,
                 decimals: addToken.decimals,
-                symbol: finalTokenSymbol,
+                symbol: watchedTokenSymbol,
                 image: !/_/.test(addToken.symbol) ? base64 : undefined,
               });
             }}

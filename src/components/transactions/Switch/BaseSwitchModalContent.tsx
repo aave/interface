@@ -695,11 +695,10 @@ export const BaseSwitchModalContent = ({
           decimals: selectedOutputToken.decimals,
           aToken: selectedOutputToken.aToken ? true : false,
         }}
+        modalType={modalType}
       />
     );
   }
-  console.log('output token', `a${selectedOutputToken.symbol}`);
-  console.log('atoken token', selectedOutputToken.aToken);
 
   // Eth-Flow requires to leave some assets for gas
   const nativeDecimals = 18;
