@@ -28,6 +28,7 @@ export const GENERAL = {
   TRANSACTION_ERROR: 'Transaction Error',
   OPEN_MODAL: 'Open Modal',
   MAX_INPUT_SELECTION: 'Select Max input',
+  LIMIT_ORDER: 'Limit Order',
 };
 
 export const REWARDS = {

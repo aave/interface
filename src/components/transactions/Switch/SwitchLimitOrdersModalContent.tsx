@@ -43,7 +43,7 @@ const calculateMaxAmount = (token: TokenInfoWithBalance, chainId: number) => {
   return normalize(maxAmount.toString(), nativeDecimals).toString();
 };
 
-const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
+const defaultNetwork = marketsData[CustomMarket.proto_arbitrum_v3];
 
 interface SwitchLimitOrdersInputsProps {
   chainId: number;
@@ -332,13 +332,14 @@ export const SwitchLimitOrdersInner = ({
         inputToken={inputToken}
         inputAmount={inputAmount}
         outputToken={outputToken}
-        // setIsExecutingActions={setIsExecutingActions}
         outputAmount={outputAmount}
         isWrongNetwork={isWrongNetwork.isWrongNetwork}
         loading={quoteLoading}
         blocked={!!quoteError}
         expirationTime={expiry}
         setShowUSDTResetWarning={setShowUSDTResetWarning}
+        inputAmountUSD={Number(staticRate?.inputUsdPrice) * Number(inputAmount) || 0}
+        outputAmountUSD={Number(staticRate?.outputUsdPrice) * Number(outputAmount) || 0}
       />
     </>
   );

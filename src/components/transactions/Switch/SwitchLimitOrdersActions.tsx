@@ -1,3 +1,4 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import {
   COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
   OrderClass,
@@ -44,6 +45,8 @@ interface SwitchProps {
   poolReserve?: ComputedReserveData;
   targetReserve?: ComputedReserveData;
   expirationTime: number;
+  inputAmountUSD: number;
+  outputAmountUSD: number;
   // setIsExecutingActions?: (isExecuting: boolean) => void;
 }
 
@@ -58,6 +61,8 @@ export const SwitchLimitOrdersActions = ({
   chainId,
   outputAmount,
   expirationTime,
+  inputAmountUSD,
+  outputAmountUSD,
 }: // setShowGasStation,
 // setIsExecutingActions,
 SwitchProps) => {
@@ -180,6 +185,26 @@ SwitchProps) => {
         success: true,
         txHash: receipt.orderId ?? undefined,
       });
+      try {
+        const baseTrackingData: Record<string, string | number | undefined> = {
+          chainId,
+          inputSymbol: inputToken.symbol,
+          outputSymbol: outputToken.symbol,
+          pair: `${inputToken.symbol}-${outputToken.symbol}`,
+          inputAmount,
+          outputAmount,
+          provider: 'cowswap',
+          inputAmountUSD,
+          outputAmountUSD,
+          rate: valueToBigNumber(inputAmount).div(outputAmount).toString(),
+        };
+
+        trackEvent(GENERAL.LIMIT_ORDER, {
+          ...baseTrackingData,
+        });
+      } catch (error) {
+        console.error('Error tracking limit order event:', error);
+      }
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
       setTxError(parsedError);
@@ -188,49 +213,7 @@ SwitchProps) => {
         loading: false,
       });
     }
-    try {
-      const baseTrackingData: Record<string, string | number | undefined> = {
-        chainId,
-        inputSymbol: inputToken.symbol,
-        outputSymbol: outputToken.symbol,
-        pair: `${inputToken.symbol}-${outputToken.symbol}`,
-        inputAmount,
-        provider: 'cowswap',
-        // inputAmountUSD: switchRates?.srcUSD,
-        // outputAmountUSD: switchRates?.destUSD,
-      };
-
-      trackEvent(GENERAL.SWAP, {
-        ...baseTrackingData,
-      });
-    } catch (error) {
-      console.error('Error tracking swap event:', error);
-    }
   };
-
-  // // Track execution state to pause rate updates during actions
-  // useEffect(() => {
-  //   const isExecuting = mainTxState.loading || approvalTxState.loading || loadingTxns;
-
-  //   setIsExecutingActions?.(isExecuting);
-  // }, [mainTxState.loading, approvalTxState.loading, loadingTxns, setIsExecutingActions]);
-
-  // useEffect(() => {
-  //   let switchGasLimit = 0;
-  //   if (requiresApproval && !approvalTxState.success) {
-  //     switchGasLimit += Number(APPROVAL_GAS_LIMIT);
-  //     if (requiresApprovalReset) {
-  //       switchGasLimit += Number(APPROVAL_GAS_LIMIT); // Reset approval
-  //     }
-  //   }
-  //   if (isNativeToken(inputToken)) {
-  //     switchGasLimit += Number(
-  //       gasLimitRecommendations[ProtocolAction.withdrawAndSwitch].recommended
-  //     );
-  //   }
-  //   setGasLimit(switchGasLimit.toString());
-  //   setShowGasStation(requiresApproval || isNativeToken(inputToken));
-  // }, [requiresApproval, approvalTxState, setGasLimit, setShowGasStation, requiresApprovalReset]);
 
   return (
     <TxActionsWrapper
