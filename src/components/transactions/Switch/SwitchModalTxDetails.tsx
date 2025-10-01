@@ -339,7 +339,6 @@ export const IntentTxDetails = ({
               color="text.secondary"
               roundDown={true}
             />
-            {/* Price impact */}
             {priceImpact && priceImpact > 0 && priceImpact < 100 && (
               <Typography
                 variant="helperText"

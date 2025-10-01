@@ -3001,6 +3001,10 @@ msgstr "English"
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
 
+#: src/components/transactions/Warnings/CowLowerThanMarketWarning.tsx
+msgid "The selected rate is lower than the market price. You might incur a loss if you proceed."
+msgstr "The selected rate is lower than the market price. You might incur a loss if you proceed."
+
 #: src/components/AddressBlockedModal.tsx
 msgid "Something went wrong. Please try again later."
 msgstr "Something went wrong. Please try again later."

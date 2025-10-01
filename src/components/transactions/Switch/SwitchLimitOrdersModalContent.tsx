@@ -1,4 +1,4 @@
-import { normalize } from '@aave/math-utils';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { Box, CircularProgress, Typography } from '@mui/material';
@@ -18,6 +18,7 @@ import { parseUnits } from 'viem';
 
 import { TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
+import { CowLowerThanMarketWarning } from '../Warnings/CowLowerThanMarketWarning';
 import { USDTResetWarning } from '../Warnings/USDTResetWarning';
 import { getFilteredTokensForSwitch } from './BaseSwitchModal';
 import { supportedNetworksWithEnabledMarketLimit } from './common';
@@ -182,7 +183,6 @@ export const SwitchLimitOrdersInner = ({
   const [expiry, setExpiry] = useState(Expiry['One week']);
 
   const [inputAmount, setInputAmount] = useState('');
-  // const [outputAmount, setOutputAmount] = useState('');
   const [rate, setRate] = useState('');
   const [isInvertedRate, setIsInvertedRate] = useState(false);
 
@@ -217,7 +217,7 @@ export const SwitchLimitOrdersInner = ({
 
   const outputAmount =
     inputAmount && rate
-      ? isInvertedRate
+      ? isInvertedRate && Number(rate) !== 0
         ? (Number(inputAmount) * (1 / Number(rate))).toString()
         : (Number(inputAmount) * Number(rate)).toString()
       : '';
@@ -227,6 +227,13 @@ export const SwitchLimitOrdersInner = ({
 
   const showChangeNetworkWarning = isWrongNetwork.isWrongNetwork && !readOnlyModeAddress;
   const selectedNetworkConfig = getNetworkConfig(chainId);
+
+  const rateLowerThanMarket =
+    staticRate &&
+    quote &&
+    (isInvertedRate
+      ? valueToBigNumber(staticRate.rate).lt(valueToBigNumber(rate))
+      : valueToBigNumber(rate).lt(valueToBigNumber(staticRate.rate)));
 
   useEffect(() => {
     if (staticRate) {
@@ -313,6 +320,7 @@ export const SwitchLimitOrdersInner = ({
           />
         </TxModalDetails>
       )}
+      {rateLowerThanMarket && <CowLowerThanMarketWarning />}
       {showUSDTResetWarning && <USDTResetWarning />}
       <SwitchErrors
         ratesError={quoteError}

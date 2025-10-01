@@ -68,7 +68,7 @@ export const PriceInput = ({
 
   const handleRateSwith = () => {
     setIsInvertedRate(!isInvertedRate);
-    onChangeRate((1 / Number(rate)).toString());
+    onChangeRate((Number(rate) === 0 ? 0 : 1 / Number(rate)).toString());
   };
 
   const marketRate = originalRate
