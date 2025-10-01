@@ -37,7 +37,7 @@
     "@amplitude/analytics-browser": "^2.13.0",
     "@bgd-labs/aave-address-book": "^4.31.0",
     "@cowprotocol/app-data": "^3.1.0",
-    "@cowprotocol/cow-sdk": "6.0.0-RC.47",
+    "@cowprotocol/cow-sdk": "6.3.3",
     "@emotion/cache": "11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/server": "latest",
@@ -49,6 +49,7 @@
     "@mui/icons-material": "^5.10.14",
     "@mui/lab": "5.0.0-alpha.103",
     "@mui/material": "^5.10.9",
+    "@number-flow/react": "^0.5.10",
     "@paraswap/sdk": "6.10.0",
     "@safe-global/safe-apps-provider": "^0.18.4",
     "@safe-global/safe-apps-sdk": "^9.1.0",
@@ -155,6 +156,5 @@
     "budget": null,
     "budgetPercentIncreaseRed": 20,
     "showDetails": true
-  },
-  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
+  }
 }

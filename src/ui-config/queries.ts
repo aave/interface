@@ -163,10 +163,10 @@ export const queryKeysFactory = {
     chainId,
     'tokenDelegatees',
   ],
-  getGhoBridgeBalances: (user: string, marketData: MarketDataType) => [
+  getGhoBridgeBalances: (user: string, chainId: number) => [
     ...queryKeysFactory.gho,
     ...queryKeysFactory.user(user),
-    ...queryKeysFactory.market(marketData),
+    chainId,
     'getGhoBridgeBalances',
   ],
   migrationExceptions: (

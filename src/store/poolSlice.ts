@@ -52,6 +52,7 @@ import { SwapActionProps } from 'src/components/transactions/Switch/CollateralSw
 import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { rwaAssetDomains } from 'src/ui-config/permitConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
@@ -726,7 +727,11 @@ export const createPoolSlice: StateCreator<
 
       let name = '';
       let version = '1';
-      if (v3TokensWithEip712DomainSupport.includes(token.toLowerCase())) {
+
+      if (rwaAssetDomains[token.toLowerCase()]) {
+        name = rwaAssetDomains[token.toLowerCase()].name;
+        version = rwaAssetDomains[token.toLowerCase()].version;
+      } else if (v3TokensWithEip712DomainSupport.includes(token.toLowerCase())) {
         const aaveV3TokenService = new AaveTokenV3Service(token, provider);
         const domain = await aaveV3TokenService.getEip712Domain();
         name = domain.name;
