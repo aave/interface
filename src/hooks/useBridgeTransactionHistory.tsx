@@ -63,11 +63,11 @@ const sendRequestsQuery = gql`
 const getSendRequests = async (url: string, sender: string) => {
   let result: { ccipsendRequests: SubgraphBridgeTransaction[] } = { ccipsendRequests: [] };
   try {
-   result = await request<{ ccipsendRequests: SubgraphBridgeTransaction[] }>(
-    url,
-    sendRequestsQuery,
-    {
-      sender,
+    result = await request<{ ccipsendRequests: SubgraphBridgeTransaction[] }>(
+      url,
+      sendRequestsQuery,
+      {
+        sender,
       }
     );
   } catch (e) {

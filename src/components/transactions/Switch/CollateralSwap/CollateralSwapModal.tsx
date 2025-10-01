@@ -1,5 +1,5 @@
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
-import { Trans } from '@lingui/macro';
+import { BasicModal } from 'src/components/primitives/BasicModal';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -11,40 +11,12 @@ import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 import { BaseSwitchModal } from '../BaseSwitchModal';
-import { SwitchDetailsParams as SwitchDetailsParams } from '../BaseSwitchModalContent';
-import { SwitchModalTxDetails } from '../SwitchModalTxDetails';
 
 export const CollateralSwapModal = () => {
-  const { args } = useModalContext() as ModalContextType<{
+  const { args, type, close } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
   const { underlyingAsset } = args;
-
-  const switchDetails = ({
-    switchRates,
-    gasLimit,
-    selectedChainId,
-    selectedOutputToken,
-    selectedInputToken,
-    safeSlippage,
-    showGasStation,
-  }: SwitchDetailsParams & { selectedInputToken: TokenInfoWithBalance }) => {
-    return (
-      <SwitchModalTxDetails
-        switchRates={switchRates}
-        selectedOutputToken={selectedOutputToken}
-        safeSlippage={safeSlippage}
-        gasLimit={gasLimit}
-        selectedChainId={selectedChainId}
-        showGasStation={showGasStation}
-        customReceivedTitle={<Trans>Minimum new collateral</Trans>}
-        reserves={reserves}
-        user={user}
-        selectedInputToken={selectedInputToken}
-        modalType={ModalType.CollateralSwap}
-      />
-    );
-  };
 
   const { user, reserves } = useAppDataContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
@@ -170,17 +142,17 @@ export const CollateralSwapModal = () => {
       : undefined;
 
   return (
-    // Only forcedDefaultInputToken forced
-    <BaseSwitchModal
-      modalType={ModalType.CollateralSwap}
-      switchDetails={switchDetails}
-      tokensFrom={tokensFrom}
-      tokensTo={tokensTo}
-      forcedDefaultInputToken={defaultInputToken}
-      forcedDefaultOutputToken={undefined}
-      suggestedDefaultOutputToken={defaultOutputToken}
-      showSwitchInputAndOutputAssetsButton={false}
-      forcedChainId={currentNetworkConfig.wagmiChain.id}
-    />
+    <BasicModal open={type === ModalType.CollateralSwap} setOpen={close}>
+      <BaseSwitchModal
+        modalType={ModalType.CollateralSwap}
+        tokensFrom={tokensFrom}
+        tokensTo={tokensTo}
+        forcedDefaultInputToken={defaultInputToken}
+        forcedDefaultOutputToken={undefined}
+        suggestedDefaultOutputToken={defaultOutputToken}
+        showSwitchInputAndOutputAssetsButton={false}
+        forcedChainId={currentNetworkConfig.wagmiChain.id}
+      />
+    </BasicModal>
   );
 };

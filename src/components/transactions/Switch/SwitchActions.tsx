@@ -8,6 +8,7 @@ import { normalize, valueToBigNumber } from '@aave/math-utils';
 import {
   calculateUniqueOrderId,
   COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
+  OrderClass,
   SupportedChainId,
 } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
@@ -653,7 +654,15 @@ export const SwitchActions = ({
 
             await uploadAppData(
               calculatedOrderId,
-              stringify(COW_APP_DATA(inputSymbol, outputSymbol, slippageBps, smartSlippage)),
+              stringify(
+                COW_APP_DATA(
+                  inputSymbol,
+                  outputSymbol,
+                  slippageBps,
+                  smartSlippage,
+                  OrderClass.MARKET
+                )
+              ),
               chainId
             );
 
