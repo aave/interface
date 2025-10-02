@@ -51,7 +51,6 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
   };
 
   const currentCampaign = getCurrentCampaign();
-  const campaignChainId = currentChainId;
 
   const [showWarning, setShowWarning] = useState(false);
 
@@ -64,19 +63,19 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
       return;
     }
 
-    const storedBannerVersion = localStorage.getItem(`bannerVersion_${campaignChainId}`);
-    const warningBarOpen = localStorage.getItem(`warningBarOpen_${campaignChainId}`);
+    const storedBannerVersion = localStorage.getItem(`bannerVersion_${currentChainId}`);
+    const warningBarOpen = localStorage.getItem(`warningBarOpen_${currentChainId}`);
 
     // Check if this is a new banner version for this chain
     if (storedBannerVersion !== currentCampaign.bannerVersion) {
-      localStorage.setItem(`bannerVersion_${campaignChainId}`, currentCampaign.bannerVersion);
-      localStorage.setItem(`warningBarOpen_${campaignChainId}`, 'true');
+      localStorage.setItem(`bannerVersion_${currentChainId}`, currentCampaign.bannerVersion);
+      localStorage.setItem(`warningBarOpen_${currentChainId}`, 'true');
       setShowWarning(true);
     } else {
       // Use stored preference for this chain
       setShowWarning(warningBarOpen !== 'false');
     }
-  }, [currentCampaign, campaignChainId, currentChainId]);
+  }, [currentCampaign, currentChainId]);
 
   useEffect(() => {
     if (showWarning) {
@@ -99,7 +98,7 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
     setSlideIn(false);
     // Wait for animation to complete before hiding
     setTimeout(() => {
-      localStorage.setItem(`warningBarOpen_${campaignChainId}`, 'false');
+      localStorage.setItem(`warningBarOpen_${currentChainId}`, 'false');
       setShowWarning(false);
     }, 300); // Match MUI Slide animation duration
   };
