@@ -47,44 +47,36 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
   const mobileDrawerOpen = useRootStore((state) => state.mobileDrawerOpen);
 
   const getCurrentCampaign = (): CampaignConfig | null => {
-    const chainIds = Object.keys(campaigns).map(Number);
-    const firstChainId = chainIds[0];
-    return firstChainId ? campaigns[firstChainId] || null : null;
+    return campaigns[currentChainId] || null;
   };
 
   const currentCampaign = getCurrentCampaign();
-  const campaignChainId = currentCampaign
-    ? Object.keys(campaigns)
-        .map(Number)
-        .find((chainId) => campaigns[chainId] === currentCampaign) || currentChainId
-    : currentChainId;
+  const campaignChainId = currentChainId;
 
-  const [showWarning, setShowWarning] = useState(() => {
-    if (!currentCampaign) return false;
-
-    const storedBannerVersion = localStorage.getItem(`bannerVersion_${campaignChainId}`);
-    const warningBarOpen = localStorage.getItem(`warningBarOpen_${campaignChainId}`);
-
-    if (storedBannerVersion !== currentCampaign.bannerVersion) {
-      return true;
-    }
-
-    return warningBarOpen !== 'false';
-  });
+  const [showWarning, setShowWarning] = useState(false);
 
   const [slideIn, setSlideIn] = useState(false);
 
   useEffect(() => {
-    if (!currentCampaign) return;
+    if (!currentCampaign) {
+      setShowWarning(false);
+      setSlideIn(false);
+      return;
+    }
 
     const storedBannerVersion = localStorage.getItem(`bannerVersion_${campaignChainId}`);
+    const warningBarOpen = localStorage.getItem(`warningBarOpen_${campaignChainId}`);
 
+    // Check if this is a new banner version for this chain
     if (storedBannerVersion !== currentCampaign.bannerVersion) {
       localStorage.setItem(`bannerVersion_${campaignChainId}`, currentCampaign.bannerVersion);
       localStorage.setItem(`warningBarOpen_${campaignChainId}`, 'true');
       setShowWarning(true);
+    } else {
+      // Use stored preference for this chain
+      setShowWarning(warningBarOpen !== 'false');
     }
-  }, [currentCampaign, campaignChainId]);
+  }, [currentCampaign, campaignChainId, currentChainId]);
 
   useEffect(() => {
     if (showWarning) {
