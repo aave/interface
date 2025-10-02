@@ -46,16 +46,23 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
   const mobileDrawerOpen = useRootStore((state) => state.mobileDrawerOpen);
 
   const getCurrentCampaign = (): CampaignConfig | null => {
-    return campaigns[currentChainId] || null;
+    const chainIds = Object.keys(campaigns).map(Number);
+    const firstChainId = chainIds[0];
+    return firstChainId ? campaigns[firstChainId] || null : null;
   };
 
   const currentCampaign = getCurrentCampaign();
+  const campaignChainId = currentCampaign
+    ? Object.keys(campaigns)
+        .map(Number)
+        .find((chainId) => campaigns[chainId] === currentCampaign) || currentChainId
+    : currentChainId;
 
   const [showWarning, setShowWarning] = useState(() => {
     if (!currentCampaign) return false;
 
-    const storedBannerVersion = localStorage.getItem(`bannerVersion_${currentChainId}`);
-    const warningBarOpen = localStorage.getItem(`warningBarOpen_${currentChainId}`);
+    const storedBannerVersion = localStorage.getItem(`bannerVersion_${campaignChainId}`);
+    const warningBarOpen = localStorage.getItem(`warningBarOpen_${campaignChainId}`);
 
     if (storedBannerVersion !== currentCampaign.bannerVersion) {
       return true;
@@ -67,14 +74,14 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
   useEffect(() => {
     if (!currentCampaign) return;
 
-    const storedBannerVersion = localStorage.getItem(`bannerVersion_${currentChainId}`);
+    const storedBannerVersion = localStorage.getItem(`bannerVersion_${campaignChainId}`);
 
     if (storedBannerVersion !== currentCampaign.bannerVersion) {
-      localStorage.setItem(`bannerVersion_${currentChainId}`, currentCampaign.bannerVersion);
-      localStorage.setItem(`warningBarOpen_${currentChainId}`, 'true');
+      localStorage.setItem(`bannerVersion_${campaignChainId}`, currentCampaign.bannerVersion);
+      localStorage.setItem(`warningBarOpen_${campaignChainId}`, 'true');
       setShowWarning(true);
     }
-  }, [currentCampaign, currentChainId]);
+  }, [currentCampaign, campaignChainId]);
 
   // If no campaign is configured for the current network, don't show anything
   if (!currentCampaign) {
@@ -82,7 +89,7 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
   }
 
   const handleClose = () => {
-    localStorage.setItem(`warningBarOpen_${currentChainId}`, 'false');
+    localStorage.setItem(`warningBarOpen_${campaignChainId}`, 'false');
     setShowWarning(false);
   };
 

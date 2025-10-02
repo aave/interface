@@ -3,21 +3,55 @@ import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
-// import { useModalContext } from 'src/hooks/useModal';
+import { useModalContext } from 'src/hooks/useModal';
 import { SupportModal } from 'src/layouts/SupportModal';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { getQueryParameter } from 'src/store/utils/queryParams';
+import { CustomMarket, marketsData } from 'src/ui-config/marketsConfig';
 import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
 import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
-import TopBarNotify from './TopBarNotify';
+import TopBarNotify, { ButtonAction } from './TopBarNotify';
+
+interface CampaignConfig {
+  notifyText: string;
+  buttonText: string;
+  buttonAction: ButtonAction;
+  bannerVersion: string;
+  icon: string;
+}
+
+type CampaignChainId = ChainId.base | ChainId.mainnet | ChainId.arbitrum_one;
+
+type CampaignConfigs = Partial<Record<CampaignChainId, CampaignConfig>>;
+
+type NetworkCampaigns = { [chainId: number]: CampaignConfig };
+
+const getIntendedChainId = (): ChainId => {
+  if (typeof window !== 'undefined') {
+    // Priority 1: localStorage selectedMarket
+    const selectedMarket = localStorage.getItem('selectedMarket');
+    if (selectedMarket && marketsData[selectedMarket as CustomMarket]) {
+      return marketsData[selectedMarket as CustomMarket].chainId;
+    }
+
+    // Priority 2: URL params marketName
+    const urlMarket = getQueryParameter('marketName');
+    if (urlMarket && marketsData[urlMarket as CustomMarket]) {
+      return marketsData[urlMarket as CustomMarket].chainId;
+    }
+  }
+
+  // Priority 3: Default to mainnet
+  return ChainId.mainnet;
+};
 
 const getCampaignConfigs = (
-  // openSwitch: (underlyingAsset: string) => void,
+  openSwitch: (underlyingAsset: string, chainId: ChainId) => void,
   openMarket: (market: CustomMarket) => void
-) => ({
+): CampaignConfigs => ({
   [ChainId.base]: {
     notifyText: 'A new incentives campaign is live on the Base market',
     buttonText: 'Explore Base',
@@ -73,16 +107,16 @@ const getCampaignConfigs = (
   //   icon: '/icons/networks/avalanche.svg',
   // },
 
-  // [ChainId.arbitrum_one]: {
-  //   notifyText: 'Swap tokens directly in the Aave App',
-  //   buttonText: 'Swap Now',
-  //   buttonAction: {
-  //     type: 'function' as const,
-  //     value: () => openSwitch('', ChainId.arbitrum_one),
-  //   },
-  //   bannerVersion: 'arbitrum-swap-v1',
-  //   icon: '/icons/networks/arbitrum.svg',
-  // },
+  [ChainId.arbitrum_one]: {
+    notifyText: 'Limit orders are now live on Arbitrum',
+    buttonText: 'Swap Now',
+    buttonAction: {
+      type: 'function' as const,
+      value: () => openSwitch('', ChainId.arbitrum_one),
+    },
+    bannerVersion: 'arbitrum-swap-v1',
+    icon: '/icons/networks/arbitrum.svg',
+  },
 
   // [ChainId.optimism]: {
   //   notifyText: 'Swap tokens directly in the Aave App',
@@ -121,17 +155,28 @@ const getCampaignConfigs = (
 export function MainLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const setCurrentMarket = useRootStore(useShallow((store) => store.setCurrentMarket));
+  const { openSwitch } = useModalContext();
 
   const openMarket = (market: CustomMarket) => {
     setCurrentMarket(market);
     router.push(`/markets/?marketName=${market}`);
   };
 
-  const campaignConfigs = getCampaignConfigs(openMarket);
+  const campaignConfigs = getCampaignConfigs(openSwitch, openMarket);
+
+  const intendedChainId = getIntendedChainId();
+
+  const isCampaignChainId = (chainId: ChainId): chainId is CampaignChainId => {
+    return chainId in campaignConfigs;
+  };
+
+  const filteredCampaigns: NetworkCampaigns = isCampaignChainId(intendedChainId)
+    ? { [intendedChainId]: campaignConfigs[intendedChainId]! }
+    : {};
 
   return (
     <>
-      <TopBarNotify campaigns={campaignConfigs} />
+      <TopBarNotify campaigns={filteredCampaigns} />
 
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
