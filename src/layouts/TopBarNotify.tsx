@@ -149,7 +149,9 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
           component="header"
           sx={{
             padding: `8px, 12px, 8px, 12px`,
-            background: (theme) => theme.palette.gradients.newGradient,
+            background: slideIn
+              ? (theme) => theme.palette.gradients.newGradient
+              : (theme) => theme.palette.background.header,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
