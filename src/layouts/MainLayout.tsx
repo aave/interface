@@ -29,22 +29,27 @@ type CampaignConfigs = Partial<Record<CampaignChainId, CampaignConfig>>;
 
 type NetworkCampaigns = { [chainId: number]: CampaignConfig };
 
-const getIntendedChainId = (): ChainId => {
+const getIntendedChainId = (currentChainId?: ChainId): ChainId => {
+  // Priority 1: currentChainId from store
+  if (currentChainId) {
+    return currentChainId;
+  }
+
   if (typeof window !== 'undefined') {
-    // Priority 1: localStorage selectedMarket
+    // Priority 2: localStorage selectedMarket
     const selectedMarket = localStorage.getItem('selectedMarket');
     if (selectedMarket && marketsData[selectedMarket as CustomMarket]) {
       return marketsData[selectedMarket as CustomMarket].chainId;
     }
 
-    // Priority 2: URL params marketName
+    // Priority 3: URL params marketName
     const urlMarket = getQueryParameter('marketName');
     if (urlMarket && marketsData[urlMarket as CustomMarket]) {
       return marketsData[urlMarket as CustomMarket].chainId;
     }
   }
 
-  // Priority 3: Default to mainnet
+  // Priority 4: Default to mainnet
   return ChainId.mainnet;
 };
 
@@ -154,7 +159,9 @@ const getCampaignConfigs = (
 
 export function MainLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const setCurrentMarket = useRootStore(useShallow((store) => store.setCurrentMarket));
+  const [setCurrentMarket, currentChainId] = useRootStore(
+    useShallow((store) => [store.setCurrentMarket, store.currentChainId])
+  );
   const { openSwitch } = useModalContext();
 
   const openMarket = (market: CustomMarket) => {
@@ -164,7 +171,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
 
   const campaignConfigs = getCampaignConfigs(openSwitch, openMarket);
 
-  const intendedChainId = getIntendedChainId();
+  const intendedChainId = getIntendedChainId(currentChainId);
 
   const isCampaignChainId = (chainId: ChainId): chainId is CampaignChainId => {
     return chainId in campaignConfigs;
