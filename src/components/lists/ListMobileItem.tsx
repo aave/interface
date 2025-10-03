@@ -20,6 +20,7 @@ interface ListMobileItemProps {
   showBorrowCapTooltips?: boolean;
   showDebtCeilingTooltips?: boolean;
   isIsolated: boolean;
+  onIconError?: () => void;
 }
 
 export const ListMobileItem = ({
@@ -35,6 +36,7 @@ export const ListMobileItem = ({
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
   isIsolated,
+  onIconError,
 }: ListMobileItemProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   return (
@@ -59,7 +61,7 @@ export const ListMobileItem = ({
                 href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
                 sx={{ display: 'inline-flex', alignItems: 'center' }}
               >
-                <TokenIcon symbol={iconSymbol} sx={{ fontSize: '40px' }} />
+                <TokenIcon symbol={iconSymbol} sx={{ fontSize: '40px' }} onError={onIconError} />
                 <Box sx={{ ml: 2 }}>
                   <Typography variant="h4">{name}</Typography>
                   <Box display="flex" alignItems="center">
