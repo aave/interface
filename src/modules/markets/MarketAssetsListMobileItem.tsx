@@ -117,7 +117,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithId) => {
             textAlign: 'center',
           }}
         >
-          {reserve.borrowInfo && Number(reserve.borrowInfo.total.amount.value) > 0 ? (
+          {reserve.borrowInfo && Number(reserve.borrowInfo?.total.amount.value) > 0 ? (
             <>
               <FormattedNumber
                 compact
@@ -163,9 +163,9 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithId) => {
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />
-        {reserve.borrowInfo?.borrowingState === 'DISABLED' && !reserve.isFrozen && (
-          <ReserveSubheader value={'Disabled'} />
-        )}
+        {reserve.borrowInfo?.borrowingState === 'DISABLED' &&
+          !reserve.isFrozen &&
+          reserve.borrowInfo.total.amount.value !== '0' && <ReserveSubheader value={'Disabled'} />}
       </Row>
       <Button
         variant="outlined"
