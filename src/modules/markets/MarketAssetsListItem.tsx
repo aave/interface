@@ -130,7 +130,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
       </ListColumn>
 
       <ListColumn>
-        {reserve.borrowInfo ? (
+        {reserve.borrowInfo && Number(reserve.borrowInfo.total.amount.value) > 0 ? (
           <>
             <FormattedNumber
               compact
@@ -165,9 +165,9 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />
-        {reserve.borrowInfo?.borrowingState === 'DISABLED' && !reserve.isFrozen && (
-          <ReserveSubheader value={'Disabled'} />
-        )}
+        {reserve.borrowInfo?.borrowingState === 'DISABLED' &&
+          !reserve.isFrozen &&
+          reserve.borrowInfo.total.amount.value !== '0' && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
 
       <ListColumn minWidth={95} maxWidth={95} align="right">
