@@ -652,7 +652,7 @@ export const marketsData: {
   },
 
   [CustomMarket.proto_ink_v3]: {
-    marketTitle: 'Plasma',
+    marketTitle: 'Ink',
     market: CustomMarket.proto_ink_v3,
     chainId: 57073 as ChainId,
     v3: true,
