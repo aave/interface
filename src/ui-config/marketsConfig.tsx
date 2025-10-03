@@ -15,6 +15,7 @@ import {
   AaveV3EthereumEtherFi,
   AaveV3EthereumLido,
   AaveV3Gnosis,
+  AaveV3InkWhitelabel,
   AaveV3Linea,
   AaveV3Metis,
   AaveV3Optimism,
@@ -106,11 +107,13 @@ export enum CustomMarket {
   proto_sepolia_horizon_v3 = 'proto_sepolia_horizon_v3',
   proto_aptos_v3 = 'proto_aptos_v3',
   proto_plasma_v3 = 'proto_plasma_v3',
+  proto_ink_v3 = 'proto_ink_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
+
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -645,6 +648,23 @@ export const marketsData: {
       COLLECTOR: AaveV3Polygon.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Polygon.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Polygon.WITHDRAW_SWAP_ADAPTER,
+    },
+  },
+
+  [CustomMarket.proto_ink_v3]: {
+    marketTitle: 'Plasma',
+    market: CustomMarket.proto_ink_v3,
+    chainId: 57073 as ChainId,
+    v3: true,
+    logo: '/icons/networks/ink.svg',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3InkWhitelabel.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3InkWhitelabel.POOL,
+      WETH_GATEWAY: AaveV3InkWhitelabel.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3InkWhitelabel.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3InkWhitelabel.UI_INCENTIVE_DATA_PROVIDER,
+      // COLLECTOR: AaveV3InkWhitelabel.COLLECTOR,
     },
   },
 
