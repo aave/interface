@@ -228,7 +228,7 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
                     color: '#EAEBEF',
                   }}
                 >
-                  <Trans>{currentCampaign.buttonText.toUpperCase()}</Trans>
+                  <Trans>{currentCampaign.buttonText}</Trans>
                 </Button>
               ) : null}
             </Box>

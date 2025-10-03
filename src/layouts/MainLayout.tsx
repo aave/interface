@@ -15,22 +15,22 @@ import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
 const getIntendedChainId = (currentChainId?: ChainId): ChainId => {
-  // Priority 1: currentChainId from store
+  // Priority 1: URL params marketName
+  const urlMarket = getQueryParameter('marketName');
+  if (urlMarket && marketsData[urlMarket as CustomMarket]) {
+    return marketsData[urlMarket as CustomMarket].chainId;
+  }
+
+  // Priority 2: currentChainId from store
   if (currentChainId) {
     return currentChainId;
   }
 
   if (typeof window !== 'undefined') {
-    // Priority 2: localStorage selectedMarket
+    // Priority 3: localStorage selectedMarket
     const selectedMarket = localStorage.getItem('selectedMarket');
     if (selectedMarket && marketsData[selectedMarket as CustomMarket]) {
       return marketsData[selectedMarket as CustomMarket].chainId;
-    }
-
-    // Priority 3: URL params marketName
-    const urlMarket = getQueryParameter('marketName');
-    if (urlMarket && marketsData[urlMarket as CustomMarket]) {
-      return marketsData[urlMarket as CustomMarket].chainId;
     }
   }
 

@@ -1,16 +1,18 @@
 import { ChainId } from '@aave/contract-helpers';
+import { Trans } from '@lingui/macro';
 import { useRouter } from 'next/router';
+import { ReactNode } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { useShallow } from 'zustand/shallow';
 
 export interface CampaignConfig {
-  notifyText: string;
-  buttonText: string;
+  notifyText: ReactNode;
+  buttonText: ReactNode;
   buttonAction: ButtonAction;
   bannerVersion: string;
-  icon: string;
+  icon?: string;
 }
 
 export type ButtonAction =
@@ -23,9 +25,7 @@ export type ButtonAction =
       value: () => void;
     };
 
-type CampaignChainId = ChainId.base | ChainId.mainnet | ChainId.arbitrum_one;
-
-type CampaignConfigs = Partial<Record<CampaignChainId, CampaignConfig>>;
+type CampaignConfigs = Partial<Record<ChainId, CampaignConfig>>;
 
 export type NetworkCampaigns = { [chainId: number]: CampaignConfig };
 
@@ -41,8 +41,8 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
 
   const campaignConfigs: CampaignConfigs = {
     [ChainId.base]: {
-      notifyText: 'A new incentives campaign is live on the Base market',
-      buttonText: 'Explore Base',
+      notifyText: <Trans>A new incentives campaign is live on the Base market</Trans>,
+      buttonText: <Trans>Explore Base</Trans>,
       buttonAction: {
         type: 'route' as const,
         value: '/markets/?marketName=proto_base_v3',
@@ -52,8 +52,8 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
     },
 
     // [ChainId.sonic]: {
-    //   notifyText: 'Swaps are now live on Sonic',
-    //   buttonText: 'Swap Now',
+    //   notifyText: <Trans>Swaps are now live on Sonic</Trans>,
+    //   buttonText: <Trans>Swap Now</Trans>,
     //   buttonAction: {
     //     type: 'function' as const,
     //     value: () => openSwitch('', ChainId.sonic),
@@ -63,8 +63,8 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
     // },
 
     [ChainId.mainnet]: {
-      notifyText: 'The Plasma market is now live.',
-      buttonText: 'Get Started',
+      notifyText: <Trans>The Plasma market is now live.</Trans>,
+      buttonText: <Trans>Get Started</Trans>,
       buttonAction: {
         type: 'function' as const,
         value: () => openMarket(CustomMarket.proto_plasma_v3),
@@ -74,8 +74,8 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
     },
 
     // [ChainId.polygon]: {
-    //   notifyText: 'Swap tokens directly in the Aave App',
-    //   buttonText: 'Swap Now',
+    //   notifyText: <Trans>Swap tokens directly in the Aave App</Trans>,
+    //   buttonText: <Trans>Swap Now</Trans>,
     //   buttonAction: {
     //     type: 'function' as const,
     //     value: () => openSwitch('', ChainId.polygon),
@@ -85,8 +85,8 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
     // },
 
     // [ChainId.avalanche]: {
-    //   notifyText: 'Swap tokens directly in the Aave App',
-    //   buttonText: 'Swap Now',
+    //   notifyText: <Trans>Swap tokens directly in the Aave App</Trans>,
+    //   buttonText: <Trans>Swap Now</Trans>,
     //   buttonAction: {
     //     type: 'function' as const,
     //     value: () => openSwitch('', ChainId.avalanche),
@@ -96,8 +96,8 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
     // },
 
     [ChainId.arbitrum_one]: {
-      notifyText: 'Limit orders are now live on Arbitrum',
-      buttonText: 'Swap Now',
+      notifyText: <Trans>Limit orders are now live on Arbitrum</Trans>,
+      buttonText: <Trans>Swap Now</Trans>,
       buttonAction: {
         type: 'function' as const,
         value: () => openSwitch('', ChainId.arbitrum_one),
@@ -107,8 +107,8 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
     },
 
     // [ChainId.optimism]: {
-    //   notifyText: 'Swap tokens directly in the Aave App',
-    //   buttonText: 'Swap Now',
+    //   notifyText: <Trans>Swap tokens directly in the Aave App</Trans>,
+    //   buttonText: <Trans>Swap Now</Trans>,
     //   buttonAction: {
     //     type: 'function' as const,
     //     value: () => openSwitch('', ChainId.optimism),
@@ -118,8 +118,8 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
     // },
 
     // [ChainId.xdai]: {
-    //   notifyText: 'Swap tokens directly in the Aave App',
-    //   buttonText: 'Swap Now',
+    //   notifyText: <Trans>Swap tokens directly in the Aave App</Trans>,
+    //   buttonText: <Trans>Swap Now</Trans>,
     //   buttonAction: {
     //     type: 'function' as const,
     //     value: () => openSwitch('', ChainId.xdai),
@@ -129,8 +129,8 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
     // },
 
     // [ChainId.bnb]: {
-    //   notifyText: 'Swap tokens directly in the Aave App',
-    //   buttonText: 'Swap Now',
+    //   notifyText: <Trans>Swap tokens directly in the Aave App</Trans>,
+    //   buttonText: <Trans>Swap Now</Trans>,
     //   buttonAction: {
     //     type: 'function' as const,
     //     value: () => openSwitch('', ChainId.bnb),
@@ -140,7 +140,7 @@ export const useBannerCampaigns = (chainId?: ChainId): NetworkCampaigns => {
     // },
   };
 
-  const isCampaignChainId = (chainId: ChainId): chainId is CampaignChainId => {
+  const isCampaignChainId = (chainId: ChainId): chainId is ChainId => {
     return chainId in campaignConfigs;
   };
 
