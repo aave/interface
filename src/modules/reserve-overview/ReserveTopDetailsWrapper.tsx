@@ -20,10 +20,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from '../../hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { AddTokenDropdown } from './AddTokenDropdown';
 import { GhoReserveTopDetails } from './Gho/GhoReserveTopDetails';
 import { ReserveTopDetails } from './ReserveTopDetails';
@@ -35,7 +32,7 @@ interface ReserveTopDetailsProps {
 
 export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const router = useRouter();
-  const { reserves, loading } = useAppDataContext();
+  const { supplyReserves, loading } = useAppDataContext();
   const [currentMarket, currentChainId] = useRootStore(
     useShallow((state) => [state.currentMarket, state.currentChainId])
   );
@@ -50,11 +47,17 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const poolReserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
+  const poolReserve = supplyReserves.find(
+    (reserve) => reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase()
+  );
 
-  const [tokenSymbol, setTokenSymbol] = useState(poolReserve.iconSymbol.toLowerCase());
+  const [tokenSymbol, setTokenSymbol] = useState(
+    poolReserve?.underlyingToken.symbol.toLowerCase() ?? 'default'
+  );
+
+  if (!poolReserve) {
+    return null;
+  }
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
 
@@ -80,11 +83,14 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
     return loading ? (
       <Skeleton width={60} height={28} sx={{ background: '#383D51' }} />
     ) : (
-      <Typography variant={valueTypographyVariant}>{poolReserve.name}</Typography>
+      <Typography variant={valueTypographyVariant}>{poolReserve.underlyingToken.name}</Typography>
     );
   };
 
-  const isGho = displayGhoForMintableMarket({ symbol: poolReserve.symbol, currentMarket });
+  const isGho = displayGhoForMintableMarket({
+    symbol: poolReserve.underlyingToken.symbol,
+    currentMarket,
+  });
 
   return (
     <TopInfoPanel
@@ -146,7 +152,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
               <Box>
                 {!loading && (
                   <Typography sx={{ color: '#A5A8B6' }} variant="caption">
-                    {poolReserve.symbol}
+                    {poolReserve.underlyingToken.symbol}
                   </Typography>
                 )}
                 <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -183,7 +189,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
       {!downToSM && (
         <>
           <TopInfoPanelItem
-            title={!loading && <Trans>{poolReserve.symbol}</Trans>}
+            title={!loading && <Trans>{poolReserve.underlyingToken.symbol}</Trans>}
             withoutIconWrapper
             icon={<ReserveIcon />}
             loading={loading}

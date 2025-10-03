@@ -13,8 +13,8 @@ import {
   AssetsBeingOffboarded,
   OffboardingWarning,
 } from 'src/components/Warnings/OffboardingWarning';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
@@ -38,7 +38,7 @@ const BROKEN_ASSETS = [
 ];
 
 type ReserveConfigurationProps = {
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
 };
 
 export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ reserve }) => {
@@ -50,12 +50,13 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       store.currentMarket,
     ])
   );
-  const renderCharts = !BROKEN_ASSETS.includes(reserve.underlyingAsset);
-  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
-  const showSupplyCapStatus: boolean = reserve.supplyCap !== '0';
-  const showBorrowCapStatus: boolean = reserve.borrowCap !== '0';
+  const renderCharts = !BROKEN_ASSETS.includes(reserve.underlyingToken.address);
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCapsSDK();
+  const showSupplyCapStatus: boolean = reserve.supplyInfo.supplyCap.amount.value !== '0';
+  const showBorrowCapStatus: boolean = reserve.borrowInfo?.borrowCap.amount.value !== '0';
 
-  const offboardingDiscussion = AssetsBeingOffboarded[currentMarket]?.[reserve.symbol];
+  const offboardingDiscussion =
+    AssetsBeingOffboarded[currentMarket]?.[reserve.underlyingToken.symbol];
 
   return (
     <>
@@ -65,7 +66,10 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             <Trans>
               This asset is frozen due to an Aave community decision.{' '}
               <Link
-                href={getFrozenProposalLink(reserve.symbol, currentMarket)}
+                href={getFrozenProposalLink(
+                  reserve.underlyingToken.symbol.toLocaleLowerCase(),
+                  currentMarket
+                )}
                 sx={{ textDecoration: 'underline' }}
               >
                 <Trans>More details</Trans>
@@ -77,7 +81,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             <OffboardingWarning discussionLink={offboardingDiscussion} />
           </Warning>
         ) : (
-          reserve.symbol == 'AMPL' && (
+          reserve.underlyingToken.symbol == 'AMPL' && (
             <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
               <AMPLWarning />
             </Warning>
@@ -85,7 +89,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         )}
 
         {reserve.isPaused ? (
-          reserve.symbol === 'MAI' ? (
+          reserve.underlyingToken.symbol === 'MAI' ? (
             <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
               <Trans>
                 MAI has been paused due to a community decision. Supply, borrows and repays are
@@ -120,15 +124,19 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         />
       </PanelRow>
 
-      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
+      {(reserve.borrowInfo?.borrowingState === 'ENABLED' ||
+        Number(reserve.borrowInfo?.total.amount.value) > 0) && (
         <>
           <Divider sx={{ my: { xs: 6, sm: 10 } }} />
           <PanelRow>
             <PanelTitle>Borrow info</PanelTitle>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-              {!reserve.borrowingEnabled && (
+              {reserve.borrowInfo?.borrowingState === 'DISABLED' && (
                 <Warning sx={{ mb: '40px' }} severity="error">
-                  <BorrowDisabledWarning symbol={reserve.symbol} currentMarket={currentMarket} />
+                  <BorrowDisabledWarning
+                    symbol={reserve.underlyingToken.symbol}
+                    currentMarket={currentMarket}
+                  />
                 </Warning>
               )}
               <BorrowInfo
@@ -144,14 +152,15 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         </>
       )}
 
-      {reserve.eModes.length > 0 && (
+      {reserve.eModeInfo?.length > 0 && (
         <>
           <Divider sx={{ my: { xs: 6, sm: 10 } }} />
           <ReserveEModePanel reserve={reserve} />
         </>
       )}
 
-      {(reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
+      {(reserve.borrowInfo?.borrowingState === 'ENABLED' ||
+        Number(reserve.borrowInfo?.total.amount.value) > 0) && (
         <>
           <Divider sx={{ my: { xs: 6, sm: 10 } }} />
 
@@ -168,7 +177,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
               >
                 <PanelItem title={<Trans>Utilization Rate</Trans>} className="borderless">
                   <FormattedNumber
-                    value={reserve.borrowUsageRatio}
+                    value={reserve.borrowInfo!.utilizationRate.value}
                     percent
                     variant="main16"
                     compact
@@ -177,13 +186,13 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <Button
                   onClick={() => {
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      asset: reserve.underlyingAsset,
+                      asset: reserve.underlyingToken.address,
                       Link: 'Interest Rate Strategy',
-                      assetName: reserve.name,
+                      assetName: reserve.underlyingToken.name,
                     });
                   }}
                   href={currentNetworkConfig.explorerLinkBuilder({
-                    address: reserve.interestRateStrategyAddress,
+                    address: '', //TODO: add interestRateStrategyAddress to SDK
                   })}
                   endIcon={
                     <SvgIcon sx={{ width: 14, height: 14 }}>
