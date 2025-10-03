@@ -662,7 +662,7 @@ export const marketsData: {
       LENDING_POOL: AaveV3InkWhitelabel.POOL,
       WETH_GATEWAY: AaveV3InkWhitelabel.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: '0x2581d1f2Ce3860b651bF84AF416e7d28d9500D7F', // custom as doesnt work utils
+      UI_POOL_DATA_PROVIDER: '0xc851e6147dcE6A469CC33BE3121b6B2D4CaD2763', // custom as doesnt work utils
       UI_INCENTIVE_DATA_PROVIDER: AaveV3InkWhitelabel.UI_INCENTIVE_DATA_PROVIDER,
       // COLLECTOR: AaveV3InkWhitelabel.COLLECTOR,
     },
