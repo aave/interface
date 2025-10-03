@@ -9,8 +9,7 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
-import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { GENERAL, RESERVE_DETAILS } from 'src/utils/events';
 
@@ -19,7 +18,7 @@ import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 import { PanelRow, PanelTitle } from './ReservePanels';
 
 type ReserverEModePanelProps = {
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
 };
 
 export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }) => {
@@ -29,15 +28,15 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
     <PanelRow>
       <PanelTitle>E-Mode info</PanelTitle>
       <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-        {reserve.eModes.map((e) => (
-          <Fragment key={e.id}>
+        {reserve.eModeInfo?.map((e) => (
+          <Fragment key={e.label}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
                 <LightningBoltGradient />
               </SvgIcon>
-              <Typography variant="subheader1">{getEmodeMessage(e.eMode.label)}</Typography>
-              <ConfigStatus enabled={e.collateralEnabled} label="Collateral" />
-              <ConfigStatus enabled={e.borrowingEnabled} label="Borrowable" />
+              <Typography variant="subheader1">{e.label}</Typography>
+              <ConfigStatus enabled={e.canBeCollateral} label="Collateral" />
+              <ConfigStatus enabled={e.canBeBorrowed} label="Borrowable" />
             </Box>
             <Box
               sx={{
@@ -51,7 +50,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
               >
                 <FormattedNumber
-                  value={e.eMode.formattedLtv}
+                  value={e.maxLTV.value}
                   percent
                   variant="secondary14"
                   visibleDecimals={2}
@@ -66,7 +65,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 }
               >
                 <FormattedNumber
-                  value={e.eMode.formattedLiquidationThreshold}
+                  value={e.liquidationThreshold.value}
                   percent
                   variant="secondary14"
                   visibleDecimals={2}
@@ -81,7 +80,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 }
               >
                 <FormattedNumber
-                  value={e.eMode.formattedLiquidationBonus}
+                  value={e.liquidationPenalty.value}
                   percent
                   variant="secondary14"
                   visibleDecimals={2}

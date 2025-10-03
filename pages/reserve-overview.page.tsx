@@ -7,9 +7,11 @@ import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import {
   ComputedReserveData,
+  ReserveWithId,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfigurationWrapper } from 'src/modules/reserve-overview/ReserveConfigurationWrapper';
@@ -44,23 +46,28 @@ const UnStakeModal = dynamic(() =>
 
 export default function ReserveOverview() {
   const router = useRouter();
-  const { reserves } = useAppDataContext();
+  const { supplyReserves, reserves } = useAppDataContext();
   const underlyingAsset = router.query.underlyingAsset as string;
 
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('overview');
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const reserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
-
+  //With SDK
+  const reserve = supplyReserves.find((reserve) => {
+    return reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase();
+  }) as ReserveWithId;
+  console.log('Reserve SDK', reserve);
+  //With Reserves
+  const reserveLegacy = reserves.find((reserve) => {
+    return reserve.underlyingAsset.toLowerCase() === underlyingAsset?.toLowerCase();
+  }) as ComputedReserveData;
   const [pageEventCalled, setPageEventCalled] = useState(false);
-
+  console.log('Reserve Legacy', reserveLegacy);
   useEffect(() => {
-    if (!pageEventCalled && reserve && reserve.iconSymbol && underlyingAsset) {
+    if (!pageEventCalled && reserve && reserve.underlyingToken.symbol && underlyingAsset) {
       trackEvent('Page Viewed', {
         'Page Name': 'Reserve Overview',
-        Reserve: reserve.iconSymbol,
+        Reserve: reserve.underlyingToken.symbol,
         Asset: underlyingAsset,
       });
       setPageEventCalled(true);
@@ -70,7 +77,7 @@ export default function ReserveOverview() {
   const isOverview = mode === 'overview';
 
   return (
-    <AssetCapsProvider asset={reserve}>
+    <AssetCapsProviderSDK asset={reserve}>
       <ReserveTopDetailsWrapper underlyingAsset={underlyingAsset} />
 
       <ContentContainer>
@@ -120,11 +127,14 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            <ReserveActions reserve={reserve} />
+            {/* Wrapped in AssetCapsProvider to provide the data using legacy method to avoid braking actions */}
+            <AssetCapsProvider asset={reserveLegacy}>
+              <ReserveActions reserve={reserveLegacy} />
+            </AssetCapsProvider>
           </Box>
         </Box>
       </ContentContainer>
-    </AssetCapsProvider>
+    </AssetCapsProviderSDK>
   );
 }
 
