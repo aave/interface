@@ -1270,6 +1270,10 @@ msgstr "Create limit order"
 msgid "Stablecoins"
 msgstr "Stablecoins"
 
+#: src/hooks/useBannerCampaigns.tsx
+msgid "The Plasma market is now live."
+msgstr "The Plasma market is now live."
+
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 #: src/modules/umbrella/UnstakeModalActions.tsx
 msgid "Unstaking {symbol}"
@@ -1340,6 +1344,10 @@ msgstr "Withdraw & Switch"
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
+
+#: src/hooks/useBannerCampaigns.tsx
+msgid "A new incentives campaign is live on the Base market"
+msgstr "A new incentives campaign is live on the Base market"
 
 #: src/modules/migration/StETHMigrationWarning.tsx
 msgid "stETH tokens will be migrated to Wrapped stETH using Lido Protocol wrapper which leads to supply balance change after migration: {0}"
@@ -1989,6 +1997,10 @@ msgstr "Learn more about the SPK rewards"
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
 msgstr "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
 
+#: src/hooks/useBannerCampaigns.tsx
+msgid "Limit orders are now live on Arbitrum"
+msgstr "Limit orders are now live on Arbitrum"
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "You'll need to wait {0} before you can unstake your tokens. This cooldown starts when you request to unstake. Once it ends, you can withdraw during the unstake window."
@@ -2359,6 +2371,10 @@ msgstr "Cannot disable E-Mode"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Not enough collateral to repay this amount of debt with"
 msgstr "Not enough collateral to repay this amount of debt with"
+
+#: src/hooks/useBannerCampaigns.tsx
+msgid "Get Started"
+msgstr "Get Started"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -3736,6 +3752,10 @@ msgstr "You {action} <0/> {symbol}"
 msgid "Discord channel"
 msgstr "Discord channel"
 
+#: src/hooks/useBannerCampaigns.tsx
+msgid "Explore Base"
+msgstr "Explore Base"
+
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
 msgstr "The caller of the function is not an AToken"
@@ -3944,6 +3964,10 @@ msgstr "Submission did not work, please try again later or contact wecare@avara.
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Filled"
 msgstr "Filled"
+
+#: src/hooks/useBannerCampaigns.tsx
+msgid "Swap Now"
+msgstr "Swap Now"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "Remaining debt"
