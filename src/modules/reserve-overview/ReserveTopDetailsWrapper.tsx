@@ -11,7 +11,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -62,8 +61,6 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
       ? iconSymbol
       : poolReserve!.underlyingToken.symbol;
 
-  const [tokenSymbol, setTokenSymbol] = useState(displayIconSymbol);
-
   if (!poolReserve) {
     return null;
   }
@@ -76,13 +73,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
         {loading ? (
           <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
         ) : (
-          <img
-            src={`/icons/tokens/${tokenSymbol}.svg`}
-            onError={() => setTokenSymbol('default')}
-            width="40px"
-            height="40px"
-            alt=""
-          />
+          <img src={`/icons/tokens/${displayIconSymbol}.svg`} width="40px" height="40px" alt="" />
         )}
       </Box>
     );
