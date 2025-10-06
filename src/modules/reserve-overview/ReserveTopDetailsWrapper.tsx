@@ -36,6 +36,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   const [currentMarket, currentChainId] = useRootStore(
     useShallow((state) => [state.currentMarket, state.currentChainId])
   );
+
   const { market, logo } = getMarketInfoById(currentMarket);
   const {
     addERC20Token,
@@ -50,6 +51,9 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   const poolReserve = supplyReserves.find(
     (reserve) => reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase()
   );
+  if (!poolReserve) {
+    return null;
+  }
   const { iconSymbol } = fetchIconSymbolAndName({
     underlyingAsset: poolReserve!.underlyingToken.address,
     symbol: poolReserve!.underlyingToken.symbol,
@@ -61,10 +65,6 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
       ? iconSymbol
       : poolReserve!.underlyingToken.symbol;
 
-  if (!poolReserve) {
-    return null;
-  }
-
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
 
   const ReserveIcon = () => {
@@ -73,7 +73,13 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
         {loading ? (
           <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
         ) : (
-          <img src={`/icons/tokens/${displayIconSymbol}.svg`} width="40px" height="40px" alt="" />
+          <img
+            src={`/icons/tokens/${displayIconSymbol}.svg`}
+            // onError={() => setTokenSymbol('default')}
+            width="40px"
+            height="40px"
+            alt=""
+          />
         )}
       </Box>
     );
