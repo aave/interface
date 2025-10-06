@@ -74,8 +74,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
         ) : (
           <img
-            src={`/icons/tokens/${displayIconSymbol}.svg`}
-            // onError={() => setTokenSymbol('default')}
+            src={`/icons/tokens/${displayIconSymbol.toLowerCase()}.svg`}
             width="40px"
             height="40px"
             alt=""

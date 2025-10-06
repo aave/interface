@@ -96,6 +96,8 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const sdkMarket = marketsList.find((item) => item.address.toLowerCase() === marketAddress);
 
+  console.log('SDK Market', sdkMarket);
+  // market fields
   const totalBorrows = sdkMarket?.borrowReserves.reduce((acc, reserve) => {
     const value = reserve.borrowInfo?.total?.usd ?? 0;
     return acc + Number(value);
