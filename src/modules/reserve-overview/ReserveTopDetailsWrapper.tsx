@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
@@ -50,10 +51,18 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   const poolReserve = supplyReserves.find(
     (reserve) => reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase()
   );
+  const { iconSymbol } = fetchIconSymbolAndName({
+    underlyingAsset: poolReserve!.underlyingToken.address,
+    symbol: poolReserve!.underlyingToken.symbol,
+    name: poolReserve!.underlyingToken.name,
+  });
 
-  const [tokenSymbol, setTokenSymbol] = useState(
-    poolReserve?.underlyingToken.symbol.toLowerCase() ?? 'default'
-  );
+  const displayIconSymbol =
+    iconSymbol?.toLowerCase() !== poolReserve!.underlyingToken.symbol.toLowerCase()
+      ? iconSymbol
+      : poolReserve!.underlyingToken.symbol;
+
+  const [tokenSymbol, setTokenSymbol] = useState(displayIconSymbol);
 
   if (!poolReserve) {
     return null;
