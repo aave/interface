@@ -245,7 +245,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
   const handleBlocked = () => {
     switch (blockingError) {
       case ErrorType.NOT_ENOUGH_BALANCE:
-        return <Trans>Your reward balance is 0</Trans>;
+        return <Trans>You have no rewards to claim at this time.</Trans>;
       default:
         return null;
     }
@@ -377,11 +377,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
         </Typography>
       )}
 
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
-        </Typography>
-      )}
+      {blockingError !== undefined && <Typography>{handleBlocked()}</Typography>}
 
       {(rewards.length > 1 ||
         (rewards.length >= 1 &&

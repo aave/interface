@@ -6,9 +6,10 @@ import {
   MeritAction,
   MeritIncentivesBreakdown,
 } from 'src/hooks/useMeritIncentives';
+import { useModalContext } from 'src/hooks/useModal';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
-import { Link } from '../primitives/Link';
+import { Link, ROUTES } from '../primitives/Link';
 import { Row } from '../primitives/Row';
 import { TokenIcon } from '../primitives/TokenIcon';
 import { getSymbolMap } from './IncentivesTooltipContent';
@@ -99,6 +100,7 @@ const getCampaignConfig = (action: MeritAction): CampaignConfig => {
 
 export const MeritIncentivesTooltipContent = ({
   meritIncentives,
+  onClose,
 }: {
   meritIncentives: ExtendedReserveIncentiveResponse & {
     breakdown?: MeritIncentivesBreakdown;
@@ -106,9 +108,16 @@ export const MeritIncentivesTooltipContent = ({
     activeActions: MeritAction[];
     actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
   };
+  onClose?: () => void;
 }) => {
   const theme = useTheme();
+  const { openClaimRewards } = useModalContext();
   const typographyVariant = 'secondary12';
+
+  const handleClaimClick = () => {
+    openClaimRewards();
+    if (onClose) onClose();
+  };
   const meritIncentivesFormatted = getSymbolMap(meritIncentives);
   const isCombinedMeritIncentives: boolean = meritIncentives.activeActions.length > 1;
   const campaignConfig = getCampaignConfig(meritIncentives.action);
@@ -212,35 +221,81 @@ export const MeritIncentivesTooltipContent = ({
         </Typography>
       ) : null}
 
-      <Typography variant="caption" color="text.primary" fontSize={13} fontWeight={'600'}>
+      <Typography
+        variant="caption"
+        color="text.primary"
+        fontSize={13}
+        fontWeight={'600'}
+        sx={{ display: 'inline' }}
+      >
         {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig ? (
-          <Trans>Merit Program and Self rewards are claimed through the</Trans>
+          <>
+            <Trans>Merit Program and Self rewards can be claimed </Trans>
+            <Typography
+              component="span"
+              onClick={handleClaimClick}
+              sx={{
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                fontSize: '13px !important',
+                fontWeight: 'bold',
+                mx: 0.5,
+              }}
+              variant="caption"
+              color="primary"
+            >
+              <Trans>here</Trans>
+            </Typography>
+            <Trans> or from the </Trans>
+            <Link
+              href={`${ROUTES.dashboard}`}
+              sx={{
+                textDecoration: 'underline',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                fontSize: '13px !important',
+                mx: 0.5,
+              }}
+              variant="caption"
+            >
+              <Trans>dashboard</Trans>
+            </Link>
+            .
+          </>
         ) : (
-          <Trans>Merit Program rewards are claimed through the</Trans>
+          <>
+            <Trans>Merit Program rewards can be claimed </Trans>
+            <Typography
+              component="span"
+              onClick={handleClaimClick}
+              sx={{
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                fontSize: '13px !important',
+                fontWeight: 'bold',
+                mx: 0.5,
+              }}
+              variant="caption"
+              color="primary"
+            >
+              <Trans>here</Trans>
+            </Typography>
+            <Trans> or from the </Trans>
+            <Link
+              href={`${ROUTES.dashboard}`}
+              sx={{
+                textDecoration: 'underline',
+                fontWeight: 'bold !important',
+                cursor: 'pointer',
+                fontSize: '13px !important',
+                mx: 0.5,
+              }}
+              variant="caption"
+            >
+              <Trans>dashboard</Trans>
+            </Link>
+          </>
         )}
-
-        <Link
-          href={`https://apps.aavechan.com/merit/${meritIncentives.action}`}
-          sx={{ textDecoration: 'underline', ml: 1 }}
-          variant="caption"
-        >
-          <span
-            style={{
-              fontSize: '13px',
-              fontWeight: '600',
-            }}
-          >
-            {'Aave Chan Initiative interface'}
-          </span>
-        </Link>
-        <span
-          style={{
-            fontSize: '13px',
-            fontWeight: '600',
-          }}
-        >
-          {'.'}
-        </span>
       </Typography>
       <Box sx={{ width: '100%' }}>
         <Box>
