@@ -251,7 +251,7 @@ export const DashboardTopPanel = () => {
           </TopInfoPanelItem>
         )}
 
-        {currentAccount && claimableRewardsUsd > 0 && (
+        {currentAccount && (
           <TopInfoPanelItem title={<Trans>Available rewards</Trans>} loading={loading} hideIcon>
             <Box
               sx={{

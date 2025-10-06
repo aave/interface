@@ -146,7 +146,12 @@ export const MeritIncentivesButton = (params: {
 
   return (
     <ContentWithTooltip
-      tooltipContent={<MeritIncentivesTooltipContent meritIncentives={meritIncentives} />}
+      tooltipContent={
+        <MeritIncentivesTooltipContent
+          meritIncentives={meritIncentives}
+          onClose={() => setOpen(false)}
+        />
+      }
       withoutHover
       setOpen={setOpen}
       open={open}
