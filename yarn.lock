@@ -47,7 +47,7 @@
   resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.36.1.tgz#3e501962de3700250c213c981ea47b36a8e37a54"
   integrity sha512-rR1sbDX1IFb1B1TLdi8hZANvtviPeU8hfpLuHC9cwlXluujCdHttnNVODwco1J5d2k6KxnNnc0DZJj2yV7nLTQ==
 
-"@aave/react@0.6.1":
+"@aave/react@^0.6.1":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.6.1.tgz#4c5079ef87e74833376ef81c119ba3ba4b601e3f"
   integrity sha512-SBi1Ix3y8sIHeIbw3JF3XGBXK0KSvia1QbGSyuobNj0/028rWJ+FAqFm5XcBfNpVImf1BWZylsuryyyLaU1zvQ==

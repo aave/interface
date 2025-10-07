@@ -56,13 +56,13 @@ export default function ReserveOverview() {
   const reserve = supplyReserves.find((reserve) => {
     return reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase();
   }) as ReserveWithId;
-  console.log('Reserve SDK', reserve);
+
   //With Reserves
   const reserveLegacy = reserves.find((reserve) => {
     return reserve.underlyingAsset.toLowerCase() === underlyingAsset?.toLowerCase();
   }) as ComputedReserveData;
   const [pageEventCalled, setPageEventCalled] = useState(false);
-  console.log('Reserve Legacy', reserveLegacy);
+
   useEffect(() => {
     if (!pageEventCalled && reserve && reserve.underlyingToken.symbol && underlyingAsset) {
       trackEvent('Page Viewed', {
