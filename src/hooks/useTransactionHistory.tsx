@@ -1,11 +1,8 @@
 import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import {
-  ADAPTER_APP_CODE,
-  HEADER_WIDGET_APP_CODE,
-} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
-import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
+import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swap/constants/cow.constants';
+import { APP_CODE_VALUES } from 'src/components/transactions/Swap/constants/shared.constants';
 import {
   actionFilterMap,
   hasCollateralReserve,
@@ -216,7 +213,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
             const appData = JSON.parse(order.fullAppData ?? '{}');
             const appCode = appData.appCode;
 
-            if (appCode == HEADER_WIDGET_APP_CODE || appCode == ADAPTER_APP_CODE) {
+            if (APP_CODE_VALUES.includes(appCode)) {
               return order;
             }
           } catch (error) {

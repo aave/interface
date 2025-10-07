@@ -89,29 +89,13 @@ export const queryKeysFactory = {
     oracles,
     'userStakeUiData',
   ],
-  paraswapRates: (
+  swapQuote: (
     chainId: number,
     amount: string,
     srcToken: string,
     destToken: string,
     user: string
-  ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'paraswapRates'],
-  cowProtocolRates: (
-    chainId: number,
-    amount: string,
-    srcToken: string,
-    destToken: string,
-    user: string,
-    appCode?: string
-  ) => [
-    ...queryKeysFactory.user(user),
-    chainId,
-    amount,
-    srcToken,
-    destToken,
-    appCode,
-    'cowProtocolRates',
-  ],
+  ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'swapQuote'],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],
   poolReservesIncentiveDataHumanized: (marketData: MarketDataType) => [
     ...queryKeysFactory.pool,

@@ -11,8 +11,9 @@ export const CollateralChangeModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
+  return null;
   return (
-    <BasicModal open={type === ModalType.CollateralChange} setOpen={close}>
+    <BasicModal open={type === ModalType.CollateralSwap} setOpen={close}>
       <ModalWrapper title={<Trans>Review tx</Trans>} underlyingAsset={args.underlyingAsset}>
         {(params) => (
           <UserAuthenticated>
