@@ -2,17 +2,35 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { CREATE_THREAD_MUTATION, UPSERT_CUSTOMER_MUTATION } from './plain-mutations';
 
-const apiKey = process.env.PLAIN_API_KEY;
-if (!apiKey) throw new Error('PLAIN_API_KEY env variable is missing');
+const apiKeyProd = process.env.PLAIN_API_KEY;
+const apiKeyTest = process.env.PLAIN_TEST_API_KEY;
+if (!apiKeyProd) throw new Error('PLAIN_API_KEY env variable is missing');
+if (!apiKeyTest) throw new Error('PLAIN_TEST_API_KEY env variable is missing');
 
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 
-const makeGraphQLRequest = async (query: string, variables: Record<string, unknown>) => {
+const getPlainConfig = (env: 'testnet' | 'production'): string => {
+  const apiKey = env === 'testnet' ? apiKeyTest : apiKeyProd;
+
+  if (!apiKey) {
+    throw new Error(
+      `Missing Plain credentials for ${env} environment. Check PLAIN_API_KEY[_TEST].`
+    );
+  }
+
+  return apiKey;
+};
+
+const makeGraphQLRequest = async (
+  query: string,
+  variables: Record<string, unknown>,
+  plainConfig: string
+) => {
   const response = await fetch('https://core-api.uk.plain.com/graphql/v1', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${apiKey}`,
+      Authorization: `Bearer ${plainConfig}`,
     },
     body: JSON.stringify({
       query,
@@ -57,10 +75,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { email, text } = req.body;
+    const { email, text, environment } = req.body;
 
-    if (!email || !text) {
-      return res.status(400).json({ message: 'Email and text are required.' });
+    if (!email || !text || !environment) {
+      return res.status(400).json({ message: 'Email, text, and environment are required.' });
     }
 
     if (!isEmail(email)) {
@@ -70,6 +88,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!text?.trim()) {
       return res.status(400).json({ error: 'Missing inquiry' });
     }
+
+    if (environment !== 'production' && environment !== 'testnet') {
+      return res.status(400).json({ message: 'Invalid environment value.' });
+    }
+
+    const plainConfig = getPlainConfig(environment);
 
     const upsertCustomerVariables = {
       input: {
@@ -87,7 +111,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     };
 
-    const customerRes = await makeGraphQLRequest(UPSERT_CUSTOMER_MUTATION, upsertCustomerVariables);
+    const customerRes = await makeGraphQLRequest(
+      UPSERT_CUSTOMER_MUTATION,
+      upsertCustomerVariables,
+      plainConfig
+    );
 
     if (customerRes.errors) {
       console.error('GraphQL errors:', customerRes.errors);
@@ -157,7 +185,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         ],
       },
     };
-    const result = await makeGraphQLRequest(CREATE_THREAD_MUTATION, createThreadVariables);
+    const result = await makeGraphQLRequest(
+      CREATE_THREAD_MUTATION,
+      createThreadVariables,
+      plainConfig
+    );
 
     if (result.errors) {
       console.error('GraphQL errors in createThread:', result.errors);
