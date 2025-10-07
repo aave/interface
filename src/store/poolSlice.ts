@@ -48,7 +48,7 @@ import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewar
 import { RewardSymbol } from 'src/components/transactions/ClaimRewards/constants';
 import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
 import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
-import { SwapActionProps } from 'src/components/transactions/Switch/CollateralSwap/CollateralSwapActions';
+import { SwapActionProps } from 'src/components/transactions/Swap/helpers/paraswap';
 import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
@@ -433,34 +433,71 @@ export const createPoolSlice: StateCreator<
           s: sig.s,
         };
       }
-      return debtSwitchService.debtSwitch({
-        user,
-        debtAssetUnderlying: poolReserve.underlyingAsset,
-        debtRepayAmount: isMaxSelected ? MAX_UINT_AMOUNT : amountToSwap,
-        debtRateMode: 2, // variable
-        newAssetUnderlying: targetReserve.underlyingAsset,
-        newAssetDebtToken: targetReserve.variableDebtTokenAddress,
-        maxNewDebtAmount: amountToReceive,
-        extraCollateralAmount: '0',
-        extraCollateralAsset: '0x0000000000000000000000000000000000000000',
-        repayAll: isMaxSelected,
-        txCalldata,
-        augustus,
-        creditDelegationPermit: {
-          deadline: signatureDeconstruct.deadline,
-          value: signatureDeconstruct.amount,
-          v: signatureDeconstruct.v,
-          r: signatureDeconstruct.r,
-          s: signatureDeconstruct.s,
-        },
-        collateralPermit: {
-          deadline: '0',
-          value: '0',
-          v: 0,
-          r: '0x0000000000000000000000000000000000000000000000000000000000000000',
-          s: '0x0000000000000000000000000000000000000000000000000000000000000000',
-        },
-      });
+      try {
+        console.log('debtSwitchTxData', {
+          user,
+          debtAssetUnderlying: poolReserve.underlyingAsset,
+          debtRepayAmount: isMaxSelected ? MAX_UINT_AMOUNT : amountToSwap,
+          debtRateMode: 2, // variable
+          newAssetUnderlying: targetReserve.underlyingAsset,
+          newAssetDebtToken: targetReserve.variableDebtTokenAddress,
+          maxNewDebtAmount: amountToReceive,
+          extraCollateralAmount: '0',
+          extraCollateralAsset: '0x0000000000000000000000000000000000000000',
+          repayAll: isMaxSelected,
+          txCalldata,
+          augustus,
+          creditDelegationPermit: {
+            deadline: signatureDeconstruct.deadline,
+            value: signatureDeconstruct.amount,
+            v: signatureDeconstruct.v,
+            r: signatureDeconstruct.r,
+            s: signatureDeconstruct.s,
+          },
+          collateralPermit: {
+            deadline: '0',
+            value: '0',
+            v: 0,
+            r: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            s: '0x0000000000000000000000000000000000000000000000000000000000000000',
+          },
+        });
+        const a = debtSwitchService.debtSwitch({
+          user,
+          debtAssetUnderlying: poolReserve.underlyingAsset,
+          debtRepayAmount: isMaxSelected ? MAX_UINT_AMOUNT : amountToSwap,
+          debtRateMode: 2, // variable
+          newAssetUnderlying: targetReserve.underlyingAsset,
+          newAssetDebtToken: targetReserve.variableDebtTokenAddress,
+          maxNewDebtAmount: amountToReceive,
+          extraCollateralAmount: '0',
+          extraCollateralAsset: '0x0000000000000000000000000000000000000000',
+          repayAll: isMaxSelected,
+          txCalldata,
+          augustus,
+          creditDelegationPermit: {
+            deadline: signatureDeconstruct.deadline,
+            value: signatureDeconstruct.amount,
+            v: signatureDeconstruct.v,
+            r: signatureDeconstruct.r,
+            s: signatureDeconstruct.s,
+          },
+          collateralPermit: {
+            deadline: '0',
+            value: '0',
+            v: 0,
+            r: '0x0000000000000000000000000000000000000000000000000000000000000000',
+            s: '0x0000000000000000000000000000000000000000000000000000000000000000',
+          },
+        });
+
+        console.log('a', a);
+        return a;
+      } catch (e) {
+        console.log('error!!!!!!!', e);
+        console.error(e);
+        throw e;
+      }
     },
     repay: ({ repayWithATokens, amountToRepay, poolAddress, debtType, encodedTxData }) => {
       const poolBundle = get().getCorrectPoolBundle();
@@ -572,6 +609,20 @@ export const createPoolSlice: StateCreator<
           s: sig.s,
         };
       }
+
+      console.log('swapCollateral', {
+        fromAsset: poolReserve.underlyingAsset,
+        toAsset: targetReserve.underlyingAsset,
+        swapAll: isMaxSelected,
+        fromAToken: poolReserve.aTokenAddress,
+        fromAmount: amountToSwap,
+        minToAmount: amountToReceive,
+        user,
+        flash: useFlashLoan,
+        augustus,
+        swapCallData,
+        permitSignature,
+      });
 
       return pool.swapCollateral({
         fromAsset: poolReserve.underlyingAsset,

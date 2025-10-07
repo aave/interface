@@ -1,0 +1,168 @@
+import { CircularProgress } from '@mui/material';
+import { useEffect, useReducer } from 'react';
+import { useModalContext } from 'src/hooks/useModal';
+
+import { BaseSwapActions } from '../../actions';
+import { SwapInputChanges } from '../../analytics/constants';
+import { useHandleAnalytics } from '../../analytics/useTrackAnalytics';
+import { BaseSwapDetails } from '../../details';
+import { SwapErrors } from '../../errors/SwapErrors';
+import { useFlowSelector } from '../../hooks/useFlowSelector';
+import { useMaxNativeAmount } from '../../hooks/useMaxNativeAmount';
+import { useMinimumReceived } from '../../hooks/useMinimumReceived';
+import { useProtocolReserves } from '../../hooks/useProtocolReserves';
+import { useSlippageSelector } from '../../hooks/useSlippageSelector';
+import { useSwapQuote } from '../../hooks/useSwapQuote';
+import { useUserContext } from '../../hooks/useUserContext';
+import { SwapInputs } from '../../inputs/SwapInputs';
+import { OrderTypeSelector } from '../../shared/OrderTypeSelector';
+import { SwapModalTitle } from '../../shared/SwapModalTitle';
+import {
+  OrderType,
+  SwapDefaultParams,
+  swapDefaultState,
+  SwapParams,
+  SwapState,
+  swapStateFromParamsOrDefault,
+} from '../../types';
+import { SwapPostInputWarnings } from '../../warnings/SwapPostInputWarnings';
+import { SwapPreInputWarnings } from '../../warnings/SwapPreInputWarnings';
+import { SwapResultView } from '../result/SwapResultView';
+import { NoEligibleAssetsToSwap } from './NoEligibleAssetsToSwap';
+
+export const BaseSwapModalContent = ({
+  params: predefinedParams,
+}: {
+  params: Partial<SwapParams>;
+}) => {
+  const params = {
+    ...SwapDefaultParams,
+    ...predefinedParams,
+  } as SwapParams;
+
+  // Shared core state for all the components
+  const [state, setStateBase] = useReducer(
+    (state: SwapState, action: Partial<SwapState>): SwapState => {
+      const newState = { ...state, ...action } as SwapState;
+      return newState;
+    },
+    swapStateFromParamsOrDefault(params, swapDefaultState)
+  );
+
+  // wrapped version
+  const setState = (action: Partial<SwapState>) => {
+    const hasChange = Object.entries(action).some(
+      ([key, value]) => !Object.is(state[key as keyof SwapState], value)
+    );
+
+    if (!hasChange) {
+      // optional: debug log
+      console.debug(
+        '%c[BaseSwapModalContent] setState skipped (no changes). Check renderings for %o',
+        'color: #b0b0b0;',
+        action
+      );
+      return;
+    }
+
+    console.debug(
+      '%c[BaseSwapModalContent] setState called. Fields changed: %o Values: %o',
+      'color: #b0b0b0;',
+      Object.keys(action),
+      action
+    );
+
+    setStateBase(action);
+  };
+
+  // Load specific states via hooks
+  const { mainTxState } = useModalContext();
+  useEffect(() => {
+    setState({ mainTxState });
+  }, [mainTxState]);
+  useUserContext({ setState });
+  useMaxNativeAmount({ params, state, setState });
+  useSlippageSelector({ params, state, setState });
+  useFlowSelector({ params, state, setState });
+  useSwapQuote({ params, state, setState });
+  useProtocolReserves({ params, state, setState });
+  useMinimumReceived({ params, state, setState });
+  const trackingHandlers = useHandleAnalytics({ state });
+
+  // Fallback views
+  if (!state.sourceTokens.length || !state.destinationTokens.length) {
+    return <NoEligibleAssetsToSwap />;
+  }
+
+  if (!state.sourceToken || !state.destinationToken) {
+    return <CircularProgress />;
+  }
+
+  // Order result view
+  if (mainTxState.success) {
+    return <SwapResultView params={params} state={state} trackingHandlers={trackingHandlers} />;
+  }
+
+  return (
+    <>
+      {params.showTitle && <SwapModalTitle params={params} state={state} />}
+
+      {params.allowLimitOrders && (
+        <OrderTypeSelector
+          switchType={state.orderType}
+          setSwitchType={(orderType: OrderType) => {
+            setState({ orderType, actionsLoading: false });
+            trackingHandlers.trackInputChange(SwapInputChanges.ORDER_TYPE, orderType.toString());
+          }}
+        />
+      )}
+
+      <SwapPreInputWarnings
+        params={params}
+        state={state}
+        // read-only
+      />
+
+      <SwapInputs
+        params={params}
+        state={state}
+        setState={setState}
+        trackingHandlers={trackingHandlers}
+      />
+
+      {/* 
+                Show details, warnings, and actions only if the swap flow is selected. 
+                This is particularly useful for Adapers where the swap may be via flashloan or not. 
+            */}
+      {state.isSwapFlowSelected && (
+        <>
+          <BaseSwapDetails
+            params={params}
+            state={state}
+            // read-only
+          />
+
+          <SwapPostInputWarnings
+            params={params}
+            state={state}
+            setState={setState} // allows bypassing warnings
+          />
+
+          <SwapErrors
+            params={params}
+            state={state}
+            setState={setState}
+            trackingHandlers={trackingHandlers}
+          />
+
+          <BaseSwapActions
+            params={params}
+            state={state}
+            setState={setState}
+            trackingHandlers={trackingHandlers}
+          />
+        </>
+      )}
+    </>
+  );
+};

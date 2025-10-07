@@ -155,7 +155,7 @@ msgstr "Sorry, we couldn't find the page you were looking for."
 msgid "Merit Program and Self rewards are claimed through the"
 msgstr "Merit Program and Self rewards are claimed through the"
 
-#: src/components/transactions/Switch/SwitchAssetInput.tsx
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "Select token"
 msgstr "Select token"
 
@@ -189,6 +189,11 @@ msgstr "This is the total amount that you are able to supply to in this reserve.
 msgid "This asset is eligible for {0} Ethena Rewards."
 msgstr "This asset is eligible for {0} Ethena Rewards."
 
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
+msgid "Repay {0}"
+msgstr "Repay {0}"
+
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
 msgstr "Price data is not currently available for this reserve on the protocol subgraph"
@@ -207,7 +212,7 @@ msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+#: src/components/transactions/Swap/warnings/postInputs/USDTResetWarning.tsx
 #: src/components/transactions/Warnings/USDTResetWarning.tsx
 msgid "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
 msgstr "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
@@ -224,6 +229,7 @@ msgstr "..."
 msgid "Liquidation <0/> threshold"
 msgstr "Liquidation <0/> threshold"
 
+#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 msgid "Withdrawing and Switching"
 msgstr "Withdrawing and Switching"
@@ -249,6 +255,10 @@ msgstr "More"
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Available liquidity"
 msgstr "Available liquidity"
+
+#: src/components/transactions/Swap/modals/CollateralSwapModal.tsx
+msgid "Please connect your wallet to swap collateral."
+msgstr "Please connect your wallet to swap collateral."
 
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
@@ -309,6 +319,7 @@ msgstr "Borrow {symbol}"
 msgid "Total supplied"
 msgstr "Total supplied"
 
+#: src/components/transactions/Swap/details/WithdrawAndSwapDetails.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
@@ -395,7 +406,7 @@ msgstr "Total amount staked"
 msgid "Transactions"
 msgstr "Transactions"
 
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+#: src/components/transactions/Swap/warnings/postInputs/SafetyModuleSwapWarning.tsx
 msgid "For swapping safety module assets please unstake your position <0>here</0>."
 msgstr "For swapping safety module assets please unstake your position <0>here</0>."
 
@@ -432,8 +443,8 @@ msgstr "Variable debt supply is not zero"
 msgid "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 msgstr "To request access for this permissioned market, please visit: <0>Acces Provider Name</0>"
 
-#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
-#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/transactions/Swap/details/SwapDetails.tsx
+#: src/components/transactions/Swap/details/SwapDetails.tsx
 msgid "Minimum {0} received"
 msgstr "Minimum {0} received"
 
@@ -481,6 +492,10 @@ msgstr "Spanish"
 #: src/components/transactions/SavingsGho/SavingsGhoWithdrawActions.tsx
 msgid "Withdrawing GHO"
 msgstr "Withdrawing GHO"
+
+#: src/components/infoTooltips/ExecutionFeeTooltip.tsx
+msgid "This is the fee of executing position changes, set by governance."
+msgstr "This is the fee of executing position changes, set by governance."
 
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signing"
@@ -605,6 +620,8 @@ msgstr "Data couldn't be fetched, please reload graph."
 msgid "Dashboard"
 msgstr "Dashboard"
 
+#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 #: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
 msgid "Withdraw and Switch"
@@ -675,6 +692,17 @@ msgstr "Transaction cancelled"
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Please connect your wallet to be able to bridge your tokens."
 msgstr "Please connect your wallet to be able to bridge your tokens."
+
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+msgid "Swap {0} collateral"
+msgstr "Swap {0} collateral"
 
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
@@ -759,6 +787,10 @@ msgstr "Choose one of the on-ramp services"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
+
+#: src/components/transactions/Swap/actions/ActionsBlocked.tsx
+msgid "Check errors"
+msgstr "Check errors"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -882,12 +914,12 @@ msgstr "GHO Balance"
 msgid "Techpaper"
 msgstr "Techpaper"
 
-#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "You've successfully submitted an order."
 msgstr "You've successfully submitted an order."
 
 #: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Switch/SwitchAssetInput.tsx
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "Max"
 msgstr "Max"
 
@@ -922,6 +954,10 @@ msgstr "Watch wallet"
 msgid "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
 msgstr "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
 
+#: src/components/transactions/Swap/errors/shared/GasEstimationError.tsx
+msgid "Gas estimation error"
+msgstr "Gas estimation error"
+
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -953,7 +989,7 @@ msgstr "I fully understand the risks of migrating."
 msgid "The underlying asset cannot be rescued"
 msgstr "The underlying asset cannot be rescued"
 
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
+#: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
 msgid "Supply balance after switch"
 msgstr "Supply balance after switch"
 
@@ -974,7 +1010,7 @@ msgid "Claiming all protocol rewards only. Merit rewards excluded - select \"cla
 msgstr "Claiming all protocol rewards only. Merit rewards excluded - select \"claim all\" to include merit rewards."
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
+#: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Collateralization"
 msgstr "Collateralization"
@@ -1071,10 +1107,6 @@ msgstr "Linked addresses"
 msgid "on"
 msgstr "on"
 
-#: src/components/transactions/Switch/SwitchLimitOrdersModalContent.tsx
-msgid "Receive at least"
-msgstr "Receive at least"
-
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Assets to supply"
@@ -1118,7 +1150,7 @@ msgstr "ends"
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+#: src/components/transactions/Swap/warnings/postInputs/LiquidationCriticalWarning.tsx
 msgid "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
 msgstr "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
 
@@ -1129,6 +1161,13 @@ msgstr "{selectedCount} Categories"
 #: src/components/CircleIcon.tsx
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
+
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+msgid "Swapping {0} collateral"
+msgstr "Swapping {0} collateral"
 
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "Rewards can be claimed through"
@@ -1161,7 +1200,7 @@ msgstr "Reload"
 msgid "sGHO"
 msgstr "sGHO"
 
-#: src/components/transactions/Switch/SwitchModal.tsx
+#: src/components/transactions/Swap/modals/SwapModal.tsx
 msgid "Please connect your wallet to swap tokens."
 msgstr "Please connect your wallet to swap tokens."
 
@@ -1212,11 +1251,11 @@ msgstr "Cooldown period"
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
-#: src/components/transactions/Switch/SwitchModalTxDetails.tsx
+#: src/components/transactions/Swap/details/CowCostsDetails.tsx
 msgid "Costs & Fees"
 msgstr "Costs & Fees"
 
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
 msgid "I confirm the swap with a potential {0}% value loss"
 msgstr "I confirm the swap with a potential {0}% value loss"
 
@@ -1240,7 +1279,7 @@ msgstr "deposited"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-#: src/components/transactions/Switch/SwitchAssetInput.tsx
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 #: src/layouts/TopBarNotify.tsx
@@ -1260,11 +1299,6 @@ msgstr "{0}"
 msgid "Manage analytics"
 msgstr "Manage analytics"
 
-#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
-#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
-msgid "Create limit order"
-msgstr "Create limit order"
-
 #: src/components/AssetCategoryMultiselect.tsx
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "Stablecoins"
@@ -1276,9 +1310,9 @@ msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapActions.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
 msgid "Swapping"
 msgstr "Swapping"
 
@@ -1326,16 +1360,13 @@ msgid "Wallet balance"
 msgstr "Wallet balance"
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/details/RepayWithCollateralDetails.tsx
 msgid "Borrow balance after repay"
 msgstr "Borrow balance after repay"
 
 #: src/modules/migration/MigrationLists.tsx
 msgid "Supplied assets"
 msgstr "Supplied assets"
-
-#: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
-msgid "Withdraw & Switch"
-msgstr "Withdraw & Switch"
 
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
@@ -1404,7 +1435,7 @@ msgstr "Claiming"
 msgid "Current LTV"
 msgstr "Current LTV"
 
-#: src/components/transactions/Switch/SwitchTypeSelector.tsx
+#: src/components/transactions/Swap/shared/OrderTypeSelector.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Market"
@@ -1442,6 +1473,10 @@ msgstr "Borrow and repay in same block is not allowed"
 msgid "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 msgstr "<0>Slippage tolerance </0><1>{selectedSlippage}% </1><2>{0}</2>"
 
+#: src/components/transactions/Swap/actions/ActionsSkeleton.tsx
+msgid "Waiting for actions..."
+msgstr "Waiting for actions..."
+
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Maximum collateral amount to use"
 msgstr "Maximum collateral amount to use"
@@ -1459,6 +1494,7 @@ msgstr "Emode"
 msgid "Expired"
 msgstr "Expired"
 
+#: src/components/transactions/Swap/errors/shared/GasEstimationError.tsx
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
 msgstr "Tip: Try increasing slippage or reduce input amount"
@@ -1471,11 +1507,15 @@ msgstr "Maximum amount received"
 msgid "Activating Cooldown"
 msgstr "Activating Cooldown"
 
+#: src/components/transactions/Swap/warnings/postInputs/LimitOrderAmountWarning.tsx
+msgid "Your order amounts are {0} less favorable to the liquidity provider than recommended. This order may not be executed."
+msgstr "Your order amounts are {0} less favorable to the liquidity provider than recommended. This order may not be executed."
+
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
 msgstr "Recipient address"
 
-#: src/components/transactions/Switch/SwitchAssetInput.tsx
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "No results found."
 msgstr "No results found."
 
@@ -1522,6 +1562,10 @@ msgstr "Invalid return value of the flashloan executor function"
 #: src/components/infoTooltips/KernelAirdropTooltip.tsx
 msgid "Learn more about the Kernel points distribution"
 msgstr "Learn more about the Kernel points distribution"
+
+#: src/components/transactions/Swap/modals/DebtSwapModal.tsx
+msgid "Please connect your wallet to swap debt."
+msgstr "Please connect your wallet to swap debt."
 
 #: src/components/AssetCategoryMultiselect.tsx
 #: src/components/MarketAssetCategoryFilter.tsx
@@ -1684,6 +1728,7 @@ msgid "Disable fork"
 msgstr "Disable fork"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+#: src/components/transactions/Swap/details/DebtSwapDetails.tsx
 msgid "Borrow apy"
 msgstr "Borrow apy"
 
@@ -1696,7 +1741,7 @@ msgstr "Fee"
 msgid "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 msgstr "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
+#: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -1737,12 +1782,16 @@ msgstr "Merit Rewards"
 msgid "Withdrawing"
 msgstr "Withdrawing"
 
+#: src/components/infoTooltips/ExecutionFeeTooltip.tsx
+msgid "Execution fee"
+msgstr "Execution fee"
+
 #: src/modules/governance/proposal/VotingResults.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Not reached"
 msgstr "Not reached"
 
-#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+#: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Auto"
 msgstr "Auto"
 
@@ -1807,10 +1856,6 @@ msgstr "stkGHO is now Savings GHO"
 msgid "Enabled"
 msgstr "Enabled"
 
-#: src/components/transactions/Switch/SwitchLimitOrdersActions.tsx
-msgid "Creating limit order"
-msgstr "Creating limit order"
-
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
 msgstr "Funds in the Safety Module"
@@ -1855,7 +1900,7 @@ msgstr "Fees exceed wallet balance"
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 msgstr "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 
-#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+#: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Max slippage"
 msgstr "Max slippage"
 
@@ -1925,6 +1970,7 @@ msgid "Bridge history"
 msgstr "Bridge history"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchModalDetails.tsx
+#: src/components/transactions/Swap/details/DebtSwapDetails.tsx
 msgid "Borrow balance after switch"
 msgstr "Borrow balance after switch"
 
@@ -2007,7 +2053,7 @@ msgstr "Reserve factor"
 msgid "Migration risks"
 msgstr "Migration risks"
 
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+#: src/components/transactions/Swap/warnings/postInputs/LowHealthFactorWarning.tsx
 msgid "I understand the liquidation risk and want to proceed"
 msgstr "I understand the liquidation risk and want to proceed"
 
@@ -2050,6 +2096,14 @@ msgstr "Nothing supplied yet"
 msgid "Voting"
 msgstr "Voting"
 
+#: src/components/transactions/Swap/actions/ActionsSkeleton.tsx
+msgid "Loading quote..."
+msgstr "Loading quote..."
+
+#: src/components/infoTooltips/EstimatedCostsForLimitSwap.tsx
+msgid "Estimated Costs & Fees"
+msgstr "Estimated Costs & Fees"
+
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Unbacked"
 msgstr "Unbacked"
@@ -2065,6 +2119,10 @@ msgstr "Reserve status & configuration"
 #: src/layouts/SupportModal.tsx
 msgid "Let us know how we can help you. You may also consider joining our community"
 msgstr "Let us know how we can help you. You may also consider joining our community"
+
+#: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
+msgid "Withdraw & Swap"
+msgstr "Withdraw & Swap"
 
 #: src/ui-config/errorMapping.tsx
 msgid "User cannot withdraw more than the available balance"
@@ -2083,7 +2141,7 @@ msgstr "In Progress"
 msgid "Because this asset is paused, no actions can be taken until further notice"
 msgstr "Because this asset is paused, no actions can be taken until further notice"
 
-#: src/components/transactions/Switch/SwitchAssetInput.tsx
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "No results found. You can import a custom token with a contract address"
 msgstr "No results found. You can import a custom token with a contract address"
 
@@ -2111,6 +2169,10 @@ msgstr "{0} {symbol} to continue"
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representative smart contract wallet (ie. Safe) addresses on other chains."
+
+#: src/components/transactions/Swap/errors/shared/UserDenied.tsx
+msgid "User denied the operation."
+msgstr "User denied the operation."
 
 #: src/layouts/SupportModal.tsx
 msgid "Support"
@@ -2141,7 +2203,7 @@ msgstr "Staked Underlying"
 msgid "Umbrella"
 msgstr "Umbrella"
 
-#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "The order could't be filled."
 msgstr "The order could't be filled."
 
@@ -2166,7 +2228,7 @@ msgstr "The total amount bridged minus CCIP fees. Paying in network token does n
 msgid "Stake token shares"
 msgstr "Stake token shares"
 
-#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+#: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Default slippage"
 msgstr "Default slippage"
 
@@ -2178,6 +2240,10 @@ msgstr "Testnet mode is ON"
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 msgstr "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "High price impact. This route may return less due to low liquidity or small order size."
+msgstr "High price impact. This route may return less due to low liquidity or small order size."
+
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
 msgstr "Interest rate rebalance conditions were not met"
@@ -2185,6 +2251,10 @@ msgstr "Interest rate rebalance conditions were not met"
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "Add {0} to wallet to track your balance."
 msgstr "Add {0} to wallet to track your balance."
+
+#: src/components/transactions/Swap/actions/ActionsSkeleton.tsx
+msgid "Loading..."
+msgstr "Loading..."
 
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
@@ -2197,6 +2267,10 @@ msgstr "Raw-Ipfs"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
 msgstr "Efficiency mode (E-Mode)"
+
+#: src/components/infoTooltips/EstimatedCostsForLimitSwap.tsx
+msgid "These are the estimated costs associated with your limit swap, including costs and fees. Consider these costs when setting your order amounts to help optimize execution and maximize your chances of filling the order."
+msgstr "These are the estimated costs associated with your limit swap, including costs and fees. Consider these costs when setting your order amounts to help optimize execution and maximize your chances of filling the order."
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -2270,7 +2344,11 @@ msgstr "Buy Crypto With Fiat"
 msgid "Array parameters that should be equal length are not"
 msgstr "Array parameters that should be equal length are not"
 
-#: src/components/transactions/Switch/SwitchErrors.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
+msgid "Repaying {0}"
+msgstr "Repaying {0}"
+
+#: src/components/transactions/Swap/errors/shared/BalanceLowerThanInput.tsx
 msgid "Your balance is lower than the selected amount."
 msgstr "Your balance is lower than the selected amount."
 
@@ -2434,7 +2512,7 @@ msgstr "Available"
 msgid "You did not participate in this proposal"
 msgstr "You did not participate in this proposal"
 
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+#: src/components/transactions/Swap/warnings/postInputs/LowHealthFactorWarning.tsx
 msgid "Low health factor after swap. Your position will carry a higher risk of liquidation."
 msgstr "Low health factor after swap. Your position will carry a higher risk of liquidation."
 
@@ -2547,6 +2625,11 @@ msgstr "Total borrowed"
 #: src/ui-config/errorMapping.tsx
 msgid "The collateral balance is 0"
 msgstr "The collateral balance is 0"
+
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "You've successfully swapped {0}."
+msgstr "You've successfully swapped {0}."
 
 #: src/components/ChainAvailabilityText.tsx
 msgid "Available on"
@@ -2753,6 +2836,10 @@ msgstr "Borrow balance"
 msgid "Staked Balance"
 msgstr "Staked Balance"
 
+#: src/components/transactions/Swap/inputs/shared/ExpirySelector.tsx
+msgid "Expires in"
+msgstr "Expires in"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "About GHO"
 msgstr "About GHO"
@@ -2827,10 +2914,6 @@ msgstr "In Isolation mode, you cannot supply other assets as collateral. A globa
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Staking this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Staking this amount will reduce your health factor and increase risk of liquidation."
-
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
-msgid "High price impact. This route may return less due to low liquidity."
-msgstr "High price impact. This route may return less due to low liquidity."
 
 #: src/hooks/useReserveActionState.tsx
 msgid "Collateral usage is limited because of Isolation mode."
@@ -2927,7 +3010,7 @@ msgstr "<0>Attention:</0> Parameter changes via governance can alter your accoun
 msgid "Claim {0}"
 msgstr "Claim {0}"
 
-#: src/components/transactions/Switch/SwitchRates.tsx
+#: src/components/transactions/Swap/inputs/shared/SwitchRates.tsx
 msgid "Price impact"
 msgstr "Price impact"
 
@@ -3053,7 +3136,16 @@ msgstr "E-Mode increases your LTV for a selected category of assets. <0>Learn mo
 msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
 msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
 
-#: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
 msgid "Checking approval"
 msgstr "Checking approval"
 
@@ -3088,7 +3180,7 @@ msgstr "Asset cannot be used as collateral."
 msgid "Developers"
 msgstr "Developers"
 
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
+#: src/components/transactions/Swap/modals/request/NoEligibleAssetsToSwap.tsx
 msgid "No eligible assets to swap."
 msgstr "No eligible assets to swap."
 
@@ -3096,7 +3188,7 @@ msgstr "No eligible assets to swap."
 msgid "Depositing"
 msgstr "Depositing"
 
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapModalDetails.tsx
+#: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
 msgid "Supply apy"
 msgstr "Supply apy"
 
@@ -3185,6 +3277,10 @@ msgstr "Cooldown to unstake"
 msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "User does not have outstanding variable rate debt on this reserve"
 
+#: src/components/transactions/Swap/errors/shared/ZeroLTVBlockingError.tsx
+msgid "You have assets with zero LTV that are blocking this operation. Please disable them as collateral first."
+msgstr "You have assets with zero LTV that are blocking this operation. Please disable them as collateral first."
+
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
 msgstr "Test Assets"
@@ -3224,7 +3320,7 @@ msgstr "Available to supply"
 msgid "Claiming all protocol rewards and merit rewards together"
 msgstr "Claiming all protocol rewards and merit rewards together"
 
-#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+#: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Default"
 msgstr "Default"
 
@@ -3281,10 +3377,6 @@ msgstr "Not enough staked balance"
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switching to {networkName}..."
 msgstr "Switching to {networkName}..."
-
-#: src/components/transactions/Switch/BaseSwitchModalContent.tsx
-msgid "Minimum new collateral"
-msgstr "Minimum new collateral"
 
 #: src/components/transactions/Warnings/SNXWarning.tsx
 msgid "please check that the amount you want to supply is not currently being used for staking. If it is being used for staking, your transaction might fail."
@@ -3355,6 +3447,7 @@ msgid "You've successfully withdrew & swapped tokens."
 msgstr "You've successfully withdrew & swapped tokens."
 
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
+#: src/components/transactions/Swap/details/RepayWithCollateralDetails.tsx
 msgid "Collateral balance after repay"
 msgstr "Collateral balance after repay"
 
@@ -3365,11 +3458,6 @@ msgstr "Staked tokens are wrapped and use an exchange rate. You may see fewer to
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
-
-#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
-#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
-msgid "You've successfully swapped tokens."
-msgstr "You've successfully swapped tokens."
 
 #: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
@@ -3384,7 +3472,7 @@ msgstr "Invalid expiration"
 msgid "Rewards available to claim"
 msgstr "Rewards available to claim"
 
-#: src/components/transactions/Switch/ExpirySelector.tsx
+#: src/components/transactions/Swap/inputs/shared/ExpirySelector.tsx
 msgid "{key}"
 msgstr "{key}"
 
@@ -3560,7 +3648,7 @@ msgstr "Nothing borrowed yet"
 msgid "Remove"
 msgstr "Remove"
 
-#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+#: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Auto Slippage"
 msgstr "Auto Slippage"
 
@@ -3625,6 +3713,10 @@ msgstr "Claim all protocol rewards"
 msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
 
+#: src/components/transactions/Swap/errors/shared/GasEstimationError.tsx
+msgid "Tip: Try improving your order parameters"
+msgstr "Tip: Try improving your order parameters"
+
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 msgid "Migrating"
@@ -3646,7 +3738,7 @@ msgstr "Buy Crypto with Fiat"
 msgid "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 msgstr "Maximum amount available to borrow is limited because protocol borrow cap is nearly reached."
 
-#: src/components/transactions/Switch/SwitchSlippageSelector.tsx
+#: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Custom slippage"
 msgstr "Custom slippage"
 
@@ -3664,12 +3756,13 @@ msgstr "Restaked"
 
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
 #: src/components/transactions/DebtSwitch/DebtSwitchActions.tsx
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapActions.tsx
-#: src/components/transactions/Switch/CollateralSwap/CollateralSwapActions.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
-#: src/components/transactions/Switch/SwitchActions.tsx
+#: src/components/transactions/Swap/actions/ActionsBlocked.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -3749,6 +3842,10 @@ msgstr "You do not have supplies in this currency"
 msgid "VOTE YAE"
 msgstr "VOTE YAE"
 
+#: src/components/transactions/Swap/errors/shared/GenericError.tsx
+msgid "{message}"
+msgstr "{message}"
+
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Faucet {0}"
 msgstr "Faucet {0}"
@@ -3804,10 +3901,6 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
 msgstr "tokens, please go to the"
-
-#: src/components/transactions/Switch/SwitchLimitOrdersModalContent.tsx
-msgid "Sell"
-msgstr "Sell"
 
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
@@ -3870,7 +3963,7 @@ msgstr "Transaction overview"
 msgid "Restake {symbol}"
 msgstr "Restake {symbol}"
 
-#: src/components/transactions/Switch/SwitchTypeSelector.tsx
+#: src/components/transactions/Swap/shared/OrderTypeSelector.tsx
 msgid "Limit"
 msgstr "Limit"
 

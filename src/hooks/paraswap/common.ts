@@ -344,6 +344,15 @@ export const ExactInSwapper = (chainId: ChainId) => {
     maxSlippage: number
   ) => {
     try {
+      console.log('getTransactionParams', {
+        srcToken,
+        srcDecimals,
+        destToken,
+        destDecimals,
+        user,
+        route,
+        maxSlippage: maxSlippage * 100,
+      });
       const params = await paraswap.buildTx(
         {
           srcToken,
@@ -361,12 +370,22 @@ export const ExactInSwapper = (chainId: ChainId) => {
         { ignoreChecks: true }
       );
 
+      console.log('params from paraswap sdk', params);
+
       return {
         swapCallData: (params as TransactionParams).data,
         augustus: (params as TransactionParams).to,
       };
     } catch (e) {
-      console.error(e);
+      console.error(e, {
+        srcToken,
+        srcDecimals,
+        destToken,
+        destDecimals,
+        user,
+        route,
+        maxSlippage,
+      });
       throw new Error('Error building transaction parameters');
     }
   };
@@ -377,7 +396,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
   };
 };
 
-const ExactOutSwapper = (chainId: ChainId) => {
+export const ExactOutSwapper = (chainId: ChainId) => {
   const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (
@@ -430,12 +449,22 @@ const ExactOutSwapper = (chainId: ChainId) => {
         { ignoreChecks: true }
       );
 
+      console.log('params from paraswap sdk', params);
+
       return {
         swapCallData: (params as TransactionParams).data,
         augustus: (params as TransactionParams).to,
       };
     } catch (e) {
-      console.log(e);
+      console.error(e, {
+        srcToken,
+        srcDecimals,
+        destToken,
+        destDecimals,
+        user,
+        route,
+        maxSlippage,
+      });
       throw new Error('Error building transaction parameters');
     }
   };
