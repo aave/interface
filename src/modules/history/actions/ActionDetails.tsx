@@ -12,7 +12,7 @@ import {
   isOrderExpired,
   isOrderFilled,
   isOrderLoading,
-} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
+} from 'src/components/transactions/Swap/helpers/cow';
 
 import { BorrowRateModeBlock } from '../actions/BorrowRateModeBlock';
 import { fetchIconSymbolAndNameHistorical } from '../helpers';

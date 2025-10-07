@@ -28,6 +28,11 @@ export const permitByChainAndToken: {
     '0x5a0f93d040de44e78f251b03c43be9cf317dcf64': true, // JAAA underlying_token Janus Henderson Andmenum (Aave V3 Horizon)
     '0x8c213ee79581ff4984583c6a801e5263418c4b86': true, // JTSRY underlying_token Janus Henderson Andmenum (Aave V3 Horizon)
     '0x136471a34f6ef19fe571effc1ca711fdb8e49f2b': true, // USYC underlying_token US Yield Coin (AaveV3Horizon)
+
+    // aTokens
+    '0x98C23E9d8f34FEFb1B7BD6a91B7FF122F4e16F5c': true, // aUSDC
+
+    // TODO: ADD aTOKENS
   },
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1a5a0dbb814af92458539fb4': true,

@@ -11,8 +11,9 @@ export const DebtSwitchModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
+  return null;
   return (
-    <BasicModal open={type === ModalType.DebtSwitch} setOpen={close}>
+    <BasicModal open={type === ModalType.DebtSwap} setOpen={close}>
       <ModalWrapper
         title={<Trans>Swap borrow position</Trans>}
         underlyingAsset={args.underlyingAsset}

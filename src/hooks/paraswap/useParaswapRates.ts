@@ -51,7 +51,7 @@ export const useParaswapSellRates = ({
         },
       });
     },
-    queryKey: queryKeysFactory.paraswapRates(chainId, amount, srcToken, destToken, user),
+    queryKey: queryKeysFactory.swapQuote(chainId, amount, srcToken, destToken, user),
     enabled: amount !== '0',
     retry: 0,
     refetchOnWindowFocus: (query) => (query.state.error ? false : true),

@@ -5,7 +5,7 @@ import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/
 import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
-import { generateCoWExplorerLink } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
+import { generateCoWExplorerLink } from 'src/components/transactions/Swap/helpers/cow';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { NetworkConfig } from 'src/ui-config/networksConfig';

@@ -14,7 +14,6 @@ export enum ModalType {
   Withdraw,
   Borrow,
   Repay,
-  CollateralChange,
   Stake,
   Unstake,
   StakeCooldown,
@@ -22,14 +21,11 @@ export enum ModalType {
   ClaimRewards,
   Emode,
   Faucet,
-  CollateralSwap,
-  DebtSwitch,
   GovDelegation,
   GovVote,
   V3Migration,
   RevokeGovDelegation,
   StakeRewardsClaimRestake,
-  Switch,
   StakingMigrate,
   GovRepresentatives,
   Bridge,
@@ -41,8 +37,14 @@ export enum ModalType {
   UmbrellaUnstake,
   SavingsGhoDeposit,
   SavingsGhoWithdraw,
-  SwitchLimitOrder,
   CancelCowOrder,
+
+  // Swaps
+  Swap,
+  CollateralSwap,
+  DebtSwap,
+  RepayWithCollateral,
+  WithdrawAndSwap,
 }
 
 export interface ModalArgsType {
@@ -260,7 +262,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           funnel,
           usageAsCollateralEnabledOnUser
         ) => {
-          setType(ModalType.CollateralChange);
+          setType(ModalType.CollateralSwap);
           setArgs({ underlyingAsset });
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Toggle Collateral',
@@ -373,7 +375,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
             modal: 'Debt Switch',
             asset: underlyingAsset,
           });
-          setType(ModalType.DebtSwitch);
+          setType(ModalType.DebtSwap);
           setArgs({ underlyingAsset });
         },
         openGovDelegation: () => {
@@ -404,7 +406,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
         },
         openSwitch: (underlyingAsset, chainId) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Swap' });
-          setType(ModalType.Switch);
+          setType(ModalType.Swap);
           setArgs({ underlyingAsset, chainId });
         },
         openStakingMigrate: () => {

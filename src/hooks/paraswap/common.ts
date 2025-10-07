@@ -377,7 +377,7 @@ export const ExactInSwapper = (chainId: ChainId) => {
   };
 };
 
-const ExactOutSwapper = (chainId: ChainId) => {
+export const ExactOutSwapper = (chainId: ChainId) => {
   const { paraswap, feeTarget } = getParaswap(chainId);
 
   const getRate = async (

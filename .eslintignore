@@ -20,3 +20,5 @@ src/locales/
 *.md
 *.log
 *.lock
+
+src/components/transactions/Swap/backup/**/*.*
