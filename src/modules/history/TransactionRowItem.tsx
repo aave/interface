@@ -5,6 +5,7 @@ import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/
 import React, { useEffect, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
+import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
@@ -16,13 +17,7 @@ import {
   getTransactionTimestamp,
   unixTimestampToFormattedTime,
 } from './helpers';
-import { TransactionHistoryItemUnion } from './types';
-
-function isCowSwapAction(
-  transaction: TransactionHistoryItem
-): transaction is TransactionHistoryItem<ActionFields['CowSwap']> {
-  return (transaction as TransactionHistoryItem<ActionFields['CowSwap']>).action === 'CowSwap';
-}
+import { isCowSwapTransaction, TransactionHistoryItemUnion } from './types';
 
 function ActionTitle({ action }: { action: string }) {
   return (
@@ -95,7 +90,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
         </Box>
         <ListColumn align="right">
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-            {isCowSwapAction(transaction) && transaction.status === OrderStatus.OPEN && (
+            {isCowSwapTransaction(transaction) && transaction.status === OrderStatus.OPEN && (
               <Button variant="contained" onClick={() => openCancelCowOrder(transaction)}>
                 <Trans>Cancel</Trans>
               </Button>

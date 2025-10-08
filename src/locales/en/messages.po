@@ -1958,10 +1958,6 @@ msgstr "Asset is not borrowable in isolation mode"
 msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 
-#: src/modules/history/HistoryWrapper.tsx
-msgid "Transaction history is not currently available for this market"
-msgstr "Transaction history is not currently available for this market"
-
 #: src/components/transactions/CancelCowOrder/CancelCowOrderActions.tsx
 msgid "Send cancel"
 msgstr "Send cancel"
