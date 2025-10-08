@@ -1,37 +1,54 @@
-import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import React, { useEffect, useMemo, useState } from 'react';
-import { BasicModal } from 'src/components/primitives/BasicModal';
 import { supportedNetworksWithEnabledMarket } from 'src/components/transactions/Switch/common';
-import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { useTokensBalance } from 'src/hooks/generic/useTokensBalance';
+import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket, marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { TOKEN_LIST } from 'src/ui-config/TokenList';
+import { CustomMarket, getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
-import {
-  BaseSwitchModalContent,
-  getFilteredTokensForSwitch,
-  SwitchModalCustomizableProps,
-} from './BaseSwitchModalContent';
+import { BaseSwitchModalContent, SwitchModalCustomizableProps } from './BaseSwitchModalContent';
 
 const defaultNetwork = marketsData[CustomMarket.proto_mainnet_v3];
 
+export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalance[] => {
+  let customTokenList = TOKEN_LIST.tokens;
+  const savedCustomTokens = localStorage.getItem('customTokens');
+  if (savedCustomTokens) {
+    customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
+  }
+
+  const transformedTokens = customTokenList.map((token) => {
+    return { ...token, balance: '0' };
+  });
+  const realChainId = getNetworkConfig(chainId).underlyingChainId ?? chainId;
+
+  // Remove duplicates
+  const seen = new Set<string>();
+  return transformedTokens
+    .filter((token) => token.chainId === realChainId)
+    .filter((token) => {
+      const key = `${token.chainId}:${token.address.toLowerCase()}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+};
+
 export const BaseSwitchModal = ({
   modalType,
-  switchDetails: swapDetails,
   inputBalanceTitle: balanceTitle,
   forcedDefaultInputToken,
   forcedDefaultOutputToken,
+  suggestedDefaultInputToken,
+  suggestedDefaultOutputToken,
   tokensFrom: forcedTokensFrom,
   tokensTo: forcedTokensTo,
   showSwitchInputAndOutputAssetsButton = true,
   forcedChainId,
 }: SwitchModalCustomizableProps) => {
   const {
-    type,
-    close,
     args: { chainId },
   } = useModalContext();
 
@@ -72,59 +89,45 @@ export const BaseSwitchModal = ({
     } else {
       setSelectedChainId(defaultNetwork.chainId);
     }
-  }, [overallAppChainId, chainId, connectedChainId]);
+  }, [overallAppChainId, chainId, connectedChainId, forcedChainId]);
 
-  const initialDefaultFromTokens = useMemo(
-    () => getFilteredTokensForSwitch(selectedChainId),
-    [selectedChainId]
-  );
-  const initialDefaultToTokens = useMemo(
+  const initialDefaultTokens = useMemo(
     () => getFilteredTokensForSwitch(selectedChainId),
     [selectedChainId]
   );
 
   const {
-    data: initialFromTokens,
-    refetch: refetchInitialFromTokens,
-    isFetching: fromTokensLoading,
-  } = useTokensBalance(initialDefaultFromTokens, selectedChainId, user);
+    data: initialTokens,
+    refetch: refetchInitialTokens,
+    isFetching: tokensLoading,
+  } = useTokensBalance(initialDefaultTokens, selectedChainId, user);
 
-  const {
-    data: initialToTokens,
-    refetch: refetchInitialToTokens,
-    isFetching: toTokensLoading,
-  } = useTokensBalance(initialDefaultToTokens, selectedChainId, user);
+  if (tokensLoading) {
+    return (
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', my: '60px' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
-    <BasicModal open={type === modalType} setOpen={close}>
-      {!user ? (
-        <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
-          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
-            <Trans>Please connect your wallet to swap tokens.</Trans>
-          </Typography>
-          <ConnectWalletButton onClick={() => close()} />
-        </Box>
-      ) : (
-        <BaseSwitchModalContent
-          forcedChainId={selectedChainId}
-          supportedNetworks={supportedNetworksWithEnabledMarket}
-          initialFromTokens={forcedTokensFrom ?? initialFromTokens ?? []}
-          initialToTokens={forcedTokensTo ?? initialToTokens ?? []}
-          tokensLoading={fromTokensLoading || toTokensLoading}
-          modalType={modalType}
-          switchDetails={swapDetails}
-          inputBalanceTitle={balanceTitle}
-          forcedDefaultInputToken={forcedDefaultInputToken}
-          forcedDefaultOutputToken={forcedDefaultOutputToken}
-          showSwitchInputAndOutputAssetsButton={showSwitchInputAndOutputAssetsButton}
-          selectedChainId={selectedChainId}
-          setSelectedChainId={setSelectedChainId}
-          refetchInitialTokens={() => {
-            refetchInitialFromTokens();
-            refetchInitialToTokens();
-          }}
-        />
-      )}
-    </BasicModal>
+    <>
+      <BaseSwitchModalContent
+        forcedChainId={selectedChainId}
+        supportedNetworks={supportedNetworksWithEnabledMarket}
+        initialFromTokens={forcedTokensFrom ?? initialTokens ?? []}
+        initialToTokens={forcedTokensTo ?? initialTokens ?? []}
+        modalType={modalType}
+        inputBalanceTitle={balanceTitle}
+        forcedDefaultInputToken={forcedDefaultInputToken}
+        forcedDefaultOutputToken={forcedDefaultOutputToken}
+        suggestedDefaultInputToken={suggestedDefaultInputToken}
+        suggestedDefaultOutputToken={suggestedDefaultOutputToken}
+        showSwitchInputAndOutputAssetsButton={showSwitchInputAndOutputAssetsButton}
+        selectedChainId={selectedChainId}
+        setSelectedChainId={setSelectedChainId}
+        refetchInitialTokens={() => refetchInitialTokens()}
+      />
+    </>
   );
 };

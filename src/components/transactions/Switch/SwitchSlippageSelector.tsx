@@ -22,6 +22,7 @@ type SwitchSlippageSelectorProps = {
   slippage: string;
   setSlippage: (value: string) => void;
   slippageValidation?: ValidationData;
+  provider?: string;
 };
 
 const defaultSlippageOptions = (suggested?: string) => {
@@ -30,7 +31,9 @@ const defaultSlippageOptions = (suggested?: string) => {
   }
 
   const suggestedNumber = Number(suggested);
-
+  if (suggestedNumber <= 0.1) {
+    return ['0.03', '0.07', 'Auto'];
+  }
   if (suggestedNumber < 1) {
     return ['0.10', '0.50', 'Auto'];
   }
@@ -55,6 +58,7 @@ export const SwitchSlippageSelector = ({
   slippage,
   setSlippage,
   slippageValidation,
+  provider,
 }: SwitchSlippageSelectorProps) => {
   const slippageOptions = defaultSlippageOptions(suggestedSlippage).map((option) => {
     if (Number(option) === Number(suggestedSlippage)) {
@@ -66,17 +70,34 @@ export const SwitchSlippageSelector = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>();
   const [isCustomSlippage, setIsCustomSlippage] = useState(false);
   const [previousSlippage, setPreviousSlippage] = useState(slippage);
-
+  const [userHasSetCustomSlippage, setUserHasSetCustomSlippage] = useState(false);
   const open = Boolean(anchorEl);
 
-  // Watch for slippage changes from outside the component
   useEffect(() => {
+    // Watch for slippage changes from outside the component
     if (previousSlippage !== slippage) {
-      // If slippage change comes from outside, past wont be equal.
-      setIsCustomSlippage(false);
+      if (!userHasSetCustomSlippage) {
+        setIsCustomSlippage(false);
+        setPreviousSlippage(slippage);
+      } else {
+        setSlippage(previousSlippage);
+        return;
+      }
+    }
+
+    // Update slippage to suggested if user has not set custom slippage
+    if (suggestedSlippage && !userHasSetCustomSlippage && !isCustomSlippage) {
+      setSlippage(suggestedSlippage);
       setPreviousSlippage(slippage);
     }
-  }, [slippage]);
+  }, [
+    slippage,
+    suggestedSlippage,
+    userHasSetCustomSlippage,
+    isCustomSlippage,
+    previousSlippage,
+    setSlippage,
+  ]);
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -89,6 +110,7 @@ export const SwitchSlippageSelector = ({
   const handleCustomSlippageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreviousSlippage(event.target.value);
     setSlippage(event.target.value);
+    setUserHasSetCustomSlippage(true);
     setIsCustomSlippage(true);
   };
 
@@ -97,17 +119,25 @@ export const SwitchSlippageSelector = ({
       setPreviousSlippage(suggestedSlippage);
       setSlippage(suggestedSlippage);
       setIsCustomSlippage(false);
+      setUserHasSetCustomSlippage(false);
     } else {
       setPreviousSlippage(value);
       setSlippage(value);
       setIsCustomSlippage(true);
+      setUserHasSetCustomSlippage(true);
     }
   };
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: '4px' }}>
       <Typography variant="caption" color="text.secondary">
-        {isCustomSlippage ? <Trans>Custom slippage</Trans> : <Trans>Auto Slippage</Trans>}
+        {isCustomSlippage ? (
+          <Trans>Custom slippage</Trans>
+        ) : provider === 'paraswap' ? (
+          <Trans>Default slippage</Trans>
+        ) : (
+          <Trans>Auto Slippage</Trans>
+        )}
         {':'}
         <Menu
           sx={{
@@ -160,7 +190,7 @@ export const SwitchSlippageSelector = ({
                 >
                   {isNaN(Number(option)) ? (
                     <Typography variant="subheader2" color="primary.main">
-                      <Trans>Auto</Trans>
+                      {provider === 'paraswap' ? <Trans>Default</Trans> : <Trans>Auto</Trans>}
                     </Typography>
                   ) : (
                     <FormattedNumber
@@ -220,6 +250,7 @@ export const SwitchSlippageSelector = ({
         sx={{ padding: 0, minWidth: 0 }}
         onClick={handleOpen}
         aria-controls="switch-slippage-selector"
+        disabled={!suggestedSlippage}
       >
         <SvgIcon sx={{ fontSize: '16px' }}>
           <CogIcon />

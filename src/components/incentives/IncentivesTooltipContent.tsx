@@ -172,6 +172,11 @@ const IncentivesSymbolMap: {
     symbol: 'aSCR',
     aToken: true,
   },
+  aPlaUSDe: {
+    tokenIconSymbol: 'USDe',
+    symbol: 'aUSDe',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {

@@ -20,3 +20,9 @@ export const supportedNetworksWithEnabledMarket = supportedNetworksConfig.filter
     (market) => market.chainId === elem.chainId && market.enabledFeatures?.switch
   )
 );
+
+export const supportedNetworksWithEnabledMarketLimit = supportedNetworksConfig.filter((elem) =>
+  Object.values(marketsData).find(
+    (market) => market.chainId === elem.chainId && market.enabledFeatures?.limit
+  )
+);

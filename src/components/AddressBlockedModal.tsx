@@ -46,7 +46,7 @@ export const AddressBlockedModal = ({
               <br />
               <Typography variant="helperText" sx={{ mb: 1 }}>
                 {' '}
-                <Trans>error code: 1</Trans>{' '}
+                <Trans>error code: 2455</Trans>{' '}
               </Typography>
             </>
           )}

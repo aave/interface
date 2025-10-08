@@ -21,6 +21,11 @@ const createAppContextPlugin = (context: string) => ({
 
 const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || '';
 
+// Consent version - increment this to force all users to re-consent
+const CONSENT_VERSION = 'v1';
+export const CONSENT_KEY = `userAcceptedAnalytics_${CONSENT_VERSION}`;
+const CONSENT_COUNTED_KEY = `analyticsConsentCounted_${CONSENT_VERSION}`;
+
 export type TrackEventProperties = {
   [key: string]: string | number | boolean | Date | undefined;
 };
@@ -78,7 +83,7 @@ export const createAnalyticsSlice: StateCreator<
     eventsTrackingInitialized: false,
 
     initializeEventsTracking: () => {
-      const userAcceptedAnalytics = localStorage.getItem('userAcceptedAnalytics') === 'true';
+      const userAcceptedAnalytics = localStorage.getItem(CONSENT_KEY) === 'true';
       const isInitialized = get().eventsTrackingInitialized;
 
       if (!AMPLITUDE_API_KEY) return;
@@ -120,18 +125,65 @@ export const createAnalyticsSlice: StateCreator<
       }
     },
     acceptAnalytics: () => {
-      localStorage.setItem('userAcceptedAnalytics', 'true');
+      localStorage.setItem(CONSENT_KEY, 'true');
       set({ isTrackingEnabled: true, analyticsConfigOpen: false });
 
       get().initializeEventsTracking();
+
+      // Only track the consent event once per user per consent version
+      const alreadyCounted = localStorage.getItem(CONSENT_COUNTED_KEY) === 'true';
+      if (!alreadyCounted) {
+        localStorage.setItem(CONSENT_COUNTED_KEY, 'true');
+        get().trackEvent('analytics_consent_given');
+      }
     },
     rejectAnalytics: () => {
-      localStorage.setItem('userAcceptedAnalytics', 'false');
+      localStorage.setItem(CONSENT_KEY, 'false');
+
+      // Only track the consent event once per user per consent version
+      const alreadyCounted = localStorage.getItem(CONSENT_COUNTED_KEY) === 'true';
+
+      if (!alreadyCounted && AMPLITUDE_API_KEY) {
+        localStorage.setItem(CONSENT_COUNTED_KEY, 'true');
+
+        if (!get().eventsTrackingInitialized) {
+          // Initialize minimal tracking just for this one event
+          init(AMPLITUDE_API_KEY, {
+            autocapture: false,
+            trackingOptions: {
+              ipAddress: false,
+              language: false,
+              platform: false,
+            },
+          });
+          add(createAppContextPlugin('app'));
+          set({ eventsTrackingInitialized: true });
+        }
+
+        try {
+          // Temporarily enable tracking to send the opt-out event
+          // This ensures the event is sent even if Amplitude is in opt-out mode
+          setOptOut(false);
+
+          track('analytics_consent_declined', {
+            app_context: 'app',
+          });
+
+          // Immediately disable tracking again
+          setOptOut(true);
+        } catch (err) {
+          console.log('Error tracking opt-out event', err);
+        }
+      }
+
+      // Now disable all tracking
       setOptOut(true);
       set({ isTrackingEnabled: false, analyticsConfigOpen: false });
     },
     setAnalyticsConfigOpen: (value: boolean) => {
-      localStorage.removeItem('userAcceptedAnalytics');
+      // Clear the current consent version when reopening analytics config
+      localStorage.removeItem(CONSENT_KEY);
+      localStorage.removeItem(CONSENT_COUNTED_KEY);
 
       set({ analyticsConfigOpen: value });
     },

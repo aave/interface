@@ -26,6 +26,7 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
   [ChainId.celo]: { network: 'celo-mainnet', apiKey: process.env.CELO_RPC_API_KEY || '' },
   [ChainId.soneium]: { network: 'soneium-mainnet', apiKey: process.env.SONEIUM_RPC_API_KEY || '' },
   [57073]: { network: 'ink-mainnet', apiKey: process.env.INK_RPC_API_KEY || '' },
+  [9745]: { network: 'plasma-mainnet', apiKey: process.env.PLASMA_RPC_API_KEY || '' },
 
   // Testnets
   [ChainId.sepolia]: { network: 'eth-sepolia', apiKey: process.env.MAINNET_RPC_API_KEY || '' },
@@ -46,11 +47,6 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
 };
 
 function getRpcUrl(chainId: number): string | null {
-  // Temp patch for Plasma
-  if (chainId === 9745) {
-    return 'https://rpc.plasma.to';
-  }
-
   const config = NETWORK_CONFIG[chainId];
   if (!config) return null;
   return `https://${config.network}.g.alchemy.com/v2/${config.apiKey}`;

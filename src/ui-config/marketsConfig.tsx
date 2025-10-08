@@ -49,6 +49,7 @@ export type MarketDataType = {
     debtSwitch?: boolean;
     withdrawAndSwitch?: boolean;
     switch?: boolean;
+    limit?: boolean;
   };
   permitDisabled?: boolean; // intended to be used for testnets
   isFork?: boolean;
@@ -133,6 +134,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       debtSwitch: true,
       switch: true,
+      limit: true,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
     addresses: {
@@ -387,6 +389,7 @@ export const marketsData: {
       debtSwitch: true,
       withdrawAndSwitch: true,
       switch: true,
+      limit: true,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B`,
     addresses: {

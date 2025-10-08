@@ -1,3 +1,4 @@
+import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
@@ -17,6 +18,12 @@ import {
 } from './helpers';
 import { TransactionHistoryItemUnion } from './types';
 
+function isCowSwapAction(
+  transaction: TransactionHistoryItem
+): transaction is TransactionHistoryItem<ActionFields['CowSwap']> {
+  return (transaction as TransactionHistoryItem<ActionFields['CowSwap']>).action === 'CowSwap';
+}
+
 function ActionTitle({ action }: { action: string }) {
   return (
     <Typography sx={{ width: '180px' }}>
@@ -34,6 +41,8 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
   const [currentNetworkConfig, trackEvent] = useRootStore(
     useShallow((state) => [state.currentNetworkConfig, state.trackEvent])
   );
+
+  const { openCancelCowOrder } = useModalContext();
 
   const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
   const action = getTransactionAction(transaction);
@@ -85,7 +94,12 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
           <ActionDetails transaction={transaction} iconSize="20px" />
         </Box>
         <ListColumn align="right">
-          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            {isCowSwapAction(transaction) && transaction.status === OrderStatus.OPEN && (
+              <Button variant="contained" onClick={() => openCancelCowOrder(transaction)}>
+                <Trans>Cancel</Trans>
+              </Button>
+            )}
             {!downToMD && explorerLink && (
               <Button
                 variant="outlined"
