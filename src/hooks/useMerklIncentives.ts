@@ -1,5 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
+import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
 import { convertAprToApy } from 'src/utils/utils';
@@ -99,6 +100,28 @@ type WhitelistApiResponse = {
   additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData>;
 };
 
+const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {
+  [AaveV3Ethereum.ASSETS.PYUSD.A_TOKEN]: {
+    incentiveAPR: '0.43',
+    rewardTokenAddress: AaveV3Ethereum.ASSETS.PYUSD.A_TOKEN,
+    rewardTokenSymbol: 'aEthPYUSD',
+    customMessage:
+      'You need to supply PYUSD without holding any PYUSD debt. This is a program initiated and implemented by ACI in collaboration with Merkl.',
+    breakdown: {
+      protocolAPY: 0,
+      protocolIncentivesAPR: 0,
+      merklIncentivesAPR: 0,
+      totalAPY: 0,
+      isBorrow: false,
+      breakdown: {
+        protocol: 0,
+        protocolIncentives: 0,
+        merklIncentives: 0,
+      },
+    },
+  },
+};
+
 const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
 const checkOpportunityAction = (
@@ -153,6 +176,23 @@ export const useMerklIncentives = ({
     queryKey: ['merklIncentives', market],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
+      const hardcodedIncentive = rewardedAsset ? hardcodedIncentives[rewardedAsset] : undefined;
+
+      if (hardcodedIncentive) {
+        const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
+          return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
+        }, 0);
+        const merklIncentivesAPY = convertAprToApy(0.1);
+        return {
+          ...hardcodedIncentive,
+          breakdown: {
+            protocolAPY,
+            protocolIncentivesAPR,
+            merklIncentivesAPR: merklIncentivesAPY,
+            totalAPY: protocolAPY + protocolIncentivesAPR + merklIncentivesAPY,
+          } as MerklIncentivesBreakdown,
+        } as ExtendedReserveIncentiveResponse;
+      }
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
           rewardedAsset &&
