@@ -192,7 +192,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     });
                   }}
                   href={currentNetworkConfig.explorerLinkBuilder({
-                    address: '', //TODO: add interestRateStrategyAddress to SDK
+                    address: reserve.interestRateStrategyAddress,
                   })}
                   endIcon={
                     <SvgIcon sx={{ width: 14, height: 14 }}>
