@@ -219,8 +219,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     filterQuery,
   }: HistoryFilters): Promise<TransactionHistoryItemUnion[]> => {
     const sdkTransactions = getSDKTransactions();
-
-    const allCowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, 0);
+    const skip = 0;
+    const allCowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, skip);
 
     const allTransactions: TransactionHistoryItemUnion[] = [
       ...sdkTransactions,
