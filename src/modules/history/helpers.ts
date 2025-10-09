@@ -158,7 +158,7 @@ export const formatTransactionData = ({
   data,
   csv,
 }: FormatTransactionDataParams): TransactionHistoryItemUnion[] => {
-  return data.map((transaction: TransactionHistoryItemUnion) => {
+  const formattedTransactions = data.map((transaction: TransactionHistoryItemUnion) => {
     // Structure of the newTransaction object following the actual CSV/JSON order
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newTransaction: any = {
@@ -415,5 +415,8 @@ export const formatTransactionData = ({
     }
 
     return newTransaction;
+  });
+  return formattedTransactions.sort((a, b) => {
+    return b.timestamp - a.timestamp;
   });
 };
