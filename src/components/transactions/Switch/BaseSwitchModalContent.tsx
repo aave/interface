@@ -715,17 +715,6 @@ export const BaseSwitchModalContent = ({
           .multipliedBy(1 - safeSlippage)
           .decimalPlaces(switchRates.destDecimals, BigNumber.ROUND_UP)
           .toString()}
-        amountUsd={Number(switchRates.srcUSD)}
-        outAmountUSD={Number(
-          switchRates.provider === 'cowprotocol' ? switchRates.destSpotInUsd : switchRates.destUSD
-        )}
-        addToken={{
-          address: selectedOutputToken.aToken ?? selectedOutputToken.address,
-          symbol: selectedOutputToken.symbol,
-          decimals: selectedOutputToken.decimals,
-          aToken: selectedOutputToken.aToken ? true : false,
-        }}
-        modalType={modalType}
       />
     );
   }
