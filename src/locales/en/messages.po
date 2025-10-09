@@ -639,6 +639,7 @@ msgid "All proposals"
 msgstr "All proposals"
 
 #: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
 msgid "Add to wallet"
 msgstr "Add to wallet"
 
@@ -2193,6 +2194,7 @@ msgid "Interest rate rebalance conditions were not met"
 msgstr "Interest rate rebalance conditions were not met"
 
 #: src/components/transactions/FlowCommons/Success.tsx
+#: src/components/transactions/Switch/SwitchTxSuccessView.tsx
 msgid "Add {0} to wallet to track your balance."
 msgstr "Add {0} to wallet to track your balance."
 
