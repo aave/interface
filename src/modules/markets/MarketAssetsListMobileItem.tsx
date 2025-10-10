@@ -13,15 +13,14 @@ import { MARKETS } from 'src/utils/events';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
-import { mapAaveProtocolIncentives } from '../../components/incentives/incentives.helper';
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
-import { ReserveWithId } from '../../hooks/app-data-provider/useAppDataProvider';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
+import { ReserveWithProtocolIncentives } from './MarketAssetsList';
 
-export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithId) => {
+export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIncentives) => {
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
@@ -46,9 +45,6 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithId) => {
     iconSymbol?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
       ? iconSymbol
       : reserve.underlyingToken.symbol;
-
-  const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
-  const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
 
   return (
     <ListMobileItemWrapper
@@ -89,7 +85,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithId) => {
         <IncentivesCard
           align="flex-end"
           value={reserve.supplyInfo.apy.value}
-          incentives={supplyProtocolIncentives}
+          incentives={reserve.supplyProtocolIncentives}
           address={reserve.aToken.address}
           symbol={reserve.underlyingToken.symbol}
           variant="secondary14"
@@ -150,7 +146,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithId) => {
               ? String(reserve.borrowInfo.apy.value)
               : '-1'
           }
-          incentives={borrowProtocolIncentives}
+          incentives={reserve.borrowProtocolIncentives}
           address={reserve.vToken.address}
           symbol={reserve.underlyingToken.symbol}
           variant="secondary14"

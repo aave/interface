@@ -17,7 +17,6 @@ import { MARKETS } from 'src/utils/events';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
-import { mapAaveProtocolIncentives } from '../../components/incentives/incentives.helper';
 import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { AMPLToolTip } from '../../components/infoTooltips/AMPLToolTip';
 import { ListColumn } from '../../components/lists/ListColumn';
@@ -25,9 +24,9 @@ import { ListItem } from '../../components/lists/ListItem';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
-import { ReserveWithId } from '../../hooks/app-data-provider/useAppDataProvider';
+import { ReserveWithProtocolIncentives } from './MarketAssetsList';
 
-export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
+export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentives) => {
   const router = useRouter();
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
@@ -54,9 +53,6 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
     iconSymbol?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
       ? iconSymbol
       : reserve.underlyingToken.symbol;
-
-  const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
-  const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
 
   return (
     <ListItem
@@ -112,7 +108,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
       <ListColumn>
         <IncentivesCard
           value={reserve.supplyInfo.apy.value}
-          incentives={supplyProtocolIncentives}
+          incentives={reserve.supplyProtocolIncentives}
           address={reserve.aToken.address}
           symbol={reserve.underlyingToken.symbol}
           variant="main16"
@@ -151,7 +147,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithId) => {
               ? String(reserve.borrowInfo?.apy.value)
               : '-1'
           }
-          incentives={borrowProtocolIncentives}
+          incentives={reserve.borrowProtocolIncentives}
           address={reserve.vToken.address}
           symbol={reserve.underlyingToken.symbol}
           variant="main16"

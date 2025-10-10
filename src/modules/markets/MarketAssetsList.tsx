@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
 import { useState } from 'react';
+import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -44,6 +45,10 @@ const listHeaders = [
 type MarketAssetsListProps = {
   reserves: ReserveWithId[];
   loading: boolean;
+};
+export type ReserveWithProtocolIncentives = ReserveWithId & {
+  supplyProtocolIncentives: ReturnType<typeof mapAaveProtocolIncentives>;
+  borrowProtocolIncentives: ReturnType<typeof mapAaveProtocolIncentives>;
 };
 
 export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
@@ -93,7 +98,11 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
       ? (aValue as number) - (bValue as number)
       : (bValue as number) - (aValue as number);
   });
-
+  const reservesWithIncentives: ReserveWithProtocolIncentives[] = sortedReserves.map((reserve) => ({
+    ...reserve,
+    supplyProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'supply'),
+    borrowProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'borrow'),
+  }));
   // Show loading state when loading
   if (loading) {
     return isTableChangedToCards ? (
@@ -141,7 +150,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         </ListHeaderWrapper>
       )}
 
-      {sortedReserves.map((reserve) =>
+      {reservesWithIncentives.map((reserve) =>
         isTableChangedToCards ? (
           <MarketAssetsListMobileItem {...reserve} key={reserve.id} />
         ) : (
