@@ -7,7 +7,7 @@ import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTok
 import { useCowSwitchRates } from 'src/hooks/switch/useCowSwitchRates';
 import { useGetConnectedWalletType } from 'src/hooks/useGetConnectedWalletType';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
-import { useModalContext } from 'src/hooks/useModal';
+import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { StaticRate, useStaticRate } from 'src/hooks/useStaticRate';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -257,6 +257,15 @@ export const SwitchLimitOrdersInner = ({
         destDecimals={outputToken.decimals}
         srcDecimals={inputToken.decimals}
         outAmount={outputAmount}
+        amountUsd={Number(staticRate?.inputUsdPrice) * Number(inputAmount) || 0}
+        outAmountUSD={Number(staticRate?.outputUsdPrice) * Number(outputAmount) || 0}
+        addToken={{
+          address: outputToken.aToken ?? outputToken.address,
+          symbol: outputToken.symbol,
+          decimals: outputToken.decimals,
+          aToken: outputToken.aToken ? true : false,
+        }}
+        modalType={ModalType.SwitchLimitOrder}
       />
     );
   }
