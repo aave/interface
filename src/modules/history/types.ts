@@ -12,7 +12,7 @@ import { OrderStatus } from '@cowprotocol/cow-sdk';
 export type TransactionHistoryItem<T = unknown> = {
   id: string;
   action: string;
-  timestamp: number;
+  timestamp: string;
 } & T;
 
 export type ReserveSubset = {
@@ -30,7 +30,6 @@ export type CowSwapSubset = {
   srcAmount: string;
   destAmount: string;
   status: OrderStatus;
-  timestamp: number;
   orderId: string;
   chainId: number;
 };

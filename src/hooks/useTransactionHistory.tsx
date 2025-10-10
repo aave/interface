@@ -38,9 +38,7 @@ const sortTransactionsByTimestampDesc = (
   a: TransactionHistoryItemUnion,
   b: TransactionHistoryItemUnion
 ) => {
-  const aTime = '__typename' in a ? new Date(a.timestamp).getTime() : a.timestamp * 1000;
-  const bTime = '__typename' in b ? new Date(b.timestamp).getTime() : b.timestamp * 1000;
-  return bTime - aTime;
+  return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
 };
 
 export const applyTxHistoryFilters = ({
@@ -343,7 +341,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         return {
           action: srcToken.isAToken ? 'CowCollateralSwap' : 'CowSwap',
           id: order.uid,
-          timestamp: Math.floor(new Date(order.creationDate).getTime() / 1000),
+          timestamp: new Date(order.creationDate).toISOString(),
           underlyingSrcToken: {
             underlyingAsset: srcToken.address,
             name: srcToken.name,

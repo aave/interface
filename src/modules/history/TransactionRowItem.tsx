@@ -11,12 +11,7 @@ import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
-import {
-  getExplorerLink,
-  getTransactionAction,
-  getTransactionTimestamp,
-  unixTimestampToFormattedTime,
-} from './helpers';
+import { getExplorerLink, getTransactionAction, unixTimestampToFormattedTime } from './helpers';
 import { isCowSwapTransaction, TransactionHistoryItemUnion } from './types';
 
 function ActionTitle({ action }: { action: string }) {
@@ -41,7 +36,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
 
   const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
   const action = getTransactionAction(transaction);
-  const timestamp = getTransactionTimestamp(transaction);
+  const timestamp = Date.parse(transaction.timestamp);
 
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));

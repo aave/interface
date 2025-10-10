@@ -11,14 +11,6 @@ import {
   TransactionHistoryItemUnion,
   UserTransactionItem,
 } from './types';
-
-//Get timestamp for sdk or cowswap transaction
-export const getTransactionTimestamp = (transaction: TransactionHistoryItemUnion): number => {
-  if (isSDKTransaction(transaction)) {
-    return new Date(transaction.timestamp).getTime();
-  }
-  return transaction.timestamp * 1000;
-};
 // Get action for sdk or cowswap transaction
 export const getTransactionAction = (transaction: TransactionHistoryItemUnion): string => {
   if (isSDKTransaction(transaction)) {
@@ -133,7 +125,7 @@ export const groupByDate = (
   transactions: TransactionHistoryItemUnion[]
 ): Record<string, TransactionHistoryItemUnion[]> => {
   return transactions.reduce((grouped, transaction) => {
-    const timestamp = getTransactionTimestamp(transaction);
+    const timestamp = Date.parse(transaction.timestamp);
 
     const date = new Intl.DateTimeFormat(undefined, {
       year: 'numeric',
@@ -186,7 +178,7 @@ export const formatTransactionData = ({
     if (isSDKTransaction(transaction)) {
       newTransaction.id = transaction.txHash;
       newTransaction.txHash = transaction.txHash;
-      newTransaction.timestamp = new Date(transaction.timestamp).getTime() / 1000;
+      newTransaction.timestamp = Math.floor(Date.parse(transaction.timestamp) / 1000);
 
       if (hasAmountAndReserve(transaction)) {
         const { amount, reserve } = transaction;
@@ -365,7 +357,7 @@ export const formatTransactionData = ({
 
       newTransaction.action = action;
       newTransaction.id = transaction.id;
-      newTransaction.timestamp = transaction.timestamp;
+      newTransaction.timestamp = Math.floor(Date.parse(transaction.timestamp) / 1000);
       newTransaction.status = status;
       newTransaction.orderId = orderId;
       newTransaction.chainId = chainId;
