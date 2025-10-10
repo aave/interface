@@ -9,7 +9,7 @@ if (!apiKeyTest) throw new Error('PLAIN_TEST_API_KEY env variable is missing');
 
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
 
-const getPlainConfig = (env: 'testnet' | 'production'): string => {
+const getPlainApiKey = (env: 'testnet' | 'production'): string => {
   const apiKey = env === 'testnet' ? apiKeyTest : apiKeyProd;
 
   if (!apiKey) {
@@ -75,12 +75,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { email, text, environment } = req.body;
+    const { email, text, environment = 'production' } = req.body;
 
-    if (!email || !text || !environment) {
-      return res.status(400).json({ message: 'Email, text, and environment are required.' });
+    if (!email || !text) {
+      return res.status(400).json({ message: 'Email and text are required.' });
     }
-
     if (!isEmail(email)) {
       return res.status(400).json({ message: 'Invalid email format.' });
     }
@@ -93,7 +92,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: 'Invalid environment value.' });
     }
 
-    const plainConfig = getPlainConfig(environment);
+    const plainConfig = getPlainApiKey(environment);
 
     const upsertCustomerVariables = {
       input: {
