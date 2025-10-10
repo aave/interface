@@ -396,7 +396,7 @@ export const withdrawAndSwitch = (
       cy.get(`[data-cy=Modal] h2:contains("Withdraw ${_shortNameFrom}")`).should('be.visible');
 
       cy.get('[data-cy=Modal] button')
-        .contains('Withdraw & Switch')
+        .contains('Withdraw & Swap')
         .click({ force: true })
         .should('not.be.disabled');
     });
