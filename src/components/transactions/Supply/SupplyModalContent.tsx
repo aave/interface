@@ -52,6 +52,7 @@ import { getAssetCollateralType } from '../utils';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
+import { USDTResetWarning } from '../Warnings/USDTResetWarning';
 import { SupplyActions } from './SupplyActions';
 import { SupplyWrappedTokenActions } from './SupplyWrappedTokenActions';
 
@@ -277,16 +278,7 @@ export const SupplyModalContent = React.memo(
 
         {txError && <GasEstimationError txError={txError} />}
 
-        {showUSDTResetWarning && (
-          <Warning severity="info" sx={{ mt: 5 }}>
-            <Typography variant="caption">
-              <Trans>
-                USDT on Ethereum requires approval reset before a new approval. This will require an
-                additional transaction.
-              </Trans>
-            </Typography>
-          </Warning>
-        )}
+        {showUSDTResetWarning && <USDTResetWarning />}
 
         <SupplyActions {...supplyActionsProps} />
       </>

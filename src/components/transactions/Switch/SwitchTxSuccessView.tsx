@@ -255,7 +255,13 @@ export const SwitchTxSuccessView = ({
               : 'Sent'}
           </Typography>
           <Box display="flex" alignItems="center" gap={1}>
-            <ExternalTokenIcon symbol={iconSymbol} logoURI={iconUri} sx={{ fontSize: 20 }} />
+            <ExternalTokenIcon
+              symbol={iconSymbol}
+              logoURI={iconUri}
+              height="20px"
+              width="20px"
+              sx={{ fontSize: 20 }}
+            />
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">
@@ -307,7 +313,13 @@ export const SwitchTxSuccessView = ({
               : 'Received'}
           </Typography>
           <Box display="flex" alignItems="center" gap={1}>
-            <ExternalTokenIcon symbol={outIconSymbol} logoURI={outIconUri} sx={{ fontSize: 20 }} />
+            <ExternalTokenIcon
+              symbol={outIconSymbol}
+              logoURI={outIconUri}
+              height="20px"
+              width="20px"
+              sx={{ fontSize: 20 }}
+            />
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">

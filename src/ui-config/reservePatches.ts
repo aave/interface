@@ -84,6 +84,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   ZRX: '0x Coin',
   '1INCH': '1inch Network',
   LUSD: 'LUSD Stablecoin',
+  FBTC: 'FunctionBTC',
 };
 
 export interface IconSymbolInterface {
@@ -155,6 +156,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe September',
       iconSymbol: 'ptsusde',
     },
+    [AaveV3Ethereum.ASSETS.PT_sUSDE_27NOV2025.UNDERLYING.toLowerCase()]: {
+      symbol: 'PT sUSDe November 27th 2025',
+      name: 'PT sUSDe November 2025',
+      iconSymbol: 'ptsusde',
+    },
     '0x917459337caac939d41d7493b3999f571d20d667': {
       symbol: 'PT USDe July',
       name: 'PT USDe July',
@@ -170,6 +176,18 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT USDe September 2025',
       iconSymbol: 'ptusde',
     },
+    [AaveV3Ethereum.ASSETS.PT_USDe_27NOV2025.UNDERLYING.toLowerCase()]: {
+      symbol: 'PT USDe November 27th 2025',
+      name: 'PT USDe November 2025',
+      iconSymbol: 'ptusde',
+    },
+    '0x6100E367285b01F48D07953803A2d8dCA5D19873': {
+      //not yet in @bgd-labs/aave-address-book
+      symbol: 'WXLP',
+      name: 'Wrapped XLP',
+      iconSymbol: 'wxlp',
+    },
+
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
     '0x1eff8af5d577060ba4ac8a29a13525bb0ee2a3d5': { iconSymbol: 'BPT_WBTC_WETH' },

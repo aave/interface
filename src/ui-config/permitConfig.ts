@@ -23,11 +23,11 @@ export const permitByChainAndToken: {
     '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f': true, // GHO
     '0x5f98805a4e8be255a32880fdec7f6728c6568ba0': true, // LUSD
     '0xdc035d45d973e3ec169d2276ddab16f1e407384f': true, // USDS
-    // '0x14d60e7fdc0d71d8611742720e4c50e7a974020c': true, // USCC superstake underlying_tokenv
-    // '0x43415eb6ff9db7e26a15b704e7a3edce97d31c4e': true, // USTB underlying_token (AaveV3Horizon)
-    // '0x5a0f93d040de44e78f251b03c43be9cf317dcf64': true, // JAAA underlying_token Janus Henderson Andmenum (Aave V3 Horizon)
-    // '0x8c213ee79581ff4984583c6a801e5263418c4b86': true, // JTSRY underlying_token Janus Henderson Andmenum (Aave V3 Horizon)
-    // '0x136471a34f6ef19fe571effc1ca711fdb8e49f2b': true, // USYC underlying_token US Yield Coin (AaveV3Horizon)
+    '0x14d60e7fdc0d71d8611742720e4c50e7a974020c': true, // USCC superstake underlying_tokenv
+    '0x43415eb6ff9db7e26a15b704e7a3edce97d31c4e': true, // USTB underlying_token (AaveV3Horizon)
+    '0x5a0f93d040de44e78f251b03c43be9cf317dcf64': true, // JAAA underlying_token Janus Henderson Andmenum (Aave V3 Horizon)
+    '0x8c213ee79581ff4984583c6a801e5263418c4b86': true, // JTSRY underlying_token Janus Henderson Andmenum (Aave V3 Horizon)
+    '0x136471a34f6ef19fe571effc1ca711fdb8e49f2b': true, // USYC underlying_token US Yield Coin (AaveV3Horizon)
   },
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1a5a0dbb814af92458539fb4': true,
@@ -71,5 +71,33 @@ export const permitByChainAndToken: {
     '0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e': true, // USDT
     // '0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73': true, // cEUR
     // '0x765de816845861e75a25fca122bb6898b8b1282a': true, // cUSD
+  },
+};
+
+export const rwaAssetDomains: { [key: string]: { name: string; version: string } } = {
+  '0x14d60e7fdc0d71d8611742720e4c50e7a974020c': {
+    // USCC AaveV3Horizon
+    name: 'Superstate Crypto Carry Fund',
+    version: '5',
+  },
+  '0x43415eb6ff9db7e26a15b704e7a3edce97d31c4e': {
+    // USTB AaveV3Horizon
+    name: 'Superstate Short Duration US Government Securities Fund',
+    version: '5',
+  },
+  '0x5a0f93d040de44e78f251b03c43be9cf317dcf64': {
+    // JAAA AaveV3Horizon
+    name: 'Centrifuge',
+    version: '1',
+  },
+  '0x8c213ee79581ff4984583c6a801e5263418c4b86': {
+    // JTSRY AaveV3Horizon
+    name: 'Centrifuge',
+    version: '1',
+  },
+  '0x136471a34f6ef19fe571effc1ca711fdb8e49f2b': {
+    // USYC AaveV3Horizon
+    name: 'US Yield Coin',
+    version: '2',
   },
 };

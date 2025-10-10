@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
 // import { useModalContext } from 'src/hooks/useModal';
-import { FeedbackModal } from 'src/layouts/FeedbackDialog';
+import { SupportModal } from 'src/layouts/SupportModal';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
@@ -41,14 +41,14 @@ const getCampaignConfigs = (
   // },
 
   [ChainId.mainnet]: {
-    notifyText: 'Horizon, the RWA market is now live.',
+    notifyText: 'The Plasma market is now live.',
     buttonText: 'Get Started',
     buttonAction: {
       type: 'function' as const,
-      value: () => openMarket(CustomMarket.proto_horizon_v3),
+      value: () => openMarket(CustomMarket.proto_plasma_v3),
     },
-    bannerVersion: 'horizon-market-v0',
-    icon: '/icons/markets/horizon.svg',
+    bannerVersion: 'plasma-market-v0',
+    icon: '/icons/networks/plasma.svg',
   },
 
   // [ChainId.polygon]: {
@@ -138,7 +138,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
         {children}
       </Box>
       <AppFooter />
-      <FeedbackModal />
+      <SupportModal />
       {FORK_ENABLED ? null : <AnalyticsConsent />}
     </>
   );

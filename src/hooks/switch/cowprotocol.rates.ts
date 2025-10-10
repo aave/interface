@@ -8,13 +8,12 @@ import {
 import { BigNumber } from 'bignumber.js';
 import {
   COW_PARTNER_FEE,
-  HEADER_WIDGET_APP_CODE,
   isNativeToken,
 } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
 import {
+  CowProtocolRatesType,
   ProviderRatesParams,
-  SwitchRatesType,
 } from 'src/components/transactions/Switch/switch.types';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
@@ -23,7 +22,7 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-const getTokenUsdPrice = async (
+export const getTokenUsdPrice = async (
   chainId: number,
   tokenAddress: string,
   isTokenCustom: boolean,
@@ -63,7 +62,8 @@ export async function getCowProtocolSellRates({
   setError,
   isInputTokenCustom,
   isOutputTokenCustom,
-}: ProviderRatesParams): Promise<SwitchRatesType> {
+  appCode,
+}: ProviderRatesParams): Promise<CowProtocolRatesType> {
   const tradingSdk = new TradingSdk({ chainId });
 
   let orderBookQuote: QuoteAndPost | undefined;
@@ -106,7 +106,7 @@ export async function getCowProtocolSellRates({
           buyToken: destTokenWrapped,
           buyTokenDecimals: destDecimals,
           signer,
-          appCode: HEADER_WIDGET_APP_CODE, // todo: use ADAPTER_APP_CODE for contract adapters
+          appCode: appCode,
           partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
         })
         .catch((cowError) => {

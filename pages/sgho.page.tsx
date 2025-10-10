@@ -31,6 +31,11 @@ const SavingsGhoWithdrawModal = dynamic(() =>
     (module) => module.SavingsGhoWithdrawModal
   )
 );
+const StakeRewardClaimModal = dynamic(() =>
+  import('../src/components/transactions/StakeRewardClaim/StakeRewardClaimModal').then(
+    (module) => module.StakeRewardClaimModal
+  )
+);
 
 export default function SavingsGho() {
   const { openSavingsGhoDeposit, openSavingsGhoWithdraw } = useModalContext();
@@ -212,6 +217,7 @@ SavingsGho.getLayout = function getLayout(page: React.ReactElement) {
       {/** Modals */}
       <SavingsGhoDepositModal />
       <SavingsGhoWithdrawModal />
+      <StakeRewardClaimModal />
       {/** End of modals */}
     </MainLayout>
   );

@@ -19,6 +19,7 @@ import {
   AaveV3Metis,
   AaveV3Optimism,
   AaveV3OptimismSepolia,
+  AaveV3Plasma,
   AaveV3Polygon,
   AaveV3Scroll,
   AaveV3ScrollSepolia,
@@ -48,6 +49,7 @@ export type MarketDataType = {
     debtSwitch?: boolean;
     withdrawAndSwitch?: boolean;
     switch?: boolean;
+    limit?: boolean;
   };
   permitDisabled?: boolean; // intended to be used for testnets
   isFork?: boolean;
@@ -103,6 +105,7 @@ export enum CustomMarket {
   proto_horizon_v3 = 'proto_horizon_v3',
   proto_sepolia_horizon_v3 = 'proto_sepolia_horizon_v3',
   proto_aptos_v3 = 'proto_aptos_v3',
+  proto_plasma_v3 = 'proto_plasma_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -131,6 +134,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       debtSwitch: true,
       switch: true,
+      limit: true,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
     addresses: {
@@ -385,6 +389,7 @@ export const marketsData: {
       debtSwitch: true,
       withdrawAndSwitch: true,
       switch: true,
+      limit: true,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B`,
     addresses: {
@@ -446,6 +451,23 @@ export const marketsData: {
       DEBT_SWITCH_ADAPTER: AaveV3Avalanche.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Avalanche.WITHDRAW_SWAP_ADAPTER,
       GHO_TOKEN_ADDRESS: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
+    },
+  },
+  [CustomMarket.proto_linea_v3]: {
+    marketTitle: 'Linea',
+    market: CustomMarket.proto_linea_v3,
+    chainId: ChainId.linea,
+    logo: '/icons/markets/linea.svg',
+    v3: true,
+    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/Gz2kjnmRV1fQj3R8cssoZa5y9VTanhrDo4Mh7nWW1wHa`,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Linea.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Linea.POOL,
+      WETH_GATEWAY: AaveV3Linea.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Linea.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Linea.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Linea.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Linea.COLLECTOR,
     },
   },
   [CustomMarket.proto_fuji_v3]: {
@@ -581,6 +603,22 @@ export const marketsData: {
       // DEBT_SWITCH_ADAPTER: AaveV3EthereumLido.DEBT_SWAP_ADAPTER,
     },
   },
+  [CustomMarket.proto_plasma_v3]: {
+    marketTitle: 'Plasma',
+    market: CustomMarket.proto_plasma_v3,
+    chainId: 9745 as ChainId,
+    v3: true,
+    logo: '/icons/networks/plasma.svg',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Plasma.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Plasma.POOL,
+      WETH_GATEWAY: AaveV3Plasma.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Plasma.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: '0xc851e6147dcE6A469CC33BE3121b6B2D4CaD2763', //AaveV3Plasma.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Plasma.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Plasma.COLLECTOR,
+    },
+  },
   [CustomMarket.proto_polygon_v3]: {
     marketTitle: 'Polygon',
     market: CustomMarket.proto_polygon_v3,
@@ -628,25 +666,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV2Fuji.UI_INCENTIVE_DATA_PROVIDER,
     },
   },
-  [CustomMarket.proto_metis_v3]: {
-    marketTitle: 'Metis',
-    market: CustomMarket.proto_metis_v3,
-    chainId: ChainId.metis_andromeda,
-    v3: true,
-    enabledFeatures: {
-      incentives: true,
-    },
-    subgraphUrl: 'https://metisapi.0xgraph.xyz/subgraphs/name/aave/protocol-v3-metis',
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Metis.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3Metis.POOL,
-      WETH_GATEWAY: '0x0', // not applicable for Metis
-      WALLET_BALANCE_PROVIDER: AaveV3Metis.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Metis.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Metis.COLLECTOR,
-    },
-  },
+
   [CustomMarket.proto_gnosis_v3]: {
     marketTitle: 'Gnosis',
     market: CustomMarket.proto_gnosis_v3,
@@ -749,22 +769,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: '',
     },
   },
-  [CustomMarket.proto_linea_v3]: {
-    marketTitle: 'Linea',
-    market: CustomMarket.proto_linea_v3,
-    chainId: ChainId.linea,
-    v3: true,
-    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/Gz2kjnmRV1fQj3R8cssoZa5y9VTanhrDo4Mh7nWW1wHa`,
-    addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Linea.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: AaveV3Linea.POOL,
-      WETH_GATEWAY: AaveV3Linea.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: AaveV3Linea.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: AaveV3Linea.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Linea.UI_INCENTIVE_DATA_PROVIDER,
-      COLLECTOR: AaveV3Linea.COLLECTOR,
-    },
-  },
+
   [CustomMarket.proto_celo_v3]: {
     marketTitle: 'Celo',
     market: CustomMarket.proto_celo_v3,
@@ -825,6 +830,25 @@ export const marketsData: {
       COLLECTOR: AaveV3EthereumEtherFi.COLLECTOR,
       WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumEtherFi.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3EthereumEtherFi.DEBT_SWAP_ADAPTER,
+    },
+  },
+  [CustomMarket.proto_metis_v3]: {
+    marketTitle: 'Metis',
+    market: CustomMarket.proto_metis_v3,
+    chainId: ChainId.metis_andromeda,
+    v3: true,
+    enabledFeatures: {
+      incentives: true,
+    },
+    subgraphUrl: 'https://metisapi.0xgraph.xyz/subgraphs/name/aave/protocol-v3-metis',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Metis.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Metis.POOL,
+      WETH_GATEWAY: '0x0', // not applicable for Metis
+      WALLET_BALANCE_PROVIDER: AaveV3Metis.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Metis.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Metis.COLLECTOR,
     },
   },
 } as const;

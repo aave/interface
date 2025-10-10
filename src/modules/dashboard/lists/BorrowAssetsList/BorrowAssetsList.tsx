@@ -3,12 +3,15 @@ import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
+import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
+import { AssetCategory, isAssetInCategoryDynamic } from 'src/modules/markets/utils/assetCategories';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GENERAL } from 'src/utils/events';
@@ -76,6 +79,9 @@ const head = [
 ];
 
 export const BorrowAssetsList = () => {
+  const { data, isLoading, error } = useCoingeckoCategories();
+  const [selectedCategories, setSelectedCategories] = useState<AssetCategory[]>([]);
+
   const [currentNetworkConfig, currentMarketData] = useRootStore(
     useShallow((store) => [store.currentNetworkConfig, store.currentMarketData])
   );
@@ -86,11 +92,29 @@ export const BorrowAssetsList = () => {
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 
+  const listCollapseKey = 'borrowAssetsDashboardTableCollapse';
+  const [isListCollapsed, setIsListCollapsed] = useState(
+    localStorage.getItem(listCollapseKey) === 'true'
+  );
+
   const { baseAssetSymbol } = currentNetworkConfig;
 
   const tokensToBorrow = reserves
     .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
     .filter((reserve) => !isAssetHidden(currentMarketData.market, reserve.underlyingAsset))
+    // filter by category
+    .filter(
+      (res) =>
+        selectedCategories.length === 0 ||
+        selectedCategories.some((category) =>
+          isAssetInCategoryDynamic(
+            res.symbol,
+            category,
+            data?.stablecoinSymbols,
+            data?.ethCorrelatedSymbols
+          )
+        )
+    )
     .map((reserve: ComputedReserveData) => {
       const availableBorrows = user ? Number(getMaxAmountAvailableToBorrow(reserve, user)) : 0;
 
@@ -187,16 +211,50 @@ export const BorrowAssetsList = () => {
   return (
     <ListWrapper
       titleComponent={
-        <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-          <Trans>Assets to borrow</Trans>
-        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mr: 2,
+          }}
+        >
+          <Typography component="div" variant="h3" sx={{ flex: '0 0 auto', mr: 2 }}>
+            <Trans>Assets to borrow</Trans>
+          </Typography>
+
+          {!downToXSM && !isListCollapsed && (
+            <AssetCategoryMultiSelect
+              selectedCategories={selectedCategories}
+              onCategoriesChange={setSelectedCategories}
+              disabled={isLoading || !!error}
+            />
+          )}
+        </Box>
       }
+      onCollapseChange={setIsListCollapsed}
       localStorageName="borrowAssetsDashboardTableCollapse"
       withTopMargin
       noData={borrowDisabled}
       subChildrenComponent={
         <>
-          <Box sx={{ px: 6, mb: 4 }}>
+          {downToXSM && (
+            <>
+              <Box sx={{ px: 4, pb: 4, pt: '2px' }}>
+                <AssetCategoryMultiSelect
+                  selectedCategories={selectedCategories}
+                  onCategoriesChange={setSelectedCategories}
+                  disabled={isLoading || !!error}
+                  sx={{
+                    buttonGroup: { width: '100%', maxWidth: '100%', height: '30px' },
+                    button: { fontSize: '0.7rem' },
+                  }}
+                />
+              </Box>
+            </>
+          )}
+          <Box sx={{ px: 6 }}>
             {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
               <Warning severity="error">
                 <Trans>
@@ -230,6 +288,14 @@ export const BorrowAssetsList = () => {
                   </Warning>
                 )}
               </>
+            )}
+            {borrowDisabled && (
+              <Warning severity="info">
+                <Trans>
+                  We couldn&apos;t find any assets related to your search. Try again with a
+                  different category.
+                </Trans>
+              </Warning>
             )}
           </Box>
         </>

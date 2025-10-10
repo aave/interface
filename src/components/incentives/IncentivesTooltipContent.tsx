@@ -106,6 +106,12 @@ const IncentivesSymbolMap: {
     symbol: 'aRLUSD',
     aToken: true,
   },
+  aHorRwaUSDC: {
+    tokenIconSymbol: 'USDC',
+    symbol: 'aUSDC',
+    aToken: true,
+  },
+
   aSonwS: {
     tokenIconSymbol: 'wS',
     symbol: 'awS',
@@ -152,6 +158,21 @@ const IncentivesSymbolMap: {
     aToken: true,
   },
   aEthUSDe: {
+    tokenIconSymbol: 'USDe',
+    symbol: 'aUSDe',
+    aToken: true,
+  },
+  aZksZK: {
+    tokenIconSymbol: 'ZK',
+    symbol: 'aZK',
+    aToken: true,
+  },
+  aScrSCR: {
+    tokenIconSymbol: 'SCR',
+    symbol: 'aSCR',
+    aToken: true,
+  },
+  aPlaUSDe: {
     tokenIconSymbol: 'USDe',
     symbol: 'aUSDe',
     aToken: true,

@@ -28,6 +28,7 @@ export const GENERAL = {
   TRANSACTION_ERROR: 'Transaction Error',
   OPEN_MODAL: 'Open Modal',
   MAX_INPUT_SELECTION: 'Select Max input',
+  LIMIT_ORDER: 'Limit Order',
 };
 
 export const REWARDS = {
@@ -138,4 +139,7 @@ export const GHO_SUCCESS_MODAL = {
   GHO_DOWNLOAD_IMAGE: 'Click download image on GHO borrow',
   GHO_BORROW_VIEW_TX_DETAILS: 'Click view TX details on GHO borrow',
   GHO_FAIL_COPY_IMAGE: 'Failed to copy image to clipboard',
+};
+export const SWITCH_MODAL = {
+  SWITCH_TYPE: 'Change switch type',
 };
