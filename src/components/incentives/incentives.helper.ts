@@ -14,15 +14,14 @@ export const isAaveProtocolIncentive = (incentive: ReserveIncentive): boolean =>
   return isAaveSupplyIncentive(incentive) || isAaveBorrowIncentive(incentive);
 };
 
-//
 export const getIncentiveAPR = (incentive: ReserveIncentive): string => {
   // For AaveSupplyIncentive
-  if ('extraSupplyApr' in incentive && incentive.extraSupplyApr?.value) {
+  if (isAaveSupplyIncentive(incentive) && incentive.extraSupplyApr?.value) {
     return incentive.extraSupplyApr.value.toString();
   }
 
   // For AaveBorrowIncentive
-  if ('borrowAprDiscount' in incentive && incentive.borrowAprDiscount?.value) {
+  if (isAaveBorrowIncentive(incentive) && incentive.borrowAprDiscount?.value) {
     return incentive.borrowAprDiscount.value.toString();
   }
 
