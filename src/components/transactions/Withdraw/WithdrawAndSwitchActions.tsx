@@ -135,6 +135,7 @@ export const WithdrawAndSwitchActions = ({
       await response.wait(1);
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
+
       setMainTxState({
         txHash: response.hash,
         loading: false,
@@ -271,13 +272,13 @@ export const WithdrawAndSwitchActions = ({
       amount={amountToSwap}
       handleApproval={() => approval()}
       requiresApproval={requiresApproval}
-      actionText={<Trans>Withdraw and Switch</Trans>}
-      actionInProgressText={<Trans>Withdrawing and Switching</Trans>}
+      actionText={<Trans>Withdraw and Swap</Trans>}
+      actionInProgressText={<Trans>Withdrawing and Swapping</Trans>}
       sx={sx}
       errorParams={{
         loading: false,
         disabled: blocked || !approvalTxState?.success,
-        content: <Trans>Withdraw and Switch</Trans>,
+        content: <Trans>Withdraw and Swap</Trans>,
         handleClick: action,
       }}
       fetchingData={loading}

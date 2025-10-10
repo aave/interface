@@ -50,7 +50,7 @@ export function WithdrawTypeSelector({
           }
         >
           <Typography variant="buttonM">
-            <Trans>Withdraw & Switch</Trans>
+            <Trans>Withdraw & Swap</Trans>
           </Typography>
         </StyledTxModalToggleButton>
       </StyledTxModalToggleGroup>

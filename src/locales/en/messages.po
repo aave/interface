@@ -220,10 +220,6 @@ msgstr "..."
 msgid "Liquidation <0/> threshold"
 msgstr "Liquidation <0/> threshold"
 
-#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
-msgid "Withdrawing and Switching"
-msgstr "Withdrawing and Switching"
-
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
@@ -597,6 +593,10 @@ msgstr "Claim all"
 msgid "Time remaining until the withdraw period ends."
 msgstr "Time remaining until the withdraw period ends."
 
+#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
+msgid "Withdrawing and Swapping"
+msgstr "Withdrawing and Swapping"
+
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
 msgid "Data couldn't be fetched, please reload graph."
 msgstr "Data couldn't be fetched, please reload graph."
@@ -605,11 +605,6 @@ msgstr "Data couldn't be fetched, please reload graph."
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
 msgstr "Dashboard"
-
-#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
-#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
-msgid "Withdraw and Switch"
-msgstr "Withdraw and Switch"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -1333,10 +1328,6 @@ msgstr "Borrow balance after repay"
 #: src/modules/migration/MigrationLists.tsx
 msgid "Supplied assets"
 msgstr "Supplied assets"
-
-#: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
-msgid "Withdraw & Switch"
-msgstr "Withdraw & Switch"
 
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
@@ -2072,6 +2063,10 @@ msgstr "Reserve status & configuration"
 msgid "Let us know how we can help you. You may also consider joining our community"
 msgstr "Let us know how we can help you. You may also consider joining our community"
 
+#: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
+msgid "Withdraw & Swap"
+msgstr "Withdraw & Swap"
+
 #: src/ui-config/errorMapping.tsx
 msgid "User cannot withdraw more than the available balance"
 msgstr "User cannot withdraw more than the available balance"
@@ -2645,6 +2640,11 @@ msgstr "about SuperFest."
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Testnet mode"
 msgstr "Testnet mode"
+
+#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
+#: src/components/transactions/Withdraw/WithdrawAndSwitchActions.tsx
+msgid "Withdraw and Swap"
+msgstr "Withdraw and Swap"
 
 #: src/components/infoTooltips/FrozenTooltip.tsx
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
