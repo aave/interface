@@ -1,7 +1,7 @@
 import type { EmodeMarketCategory, Market, MarketUserState, Reserve } from '@aave/graphql';
 import { UserReserveData } from '@aave/math-utils';
 import { client } from 'pages/_app.page';
-import React, { PropsWithChildren, useContext, useMemo } from 'react';
+import React, { PropsWithChildren, useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -80,21 +80,8 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   });
 
   const marketAddress = currentMarketData.addresses.LENDING_POOL.toLowerCase();
-  const marketsList = useMemo(() => {
-    if (!data) {
-      return [] as Market[];
-    }
-    const withItems = (data as { items?: Market[] }).items;
-    if (Array.isArray(withItems)) {
-      return withItems;
-    }
-    if (Array.isArray(data)) {
-      return data as Market[];
-    }
-    return [] as Market[];
-  }, [data]);
 
-  const sdkMarket = marketsList.find((item) => item.address.toLowerCase() === marketAddress);
+  const sdkMarket = data?.find((item) => item.address.toLowerCase() === marketAddress);
 
   const totalBorrows = sdkMarket?.borrowReserves.reduce((acc, reserve) => {
     const value = reserve.borrowInfo?.total?.usd ?? 0;
