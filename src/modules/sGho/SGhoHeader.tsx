@@ -100,7 +100,7 @@ const SGhoHeaderUserDetails = ({
   stkGho: StakeTokenFormatted;
 }) => {
   const { data: stakeAPR, isLoading: isLoadingStakeAPR } = useStakeTokenAPR();
-  const { reserves } = useAppDataContext();
+  const { supplyReserves } = useAppDataContext();
 
   const {
     addERC20Token,
@@ -108,7 +108,7 @@ const SGhoHeaderUserDetails = ({
     chainId: connectedChainId,
     currentAccount,
   } = useWeb3Context();
-  const poolReserve = reserves.find((reserve) => reserve.symbol === 'GHO');
+  const poolReserve = supplyReserves.find((reserve) => reserve.underlyingToken.symbol === 'GHO');
   const theme = useTheme();
   const [currentChainId] = useRootStore(useShallow((state) => [state.currentChainId]));
 
