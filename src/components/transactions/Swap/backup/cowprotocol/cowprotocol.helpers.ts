@@ -1,5 +1,5 @@
 // import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-// import { MetadataApi } from '@cowprotocol/app-data';
+// import { MetadataApi } from '@cowprotocol/sdk-app-data';
 // import {
 //   BuyTokenDestination,
 //   MAX_VALID_TO_EPOCH,
