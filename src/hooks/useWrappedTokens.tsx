@@ -1,8 +1,7 @@
-import { normalize } from '@aave/math-utils';
+//! Moificado
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { amountToUsd } from 'src/utils/utils';
 
 import { useAppDataContext } from './app-data-provider/useAppDataProvider';
 
@@ -37,11 +36,9 @@ const wrappedTokenConfig: {
 };
 
 export const useWrappedTokens = () => {
-  const { marketReferencePriceInUsd, marketReferenceCurrencyDecimals, reserves } =
-    useAppDataContext();
+  const { supplyReserves } = useAppDataContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
-
-  if (!reserves || reserves.length === 0) {
+  if (!supplyReserves || supplyReserves.length === 0) {
     return [];
   }
 
@@ -49,49 +46,36 @@ export const useWrappedTokens = () => {
   let wrappedTokenReserves: WrappedTokenConfig[] = [];
 
   wrappedTokenReserves = wrappedTokens.map<WrappedTokenConfig>((config) => {
-    const tokenInReserve = reserves.find((reserve) => reserve.underlyingAsset === config.tokenIn);
-    const tokenOutReserve = reserves.find((reserve) => reserve.underlyingAsset === config.tokenOut);
+    const tokenInReserve = supplyReserves.find(
+      (reserve) => reserve.underlyingToken.address.toLowerCase() === config.tokenIn
+    );
+
+    const tokenOutReserve = supplyReserves.find(
+      (reserve) => reserve.underlyingToken.address.toLowerCase() === config.tokenOut
+    );
 
     if (!tokenInReserve || !tokenOutReserve) {
       throw new Error('wrapped token reserves not found');
     }
 
-    const tokenInFormattedPriceInMarketReferenceCurrency = normalize(
-      tokenInReserve.priceInMarketReferenceCurrency,
-      marketReferenceCurrencyDecimals
-    );
-
-    const tokenOutFormattedPriceInMarketReferenceCurrency = normalize(
-      tokenOutReserve.priceInMarketReferenceCurrency,
-      marketReferenceCurrencyDecimals
-    );
-
     return {
       tokenIn: {
-        symbol: tokenInReserve.symbol,
-        underlyingAsset: tokenInReserve.underlyingAsset,
-        decimals: tokenInReserve.decimals,
-        priceInUSD: amountToUsd(
-          1,
-          tokenInFormattedPriceInMarketReferenceCurrency,
-          marketReferencePriceInUsd
-        ).toString(),
-        formattedPriceInMarketReferenceCurrency: tokenInFormattedPriceInMarketReferenceCurrency,
+        symbol: tokenInReserve.underlyingToken.symbol,
+        underlyingAsset: tokenInReserve.underlyingToken.address,
+        decimals: tokenInReserve.underlyingToken.decimals,
+        priceInUSD: tokenInReserve.usdExchangeRate,
+        formattedPriceInMarketReferenceCurrency: tokenInReserve.size.usdPerToken, //! no estoy seguro
       },
       tokenOut: {
-        symbol: tokenOutReserve.symbol,
-        underlyingAsset: tokenOutReserve.underlyingAsset,
-        decimals: tokenOutReserve.decimals,
-        priceInUSD: amountToUsd(
-          1,
-          tokenOutFormattedPriceInMarketReferenceCurrency,
-          marketReferencePriceInUsd
-        ).toString(),
-        formattedPriceInMarketReferenceCurrency: tokenOutFormattedPriceInMarketReferenceCurrency,
+        symbol: tokenOutReserve.underlyingToken.symbol,
+        underlyingAsset: tokenOutReserve.underlyingToken.address,
+        decimals: tokenOutReserve.underlyingToken.decimals,
+        priceInUSD: tokenOutReserve.usdExchangeRate,
+        formattedPriceInMarketReferenceCurrency: tokenOutReserve.size.usdPerToken, //! no estoy seguro
       },
       tokenWrapperAddress: config.tokenWrapperContractAddress,
     };
   });
-
+  console.log('WrappedTokenReserves: ', wrappedTokenReserves); // ! debug
   return wrappedTokenReserves;
 };

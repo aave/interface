@@ -1,4 +1,5 @@
 import { ProtocolAction } from '@aave/contract-helpers';
+import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { EyeIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
@@ -15,6 +16,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -22,10 +24,11 @@ import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { WalletBalancesMap } from 'src/hooks/app-data-provider/useWalletBalances';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
@@ -48,13 +51,13 @@ export const SupplyAssetsListItem = (
 ) => {
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const { supplyCap } = useAssetCaps();
+  const { supplyCap } = useAssetCapsSDK();
   const wrappedTokenReserves = useWrappedTokens();
 
-  const { isActive, isFreezed, walletBalance, underlyingAsset } = params;
-
+  const { reserve } = params;
+  console.log('SupplyAssetsListItem params: ', params.symbol, params.iconSymbol); // ! debug
   const wrappedToken = wrappedTokenReserves.find(
-    (r) => r.tokenOut.underlyingAsset === underlyingAsset
+    (r) => r.tokenOut.underlyingAsset === reserve.underlyingToken.address
   );
 
   const canSupplyAsWrappedToken =
@@ -62,16 +65,17 @@ export const SupplyAssetsListItem = (
     params.walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
 
   const disableSupply =
-    !isActive ||
-    isFreezed ||
-    (Number(walletBalance) <= 0 && !canSupplyAsWrappedToken) ||
+    reserve.isPaused ||
+    reserve.isFrozen ||
+    (Number(params.walletBalance) <= 0 && !canSupplyAsWrappedToken) ||
     supplyCap.isMaxed;
-
+  const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
   const props: SupplyAssetsListItemProps = {
     ...params,
     disableSupply,
     canSupplyAsWrappedToken: canSupplyAsWrappedToken ?? false,
     walletBalancesMap: params.walletBalances,
+    supplyProtocolIncentives,
   };
 
   if (downToXSM) {
@@ -85,26 +89,21 @@ interface SupplyAssetsListItemProps extends DashboardReserve {
   disableSupply: boolean;
   canSupplyAsWrappedToken: boolean;
   walletBalancesMap: WalletBalancesMap;
+  supplyProtocolIncentives: ReserveIncentiveResponse[];
 }
 
 export const SupplyAssetsListItemDesktop = ({
-  symbol,
-  iconSymbol,
-  name,
+  reserve,
   walletBalance,
   walletBalanceUSD,
-  supplyCap,
-  totalLiquidity,
-  supplyAPY,
-  aIncentivesData,
-  aTokenAddress,
-  underlyingAsset,
-  isIsolated,
-  usageAsCollateralEnabledOnUser,
   detailsAddress,
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
+  symbol,
+  iconSymbol,
+  name,
+  supplyProtocolIncentives,
 }: SupplyAssetsListItemProps) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentMarket = useRootStore((store) => store.currentMarket);
@@ -113,7 +112,7 @@ export const SupplyAssetsListItemDesktop = ({
   const { openSupply, openSwitch } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
-  const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
+  const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCapsSDK();
   const isMaxCapReached = supplyCapUsage.isMaxed;
 
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -127,35 +126,45 @@ export const SupplyAssetsListItemDesktop = ({
   };
 
   const wrappedToken = wrappedTokenReserves.find(
-    (r) => r.tokenOut.underlyingAsset === underlyingAsset
+    (r) => r.tokenOut.underlyingAsset === reserve.underlyingToken.address
   );
 
   const onDetailsClick = () => {
     trackEvent(DASHBOARD.DETAILS_NAVIGATION, {
       type: 'Button',
       market: currentMarket,
-      assetName: name,
-      asset: underlyingAsset,
+      assetName: reserve.underlyingToken.name,
+      asset: reserve.underlyingToken.address,
     });
     setAnchorEl(null);
   };
 
   const handleSwitchClick = () => {
-    openSwitch(underlyingAsset);
+    openSwitch(reserve.underlyingToken.address);
     setAnchorEl(null);
   };
+  const { iconSymbol: iconSymbolFetched } = fetchIconSymbolAndName({
+    underlyingAsset: reserve.underlyingToken.address,
+    symbol: reserve.underlyingToken.symbol,
+    name: reserve.underlyingToken.name,
+  });
+
+  const displayIconSymbol =
+    iconSymbolFetched?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
+      ? iconSymbolFetched
+      : reserve.underlyingToken.symbol;
 
   return (
     <ListItemWrapper
-      symbol={symbol}
-      iconSymbol={iconSymbol}
-      name={name}
+      symbol={symbol || reserve.underlyingToken.symbol}
+      iconSymbol={iconSymbol || displayIconSymbol}
+      name={name || reserve.underlyingToken.name}
       detailsAddress={detailsAddress}
-      data-cy={`dashboardSupplyListItem_${symbol.toUpperCase()}`}
+      data-cy={`dashboardSupplyListItem_${reserve.underlyingToken.symbol.toUpperCase()}`}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        symbol,
+        reserve.underlyingToken.symbol,
         currentMarket,
         ProtocolAction.supply
       )}
@@ -202,7 +211,7 @@ export const SupplyAssetsListItemDesktop = ({
         </ListColumn>
       ) : (
         <ListValueColumn
-          symbol={symbol}
+          symbol={reserve.underlyingToken.symbol}
           value={Number(walletBalance)}
           subValue={walletBalanceUSD}
           withTooltip
@@ -210,8 +219,8 @@ export const SupplyAssetsListItemDesktop = ({
           capsComponent={
             <CapsHint
               capType={CapType.supplyCap}
-              capAmount={supplyCap}
-              totalAmount={totalLiquidity}
+              capAmount={reserve.supplyInfo.supplyCap.amount.value}
+              totalAmount={reserve.size.amount.value}
               withoutText
             />
           }
@@ -219,12 +228,12 @@ export const SupplyAssetsListItemDesktop = ({
       )}
 
       <ListAPRColumn
-        value={Number(supplyAPY)}
+        value={Number(reserve.supplyInfo.apy.value)}
         market={currentMarket}
         protocolAction={ProtocolAction.supply}
-        address={aTokenAddress}
-        incentives={aIncentivesData}
-        symbol={symbol}
+        address={reserve.aToken.address}
+        incentives={supplyProtocolIncentives}
+        symbol={reserve.underlyingToken.symbol}
       />
 
       <ListColumn>
@@ -232,8 +241,8 @@ export const SupplyAssetsListItemDesktop = ({
           <NoData variant="main14" color="text.secondary" />
         ) : (
           <ListItemCanBeCollateral
-            isIsolated={isIsolated}
-            usageAsCollateralEnabled={usageAsCollateralEnabledOnUser}
+            isIsolated={!!reserve.isolationModeConfig?.canBeCollateral}
+            usageAsCollateralEnabled={reserve.supplyInfo.canBeCollateral}
           />
         )}
       </ListColumn>
@@ -243,7 +252,12 @@ export const SupplyAssetsListItemDesktop = ({
           disabled={disableSupply}
           variant="contained"
           onClick={() => {
-            openSupply(underlyingAsset, currentMarket, name, 'dashboard');
+            openSupply(
+              reserve.underlyingToken.address,
+              currentMarket,
+              reserve.underlyingToken.name,
+              'dashboard'
+            );
           }}
         >
           <Trans>Supply</Trans>
@@ -309,18 +323,13 @@ export const SupplyAssetsListItemDesktop = ({
 };
 
 export const SupplyAssetsListItemMobile = ({
+  reserve,
   symbol,
   iconSymbol,
   name,
   walletBalance,
   walletBalanceUSD,
-  supplyCap,
-  totalLiquidity,
-  supplyAPY,
-  aIncentivesData,
-  aTokenAddress,
-  isIsolated,
-  usageAsCollateralEnabledOnUser,
+  supplyProtocolIncentives,
   underlyingAsset,
   detailsAddress,
   disableSupply,
@@ -332,23 +341,33 @@ export const SupplyAssetsListItemMobile = ({
   const wrappedTokenReserves = useWrappedTokens();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
-  const { supplyCap: supplyCapUsage } = useAssetCaps();
+  const { supplyCap: supplyCapUsage } = useAssetCapsSDK();
   const isMaxCapReached = supplyCapUsage.isMaxed;
 
   const wrappedToken = wrappedTokenReserves.find(
     (r) => r.tokenOut.underlyingAsset === underlyingAsset
   );
+  const { iconSymbol: iconSymbolFetched } = fetchIconSymbolAndName({
+    underlyingAsset: reserve.underlyingToken.address,
+    symbol: reserve.underlyingToken.symbol,
+    name: reserve.underlyingToken.name,
+  });
+
+  const displayIconSymbol =
+    iconSymbolFetched?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
+      ? iconSymbolFetched
+      : reserve.underlyingToken.symbol;
 
   return (
     <ListMobileItemWrapper
-      symbol={symbol}
-      iconSymbol={iconSymbol}
-      name={name}
-      underlyingAsset={underlyingAsset}
+      symbol={symbol || reserve.underlyingToken.symbol}
+      iconSymbol={iconSymbol || displayIconSymbol}
+      name={name || reserve.underlyingToken.name}
+      underlyingAsset={reserve.underlyingToken.address}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        symbol,
+        symbol || reserve.underlyingToken.symbol,
         currentMarket,
         ProtocolAction.supply
       )}
@@ -407,8 +426,8 @@ export const SupplyAssetsListItemMobile = ({
           capsComponent={
             <CapsHint
               capType={CapType.supplyCap}
-              capAmount={supplyCap}
-              totalAmount={totalLiquidity}
+              capAmount={reserve.supplyInfo.supplyCap.amount.value}
+              totalAmount={reserve.size.amount.value}
               withoutText
             />
           }
@@ -422,10 +441,10 @@ export const SupplyAssetsListItemMobile = ({
         mb={2}
       >
         <IncentivesCard
-          value={Number(supplyAPY)}
-          incentives={aIncentivesData}
-          address={aTokenAddress}
-          symbol={symbol}
+          value={Number(reserve.supplyInfo.apy.value)}
+          incentives={supplyProtocolIncentives}
+          address={reserve.aToken.address}
+          symbol={symbol || reserve.underlyingToken.symbol}
           variant="secondary14"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
@@ -439,8 +458,8 @@ export const SupplyAssetsListItemMobile = ({
         mb={2}
       >
         <ListItemCanBeCollateral
-          isIsolated={isIsolated}
-          usageAsCollateralEnabled={usageAsCollateralEnabledOnUser}
+          isIsolated={!!reserve.isolationModeConfig?.canBeCollateral}
+          usageAsCollateralEnabled={reserve.supplyInfo.canBeCollateral}
         />
       </Row>
 
@@ -457,7 +476,7 @@ export const SupplyAssetsListItemMobile = ({
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+          href={ROUTES.reserveOverview(detailsAddress.toLowerCase(), currentMarket)}
           fullWidth
         >
           <Trans>Details</Trans>

@@ -56,7 +56,8 @@ export default function ReserveOverview() {
   const reserve = supplyReserves.find((reserve) => {
     return reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase();
   }) as ReserveWithId;
-
+  //! debug
+  console.log('ReserveOverview reserve: ', reserve);
   //With Reserves
   const reserveLegacy = reserves.find((reserve) => {
     return reserve.underlyingAsset.toLowerCase() === underlyingAsset?.toLowerCase();

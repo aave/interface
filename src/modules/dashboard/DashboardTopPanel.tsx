@@ -41,7 +41,13 @@ interface MeritReward {
 }
 
 export const DashboardTopPanel = () => {
-  const { user, reserves, loading } = useAppDataContext();
+  const { user, reserves, loading, userState, supplyReserves } = useAppDataContext();
+  console.log('UserLegacy:', user);
+  console.log('UserSDK:', userState);
+  console.log('ReservesSDK:', supplyReserves);
+  //! log
+  console.log('ReservesLegacy:', reserves);
+
   const { currentAccount } = useWeb3Context();
   const { netAPY: enhancedNetAPY, hasEnhancedData } = useEnhancedUserYield();
   const [open, setOpen] = useState(false);
