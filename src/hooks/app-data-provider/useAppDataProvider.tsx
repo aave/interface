@@ -1,4 +1,13 @@
-import type { EmodeMarketCategory, Market, MarketUserState, Reserve } from '@aave/graphql';
+import type {
+  EmodeMarketCategory,
+  Market,
+  MarketUserReserveBorrowPosition,
+  MarketUserReserveSupplyPosition,
+  MarketUserState,
+  PercentValue,
+  Reserve,
+  TokenAmount,
+} from '@aave/graphql';
 import { UserReserveData } from '@aave/math-utils';
 import { client } from 'pages/_app.page';
 import React, { PropsWithChildren, useContext } from 'react';
@@ -19,6 +28,8 @@ import { usePoolReservesHumanized } from '../pool/usePoolReserves';
 import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
 import { useMarketsData } from './useMarketsData';
+import { useUserBorrows } from './useUserBorrows';
+import { useUserSupplies } from './useUserSupplies';
 
 /**
  * removes the marketPrefix from a symbol
@@ -43,7 +54,15 @@ export type ComputedUserReserveData = FormattedUserReserves;
  * @deprecated Use ExtendedFormattedUser type from useExtendedUserSummaryAndIncentives hook
  */
 export type ExtendedFormattedUser = _ExtendedFormattedUser;
-export type ReserveWithId = Reserve & { id: string };
+export type ReserveWithId = Reserve & {
+  id: string;
+  supplyAPY?: number;
+  underlyingBalance?: string;
+  usageAsCollateralEnabledOnUser?: boolean;
+  isCollateralPosition?: boolean;
+  apyPosition?: PercentValue;
+  balancePosition?: TokenAmount;
+};
 export interface AppDataContextType {
   loading: boolean;
   /** SDK market snapshot */
@@ -53,6 +72,8 @@ export interface AppDataContextType {
   borrowReserves: ReserveWithId[];
   eModeCategories: EmodeMarketCategory[];
   userState?: MarketUserState;
+  userSupplies?: MarketUserReserveSupplyPosition[];
+  userBorrows?: MarketUserReserveBorrowPosition[];
   /** Legacy fields (deprecated) kept temporarily for incremental migration */
   reserves: ComputedReserveData[];
   eModes: Record<number, EmodeCategory>;
@@ -79,6 +100,19 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
     account: currentAccount,
   });
 
+  const { data: userSuppliesData, isPending: userSuppliesLoading } = useUserSupplies({
+    client,
+    marketData: currentMarketData,
+    account: currentAccount,
+  });
+
+  const { data: userBorrowsData, isPending: userBorrowsLoading } = useUserBorrows({
+    client,
+    marketData: currentMarketData,
+    account: currentAccount,
+  });
+  console.log('userSuppliesData', userSuppliesData);
+  console.log('userBorrowsData', userBorrowsData);
   const marketAddress = currentMarketData.addresses.LENDING_POOL.toLowerCase();
 
   const sdkMarket = data?.find((item) => item.address.toLowerCase() === marketAddress);
@@ -120,7 +154,12 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const isReservesLoading = reservesDataLoading || formattedPoolReservesLoading;
   const isUserDataLoading = userReservesDataLoading || userSummaryLoading;
 
-  const loading = isPending || isReservesLoading || (!!currentAccount && isUserDataLoading);
+  const loading =
+    isPending ||
+    userSuppliesLoading ||
+    userBorrowsLoading ||
+    isReservesLoading ||
+    (!!currentAccount && isUserDataLoading);
 
   return (
     <AppDataContext.Provider
@@ -132,6 +171,8 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
         borrowReserves,
         eModeCategories,
         userState: marketUserState,
+        userSupplies: userSuppliesData,
+        userBorrows: userBorrowsData,
         // Legacy fields (to be removed once consumers migrate)
         reserves: formattedPoolReserves || [],
         eModes,

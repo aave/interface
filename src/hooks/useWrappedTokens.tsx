@@ -76,6 +76,6 @@ export const useWrappedTokens = () => {
       tokenWrapperAddress: config.tokenWrapperContractAddress,
     };
   });
-  console.log('WrappedTokenReserves: ', wrappedTokenReserves); // ! debug
+
   return wrappedTokenReserves;
 };

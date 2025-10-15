@@ -18,7 +18,7 @@ type DashboardReserveData = ReserveWithId & BorrowAssetsItem & SupplyAssetsItem;
 
 export type DashboardReserve = DashboardReserveData & {
   // Additions
-  borrowRateMode: InterestRate; // for the borrow positions list
+  borrowRateMode: InterestRate; // for the borrow positions list //!Esto quizas hay que wipped out
   // Overrides
   reserve: ReserveWithId;
 };

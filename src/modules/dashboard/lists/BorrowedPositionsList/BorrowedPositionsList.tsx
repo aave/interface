@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GENERAL } from 'src/utils/events';
@@ -50,6 +50,7 @@ const head = [
 
 export const BorrowedPositionsList = () => {
   const { user, loading, eModes, reserves } = useAppDataContext();
+
   const [currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [store.currentMarketData, store.currentNetworkConfig])
   );
@@ -198,12 +199,12 @@ export const BorrowedPositionsList = () => {
         <>
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
-            <AssetCapsProvider
+            <AssetCapsProviderSDK
               asset={item.reserve}
               key={item.underlyingAsset + item.borrowRateMode}
             >
               <BorrowedPositionsListItem item={item} disableEModeSwitch={disableEModeSwitch} />
-            </AssetCapsProvider>
+            </AssetCapsProviderSDK>
           ))}
         </>
       ) : (

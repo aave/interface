@@ -55,7 +55,7 @@ export const SupplyAssetsListItem = (
   const wrappedTokenReserves = useWrappedTokens();
 
   const { reserve } = params;
-  console.log('SupplyAssetsListItem params: ', params.symbol, params.iconSymbol); // ! debug
+
   const wrappedToken = wrappedTokenReserves.find(
     (r) => r.tokenOut.underlyingAsset === reserve.underlyingToken.address
   );
@@ -458,7 +458,7 @@ export const SupplyAssetsListItemMobile = ({
         mb={2}
       >
         <ListItemCanBeCollateral
-          isIsolated={!!reserve.isolationModeConfig?.canBeCollateral}
+          isIsolated={!!reserve.isolationModeConfig}
           usageAsCollateralEnabled={reserve.supplyInfo.canBeCollateral}
         />
       </Row>

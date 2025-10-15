@@ -1,9 +1,9 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { useRootStore } from 'src/store/root';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
@@ -18,64 +18,60 @@ import { ListValueRow } from '../ListValueRow';
 
 export const SuppliedPositionsListMobileItem = ({
   reserve,
-  underlyingBalance,
-  underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
+  symbol,
+  name,
+  iconSymbol,
 }: DashboardReserve) => {
-  const { user } = useAppDataContext();
   const [currentMarketData, currentMarket] = useRootStore(
     useShallow((state) => [state.currentMarketData, state.currentMarket])
   );
+
   const { openSupply, openCollateralSwap, openWithdraw, openCollateralChange } = useModalContext();
-  const { debtCeiling } = useAssetCaps();
+
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
-  const {
-    symbol,
-    iconSymbol,
-    name,
-    supplyAPY,
-    isIsolated,
-    aIncentivesData,
-    aTokenAddress,
-    isFrozen,
-    isActive,
-    isPaused,
-  } = reserve;
 
-  const canBeEnabledAsCollateral = user
-    ? !debtCeiling.isMaxed &&
-      reserve.reserveLiquidationThreshold !== '0' &&
-      ((!reserve.isIsolated && !user.isInIsolationMode) ||
-        user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
-        (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'))
-    : false;
+  const { isFrozen, isPaused } = reserve;
 
-  const disableSwap = !isActive || isPaused || reserve.symbol == 'stETH';
-  const disableWithdraw = !isActive || isPaused;
-  const disableSupply = !isActive || isFrozen || isPaused;
+  const { iconSymbol: iconSymbolFetched } = fetchIconSymbolAndName({
+    underlyingAsset: reserve.underlyingToken.address,
+    symbol: reserve.underlyingToken.symbol,
+    name: reserve.underlyingToken.name,
+  });
+
+  const displayIconSymbol =
+    iconSymbolFetched?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
+      ? iconSymbolFetched
+      : reserve.underlyingToken.symbol;
+
+  const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
+  const canBeEnabledAsCollateral = reserve.usageAsCollateralEnabledOnUser;
+  const disableSwap = isPaused || reserve.underlyingToken.symbol == 'stETH';
+  const disableWithdraw = isPaused;
+  const disableSupply = isFrozen || isPaused;
 
   return (
     <ListMobileItemWrapper
-      symbol={symbol}
-      iconSymbol={iconSymbol}
-      name={name}
-      underlyingAsset={underlyingAsset}
+      symbol={symbol ?? reserve.underlyingToken.symbol}
+      iconSymbol={iconSymbol ?? displayIconSymbol}
+      name={name ?? reserve.underlyingToken.name}
+      underlyingAsset={underlyingAsset ?? reserve.underlyingToken.address}
       currentMarket={currentMarket}
-      frozen={reserve.isFrozen}
+      frozen={isFrozen}
       showSupplyCapTooltips
       showDebtCeilingTooltips
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        reserve.symbol,
+        symbol || reserve.underlyingToken.symbol,
         currentMarket,
         ProtocolAction.supply
       )}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
-        value={Number(underlyingBalance)}
-        subValue={Number(underlyingBalanceUSD)}
-        disabled={Number(underlyingBalance) === 0}
+        value={Number(reserve.balancePosition?.amount.value ?? 0)}
+        subValue={Number(reserve.balancePosition?.usd ?? 0)}
+        disabled={Number(reserve.balancePosition?.amount.value ?? 0) === 0}
       />
 
       <Row
@@ -85,10 +81,10 @@ export const SuppliedPositionsListMobileItem = ({
         mb={2}
       >
         <IncentivesCard
-          value={Number(supplyAPY)}
-          incentives={aIncentivesData}
-          address={aTokenAddress}
-          symbol={symbol}
+          value={Number(reserve.supplyInfo.apy.value ?? 0)}
+          incentives={supplyProtocolIncentives}
+          address={reserve.aToken.address}
+          symbol={reserve.underlyingToken.symbol}
           variant="secondary14"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
@@ -97,20 +93,20 @@ export const SuppliedPositionsListMobileItem = ({
 
       <Row
         caption={<Trans>Used as collateral</Trans>}
-        align={isIsolated ? 'flex-start' : 'center'}
+        align={reserve.userState?.isInIsolationMode ? 'flex-start' : 'center'}
         captionVariant="description"
         mb={2}
       >
         <ListItemUsedAsCollateral
-          disabled={reserve.isPaused}
-          isIsolated={isIsolated}
-          usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
-          canBeEnabledAsCollateral={canBeEnabledAsCollateral}
+          disabled={isPaused}
+          isIsolated={reserve.userState!.isInIsolationMode}
+          usageAsCollateralEnabledOnUser={reserve.isCollateralPosition!}
+          canBeEnabledAsCollateral={canBeEnabledAsCollateral!}
           onToggleSwitch={() =>
             openCollateralChange(
               underlyingAsset,
               currentMarket,
-              reserve.name,
+              reserve.underlyingToken.name,
               'dashboard',
               usageAsCollateralEnabledOnUser
             )
@@ -132,7 +128,9 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={disableSupply}
             variant="contained"
-            onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
+            onClick={() =>
+              openSupply(underlyingAsset, currentMarket, reserve.underlyingToken.name, 'dashboard')
+            }
             fullWidth
           >
             <Trans>Supply</Trans>
@@ -141,7 +139,9 @@ export const SuppliedPositionsListMobileItem = ({
         <Button
           disabled={disableWithdraw}
           variant="outlined"
-          onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
+          onClick={() =>
+            openWithdraw(underlyingAsset, currentMarket, reserve.underlyingToken.name, 'dashboard')
+          }
           sx={{ ml: 1.5 }}
           fullWidth
         >

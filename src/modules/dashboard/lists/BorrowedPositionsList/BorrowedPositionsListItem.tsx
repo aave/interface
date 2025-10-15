@@ -4,7 +4,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { Row } from 'src/components/primitives/Row';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -29,7 +29,7 @@ export const BorrowedPositionsListItem = ({
   item,
   disableEModeSwitch,
 }: BorrowedPositionsListItem) => {
-  const { borrowCap } = useAssetCaps();
+  const { borrowCap } = useAssetCapsSDK();
   const [currentMarket, currentMarketData] = useRootStore(
     useShallow((state) => [state.currentMarket, state.currentMarketData])
   );

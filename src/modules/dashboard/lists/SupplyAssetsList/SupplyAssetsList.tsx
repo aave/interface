@@ -128,6 +128,7 @@ export const SupplyAssetsList = () => {
             usageAsCollateralEnabledOnUser,
             detailsAddress: reserve.underlyingToken.address,
             id: reserve.id + 'base',
+            supplyAPY: Number(reserve.supplyInfo.apy.value),
           },
           {
             ...reserve,
@@ -150,6 +151,7 @@ export const SupplyAssetsList = () => {
         availableToDeposit,
         availableToDepositUSD,
         usageAsCollateralEnabledOnUser,
+        supplyAPY: Number(reserve.supplyInfo.apy.value),
         detailsAddress: reserve.underlyingToken.address,
       };
     })
