@@ -161,11 +161,7 @@ export const MeritIncentivesTooltipContent = ({
           does not guarantee the program and accepts no liability.
         </Trans>{' '}
         <Link
-          href={
-            meritIncentives.customForumLink
-              ? meritIncentives.customForumLink
-              : 'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898'
-          }
+          href={'https://www.aavechan.com/'}
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
