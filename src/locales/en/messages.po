@@ -665,6 +665,10 @@ msgstr "Balance to revoke"
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
 
+#: src/components/MarketSwitcher.tsx
+msgid "The Ink instance is governed by the Ink Foundation"
+msgstr "The Ink instance is governed by the Ink Foundation"
+
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "View contract"
 msgstr "View contract"
