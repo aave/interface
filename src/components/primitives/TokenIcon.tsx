@@ -1,5 +1,5 @@
 import { Badge, Box, Icon, IconProps } from '@mui/material';
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import { forwardRef, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import LazyLoad from 'react-lazy-load';
 
 /**
@@ -169,11 +169,13 @@ function SingleTokenIcon({ symbol, aToken, waToken, ...rest }: TokenIconProps) {
     setTokenSymbol(symbol.toLowerCase());
     setError('');
   }, [symbol]);
-  const handleError = (e: Error) => {
+  const handleError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     console.error('❌ Token icon error for:', tokenSymbol);
     console.error('❌ Attempted path:', `/icons/tokens/${tokenSymbol}.svg`);
     console.error('❌ Full error:', e);
-    setError(e.message || 'unknown');
+    console.error('❌ Error type:', e.type);
+    console.error('❌ Target src:', (e.target as HTMLImageElement)?.src);
+    setError(e.type || 'unknown');
     setTokenSymbol('default');
   };
 
