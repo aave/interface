@@ -163,11 +163,33 @@ interface TokenIconProps extends IconProps {
 
 function SingleTokenIcon({ symbol, aToken, waToken, ...rest }: TokenIconProps) {
   const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     setTokenSymbol(symbol.toLowerCase());
+    setError('');
   }, [symbol]);
+  const handleError = (e: Error) => {
+    console.error('❌ Token icon error for:', tokenSymbol);
+    console.error('❌ Attempted path:', `/icons/tokens/${tokenSymbol}.svg`);
+    console.error('❌ Full error:', e);
+    setError(e.message || 'unknown');
+    setTokenSymbol('default');
+  };
 
+  const handleLoad = () => {
+    console.log('✅ Token icon loaded successfully:', tokenSymbol);
+  };
+  console.log(
+    'Rendering SingleTokenIcon for symbol:',
+    symbol,
+    'aToken:',
+    aToken,
+    'tokenSymbol:',
+    tokenSymbol,
+    'error:',
+    error
+  );
   return (
     <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
       {aToken || waToken ? (
@@ -175,7 +197,8 @@ function SingleTokenIcon({ symbol, aToken, waToken, ...rest }: TokenIconProps) {
       ) : (
         <img
           src={`/icons/tokens/${tokenSymbol}.svg`}
-          onError={() => setTokenSymbol('default')}
+          onError={handleError}
+          onLoad={handleLoad}
           width="100%"
           height="100%"
           alt={`${symbol} icon`}
