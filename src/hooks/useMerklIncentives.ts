@@ -16,7 +16,7 @@ enum OpportunityStatus {
   UPCOMING = 'UPCOMING',
 }
 
-type MerklOpportunity = {
+export type MerklOpportunity = {
   chainId: number;
   type: string;
   identifier: Address;
@@ -92,6 +92,10 @@ export type MerklIncentivesBreakdown = {
     protocol: number;
     protocolIncentives: number;
     merklIncentives: number; // Now represents APY (converted from APR)
+  };
+  points?: {
+    dailyPoints: number;
+    pointsPerThousandUsd: number;
   };
 };
 type WhitelistApiResponse = {

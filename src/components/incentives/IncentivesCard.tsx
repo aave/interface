@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { ENABLE_SELF_CAMPAIGN, useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
+import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
@@ -73,13 +74,31 @@ export const IncentivesCard = ({
     protocolIncentives: incentives || [],
   });
 
+  const { data: merklPointsIncentives } = useMerklPointsIncentives({
+    market,
+    rewardedAsset: address,
+    protocolAction,
+    protocolAPY,
+    protocolIncentives: incentives || [],
+  });
+
   const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
 
   // TODO: This is a one-off for the Self campaign.
   // Remove once the Self incentives are finished.
   const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
   const totalMeritAPY = meritIncentivesAPR + selfAPY;
-  const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
+
+  let merklIncentivesAPR = 0;
+  if (merklIncentives?.breakdown) {
+    if (merklIncentives.breakdown.points) {
+      merklIncentivesAPR = merklPointsIncentives?.breakdown?.merklIncentivesAPR || 0;
+    } else {
+      merklIncentivesAPR = merklIncentives.breakdown.merklIncentivesAPR || 0;
+    }
+  } else if (merklPointsIncentives?.breakdown) {
+    merklIncentivesAPR = merklPointsIncentives.breakdown.merklIncentivesAPR || 0;
+  }
 
   const isBorrow = protocolAction === ProtocolAction.borrow;
 

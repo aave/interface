@@ -6,7 +6,8 @@ import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
-import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
+import { ExtendedReserveIncentiveResponse, useMerklIncentives } from 'src/hooks/useMerklIncentives';
+import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
@@ -174,19 +175,36 @@ export const MerklIncentivesButton = (params: {
 }) => {
   const [open, setOpen] = useState(false);
   const { data: merklIncentives } = useMerklIncentives(params);
+  const { data: merklPointsIncentives } = useMerklPointsIncentives(params);
 
-  if (!merklIncentives) {
+  let incentiveData = null;
+  let incentiveAPR = 0;
+
+  if (merklIncentives?.breakdown) {
+    if (merklIncentives.breakdown.points) {
+      incentiveData = merklPointsIncentives;
+      incentiveAPR = merklPointsIncentives?.incentiveAPR ? +merklPointsIncentives.incentiveAPR : 0;
+    } else {
+      incentiveData = merklIncentives;
+      incentiveAPR = +merklIncentives.incentiveAPR;
+    }
+  } else if (merklPointsIncentives?.breakdown) {
+    incentiveData = merklPointsIncentives;
+    incentiveAPR = +merklPointsIncentives.incentiveAPR;
+  }
+
+  if (!incentiveData) {
     return null;
   }
 
   return (
     <ContentWithTooltip
-      tooltipContent={<MerklIncentivesTooltipContent merklIncentives={merklIncentives} />}
+      tooltipContent={<MerklIncentivesTooltipContent merklIncentives={incentiveData} />}
       withoutHover
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[merklIncentives]} incentivesNetAPR={+merklIncentives.incentiveAPR} />
+      <Content incentives={[incentiveData]} incentivesNetAPR={incentiveAPR} />
     </ContentWithTooltip>
   );
 };
@@ -335,13 +353,12 @@ const Content = ({
       return null;
     }
   }
+  const hasPointsBreakdown = incentives.some(
+    (incentive) => (incentive as ExtendedReserveIncentiveResponse)?.breakdown?.points !== undefined
+  );
 
-  if (incentivesNetAPR === 0) {
-    if (displayBlank) {
-      return <BlankIncentives />;
-    } else {
-      return null;
-    }
+  if (incentivesNetAPR === 0 && !hasPointsBreakdown) {
+    return displayBlank ? <BlankIncentives /> : null;
   }
 
   const incentivesButtonValue = () => {

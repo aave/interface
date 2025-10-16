@@ -19,6 +19,8 @@ export const MerklIncentivesTooltipContent = ({
 
   const merklIncentivesFormatted = getSymbolMap(merklIncentives);
 
+  const isPointsBased = Boolean(merklIncentives?.breakdown?.points);
+
   return (
     <Box
       sx={{
@@ -130,7 +132,7 @@ export const MerklIncentivesTooltipContent = ({
               </Row>
             )}
 
-            {/* Merit Incentives */}
+            {/* Merkl Incentives */}
             <Row
               height={32}
               caption={
@@ -156,22 +158,51 @@ export const MerklIncentivesTooltipContent = ({
               }
               width="100%"
             >
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <FormattedNumber
-                  value={
-                    merklIncentives.breakdown.isBorrow
-                      ? -merklIncentives.breakdown.merklIncentivesAPR
-                      : merklIncentives.breakdown.merklIncentivesAPR
-                  }
-                  percent
-                  variant={typographyVariant}
-                />
-                <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-                  <Trans>APY</Trans>
-                </Typography>
-              </Box>
+              {isPointsBased ? (
+                ''
+              ) : (
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <FormattedNumber
+                    value={
+                      merklIncentives.breakdown.isBorrow
+                        ? -merklIncentives.breakdown.merklIncentivesAPR
+                        : merklIncentives.breakdown.merklIncentivesAPR
+                    }
+                    percent
+                    variant={typographyVariant}
+                  />
+                  <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+                    <Trans>APY</Trans>
+                  </Typography>
+                </Box>
+              )}
             </Row>
 
+            {/* Points-based rewards */}
+            {isPointsBased && (
+              <>
+                <Row
+                  height={32}
+                  caption={
+                    <Typography variant={typographyVariant}>
+                      <Trans>Est. daily points per $1k</Trans>
+                    </Typography>
+                  }
+                  width="100%"
+                >
+                  <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                    <FormattedNumber
+                      value={merklIncentives.breakdown.points?.pointsPerThousandUsd || 0}
+                      visibleDecimals={2}
+                      variant={typographyVariant}
+                    />
+                    <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+                      <Trans>Points</Trans>
+                    </Typography>
+                  </Box>
+                </Row>
+              </>
+            )}
             {/* Total APY */}
             <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
               <Row

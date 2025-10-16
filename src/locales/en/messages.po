@@ -892,6 +892,10 @@ msgstr "You've successfully submitted an order."
 msgid "Max"
 msgstr "Max"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Points"
+msgstr "Points"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "Greek"
@@ -1337,6 +1341,10 @@ msgstr "Borrow balance after repay"
 #: src/modules/migration/MigrationLists.tsx
 msgid "Supplied assets"
 msgstr "Supplied assets"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Est. daily points per $1k"
+msgstr "Est. daily points per $1k"
 
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 msgid "Withdraw & Switch"
