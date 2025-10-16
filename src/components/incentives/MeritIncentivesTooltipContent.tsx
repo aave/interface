@@ -161,7 +161,7 @@ export const MeritIncentivesTooltipContent = ({
           does not guarantee the program and accepts no liability.
         </Trans>{' '}
         <Link
-          href={'https://www.aavechan.com/'}
+          href={'https://apps.aavechan.com/merit'}
           sx={{ textDecoration: 'underline' }}
           variant="caption"
           color="text.secondary"
