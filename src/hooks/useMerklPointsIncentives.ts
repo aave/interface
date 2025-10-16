@@ -27,15 +27,39 @@ type ReserveIncentiveAdditionalData = {
   customForumLink?: string;
 };
 
-type WhitelistApiResponse = {
-  whitelistedRewardTokens: string[];
-  additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData>;
+const additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData> = {
+  // GHO
+  '57073-0xC629140A8aA21F8f319A21F41b2DC1b0431693C1': {
+    customMessage:
+      'Earn TydroInkPoints by lending GHO on Tydro. Rewards accumulate automatically based on your net lending position.',
+  },
+  // USD₮0
+  '57073-0x99cBF1Ff4527675Ed3301671105C9F7748fb8a04': {
+    customMessage:
+      'Earn TydroInkPoints by lending USD₮0 on Tydro. Rewards accumulate automatically based on your net lending position.',
+  },
+  // kBTC
+  '57073-0xC712C3a5624de08EA593FB23270804B47942564e': {
+    customMessage:
+      'Earn TydroInkPoints by lending kBTC on Tydro. Rewards accumulate automatically based on your net lending position.',
+  },
+  // USDG
+  '57073-0x4cd13ce4edbB5523fd4849252b5f1bF215129D10': {
+    customMessage:
+      'Earn TydroInkPoints by lending USDG on Tydro. Rewards accumulate automatically based on your net lending position.',
+  },
+  // WETH
+  '57073-0x2B35eF056728BaFFaC103e3b81cB029788006EF9': {
+    customMessage:
+      'Earn TydroInkPoints by lending WETH on Tydro. Rewards accumulate automatically based on your net lending position.',
+  },
 };
+
 // Hardcoded Merkl endpoint for INK/tydro incentives
 const INK_POINT_TOKEN_ADDRESSES = ['0x40aBd730Cc9dA34a8EE9823fEaBDBa35E50c4ac7'];
 const MERKL_TYDRO_ENDPOINT =
   'https://api.merkl.xyz/v4/opportunities?mainProtocolId=tydro&chainName=ink'; // Merkl API
-const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
+
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
   protocolAction: ProtocolAction
@@ -48,19 +72,6 @@ const checkOpportunityAction = (
     default:
       return false;
   }
-};
-const useWhitelistedTokens = () => {
-  return useQuery({
-    queryFn: async (): Promise<WhitelistApiResponse> => {
-      const response = await fetch(WHITELIST_ENDPOINT);
-      if (!response.ok) {
-        throw new Error('Failed to fetch whitelisted tokens');
-      }
-      return response.json();
-    },
-    queryKey: ['whitelistedTokens'],
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
 };
 
 export const useMerklPointsIncentives = ({
@@ -79,7 +90,6 @@ export const useMerklPointsIncentives = ({
   enabled?: boolean;
 }) => {
   const currentChainId = useRootStore((state) => state.currentChainId);
-  const { data: whitelistData } = useWhitelistedTokens();
 
   return useQuery({
     queryFn: async () => {
@@ -92,37 +102,18 @@ export const useMerklPointsIncentives = ({
     enabled,
     select: (merklOpportunities) => {
       const opportunities = merklOpportunities.filter((opportunity) => {
-        if (!rewardedAsset) {
+        if (!rewardedAsset || !opportunity.explorerAddress || !protocolAction) {
           return false;
         }
-
-        if (!opportunity.explorerAddress) {
-          return false;
-        }
-
         const matchingToken = opportunity.tokens.find(
           (token) => token.address.toLowerCase() === rewardedAsset.toLowerCase()
         );
 
-        if (!matchingToken) {
-          return false;
-        }
-
-        if (!protocolAction) {
-          return false;
-        }
-
-        const actionMatch = checkOpportunityAction(opportunity.action, protocolAction);
-        if (!actionMatch) {
-          return false;
-        }
-
-        const chainMatch = opportunity.chainId === currentChainId;
-        if (!chainMatch) {
-          return false;
-        }
-
-        return true;
+        return (
+          matchingToken &&
+          checkOpportunityAction(opportunity.action, protocolAction) &&
+          opportunity.chainId === currentChainId
+        );
       });
 
       if (opportunities.length === 0) {
@@ -160,7 +151,7 @@ export const useMerklPointsIncentives = ({
         : protocolAPY + protocolIncentivesAPR + merklIncentivesAPY;
 
       const incentiveKey = `${currentChainId}-${checksumAddress(rewardedAsset as Address)}`;
-      const incentiveAdditionalData = whitelistData?.additionalIncentiveInfo?.[incentiveKey];
+      const incentiveAdditionalData = additionalIncentiveInfo?.[incentiveKey];
 
       const dailyPoints = Number(rewardsBreakdown.value);
       const tvl = Number(opportunity.tvl) || 0;
