@@ -181,8 +181,6 @@ export const SuppliedPositionsList = () => {
     supplyReservesLookup,
     userSupplyPositions,
   ]);
-  //! debug
-  console.log('suppliedPositions', suppliedPositions);
 
   const userEarnedAPY = useMemo(() => {
     const totalSupplyUSD = suppliedPositions.reduce(
@@ -203,10 +201,6 @@ export const SuppliedPositionsList = () => {
     return { earnedAPY, totalSupplyUSD };
   }, [suppliedPositions]);
 
-  // ! debug
-  console.log('🔍 APY Breakdown:', {
-    earnedAPY: (userEarnedAPY.earnedAPY * 100).toFixed(2) + '%',
-  });
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = suppliedPositions as DashboardReserve[];
   const sortedReserves = handleSortDashboardReserves(

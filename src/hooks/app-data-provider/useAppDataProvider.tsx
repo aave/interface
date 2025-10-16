@@ -57,6 +57,7 @@ export type ExtendedFormattedUser = _ExtendedFormattedUser;
 export type ReserveWithId = Reserve & {
   id: string;
   supplyAPY?: number;
+  borrowAPY?: number;
   underlyingBalance?: string;
   usageAsCollateralEnabledOnUser?: boolean;
   isCollateralPosition?: boolean;

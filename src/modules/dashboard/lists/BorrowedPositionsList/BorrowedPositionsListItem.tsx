@@ -2,11 +2,13 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { Row } from 'src/components/primitives/Row';
 import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
@@ -40,23 +42,24 @@ export const BorrowedPositionsListItem = ({
   const reserve = item.reserve;
 
   const disableBorrow =
-    !reserve.isActive ||
-    !reserve.borrowingEnabled ||
+    reserve.borrowInfo?.borrowingState === 'DISABLED' ||
     reserve.isFrozen ||
     reserve.isPaused ||
     borrowCap.isMaxed;
 
-  const disableRepay = !reserve.isActive || reserve.isPaused;
+  const disableRepay = reserve.isPaused;
 
   const showSwitchButton = !!isFeatureEnabled.debtSwitch(currentMarketData);
+
   const disableSwitch =
     // NOTE: Disabled on v2 because borrowing is not possible
     currentMarket === 'proto_mainnet' ||
     currentMarket === 'proto_polygon' ||
     reserve.isPaused ||
-    !reserve.isActive ||
-    reserve.symbol == 'stETH' ||
+    reserve.underlyingToken.symbol == 'stETH' ||
     disableEModeSwitch;
+
+  const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
 
   const props: BorrowedPositionsListItemProps = {
     ...item,
@@ -64,23 +67,28 @@ export const BorrowedPositionsListItem = ({
     disableSwitch,
     disableRepay,
     showSwitchButton,
-    totalBorrows: item.variableBorrows,
-    totalBorrowsUSD: item.variableBorrowsUSD,
-    borrowAPY: Number(reserve.variableBorrowAPY),
-    incentives: reserve.vIncentivesData,
-    variableDebtTokenAddress: reserve.variableDebtTokenAddress,
+    // Usar balancePosition y apyPosition del SDK
+    totalBorrows: item.balancePosition?.amount.value ?? '0',
+    borrowAPY: Number(item.apyPosition?.value ?? 0),
+    // Incentivos del SDK
+    borrowProtocolIncentives: borrowProtocolIncentives,
     onDetbSwitchClick: () => {
-      openDebtSwitch(reserve.underlyingAsset);
+      openDebtSwitch(item.underlyingAsset ?? item.reserve.underlyingToken.address);
     },
     onOpenBorrow: () => {
-      openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'dashboard');
+      openBorrow(
+        item.underlyingAsset ?? item.reserve.underlyingToken.address,
+        currentMarket,
+        item.name ?? item.reserve.underlyingToken.name,
+        'dashboard'
+      );
     },
     onOpenRepay: () => {
       openRepay(
-        reserve.underlyingAsset,
-        reserve.isFrozen,
+        item.underlyingAsset ?? item.reserve.underlyingToken.address,
+        item.reserve.isFrozen,
         currentMarket,
-        reserve.name,
+        item.name ?? item.reserve.underlyingToken.name,
         'dashboard'
       );
     },
@@ -93,13 +101,14 @@ export const BorrowedPositionsListItem = ({
   }
 };
 
-interface BorrowedPositionsListItemProps extends DashboardReserve {
+interface BorrowedPositionsListItemProps extends Omit<DashboardReserve, 'incentives'> {
   disableBorrow: boolean;
   disableSwitch: boolean;
   disableRepay: boolean;
   showSwitchButton: boolean;
   borrowAPY: number;
-  incentives: ReserveIncentiveResponse[] | undefined;
+  borrowProtocolIncentives: ReserveIncentiveResponse[] | undefined;
+
   onDetbSwitchClick: () => void;
   onOpenBorrow: () => void;
   onOpenRepay: () => void;
@@ -111,11 +120,13 @@ const BorrowedPositionsListItemDesktop = ({
   disableSwitch,
   disableRepay,
   showSwitchButton,
-  totalBorrows,
-  totalBorrowsUSD,
   borrowAPY,
-  variableDebtTokenAddress,
-  incentives,
+  borrowProtocolIncentives,
+  symbol,
+  iconSymbol,
+  name,
+  detailsAddress,
+
   onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
@@ -123,47 +134,60 @@ const BorrowedPositionsListItemDesktop = ({
   const currentMarket = useRootStore((state) => state.currentMarket);
 
   const isGho = displayGhoForMintableMarket({
-    symbol: reserve.symbol,
+    symbol: reserve.underlyingToken.symbol,
     currentMarket,
   });
+  const { iconSymbol: iconSymbolFetched } = fetchIconSymbolAndName({
+    underlyingAsset: reserve.underlyingToken.address,
+    symbol: reserve.underlyingToken.symbol,
+    name: reserve.underlyingToken.name,
+  });
 
+  const displayIconSymbol =
+    iconSymbolFetched?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
+      ? iconSymbolFetched
+      : reserve.underlyingToken.symbol;
   return (
     <ListItemWrapper
-      symbol={reserve.symbol}
-      iconSymbol={reserve.iconSymbol}
-      name={reserve.name}
-      detailsAddress={reserve.underlyingAsset}
+      symbol={symbol || reserve.underlyingToken.symbol}
+      iconSymbol={iconSymbol || displayIconSymbol}
+      name={name || reserve.underlyingToken.name}
+      detailsAddress={detailsAddress}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
       paused={reserve.isPaused}
-      borrowEnabled={reserve.borrowingEnabled}
-      data-cy={`dashboardBorrowedListItem_${reserve.symbol.toUpperCase()}`}
+      borrowEnabled={reserve.borrowInfo?.borrowingState === 'ENABLED'}
+      data-cy={`dashboardBorrowedListItem_${reserve.underlyingToken.symbol.toUpperCase()}`}
       showBorrowCapTooltips
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
-        reserve.symbol,
+        reserve.underlyingToken.symbol,
         currentMarket,
         ProtocolAction.borrow
       )}
     >
-      <ListValueColumn symbol={reserve.symbol} value={totalBorrows} subValue={totalBorrowsUSD} />
+      <ListValueColumn
+        symbol={reserve.underlyingToken.symbol}
+        value={reserve.balancePosition?.amount.value ?? '0'}
+        subValue={reserve.balancePosition?.usd ?? '0'}
+      />
 
       {isGho ? (
         <ListGhoAPRColumn
           value={borrowAPY}
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
-          address={variableDebtTokenAddress}
-          incentives={incentives}
-          symbol={reserve.symbol}
+          address={reserve.vToken.address}
+          incentives={borrowProtocolIncentives}
+          symbol={reserve.underlyingToken.symbol}
         />
       ) : (
         <ListAPRColumn
           value={borrowAPY}
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
-          address={variableDebtTokenAddress}
-          incentives={incentives}
-          symbol={reserve.symbol}
+          address={reserve.vToken.address}
+          incentives={borrowProtocolIncentives}
+          symbol={reserve.underlyingToken.symbol}
         />
       )}
 
@@ -192,32 +216,40 @@ const BorrowedPositionsListItemDesktop = ({
 
 const BorrowedPositionsListItemMobile = ({
   reserve,
-  totalBorrows,
-  totalBorrowsUSD,
   disableBorrow,
-  showSwitchButton,
   disableSwitch,
-  borrowAPY,
-  incentives,
-  variableDebtTokenAddress,
   disableRepay,
+  showSwitchButton,
+  borrowAPY,
+  borrowProtocolIncentives,
+  symbol,
+  iconSymbol,
+  name,
+
   onDetbSwitchClick,
   onOpenBorrow,
   onOpenRepay,
 }: BorrowedPositionsListItemProps) => {
   const currentMarket = useRootStore((state) => state.currentMarket);
+  const { iconSymbol: iconSymbolFetched } = fetchIconSymbolAndName({
+    underlyingAsset: reserve.underlyingToken.address,
+    symbol: reserve.underlyingToken.symbol,
+    name: reserve.underlyingToken.name,
+  });
 
-  const { symbol, iconSymbol, name } = reserve;
-
+  const displayIconSymbol =
+    iconSymbolFetched?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
+      ? iconSymbolFetched
+      : reserve.underlyingToken.symbol;
   return (
     <ListMobileItemWrapper
-      symbol={symbol}
-      iconSymbol={iconSymbol}
-      name={name}
-      underlyingAsset={reserve.underlyingAsset}
+      symbol={symbol || reserve.underlyingToken.symbol}
+      iconSymbol={iconSymbol || displayIconSymbol}
+      name={name || reserve.underlyingToken.name}
+      underlyingAsset={reserve.underlyingToken.address}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
-      borrowEnabled={reserve.borrowingEnabled}
+      borrowEnabled={reserve.borrowInfo?.borrowingState === 'ENABLED'}
       showBorrowCapTooltips
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         symbol,
@@ -227,17 +259,17 @@ const BorrowedPositionsListItemMobile = ({
     >
       <ListValueRow
         title={<Trans>Debt</Trans>}
-        value={totalBorrows}
-        subValue={totalBorrowsUSD}
-        disabled={Number(totalBorrows) === 0}
+        value={reserve.balancePosition?.amount.value ?? '0'}
+        subValue={reserve.balancePosition?.usd ?? '0'}
+        disabled={Number(reserve.balancePosition?.amount.value) === 0}
       />
 
       <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
         <IncentivesCard
           value={borrowAPY}
-          incentives={incentives}
-          address={variableDebtTokenAddress}
-          symbol={symbol}
+          incentives={borrowProtocolIncentives}
+          address={reserve.vToken.address}
+          symbol={reserve.underlyingToken.symbol}
           variant="secondary14"
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}

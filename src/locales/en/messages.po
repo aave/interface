@@ -545,6 +545,10 @@ msgstr "Total"
 msgid "{stepName}"
 msgstr "{stepName}"
 
+#: src/modules/dashboard/DashboardEModeButton.tsx
+msgid "DISABLED"
+msgstr "DISABLED"
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx

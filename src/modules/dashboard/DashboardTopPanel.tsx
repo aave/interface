@@ -41,10 +41,10 @@ interface MeritReward {
 }
 
 export const DashboardTopPanel = () => {
-  const { user, reserves, loading, userState, supplyReserves } = useAppDataContext();
+  const { user, reserves, loading, userState, borrowReserves } = useAppDataContext();
   console.log('UserLegacy:', user);
   console.log('UserSDK:', userState);
-  console.log('ReservesSDK:', supplyReserves);
+  console.log('ReservesSDKBorrows:', borrowReserves);
   //! log
   console.log('ReservesLegacy:', reserves);
 
