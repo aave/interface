@@ -178,9 +178,9 @@ const IncentivesSymbolMap: {
     aToken: true,
   },
   TydroInkPoints: {
-    tokenIconSymbol: 'TydroInkPoints',
+    tokenIconSymbol: 'tydroInkPoints',
     symbol: 'TydroInkPoints',
-    aToken: false,
+    aToken: true,
   },
 };
 
