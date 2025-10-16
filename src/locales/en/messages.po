@@ -2276,6 +2276,11 @@ msgstr "Array parameters that should be equal length are not"
 msgid "Your balance is lower than the selected amount."
 msgstr "Your balance is lower than the selected amount."
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "from the"
+msgstr "from the"
+
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "An error has occurred fetching the proposal."
 msgstr "An error has occurred fetching the proposal."

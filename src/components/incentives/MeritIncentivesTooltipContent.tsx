@@ -7,6 +7,7 @@ import {
   MeritIncentivesBreakdown,
 } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link, ROUTES } from '../primitives/Link';
@@ -112,6 +113,7 @@ export const MeritIncentivesTooltipContent = ({
 }) => {
   const theme = useTheme();
   const { openClaimRewards } = useModalContext();
+  const account = useRootStore((store) => store.account);
   const typographyVariant = 'secondary12';
 
   const handleClaimClick = () => {
@@ -231,22 +233,30 @@ export const MeritIncentivesTooltipContent = ({
         {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig ? (
           <>
             <Trans>Merit Program and Self rewards can be claimed </Trans>
-            <Typography
-              component="span"
-              onClick={handleClaimClick}
-              sx={{
-                textDecoration: 'underline',
-                cursor: 'pointer',
-                fontSize: '13px !important',
-                fontWeight: 'bold',
-                mx: 0.5,
-              }}
-              variant="caption"
-              color="primary"
-            >
-              <Trans>here</Trans>
-            </Typography>
-            <Trans> or from the </Trans>
+            {account ? (
+              <>
+                <Typography
+                  component="span"
+                  onClick={handleClaimClick}
+                  sx={{
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    fontSize: '13px !important',
+                    fontWeight: 'bold',
+                    mx: 0.5,
+                  }}
+                  variant="caption"
+                  color="primary"
+                >
+                  <Trans>here</Trans>
+                </Typography>
+                <Trans> or from the </Trans>
+              </>
+            ) : (
+              <span style={{ marginLeft: '4px' }}>
+                <Trans>from the </Trans>
+              </span>
+            )}
             <Link
               href={`${ROUTES.dashboard}`}
               sx={{
@@ -265,22 +275,30 @@ export const MeritIncentivesTooltipContent = ({
         ) : (
           <>
             <Trans>Merit Program rewards can be claimed </Trans>
-            <Typography
-              component="span"
-              onClick={handleClaimClick}
-              sx={{
-                textDecoration: 'underline',
-                cursor: 'pointer',
-                fontSize: '13px !important',
-                fontWeight: 'bold',
-                mx: 0.5,
-              }}
-              variant="caption"
-              color="primary"
-            >
-              <Trans>here</Trans>
-            </Typography>
-            <Trans> or from the </Trans>
+            {account ? (
+              <>
+                <Typography
+                  component="span"
+                  onClick={handleClaimClick}
+                  sx={{
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    fontSize: '13px !important',
+                    fontWeight: 'bold',
+                    mx: 0.5,
+                  }}
+                  variant="caption"
+                  color="primary"
+                >
+                  <Trans>here</Trans>
+                </Typography>
+                <Trans> or from the </Trans>
+              </>
+            ) : (
+              <span style={{ marginLeft: '4px' }}>
+                <Trans>from the </Trans>
+              </span>
+            )}
             <Link
               href={`${ROUTES.dashboard}`}
               sx={{
