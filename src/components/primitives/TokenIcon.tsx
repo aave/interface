@@ -1,5 +1,5 @@
 import { Badge, Box, Icon, IconProps } from '@mui/material';
-import { forwardRef, SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import LazyLoad from 'react-lazy-load';
 
 /**
@@ -163,35 +163,11 @@ interface TokenIconProps extends IconProps {
 
 function SingleTokenIcon({ symbol, aToken, waToken, ...rest }: TokenIconProps) {
   const [tokenSymbol, setTokenSymbol] = useState(symbol.toLowerCase());
-  const [error, setError] = useState<string>('');
 
   useEffect(() => {
     setTokenSymbol(symbol.toLowerCase());
-    setError('');
   }, [symbol]);
-  const handleError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
-    console.error('❌ Token icon error for:', tokenSymbol);
-    console.error('❌ Attempted path:', `/icons/tokens/${tokenSymbol}.svg`);
-    console.error('❌ Full error:', e);
-    console.error('❌ Error type:', e.type);
-    console.error('❌ Target src:', (e.target as HTMLImageElement)?.src);
-    setError(e.type || 'unknown');
-    setTokenSymbol('default');
-  };
 
-  const handleLoad = () => {
-    console.log('✅ Token icon loaded successfully:', tokenSymbol);
-  };
-  console.log(
-    'Rendering SingleTokenIcon for symbol:',
-    symbol,
-    'aToken:',
-    aToken,
-    'tokenSymbol:',
-    tokenSymbol,
-    'error:',
-    error
-  );
   return (
     <Icon {...rest} sx={{ display: 'flex', position: 'relative', borderRadius: '50%', ...rest.sx }}>
       {aToken || waToken ? (
@@ -199,8 +175,7 @@ function SingleTokenIcon({ symbol, aToken, waToken, ...rest }: TokenIconProps) {
       ) : (
         <img
           src={`/icons/tokens/${tokenSymbol}.svg`}
-          onError={handleError}
-          onLoad={handleLoad}
+          onError={() => setTokenSymbol('default')}
           width="100%"
           height="100%"
           alt={`${symbol} icon`}
