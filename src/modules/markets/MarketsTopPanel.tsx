@@ -1,4 +1,3 @@
-import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { marketContainerProps } from 'pages/markets.page';
@@ -10,23 +9,9 @@ import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 
 export const MarketsTopPanel = () => {
-  const { reserves, loading } = useAppDataContext();
+  const { market, totalBorrows, loading } = useAppDataContext();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const aggregatedStats = reserves.reduce(
-    (acc, reserve) => {
-      return {
-        totalLiquidity: acc.totalLiquidity.plus(reserve.totalLiquidityUSD),
-        totalDebt: acc.totalDebt.plus(reserve.totalDebtUSD),
-      };
-    },
-    {
-      totalLiquidity: valueToBigNumber(0),
-      totalDebt: valueToBigNumber(0),
-    }
-  );
-
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
 
@@ -39,7 +24,7 @@ export const MarketsTopPanel = () => {
     >
       <TopInfoPanelItem hideIcon title={<Trans>Total market size</Trans>} loading={loading}>
         <FormattedNumber
-          value={aggregatedStats.totalLiquidity.toString()}
+          value={Number(market?.totalMarketSize)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
@@ -50,7 +35,7 @@ export const MarketsTopPanel = () => {
       </TopInfoPanelItem>
       <TopInfoPanelItem hideIcon title={<Trans>Total available</Trans>} loading={loading}>
         <FormattedNumber
-          value={aggregatedStats.totalLiquidity.minus(aggregatedStats.totalDebt).toString()}
+          value={Number(market?.totalAvailableLiquidity)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}
@@ -61,7 +46,7 @@ export const MarketsTopPanel = () => {
       </TopInfoPanelItem>
       <TopInfoPanelItem hideIcon title={<Trans>Total borrows</Trans>} loading={loading}>
         <FormattedNumber
-          value={aggregatedStats.totalDebt.toString()}
+          value={Number(totalBorrows)}
           symbol="USD"
           variant={valueTypographyVariant}
           visibleDecimals={2}

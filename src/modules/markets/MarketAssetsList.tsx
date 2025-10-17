@@ -1,12 +1,13 @@
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
 import { useState } from 'react';
+import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
+import { ReserveWithId } from '../../hooks/app-data-provider/useAppDataProvider';
 import { MarketAssetsListItem } from './MarketAssetsListItem';
 import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
 import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
@@ -15,19 +16,19 @@ import { MarketAssetsListMobileItemLoader } from './MarketAssetsListMobileItemLo
 const listHeaders = [
   {
     title: <Trans>Asset</Trans>,
-    sortKey: 'symbol',
+    sortKey: 'underlyingToken.symbol',
   },
   {
     title: <Trans>Total supplied</Trans>,
-    sortKey: 'totalLiquidityUSD',
+    sortKey: 'size.usd',
   },
   {
     title: <Trans>Supply APY</Trans>,
-    sortKey: 'supplyAPY',
+    sortKey: 'supplyInfo.apy.value',
   },
   {
     title: <Trans>Total borrowed</Trans>,
-    sortKey: 'totalDebtUSD',
+    sortKey: 'borrowInfo.total.usd',
   },
   {
     title: (
@@ -37,37 +38,71 @@ const listHeaders = [
         variant="subheader2"
       />
     ),
-    sortKey: 'variableBorrowAPY',
+    sortKey: 'borrowInfo.apy.value',
   },
 ];
 
 type MarketAssetsListProps = {
-  reserves: ComputedReserveData[];
+  reserves: ReserveWithId[];
   loading: boolean;
+};
+export type ReserveWithProtocolIncentives = ReserveWithId & {
+  supplyProtocolIncentives: ReturnType<typeof mapAaveProtocolIncentives>;
+  borrowProtocolIncentives: ReturnType<typeof mapAaveProtocolIncentives>;
 };
 
 export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
-  if (sortDesc) {
-    if (sortName === 'symbol') {
-      reserves.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      reserves.sort((a, b) => a[sortName] - b[sortName]);
-    }
-  } else {
-    if (sortName === 'symbol') {
-      reserves.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      reserves.sort((a, b) => b[sortName] - a[sortName]);
-    }
-  }
+  const sortedReserves = [...reserves].sort((a, b) => {
+    if (!sortName) return 0;
 
+    let aValue: number | string;
+    let bValue: number | string;
+
+    switch (sortName) {
+      case 'underlyingToken.symbol':
+        aValue = a.underlyingToken.symbol.toUpperCase();
+        bValue = b.underlyingToken.symbol.toUpperCase();
+        if (sortDesc) {
+          return aValue < bValue ? -1 : 1;
+        }
+        return bValue < aValue ? -1 : 1;
+
+      case 'size.usd':
+        aValue = Number(a.size.usd) || 0;
+        bValue = Number(b.size.usd) || 0;
+        break;
+
+      case 'supplyInfo.apy.value':
+        aValue = Number(a.supplyInfo.apy.value) || 0;
+        bValue = Number(b.supplyInfo.apy.value) || 0;
+        break;
+
+      case 'borrowInfo.total.usd':
+        aValue = Number(a.borrowInfo?.total.usd) || 0;
+        bValue = Number(b.borrowInfo?.total.usd) || 0;
+        break;
+
+      case 'borrowInfo.apy.value':
+        aValue = Number(a.borrowInfo?.apy.value) || 0;
+        bValue = Number(b.borrowInfo?.apy.value) || 0;
+        break;
+
+      default:
+        return 0;
+    }
+
+    return sortDesc
+      ? (aValue as number) - (bValue as number)
+      : (bValue as number) - (aValue as number);
+  });
+  const reservesWithIncentives: ReserveWithProtocolIncentives[] = sortedReserves.map((reserve) => ({
+    ...reserve,
+    supplyProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'supply'),
+    borrowProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'borrow'),
+  }));
   // Show loading state when loading
   if (loading) {
     return isTableChangedToCards ? (
@@ -95,8 +130,8 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         <ListHeaderWrapper px={6}>
           {listHeaders.map((col) => (
             <ListColumn
-              isRow={col.sortKey === 'symbol'}
-              maxWidth={col.sortKey === 'symbol' ? 280 : undefined}
+              isRow={col.sortKey === 'underlyingToken.symbol'}
+              maxWidth={col.sortKey === 'underlyingToken.symbol' ? 280 : undefined}
               key={col.sortKey}
             >
               <ListHeaderTitle
@@ -115,7 +150,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         </ListHeaderWrapper>
       )}
 
-      {reserves.map((reserve) =>
+      {reservesWithIncentives.map((reserve) =>
         isTableChangedToCards ? (
           <MarketAssetsListMobileItem {...reserve} key={reserve.id} />
         ) : (

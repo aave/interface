@@ -1,4 +1,3 @@
-import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
@@ -13,7 +12,6 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
@@ -42,7 +40,8 @@ function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolea
 export const MarketAssetsListContainer = () => {
   const { data, isLoading, error } = useCoingeckoCategories();
 
-  const { reserves, loading } = useAppDataContext();
+  const { supplyReserves, loading } = useAppDataContext();
+
   const [trackEvent, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [
       store.trackEvent,
@@ -60,19 +59,19 @@ export const MarketAssetsListContainer = () => {
 
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
 
-  const filteredData = reserves
+  const filteredData = supplyReserves
     // Filter out any non-active reserves
-    .filter((res) => res.isActive)
+    .filter((res) => !res.isPaused)
     // Filter out any hidden assets
-    .filter((res) => !isAssetHidden(currentMarketData.market, res.underlyingAsset))
+    .filter((res) => !isAssetHidden(currentMarketData.market, res.underlyingToken.address))
     // filter out any that don't meet search term criteria
     .filter((res) => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase().trim();
       return (
-        res.symbol.toLowerCase().includes(term) ||
-        res.name.toLowerCase().includes(term) ||
-        res.underlyingAsset.toLowerCase().includes(term)
+        res.underlyingToken.symbol.toLowerCase().includes(term) ||
+        res.underlyingToken.name.toLowerCase().includes(term) ||
+        res.underlyingToken.address.toLowerCase().includes(term)
       );
     })
     // Filter by category
@@ -81,27 +80,39 @@ export const MarketAssetsListContainer = () => {
         selectedCategories.length === 0 ||
         selectedCategories.some((category) =>
           isAssetInCategoryDynamic(
-            res.symbol,
+            res.underlyingToken.symbol,
             category,
             data?.stablecoinSymbols,
             data?.ethCorrelatedSymbols
           )
         )
     )
+    // Add initial sorting by total supplied in USD descending
+    .sort((a, b) => {
+      const aValue = Number(a.size.usd) || 0;
+      const bValue = Number(b.size.usd) || 0;
+      return bValue - aValue;
+    })
     // Transform the object for list to consume it
     .map((reserve) => ({
       ...reserve,
-      ...(reserve.isWrappedBaseAsset
-        ? fetchIconSymbolAndName({
-            symbol: currentNetworkConfig.baseAssetSymbol,
-            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-          })
+      ...(reserve.acceptsNative
+        ? {
+            underlyingToken: {
+              ...reserve.underlyingToken,
+              name: currentNetworkConfig.baseAssetSymbol, // e.g., "Ethereum"
+              symbol: currentNetworkConfig.baseAssetSymbol, // e.g., "ETH"
+              imageUrl: currentNetworkConfig.baseAssetSymbol.toLowerCase(), // This might need adjustment based on your icon system
+            },
+          }
         : {}),
     }));
+
   // const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
   // const showFrozenMarketWarning =
   //   marketFrozen && ['Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
+
   const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
 
   const handleChange = () => {
