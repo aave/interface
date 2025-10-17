@@ -50,7 +50,7 @@
     "@mui/lab": "5.0.0-alpha.103",
     "@mui/material": "^5.10.9",
     "@number-flow/react": "^0.5.10",
-    "@paraswap/sdk": "6.10.0",
+    "@paraswap/sdk": "7.3.1",
     "@safe-global/safe-apps-provider": "^0.18.4",
     "@safe-global/safe-apps-sdk": "^9.1.0",
     "@tanstack/react-query": "^5.62.8",
