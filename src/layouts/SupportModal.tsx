@@ -12,6 +12,8 @@ export const SupportModal = () => {
   const [feedbackDialogOpen, setFeedbackOpen] = useRootStore(
     useShallow((state) => [state.feedbackDialogOpen, state.setFeedbackOpen])
   );
+  const currentNetworkConfig = useRootStore((state) => state.currentNetworkConfig);
+  const isTestnet = currentNetworkConfig.isTestnet ?? false;
 
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +62,7 @@ export const SupportModal = () => {
     const payload = {
       text: value,
       email: email,
+      environment: isTestnet ? 'testnet' : 'production',
     };
 
     try {
