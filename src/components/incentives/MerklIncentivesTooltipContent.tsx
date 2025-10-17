@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
 import { ExtendedReserveIncentiveResponse } from 'src/hooks/useMerklIncentives';
 
+import { PointsBasedCampaignTooltip } from '../infoTooltips/PointsBasedCampaignTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
 import { Row } from '../primitives/Row';
@@ -136,30 +137,61 @@ export const MerklIncentivesTooltipContent = ({
             <Row
               height={32}
               caption={
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    mb: 0,
-                  }}
-                >
-                  <TokenIcon
-                    aToken={merklIncentivesFormatted.aToken}
-                    symbol={merklIncentivesFormatted.tokenIconSymbol}
-                    sx={{ fontSize: '20px', mr: 1 }}
-                  />
-                  <Typography variant={typographyVariant}>
-                    {merklIncentivesFormatted.symbol}
-                  </Typography>
-                  <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
-                    {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
-                  </Typography>
-                </Box>
+                isPointsBased ? (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      mb: 0,
+                    }}
+                  >
+                    <Typography variant={typographyVariant}>Points</Typography>
+                    <PointsBasedCampaignTooltip
+                      aToken={merklIncentivesFormatted.aToken}
+                      tokenIconSymbol={merklIncentivesFormatted.tokenIconSymbol}
+                      symbol={merklIncentivesFormatted.symbol}
+                      isBorrow={merklIncentives.breakdown.isBorrow}
+                      pointsPerThousandUsd={
+                        merklIncentives.breakdown.points?.pointsPerThousandUsd || 0
+                      }
+                      sx={{ marginLeft: 1 }}
+                    />
+                  </Box>
+                ) : (
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      mb: 0,
+                    }}
+                  >
+                    <TokenIcon
+                      aToken={merklIncentivesFormatted.aToken}
+                      symbol={merklIncentivesFormatted.tokenIconSymbol}
+                      sx={{ fontSize: '20px', mr: 1 }}
+                    />
+                    <Typography variant={typographyVariant}>
+                      {merklIncentivesFormatted.symbol}
+                    </Typography>
+                    <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                      {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                    </Typography>
+                  </Box>
+                )
               }
               width="100%"
             >
               {isPointsBased ? (
-                ''
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <FormattedNumber
+                    value={merklIncentives.breakdown.points?.pointsPerThousandUsd || 0}
+                    visibleDecimals={2}
+                    variant={typographyVariant}
+                  />
+                  <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+                    <Trans>Points</Trans>
+                  </Typography>
+                </Box>
               ) : (
                 <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                   <FormattedNumber
@@ -178,31 +210,6 @@ export const MerklIncentivesTooltipContent = ({
               )}
             </Row>
 
-            {/* Points-based rewards */}
-            {isPointsBased && (
-              <>
-                <Row
-                  height={32}
-                  caption={
-                    <Typography variant={typographyVariant}>
-                      <Trans>Est. daily points per $1k</Trans>
-                    </Typography>
-                  }
-                  width="100%"
-                >
-                  <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                    <FormattedNumber
-                      value={merklIncentives.breakdown.points?.pointsPerThousandUsd || 0}
-                      visibleDecimals={2}
-                      variant={typographyVariant}
-                    />
-                    <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-                      <Trans>Points</Trans>
-                    </Typography>
-                  </Box>
-                </Row>
-              </>
-            )}
             {/* Total APY */}
             <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
               <Row

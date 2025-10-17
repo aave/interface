@@ -1342,10 +1342,6 @@ msgstr "Borrow balance after repay"
 msgid "Supplied assets"
 msgstr "Supplied assets"
 
-#: src/components/incentives/MerklIncentivesTooltipContent.tsx
-msgid "Est. daily points per $1k"
-msgstr "Est. daily points per $1k"
-
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 msgid "Withdraw & Switch"
 msgstr "Withdraw & Switch"
