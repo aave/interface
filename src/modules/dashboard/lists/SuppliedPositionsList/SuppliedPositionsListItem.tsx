@@ -52,15 +52,6 @@ export const SuppliedPositionsListItem = ({
       : reserve.underlyingToken.symbol;
   const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
 
-  console.log(
-    'symbol, iconSymbol, name, underlyingAsset, currentMarket, isFrozen',
-    symbol,
-    iconSymbol,
-    name,
-    underlyingAsset,
-    currentMarket,
-    isFrozen
-  );
   return (
     <ListItemWrapper
       symbol={symbol || reserve.underlyingToken.symbol}

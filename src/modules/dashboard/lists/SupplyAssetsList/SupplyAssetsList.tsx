@@ -106,7 +106,7 @@ export const SupplyAssetsList = () => {
       const availableToDeposit = reserve.userState?.suppliable.amount.value;
       const availableToDepositUSD = reserve.userState?.suppliable.usd;
       const usageAsCollateralEnabledOnUser = reserve.userState?.canBeCollateral ?? false;
-      //! Checkear si esto funciona realmente
+
       if (reserve.acceptsNative !== null) {
         const baseAvailableToDeposit =
           walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0';

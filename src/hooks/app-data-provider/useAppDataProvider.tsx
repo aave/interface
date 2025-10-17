@@ -112,8 +112,7 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
     marketData: currentMarketData,
     account: currentAccount,
   });
-  console.log('userSuppliesData', userSuppliesData);
-  console.log('userBorrowsData', userBorrowsData);
+
   const marketAddress = currentMarketData.addresses.LENDING_POOL.toLowerCase();
 
   const sdkMarket = data?.find((item) => item.address.toLowerCase() === marketAddress);
