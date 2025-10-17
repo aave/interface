@@ -21,6 +21,8 @@ export type MerklOpportunity = {
   type: string;
   identifier: Address;
   name: string;
+  description?: string;
+  depositUrl?: string;
   status: OpportunityStatus;
   action: OpportunityAction;
   tvl: number;
