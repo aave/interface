@@ -1,5 +1,4 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
@@ -9,21 +8,20 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
 import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
 import { AssetCategory, isAssetInCategoryDynamic } from 'src/modules/markets/utils/assetCategories';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GENERAL } from 'src/utils/events';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
-import { useShallow } from 'zustand/shallow';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import { Link } from '../../../../components/primitives/Link';
 import {
-  ComputedReserveData,
+  ReserveWithId,
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
 import {
@@ -31,10 +29,6 @@ import {
   DashboardReserve,
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
-import {
-  assetCanBeBorrowedByUser,
-  getMaxAmountAvailableToBorrow,
-} from '../../../../utils/getMaxAmountAvailableToBorrow';
 import { isAssetHidden } from '../constants';
 import { ListButtonsColumn } from '../ListButtonsColumn';
 import { ListLoader } from '../ListLoader';
@@ -82,11 +76,10 @@ export const BorrowAssetsList = () => {
   const { data, isLoading, error } = useCoingeckoCategories();
   const [selectedCategories, setSelectedCategories] = useState<AssetCategory[]>([]);
 
-  const [currentNetworkConfig, currentMarketData] = useRootStore(
-    useShallow((store) => [store.currentNetworkConfig, store.currentMarketData])
-  );
-  const currentMarket = currentMarketData.market;
-  const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentMarket = useRootStore((store) => store.currentMarket);
+  const { borrowReserves: reserves, loading, userState } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
@@ -100,39 +93,49 @@ export const BorrowAssetsList = () => {
   const { baseAssetSymbol } = currentNetworkConfig;
 
   const tokensToBorrow = reserves
-    .filter((reserve) => (user ? assetCanBeBorrowedByUser(reserve, user) : false))
-    .filter((reserve) => !isAssetHidden(currentMarketData.market, reserve.underlyingAsset))
+    .filter(
+      (reserve: ReserveWithId) =>
+        !(reserve.isFrozen || reserve.isPaused) &&
+        !isAssetHidden(currentMarketData.market, reserve.underlyingToken.address) &&
+        (reserve.borrowInfo?.borrowCap.amount.value === '0' ||
+          Number(reserve.borrowInfo?.total?.amount.value || '0') <
+            Number(reserve.borrowInfo?.borrowCap.amount.value || '0'))
+    )
     // filter by category
     .filter(
       (res) =>
         selectedCategories.length === 0 ||
         selectedCategories.some((category) =>
           isAssetInCategoryDynamic(
-            res.symbol,
+            res.underlyingToken.symbol,
             category,
             data?.stablecoinSymbols,
             data?.ethCorrelatedSymbols
           )
         )
     )
-    .map((reserve: ComputedReserveData) => {
-      const availableBorrows = user ? Number(getMaxAmountAvailableToBorrow(reserve, user)) : 0;
-
-      const availableBorrowsInUSD = valueToBigNumber(availableBorrows)
-        .multipliedBy(reserve.formattedPriceInMarketReferenceCurrency)
-        .multipliedBy(marketReferencePriceInUsd)
-        .shiftedBy(-USD_DECIMALS)
-        .toFixed(2);
+    .sort((a, b) => {
+      const aSize = Number(a?.size?.usd || '0');
+      const bSize = Number(b?.size?.usd || '0');
+      return bSize - aSize;
+    })
+    .map((reserve: ReserveWithId) => {
+      const availableBorrows = reserve.userState?.borrowable.amount.value || '0';
+      const availableBorrowsInUSD = reserve.userState?.borrowable.usd || '0';
 
       return {
         ...reserve,
         reserve,
-        totalBorrows: reserve.totalDebt,
-        availableBorrows,
+        totalBorrows: reserve.borrowInfo?.total?.amount.value || '0',
+        availableBorrows: Number(availableBorrows),
         availableBorrowsInUSD,
-        variableBorrowRate: reserve.borrowingEnabled ? Number(reserve.variableBorrowAPY) : -1,
-        iconSymbol: reserve.iconSymbol,
-        ...(reserve.isWrappedBaseAsset
+        variableBorrowRate:
+          reserve.borrowInfo?.borrowingState === 'ENABLED'
+            ? Number(reserve.borrowInfo?.apy.value || '0')
+            : -1,
+        totalLiquidityUSD: reserve.size?.usd || '0',
+        variableBorrowAPY: Number(reserve.borrowInfo?.apy.value || '0'),
+        ...(reserve.acceptsNative
           ? fetchIconSymbolAndName({
               symbol: baseAssetSymbol,
               underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
@@ -141,24 +144,31 @@ export const BorrowAssetsList = () => {
       };
     });
 
-  const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
-    user?.availableBorrowsMarketReferenceCurrency || '0'
-  );
-  const collateralUsagePercent = maxBorrowAmount.eq(0)
-    ? '0'
-    : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-        .div(maxBorrowAmount)
-        .toFixed();
+  const maxBorrowAmount =
+    Number(userState?.availableBorrowsBase || '0') + Number(userState?.totalDebtBase || '0');
+  const collateralUsagePercent =
+    maxBorrowAmount === 0
+      ? '0'
+      : (Number(userState?.totalDebtBase || '0') / maxBorrowAmount).toFixed(2);
 
   const borrowReserves =
-    user?.totalCollateralMarketReferenceCurrency === '0' || +collateralUsagePercent >= 0.98
+    Number(userState?.totalCollateralBase || '0') === 0 || +collateralUsagePercent >= 0.98
       ? tokensToBorrow
-      : tokensToBorrow.filter(({ availableBorrowsInUSD, totalLiquidityUSD, symbol }) => {
-          if (displayGhoForMintableMarket({ symbol, currentMarket })) {
+      : tokensToBorrow.filter(({ availableBorrowsInUSD, totalLiquidityUSD, symbol, reserve }) => {
+          if (
+            displayGhoForMintableMarket({
+              symbol: symbol || reserve.underlyingToken.symbol,
+              currentMarket,
+            })
+          ) {
             return true;
           }
 
-          return availableBorrowsInUSD !== '0.00' && totalLiquidityUSD !== '0';
+          return (
+            availableBorrowsInUSD !== '0.00' &&
+            Number(availableBorrowsInUSD) > 0 &&
+            totalLiquidityUSD !== '0'
+          );
         });
 
   const sortedReserves = handleSortDashboardReserves(
@@ -166,8 +176,10 @@ export const BorrowAssetsList = () => {
     sortName,
     'asset',
     borrowReserves.sort((a, b) => {
-      if (displayGhoForMintableMarket({ symbol: a.symbol, currentMarket })) return -1;
-      if (displayGhoForMintableMarket({ symbol: b.symbol, currentMarket })) return 1;
+      if (displayGhoForMintableMarket({ symbol: a.underlyingToken.symbol, currentMarket }))
+        return -1;
+      if (displayGhoForMintableMarket({ symbol: b.underlyingToken.symbol, currentMarket }))
+        return 1;
       return 0;
     }) as unknown as DashboardReserve[]
   );
@@ -255,18 +267,21 @@ export const BorrowAssetsList = () => {
             </>
           )}
           <Box sx={{ px: 6 }}>
-            {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
-              <Warning severity="error">
-                <Trans>
-                  Be careful - You are very close to liquidation. Consider depositing more
-                  collateral or paying down some of your borrowed positions
-                </Trans>
-              </Warning>
-            )}
+            {userState?.healthFactor !== null &&
+              userState?.healthFactor !== undefined &&
+              Number(userState.healthFactor) !== -1 &&
+              Number(userState.healthFactor) <= 1.1 && (
+                <Warning severity="error">
+                  <Trans>
+                    Be careful - You are very close to liquidation. Consider depositing more
+                    collateral or paying down some of your borrowed positions
+                  </Trans>
+                </Warning>
+              )}
 
             {!borrowDisabled && (
               <>
-                {user?.isInIsolationMode && (
+                {userState?.isInIsolationMode && (
                   <Warning severity="warning">
                     <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
                     <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
@@ -274,7 +289,7 @@ export const BorrowAssetsList = () => {
                     </Link>
                   </Warning>
                 )}
-                {user?.isInEmode && (
+                {userState?.eModeEnabled && (
                   <Warning severity="warning">
                     <Trans>
                       In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
@@ -282,7 +297,7 @@ export const BorrowAssetsList = () => {
                     </Trans>
                   </Warning>
                 )}
-                {user?.totalCollateralMarketReferenceCurrency === '0' && (
+                {Number(userState?.totalCollateralBase || '0') === 0 && (
                   <Warning severity="info">
                     <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
                   </Warning>
@@ -305,13 +320,13 @@ export const BorrowAssetsList = () => {
         {!downToXSM && !!borrowReserves.length && <RenderHeader />}
         {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
-            <AssetCapsProvider asset={item.reserve}>
+            <AssetCapsProviderSDK asset={item.reserve}>
               {downToXSM ? (
                 <BorrowAssetsListMobileItem {...item} />
               ) : (
                 <BorrowAssetsListItem {...item} />
               )}
-            </AssetCapsProvider>
+            </AssetCapsProviderSDK>
           </Fragment>
         ))}
       </>

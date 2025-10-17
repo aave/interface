@@ -19,7 +19,6 @@ import { ListValueRow } from '../ListValueRow';
 export const SuppliedPositionsListMobileItem = ({
   reserve,
   usageAsCollateralEnabledOnUser,
-  underlyingAsset,
   symbol,
   name,
   iconSymbol,
@@ -56,7 +55,7 @@ export const SuppliedPositionsListMobileItem = ({
       symbol={symbol ?? reserve.underlyingToken.symbol}
       iconSymbol={iconSymbol ?? displayIconSymbol}
       name={name ?? reserve.underlyingToken.name}
-      underlyingAsset={underlyingAsset ?? reserve.underlyingToken.address}
+      underlyingAsset={reserve.underlyingToken.address.toLowerCase()}
       currentMarket={currentMarket}
       frozen={isFrozen}
       showSupplyCapTooltips
@@ -104,7 +103,7 @@ export const SuppliedPositionsListMobileItem = ({
           canBeEnabledAsCollateral={canBeEnabledAsCollateral!}
           onToggleSwitch={() =>
             openCollateralChange(
-              underlyingAsset,
+              reserve.underlyingToken.address.toLowerCase(),
               currentMarket,
               reserve.underlyingToken.name,
               'dashboard',
@@ -119,7 +118,7 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={disableSwap}
             variant="contained"
-            onClick={() => openCollateralSwap(underlyingAsset)}
+            onClick={() => openCollateralSwap(reserve.underlyingToken.address.toLowerCase())}
             fullWidth
           >
             <Trans>Swap</Trans>
@@ -129,7 +128,12 @@ export const SuppliedPositionsListMobileItem = ({
             disabled={disableSupply}
             variant="contained"
             onClick={() =>
-              openSupply(underlyingAsset, currentMarket, reserve.underlyingToken.name, 'dashboard')
+              openSupply(
+                reserve.underlyingToken.address.toLowerCase(),
+                currentMarket,
+                reserve.underlyingToken.name,
+                'dashboard'
+              )
             }
             fullWidth
           >
@@ -140,7 +144,12 @@ export const SuppliedPositionsListMobileItem = ({
           disabled={disableWithdraw}
           variant="outlined"
           onClick={() =>
-            openWithdraw(underlyingAsset, currentMarket, reserve.underlyingToken.name, 'dashboard')
+            openWithdraw(
+              reserve.underlyingToken.address.toLowerCase(),
+              currentMarket,
+              reserve.underlyingToken.name,
+              'dashboard'
+            )
           }
           sx={{ ml: 1.5 }}
           fullWidth

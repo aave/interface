@@ -1,8 +1,10 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
@@ -18,39 +20,46 @@ import { ListItemWrapper } from '../ListItemWrapper';
 import { ListValueColumn } from '../ListValueColumn';
 
 export const BorrowAssetsListItem = ({
+  reserve,
   symbol,
   iconSymbol,
   name,
   availableBorrows,
   availableBorrowsInUSD,
-  borrowCap,
   totalBorrows,
-  variableBorrowRate,
-  vIncentivesData,
-  variableDebtTokenAddress,
-  underlyingAsset,
-  isFreezed,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
+  const { isPaused, isFrozen } = reserve;
 
-  const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
+  const disableBorrow = isPaused || isFrozen || Number(availableBorrows) <= 0;
 
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
-
+  const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
   const isGho = displayGhoForMintableMarket({
-    symbol,
+    symbol: reserve.underlyingToken.symbol,
     currentMarket,
   });
 
+  const { iconSymbol: iconSymbolFetched } = fetchIconSymbolAndName({
+    underlyingAsset: reserve.underlyingToken.address,
+    symbol: reserve.underlyingToken.symbol,
+    name: reserve.underlyingToken.name,
+  });
+
+  const displayIconSymbol =
+    iconSymbolFetched?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
+      ? iconSymbolFetched
+      : reserve.underlyingToken.symbol;
+
   return (
     <ListItemWrapper
-      symbol={symbol}
-      iconSymbol={iconSymbol}
-      name={name}
-      detailsAddress={underlyingAsset}
-      data-cy={`dashboardBorrowListItem_${symbol.toUpperCase()}`}
+      symbol={symbol || reserve.underlyingToken.symbol}
+      iconSymbol={iconSymbol || displayIconSymbol}
+      name={name || reserve.underlyingToken.name}
+      detailsAddress={reserve.underlyingToken.address.toLowerCase()}
+      data-cy={`dashboardBorrowListItem_${reserve.underlyingToken.symbol.toUpperCase()}`}
       currentMarket={currentMarket}
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         symbol,
@@ -59,7 +68,7 @@ export const BorrowAssetsListItem = ({
       )}
     >
       <ListValueColumn
-        symbol={symbol}
+        symbol={reserve.underlyingToken.symbol}
         value={Number(availableBorrows)}
         subValue={Number(availableBorrowsInUSD)}
         disabled={Number(availableBorrows) === 0}
@@ -67,7 +76,7 @@ export const BorrowAssetsListItem = ({
         capsComponent={
           <CapsHint
             capType={CapType.borrowCap}
-            capAmount={borrowCap}
+            capAmount={reserve.borrowInfo?.borrowCap.amount.value.toString() || '0'}
             totalAmount={totalBorrows}
             withoutText
           />
@@ -75,21 +84,21 @@ export const BorrowAssetsListItem = ({
       />
       {isGho ? (
         <ListGhoAPRColumn
-          value={Number(variableBorrowRate)}
+          value={Number(reserve.borrowInfo?.apy.value || '0')}
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
-          address={variableDebtTokenAddress}
-          incentives={vIncentivesData}
-          symbol={symbol}
+          address={reserve.vToken.address}
+          incentives={borrowProtocolIncentives}
+          symbol={reserve.underlyingToken.symbol}
         />
       ) : (
         <ListAPRColumn
-          value={Number(variableBorrowRate)}
+          value={Number(reserve.borrowInfo?.apy.value || '0')}
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
-          address={variableDebtTokenAddress}
-          incentives={vIncentivesData}
-          symbol={symbol}
+          address={reserve.vToken.address}
+          incentives={borrowProtocolIncentives}
+          symbol={reserve.underlyingToken.symbol}
         />
       )}
 
@@ -98,7 +107,12 @@ export const BorrowAssetsListItem = ({
           disabled={disableBorrow}
           variant="contained"
           onClick={() => {
-            openBorrow(underlyingAsset, currentMarket, name, 'dashboard');
+            openBorrow(
+              reserve.underlyingToken.address,
+              currentMarket,
+              reserve.underlyingToken.name,
+              'dashboard'
+            );
           }}
         >
           <Trans>Borrow</Trans>
@@ -106,13 +120,16 @@ export const BorrowAssetsListItem = ({
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
+          href={ROUTES.reserveOverview(
+            reserve.underlyingToken.address.toLowerCase(),
+            currentMarket
+          )}
           onClick={() => {
             trackEvent(DASHBOARD.DETAILS_NAVIGATION, {
               type: 'Button',
               market: currentMarket,
-              assetName: name,
-              asset: underlyingAsset,
+              assetName: reserve.underlyingToken.name,
+              asset: reserve.underlyingToken.address,
             });
           }}
         >

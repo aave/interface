@@ -51,8 +51,7 @@ const head = [
 
 export const BorrowedPositionsList = () => {
   const { loading, eModeCategories, borrowReserves, userBorrows, userState } = useAppDataContext();
-  //! debug
-  console.log('eModeCategories', eModeCategories);
+
   const [currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [store.currentMarketData, store.currentNetworkConfig])
   );
@@ -141,51 +140,42 @@ export const BorrowedPositionsList = () => {
     borrowReservesLookup,
     userBorrows,
   ]);
-  //! Debug
-  console.log('borrowedPositions', borrowedPositions);
+
   const userdebtAPY = useMemo(() => {
     const totalDebtUSD = borrowedPositions.reduce(
       (sum, position) => sum + Number(position?.balancePosition?.usd || '0'),
       0
     );
 
-    // APY ponderado por balance USD
     const weightedSupplyAPY = borrowedPositions.reduce((sum, position) => {
       const balanceUSD = Number(position?.balancePosition?.usd || '0');
       const apy = Number(position?.apyPosition?.value || '0');
       return sum + balanceUSD * apy;
     }, 0);
 
-    // APY promedio ponderado
     const debtAPY = totalDebtUSD > 0 ? weightedSupplyAPY / totalDebtUSD : 0;
 
     return { debtAPY, totalDebtUSD };
   }, [borrowedPositions]);
   const disableEModeSwitch = useMemo(() => {
-    //! Si E-mode no está habilitado, el botón debe estar habilitado para permitir activarlo
     if (!userState?.eModeEnabled) {
       return 0;
     }
 
-    //! Si E-mode está habilitado, verificar si hay suficientes reservas para prestamos
     const eligibleReserves = borrowReserves.filter((reserve) => {
-      //! Buscar la categoría E-mode actual del usuario
       const userEmodeCategory = reserve.userState?.emode?.categoryId;
       if (!userEmodeCategory) return false;
 
       return reserve.eModeInfo?.find((e) => e.categoryId === userEmodeCategory && e.canBeBorrowed);
     });
 
-    //! Si hay menos de 2 reservas disponibles para préstamos en E-mode, deshabilitar el switch
     return eligibleReserves.length < 2;
   }, [userState?.eModeEnabled, borrowReserves]);
   const userEmodeCategoryId = useMemo(() => {
-    // ✅ PRIMERO verificar si E-mode está habilitado en el SDK
     if (!userState?.eModeEnabled) {
-      return 0; // E-mode deshabilitado = categoryId 0
+      return 0;
     }
 
-    // Solo si está habilitado, buscar la categoría
     const reserveWithEmode = borrowReserves.find((reserve) =>
       reserve.eModeInfo.find(
         (e) => e.categoryId === reserve.userState?.emode?.categoryId && e.canBeBorrowed
@@ -194,7 +184,7 @@ export const BorrowedPositionsList = () => {
 
     return reserveWithEmode?.userState?.emode?.categoryId || 0;
   }, [userState?.eModeEnabled, borrowReserves]);
-  //! no se si userBorrows o otra propiedad
+
   if (loading || !userBorrows)
     return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
 

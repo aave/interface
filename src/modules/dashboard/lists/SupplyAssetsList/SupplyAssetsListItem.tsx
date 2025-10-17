@@ -96,7 +96,6 @@ export const SupplyAssetsListItemDesktop = ({
   reserve,
   walletBalance,
   walletBalanceUSD,
-  detailsAddress,
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
@@ -159,7 +158,7 @@ export const SupplyAssetsListItemDesktop = ({
       symbol={symbol || reserve.underlyingToken.symbol}
       iconSymbol={iconSymbol || displayIconSymbol}
       name={name || reserve.underlyingToken.name}
-      detailsAddress={detailsAddress}
+      detailsAddress={reserve.underlyingToken.address.toLowerCase()}
       data-cy={`dashboardSupplyListItem_${reserve.underlyingToken.symbol.toUpperCase()}`}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
@@ -308,7 +307,10 @@ export const SupplyAssetsListItemDesktop = ({
           <MenuItem
             sx={{ gap: 2 }}
             component={Link}
-            href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
+            href={ROUTES.reserveOverview(
+              reserve.underlyingToken.address.toLowerCase(),
+              currentMarket
+            )}
             onClick={onDetailsClick}
           >
             <SvgIcon fontSize="small">
@@ -331,7 +333,6 @@ export const SupplyAssetsListItemMobile = ({
   walletBalanceUSD,
   supplyProtocolIncentives,
   underlyingAsset,
-  detailsAddress,
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
@@ -363,7 +364,7 @@ export const SupplyAssetsListItemMobile = ({
       symbol={symbol || reserve.underlyingToken.symbol}
       iconSymbol={iconSymbol || displayIconSymbol}
       name={name || reserve.underlyingToken.name}
-      underlyingAsset={reserve.underlyingToken.address}
+      underlyingAsset={reserve.underlyingToken.address.toLowerCase()}
       currentMarket={currentMarket}
       showDebtCeilingTooltips
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
@@ -476,7 +477,10 @@ export const SupplyAssetsListItemMobile = ({
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(detailsAddress.toLowerCase(), currentMarket)}
+          href={ROUTES.reserveOverview(
+            reserve.underlyingToken.address.toLowerCase(),
+            currentMarket
+          )}
           fullWidth
         >
           <Trans>Details</Trans>

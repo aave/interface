@@ -24,7 +24,7 @@ import { ListValueRow } from '../ListValueRow';
 
 export interface BorrowedPositionsListItem {
   item: DashboardReserve;
-  disableEModeSwitch: boolean;
+  disableEModeSwitch: number | boolean;
 }
 
 export const BorrowedPositionsListItem = ({
@@ -57,7 +57,7 @@ export const BorrowedPositionsListItem = ({
     currentMarket === 'proto_polygon' ||
     reserve.isPaused ||
     reserve.underlyingToken.symbol == 'stETH' ||
-    disableEModeSwitch;
+    disableEModeSwitch !== 0;
 
   const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
 
@@ -67,10 +67,8 @@ export const BorrowedPositionsListItem = ({
     disableSwitch,
     disableRepay,
     showSwitchButton,
-    // Usar balancePosition y apyPosition del SDK
     totalBorrows: item.balancePosition?.amount.value ?? '0',
     borrowAPY: Number(item.apyPosition?.value ?? 0),
-    // Incentivos del SDK
     borrowProtocolIncentives: borrowProtocolIncentives,
     onDetbSwitchClick: () => {
       openDebtSwitch(item.underlyingAsset ?? item.reserve.underlyingToken.address);
@@ -125,7 +123,6 @@ const BorrowedPositionsListItemDesktop = ({
   symbol,
   iconSymbol,
   name,
-  detailsAddress,
 
   onDetbSwitchClick,
   onOpenBorrow,
@@ -152,7 +149,7 @@ const BorrowedPositionsListItemDesktop = ({
       symbol={symbol || reserve.underlyingToken.symbol}
       iconSymbol={iconSymbol || displayIconSymbol}
       name={name || reserve.underlyingToken.name}
-      detailsAddress={detailsAddress}
+      detailsAddress={reserve.underlyingToken.address.toLowerCase()}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
       paused={reserve.isPaused}
@@ -246,7 +243,7 @@ const BorrowedPositionsListItemMobile = ({
       symbol={symbol || reserve.underlyingToken.symbol}
       iconSymbol={iconSymbol || displayIconSymbol}
       name={name || reserve.underlyingToken.name}
-      underlyingAsset={reserve.underlyingToken.address}
+      underlyingAsset={reserve.underlyingToken.address.toLowerCase()}
       currentMarket={currentMarket}
       frozen={reserve.isFrozen}
       borrowEnabled={reserve.borrowInfo?.borrowingState === 'ENABLED'}

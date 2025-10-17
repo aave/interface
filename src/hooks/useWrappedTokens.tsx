@@ -1,4 +1,3 @@
-//! Moificado
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -64,14 +63,14 @@ export const useWrappedTokens = () => {
         underlyingAsset: tokenInReserve.underlyingToken.address,
         decimals: tokenInReserve.underlyingToken.decimals,
         priceInUSD: tokenInReserve.usdExchangeRate,
-        formattedPriceInMarketReferenceCurrency: tokenInReserve.size.usdPerToken, //! no estoy seguro
+        formattedPriceInMarketReferenceCurrency: tokenInReserve.size.usdPerToken,
       },
       tokenOut: {
         symbol: tokenOutReserve.underlyingToken.symbol,
         underlyingAsset: tokenOutReserve.underlyingToken.address,
         decimals: tokenOutReserve.underlyingToken.decimals,
         priceInUSD: tokenOutReserve.usdExchangeRate,
-        formattedPriceInMarketReferenceCurrency: tokenOutReserve.size.usdPerToken, //! no estoy seguro
+        formattedPriceInMarketReferenceCurrency: tokenOutReserve.size.usdPerToken,
       },
       tokenWrapperAddress: config.tokenWrapperContractAddress,
     };
