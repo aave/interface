@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
+// import { BorrowDisabledToolTip } from 'src/components/infoTooltips/BorrowDisabledToolTip';
 import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { PausedTooltip } from 'src/components/infoTooltips/PausedTooltip';
@@ -45,7 +45,7 @@ export const ListMobileItemWrapper = ({
   currentMarket,
   frozen,
   paused,
-  borrowEnabled = true,
+  // borrowEnabled = true,
   showSupplyCapTooltips = false,
   showBorrowCapTooltips = false,
   showDebtCeilingTooltips = false,
@@ -64,7 +64,7 @@ export const ListMobileItemWrapper = ({
     const showstETHTooltip = symbol == 'stETH';
     const offboardingDiscussion =
       currentMarket && symbol ? AssetsBeingOffboarded[currentMarket]?.[symbol] : '';
-    const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
+    // const showBorrowDisabledTooltip = !frozen && !borrowEnabled;
     return (
       <>
         {paused && <PausedTooltip />}
@@ -76,9 +76,9 @@ export const ListMobileItemWrapper = ({
         {showAmplTooltip && <AMPLToolTip />}
         {showstETHTooltip && <StETHCollateralToolTip />}
         {offboardingDiscussion && <OffboardingTooltip discussionLink={offboardingDiscussion} />}
-        {showBorrowDisabledTooltip && symbol && currentMarket && (
+        {/* {showBorrowDisabledTooltip && symbol && currentMarket && (
           <BorrowDisabledToolTip symbol={symbol} currentMarket={currentMarket} />
-        )}
+        )} */}
       </>
     );
   };
