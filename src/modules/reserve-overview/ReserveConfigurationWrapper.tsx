@@ -1,12 +1,12 @@
 import { Trans } from '@lingui/macro';
 import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 type ReserveConfigurationProps = {
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
 };
 
 const GhoReserveConfiguration = dynamic(() =>
@@ -21,7 +21,10 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
   const currentMarket = useRootStore((state) => state.currentMarket);
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
+  const isGho = displayGhoForMintableMarket({
+    symbol: reserve.underlyingToken.symbol,
+    currentMarket,
+  });
 
   return (
     <Paper sx={{ pt: 4, pb: 20, px: downToXsm ? 4 : 6 }}>
@@ -32,7 +35,9 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
           gap: 6,
           flexWrap: 'wrap',
           mb:
-            reserve.isFrozen || reserve.symbol == 'AMPL' || reserve.symbol === 'stETH'
+            reserve.isFrozen ||
+            reserve.underlyingToken.symbol == 'AMPL' ||
+            reserve.underlyingToken.symbol === 'stETH'
               ? '0px'
               : '36px',
         }}
