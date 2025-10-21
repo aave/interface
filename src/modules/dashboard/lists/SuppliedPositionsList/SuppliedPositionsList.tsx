@@ -188,14 +188,12 @@ export const SuppliedPositionsList = () => {
       0
     );
 
-    // APY ponderado por balance USD
     const weightedSupplyAPY = suppliedPositions.reduce((sum, position) => {
       const balanceUSD = Number(position?.balancePosition?.usd || '0');
       const apy = Number(position?.apyPosition?.value || '0');
       return sum + balanceUSD * apy;
     }, 0);
 
-    // APY promedio ponderado
     const earnedAPY = totalSupplyUSD > 0 ? weightedSupplyAPY / totalSupplyUSD : 0;
 
     return { earnedAPY, totalSupplyUSD };
