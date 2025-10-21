@@ -1,3 +1,4 @@
+import { Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useRootStore } from 'src/store/root';
@@ -7,10 +8,22 @@ import { Link } from '../primitives/Link';
 import { Warning } from '../primitives/Warning';
 import { SecondsToString } from '../SecondsToString';
 
-const TWENTY_DAYS = 7 * 24 * 60 * 60; // 7 days
+const SEVEN_DAYS = 7 * 24 * 60 * 60;
+const TWENTY_DAYS = 20 * 24 * 60 * 60;
 
-export const CooldownWarning = ({ cooldownSeconds }: { cooldownSeconds?: number }) => {
-  const cooldownTime = cooldownSeconds || TWENTY_DAYS;
+export const CooldownWarning = ({
+  cooldownSeconds,
+  stakeAssetName,
+}: {
+  cooldownSeconds?: number;
+  stakeAssetName?: Stake;
+}) => {
+  const fallbackCooldown = stakeAssetName
+    ? stakeAssetName === Stake.aave
+      ? SEVEN_DAYS
+      : TWENTY_DAYS
+    : TWENTY_DAYS;
+  const cooldownTime = cooldownSeconds || fallbackCooldown;
 
   const trackEvent = useRootStore((store) => store.trackEvent);
   return (
