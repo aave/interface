@@ -32,6 +32,7 @@ interface ListMobileItemWrapperProps {
   showDebtCeilingTooltips?: boolean;
   isIsolated?: boolean;
   showExternalIncentivesTooltips?: ExternalIncentivesTooltipsConfig;
+  onIconError?: () => void;
 }
 
 export const ListMobileItemWrapper = ({
@@ -54,6 +55,7 @@ export const ListMobileItemWrapper = ({
     spkAirdrop: false,
     kernelPoints: false,
   },
+  onIconError,
 }: ListMobileItemWrapperProps) => {
   const WarningComponent: React.FC = () => {
     const showFrozenTooltip = frozen && symbol !== 'renFIL';
@@ -94,6 +96,7 @@ export const ListMobileItemWrapper = ({
       showSupplyCapTooltips={showSupplyCapTooltips}
       showBorrowCapTooltips={showBorrowCapTooltips}
       showDebtCeilingTooltips={showDebtCeilingTooltips}
+      onIconError={onIconError}
     >
       {children}
     </ListMobileItem>
