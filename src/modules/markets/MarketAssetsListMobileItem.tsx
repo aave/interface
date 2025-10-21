@@ -55,7 +55,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
       currentMarket={currentMarket}
       isIsolated={reserve.isolationModeConfig?.canBeCollateral}
       frozen={reserve.isFrozen}
-      borrowEnabled={reserve.borrowInfo?.borrowingState === 'ENABLED' ? true : false}
+      borrowEnabled={true}
       showExternalIncentivesTooltips={{
         superFestRewards: externalIncentivesTooltipsSupplySide.superFestRewards,
         spkAirdrop: externalIncentivesTooltipsSupplySide.spkAirdrop,
