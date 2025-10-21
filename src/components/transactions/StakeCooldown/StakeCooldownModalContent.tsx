@@ -65,6 +65,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
 
   // Cooldown logic
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
+
   const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
 
   const cooldownPercent = valueToBigNumber(stakeCooldownSeconds)

@@ -42,6 +42,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
   const stakeData = stakeGeneralResult?.[0];
+  const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
   const stakeUserData = stakeUserResult?.[0];
 
   // states
@@ -112,7 +113,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         />
       )}
 
-      {nameFormatted !== 'GHO' && <CooldownWarning />}
+      {nameFormatted !== 'GHO' && <CooldownWarning cooldownSeconds={stakeCooldownSeconds} />}
 
       <AssetInput
         value={amount}
