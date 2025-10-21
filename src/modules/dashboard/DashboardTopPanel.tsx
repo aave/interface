@@ -43,6 +43,10 @@ interface MeritReward {
 export const DashboardTopPanel = () => {
   const { user, loading, userState, supplyReserves } = useAppDataContext();
 
+  console.log('UserLegacy:', user);
+  console.log('UserState:', userState);
+  console.log('SupplyReserves:', supplyReserves);
+
   const { currentAccount } = useWeb3Context();
   const { netAPY: enhancedNetAPY, hasEnhancedData } = useEnhancedUserYield();
   const [open, setOpen] = useState(false);
@@ -146,10 +150,6 @@ export const DashboardTopPanel = () => {
           .toFixed();
 
   const currentLoanToValue = userState ? userState.ltv.value.toString() : '0';
-  // const currentLoanToValue =
-  //   userState && userState.totalCollateralBase && Number(userState.totalCollateralBase) > 0
-  //     ? ((Number(userState.totalDebtBase) / Number(userState.totalCollateralBase)) * 100).toString()
-  //     : '0';
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
@@ -228,7 +228,9 @@ export const DashboardTopPanel = () => {
         >
           {currentAccount && userState && Number(userState.netWorth) > 0 ? (
             <FormattedNumber
-              value={hasEnhancedData ? enhancedNetAPY : userState ? Number(userState.netAPY) : 0}
+              value={
+                hasEnhancedData ? enhancedNetAPY : userState ? Number(userState.netAPY.value) : 0
+              }
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
