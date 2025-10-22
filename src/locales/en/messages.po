@@ -3434,6 +3434,7 @@ msgstr "Selected supply assets"
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx

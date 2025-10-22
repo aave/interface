@@ -130,48 +130,98 @@ export const MerklIncentivesTooltipContent = ({
               </Row>
             )}
 
-            {/* Merit Incentives */}
-            <Row
-              height={32}
-              caption={
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    mb: 0,
-                  }}
-                >
-                  <TokenIcon
-                    aToken={merklIncentivesFormatted.aToken}
-                    symbol={merklIncentivesFormatted.tokenIconSymbol}
-                    sx={{ fontSize: '20px', mr: 1 }}
+            {/* Merkl Incentives */}
+            {merklIncentives.allOpportunities && merklIncentives.allOpportunities.length > 1 ? (
+              <>
+                {merklIncentives.allOpportunities.map((opportunity, index) => {
+                  const { tokenIconSymbol, symbol, aToken } = getSymbolMap({
+                    rewardTokenSymbol: opportunity.rewardToken.symbol,
+                    rewardTokenAddress: opportunity.rewardToken.address,
+                    incentiveAPR: opportunity.apy.toString(),
+                  });
+                  return (
+                    <Row
+                      key={index}
+                      height={32}
+                      caption={
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            mb: 0,
+                          }}
+                        >
+                          <TokenIcon
+                            symbol={tokenIconSymbol}
+                            aToken={aToken}
+                            sx={{ fontSize: '20px', mr: 1 }}
+                          />
+                          <Typography variant={typographyVariant}>{symbol}</Typography>
+                          <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                            {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                          </Typography>
+                        </Box>
+                      }
+                      width="100%"
+                    >
+                      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                        <FormattedNumber
+                          value={
+                            merklIncentives.breakdown.isBorrow ? -opportunity.apy : opportunity.apy
+                          }
+                          percent
+                          variant={typographyVariant}
+                        />
+                        <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+                          <Trans>APY</Trans>
+                        </Typography>
+                      </Box>
+                    </Row>
+                  );
+                })}
+              </>
+            ) : (
+              <Row
+                height={32}
+                caption={
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      mb: 0,
+                    }}
+                  >
+                    <TokenIcon
+                      aToken={merklIncentivesFormatted.aToken}
+                      symbol={merklIncentivesFormatted.tokenIconSymbol}
+                      sx={{ fontSize: '20px', mr: 1 }}
+                    />
+                    <Typography variant={typographyVariant}>
+                      {merklIncentivesFormatted.symbol}
+                    </Typography>
+                    <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                      {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                    </Typography>
+                  </Box>
+                }
+                width="100%"
+              >
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <FormattedNumber
+                    value={
+                      merklIncentives.breakdown.isBorrow
+                        ? -merklIncentives.breakdown.merklIncentivesAPR
+                        : merklIncentives.breakdown.merklIncentivesAPR
+                    }
+                    percent
+                    variant={typographyVariant}
                   />
-                  <Typography variant={typographyVariant}>
-                    {merklIncentivesFormatted.symbol}
-                  </Typography>
-                  <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
-                    {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
+                  <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+                    <Trans>APY</Trans>
                   </Typography>
                 </Box>
-              }
-              width="100%"
-            >
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <FormattedNumber
-                  value={
-                    merklIncentives.breakdown.isBorrow
-                      ? -merklIncentives.breakdown.merklIncentivesAPR
-                      : merklIncentives.breakdown.merklIncentivesAPR
-                  }
-                  percent
-                  variant={typographyVariant}
-                />
-                <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-                  <Trans>APY</Trans>
-                </Typography>
-              </Box>
-            </Row>
-
+              </Row>
+            )}
             {/* Total APY */}
             <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
               <Row
