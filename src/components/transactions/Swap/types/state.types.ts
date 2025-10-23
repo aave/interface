@@ -1,6 +1,7 @@
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { TxStateType } from 'src/hooks/useModal';
 
+import { Expiry } from '../constants/limitOrders.constants';
 import { ValidationData } from '../helpers/shared/slippage.helpers';
 import { SwapParams } from './params.types';
 import { SwapQuoteType } from './quote.types';
@@ -37,7 +38,7 @@ export type TokensSwapState = {
   slippage: string;
   autoSlippage: string;
   safeSlippage: number;
-  expiry: number;
+  expiry: Expiry;
 
   // Context
   user: string;
@@ -121,7 +122,7 @@ const defaultToken: SwappableToken = {
 export const swapDefaultState: SwapState = {
   swapType: SwapType.Swap,
   provider: SwapProvider.NONE,
-  expiry: Math.floor(Date.now() / 1000) + 10 * 60, // 10 minutes
+  expiry: Expiry.TEN_MINUTES, // 10 minutes
   user: '',
   actionsLoading: false,
   side: 'sell',

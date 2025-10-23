@@ -64,6 +64,26 @@ export const CollateralRepayActions = ({
       protocolAction: ProtocolAction.repayCollateral,
       handleGetTxns: async (signature, deadline) => {
         const route = await buildTxFn();
+
+        console.log('paraswapRepayWithCollateral', {
+          repayAllDebt,
+          repayAmount,
+          rateMode,
+          repayWithAmount,
+
+          fromAssetData,
+          poolReserve,
+          symbol,
+          isWrongNetwork,
+          useFlashLoan,
+          blocked,
+          swapCallData: route.swapCallData,
+          augustus: route.augustus,
+          signature,
+          deadline,
+          signedAmount: calculateSignedAmount(repayWithAmount, fromAssetData.decimals),
+        });
+
         return paraswapRepayWithCollateral({
           repayAllDebt,
           repayAmount,
@@ -83,6 +103,25 @@ export const CollateralRepayActions = ({
         });
       },
       handleGetApprovalTxns: async () => {
+        console.log('paraswapRepayWithCollateral', {
+          repayAllDebt,
+          repayAmount,
+          rateMode,
+          repayWithAmount,
+
+          fromAssetData,
+          poolReserve,
+          symbol,
+          isWrongNetwork,
+          useFlashLoan,
+          blocked,
+          swapCallData: '0x',
+          augustus: API_ETH_MOCK_ADDRESS,
+          signature: '0x',
+          deadline: '0',
+          signedAmount: calculateSignedAmount(repayWithAmount, fromAssetData.decimals),
+        });
+
         return paraswapRepayWithCollateral({
           repayAllDebt,
           repayAmount,

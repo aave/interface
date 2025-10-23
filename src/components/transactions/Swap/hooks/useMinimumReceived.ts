@@ -4,6 +4,8 @@ import { minimumReceivedAfterSlippage } from 'src/hooks/paraswap/common';
 
 import { OrderType, SwapParams, SwapState } from '../types';
 
+// TODO: Fix for inverted swaps
+
 export const useMinimumReceived = ({
   state,
   setState,

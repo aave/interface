@@ -13,13 +13,13 @@ import {
 import { Expiry } from '../../types';
 
 interface ExpirySelectorProps {
-  selectedExpiry: number;
-  setSelectedExpiry: (value: number) => void;
+  selectedExpiry: Expiry;
+  setSelectedExpiry: (value: Expiry) => void;
 }
 
 export const ExpirySelector = ({ selectedExpiry, setSelectedExpiry }: ExpirySelectorProps) => {
   const handleChange = (event: SelectChangeEvent<string>) => {
-    setSelectedExpiry(Number(event.target.value));
+    setSelectedExpiry(event.target.value as unknown as Expiry);
   };
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -67,7 +67,7 @@ export const ExpirySelector = ({ selectedExpiry, setSelectedExpiry }: ExpirySele
                 }}
               >
                 <Typography variant="subheader2" color="text.secondary">
-                  <Trans>{key}</Trans>
+                  {value}
                 </Typography>
               </Box>
             </MenuItem>

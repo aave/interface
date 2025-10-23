@@ -1,22 +1,69 @@
-import { normalize } from '@aave/math-utils';
-import { getOrderToSign, LimitTradeParameters, OrderKind, TradingSdk } from '@cowprotocol/cow-sdk';
-import { AaveCollateralSwapSdk, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
+import { normalize, normalizeBN } from '@aave/math-utils';
+import { getOrderToSign, LimitTradeParameters, OrderKind } from '@cowprotocol/cow-sdk';
+import { AaveFlashLoanType, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
+import { calculateSignedAmount } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { useShallow } from 'zustand/react/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
+import { FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
-import { getCowAdapter } from '../../helpers/cow';
-import { calculateInstanceAddress } from '../../helpers/cow/adapters.helpers';
+import { getCowFlashLoanSdk, getCowTradingSdkByChainIdAndAppCode } from '../../helpers/cow';
+import { calculateInstanceAddress, OrderCore } from '../../helpers/cow/adapters.helpers';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { OrderType, SwapParams, SwapState } from '../../types';
+import { ExpiryToSecondsMap, OrderType, SwapParams, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
+
+export const getCollateralSwapOrderCore = (state: SwapState): OrderCore => {
+  // In limit orders, slippage is zero.
+  const slippageInPercentage =
+    state.orderType === OrderType.LIMIT ? 0 : Number(state.slippage) / 100;
+
+  const sellToken = state.sourceToken;
+  const buyToken = state.destinationToken;
+  const side = state.side;
+
+  // If side is sell, we allow less buy amount to ensure sell amount
+  // If side is buy, we allow more sell amount to ensure buy amount
+  const sellAmount =
+    side === 'sell'
+      ? normalizeBN(state.inputAmount, -sellToken.decimals)
+      : normalizeBN(state.inputAmount, -sellToken.decimals)
+          .multipliedBy(1 + slippageInPercentage)
+          .decimalPlaces(0);
+  const buyAmount =
+    side === 'sell'
+      ? normalizeBN(state.outputAmount, -buyToken.decimals)
+          .dividedBy(1 + slippageInPercentage)
+          .decimalPlaces(0)
+      : normalizeBN(state.outputAmount, -buyToken.decimals).decimalPlaces(0);
+
+  // TODO: REQUIRES FIX IN COW SDK
+  // slippageBps = slippageInPercentage * 10000
+  // const partnerFee = COW_PARTNER_FEE(state.sourceToken.symbol, state.destinationToken.symbol);
+
+  const partnerFee = {
+    volumeBps: 0,
+    recipient: '0x0000000000000000000000000000000000000000',
+  };
+  const slippageBps = 0;
+
+  return {
+    chainId: state.chainId,
+    sellAmount,
+    buyAmount,
+    sellToken,
+    buyToken,
+    side,
+    slippageBps,
+    partnerFee,
+  };
+};
 
 export const CollateralSwapActionsViaCowAdapters = ({
   params,
@@ -37,15 +84,35 @@ export const CollateralSwapActionsViaCowAdapters = ({
   const [precalculatedInstanceAddress, setPrecalculatedInstanceAddress] = useState<
     string | undefined
   >();
-  const validTo = state.expiry || Math.floor(Date.now() / 1000) + 10 * 60; // 10 minutes
 
-  const slippageBps =
-    state.orderType === OrderType.LIMIT ? 0 : Math.round(Number(state.slippage) * 100); // percent to bps
+  const validTo = useMemo(
+    () => Math.floor(Date.now() / 1000) + ExpiryToSecondsMap[state.expiry],
+    [state.expiry]
+  );
+
+  const orderCore = useMemo(
+    () => getCollateralSwapOrderCore(state),
+    [
+      state.inputAmount,
+      state.outputAmount,
+      state.sourceToken,
+      state.destinationToken,
+      state.side,
+      state.slippage,
+      state.orderType,
+      state.chainId,
+    ]
+  );
 
   // Pre-compute instance address
   useEffect(() => {
     if (state.chainId !== 100) return; // TODO: remove this once we have a supported chainId
-    calculateInstanceAddress(state, user, validTo)
+    calculateInstanceAddress({
+      user,
+      validTo,
+      type: AaveFlashLoanType.CollateralSwap,
+      orderCore,
+    })
       .catch((error) => {
         console.error('calculateInstanceAddress error', error);
         setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, true));
@@ -58,24 +125,23 @@ export const CollateralSwapActionsViaCowAdapters = ({
       .then((address) => {
         if (address) setPrecalculatedInstanceAddress(address);
       });
-  }, [
-    user,
-    state.inputAmount,
-    state.minimumReceived,
-    state.destinationToken.underlyingAddress,
-    state.sourceToken.symbol,
-    state.destinationToken.symbol,
-    state.slippage,
-    state.autoSlippage,
-    APP_CODE_PER_SWAP_TYPE[state.swapType],
-  ]);
+  }, [user, validTo, orderCore, state.chainId]);
 
   // Approval is aToken ERC20 Approval
+  const amountToApprove = useMemo(
+    () =>
+      calculateSignedAmount(
+        normalizeBN(orderCore.sellAmount.toString(), orderCore.sellToken.decimals).toString(),
+        orderCore.sellToken.decimals
+      ),
+    [orderCore.sellAmount, orderCore.sellToken.decimals]
+  );
+
   const { requiresApproval, approval, tryPermit, signatureParams } = useSwapTokenApproval({
     chainId: state.chainId,
     token: state.sourceToken.addressToSwap,
     symbol: state.sourceToken.symbol,
-    amount: state.inputAmount,
+    amount: normalize(amountToApprove.toString(), orderCore.sellToken.decimals),
     decimals: state.sourceToken.decimals,
     spender: precalculatedInstanceAddress,
     setState,
@@ -101,23 +167,13 @@ export const CollateralSwapActionsViaCowAdapters = ({
     });
 
     try {
-      if (!state.minimumReceived) return;
-
-      const sellAmount = normalize(state.inputAmount, -state.sourceToken.decimals);
-      const buyAmount = normalize(state.minimumReceived, -state.destinationToken.decimals);
-
-      const adapter = await getCowAdapter(state.chainId);
-      const tradingSdk = new TradingSdk(
-        {
-          chainId: state.chainId,
-          appCode: APP_CODE_PER_SWAP_TYPE[state.swapType],
-          env: 'staging',
-          signer: adapter.signer,
-        },
-        {},
-        adapter
+      const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(
+        orderCore.chainId,
+        APP_CODE_PER_SWAP_TYPE[state.swapType],
+        'staging'
       );
-      const flashLoanSdk = new AaveCollateralSwapSdk();
+      const flashLoanSdk = await getCowFlashLoanSdk(orderCore.chainId);
+
       const collateralPermit = signatureParams
         ? {
             amount: signatureParams?.amount,
@@ -128,42 +184,41 @@ export const CollateralSwapActionsViaCowAdapters = ({
           }
         : undefined;
 
-      const partnerFee = COW_PARTNER_FEE(state.sourceToken.symbol, state.destinationToken.symbol);
-
       const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
-        flashLoanFeePercent: FLASH_LOAN_FEE_BPS / 100,
-        sellAmount: BigInt(sellAmount),
+        flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
+        sellAmount: BigInt(orderCore.sellAmount.toString()),
       });
 
       const limitOrder: LimitTradeParameters = {
-        sellToken: state.sourceToken.underlyingAddress,
-        sellTokenDecimals: state.sourceToken.decimals,
-        buyToken: state.destinationToken.underlyingAddress,
-        buyTokenDecimals: state.destinationToken.decimals,
+        sellToken: orderCore.sellToken.underlyingAddress,
+        sellTokenDecimals: orderCore.sellToken.decimals,
+        buyToken: orderCore.buyToken.underlyingAddress,
+        buyTokenDecimals: orderCore.buyToken.decimals,
         sellAmount: sellAmountToSign.toString(),
-        buyAmount: buyAmount.toString(),
-        kind: state.side === 'buy' ? OrderKind.BUY : OrderKind.SELL,
+        buyAmount: orderCore.buyAmount.toString(),
+        kind: orderCore.side === 'buy' ? OrderKind.BUY : OrderKind.SELL,
         validTo,
-        slippageBps,
-        partnerFee,
+        slippageBps: orderCore.slippageBps,
+        partnerFee: orderCore.partnerFee,
       };
 
       const orderToSign = getOrderToSign(
-        { chainId: state.chainId, from: user, networkCostsAmount: '0', isEthFlow: false },
+        { chainId: orderCore.chainId, from: user, networkCostsAmount: '0', isEthFlow: false },
         limitOrder,
         HASH_ZERO
       );
 
       const orderPostParams = await flashLoanSdk.getOrderPostingSettings(
+        AaveFlashLoanType.CollateralSwap,
         {
-          chainId: state.chainId,
+          chainId: orderCore.chainId,
           validTo,
           owner: user as `0x${string}`,
           flashLoanFeeAmount,
         },
         {
-          sellAmount: BigInt(sellAmount),
-          buyAmount: BigInt(buyAmount),
+          sellAmount: BigInt(orderCore.sellAmount.toString()),
+          buyAmount: BigInt(orderCore.buyAmount.toString()),
           orderToSign,
           collateralPermit,
         }

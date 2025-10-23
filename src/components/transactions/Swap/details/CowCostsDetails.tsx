@@ -12,6 +12,7 @@ import { Row } from 'src/components/primitives/Row';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 
 import { calculateFlashLoanAmounts } from '../helpers/cow/adapters.helpers';
+import { swapTypesThatRequiresInvertedQuote } from '../hooks/useSwapQuote';
 import { isCowProtocolRates, OrderType, SwapState } from '../types';
 
 export const CowCostsDetails = ({ state }: { state: SwapState }) => {
@@ -19,43 +20,50 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
 
   if (!state.swapRate || !isCowProtocolRates(state.swapRate)) return null;
 
-  let networkFeeFormatted,
-    networkFeeUsd,
-    networkFeeToken,
-    flashloanFeeFormatted,
-    flashloanFeeUsd,
-    flashloanFeeToken;
-  if (state.side === 'sell') {
-    networkFeeFormatted = normalize(
-      state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
+  const networkFeeFormatted = normalize(
+    state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
+    state.swapRate.destDecimals
+  );
+
+  const networkFeeUsd = Number(networkFeeFormatted) * state.swapRate.destTokenPriceUsd;
+  const networkFeeToken = state.destinationToken;
+  // If using flash-loan via CoW we need to account for the flash-loan fee
+  const flashloanFeeFormatted = normalize(
+    calculateFlashLoanAmounts(state).flashLoanFeeAmount.toString(),
+    state.sourceToken.decimals
+  );
+  const flashloanFeeUsd = Number(flashloanFeeFormatted) * state.swapRate.srcTokenPriceUsd;
+  const flashloanFeeToken = state.sourceToken;
+
+  // Partner fee is applied to the surplus token:
+  // - For sell orders: fee in buy token (destinationToken), deducted from buy amount
+  // - For buy orders: fee in sell token (sourceToken), added to sell amount
+  // For Debt and Repay with collateral, the swap is inverted to our UI
+  const invertedSide = swapTypesThatRequiresInvertedQuote.includes(state.swapType)
+    ? state.side === 'sell'
+      ? 'buy'
+      : 'sell'
+    : state.side;
+  let partnerFeeFormatted: string,
+    partnerFeeUsd: number,
+    partnerFeeToken: typeof state.sourceToken | typeof state.destinationToken;
+  if (invertedSide === 'buy') {
+    // Fee in destination token (buy token)
+    partnerFeeFormatted = normalize(
+      state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
       state.destinationToken.decimals
     );
-    networkFeeUsd = Number(networkFeeFormatted) * state.swapRate.destTokenPriceUsd;
-    networkFeeToken = state.destinationToken;
-
-    // If using flash-loan via CoW we need to account for the flash-loan fee
-    flashloanFeeFormatted = normalize(
-      calculateFlashLoanAmounts(state).flashLoanFeeAmount.toString(),
-      state.sourceToken.decimals
-    );
-    flashloanFeeUsd = Number(flashloanFeeFormatted) * state.swapRate.srcTokenPriceUsd;
-    flashloanFeeToken = state.sourceToken;
+    partnerFeeUsd = Number(partnerFeeFormatted) * state.swapRate.destTokenPriceUsd;
+    partnerFeeToken = state.destinationToken;
   } else {
-    networkFeeFormatted = normalize(
-      state.swapRate.amountAndCosts.costs.networkFee.amountInSellCurrency.toString(),
+    // Fee in source token (sell token)
+    partnerFeeFormatted = normalize(
+      state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
       state.sourceToken.decimals
     );
-    networkFeeUsd = Number(networkFeeFormatted) * state.swapRate.srcTokenPriceUsd;
-    networkFeeToken = state.sourceToken;
+    partnerFeeUsd = Number(partnerFeeFormatted) * state.swapRate.srcTokenPriceUsd;
+    partnerFeeToken = state.sourceToken;
   }
-
-  // Partner fee always in buy currency
-  const partnerFeeFormatted = normalize(
-    state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
-    state.destinationToken.decimals
-  );
-  const partnerFeeUsd = Number(partnerFeeFormatted) * state.swapRate.destTokenPriceUsd;
-  const partnerFeeToken = state.destinationToken;
 
   const totalCostsInUsd = networkFeeUsd + partnerFeeUsd + (flashloanFeeUsd ?? 0); // + costs.slippageInUsd;
 
@@ -65,7 +73,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
         mb: 4,
         boxShadow: 'none',
         '&:before': { display: 'none' },
-        '.MuiAccordionSummary-root': { minHeight: '24px', maxHeight: '24px' },
+        '.MuiAccordionSummary-root': { minHeight: '24px', maxHeight: '24px', margin: 0 },
         backgroundColor: 'transparent',
         mt: '0',
       }}
@@ -76,10 +84,15 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         sx={{
+          margin: 0,
           padding: 0,
           minHeight: '24px',
           height: '24px',
-          '.MuiAccordionSummary-content': { margin: 0 },
+          '.MuiAccordionSummary-content': {
+            margin: 0,
+            alignItems: !costBreakdownExpanded ? 'center' : undefined,
+            display: !costBreakdownExpanded ? 'flex' : undefined,
+          },
         }}
       >
         <Row
@@ -95,6 +108,11 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
           width="100%"
           minHeight="24px"
           maxHeight="24px"
+          sx={{
+            margin: 0,
+            display: 'flex',
+            alignItems: !costBreakdownExpanded ? 'center' : undefined, // center only if not expanded
+          }}
         >
           {!costBreakdownExpanded && (
             <FormattedNumber

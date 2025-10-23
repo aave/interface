@@ -46,7 +46,7 @@ export const getSwitchProvider = ({
   // TODO: REMOVE
   if (shouldUseFlashloan) {
     // CoW Adapters only deployed on Gnosis for now
-    if (chainId !== ChainId.xdai) {
+    if (chainId !== ChainId.xdai && swapType === SwapType.CollateralSwap) {
       return SwapProvider.PARASWAP;
     }
   }

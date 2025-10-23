@@ -34,12 +34,12 @@ function buildErrorPayload(state: SwapState, error: SwapError) {
     slippage: state.slippage,
     input: {
       token: state.sourceToken.symbol,
-      amount: state.debouncedInputAmount,
+      amount: state.inputAmount,
       usd: state.swapRate?.srcSpotUSD,
     },
     output: {
       token: state.destinationToken.symbol,
-      amount: state.debouncedOutputAmount,
+      amount: state.outputAmount,
       usd: state.swapRate?.destSpotUSD,
     },
     error: {

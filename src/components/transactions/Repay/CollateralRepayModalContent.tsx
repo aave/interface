@@ -257,6 +257,13 @@ export function CollateralRepayModalContent({
       />
     );
 
+  console.log('poolReserve', poolReserve.symbol, poolReserve.underlyingAsset);
+  console.log(
+    'collateralReserveData',
+    collateralReserveData.symbol,
+    collateralReserveData.underlyingAsset
+  );
+
   return (
     <>
       <AssetInput

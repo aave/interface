@@ -32,7 +32,8 @@ export type TokensSwapParams = {
   refreshTokens: (chainId: number) => void;
   interestMode: InterestRate;
   swapKind: SwapKind;
-  resultScreenTokensPrefix?: string;
+  resultScreenTokensFromTitle?: string;
+  resultScreenTokensToTitle?: string;
   resultScreenTitleItems?: string;
 };
 

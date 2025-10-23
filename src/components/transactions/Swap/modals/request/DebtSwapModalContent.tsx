@@ -85,7 +85,8 @@ export const DebtSwapModalContent = ({ underlyingAsset }: { underlyingAsset: str
     showSwitchInputAndOutputAssetsButton: false, // TODO: do we?
     chainId: currentNetworkConfig.wagmiChain.id,
     titleTokenPostfix: 'debt',
-    resultScreenTokensPrefix: 'Debt ',
+    resultScreenTokensFromTitle: 'Debt sent',
+    resultScreenTokensToTitle: 'Debt received',
     resultScreenTitleItems: 'debt',
   };
 

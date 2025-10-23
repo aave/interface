@@ -1,10 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import {
-  OrderKind,
-  QuoteAndPost,
-  TradingSdk,
-  WRAPPED_NATIVE_CURRENCIES,
-} from '@cowprotocol/cow-sdk';
+import { OrderKind, QuoteAndPost, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { BigNumber } from 'bignumber.js';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
@@ -14,8 +9,9 @@ import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { COW_PARTNER_FEE, isChainIdSupportedByCoWProtocol } from '../../constants/cow.constants';
-import { getCowAdapter, isNativeToken } from '../../helpers/cow';
+import { isNativeToken } from '../../helpers/cow';
 import { CowProtocolRatesType, ProviderRatesParams, SwapProvider } from '../../types';
+import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
 export const getTokenUsdPrice = async (
   chainId: number,
@@ -61,8 +57,7 @@ export async function getCowProtocolSellRates({
   side = 'sell',
   invertedQuoteRoute = false,
 }: ProviderRatesParams): Promise<CowProtocolRatesType> {
-  const tradingSdk = new TradingSdk({ chainId }, {}, await getCowAdapter(chainId));
-
+  const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(chainId, appCode);
   let orderBookQuote: QuoteAndPost | undefined;
   let srcTokenPriceUsd: string | undefined;
   let destTokenPriceUsd: string | undefined;
@@ -193,11 +188,12 @@ export async function getCowProtocolSellRates({
       srcToken: destToken,
       srcSpotUSD: destAmountInUsd.toString(),
       srcSpotAmount:
-        orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString(),
+        orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString(),
       srcDecimals: destDecimals,
       destToken: srcToken,
-      destSpotAmount: amount,
-      destSpotUSD: srcAmountInUsd.toString(),
+      destSpotAmount:
+        orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString(),
+      destSpotUSD: destAmountInUsd.toString(),
       afterFeesUSD: destAmountInUsd.toString(),
       afterFeesAmount: amount.toString(),
       destDecimals: srcDecimals,

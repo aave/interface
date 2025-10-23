@@ -59,6 +59,10 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
     if (!state.swapRate || !isParaswapRates(state.swapRate))
       throw new Error('Route required to build transaction');
 
+    setMainTxState({
+      txHash: undefined,
+      loading: true,
+    });
     const isMaxSelected = state.isMaxSelected;
     const optimalRateData = state.swapRate.optimalRateData;
 
@@ -186,7 +190,8 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
           chainId: state.chainId,
         }
       );
-      // TODO: fix success
+      trackingHandlers.trackSwap(); // TODO: check this happening in all actions
+      params.invalidateAppState(); // TODO: check this happening in all actions
       setMainTxState({
         txHash: response.hash,
         loading: false,

@@ -29,7 +29,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
   },
   [SwapType.DebtSwap]: {
     [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.GNOSIS_CHAIN]: 'ALL',
     [SupportedChainId.ARBITRUM_ONE]: 'ALL',
     [SupportedChainId.BASE]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
@@ -39,7 +38,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
   },
   [SwapType.RepayWithCollateral]: {
     [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.GNOSIS_CHAIN]: 'ALL',
     [SupportedChainId.ARBITRUM_ONE]: 'ALL',
     [SupportedChainId.BASE]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
@@ -77,7 +75,7 @@ export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) 
   recipient: COW_EVM_RECIPIENT,
 });
 
-export const FLASH_LOAN_FEE_BPS = 5; // 0.05%
+export const FLASH_LOAN_FEE_BPS = 5;
 export const VALID_TO_HALF_HOUR = Math.floor(Date.now() / 1000) + 60 * 30; // 30 minutes
 
 export const COW_APP_DATA = (

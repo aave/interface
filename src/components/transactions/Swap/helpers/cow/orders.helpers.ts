@@ -10,16 +10,12 @@ import {
   SellTokenSource,
   SigningScheme,
   SupportedChainId,
-  TradingSdk,
   WRAPPED_NATIVE_CURRENCIES,
 } from '@cowprotocol/cow-sdk';
 import { AnyAppDataDocVersion, MetadataApi } from '@cowprotocol/sdk-app-data';
-import { ViemAdapter } from '@cowprotocol/sdk-viem-adapter';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { isSmartContractWallet } from 'src/helpers/provider';
-import { wagmiConfig } from 'src/ui-config/wagmiConfig';
-import { getPublicClient, getWalletClient } from 'wagmi/actions';
 
 import {
   COW_APP_DATA,
@@ -29,6 +25,7 @@ import {
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
 import { isCowProtocolRates, OrderType, SwapState } from '../../types';
+import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
 export type CowProtocolActionParams = {
   orderType: OrderType;
@@ -49,15 +46,6 @@ export type CowProtocolActionParams = {
   appCode: string;
   kind: OrderKind;
   orderBookQuote: QuoteAndPost;
-};
-
-export const getCowAdapter = async (chainId: number) => {
-  const walletClient = await getWalletClient(wagmiConfig, { chainId });
-  const publicClient = getPublicClient(wagmiConfig, { chainId });
-  if (!publicClient || !walletClient) {
-    throw new Error('Wallet not connected');
-  }
-  return new ViemAdapter({ provider: publicClient, walletClient });
 };
 
 export const getPreSignTransaction = async ({
@@ -83,15 +71,7 @@ export const getPreSignTransaction = async ({
     throw new Error('Chain not supported.');
   }
 
-  const tradingSdk = new TradingSdk(
-    {
-      chainId,
-      appCode,
-    },
-    {},
-    await getCowAdapter(chainId)
-  );
-
+  const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(chainId, appCode);
   const isSmartContract = await isSmartContractWallet(user, provider);
   if (!isSmartContract) {
     throw new Error('Only smart contract wallets should use presign.');
@@ -187,14 +167,7 @@ export const sendOrder = async ({
   }
 
   if (orderType === OrderType.LIMIT) {
-    const tradingSdk = new TradingSdk(
-      {
-        chainId,
-        appCode,
-      },
-      {},
-      await getCowAdapter(chainId)
-    );
+    const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(chainId, appCode);
 
     return tradingSdk
       .postLimitOrder(

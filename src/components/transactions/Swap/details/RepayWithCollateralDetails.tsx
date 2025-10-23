@@ -9,7 +9,8 @@ import {
   DetailsNumberLineWithSub,
   TxModalDetails,
 } from '../../FlowCommons/TxModalDetails';
-import { ProtocolSwapParams, ProtocolSwapState } from '../types';
+import { ProtocolSwapParams, ProtocolSwapState, SwapProvider } from '../types';
+import { CowCostsDetails } from './CowCostsDetails';
 
 export const RepayWithCollateralDetails = ({
   state,
@@ -69,6 +70,8 @@ export const RepayWithCollateralDetails = ({
 
   return (
     <TxModalDetails gasLimit={state.gasLimit} showGasStation={state.showGasStation}>
+      {state.provider === SwapProvider.COW_PROTOCOL && <CowCostsDetails state={state} />}
+
       <DetailsHFLine
         visibleHfChange={!!state.inputAmount}
         healthFactor={user?.healthFactor}
