@@ -3,7 +3,7 @@ import { Box, IconButton, SvgIcon } from '@mui/material';
 import { Dispatch } from 'react';
 
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
-import { SwapParams, SwapState } from '../types';
+import { Expiry, SwapParams, SwapState } from '../types';
 import { SwitchAssetInput } from './primitives/SwapAssetInput';
 import { ExpirySelector } from './shared/ExpirySelector';
 import { NetworkSelector } from './shared/NetworkSelector';
@@ -41,10 +41,8 @@ export const LimitOrderInputs = ({
 
         <ExpirySelector
           selectedExpiry={state.expiry}
-          setSelectedExpiry={(expiry: number) => {
-            const remaining = expiry;
-            const fromNow = Math.floor(Date.now() / 1000) + remaining;
-            setState({ expiry: fromNow });
+          setSelectedExpiry={(expiry: Expiry) => {
+            setState({ expiry });
           }}
         />
       </Box>

@@ -101,7 +101,8 @@ export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsse
     titleTokenPostfix: 'supply',
     sourceReserve: initialSourceUserReserve,
     destinationReserve: initialTargetUserReserve,
-    resultScreenTokensPrefix: 'Collateral ',
+    resultScreenTokensFromTitle: 'Collateral sent',
+    resultScreenTokensToTitle: 'Collateral received',
     resultScreenTitleItems: 'collateral',
   };
 

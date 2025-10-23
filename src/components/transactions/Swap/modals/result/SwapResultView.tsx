@@ -23,7 +23,7 @@ import {
   isOrderFilled,
   isOrderLoading,
 } from '../../helpers/cow';
-import { SwapParams, SwapProvider, SwapState } from '../../types';
+import { SwapParams, SwapProvider, SwapState, SwapType } from '../../types';
 
 export type SwapTxSuccessViewProps = {
   txHash?: string;
@@ -39,7 +39,8 @@ export type SwapTxSuccessViewProps = {
   chainId: number;
   destDecimals: number;
   srcDecimals: number;
-  resultScreenTokensPrefix?: string;
+  resultScreenTokensFromTitle?: string;
+  resultScreenTokensToTitle?: string;
   resultScreenTitleItems?: string;
 };
 
@@ -80,13 +81,15 @@ export const SwapResultView = ({
   state: SwapState;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
+  const outAmount = state.swapType === SwapType.Swap ? state.minimumReceived : state.outputAmount;
+
   return (
     <SwapTxSuccessView
       txHash={state.mainTxState.txHash}
       amount={state.inputAmount}
       symbol={state.sourceToken.symbol}
       iconSymbol={state.sourceToken.symbol} // TODO: can simplify?
-      outAmount={state.minimumReceived ?? ''}
+      outAmount={outAmount ?? ''}
       outSymbol={state.destinationToken.symbol}
       outIconSymbol={state.destinationToken.symbol}
       iconUri={state.sourceToken.logoURI}
@@ -95,7 +98,8 @@ export const SwapResultView = ({
       chainId={state.chainId}
       destDecimals={state.destinationToken.decimals}
       srcDecimals={state.sourceToken.decimals}
-      resultScreenTokensPrefix={params.resultScreenTokensPrefix}
+      resultScreenTokensFromTitle={params.resultScreenTokensFromTitle}
+      resultScreenTokensToTitle={params.resultScreenTokensToTitle}
       resultScreenTitleItems={params.resultScreenTitleItems}
     />
   );
@@ -115,7 +119,8 @@ export const SwapTxSuccessView = ({
   chainId,
   destDecimals,
   srcDecimals,
-  resultScreenTokensPrefix,
+  resultScreenTokensFromTitle,
+  resultScreenTokensToTitle,
   resultScreenTitleItems,
 }: SwapTxSuccessViewProps) => {
   const { trackOrder, setHasActiveOrders } = useCowOrderToast();
@@ -275,8 +280,8 @@ export const SwapTxSuccessView = ({
           <Typography color="text.secondary">
             {provider == 'cowprotocol' &&
             ((orderStatus == 'open' && !isNativeToken(symbol)) || orderStatus == 'failed')
-              ? `${resultScreenTokensPrefix ?? ''} Send`
-              : `${resultScreenTokensPrefix ?? ''} Sent`}
+              ? `${resultScreenTokensFromTitle ?? 'Send'}`
+              : `${resultScreenTokensFromTitle ?? 'Sent'}`}
           </Typography>
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon
@@ -315,8 +320,8 @@ export const SwapTxSuccessView = ({
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
           <Typography color="text.secondary">
             {provider == 'cowprotocol' && (orderStatus == 'open' || orderStatus == 'failed')
-              ? 'Receive'
-              : 'Received'}
+              ? `${resultScreenTokensToTitle ?? 'Receive'}`
+              : `${resultScreenTokensToTitle ?? 'Received'}`}
           </Typography>
           <Box display="flex" alignItems="center" gap={1}>
             <ExternalTokenIcon

@@ -61,7 +61,8 @@ export const useSwapTokenApproval = ({
   const [approvedAmount, setApprovedAmount] = useState<string | undefined>();
   const [requiresApprovalReset, setRequiresApprovalReset] = useState(false);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
-  const lastFetchedSpenderRef = useRef<string | undefined>();
+  // Keep track of last fetched approval key (token:spender) to avoid duplicate calls for same pair
+  const lastFetchedApprovalKeyRef = useRef<string | undefined>();
 
   const { approvalTxState, setLoadingTxns, setTxError, setApprovalTxState } = useModalContext();
   const { sendTx, signTxData } = useWeb3Context();
@@ -118,6 +119,14 @@ export const useSwapTokenApproval = ({
     }
   }, [amount]);
 
+  // Reset approval-related state when token/spender context changes to ensure fresh checks
+  useEffect(() => {
+    setSignatureParams(undefined);
+    setApprovedAmount(undefined);
+    lastFetchedApprovalKeyRef.current = undefined;
+    setApprovalTxState({ txHash: undefined, loading: false, success: false });
+  }, [token, spender, chainId, type]);
+
   // Warning for USDT on Ethereum approval reset
   useEffect(() => {
     const amountToApprove = calculateSignedAmount(normalizeBN(amount, -decimals).toString(), 0);
@@ -163,7 +172,7 @@ export const useSwapTokenApproval = ({
       });
       approvedTargetAmount = erc20ApprovedAmount.toString();
     }
-    console.log('approvedTargetAmount', approvedTargetAmount);
+
     setApprovedAmount(approvedTargetAmount.toString());
 
     setLoadingTxns(false);
@@ -176,11 +185,13 @@ export const useSwapTokenApproval = ({
     if (!spender) return;
     if (signatureParams) return; // skip after permit path
     if (approvalTxState.loading || approvalTxState.success) return;
-    if (lastFetchedSpenderRef.current === spender) return; // prevent duplicate fetches for same spender (e.g., StrictMode re-mount)
 
-    lastFetchedSpenderRef.current = spender;
+    const approvalKey = `${token.toLowerCase()}:${spender.toLowerCase()}`;
+    if (lastFetchedApprovalKeyRef.current === approvalKey) return; // prevent duplicate fetches for same token/spender
+
+    lastFetchedApprovalKeyRef.current = approvalKey;
     fetchApprovedAmountFromContract();
-  }, [spender, signatureParams, approvalTxState.loading, approvalTxState.success]);
+  }, [token, spender, signatureParams, approvalTxState.loading, approvalTxState.success]);
 
   const permitAvailable = permitByChainAndToken[chainId]?.[token.toLowerCase()];
   const tryPermit = allowPermit && permitAvailable;
@@ -292,6 +303,7 @@ export const useSwapTokenApproval = ({
         setState({
           actionsLoading: false,
         });
+
         setApprovedAmount(amountToApprove.toString());
         setTxError(undefined);
         setApprovalTxState({
@@ -353,6 +365,12 @@ export const useSwapTokenApproval = ({
         });
       }
     }
+
+    // Stop loading quotes
+    setState({
+      quoteRefreshPaused: true,
+      quoteTimerPausedAt: Date.now(),
+    });
   };
 
   return {

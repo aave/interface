@@ -11,7 +11,8 @@ import {
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 
-import { ProtocolSwapParams, ProtocolSwapState } from '../types';
+import { ProtocolSwapParams, ProtocolSwapState, SwapProvider } from '../types';
+import { CowCostsDetails } from './CowCostsDetails';
 
 export const DebtSwapDetails = ({
   state,
@@ -40,6 +41,8 @@ export const DebtSwapDetails = ({
 
   return (
     <TxModalDetails gasLimit={state.gasLimit} showGasStation={state.showGasStation}>
+      {state.provider === SwapProvider.COW_PROTOCOL && <CowCostsDetails state={state} />}
+
       <Row caption={<Trans>Borrow apy</Trans>} captionVariant="description" mb={4}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {state.ratesLoading ? (

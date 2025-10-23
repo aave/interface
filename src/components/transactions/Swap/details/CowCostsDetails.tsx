@@ -65,7 +65,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
         mb: 4,
         boxShadow: 'none',
         '&:before': { display: 'none' },
-        '.MuiAccordionSummary-root': { minHeight: '24px', maxHeight: '24px' },
+        '.MuiAccordionSummary-root': { minHeight: '24px', maxHeight: '24px', margin: 0 },
         backgroundColor: 'transparent',
         mt: '0',
       }}
@@ -76,10 +76,15 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         sx={{
+          margin: 0,
           padding: 0,
           minHeight: '24px',
           height: '24px',
-          '.MuiAccordionSummary-content': { margin: 0 },
+          '.MuiAccordionSummary-content': {
+            margin: 0,
+            alignItems: !costBreakdownExpanded ? 'center' : undefined,
+            display: !costBreakdownExpanded ? 'flex' : undefined,
+          },
         }}
       >
         <Row
@@ -95,6 +100,11 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
           width="100%"
           minHeight="24px"
           maxHeight="24px"
+          sx={{
+            margin: 0,
+            display: 'flex',
+            alignItems: !costBreakdownExpanded ? 'center' : undefined, // center only if not expanded
+          }}
         >
           {!costBreakdownExpanded && (
             <FormattedNumber

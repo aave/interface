@@ -29,7 +29,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
   },
   [SwapType.DebtSwap]: {
     [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.GNOSIS_CHAIN]: 'ALL',
     [SupportedChainId.ARBITRUM_ONE]: 'ALL',
     [SupportedChainId.BASE]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
@@ -39,7 +38,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
   },
   [SwapType.RepayWithCollateral]: {
     [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.GNOSIS_CHAIN]: 'ALL',
     [SupportedChainId.ARBITRUM_ONE]: 'ALL',
     [SupportedChainId.BASE]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',

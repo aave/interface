@@ -99,6 +99,10 @@ export const RepayWithCollateralModalContent = ({
     inputInputTitle: 'Repay',
     outputInputTitle: 'Using',
     interestMode,
+    resultScreenTokensFromTitle: 'Repay',
+    resultScreenTokensToTitle: 'With',
+    resultScreenTitleItems: 'repay',
+    customReceivedTitle: 'Repaid',
   };
 
   return <BaseSwapModalContent params={params} />;

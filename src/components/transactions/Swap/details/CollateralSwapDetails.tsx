@@ -94,6 +94,8 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
     user,
     toAmountAfterSlippage: valueToBigNumber(toAmount || '0'),
     toAssetData: targetReserve,
+    fromAssetType: 'collateral',
+    toAssetType: 'collateral',
   });
 
   const sourceAmountAfterSwap = valueToBigNumber(userReserve.underlyingBalance).minus(

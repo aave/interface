@@ -29,7 +29,10 @@ interface TokenSelectionParams {
   side: 'buy' | 'sell';
 }
 
-const swapTypesThatRequiresInvertedQuote: SwapType[] = [SwapType.DebtSwap];
+export const swapTypesThatRequiresInvertedQuote: SwapType[] = [
+  SwapType.DebtSwap,
+  SwapType.RepayWithCollateral,
+];
 
 const getTokenSelectionForQuote = (
   invertedQuoteRoute: boolean,
@@ -38,12 +41,15 @@ const getTokenSelectionForQuote = (
 ): TokenSelectionParams => {
   const srcTokenObj = invertedQuoteRoute ? state.destinationToken : state.sourceToken;
   const srcToken =
-    provider === SwapProvider.PARASWAP ? srcTokenObj.underlyingAddress : srcTokenObj.addressToSwap;
+    provider === SwapProvider.PARASWAP || state.useFlashloan
+      ? srcTokenObj.underlyingAddress
+      : srcTokenObj.addressToSwap;
   const destTokenObj = invertedQuoteRoute ? state.sourceToken : state.destinationToken;
   const destToken =
-    provider === SwapProvider.PARASWAP
+    provider === SwapProvider.PARASWAP || state.useFlashloan
       ? destTokenObj.underlyingAddress
       : destTokenObj.addressToSwap;
+
   const srcDecimals = invertedQuoteRoute
     ? state.destinationToken.decimals
     : state.sourceToken.decimals;
@@ -105,11 +111,8 @@ export const useSwapQuote = ({
   );
 
   const requiresQuoteInverted = useMemo(
-    () =>
-      provider === SwapProvider.PARASWAP &&
-      swapTypesThatRequiresInvertedQuote.includes(params.swapType) &&
-      state.useFlashloan === true,
-    [provider, params.swapType, state.useFlashloan]
+    () => swapTypesThatRequiresInvertedQuote.includes(params.swapType),
+    [provider, params.swapType]
   );
 
   const {
@@ -343,6 +346,7 @@ export const useMultiProviderSwapQuoteQuery = ({
             srcDecimals,
             destDecimals,
             side,
+            appCode,
             options: {
               partner: 'aave-widget', // TODO: Check with paraswap team if we can change it
             },
