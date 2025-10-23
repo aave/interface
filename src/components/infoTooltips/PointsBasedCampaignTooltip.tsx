@@ -1,4 +1,6 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Input, InputAdornment, Typography, useTheme } from '@mui/material';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { convertAprToApy } from 'src/utils/utils';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
@@ -22,6 +24,45 @@ export const PointsBasedCampaignTooltip = ({
 }: PointBasedCampaignTooltipProps) => {
   const theme = useTheme();
   const typographyVariant = 'secondary12';
+  const [inkPriceInput, setInkPriceInput] = useState('');
+  const [estimatedPointsValue, setEstimatedPointsValue] = useState<number | null>(null);
+  const [estimatedAPY, setEstimatedAPY] = useState<number | null>(null);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      const trimmedValue = inkPriceInput.trim();
+
+      if (!trimmedValue) {
+        setEstimatedPointsValue(null);
+        setEstimatedAPY(null);
+        return;
+      }
+
+      const normalizedValue = trimmedValue.replace(/,/g, '');
+      const numericPrice = Number(normalizedValue);
+
+      if (!Number.isFinite(numericPrice) || numericPrice < 0) {
+        setEstimatedPointsValue(null);
+        setEstimatedAPY(null);
+        return;
+      }
+      const dailyUsdValue = pointsPerThousandUsd * numericPrice;
+      setEstimatedPointsValue(dailyUsdValue);
+
+      const aprDecimal = (dailyUsdValue / 1000) * 365;
+      const apyDecimal = convertAprToApy(aprDecimal);
+
+      setEstimatedAPY(apyDecimal * 100);
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [inkPriceInput, pointsPerThousandUsd]);
+
+  const hasInkPriceInput = inkPriceInput.trim().length > 0;
+
+  const handleInkPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInkPriceInput(event.target.value);
+  };
 
   return (
     <TextWithTooltip {...rest}>
@@ -92,6 +133,107 @@ export const PointsBasedCampaignTooltip = ({
               variant={typographyVariant}
             />
           </Typography>
+        </Box>
+
+        {/* Estimated calculation */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1.25,
+            p: 1.5,
+            borderRadius: 1,
+            border: `1px solid ${theme.palette.divider}`,
+            backgroundColor: theme.palette.background.paper,
+          }}
+        >
+          <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+            Estimate APY and points value
+          </Typography>
+
+          <Input
+            name="inkPrice"
+            type="string"
+            value={inkPriceInput}
+            onChange={handleInkPriceChange}
+            placeholder="Introduce an INK price in USD"
+            disableUnderline
+            endAdornment={
+              hasInkPriceInput ? (
+                <InputAdornment
+                  position="end"
+                  sx={{
+                    color: theme.palette.text.secondary,
+                    pointerEvents: 'none',
+                    pr: 1,
+                  }}
+                >
+                  USD&nbsp;per&nbsp;INK
+                </InputAdornment>
+              ) : null
+            }
+            sx={{
+              alignContent: 'center',
+              borderRadius: 1,
+              pl: 1,
+              height: 24,
+              border: `1px solid ${theme.palette.divider}`,
+              transition: theme.transitions.create(['border-color', 'box-shadow']),
+              backgroundColor: theme.palette.background.default,
+              '&:focus-within': { borderColor: theme.palette.primary.main },
+            }}
+          />
+
+          {estimatedPointsValue !== null && (
+            <>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  px: 1,
+                  py: 1,
+                  borderRadius: 1,
+                  backgroundColor: theme.palette.action.hover,
+                }}
+              >
+                <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+                  USD value
+                </Typography>
+                <Typography variant={typographyVariant} sx={{ fontWeight: 500 }}>
+                  $
+                  <FormattedNumber
+                    value={estimatedPointsValue}
+                    visibleDecimals={2}
+                    variant={typographyVariant}
+                  />
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  px: 1,
+                  py: 1,
+                  borderRadius: 1,
+                  backgroundColor: theme.palette.action.hover,
+                }}
+              >
+                <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+                  APY
+                </Typography>
+                <Typography variant={typographyVariant} sx={{ fontWeight: 600 }}>
+                  <FormattedNumber
+                    value={estimatedAPY || 0}
+                    visibleDecimals={2}
+                    variant={typographyVariant}
+                  />
+                  %
+                </Typography>
+              </Box>
+            </>
+          )}
         </Box>
       </Box>
     </TextWithTooltip>
