@@ -27,6 +27,8 @@ export const PointsBasedCampaignTooltip = ({
   const [inkPriceInput, setInkPriceInput] = useState('');
   const [estimatedPointsValue, setEstimatedPointsValue] = useState<number | null>(null);
   const [estimatedAPY, setEstimatedAPY] = useState<number | null>(null);
+  const [estimatedFDV, setEstimatedFDV] = useState<number | null>(null);
+  const TOTAL_INK_SUPPLY = 1_000_000_000;
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -35,6 +37,7 @@ export const PointsBasedCampaignTooltip = ({
       if (!trimmedValue) {
         setEstimatedPointsValue(null);
         setEstimatedAPY(null);
+        setEstimatedFDV(null);
         return;
       }
 
@@ -44,10 +47,12 @@ export const PointsBasedCampaignTooltip = ({
       if (!Number.isFinite(numericPrice) || numericPrice < 0) {
         setEstimatedPointsValue(null);
         setEstimatedAPY(null);
+        setEstimatedFDV(null);
         return;
       }
       const dailyUsdValue = pointsPerThousandUsd * numericPrice;
       setEstimatedPointsValue(dailyUsdValue);
+      setEstimatedFDV(numericPrice * TOTAL_INK_SUPPLY);
 
       const aprDecimal = (dailyUsdValue / 1000) * 365;
       const apyDecimal = convertAprToApy(aprDecimal);
@@ -230,6 +235,29 @@ export const PointsBasedCampaignTooltip = ({
                     variant={typographyVariant}
                   />
                   %
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  px: 1,
+                  py: 1,
+                  borderRadius: 1,
+                  backgroundColor: theme.palette.action.hover,
+                }}
+              >
+                <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+                  FDV
+                </Typography>
+                <Typography variant={typographyVariant} sx={{ fontWeight: 500 }}>
+                  $
+                  <FormattedNumber
+                    value={estimatedFDV || 0}
+                    visibleDecimals={2}
+                    variant={typographyVariant}
+                  />
                 </Typography>
               </Box>
             </>
