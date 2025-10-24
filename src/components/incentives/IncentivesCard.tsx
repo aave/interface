@@ -89,16 +89,9 @@ export const IncentivesCard = ({
   const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
   const totalMeritAPY = meritIncentivesAPR + selfAPY;
 
-  let merklIncentivesAPR = 0;
-  if (merklIncentives?.breakdown) {
-    if (merklIncentives.breakdown.points) {
-      merklIncentivesAPR = merklPointsIncentives?.breakdown?.merklIncentivesAPR || 0;
-    } else {
-      merklIncentivesAPR = merklIncentives.breakdown.merklIncentivesAPR || 0;
-    }
-  } else if (merklPointsIncentives?.breakdown) {
-    merklIncentivesAPR = merklPointsIncentives.breakdown.merklIncentivesAPR || 0;
-  }
+  const merklIncentivesAPR = merklPointsIncentives?.breakdown?.points
+    ? merklPointsIncentives.breakdown.merklIncentivesAPR || 0
+    : merklIncentives?.breakdown?.merklIncentivesAPR || 0;
 
   const isBorrow = protocolAction === ProtocolAction.borrow;
 

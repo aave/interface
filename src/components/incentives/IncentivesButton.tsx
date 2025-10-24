@@ -177,21 +177,13 @@ export const MerklIncentivesButton = (params: {
   const { data: merklIncentives } = useMerklIncentives(params);
   const { data: merklPointsIncentives } = useMerklPointsIncentives(params);
 
-  let incentiveData = null;
-  let incentiveAPR = 0;
+  const incentiveData = merklIncentives?.breakdown
+    ? merklIncentives
+    : merklPointsIncentives?.breakdown
+    ? merklPointsIncentives
+    : undefined;
 
-  if (merklIncentives?.breakdown) {
-    if (merklIncentives.breakdown.points) {
-      incentiveData = merklPointsIncentives;
-      incentiveAPR = merklPointsIncentives?.incentiveAPR ? +merklPointsIncentives.incentiveAPR : 0;
-    } else {
-      incentiveData = merklIncentives;
-      incentiveAPR = +merklIncentives.incentiveAPR;
-    }
-  } else if (merklPointsIncentives?.breakdown) {
-    incentiveData = merklPointsIncentives;
-    incentiveAPR = +merklPointsIncentives.incentiveAPR;
-  }
+  const incentiveAPR = incentiveData?.incentiveAPR ? +incentiveData.incentiveAPR : 0;
 
   if (!incentiveData) {
     return null;
