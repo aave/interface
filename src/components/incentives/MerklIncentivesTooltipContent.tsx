@@ -79,7 +79,22 @@ export const MerklIncentivesTooltipContent = ({
             Learn more
           </Link>
         </Typography>
-      ) : null}
+      ) : (
+        <Typography variant="caption" color="text.strong" mb={3}>
+          <Trans>{merklIncentivesFormatted.description}</Trans>{' '}
+          <Link
+            href={
+              merklIncentives.customForumLink
+                ? merklIncentives.customForumLink
+                : 'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898'
+            }
+            sx={{ textDecoration: 'underline' }}
+            variant="caption"
+          >
+            Learn more
+          </Link>
+        </Typography>
+      )}
 
       <Box sx={{ width: '100%' }}>
         {merklIncentives.breakdown ? (

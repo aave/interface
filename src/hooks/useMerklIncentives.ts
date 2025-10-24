@@ -19,6 +19,7 @@ enum OpportunityStatus {
 type MerklOpportunity = {
   chainId: number;
   type: string;
+  description?: string;
   identifier: Address;
   name: string;
   status: OpportunityStatus;
@@ -108,80 +109,7 @@ type WhitelistApiResponse = {
   whitelistedRewardTokens: string[];
   additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData>;
 };
-// TODO: Remove mock before production
-const ethfiMockOpportunity: MerklOpportunity = {
-  chainId: 9745,
-  type: 'AAVE_SUPPLY',
-  identifier: '0xaf1a7a488c8348b41d5860c04162af7d3d38a996' as Address,
-  name: 'Lend weETH on Aave (ETHFI Bonus)',
-  status: OpportunityStatus.LIVE,
-  action: OpportunityAction.LEND,
-  tvl: 1000000,
-  apr: 5.0,
-  dailyRewards: 500,
-  tags: [],
-  id: 'mock-ethfi-campaign-2',
-  explorerAddress: '0xaf1a7a488c8348b41d5860c04162af7d3d38a996' as Address,
-  tokens: [
-    {
-      id: '14178706307683891785',
-      name: 'Aave Plasma weETH',
-      chainId: 9745,
-      address: '0xaf1a7a488c8348b41d5860c04162af7d3d38a996' as Address,
-      decimals: 18,
-      icon: '',
-      verified: false,
-      isTest: false,
-      price: 4156.526571271317,
-      symbol: 'aPlaweETH',
-    },
-    {
-      id: '3885658325202072166',
-      name: 'Wrapped eETH',
-      chainId: 9745,
-      address: '0xa3d68b74bf0528fdd07263c60d6488749044914b' as Address,
-      decimals: 18,
-      icon: 'https://storage.googleapis.com/merkl-static-assets/tokens/weETH.webp',
-      verified: true,
-      isTest: false,
-      price: 4156.526571271317,
-      symbol: 'weETH',
-    },
-  ],
-  rewardsRecord: {
-    id: 'mock-ethfi-rewards-record',
-    total: 500,
-    timestamp: '1761125029',
-    breakdowns: [
-      {
-        token: {
-          id: 'ethfi-token-id',
-          name: 'Ether.fi Governance Token',
-          chainId: 9745,
-          address: '0xfe0c30065b384f05761f15d0cc899d4f9f9cc0eb',
-          decimals: 18,
-          symbol: 'ETHFI',
-          displaySymbol: 'ETHFI',
-          icon: 'https://assets.coingecko.com/coins/images/35958/standard/etherfi.png',
-          verified: true,
-          isTest: false,
-          type: 'TOKEN',
-          isNative: false,
-          price: 3.25,
-        },
-        amount: '153846153846153846153',
-        value: 500,
-        distributionType: 'DUTCH_AUCTION',
-        id: 'mock-ethfi-breakdown-id',
-        campaignId: 'mock-ethfi-campaign-id',
-        dailyRewardsRecordId: 'mock-ethfi-daily-rewards-id',
-      },
-    ],
-  },
-};
-
-// TODO: Remove mock before production
-const mockaddressWeETH = '0xfe0c30065b384f05761f15d0cc899d4f9f9cc0eb';
+const mockaddressWeETH = '0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB';
 const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
 const checkOpportunityAction = (
@@ -206,10 +134,11 @@ const useWhitelistedTokens = () => {
       }
       const data = await response.json();
 
-      // TODO: Remove mock before production
+      // TODO: Remove hardcoded addition once we have ETHFI in the whitelist API
       if (!data.whitelistedRewardTokens.includes(mockaddressWeETH.toLowerCase())) {
         data.whitelistedRewardTokens.push(mockaddressWeETH.toLowerCase());
       }
+
       return data;
     },
     queryKey: ['whitelistedTokens'],
@@ -237,8 +166,7 @@ export const useMerklIncentives = ({
     queryFn: async () => {
       const response = await fetch(`${MERKL_ENDPOINT}`);
       const merklOpportunities: MerklOpportunity[] = await response.json();
-      // TODO: Remove mock before production
-      merklOpportunities.push(ethfiMockOpportunity);
+
       return merklOpportunities;
     },
     queryKey: ['merklIncentives', market],
@@ -250,9 +178,8 @@ export const useMerklIncentives = ({
           opportunitiy.explorerAddress &&
           opportunitiy.explorerAddress.toLowerCase() === rewardedAsset.toLowerCase() &&
           protocolAction &&
-          checkOpportunityAction(opportunitiy.action, protocolAction)
-        // disabled to allow cross-chain incentives e.g. ethfi on weETH
-        // opportunitiy.chainId === currentChainId
+          checkOpportunityAction(opportunitiy.action, protocolAction) &&
+          opportunitiy.chainId === currentChainId
       );
 
       if (opportunities.length === 0) {
@@ -262,9 +189,6 @@ export const useMerklIncentives = ({
       const validOpportunities = opportunities.filter(
         (opp) => opp.status === OpportunityStatus.LIVE && opp.apr > 0
       );
-      if (validOpportunities.length === 0) {
-        return null;
-      }
 
       if (!whitelistData?.whitelistedRewardTokens) {
         return null;
@@ -291,6 +215,7 @@ export const useMerklIncentives = ({
 
       const primaryOpportunity = whitelistedOpportunities[0];
       const rewardToken = primaryOpportunity.rewardsRecord.breakdowns[0].token;
+      const description = primaryOpportunity.description;
 
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
@@ -308,6 +233,7 @@ export const useMerklIncentives = ({
         incentiveAPR: merklIncentivesAPY.toString(),
         rewardTokenAddress: rewardToken.address,
         rewardTokenSymbol: rewardToken.symbol,
+        description: description,
         ...incentiveAdditionalData,
         allOpportunities: whitelistedOpportunities.map((opp) => ({
           name: opp.name,
