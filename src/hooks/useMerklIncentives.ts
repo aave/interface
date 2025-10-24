@@ -110,7 +110,7 @@ type WhitelistApiResponse = {
   whitelistedRewardTokens: string[];
   additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData>;
 };
-const mockaddressWeETH = '0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB';
+const addressETHFI = '0xFe0c30065B384F05761f15d0CC899D4F9F9Cc0eB';
 const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
 const checkOpportunityAction = (
@@ -136,8 +136,8 @@ const useWhitelistedTokens = () => {
       const data = await response.json();
 
       // TODO: Remove hardcoded addition once we have ETHFI in the whitelist API
-      if (!data.whitelistedRewardTokens.includes(mockaddressWeETH.toLowerCase())) {
-        data.whitelistedRewardTokens.push(mockaddressWeETH.toLowerCase());
+      if (!data.whitelistedRewardTokens.includes(addressETHFI.toLowerCase())) {
+        data.whitelistedRewardTokens.push(addressETHFI.toLowerCase());
       }
 
       return data;
