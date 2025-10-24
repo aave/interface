@@ -892,6 +892,10 @@ msgstr "You've successfully submitted an order."
 msgid "Max"
 msgstr "Max"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Points"
+msgstr "Points"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "Greek"

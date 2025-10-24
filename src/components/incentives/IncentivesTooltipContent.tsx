@@ -177,6 +177,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDe',
     aToken: true,
   },
+  tydroInkPoints: {
+    tokenIconSymbol: 'TydroInkPoints',
+    symbol: 'TydroInkPoints',
+    aToken: false,
+  },
 };
 
 interface IncentivesTooltipContentProps {
