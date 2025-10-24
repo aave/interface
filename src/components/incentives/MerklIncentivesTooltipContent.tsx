@@ -81,7 +81,7 @@ export const MerklIncentivesTooltipContent = ({
         </Typography>
       ) : (
         <Typography variant="caption" color="text.strong" mb={3}>
-          <Trans>{merklIncentivesFormatted.description}</Trans>{' '}
+          <Trans>{merklIncentives.description}</Trans>{' '}
           <Link
             href={
               merklIncentives.customForumLink

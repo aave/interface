@@ -81,6 +81,7 @@ type ReserveIncentiveAdditionalData = {
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
   ReserveIncentiveAdditionalData & {
     breakdown: MerklIncentivesBreakdown;
+    description?: string;
     allOpportunities?: {
       name: string;
       apy: number;

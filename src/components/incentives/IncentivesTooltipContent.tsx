@@ -197,14 +197,12 @@ export const getSymbolMap = (incentive: ReserveIncentiveResponse) => {
         ...IncentivesSymbolMap[rewardTokenSymbol],
         rewardTokenAddress: incentive.rewardTokenAddress,
         incentiveAPR: incentive.incentiveAPR,
-        description: incentive.description,
       }
     : {
         ...incentive,
         tokenIconSymbol: rewardTokenSymbol,
         symbol: rewardTokenSymbol,
         aToken: false,
-        description: incentive.description,
       };
 };
 
