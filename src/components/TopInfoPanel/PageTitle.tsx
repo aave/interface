@@ -93,7 +93,8 @@ export const PageTitle = ({
             onClick={handleFavoriteClick}
             variant="surface"
             sx={{
-              display: { xs: 'none', sm: 'flex' }, // Hide on mobile (xs), show on small screens and up
+              display: 'none',
+              [theme.breakpoints.up(800)]: { display: 'flex' }, // Hide on mobile (xs) and for widths between 759px and 800px, show on small screens and up
               p: '7px 8px',
               minWidth: 'unset',
               gap: 2,
