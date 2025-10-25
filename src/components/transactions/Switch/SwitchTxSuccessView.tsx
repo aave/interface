@@ -1,13 +1,17 @@
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Divider, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Divider, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
+import { Base64Token, ExternalTokenIcon, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
 import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
+import { ModalType } from 'src/hooks/useModal';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 import { parseUnits } from 'viem';
 
@@ -38,6 +42,10 @@ export type SwitchTxSuccessViewProps = {
   chainId: number;
   destDecimals: number;
   srcDecimals: number;
+  amountUsd: number;
+  outAmountUSD: number;
+  addToken?: ERC20TokenType;
+  modalType: ModalType;
 };
 
 export const SwitchWithSurplusTooltip = ({
@@ -83,8 +91,14 @@ export const SwitchTxSuccessView = ({
   chainId,
   destDecimals,
   srcDecimals,
+  amountUsd,
+  outAmountUSD,
+  addToken,
+  modalType,
 }: SwitchTxSuccessViewProps) => {
   const { trackOrder, setHasActiveOrders } = useCowOrderToast();
+  const { addERC20Token } = useWeb3Context();
+  const [base64, setBase64] = useState<string>('');
 
   // Do polling each 10 seconds until the order get's filled
   const [orderStatus, setOrderStatus] = useState<'succeed' | 'failed' | 'open'>('open');
@@ -196,6 +210,9 @@ export const SwitchTxSuccessView = ({
     ) : undefined;
   }, [provider, txHashOrOrderId]);
 
+  const shouldShowATokenCta = modalType === ModalType.CollateralSwap && addToken?.aToken;
+  const watchedTokenSymbol = shouldShowATokenCta ? '' : addToken?.symbol ?? '';
+
   return (
     <View
       txHash={txHashOrOrderId}
@@ -227,7 +244,6 @@ export const SwitchTxSuccessView = ({
           border: '1px solid',
           borderColor: 'divider',
           p: 3,
-          mb: 4,
           width: '80%',
         }}
       >
@@ -257,22 +273,40 @@ export const SwitchTxSuccessView = ({
               enterTouchDelay={100}
               leaveTouchDelay={500}
             >
-              <Box>
-                <Typography fontWeight={600}>
-                  {Number(inAmount).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: Number(inAmount) < 0.01 ? 4 : 2,
-                  })}{' '}
-                </Typography>
-              </Box>
+              <>
+                <Box>
+                  <Typography fontWeight={600}>
+                    <FormattedNumber
+                      value={inAmount}
+                      variant="main14"
+                      visibleDecimals={4}
+                      compact={false}
+                    />
+                  </Typography>
+                </Box>
+              </>
             </DarkTooltip>
-            <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
-              {symbol}
-            </Typography>
+
+            <Typography fontWeight={600}>{symbol}</Typography>
           </Box>
         </Box>
+        {amountUsd && amountUsd > 0 && (
+          <Box display="flex" justifyContent="flex-end" mb={'12px'}>
+            <Typography>
+              <FormattedNumber
+                value={amountUsd}
+                symbol="USD"
+                symbolsColor="text.muted"
+                variant="caption"
+                color="text.muted"
+                visibleDecimals={2}
+                compact={false}
+              />
+            </Typography>
+          </Box>
+        )}
         <Divider sx={{ my: 1 }} />
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1} mt={'12px'}>
           <Typography color="text.secondary">
             {provider == 'cowprotocol' && (orderStatus == 'open' || orderStatus == 'failed')
               ? 'Receive'
@@ -297,31 +331,100 @@ export const SwitchTxSuccessView = ({
               enterTouchDelay={100}
               leaveTouchDelay={500}
             >
-              <Box>
-                <Typography fontWeight={600}>
-                  {Number(outFinalAmount).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: Number(outFinalAmount) < 0.01 ? 4 : 2,
-                  })}
-                </Typography>
-              </Box>
+              <>
+                <Box>
+                  <Typography fontWeight={600}>
+                    <FormattedNumber
+                      value={outFinalAmount}
+                      variant="main14"
+                      visibleDecimals={4}
+                      compact={false}
+                    />
+                  </Typography>
+                </Box>
+              </>
             </DarkTooltip>
-            <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
-              {outSymbol}
-            </Typography>
+
+            <Typography fontWeight={600}>{outSymbol}</Typography>
           </Box>
         </Box>
+        {outAmountUSD && outAmountUSD > 0 && (
+          <Box display="flex" justifyContent="flex-end">
+            <Typography>
+              <FormattedNumber
+                value={outAmountUSD}
+                symbol="USD"
+                symbolsColor="text.muted"
+                variant="caption"
+                color="text.muted"
+                visibleDecimals={2}
+                compact={false}
+              />
+            </Typography>
+          </Box>
+        )}
         {surplusDisplay && (
           <Typography
             variant="helperText"
             fontWeight={500}
-            sx={{ float: 'right', color: 'text.secondary' }}
-            mt={0.5}
+            sx={{ float: 'right', color: 'text.secondary', mt: '4px' }}
           >
             {surplusDisplay}
           </Typography>
         )}
       </Box>
+      {shouldShowATokenCta && (
+        <Box
+          sx={(theme) => ({
+            border: theme.palette.mode === 'dark' ? `1px solid ${theme.palette.divider}` : 'none',
+            background: theme.palette.mode === 'dark' ? 'none' : '#F7F7F9',
+            borderRadius: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mt: 4,
+
+            width: '80%',
+          })}
+        >
+          <TokenIcon
+            symbol={addToken.symbol}
+            aToken={addToken.aToken || false}
+            sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
+          />
+          <Typography variant="description" color="text.primary" sx={{ mx: '24px' }}>
+            <Trans>
+              Add {addToken.aToken ? 'aToken ' : 'token '} to wallet to track your balance.
+            </Trans>
+          </Typography>
+          <Button
+            onClick={() => {
+              addERC20Token({
+                address: addToken.address,
+                decimals: addToken.decimals,
+                symbol: watchedTokenSymbol,
+                image: !/_/.test(addToken.symbol) ? base64 : undefined,
+              });
+            }}
+            variant="outlined"
+            size="medium"
+            sx={{ mt: '8px', mb: '12px' }}
+          >
+            {addToken.symbol && !/_/.test(addToken.symbol) && (
+              <Base64Token
+                symbol={addToken.symbol}
+                onImageGenerated={setBase64}
+                aToken={addToken.aToken}
+              />
+            )}
+            <WalletIcon sx={{ width: '20px', height: '20px', mr: '4px' }} />
+            <Typography variant="buttonM" ml="4px">
+              <Trans>Add to wallet</Trans>
+            </Typography>
+          </Button>
+        </Box>
+      )}
     </View>
   );
 };
