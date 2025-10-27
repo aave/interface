@@ -665,6 +665,10 @@ msgstr "Balance to revoke"
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
 
+#: src/components/MarketSwitcher.tsx
+msgid "The Ink instance is governed by the Ink Foundation"
+msgstr "The Ink instance is governed by the Ink Foundation"
+
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "View contract"
 msgstr "View contract"
@@ -1227,6 +1231,7 @@ msgstr "deposited"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
@@ -2279,6 +2284,11 @@ msgstr "Array parameters that should be equal length are not"
 #: src/components/transactions/Switch/SwitchErrors.tsx
 msgid "Your balance is lower than the selected amount."
 msgstr "Your balance is lower than the selected amount."
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "from the"
+msgstr "from the"
 
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "An error has occurred fetching the proposal."
@@ -3423,6 +3433,7 @@ msgstr "Amount must be greater than 0"
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx

@@ -19,6 +19,7 @@ enum OpportunityStatus {
 type MerklOpportunity = {
   chainId: number;
   type: string;
+  description?: string;
   identifier: Address;
   name: string;
   status: OpportunityStatus;
@@ -80,6 +81,17 @@ type ReserveIncentiveAdditionalData = {
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
   ReserveIncentiveAdditionalData & {
     breakdown: MerklIncentivesBreakdown;
+    description?: string;
+    allOpportunities?: {
+      name: string;
+      apy: number;
+      rewardToken: {
+        address: string;
+        symbol: string;
+        icon: string;
+        price: number;
+      };
+    }[];
   };
 
 export type MerklIncentivesBreakdown = {
@@ -121,7 +133,7 @@ const useWhitelistedTokens = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch whitelisted tokens');
       }
-      return response.json();
+      return await response.json();
     },
     queryKey: ['whitelistedTokens'],
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -148,6 +160,7 @@ export const useMerklIncentives = ({
     queryFn: async () => {
       const response = await fetch(`${MERKL_ENDPOINT}`);
       const merklOpportunities: MerklOpportunity[] = await response.json();
+
       return merklOpportunities;
     },
     queryKey: ['merklIncentives', market],
@@ -167,20 +180,9 @@ export const useMerklIncentives = ({
         return null;
       }
 
-      const opportunity = opportunities[0];
-
-      if (opportunity.status !== OpportunityStatus.LIVE) {
-        return null;
-      }
-
-      if (opportunity.apr <= 0) {
-        return null;
-      }
-
-      const merklIncentivesAPR = opportunity.apr / 100;
-      const merklIncentivesAPY = convertAprToApy(merklIncentivesAPR);
-
-      const rewardToken = opportunity.rewardsRecord.breakdowns[0].token;
+      const validOpportunities = opportunities.filter(
+        (opp) => opp.status === OpportunityStatus.LIVE && opp.apr > 0
+      );
 
       if (!whitelistData?.whitelistedRewardTokens) {
         return null;
@@ -190,9 +192,24 @@ export const useMerklIncentives = ({
         whitelistData.whitelistedRewardTokens.map((token) => token.toLowerCase())
       );
 
-      if (!whitelistedTokensSet.has(rewardToken.address.toLowerCase())) {
+      const whitelistedOpportunities = validOpportunities.filter((opp) => {
+        const rewardToken = opp.rewardsRecord.breakdowns[0]?.token;
+        return rewardToken && whitelistedTokensSet.has(rewardToken.address.toLowerCase());
+      });
+
+      if (whitelistedOpportunities.length === 0) {
         return null;
       }
+
+      const totalMerklAPR = whitelistedOpportunities.reduce((sum, opp) => {
+        return sum + opp.apr / 100;
+      }, 0);
+
+      const merklIncentivesAPY = convertAprToApy(totalMerklAPR);
+
+      const primaryOpportunity = whitelistedOpportunities[0];
+      const rewardToken = primaryOpportunity.rewardsRecord.breakdowns[0].token;
+      const description = primaryOpportunity.description;
 
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
@@ -210,7 +227,13 @@ export const useMerklIncentives = ({
         incentiveAPR: merklIncentivesAPY.toString(),
         rewardTokenAddress: rewardToken.address,
         rewardTokenSymbol: rewardToken.symbol,
+        description: description,
         ...incentiveAdditionalData,
+        allOpportunities: whitelistedOpportunities.map((opp) => ({
+          name: opp.name,
+          apy: convertAprToApy(opp.apr / 100),
+          rewardToken: opp.rewardsRecord.breakdowns[0].token,
+        })),
         breakdown: {
           protocolAPY,
           protocolIncentivesAPR,

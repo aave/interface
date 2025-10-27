@@ -41,14 +41,14 @@ const getCampaignConfigs = (
   // },
 
   [ChainId.mainnet]: {
-    notifyText: 'The Plasma market is now live.',
+    notifyText: 'The Ink market is now live.',
     buttonText: 'Get Started',
     buttonAction: {
       type: 'function' as const,
-      value: () => openMarket(CustomMarket.proto_plasma_v3),
+      value: () => openMarket(CustomMarket.proto_ink_v3),
     },
-    bannerVersion: 'plasma-market-v0',
-    icon: '/icons/networks/plasma.svg',
+    bannerVersion: 'ink-market-v0',
+    icon: '/icons/networks/ink.svg',
   },
 
   // [ChainId.polygon]: {

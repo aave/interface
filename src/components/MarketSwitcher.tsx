@@ -126,14 +126,16 @@ const MARKET_ORDER_BY_TITLE: { [title: string]: number } = {
   OP: 9,
   Gnosis: 10,
   Aptos: 11,
-  'BNB Chain': 12,
-  Polygon: 13,
-  Scroll: 14,
-  ZKsync: 15,
-  Celo: 16,
-  Metis: 17,
-  Soneium: 18,
-  EtherFi: 19,
+  Ink: 12,
+
+  'BNB Chain': 13,
+  Polygon: 14,
+  Scroll: 15,
+  ZKsync: 16,
+  Celo: 17,
+  Metis: 18,
+  Soneium: 19,
+  EtherFi: 20,
 };
 
 const getMarketOrder = (marketId: CustomMarket): number => {
@@ -185,6 +187,7 @@ export const MarketSwitcher = () => {
   };
 
   const marketBlurbs: { [key: string]: JSX.Element } = {
+    proto_ink_v3: <Trans>The Ink instance is governed by the Ink Foundation</Trans>,
     proto_mainnet_v3: (
       <Trans>Main Ethereum market with the largest selection of assets and yield options</Trans>
     ),
