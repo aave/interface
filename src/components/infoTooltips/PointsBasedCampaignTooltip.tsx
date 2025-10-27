@@ -203,29 +203,6 @@ export const PointsBasedCampaignTooltip = ({
                 }}
               >
                 <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
-                  USD value
-                </Typography>
-                <Typography variant={typographyVariant} sx={{ fontWeight: 500 }}>
-                  $
-                  <FormattedNumber
-                    value={estimatedPointsValue}
-                    visibleDecimals={2}
-                    variant={typographyVariant}
-                  />
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  px: 1,
-                  py: 1,
-                  borderRadius: 1,
-                  backgroundColor: theme.palette.action.hover,
-                }}
-              >
-                <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
                   APY
                 </Typography>
                 <Typography variant={typographyVariant} sx={{ fontWeight: 600 }}>
