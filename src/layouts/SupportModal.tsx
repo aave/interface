@@ -1,16 +1,30 @@
 import { XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, CircularProgress, SvgIcon, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  CircularProgress,
+  FormControlLabel,
+  SvgIcon,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { Link } from 'src/components/primitives/Link';
 import { BaseSuccessView } from 'src/components/transactions/FlowCommons/BaseSuccess';
+import { CONSENT_KEY } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
+import { SUPPORT } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 export const SupportModal = () => {
   const [feedbackDialogOpen, setFeedbackOpen] = useRootStore(
     useShallow((state) => [state.feedbackDialogOpen, state.setFeedbackOpen])
+  );
+  const [account, trackEvent] = useRootStore(
+    useShallow((store) => [store.account, store.trackEvent])
   );
 
   const [value, setValue] = useState('');
@@ -20,6 +34,8 @@ export const SupportModal = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [dirtyEmailField, setDirtyEmailField] = useState(false);
+  const [hasOptedIn, setHasOptedIn] = useState(false);
+  const [isShareWalletApproved, setIsShareWalletApproved] = useState(false);
 
   const onBlur = () => {
     if (!dirtyEmailField) setDirtyEmailField(true);
@@ -27,6 +43,10 @@ export const SupportModal = () => {
 
   useEffect(() => {
     if (feedbackDialogOpen) {
+      const optInStatus =
+        typeof window !== 'undefined' ? localStorage.getItem(CONSENT_KEY) === 'true' : false;
+
+      setHasOptedIn(optInStatus);
       setSuccess(false);
       setError(false);
       setEmailError('');
@@ -56,10 +76,10 @@ export const SupportModal = () => {
     setIsLoading(true);
 
     const url = '/api/support-create-ticket';
-
     const payload = {
       text: value,
       email: email,
+      walletAddress: (hasOptedIn || isShareWalletApproved) && account ? account : undefined,
     };
 
     try {
@@ -75,15 +95,22 @@ export const SupportModal = () => {
         setIsLoading(false);
         setValue('');
         setEmail('');
+        setIsShareWalletApproved(false);
         return;
       }
       setSuccess(true);
+      trackEvent(SUPPORT.TICKET_CREATED, {
+        type: 'Form',
+        hasWalletConnected: !!account,
+      });
     } catch (error) {
       setError(true);
+      setIsShareWalletApproved(false);
     } finally {
       setIsLoading(false);
       setValue('');
       setEmail('');
+      setIsShareWalletApproved(false);
     }
   };
 
@@ -92,6 +119,7 @@ export const SupportModal = () => {
     setEmailError('');
     setEmail('');
     setValue('');
+    setIsShareWalletApproved(false);
     setDirtyEmailField(false);
     setSuccess(false);
     setError(false);
@@ -234,6 +262,34 @@ export const SupportModal = () => {
                     },
                   }}
                 />
+
+                {account && (
+                  <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                    {!hasOptedIn ? (
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={isShareWalletApproved}
+                            onChange={(e) => setIsShareWalletApproved(e.target.checked)}
+                            color="primary"
+                            size="small"
+                          />
+                        }
+                        label={
+                          <Box>
+                            <Typography color="text.primary">
+                              <Trans>
+                                Share my wallet address to help the support team resolve my issue
+                              </Trans>
+                            </Typography>
+                          </Box>
+                        }
+                      />
+                    ) : (
+                      ''
+                    )}
+                  </Box>
+                )}
                 <Box display="flex" flexDirection={'row-reverse'} mt={3}>
                   <Button disabled={!value || !!emailError} variant="contained" type="submit">
                     <Trans>Submit</Trans>

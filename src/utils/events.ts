@@ -143,3 +143,6 @@ export const GHO_SUCCESS_MODAL = {
 export const SWITCH_MODAL = {
   SWITCH_TYPE: 'Change switch type',
 };
+export const SUPPORT = {
+  TICKET_CREATED: 'Support Ticket Created', // Este string es lo que ve Amplitude
+} as const;
