@@ -236,7 +236,7 @@ export const SupportModal = () => {
                   sx={{
                     mb: 2,
                     '& .MuiInputBase-input': {
-                      padding: '6px 12px',
+                      padding: '6px 8px',
                     },
                   }}
                 />
@@ -264,7 +264,7 @@ export const SupportModal = () => {
                 />
 
                 {account && (
-                  <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                  <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1.5 }}>
                     {!hasOptedIn ? (
                       <FormControlLabel
                         control={
