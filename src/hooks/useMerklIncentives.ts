@@ -138,7 +138,6 @@ const useWhitelistedTokens = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch whitelisted tokens');
       }
-
       return await response.json();
     },
     queryKey: ['whitelistedTokens'],
