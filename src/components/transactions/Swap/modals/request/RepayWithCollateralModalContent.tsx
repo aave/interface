@@ -8,13 +8,12 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { useRootStore } from 'src/store/root';
-import { findByChainId } from 'src/ui-config/marketsConfig';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
-import { queryKeysFactory } from 'src/ui-config/queries';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { useShallow } from 'zustand/shallow';
 
+import { invalidateAppStateForSwap } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 
@@ -27,8 +26,8 @@ export const RepayWithCollateralModalContent = ({
 }) => {
   const { user, reserves } = useAppDataContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-  const [account, chainId, currentMarketData] = useRootStore(
-    useShallow((store) => [store.account, store.currentChainId, store.currentMarketData])
+  const [account, chainId] = useRootStore(
+    useShallow((store) => [store.account, store.currentChainId])
   );
 
   const baseTokens: TokenInfo[] = reserves.map((reserve) => {
@@ -55,29 +54,11 @@ export const RepayWithCollateralModalContent = ({
 
   // TODO: debt type check!!
   const invalidateAppState = () => {
-    // A collateral swap should refresh collateral, user reserves, transaction history and pool tokens
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolReservesDataHumanized(
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.userPoolReservesDataHumanized(
-        account,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.transactionHistory(
-        account,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolTokens(account, currentMarketData),
+    invalidateAppStateForSwap({
+      swapType: SwapType.RepayWithCollateral,
+      chainId,
+      account,
+      queryClient,
     });
   };
 

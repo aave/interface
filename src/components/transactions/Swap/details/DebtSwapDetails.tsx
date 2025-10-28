@@ -21,10 +21,17 @@ export const DebtSwapDetails = ({
   state: ProtocolSwapState;
 }) => {
   const sourceAmountAfterSwap = valueToBigNumber(state.sourceReserve.variableBorrows).minus(
-    valueToBigNumber(state.inputAmount)
+    valueToBigNumber(state.buyAmountFormatted ?? '0')
   );
   const targetAmountAfterSwap = valueToBigNumber(state.destinationReserve.variableBorrows).plus(
-    valueToBigNumber(state.minimumReceived ?? '0')
+    valueToBigNumber(state.sellAmountFormatted ?? '0')
+  );
+
+  const sourceAmountAfterSwapUSD = sourceAmountAfterSwap.multipliedBy(
+    valueToBigNumber(state.sourceReserve.reserve.priceInUSD)
+  );
+  const targetAmountAfterSwapUSD = targetAmountAfterSwap.multipliedBy(
+    valueToBigNumber(state.destinationReserve.reserve.priceInUSD)
   );
 
   const skeleton: JSX.Element = (
@@ -104,9 +111,7 @@ export const DebtSwapDetails = ({
                   />
                 </Box>
                 <FormattedNumber
-                  value={sourceAmountAfterSwap
-                    .multipliedBy(valueToBigNumber(state.sourceReserve.reserve.priceInUSD))
-                    .toString()}
+                  value={sourceAmountAfterSwapUSD.toString()}
                   variant="helperText"
                   compact
                   symbol="USD"
@@ -142,9 +147,7 @@ export const DebtSwapDetails = ({
                   />
                 </Box>
                 <FormattedNumber
-                  value={targetAmountAfterSwap
-                    .multipliedBy(valueToBigNumber(state.destinationReserve.reserve.priceInUSD))
-                    .toString()}
+                  value={targetAmountAfterSwapUSD.toString()}
                   variant="helperText"
                   compact
                   symbol="USD"

@@ -29,10 +29,20 @@ export type TokensSwapState = {
   debouncedOutputAmount: string;
   inputAmountUSD: string;
   outputAmountUSD: string;
-  minimumReceived?: string;
-  minimumReceivedUSD?: string;
   forcedMaxValue: string;
   isMaxSelected: boolean;
+
+  // Processed amounts for the order, based on fees, slippage, inverting requirements, etc.
+  sellAmountFormatted: string | undefined;
+  sellAmountBigInt: bigint | undefined;
+  sellAmountUSD: string | undefined;
+  sellAmountToken: SwappableToken | undefined;
+  buyAmountFormatted: string | undefined;
+  buyAmountBigInt: bigint | undefined;
+  buyAmountUSD: string | undefined;
+  buyAmountToken: SwappableToken | undefined;
+  isInvertedSwap: boolean;
+  processedSide: SwapKind;
 
   // TODO: Can we simplify slippage in one?
   slippage: string;
@@ -157,7 +167,18 @@ export const swapDefaultState: SwapState = {
   hfAfterSwap: 0,
   safeSlippage: 0.005,
   swapRate: undefined,
-  minimumReceived: undefined,
+
+  sellAmountFormatted: undefined,
+  sellAmountBigInt: undefined,
+  sellAmountToken: undefined,
+  buyAmountFormatted: undefined,
+  buyAmountBigInt: undefined,
+  buyAmountToken: undefined,
+  sellAmountUSD: undefined,
+  buyAmountUSD: undefined,
+  isInvertedSwap: false,
+  processedSide: 'sell',
+
   showSlippageWarning: false,
   showUSDTResetWarning: false,
   showChangeNetworkWarning: false,

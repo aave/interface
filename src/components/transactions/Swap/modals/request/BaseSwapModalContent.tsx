@@ -9,9 +9,9 @@ import { BaseSwapDetails } from '../../details';
 import { SwapErrors } from '../../errors/SwapErrors';
 import { useFlowSelector } from '../../hooks/useFlowSelector';
 import { useMaxNativeAmount } from '../../hooks/useMaxNativeAmount';
-import { useMinimumReceived } from '../../hooks/useMinimumReceived';
 import { useProtocolReserves } from '../../hooks/useProtocolReserves';
 import { useSlippageSelector } from '../../hooks/useSlippageSelector';
+import { useSwapOrderAmounts } from '../../hooks/useSwapOrderAmounts';
 import { useSwapQuote } from '../../hooks/useSwapQuote';
 import { useUserContext } from '../../hooks/useUserContext';
 import { SwapInputs } from '../../inputs/SwapInputs';
@@ -86,7 +86,7 @@ export const BaseSwapModalContent = ({
   useFlowSelector({ params, state, setState });
   useSwapQuote({ params, state, setState });
   useProtocolReserves({ params, state, setState });
-  useMinimumReceived({ params, state, setState });
+  useSwapOrderAmounts({ params, state, setState });
   const trackingHandlers = useHandleAnalytics({ state });
 
   // Fallback views

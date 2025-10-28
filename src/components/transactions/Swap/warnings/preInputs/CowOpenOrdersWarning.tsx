@@ -26,7 +26,7 @@ export function CowOpenOrdersWarning({ state }: { state: SwapState }) {
       setCowOpenOrdersTotalAmountFormatted(undefined);
 
       getOrders(state.chainId, user).then((orders) => {
-        const token = state.sourceToken.addressToSwap;
+        const token = state.sellAmountToken?.addressToSwap;
 
         if (!token) {
           return;

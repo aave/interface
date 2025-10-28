@@ -7,24 +7,18 @@ import {
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { useRootStore } from 'src/store/root';
-import { findByChainId } from 'src/ui-config/marketsConfig';
-import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
+import { invalidateAppStateForSwap } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 
 export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
   const { user, reserves } = useAppDataContext();
-  const [account, chainId, currentMarketName, currentMarketData] = useRootStore(
-    useShallow((store) => [
-      store.account,
-      store.currentChainId,
-      store.currentMarket,
-      store.currentMarketData,
-    ])
+  const [account, chainId, currentMarketName] = useRootStore(
+    useShallow((store) => [store.account, store.currentChainId, store.currentMarket])
   );
   const queryClient = useQueryClient();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
@@ -51,29 +45,11 @@ export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsse
   const defaultOutputToken = getDefaultOutputToken(tokensTo, defaultInputToken);
 
   const invalidateAppState = () => {
-    // A collateral swap should refresh collateral, user reserves, transaction history and pool tokens
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolReservesDataHumanized(
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.userPoolReservesDataHumanized(
-        account,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.transactionHistory(
-        account,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolTokens(account, currentMarketData),
+    invalidateAppStateForSwap({
+      swapType: SwapType.CollateralSwap,
+      chainId,
+      account,
+      queryClient,
     });
   };
 

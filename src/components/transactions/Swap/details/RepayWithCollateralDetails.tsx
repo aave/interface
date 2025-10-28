@@ -28,29 +28,27 @@ export const RepayWithCollateralDetails = ({
   //     useFlashloan(user.healthFactor, hfEffectOfFromAmount.toString()) ||
   //     state.destinationReserve.reserve.isFrozen;
 
-  const inputAmount = state.inputAmount;
-
   // we need to get the min as minimumReceived can be greater than debt as we are swapping
   // a safe amount to repay all. When this happens amountAfterRepay would be < 0 and
   // this would show as certain amount left to repay when we are actually repaying all debt
   const tokenToRepayWithBalance = state.destinationReserve.underlyingBalance;
   const debtAmountAfterRepay = useMemo(() => {
-    if (!state.minimumReceived || !currentDebt) return valueToBigNumber('0');
+    if (!state.buyAmountFormatted || !currentDebt) return valueToBigNumber('0');
 
     return valueToBigNumber(currentDebt).minus(
-      valueToBigNumber(state.minimumReceived) < valueToBigNumber(currentDebt)
-        ? valueToBigNumber(state.minimumReceived)
+      valueToBigNumber(state.buyAmountFormatted) < valueToBigNumber(currentDebt)
+        ? valueToBigNumber(state.buyAmountFormatted)
         : valueToBigNumber(currentDebt)
     );
-  }, [currentDebt, state.minimumReceived]);
+  }, [currentDebt, state.buyAmountFormatted]);
 
-  if (!user || !state.minimumReceived) {
+  if (!user || !state.buyAmountFormatted) {
     return null;
   }
 
   const { hfAfterSwap } = calculateHFAfterRepay({
-    amountToReceiveAfterSwap: state.minimumReceived,
-    amountToSwap: state.inputAmount,
+    amountToReceiveAfterSwap: state.buyAmountFormatted,
+    amountToSwap: state.sellAmountFormatted ?? '0',
     fromAssetData: state.destinationReserve.reserve, // used as collateral
     user,
     toAssetData: state.sourceReserve.reserve,
@@ -62,7 +60,7 @@ export const RepayWithCollateralDetails = ({
     state.sourceReserve.reserve.priceInUSD
   );
   const collateralAmountAfterRepay = tokenToRepayWithBalance
-    ? valueToBigNumber(tokenToRepayWithBalance).minus(inputAmount)
+    ? valueToBigNumber(tokenToRepayWithBalance).minus(state.sellAmountFormatted ?? '0')
     : valueToBigNumber('0');
   const collateralAmountAfterRepayUSD = collateralAmountAfterRepay.multipliedBy(
     state.destinationReserve.reserve.priceInUSD
@@ -73,7 +71,7 @@ export const RepayWithCollateralDetails = ({
       {state.provider === SwapProvider.COW_PROTOCOL && <CowCostsDetails state={state} />}
 
       <DetailsHFLine
-        visibleHfChange={!!state.inputAmount}
+        visibleHfChange={!!state.sellAmountFormatted}
         healthFactor={user?.healthFactor}
         futureHealthFactor={hfAfterSwap.toString(10)}
       />

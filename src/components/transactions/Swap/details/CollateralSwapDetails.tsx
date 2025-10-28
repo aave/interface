@@ -67,8 +67,8 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
     user.totalBorrowsMarketReferenceCurrency !== '0' &&
     poolReserve.reserveLiquidationThreshold !== '0';
 
-  const fromAmount = state.inputAmount;
-  const toAmount = state.minimumReceived;
+  const fromAmount = state.sellAmountFormatted ?? '0';
+  const toAmount = state.buyAmountFormatted ?? '0';
 
   // Compute collateral types
   const { debtCeilingReached: sourceDebtCeiling } = getDebtCeilingData(targetReserve);

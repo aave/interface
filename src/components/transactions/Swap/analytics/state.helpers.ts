@@ -5,6 +5,7 @@ import { SwapInputChanges } from './constants';
 
 export const swapStateToAnalyticsEventParams = (state: SwapState): TrackEventProperties => {
   return {
+    // UI inputs info
     chainId: state.chainId,
     inputSymbol: state.sourceToken.symbol,
     outputSymbol: state.destinationToken.symbol,
@@ -12,11 +13,18 @@ export const swapStateToAnalyticsEventParams = (state: SwapState): TrackEventPro
     inputAmountUSD: state.swapRate?.srcSpotUSD,
     outputAmount: state.outputAmount,
     outputAmountUSD: state.swapRate?.destSpotUSD,
-    afterFeesAmount: state.swapRate?.afterFeesAmount,
-    afterFeesUSD: state.swapRate?.afterFeesUSD,
-    minimumReceived: state.minimumReceived,
-    minimumReceivedUSD: state.minimumReceivedUSD,
     slippage: state.slippage,
+
+    // Swap Order info
+    sellAmountFormatted: state.sellAmountFormatted,
+    sellAmountBigInt: state.sellAmountBigInt?.toString() ?? '',
+    sellAmountToken: state.sellAmountToken?.symbol ?? '',
+    buyAmountFormatted: state.buyAmountFormatted,
+    buyAmountBigInt: state.buyAmountBigInt?.toString() ?? '',
+    buyAmountToken: state.buyAmountToken?.symbol ?? '',
+    isInvertedSwap: state.isInvertedSwap,
+
+    // Swap context info
     provider: state.provider,
     expiry: state.expiry,
     orderType: state.orderType,

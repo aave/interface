@@ -25,7 +25,7 @@ export const WithdrawAndSwapDetails = ({
   const withdrawAmount = state.inputAmount;
   const poolReserve = state.sourceReserve.reserve;
 
-  if (!user || !state.swapRate || !state.minimumReceived || !state.minimumReceivedUSD) return null;
+  if (!user || !state.swapRate || !state.buyAmountFormatted || !state.buyAmountUSD) return null;
   const healthFactorAfterWithdraw = calculateHFAfterWithdraw({
     user,
     userReserve: state.sourceReserve,
@@ -35,7 +35,6 @@ export const WithdrawAndSwapDetails = ({
 
   return (
     <TxModalDetails gasLimit={state.gasLimit} showGasStation={state.showGasStation}>
-      {/* TODO: Clean params */}
       <SwapModalTxDetails
         state={state}
         switchRates={state.swapRate}
@@ -43,8 +42,8 @@ export const WithdrawAndSwapDetails = ({
         customReceivedTitle={params.customReceivedTitle}
         selectedInputToken={state.sourceToken}
         selectedOutputToken={state.destinationToken}
-        minimumReceived={state.minimumReceived}
-        minimumReceivedUSD={state.minimumReceivedUSD}
+        minimumReceived={state.buyAmountFormatted}
+        minimumReceivedUSD={state.buyAmountUSD}
       />
       <DetailsNumberLine
         description={<Trans>Remaining supply</Trans>}

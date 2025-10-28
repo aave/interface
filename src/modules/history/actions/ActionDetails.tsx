@@ -13,11 +13,17 @@ import {
   isOrderFilled,
   isOrderLoading,
 } from 'src/components/transactions/Swap/helpers/cow';
+import { swapTypesThatRequiresInvertedQuote } from 'src/components/transactions/Swap/hooks/useSwapQuote';
 
 import { BorrowRateModeBlock } from '../actions/BorrowRateModeBlock';
 import { fetchIconSymbolAndNameHistorical } from '../helpers';
 import { PriceUnavailable } from '../PriceUnavailable';
-import { ActionFields, TransactionHistoryItem } from '../types';
+import {
+  ActionFields,
+  CowSwapSubset,
+  TransactionHistoryItem,
+  transactionHistoryItemTypeToSwapType,
+} from '../types';
 
 export const ActionTextMap = ({ action }: { action: string }) => {
   switch (action) {
@@ -41,6 +47,12 @@ export const ActionTextMap = ({ action }: { action: string }) => {
       return <Trans>Swap</Trans>;
     case 'CowCollateralSwap':
       return <Trans>Collateral Swap</Trans>;
+    case 'CowDebtSwap':
+      return <Trans>Debt Swap</Trans>;
+    case 'CowRepayWithCollateral':
+      return <Trans>Repay with Collateral</Trans>;
+    case 'CowWithdrawAndSwap':
+      return <Trans>Withdraw and Swap</Trans>;
     default:
       return <></>;
   }
@@ -585,25 +597,41 @@ export const ActionDetails = <K extends keyof ActionFields>({
       );
     case 'CowSwap':
     case 'CowCollateralSwap':
-      const cowSwapTx = transaction as TransactionHistoryItem<ActionFields['CowSwap']>;
-      const formattedCowSwapSrcToken = fetchIconSymbolAndNameHistorical(
-        cowSwapTx.underlyingSrcToken
-      );
+    case 'CowDebtSwap':
+    case 'CowRepayWithCollateral':
+    case 'CowWithdrawAndSwap':
+      const swapType = transactionHistoryItemTypeToSwapType(transaction.action);
+      const areInputsInverted = swapType && swapTypesThatRequiresInvertedQuote.includes(swapType);
+      const data = transaction as TransactionHistoryItem<CowSwapSubset>;
+      const swapTx = !areInputsInverted
+        ? data
+        : {
+            ...data,
+            underlyingSrcToken: data.underlyingDestToken,
+            underlyingDestToken: data.underlyingSrcToken,
+            srcAToken: data.destAToken,
+            destAToken: data.srcAToken,
+            srcAmount: data.destAmount,
+            destAmount: data.srcAmount,
+          };
+
+      const formattedCowSwapSrcToken = fetchIconSymbolAndNameHistorical(swapTx.underlyingSrcToken);
       const formattedCowSwapDestToken = fetchIconSymbolAndNameHistorical(
-        cowSwapTx.underlyingDestToken
+        swapTx.underlyingDestToken
       );
+
       return (
         <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }} pr={4.5}>
             <TokenIcon
               symbol={formattedCowSwapSrcToken.iconSymbol}
               sx={{ fontSize: iconSize }}
-              aToken={!!cowSwapTx.srcAToken}
+              aToken={!!swapTx.srcAToken}
             />
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">
-                  {formatUnits(cowSwapTx.srcAmount, cowSwapTx.underlyingSrcToken.decimals)}{' '}
+                  {formatUnits(swapTx.srcAmount, swapTx.underlyingSrcToken.decimals)}{' '}
                   {formattedCowSwapSrcToken.symbol}
                 </Typography>
               }
@@ -614,7 +642,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             >
               <Box>
                 <FormattedNumber
-                  value={formatUnits(cowSwapTx.srcAmount, cowSwapTx.underlyingSrcToken.decimals)}
+                  value={formatUnits(swapTx.srcAmount, swapTx.underlyingSrcToken.decimals)}
                   variant="secondary14"
                   color="text.primary"
                   sx={{ mr: 1, ml: 1 }}
@@ -643,12 +671,12 @@ export const ActionDetails = <K extends keyof ActionFields>({
             <TokenIcon
               symbol={formattedCowSwapDestToken.iconSymbol}
               sx={{ fontSize: iconSize }}
-              aToken={!!cowSwapTx.destAToken}
+              aToken={!!swapTx.destAToken}
             />
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">
-                  {formatUnits(cowSwapTx.destAmount, cowSwapTx.underlyingDestToken.decimals)}{' '}
+                  {formatUnits(swapTx.destAmount, swapTx.underlyingDestToken.decimals)}{' '}
                   {formattedCowSwapDestToken.symbol}
                 </Typography>
               }
@@ -659,7 +687,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
             >
               <Box>
                 <FormattedNumber
-                  value={formatUnits(cowSwapTx.destAmount, cowSwapTx.underlyingDestToken.decimals)}
+                  value={formatUnits(swapTx.destAmount, swapTx.underlyingDestToken.decimals)}
                   variant="secondary14"
                   color="text.primary"
                   visibleDecimals={2}
@@ -683,7 +711,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
           </Box>
 
           {/* Status */}
-          {isOrderLoading(cowSwapTx.status) && (
+          {isOrderLoading(swapTx.status) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
               <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
                 <DarkTooltip
@@ -729,7 +757,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
               </Box>
             </Box>
           )}
-          {isOrderFilled(cowSwapTx.status) && (
+          {isOrderFilled(swapTx.status) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
               <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
                 <DarkTooltip
@@ -776,12 +804,12 @@ export const ActionDetails = <K extends keyof ActionFields>({
             </Box>
           )}
 
-          {(isOrderCancelled(cowSwapTx.status) || isOrderExpired(cowSwapTx.status)) && (
+          {(isOrderCancelled(swapTx.status) || isOrderExpired(swapTx.status)) && (
             <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
               <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
                 <DarkTooltip
                   title={
-                    isOrderCancelled(cowSwapTx.status) ? (
+                    isOrderCancelled(swapTx.status) ? (
                       <Trans>Cancelled</Trans>
                     ) : (
                       <Trans>Expired</Trans>
@@ -823,7 +851,7 @@ export const ActionDetails = <K extends keyof ActionFields>({
                     color: theme.palette.text.primary,
                   }}
                 >
-                  {isOrderCancelled(cowSwapTx.status) ? (
+                  {isOrderCancelled(swapTx.status) ? (
                     <Trans>Cancelled</Trans>
                   ) : (
                     <Trans>Expired</Trans>

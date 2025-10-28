@@ -130,7 +130,7 @@ export const WithdrawAndSwapActionsViaParaswap = ({
           state.sourceReserve.reserve.decimals
         ).toString(),
         amountToReceive: parseUnits(
-          state.minimumReceived ?? '0',
+          state.buyAmountFormatted ?? '0',
           state.destinationReserve.reserve.decimals
         ).toString(),
         augustus: augustus,
@@ -156,7 +156,7 @@ export const WithdrawAndSwapActionsViaParaswap = ({
         outAsset: state.destinationReserve.reserve.underlyingAsset,
         outAssetName: state.destinationReserve.reserve.name,
         outAmount: parseUnits(
-          state.minimumReceived ?? '0',
+          state.buyAmountFormatted ?? '0',
           state.destinationReserve.reserve.decimals
         ).toString(),
         amountUsd: valueToBigNumber(
@@ -166,7 +166,7 @@ export const WithdrawAndSwapActionsViaParaswap = ({
           .toString(),
         outAmountUsd: valueToBigNumber(
           parseUnits(
-            state.minimumReceived ?? '0',
+            state.buyAmountFormatted ?? '0',
             state.destinationReserve.reserve.decimals
           ).toString()
         )

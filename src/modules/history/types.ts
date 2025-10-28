@@ -1,4 +1,5 @@
 import { OrderStatus } from '@cowprotocol/cow-sdk';
+import { SwapType } from 'src/components/transactions/Swap/types';
 
 export type TransactionHistoryItem<T = unknown> = {
   id: string;
@@ -91,6 +92,9 @@ export type ActionFields = {
   } & PoolActionSubset;
   CowSwap: CowSwapSubset;
   CowCollateralSwap: CowSwapSubset;
+  CowDebtSwap: CowSwapSubset;
+  CowRepayWithCollateral: CowSwapSubset;
+  CowWithdrawAndSwap: CowSwapSubset;
 };
 
 export type TransactionHistoryItemUnion =
@@ -103,7 +107,45 @@ export type TransactionHistoryItemUnion =
   | TransactionHistoryItem<ActionFields['SwapBorrowRate']>
   | TransactionHistoryItem<ActionFields['Swap']>
   | TransactionHistoryItem<ActionFields['UsageAsCollateral']>
-  | TransactionHistoryItem<ActionFields['CowSwap']>;
+  | TransactionHistoryItem<ActionFields['CowSwap']>
+  | TransactionHistoryItem<ActionFields['CowCollateralSwap']>
+  | TransactionHistoryItem<ActionFields['CowDebtSwap']>
+  | TransactionHistoryItem<ActionFields['CowRepayWithCollateral']>
+  | TransactionHistoryItem<ActionFields['CowWithdrawAndSwap']>;
+
+export const transactionHistoryItemTypeToSwapType = (type: string): SwapType | undefined => {
+  switch (type) {
+    case 'CowSwap':
+      return SwapType.Swap;
+    case 'CowCollateralSwap':
+      return SwapType.CollateralSwap;
+    case 'CowDebtSwap':
+      return SwapType.DebtSwap;
+    case 'CowRepayWithCollateral':
+      return SwapType.RepayWithCollateral;
+    case 'CowWithdrawAndSwap':
+      return SwapType.WithdrawAndSwap;
+    default:
+      return undefined;
+  }
+};
+
+export const swapTypeToTransactionHistoryItemType = (swapType: SwapType): string | undefined => {
+  switch (swapType) {
+    case SwapType.Swap:
+      return 'CowSwap';
+    case SwapType.CollateralSwap:
+      return 'CowCollateralSwap';
+    case SwapType.DebtSwap:
+      return 'CowDebtSwap';
+    case SwapType.RepayWithCollateral:
+      return 'CowRepayWithCollateral';
+    case SwapType.WithdrawAndSwap:
+      return 'CowWithdrawAndSwap';
+    default:
+      return undefined;
+  }
+};
 
 // Type guards
 export const hasCollateralReserve = (
@@ -208,7 +250,13 @@ export const actionFilterMap = (action: string): number => {
       return 6;
     case 'CowSwap':
       return 7;
-    default:
+    case 'CowDebtSwap':
       return 8;
+    case 'CowRepayWithCollateral':
+      return 9;
+    case 'CowWithdrawAndSwap':
+      return 10;
+    default:
+      return 11;
   }
 };

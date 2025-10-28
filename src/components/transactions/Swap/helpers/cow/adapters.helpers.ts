@@ -1,4 +1,3 @@
-import { BigNumberValue, normalize } from '@aave/math-utils';
 import {
   getOrderToSign,
   LimitTradeParameters,
@@ -13,42 +12,44 @@ import {
   HASH_ZERO,
 } from '@cowprotocol/sdk-flash-loans';
 
-import { FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
-import { SwappableToken, SwapProvider, SwapState, SwapType } from '../../types';
+import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
+import { SwapProvider, SwapState, SwapType } from '../../types';
 import { getCowFlashLoanSdk } from './env.helpers';
-
-export type OrderCore = {
-  chainId: number;
-  sellAmount: BigNumberValue;
-  buyAmount: BigNumberValue;
-  sellToken: SwappableToken;
-  buyToken: SwappableToken;
-  side: 'buy' | 'sell';
-  slippageBps: number;
-  partnerFee: {
-    volumeBps: number;
-    recipient: string;
-  };
-};
 
 export const calculateInstanceAddress = async ({
   user,
   validTo,
   type,
-  orderCore,
+  state,
 }: {
   user: string;
   validTo: number;
   type: AaveFlashLoanType;
-  orderCore: OrderCore;
+  state: SwapState;
 }) => {
   if (!user) return;
-  const flashLoanSdk = await getCowFlashLoanSdk(orderCore.chainId);
-  const { sellAmount, buyAmount, sellToken, buyToken, side, slippageBps, partnerFee } = orderCore;
+  if (
+    !state.sellAmountBigInt ||
+    !state.buyAmountBigInt ||
+    !state.sellAmountToken ||
+    !state.buyAmountToken
+  )
+    return;
+
+  const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
+  const { sellAmount, buyAmount, sellToken, buyToken, side, slippageBps, partnerFee } = {
+    sellAmount: state.sellAmountBigInt,
+    sellToken: state.sellAmountToken,
+    buyAmount: state.buyAmountBigInt,
+    buyToken: state.buyAmountToken,
+    side: state.processedSide,
+    slippageBps: Number(state.slippage) * 100,
+    partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),
+  };
 
   const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
     flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
-    sellAmount: BigInt(sellAmount.toString()),
+    sellAmount: sellAmount,
   });
 
   const limitOrder: LimitTradeParameters = {
@@ -65,7 +66,13 @@ export const calculateInstanceAddress = async ({
   };
 
   const orderToSign = getOrderToSign(
-    { chainId: orderCore.chainId, from: user, networkCostsAmount: '0', isEthFlow: false },
+    {
+      chainId: state.chainId,
+      from: user,
+      networkCostsAmount: '0',
+      isEthFlow: false,
+      applyQuoteAdjustments: false,
+    },
     limitOrder,
     HASH_ZERO
   );
@@ -85,7 +92,7 @@ export const calculateInstanceAddress = async ({
 
   return await flashLoanSdk.getExpectedInstanceAddress(
     type,
-    orderCore.chainId,
+    state.chainId,
     user as `0x${string}`,
     hookAmounts,
     encodedOrder
@@ -99,17 +106,23 @@ export const calculateFlashLoanAmounts = (
   finalSellAmount: bigint;
 } => {
   const flashLoanSdk = new AaveCollateralSwapSdk();
-  const sellAmount = normalize(state.inputAmount, -state.sourceToken.decimals);
+  const sellAmount = state.sellAmountBigInt;
+
+  if (!sellAmount)
+    return {
+      flashLoanFeeAmount: BigInt(0),
+      finalSellAmount: BigInt(0),
+    };
 
   if (state.swapType === SwapType.Swap || state.provider !== SwapProvider.COW_PROTOCOL) {
     return {
       flashLoanFeeAmount: BigInt(0),
-      finalSellAmount: BigInt(sellAmount),
+      finalSellAmount: sellAmount,
     };
   }
 
   const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
-    sellAmount: BigInt(sellAmount),
+    sellAmount: sellAmount,
     flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
   });
 

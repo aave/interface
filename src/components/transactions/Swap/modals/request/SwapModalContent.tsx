@@ -3,13 +3,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useRootStore } from 'src/store/root';
-import { findByChainId } from 'src/ui-config/marketsConfig';
-import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
-import { supportedNetworksWithEnabledMarket } from '../../helpers/shared';
+import {
+  invalidateAppStateForSwap,
+  supportedNetworksWithEnabledMarket,
+} from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType, TokenType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 
@@ -21,8 +22,8 @@ export const SwapModalContent = ({
   chainId?: number;
 }) => {
   const queryClient = useQueryClient();
-  const [account, chainIdInApp, currentMarketData] = useRootStore(
-    useShallow((store) => [store.account, store.currentChainId, store.currentMarketData])
+  const [account, chainIdInApp] = useRootStore(
+    useShallow((store) => [store.account, store.currentChainId])
   );
   const [chainId, setChainId] = useState(chainIdFromSelection ?? chainIdInApp);
   const initialDefaultTokens = useMemo(() => getFilteredTokensForSwitch(chainId), [chainId]);
@@ -55,15 +56,11 @@ export const SwapModalContent = ({
   const defaultOutputToken = getDefaultOutputToken(swappableTokens ?? []);
 
   const invalidateAppState = () => {
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.transactionHistory(
-        account,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolTokens(account, currentMarketData),
+    invalidateAppStateForSwap({
+      swapType: SwapType.Swap,
+      chainId,
+      account,
+      queryClient,
     });
   };
 

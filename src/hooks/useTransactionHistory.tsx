@@ -2,7 +2,11 @@ import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swap/constants/cow.constants';
-import { APP_CODE_VALUES } from 'src/components/transactions/Swap/constants/shared.constants';
+import {
+  APP_CODE_PER_SWAP_TYPE,
+  APP_CODE_VALUES,
+} from 'src/components/transactions/Swap/constants/shared.constants';
+import { SwapType } from 'src/components/transactions/Swap/types';
 import {
   actionFilterMap,
   hasCollateralReserve,
@@ -10,6 +14,7 @@ import {
   hasReserve,
   hasSrcOrDestToken,
   HistoryFilters,
+  swapTypeToTransactionHistoryItemType,
   TransactionHistoryItemUnion,
 } from 'src/modules/history/types';
 import {
@@ -199,7 +204,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       return [];
     }
 
-    const orderBookApi = new OrderBookApi({ chainId: chainId });
+    const orderBookApi = new OrderBookApi({ chainId: chainId, env: 'staging' }); // TODO: use prod for production
     const orders = await orderBookApi.getOrders({
       owner: account,
       limit: first,
@@ -302,8 +307,24 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
           return null;
         }
 
+        // We define the Order's swap type based on the app code
+        const appCode = (() => {
+          try {
+            return JSON.parse(order.fullAppData ?? '{}').appCode;
+          } catch (e) {
+            console.error('Error parsing order.fullAppData:', order.fullAppData, e);
+            return undefined;
+          }
+        })();
+
+        const swapType = Object.entries(APP_CODE_PER_SWAP_TYPE).find(
+          ([, code]) => code === appCode
+        )?.[0] as keyof typeof APP_CODE_PER_SWAP_TYPE | undefined;
+
+        console.log('swapType', swapType);
+
         return {
-          action: srcToken.isAToken ? 'CowCollateralSwap' : 'CowSwap',
+          action: swapTypeToTransactionHistoryItemType(swapType ?? SwapType.Swap) ?? '',
           id: order.uid,
           timestamp: Math.floor(new Date(order.creationDate).getTime() / 1000),
           underlyingSrcToken: {

@@ -9,6 +9,7 @@ import {
   useState,
 } from 'react';
 import { toast } from 'sonner';
+import { APP_CODE_PER_SWAP_TYPE } from 'src/components/transactions/Swap/constants/shared.constants';
 import {
   generateCoWExplorerLink,
   getOrder,
@@ -16,10 +17,9 @@ import {
   isOrderFilled,
   isOrderLoading,
 } from 'src/components/transactions/Swap/helpers/cow';
-import { ActionFields, TransactionHistoryItemUnion } from 'src/modules/history/types';
+import { invalidateAppStateForSwap } from 'src/components/transactions/Swap/helpers/shared';
+import { CowSwapSubset, TransactionHistoryItemUnion } from 'src/modules/history/types';
 import { useRootStore } from 'src/store/root';
-import { findByChainId } from 'src/ui-config/marketsConfig';
-import { queryKeysFactory } from 'src/ui-config/queries';
 import { findTokenSymbol } from 'src/ui-config/TokenList';
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
@@ -27,6 +27,7 @@ import { useShallow } from 'zustand/shallow';
 import { useTransactionHistory } from './useTransactionHistory';
 
 interface OrderDetails {
+  appCode?: string;
   orderId: string;
   chainId: number;
   interval: NodeJS.Timeout;
@@ -68,12 +69,15 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
       transactions.pages[0]
         .filter(
           (tx: TransactionHistoryItemUnion) =>
-            tx.action === 'CowSwap' || tx.action === 'CowCollateralSwap'
+            tx.action === 'CowSwap' ||
+            tx.action === 'CowCollateralSwap' ||
+            tx.action === 'CowDebtSwap' ||
+            tx.action === 'CowRepayWithCollateral' ||
+            tx.action === 'CowWithdrawAndSwap'
         )
-        .filter((tx: ActionFields['CowSwap']) => isOrderLoading(tx.status))
-        .map((tx: TransactionHistoryItemUnion) => tx as ActionFields['CowSwap'])
-        .filter((tx: ActionFields['CowSwap']) => !activeOrders.has(tx.orderId))
-        .forEach((tx: ActionFields['CowSwap']) => {
+        .filter((tx: CowSwapSubset) => isOrderLoading(tx.status))
+        .filter((tx: CowSwapSubset) => !activeOrders.has(tx.orderId))
+        .forEach((tx: CowSwapSubset) => {
           trackOrder(tx.orderId, tx.chainId);
         });
     }
@@ -88,29 +92,21 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
           const newMap = new Map(prev);
           newMap.delete(orderId);
 
-          queryClient.invalidateQueries({
-            queryKey: queryKeysFactory.poolReservesDataHumanized(
-              findByChainId(order.chainId) ?? currentMarketData
-            ),
-          });
+          const orderAppCode = order.appCode;
+          if (orderAppCode) {
+            const swapType = Object.entries(APP_CODE_PER_SWAP_TYPE).find(
+              ([, code]) => code === orderAppCode
+            )?.[0] as keyof typeof APP_CODE_PER_SWAP_TYPE | undefined;
 
-          queryClient.invalidateQueries({
-            queryKey: queryKeysFactory.userPoolReservesDataHumanized(
-              account,
-              findByChainId(order.chainId) ?? currentMarketData
-            ),
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: queryKeysFactory.transactionHistory(
-              account,
-              findByChainId(order.chainId) ?? currentMarketData
-            ),
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: queryKeysFactory.poolTokens(account, currentMarketData),
-          });
+            if (swapType) {
+              invalidateAppStateForSwap({
+                swapType,
+                chainId: order.chainId,
+                account,
+                queryClient,
+              });
+            }
+          }
 
           if (newMap.size === 0) {
             setHasActiveOrders(false);

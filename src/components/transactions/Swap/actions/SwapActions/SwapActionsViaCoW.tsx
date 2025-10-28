@@ -22,12 +22,10 @@ import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { COW_APP_DATA, VALID_TO_HALF_HOUR } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
-  buyAmountWithCostsIncluded,
   getPreSignTransaction,
   getUnsignerOrder,
   isNativeToken,
   populateEthFlowTx,
-  sellAmountWithCostsIncluded,
   sendOrder,
   uploadAppData,
 } from '../../helpers/cow';
@@ -57,7 +55,7 @@ export const SwapActionsViaCoW = ({
     chainId: state.chainId,
     token: state.sourceToken.addressToSwap,
     symbol: state.sourceToken.symbol,
-    amount: state.inputAmount,
+    amount: state.sellAmountFormatted ?? '0',
     decimals: state.sourceToken.decimals,
     spender: isCowProtocolRates(state.swapRate)
       ? COW_PROTOCOL_VAULT_RELAYER_ADDRESS[state.chainId as SupportedChainId]
@@ -78,10 +76,18 @@ export const SwapActionsViaCoW = ({
   const { sendTx } = useWeb3Context();
 
   const slippageInPercent = state.slippage;
-  const sellAmountAccountingCosts = sellAmountWithCostsIncluded(state);
-  const buyAmountAccountingCosts = buyAmountWithCostsIncluded(state);
+
+  // TODO: decide amount to use
+  // const sellAmountAccountingCosts = sellAmountWithCostsIncluded(state);
+  // const buyAmountAccountingCosts = buyAmountWithCostsIncluded(state);
+  const sellAmountAccountingCosts = state.sellAmountBigInt;
+  const buyAmountAccountingCosts = state.buyAmountBigInt;
 
   const action = async () => {
+    if (!sellAmountAccountingCosts || !buyAmountAccountingCosts) {
+      return;
+    }
+
     setMainTxState({ ...mainTxState, loading: true });
     if (isCowProtocolRates(state.swapRate)) {
       if (state.useFlashloan) {
@@ -108,8 +114,8 @@ export const SwapActionsViaCoW = ({
         // If srcToken is native, we need to use the eth-flow instead of the orderbook
         if (isNativeToken(state.sourceToken.addressToSwap)) {
           const ethFlowTx = await populateEthFlowTx(
-            sellAmountAccountingCosts,
-            buyAmountAccountingCosts,
+            sellAmountAccountingCosts.toString(),
+            buyAmountAccountingCosts.toString(),
             state.destinationToken.addressToSwap,
             user,
             VALID_TO_HALF_HOUR,
@@ -141,8 +147,8 @@ export const SwapActionsViaCoW = ({
             });
 
             const unsignerOrder = await getUnsignerOrder({
-              sellAmount: sellAmountAccountingCosts,
-              buyAmount: buyAmountAccountingCosts,
+              sellAmount: sellAmountAccountingCosts.toString(),
+              buyAmount: buyAmountAccountingCosts.toString(),
               dstToken: state.destinationToken.addressToSwap,
               user,
               chainId: state.chainId,
@@ -207,8 +213,8 @@ export const SwapActionsViaCoW = ({
                 tokenDest: state.destinationToken.addressToSwap,
                 chainId: state.chainId,
                 user,
-                sellAmount: sellAmountAccountingCosts,
-                buyAmount: buyAmountAccountingCosts,
+                sellAmount: sellAmountAccountingCosts.toString(),
+                buyAmount: buyAmountAccountingCosts.toString(),
                 tokenSrc: state.sourceToken.addressToSwap,
                 tokenSrcDecimals: state.swapRate.srcDecimals,
                 tokenDestDecimals: state.swapRate.destDecimals,
@@ -257,8 +263,8 @@ export const SwapActionsViaCoW = ({
                 tokenDest: state.destinationToken.addressToSwap,
                 tokenDestDecimals: state.swapRate.destDecimals,
                 quote: state.swapRate.order,
-                sellAmount: sellAmountAccountingCosts,
-                buyAmount: buyAmountAccountingCosts,
+                sellAmount: sellAmountAccountingCosts.toString(),
+                buyAmount: buyAmountAccountingCosts.toString(),
                 slippageBps,
                 smartSlippage,
                 orderType: state.orderType,

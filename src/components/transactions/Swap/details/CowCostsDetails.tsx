@@ -20,10 +20,18 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
 
   if (!state.swapRate || !isCowProtocolRates(state.swapRate)) return null;
 
-  const networkFeeFormatted = normalize(
-    state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
-    state.swapRate.destDecimals
-  );
+  let networkFeeFormatted;
+  if (!state.isInvertedSwap) {
+    networkFeeFormatted = normalize(
+      state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
+      state.swapRate.destDecimals
+    );
+  } else {
+    networkFeeFormatted = normalize(
+      state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
+      state.swapRate.srcDecimals
+    );
+  }
 
   const networkFeeUsd = Number(networkFeeFormatted) * state.swapRate.destTokenPriceUsd;
   const networkFeeToken = state.destinationToken;

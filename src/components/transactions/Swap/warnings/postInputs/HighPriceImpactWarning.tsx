@@ -3,7 +3,7 @@ import { Box, Checkbox, Typography } from '@mui/material';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 
-import { SwapState, SwapType } from '../../types';
+import { SwapState } from '../../types';
 import { shouldRequireConfirmation, shouldShowWarning, valueLostPercentage } from '../helpers';
 
 export function HighPriceImpactWarning({
@@ -16,15 +16,12 @@ export function HighPriceImpactWarning({
   const lostValue = useMemo(() => {
     if (!state.swapRate) return 0;
 
-    // TODO: Support other swap types
-    if (state.swapType !== SwapType.Swap) return 0;
-
-    return valueLostPercentage(Number(state.minimumReceivedUSD), Number(state.inputAmountUSD));
-  }, [state.minimumReceivedUSD, state.inputAmountUSD]);
+    return valueLostPercentage(Number(state.buyAmountUSD), Number(state.sellAmountUSD));
+  }, [state.buyAmountUSD, state.sellAmountUSD]);
 
   const showWarning = useMemo(() => {
     if (!state.swapRate) return false;
-    return shouldShowWarning(lostValue, Number(state.inputAmountUSD));
+    return shouldShowWarning(lostValue, Number(state.sellAmountUSD));
   }, [state.swapRate, lostValue]);
 
   const requireConfirmation = useMemo(() => {

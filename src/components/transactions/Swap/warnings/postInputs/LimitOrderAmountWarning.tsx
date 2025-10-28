@@ -15,11 +15,20 @@ export function LimitOrderAmountWarning({ state }: { state: SwapState }) {
       return [false, false];
     }
 
-    const recommendedAfterFees = normalizeBN(
-      state.swapRate.afterFeesAmount,
-      state.destinationToken.decimals
-    );
-    const userOrderAmount = valueToBigNumber(state.outputAmount);
+    let userOrderAmount, recommendedAfterFees;
+    if (state.isInvertedSwap) {
+      userOrderAmount = valueToBigNumber(state.inputAmount);
+      recommendedAfterFees = normalizeBN(
+        state.buyAmountFormatted ?? '0',
+        state.buyAmountToken?.decimals ?? 18
+      );
+    } else {
+      userOrderAmount = valueToBigNumber(state.outputAmount);
+      recommendedAfterFees = normalizeBN(
+        state.buyAmountFormatted ?? '0',
+        state.buyAmountToken?.decimals ?? 18
+      );
+    }
 
     const differencePercentage = recommendedAfterFees
       .minus(userOrderAmount)

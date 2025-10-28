@@ -11,7 +11,7 @@ import { SwappableToken, SwapParams, SwapProvider, SwapQuoteType, SwapState } fr
 import { CowCostsDetails } from './CowCostsDetails';
 
 export const SwapDetails = ({ params, state }: { params: SwapParams; state: SwapState }) => {
-  if (!state.swapRate || !state.minimumReceived || !state.minimumReceivedUSD) return null;
+  if (!state.swapRate || !state.buyAmountFormatted || !state.buyAmountUSD) return null;
 
   return (
     <TxModalDetails
@@ -25,8 +25,8 @@ export const SwapDetails = ({ params, state }: { params: SwapParams; state: Swap
         customReceivedTitle={params.customReceivedTitle}
         selectedInputToken={state.sourceToken}
         selectedOutputToken={state.destinationToken}
-        minimumReceived={state.minimumReceived}
-        minimumReceivedUSD={state.minimumReceivedUSD}
+        minimumReceived={state.buyAmountFormatted}
+        minimumReceivedUSD={state.buyAmountUSD}
         state={state}
       />
     </TxModalDetails>

@@ -23,9 +23,10 @@ import {
   isOrderFilled,
   isOrderLoading,
 } from '../../helpers/cow';
-import { SwapParams, SwapProvider, SwapState, SwapType } from '../../types';
+import { SwapParams, SwapProvider, SwapState } from '../../types';
 
 export type SwapTxSuccessViewProps = {
+  isInvertedSwap: boolean;
   txHash?: string;
   amount: string;
   symbol: string;
@@ -42,6 +43,7 @@ export type SwapTxSuccessViewProps = {
   resultScreenTokensFromTitle?: string;
   resultScreenTokensToTitle?: string;
   resultScreenTitleItems?: string;
+  invalidateAppState: () => void;
 };
 
 export const SwapWithSurplusTooltip = ({
@@ -81,11 +83,13 @@ export const SwapResultView = ({
   state: SwapState;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  const outAmount = state.swapType === SwapType.Swap ? state.minimumReceived : state.outputAmount;
+  const outAmount = state.isInvertedSwap ? state.sellAmountFormatted : state.buyAmountFormatted;
 
   return (
     <SwapTxSuccessView
+      invalidateAppState={params.invalidateAppState}
       txHash={state.mainTxState.txHash}
+      isInvertedSwap={state.isInvertedSwap}
       amount={state.inputAmount}
       symbol={state.sourceToken.symbol}
       iconSymbol={state.sourceToken.symbol} // TODO: can simplify?
@@ -106,6 +110,7 @@ export const SwapResultView = ({
 };
 
 export const SwapTxSuccessView = ({
+  isInvertedSwap,
   txHash: txHashOrOrderId,
   amount,
   symbol,
@@ -122,6 +127,7 @@ export const SwapTxSuccessView = ({
   resultScreenTokensFromTitle,
   resultScreenTokensToTitle,
   resultScreenTitleItems,
+  invalidateAppState,
 }: SwapTxSuccessViewProps) => {
   const { trackOrder, setHasActiveOrders } = useCowOrderToast();
 
@@ -153,20 +159,36 @@ export const SwapTxSuccessView = ({
           if (isOrderFilled(order.status)) {
             setOrderStatus('succeed');
             setSurplus(
-              BigNumber.from(order.executedBuyAmount)
-                .sub(BigNumber.from(parseUnits(outAmount, destDecimals)))
+              BigNumber.from(isInvertedSwap ? order.executedSellAmount : order.executedBuyAmount)
+                .sub(
+                  BigNumber.from(
+                    !isInvertedSwap
+                      ? parseUnits(outAmount, destDecimals)
+                      : parseUnits(inAmount, srcDecimals)
+                  )
+                )
                 .toBigInt()
             );
-            setOutFinalAmount(normalize(order.executedBuyAmount, destDecimals));
-            setInAmount(normalize(order.executedSellAmount, srcDecimals));
+            setOutFinalAmount(
+              !isInvertedSwap
+                ? normalize(order.executedBuyAmount, destDecimals)
+                : normalize(order.executedSellAmount, srcDecimals)
+            );
+            setInAmount(
+              !isInvertedSwap
+                ? normalize(order.executedSellAmount, srcDecimals)
+                : normalize(order.executedBuyAmount, destDecimals)
+            );
             if (interval.current) {
               clearInterval(interval.current);
             }
+            invalidateAppState();
           } else if (isOrderCancelled(order.status)) {
             setOrderStatus('failed');
             if (interval.current) {
               clearInterval(interval.current);
             }
+            invalidateAppState();
           } else if (isOrderLoading(order.status)) {
             setOrderStatus('open');
           }

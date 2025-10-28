@@ -1,4 +1,4 @@
-import { ComputedUserReserve, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
 import { Dispatch, useEffect, useMemo } from 'react';
 import {
   ComputedReserveData,
@@ -7,9 +7,6 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { calculateHFAfterSwap, CalculateHFAfterSwapProps } from 'src/utils/hfUtils';
 
-import { getCollateralSwapOrderCore } from '../actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters';
-import { getDebtSwapOrderCore } from '../actions/DebtSwap/DebtSwapActionsViaCoW';
-import { getRepayWithCollateralOrderCore } from '../actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW';
 import {
   LIQUIDATION_DANGER_THRESHOLD,
   LIQUIDATION_SAFETY_THRESHOLD,
@@ -154,19 +151,12 @@ const getHFAfterSwapParamsFromSwapType = (
   toAssetUserReserve: ComputedUserReserve,
   user: ExtendedFormattedUser
 ): CalculateHFAfterSwapProps | undefined => {
+  if (!state.sellAmountFormatted || !state.buyAmountFormatted) return undefined;
   switch (state.swapType) {
     case SwapType.CollateralSwap:
-      const collateralSwapOrderCore = getCollateralSwapOrderCore(state);
-
       return {
-        fromAmount: normalizeBN(
-          collateralSwapOrderCore.sellAmount.toString(),
-          collateralSwapOrderCore.sellToken.decimals
-        ).toString(),
-        toAmountAfterSlippage: normalizeBN(
-          collateralSwapOrderCore.buyAmount.toString(),
-          collateralSwapOrderCore.buyToken.decimals
-        ).toString(),
+        fromAmount: state.sellAmountFormatted.toString(),
+        toAmountAfterSlippage: state.buyAmountFormatted.toString(),
         fromAssetData: state.sourceReserve.reserve,
         toAssetData: state.destinationReserve.reserve,
         fromAssetUserData: fromAssetUserReserve,
@@ -175,18 +165,9 @@ const getHFAfterSwapParamsFromSwapType = (
         user,
       };
     case SwapType.DebtSwap:
-      const debtSwapOrderCore = getDebtSwapOrderCore(state);
-
       return {
-        fromAmount: normalizeBN(
-          debtSwapOrderCore.sellAmount.toString(),
-          debtSwapOrderCore.sellToken.decimals
-        ).toString(),
-        toAmountAfterSlippage: normalizeBN(
-          debtSwapOrderCore.buyAmount.toString(),
-          debtSwapOrderCore.buyToken.decimals
-        ).toString(),
-
+        fromAmount: state.sellAmountFormatted.toString(),
+        toAmountAfterSlippage: state.buyAmountFormatted.toString(),
         fromAssetData: state.destinationReserve.reserve,
         toAssetData: state.sourceReserve.reserve,
         fromAssetUserData: toAssetUserReserve,
@@ -196,17 +177,9 @@ const getHFAfterSwapParamsFromSwapType = (
       };
 
     case SwapType.RepayWithCollateral:
-      const repayWithCollateralOrderCore = getRepayWithCollateralOrderCore(state);
-
       return {
-        fromAmount: normalizeBN(
-          repayWithCollateralOrderCore.sellAmount.toString(),
-          repayWithCollateralOrderCore.sellToken.decimals
-        ).toString(),
-        toAmountAfterSlippage: normalizeBN(
-          repayWithCollateralOrderCore.buyAmount.toString(),
-          repayWithCollateralOrderCore.buyToken.decimals
-        ).toString(),
+        fromAmount: state.sellAmountFormatted.toString(),
+        toAmountAfterSlippage: state.buyAmountFormatted.toString(),
         fromAssetData: state.destinationReserve.reserve,
         toAssetData: state.sourceReserve.reserve,
         fromAssetUserData: toAssetUserReserve,

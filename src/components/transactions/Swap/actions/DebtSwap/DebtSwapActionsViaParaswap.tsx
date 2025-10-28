@@ -40,8 +40,10 @@ export const DebtSwapActionsViaParaswap = ({
   const { sendTx } = useWeb3Context();
   const queryClient = useQueryClient();
 
+  // TODO: CHECK LIMIT ORDERS BUY ORDERS
+
   const amountToSwap = maxInputAmountWithSlippage(
-    state.minimumReceived ?? '0',
+    state.buyAmountFormatted ?? '0',
     (Number(state.slippage) * 100).toString(),
     state.destinationReserve.reserve.decimals || 18
   );
@@ -138,7 +140,7 @@ export const DebtSwapActionsViaParaswap = ({
       addTransaction(response.hash, {
         action: 'debtSwitch',
         txState: 'success',
-        previousState: `${state.minimumReceived} variable ${state.sourceReserve.reserve.symbol}`,
+        previousState: `${state.buyAmountFormatted} variable ${state.sourceReserve.reserve.symbol}`,
         newState: `${state.inputAmount} variable ${state.destinationReserve.reserve.symbol}`,
         amountUsd: valueToBigNumber(
           parseUnits(amountToSwap, state.sourceReserve.reserve.decimals).toString()

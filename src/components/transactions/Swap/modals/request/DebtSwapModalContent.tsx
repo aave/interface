@@ -10,9 +10,8 @@ import {
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { isAssetHidden } from 'src/modules/dashboard/lists/constants';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket, findByChainId } from 'src/ui-config/marketsConfig';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
-import { queryKeysFactory } from 'src/ui-config/queries';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
 import {
@@ -21,19 +20,15 @@ import {
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { useShallow } from 'zustand/shallow';
 
+import { invalidateAppStateForSwap } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 
 export const DebtSwapModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
   const { user, reserves } = useAppDataContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-  const [account, chainId, currentMarketData, currentMarket] = useRootStore(
-    useShallow((store) => [
-      store.account,
-      store.currentChainId,
-      store.currentMarketData,
-      store.currentMarket,
-    ])
+  const [account, chainId, currentMarket] = useRootStore(
+    useShallow((store) => [store.account, store.currentChainId, store.currentMarket])
   );
 
   const tokensFrom = getTokensFrom(user, currentNetworkConfig.wagmiChain.id, currentNetworkConfig);
@@ -48,29 +43,11 @@ export const DebtSwapModalContent = ({ underlyingAsset }: { underlyingAsset: str
   const defaultOutputToken = getDefaultOutputToken(tokensTo, defaultInputToken);
   const queryClient = useQueryClient();
   const invalidateAppState = () => {
-    // A collateral swap should refresh collateral, user reserves, transaction history and pool tokens
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolReservesDataHumanized(
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.userPoolReservesDataHumanized(
-        account,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.transactionHistory(
-        account,
-        findByChainId(chainId) ?? currentMarketData
-      ),
-    });
-
-    queryClient.invalidateQueries({
-      queryKey: queryKeysFactory.poolTokens(account, currentMarketData),
+    invalidateAppStateForSwap({
+      swapType: SwapType.DebtSwap,
+      chainId,
+      account,
+      queryClient,
     });
   };
 
