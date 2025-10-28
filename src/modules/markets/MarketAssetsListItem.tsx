@@ -139,7 +139,10 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           <NoData variant={'secondary14'} color="text.secondary" />
         )}
       </ListColumn>
-
+      <ListColumn>
+        <FormattedNumber compact value={reserve.formattedAvailableLiquidity} variant="main16" />
+        <ReserveSubheader value={Math.max(Number(reserve?.availableLiquidityUSD), 0).toString()} />
+      </ListColumn>
       <ListColumn>
         <IncentivesCard
           value={

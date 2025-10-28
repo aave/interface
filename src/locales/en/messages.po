@@ -2115,6 +2115,11 @@ msgstr "{0} {symbol} to continue"
 msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representative smart contract wallet (ie. Safe) addresses on other chains."
 
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Available Liquidity"
+msgstr "Available Liquidity"
+
 #: src/layouts/SupportModal.tsx
 msgid "Support"
 msgstr "Support"

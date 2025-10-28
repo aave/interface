@@ -126,6 +126,22 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           )}
         </Box>
       </Row>
+      <Row caption={<Trans>Available Liquidity</Trans>} captionVariant="description" mb={3}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: { xs: 'flex-end' },
+            justifyContent: 'center',
+            textAlign: 'center',
+          }}
+        >
+          <FormattedNumber compact value={reserve.formattedAvailableLiquidity} variant="main16" />
+          <ReserveSubheader
+            value={Math.max(Number(reserve?.availableLiquidityUSD), 0).toString()}
+          />
+        </Box>
+      </Row>
       <Row
         caption={
           <VariableAPYTooltip

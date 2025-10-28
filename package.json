@@ -156,5 +156,8 @@
     "budget": null,
     "budgetPercentIncreaseRed": 20,
     "showDetails": true
+  },
+  "resolutions": {
+    "@coinbase/wallet-sdk": "4.3.0"
   }
 }
