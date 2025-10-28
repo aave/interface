@@ -17,6 +17,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { isSmartContractWallet } from 'src/helpers/provider';
 
+import { SignedParams } from '../../actions/approval/useSwapTokenApproval';
 import {
   COW_APP_DATA,
   COW_CREATE_ORDER_ABI,
@@ -26,6 +27,26 @@ import {
 } from '../../constants/cow.constants';
 import { isCowProtocolRates, OrderType, SwapState } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
+
+const EIP_2612_PERMIT_ABI = [
+  {
+    constant: false,
+    inputs: [
+      { name: 'owner', type: 'address' },
+      { name: 'spender', type: 'address' },
+      { name: 'value', type: 'uint256' },
+      { name: 'deadline', type: 'uint256' },
+      { name: 'v', type: 'uint8' },
+      { name: 'r', type: 'bytes32' },
+      { name: 's', type: 'bytes32' },
+    ],
+    name: 'permit',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+];
 
 export type CowProtocolActionParams = {
   orderType: OrderType;
@@ -46,6 +67,8 @@ export type CowProtocolActionParams = {
   appCode: string;
   kind: OrderKind;
   orderBookQuote: QuoteAndPost;
+  signatureParams?: SignedParams;
+  estimateGasLimit?: (tx: PopulatedTransaction, chainId?: number) => Promise<PopulatedTransaction>;
 };
 
 export const getPreSignTransaction = async ({
@@ -150,6 +173,8 @@ export const sendOrder = async ({
   tokenSrcDecimals,
   tokenDestDecimals,
   kind,
+  signatureParams,
+  estimateGasLimit,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
 
@@ -165,6 +190,37 @@ export const sendOrder = async ({
   if (isSmartContract) {
     throw new Error('Smart contract wallets should use presign.');
   }
+
+  console.log({
+    signatureParams,
+    estimateGasLimit,
+    tokenSrc,
+  });
+
+  const permitHook =
+    signatureParams && estimateGasLimit
+      ? await getPermitHook({ tokenAddress: tokenSrc, signatureParams, estimateGasLimit, chainId })
+      : undefined;
+
+  console.log('permitHook', permitHook);
+
+  const hooks = permitHook
+    ? {
+        pre: [permitHook],
+      }
+    : undefined;
+
+  console.log('hooks', hooks);
+
+  const appData = COW_APP_DATA(
+    inputSymbol,
+    outputSymbol,
+    slippageBps,
+    smartSlippage,
+    orderType,
+    appCode,
+    hooks
+  );
 
   if (orderType === OrderType.LIMIT) {
     const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(chainId, appCode);
@@ -182,28 +238,19 @@ export const sendOrder = async ({
           owner: user as `0x${string}`,
         },
         {
-          appData: COW_APP_DATA(
-            inputSymbol,
-            outputSymbol,
-            slippageBps,
-            smartSlippage,
-            orderType,
-            appCode
-          ),
+          appData,
         }
       )
       .then((orderResult) => orderResult.orderId);
   } else {
+    console.log({
+      sellAmount,
+      buyAmount,
+    });
+
     return orderBookQuote
       .postSwapOrderFromQuote({
-        appData: COW_APP_DATA(
-          inputSymbol,
-          outputSymbol,
-          slippageBps,
-          smartSlippage,
-          orderType,
-          appCode
-        ),
+        appData,
       })
       .then((orderResult) => orderResult.orderId);
   }
@@ -613,4 +660,48 @@ export const buyAmountBeforeCostsIncluded = (
         .toString();
     }
   }
+};
+
+export const getPermitHook = async ({
+  tokenAddress,
+  signatureParams,
+  estimateGasLimit,
+  chainId,
+}: {
+  tokenAddress: string;
+  signatureParams: SignedParams;
+  estimateGasLimit: (tx: PopulatedTransaction, chainId?: number) => Promise<PopulatedTransaction>;
+  chainId: number;
+}) => {
+  // Decode the owner from the stored encoded signature payload if needed
+  const [owner] = ethers.utils.defaultAbiCoder.decode(
+    ['address', 'address', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+    signatureParams.signature
+  );
+
+  const iface = new ethers.utils.Interface(EIP_2612_PERMIT_ABI);
+  const { v, r, s } = signatureParams.splitedSignature;
+  const spender = signatureParams.approvedToken; // Vault Relayer / adapter address
+  const value = signatureParams.amount;
+  const deadline = signatureParams.deadline;
+
+  const callData = iface.encodeFunctionData('permit', [owner, spender, value, deadline, v, r, s]);
+
+  const PERMIT_HOOK_DAPP_ID = 'cow.fi';
+  const gasLimit = '80000';
+
+  const tx: PopulatedTransaction = {
+    to: tokenAddress,
+    data: callData,
+    gasLimit: BigNumber.from(gasLimit),
+  };
+
+  const txWithGasEstimation = await estimateGasLimit(tx, chainId);
+
+  return {
+    target: txWithGasEstimation.to,
+    callData: txWithGasEstimation.data,
+    gasLimit: txWithGasEstimation.gasLimit?.toString(),
+    dappId: PERMIT_HOOK_DAPP_ID,
+  };
 };

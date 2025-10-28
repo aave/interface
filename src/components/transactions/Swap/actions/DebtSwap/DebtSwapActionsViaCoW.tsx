@@ -1,10 +1,5 @@
 import { normalize } from '@aave/math-utils';
-import {
-  enableLogging,
-  getOrderToSign,
-  LimitTradeParameters,
-  OrderKind,
-} from '@cowprotocol/cow-sdk';
+import { getOrderToSign, LimitTradeParameters, OrderKind } from '@cowprotocol/cow-sdk';
 import { AaveFlashLoanType, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
@@ -180,7 +175,6 @@ export const DebtSwapActionsViaCoW = ({
         HASH_ZERO
       );
 
-      enableLogging(true); //  todo remove
       const orderPostParams = await flashLoanSdk.getOrderPostingSettings(
         AaveFlashLoanType.DebtSwap,
         {

@@ -40,10 +40,10 @@ export const WithdrawAndSwapDetails = ({
         switchRates={state.swapRate}
         safeSlippage={state.safeSlippage}
         customReceivedTitle={params.customReceivedTitle}
-        selectedInputToken={state.sourceToken}
-        selectedOutputToken={state.destinationToken}
-        minimumReceived={state.buyAmountFormatted}
-        minimumReceivedUSD={state.buyAmountUSD}
+        sellToken={state.sourceToken}
+        buyToken={state.destinationToken}
+        buyAmount={state.buyAmountFormatted}
+        buyAmountUSD={state.buyAmountUSD}
       />
       <DetailsNumberLine
         description={<Trans>Remaining supply</Trans>}

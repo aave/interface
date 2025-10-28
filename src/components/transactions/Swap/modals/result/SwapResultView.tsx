@@ -83,17 +83,17 @@ export const SwapResultView = ({
   state: SwapState;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  const outAmount = state.isInvertedSwap ? state.sellAmountFormatted : state.buyAmountFormatted;
+  if (!state.sellAmountFormatted || !state.buyAmountFormatted) return null;
 
   return (
     <SwapTxSuccessView
       invalidateAppState={params.invalidateAppState}
       txHash={state.mainTxState.txHash}
       isInvertedSwap={state.isInvertedSwap}
-      amount={state.inputAmount}
+      amount={state.sellAmountFormatted}
       symbol={state.sourceToken.symbol}
       iconSymbol={state.sourceToken.symbol} // TODO: can simplify?
-      outAmount={outAmount ?? ''}
+      outAmount={state.buyAmountFormatted ?? ''}
       outSymbol={state.destinationToken.symbol}
       outIconSymbol={state.destinationToken.symbol}
       iconUri={state.sourceToken.logoURI}

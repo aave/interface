@@ -7,7 +7,7 @@ import {
 import { Trans } from '@lingui/macro';
 import { BigNumber } from 'ethers';
 import stringify from 'json-stringify-deterministic';
-import { Dispatch, useEffect } from 'react';
+import { Dispatch } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { isSmartContractWallet } from 'src/helpers/provider';
 import { useModalContext } from 'src/hooks/useModal';
@@ -51,18 +51,19 @@ export const SwapActionsViaCoW = ({
   const { mainTxState, loadingTxns, setMainTxState, setTxError, approvalTxState } =
     useModalContext();
 
-  const { requiresApproval, requiresApprovalReset, approval, tryPermit } = useSwapTokenApproval({
-    chainId: state.chainId,
-    token: state.sourceToken.addressToSwap,
-    symbol: state.sourceToken.symbol,
-    amount: state.sellAmountFormatted ?? '0',
-    decimals: state.sourceToken.decimals,
-    spender: isCowProtocolRates(state.swapRate)
-      ? COW_PROTOCOL_VAULT_RELAYER_ADDRESS[state.chainId as SupportedChainId]
-      : undefined,
-    setState,
-    allowPermit: false, // CoW does not support permit
-  });
+  const { requiresApproval, requiresApprovalReset, approval, tryPermit, signatureParams } =
+    useSwapTokenApproval({
+      chainId: state.chainId,
+      token: state.sourceToken.addressToSwap,
+      symbol: state.sourceToken.symbol,
+      amount: state.sellAmountFormatted ?? '0',
+      decimals: state.sourceToken.decimals,
+      spender: isCowProtocolRates(state.swapRate)
+        ? COW_PROTOCOL_VAULT_RELAYER_ADDRESS[state.chainId as SupportedChainId]
+        : undefined,
+      setState,
+      allowPermit: true,
+    });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -232,6 +233,8 @@ export const SwapActionsViaCoW = ({
                     : state.side === 'buy'
                     ? OrderKind.BUY
                     : OrderKind.SELL,
+                signatureParams, // TODO: Test permit for smart contract wallets?
+                estimateGasLimit,
               });
 
               const response = await sendTx({
@@ -281,6 +284,8 @@ export const SwapActionsViaCoW = ({
                 outputSymbol: state.destinationToken.symbol,
                 appCode,
                 orderBookQuote: state.swapRate.orderBookQuote,
+                signatureParams,
+                estimateGasLimit,
               });
               setMainTxState({
                 loading: false,
@@ -326,12 +331,6 @@ export const SwapActionsViaCoW = ({
     trackingHandlers.trackSwap();
     params.invalidateAppState();
   };
-
-  // Track execution state to pause rate updates during actions
-  useEffect(() => {
-    const isExecuting = mainTxState.loading || approvalTxState.loading;
-    setState({ actionsLoading: isExecuting });
-  }, [mainTxState.loading, approvalTxState.loading, setState, state.actionsLoading]);
 
   return (
     <TxActionsWrapper

@@ -43,6 +43,8 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
   const flashloanFeeUsd = Number(flashloanFeeFormatted) * state.swapRate.srcTokenPriceUsd;
   const flashloanFeeToken = state.sourceToken;
 
+  if (!state.buyAmountToken || !state.sellAmountToken) return null;
+
   // Partner fee is applied to the surplus token:
   // - For sell orders: fee in buy token (destinationToken), deducted from buy amount
   // - For buy orders: fee in sell token (sourceToken), added to sell amount
@@ -59,7 +61,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
     // Fee in destination token (buy token)
     partnerFeeFormatted = normalize(
       state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
-      state.destinationToken.decimals
+      state.buyAmountToken?.decimals ?? 18
     );
     partnerFeeUsd = Number(partnerFeeFormatted) * state.swapRate.destTokenPriceUsd;
     partnerFeeToken = state.destinationToken;
@@ -67,10 +69,11 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
     // Fee in source token (sell token)
     partnerFeeFormatted = normalize(
       state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
-      state.sourceToken.decimals
+      state.buyAmountToken?.decimals ?? 18
     );
+
     partnerFeeUsd = Number(partnerFeeFormatted) * state.swapRate.srcTokenPriceUsd;
-    partnerFeeToken = state.sourceToken;
+    partnerFeeToken = state.buyAmountToken;
   }
 
   const totalCostsInUsd = networkFeeUsd + partnerFeeUsd + (flashloanFeeUsd ?? 0); // + costs.slippageInUsd;

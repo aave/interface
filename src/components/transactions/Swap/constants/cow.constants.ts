@@ -84,7 +84,8 @@ export const COW_APP_DATA = (
   slippageBips: number,
   smartSlippage: boolean,
   orderType: OrderType,
-  appCode: string
+  appCode: string,
+  hooks?: Record<string, unknown>
 ) => ({
   appCode: appCode,
   version: '1.4.0',
@@ -97,6 +98,7 @@ export const COW_APP_DATA = (
       smartSlippage,
     },
     partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
+    hooks,
   },
 });
 

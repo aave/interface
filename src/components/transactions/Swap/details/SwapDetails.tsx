@@ -1,4 +1,4 @@
-import { normalizeBN } from '@aave/math-utils';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
@@ -11,7 +11,16 @@ import { SwappableToken, SwapParams, SwapProvider, SwapQuoteType, SwapState } fr
 import { CowCostsDetails } from './CowCostsDetails';
 
 export const SwapDetails = ({ params, state }: { params: SwapParams; state: SwapState }) => {
-  if (!state.swapRate || !state.buyAmountFormatted || !state.buyAmountUSD) return null;
+  if (
+    !state.swapRate ||
+    !state.sellAmountToken ||
+    !state.buyAmountToken ||
+    !state.sellAmountUSD ||
+    !state.buyAmountUSD ||
+    !state.sellAmountFormatted ||
+    !state.buyAmountFormatted
+  )
+    return null;
 
   return (
     <TxModalDetails
@@ -23,10 +32,10 @@ export const SwapDetails = ({ params, state }: { params: SwapParams; state: Swap
         switchRates={state.swapRate}
         safeSlippage={state.safeSlippage}
         customReceivedTitle={params.customReceivedTitle}
-        selectedInputToken={state.sourceToken}
-        selectedOutputToken={state.destinationToken}
-        minimumReceived={state.buyAmountFormatted}
-        minimumReceivedUSD={state.buyAmountUSD}
+        sellToken={state.sellAmountToken}
+        buyToken={state.buyAmountToken}
+        buyAmount={state.buyAmountFormatted}
+        buyAmountUSD={state.buyAmountUSD}
         state={state}
       />
     </TxModalDetails>
@@ -35,73 +44,74 @@ export const SwapDetails = ({ params, state }: { params: SwapParams; state: Swap
 
 export const SwapModalTxDetails = ({
   switchRates,
-  selectedOutputToken,
+  buyToken,
+  buyAmount,
+  buyAmountUSD,
   safeSlippage,
   customReceivedTitle,
-  selectedInputToken,
-  minimumReceived,
-  minimumReceivedUSD,
+  sellToken,
   state,
 }: {
   switchRates: SwapQuoteType;
   safeSlippage: number;
   customReceivedTitle?: React.ReactNode;
-  selectedInputToken: SwappableToken;
-  selectedOutputToken: SwappableToken;
-  minimumReceived: string;
-  minimumReceivedUSD: string;
+  sellToken: SwappableToken;
+  buyToken: SwappableToken;
+  buyAmount: string;
+  buyAmountUSD: string;
   state: SwapState;
 }) => {
   return switchRates.provider === SwapProvider.COW_PROTOCOL ? (
     <IntentTxDetails
       state={state}
-      selectedInputToken={selectedInputToken}
-      selectedOutputToken={selectedOutputToken}
+      sellToken={sellToken}
+      buyToken={buyToken}
       safeSlippage={safeSlippage}
       customReceivedTitle={customReceivedTitle}
-      inputTokenPriceUsd={switchRates.srcTokenPriceUsd}
-      inputAmount={switchRates.srcSpotAmount}
-      minimumReceived={minimumReceived}
-      minimumReceivedUSD={minimumReceivedUSD}
+      sellTokenPriceUsd={Number(state.sellAmountUSD)}
+      sellAmount={switchRates.srcSpotAmount}
+      buyAmount={buyAmount}
+      buyAmountUSD={buyAmountUSD}
     />
   ) : (
     <MarketOrderTxDetails
-      switchRates={switchRates}
-      selectedOutputToken={selectedOutputToken}
+      buyToken={buyToken}
       safeSlippage={safeSlippage}
       customReceivedTitle={customReceivedTitle}
-      minimumReceived={minimumReceived}
-      minimumReceivedUSD={minimumReceivedUSD}
+      buyAmount={buyAmount}
+      buyAmountUSD={buyAmountUSD}
     />
   );
 };
 
 export const IntentTxDetails = ({
   state,
-  selectedOutputToken,
-  selectedInputToken,
+  buyToken,
   customReceivedTitle,
-  inputTokenPriceUsd,
-  inputAmount,
-  minimumReceived,
-  minimumReceivedUSD,
+  sellTokenPriceUsd,
+  sellAmount,
+  buyAmount,
+  buyAmountUSD,
 }: {
   state: SwapState;
-  selectedOutputToken: SwappableToken;
-  selectedInputToken: SwappableToken;
+  buyToken: SwappableToken;
+  sellToken: SwappableToken;
   safeSlippage: number;
   customReceivedTitle?: React.ReactNode;
-  inputTokenPriceUsd: number;
-  inputAmount: string;
-  minimumReceived: string;
-  minimumReceivedUSD: string;
+  sellTokenPriceUsd: number;
+  sellAmount: string;
+  buyAmount: string;
+  buyAmountUSD: string;
 }) => {
-  const srcUsd = normalizeBN(inputAmount, selectedInputToken.decimals)
-    .multipliedBy(inputTokenPriceUsd)
-    .toNumber();
+  const srcUsd = valueToBigNumber(sellAmount).multipliedBy(sellTokenPriceUsd).toNumber();
 
-  const receivingInUsd = Number(minimumReceivedUSD);
+  const receivingInUsd = Number(buyAmountUSD);
   const sendingInUsd = srcUsd;
+  console.log({
+    sellTokenPriceUsd,
+    receivingInUsd,
+    sendingInUsd,
+  });
 
   const priceImpact = (1 - receivingInUsd / sendingInUsd) * 100;
 
@@ -111,9 +121,7 @@ export const IntentTxDetails = ({
 
       <Row
         mb={4}
-        caption={
-          customReceivedTitle || <Trans>{`Minimum ${selectedOutputToken.symbol} received`}</Trans>
-        }
+        caption={customReceivedTitle || <Trans>{`Minimum ${buyToken.symbol} received`}</Trans>}
         captionVariant="description"
         align="flex-start"
       >
@@ -127,8 +135,8 @@ export const IntentTxDetails = ({
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <ExternalTokenIcon
-              symbol={selectedOutputToken.symbol}
-              logoURI={selectedOutputToken.logoURI}
+              symbol={buyToken.symbol}
+              logoURI={buyToken.logoURI}
               height="16px"
               width="16px"
               sx={{ mr: 2, ml: 4, fontSize: '16px' }}
@@ -136,7 +144,7 @@ export const IntentTxDetails = ({
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">
-                  {minimumReceived} {selectedOutputToken.symbol}
+                  {buyAmount} {buyToken.symbol}
                 </Typography>
               }
               arrow
@@ -145,18 +153,13 @@ export const IntentTxDetails = ({
               leaveTouchDelay={500}
             >
               <Box>
-                <FormattedNumber
-                  value={minimumReceived}
-                  variant="secondary14"
-                  compact
-                  roundDown={true}
-                />
+                <FormattedNumber value={buyAmount} variant="secondary14" compact roundDown={true} />
               </Box>
             </DarkTooltip>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <FormattedNumber
-              value={Number(minimumReceivedUSD)}
+              value={Number(buyAmountUSD)}
               variant="helperText"
               compact
               symbol="USD"
@@ -181,24 +184,21 @@ export const IntentTxDetails = ({
 };
 
 const MarketOrderTxDetails = ({
-  selectedOutputToken,
+  buyToken,
   customReceivedTitle,
-  minimumReceived,
-  minimumReceivedUSD,
+  buyAmount,
+  buyAmountUSD,
 }: {
-  switchRates: SwapQuoteType;
-  selectedOutputToken: SwappableToken;
+  buyToken: SwappableToken;
   safeSlippage: number;
   customReceivedTitle?: React.ReactNode;
-  minimumReceived: string;
-  minimumReceivedUSD: string;
+  buyAmount: string;
+  buyAmountUSD: string;
 }) => {
   return (
     <>
       <Row
-        caption={
-          customReceivedTitle || <Trans>{`Minimum ${selectedOutputToken.symbol} received`}</Trans>
-        }
+        caption={customReceivedTitle || <Trans>{`Minimum ${buyToken.symbol} received`}</Trans>}
         captionVariant="description"
         align="flex-start"
       >
@@ -212,8 +212,8 @@ const MarketOrderTxDetails = ({
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <ExternalTokenIcon
-              symbol={selectedOutputToken.symbol}
-              logoURI={selectedOutputToken.logoURI}
+              symbol={buyToken.symbol}
+              logoURI={buyToken.logoURI}
               height="16px"
               width="16px"
               sx={{ mr: 2, ml: 4, fontSize: '16px' }}
@@ -221,7 +221,7 @@ const MarketOrderTxDetails = ({
             <DarkTooltip
               title={
                 <Typography variant="secondary14" color="common.white">
-                  {minimumReceived} {selectedOutputToken.symbol}
+                  {buyAmount} {buyToken.symbol}
                 </Typography>
               }
               arrow
@@ -231,7 +231,7 @@ const MarketOrderTxDetails = ({
             >
               <Box>
                 <FormattedNumber
-                  value={Number(minimumReceived)}
+                  value={Number(buyAmount)}
                   variant="secondary14"
                   compact
                   roundDown={true}
@@ -240,7 +240,7 @@ const MarketOrderTxDetails = ({
             </DarkTooltip>
           </Box>
           <FormattedNumber
-            value={Number(minimumReceivedUSD)}
+            value={Number(buyAmountUSD)}
             variant="helperText"
             compact
             symbol="USD"
