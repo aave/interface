@@ -42,16 +42,18 @@ import {
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { AaveSafetyModule, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { BoxProps } from '@mui/material';
 import { BigNumber, PopulatedTransaction, Signature, utils } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { ClaimRewardsActionsProps } from 'src/components/transactions/ClaimRewards/ClaimRewardsActions';
 import { RewardSymbol } from 'src/components/transactions/ClaimRewards/constants';
-import { DebtSwitchActionProps } from 'src/components/transactions/DebtSwitch/DebtSwitchActions';
-import { CollateralRepayActionProps } from 'src/components/transactions/Repay/CollateralRepayActions';
+import { SignatureLike } from 'src/components/transactions/Swap/actions/approval/useSwapTokenApproval';
 import { SwapActionProps } from 'src/components/transactions/Swap/helpers/paraswap';
-import { WithdrawAndSwitchActionProps } from 'src/components/transactions/Withdraw/WithdrawAndSwitchActions';
 import { Approval } from 'src/helpers/useTransactionHandler';
+import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
+import { SignedParams } from 'src/hooks/useApprovalTx';
 import { customAssetDomains } from 'src/ui-config/permitConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
@@ -83,6 +85,71 @@ type GenerateApprovalOpts = {
 type GenerateSignatureRequestOpts = {
   chainId?: number;
 };
+
+interface DebtSwitchBaseProps extends BoxProps {
+  amountToSwap: string;
+  amountToReceive: string;
+  poolReserve: ComputedReserveData;
+  targetReserve: ComputedReserveData;
+  isWrongNetwork: boolean;
+  customGasPrice?: string;
+  symbol?: string;
+  blocked?: boolean;
+  isMaxSelected: boolean;
+  loading?: boolean;
+  signatureParams?: SignedParams;
+}
+
+export interface DebtSwitchActionProps extends DebtSwitchBaseProps {
+  augustus: string;
+  txCalldata: string;
+}
+
+interface WithdrawAndSwitchProps extends BoxProps {
+  amountToSwap: string;
+  amountToReceive: string;
+  poolReserve: ComputedReserveData;
+  targetReserve: ComputedReserveData;
+  isWrongNetwork: boolean;
+  blocked: boolean;
+  isMaxSelected: boolean;
+  loading?: boolean;
+  buildTxFn: () => Promise<SwapTransactionParams>;
+}
+
+export interface WithdrawAndSwitchActionProps
+  extends Pick<
+    WithdrawAndSwitchProps,
+    'amountToSwap' | 'amountToReceive' | 'poolReserve' | 'targetReserve' | 'isMaxSelected'
+  > {
+  augustus: string;
+  signatureParams?: SignedParams;
+  txCalldata: string;
+}
+
+interface CollateralRepayBaseProps extends BoxProps {
+  rateMode: InterestRate;
+  repayAmount: string;
+  repayWithAmount: string;
+  fromAssetData: ComputedReserveData;
+  poolReserve: ComputedReserveData;
+  isWrongNetwork: boolean;
+  customGasPrice?: string;
+  symbol: string;
+  repayAllDebt: boolean;
+  useFlashLoan: boolean;
+  blocked: boolean;
+  loading?: boolean;
+  signature?: SignatureLike;
+  signedAmount?: string;
+  deadline?: string;
+}
+
+// Used in poolSlice
+export interface CollateralRepayActionProps extends CollateralRepayBaseProps {
+  augustus: string;
+  swapCallData: string;
+}
 
 // TODO: add chain/provider/account mapping
 export interface PoolSlice {
