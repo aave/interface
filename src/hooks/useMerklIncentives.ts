@@ -16,12 +16,13 @@ enum OpportunityStatus {
   UPCOMING = 'UPCOMING',
 }
 
-type MerklOpportunity = {
+export type MerklOpportunity = {
   chainId: number;
   type: string;
   description?: string;
   identifier: Address;
   name: string;
+  depositUrl?: string;
   status: OpportunityStatus;
   action: OpportunityAction;
   tvl: number;
@@ -104,6 +105,10 @@ export type MerklIncentivesBreakdown = {
     protocol: number;
     protocolIncentives: number;
     merklIncentives: number; // Now represents APY (converted from APR)
+  };
+  points?: {
+    dailyPoints: number;
+    pointsPerThousandUsd: number;
   };
 };
 type WhitelistApiResponse = {
@@ -210,15 +215,16 @@ export const useMerklIncentives = ({
       const primaryOpportunity = whitelistedOpportunities[0];
       const rewardToken = primaryOpportunity.rewardsRecord.breakdowns[0].token;
       const description = primaryOpportunity.description;
-
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
       }, 0);
 
+      const protocolIncentivesAPY = convertAprToApy(protocolIncentivesAPR);
+
       const isBorrow = protocolAction === ProtocolAction.borrow;
       const totalAPY = isBorrow
-        ? protocolAPY - protocolIncentivesAPR - merklIncentivesAPY
-        : protocolAPY + protocolIncentivesAPR + merklIncentivesAPY;
+        ? protocolAPY - protocolIncentivesAPY - merklIncentivesAPY
+        : protocolAPY + protocolIncentivesAPY + merklIncentivesAPY;
 
       const incentiveKey = `${currentChainId}-${checksumAddress(rewardedAsset as Address)}`;
       const incentiveAdditionalData = whitelistData?.additionalIncentiveInfo?.[incentiveKey];
@@ -236,13 +242,13 @@ export const useMerklIncentives = ({
         })),
         breakdown: {
           protocolAPY,
-          protocolIncentivesAPR,
+          protocolIncentivesAPR: protocolIncentivesAPY,
           merklIncentivesAPR: merklIncentivesAPY,
           totalAPY,
           isBorrow,
           breakdown: {
             protocol: protocolAPY,
-            protocolIncentives: protocolIncentivesAPR,
+            protocolIncentives: protocolIncentivesAPY,
             merklIncentives: merklIncentivesAPY,
           },
         } as MerklIncentivesBreakdown,
