@@ -152,16 +152,23 @@ export const PointsBasedCampaignTooltip = ({
             backgroundColor: theme.palette.background.paper,
           }}
         >
-          <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
-            Estimate APY and points value
-          </Typography>
-
+          {!hasInkPriceInput ? (
+            <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+              Calculate APY from the assumed INK price.
+              <br />
+              (INK price not public yet)
+            </Typography>
+          ) : (
+            <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+              The results are based on your estimated INK price.
+            </Typography>
+          )}
           <Input
             name="inkPrice"
             type="string"
             value={inkPriceInput}
             onChange={handleInkPriceChange}
-            placeholder="Introduce an INK price in USD"
+            placeholder="Enter estimated INK price (USD)"
             disableUnderline
             endAdornment={
               hasInkPriceInput ? (
@@ -188,7 +195,6 @@ export const PointsBasedCampaignTooltip = ({
               '&:focus-within': { borderColor: theme.palette.primary.main },
             }}
           />
-
           {estimatedPointsValue !== null && (
             <>
               <Box
