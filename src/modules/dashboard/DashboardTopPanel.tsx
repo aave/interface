@@ -143,7 +143,7 @@ export const DashboardTopPanel = () => {
   // Aggregate total claimable rewards (base + merit)
   const claimableRewardsUsd = baseClaimableRewardsUsd + meritRewardsUsd;
   const loanToValue =
-    user?.totalCollateralMarketReferenceCurrency === '0'
+    userState?.totalCollateralBase === '0'
       ? '0'
       : valueToBigNumber(userState?.totalDebtBase || '0')
           .dividedBy(userState?.totalCollateralBase || '1')
