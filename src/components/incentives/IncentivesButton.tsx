@@ -11,6 +11,7 @@ import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
+import { convertAprToApy } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
@@ -295,13 +296,14 @@ export const IncentivesButton = ({
     : incentivesAPRSum !== INFINITY
     ? valueToBigNumber(incentivesAPRSum || 0).toNumber()
     : INFINITY;
+  const incentivesNetAPY = convertAprToApy(incentivesNetAPR as number);
 
   return (
     <ContentWithTooltip
       tooltipContent={
         <IncentivesTooltipContent
           incentives={incentives}
-          incentivesNetAPR={incentivesNetAPR}
+          incentivesNetAPR={incentivesNetAPY}
           symbol={symbol}
           market={market}
           protocolAction={protocolAction}

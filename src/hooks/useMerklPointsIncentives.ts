@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
+import { convertAprToApy } from 'src/utils/utils';
 
 import {
   ExtendedReserveIncentiveResponse,
@@ -116,10 +117,12 @@ export const useMerklPointsIncentives = ({
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
       }, 0);
 
+      const protocolIncentivesAPY = convertAprToApy(protocolIncentivesAPR);
+
       const isBorrow = protocolAction === ProtocolAction.borrow;
       const totalAPY = isBorrow
-        ? protocolAPY - protocolIncentivesAPR - merklIncentivesAPY
-        : protocolAPY + protocolIncentivesAPR + merklIncentivesAPY;
+        ? protocolAPY - protocolIncentivesAPY - merklIncentivesAPY
+        : protocolAPY + protocolIncentivesAPY + merklIncentivesAPY;
 
       const incentiveAdditionalData: ReserveIncentiveAdditionalData = {
         customMessage: opportunity.description,
@@ -132,13 +135,13 @@ export const useMerklPointsIncentives = ({
 
       const breakdown: MerklIncentivesBreakdown = {
         protocolAPY,
-        protocolIncentivesAPR,
+        protocolIncentivesAPR: protocolIncentivesAPY,
         merklIncentivesAPR: merklIncentivesAPY,
         totalAPY,
         isBorrow,
         breakdown: {
           protocol: protocolAPY,
-          protocolIncentives: protocolIncentivesAPR,
+          protocolIncentives: protocolIncentivesAPY,
           merklIncentives: merklIncentivesAPY,
         },
         points: {

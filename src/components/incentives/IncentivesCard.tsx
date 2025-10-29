@@ -6,6 +6,7 @@ import { ReactNode } from 'react';
 import { ENABLE_SELF_CAMPAIGN, useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
+import { convertAprToApy } from 'src/utils/utils';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
@@ -58,6 +59,9 @@ export const IncentivesCard = ({
       return sum + +inc.incentiveAPR;
     }, 0 as number | 'Infinity') || 0;
 
+  const protocolIncentivesAPY = convertAprToApy(
+    protocolIncentivesAPR === 'Infinity' ? 0 : protocolIncentivesAPR
+  );
   const { data: meritIncentives } = useMeritIncentives({
     symbol,
     market,
@@ -101,8 +105,8 @@ export const IncentivesCard = ({
   const displayAPY = hasInfiniteIncentives
     ? 'Infinity'
     : isBorrow
-    ? protocolAPY - (protocolIncentivesAPR as number) - totalMeritAPY - merklIncentivesAPR
-    : protocolAPY + (protocolIncentivesAPR as number) + totalMeritAPY + merklIncentivesAPR;
+    ? protocolAPY - (protocolIncentivesAPY as number) - totalMeritAPY - merklIncentivesAPR
+    : protocolAPY + (protocolIncentivesAPY as number) + totalMeritAPY + merklIncentivesAPR;
 
   const isSghoPage =
     typeof router?.asPath === 'string' && router.asPath.toLowerCase().startsWith('/sgho');
