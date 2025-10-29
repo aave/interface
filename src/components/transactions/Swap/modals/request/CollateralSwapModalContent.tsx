@@ -37,7 +37,7 @@ export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsse
   const tokensTo = getTokensTo(user, reserves, baseTokens, currentMarketName, chainId);
 
   const userSelectedInputToken = tokensFrom.find(
-    (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase() // TODO: Check
+    (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase()
   );
   const defaultInputToken =
     userSelectedInputToken ?? (tokensFrom.length > 0 ? tokensFrom[0] : undefined);
@@ -66,7 +66,7 @@ export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsse
 
   const params: Partial<SwapParams> = {
     swapType: SwapType.CollateralSwap,
-    allowLimitOrders: true, // TODO: do we?
+    allowLimitOrders: true,
     forcedInputToken: defaultInputToken,
     suggestedDefaultOutputToken: defaultOutputToken,
     invalidateAppState,
@@ -147,7 +147,7 @@ const getTokensFrom = (
         return {
           addressToSwap: position.reserve.aTokenAddress,
           addressForUsdPrice: position.reserve.aTokenAddress,
-          underlyingAddress: position.reserve.underlyingAsset, // TODO: Check
+          underlyingAddress: position.reserve.underlyingAsset,
           decimals: baseToken.decimals,
           symbol: nativeToken?.symbol ?? baseToken.symbol,
           name: baseToken.name,
@@ -209,7 +209,7 @@ const getTokensTo = (
       return {
         addressToSwap: reserve.aTokenAddress,
         addressForUsdPrice: reserve.aTokenAddress,
-        underlyingAddress: reserve.underlyingAsset, // TODO: Check
+        underlyingAddress: reserve.underlyingAsset,
         decimals: baseToken.decimals,
         symbol: baseToken.symbol,
         name: baseToken.name,

@@ -63,13 +63,13 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
   };
 
   const defaultInputToken = tokensFrom.find(
-    (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase() // TODO: Check
+    (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase()
   );
   const defaultOutputToken = getDefaultOutputToken(swappableTokens ?? [], underlyingAsset);
 
   const params: Partial<SwapParams> = {
     swapType: SwapType.WithdrawAndSwap,
-    // allowLimitOrders: false,
+    allowLimitOrders: true,
     invalidateAppState,
     sourceTokens: tokensFrom,
     destinationTokens: swappableTokens,
@@ -128,7 +128,7 @@ const getTokensFrom = (
         return {
           addressToSwap: position.reserve.aTokenAddress,
           addressForUsdPrice: position.reserve.aTokenAddress,
-          underlyingAddress: position.reserve.underlyingAsset, // TODO: Check
+          underlyingAddress: position.reserve.underlyingAsset,
           decimals: baseToken.decimals,
           symbol: nativeToken?.symbol ?? baseToken.symbol,
           name: baseToken.name,

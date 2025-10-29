@@ -83,6 +83,13 @@ const getTokenSelectionForQuote = (
 
 export const QUOTE_REFETCH_INTERVAL = 30000; // 30 seconds
 
+/**
+ * React hook that orchestrates quoting logic across providers.
+ *
+ * - Selects provider via getSwitchProvider
+ * - Builds provider-agnostic params from SwapState/SwapParams
+ * - Periodically refetches quotes and writes normalized values into SwapState
+ */
 export const useSwapQuote = ({
   params,
   state,
@@ -235,7 +242,11 @@ export const useSwapQuote = ({
   }, [state.actionsLoading]);
 };
 
-export const useMultiProviderSwapQuoteQuery = ({
+/**
+ * Low-level function used by useSwapQuote to query the selected provider.
+ * Converts state into provider params and returns a normalized `SwapQuoteType`.
+ */
+const useMultiProviderSwapQuoteQuery = ({
   params,
   state,
   setState,

@@ -34,6 +34,15 @@ export type SwapInputState = {
   onSwitchReserves: () => void;
 };
 
+/**
+ * Input surface for both market and limit orders.
+ *
+ * Responsibilities:
+ * - Manage input/output amount edits, max selection, and switching tokens
+ * - Pause automatic quote refresh when user makes manual price/amount edits
+ * - Persist last token selection per swap type + chain in sessionStorage (with expiry)
+ * - Filter token lists to avoid wrapping paths and native token pitfalls for SCWs
+ */
 export const SwapInputs = ({
   params,
   state,

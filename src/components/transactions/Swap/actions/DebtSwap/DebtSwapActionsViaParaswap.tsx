@@ -1,6 +1,5 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useQueryClient } from '@tanstack/react-query';
 import { parseUnits } from 'ethers/lib/utils';
 import { Dispatch } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
@@ -9,7 +8,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
@@ -18,9 +16,20 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { isParaswapRates, ProtocolSwapParams, ProtocolSwapState, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
+/**
+ * Debt swap via ParaSwap Adapter.
+ *
+ * Flow summary:
+ * 1) Approve delegation on the destination variable debt token to the adapter
+ * 2) Build a ParaSwap route INVERTED relative to the UI: new debt asset -> old debt asset
+ *    - Inversion is required because we're acquiring new debt to repay old debt
+ * 3) Call the Debt Switch adapter with swap calldata and permit/delegation signature
+ */
 export const DebtSwapActionsViaParaswap = ({
   state,
+  params,
   setState,
+  trackingHandlers,
 }: {
   params: ProtocolSwapParams;
   state: ProtocolSwapState;
@@ -38,7 +47,6 @@ export const DebtSwapActionsViaParaswap = ({
   const { approvalTxState, mainTxState, loadingTxns, setMainTxState, setTxError } =
     useModalContext();
   const { sendTx } = useWeb3Context();
-  const queryClient = useQueryClient();
 
   // TODO: CHECK LIMIT ORDERS BUY ORDERS
 
@@ -157,8 +165,8 @@ export const DebtSwapActionsViaParaswap = ({
           .toString(),
       });
 
-      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-      queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
+      params.invalidateAppState();
+      trackingHandlers.trackSwap();
     } catch (error) {
       console.error('error', error);
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);

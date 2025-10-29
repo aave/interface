@@ -30,6 +30,16 @@ import { SwapPreInputWarnings } from '../../warnings/SwapPreInputWarnings';
 import { SwapResultView } from '../result/SwapResultView';
 import { NoEligibleAssetsToSwap } from './NoEligibleAssetsToSwap';
 
+/**
+ * Core composition root for all Swap modals.
+ *
+ * Responsibilities:
+ * - Build immutable `params` from defaults + overrides
+ * - Initialize and own `SwapState`; expose a guarded `setState` that avoids no-op updates
+ * - Wire all domain hooks (user context, max native amount, slippage validation, flow selection (HF/flashloan), quotes, protocol reserves, processed amounts, analytics)
+ * - Gate details, warnings, errors and actions until the flow is selected (prevents flicker while HF/flashloan decision is pending for protocol flows)
+ * - Render fallback views when tokens are not available/loaded
+ */
 export const BaseSwapModalContent = ({
   params: predefinedParams,
 }: {
@@ -49,7 +59,7 @@ export const BaseSwapModalContent = ({
     swapStateFromParamsOrDefault(params, swapDefaultState)
   );
 
-  // wrapped version
+  // Wrapped setter that avoids re-render churn when no fields change
   const setState = (action: Partial<SwapState>) => {
     const hasChange = Object.entries(action).some(
       ([key, value]) => !Object.is(state[key as keyof SwapState], value)

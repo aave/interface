@@ -14,6 +14,16 @@ const marketOrderKindPerSwapType: Record<SwapType, OrderKind> = {
   [SwapType.WithdrawAndSwap]: OrderKind.SELL,
 };
 
+/**
+ * Computes normalized sell/buy amounts used to build transactions.
+ *
+ * Responsibilities:
+ * - Applies partner fee and user slippage depending on order side and type
+ * - Handles flows that require inverted quoting (DebtSwap, RepayWithCollateral)
+ *   by swapping token roles: UI(source,destination) -> swap order request(sell,buy)
+ * - Derives bigint amounts and USD values for details and execution
+ * - Chooses the correct OrderKind for market orders per swap type
+ */
 export const useSwapOrderAmounts = ({
   state,
   setState,

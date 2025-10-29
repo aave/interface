@@ -33,6 +33,20 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { isCowProtocolRates, OrderType, SwapParams, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
+/**
+ * Asset swap via CoW Protocol (Limit/Market orders).
+ *
+ * Process:
+ * 1) Ensure token approval (with permit when possible) for the CoW Relayer. Handles smart contract wallets and native token flows.
+ * 2) For tokens requiring approval, attempts onchain approval and reacts to possible failures or pending states.
+ * 3) For ERC-20s supporting permit, attempts signature path unless already approved.
+ * 4) Handles both normal EOA users and smart contract wallets (e.g. Gnosis Safe) with pre-sign or off-chain signatures as needed.
+ * 5) Posts order to the CoW API (off-chain) or submits on-chain pre-sign transaction, depending on user/wallet.
+ * 6) Tracks tx/analytics and updates transaction state accurately for UI.
+ *
+ * Automatically accounts for amount normalization, possible token decimal mismatches,
+ * error states in approvals or post order flow, and UI feedback for each path.
+ */
 export const SwapActionsViaCoW = ({
   params,
   state,
@@ -78,9 +92,6 @@ export const SwapActionsViaCoW = ({
 
   const slippageInPercent = state.slippage;
 
-  // TODO: decide amount to use
-  // const sellAmountAccountingCosts = sellAmountWithCostsIncluded(state);
-  // const buyAmountAccountingCosts = buyAmountWithCostsIncluded(state);
   const sellAmountAccountingCosts = state.sellAmountBigInt;
   const buyAmountAccountingCosts = state.buyAmountBigInt;
 
@@ -329,7 +340,6 @@ export const SwapActionsViaCoW = ({
     }
 
     trackingHandlers.trackSwap();
-    params.invalidateAppState();
   };
 
   return (

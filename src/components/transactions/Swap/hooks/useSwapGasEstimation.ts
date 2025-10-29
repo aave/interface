@@ -7,6 +7,12 @@ import { useShallow } from 'zustand/react/shallow';
 import { estimateSwapGas, GasEstimationParams } from '../helpers/gasEstimation.helpers';
 import { SwapState, TokenType } from '../types';
 
+/**
+ * Centralized gas estimation for swap actions.
+ *
+ * Normalizes inputs required by provider/flow specific estimators and writes
+ * only when values change to avoid render loops.
+ */
 export const useSwapGasEstimation = ({
   state,
   setState,

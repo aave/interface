@@ -3,6 +3,10 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 
 import { isProtocolSwapParams, SwapParams, SwapState } from '../types';
 
+/**
+ * Resolves `sourceReserve` and `destinationReserve` from the connected user's data
+ * for protocol-aware flows. Keeps state in sync with token selection changes.
+ */
 export const useProtocolReserves = ({
   state,
   params,

@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro';
-import { useQueryClient } from '@tanstack/react-query';
 import { Dispatch, useEffect } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { useParaswapSellTxParams } from 'src/hooks/paraswap/useParaswapRates';
@@ -7,7 +6,6 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
@@ -15,6 +13,10 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { isParaswapRates, SwapParams, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
+/**
+ * Simple asset swap via ParaSwap Adapter (non-position flow).
+ * Prepares approval if needed and executes the route returned by useSwapQuote.
+ */
 export const SwapActionsViaParaswap = ({
   params,
   state,
@@ -26,20 +28,14 @@ export const SwapActionsViaParaswap = ({
   setState: Dispatch<Partial<SwapState>>;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  const [user, estimateGasLimit, addTransaction, currentMarketData] = useRootStore(
-    useShallow((state) => [
-      state.account,
-      state.estimateGasLimit,
-      state.addTransaction,
-      state.currentMarketData,
-    ])
+  const [user, estimateGasLimit, addTransaction] = useRootStore(
+    useShallow((state) => [state.account, state.estimateGasLimit, state.addTransaction])
   );
 
   const { mainTxState, loadingTxns, setMainTxState, setTxError, approvalTxState } =
     useModalContext();
 
   const { sendTx } = useWeb3Context();
-  const queryClient = useQueryClient();
   const { mutateAsync: fetchParaswapTxParams } = useParaswapSellTxParams(state.chainId);
 
   const slippageInPercent = (Number(state.slippage) * 100).toString();
@@ -102,9 +98,9 @@ export const SwapActionsViaParaswap = ({
             loading: false,
             success: true,
           });
-          queryClient.invalidateQueries({
-            queryKey: queryKeysFactory.poolTokens(user, currentMarketData),
-          });
+
+          params.invalidateAppState();
+          trackingHandlers.trackSwap();
         } catch (error) {
           const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
           setTxError(parsedError);
@@ -144,9 +140,6 @@ export const SwapActionsViaParaswap = ({
         actionsLoading: false,
       });
     }
-
-    params.invalidateAppState();
-    trackingHandlers.trackSwap();
   };
 
   // Track execution state to pause rate updates during actions

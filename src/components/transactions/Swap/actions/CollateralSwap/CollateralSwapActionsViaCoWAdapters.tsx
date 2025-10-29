@@ -20,7 +20,6 @@ import { ExpiryToSecondsMap, SwapParams, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 export const CollateralSwapActionsViaCowAdapters = ({
-  params,
   state,
   setState,
   trackingHandlers,
@@ -190,7 +189,6 @@ export const CollateralSwapActionsViaCowAdapters = ({
       const result = await tradingSdk.postLimitOrder(limitOrder, orderPostParams.swapSettings);
 
       trackingHandlers.trackSwap();
-      params.invalidateAppState(); // todo remove, running when finished
       setMainTxState({
         loading: false,
         success: true,

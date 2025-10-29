@@ -191,8 +191,8 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
           chainId: state.chainId,
         }
       );
-      trackingHandlers.trackSwap(); // TODO: check this happening in all actions
-      params.invalidateAppState(); // TODO: check this happening in all actions
+      trackingHandlers.trackSwap();
+      params.invalidateAppState();
       setMainTxState({
         txHash: response.hash,
         loading: false,

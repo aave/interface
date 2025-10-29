@@ -4,6 +4,10 @@ import { Dispatch, useEffect } from 'react';
 
 import { SwapParams, SwapState, SwapType, TokenType } from '../types';
 
+/**
+ * Computes the max selectable amount for native-asset sells, leaving gas headroom.
+ * Applies only to simple token swaps for EOAs; SCWs/Safe and protocol flows ignore it.
+ */
 export const useMaxNativeAmount = ({
   params,
   state,

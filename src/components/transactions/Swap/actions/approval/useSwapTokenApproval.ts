@@ -46,6 +46,35 @@ export interface SignedParams {
   approvedToken: string;
 }
 
+/**
+ * Custom React hook to handle token approval flow for swaps.
+ *
+ * Handles both “traditional” ERC-20 approvals and permit signatures, depending on token and chain support.
+ * - Determines if approval or approval reset is required for a given token, amount, and spender.
+ * - Exposes functions and state for triggering approvals, permits, and tracking their status.
+ * - Integrates with the modal and global stores for transaction state management.
+ * - Handles token-specific quirks (e.g., USDT approval reset) and margin calculations for edge cases.
+ *
+ * @param {object} params - Hook parameters.
+ * @param {number} params.chainId - Current chain ID.
+ * @param {string} params.token - Address of the token to approve.
+ * @param {string} params.symbol - Symbol of the token.
+ * @param {string} params.amount - Amount, as string formatter like '1.234567890', for which approval is requested.
+ * @param {number} params.decimals - Token decimals.
+ * @param {string} [params.spender] - Spender address, smart contract requiring approval.
+ * @param {Dispatch<Partial<SwapState>>} params.setState - State setter for updating SwapState.
+ * @param {boolean} [params.allowPermit=true] - Whether to allow permit signature flow if supported.
+ * @param {number} [params.margin=0] - Optional margin for approval checks (in token units).
+ * @param {"approval"|"delegation"} [params.type="approval"] - Approval type; "approval" for typical ERC-20, "delegation" for credit delegation.
+ *
+ * @returns {{
+ *   requiresApproval: boolean;        // Whether an approval transaction is needed.
+ *   requiresApprovalReset: boolean;   // Whether an approval "reset" to 0 is needed before the actual approval (e.g. for USDT).
+ *   approval: () => Promise<void>;    // Function to trigger the approval transaction.
+ *   tryPermit: () => Promise<void>;   // Function to attempt permit signature flow, if available.
+ *   signatureParams?: SignedParams;   // Details/signature object if permit is ready.
+ * }}
+ */
 export const useSwapTokenApproval = ({
   chainId,
   token,

@@ -3,7 +3,12 @@ import { Dispatch, useEffect } from 'react';
 import { validateSlippage, ValidationSeverity } from '../helpers/shared/slippage.helpers';
 import { isCowProtocolRates, SwapParams, SwapState, TokenType } from '../types';
 
-// TODO: move to warning and delete hook
+/**
+ * Keeps slippage-related UI/validation in sync with user input and provider hints.
+ *
+ * - Surfaces a warning when user slippage is below provider suggestion (CoW)
+ * - Validates input and derives `safeSlippage` for guards and calculations
+ */
 export const useSlippageSelector = ({
   state,
   setState,

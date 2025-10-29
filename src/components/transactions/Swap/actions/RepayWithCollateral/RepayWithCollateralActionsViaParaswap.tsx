@@ -16,6 +16,16 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { isParaswapRates, ProtocolSwapParams, ProtocolSwapState, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
+/**
+ * Repay-with-collateral via ParaSwap Adapter.
+ *
+ * Flow summary:
+ * 1) Approve aToken (or use permit) to the RepayWithCollateral adapter
+ * 2) Build a ParaSwap route INVERTED relative to the UI: collateral aToken -> debt token
+ *    - We invert because the protocol action consumes collateral to acquire the debt asset
+ * 3) Compute repay amounts with slippage; detect `repayAllDebt` when balance covers max with margin
+ * 4) Call adapter with swap calldata + optional permit to execute repay and residual handling
+ */
 export const RepayWithCollateralActionsViaParaswap = ({
   params,
   state,
@@ -46,6 +56,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
         -state.destinationToken.decimals
       ).toString(),
       0
+      // Adds margin to account future incremental so better ux
     ),
     state.destinationToken.decimals
   );
@@ -57,8 +68,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
       token: state.destinationToken.addressToSwap, // aToken
       symbol: state.destinationToken.symbol,
       decimals: state.destinationToken.decimals,
-      // amount: normalizeBN(state.outputAmount, -state.destinationToken.decimals).toString(), // TODO: need to add a margin to account time for better ux?
-      amount: collateralToRepayAmountToApprove.toString(), // TODO: need to add a margin to account time for better ux?
+      amount: collateralToRepayAmountToApprove.toString(),
       spender: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
       setState,
     });

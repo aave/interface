@@ -16,9 +16,12 @@ import { RepayWithCollateralDetails } from './RepayWithCollateralDetails';
 import { SwapDetails } from './SwapDetails';
 import { WithdrawAndSwapDetails } from './WithdrawAndSwapDetails';
 
+/**
+ * Decides which details component to show given the swap type.
+ * Renders a skeleton while rates load and hides the section if no quote is present.
+ */
 export const BaseSwapDetails = ({ params, state }: { params: SwapParams; state: SwapState }) => {
   if (state.ratesLoading) {
-    // TODO: any other loading state?
     return React.createElement(DetailsSkeleton, { state });
   }
 

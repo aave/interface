@@ -53,13 +53,13 @@ export const DebtSwapModalContent = ({ underlyingAsset }: { underlyingAsset: str
 
   const params: Partial<SwapParams> = {
     swapType: SwapType.DebtSwap,
-    allowLimitOrders: true, // TODO: do we?
+    allowLimitOrders: true,
     forcedInputToken: defaultInputToken,
     suggestedDefaultOutputToken: defaultOutputToken,
     invalidateAppState,
     sourceTokens: tokensFrom,
     destinationTokens: tokensTo,
-    showSwitchInputAndOutputAssetsButton: false, // TODO: do we?
+    showSwitchInputAndOutputAssetsButton: false,
     chainId: currentNetworkConfig.wagmiChain.id,
     titleTokenPostfix: 'debt',
     resultScreenTokensFromTitle: 'Debt sent',
@@ -188,7 +188,7 @@ const getTokensTo = (
         chainId,
         decimals: reserve.decimals,
         symbol: nativeToken?.symbol ?? tokenFromList?.symbol ?? reserve.symbol,
-        balance: availableBorrows.toString(), // TODO: Check
+        balance: availableBorrows.toString(),
 
         ...(reserve.isWrappedBaseAsset
           ? fetchIconSymbolAndName({

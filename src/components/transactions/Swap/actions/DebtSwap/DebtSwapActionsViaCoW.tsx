@@ -20,8 +20,16 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { ExpiryToSecondsMap, isProtocolSwapState, SwapParams, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
+/**
+ * Debt swap via CoW Protocol Flashloan Adapters.
+ *
+ * Flow summary:
+ * 1) Approve delegation on the destination variable debt token (permit supported)
+ * 2) Compute flashloan fee and sell amount; we temporarily borrow to close existing debt
+ * 3) Create a LIMIT order INVERTED relative to the UI: new debt asset -> old debt asset
+ * 4) Post order with adapter swap settings; adapter executes the repay + reborrow atomically
+ */
 export const DebtSwapActionsViaCoW = ({
-  params,
   state,
   setState,
   trackingHandlers,
@@ -198,7 +206,6 @@ export const DebtSwapActionsViaCoW = ({
       const result = await tradingSdk.postLimitOrder(limitOrder, orderPostParams.swapSettings);
 
       trackingHandlers.trackSwap();
-      params.invalidateAppState(); // move to sucess state
       setMainTxState({
         loading: false,
         success: true,

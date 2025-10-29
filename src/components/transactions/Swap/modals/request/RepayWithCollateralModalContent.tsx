@@ -44,15 +44,13 @@ export const RepayWithCollateralModalContent = ({
   const tokensFrom = getTokensFrom(user, currentNetworkConfig.wagmiChain.id, currentNetworkConfig);
   const tokensTo = getTokensTo(user, baseTokens, currentNetworkConfig.wagmiChain.id);
   const defaultInputToken = tokensFrom.find(
-    (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase() // TODO: Check
+    (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase()
   );
 
   // Collateral with highest balance
   const defaultOutputToken = tokensTo.sort((a, b) => Number(b.balance) - Number(a.balance))[0];
 
   const queryClient = useQueryClient();
-
-  // TODO: debt type check!!
   const invalidateAppState = () => {
     invalidateAppStateForSwap({
       swapType: SwapType.RepayWithCollateral,
@@ -196,7 +194,7 @@ const getTokensTo = (
         return {
           addressToSwap: position.reserve.aTokenAddress,
           addressForUsdPrice: position.reserve.aTokenAddress,
-          underlyingAddress: position.reserve.underlyingAsset, // TODO: Check
+          underlyingAddress: position.reserve.underlyingAsset,
           decimals: baseToken.decimals,
           symbol: nativeToken?.symbol ?? baseToken.symbol,
           name: baseToken.name,

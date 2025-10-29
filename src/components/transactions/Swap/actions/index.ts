@@ -18,6 +18,11 @@ import { RepayWithCollateralActions } from './RepayWithCollateral/RepayWithColla
 import { SwapActions } from './SwapActions';
 import { WithdrawAndSwapActions } from './WithdrawAndSwap/WithdrawAndSwapActions';
 
+/**
+ * Decides which action component to render for the current swap type.
+ * Shows skeleton/blocked states based on `SwapState` and guards against
+ * invalid combinations of params/state.
+ */
 export const BaseSwapActions = ({
   params,
   state,

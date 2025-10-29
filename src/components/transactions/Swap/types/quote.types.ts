@@ -4,6 +4,10 @@ import { TxErrorType } from 'src/ui-config/errorMapping';
 
 import { SwapProvider } from './shared.types';
 
+/**
+ * Parameters required to fetch a quote from a provider.
+ * The module converts from SwapState into this minimal, provider-agnostic shape.
+ */
 export type ProviderRatesParams = {
   side?: 'buy' | 'sell';
   invertedQuoteRoute?: boolean;
@@ -35,6 +39,10 @@ export type MultiProviderRatesParams = Omit<ProviderRatesParams, 'srcToken' | 'd
   destAToken?: string;
 };
 
+/**
+ * Provider-agnostic quote shape used by the UI.
+ * All providers must adapt their responses to this before rendering.
+ */
 export type BaseSwitchRates = {
   // Source token
   srcToken: string;
@@ -54,12 +62,14 @@ export type BaseSwitchRates = {
   provider: SwapProvider;
 };
 
+/** ParaSwap-specific extension of BaseSwitchRates. */
 export type ParaswapRatesType = BaseSwitchRates & {
   optimalRateData: OptimalRate;
   provider: SwapProvider.PARASWAP;
   suggestedSlippage?: number;
 };
 
+/** CoW Protocol-specific extension of BaseSwitchRates. */
 export type CowProtocolRatesType = BaseSwitchRates & {
   provider: SwapProvider.COW_PROTOCOL;
 
@@ -81,4 +91,5 @@ export const isCowProtocolRates = (rates?: SwapQuoteType): rates is CowProtocolR
   return rates?.provider === SwapProvider.COW_PROTOCOL;
 };
 
+/** Union of all provider quote types consumed by the UI. */
 export type SwapQuoteType = ParaswapRatesType | CowProtocolRatesType;

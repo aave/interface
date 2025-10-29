@@ -1,5 +1,5 @@
 import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
-import { Dispatch, useEffect, useMemo } from 'react';
+import { Dispatch, useEffect } from 'react';
 import {
   ComputedReserveData,
   ExtendedFormattedUser,
@@ -12,8 +12,14 @@ import {
   LIQUIDATION_SAFETY_THRESHOLD,
 } from '../constants/shared.constants';
 import { isProtocolSwapState, SwapParams, SwapState, SwapType } from '../types';
-import { swapTypesThatRequiresInvertedQuote } from './useSwapQuote';
 
+/**
+ * React hook that decides the execution flow (simple vs flashloan) and
+ * computes health-factor effects for protocol-aware swaps.
+ *
+ * Writes derived flags into SwapState: isHFLow, isLiquidatable, useFlashloan,
+ * and marks the flow as selected once enough context is present.
+ */
 export const useFlowSelector = ({
   params,
   state,
@@ -24,12 +30,7 @@ export const useFlowSelector = ({
   setState: Dispatch<Partial<SwapState>>;
 }) => {
   const { user: extendedUser, reserves } = useAppDataContext();
-
-  // TODO: Move to state and centralize this logic
-  const requiresInvertedQuote = useMemo(
-    () => swapTypesThatRequiresInvertedQuote.includes(state.swapType),
-    [state.swapType]
-  );
+  const requiresInvertedQuote = state.isInvertedSwap;
 
   useEffect(() => {
     if (params.swapType === SwapType.Swap) {
@@ -57,6 +58,9 @@ export const useFlowSelector = ({
   ]);
 };
 
+/**
+ * Pure helper that computes HF and determines whether to force flashloan.
+ */
 export const healthFactorSensibleSwapFlowSelector = ({
   state,
   setState,

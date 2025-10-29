@@ -6,6 +6,10 @@ import {
 } from '../../constants/cow.constants';
 import { SwapProvider, SwapType } from '../../types';
 
+/**
+ * Returns whether CoW Protocol can handle the given pair/swapType on the chain.
+ * Checks chain support and a per-flow unsupported assets list.
+ */
 export const isSwapSupportedByCowProtocol = (
   chainId: number,
   assetFrom: string,
@@ -30,6 +34,12 @@ export const isSwapSupportedByCowProtocol = (
   return true;
 };
 
+/**
+ * Picks the provider for the current swap based on chain, assets and flow.
+ *
+ * Notes:
+ * - CoW is preferred when supported; fallback to ParaSwap
+ */
 export const getSwitchProvider = ({
   chainId,
   assetFrom,

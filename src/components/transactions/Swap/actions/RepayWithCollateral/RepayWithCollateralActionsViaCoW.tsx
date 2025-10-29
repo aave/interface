@@ -19,8 +19,18 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { ExpiryToSecondsMap, SwapParams, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
+/**
+ * Repay-with-collateral via CoW Protocol Flashloan Adapters.
+ *
+ * Flow summary:
+ * 1) Approve collateral aToken (permit supported) to the CoW flashloan adapter
+ * 2) Compute flashloan fee and sell amount to sign
+ * 3) Create a LIMIT order INVERTED relative to the UI: collateral -> debt asset
+ *    - The order kind depends on processed side; inversion is required because
+ *      we swap the available collateral to acquire the debt asset to repay
+ * 4) Post order with adapter-provided swap settings; adapter orchestrates repay
+ */
 export const RepayWithCollateralActionsViaCoW = ({
-  params,
   state,
   setState,
   trackingHandlers,
@@ -191,7 +201,6 @@ export const RepayWithCollateralActionsViaCoW = ({
       const result = await tradingSdk.postLimitOrder(limitOrder, orderPostParams.swapSettings);
 
       trackingHandlers.trackSwap();
-      params.invalidateAppState();
       setMainTxState({
         loading: false,
         success: true,
