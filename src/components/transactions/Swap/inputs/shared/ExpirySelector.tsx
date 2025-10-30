@@ -27,7 +27,7 @@ export const ExpirySelector = ({ selectedExpiry, setSelectedExpiry }: ExpirySele
         <Typography
           color="text.secondary"
           variant="subheader2"
-          sx={{ height: '100%', marginRight: -1, opacity: 0.5 }}
+          sx={{ height: '100%', marginRight: -1, opacity: 0.75 }}
         >
           <Trans>Expires in</Trans>
         </Typography>

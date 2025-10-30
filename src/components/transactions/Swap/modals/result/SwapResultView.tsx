@@ -38,8 +38,8 @@ export type SwapTxSuccessViewProps = {
   outIconUri?: string;
   provider?: SwapProvider;
   chainId: number;
-  destDecimals: number;
-  srcDecimals: number;
+  buyDecimals: number;
+  sellDecimals: number;
   resultScreenTokensFromTitle?: string;
   resultScreenTokensToTitle?: string;
   resultScreenTitleItems?: string;
@@ -78,6 +78,7 @@ export const SwapWithSurplusTooltip = ({
 export const SwapResultView = ({
   params,
   state,
+  trackingHandlers,
 }: {
   params: SwapParams;
   state: SwapState;
@@ -100,11 +101,12 @@ export const SwapResultView = ({
       outIconUri={state.destinationToken.logoURI}
       provider={state.provider}
       chainId={state.chainId}
-      destDecimals={state.destinationToken.decimals}
-      srcDecimals={state.sourceToken.decimals}
+      buyDecimals={state.buyAmountToken?.decimals ?? 18}
+      sellDecimals={state.sellAmountToken?.decimals ?? 18}
       resultScreenTokensFromTitle={params.resultScreenTokensFromTitle}
       resultScreenTokensToTitle={params.resultScreenTokensToTitle}
       resultScreenTitleItems={params.resultScreenTitleItems}
+      trackingHandlers={trackingHandlers}
     />
   );
 };
@@ -122,13 +124,14 @@ export const SwapTxSuccessView = ({
   outIconUri,
   provider,
   chainId,
-  destDecimals,
-  srcDecimals,
+  buyDecimals,
+  sellDecimals,
   resultScreenTokensFromTitle,
   resultScreenTokensToTitle,
   resultScreenTitleItems,
   invalidateAppState,
-}: SwapTxSuccessViewProps) => {
+  trackingHandlers,
+}: SwapTxSuccessViewProps & { trackingHandlers?: TrackAnalyticsHandlers }) => {
   const { trackOrder, setHasActiveOrders } = useCowOrderToast();
 
   // Do polling each 10 seconds until the order get's filled
@@ -163,32 +166,36 @@ export const SwapTxSuccessView = ({
                 .sub(
                   BigNumber.from(
                     !isInvertedSwap
-                      ? parseUnits(outAmount, destDecimals)
-                      : parseUnits(inAmount, srcDecimals)
+                      ? parseUnits(outAmount, buyDecimals)
+                      : parseUnits(inAmount, sellDecimals)
                   )
                 )
                 .toBigInt()
             );
             setOutFinalAmount(
               !isInvertedSwap
-                ? normalize(order.executedBuyAmount, destDecimals)
-                : normalize(order.executedSellAmount, srcDecimals)
+                ? normalize(order.executedBuyAmount, buyDecimals)
+                : normalize(order.executedSellAmount, sellDecimals)
             );
             setInAmount(
               !isInvertedSwap
-                ? normalize(order.executedSellAmount, srcDecimals)
-                : normalize(order.executedBuyAmount, destDecimals)
+                ? normalize(order.executedSellAmount, sellDecimals)
+                : normalize(order.executedBuyAmount, buyDecimals)
             );
             if (interval.current) {
               clearInterval(interval.current);
             }
             invalidateAppState();
+            // Analytics: CoW order filled
+            trackingHandlers?.trackSwapFilled(order.executedSellAmount, order.executedBuyAmount);
           } else if (isOrderCancelled(order.status)) {
             setOrderStatus('failed');
             if (interval.current) {
               clearInterval(interval.current);
             }
             invalidateAppState();
+            // Analytics: CoW order failed
+            trackingHandlers?.trackSwapFailed();
           } else if (isOrderLoading(order.status)) {
             setOrderStatus('open');
           }
@@ -203,12 +210,12 @@ export const SwapTxSuccessView = ({
       txHashOrOrderId &&
       provider === 'cowprotocol' &&
       chainId &&
-      destDecimals &&
+      buyDecimals &&
       interval.current === null
     ) {
       interval.current = setInterval(pollOrder, 10000);
     }
-  }, [txHashOrOrderId, chainId, provider, destDecimals]);
+  }, [txHashOrOrderId, chainId, provider, buyDecimals]);
 
   const View = useMemo(() => {
     if (provider === 'cowprotocol' && orderStatus === 'open') {
@@ -220,7 +227,7 @@ export const SwapTxSuccessView = ({
   }, [orderStatus, provider]);
 
   const surplusFormatted = surplus
-    ? Number(normalize(surplus.toString(), destDecimals))
+    ? Number(normalize(surplus.toString(), isInvertedSwap ? sellDecimals : buyDecimals))
     : undefined;
   const surplusDisplay =
     surplusFormatted && surplusFormatted > 0

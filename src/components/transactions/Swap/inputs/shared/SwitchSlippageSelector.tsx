@@ -123,7 +123,7 @@ export const SwitchSlippageSelector = ({
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: '4px' }}>
-      <Typography variant="caption" color="text.secondary">
+      <Typography variant="subheader2" color="text.secondary" sx={{ opacity: 0.75 }}>
         {isCustomSlippage ? (
           <Trans>Custom slippage</Trans>
         ) : provider === 'paraswap' ? (
@@ -231,21 +231,33 @@ export const SwitchSlippageSelector = ({
           )}
         </Menu>
       </Typography>
-      <FormattedNumber
-        variant="caption"
-        color={slippageValidation ? `${slippageValidation.severity}.main` : 'text.primary'}
-        value={slippage}
-        visibleDecimals={2}
-        symbol="%"
-      />
       <Button
         id="switch-slippage-selector-button"
-        sx={{ padding: 0, minWidth: 0 }}
+        sx={{
+          opacity: 0.85,
+          py: 1,
+          px: 1,
+          minWidth: 0,
+          '&:hover .spin-on-hover': {
+            animation: 'spin 2s linear infinite',
+          },
+          '@keyframes spin': {
+            from: { transform: 'rotate(0deg)' },
+            to: { transform: 'rotate(360deg)' },
+          },
+        }}
         onClick={handleOpen}
         aria-controls="switch-slippage-selector"
         disabled={!suggestedSlippage}
       >
-        <SvgIcon sx={{ fontSize: '16px' }}>
+        <FormattedNumber
+          variant="caption"
+          color={slippageValidation ? `${slippageValidation.severity}.main` : 'text.primary'}
+          value={slippage}
+          visibleDecimals={2}
+          symbol="%"
+        />
+        <SvgIcon className="spin-on-hover" sx={{ fontSize: '16px' }}>
           <CogIcon />
         </SvgIcon>
       </Button>

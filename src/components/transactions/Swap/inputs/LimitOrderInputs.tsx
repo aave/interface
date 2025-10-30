@@ -1,5 +1,5 @@
 import { ArrowDownIcon, SwitchVerticalIcon } from '@heroicons/react/outline';
-import { Box, IconButton, SvgIcon } from '@mui/material';
+import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
 import { Dispatch } from 'react';
 
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
@@ -27,16 +27,26 @@ export const LimitOrderInputs = ({
       <Box
         sx={{
           display: 'flex',
-          justifyContent: !swapState.showNetworkSelector ? 'flex-end' : 'space-between',
+          justifyContent:
+            params.inputInputTitle || swapState.showNetworkSelector ? 'space-between' : 'flex-end',
           alignItems: 'center',
         }}
       >
-        {swapState.showNetworkSelector && (
-          <NetworkSelector
-            networks={params.supportedNetworks}
-            selectedNetwork={state.chainId}
-            setSelectedNetwork={swapState.handleSelectedNetworkChange}
-          />
+        {(params.inputInputTitle || swapState.showNetworkSelector) && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            {params.inputInputTitle && (
+              <Typography variant="secondary14" color="text.secondary">
+                {params.inputInputTitle}
+              </Typography>
+            )}
+            {swapState.showNetworkSelector && (
+              <NetworkSelector
+                networks={params.supportedNetworks}
+                selectedNetwork={state.chainId}
+                setSelectedNetwork={swapState.handleSelectedNetworkChange}
+              />
+            )}
+          </Box>
         )}
 
         <ExpirySelector
@@ -62,7 +72,15 @@ export const LimitOrderInputs = ({
           balanceTitle={params.inputBalanceTitle}
           assets={swapState.inputAssets}
           value={state.inputAmount}
+          enableHover={true}
           onChange={swapState.handleInputChange}
+          onClear={() =>
+            setState({
+              inputAmount: '',
+              debouncedInputAmount: '',
+              inputAmountUSD: '',
+            })
+          }
           usdValue={state.inputAmountUSD || '0'}
           onSelect={swapState.handleSelectedInputToken}
           selectedAsset={state.sourceToken}
@@ -151,8 +169,10 @@ export const LimitOrderInputs = ({
         <SwitchAssetInput
           chainId={state.chainId}
           balanceTitle={params.outputBalanceTitle}
+          title={params.outputInputTitle}
           assets={swapState.outputAssets}
           value={state.outputAmount}
+          enableHover={true}
           usdValue={state.outputAmountUSD || '0'}
           loading={
             state.debouncedInputAmount !== '0' &&
@@ -163,6 +183,13 @@ export const LimitOrderInputs = ({
           onChange={(value) => {
             swapState.handleOutputChange(value);
           }}
+          onClear={() =>
+            setState({
+              outputAmount: '',
+              debouncedOutputAmount: '',
+              outputAmountUSD: '',
+            })
+          }
           onSelect={swapState.handleSelectedOutputToken}
           disableInput={false}
           selectedAsset={state.destinationToken}

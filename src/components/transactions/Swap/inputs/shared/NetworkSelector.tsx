@@ -61,7 +61,7 @@ export const NetworkSelector = ({
                   mr: 1,
                 }}
               />
-              <Typography variant="subheader2" color="#4D6EEE">
+              <Typography variant="subheader2" color="text.secondary">
                 {network.displayName || network.name}
               </Typography>
             </Box>

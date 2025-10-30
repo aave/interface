@@ -181,6 +181,10 @@ export const PriceInput = ({
         px: 3,
         py: 2,
         width: '100%',
+        transition: 'background-color 0.15s ease',
+        '&:hover': {
+          backgroundColor: 'background.surface',
+        },
       })}
     >
       <Typography variant="secondary12" color="text.muted">

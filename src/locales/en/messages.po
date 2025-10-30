@@ -707,6 +707,10 @@ msgstr "Borrowing is currently unavailable for {0}."
 msgid "Reserve Size"
 msgstr "Reserve Size"
 
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+msgid "%"
+msgstr "%"
+
 #: src/components/transactions/SavingsGho/SavingsGhoWithdrawModalContent.tsx
 #: src/components/transactions/UnStake/UnStakeModalContent.tsx
 msgid "Staking balance"

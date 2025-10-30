@@ -13,11 +13,11 @@ const stateToLoadingType = (state: SwapState): LoadingType => {
 
 export const ActionsLoading: React.FC<{ state: SwapState }> = ({ state }) => {
   const loadingType = stateToLoadingType(state);
-
-  // Timer logic for updating the loading text after 2 seconds when loadingType is 'quote'
   const [quoteTimeElapsed, setQuoteTimeElapsed] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Timer logic for updating the loading text after 2 seconds when loadingType is 'quote'
+  // Trick to change quote loading trick to make it feel more smooth
   useEffect(() => {
     if (loadingType === 'quote') {
       setQuoteTimeElapsed(false);

@@ -1,5 +1,5 @@
 import { ArrowDownIcon, SwitchVerticalIcon } from '@heroicons/react/outline';
-import { Box, IconButton, SvgIcon } from '@mui/material';
+import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
 import { Dispatch } from 'react';
 
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
@@ -15,6 +15,7 @@ export const MarketOrderInputs = ({
   params,
   state,
   swapState,
+  setState,
 }: {
   params: SwapParams;
   state: SwapState;
@@ -26,16 +27,26 @@ export const MarketOrderInputs = ({
       <Box
         sx={{
           display: 'flex',
-          justifyContent: !swapState.showNetworkSelector ? 'flex-end' : 'space-between',
+          justifyContent:
+            params.inputInputTitle || swapState.showNetworkSelector ? 'space-between' : 'flex-end',
           alignItems: 'center',
         }}
       >
-        {swapState.showNetworkSelector && (
-          <NetworkSelector
-            networks={params.supportedNetworks}
-            selectedNetwork={state.chainId}
-            setSelectedNetwork={swapState.handleSelectedNetworkChange}
-          />
+        {(params.inputInputTitle || swapState.showNetworkSelector) && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            {params.inputInputTitle && (
+              <Typography variant="secondary14" color="text.secondary">
+                {params.inputInputTitle}
+              </Typography>
+            )}
+            {swapState.showNetworkSelector && (
+              <NetworkSelector
+                networks={params.supportedNetworks}
+                selectedNetwork={state.chainId}
+                setSelectedNetwork={swapState.handleSelectedNetworkChange}
+              />
+            )}
+          </Box>
         )}
 
         <SwitchSlippageSelector
@@ -60,10 +71,24 @@ export const MarketOrderInputs = ({
         <SwitchAssetInput
           chainId={state.chainId}
           balanceTitle={params.inputBalanceTitle}
-          title={params.inputInputTitle}
           assets={swapState.inputAssets}
           value={state.inputAmount}
+          enableHover={true}
           onChange={swapState.handleInputChange}
+          onClear={() =>
+            setState({
+              inputAmount: '',
+              debouncedInputAmount: '',
+              inputAmountUSD: '',
+              outputAmount: '',
+              debouncedOutputAmount: '',
+              outputAmountUSD: '',
+              swapRate: undefined,
+              ratesLoading: false,
+              error: undefined,
+              warnings: [],
+            })
+          }
           usdValue={state.inputAmountUSD.toString() || '0'}
           onSelect={swapState.handleSelectedInputToken}
           selectedAsset={state.sourceToken}
@@ -147,6 +172,7 @@ export const MarketOrderInputs = ({
           assets={swapState.outputAssets}
           title={params.outputInputTitle}
           value={state.outputAmount}
+          enableHover={false}
           usdValue={state.outputAmountUSD || '0'}
           loading={
             state.debouncedInputAmount !== '0' &&

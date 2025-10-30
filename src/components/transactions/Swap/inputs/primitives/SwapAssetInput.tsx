@@ -1,3 +1,4 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { isAddress } from '@ethersproject/address';
 import { formatUnits } from '@ethersproject/units';
 import { ExclamationIcon } from '@heroicons/react/outline';
@@ -12,7 +13,10 @@ import {
   InputBase,
   ListItemText,
   MenuItem,
+  Popover,
   SvgIcon,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -64,6 +68,8 @@ export interface AssetInputProps {
   usdValue: string;
   chainId: number;
   onChange?: (value: string) => void;
+  onClear?: () => void;
+  enableHover?: boolean;
   disabled?: boolean;
   disableInput?: boolean;
   onSelect?: (asset: SwappableToken) => void;
@@ -84,6 +90,8 @@ export const SwitchAssetInput = ({
   value,
   usdValue,
   onChange,
+  onClear,
+  enableHover = false,
   disabled,
   disableInput,
   onSelect,
@@ -229,6 +237,14 @@ export const SwitchAssetInput = ({
           px: 3,
           py: 2,
           width: '100%',
+          ...(enableHover
+            ? {
+                transition: 'background-color 0.15s ease',
+                '&:hover': {
+                  backgroundColor: 'background.surface',
+                },
+              }
+            : {}),
         })}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -281,7 +297,11 @@ export const SwitchAssetInput = ({
                 },
               }}
               onClick={() => {
-                onChange && onChange('');
+                if (onClear) {
+                  onClear();
+                } else {
+                  onChange && onChange('');
+                }
               }}
               disabled={disabled}
             >
@@ -531,9 +551,19 @@ export const SwitchAssetInput = ({
                 />
               </Typography>
               {!disableInput && (
+                <PercentSelector
+                  disabled={disabled || Number(selectedAsset.balance) === 0}
+                  onSelectPercent={(fraction) => {
+                    const maxBase = forcedMaxValue || selectedAsset.balance || '0';
+                    const next = valueToBigNumber(maxBase).multipliedBy(fraction).toString();
+                    onChange && onChange(next);
+                  }}
+                />
+              )}
+              {!disableInput && (
                 <Button
                   size="small"
-                  sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                  sx={{ minWidth: 0, ml: '1px', pt: 0, pb: 0, mr: '-5px' }}
                   onClick={() => {
                     onChange && onChange(forcedMaxValue || '-1');
                   }}
@@ -553,5 +583,87 @@ export const SwitchAssetInput = ({
         </Box>
       </Box>
     </Box>
+  );
+};
+
+const PercentSelector = ({
+  disabled,
+  onSelectPercent,
+}: {
+  disabled?: boolean;
+  onSelectPercent: (fraction: number) => void;
+}) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (disabled) return;
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => setAnchorEl(null);
+
+  const handlePick = (fraction: number) => {
+    onSelectPercent(fraction);
+    handleClose();
+  };
+
+  return (
+    <>
+      <Button
+        size="small"
+        sx={{ minWidth: 0, ml: '6px', py: 0, fontSize: '12px' }}
+        onClick={handleOpen}
+        disabled={disabled}
+      >
+        <Trans>%</Trans>
+      </Button>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        PaperProps={{
+          sx: {
+            p: 1,
+            backgroundColor: 'background.surface',
+            border: '1px solid',
+            borderColor: 'divider',
+          },
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5 }}>
+          <ToggleButtonGroup
+            exclusive
+            sx={{
+              backgroundColor: 'background.surface',
+              borderRadius: '6px',
+              borderColor: 'background.surface',
+            }}
+            onChange={(_, v) => v && handlePick(v)}
+          >
+            {[0.25, 0.5, 0.75].map((fraction) => (
+              <ToggleButton
+                key={fraction}
+                value={fraction}
+                sx={{
+                  borderRadius: 1,
+                  py: 0.5,
+                  px: 1,
+                  borderWidth: 2,
+                  '&.Mui-selected': {
+                    backgroundColor: 'background.paper',
+                  },
+                }}
+              >
+                <Typography variant="subheader2" color="primary.main">
+                  {Math.round(fraction * 100)}%
+                </Typography>
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
+        </Box>
+      </Popover>
+    </>
   );
 };

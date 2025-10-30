@@ -112,7 +112,6 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
 
     if (!isProtocolSwapState(state)) throw new Error('State is not a protocol swap state');
 
-    // TODO: CHECK LIMIT ORDERS BUY ORDERS
     const signedAmount = approvedAmount;
     const amountToSwap = state.inputAmount;
     const amountToReceive = state.buyAmountFormatted || '0';
