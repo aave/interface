@@ -10,6 +10,7 @@ import stringify from 'json-stringify-deterministic';
 import { Dispatch } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { isSmartContractWallet } from 'src/helpers/provider';
+import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
@@ -65,6 +66,13 @@ export const SwapActionsViaCoW = ({
   const { mainTxState, loadingTxns, setMainTxState, setTxError, approvalTxState } =
     useModalContext();
 
+  const { hasActiveOrderForSellToken } = useCowOrderToast();
+
+  const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(
+    state.chainId,
+    state.sourceToken.addressToSwap
+  );
+
   const { requiresApproval, requiresApprovalReset, approval, tryPermit, signatureParams } =
     useSwapTokenApproval({
       chainId: state.chainId,
@@ -76,7 +84,7 @@ export const SwapActionsViaCoW = ({
         ? COW_PROTOCOL_VAULT_RELAYER_ADDRESS[state.chainId as SupportedChainId]
         : undefined,
       setState,
-      allowPermit: true,
+      allowPermit: !disablePermitDueToActiveOrder,
     });
 
   // Use centralized gas estimation
@@ -367,6 +375,7 @@ export const SwapActionsViaCoW = ({
       fetchingData={state.actionsLoading}
       blocked={state.actionsBlocked}
       tryPermit={tryPermit}
+      permitInUse={disablePermitDueToActiveOrder}
     />
   );
 };

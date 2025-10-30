@@ -31,6 +31,7 @@ interface OrderDetails {
   orderId: string;
   chainId: number;
   interval: NodeJS.Timeout;
+  sellToken?: string;
 }
 
 interface CowOrderToastContextType {
@@ -39,6 +40,7 @@ interface CowOrderToastContextType {
   hasActiveOrders: boolean;
   setHasActiveOrders: (hasActiveOrders: boolean) => void;
   activeOrdersCount: number;
+  hasActiveOrderForSellToken: (chainId: number, sellTokenAddress: string) => boolean;
 }
 
 const CowOrderToastContext = createContext<CowOrderToastContextType>(
@@ -130,6 +132,22 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
       const interval = setInterval(async () => {
         try {
           const order = await getOrder(orderId, chainId);
+          // Store sell token for quick lookups (used to prevent permit nonce collisions)
+          setActiveOrders((prev) => {
+            const current = prev.get(orderId);
+            if (current && current.sellToken?.toLowerCase() === order.sellToken.toLowerCase()) {
+              return prev;
+            }
+            const updated = new Map(prev);
+            updated.set(orderId, {
+              ...current!,
+              orderId,
+              chainId,
+              interval,
+              sellToken: order.sellToken,
+            });
+            return updated;
+          });
           const baseTrackingData = {
             chainId,
             inputSymbol: order.sellToken,
@@ -182,9 +200,38 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
         return newMap;
       });
 
+      // One-off fetch to populate sellToken immediately (avoid waiting for first poll)
+      getOrder(orderId, chainId).then((order) => {
+        setActiveOrders((prev) => {
+          const existing = prev.get(orderId);
+          const updated = new Map(prev);
+          updated.set(orderId, {
+            ...existing!,
+            orderId,
+            chainId,
+            interval,
+            sellToken: order.sellToken,
+          });
+          return updated;
+        });
+      });
+
       setHasActiveOrders(true);
     },
     [stopTracking]
+  );
+
+  const hasActiveOrderForSellToken = useCallback(
+    (chainId: number, sellTokenAddress: string) => {
+      const needle = sellTokenAddress.toLowerCase();
+      for (const [, details] of activeOrders) {
+        if (details.chainId === chainId && details.sellToken?.toLowerCase() === needle) {
+          return true;
+        }
+      }
+      return false;
+    },
+    [activeOrders]
   );
 
   return (
@@ -195,6 +242,7 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
         hasActiveOrders,
         setHasActiveOrders,
         activeOrdersCount: activeOrders.size,
+        hasActiveOrderForSellToken,
       }}
     >
       {children}

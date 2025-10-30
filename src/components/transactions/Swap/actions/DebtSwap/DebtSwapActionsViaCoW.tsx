@@ -5,6 +5,7 @@ import { Trans } from '@lingui/macro';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { calculateSignedAmount } from 'src/hooks/paraswap/common';
+import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
@@ -93,6 +94,11 @@ export const DebtSwapActionsViaCoW = ({
     return calculateSignedAmount(state.sellAmountFormatted, state.sellAmountToken.decimals);
   }, [state.sellAmountFormatted, state.sellAmountToken]);
 
+  const { hasActiveOrderForSellToken } = useCowOrderToast();
+  const sellAssetAddress =
+    state.sellAmountToken?.underlyingAddress || state.sourceToken.addressToSwap;
+  const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(state.chainId, sellAssetAddress);
+
   // Approval is to the destination token via delegation Approval
   const { requiresApproval, approval, tryPermit, signatureParams } = useSwapTokenApproval({
     chainId: state.chainId,
@@ -104,7 +110,7 @@ export const DebtSwapActionsViaCoW = ({
     decimals: state.destinationToken.decimals,
     spender: precalculatedInstanceAddress,
     setState,
-    allowPermit: true, // CoW Adapters do support permit
+    allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
     type: 'delegation', // Debt swap uses delegation
   });
 
@@ -268,6 +274,7 @@ export const DebtSwapActionsViaCoW = ({
       fetchingData={state.actionsLoading}
       blocked={state.actionsBlocked || !precalculatedInstanceAddress}
       tryPermit={tryPermit}
+      permitInUse={disablePermitDueToActiveOrder}
     />
   );
 };

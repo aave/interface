@@ -5,6 +5,7 @@ import { Trans } from '@lingui/macro';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { calculateSignedAmount } from 'src/hooks/paraswap/common';
+import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
@@ -19,6 +20,15 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { ExpiryToSecondsMap, SwapParams, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
+/**
+ * Collateral swap via CoW Protocol Flashloan Adapters.
+ *
+ * Flow summary:
+ * 1) Approve collateral aToken (permit supported) to the CoW flashloan adapter
+ * 2) Compute flashloan fee and sell amount to sign
+ * 3) Create a LIMIT order relative to the UI: collateral -> debt asset
+ * 4) Post order with adapter-provided swap settings; adapter orchestrates the swap
+ */
 export const CollateralSwapActionsViaCowAdapters = ({
   state,
   setState,
@@ -83,6 +93,11 @@ export const CollateralSwapActionsViaCowAdapters = ({
     return calculateSignedAmount(state.sellAmountFormatted, state.sellAmountToken.decimals);
   }, [state.sellAmountFormatted, state.sellAmountToken]);
 
+  const { hasActiveOrderForSellToken } = useCowOrderToast();
+  const sellAssetAddress =
+    state.sellAmountToken?.underlyingAddress || state.sourceToken.addressToSwap;
+  const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(state.chainId, sellAssetAddress);
+
   const { requiresApproval, approval, tryPermit, signatureParams } = useSwapTokenApproval({
     chainId: state.chainId,
     token: state.sourceToken.addressToSwap,
@@ -91,7 +106,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
     decimals: state.sourceToken.decimals,
     spender: precalculatedInstanceAddress,
     setState,
-    allowPermit: true, // CoW Adapters do support permit
+    allowPermit: !disablePermitDueToActiveOrder, // CoW Adapters do support permit but avoid nonce reuse
   });
 
   // Use centralized gas estimation
@@ -253,6 +268,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
       fetchingData={state.actionsLoading}
       blocked={state.actionsBlocked || !precalculatedInstanceAddress}
       tryPermit={tryPermit}
+      permitInUse={disablePermitDueToActiveOrder}
     />
   );
 };

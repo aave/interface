@@ -1,5 +1,4 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { BigNumberValue, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import {
   BuyTokenDestination,
   OrderBookApi,
@@ -21,11 +20,10 @@ import { SignedParams } from '../../actions/approval/useSwapTokenApproval';
 import {
   COW_APP_DATA,
   COW_CREATE_ORDER_ABI,
-  COW_PARTNER_FEE,
   COW_PROTOCOL_ETH_FLOW_ADDRESS,
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
-import { isCowProtocolRates, OrderType, SwapState } from '../../types';
+import { OrderType } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
 const EIP_2612_PERMIT_ABI = [
@@ -164,7 +162,6 @@ export const sendOrder = async ({
   outputSymbol,
   smartSlippage,
   appCode,
-  orderBookQuote,
   orderType,
   sellAmount,
   buyAmount,
@@ -212,36 +209,28 @@ export const sendOrder = async ({
     hooks
   );
 
-  if (orderType === OrderType.LIMIT) {
-    const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(chainId, appCode);
+  const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(chainId, appCode);
 
-    return tradingSdk
-      .postLimitOrder(
-        {
-          sellAmount,
-          buyAmount,
-          kind: kind == OrderKind.SELL ? OrderKind.SELL : OrderKind.BUY,
-          sellToken: tokenSrc,
-          buyToken: tokenDest,
-          sellTokenDecimals: tokenSrcDecimals,
-          buyTokenDecimals: tokenDestDecimals,
-          owner: user as `0x${string}`,
-        },
-        {
-          appData,
-          additionalParams: {
-            applyQuoteAdjustments: false,
-          },
-        }
-      )
-      .then((orderResult) => orderResult.orderId);
-  } else {
-    return orderBookQuote
-      .postSwapOrderFromQuote({
+  return tradingSdk
+    .postLimitOrder(
+      {
+        sellAmount,
+        buyAmount,
+        kind: kind == OrderKind.SELL ? OrderKind.SELL : OrderKind.BUY,
+        sellToken: tokenSrc,
+        buyToken: tokenDest,
+        sellTokenDecimals: tokenSrcDecimals,
+        buyTokenDecimals: tokenDestDecimals,
+        owner: user as `0x${string}`,
+      },
+      {
         appData,
-      })
-      .then((orderResult) => orderResult.orderId);
-  }
+        additionalParams: {
+          applyQuoteAdjustments: false,
+        },
+      }
+    )
+    .then((orderResult) => orderResult.orderId);
 };
 
 export const getOrderStatus = async (orderId: string, chainId: number) => {
@@ -465,189 +454,6 @@ export const adjustedBps = (sdkFeeBps: number) => {
   const f = sdkFeeBps / 10000;
   const effective = f / (1 + f);
   return effective * 10000;
-};
-
-export const sellAmountBeforeCostsIncluded = (
-  state: SwapState,
-  extraAmountToAdd?: BigNumberValue
-) => {
-  if (!state.swapRate || !isCowProtocolRates(state.swapRate)) return '';
-
-  const extraAmount = extraAmountToAdd
-    ? valueToBigNumber(extraAmountToAdd.toString())
-    : valueToBigNumber('0');
-
-  if (state.orderType === OrderType.MARKET) {
-    return valueToBigNumber(state.swapRate.srcSpotAmount).plus(extraAmount).toString();
-  } else {
-    if (state.side === 'sell') {
-      return normalizeBN(state.inputAmount, -state.sourceToken.decimals)
-        .minus(extraAmount)
-        .toString();
-    } else {
-      const sellAmount = valueToBigNumber(
-        normalizeBN(state.inputAmount, -state.sourceToken.decimals)
-      );
-      const sellAmountBeforeNetworkCosts = sellAmount;
-      const originalPartnerFeeBps = COW_PARTNER_FEE(
-        state.sourceToken.symbol,
-        state.destinationToken.symbol
-      ).volumeBps;
-      const adjustedPartnerFeeBps = adjustedBps(originalPartnerFeeBps);
-      const partnerFeeAmount = sellAmountBeforeNetworkCosts
-        .multipliedBy(adjustedPartnerFeeBps)
-        .dividedBy(10000)
-        .toFixed(0);
-
-      return valueToBigNumber(normalizeBN(state.inputAmount, -state.sourceToken.decimals))
-        .plus(partnerFeeAmount)
-        .plus(extraAmount)
-        .toString();
-    }
-  }
-};
-
-export const sellAmountWithCostsIncluded = (
-  state: SwapState,
-  extraAmountToAdd?: BigNumberValue
-) => {
-  if (!state.swapRate || !isCowProtocolRates(state.swapRate)) return '';
-
-  const extraAmount = extraAmountToAdd
-    ? valueToBigNumber(extraAmountToAdd.toString())
-    : valueToBigNumber('0');
-
-  if (state.orderType === OrderType.MARKET) {
-    return valueToBigNumber(state.swapRate.srcSpotAmount).plus(extraAmount).toString();
-  } else {
-    if (state.side === 'sell') {
-      return normalizeBN(state.inputAmount, -state.sourceToken.decimals)
-        .plus(extraAmount)
-        .toString();
-    } else {
-      const sellAmount = valueToBigNumber(
-        normalizeBN(state.inputAmount, -state.sourceToken.decimals)
-      );
-      const sellAmountBeforeNetworkCosts = sellAmount;
-      const originalPartnerFeeBps = COW_PARTNER_FEE(
-        state.sourceToken.symbol,
-        state.destinationToken.symbol
-      ).volumeBps;
-      const adjustedPartnerFeeBps = adjustedBps(originalPartnerFeeBps);
-      const partnerFeeAmount = sellAmountBeforeNetworkCosts
-        .multipliedBy(adjustedPartnerFeeBps)
-        .dividedBy(10000)
-        .toFixed(0);
-
-      return valueToBigNumber(normalizeBN(state.inputAmount, -state.sourceToken.decimals))
-        .minus(partnerFeeAmount)
-        .plus(extraAmount)
-        .toString();
-    }
-  }
-};
-
-export const buyAmountWithCostsIncluded = (state: SwapState, extraAmountToAdd?: BigNumberValue) => {
-  if (!state.swapRate || !isCowProtocolRates(state.swapRate)) return '';
-  const extraAmount = extraAmountToAdd
-    ? valueToBigNumber(extraAmountToAdd.toString())
-    : valueToBigNumber('0');
-
-  if (state.orderType === OrderType.MARKET) {
-    if (isNativeToken(state.destinationToken.addressToSwap)) {
-      const destAmountWithSlippage = valueToBigNumber(state.swapRate.destSpotAmount)
-        .multipliedBy(valueToBigNumber(1).minus(valueToBigNumber(state.slippage).dividedBy(100)))
-        .toFixed(0);
-      return valueToBigNumber(destAmountWithSlippage).plus(extraAmount).toString();
-    } else {
-      return valueToBigNumber(state.swapRate.amountAndCosts.afterNetworkCosts.buyAmount.toString())
-        .plus(extraAmount)
-        .toString();
-    }
-  } else {
-    if (state.side === 'sell') {
-      const buyAmount = normalizeBN(state.outputAmount, -state.destinationToken.decimals);
-      const sellAmount = normalizeBN(state.inputAmount, -state.sourceToken.decimals);
-      const sellAmountBeforeNetworkCosts = sellAmount;
-      const buyAmountAfterNetworkCosts = buyAmount;
-      const networkCostsAmount = valueToBigNumber('0');
-      const sellAmountAfterNetworkCosts = sellAmountBeforeNetworkCosts.plus(networkCostsAmount);
-      const buyAmountBeforeNetworkCosts = buyAmountAfterNetworkCosts
-        .dividedBy(sellAmountBeforeNetworkCosts)
-        .multipliedBy(sellAmountAfterNetworkCosts);
-      const partnerFeeBps = COW_PARTNER_FEE(
-        state.sourceToken.symbol,
-        state.destinationToken.symbol
-      ).volumeBps;
-      const adjustedPartnerFeeBps = adjustedBps(partnerFeeBps);
-      const partnerFeeAmount = buyAmountBeforeNetworkCosts
-        .multipliedBy(adjustedPartnerFeeBps)
-        .dividedBy(10000)
-        .toFixed(0);
-
-      return valueToBigNumber(normalizeBN(state.outputAmount, -state.destinationToken.decimals))
-        .plus(partnerFeeAmount)
-        .plus(extraAmount)
-        .toString();
-    } else {
-      return normalizeBN(state.outputAmount, -state.destinationToken.decimals)
-        .plus(extraAmount)
-        .toString();
-    }
-  }
-};
-
-export const buyAmountBeforeCostsIncluded = (
-  state: SwapState,
-  extraAmountToAdd?: BigNumberValue
-) => {
-  if (!state.swapRate || !isCowProtocolRates(state.swapRate)) return '';
-  const extraAmount = extraAmountToAdd
-    ? valueToBigNumber(extraAmountToAdd.toString())
-    : valueToBigNumber('0');
-
-  if (state.orderType === OrderType.MARKET) {
-    if (isNativeToken(state.destinationToken.addressToSwap)) {
-      const destAmountWithSlippage = valueToBigNumber(state.swapRate.destSpotAmount)
-        .multipliedBy(valueToBigNumber(1).minus(valueToBigNumber(state.slippage).dividedBy(100)))
-        .toFixed(0);
-      return valueToBigNumber(destAmountWithSlippage).plus(extraAmount).toString();
-    } else {
-      return valueToBigNumber(state.swapRate.amountAndCosts.afterNetworkCosts.buyAmount.toString())
-        .plus(extraAmount)
-        .toString();
-    }
-  } else {
-    if (state.side === 'sell') {
-      const buyAmount = normalizeBN(state.outputAmount, -state.destinationToken.decimals);
-      const sellAmount = normalizeBN(state.inputAmount, -state.sourceToken.decimals);
-      const sellAmountBeforeNetworkCosts = sellAmount;
-      const buyAmountAfterNetworkCosts = buyAmount;
-      const networkCostsAmount = valueToBigNumber('0');
-      const sellAmountAfterNetworkCosts = sellAmountBeforeNetworkCosts.plus(networkCostsAmount);
-      const buyAmountBeforeNetworkCosts = buyAmountAfterNetworkCosts
-        .dividedBy(sellAmountBeforeNetworkCosts)
-        .multipliedBy(sellAmountAfterNetworkCosts);
-      const partnerFeeBps = COW_PARTNER_FEE(
-        state.sourceToken.symbol,
-        state.destinationToken.symbol
-      ).volumeBps;
-      const adjustedPartnerFeeBps = adjustedBps(partnerFeeBps);
-      const partnerFeeAmount = buyAmountBeforeNetworkCosts
-        .multipliedBy(adjustedPartnerFeeBps)
-        .dividedBy(10000)
-        .toFixed(0);
-
-      return valueToBigNumber(normalizeBN(state.outputAmount, -state.destinationToken.decimals))
-        .minus(partnerFeeAmount)
-        .plus(extraAmount)
-        .toString();
-    } else {
-      return normalizeBN(state.outputAmount, -state.destinationToken.decimals)
-        .plus(extraAmount)
-        .toString();
-    }
-  }
 };
 
 export const getPermitHook = async ({
