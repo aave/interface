@@ -352,7 +352,7 @@ export const MarketSwitcher = () => {
             exclusive
             onChange={(_, value) => {
               if (value === SelectedMarketVersion.V2) {
-                window.open('https://v2-markets.aave.com', '_blank', 'noopener');
+                window.open('https://v2-market.aave.com/', '_blank', 'noopener');
                 return;
               }
               if (value !== null) {
