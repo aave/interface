@@ -11,7 +11,7 @@ import {
   LIQUIDATION_DANGER_THRESHOLD,
   LIQUIDATION_SAFETY_THRESHOLD,
 } from '../constants/shared.constants';
-import { isProtocolSwapState, SwapParams, SwapState, SwapType } from '../types';
+import { isProtocolSwapState, SwapParams, SwapProvider, SwapState, SwapType } from '../types';
 
 /**
  * React hook that decides the execution flow (simple vs flashloan) and
@@ -129,7 +129,8 @@ export const healthFactorSensibleSwapFlowSelector = ({
     : false;
 
   const forceFlashloanFlow =
-    state.swapType === SwapType.RepayWithCollateral || state.swapType === SwapType.DebtSwap;
+    state.provider === SwapProvider.COW_PROTOCOL &&
+    (state.swapType === SwapType.RepayWithCollateral || state.swapType === SwapType.DebtSwap);
   const useFlashloan =
     forceFlashloanFlow ||
     (extendedUser?.healthFactor !== '-1' &&

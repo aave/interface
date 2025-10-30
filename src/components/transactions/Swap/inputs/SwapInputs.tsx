@@ -74,6 +74,10 @@ export const SwapInputs = ({
     if (value === '-1') {
       // Max Selected
       setState({
+        quoteRefreshPaused: false,
+        quoteLastUpdatedAt: undefined,
+        quoteTimerPausedAt: undefined,
+        quoteTimerPausedAccumMs: undefined,
         inputAmount: state.sourceToken.balance,
         debouncedInputAmount: state.sourceToken.balance,
         isMaxSelected: true,
@@ -81,6 +85,10 @@ export const SwapInputs = ({
       });
     } else {
       setState({
+        quoteRefreshPaused: false,
+        quoteLastUpdatedAt: undefined,
+        quoteTimerPausedAt: undefined,
+        quoteTimerPausedAccumMs: undefined,
         inputAmount: value,
         debouncedInputAmount: value,
         isMaxSelected: value === state.forcedMaxValue,
@@ -100,6 +108,10 @@ export const SwapInputs = ({
 
     if (value === '-1') {
       setState({
+        quoteRefreshPaused: false,
+        quoteLastUpdatedAt: undefined,
+        quoteTimerPausedAt: undefined,
+        quoteTimerPausedAccumMs: undefined,
         outputAmount: state.destinationToken.balance,
         debouncedOutputAmount: state.destinationToken.balance,
         isMaxSelected: true,
@@ -107,6 +119,10 @@ export const SwapInputs = ({
       });
     } else {
       setState({
+        quoteRefreshPaused: false,
+        quoteLastUpdatedAt: undefined,
+        quoteTimerPausedAt: undefined,
+        quoteTimerPausedAccumMs: undefined,
         outputAmount: value,
         debouncedOutputAmount: value,
         isMaxSelected: false,
@@ -135,6 +151,10 @@ export const SwapInputs = ({
     }
 
     setState({
+      quoteRefreshPaused: false,
+      quoteLastUpdatedAt: undefined,
+      quoteTimerPausedAt: undefined,
+      quoteTimerPausedAccumMs: undefined,
       outputAmount: newOutputAmount,
       debouncedOutputAmount: newOutputAmount,
       isMaxSelected: false,
@@ -153,6 +173,10 @@ export const SwapInputs = ({
       : '0';
 
     setState({
+      quoteRefreshPaused: false,
+      quoteLastUpdatedAt: undefined,
+      quoteTimerPausedAt: undefined,
+      quoteTimerPausedAccumMs: undefined,
       sourceToken: toToken,
       destinationToken: fromToken,
       inputAmount: '',
@@ -215,7 +239,6 @@ export const SwapInputs = ({
   };
 
   const handleSelectedInputToken = (token: SwappableToken) => {
-    console.log('handleSelectedInputToken', token);
     if (!state.sourceTokens?.find((t) => t.addressToSwap === token.addressToSwap)) {
       addNewToken(token).then(() => {
         setState({
@@ -365,31 +388,64 @@ export const SwapInputs = ({
       };
     }, [params.sourceTokens, params.destinationTokens]);
 
+  // Helper to check if two tokens are the same (by addressToSwap, underlyingAddress, or symbol)
+  const areTokensEqual = (
+    token1: SwappableToken | undefined,
+    token2: SwappableToken | undefined
+  ): boolean => {
+    if (!token1 || !token2) return false;
+    return (
+      token1.addressToSwap.toLowerCase() === token2.addressToSwap.toLowerCase() ||
+      token1.underlyingAddress.toLowerCase() === token2.underlyingAddress.toLowerCase() ||
+      token1.symbol === token2.symbol
+    );
+  };
+
   // Update selected tokens when defaults change (e.g., after network change)
   useEffect(() => {
+    const saved = loadTokenSelection();
+
+    let inputToken: SwappableToken | undefined;
+    let outputToken: SwappableToken | undefined;
+
+    // Determine input token first (prioritize forced, then saved if valid, else fallback)
     if (params.forcedInputToken) {
-      setState({ sourceToken: params.forcedInputToken });
-    } else {
-      // If saved use it
-      const saved = loadTokenSelection();
-      if (saved?.inputToken) {
-        setState({ sourceToken: saved.inputToken });
+      inputToken = params.forcedInputToken;
+    } else if (saved?.inputToken) {
+      // Only use saved input token if it doesn't match the intended output
+      const intendedOutput = params.forcedOutputToken || saved.outputToken || fallbackOutputToken;
+      if (!areTokensEqual(saved.inputToken, intendedOutput)) {
+        inputToken = saved.inputToken;
       } else {
-        setState({ sourceToken: fallbackInputToken });
+        inputToken = fallbackInputToken;
       }
+    } else {
+      inputToken = fallbackInputToken;
     }
 
+    // Determine output token (prioritize forced, then saved if valid, else fallback)
     if (params.forcedOutputToken) {
-      setState({ destinationToken: params.forcedOutputToken });
-    } else {
-      // If saved use it
-      const saved = loadTokenSelection();
-      if (saved?.outputToken) {
-        setState({ destinationToken: saved.outputToken });
+      outputToken = params.forcedOutputToken;
+    } else if (saved?.outputToken) {
+      // Only use saved output token if it doesn't match the input token
+      if (!areTokensEqual(saved.outputToken, inputToken)) {
+        outputToken = saved.outputToken;
       } else {
-        setState({ destinationToken: fallbackOutputToken });
+        outputToken = fallbackOutputToken;
       }
+    } else {
+      outputToken = fallbackOutputToken;
     }
+
+    // Final safety check: if input and output tokens still match, reset output to fallback
+    if (areTokensEqual(inputToken, outputToken)) {
+      outputToken = fallbackOutputToken;
+    }
+
+    setState({
+      sourceToken: inputToken ?? fallbackInputToken,
+      destinationToken: outputToken ?? fallbackOutputToken,
+    });
   }, [
     params.forcedInputToken,
     params.forcedOutputToken,
@@ -437,7 +493,12 @@ export const SwapInputs = ({
     () =>
       state.sourceTokens.filter(
         (token) =>
-          token.addressToSwap !== state.destinationToken.addressToSwap &&
+          // Filter out tokens that match the destination token by addressToSwap OR underlyingAddress
+          // This prevents the same asset from appearing in both lists (e.g., USDT in CollateralSwap)
+          token.addressToSwap.toLowerCase() !==
+            state.destinationToken.addressToSwap.toLowerCase() &&
+          token.underlyingAddress.toLowerCase() !==
+            state.destinationToken.underlyingAddress.toLowerCase() &&
           Number(token.balance) !== 0 &&
           // Remove native tokens for non-Safe smart contract wallets
           !(
@@ -464,6 +525,7 @@ export const SwapInputs = ({
     [
       state.sourceTokens,
       state.destinationToken.addressToSwap,
+      state.destinationToken.underlyingAddress,
       state.destinationToken.tokenType,
       state.userIsSmartContractWallet,
       state.userIsSafeWallet,
@@ -475,7 +537,11 @@ export const SwapInputs = ({
     () =>
       state.destinationTokens.filter(
         (token) =>
-          token.addressToSwap !== state.sourceToken.addressToSwap &&
+          // Filter out tokens that match the source token by addressToSwap OR underlyingAddress
+          // This prevents the same asset from appearing in both lists (e.g., USDT in CollateralSwap)
+          token.addressToSwap.toLowerCase() !== state.sourceToken.addressToSwap.toLowerCase() &&
+          token.underlyingAddress.toLowerCase() !==
+            state.sourceToken.underlyingAddress.toLowerCase() &&
           // Avoid wrapping
           !(
             state.sourceToken.tokenType === TokenType.NATIVE &&
@@ -495,6 +561,7 @@ export const SwapInputs = ({
     [
       state.destinationTokens,
       state.sourceToken.addressToSwap,
+      state.sourceToken.underlyingAddress,
       state.sourceToken.tokenType,
       state.chainId,
     ]

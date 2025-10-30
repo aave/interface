@@ -90,7 +90,13 @@ const getDefaultOutputToken = (
   defaultInputToken: SwappableToken | undefined
 ) => {
   const tokensWithoutInputToken = tokensTo.filter(
-    (token) => token.addressToSwap !== defaultInputToken?.addressToSwap
+    (token) =>
+      // Filter out tokens that match by addressToSwap OR underlyingAddress OR symbol
+      // This prevents the same asset from appearing in both lists (triple check for robustness)
+      token.addressToSwap.toLowerCase() !== defaultInputToken?.addressToSwap.toLowerCase() &&
+      token.underlyingAddress.toLowerCase() !==
+        defaultInputToken?.underlyingAddress.toLowerCase() &&
+      token.symbol !== defaultInputToken?.symbol
   );
 
   // 1. Highest balance
@@ -101,9 +107,11 @@ const getDefaultOutputToken = (
     return highestBalanceToken[0];
   }
 
-  // 2. USDT or USDC or AAVE
+  // 2. USDT or USDC or AAVE (but not the input token)
   const usdtOrUsdcOrAaveToken = tokensWithoutInputToken.filter(
-    (token) => token.symbol === 'USDT' || token.symbol === 'USDC' || token.symbol === 'AAVE'
+    (token) =>
+      (token.symbol === 'USDT' || token.symbol === 'USDC' || token.symbol === 'AAVE') &&
+      token.symbol !== defaultInputToken?.symbol
   );
   if (usdtOrUsdcOrAaveToken.length > 0) {
     return usdtOrUsdcOrAaveToken[0];

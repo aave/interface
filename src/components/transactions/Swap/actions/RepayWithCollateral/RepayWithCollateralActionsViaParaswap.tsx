@@ -148,26 +148,6 @@ export const RepayWithCollateralActionsViaParaswap = ({
         Number(state.slippage)
       );
 
-      console.log('paraswapRepayWithCollateral', {
-        repayAllDebt,
-        repayAmount,
-        rateMode: params.interestMode,
-        repayWithAmount,
-
-        fromAssetData: state.destinationReserve.reserve,
-        poolReserve: state.sourceReserve.reserve,
-
-        symbol: state.sourceReserve.reserve.symbol,
-        isWrongNetwork: state.isWrongNetwork,
-        useFlashLoan: state.useFlashloan || false,
-        blocked: state.actionsBlocked,
-        swapCallData,
-        augustus,
-        signature: signatureParams?.splitedSignature,
-        deadline: signatureParams?.deadline,
-        signedAmount: approvedAmount,
-      });
-
       const txs = await paraswapRepayWithCollateral({
         repayAllDebt,
         repayAmount,
@@ -215,7 +195,27 @@ export const RepayWithCollateralActionsViaParaswap = ({
       });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
+
+      // For gas estimation errors in Paraswap actions, show as warning instead of blocking error
+      if (parsedError.txAction === TxAction.GAS_ESTIMATION) {
+        setState({
+          actionsLoading: false,
+          warnings: [
+            {
+              message:
+                'Gas estimation error: The swap could not be estimated. Try increasing slippage or changing the amount.',
+            },
+          ],
+          error: undefined, // Clear any existing errors
+        });
+      } else {
+        // For other errors, handle normally
+        setTxError(parsedError);
+        setState({
+          actionsLoading: false,
+        });
+      }
+
       setMainTxState({
         loading: false,
       });

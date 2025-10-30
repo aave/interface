@@ -3,7 +3,12 @@ import React, { Dispatch, useEffect } from 'react';
 import { useModalContext } from '../../../../hooks/useModal';
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
 import { SwapError, SwapParams, SwapState } from '../types';
+import { isProtocolSwapState } from '../types/state.types';
 import { errorToConsole } from './shared/console.helpers';
+import {
+  FlashLoanDisabledBlockingGuard,
+  hasFlashLoanDisabled,
+} from './shared/FlashLoanDisabledBlockingGuard';
 import { GasEstimationError } from './shared/GasEstimationError';
 import { GenericError } from './shared/GenericError';
 import {
@@ -62,6 +67,16 @@ export const SwapErrors = ({
   if (hasZeroLTVBlocking(state, [])) {
     return (
       <ZeroLTVBlockingGuard
+        state={state}
+        setState={setState}
+        isSwapFlowSelected={state.isSwapFlowSelected}
+      />
+    );
+  }
+
+  if (hasFlashLoanDisabled(state) && isProtocolSwapState(state)) {
+    return (
+      <FlashLoanDisabledBlockingGuard
         state={state}
         setState={setState}
         isSwapFlowSelected={state.isSwapFlowSelected}

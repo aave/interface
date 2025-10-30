@@ -184,8 +184,6 @@ export const CollateralSwapActionsViaCowAdapters = ({
         }
       );
 
-      console.log('POST LIMIT ORDER', limitOrder, orderPostParams);
-
       const result = await tradingSdk.postLimitOrder(limitOrder, orderPostParams.swapSettings);
 
       trackingHandlers.trackSwap();

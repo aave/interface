@@ -175,13 +175,30 @@ export const WithdrawAndSwapActionsViaParaswap = ({
       });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
+
+      // For gas estimation errors in Paraswap actions, show as warning instead of blocking error
+      if (parsedError.txAction === TxAction.GAS_ESTIMATION) {
+        setState({
+          actionsLoading: false,
+          warnings: [
+            {
+              message:
+                'Gas estimation error: The swap could not be estimated. Try increasing slippage or changing the amount.',
+            },
+          ],
+          error: undefined, // Clear any existing errors
+        });
+      } else {
+        // For other errors, handle normally
+        setTxError(parsedError);
+        setState({
+          actionsLoading: false,
+        });
+      }
+
       setMainTxState({
         txHash: undefined,
         loading: false,
-      });
-      setState({
-        actionsLoading: false,
       });
       trackingHandlers.trackSwapFailed();
     }

@@ -199,10 +199,6 @@ export const DebtSwapActionsViaCoW = ({
         }
       );
 
-      console.log('precalculatedInstanceAddress', precalculatedInstanceAddress);
-      console.log('orderPostParams', orderPostParams);
-
-      console.log('limitOrder', limitOrder);
       const result = await tradingSdk.postLimitOrder(limitOrder, orderPostParams.swapSettings);
 
       trackingHandlers.trackSwap();

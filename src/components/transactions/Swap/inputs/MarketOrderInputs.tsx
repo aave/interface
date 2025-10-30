@@ -3,7 +3,7 @@ import { Box, IconButton, SvgIcon } from '@mui/material';
 import { Dispatch } from 'react';
 
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
-import { isCowProtocolRates, SwapParams, SwapState } from '../types';
+import { isCowProtocolRates, SwapParams, SwapProvider, SwapState } from '../types';
 import { SwitchAssetInput } from './primitives/SwapAssetInput';
 import { NetworkSelector } from './shared/NetworkSelector';
 import { QuoteProgressRing } from './shared/QuoteProgressRing';
@@ -93,11 +93,11 @@ export const MarketOrderInputs = ({
             </IconButton>
             {!state.quoteRefreshPaused && (
               <QuoteProgressRing
-                active={state.provider === 'cowprotocol'}
+                active={state.provider !== SwapProvider.NONE && !!state.provider}
                 lastUpdatedAt={state.quoteLastUpdatedAt ?? null}
                 intervalMs={QUOTE_REFETCH_INTERVAL}
                 size={38}
-                paused={state.actionsLoading}
+                paused={state.actionsLoading || !!state.mainTxState.txHash}
               />
             )}
           </Box>
@@ -128,11 +128,11 @@ export const MarketOrderInputs = ({
               </IconButton>
               {!state.quoteRefreshPaused && (
                 <QuoteProgressRing
-                  active={state.provider === 'cowprotocol'}
+                  active={state.provider !== SwapProvider.NONE && !!state.provider}
                   lastUpdatedAt={state.quoteLastUpdatedAt ?? null}
                   intervalMs={QUOTE_REFETCH_INTERVAL}
                   size={38}
-                  paused={state.actionsLoading}
+                  paused={state.actionsLoading || !!state.mainTxState.txHash}
                 />
               )}
             </Box>

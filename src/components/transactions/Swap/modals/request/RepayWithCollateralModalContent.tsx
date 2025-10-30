@@ -47,8 +47,17 @@ export const RepayWithCollateralModalContent = ({
     (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase()
   );
 
-  // Collateral with highest balance
-  const defaultOutputToken = tokensTo.sort((a, b) => Number(b.balance) - Number(a.balance))[0];
+  // Collateral with highest balance, excluding the input token
+  const tokensWithoutInputToken = tokensTo.filter(
+    (token) =>
+      // Filter out tokens that match by addressToSwap OR underlyingAddress
+      // This prevents the same asset from appearing in both lists
+      token.addressToSwap.toLowerCase() !== defaultInputToken?.addressToSwap.toLowerCase() &&
+      token.underlyingAddress.toLowerCase() !== defaultInputToken?.underlyingAddress.toLowerCase()
+  );
+  const defaultOutputToken = tokensWithoutInputToken.sort(
+    (a, b) => Number(b.balance) - Number(a.balance)
+  )[0];
 
   const queryClient = useQueryClient();
   const invalidateAppState = () => {

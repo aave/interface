@@ -1,4 +1,4 @@
-import { normalize } from '@aave/math-utils';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Box } from '@mui/material';
@@ -72,7 +72,11 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
       state.buyAmountToken?.decimals ?? 18
     );
 
-    partnerFeeUsd = Number(partnerFeeFormatted) * state.swapRate.srcTokenPriceUsd;
+    const buyAmountTokenPriceUsd = valueToBigNumber(state.buyAmountUSD ?? '0')
+      .dividedBy(valueToBigNumber(state.buyAmountFormatted?.toString() ?? '0'))
+      .toNumber();
+
+    partnerFeeUsd = Number(partnerFeeFormatted) * buyAmountTokenPriceUsd;
     partnerFeeToken = state.buyAmountToken;
   }
 

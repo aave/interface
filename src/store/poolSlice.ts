@@ -400,6 +400,7 @@ export const createPoolSlice: StateCreator<
           s: sig.s,
         };
       }
+
       return pool.paraswapRepayWithCollateral({
         user,
         fromAsset: fromAssetData.underlyingAsset,
@@ -501,34 +502,6 @@ export const createPoolSlice: StateCreator<
         };
       }
       try {
-        console.log('debtSwitchTxData', {
-          user,
-          debtAssetUnderlying: poolReserve.underlyingAsset,
-          debtRepayAmount: isMaxSelected ? MAX_UINT_AMOUNT : amountToSwap,
-          debtRateMode: 2, // variable
-          newAssetUnderlying: targetReserve.underlyingAsset,
-          newAssetDebtToken: targetReserve.variableDebtTokenAddress,
-          maxNewDebtAmount: amountToReceive,
-          extraCollateralAmount: '0',
-          extraCollateralAsset: '0x0000000000000000000000000000000000000000',
-          repayAll: isMaxSelected,
-          txCalldata,
-          augustus,
-          creditDelegationPermit: {
-            deadline: signatureDeconstruct.deadline,
-            value: signatureDeconstruct.amount,
-            v: signatureDeconstruct.v,
-            r: signatureDeconstruct.r,
-            s: signatureDeconstruct.s,
-          },
-          collateralPermit: {
-            deadline: '0',
-            value: '0',
-            v: 0,
-            r: '0x0000000000000000000000000000000000000000000000000000000000000000',
-            s: '0x0000000000000000000000000000000000000000000000000000000000000000',
-          },
-        });
         const a = debtSwitchService.debtSwitch({
           user,
           debtAssetUnderlying: poolReserve.underlyingAsset,
@@ -558,10 +531,8 @@ export const createPoolSlice: StateCreator<
           },
         });
 
-        console.log('a', a);
         return a;
       } catch (e) {
-        console.log('error!!!!!!!', e);
         console.error(e);
         throw e;
       }
@@ -676,20 +647,6 @@ export const createPoolSlice: StateCreator<
           s: sig.s,
         };
       }
-
-      console.log('swapCollateral', {
-        fromAsset: poolReserve.underlyingAsset,
-        toAsset: targetReserve.underlyingAsset,
-        swapAll: isMaxSelected,
-        fromAToken: poolReserve.aTokenAddress,
-        fromAmount: amountToSwap,
-        minToAmount: amountToReceive,
-        user,
-        flash: useFlashLoan,
-        augustus,
-        swapCallData,
-        permitSignature,
-      });
 
       return pool.swapCollateral({
         fromAsset: poolReserve.underlyingAsset,

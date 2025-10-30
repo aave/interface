@@ -213,7 +213,11 @@ const getDefaultOutputToken = (
 ) => {
   return tokens.find(
     (token) =>
-      token.addressToSwap !== defaultInputToken?.addressToSwap &&
+      // Filter out tokens that match by addressToSwap OR underlyingAddress
+      // This prevents the same asset from appearing in both lists
+      token.addressToSwap.toLowerCase() !== defaultInputToken?.addressToSwap.toLowerCase() &&
+      token.underlyingAddress.toLowerCase() !==
+        defaultInputToken?.underlyingAddress.toLowerCase() &&
       token.symbol !== defaultInputToken?.symbol
   );
 };

@@ -1,8 +1,9 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, SvgIcon } from '@mui/material';
+import { Box, Skeleton, SvgIcon, Typography } from '@mui/material';
 import React from 'react';
+import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -217,11 +218,25 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
                       symbol={userReserve.reserve.iconSymbol}
                       sx={{ mr: 2, ml: 4, fontSize: '16px' }}
                     />
-                    <FormattedNumber
-                      value={sourceAmountAfterSwap.toString()}
-                      variant="secondary14"
-                      compact
-                    />
+                    <DarkTooltip
+                      title={
+                        <Typography variant="secondary14" color="common.white">
+                          {sourceAmountAfterSwap.toString()} {userReserve.reserve.symbol}
+                        </Typography>
+                      }
+                      arrow
+                      placement="top"
+                      enterTouchDelay={100}
+                      leaveTouchDelay={500}
+                    >
+                      <Box>
+                        <FormattedNumber
+                          value={sourceAmountAfterSwap.toString()}
+                          variant="secondary14"
+                          compact
+                        />
+                      </Box>
+                    </DarkTooltip>
                   </Box>
                   <FormattedNumber
                     value={sourceAmountAfterSwap
@@ -255,11 +270,25 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
                       symbol={userTargetReserve.reserve.iconSymbol}
                       sx={{ mr: 2, ml: 4, fontSize: '16px' }}
                     />
-                    <FormattedNumber
-                      value={targetAmountAfterSwap.toString()}
-                      variant="secondary14"
-                      compact
-                    />
+                    <DarkTooltip
+                      title={
+                        <Typography variant="secondary14" color="common.white">
+                          {targetAmountAfterSwap.toString()} {userTargetReserve.reserve.symbol}
+                        </Typography>
+                      }
+                      arrow
+                      placement="top"
+                      enterTouchDelay={100}
+                      leaveTouchDelay={500}
+                    >
+                      <Box>
+                        <FormattedNumber
+                          value={targetAmountAfterSwap.toString()}
+                          variant="secondary14"
+                          compact
+                        />
+                      </Box>
+                    </DarkTooltip>
                   </Box>
                   <FormattedNumber
                     value={targetAmountAfterSwap

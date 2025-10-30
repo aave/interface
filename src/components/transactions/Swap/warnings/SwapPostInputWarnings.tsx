@@ -4,6 +4,7 @@ import React, { Dispatch } from 'react';
 import { SwapParams, SwapState } from '../types';
 import {
   CustomTokenWarning,
+  GasEstimationWarning,
   HighPriceImpactWarning,
   LimitOrderAmountWarning,
   LiquidationCriticalWarning,
@@ -30,6 +31,7 @@ export const SwapPostInputWarnings = ({
   return (
     <Box sx={{ mt: 6, mb: 2 }}>
       <CustomTokenWarning state={state} />
+      <GasEstimationWarning state={state} />
       <SlippageWarning state={state} />
       <USDTResetWarning state={state} />
       <LiquidationCriticalWarning params={params} state={state} setState={setState} />

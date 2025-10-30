@@ -1,9 +1,9 @@
-import { normalizeBN } from '@aave/math-utils';
+import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BigNumber, PopulatedTransaction } from 'ethers';
-import { Dispatch, useEffect } from 'react';
+import { Dispatch, useEffect, useMemo } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
-import { ExactInSwapper, ExactOutSwapper } from 'src/hooks/paraswap/common';
+import { calculateSignedAmount, ExactInSwapper, ExactOutSwapper } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -35,12 +35,17 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
   );
 
   // Approval is aToken ERC20 Approval
+  const amountToApprove = useMemo(() => {
+    if (!state.sellAmountFormatted || !state.sellAmountToken) return '0';
+    return calculateSignedAmount(state.sellAmountFormatted, state.sellAmountToken.decimals);
+  }, [state.sellAmountFormatted, state.sellAmountToken]);
+
   const { requiresApproval, signatureParams, approval, tryPermit, approvedAmount } =
     useSwapTokenApproval({
       chainId: state.chainId,
       token: state.sourceToken.addressToSwap, // aToken
       symbol: state.sourceToken.symbol,
-      amount: normalizeBN(state.inputAmount, -state.sourceToken.decimals).toString(),
+      amount: normalize(amountToApprove.toString(), state.sourceToken?.decimals ?? 18),
       decimals: state.sourceToken.decimals,
       spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
       setState,
@@ -72,9 +77,6 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
     if (state.side === 'sell') {
       const swapper = ExactInSwapper(state.chainId);
 
-      console.log('SWAPPER getTransactionParams');
-      console.log('maxSlippage', Number(state.slippage));
-
       const result = await swapper.getTransactionParams(
         state.sourceToken.underlyingAddress,
         state.sourceToken.decimals,
@@ -84,20 +86,10 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
         optimalRateData,
         Number(state.slippage)
       );
-      console.log('SWAPPER getTransactionParams result', result);
       swapCallData = result.swapCallData;
       augustus = result.augustus;
     } else {
       const swapper = ExactOutSwapper(state.chainId);
-      console.log('optimalRateData', optimalRateData, {
-        srcToken: state.destinationToken.underlyingAddress,
-        srcDecimals: state.destinationToken.decimals,
-        destToken: state.sourceToken.underlyingAddress,
-        destDecimals: state.sourceToken.decimals,
-        user: state.user,
-        maxSlippage: Number(state.slippage),
-        optimalRateData: optimalRateData,
-      });
 
       const result = await swapper.getTransactionParams(
         state.destinationToken.underlyingAddress,
@@ -118,30 +110,6 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
     const signedAmount = approvedAmount;
     const amountToSwap = state.inputAmount;
     const amountToReceive = state.buyAmountFormatted || '0';
-
-    console.log('!! CollateralSwapActionsViaParaswapAdapters', {
-      amountToSwap: amountToSwap,
-      amountToReceive: amountToReceive,
-      signedAmount,
-    });
-
-    console.log('Partner using app code', optimalRateData.partner);
-
-    console.log({
-      amountToSwap: amountToSwap,
-      amountToReceive: amountToReceive,
-      poolReserve: state.sourceReserve.reserve,
-      targetReserve: state.destinationReserve.reserve,
-      isWrongNetwork: state.isWrongNetwork,
-      symbol: state.sourceToken.symbol,
-      blocked: state.actionsBlocked,
-      isMaxSelected: isMaxSelected,
-      useFlashLoan: true,
-      swapCallData: swapCallData,
-      signature: signatureParams?.splitedSignature,
-      deadline: signatureParams?.deadline,
-      signedAmount,
-    });
 
     let response;
     try {
@@ -178,7 +146,6 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
       };
 
       // 3. Estimate gas limit and send tx
-      console.log('populatedTx', populatedTx);
       const txWithGasEstimation = await estimateGasLimit(populatedTx, state.chainId);
       response = await sendTx(txWithGasEstimation);
       await response.wait(1);
@@ -200,17 +167,42 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
       });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
-      setTxError(parsedError);
+
+      // Check if this is a gas estimation error (from estimateGasLimit call)
+      // Gas estimation errors typically occur when estimateGasLimit fails
+      const errorMessage = parsedError.rawError?.message?.toLowerCase() || '';
+      const isGasEstimationError =
+        errorMessage.includes('gas') ||
+        errorMessage.includes('estimation') ||
+        (errorMessage.includes('execution reverted') && errorMessage.includes('estimation'));
+
+      // For gas estimation errors in Paraswap actions, show as warning instead of blocking error
+      if (isGasEstimationError) {
+        setState({
+          actionsLoading: false,
+          warnings: [
+            {
+              message:
+                'Gas estimation error: The swap could not be estimated. Try increasing slippage or changing the amount.',
+            },
+          ],
+          error: undefined, // Clear any existing errors
+        });
+      } else {
+        // For other errors, handle normally
+        setTxError(parsedError);
+        setState({
+          actionsLoading: false,
+          error: {
+            rawError: parsedError.rawError,
+            message: `Error: ${parsedError.error} on ${parsedError.txAction}`,
+            actionBlocked: parsedError.actionBlocked,
+          },
+        });
+      }
+
       setMainTxState({
         loading: false,
-      });
-      setState({
-        actionsLoading: false,
-        error: {
-          rawError: parsedError.rawError,
-          message: `Error: ${parsedError.error} on ${parsedError.txAction}`,
-          actionBlocked: parsedError.actionBlocked,
-        },
       });
     }
   };

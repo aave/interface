@@ -309,18 +309,21 @@ export const useSwapTokenApproval = ({
         setApprovalTxState({ ...approvalTxState, loading: true });
         const response = await signTxData(signatureRequest);
         const splitedSignature = splitSignature(response);
-        const encodedSignature = defaultAbiCoder.encode(
-          ['address', 'address', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
-          [
-            approvalData.user,
-            approvalData.spender,
-            approvalData.amount,
-            deadline,
-            splitedSignature.v,
-            splitedSignature.r,
-            splitedSignature.s,
-          ]
-        );
+        const encodedSignature =
+          type === 'delegation'
+            ? response.toString()
+            : defaultAbiCoder.encode(
+                ['address', 'address', 'uint256', 'uint256', 'uint8', 'bytes32', 'bytes32'],
+                [
+                  approvalData.user,
+                  approvalData.spender,
+                  approvalData.amount,
+                  deadline,
+                  splitedSignature.v,
+                  splitedSignature.r,
+                  splitedSignature.s,
+                ]
+              );
         const newSignatureParams = {
           signature: encodedSignature,
           splitedSignature,

@@ -53,13 +53,13 @@ export const DebtSwapActionsViaParaswap = ({
   const amountToSwap = maxInputAmountWithSlippage(
     state.buyAmountFormatted ?? '0',
     (Number(state.slippage) * 100).toString(),
-    state.destinationReserve.reserve.decimals || 18
+    state.buyAmountToken?.decimals || 18
   );
 
   const maxNewDebtAmountToReceiveWithSlippage = maxInputAmountWithSlippage(
-    state.outputAmount,
+    state.sellAmountFormatted ?? '0',
     (Number(state.slippage) * 100).toString(),
-    state.destinationReserve.reserve.decimals || 18
+    state.sellAmountToken?.decimals || 18
   );
 
   const { requiresApproval, approval, tryPermit, signatureParams } = useSwapTokenApproval({
@@ -111,15 +111,8 @@ export const DebtSwapActionsViaParaswap = ({
         Number(state.slippage)
       );
 
-      // Transaction sent to Paraswap Adapter
-      const amountToReceiveForDebtSwitch = parseUnits(
-        maxNewDebtAmountToReceiveWithSlippage,
-        state.sourceReserve.reserve.decimals
-      ).toString();
-      const amountToSwapForDebtSwitch = parseUnits(
-        amountToSwap,
-        state.destinationReserve.reserve.decimals
-      ).toString();
+      const amountToReceiveForDebtSwitch = state.buyAmountBigInt?.toString() ?? '0';
+      const amountToSwapForDebtSwitch = state.sellAmountBigInt?.toString() ?? '0';
 
       let debtSwitchTxData = debtSwitch({
         poolReserve: state.sourceReserve.reserve,
@@ -130,7 +123,7 @@ export const DebtSwapActionsViaParaswap = ({
         txCalldata: swapCallData,
         augustus: augustus,
         signatureParams: {
-          signature: signatureParams.splitedSignature,
+          signature: signatureParams.signature,
           deadline: signatureParams.deadline,
           amount: signatureParams.amount,
         },
@@ -170,10 +163,27 @@ export const DebtSwapActionsViaParaswap = ({
     } catch (error) {
       console.error('error', error);
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
-      setState({
-        actionsLoading: false,
-      });
+
+      // For gas estimation errors in Paraswap actions, show as warning instead of blocking error
+      if (parsedError.txAction === TxAction.GAS_ESTIMATION) {
+        setState({
+          actionsLoading: false,
+          warnings: [
+            {
+              message:
+                'Gas estimation error: The swap could not be estimated. Try increasing slippage or changing the amount.',
+            },
+          ],
+          error: undefined, // Clear any existing errors
+        });
+      } else {
+        // For other errors, handle normally
+        setTxError(parsedError);
+        setState({
+          actionsLoading: false,
+        });
+      }
+
       setMainTxState({
         txHash: undefined,
         loading: false,

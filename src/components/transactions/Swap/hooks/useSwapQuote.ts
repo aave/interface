@@ -99,23 +99,30 @@ export const useSwapQuote = ({
   state: SwapState;
   setState: Dispatch<Partial<SwapState>>;
 }) => {
-  const provider = useMemo(
-    () =>
-      getSwitchProvider({
-        chainId: state.chainId,
-        assetFrom: state.sourceToken.addressToSwap,
-        assetTo: state.destinationToken.addressToSwap,
-        swapType: params.swapType,
-        shouldUseFlashloan: state.useFlashloan,
-      }),
-    [
-      state.chainId,
-      state.sourceToken.addressToSwap,
-      state.destinationToken.addressToSwap,
-      params.swapType,
-      state.useFlashloan,
-    ]
-  );
+  // Once transaction succeeds, lock the provider to prevent recalculation
+  // (useFlashloan or other dependencies might change after invalidateAppState)
+  const provider = useMemo(() => {
+    // If transaction already succeeded, use the existing provider from state
+    if (state.mainTxState.success && state.provider !== SwapProvider.NONE) {
+      return state.provider;
+    }
+    // Otherwise, calculate provider based on current state
+    return getSwitchProvider({
+      chainId: state.chainId,
+      assetFrom: state.sourceToken.addressToSwap,
+      assetTo: state.destinationToken.addressToSwap,
+      swapType: params.swapType,
+      shouldUseFlashloan: state.useFlashloan,
+    });
+  }, [
+    state.mainTxState.success,
+    state.provider,
+    state.chainId,
+    state.sourceToken.addressToSwap,
+    state.destinationToken.addressToSwap,
+    params.swapType,
+    state.useFlashloan,
+  ]);
 
   const requiresQuoteInverted = useMemo(
     () => swapTypesThatRequiresInvertedQuote.includes(params.swapType),
@@ -359,7 +366,7 @@ const useMultiProviderSwapQuoteQuery = ({
             side,
             appCode,
             options: {
-              partner: 'aave-widget', // TODO: Check with paraswap team if we can change it
+              partner: appCode,
             },
             invertedQuoteRoute: requiresQuoteInverted,
           });
@@ -382,12 +389,20 @@ const useMultiProviderSwapQuoteQuery = ({
       amount != 'NaN' &&
       amount !== '0' &&
       !state.mainTxState.success &&
+      !state.mainTxState.txHash && // Don't fetch quotes once transaction is sent
+      !state.mainTxState.loading && // Don't fetch quotes while transaction is processing
       provider !== SwapProvider.NONE &&
       !state.quoteRefreshPaused,
     retry: 0,
     throwOnError: false,
     refetchOnWindowFocus: (query) => (query.state.error ? false : true),
     refetchInterval:
-      !state.actionsLoading && !state.quoteRefreshPaused ? QUOTE_REFETCH_INTERVAL : false, // 30 seconds, but pause during action execution or when paused
+      !state.actionsLoading &&
+      !state.quoteRefreshPaused &&
+      !state.mainTxState.success &&
+      !state.mainTxState.txHash && // Stop refetching once transaction is sent
+      !state.mainTxState.loading // Stop refetching while transaction is processing
+        ? QUOTE_REFETCH_INTERVAL
+        : false,
   });
 };

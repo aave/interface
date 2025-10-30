@@ -191,26 +191,16 @@ export const sendOrder = async ({
     throw new Error('Smart contract wallets should use presign.');
   }
 
-  console.log({
-    signatureParams,
-    estimateGasLimit,
-    tokenSrc,
-  });
-
   const permitHook =
     signatureParams && estimateGasLimit
       ? await getPermitHook({ tokenAddress: tokenSrc, signatureParams, estimateGasLimit, chainId })
       : undefined;
-
-  console.log('permitHook', permitHook);
 
   const hooks = permitHook
     ? {
         pre: [permitHook],
       }
     : undefined;
-
-  console.log('hooks', hooks);
 
   const appData = COW_APP_DATA(
     inputSymbol,
@@ -239,15 +229,13 @@ export const sendOrder = async ({
         },
         {
           appData,
+          additionalParams: {
+            applyQuoteAdjustments: false,
+          },
         }
       )
       .then((orderResult) => orderResult.orderId);
   } else {
-    console.log({
-      sellAmount,
-      buyAmount,
-    });
-
     return orderBookQuote
       .postSwapOrderFromQuote({
         appData,

@@ -3,7 +3,7 @@ import { Box, IconButton, SvgIcon } from '@mui/material';
 import { Dispatch } from 'react';
 
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
-import { Expiry, SwapParams, SwapState } from '../types';
+import { Expiry, SwapParams, SwapProvider, SwapState } from '../types';
 import { SwitchAssetInput } from './primitives/SwapAssetInput';
 import { ExpirySelector } from './shared/ExpirySelector';
 import { NetworkSelector } from './shared/NetworkSelector';
@@ -93,11 +93,11 @@ export const LimitOrderInputs = ({
             </IconButton>
             {!state.quoteRefreshPaused && (
               <QuoteProgressRing
-                active={state.provider === 'cowprotocol'}
+                active={state.provider !== SwapProvider.NONE && !!state.provider}
                 lastUpdatedAt={state.quoteLastUpdatedAt ?? null}
                 intervalMs={QUOTE_REFETCH_INTERVAL}
                 size={38}
-                paused={state.actionsLoading}
+                paused={state.actionsLoading || !!state.mainTxState.txHash}
                 sx={{
                   transform: 'translateY(-124%)',
                 }}
@@ -132,11 +132,11 @@ export const LimitOrderInputs = ({
               </IconButton>
               {!state.quoteRefreshPaused && (
                 <QuoteProgressRing
-                  active={state.provider === 'cowprotocol'}
+                  active={state.provider !== SwapProvider.NONE && !!state.provider}
                   lastUpdatedAt={state.quoteLastUpdatedAt ?? null}
                   intervalMs={QUOTE_REFETCH_INTERVAL}
                   size={38}
-                  paused={state.actionsLoading}
+                  paused={state.actionsLoading || !!state.mainTxState.txHash}
                   sx={{
                     transform: 'translateY(-124%)',
                   }}

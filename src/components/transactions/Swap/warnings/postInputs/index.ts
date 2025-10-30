@@ -1,4 +1,5 @@
 export * from './CustomTokenWarning';
+export * from './GasEstimationWarning';
 export * from './HighPriceImpactWarning';
 export * from './LimitOrderAmountWarning';
 export * from './LiquidationCriticalWarning';

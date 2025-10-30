@@ -9,6 +9,7 @@ import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
+import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { isParaswapRates, SwapParams, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
@@ -66,6 +67,8 @@ export const SwapActionsViaParaswap = ({
     setMainTxState({ ...mainTxState, loading: true });
     if (isParaswapRates(state.swapRate)) {
       try {
+        const appCode = APP_CODE_PER_SWAP_TYPE[params.swapType];
+
         // Normal switch using paraswap
         const tx = await fetchParaswapTxParams({
           srcToken: state.sourceToken.addressToSwap,
@@ -77,7 +80,7 @@ export const SwapActionsViaParaswap = ({
           maxSlippage: Number(slippageInPercent) * 10000,
           permit: signatureParams && signatureParams.signature,
           deadline: signatureParams && signatureParams.deadline,
-          partner: 'aave-widget', // TODO: Check with paraswap team if we can change it
+          partner: appCode,
         });
         tx.chainId = state.chainId;
         const txWithGasEstimation = await estimateGasLimit(tx, state.chainId);
@@ -102,6 +105,7 @@ export const SwapActionsViaParaswap = ({
           params.invalidateAppState();
           trackingHandlers.trackSwap();
         } catch (error) {
+          // This is for transaction waiting errors, not gas estimation, so handle normally
           const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
           setTxError(parsedError);
           setMainTxState({
@@ -123,13 +127,38 @@ export const SwapActionsViaParaswap = ({
         }
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
-        setTxError(parsedError);
+
+        // Check if this is a gas estimation error (from estimateGasLimit call)
+        // Gas estimation errors typically occur when estimateGasLimit fails
+        const errorMessage = parsedError.rawError?.message?.toLowerCase() || '';
+        const isGasEstimationError =
+          errorMessage.includes('gas') ||
+          errorMessage.includes('estimation') ||
+          (errorMessage.includes('execution reverted') && errorMessage.includes('estimation'));
+
+        // For gas estimation errors in Paraswap actions, show as warning instead of blocking error
+        if (isGasEstimationError) {
+          setState({
+            actionsLoading: false,
+            warnings: [
+              {
+                message:
+                  'Gas estimation error: The swap could not be estimated. Try increasing slippage or changing the amount.',
+              },
+            ],
+            error: undefined, // Clear any existing errors
+          });
+        } else {
+          // For other errors, handle normally
+          setTxError(parsedError);
+          setState({
+            actionsLoading: false,
+          });
+        }
+
         setMainTxState({
           txHash: undefined,
           loading: false,
-        });
-        setState({
-          actionsLoading: false,
         });
       }
     } else {

@@ -107,12 +107,6 @@ export const IntentTxDetails = ({
 
   const receivingInUsd = Number(buyAmountUSD);
   const sendingInUsd = srcUsd;
-  console.log({
-    sellTokenPriceUsd,
-    receivingInUsd,
-    sendingInUsd,
-  });
-
   const priceImpact = (1 - receivingInUsd / sendingInUsd) * 100;
 
   return (

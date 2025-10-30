@@ -19,22 +19,7 @@ export const getTransactionParams = async (
 ) => {
   const { paraswap, feeTarget } = getParaswap(chainId);
 
-  console.log('route', route);
   try {
-    console.log('buildTx', {
-      srcToken,
-      destToken,
-      ...(kind === 'buy' ? { destAmount: route.destAmount } : { srcAmount: route.srcAmount }),
-      priceRoute: route,
-      userAddress: user,
-      partnerAddress: feeTarget,
-      takeSurplus: true,
-      slippage: maxSlippage * 100,
-      srcDecimals,
-      destDecimals,
-      isDirectFeeTransfer: true,
-    });
-
     const params = await paraswap.buildTx(
       {
         srcToken,

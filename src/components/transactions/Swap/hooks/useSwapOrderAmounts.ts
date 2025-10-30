@@ -3,7 +3,7 @@ import { OrderKind } from '@cowprotocol/cow-sdk';
 import { Dispatch, useEffect } from 'react';
 
 import { COW_PARTNER_FEE } from '../constants/cow.constants';
-import { OrderType, SwapParams, SwapState, SwapType } from '../types';
+import { OrderType, SwapParams, SwapProvider, SwapState, SwapType } from '../types';
 import { swapTypesThatRequiresInvertedQuote } from './useSwapQuote';
 
 const marketOrderKindPerSwapType: Record<SwapType, OrderKind> = {
@@ -50,11 +50,14 @@ export const useSwapOrderAmounts = ({
       sellAmountToken,
       buyTokenPriceUsd,
       sellTokenPriceUsd;
-    const partnetFee = COW_PARTNER_FEE(state.sourceToken.symbol, state.destinationToken.symbol);
+    const partnetFeeBps =
+      state.provider === SwapProvider.COW_PROTOCOL
+        ? COW_PARTNER_FEE(state.sourceToken.symbol, state.destinationToken.symbol).volumeBps
+        : 0;
     const partnerFeeAmount =
       state.side === 'sell'
-        ? valueToBigNumber(state.outputAmount).multipliedBy(partnetFee.volumeBps).dividedBy(10000)
-        : valueToBigNumber(state.inputAmount).multipliedBy(partnetFee.volumeBps).dividedBy(10000);
+        ? valueToBigNumber(state.outputAmount).multipliedBy(partnetFeeBps).dividedBy(10000)
+        : valueToBigNumber(state.inputAmount).multipliedBy(partnetFeeBps).dividedBy(10000);
     // const partnerFeeToken = state.side === 'sell' ? state.destinationToken : state.sourceToken;
 
     if (!isInvertedSwap) {
@@ -133,7 +136,7 @@ export const useSwapOrderAmounts = ({
         } else {
           buyAmountFormatted = state.inputAmount.toString();
 
-          const sellAmountAfterPartnerFees = valueToBigNumber(state.inputAmount).plus(
+          const sellAmountAfterPartnerFees = valueToBigNumber(state.outputAmount).plus(
             partnerFeeAmount
           );
           const sellAmountAfterSlippage = valueToBigNumber(sellAmountAfterPartnerFees).multipliedBy(
@@ -178,6 +181,7 @@ export const useSwapOrderAmounts = ({
     const sellAmountBigInt = BigInt(
       normalizeBN(sellAmountFormatted, -sellAmountToken.decimals).toFixed(0)
     );
+
     const buyAmountBigInt = BigInt(
       normalizeBN(buyAmountFormatted, -buyAmountToken.decimals).toFixed(0)
     );
