@@ -26,7 +26,7 @@ import { BasicModal } from '../../../../primitives/BasicModal';
 import { FormattedNumber } from '../../../../primitives/FormattedNumber';
 import { ExternalTokenIcon } from '../../../../primitives/TokenIcon';
 import { SearchInput } from '../../../../SearchInput';
-import { SwappableToken, TokenType } from '../../types';
+import { SwappableToken, SwapType, TokenType } from '../../types';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -76,6 +76,8 @@ export interface AssetInputProps {
   showBalance?: boolean;
   allowCustomTokens?: boolean;
   title?: string;
+  swapType: SwapType;
+  side: 'input' | 'output';
 }
 
 export const SwitchAssetInput = ({
@@ -95,6 +97,8 @@ export const SwitchAssetInput = ({
   showBalance = true,
   allowCustomTokens = true,
   title,
+  swapType,
+  side,
 }: AssetInputProps) => {
   const theme = useTheme();
   const handleSelect = (asset: SwappableToken) => {
@@ -127,6 +131,32 @@ export const SwitchAssetInput = ({
   }, [assets]);
 
   const popularAssets = assets.filter((asset) => COMMON_SWAPS.includes(asset.symbol));
+
+  const getRecentStorageKey = (swapType: SwapType, chainId: number, side: 'input' | 'output') =>
+    `aave_recent_tokens_${swapType}_${chainId}_${side}`;
+
+  const recentAddresses: string[] = (() => {
+    try {
+      const raw = localStorage.getItem(getRecentStorageKey(swapType, chainId, side));
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  })();
+
+  const recentAssets = recentAddresses
+    .map((addr) => assets.find((a) => a.addressToSwap.toLowerCase() === String(addr).toLowerCase()))
+    .filter(Boolean) as SwappableToken[];
+
+  const seen = new Set<string>();
+  const mergedPopular = [...recentAssets, ...popularAssets].filter((asset) => {
+    const key = asset.addressToSwap.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  const popularSectionTitle = recentAssets.length > 0 ? 'Recently used & Popular' : 'Popular';
   const handleSearchAssetChange = (value: string) => {
     const searchQuery = value.trim().toLowerCase();
     const matchingAssets = assets.filter(
@@ -308,7 +338,8 @@ export const SwitchAssetInput = ({
 
               <Box
                 sx={{
-                  borderBottom: `1px solid ${theme.palette.divider}`,
+                  borderBottom:
+                    mergedPopular.length > 0 ? `1px solid ${theme.palette.divider}` : 'none',
                   position: 'sticky',
                   top: 0,
                   zIndex: 2,
@@ -336,9 +367,16 @@ export const SwitchAssetInput = ({
                       gap: 1.5,
                     }}
                   >
-                    {popularAssets.map((asset) => (
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ display: 'block', width: '100%' }}
+                    >
+                      <Trans>{popularSectionTitle}</Trans>
+                    </Typography>
+                    {mergedPopular.map((asset) => (
                       <Box
-                        key={asset.symbol}
+                        key={asset.addressToSwap}
                         sx={{
                           display: 'flex',
                           flexDirection: 'row',

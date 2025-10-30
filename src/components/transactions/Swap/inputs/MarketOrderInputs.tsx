@@ -69,6 +69,8 @@ export const MarketOrderInputs = ({
           selectedAsset={state.sourceToken}
           forcedMaxValue={state.forcedMaxValue}
           allowCustomTokens={params.allowCustomTokens}
+          swapType={params.swapType}
+          side="input"
         />
 
         {params.showSwitchInputAndOutputAssetsButton && !params.outputInputTitle ? (
@@ -157,6 +159,8 @@ export const MarketOrderInputs = ({
           selectedAsset={state.destinationToken}
           showBalance={params.showOutputBalance}
           allowCustomTokens={params.allowCustomTokens}
+          swapType={params.swapType}
+          side="output"
         />
       </Box>
 

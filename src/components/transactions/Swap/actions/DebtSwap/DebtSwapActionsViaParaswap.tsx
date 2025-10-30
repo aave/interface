@@ -62,18 +62,19 @@ export const DebtSwapActionsViaParaswap = ({
     state.sellAmountToken?.decimals || 18
   );
 
-  const { requiresApproval, approval, tryPermit, signatureParams } = useSwapTokenApproval({
-    chainId: state.chainId,
-    token: state.destinationReserve.reserve.variableDebtTokenAddress,
-    symbol: state.destinationReserve.reserve.symbol,
-    amount: maxNewDebtAmountToReceiveWithSlippage,
-    decimals: state.destinationReserve.reserve.decimals,
-    spender: currentMarketData.addresses.DEBT_SWITCH_ADAPTER,
-    setState,
-    allowPermit: currentMarketData.v3,
-    margin: 0.25,
-    type: 'delegation',
-  });
+  const { requiresApproval, approval, tryPermit, signatureParams, loadingPermitData } =
+    useSwapTokenApproval({
+      chainId: state.chainId,
+      token: state.destinationReserve.reserve.variableDebtTokenAddress,
+      symbol: state.destinationReserve.reserve.symbol,
+      amount: maxNewDebtAmountToReceiveWithSlippage,
+      decimals: state.destinationReserve.reserve.decimals,
+      spender: currentMarketData.addresses.DEBT_SWITCH_ADAPTER,
+      setState,
+      allowPermit: currentMarketData.v3,
+      margin: 0.25,
+      type: 'delegation',
+    });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -207,7 +208,7 @@ export const DebtSwapActionsViaParaswap = ({
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
-      fetchingData={state.ratesLoading}
+      fetchingData={state.ratesLoading || loadingPermitData}
       errorParams={{
         loading: false,
         disabled: state.actionsBlocked || !approvalTxState?.success,

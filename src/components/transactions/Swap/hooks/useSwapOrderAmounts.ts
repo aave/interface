@@ -248,19 +248,6 @@ export const useSwapOrderAmounts = ({
       normalizeBN(buyAmountFormatted, -buyAmountToken.decimals).toFixed(0)
     );
 
-    console.log({
-      buyAmountFormatted,
-      buyAmountUSD,
-      sellAmountFormatted,
-      sellAmountUSD,
-      sellAmountToken,
-      buyAmountToken,
-      isInvertedSwap,
-      sellAmountBigInt,
-      buyAmountBigInt,
-      processedSide,
-    });
-
     setState({
       buyAmountFormatted,
       buyAmountUSD,

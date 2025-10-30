@@ -250,6 +250,7 @@ export const SwapInputs = ({
           actionsLoading: false,
         });
         saveTokenSelection(token, state.destinationToken);
+        saveRecentToken('input', token);
         resetErrorsAndWarnings();
       });
     } else {
@@ -267,6 +268,7 @@ export const SwapInputs = ({
         actionsLoading: false,
       });
       saveTokenSelection(token, state.destinationToken);
+      saveRecentToken('input', token);
       resetErrorsAndWarnings();
     }
     trackingHandlers.trackInputChange(SwapInputChanges.INPUT_TOKEN, token.symbol);
@@ -298,6 +300,7 @@ export const SwapInputs = ({
           actionsLoading: false,
         });
         saveTokenSelection(state.sourceToken, token);
+        saveRecentToken('output', token);
         resetErrorsAndWarnings();
       });
     } else {
@@ -315,6 +318,7 @@ export const SwapInputs = ({
         actionsLoading: false,
       });
       saveTokenSelection(state.sourceToken, token);
+      saveRecentToken('output', token);
       resetErrorsAndWarnings();
     }
     trackingHandlers.trackInputChange(SwapInputChanges.OUTPUT_TOKEN, token.symbol);
@@ -332,6 +336,22 @@ export const SwapInputs = ({
       );
     } catch (e) {
       console.error('Error saving token selection', e);
+    }
+  };
+
+  const getRecentStorageKey = (swapType: SwapType, chainId: number, side: 'input' | 'output') =>
+    `aave_recent_tokens_${swapType}_${chainId}_${side}`;
+
+  const saveRecentToken = (side: 'input' | 'output', token: SwappableToken) => {
+    try {
+      const key = getRecentStorageKey(params.swapType, state.chainId, side);
+      const raw = localStorage.getItem(key);
+      const list: string[] = raw ? JSON.parse(raw) : [];
+      const addr = token.addressToSwap.toLowerCase();
+      const next = [addr, ...list.filter((a) => a.toLowerCase() !== addr)];
+      localStorage.setItem(key, JSON.stringify(next.slice(0, 8)));
+    } catch (e) {
+      // ignore storage errors
     }
   };
 

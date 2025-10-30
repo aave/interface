@@ -68,6 +68,8 @@ export const LimitOrderInputs = ({
           selectedAsset={state.sourceToken}
           forcedMaxValue={state.forcedMaxValue}
           allowCustomTokens={params.allowCustomTokens}
+          swapType={params.swapType}
+          side="input"
         />
 
         {params.showSwitchInputAndOutputAssetsButton && !params.outputInputTitle ? (
@@ -166,6 +168,8 @@ export const LimitOrderInputs = ({
           selectedAsset={state.destinationToken}
           showBalance={false}
           allowCustomTokens={params.allowCustomTokens}
+          swapType={params.swapType}
+          side="output"
         />
 
         <PriceInput

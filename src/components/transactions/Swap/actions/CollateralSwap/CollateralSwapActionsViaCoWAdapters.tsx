@@ -98,16 +98,17 @@ export const CollateralSwapActionsViaCowAdapters = ({
     state.sellAmountToken?.underlyingAddress || state.sourceToken.addressToSwap;
   const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(state.chainId, sellAssetAddress);
 
-  const { requiresApproval, approval, tryPermit, signatureParams } = useSwapTokenApproval({
-    chainId: state.chainId,
-    token: state.sourceToken.addressToSwap,
-    symbol: state.sourceToken.symbol,
-    amount: normalize(amountToApprove.toString(), state.sellAmountToken?.decimals ?? 18),
-    decimals: state.sourceToken.decimals,
-    spender: precalculatedInstanceAddress,
-    setState,
-    allowPermit: !disablePermitDueToActiveOrder, // CoW Adapters do support permit but avoid nonce reuse
-  });
+  const { requiresApproval, approval, tryPermit, signatureParams, loadingPermitData } =
+    useSwapTokenApproval({
+      chainId: state.chainId,
+      token: state.sourceToken.addressToSwap,
+      symbol: state.sourceToken.symbol,
+      amount: normalize(amountToApprove.toString(), state.sellAmountToken?.decimals ?? 18),
+      decimals: state.sourceToken.decimals,
+      spender: precalculatedInstanceAddress,
+      setState,
+      allowPermit: !disablePermitDueToActiveOrder, // CoW Adapters do support permit but avoid nonce reuse
+    });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -265,7 +266,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
         ),
         handleClick: action,
       }}
-      fetchingData={state.actionsLoading}
+      fetchingData={state.actionsLoading || loadingPermitData}
       blocked={state.actionsBlocked || !precalculatedInstanceAddress}
       tryPermit={tryPermit}
       permitInUse={disablePermitDueToActiveOrder}

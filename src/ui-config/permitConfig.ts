@@ -1,5 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
-
+import { Contract, providers } from 'ethers';
+import { zeroAddress } from 'viem';
 /**
  * Maps token permit support by chain and token address.
  * Permit enables gasless approvals using signed messages (EIP-2612).
@@ -521,6 +522,118 @@ export const permitByChainAndToken: {
     '0x37b9ad6b5dc8ad977ad716e92f49e9d200e58431': true, // vusdce
     '0x2766eefe0311bf7421cc30155b03d210bce30df8': true, // vgho
   },
+};
+
+export const isPermitSupported = (chainId: ChainId, tokenAddress: string) => {
+  return permitByChainAndToken[chainId]?.[tokenAddress.toLowerCase()] ?? false;
+};
+
+const PERMIT_PROBE_ABI = [
+  'function nonces(address owner) view returns (uint256)',
+  'function DOMAIN_SEPARATOR() view returns (bytes32)',
+  'function domainSeparator() view returns (bytes32)',
+  'function EIP712Domain() view returns (bytes memory)',
+  'function permit(address, address, uint256, uint256, uint8, bytes32, bytes32)',
+];
+
+const CACHE_KEY = 'permitCache';
+const CACHE_TTL = 1000 * 60 * 60 * 24 * 7; // 7 days
+const memoryCache = new Map<string, boolean>();
+
+// ---- Local cache helpers ----
+interface PermitCacheEntry {
+  value: boolean;
+  timestamp: number;
+}
+
+const loadCache = (): Record<string, PermitCacheEntry> => {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch {
+    return {};
+  }
+};
+
+const saveCache = (cache: Record<string, PermitCacheEntry>) => {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+  } catch {
+    // ignore quota errors
+  }
+};
+
+const getFromCache = (key: string): boolean | undefined => {
+  // SSR fallback
+  if (typeof window === 'undefined') return memoryCache.get(key);
+
+  const cache = loadCache();
+  const entry = cache[key];
+  if (!entry) return;
+
+  if (Date.now() - entry.timestamp > CACHE_TTL) {
+    delete cache[key];
+    saveCache(cache);
+    return;
+  }
+
+  return entry.value;
+};
+
+const setToCache = (key: string, value: boolean) => {
+  if (typeof window === 'undefined') {
+    memoryCache.set(key, value);
+    return;
+  }
+
+  const cache = loadCache();
+  cache[key] = { value, timestamp: Date.now() };
+  saveCache(cache);
+};
+
+export const isPermitSupportedWithFallback = async (
+  chainId: ChainId,
+  tokenAddress: string,
+  provider: providers.Provider
+): Promise<boolean> => {
+  const key = `${chainId}:${tokenAddress.toLowerCase()}`;
+
+  // 1) Static table
+  const staticResult = permitByChainAndToken?.[chainId]?.[tokenAddress.toLowerCase()];
+  if (typeof staticResult === 'boolean') return staticResult;
+
+  // 2) Cache
+  const cached = getFromCache(key);
+  if (cached !== undefined) return cached;
+
+  // 3) On-chain probe
+  const contract = new Contract(tokenAddress, PERMIT_PROBE_ABI, provider);
+
+  console.log('chainId', chainId);
+  console.log('tokenAddress', tokenAddress);
+
+  const tryCall = async (fn: string, args: unknown[] = []) => {
+    try {
+      await contract[fn](...args);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const noncesOk = await tryCall('nonces', [zeroAddress]);
+  console.log('noncesOk', noncesOk);
+  const sepOk =
+    (await tryCall('DOMAIN_SEPARATOR')) ||
+    (await tryCall('domainSeparator')) ||
+    (await tryCall('EIP712Domain'));
+  console.log('sepOk', sepOk);
+  const supported = noncesOk && sepOk;
+  console.log('supported', supported);
+  setToCache(key, supported);
+  return supported;
 };
 
 export const customAssetDomains: { [key: string]: { name: string; version: string } } = {

@@ -10,7 +10,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { permitByChainAndToken } from 'src/ui-config/permitConfig';
+import { isPermitSupportedWithFallback } from 'src/ui-config/permitConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { needsUSDTApprovalReset } from 'src/utils/usdtHelpers';
 import { useShallow } from 'zustand/shallow';
@@ -95,6 +95,7 @@ export const useSwapTokenApproval = ({
 
   const { approvalTxState, setLoadingTxns, setTxError, setApprovalTxState } = useModalContext();
   const { sendTx, signTxData } = useWeb3Context();
+  const [loadingPermitData, setLoadingPermitData] = useState(false);
 
   const [
     user,
@@ -222,8 +223,28 @@ export const useSwapTokenApproval = ({
     fetchApprovedAmountFromContract();
   }, [token, spender, signatureParams, approvalTxState.loading, approvalTxState.success]);
 
-  const permitAvailable = permitByChainAndToken[chainId]?.[token.toLowerCase()];
-  const tryPermit = allowPermit && permitAvailable;
+  const [permitSupported, setPermitSupported] = useState<boolean | undefined>(undefined);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        setLoadingPermitData(true);
+        const rpc = getProvider(chainId);
+        const supported = await isPermitSupportedWithFallback(chainId, token, rpc);
+        if (!cancelled) setPermitSupported(supported);
+        setLoadingPermitData(false);
+      } catch {
+        if (!cancelled) setPermitSupported(false);
+        setLoadingPermitData(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [chainId, token]);
+
+  const tryPermit = allowPermit && permitSupported === true;
   const usePermit = tryPermit && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   const approval = async () => {
@@ -408,6 +429,7 @@ export const useSwapTokenApproval = ({
   return {
     requiresApproval,
     requiresApprovalReset,
+    loadingPermitData,
     signatureParams,
     approval,
     tryPermit,

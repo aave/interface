@@ -62,16 +62,22 @@ export const RepayWithCollateralActionsViaParaswap = ({
   );
 
   // Approval is aToken ERC20 Approval
-  const { requiresApproval, signatureParams, approval, tryPermit, approvedAmount } =
-    useSwapTokenApproval({
-      chainId: state.chainId,
-      token: state.destinationToken.addressToSwap, // aToken
-      symbol: state.destinationToken.symbol,
-      decimals: state.destinationToken.decimals,
-      amount: collateralToRepayAmountToApprove.toString(),
-      spender: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
-      setState,
-    });
+  const {
+    requiresApproval,
+    signatureParams,
+    approval,
+    tryPermit,
+    approvedAmount,
+    loadingPermitData,
+  } = useSwapTokenApproval({
+    chainId: state.chainId,
+    token: state.destinationToken.addressToSwap, // aToken
+    symbol: state.destinationToken.symbol,
+    decimals: state.destinationToken.decimals,
+    amount: collateralToRepayAmountToApprove.toString(),
+    spender: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
+    setState,
+  });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -239,7 +245,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
       handleApproval={approval}
       actionText={<Trans>Repay {state.sourceReserve.reserve.symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {state.sourceReserve.reserve.symbol}</Trans>}
-      fetchingData={state.ratesLoading}
+      fetchingData={state.ratesLoading || loadingPermitData}
       errorParams={{
         loading: false,
         disabled: state.actionsBlocked,

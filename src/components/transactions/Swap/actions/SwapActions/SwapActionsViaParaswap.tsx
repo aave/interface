@@ -41,18 +41,24 @@ export const SwapActionsViaParaswap = ({
 
   const slippageInPercent = (Number(state.slippage) * 100).toString();
 
-  const { requiresApproval, requiresApprovalReset, signatureParams, approval, tryPermit } =
-    useSwapTokenApproval({
-      chainId: state.chainId,
-      token: state.sourceToken.addressToSwap,
-      symbol: state.sourceToken.symbol,
-      amount: state.inputAmount,
-      decimals: state.sourceToken.decimals,
-      spender: isParaswapRates(state.swapRate)
-        ? state?.swapRate?.optimalRateData?.tokenTransferProxy
-        : undefined,
-      setState,
-    });
+  const {
+    requiresApproval,
+    requiresApprovalReset,
+    signatureParams,
+    approval,
+    tryPermit,
+    loadingPermitData,
+  } = useSwapTokenApproval({
+    chainId: state.chainId,
+    token: state.sourceToken.addressToSwap,
+    symbol: state.sourceToken.symbol,
+    amount: state.inputAmount,
+    decimals: state.sourceToken.decimals,
+    spender: isParaswapRates(state.swapRate)
+      ? state?.swapRate?.optimalRateData?.tokenTransferProxy
+      : undefined,
+    setState,
+  });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -200,7 +206,7 @@ export const SwapActionsViaParaswap = ({
         content: <Trans>Swap</Trans>,
         handleClick: action,
       }}
-      fetchingData={state.actionsLoading}
+      fetchingData={state.actionsLoading || loadingPermitData}
       blocked={state.actionsBlocked}
       tryPermit={tryPermit}
     />

@@ -22,16 +22,6 @@ export const SwapDetails = ({ params, state }: { params: SwapParams; state: Swap
   )
     return null;
 
-  console.log({
-    sellAmount: state.sellAmountFormatted,
-    buyAmount: state.buyAmountFormatted,
-    sellAmountUSD: state.sellAmountUSD,
-    buyAmountUSD: state.buyAmountUSD,
-    sellAmountToken: state.sellAmountToken,
-    buyAmountToken: state.buyAmountToken,
-    provider: state.provider,
-  });
-
   return (
     <TxModalDetails
       gasLimit={state.gasLimit}
@@ -120,11 +110,6 @@ export const IntentTxDetails = ({
 
   const receivingInUsd = Number(buyAmountUSD);
   const sendingInUsd = srcUsd;
-
-  console.log({
-    receivingInUsd,
-    sendingInUsd,
-  });
 
   const priceImpact = (1 - receivingInUsd / sendingInUsd) * 100;
 

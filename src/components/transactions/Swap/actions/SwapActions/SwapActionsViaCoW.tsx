@@ -73,19 +73,25 @@ export const SwapActionsViaCoW = ({
     state.sourceToken.addressToSwap
   );
 
-  const { requiresApproval, requiresApprovalReset, approval, tryPermit, signatureParams } =
-    useSwapTokenApproval({
-      chainId: state.chainId,
-      token: state.sourceToken.addressToSwap,
-      symbol: state.sourceToken.symbol,
-      amount: state.sellAmountFormatted ?? '0',
-      decimals: state.sourceToken.decimals,
-      spender: isCowProtocolRates(state.swapRate)
-        ? COW_PROTOCOL_VAULT_RELAYER_ADDRESS[state.chainId as SupportedChainId]
-        : undefined,
-      setState,
-      allowPermit: !disablePermitDueToActiveOrder,
-    });
+  const {
+    requiresApproval,
+    requiresApprovalReset,
+    approval,
+    tryPermit,
+    signatureParams,
+    loadingPermitData,
+  } = useSwapTokenApproval({
+    chainId: state.chainId,
+    token: state.sourceToken.addressToSwap,
+    symbol: state.sourceToken.symbol,
+    amount: state.sellAmountFormatted ?? '0',
+    decimals: state.sourceToken.decimals,
+    spender: isCowProtocolRates(state.swapRate)
+      ? COW_PROTOCOL_VAULT_RELAYER_ADDRESS[state.chainId as SupportedChainId]
+      : undefined,
+    setState,
+    allowPermit: !disablePermitDueToActiveOrder,
+  });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -372,7 +378,7 @@ export const SwapActionsViaCoW = ({
         content: <Trans>Swap</Trans>,
         handleClick: action,
       }}
-      fetchingData={state.actionsLoading}
+      fetchingData={state.actionsLoading || loadingPermitData}
       blocked={state.actionsBlocked}
       tryPermit={tryPermit}
       permitInUse={disablePermitDueToActiveOrder}

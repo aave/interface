@@ -40,16 +40,22 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
     return calculateSignedAmount(state.sellAmountFormatted, state.sellAmountToken.decimals);
   }, [state.sellAmountFormatted, state.sellAmountToken]);
 
-  const { requiresApproval, signatureParams, approval, tryPermit, approvedAmount } =
-    useSwapTokenApproval({
-      chainId: state.chainId,
-      token: state.sourceToken.addressToSwap, // aToken
-      symbol: state.sourceToken.symbol,
-      amount: normalize(amountToApprove.toString(), state.sourceToken?.decimals ?? 18),
-      decimals: state.sourceToken.decimals,
-      spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
-      setState,
-    });
+  const {
+    requiresApproval,
+    signatureParams,
+    approval,
+    tryPermit,
+    approvedAmount,
+    loadingPermitData,
+  } = useSwapTokenApproval({
+    chainId: state.chainId,
+    token: state.sourceToken.addressToSwap, // aToken
+    symbol: state.sourceToken.symbol,
+    amount: normalize(amountToApprove.toString(), state.sourceToken?.decimals ?? 18),
+    decimals: state.sourceToken.decimals,
+    spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
+    setState,
+  });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -253,7 +259,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
         )
       }
       actionInProgressText={<Trans>Swapping {state.sourceToken.symbol} collateral</Trans>}
-      fetchingData={state.actionsLoading}
+      fetchingData={state.actionsLoading || loadingPermitData}
       errorParams={{
         loading: false,
         disabled: state.actionsBlocked,

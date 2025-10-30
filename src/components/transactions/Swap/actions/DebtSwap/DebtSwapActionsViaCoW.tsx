@@ -100,19 +100,20 @@ export const DebtSwapActionsViaCoW = ({
   const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(state.chainId, sellAssetAddress);
 
   // Approval is to the destination token via delegation Approval
-  const { requiresApproval, approval, tryPermit, signatureParams } = useSwapTokenApproval({
-    chainId: state.chainId,
-    token: isProtocolSwapState(state)
-      ? state.destinationReserve.reserve.variableDebtTokenAddress
-      : zeroAddress,
-    symbol: state.destinationToken.symbol,
-    amount: normalize(amountToApprove, state.sellAmountToken?.decimals ?? 18),
-    decimals: state.destinationToken.decimals,
-    spender: precalculatedInstanceAddress,
-    setState,
-    allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
-    type: 'delegation', // Debt swap uses delegation
-  });
+  const { requiresApproval, approval, tryPermit, signatureParams, loadingPermitData } =
+    useSwapTokenApproval({
+      chainId: state.chainId,
+      token: isProtocolSwapState(state)
+        ? state.destinationReserve.reserve.variableDebtTokenAddress
+        : zeroAddress,
+      symbol: state.destinationToken.symbol,
+      amount: normalize(amountToApprove, state.sellAmountToken?.decimals ?? 18),
+      decimals: state.destinationToken.decimals,
+      spender: precalculatedInstanceAddress,
+      setState,
+      allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
+      type: 'delegation', // Debt swap uses delegation
+    });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -271,7 +272,7 @@ export const DebtSwapActionsViaCoW = ({
         ),
         handleClick: action,
       }}
-      fetchingData={state.actionsLoading}
+      fetchingData={state.actionsLoading || loadingPermitData}
       blocked={state.actionsBlocked || !precalculatedInstanceAddress}
       tryPermit={tryPermit}
       permitInUse={disablePermitDueToActiveOrder}

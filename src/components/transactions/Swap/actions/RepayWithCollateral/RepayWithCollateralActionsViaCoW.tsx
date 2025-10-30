@@ -102,16 +102,17 @@ export const RepayWithCollateralActionsViaCoW = ({
   const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(state.chainId, sellAssetAddress);
 
   // Approval is aToken ERC20 Approval
-  const { requiresApproval, approval, tryPermit, signatureParams } = useSwapTokenApproval({
-    chainId: state.chainId,
-    token: state.destinationToken.addressToSwap, // aToken to repay with
-    symbol: state.destinationToken.symbol,
-    amount: normalize(amountToApprove.toString(), state.sellAmountToken?.decimals ?? 18),
-    decimals: state.destinationToken.decimals,
-    spender: precalculatedInstanceAddress,
-    setState,
-    allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
-  });
+  const { requiresApproval, approval, tryPermit, signatureParams, loadingPermitData } =
+    useSwapTokenApproval({
+      chainId: state.chainId,
+      token: state.destinationToken.addressToSwap, // aToken to repay with
+      symbol: state.destinationToken.symbol,
+      amount: normalize(amountToApprove.toString(), state.sellAmountToken?.decimals ?? 18),
+      decimals: state.destinationToken.decimals,
+      spender: precalculatedInstanceAddress,
+      setState,
+      allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
+    });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -276,7 +277,7 @@ export const RepayWithCollateralActionsViaCoW = ({
         ),
         handleClick: action,
       }}
-      fetchingData={state.actionsLoading}
+      fetchingData={state.actionsLoading || loadingPermitData}
       blocked={state.actionsBlocked || !precalculatedInstanceAddress}
       tryPermit={tryPermit}
       permitInUse={disablePermitDueToActiveOrder}

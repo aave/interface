@@ -224,7 +224,7 @@ export const getOrderStatus = async (orderId: string, chainId: number) => {
 };
 
 export const getOrder = async (orderId: string, chainId: number) => {
-  const orderBookApi = new OrderBookApi({ chainId });
+  const orderBookApi = new OrderBookApi({ chainId, env: 'staging' });
   const order = await orderBookApi.getOrder(orderId, {
     chainId,
   });

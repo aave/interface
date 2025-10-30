@@ -102,11 +102,20 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
           margin: 0,
           padding: 0,
           minHeight: '24px',
+          maxHeight: '24px',
           height: '24px',
+          '&.Mui-expanded': {
+            minHeight: '24px',
+            maxHeight: '24px',
+            height: '24px',
+          },
           '.MuiAccordionSummary-content': {
             margin: 0,
             alignItems: !costBreakdownExpanded ? 'center' : undefined,
             display: !costBreakdownExpanded ? 'flex' : undefined,
+          },
+          '& .MuiAccordionSummary-content.Mui-expanded': {
+            margin: 0,
           },
         }}
       >
