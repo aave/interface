@@ -43,7 +43,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
     currentMarket,
     ProtocolAction.borrow
   );
-  const { iconSymbol } = fetchIconSymbolAndName({
+  const { iconSymbol, name } = fetchIconSymbolAndName({
     underlyingAsset: reserve.underlyingToken.address,
     symbol: reserve.underlyingToken.symbol,
     name: reserve.underlyingToken.name,
@@ -77,7 +77,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
         <TokenIcon symbol={displayIconSymbol} fontSize="large" />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
           <Typography variant="h4" noWrap>
-            {reserve.underlyingToken.name}
+            {name || reserve.underlyingToken.name}
           </Typography>
 
           <Box
