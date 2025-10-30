@@ -79,7 +79,6 @@ export const SwapInputs = ({
         quoteTimerPausedAt: undefined,
         quoteTimerPausedAccumMs: undefined,
         inputAmount: state.sourceToken.balance,
-        debouncedInputAmount: state.sourceToken.balance,
         isMaxSelected: true,
         side: 'sell',
       });
@@ -90,7 +89,6 @@ export const SwapInputs = ({
         quoteTimerPausedAt: undefined,
         quoteTimerPausedAccumMs: undefined,
         inputAmount: value,
-        debouncedInputAmount: value,
         isMaxSelected: value === state.forcedMaxValue,
         side: 'sell',
       });
@@ -113,7 +111,6 @@ export const SwapInputs = ({
         quoteTimerPausedAt: undefined,
         quoteTimerPausedAccumMs: undefined,
         outputAmount: state.destinationToken.balance,
-        debouncedOutputAmount: state.destinationToken.balance,
         isMaxSelected: true,
         side: 'buy',
       });
@@ -124,7 +121,6 @@ export const SwapInputs = ({
         quoteTimerPausedAt: undefined,
         quoteTimerPausedAccumMs: undefined,
         outputAmount: value,
-        debouncedOutputAmount: value,
         isMaxSelected: false,
         side: 'buy',
       });
@@ -156,7 +152,6 @@ export const SwapInputs = ({
       quoteTimerPausedAt: undefined,
       quoteTimerPausedAccumMs: undefined,
       outputAmount: newOutputAmount,
-      debouncedOutputAmount: newOutputAmount,
       isMaxSelected: false,
       side: 'sell',
     });
@@ -488,6 +483,21 @@ export const SwapInputs = ({
   };
 
   const showNetworkSelector = params.showNetworkSelector && !!params.supportedNetworks.length;
+
+  // Debounce input and output amounts before triggering quote logic
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setState({ debouncedInputAmount: state.inputAmount });
+    }, 400);
+    return () => clearTimeout(t);
+  }, [state.inputAmount]);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setState({ debouncedOutputAmount: state.outputAmount });
+    }, 400);
+    return () => clearTimeout(t);
+  }, [state.outputAmount]);
 
   const inputAssets = useMemo(
     () =>

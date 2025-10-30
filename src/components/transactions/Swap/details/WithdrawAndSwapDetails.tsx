@@ -25,7 +25,8 @@ export const WithdrawAndSwapDetails = ({
   const withdrawAmount = state.inputAmount;
   const poolReserve = state.sourceReserve.reserve;
 
-  if (!user || !state.buyAmountFormatted || !state.buyAmountUSD || !state.sellAmountFormatted) return null;
+  if (!user || !state.buyAmountFormatted || !state.buyAmountUSD || !state.sellAmountFormatted)
+    return null;
   const healthFactorAfterWithdraw = calculateHFAfterWithdraw({
     user,
     userReserve: state.sourceReserve,
