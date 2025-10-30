@@ -351,6 +351,10 @@ export const MarketSwitcher = () => {
             value={selectedMarketVersion}
             exclusive
             onChange={(_, value) => {
+              if (value === SelectedMarketVersion.V2) {
+                window.open('https://v2-app.aave.com', '_blank', 'noopener');
+                return;
+              }
               if (value !== null) {
                 setSelectedMarketVersion(value);
               }
@@ -372,6 +376,8 @@ export const MarketSwitcher = () => {
               value={SelectedMarketVersion.V3}
               data-cy={`markets_switch_button_v3`}
               sx={{
+                flex: '0 0 96px',
+                px: 1.5,
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
                 '&.Mui-selected, &.Mui-selected:hover': {
                   backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
@@ -401,12 +407,16 @@ export const MarketSwitcher = () => {
               value={SelectedMarketVersion.V2}
               data-cy={`markets_switch_button_v2`}
               sx={{
+                flexGrow: 1.2,
+                flexBasis: 0,
+                px: 2,
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
                 '&.Mui-selected, &.Mui-selected:hover': {
                   backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
                   boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
                 },
                 borderRadius: '4px',
+                padding: 0,
               }}
             >
               <Typography
@@ -419,11 +429,17 @@ export const MarketSwitcher = () => {
                         color: 'transparent',
                       }
                     : {
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
                         color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
                       }
                 }
               >
                 <Trans>Version 2</Trans>
+                <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
+                  <ExternalLinkIcon />
+                </SvgIcon>
               </Typography>
             </StyledToggleButton>
           </StyledToggleButtonGroup>
