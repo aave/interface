@@ -98,11 +98,21 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
       ? (aValue as number) - (bValue as number)
       : (bValue as number) - (aValue as number);
   });
-  const reservesWithIncentives: ReserveWithProtocolIncentives[] = sortedReserves.map((reserve) => ({
-    ...reserve,
-    supplyProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'supply'),
-    borrowProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'borrow'),
-  }));
+  const reservesWithIncentives: ReserveWithProtocolIncentives[] = sortedReserves.map((reserve) => {
+    const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
+    const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
+
+    // Temporary safeguard: Prime should not display the Core extra APR incentive for USDS.
+    const isPrimeMarket = reserve.market?.name?.toLowerCase() === 'aavev3ethereumlido';
+    const isUsds = reserve.underlyingToken.symbol === 'USDS';
+
+    return {
+      ...reserve,
+      // Temporary safeguard: Prime should not display the Core extra APR incentive for USDS.
+      supplyProtocolIncentives: isPrimeMarket && isUsds ? [] : supplyProtocolIncentives,
+      borrowProtocolIncentives,
+    };
+  });
   // Show loading state when loading
   if (loading) {
     return isTableChangedToCards ? (
