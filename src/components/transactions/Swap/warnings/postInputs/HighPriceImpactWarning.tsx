@@ -54,7 +54,8 @@ export function HighPriceImpactWarning({
     >
       <Typography variant="caption">
         <Trans>
-          High price impact. This route may return less due to low liquidity or small order size.
+          High price impact ({(lostValue * 100).toFixed(1)}%). This route may return less due to low
+          liquidity or small order size.
         </Trans>
       </Typography>
 

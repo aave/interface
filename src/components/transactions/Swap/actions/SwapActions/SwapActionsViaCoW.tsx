@@ -236,15 +236,15 @@ export const SwapActionsViaCoW = ({
                 sellAmount: sellAmountAccountingCosts.toString(),
                 buyAmount: buyAmountAccountingCosts.toString(),
                 tokenSrc: state.sourceToken.addressToSwap,
-                tokenSrcDecimals: state.swapRate.srcDecimals,
-                tokenDestDecimals: state.swapRate.destDecimals,
+                tokenSrcDecimals: state.sourceToken.decimals,
+                tokenDestDecimals: state.destinationToken.decimals,
                 slippageBps,
                 smartSlippage,
                 inputSymbol: state.sourceToken.symbol,
                 outputSymbol: state.destinationToken.symbol,
-                quote: state.swapRate.order,
+                quote: state.swapRate?.order,
                 appCode,
-                orderBookQuote: state.swapRate.orderBookQuote,
+                orderBookQuote: state.swapRate?.orderBookQuote,
                 orderType: state.orderType,
                 kind:
                   state.orderType === OrderType.MARKET
@@ -281,10 +281,10 @@ export const SwapActionsViaCoW = ({
             } else {
               orderId = await sendOrder({
                 tokenSrc: state.sourceToken.addressToSwap,
-                tokenSrcDecimals: state.swapRate.srcDecimals,
+                tokenSrcDecimals: state.sourceToken.decimals,
                 tokenDest: state.destinationToken.addressToSwap,
-                tokenDestDecimals: state.swapRate.destDecimals,
-                quote: state.swapRate.order,
+                tokenDestDecimals: state.destinationToken.decimals,
+                quote: state.swapRate?.order,
                 sellAmount: sellAmountAccountingCosts.toString(),
                 buyAmount: buyAmountAccountingCosts.toString(),
                 slippageBps,
@@ -302,7 +302,7 @@ export const SwapActionsViaCoW = ({
                 inputSymbol: state.sourceToken.symbol,
                 outputSymbol: state.destinationToken.symbol,
                 appCode,
-                orderBookQuote: state.swapRate.orderBookQuote,
+                orderBookQuote: state.swapRate?.orderBookQuote,
                 signatureParams,
                 estimateGasLimit,
               });

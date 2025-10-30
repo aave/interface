@@ -48,7 +48,7 @@ const EIP_2612_PERMIT_ABI = [
 
 export type CowProtocolActionParams = {
   orderType: OrderType;
-  quote: OrderParameters;
+  quote?: OrderParameters;
   provider: JsonRpcProvider;
   chainId: number;
   user: string;
@@ -64,7 +64,7 @@ export type CowProtocolActionParams = {
   smartSlippage: boolean;
   appCode: string;
   kind: OrderKind;
-  orderBookQuote: QuoteAndPost;
+  orderBookQuote?: QuoteAndPost;
   signatureParams?: SignedParams;
   estimateGasLimit?: (tx: PopulatedTransaction, chainId?: number) => Promise<PopulatedTransaction>;
 };
@@ -78,7 +78,6 @@ export const getPreSignTransaction = async ({
   inputSymbol,
   outputSymbol,
   appCode,
-  orderBookQuote,
   orderType,
   sellAmount,
   buyAmount,
@@ -98,38 +97,18 @@ export const getPreSignTransaction = async ({
     throw new Error('Only smart contract wallets should use presign.');
   }
 
-  let orderResult;
-  if (orderType === OrderType.LIMIT) {
-    orderResult = await tradingSdk.postLimitOrder(
-      {
-        sellAmount,
-        buyAmount,
-        kind: kind == OrderKind.SELL ? OrderKind.SELL : OrderKind.BUY,
-        sellToken: tokenSrc,
-        buyToken: tokenDest,
-        sellTokenDecimals: tokenSrcDecimals,
-        buyTokenDecimals: tokenDestDecimals,
-        owner: user as `0x${string}`,
-      },
-      {
-        appData: COW_APP_DATA(
-          inputSymbol,
-          outputSymbol,
-          slippageBps,
-          smartSlippage,
-          orderType,
-          appCode
-        ),
-        additionalParams: {
-          signingScheme: SigningScheme.PRESIGN,
-        },
-      }
-    );
-  } else {
-    orderResult = await orderBookQuote.postSwapOrderFromQuote({
-      additionalParams: {
-        signingScheme: SigningScheme.PRESIGN,
-      },
+  const orderResult = await tradingSdk.postLimitOrder(
+    {
+      sellAmount,
+      buyAmount,
+      kind: kind == OrderKind.SELL ? OrderKind.SELL : OrderKind.BUY,
+      sellToken: tokenSrc,
+      buyToken: tokenDest,
+      sellTokenDecimals: tokenSrcDecimals,
+      buyTokenDecimals: tokenDestDecimals,
+      owner: user as `0x${string}`,
+    },
+    {
       appData: COW_APP_DATA(
         inputSymbol,
         outputSymbol,
@@ -138,8 +117,11 @@ export const getPreSignTransaction = async ({
         orderType,
         appCode
       ),
-    });
-  }
+      additionalParams: {
+        signingScheme: SigningScheme.PRESIGN,
+      },
+    }
+  );
 
   const preSignTransaction = await tradingSdk.getPreSignTransaction({
     orderUid: orderResult.orderId,

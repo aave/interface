@@ -1,13 +1,16 @@
-import { Dispatch, useEffect } from 'react';
+import { Dispatch, useEffect, useRef } from 'react';
 
 import { validateSlippage, ValidationSeverity } from '../helpers/shared/slippage.helpers';
-import { isCowProtocolRates, SwapParams, SwapState, TokenType } from '../types';
+import { isCowProtocolRates, OrderType, SwapParams, SwapState, TokenType } from '../types';
 
 /**
- * Keeps slippage-related UI/validation in sync with user input and provider hints.
- *
- * - Surfaces a warning when user slippage is below provider suggestion (CoW)
- * - Validates input and derives `safeSlippage` for guards and calculations
+/**
+ * Hook responsibilities:
+ * - Synchronizes the slippage value in state with the selected order type (MARKET or LIMIT), restoring previous market slippage as needed.
+ * - Tracks the last non-zero market slippage to allow restoration when toggling between order types.
+ * - Triggers slippage warnings for the user if their input value is below the provider's suggested minimum for CoW Protocol swaps.
+ * - Validates the slippage value and updates related state/validation UI.
+ * - Keeps UI/validation in sync with both user input and provider hints or requirements.
  */
 export const useSlippageSelector = ({
   state,
@@ -17,6 +20,28 @@ export const useSlippageSelector = ({
   state: SwapState;
   setState: Dispatch<Partial<SwapState>>;
 }) => {
+  // Track last non-zero market slippage to restore when switching back from LIMIT
+  const lastMarketSlippageRef = useRef<string | null>(null);
+
+  // Keep slippage aligned with order type globally
+  useEffect(() => {
+    if (state.orderType === OrderType.LIMIT) {
+      // Remember current market slippage if non-zero before forcing to 0 for limit
+      if (state.slippage && Number(state.slippage) !== 0) {
+        lastMarketSlippageRef.current = state.slippage;
+      }
+      if (state.slippage !== '0') {
+        setState({ slippage: '0' });
+      }
+    } else if (state.orderType === OrderType.MARKET) {
+      // Restore to suggested slippage if available, otherwise last known market slippage, else default 0.10%
+      const target = lastMarketSlippageRef.current || state.autoSlippage;
+      if (state.slippage !== target) {
+        setState({ slippage: target });
+      }
+    }
+  }, [state.orderType]);
+
   useEffect(() => {
     // Debounce to avoid race condition
     const timeout = setTimeout(() => {

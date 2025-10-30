@@ -7,7 +7,7 @@ import { Row } from 'src/components/primitives/Row';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 
 import { TxModalDetails } from '../../FlowCommons/TxModalDetails';
-import { SwappableToken, SwapParams, SwapProvider, SwapQuoteType, SwapState } from '../types';
+import { SwappableToken, SwapParams, SwapProvider, SwapState } from '../types';
 import { CowCostsDetails } from './CowCostsDetails';
 
 export const SwapDetails = ({ params, state }: { params: SwapParams; state: SwapState }) => {
@@ -22,6 +22,16 @@ export const SwapDetails = ({ params, state }: { params: SwapParams; state: Swap
   )
     return null;
 
+  console.log({
+    sellAmount: state.sellAmountFormatted,
+    buyAmount: state.buyAmountFormatted,
+    sellAmountUSD: state.sellAmountUSD,
+    buyAmountUSD: state.buyAmountUSD,
+    sellAmountToken: state.sellAmountToken,
+    buyAmountToken: state.buyAmountToken,
+    provider: state.provider,
+  });
+
   return (
     <TxModalDetails
       gasLimit={state.gasLimit}
@@ -29,10 +39,11 @@ export const SwapDetails = ({ params, state }: { params: SwapParams; state: Swap
       showGasStation={state.showGasStation}
     >
       <SwapModalTxDetails
-        switchRates={state.swapRate}
+        provider={state.provider}
         safeSlippage={state.safeSlippage}
         customReceivedTitle={params.customReceivedTitle}
         sellToken={state.sellAmountToken}
+        sellAmount={state.sellAmountFormatted}
         buyToken={state.buyAmountToken}
         buyAmount={state.buyAmountFormatted}
         buyAmountUSD={state.buyAmountUSD}
@@ -43,33 +54,35 @@ export const SwapDetails = ({ params, state }: { params: SwapParams; state: Swap
 };
 
 export const SwapModalTxDetails = ({
-  switchRates,
+  provider,
   buyToken,
   buyAmount,
   buyAmountUSD,
+  sellAmount,
   safeSlippage,
   customReceivedTitle,
   sellToken,
   state,
 }: {
-  switchRates: SwapQuoteType;
+  provider: SwapProvider;
   safeSlippage: number;
   customReceivedTitle?: React.ReactNode;
   sellToken: SwappableToken;
   buyToken: SwappableToken;
+  sellAmount: string;
   buyAmount: string;
   buyAmountUSD: string;
   state: SwapState;
 }) => {
-  return switchRates.provider === SwapProvider.COW_PROTOCOL ? (
+  return provider === SwapProvider.COW_PROTOCOL ? (
     <IntentTxDetails
       state={state}
       sellToken={sellToken}
       buyToken={buyToken}
       safeSlippage={safeSlippage}
       customReceivedTitle={customReceivedTitle}
-      sellTokenPriceUsd={Number(state.sellAmountUSD)}
-      sellAmount={switchRates.srcSpotAmount}
+      sellAmountInUsd={Number(state.sellAmountUSD)}
+      sellAmount={sellAmount}
       buyAmount={buyAmount}
       buyAmountUSD={buyAmountUSD}
     />
@@ -88,7 +101,7 @@ export const IntentTxDetails = ({
   state,
   buyToken,
   customReceivedTitle,
-  sellTokenPriceUsd,
+  sellAmountInUsd,
   sellAmount,
   buyAmount,
   buyAmountUSD,
@@ -98,15 +111,21 @@ export const IntentTxDetails = ({
   sellToken: SwappableToken;
   safeSlippage: number;
   customReceivedTitle?: React.ReactNode;
-  sellTokenPriceUsd: number;
+  sellAmountInUsd: number;
   sellAmount: string;
   buyAmount: string;
   buyAmountUSD: string;
 }) => {
-  const srcUsd = valueToBigNumber(sellAmount).multipliedBy(sellTokenPriceUsd).toNumber();
+  const srcUsd = valueToBigNumber(sellAmount).dividedBy(sellAmountInUsd).toNumber();
 
   const receivingInUsd = Number(buyAmountUSD);
   const sendingInUsd = srcUsd;
+
+  console.log({
+    receivingInUsd,
+    sendingInUsd,
+  });
+
   const priceImpact = (1 - receivingInUsd / sendingInUsd) * 100;
 
   return (

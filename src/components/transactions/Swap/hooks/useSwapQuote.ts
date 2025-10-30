@@ -9,6 +9,7 @@ import { getCowProtocolSellRates } from '../helpers/cow';
 import { getParaswapSellRates, getParaswapSlippage } from '../helpers/paraswap';
 import { getSwitchProvider } from '../helpers/shared/provider.helpers';
 import {
+  OrderType,
   SwapParams,
   SwapProvider,
   SwapQuoteType as SwapQuoteType,
@@ -386,6 +387,9 @@ const useMultiProviderSwapQuoteQuery = ({
       state.user
     ),
     enabled:
+      // LIMIT: fetch only once (when no quote yet). MARKET: fetch normally
+      ((state.orderType === OrderType.LIMIT && !state.swapRate) ||
+        state.orderType !== OrderType.LIMIT) &&
       amount != 'NaN' &&
       amount !== '0' &&
       !state.mainTxState.success &&
@@ -397,6 +401,8 @@ const useMultiProviderSwapQuoteQuery = ({
     throwOnError: false,
     refetchOnWindowFocus: (query) => (query.state.error ? false : true),
     refetchInterval:
+      // LIMIT: never refetch periodically after we got the first quote
+      state.orderType !== OrderType.LIMIT &&
       !state.actionsLoading &&
       !state.quoteRefreshPaused &&
       !state.mainTxState.success &&

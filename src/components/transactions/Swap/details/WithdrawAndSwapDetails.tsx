@@ -25,7 +25,7 @@ export const WithdrawAndSwapDetails = ({
   const withdrawAmount = state.inputAmount;
   const poolReserve = state.sourceReserve.reserve;
 
-  if (!user || !state.swapRate || !state.buyAmountFormatted || !state.buyAmountUSD) return null;
+  if (!user || !state.buyAmountFormatted || !state.buyAmountUSD || !state.sellAmountFormatted) return null;
   const healthFactorAfterWithdraw = calculateHFAfterWithdraw({
     user,
     userReserve: state.sourceReserve,
@@ -37,12 +37,13 @@ export const WithdrawAndSwapDetails = ({
     <TxModalDetails gasLimit={state.gasLimit} showGasStation={state.showGasStation}>
       <SwapModalTxDetails
         state={state}
-        switchRates={state.swapRate}
+        provider={state.provider}
         safeSlippage={state.safeSlippage}
         customReceivedTitle={params.customReceivedTitle}
         sellToken={state.sourceToken}
         buyToken={state.destinationToken}
         buyAmount={state.buyAmountFormatted}
+        sellAmount={state.sellAmountFormatted}
         buyAmountUSD={state.buyAmountUSD}
       />
       <DetailsNumberLine
