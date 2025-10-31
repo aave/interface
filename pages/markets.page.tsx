@@ -1,9 +1,12 @@
 import { Box, Container } from '@mui/material';
+import { useRouter } from 'next/router';
 import { ReactNode, useEffect } from 'react';
+import { ROUTES } from 'src/components/primitives/Link';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { MarketAssetsListContainer } from 'src/modules/markets/MarketAssetsListContainer';
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 import { useRootStore } from 'src/store/root';
+import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 interface MarketContainerProps {
   children: ReactNode;
@@ -38,13 +41,23 @@ export const MarketContainer = ({ children }: MarketContainerProps) => {
 };
 
 export default function Markets() {
+  const router = useRouter();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   useEffect(() => {
+    if (ENABLE_TESTNET) {
+      router.replace(ROUTES.dashboard);
+      return;
+    }
+
     trackEvent('Page Viewed', {
       'Page Name': 'Markets',
     });
-  }, [trackEvent]);
+  }, [router, trackEvent]);
+
+  if (ENABLE_TESTNET) {
+    return null;
+  }
 
   return (
     <>

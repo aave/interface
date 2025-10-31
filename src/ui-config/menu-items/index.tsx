@@ -28,6 +28,8 @@ export const navigation: Navigation[] = [
     link: ROUTES.markets,
     title: t`Markets`,
     dataCy: 'menuMarkets',
+    // Temporary hide Markets menu item on testnet
+    isVisible: () => !ENABLE_TESTNET,
   },
   {
     link: ROUTES.governance,
