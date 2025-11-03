@@ -163,16 +163,16 @@ export const useSwapQuote = ({
       return;
     }
 
-    let slippage, autoSlippage;
-    if (state.provider === 'cowprotocol' && quote?.suggestedSlippage !== undefined) {
+    let slippage = state.slippage;
+    let autoSlippage = state.autoSlippage;
+    if (quote.provider === 'cowprotocol' && quote?.suggestedSlippage !== undefined) {
       slippage = quote.suggestedSlippage.toString();
       autoSlippage = quote.suggestedSlippage.toString();
-    } else if (state.provider === 'paraswap') {
+    } else if (quote.provider === 'paraswap') {
       const paraswapSlippage = getParaswapSlippage(
         state.sourceToken.symbol || '',
         state.destinationToken.symbol || ''
       );
-
       slippage = paraswapSlippage;
       autoSlippage = paraswapSlippage;
     }
@@ -386,17 +386,25 @@ const useMultiProviderSwapQuoteQuery = ({
       destToken,
       state.user
     ),
-    enabled:
-      // LIMIT: fetch only once (when no quote yet). MARKET: fetch normally
-      ((state.orderType === OrderType.LIMIT && !state.swapRate) ||
-        state.orderType !== OrderType.LIMIT) &&
-      amount != 'NaN' &&
-      amount !== '0' &&
-      !state.mainTxState.success &&
-      !state.mainTxState.txHash && // Don't fetch quotes once transaction is sent
-      !state.mainTxState.loading && // Don't fetch quotes while transaction is processing
-      provider !== SwapProvider.NONE &&
-      !state.quoteRefreshPaused,
+    enabled: (() => {
+      // Allow fetch when user has entered a positive amount, even if normalization rounded to '0'
+      const hasPositiveUserAmount =
+        state.processedSide === 'sell'
+          ? Number(state.debouncedInputAmount || '0') > 0
+          : Number(state.debouncedOutputAmount || '0') > 0;
+
+      return (
+        // LIMIT: fetch only once (when no quote yet). MARKET: fetch normally
+        ((state.orderType === OrderType.LIMIT && !state.swapRate) ||
+          state.orderType !== OrderType.LIMIT) &&
+        hasPositiveUserAmount &&
+        !state.mainTxState.success &&
+        !state.mainTxState.txHash && // Don't fetch quotes once transaction is sent
+        !state.mainTxState.loading && // Don't fetch quotes while transaction is processing
+        provider !== SwapProvider.NONE &&
+        !state.quoteRefreshPaused
+      );
+    })(),
     retry: 0,
     throwOnError: false,
     refetchOnWindowFocus: (query) => (query.state.error ? false : true),

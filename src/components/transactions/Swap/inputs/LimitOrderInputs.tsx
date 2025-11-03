@@ -79,6 +79,8 @@ export const LimitOrderInputs = ({
               inputAmount: '',
               debouncedInputAmount: '',
               inputAmountUSD: '',
+              quoteRefreshPaused: true,
+              quoteLastUpdatedAt: undefined,
             })
           }
           usdValue={state.inputAmountUSD || '0'}
@@ -188,6 +190,8 @@ export const LimitOrderInputs = ({
               outputAmount: '',
               debouncedOutputAmount: '',
               outputAmountUSD: '',
+              quoteRefreshPaused: true,
+              quoteLastUpdatedAt: undefined,
             })
           }
           onSelect={swapState.handleSelectedOutputToken}

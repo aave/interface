@@ -119,6 +119,7 @@ export const SwitchAssetInput = ({
 
   const [openModal, setOpenModal] = useState(false);
   const inputRef = useRef<HTMLDivElement>(null);
+  const [pickerHeight, setPickerHeight] = useState<number | undefined>(undefined);
 
   const handleClick = () => {
     if (assets.length === 1) return;
@@ -129,6 +130,14 @@ export const SwitchAssetInput = ({
     setOpenModal(false);
     handleCleanSearch();
   };
+
+  // Match token picker height to the current swap modal paper height
+  useEffect(() => {
+    const paper = inputRef.current?.closest('.MuiPaper-root') as HTMLElement | null;
+    if (paper) {
+      setPickerHeight(paper.clientHeight);
+    }
+  }, [openModal]);
 
   const [filteredAssets, setFilteredAssets] = useState(assets);
   const [loadingNewAsset, setLoadingNewAsset] = useState(false);
@@ -349,7 +358,7 @@ export const SwitchAssetInput = ({
             open={openModal}
             setOpen={setOpenModal}
             contentMaxWidth={420}
-            contentHeight={800}
+            contentHeight={pickerHeight}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
               <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
@@ -359,7 +368,9 @@ export const SwitchAssetInput = ({
               <Box
                 sx={{
                   borderBottom:
-                    mergedPopular.length > 0 ? `1px solid ${theme.palette.divider}` : 'none',
+                    assets.length > 3 && mergedPopular.length > 0
+                      ? `1px solid ${theme.palette.divider}`
+                      : 'none',
                   position: 'sticky',
                   top: 0,
                   zIndex: 2,

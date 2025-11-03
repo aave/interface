@@ -121,7 +121,31 @@ export const BaseSwapModalContent = ({
         <OrderTypeSelector
           switchType={state.orderType}
           setSwitchType={(orderType: OrderType) => {
-            setState({ orderType, actionsLoading: false });
+            const switchingFromLimitToMarket =
+              state.orderType === OrderType.LIMIT && orderType === OrderType.MARKET;
+
+            setState({
+              orderType,
+              actionsLoading: false,
+              ...(switchingFromLimitToMarket
+                ? {
+                    inputAmount: '',
+                    debouncedInputAmount: '',
+                    inputAmountUSD: '',
+                    outputAmount: '',
+                    debouncedOutputAmount: '',
+                    outputAmountUSD: '',
+                    swapRate: undefined,
+                    error: undefined,
+                    isLiquidatable: false,
+                    warnings: [],
+                    quoteRefreshPaused: false,
+                    quoteLastUpdatedAt: undefined,
+                    quoteTimerPausedAt: null,
+                    quoteTimerPausedAccumMs: 0,
+                  }
+                : {}),
+            });
             trackingHandlers.trackInputChange(SwapInputChanges.ORDER_TYPE, orderType.toString());
           }}
         />
@@ -139,6 +163,16 @@ export const BaseSwapModalContent = ({
         setState={setState}
         trackingHandlers={trackingHandlers}
       />
+
+      {/* Show provider and validation errors early when flow is not yet selected */}
+      {!state.isSwapFlowSelected && (
+        <SwapErrors
+          params={params}
+          state={state}
+          setState={setState}
+          trackingHandlers={trackingHandlers}
+        />
+      )}
 
       {/* 
                 Show details, warnings, and actions only if the swap flow is selected. 
@@ -158,6 +192,7 @@ export const BaseSwapModalContent = ({
             setState={setState} // allows bypassing warnings
           />
 
+          {/* Keep original ordering: errors appear after post-input warnings, before actions */}
           <SwapErrors
             params={params}
             state={state}

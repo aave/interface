@@ -40,7 +40,13 @@ export const useSwapOrderAmounts = ({
   setState: Dispatch<Partial<SwapState>>;
 }) => {
   useEffect(() => {
-    if (!state.swapRate?.afterFeesAmount) return;
+    if (
+      !state.swapRate?.afterFeesAmount ||
+      state.outputAmount == '' ||
+      state.inputAmount == '' ||
+      (state.orderType === OrderType.MARKET && state.slippage == undefined)
+    )
+      return;
 
     // On some swaps, the order is inverted, the required swap behind the operation is from our second input to our first.
     // e.g. repay with collateral, we have input Repay and output Available collateral, the required swap is from Available collateral to Repay.

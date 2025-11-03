@@ -129,21 +129,6 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
     >
       {state.provider === SwapProvider.COW_PROTOCOL && <CowCostsDetails state={state} />}
 
-      {hfAfterSwap && (
-        <DetailsHFLine
-          healthFactor={user.healthFactor}
-          futureHealthFactor={hfAfterSwap.toString()}
-          visibleHfChange={showHealthFactor}
-          loading={state.ratesLoading}
-        />
-      )}
-      <DetailsNumberLine
-        description={<Trans>Supply apy</Trans>}
-        value={userReserve.reserve.supplyAPY}
-        futureValue={userTargetReserve.reserve.supplyAPY}
-        percent
-        loading={state.ratesLoading}
-      />
       {swapSourceCollateralType !== swapTargetCollateralType && (
         <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
           <Box
@@ -177,6 +162,21 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
           </Box>
         </Row>
       )}
+      {hfAfterSwap && (
+        <DetailsHFLine
+          healthFactor={user.healthFactor}
+          futureHealthFactor={hfAfterSwap.toString()}
+          visibleHfChange={showHealthFactor}
+          loading={state.ratesLoading}
+        />
+      )}
+      <DetailsNumberLine
+        description={<Trans>Supply apy</Trans>}
+        value={userReserve.reserve.supplyAPY}
+        futureValue={userTargetReserve.reserve.supplyAPY}
+        percent
+        loading={state.ratesLoading}
+      />
       <DetailsIncentivesLine
         incentives={userReserve.reserve.aIncentivesData}
         symbol={userReserve.reserve.symbol}

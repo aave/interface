@@ -1,6 +1,7 @@
 import { Box, CircularProgress } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useRootStore } from 'src/store/root';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
@@ -27,6 +28,7 @@ export const SwapModalContent = ({
   );
   const [chainId, setChainId] = useState(chainIdFromSelection ?? chainIdInApp);
   const initialDefaultTokens = useMemo(() => getFilteredTokensForSwitch(chainId), [chainId]);
+  const reserves = useAppDataContext().reserves;
 
   const {
     data: initialTokens,
@@ -36,6 +38,10 @@ export const SwapModalContent = ({
 
   const swappableTokens = initialTokens
     ?.map((token) => {
+      const reserve = reserves.find(
+        (reserve) => reserve.underlyingAsset.toLowerCase() === token.address.toLowerCase()
+      );
+
       return {
         addressToSwap: token.address,
         addressForUsdPrice: token.address,
@@ -45,7 +51,9 @@ export const SwapModalContent = ({
         name: token.name,
         balance: token.balance,
         chainId,
-        logoURI: token.logoURI,
+        logoURI: reserve?.iconSymbol
+          ? `/icons/tokens/${reserve.iconSymbol.toLowerCase()}.svg`
+          : token.logoURI,
         tokenType: token.extensions?.isNative ? TokenType.NATIVE : TokenType.ERC20,
       };
     })

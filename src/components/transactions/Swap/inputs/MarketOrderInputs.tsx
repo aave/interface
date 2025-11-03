@@ -87,6 +87,8 @@ export const MarketOrderInputs = ({
               ratesLoading: false,
               error: undefined,
               warnings: [],
+              quoteRefreshPaused: true,
+              quoteLastUpdatedAt: undefined,
             })
           }
           usdValue={state.inputAmountUSD.toString() || '0'}
