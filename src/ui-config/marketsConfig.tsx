@@ -425,6 +425,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x6a9D64f93DB660EaCB2b6E9424792c630CdA87d8', // AaveV3BaseSepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: '0xDB1412acf288D5bE057f8e90fd7b1BF4f84bB3B1', // AaveV3BaseSepolia.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3BaseSepolia.L2_ENCODER,
+      FAUCET: '0xD9145b5F45Ad4519c7ACcD6E0A4A82e83bB8A6Dc',
     },
   },
   [CustomMarket.proto_avalanche_v3]: {
