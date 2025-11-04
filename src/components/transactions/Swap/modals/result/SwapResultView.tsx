@@ -137,8 +137,10 @@ export const SwapTxSuccessView = ({
   // Do polling each 10 seconds until the order get's filled
   const [orderStatus, setOrderStatus] = useState<'succeed' | 'failed' | 'open'>('open');
   const [surplus, setSurplus] = useState<bigint | undefined>(undefined);
-  const [inAmount, setInAmount] = useState<string>(amount);
-  const [outFinalAmount, setOutFinalAmount] = useState<string>(outAmount);
+  const [inAmount, setInAmount] = useState<string>(!isInvertedSwap ? amount : outAmount);
+  const [outFinalAmount, setOutFinalAmount] = useState<string>(
+    !isInvertedSwap ? outAmount : amount
+  );
 
   // Market for chain id
   const networkConfig = networkConfigs[chainId].explorerLink;

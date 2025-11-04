@@ -71,7 +71,7 @@ export const calculateInstanceAddress = async ({
       from: user,
       networkCostsAmount: '0',
       isEthFlow: false,
-      applyQuoteAdjustments: false,
+      applyCostsSlippageAndFees: false,
     },
     limitOrder,
     HASH_ZERO

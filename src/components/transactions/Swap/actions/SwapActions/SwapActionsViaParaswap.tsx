@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Dispatch, useEffect } from 'react';
+import { Dispatch } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { useParaswapSellTxParams } from 'src/hooks/paraswap/useParaswapRates';
 import { useModalContext } from 'src/hooks/useModal';
@@ -176,13 +176,6 @@ export const SwapActionsViaParaswap = ({
       });
     }
   };
-
-  // Track execution state to pause rate updates during actions
-  useEffect(() => {
-    const isExecuting = mainTxState.loading || approvalTxState.loading;
-
-    setState({ actionsLoading: isExecuting });
-  }, [mainTxState.loading, approvalTxState.loading, state.actionsLoading]);
 
   return (
     <TxActionsWrapper

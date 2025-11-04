@@ -208,7 +208,7 @@ export const sendOrder = async ({
       {
         appData,
         additionalParams: {
-          applyQuoteAdjustments: false,
+          applyCostsSlippageAndFees: false,
         },
       }
     )

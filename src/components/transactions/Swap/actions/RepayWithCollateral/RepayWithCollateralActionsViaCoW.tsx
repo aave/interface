@@ -183,7 +183,7 @@ export const RepayWithCollateralActionsViaCoW = ({
           from: user,
           networkCostsAmount: '0',
           isEthFlow: false,
-          applyQuoteAdjustments: false,
+          applyCostsSlippageAndFees: false,
         },
         limitOrder,
         HASH_ZERO
