@@ -70,5 +70,3 @@ export const SupplyCapBlockingGuard = ({
 
   return null;
 };
-
-

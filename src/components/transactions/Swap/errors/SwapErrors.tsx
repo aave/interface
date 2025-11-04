@@ -15,14 +15,14 @@ import {
   hasInsufficientBalance,
   InsufficientBalanceGuard,
 } from './shared/InsufficientBalanceGuard';
-import { ProviderError } from './shared/ProviderError';
-import { hasUserDenied, UserDenied } from './shared/UserDenied';
-import { hasZeroLTVBlocking, ZeroLTVBlockingGuard } from './shared/ZeroLTVBlockingGuard';
 import {
   hasInsufficientLiquidity,
   InsufficientLiquidityBlockingGuard,
 } from './shared/InsufficientLiquidityBlockingGuard';
+import { ProviderError } from './shared/ProviderError';
 import { hasSupplyCapBlocking, SupplyCapBlockingGuard } from './shared/SupplyCapBlockingGuard';
+import { hasUserDenied, UserDenied } from './shared/UserDenied';
+import { hasZeroLTVBlocking, ZeroLTVBlockingGuard } from './shared/ZeroLTVBlockingGuard';
 
 export const SwapErrors = ({
   state,

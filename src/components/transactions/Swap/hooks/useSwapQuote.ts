@@ -5,6 +5,8 @@ import { isTxErrorType, TxErrorType } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { APP_CODE_PER_SWAP_TYPE } from '../constants/shared.constants';
+import { hasFlashLoanDisabled } from '../errors/shared/FlashLoanDisabledBlockingGuard';
+import { hasInsufficientBalance } from '../errors/shared/InsufficientBalanceGuard';
 import { getCowProtocolSellRates } from '../helpers/cow';
 import { getParaswapSellRates, getParaswapSlippage } from '../helpers/paraswap';
 import { getSwitchProvider } from '../helpers/shared/provider.helpers';
@@ -17,8 +19,6 @@ import {
   SwapType,
   TokenType,
 } from '../types';
-import { hasFlashLoanDisabled } from '../errors/shared/FlashLoanDisabledBlockingGuard';
-import { hasInsufficientBalance } from '../errors/shared/InsufficientBalanceGuard';
 
 interface TokenSelectionParams {
   srcToken: string;

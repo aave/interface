@@ -1,7 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
-import { ethers } from 'ethers';
 import { SxProps } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
+import { ethers } from 'ethers';
 import { Dispatch, useEffect } from 'react';
 
 import { ProtocolSwapState, SwapError, SwapState } from '../../types';
@@ -77,5 +77,3 @@ export const InsufficientLiquidityBlockingGuard = ({
 
   return null;
 };
-
-
