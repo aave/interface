@@ -17,6 +17,8 @@ import {
   SwapType,
   TokenType,
 } from '../types';
+import { hasFlashLoanDisabled } from '../errors/shared/FlashLoanDisabledBlockingGuard';
+import { hasInsufficientBalance } from '../errors/shared/InsufficientBalanceGuard';
 
 interface TokenSelectionParams {
   srcToken: string;
@@ -339,6 +341,7 @@ const useMultiProviderSwapQuoteQuery = ({
       switch (provider) {
         case SwapProvider.COW_PROTOCOL:
           return await getCowProtocolSellRates({
+            swapType: state.swapType,
             chainId: state.chainId,
             amount,
             srcToken,
@@ -357,6 +360,7 @@ const useMultiProviderSwapQuoteQuery = ({
           });
         case SwapProvider.PARASWAP:
           return await getParaswapSellRates({
+            swapType: state.swapType,
             chainId: state.chainId,
             amount,
             srcToken,
@@ -393,30 +397,47 @@ const useMultiProviderSwapQuoteQuery = ({
           ? Number(state.debouncedInputAmount || '0') > 0
           : Number(state.debouncedOutputAmount || '0') > 0;
 
+      // Basic pre-blockers to avoid provider requests
+      const isSameTokenPair =
+        state.sourceToken.addressToSwap === state.destinationToken.addressToSwap;
+      const isInsufficientBalance = hasInsufficientBalance(state);
+      const isFlashloanDisabled = hasFlashLoanDisabled(state);
+
       return (
         // LIMIT: fetch only once (when no quote yet). MARKET: fetch normally
         ((state.orderType === OrderType.LIMIT && !state.swapRate) ||
           state.orderType !== OrderType.LIMIT) &&
         hasPositiveUserAmount &&
+        !state.actionsBlocked &&
+        !isSameTokenPair &&
+        !isInsufficientBalance &&
+        !isFlashloanDisabled &&
         !state.mainTxState.success &&
         !state.mainTxState.txHash && // Don't fetch quotes once transaction is sent
         !state.mainTxState.loading && // Don't fetch quotes while transaction is processing
         provider !== SwapProvider.NONE &&
-        !state.quoteRefreshPaused
+        !state.quoteRefreshPaused &&
+        !state.isWrongNetwork
       );
     })(),
     retry: 0,
     throwOnError: false,
     refetchOnWindowFocus: (query) => (query.state.error ? false : true),
-    refetchInterval:
+    refetchInterval: (() => {
       // LIMIT: never refetch periodically after we got the first quote
-      state.orderType !== OrderType.LIMIT &&
-      !state.actionsLoading &&
-      !state.quoteRefreshPaused &&
-      !state.mainTxState.success &&
-      !state.mainTxState.txHash && // Stop refetching once transaction is sent
-      !state.mainTxState.loading // Stop refetching while transaction is processing
+      const isInsufficientBalance = hasInsufficientBalance(state);
+      const isFlashloanDisabled = hasFlashLoanDisabled(state);
+      return state.orderType !== OrderType.LIMIT &&
+        !state.actionsLoading &&
+        !state.quoteRefreshPaused &&
+        !state.mainTxState.success &&
+        !state.mainTxState.txHash &&
+        !state.mainTxState.loading &&
+        !state.actionsBlocked &&
+        !isInsufficientBalance &&
+        !isFlashloanDisabled
         ? QUOTE_REFETCH_INTERVAL
-        : false,
+        : false;
+    })(),
   });
 };

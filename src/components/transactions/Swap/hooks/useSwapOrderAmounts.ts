@@ -84,18 +84,32 @@ export const useSwapOrderAmounts = ({
         .dividedBy(valueToBigNumber(state.outputAmount))
         .toNumber();
 
-      const networkFeeAmountFormattedInSell = isCowProtocolRates(state.swapRate)
+      let networkFeeAmountFormattedInSell = isCowProtocolRates(state.swapRate)
         ? normalize(
             state.swapRate.amountAndCosts.costs.networkFee.amountInSellCurrency.toString(),
             sellAmountToken.decimals
           )
         : '0';
-      const networkFeeAmountFormattedInBuy = isCowProtocolRates(state.swapRate)
+      let networkFeeAmountFormattedInBuy = isCowProtocolRates(state.swapRate)
         ? normalize(
             state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
             buyAmountToken.decimals
           )
         : '0';
+
+      // Trick waiting for CoW solvers precise hook simulation - TODO: remove once it's solved on CoW's BFF
+      if (
+        state.swapType === SwapType.RepayWithCollateral ||
+        state.swapType === SwapType.DebtSwap ||
+        state.swapType === SwapType.CollateralSwap
+      ) {
+        networkFeeAmountFormattedInSell = valueToBigNumber(networkFeeAmountFormattedInSell)
+          .multipliedBy(3)
+          .toString();
+        networkFeeAmountFormattedInBuy = valueToBigNumber(networkFeeAmountFormattedInBuy)
+          .multipliedBy(3)
+          .toString();
+      }
 
       if (state.orderType === OrderType.MARKET) {
         // On a classic sell market order, we send the input amount and receive the amount after partner fees and slippage
@@ -162,18 +176,32 @@ export const useSwapOrderAmounts = ({
         .dividedBy(valueToBigNumber(state.inputAmount))
         .toNumber();
 
-      const networkFeeAmountFormattedInSell = isCowProtocolRates(state.swapRate)
+      let networkFeeAmountFormattedInSell = isCowProtocolRates(state.swapRate)
         ? normalize(
             state.swapRate.amountAndCosts.costs.networkFee.amountInSellCurrency.toString(),
             sellAmountToken.decimals
           )
         : '0';
-      const networkFeeAmountFormattedInBuy = isCowProtocolRates(state.swapRate)
+      let networkFeeAmountFormattedInBuy = isCowProtocolRates(state.swapRate)
         ? normalize(
             state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
             buyAmountToken.decimals
           )
         : '0';
+
+      // Trick waiting for CoW solvers precise hook simulation - TODO: remove once it's solved on CoW's BFF
+      if (
+        state.swapType === SwapType.RepayWithCollateral ||
+        state.swapType === SwapType.DebtSwap ||
+        state.swapType === SwapType.CollateralSwap
+      ) {
+        networkFeeAmountFormattedInSell = valueToBigNumber(networkFeeAmountFormattedInSell)
+          .multipliedBy(3)
+          .toString();
+        networkFeeAmountFormattedInBuy = valueToBigNumber(networkFeeAmountFormattedInBuy)
+          .multipliedBy(3)
+          .toString();
+      }
 
       if (state.orderType === OrderType.MARKET) {
         // on a classic inverted sell market order, we send the output amount and receive the input amount after partner fees and slippage

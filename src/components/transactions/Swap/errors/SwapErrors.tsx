@@ -18,6 +18,11 @@ import {
 import { ProviderError } from './shared/ProviderError';
 import { hasUserDenied, UserDenied } from './shared/UserDenied';
 import { hasZeroLTVBlocking, ZeroLTVBlockingGuard } from './shared/ZeroLTVBlockingGuard';
+import {
+  hasInsufficientLiquidity,
+  InsufficientLiquidityBlockingGuard,
+} from './shared/InsufficientLiquidityBlockingGuard';
+import { hasSupplyCapBlocking, SupplyCapBlockingGuard } from './shared/SupplyCapBlockingGuard';
 
 export const SwapErrors = ({
   state,
@@ -77,6 +82,26 @@ export const SwapErrors = ({
   if (hasFlashLoanDisabled(state) && isProtocolSwapState(state)) {
     return (
       <FlashLoanDisabledBlockingGuard
+        state={state}
+        setState={setState}
+        isSwapFlowSelected={state.isSwapFlowSelected}
+      />
+    );
+  }
+
+  if (isProtocolSwapState(state) && hasSupplyCapBlocking(state)) {
+    return (
+      <SupplyCapBlockingGuard
+        state={state}
+        setState={setState}
+        isSwapFlowSelected={state.isSwapFlowSelected}
+      />
+    );
+  }
+
+  if (isProtocolSwapState(state) && hasInsufficientLiquidity(state)) {
+    return (
+      <InsufficientLiquidityBlockingGuard
         state={state}
         setState={setState}
         isSwapFlowSelected={state.isSwapFlowSelected}

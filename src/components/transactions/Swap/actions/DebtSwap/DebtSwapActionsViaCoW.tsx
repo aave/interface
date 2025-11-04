@@ -15,7 +15,11 @@ import { useShallow } from 'zustand/react/shallow';
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
-import { getCowFlashLoanSdk, getCowTradingSdkByChainIdAndAppCode } from '../../helpers/cow';
+import {
+  addOrderTypeToAppData,
+  getCowFlashLoanSdk,
+  getCowTradingSdkByChainIdAndAppCode,
+} from '../../helpers/cow';
 import { calculateInstanceAddress } from '../../helpers/cow/adapters.helpers';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { ExpiryToSecondsMap, isProtocolSwapState, SwapParams, SwapState } from '../../types';
@@ -206,6 +210,10 @@ export const DebtSwapActionsViaCoW = ({
         }
       );
 
+      orderPostParams.swapSettings.appData = addOrderTypeToAppData(
+        state.orderType,
+        orderPostParams.swapSettings.appData
+      );
       const result = await tradingSdk.postLimitOrder(limitOrder, orderPostParams.swapSettings);
 
       trackingHandlers.trackSwap();

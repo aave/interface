@@ -11,7 +11,9 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { COW_PARTNER_FEE, isChainIdSupportedByCoWProtocol } from '../../constants/cow.constants';
 import { isNativeToken } from '../../helpers/cow';
 import { CowProtocolRatesType, ProviderRatesParams, SwapProvider } from '../../types';
+import { getAppDataForQuote } from './adapters.helpers';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
+import { priceQualityToUse } from './orders.helpers';
 
 export const getTokenUsdPrice = async (
   chainId: number,
@@ -48,6 +50,7 @@ export async function getCowProtocolSellRates({
   destToken,
   destDecimals,
   user,
+  swapType,
   inputSymbol,
   outputSymbol,
   isInputTokenCustom,
@@ -89,18 +92,35 @@ export async function getCowProtocolSellRates({
 
     [orderBookQuote, srcTokenPriceUsd, destTokenPriceUsd] = await Promise.all([
       tradingSdk
-        .getQuote({
-          owner: user as `0x${string}`,
-          kind: side === 'buy' ? OrderKind.BUY : OrderKind.SELL,
-          amount,
-          sellToken: srcTokenWrapped,
-          sellTokenDecimals: srcDecimals,
-          buyToken: destTokenWrapped,
-          buyTokenDecimals: destDecimals,
-          signer,
-          appCode: appCode,
-          partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
-        })
+        .getQuote(
+          {
+            owner: user as `0x${string}`,
+            kind: side === 'buy' ? OrderKind.BUY : OrderKind.SELL,
+            amount,
+            sellToken: srcTokenWrapped,
+            sellTokenDecimals: srcDecimals,
+            buyToken: destTokenWrapped,
+            buyTokenDecimals: destDecimals,
+            signer,
+            appCode: appCode,
+            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
+          },
+          {
+            quoteRequest: {
+              priceQuality: priceQualityToUse(swapType),
+            },
+            appData: await getAppDataForQuote({
+              user,
+              type: swapType,
+              chainId,
+              amount,
+              srcToken,
+              srcDecimals,
+              destToken,
+              destDecimals,
+            }),
+          }
+        )
         .catch((cowError) => {
           console.error(cowError);
           throw new Error(cowError?.body?.errorType);

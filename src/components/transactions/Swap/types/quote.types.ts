@@ -2,13 +2,14 @@ import { OrderParameters, QuoteAmountsAndCosts, QuoteAndPost } from '@cowprotoco
 import { OptimalRate } from '@paraswap/core';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
-import { SwapProvider } from './shared.types';
+import { SwapProvider, SwapType } from './shared.types';
 
 /**
  * Parameters required to fetch a quote from a provider.
  * The module converts from SwapState into this minimal, provider-agnostic shape.
  */
 export type ProviderRatesParams = {
+  swapType: SwapType;
   side?: 'buy' | 'sell';
   invertedQuoteRoute?: boolean;
   amount: string;

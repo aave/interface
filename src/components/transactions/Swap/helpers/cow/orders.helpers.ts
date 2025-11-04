@@ -2,16 +2,18 @@ import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import {
   BuyTokenDestination,
   OrderBookApi,
+  OrderClass,
   OrderKind,
   OrderParameters,
   OrderStatus,
+  PriceQuality,
   QuoteAndPost,
   SellTokenSource,
   SigningScheme,
   SupportedChainId,
   WRAPPED_NATIVE_CURRENCIES,
 } from '@cowprotocol/cow-sdk';
-import { AnyAppDataDocVersion, MetadataApi } from '@cowprotocol/sdk-app-data';
+import { AnyAppDataDocVersion, AppDataParams, MetadataApi } from '@cowprotocol/sdk-app-data';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { isSmartContractWallet } from 'src/helpers/provider';
@@ -23,7 +25,7 @@ import {
   COW_PROTOCOL_ETH_FLOW_ADDRESS,
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
-import { OrderType } from '../../types';
+import { OrderType, SwapType } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
 const EIP_2612_PERMIT_ABI = [
@@ -480,4 +482,30 @@ export const getPermitHook = async ({
     gasLimit: txWithGasEstimation.gasLimit?.toString(),
     dappId: PERMIT_HOOK_DAPP_ID,
   };
+};
+
+export const addOrderTypeToAppData = (
+  orderType: OrderType,
+  appData?: AppDataParams
+): AppDataParams => {
+  return {
+    ...appData,
+    metadata: {
+      ...appData?.metadata,
+      orderClass: {
+        orderClass: orderType === OrderType.LIMIT ? OrderClass.LIMIT : OrderClass.MARKET,
+      },
+    },
+  };
+};
+
+export const priceQualityToUse = (swapType: SwapType) => {
+  switch (swapType) {
+    case SwapType.CollateralSwap:
+    case SwapType.RepayWithCollateral:
+    case SwapType.DebtSwap:
+      return PriceQuality.VERIFIED;
+    default:
+      return PriceQuality.FAST;
+  }
 };
