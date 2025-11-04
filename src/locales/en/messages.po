@@ -139,10 +139,6 @@ msgstr "Rate change"
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Merit Program and Self rewards are claimed through the"
-msgstr "Merit Program and Self rewards are claimed through the"
-
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "Select token"
 msgstr "Select token"
@@ -380,6 +376,11 @@ msgstr "Terms"
 msgid "Maximum available to borrow"
 msgstr "Maximum available to borrow"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "or from the"
+msgstr "or from the"
+
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Sign to continue"
 msgstr "Sign to continue"
@@ -442,6 +443,7 @@ msgid "Allowance required action"
 msgstr "Allowance required action"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/sGho/SGhoHeader.tsx
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Available rewards"
 msgstr "Available rewards"
@@ -533,8 +535,6 @@ msgstr "Available to Stake"
 msgid "Switch Network"
 msgstr "Switch Network"
 
-#: src/components/incentives/IncentivesTooltipContent.tsx
-#: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 msgid "APR"
@@ -665,6 +665,10 @@ msgstr "Balance to revoke"
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
+
+#: src/components/MarketSwitcher.tsx
+msgid "The Ink instance is governed by the Ink Foundation"
+msgstr "The Ink instance is governed by the Ink Foundation"
 
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "View contract"
@@ -802,10 +806,6 @@ msgstr "Borrowing power and assets are limited due to Isolation mode."
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 
-#: src/modules/history/actions/BorrowRateModeBlock.tsx
-msgid "Stable"
-msgstr "Stable"
-
 #: src/modules/umbrella/helpers/SharesTooltip.tsx
 msgid "Shares"
 msgstr "Shares"
@@ -900,6 +900,10 @@ msgstr "You've successfully submitted an order."
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "Max"
 msgstr "Max"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Points"
+msgstr "Points"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -1026,6 +1030,10 @@ msgstr "Withdrawing {symbol}"
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "None"
 msgstr "None"
+
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Unknown"
+msgstr "Unknown"
 
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
 msgid "Swapping {0} debt"
@@ -1249,6 +1257,7 @@ msgstr "deposited"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/MarketSwitcher.tsx
@@ -1605,6 +1614,11 @@ msgstr "Maximum amount available to borrow against this asset is limited because
 msgid "Email"
 msgstr "Email"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "here"
+msgstr "here"
+
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UnstakeModal.tsx
 msgid "Unstake"
@@ -1924,10 +1938,6 @@ msgstr "Docs"
 msgid "User does not have outstanding stable rate debt on this reserve"
 msgstr "User does not have outstanding stable rate debt on this reserve"
 
-#: src/modules/history/actions/ActionDetails.tsx
-msgid "Borrow rate change"
-msgstr "Borrow rate change"
-
 #: src/modules/bridge/BridgeTopPanel.tsx
 msgid "Bridge history"
 msgstr "Bridge history"
@@ -1963,10 +1973,6 @@ msgstr "Asset is not borrowable in isolation mode"
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
-
-#: src/modules/history/HistoryWrapper.tsx
-msgid "Transaction history is not currently available for this market"
-msgstr "Transaction history is not currently available for this market"
 
 #: src/components/transactions/CancelCowOrder/CancelCowOrderActions.tsx
 msgid "Send cancel"
@@ -2161,6 +2167,10 @@ msgstr "Staked Underlying"
 msgid "Umbrella"
 msgstr "Umbrella"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Merit Program and Self rewards can be claimed"
+msgstr "Merit Program and Self rewards can be claimed"
+
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "The order could't be filled."
 msgstr "The order could't be filled."
@@ -2301,6 +2311,11 @@ msgstr "Repaying {0}"
 #: src/components/transactions/Swap/errors/shared/BalanceLowerThanInput.tsx
 msgid "Your balance is lower than the selected amount."
 msgstr "Your balance is lower than the selected amount."
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "from the"
+msgstr "from the"
 
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "An error has occurred fetching the proposal."
@@ -2506,10 +2521,6 @@ msgstr "Borrowing is disabled due to an Aave community decision. <0>More details
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Collateral usage"
 msgstr "Collateral usage"
-
-#: src/modules/history/actions/BorrowRateModeBlock.tsx
-msgid "Variable"
-msgstr "Variable"
 
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
@@ -2763,6 +2774,7 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
+#: src/modules/sGho/SGhoHeader.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UmbrellaClaimActions.tsx
@@ -2773,6 +2785,11 @@ msgstr "Claim"
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
+
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "dashboard"
+msgstr "dashboard"
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
@@ -3280,10 +3297,6 @@ msgstr "The loan to value of the migrated positions would cause liquidation. Inc
 msgid "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."
 msgstr "This asset has reached its borrow cap. Nothing is available to be borrowed from this market."
 
-#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
-msgid "Your reward balance is 0"
-msgstr "Your reward balance is 0"
-
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "Set up delegation"
 msgstr "Set up delegation"
@@ -3434,6 +3447,9 @@ msgstr "Amount must be greater than 0"
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
 
+#: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
@@ -3445,8 +3461,6 @@ msgstr "Selected supply assets"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/history/actions/BorrowRateModeBlock.tsx
-#: src/modules/history/actions/BorrowRateModeBlock.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
@@ -3518,7 +3532,6 @@ msgstr "Enter ETH address or ENS"
 msgid "NAY"
 msgstr "NAY"
 
-#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "for"
 msgstr "for"
@@ -3602,6 +3615,10 @@ msgstr "Borrow amount to reach {0}% utilization"
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
 
+#: src/components/incentives/MeritIncentivesTooltipContent.tsx
+msgid "Merit Program rewards can be claimed"
+msgstr "Merit Program rewards can be claimed"
+
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Your supplies"
@@ -3675,6 +3692,10 @@ msgstr "Custom slippage"
 #: src/components/infoTooltips/KernelAirdropTooltip.tsx
 msgid "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for Kernel points incentive program. Aave Labs does not guarantee the program and accepts no liability."
+
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+msgid "You have no rewards to claim at this time."
+msgstr "You have no rewards to claim at this time."
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "Restaked"
@@ -3883,6 +3904,10 @@ msgstr "Limit"
 msgid "Not a valid address"
 msgstr "Not a valid address"
 
+#: src/modules/history/actions/ActionDetails.tsx
+msgid "Transaction details not available"
+msgstr "Transaction details not available"
+
 #: src/components/WalletConnection/ReadOnlyModal.tsx
 msgid "Track wallet"
 msgstr "Track wallet"
@@ -3995,7 +4020,3 @@ msgstr "Asset is frozen in {marketName} v3 market, hence this position cannot be
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Be mindful of the network congestion and gas prices."
 msgstr "Be mindful of the network congestion and gas prices."
-
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Merit Program rewards are claimed through the"
-msgstr "Merit Program rewards are claimed through the"

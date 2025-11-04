@@ -8,9 +8,8 @@ import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
-import { unixTimestampToFormattedTime } from './helpers';
-import { getExplorerLink } from './TransactionRowItem';
-import { ActionFields, TransactionHistoryItem } from './types';
+import { getExplorerLink, getTransactionAction, unixTimestampToFormattedTime } from './helpers';
+import { TransactionHistoryItemUnion } from './types';
 
 function ActionTitle({ action }: { action: string }) {
   return (
@@ -21,7 +20,7 @@ function ActionTitle({ action }: { action: string }) {
 }
 
 interface TransactionHistoryItemProps {
-  transaction: TransactionHistoryItem & ActionFields[keyof ActionFields];
+  transaction: TransactionHistoryItemUnion;
 }
 
 function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) {
@@ -30,6 +29,9 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
     useShallow((state) => [state.currentNetworkConfig, state.trackEvent])
   );
   const theme = useTheme();
+  const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
+  const action = getTransactionAction(transaction);
+  const timestamp = Date.parse(transaction.timestamp);
 
   useEffect(() => {
     if (copyStatus) {
@@ -42,8 +44,6 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
       };
     }
   }, [copyStatus]);
-
-  const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
 
   return (
     <Box>
@@ -75,13 +75,13 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
             }}
           >
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <ActionTitle action={transaction.action} />
+              <ActionTitle action={action} />
             </Box>
 
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               {' '}
               <Typography variant="caption" color="text.muted">
-                {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
+                {unixTimestampToFormattedTime({ unixTimestamp: timestamp })}
               </Typography>
               {explorerLink && (
                 <Button

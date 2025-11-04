@@ -1,10 +1,19 @@
+import type {
+  UserBorrowTransaction,
+  UserLiquidationCallTransaction,
+  UserRepayTransaction,
+  UserSupplyTransaction,
+  UserTransactionItem,
+  UserUsageAsCollateralTransaction,
+  UserWithdrawTransaction,
+} from '@aave/graphql';
 import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { SwapType } from 'src/components/transactions/Swap/types';
 
 export type TransactionHistoryItem<T = unknown> = {
   id: string;
   action: string;
-  timestamp: number;
+  timestamp: string;
 } & T;
 
 export type ReserveSubset = {
@@ -12,13 +21,6 @@ export type ReserveSubset = {
   decimals: number;
   underlyingAsset: string;
   name: string;
-};
-
-export type PoolActionSubset = {
-  txHash: string;
-  pool: {
-    id: string;
-  };
 };
 
 export type CowSwapSubset = {
@@ -29,67 +31,11 @@ export type CowSwapSubset = {
   srcAmount: string;
   destAmount: string;
   status: OrderStatus;
-  timestamp: number;
   orderId: string;
   chainId: number;
 };
 
 export type ActionFields = {
-  Supply: {
-    reserve: ReserveSubset;
-    amount: string;
-    assetPriceUSD: string;
-  } & PoolActionSubset;
-  Deposit: {
-    reserve: ReserveSubset;
-    amount: string;
-    assetPriceUSD: string;
-  } & PoolActionSubset;
-  Borrow: {
-    reserve: ReserveSubset;
-    amount: string;
-    assetPriceUSD: string;
-  } & PoolActionSubset;
-  Repay: {
-    reserve: ReserveSubset;
-    amount: string;
-    assetPriceUSD: string;
-  } & PoolActionSubset;
-  RedeemUnderlying: {
-    reserve: ReserveSubset;
-    amount: string;
-    assetPriceUSD: string;
-  } & PoolActionSubset;
-  LiquidationCall: {
-    collateralReserve: ReserveSubset;
-    collateralAmount: string;
-    principalReserve: ReserveSubset;
-    principalAmount: string;
-    borrowAssetPriceUSD: string;
-    collateralAssetPriceUSD: string;
-  } & PoolActionSubset;
-  SwapBorrowRate: {
-    reserve: ReserveSubset;
-    borrowRateModeFrom: string;
-    borrowRateModeTo: string;
-    stableBorrowRate: string;
-    variableBorrowRate: string;
-    assetPriceUSD: string;
-  } & PoolActionSubset;
-  Swap: {
-    reserve: ReserveSubset;
-    borrowRateModeFrom: number;
-    borrowRateModeTo: number;
-    stableBorrowRate: string;
-    variableBorrowRate: string;
-    assetPriceUSD: string;
-  } & PoolActionSubset;
-  UsageAsCollateral: {
-    reserve: ReserveSubset;
-    fromState: boolean;
-    toState: boolean;
-    assetPriceUSD: string;
-  } & PoolActionSubset;
   CowSwap: CowSwapSubset;
   CowCollateralSwap: CowSwapSubset;
   CowDebtSwap: CowSwapSubset;
@@ -97,16 +43,9 @@ export type ActionFields = {
   CowWithdrawAndSwap: CowSwapSubset;
 };
 
+// Combine the SDK types with the CoWswap types
 export type TransactionHistoryItemUnion =
-  | TransactionHistoryItem<ActionFields['Supply']>
-  | TransactionHistoryItem<ActionFields['Deposit']>
-  | TransactionHistoryItem<ActionFields['Borrow']>
-  | TransactionHistoryItem<ActionFields['Repay']>
-  | TransactionHistoryItem<ActionFields['RedeemUnderlying']>
-  | TransactionHistoryItem<ActionFields['LiquidationCall']>
-  | TransactionHistoryItem<ActionFields['SwapBorrowRate']>
-  | TransactionHistoryItem<ActionFields['Swap']>
-  | TransactionHistoryItem<ActionFields['UsageAsCollateral']>
+  | UserTransactionItem
   | TransactionHistoryItem<ActionFields['CowSwap']>
   | TransactionHistoryItem<ActionFields['CowCollateralSwap']>
   | TransactionHistoryItem<ActionFields['CowDebtSwap']>
@@ -147,72 +86,81 @@ export const swapTypeToTransactionHistoryItemType = (swapType: SwapType): string
   }
 };
 
-// Type guards
-export const hasCollateralReserve = (
-  txn: TransactionHistoryItemUnion
-): txn is TransactionHistoryItem<ActionFields['LiquidationCall']> => {
-  return (
-    (txn as TransactionHistoryItem<ActionFields['LiquidationCall']>).collateralReserve !== undefined
-  );
+//GUARDS
+export const isSDKTransaction = (txn: TransactionHistoryItemUnion): txn is UserTransactionItem => {
+  return '__typename' in txn;
 };
 
-export const hasPrincipalReserve = (
+export const isCowSwapTransaction = (
   txn: TransactionHistoryItemUnion
-): txn is TransactionHistoryItem<ActionFields['LiquidationCall']> => {
+): txn is
+  | TransactionHistoryItem<ActionFields['CowSwap']>
+  | TransactionHistoryItem<ActionFields['CowCollateralSwap']>
+  | TransactionHistoryItem<ActionFields['CowDebtSwap']>
+  | TransactionHistoryItem<ActionFields['CowRepayWithCollateral']>
+  | TransactionHistoryItem<ActionFields['CowWithdrawAndSwap']> => {
   return (
-    (txn as TransactionHistoryItem<ActionFields['LiquidationCall']>).principalReserve !== undefined
+    'action' in txn &&
+    (txn.action === 'CowSwap' ||
+      txn.action === 'CowCollateralSwap' ||
+      txn.action === 'CowDebtSwap' ||
+      txn.action === 'CowRepayWithCollateral' ||
+      txn.action === 'CowWithdrawAndSwap')
   );
 };
 
 export const hasReserve = (
   txn: TransactionHistoryItemUnion
 ): txn is
-  | TransactionHistoryItem<ActionFields['Supply']>
-  | TransactionHistoryItem<ActionFields['Deposit']>
-  | TransactionHistoryItem<ActionFields['Borrow']>
-  | TransactionHistoryItem<ActionFields['Repay']>
-  | TransactionHistoryItem<ActionFields['RedeemUnderlying']>
-  | TransactionHistoryItem<ActionFields['SwapBorrowRate']>
-  | TransactionHistoryItem<ActionFields['Swap']>
-  | TransactionHistoryItem<ActionFields['UsageAsCollateral']> => {
-  return (txn as TransactionHistoryItem<ActionFields['Supply']>).reserve !== undefined;
+  | UserSupplyTransaction
+  | UserWithdrawTransaction
+  | UserBorrowTransaction
+  | UserRepayTransaction
+  | UserUsageAsCollateralTransaction => {
+  return isSDKTransaction(txn) && txn.__typename !== 'UserLiquidationCallTransaction';
 };
 
-export const hasSrcOrDestToken = (
+export const hasAmount = (
   txn: TransactionHistoryItemUnion
-): txn is TransactionHistoryItem<ActionFields['CowSwap']> => {
-  return (
-    (txn as TransactionHistoryItem<ActionFields['CowSwap']>).underlyingSrcToken !== undefined ||
-    (txn as TransactionHistoryItem<ActionFields['CowSwap']>).underlyingDestToken !== undefined
-  );
+): txn is
+  | UserSupplyTransaction
+  | UserWithdrawTransaction
+  | UserBorrowTransaction
+  | UserRepayTransaction => {
+  return isSDKTransaction(txn) && 'amount' in txn;
 };
 
 export const hasAmountAndReserve = (
   txn: TransactionHistoryItemUnion
 ): txn is
-  | TransactionHistoryItem<ActionFields['Supply']>
-  | TransactionHistoryItem<ActionFields['Deposit']>
-  | TransactionHistoryItem<ActionFields['Borrow']>
-  | TransactionHistoryItem<ActionFields['Repay']>
-  | TransactionHistoryItem<ActionFields['RedeemUnderlying']> => {
-  return (
-    (txn as TransactionHistoryItem<ActionFields['Supply']>).amount !== undefined &&
-    (txn as TransactionHistoryItem<ActionFields['Supply']>).reserve !== undefined
-  );
+  | UserSupplyTransaction
+  | UserWithdrawTransaction
+  | UserBorrowTransaction
+  | UserRepayTransaction => {
+  return hasAmount(txn) && hasReserve(txn);
 };
 
-export const hasSwapBorrowRate = (
+export const hasCollateralReserve = (
+  txn: TransactionHistoryItemUnion
+): txn is UserLiquidationCallTransaction => {
+  return isSDKTransaction(txn) && txn.__typename === 'UserLiquidationCallTransaction';
+};
+
+export const hasPrincipalReserve = (
+  txn: TransactionHistoryItemUnion
+): txn is UserLiquidationCallTransaction => {
+  return hasCollateralReserve(txn);
+};
+
+export const hasSrcOrDestToken = (
   txn: TransactionHistoryItemUnion
 ): txn is
-  | TransactionHistoryItem<ActionFields['SwapBorrowRate']>
-  | TransactionHistoryItem<ActionFields['Swap']> => {
-  return (
-    (txn as TransactionHistoryItem<ActionFields['SwapBorrowRate']>).variableBorrowRate !==
-      undefined &&
-    (txn as TransactionHistoryItem<ActionFields['SwapBorrowRate']>).stableBorrowRate !== undefined
-  );
+  | TransactionHistoryItem<ActionFields['CowSwap']>
+  | TransactionHistoryItem<ActionFields['CowCollateralSwap']> => {
+  return isCowSwapTransaction(txn);
 };
 
+// FILTERS
 export enum FilterOptions {
   SUPPLY,
   BORROW,
@@ -231,23 +179,19 @@ export interface HistoryFilters {
 
 export const actionFilterMap = (action: string): number => {
   switch (action) {
-    case 'Deposit': // v2
-    case 'Supply': // v3
-      return 0;
-    case 'Borrow':
-      return 1;
-    case 'RedeemUnderlying':
-      return 2;
-    case 'Repay':
-      return 3;
-    case 'Swap': // v2
-    case 'SwapBorrowRate': // v3
-      return 4;
-    case 'UsageAsCollateral':
+    case 'UserSupplyTransaction':
+      return FilterOptions.SUPPLY;
+    case 'UserBorrowTransaction':
+      return FilterOptions.BORROW;
+    case 'UserWithdrawTransaction':
+      return FilterOptions.WITHDRAW;
+    case 'UserRepayTransaction':
+      return FilterOptions.REPAY;
+    case 'UserUsageAsCollateralTransaction':
     case 'CowCollateralSwap':
-      return 5;
-    case 'LiquidationCall':
-      return 6;
+      return FilterOptions.COLLATERALCHANGE;
+    case 'UserLiquidationCallTransaction':
+      return FilterOptions.LIQUIDATION;
     case 'CowSwap':
       return 7;
     case 'CowDebtSwap':
@@ -260,3 +204,19 @@ export const actionFilterMap = (action: string): number => {
       return 11;
   }
 };
+
+//RE-EXPORT TYPES
+export type {
+  Currency,
+  DecimalValue,
+  MarketInfo,
+  ReserveInfo,
+  TokenAmount,
+  UserBorrowTransaction,
+  UserLiquidationCallTransaction,
+  UserRepayTransaction,
+  UserSupplyTransaction,
+  UserTransactionItem,
+  UserUsageAsCollateralTransaction,
+  UserWithdrawTransaction,
+} from '@aave/graphql';

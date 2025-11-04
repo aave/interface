@@ -6,10 +6,12 @@ import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
-import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
+import { ExtendedReserveIncentiveResponse, useMerklIncentives } from 'src/hooks/useMerklIncentives';
+import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
+import { convertAprToApy } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
@@ -146,7 +148,12 @@ export const MeritIncentivesButton = (params: {
 
   return (
     <ContentWithTooltip
-      tooltipContent={<MeritIncentivesTooltipContent meritIncentives={meritIncentives} />}
+      tooltipContent={
+        <MeritIncentivesTooltipContent
+          meritIncentives={meritIncentives}
+          onClose={() => setOpen(false)}
+        />
+      }
       withoutHover
       setOpen={setOpen}
       open={open}
@@ -169,19 +176,28 @@ export const MerklIncentivesButton = (params: {
 }) => {
   const [open, setOpen] = useState(false);
   const { data: merklIncentives } = useMerklIncentives(params);
+  const { data: merklPointsIncentives } = useMerklPointsIncentives(params);
 
-  if (!merklIncentives) {
+  const incentiveData = merklIncentives?.breakdown
+    ? merklIncentives
+    : merklPointsIncentives?.breakdown
+    ? merklPointsIncentives
+    : undefined;
+
+  const incentiveAPR = incentiveData?.incentiveAPR ? +incentiveData.incentiveAPR : 0;
+
+  if (!incentiveData) {
     return null;
   }
 
   return (
     <ContentWithTooltip
-      tooltipContent={<MerklIncentivesTooltipContent merklIncentives={merklIncentives} />}
+      tooltipContent={<MerklIncentivesTooltipContent merklIncentives={incentiveData} />}
       withoutHover
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[merklIncentives]} incentivesNetAPR={+merklIncentives.incentiveAPR} />
+      <Content incentives={[incentiveData]} incentivesNetAPR={incentiveAPR} />
     </ContentWithTooltip>
   );
 };
@@ -280,13 +296,14 @@ export const IncentivesButton = ({
     : incentivesAPRSum !== INFINITY
     ? valueToBigNumber(incentivesAPRSum || 0).toNumber()
     : INFINITY;
+  const incentivesNetAPY = convertAprToApy(incentivesNetAPR as number);
 
   return (
     <ContentWithTooltip
       tooltipContent={
         <IncentivesTooltipContent
           incentives={incentives}
-          incentivesNetAPR={incentivesNetAPR}
+          incentivesNetAPR={incentivesNetAPY}
           symbol={symbol}
           market={market}
           protocolAction={protocolAction}
@@ -330,13 +347,12 @@ const Content = ({
       return null;
     }
   }
+  const hasPointsBreakdown = incentives.some(
+    (incentive) => (incentive as ExtendedReserveIncentiveResponse)?.breakdown?.points !== undefined
+  );
 
-  if (incentivesNetAPR === 0) {
-    if (displayBlank) {
-      return <BlankIncentives />;
-    } else {
-      return null;
-    }
+  if (incentivesNetAPR === 0 && !hasPointsBreakdown) {
+    return displayBlank ? <BlankIncentives /> : null;
   }
 
   const incentivesButtonValue = () => {

@@ -18,7 +18,11 @@ import {
   isOrderLoading,
 } from 'src/components/transactions/Swap/helpers/cow';
 import { invalidateAppStateForSwap } from 'src/components/transactions/Swap/helpers/shared';
-import { CowSwapSubset, TransactionHistoryItemUnion } from 'src/modules/history/types';
+import {
+  CowSwapSubset,
+  isCowSwapTransaction,
+  TransactionHistoryItemUnion,
+} from 'src/modules/history/types';
 import { useRootStore } from 'src/store/root';
 import { findTokenSymbol } from 'src/ui-config/TokenList';
 import { GENERAL } from 'src/utils/events';
@@ -69,14 +73,8 @@ export const CowOrderToastProvider: React.FC<PropsWithChildren> = ({ children })
   useEffect(() => {
     if (transactions?.pages[0] && activeOrders.size === 0) {
       transactions.pages[0]
-        .filter(
-          (tx: TransactionHistoryItemUnion) =>
-            tx.action === 'CowSwap' ||
-            tx.action === 'CowCollateralSwap' ||
-            tx.action === 'CowDebtSwap' ||
-            tx.action === 'CowRepayWithCollateral' ||
-            tx.action === 'CowWithdrawAndSwap'
-        )
+        .filter((tx: TransactionHistoryItemUnion) => isCowSwapTransaction(tx))
+        .filter(isCowSwapTransaction)
         .filter((tx: CowSwapSubset) => isOrderLoading(tx.status))
         .filter((tx: CowSwapSubset) => !activeOrders.has(tx.orderId))
         .forEach((tx: CowSwapSubset) => {

@@ -3,6 +3,7 @@ import {
   AaveV3Ethereum,
   AaveV3Gnosis,
   AaveV3Optimism,
+  AaveV3Plasma,
   AaveV3Polygon,
 } from '@bgd-labs/aave-address-book';
 import { unPrefixSymbol } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -181,11 +182,28 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT USDe November 2025',
       iconSymbol: 'ptusde',
     },
+
     '0x6100E367285b01F48D07953803A2d8dCA5D19873': {
       //not yet in @bgd-labs/aave-address-book
       symbol: 'WXLP',
       name: 'Wrapped XLP',
       iconSymbol: 'wxlp',
+    },
+
+    [AaveV3Plasma.ASSETS.PT_USDe_15JAN2026.UNDERLYING.toLowerCase()]: {
+      symbol: 'PT USDe January 15th 2026',
+      name: 'PT USDe January 2026',
+      iconSymbol: 'ptusde',
+    },
+    [AaveV3Plasma.ASSETS.PT_sUSDE_15JAN2026.UNDERLYING.toLowerCase()]: {
+      symbol: 'PT sUSDe January 15th 2026',
+      name: 'PT sUSDe January 2026',
+      iconSymbol: 'ptsusde',
+    },
+    [AaveV3Plasma.ASSETS.syrupUSDT.UNDERLYING.toLowerCase()]: {
+      symbol: 'syrupUSDT',
+      name: 'syrupUSDT',
+      iconSymbol: 'syrupusdt',
     },
 
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },

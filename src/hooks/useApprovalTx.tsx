@@ -1,4 +1,5 @@
 import { ApproveType, MAX_UINT_AMOUNT, ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { SignatureLike } from '@ethersproject/bytes';
 import { constants, ethers } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
@@ -68,16 +69,16 @@ export const useApprovalTx = ({
       !isUSDTOnEthereum(symbol, chainId) ||
       !setShowUSDTResetWarning ||
       !signatureAmount ||
-      signatureAmount === '0'
+      signatureAmount === '0' ||
+      signatureAmount === '-1'
     ) {
       return;
     }
 
     const amountToApprove = parseUnits(signatureAmount, decimals).toString();
-    const currentApproved = parseUnits(
-      approvedAmount?.amount?.toString() || '0',
-      decimals
-    ).toString();
+    const currentApproved = approvedAmount?.amount
+      ? valueToBigNumber(approvedAmount.amount).toFixed(0)
+      : '0';
 
     if (needsUSDTApprovalReset(symbol, chainId, currentApproved, amountToApprove)) {
       setShowUSDTResetWarning(true);

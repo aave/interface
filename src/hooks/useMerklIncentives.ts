@@ -1,6 +1,5 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { AaveV3Plasma } from '@bgd-labs/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
 import { convertAprToApy } from 'src/utils/utils';
@@ -17,11 +16,13 @@ enum OpportunityStatus {
   UPCOMING = 'UPCOMING',
 }
 
-type MerklOpportunity = {
+export type MerklOpportunity = {
   chainId: number;
   type: string;
+  description?: string;
   identifier: Address;
   name: string;
+  depositUrl?: string;
   status: OpportunityStatus;
   action: OpportunityAction;
   tvl: number;
@@ -81,6 +82,17 @@ type ReserveIncentiveAdditionalData = {
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
   ReserveIncentiveAdditionalData & {
     breakdown: MerklIncentivesBreakdown;
+    description?: string;
+    allOpportunities?: {
+      name: string;
+      apy: number;
+      rewardToken: {
+        address: string;
+        symbol: string;
+        icon: string;
+        price: number;
+      };
+    }[];
   };
 
 export type MerklIncentivesBreakdown = {
@@ -94,31 +106,14 @@ export type MerklIncentivesBreakdown = {
     protocolIncentives: number;
     merklIncentives: number; // Now represents APY (converted from APR)
   };
+  points?: {
+    dailyPoints: number;
+    pointsPerThousandUsd: number;
+  };
 };
 type WhitelistApiResponse = {
   whitelistedRewardTokens: string[];
   additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData>;
-};
-const hardcodedIncentives: Record<string, ExtendedReserveIncentiveResponse> = {
-  [AaveV3Plasma.ASSETS.USDe.A_TOKEN]: {
-    incentiveAPR: '0.12',
-    rewardTokenAddress: AaveV3Plasma.ASSETS.USDe.A_TOKEN,
-    rewardTokenSymbol: 'aPlaUSDe',
-    customMessage:
-      'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate for the forseeable future.',
-    breakdown: {
-      protocolAPY: 0,
-      protocolIncentivesAPR: 0,
-      merklIncentivesAPR: 0,
-      totalAPY: 0,
-      isBorrow: false,
-      breakdown: {
-        protocol: 0,
-        protocolIncentives: 0,
-        merklIncentives: 0,
-      },
-    },
-  },
 };
 
 const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
@@ -143,7 +138,7 @@ const useWhitelistedTokens = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch whitelisted tokens');
       }
-      return response.json();
+      return await response.json();
     },
     queryKey: ['whitelistedTokens'],
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -170,29 +165,12 @@ export const useMerklIncentives = ({
     queryFn: async () => {
       const response = await fetch(`${MERKL_ENDPOINT}`);
       const merklOpportunities: MerklOpportunity[] = await response.json();
+
       return merklOpportunities;
     },
     queryKey: ['merklIncentives', market],
     staleTime: 1000 * 60 * 5,
     select: (merklOpportunities) => {
-      const hardcodedIncentive = rewardedAsset ? hardcodedIncentives[rewardedAsset] : undefined;
-
-      if (hardcodedIncentive) {
-        const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
-          return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
-        }, 0);
-        const merklIncentivesAPY = convertAprToApy(0.045);
-        return {
-          ...hardcodedIncentive,
-          breakdown: {
-            protocolAPY,
-            protocolIncentivesAPR,
-            merklIncentivesAPR: merklIncentivesAPY,
-            totalAPY: protocolAPY + protocolIncentivesAPR + merklIncentivesAPY,
-          } as MerklIncentivesBreakdown,
-        } as ExtendedReserveIncentiveResponse;
-      }
-
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
           rewardedAsset &&
@@ -207,20 +185,9 @@ export const useMerklIncentives = ({
         return null;
       }
 
-      const opportunity = opportunities[0];
-
-      if (opportunity.status !== OpportunityStatus.LIVE) {
-        return null;
-      }
-
-      if (opportunity.apr <= 0) {
-        return null;
-      }
-
-      const merklIncentivesAPR = opportunity.apr / 100;
-      const merklIncentivesAPY = convertAprToApy(merklIncentivesAPR);
-
-      const rewardToken = opportunity.rewardsRecord.breakdowns[0].token;
+      const validOpportunities = opportunities.filter(
+        (opp) => opp.status === OpportunityStatus.LIVE && opp.apr > 0
+      );
 
       if (!whitelistData?.whitelistedRewardTokens) {
         return null;
@@ -230,18 +197,34 @@ export const useMerklIncentives = ({
         whitelistData.whitelistedRewardTokens.map((token) => token.toLowerCase())
       );
 
-      if (!whitelistedTokensSet.has(rewardToken.address.toLowerCase())) {
+      const whitelistedOpportunities = validOpportunities.filter((opp) => {
+        const rewardToken = opp.rewardsRecord.breakdowns[0]?.token;
+        return rewardToken && whitelistedTokensSet.has(rewardToken.address.toLowerCase());
+      });
+
+      if (whitelistedOpportunities.length === 0) {
         return null;
       }
 
+      const totalMerklAPR = whitelistedOpportunities.reduce((sum, opp) => {
+        return sum + opp.apr / 100;
+      }, 0);
+
+      const merklIncentivesAPY = convertAprToApy(totalMerklAPR);
+
+      const primaryOpportunity = whitelistedOpportunities[0];
+      const rewardToken = primaryOpportunity.rewardsRecord.breakdowns[0].token;
+      const description = primaryOpportunity.description;
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
         return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);
       }, 0);
 
+      const protocolIncentivesAPY = convertAprToApy(protocolIncentivesAPR);
+
       const isBorrow = protocolAction === ProtocolAction.borrow;
       const totalAPY = isBorrow
-        ? protocolAPY - protocolIncentivesAPR - merklIncentivesAPY
-        : protocolAPY + protocolIncentivesAPR + merklIncentivesAPY;
+        ? protocolAPY - protocolIncentivesAPY - merklIncentivesAPY
+        : protocolAPY + protocolIncentivesAPY + merklIncentivesAPY;
 
       const incentiveKey = `${currentChainId}-${checksumAddress(rewardedAsset as Address)}`;
       const incentiveAdditionalData = whitelistData?.additionalIncentiveInfo?.[incentiveKey];
@@ -250,16 +233,22 @@ export const useMerklIncentives = ({
         incentiveAPR: merklIncentivesAPY.toString(),
         rewardTokenAddress: rewardToken.address,
         rewardTokenSymbol: rewardToken.symbol,
+        description: description,
         ...incentiveAdditionalData,
+        allOpportunities: whitelistedOpportunities.map((opp) => ({
+          name: opp.name,
+          apy: convertAprToApy(opp.apr / 100),
+          rewardToken: opp.rewardsRecord.breakdowns[0].token,
+        })),
         breakdown: {
           protocolAPY,
-          protocolIncentivesAPR,
+          protocolIncentivesAPR: protocolIncentivesAPY,
           merklIncentivesAPR: merklIncentivesAPY,
           totalAPY,
           isBorrow,
           breakdown: {
             protocol: protocolAPY,
-            protocolIncentives: protocolIncentivesAPR,
+            protocolIncentives: protocolIncentivesAPY,
             merklIncentives: merklIncentivesAPY,
           },
         } as MerklIncentivesBreakdown,
