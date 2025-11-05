@@ -745,6 +745,7 @@ msgid "This asset has reached its supply cap. Nothing is available to be supplie
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 msgid "Collateral Swap"
 msgstr "Collateral Swap"
 
@@ -764,6 +765,10 @@ msgstr "Bridged Via CCIP"
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
 msgstr "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
+
+#: src/components/transactions/Swap/errors/shared/InsufficientLiquidityBlockingError.tsx
+msgid "There is not enough liquidity in {symbol} to complete this swap. Try lowering the amount."
+msgstr "There is not enough liquidity in {symbol} to complete this swap. Try lowering the amount."
 
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
@@ -1366,10 +1371,6 @@ msgstr "stETH tokens will be migrated to Wrapped stETH using Lido Protocol wrapp
 #: src/components/transactions/Bridge/BridgeDestinationInput.tsx
 msgid "Use connected account"
 msgstr "Use connected account"
-
-#: src/modules/history/TransactionMobileRowItem.tsx
-msgid "VIEW TX"
-msgstr "VIEW TX"
 
 #: src/components/infoTooltips/LiquidationThresholdTooltip.tsx
 msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
@@ -2208,6 +2209,11 @@ msgstr "Testnet mode is ON"
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 msgstr "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 
+#: src/modules/history/TransactionMobileRowItem.tsx
+#: src/modules/history/TransactionRowItem.tsx
+msgid "VIEW"
+msgstr "VIEW"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
 msgstr "Interest rate rebalance conditions were not met"
@@ -2511,6 +2517,10 @@ msgstr "Assets to borrow"
 msgid "Data couldn't be loaded."
 msgstr "Data couldn't be loaded."
 
+#: src/components/transactions/Swap/errors/shared/SupplyCapBlockingError.tsx
+msgid "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
+msgstr "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
+
 #: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
 msgstr "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
@@ -2675,6 +2685,7 @@ msgid "Testnet mode"
 msgstr "Testnet mode"
 
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 msgid "Withdraw and Swap"
 msgstr "Withdraw and Swap"
 
@@ -2752,6 +2763,7 @@ msgid "Claimed"
 msgstr "Claimed"
 
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 msgid "Debt Swap"
 msgstr "Debt Swap"
 
@@ -2946,10 +2958,6 @@ msgstr "Migrated"
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 
-#: src/modules/history/TransactionRowItem.tsx
-msgid "View"
-msgstr "View"
-
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "here."
 msgstr "here."
@@ -3044,6 +3052,7 @@ msgid "We couldn't find any transactions related to your search. Try again with 
 msgstr "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
 
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/HistoryFilterMenu.tsx
 msgid "Repay with Collateral"
 msgstr "Repay with Collateral"
 
