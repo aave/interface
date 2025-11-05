@@ -138,7 +138,7 @@ export const getSupplyCapData = (asset: ReserveWithId) => {
 
   return {
     supplyCapUsage: Number.isFinite(rawUsage) ? rawUsage : 0,
-    supplyCapReached: asset?.supplyInfo?.supplyCapReached ?? false,
+    supplyCapReached: asset?.supplyInfo?.supplyCapReached || rawUsage >= 99.99,
   };
 };
 
