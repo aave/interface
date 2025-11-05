@@ -141,22 +141,22 @@ export const BorrowedPositionsList = () => {
     userBorrows,
   ]);
 
-  const userdebtAPY = useMemo(() => {
-    const totalDebtUSD = borrowedPositions.reduce(
-      (sum, position) => sum + Number(position?.balancePosition?.usd || '0'),
-      0
-    );
+  // const userdebtAPY = useMemo(() => {
+  //   const totalDebtUSD = borrowedPositions.reduce(
+  //     (sum, position) => sum + Number(position?.balancePosition?.usd || '0'),
+  //     0
+  //   );
 
-    const weightedSupplyAPY = borrowedPositions.reduce((sum, position) => {
-      const balanceUSD = Number(position?.balancePosition?.usd || '0');
-      const apy = Number(position?.apyPosition?.value || '0');
-      return sum + balanceUSD * apy;
-    }, 0);
+  //   const weightedSupplyAPY = borrowedPositions.reduce((sum, position) => {
+  //     const balanceUSD = Number(position?.balancePosition?.usd || '0');
+  //     const apy = Number(position?.apyPosition?.value || '0');
+  //     return sum + balanceUSD * apy;
+  //   }, 0);
 
-    const debtAPY = totalDebtUSD > 0 ? weightedSupplyAPY / totalDebtUSD : 0;
+  //   const debtAPY = totalDebtUSD > 0 ? weightedSupplyAPY / totalDebtUSD : 0;
 
-    return { debtAPY, totalDebtUSD };
-  }, [borrowedPositions]);
+  //   return { debtAPY, totalDebtUSD };
+  // }, [borrowedPositions]);
   const disableEModeSwitch = useMemo(() => {
     if (!userState?.eModeEnabled) {
       return 0;
@@ -266,11 +266,11 @@ export const BorrowedPositionsList = () => {
             <>
               <ListTopInfoItem
                 title={<Trans>Balance</Trans>}
-                value={userdebtAPY.totalDebtUSD || 0}
+                value={userState?.totalDebtBase || 0}
               />
               <ListTopInfoItem
                 title={<Trans>APY</Trans>}
-                value={userdebtAPY.debtAPY || 0}
+                value={userState?.userDebtAPY.value || 0}
                 percent
                 tooltip={
                   <TotalBorrowAPYTooltip

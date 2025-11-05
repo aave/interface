@@ -80,7 +80,7 @@ export const SuppliedPositionsList = () => {
   const [isShowSmallBalanceAssets, setIsShowSmallBalanceAssets] = useState(
     localStorage.getItem(localStorageName) === 'true'
   );
-
+  console.log('UserState:', userState);
   const supplyReservesLookup = useMemo(() => {
     const map = new Map<string, ReserveWithId>();
     supplyReserves.forEach((reserve) => {
@@ -182,23 +182,6 @@ export const SuppliedPositionsList = () => {
     userSupplyPositions,
   ]);
 
-  const userEarnedAPY = useMemo(() => {
-    const totalSupplyUSD = suppliedPositions.reduce(
-      (sum, position) => sum + Number(position?.balancePosition?.usd || '0'),
-      0
-    );
-
-    const weightedSupplyAPY = suppliedPositions.reduce((sum, position) => {
-      const balanceUSD = Number(position?.balancePosition?.usd || '0');
-      const apy = Number(position?.apyPosition?.value || '0');
-      return sum + balanceUSD * apy;
-    }, 0);
-
-    const earnedAPY = totalSupplyUSD > 0 ? weightedSupplyAPY / totalSupplyUSD : 0;
-
-    return { earnedAPY, totalSupplyUSD };
-  }, [suppliedPositions]);
-
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = suppliedPositions as DashboardReserve[];
   const sortedReserves = handleSortDashboardReserves(
@@ -269,11 +252,11 @@ export const SuppliedPositionsList = () => {
             <>
               <ListTopInfoItem
                 title={<Trans>Balance</Trans>}
-                value={userEarnedAPY.totalSupplyUSD || 0}
+                value={userState?.totalCollateralBase || 0}
               />
               <ListTopInfoItem
                 title={<Trans>APY</Trans>}
-                value={userEarnedAPY.earnedAPY || 0}
+                value={userState?.userEarnedAPY.value || 0}
                 percent
                 tooltip={
                   <TotalSupplyAPYTooltip
