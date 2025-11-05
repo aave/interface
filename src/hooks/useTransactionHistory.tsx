@@ -14,6 +14,7 @@ import {
   APP_CODE_PER_SWAP_TYPE,
   APP_CODE_VALUES,
 } from 'src/components/transactions/Swap/constants/shared.constants';
+import { COW_ENV } from 'src/components/transactions/Swap/helpers/cow';
 import { SwapType } from 'src/components/transactions/Swap/types';
 import { getTransactionAction, getTransactionId } from 'src/modules/history/helpers';
 import {
@@ -249,7 +250,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       return [];
     }
 
-    const orderBookApi = new OrderBookApi({ chainId: chainId }); // TODO: use prod for production
+    const orderBookApi = new OrderBookApi({ chainId: chainId, env: COW_ENV });
     const orders = await orderBookApi.getOrders({
       owner: account,
       limit: first,

@@ -148,8 +148,7 @@ export const RepayWithCollateralActionsViaCoW = ({
 
       const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(
         state.chainId,
-        APP_CODE_PER_SWAP_TYPE[state.swapType],
-        'staging'
+        APP_CODE_PER_SWAP_TYPE[state.swapType]
       );
       const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
 

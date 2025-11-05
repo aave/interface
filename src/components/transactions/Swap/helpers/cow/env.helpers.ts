@@ -6,6 +6,7 @@ import { getPublicClient, getWalletClient } from 'wagmi/actions';
 
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import { SwapState } from '../../types';
+import { COW_ENV } from './orders.helpers';
 
 export const getCowTradingSdk = async (state: SwapState, env: CowEnv = 'prod') => {
   return getCowTradingSdkByChainIdAndAppCode(
@@ -18,7 +19,7 @@ export const getCowTradingSdk = async (state: SwapState, env: CowEnv = 'prod') =
 export const getCowTradingSdkByChainIdAndAppCode = async (
   chainId: number,
   appCode: string,
-  env: CowEnv = 'prod'
+  env: CowEnv = COW_ENV
 ) => {
   const adapter = await getCowAdapter(chainId);
   return new TradingSdk(

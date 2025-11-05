@@ -26,6 +26,7 @@ import {
   TransactionHistoryItemUnion,
 } from 'src/modules/history/types';
 import { useRootStore } from 'src/store/root';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { findTokenSymbol } from 'src/ui-config/TokenList';
 import { GENERAL } from 'src/utils/events';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -173,6 +174,13 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
               },
             });
             stopTracking(orderId);
+            try {
+              queryClient.invalidateQueries({
+                queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
+              });
+            } catch (error) {
+              console.error('Error invalidating transaction history:', error);
+            }
 
             trackEvent(GENERAL.SWAP_COMPLETED, {
               ...baseTrackingData,
@@ -191,6 +199,13 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
               },
             });
             stopTracking(orderId);
+            try {
+              queryClient.invalidateQueries({
+                queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
+              });
+            } catch (error) {
+              console.error('Error invalidating transaction history:', error);
+            }
 
             trackEvent(GENERAL.SWAP_FAILED, {
               ...baseTrackingData,

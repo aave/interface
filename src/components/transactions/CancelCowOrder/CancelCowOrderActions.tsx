@@ -8,6 +8,7 @@ import { ActionName, SwapActionFields, TransactionHistoryItem } from 'src/module
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 
+import { COW_ENV } from '../Swap/helpers/cow';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 // TODO: check with cow if we can cancel adapters orders
@@ -26,7 +27,7 @@ export const CancelCowOrderActions = ({ cowOrder, blocked }: CancelCowOrderActio
       setMainTxState({ ...mainTxState, loading: true });
       const provider = getEthersProvider(wagmiConfig, { chainId: cowOrder.chainId });
       const signer = (await provider).getSigner();
-      const orderBookApi = new OrderBookApi({ chainId: cowOrder.chainId });
+      const orderBookApi = new OrderBookApi({ chainId: cowOrder.chainId, env: COW_ENV });
       const { signature, signingScheme } = await OrderSigningUtils.signOrderCancellation(
         cowOrder.id,
         cowOrder.chainId,

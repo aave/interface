@@ -1,6 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import {
   BuyTokenDestination,
+  CowEnv,
   OrderBookApi,
   OrderClass,
   OrderKind,
@@ -27,6 +28,8 @@ import {
 } from '../../constants/cow.constants';
 import { OrderType, SwapType } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
+
+export const COW_ENV: CowEnv = 'staging';
 
 const EIP_2612_PERMIT_ABI = [
   {
@@ -218,7 +221,7 @@ export const sendOrder = async ({
 };
 
 export const getOrderStatus = async (orderId: string, chainId: number) => {
-  const orderBookApi = new OrderBookApi({ chainId: chainId });
+  const orderBookApi = new OrderBookApi({ chainId: chainId, env: COW_ENV });
   const status = await orderBookApi.getOrderCompetitionStatus(orderId, {
     chainId,
   });
@@ -226,7 +229,7 @@ export const getOrderStatus = async (orderId: string, chainId: number) => {
 };
 
 export const getOrder = async (orderId: string, chainId: number) => {
-  const orderBookApi = new OrderBookApi({ chainId, env: 'staging' });
+  const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
   const order = await orderBookApi.getOrder(orderId, {
     chainId,
   });
@@ -234,7 +237,7 @@ export const getOrder = async (orderId: string, chainId: number) => {
 };
 
 export const getOrders = async (chainId: number, account: string) => {
-  const orderBookApi = new OrderBookApi({ chainId });
+  const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
   const orders = await orderBookApi.getOrders({
     owner: account,
   });
@@ -401,7 +404,7 @@ export const getRecommendedSlippage = (srcUSD: string) => {
 };
 
 export const uploadAppData = async (orderId: string, appDataHex: string, chainId: number) => {
-  const orderBookApi = new OrderBookApi({ chainId });
+  const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
 
   return orderBookApi.uploadAppData(orderId, appDataHex);
 };
