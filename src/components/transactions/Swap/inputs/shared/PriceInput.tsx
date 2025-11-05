@@ -118,11 +118,13 @@ export const PriceInput = ({
       usd: rateUsd,
     });
 
-    // Capture latest market rate from the most recent quote (or direction switch)
-    setLastMarketRate({
-      nominal: rate,
-      usd: rateUsd,
-    });
+    // Capture latest market rate from the most recent quote only once
+    if (lastMarketRate.nominal === undefined) {
+      setLastMarketRate({
+        nominal: rate,
+        usd: rateUsd,
+      });
+    }
   }, [amount]);
 
   const setNewRate = (newRate: BigNumberValue) => {
@@ -276,7 +278,7 @@ export const PriceInput = ({
 
         <Typography component="div" variant="secondary12" color="text.secondary">
           <FormattedNumber
-            value={rate.nominal ? rate.nominal.toNumber() : 0}
+            value={lastMarketRate.nominal ? lastMarketRate.nominal.toNumber() : 0}
             compact
             variant="secondary12"
             color="text.secondary"

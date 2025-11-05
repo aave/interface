@@ -9,9 +9,9 @@ import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { getExplorerLink, getTransactionAction, unixTimestampToFormattedTime } from './helpers';
-import { TransactionHistoryItemUnion } from './types';
+import { ActionName, TransactionHistoryItemUnion } from './types';
 
-function ActionTitle({ action }: { action: string }) {
+function ActionTitle({ action }: { action: ActionName }) {
   return (
     <Typography variant="subheader2" color="text.muted">
       <ActionTextMap action={action} />

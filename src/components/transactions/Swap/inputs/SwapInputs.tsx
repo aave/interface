@@ -1,4 +1,4 @@
-import { BigNumberValue, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { BigNumberValue, valueToBigNumber } from '@aave/math-utils';
 import { WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { useQueryClient } from '@tanstack/react-query';
 import { Dispatch, useEffect, useMemo } from 'react';
@@ -66,19 +66,32 @@ export const SwapInputs = ({
   const handleInputChange = (value: string) => {
     resetErrorsAndWarnings();
 
+    // Calculate USD per token unit if possible
+    const usdPerToken =
+      state.inputAmount &&
+      state.inputAmount !== '0' &&
+      state.inputAmountUSD &&
+      state.inputAmountUSD !== '0'
+        ? valueToBigNumber(state.inputAmountUSD).dividedBy(state.inputAmount)
+        : undefined;
+
+    const computeUSD = (amt: string) =>
+      usdPerToken ? valueToBigNumber(amt).multipliedBy(usdPerToken).toString(10) : '';
+
     if (state.orderType === OrderType.LIMIT && state.swapRate) {
       // Manual edit should pause quote refresh
       setState({ quoteRefreshPaused: true });
     }
 
     if (value === '-1') {
-      // Max Selected
+      const maxAmount = state.sourceToken.balance;
       setState({
         quoteRefreshPaused: false,
         quoteLastUpdatedAt: undefined,
         quoteTimerPausedAt: undefined,
         quoteTimerPausedAccumMs: undefined,
-        inputAmount: state.sourceToken.balance,
+        inputAmount: maxAmount,
+        inputAmountUSD: computeUSD(maxAmount),
         isMaxSelected: true,
         side: 'sell',
       });
@@ -89,6 +102,7 @@ export const SwapInputs = ({
         quoteTimerPausedAt: undefined,
         quoteTimerPausedAccumMs: undefined,
         inputAmount: value,
+        inputAmountUSD: computeUSD(value),
         isMaxSelected: value === state.forcedMaxValue,
         side: 'sell',
       });
@@ -99,18 +113,32 @@ export const SwapInputs = ({
   };
 
   const handleOutputChange = (value: string) => {
+    // Calculate USD per token unit if possible, same as in handleInputChange
+    const usdPerToken =
+      state.outputAmount &&
+      state.outputAmount !== '0' &&
+      state.outputAmountUSD &&
+      state.outputAmountUSD !== '0'
+        ? valueToBigNumber(state.outputAmountUSD).dividedBy(state.outputAmount)
+        : undefined;
+
+    const computeUSD = (amt: string) =>
+      usdPerToken ? valueToBigNumber(amt).multipliedBy(usdPerToken).toString(10) : '';
+
     if (state.swapRate) {
       // Block quote refreshs if user is changing the output amount after getting quotes
       setState({ quoteRefreshPaused: true });
     }
 
     if (value === '-1') {
+      const maxAmount = state.destinationToken.balance;
       setState({
         quoteRefreshPaused: false,
         quoteLastUpdatedAt: undefined,
         quoteTimerPausedAt: undefined,
         quoteTimerPausedAccumMs: undefined,
-        outputAmount: state.destinationToken.balance,
+        outputAmount: maxAmount,
+        outputAmountUSD: computeUSD(maxAmount),
         isMaxSelected: true,
         side: 'buy',
       });
@@ -121,6 +149,7 @@ export const SwapInputs = ({
         quoteTimerPausedAt: undefined,
         quoteTimerPausedAccumMs: undefined,
         outputAmount: value,
+        outputAmountUSD: computeUSD(value),
         isMaxSelected: false,
         side: 'buy',
       });
@@ -128,10 +157,6 @@ export const SwapInputs = ({
 
     trackingHandlers.trackInputChange(SwapInputChanges.OUTPUT_AMOUNT, value);
     resetErrorsAndWarnings();
-    setState({
-      outputAmount: value,
-      debouncedOutputAmount: value,
-    });
   };
 
   const handleRateChange = (rateFromAsset: SwappableToken, newRate: BigNumberValue) => {
@@ -163,9 +188,6 @@ export const SwapInputs = ({
   const onSwitchReserves = () => {
     const fromToken = state.sourceToken;
     const toToken = state.destinationToken;
-    const toInput = state.swapRate
-      ? normalizeBN(state.swapRate.destSpotAmount, state.swapRate.destDecimals).toString()
-      : '0';
 
     setState({
       quoteRefreshPaused: false,
@@ -176,8 +198,8 @@ export const SwapInputs = ({
       destinationToken: fromToken,
       inputAmount: '',
       debouncedInputAmount: '',
-      outputAmount: toInput,
-      debouncedOutputAmount: toInput,
+      outputAmount: '',
+      debouncedOutputAmount: '',
       inputAmountUSD: '',
       outputAmountUSD: '',
       ratesLoading: false,
@@ -418,6 +440,8 @@ export const SwapInputs = ({
 
   // Update selected tokens when defaults change (e.g., after network change)
   useEffect(() => {
+    // Guard: do not auto-adjust tokens after user interaction (amounts entered or Max selected)
+    if (state.inputAmount || state.outputAmount || state.isMaxSelected) return;
     const saved = loadTokenSelection();
 
     let inputToken: SwappableToken | undefined;
@@ -467,6 +491,9 @@ export const SwapInputs = ({
     fallbackInputToken,
     fallbackOutputToken,
     state.chainId,
+    state.inputAmount,
+    state.outputAmount,
+    state.isMaxSelected,
   ]);
 
   const resetSwap = (side: 'source' | 'destination' | 'both') => {

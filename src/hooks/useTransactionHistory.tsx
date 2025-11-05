@@ -366,8 +366,6 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
           ([, code]) => code === appCode
         )?.[0] as keyof typeof APP_CODE_PER_SWAP_TYPE | undefined;
 
-        console.log('swapType', swapType);
-
         return {
           action:
             swapTypeToTransactionHistoryItemType(swapType ?? SwapType.Swap) ?? ActionName.Swap,

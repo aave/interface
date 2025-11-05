@@ -611,9 +611,6 @@ export const isPermitSupportedWithFallback = async (
   // 3) On-chain probe
   const contract = new Contract(tokenAddress, PERMIT_PROBE_ABI, provider);
 
-  console.log('chainId', chainId);
-  console.log('tokenAddress', tokenAddress);
-
   const tryCall = async (fn: string, args: unknown[] = []) => {
     try {
       await contract[fn](...args);
@@ -624,14 +621,11 @@ export const isPermitSupportedWithFallback = async (
   };
 
   const noncesOk = await tryCall('nonces', [zeroAddress]);
-  console.log('noncesOk', noncesOk);
   const sepOk =
     (await tryCall('DOMAIN_SEPARATOR')) ||
     (await tryCall('domainSeparator')) ||
     (await tryCall('EIP712Domain'));
-  console.log('sepOk', sepOk);
   const supported = noncesOk && sepOk;
-  console.log('supported', supported);
   setToCache(key, supported);
   return supported;
 };

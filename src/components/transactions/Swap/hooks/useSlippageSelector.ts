@@ -56,6 +56,8 @@ export const useSlippageSelector = ({
   }, [state.slippage]);
 
   useEffect(() => {
+    if (!state.swapRate) return;
+
     const slippageValidation = validateSlippage(
       state.slippage,
       state.chainId,
@@ -72,5 +74,5 @@ export const useSlippageSelector = ({
       slippageValidation,
       safeSlippage,
     });
-  }, [state.slippage]);
+  }, [state.slippage, state.swapRate]);
 };

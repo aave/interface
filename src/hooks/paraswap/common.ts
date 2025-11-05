@@ -344,15 +344,6 @@ export const ExactInSwapper = (chainId: ChainId) => {
     maxSlippage: number
   ) => {
     try {
-      console.log('getTransactionParams', {
-        srcToken,
-        srcDecimals,
-        destToken,
-        destDecimals,
-        user,
-        route,
-        maxSlippage: maxSlippage * 100,
-      });
       const params = await paraswap.buildTx(
         {
           srcToken,
@@ -369,8 +360,6 @@ export const ExactInSwapper = (chainId: ChainId) => {
         },
         { ignoreChecks: true }
       );
-
-      console.log('params from paraswap sdk', params);
 
       return {
         swapCallData: (params as TransactionParams).data,
@@ -448,8 +437,6 @@ export const ExactOutSwapper = (chainId: ChainId) => {
         },
         { ignoreChecks: true }
       );
-
-      console.log('params from paraswap sdk', params);
 
       return {
         swapCallData: (params as TransactionParams).data,
