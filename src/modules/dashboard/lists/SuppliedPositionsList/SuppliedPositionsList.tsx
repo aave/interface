@@ -182,6 +182,13 @@ export const SuppliedPositionsList = () => {
     userSupplyPositions,
   ]);
 
+  const totalSupplyUSD = useMemo(() => {
+    return suppliedPositions.reduce(
+      (sum, position) => sum + Number(position?.balancePosition?.usd || '0'),
+      0
+    );
+  }, [suppliedPositions]);
+
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = suppliedPositions as DashboardReserve[];
   const sortedReserves = handleSortDashboardReserves(
@@ -250,10 +257,7 @@ export const SuppliedPositionsList = () => {
         <>
           {!!sortedReserves.length && (
             <>
-              <ListTopInfoItem
-                title={<Trans>Balance</Trans>}
-                value={userState?.totalCollateralBase || 0}
-              />
+              <ListTopInfoItem title={<Trans>Balance</Trans>} value={totalSupplyUSD || 0} />
               <ListTopInfoItem
                 title={<Trans>APY</Trans>}
                 value={userState?.userEarnedAPY.value || 0}
