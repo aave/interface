@@ -250,7 +250,7 @@ export const swapDefaultState: SwapState = {
   quoteTimerPausedAccumMs: 0,
   quoteRefreshPaused: false,
   slippage: '0.10',
-  autoSlippage: '0.10',
+  autoSlippage: '',
   gasLimit: '0',
   useFlashloan: undefined,
   slippageValidation: undefined,

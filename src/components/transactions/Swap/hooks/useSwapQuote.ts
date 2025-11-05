@@ -195,6 +195,7 @@ export const useSwapQuote = ({
       setState({
         provider,
         swapRate: undefined, // Clear the old swap rate to force new quote
+        autoSlippage: '', // Clear suggested slippage until a new quote arrives
         quoteRefreshPaused: false, // Ensure quotes can be fetched
       });
     }

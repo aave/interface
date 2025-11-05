@@ -35,7 +35,7 @@ export const useSlippageSelector = ({
       }
     } else if (state.orderType === OrderType.MARKET) {
       // Restore to suggested slippage if available, otherwise last known market slippage, else default 0.10%
-      const target = lastMarketSlippageRef.current || state.autoSlippage;
+      const target = lastMarketSlippageRef.current || state.autoSlippage || '0.10';
       if (state.slippage !== target) {
         setState({ slippage: target });
       }

@@ -358,7 +358,11 @@ export const SwitchAssetInput = ({
             open={openModal}
             setOpen={setOpenModal}
             contentMaxWidth={420}
-            contentHeight={pickerHeight}
+            minContentHeight={600}
+            contentHeight={Math.max(
+              pickerHeight ?? 0,
+              mergedPopular.length && filteredAssets.length > 3 ? 600 : 0
+            )}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
               <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>

@@ -1,4 +1,4 @@
-import { OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
+import { CowEnv, OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
 
 import { getAssetGroup } from '../helpers/shared/assetCorrelation.helpers';
 import { OrderType, SwapType } from '../types';
@@ -65,6 +65,12 @@ export const isChainIdSupportedByCoWProtocol = (chainId: number): chainId is Sup
 export const COW_EVM_RECIPIENT = '0xC542C2F197c4939154017c802B0583C596438380';
 // export const COW_LENS_RECIPIENT = '0xce4eB8a1f6Bd0e0B9282102DC056B11E9D83b7CA';
 export const COW_PROTOCOL_ETH_FLOW_ADDRESS = '0xbA3cB449bD2B4ADddBc894D8697F5170800EAdeC';
+export const COW_PROTOCOL_ETH_FLOW_ADDRESS_STAGING = '0x04501b9b1D52e67f6862d157E00D13419D2D6E95';
+
+export const COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV = (env: CowEnv) => {
+  return env === 'staging' ? COW_PROTOCOL_ETH_FLOW_ADDRESS_STAGING : COW_PROTOCOL_ETH_FLOW_ADDRESS;
+};
+
 export const COW_CREATE_ORDER_ABI =
   'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
 

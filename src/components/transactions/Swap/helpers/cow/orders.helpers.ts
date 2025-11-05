@@ -23,7 +23,7 @@ import { SignedParams } from '../../actions/approval/useSwapTokenApproval';
 import {
   COW_APP_DATA,
   COW_CREATE_ORDER_ABI,
-  COW_PROTOCOL_ETH_FLOW_ADDRESS,
+  COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV,
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
 import { OrderType, SwapType } from '../../types';
@@ -112,6 +112,7 @@ export const getPreSignTransaction = async ({
       sellTokenDecimals: tokenSrcDecimals,
       buyTokenDecimals: tokenDestDecimals,
       owner: user as `0x${string}`,
+      env: COW_ENV,
     },
     {
       appData: COW_APP_DATA(
@@ -209,6 +210,7 @@ export const sendOrder = async ({
         sellTokenDecimals: tokenSrcDecimals,
         buyTokenDecimals: tokenDestDecimals,
         owner: user as `0x${string}`,
+        env: COW_ENV,
       },
       {
         appData,
@@ -377,7 +379,7 @@ export const populateEthFlowTx = async (
   ]);
 
   return {
-    to: COW_PROTOCOL_ETH_FLOW_ADDRESS,
+    to: COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV(COW_ENV),
     value,
     data,
   };
