@@ -135,10 +135,10 @@ export const getSupplyCapData = (asset: ReserveWithId) => {
   const cap = valueToBigNumber(asset?.supplyInfo?.supplyCap.amount.value ?? '0');
 
   const rawUsage = cap.isZero() ? 0 : total.dividedBy(cap).multipliedBy(100).toNumber();
-  const supplyCapReached = total.gte(cap) || rawUsage >= 99.99;
+
   return {
     supplyCapUsage: Number.isFinite(rawUsage) ? rawUsage : 0,
-    supplyCapReached: supplyCapReached,
+    supplyCapReached: asset?.supplyInfo?.supplyCapReached || rawUsage >= 99.99,
   };
 };
 
@@ -153,11 +153,9 @@ export const getBorrowCapData = (asset: ReserveWithId) => {
 
   const rawUsage = cap.isZero() ? 0 : totalDebt.dividedBy(cap).multipliedBy(100).toNumber();
 
-  const borrowCapReached = totalDebt.gte(cap) || rawUsage >= 99.99;
-
   return {
     borrowCapUsage: Number.isFinite(rawUsage) ? rawUsage : 0,
-    borrowCapReached: borrowCapReached,
+    borrowCapReached: asset?.borrowInfo?.borrowCapReached || rawUsage >= 99.99,
   };
 };
 

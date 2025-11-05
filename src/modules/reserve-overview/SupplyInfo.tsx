@@ -309,8 +309,8 @@ export const SupplyInfo = ({
           {reserve.isolationModeConfig?.canBeCollateral && (
             <ReserveOverviewBox fullWidth>
               <DebtCeilingStatus
-                debt={reserve.isolationModeConfig.totalBorrows.amount.raw}
-                ceiling={reserve.isolationModeConfig.debtCeiling.amount.raw}
+                debt={reserve.isolationModeConfig.totalBorrows.usd}
+                ceiling={reserve.isolationModeConfig.debtCeiling.usd}
                 usageData={debtCeiling}
               />
             </ReserveOverviewBox>

@@ -15,13 +15,13 @@
     "@gql.tada/internal" "^1.0.0"
     graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
 
-"@aave/client@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.7.0.tgz#f525c785f115ebf5746b2082687417215d816c42"
-  integrity sha512-eyWJ6o0dWAOXojVOeg7ebP+wtsU04OafIC8vTAsKL+atzkhe9Tpc1g8OyUe+9gOSzJq2FNw+WN9XS2AP687EBg==
+"@aave/client@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.8.0.tgz#ef3e37d330fc454c1abe7a9e26ec01bd66ce3fd6"
+  integrity sha512-QW2IKOuae0jp7XV9YCUwtB00QNdO2LbybGXRV0SkehcCIgFAx6SeY3daXrtm/s1d6ysqvEJJEvXkoaXhAt76QQ==
   dependencies:
     "@aave/core" "0.1.0"
-    "@aave/graphql" "0.7.0"
+    "@aave/graphql" "0.8.0"
     "@aave/types" "0.2.0"
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
@@ -42,10 +42,10 @@
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
-"@aave/graphql@0.7.0", "@aave/graphql@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.7.0.tgz#4f91e3d7ef9061d19dddc71a3896eb7e61ac801d"
-  integrity sha512-5HqILlYzeLYb0KVelrbWMZ/O8JfvKOC2cg0QSdKjSlolA9iRtZ0VYiI/lVjiVliwAfUFxTZi7qWh934sDR0bvA==
+"@aave/graphql@0.8.0", "@aave/graphql@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.8.0.tgz#b999862b5c22bf3119f5c4ba5de46aef34df197d"
+  integrity sha512-S5NoQk50ypHjdTP6hJvNQW336J2fgqRrFdDlgmr6u3j7DShVTIKw3taP9spbyfGQnkIYmgzs2ZCQN/8Xq81f3Q==
   dependencies:
     "@aave/types" "0.2.0"
     gql.tada "^1.8.13"
@@ -57,13 +57,13 @@
   resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.36.1.tgz#3e501962de3700250c213c981ea47b36a8e37a54"
   integrity sha512-rR1sbDX1IFb1B1TLdi8hZANvtviPeU8hfpLuHC9cwlXluujCdHttnNVODwco1J5d2k6KxnNnc0DZJj2yV7nLTQ==
 
-"@aave/react@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.7.0.tgz#d25ec57477214bdbd81a14c4e1126c1655922fb7"
-  integrity sha512-AsieUfwfJ41+rLDmc0SzkJHeri1Xrria45J+g0NPfj/iLrTU90a4XcmpcWW/IldojLy0iqsxb9f2DCtOVBMe/g==
+"@aave/react@^0.7.1":
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.7.1.tgz#222f8551d927cbbb0ba1bb0f6f2d0605c978bf9b"
+  integrity sha512-ycnzgCz3RVrhfruuhi1P93e470KE3RyzVdTh71KgM7bM4Z8b/Gr8ocMqhkK/WCnue9p1QZGNVt00/l3d9DtY0A==
   dependencies:
-    "@aave/client" "0.7.0"
-    "@aave/graphql" "0.7.0"
+    "@aave/client" "0.8.0"
+    "@aave/graphql" "0.8.0"
     "@aave/types" "0.2.0"
     urql "^4.2.2"
 
