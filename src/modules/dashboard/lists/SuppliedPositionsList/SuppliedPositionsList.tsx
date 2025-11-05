@@ -80,7 +80,7 @@ export const SuppliedPositionsList = () => {
   const [isShowSmallBalanceAssets, setIsShowSmallBalanceAssets] = useState(
     localStorage.getItem(localStorageName) === 'true'
   );
-  console.log('UserState:', userState);
+
   const supplyReservesLookup = useMemo(() => {
     const map = new Map<string, ReserveWithId>();
     supplyReserves.forEach((reserve) => {
