@@ -1,14 +1,15 @@
 import { normalize } from '@aave/math-utils';
-import { getOrderToSign, LimitTradeParameters, OrderKind } from '@cowprotocol/cow-sdk';
+import { getOrderToSign, LimitTradeParameters, OrderKind, OrderStatus } from '@cowprotocol/cow-sdk';
 import { AaveFlashLoanType, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { calculateSignedAmount } from 'src/hooks/paraswap/common';
-import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { saveCowOrderToUserHistory } from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/react/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
@@ -97,7 +98,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
     return calculateSignedAmount(state.sellAmountFormatted, state.sellAmountToken.decimals);
   }, [state.sellAmountFormatted, state.sellAmountToken]);
 
-  const { hasActiveOrderForSellToken } = useCowOrderToast();
+  const { hasActiveOrderForSellToken, trackSwapOrderProgress } = useSwapOrdersTracking();
   const sellAssetAddress =
     state.sellAmountToken?.underlyingAddress || state.sourceToken.addressToSwap;
   const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(state.chainId, sellAssetAddress);
@@ -216,6 +217,31 @@ export const CollateralSwapActionsViaCowAdapters = ({
         success: true,
         txHash: result.orderId,
       });
+      // Save to local history and start tracking status
+      saveCowOrderToUserHistory({
+        protocol: 'cow',
+        orderId: result.orderId,
+        status: OrderStatus.OPEN,
+        swapType: state.swapType,
+        chainId: state.chainId,
+        account: user,
+        timestamp: new Date().toISOString(),
+        srcToken: {
+          address: state.sellAmountToken.underlyingAddress,
+          symbol: state.sellAmountToken.symbol,
+          name: state.sellAmountToken.symbol,
+          decimals: state.sellAmountToken.decimals,
+        },
+        destToken: {
+          address: state.buyAmountToken.underlyingAddress,
+          symbol: state.buyAmountToken.symbol,
+          name: state.buyAmountToken.symbol,
+          decimals: state.buyAmountToken.decimals,
+        },
+        srcAmount: state.sellAmountBigInt.toString(),
+        destAmount: state.buyAmountBigInt.toString(),
+      });
+      trackSwapOrderProgress(result.orderId, state.chainId);
       setState({
         actionsLoading: false,
       });

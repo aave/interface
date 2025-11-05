@@ -10,8 +10,8 @@ import stringify from 'json-stringify-deterministic';
 import { Dispatch } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { isSmartContractWallet } from 'src/helpers/provider';
-import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { useRootStore } from 'src/store/root';
@@ -66,7 +66,7 @@ export const SwapActionsViaCoW = ({
   const { mainTxState, loadingTxns, setMainTxState, setTxError, approvalTxState } =
     useModalContext();
 
-  const { hasActiveOrderForSellToken } = useCowOrderToast();
+  const { hasActiveOrderForSellToken } = useSwapOrdersTracking();
 
   const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(
     state.chainId,

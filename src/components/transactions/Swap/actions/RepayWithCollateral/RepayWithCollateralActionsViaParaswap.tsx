@@ -1,4 +1,5 @@
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { BigNumber, PopulatedTransaction } from 'ethers';
 import { Dispatch } from 'react';
@@ -7,6 +8,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { saveParaswapTxToUserHistory } from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../../../TxActionsWrapper';
@@ -191,6 +193,31 @@ export const RepayWithCollateralActionsViaParaswap = ({
       const txWithGasEstimation = await estimateGasLimit(populatedTx, state.chainId);
       const response = await sendTx(txWithGasEstimation);
       await response.wait(1);
+      try {
+        saveParaswapTxToUserHistory({
+          protocol: 'paraswap',
+          txHash: response.hash,
+          swapType: state.swapType,
+          chainId: state.chainId,
+          status: OrderStatus.FULFILLED,
+          account: state.user,
+          timestamp: new Date().toISOString(),
+          srcToken: {
+            address: state.sourceToken.addressToSwap,
+            symbol: state.sourceToken.symbol,
+            name: state.sourceToken.symbol,
+            decimals: state.sourceToken.decimals,
+          },
+          destToken: {
+            address: state.destinationToken.addressToSwap,
+            symbol: state.destinationToken.symbol,
+            name: state.destinationToken.symbol,
+            decimals: state.destinationToken.decimals,
+          },
+          srcAmount: state.sellAmountBigInt?.toString() ?? '0',
+          destAmount: state.buyAmountBigInt?.toString() ?? '0',
+        });
+      } catch {}
 
       trackingHandlers.trackSwap();
       params.invalidateAppState();

@@ -18,8 +18,8 @@ import { TransactionEventHandler } from 'src/components/TransactionEventHandler'
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
 import { CowOrderToast } from 'src/components/transactions/Swap/modals/result/CowOrderToast';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { CowOrderToastProvider } from 'src/hooks/useCowOrderToast';
 import { ModalContextProvider } from 'src/hooks/useModal';
+import { SwapOrdersTrackingProvider } from 'src/hooks/useSwapOrdersTracking';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
@@ -156,7 +156,7 @@ export default function MyApp(props: MyAppProps) {
                   <Web3ContextProvider>
                     <AppGlobalStyles>
                       <AddressBlocked>
-                        <CowOrderToastProvider>
+                        <SwapOrdersTrackingProvider>
                           <ModalContextProvider>
                             <SharedDependenciesProvider>
                               <AppDataProvider>
@@ -184,7 +184,7 @@ export default function MyApp(props: MyAppProps) {
                               </AppDataProvider>
                             </SharedDependenciesProvider>
                           </ModalContextProvider>
-                        </CowOrderToastProvider>
+                        </SwapOrdersTrackingProvider>
                       </AddressBlocked>
                     </AppGlobalStyles>
                   </Web3ContextProvider>

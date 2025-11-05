@@ -16,11 +16,11 @@ import {
 import { swapTypesThatRequiresInvertedQuote } from 'src/components/transactions/Swap/hooks/useSwapQuote';
 
 import {
+  ActionName,
   CowSwapSubset,
   hasAmount,
   hasCollateralReserve,
   hasSrcOrDestToken,
-  isCowSwapTransaction,
   isSDKTransaction,
   TransactionHistoryItem,
   transactionHistoryItemTypeToSwapType,
@@ -32,33 +32,34 @@ interface ActionDetailsProps {
   iconSize?: string;
 }
 
-export const ActionTextMap = ({ action }: { action: string }) => {
+export const ActionTextMap = ({ action }: { action: ActionName }) => {
   switch (action) {
     // SDK transactions
-    case 'UserSupplyTransaction':
+    case ActionName.UserSupplyTransaction:
       return <Trans>Supply</Trans>;
-    case 'UserWithdrawTransaction':
+    case ActionName.UserWithdrawTransaction:
       return <Trans>Withdraw</Trans>;
-    case 'UserBorrowTransaction':
+    case ActionName.UserBorrowTransaction:
       return <Trans>Borrow</Trans>;
-    case 'UserRepayTransaction':
+    case ActionName.UserRepayTransaction:
       return <Trans>Repay</Trans>;
-    case 'UserUsageAsCollateralTransaction':
+    case ActionName.UserUsageAsCollateralTransaction:
       return <Trans>Collateral usage</Trans>;
-    case 'UserLiquidationCallTransaction':
+    case ActionName.UserLiquidationCallTransaction:
       return <Trans>Liquidation</Trans>;
 
-    // CowSwap transactions
-    case 'CowSwap':
+    // Swap transactions
+    case ActionName.Swap:
       return <Trans>Swap</Trans>;
-    case 'CowCollateralSwap':
+    case ActionName.CollateralSwap:
       return <Trans>Collateral Swap</Trans>;
-    case 'CowDebtSwap':
+    case ActionName.DebtSwap:
       return <Trans>Debt Swap</Trans>;
-    case 'CowRepayWithCollateral':
+    case ActionName.RepayWithCollateral:
       return <Trans>Repay with Collateral</Trans>;
-    case 'CowWithdrawAndSwap':
+    case ActionName.WithdrawAndSwap:
       return <Trans>Withdraw and Swap</Trans>;
+
     default:
       return <Trans>Unknown</Trans>;
   }
@@ -290,8 +291,8 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
     );
   }
 
-  // For CowSwap transactions
-  if (isCowSwapTransaction(transaction) && hasSrcOrDestToken(transaction)) {
+  // For swap transactions with token pairs (CoW and ParaSwap)
+  if (hasSrcOrDestToken(transaction)) {
     const swapType = transactionHistoryItemTypeToSwapType(transaction.action);
     const areInputsInverted = swapType && swapTypesThatRequiresInvertedQuote.includes(swapType);
     const data = transaction as TransactionHistoryItem<CowSwapSubset>;

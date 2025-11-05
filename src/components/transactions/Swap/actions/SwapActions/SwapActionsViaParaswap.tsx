@@ -1,3 +1,4 @@
+import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { Dispatch } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
@@ -93,6 +94,36 @@ export const SwapActionsViaParaswap = ({
         const response = await sendTx(txWithGasEstimation);
         try {
           await response.wait(1);
+          // Save Paraswap tx locally for history
+          try {
+            const { saveParaswapTxToUserHistory: addParaswapTx } = await import(
+              'src/utils/swapAdapterHistory'
+            );
+            addParaswapTx({
+              protocol: 'paraswap',
+              txHash: response.hash,
+              swapType: params.swapType,
+              chainId: state.chainId,
+              account: user,
+              timestamp: new Date().toISOString(),
+              status: OrderStatus.FULFILLED,
+              srcToken: {
+                address: state.sourceToken.addressToSwap,
+                symbol: state.sourceToken.symbol,
+                name: state.sourceToken.symbol,
+                decimals: state.sourceToken.decimals,
+              },
+              destToken: {
+                address: state.destinationToken.addressToSwap,
+                symbol: state.destinationToken.symbol,
+                name: state.destinationToken.symbol,
+                decimals: state.destinationToken.decimals,
+              },
+              srcAmount: state.sellAmountBigInt?.toString() ?? '0',
+              destAmount: state.buyAmountBigInt?.toString() ?? '0',
+            });
+            // ParaSwap is atomic onchain; no toast tracking required
+          } catch {}
           addTransaction(
             response.hash,
             {

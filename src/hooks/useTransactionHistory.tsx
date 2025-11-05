@@ -18,11 +18,14 @@ import { SwapType } from 'src/components/transactions/Swap/types';
 import { getTransactionAction, getTransactionId } from 'src/modules/history/helpers';
 import {
   actionFilterMap,
+  ActionName,
+  CowSwapSubset,
   hasCollateralReserve,
   hasPrincipalReserve,
   hasReserve,
   hasSrcOrDestToken,
   HistoryFilters,
+  isCowSwapSubset,
   swapTypeToTransactionHistoryItemType,
   TransactionHistoryItemUnion,
   UserTransactionItem,
@@ -32,6 +35,11 @@ import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import {
+  CowAdapterEntry,
+  getAdapterSwapHistory,
+  ParaswapAdapterEntry,
+} from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/shallow';
 
 import { useAppDataContext } from './app-data-provider/useAppDataProvider';
@@ -82,8 +90,12 @@ export const applyTxHistoryFilters = ({
 
       // CowSwap structure
       if (hasSrcOrDestToken(txn)) {
-        srcToken = txn.underlyingSrcToken.symbol.toLowerCase();
-        destToken = txn.underlyingDestToken.symbol.toLowerCase();
+        const swapTxn = txn as unknown as {
+          underlyingSrcToken: { symbol: string };
+          underlyingDestToken: { symbol: string };
+        };
+        srcToken = swapTxn.underlyingSrcToken.symbol.toLowerCase();
+        destToken = swapTxn.underlyingDestToken.symbol.toLowerCase();
       }
 
       // handle special case where user searches for ethereum but asset names are abbreviated as ether
@@ -237,7 +249,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       return [];
     }
 
-    const orderBookApi = new OrderBookApi({ chainId: chainId, env: 'staging' }); // TODO: use prod for production
+    const orderBookApi = new OrderBookApi({ chainId: chainId }); // TODO: use prod for production
     const orders = await orderBookApi.getOrders({
       owner: account,
       limit: first,
@@ -262,7 +274,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       )
     ).filter((order) => order !== null);
 
-    return Promise.all(
+    const apiTxns = await Promise.all(
       filteredCowAaveOrders.map<Promise<TransactionHistoryItemUnion | null>>(async (order) => {
         const erc20Service = new ERC20Service(getProvider);
 
@@ -357,7 +369,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         console.log('swapType', swapType);
 
         return {
-          action: swapTypeToTransactionHistoryItemType(swapType ?? SwapType.Swap) ?? '',
+          action:
+            swapTypeToTransactionHistoryItemType(swapType ?? SwapType.Swap) ?? ActionName.Swap,
           id: order.uid,
           timestamp: new Date(order.creationDate).toISOString(),
           underlyingSrcToken: {
@@ -374,6 +387,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
             decimals: destToken.decimals,
           },
           destAToken: destToken.isAToken,
+          protocol: 'cow',
           srcAmount:
             order.executedSellAmount && order.executedBuyAmount != '0'
               ? order.executedSellAmount
@@ -388,6 +402,79 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         };
       })
     ).then((txns) => txns.filter((txn) => txn !== null));
+
+    // Merge in locally stored adapter entries (CoW + ParaSwap) for this account/chain
+    // This is needed because Paraswap txs are not included in the subgraph yet and CoW adapters orders are sent by the adapters instances therefore not returned by asking for the user's trades.
+    const localEntries = getAdapterSwapHistory(chainId, account || '');
+
+    // Build a set of CoW orderIds returned by API to dedupe
+    const apiCowIds = new Set(
+      apiTxns
+        .filter((t: TransactionHistoryItemUnion) => !!t && isCowSwapSubset(t))
+        .map((t: CowSwapSubset) => t.orderId)
+        .filter(Boolean)
+    );
+
+    const localCowTxns: TransactionHistoryItemUnion[] = (localEntries as CowAdapterEntry[])
+      .filter((e) => e.protocol === 'cow' && !apiCowIds.has(e.orderId))
+      .map((e: CowAdapterEntry) => ({
+        action: swapTypeToTransactionHistoryItemType(e.swapType) ?? ActionName.Swap,
+        id: e.orderId,
+        timestamp: e.timestamp,
+        underlyingSrcToken: {
+          underlyingAsset: e.srcToken.address,
+          name: e.srcToken.name,
+          symbol: e.srcToken.symbol,
+          decimals: e.srcToken.decimals,
+        },
+        srcAToken: e.srcToken.isAToken,
+        underlyingDestToken: {
+          underlyingAsset: e.destToken.address,
+          name: e.destToken.name,
+          symbol: e.destToken.symbol,
+          decimals: e.destToken.decimals,
+        },
+        destAToken: e.destToken.isAToken,
+        srcAmount: e.srcAmount,
+        destAmount: e.destAmount,
+        status: e.status,
+        protocol: 'cow',
+        orderId: e.orderId,
+        chainId: e.chainId,
+      }));
+
+    const localParaswapTxns: TransactionHistoryItemUnion[] = (
+      localEntries as ParaswapAdapterEntry[]
+    )
+      .filter((e) => e.protocol === 'paraswap')
+      .map((e: ParaswapAdapterEntry) => ({
+        action: swapTypeToTransactionHistoryItemType(e.swapType) ?? ActionName.Swap,
+        id: e.txHash,
+        timestamp: e.timestamp,
+        underlyingSrcToken: {
+          underlyingAsset: e.srcToken.address,
+          name: e.srcToken.name,
+          symbol: e.srcToken.symbol,
+          decimals: e.srcToken.decimals,
+        },
+        protocol: 'paraswap',
+        srcAToken: e.srcToken.isAToken,
+        underlyingDestToken: {
+          underlyingAsset: e.destToken.address,
+          name: e.destToken.name,
+          symbol: e.destToken.symbol,
+          decimals: e.destToken.decimals,
+        },
+        destAToken: e.destToken.isAToken,
+        srcAmount: e.srcAmount,
+        destAmount: e.destAmount,
+        status: e.status,
+        txHash: e.txHash,
+        chainId: e.chainId,
+      }));
+
+    const combined = [...apiTxns, ...localCowTxns, ...localParaswapTxns];
+    return combined.sort(sortTransactionsByTimestampDesc);
   };
 
   const PAGE_SIZE = 50; //Limit SDK and CowSwap to same page size

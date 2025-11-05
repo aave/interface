@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { ActionFields, TransactionHistoryItem } from 'src/modules/history/types';
+import { ActionName, SwapActionFields, TransactionHistoryItem } from 'src/modules/history/types';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { formatUnits } from 'viem';
 
@@ -14,7 +14,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { CancelCowOrderActions } from './CancelCowOrderActions';
 
 interface CancelCowOrderModalContentProps {
-  cowOrder: TransactionHistoryItem<ActionFields['CowSwap']>;
+  cowOrder: TransactionHistoryItem<SwapActionFields[ActionName.Swap]>;
 }
 
 export const CancelCowOrderModalContent = ({ cowOrder }: CancelCowOrderModalContentProps) => {

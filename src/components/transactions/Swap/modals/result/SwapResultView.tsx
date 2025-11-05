@@ -7,7 +7,7 @@ import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
-import { useCowOrderToast } from 'src/hooks/useCowOrderToast';
+import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 import { parseUnits } from 'viem';
 
@@ -132,7 +132,7 @@ export const SwapTxSuccessView = ({
   invalidateAppState,
   trackingHandlers,
 }: SwapTxSuccessViewProps & { trackingHandlers?: TrackAnalyticsHandlers }) => {
-  const { trackOrder, setHasActiveOrders } = useCowOrderToast();
+  const { trackSwapOrderProgress, setHasActiveOrders } = useSwapOrdersTracking();
 
   // Do polling each 10 seconds until the order get's filled
   const [orderStatus, setOrderStatus] = useState<'succeed' | 'failed' | 'open'>('open');
@@ -148,12 +148,12 @@ export const SwapTxSuccessView = ({
   // Start tracking the order when the component mounts
   useEffect(() => {
     if (provider === 'cowprotocol' && txHashOrOrderId) {
-      trackOrder(txHashOrOrderId, chainId);
+      trackSwapOrderProgress(txHashOrOrderId, chainId);
     } else if (provider === 'cowprotocol' && orderStatus === 'open') {
       // If the order is open, force the spinner to show, waiting for order details e.g. eth flow
       setHasActiveOrders(true);
     }
-  }, [txHashOrOrderId, chainId, provider, trackOrder, setHasActiveOrders]);
+  }, [txHashOrOrderId, chainId, provider]);
 
   // Poll the order status for UI updates
   const interval = useRef<NodeJS.Timeout | null>(null);

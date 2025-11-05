@@ -1,4 +1,5 @@
 import { valueToBigNumber } from '@aave/math-utils';
+import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { parseUnits } from 'ethers/lib/utils';
 import { Dispatch } from 'react';
@@ -134,6 +135,34 @@ export const DebtSwapActionsViaParaswap = ({
       debtSwitchTxData = await estimateGasLimit(debtSwitchTxData);
       const response = await sendTx(debtSwitchTxData);
       await response.wait(1);
+      try {
+        const { saveParaswapTxToUserHistory: addParaswapTx } = await import(
+          'src/utils/swapAdapterHistory'
+        );
+        addParaswapTx({
+          protocol: 'paraswap',
+          txHash: response.hash,
+          swapType: state.swapType,
+          chainId: state.chainId,
+          account: state.user,
+          timestamp: new Date().toISOString(),
+          status: OrderStatus.FULFILLED,
+          srcToken: {
+            address: state.sourceToken.addressToSwap,
+            symbol: state.sourceToken.symbol,
+            name: state.sourceToken.symbol,
+            decimals: state.sourceToken.decimals,
+          },
+          destToken: {
+            address: state.destinationToken.addressToSwap,
+            symbol: state.destinationToken.symbol,
+            name: state.destinationToken.symbol,
+            decimals: state.destinationToken.decimals,
+          },
+          srcAmount: state.buyAmountBigInt?.toString() ?? '0',
+          destAmount: state.sellAmountBigInt?.toString() ?? '0',
+        });
+      } catch {}
       setMainTxState({
         txHash: response.hash,
         loading: false,

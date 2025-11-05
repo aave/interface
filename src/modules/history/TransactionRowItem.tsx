@@ -12,9 +12,14 @@ import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { getExplorerLink, getTransactionAction, unixTimestampToFormattedTime } from './helpers';
-import { isCowSwapTransaction, TransactionHistoryItemUnion } from './types';
+import {
+  ActionName,
+  isCowSwapSubset,
+  isSwapTransaction,
+  TransactionHistoryItemUnion,
+} from './types';
 
-function ActionTitle({ action }: { action: string }) {
+function ActionTitle({ action }: { action: ActionName }) {
   return (
     <Typography sx={{ width: '180px' }}>
       <ActionTextMap action={action} />
@@ -85,11 +90,13 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
         </Box>
         <ListColumn align="right">
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
-            {isCowSwapTransaction(transaction) && transaction.status === OrderStatus.OPEN && (
-              <Button variant="contained" onClick={() => openCancelCowOrder(transaction)}>
-                <Trans>Cancel</Trans>
-              </Button>
-            )}
+            {isSwapTransaction(transaction) &&
+              isCowSwapSubset(transaction) &&
+              transaction.status === OrderStatus.OPEN && (
+                <Button variant="contained" onClick={() => openCancelCowOrder(transaction)}>
+                  <Trans>Cancel</Trans>
+                </Button>
+              )}
             {!downToMD && explorerLink && (
               <Button
                 variant="outlined"
@@ -99,7 +106,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
                   trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
                 }
               >
-                <Trans>View</Trans>{' '}
+                <Trans>VIEW</Trans>{' '}
                 <SvgIcon
                   sx={{
                     marginLeft: '5px',

@@ -1,4 +1,5 @@
 import { normalize } from '@aave/math-utils';
+import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { BigNumber, PopulatedTransaction } from 'ethers';
 import { Dispatch, useEffect, useMemo } from 'react';
@@ -154,6 +155,34 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
       const txWithGasEstimation = await estimateGasLimit(populatedTx, state.chainId);
       response = await sendTx(txWithGasEstimation);
       await response.wait(1);
+      try {
+        const { saveParaswapTxToUserHistory: addParaswapTx } = await import(
+          'src/utils/swapAdapterHistory'
+        );
+        addParaswapTx({
+          protocol: 'paraswap',
+          txHash: response.hash,
+          swapType: params.swapType,
+          chainId: state.chainId,
+          account: state.user,
+          timestamp: new Date().toISOString(),
+          status: OrderStatus.FULFILLED,
+          srcToken: {
+            address: state.sourceToken.addressToSwap,
+            symbol: state.sourceToken.symbol,
+            name: state.sourceToken.symbol,
+            decimals: state.sourceToken.decimals,
+          },
+          destToken: {
+            address: state.destinationToken.addressToSwap,
+            symbol: state.destinationToken.symbol,
+            name: state.destinationToken.symbol,
+            decimals: state.destinationToken.decimals,
+          },
+          srcAmount: state.sellAmountBigInt?.toString() ?? '0',
+          destAmount: state.buyAmountBigInt?.toString() ?? '0',
+        });
+      } catch {}
       addTransaction(
         response.hash,
         {
