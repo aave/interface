@@ -117,8 +117,6 @@ const getTokensFrom = (
           )
         : undefined;
 
-      if (!tokenFromList) return undefined;
-
       const initialSourceUserReserve = user?.userReservesData.find(
         (userReserve) =>
           userReserve.underlyingAsset.toLowerCase() === borrowPosition.underlyingAsset.toLowerCase()
@@ -138,7 +136,9 @@ const getTokensFrom = (
         decimals: borrowPosition.reserve.decimals,
         symbol: nativeToken?.symbol ?? tokenFromList?.symbol ?? borrowPosition.reserve.symbol,
         logoURI:
-          nativeToken?.logoURI ?? tokenFromList?.logoURI ?? borrowPosition.reserve.iconSymbol,
+          nativeToken?.logoURI ??
+          tokenFromList?.logoURI ??
+          `/icons/tokens/${borrowPosition.reserve.iconSymbol.toLowerCase()}.svg`,
         usdPrice: borrowPosition.reserve.priceInUSD,
         supplyAPY: borrowPosition.reserve.supplyAPY,
         variableBorrowAPY: borrowPosition.reserve.variableBorrowAPY,
@@ -187,7 +187,10 @@ const getTokensTo = (
         addressForUsdPrice: reserve.underlyingAsset,
         underlyingAddress: reserve.underlyingAsset,
         name: nativeToken?.name ?? tokenFromList?.name ?? reserve.name,
-        logoURI: nativeToken?.logoURI ?? tokenFromList?.logoURI ?? reserve.iconSymbol,
+        logoURI:
+          nativeToken?.logoURI ??
+          tokenFromList?.logoURI ??
+          `/icons/tokens/${reserve.iconSymbol.toLowerCase()}.svg`,
         chainId,
         decimals: reserve.decimals,
         symbol: nativeToken?.symbol ?? tokenFromList?.symbol ?? reserve.symbol,

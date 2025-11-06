@@ -76,13 +76,13 @@ export const RepayWithCollateralModalContent = ({
     sourceTokens: tokensFrom,
     destinationTokens: tokensTo,
     chainId,
+    forcedInputToken: defaultInputToken,
     suggestedDefaultOutputToken: defaultOutputToken,
-    suggestedDefaultInputToken: defaultInputToken,
     showTitle: false,
     showSwitchInputAndOutputAssetsButton: false,
     titleTokenPostfix: 'with collateral',
-    inputBalanceTitle: 'Repay',
-    outputBalanceTitle: 'Available collateral',
+    inputBalanceTitle: 'Debt',
+    outputBalanceTitle: 'Collateral',
     showOutputBalance: true,
     inputInputTitle: 'Repay',
     outputInputTitle: 'Using',
@@ -143,8 +143,6 @@ const getTokensFrom = (
           )
         : undefined;
 
-      if (!tokenFromList) return undefined;
-
       const initialSourceUserReserve = user?.userReservesData.find(
         (userReserve) =>
           userReserve.underlyingAsset.toLowerCase() === borrowPosition.underlyingAsset.toLowerCase()
@@ -164,7 +162,9 @@ const getTokensFrom = (
         decimals: borrowPosition.reserve.decimals,
         symbol: nativeToken?.symbol ?? tokenFromList?.symbol ?? borrowPosition.reserve.symbol,
         logoURI:
-          nativeToken?.logoURI ?? tokenFromList?.logoURI ?? borrowPosition.reserve.iconSymbol,
+          nativeToken?.logoURI ??
+          tokenFromList?.logoURI ??
+          `/icons/tokens/${borrowPosition.reserve.iconSymbol.toLowerCase()}.svg`,
         usdPrice: borrowPosition.reserve.priceInUSD,
         supplyAPY: borrowPosition.reserve.supplyAPY,
         variableBorrowAPY: borrowPosition.reserve.variableBorrowAPY,
@@ -215,7 +215,10 @@ const getTokensTo = (
           usdPrice: position.reserve.priceInUSD,
           supplyAPY: position.reserve.supplyAPY,
           variableBorrowAPY: position.reserve.variableBorrowAPY,
-          logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
+          logoURI:
+            nativeToken?.logoURI ??
+            baseToken.logoURI ??
+            `/icons/tokens/${position.reserve.iconSymbol.toLowerCase()}.svg`,
         };
       }
       return undefined;

@@ -52,7 +52,7 @@ export const RepayWithCollateralDetails = ({
     fromAssetData: state.destinationReserve.reserve, // used as collateral
     user,
     toAssetData: state.sourceReserve.reserve,
-    repayWithUserReserve: state.sourceReserve,
+    repayWithUserReserve: state.destinationReserve,
     debt: currentDebt,
   });
 
