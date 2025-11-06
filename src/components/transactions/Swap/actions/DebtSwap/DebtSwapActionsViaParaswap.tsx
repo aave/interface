@@ -236,7 +236,7 @@ export const DebtSwapActionsViaParaswap = ({
       preparingTransactions={loadingTxns}
       handleAction={action}
       requiresAmount
-      amount={state.inputAmount}
+      amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       handleApproval={approval}
       requiresApproval={requiresApproval}
       actionText={<Trans>Swap</Trans>}

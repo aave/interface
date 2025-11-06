@@ -153,21 +153,6 @@ export async function getCowProtocolSellRates({
     throw error;
   }
 
-  const srcAmountInUsd = BigNumber(srcTokenPriceUsd).multipliedBy(
-    BigNumber(amount).dividedBy(10 ** srcDecimals)
-  );
-  const destAmountInUsd = BigNumber(destTokenPriceUsd).multipliedBy(
-    BigNumber(
-      orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString()
-    ).dividedBy(10 ** destDecimals)
-  );
-
-  const destSpotInUsd = BigNumber(destTokenPriceUsd)
-    .multipliedBy(
-      BigNumber(orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString())
-    )
-    .dividedBy(10 ** destDecimals);
-
   if (!orderBookQuote.quoteResults.suggestedSlippageBps) {
     console.error('No suggested slippage found');
     const error = getErrorTextFromError(
@@ -204,18 +189,37 @@ export async function getCowProtocolSellRates({
   }
 
   if (invertedQuoteRoute) {
+    // Calculate Amounts
+    const srcSpotAmount =
+      side === 'sell'
+        ? orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString()
+        : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString();
+    const srcSpotUSD = BigNumber(destTokenPriceUsd)
+      .multipliedBy(BigNumber(srcSpotAmount).dividedBy(10 ** destDecimals))
+      .toString();
+    const destSpotAmount =
+      side === 'sell'
+        ? orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString()
+        : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString();
+    const destSpotUSD = BigNumber(srcTokenPriceUsd)
+      .multipliedBy(BigNumber(destSpotAmount).dividedBy(10 ** srcDecimals))
+      .toString();
+    const afterFeesAmount =
+      orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.sellAmount.toString();
+    const afterFeesUSD = BigNumber(srcTokenPriceUsd)
+      .multipliedBy(BigNumber(afterFeesAmount).dividedBy(10 ** srcDecimals))
+      .toString();
+
     return {
       srcToken: destToken,
-      srcSpotUSD: destAmountInUsd.toString(),
-      srcSpotAmount:
-        orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString(),
+      srcSpotUSD,
+      srcSpotAmount: srcSpotAmount,
       srcDecimals: destDecimals,
       destToken: srcToken,
-      destSpotAmount:
-        orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString(),
-      destSpotUSD: destAmountInUsd.toString(),
-      afterFeesUSD: destAmountInUsd.toString(),
-      afterFeesAmount: amount.toString(),
+      destSpotAmount,
+      destSpotUSD,
+      afterFeesUSD,
+      afterFeesAmount,
       destDecimals: srcDecimals,
       orderBookQuote,
       provider: SwapProvider.COW_PROTOCOL,
@@ -227,18 +231,37 @@ export async function getCowProtocolSellRates({
       destTokenPriceUsd: Number(srcTokenPriceUsd),
     };
   } else {
+    // Calculate Amounts
+    const srcSpotAmount =
+      side === 'sell'
+        ? orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString()
+        : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString();
+    const srcSpotUSD = BigNumber(srcTokenPriceUsd)
+      .multipliedBy(BigNumber(srcSpotAmount).dividedBy(10 ** srcDecimals))
+      .toString();
+    const destSpotAmount =
+      side === 'sell'
+        ? orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString()
+        : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString();
+    const destSpotUSD = BigNumber(destTokenPriceUsd)
+      .multipliedBy(BigNumber(destSpotAmount).dividedBy(10 ** destDecimals))
+      .toString();
+    const afterFeesAmount =
+      orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString();
+    const afterFeesUSD = BigNumber(destTokenPriceUsd)
+      .multipliedBy(BigNumber(afterFeesAmount).dividedBy(10 ** destDecimals))
+      .toString();
+
     return {
       srcToken,
-      srcSpotUSD: srcAmountInUsd.toString(),
-      srcSpotAmount: amount,
+      srcSpotUSD,
+      srcSpotAmount,
       srcDecimals,
       destToken,
-      destSpotAmount:
-        orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString(),
-      destSpotUSD: destSpotInUsd.toString(),
-      afterFeesUSD: destAmountInUsd.toString(),
-      afterFeesAmount:
-        orderBookQuote.quoteResults.amountsAndCosts.afterPartnerFees.buyAmount.toString(),
+      destSpotAmount,
+      destSpotUSD,
+      afterFeesUSD,
+      afterFeesAmount,
       destDecimals,
       orderBookQuote,
       provider: SwapProvider.COW_PROTOCOL,

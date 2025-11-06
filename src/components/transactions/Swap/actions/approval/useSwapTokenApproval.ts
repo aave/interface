@@ -98,7 +98,7 @@ export const useSwapTokenApproval = ({
 
   const { approvalTxState, setLoadingTxns, setTxError, setApprovalTxState } = useModalContext();
   const { sendTx, signTxData } = useWeb3Context();
-  const [loadingPermitData, setLoadingPermitData] = useState(false);
+  const [loadingPermitData, setLoadingPermitData] = useState(true);
 
   const [
     user,

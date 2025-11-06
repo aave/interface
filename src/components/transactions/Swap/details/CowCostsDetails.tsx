@@ -47,18 +47,39 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
 
   if (!state.buyAmountToken || !state.sellAmountToken) return null;
 
-  // Fee in source token (sell token)
-  const partnerFeeFormatted = normalize(
-    state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
-    state.buyAmountToken?.decimals ?? 18
-  );
+  // Partner fee is applied to the surplus token:
+  // - For sell orders: fee in buy token (destinationToken), deducted from buy amount
+  // - For buy orders: fee in sell token (sourceToken), added to sell amount
+  // For Debt and Repay with collateral, the swap is inverted to our UI
+  const invertedSide = state.processedSide;
+  let partnerFeeFormatted: string,
+    partnerFeeUsd: number,
+    partnerFeeToken: typeof state.buyAmountToken | typeof state.sellAmountToken;
+  if (invertedSide === 'buy') {
+    // Fee in destination token (buy token)
+    partnerFeeFormatted = normalize(
+      state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
+      state.sellAmountToken?.decimals ?? 18
+    );
+    const partnerFeeAmountPriceUnitUsd = valueToBigNumber(state.sellAmountUSD ?? '0')
+      .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
+      .toNumber();
+    partnerFeeUsd = Number(partnerFeeFormatted) * partnerFeeAmountPriceUnitUsd;
+    partnerFeeToken = state.sellAmountToken;
+  } else {
+    // Fee in source token (sell token)
+    partnerFeeFormatted = normalize(
+      state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
+      state.buyAmountToken?.decimals ?? 18
+    );
 
-  const partnerFeeAmountPriceUnitUsd = valueToBigNumber(state.buyAmountUSD ?? '0')
-    .dividedBy(valueToBigNumber(state.buyAmountFormatted ?? '0'))
-    .toNumber();
+    const partnerFeeAmountPriceUnitUsd = valueToBigNumber(state.buyAmountUSD ?? '0')
+      .dividedBy(valueToBigNumber(state.buyAmountFormatted ?? '0'))
+      .toNumber();
 
-  const partnerFeeUsd = Number(partnerFeeFormatted) * partnerFeeAmountPriceUnitUsd;
-  const partnerFeeToken = state.buyAmountToken;
+    partnerFeeUsd = Number(partnerFeeFormatted) * partnerFeeAmountPriceUnitUsd;
+    partnerFeeToken = state.buyAmountToken;
+  }
 
   const totalCostsInUsd = networkFeeUsd + partnerFeeUsd + (flashloanFeeUsd ?? 0); // + costs.slippageInUsd;
 

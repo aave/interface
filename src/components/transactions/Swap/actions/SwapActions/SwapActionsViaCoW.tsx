@@ -7,7 +7,7 @@ import {
 import { Trans } from '@lingui/macro';
 import { BigNumber } from 'ethers';
 import stringify from 'json-stringify-deterministic';
-import { Dispatch } from 'react';
+import { Dispatch, useMemo } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { isSmartContractWallet } from 'src/helpers/provider';
 import { useModalContext } from 'src/hooks/useModal';
@@ -20,7 +20,7 @@ import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import { COW_APP_DATA, VALID_TO_HALF_HOUR } from '../../constants/cow.constants';
+import { COW_APP_DATA } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
   getPreSignTransaction,
@@ -31,7 +31,14 @@ import {
   uploadAppData,
 } from '../../helpers/cow';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { isCowProtocolRates, OrderType, SwapParams, SwapState, TokenType } from '../../types';
+import {
+  ExpiryToSecondsMap,
+  isCowProtocolRates,
+  OrderType,
+  SwapParams,
+  SwapState,
+  TokenType,
+} from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
@@ -103,6 +110,11 @@ export const SwapActionsViaCoW = ({
     approvalTxState,
   });
 
+  const validTo = useMemo(
+    () => Math.floor(Date.now() / 1000) + ExpiryToSecondsMap[state.expiry],
+    [state.expiry]
+  );
+
   const { sendTx } = useWeb3Context();
 
   const slippageInPercent = state.slippage;
@@ -163,7 +175,7 @@ export const SwapActionsViaCoW = ({
             buyAmountAccountingCosts.toString(),
             state.destinationToken.addressToSwap,
             user,
-            VALID_TO_HALF_HOUR,
+            validTo,
             state.sourceToken.symbol,
             state.destinationToken.symbol,
             slippageBps,
@@ -203,7 +215,7 @@ export const SwapActionsViaCoW = ({
               smartSlippage,
               appCode,
               orderType: state.orderType,
-              validTo: VALID_TO_HALF_HOUR,
+              validTo,
             });
             const calculatedOrderId = await calculateUniqueOrderId(state.chainId, unsignerOrder);
 
@@ -255,6 +267,7 @@ export const SwapActionsViaCoW = ({
             if (await isSmartContractWallet(user, provider)) {
               const preSignTransaction = await getPreSignTransaction({
                 provider,
+                validTo,
                 tokenDest: state.destinationToken.addressToSwap,
                 chainId: state.chainId,
                 user,
@@ -305,6 +318,7 @@ export const SwapActionsViaCoW = ({
               });
             } else {
               orderId = await sendOrder({
+                validTo,
                 tokenSrc: state.sourceToken.addressToSwap,
                 tokenSrcDecimals: state.sourceToken.decimals,
                 tokenDest: state.destinationToken.addressToSwap,
@@ -386,7 +400,7 @@ export const SwapActionsViaCoW = ({
       preparingTransactions={loadingTxns}
       handleAction={action}
       requiresAmount
-      amount={state.inputAmount}
+      amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       handleApproval={() => approval()}
       requiresApproval={!state.actionsBlocked && requiresApproval}
       actionText={<Trans>Swap</Trans>}

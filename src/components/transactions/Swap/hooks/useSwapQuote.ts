@@ -400,10 +400,10 @@ const useMultiProviderSwapQuoteQuery = ({
     enabled: (() => {
       // Allow fetch when user has entered a positive amount, even if normalization rounded to '0'
       const hasPositiveUserAmount =
-        state.processedSide === 'sell'
+        state.side === 'sell'
           ? Number(state.debouncedInputAmount || '0') > 0
           : Number(state.debouncedOutputAmount || '0') > 0;
-
+      
       // Basic pre-blockers to avoid provider requests
       const isSameTokenPair =
         state.sourceToken.addressToSwap === state.destinationToken.addressToSwap;
@@ -412,8 +412,7 @@ const useMultiProviderSwapQuoteQuery = ({
 
       return (
         // LIMIT: fetch only once (when no quote yet). MARKET: fetch normally
-        ((state.orderType === OrderType.LIMIT && !state.swapRate) ||
-          state.orderType !== OrderType.LIMIT) &&
+        (state.orderType === OrderType.LIMIT && !state.swapRate) &&
         hasPositiveUserAmount &&
         !state.actionsBlocked &&
         !isSameTokenPair &&

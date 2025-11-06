@@ -653,11 +653,14 @@ export const isPermitSupportedWithFallback = async (
     (await tryCall('domainSeparator')) ||
     (await tryCall('EIP712Domain'));
   const basicSupported = noncesOk && sepOk;
-  if (basicSupported) {
-    // Only mark supported if we can resolve BOTH name and version reliably
-    const name = await callString('name');
-    const version = await callString('version');
 
+  if (basicSupported) {
+    // Prefer exact domain info; if version is missing, default to '1' (common default)
+    const name = await callString('name');
+    let version = await callString('version');
+    if (name && !version) {
+      version = '1';
+    }
     if (name && version) {
       setToCache(key, true, name, version);
       return true;

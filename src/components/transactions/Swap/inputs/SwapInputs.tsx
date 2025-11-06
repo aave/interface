@@ -641,8 +641,6 @@ export const SwapInputs = ({
     const newInputAsset = state.destinationToken;
     const newOutputAsset = state.sourceToken;
 
-    console.log('newInputAsset', newInputAsset.addressToSwap.toLowerCase());
-    console.log('newOutputAsset', newOutputAsset.addressToSwap.toLowerCase());
     const newInputAssetExists = filterInputAssets(true, state.orderType).find(
       (token) => token.addressToSwap.toLowerCase() === newInputAsset.addressToSwap.toLowerCase()
     );
@@ -650,9 +648,6 @@ export const SwapInputs = ({
       (token) => token.addressToSwap.toLowerCase() === newOutputAsset.addressToSwap.toLowerCase()
     );
 
-    console.log('newInputAssetExists', newInputAssetExists?.addressToSwap.toLowerCase());
-    console.log('newOutputAssetExists', newOutputAssetExists?.addressToSwap.toLowerCase());
-    console.log('allowSwitchTokens', !!newInputAssetExists && !!newOutputAssetExists);
     return !!newInputAssetExists && !!newOutputAssetExists;
   }, [state.sourceToken, state.destinationToken, state.orderType]);
 

@@ -268,7 +268,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
       mainTxState={state.mainTxState}
       approvalTxState={approvalTxState}
       requiresAmount
-      amount={state.inputAmount == '' ? undefined : state.inputAmount}
+      amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       requiresApproval={requiresApproval}
       isWrongNetwork={state.isWrongNetwork}
       blocked={state.actionsBlocked}

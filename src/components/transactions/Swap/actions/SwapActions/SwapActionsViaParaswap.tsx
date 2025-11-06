@@ -223,7 +223,7 @@ export const SwapActionsViaParaswap = ({
       preparingTransactions={loadingTxns}
       handleAction={action}
       requiresAmount
-      amount={state.inputAmount}
+      amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       handleApproval={() => approval()}
       requiresApproval={!state.actionsBlocked && requiresApproval}
       actionText={<Trans>Swap</Trans>}

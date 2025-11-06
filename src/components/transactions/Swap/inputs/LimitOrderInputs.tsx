@@ -84,6 +84,12 @@ export const LimitOrderInputs = ({
           assets={swapState.inputAssets}
           value={state.inputAmount}
           enableHover={true}
+          loading={
+            state.debouncedOutputAmount !== '0' &&
+            state.debouncedOutputAmount !== '' &&
+            state.ratesLoading &&
+            !state.error
+          }
           onChange={swapState.handleInputChange}
           onClear={() =>
             setState({

@@ -43,7 +43,9 @@ export const useSwapOrderAmounts = ({
     if (
       !state.swapRate?.afterFeesAmount ||
       state.outputAmount == '' ||
+      state.outputAmount == 'NaN' ||
       state.inputAmount == '' ||
+      state.inputAmount == 'NaN' ||
       (state.orderType === OrderType.MARKET && state.slippage == undefined)
     )
       return;
@@ -154,14 +156,14 @@ export const useSwapOrderAmounts = ({
             .toString();
         } else {
           // on a buy limit order, we receive exactly the output amount and send the input amount after partner fees (no slippage applied)
-          sellAmountFormatted = state.inputAmount.toString();
-
-          const buyAmountAfterNetworkFees = valueToBigNumber(state.outputAmount).minus(
-            networkFeeAmountFormattedInBuy
+          const sellAmountAfterNetworkFees = valueToBigNumber(state.inputAmount).plus(
+            networkFeeAmountFormattedInSell
           );
-          buyAmountFormatted = valueToBigNumber(buyAmountAfterNetworkFees)
-            .minus(partnerFeeAmount)
+          sellAmountFormatted = valueToBigNumber(sellAmountAfterNetworkFees)
+            .plus(partnerFeeAmount)
             .toString();
+
+          buyAmountFormatted = state.outputAmount.toString();
         }
       }
     } else {
@@ -258,15 +260,23 @@ export const useSwapOrderAmounts = ({
     }
 
     if (
-      !buyAmountFormatted ||
-      !sellAmountFormatted ||
-      !sellAmountToken ||
-      !buyAmountToken ||
-      !sellTokenPriceUsd ||
-      !buyTokenPriceUsd
+      buyAmountFormatted == undefined ||
+      sellAmountFormatted == undefined ||
+      sellAmountToken == undefined ||
+      buyAmountToken == undefined ||
+      sellTokenPriceUsd == undefined ||
+      buyTokenPriceUsd == undefined
     )
       return;
 
+    // Avoid negative amounts
+    sellAmountFormatted = valueToBigNumber(sellAmountFormatted ?? '0').lt(0)
+      ? '0'
+      : sellAmountFormatted;
+    buyAmountFormatted = valueToBigNumber(buyAmountFormatted ?? '0').lt(0)
+      ? '0'
+      : buyAmountFormatted;
+    
     const sellAmountUSD = valueToBigNumber(sellAmountFormatted)
       .multipliedBy(sellTokenPriceUsd)
       .toString();

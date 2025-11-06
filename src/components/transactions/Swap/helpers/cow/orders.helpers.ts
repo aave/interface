@@ -29,7 +29,7 @@ import {
 import { OrderType, SwapType } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
-export const COW_ENV: CowEnv = 'prod';
+export const COW_ENV: CowEnv = 'staging';
 
 const EIP_2612_PERMIT_ABI = [
   {
@@ -72,6 +72,7 @@ export type CowProtocolActionParams = {
   orderBookQuote?: QuoteAndPost;
   signatureParams?: SignedParams;
   estimateGasLimit?: (tx: PopulatedTransaction, chainId?: number) => Promise<PopulatedTransaction>;
+  validTo: number;
 };
 
 export const getPreSignTransaction = async ({
@@ -91,6 +92,7 @@ export const getPreSignTransaction = async ({
   tokenSrcDecimals,
   tokenDestDecimals,
   kind,
+  validTo,
 }: CowProtocolActionParams) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -111,6 +113,7 @@ export const getPreSignTransaction = async ({
       buyToken: tokenDest,
       sellTokenDecimals: tokenSrcDecimals,
       buyTokenDecimals: tokenDestDecimals,
+      validTo,
       owner: user as `0x${string}`,
       env: COW_ENV,
     },
@@ -160,6 +163,7 @@ export const sendOrder = async ({
   kind,
   signatureParams,
   estimateGasLimit,
+  validTo,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
 
@@ -209,6 +213,7 @@ export const sendOrder = async ({
         buyToken: tokenDest,
         sellTokenDecimals: tokenSrcDecimals,
         buyTokenDecimals: tokenDestDecimals,
+        validTo,
         owner: user as `0x${string}`,
         env: COW_ENV,
       },
@@ -509,7 +514,7 @@ export const priceQualityToUse = (swapType: SwapType) => {
     case SwapType.CollateralSwap:
     case SwapType.RepayWithCollateral:
     case SwapType.DebtSwap:
-      return PriceQuality.VERIFIED;
+      return PriceQuality.FAST;
     default:
       return PriceQuality.FAST;
   }

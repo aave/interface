@@ -279,7 +279,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
       preparingTransactions={state.actionsLoading}
       handleAction={action}
       requiresAmount
-      amount={state.inputAmount}
+      amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       blocked={state.actionsBlocked || approvalTxState.loading}
       handleApproval={approval}
       requiresApproval={requiresApproval}

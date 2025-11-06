@@ -62,7 +62,7 @@ export const RepayWithCollateralActionsViaCoW = ({
 
   // Pre-compute instance address
   useEffect(() => {
-    if (state.chainId !== 100) return; // TODO: remove this once we have a supported chainId
+    if (state.chainId !== 100 && state.chainId !== 8453 && state.chainId !== 1) return; // TODO: remove this once we have a supported chainId
     calculateInstanceAddress({
       user,
       validTo,
@@ -275,7 +275,7 @@ export const RepayWithCollateralActionsViaCoW = ({
       preparingTransactions={loadingTxns}
       handleAction={action}
       requiresAmount
-      amount={state.inputAmount}
+      amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       handleApproval={approval}
       requiresApproval={!state.actionsBlocked && requiresApproval}
       actionText={

@@ -328,12 +328,11 @@ export const WithdrawAndSwapActionsViaParaswap = ({
       preparingTransactions={loadingTxns}
       handleAction={action}
       requiresAmount
-      amount={state.inputAmount}
+      amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       handleApproval={() => approval()}
       requiresApproval={requiresApproval}
       actionText={<Trans>Withdraw and Switch</Trans>}
       actionInProgressText={<Trans>Withdrawing and Switching</Trans>}
-      //   sx={sx}
       errorParams={{
         loading: false,
         disabled: state.actionsBlocked || !approvalTxState?.success,
