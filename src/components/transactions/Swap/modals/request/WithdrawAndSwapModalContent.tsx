@@ -51,6 +51,8 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
         balance: token.balance,
         chainId,
         usdPrice: reserve?.priceInUSD,
+        supplyAPY: reserve?.supplyAPY,
+        variableBorrowAPY: reserve?.variableBorrowAPY,
         logoURI: token.logoURI,
         tokenType: token.extensions?.isNative ? TokenType.NATIVE : TokenType.ERC20,
       };

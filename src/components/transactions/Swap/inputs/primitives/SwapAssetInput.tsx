@@ -17,6 +17,7 @@ import {
   SvgIcon,
   ToggleButton,
   ToggleButtonGroup,
+  Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -115,6 +116,33 @@ export const SwitchAssetInput = ({
   const theme = useTheme();
   const networkConfig = getNetworkConfig(chainId);
   const networkName = networkConfig.displayName || networkConfig.name;
+  const getApyInfo = (asset: SwappableToken, swapType: SwapType, side: 'input' | 'output') => {
+    switch (swapType) {
+      case SwapType.RepayWithCollateral:
+        return side === 'input'
+          ? asset.variableBorrowAPY
+            ? { label: 'Borrow APY', value: Number(asset.variableBorrowAPY) }
+            : undefined
+          : asset.supplyAPY
+          ? { label: 'Supply APY', value: Number(asset.supplyAPY) }
+          : undefined;
+      case SwapType.WithdrawAndSwap:
+        return side === 'input' && asset.supplyAPY
+          ? { label: 'Supply APY', value: Number(asset.supplyAPY) }
+          : undefined;
+      case SwapType.CollateralSwap:
+        return asset.supplyAPY
+          ? { label: 'Supply APY', value: Number(asset.supplyAPY) }
+          : undefined;
+      case SwapType.DebtSwap:
+        return asset.variableBorrowAPY
+          ? { label: 'Borrow APY', value: Number(asset.variableBorrowAPY) }
+          : undefined;
+      case SwapType.Swap:
+      default:
+        return undefined;
+    }
+  };
   const handleSelect = (asset: SwappableToken) => {
     onSelect && onSelect(asset);
     onChange && onChange('');
@@ -566,6 +594,27 @@ export const SwitchAssetInput = ({
                               <LaunchIcon />
                             </SvgIcon>
                           </Link>
+                          {(() => {
+                            const apy = getApyInfo(asset, swapType, side);
+                            if (!apy) return null;
+                            return (
+                              <>
+                                <Typography variant="caption" color="text.secondary">
+                                  {' • '}
+                                </Typography>
+                                <Tooltip title={apy.label}>
+                                  <span>
+                                    <FormattedNumber
+                                      value={apy.value}
+                                      percent
+                                      variant="caption"
+                                      color="text.secondary"
+                                    />
+                                  </span>
+                                </Tooltip>
+                              </>
+                            );
+                          })()}
                         </Box>
                       </Box>
                       {asset.tokenType === TokenType.USER_CUSTOM && (

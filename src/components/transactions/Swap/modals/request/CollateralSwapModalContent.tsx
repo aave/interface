@@ -162,6 +162,8 @@ const getTokensFrom = (
           balance: position.underlyingBalance,
           chainId,
           usdPrice: position.reserve.priceInUSD,
+          supplyAPY: position.reserve.supplyAPY,
+          variableBorrowAPY: position.reserve.variableBorrowAPY,
           logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
         };
       }
@@ -225,6 +227,8 @@ const getTokensTo = (
         balance: currentCollateral,
         chainId,
         usdPrice: reserve.priceInUSD,
+        supplyAPY: reserve.supplyAPY,
+        variableBorrowAPY: reserve.variableBorrowAPY,
         logoURI: baseToken.logoURI,
       };
     })

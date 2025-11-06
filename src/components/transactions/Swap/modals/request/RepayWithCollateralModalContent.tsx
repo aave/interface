@@ -166,6 +166,8 @@ const getTokensFrom = (
         logoURI:
           nativeToken?.logoURI ?? tokenFromList?.logoURI ?? borrowPosition.reserve.iconSymbol,
         usdPrice: borrowPosition.reserve.priceInUSD,
+        supplyAPY: borrowPosition.reserve.supplyAPY,
+        variableBorrowAPY: borrowPosition.reserve.variableBorrowAPY,
         sourceReserve: initialSourceUserReserve,
         destinationReserve: initialTargetUserReserve,
       };
@@ -211,6 +213,8 @@ const getTokensTo = (
           balance: position.underlyingBalance,
           chainId,
           usdPrice: position.reserve.priceInUSD,
+          supplyAPY: position.reserve.supplyAPY,
+          variableBorrowAPY: position.reserve.variableBorrowAPY,
           logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
         };
       }
