@@ -11,16 +11,22 @@ import { SwitchRates } from './shared/SwitchRates';
 import { SwitchSlippageSelector } from './shared/SwitchSlippageSelector';
 import { SwapInputState } from './SwapInputs';
 
+export type SwapInputsCustomProps = {
+  canSwitchTokens: boolean;
+};
+
 export const MarketOrderInputs = ({
   params,
   state,
   swapState,
   setState,
+  customProps,
 }: {
   params: SwapParams;
   state: SwapState;
   swapState: SwapInputState;
   setState: Dispatch<Partial<SwapState>>;
+  customProps?: SwapInputsCustomProps;
 }) => {
   return (
     <>
@@ -105,11 +111,13 @@ export const MarketOrderInputs = ({
           <Box sx={{ position: 'absolute' }}>
             <IconButton
               onClick={swapState.onSwitchReserves}
+              disabled={!(customProps?.canSwitchTokens ?? false)}
               sx={{
                 border: '1px solid',
                 borderColor: 'divider',
                 backgroundColor: 'background.paper',
                 '&:hover': { backgroundColor: 'background.surface' },
+                '&:disabled': { backgroundColor: 'background.paper' },
               }}
             >
               <SvgIcon

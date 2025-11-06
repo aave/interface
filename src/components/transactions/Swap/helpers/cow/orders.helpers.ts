@@ -29,7 +29,7 @@ import {
 import { OrderType, SwapType } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
-export const COW_ENV: CowEnv = 'staging';
+export const COW_ENV: CowEnv = 'prod';
 
 const EIP_2612_PERMIT_ABI = [
   {

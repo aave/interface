@@ -8,9 +8,11 @@ import { OrderType } from '../types';
 export function OrderTypeSelector({
   switchType,
   setSwitchType,
+  limitsOrderButtonBlocked,
 }: {
   switchType: OrderType;
   setSwitchType: (type: OrderType) => void;
+  limitsOrderButtonBlocked: boolean;
 }) {
   return (
     <Box sx={{ mb: 6 }}>
@@ -25,13 +27,13 @@ export function OrderTypeSelector({
           disabled={switchType === OrderType.MARKET}
         >
           <Typography variant="buttonM">
-            <Trans>Market </Trans>
+            <Trans>Market</Trans>
           </Typography>
         </StyledTxModalToggleButton>
 
         <StyledTxModalToggleButton
           value={OrderType.LIMIT}
-          disabled={switchType === OrderType.LIMIT}
+          disabled={switchType === OrderType.LIMIT || limitsOrderButtonBlocked}
         >
           <Typography variant="buttonM">
             <Trans>Limit</Trans>

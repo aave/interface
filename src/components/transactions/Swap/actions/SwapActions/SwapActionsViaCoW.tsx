@@ -31,7 +31,7 @@ import {
   uploadAppData,
 } from '../../helpers/cow';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { isCowProtocolRates, OrderType, SwapParams, SwapState } from '../../types';
+import { isCowProtocolRates, OrderType, SwapParams, SwapState, TokenType } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
@@ -91,6 +91,7 @@ export const SwapActionsViaCoW = ({
       : undefined,
     setState,
     allowPermit: !disablePermitDueToActiveOrder,
+    trackingHandlers,
   });
 
   // Use centralized gas estimation
@@ -112,6 +113,24 @@ export const SwapActionsViaCoW = ({
   const action = async () => {
     if (!sellAmountAccountingCosts || !buyAmountAccountingCosts) {
       return;
+    }
+
+    if (state.orderType === OrderType.LIMIT) {
+      if (state.sourceToken.tokenType === TokenType.NATIVE) {
+        // Disallow native as sell token in ALL limit orders (would require eth-flow and locked funds)
+        setTxError(
+          getErrorTextFromError(
+            new Error(
+              'Native sell token is not supported in limit orders. Please use the wrapped token.'
+            ),
+            TxAction.MAIN_ACTION,
+            true
+          )
+        );
+        setState({ actionsLoading: false });
+        setMainTxState({ txHash: undefined, loading: false });
+        return;
+      }
     }
 
     setMainTxState({ ...mainTxState, loading: true });

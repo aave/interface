@@ -90,14 +90,14 @@ export const BaseSwapModalContent = ({
   useEffect(() => {
     setState({ mainTxState });
   }, [mainTxState]);
+  const trackingHandlers = useHandleAnalytics({ state });
   useUserContext({ setState });
   useMaxNativeAmount({ params, state, setState });
   useSlippageSelector({ params, state, setState });
   useFlowSelector({ params, state, setState });
-  useSwapQuote({ params, state, setState });
+  useSwapQuote({ params, state, setState, trackingHandlers });
   useProtocolReserves({ params, state, setState });
   useSwapOrderAmounts({ params, state, setState });
-  const trackingHandlers = useHandleAnalytics({ state });
 
   // Fallback views
   if (!state.sourceTokens.length || !state.destinationTokens.length) {
@@ -120,6 +120,7 @@ export const BaseSwapModalContent = ({
       {params.allowLimitOrders && (
         <OrderTypeSelector
           switchType={state.orderType}
+          limitsOrderButtonBlocked={state.limitsOrderButtonBlocked ?? false}
           setSwitchType={(orderType: OrderType) => {
             const switchingFromLimitToMarket =
               state.orderType === OrderType.LIMIT && orderType === OrderType.MARKET;

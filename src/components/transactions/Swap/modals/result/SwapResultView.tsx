@@ -20,6 +20,7 @@ import {
   getOrder,
   isNativeToken,
   isOrderCancelled,
+  isOrderExpired,
   isOrderFilled,
   isOrderLoading,
 } from '../../helpers/cow';
@@ -190,7 +191,7 @@ export const SwapTxSuccessView = ({
             invalidateAppState();
             // Analytics: CoW order filled
             trackingHandlers?.trackSwapFilled(order.executedSellAmount, order.executedBuyAmount);
-          } else if (isOrderCancelled(order.status)) {
+          } else if (isOrderCancelled(order.status) || isOrderExpired(order.status)) {
             setOrderStatus('failed');
             if (interval.current) {
               clearInterval(interval.current);

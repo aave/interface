@@ -59,6 +59,13 @@ export const SwapErrors = ({
     }
   }, [txError]);
 
+  // Track user denied
+  useEffect(() => {
+    if (state.error && hasUserDenied(state.error)) {
+      trackingHandlers.trackUserDenied();
+    }
+  }, [state.error]);
+
   if (hasInsufficientBalance(state)) {
     return (
       <InsufficientBalanceGuard

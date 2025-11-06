@@ -229,7 +229,8 @@ export const WithdrawAndSwapActionsViaParaswap = ({
         txHash: undefined,
         loading: false,
       });
-      trackingHandlers.trackSwapFailed();
+      const reason = error instanceof Error ? error.message : undefined;
+      trackingHandlers.trackSwapFailed(reason);
     }
   };
 

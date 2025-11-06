@@ -117,8 +117,20 @@ export const swapTrackSwapFilledToAnalyticsEventParams = (
 };
 
 export const swapTrackSwapFailedToAnalyticsEventParams = (
-  state: SwapState
+  state: SwapState,
+  reason?: string
 ): TrackEventProperties => {
+  return {
+    ...swapStateToAnalyticsEventParams(state),
+    ...(reason
+      ? { errorReason: String(reason).slice(0, 160) }
+      : state.error?.message
+      ? { errorReason: String(state.error.message).slice(0, 160) }
+      : {}),
+  };
+};
+
+export const swapUserDeniedToAnalyticsEventParams = (state: SwapState): TrackEventProperties => {
   return {
     ...swapStateToAnalyticsEventParams(state),
   };

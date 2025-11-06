@@ -1,25 +1,27 @@
 import { useRootStore } from 'src/store/root';
 
-import { SwapError, SwapState } from '../types';
+import { SwapError, SwapQuoteType, SwapState } from '../types';
 import { SWAP, SwapInputChanges } from './constants';
 import {
   swapErrorToAnalyticsEventParams,
   swapInputChangeToAnalyticsEventParams,
-  swapStateToAnalyticsEventParams,
+  swapQuoteToAnalyticsEventParams,
   swapTrackApprovalToAnalyticsEventParams,
   swapTrackSwapFailedToAnalyticsEventParams,
   swapTrackSwapFilledToAnalyticsEventParams,
   swapTrackSwapToAnalyticsEventParams,
+  swapUserDeniedToAnalyticsEventParams,
 } from './state.helpers';
 
 export type TrackAnalyticsHandlers = {
-  trackSwapQuote: (isAutoRefreshed: boolean) => void;
+  trackSwapQuote: (isAutoRefreshed: boolean, swapQuote: SwapQuoteType) => void;
   trackSwapError: (error: SwapError) => void;
+  trackUserDenied: () => void;
   trackInputChange: (fieldChange: SwapInputChanges, newValue: string) => void;
   trackApproval: (approvalAmount: string, viaPermit: boolean) => void;
   trackSwap: () => void;
   trackSwapFilled: (executedSellAmount: string, executedBuyAmount: string) => void;
-  trackSwapFailed: () => void;
+  trackSwapFailed: (reason?: string) => void;
 };
 
 /*
@@ -30,13 +32,15 @@ export const useHandleAnalytics = ({ state }: { state: SwapState }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return {
-    trackSwapQuote: (isAutoRefreshed: boolean) =>
+    trackSwapQuote: (isAutoRefreshed: boolean, swapQuote: SwapQuoteType) =>
       trackEvent(
         isAutoRefreshed ? SWAP.QUOTE_REFRESHED : SWAP.QUOTE,
-        swapStateToAnalyticsEventParams(state)
+        swapQuoteToAnalyticsEventParams(state, swapQuote)
       ),
     trackSwapError: (error: SwapError) =>
       trackEvent(SWAP.ERROR, swapErrorToAnalyticsEventParams(error)),
+    trackUserDenied: () =>
+      trackEvent(SWAP.USER_DENIED, swapUserDeniedToAnalyticsEventParams(state)),
     trackInputChange: (fieldChange: SwapInputChanges, newValue: string) =>
       trackEvent(
         SWAP.INPUT_CHANGES,
@@ -53,7 +57,7 @@ export const useHandleAnalytics = ({ state }: { state: SwapState }) => {
         SWAP.SWAP_FILLED,
         swapTrackSwapFilledToAnalyticsEventParams(state, executedSellAmount, executedBuyAmount)
       ),
-    trackSwapFailed: () =>
-      trackEvent(SWAP.SWAP_FAILED, swapTrackSwapFailedToAnalyticsEventParams(state)),
+    trackSwapFailed: (reason?: string) =>
+      trackEvent(SWAP.SWAP_FAILED, swapTrackSwapFailedToAnalyticsEventParams(state, reason)),
   };
 };

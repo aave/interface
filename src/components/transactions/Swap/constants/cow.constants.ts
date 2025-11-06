@@ -4,12 +4,14 @@ import { getAssetGroup } from '../helpers/shared/assetCorrelation.helpers';
 import { OrderType, SwapType } from '../types';
 
 export const COW_UNSUPPORTED_ASSETS: Partial<
-  Record<SwapType, Partial<Record<SupportedChainId, string[] | 'ALL'>>>
+  Record<SwapType | 'ALL', Partial<Record<SupportedChainId, string[] | 'ALL'>>>
 > = {
-  [SwapType.CollateralSwap]: {
-    [SupportedChainId.POLYGON]: 'ALL', // Polygon not supported for collateral swap, waiting better solvers support
-    [SupportedChainId.AVALANCHE]: 'ALL', // Disabled until we have better solvers liquidity
-    [SupportedChainId.BNB]: 'ALL', // Disabled until we have better solvers liquidity
+  ['ALL']: {
+    [SupportedChainId.AVALANCHE]: [
+      '0x8eb270e296023e9d92081fdf967ddd7878724424'.toLowerCase(), // AVaMAI not supported
+      '0x078f358208685046a11c85e8ad32895ded33a249'.toLowerCase(), // aVaWBTC not supported
+      '0xc45a479877e1e9dfe9fcd4056c699575a1045daa'.toLowerCase(), // aVaFRAX not supported
+    ],
     [SupportedChainId.GNOSIS_CHAIN]: [
       '0xedbc7449a9b594ca4e053d9737ec5dc4cbccbfb2'.toLowerCase(), // EURe USD Price not supported
     ],
@@ -26,24 +28,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.SEPOLIA]: [
       '0xd190eF37dB51Bb955A680fF1A85763CC72d083D4'.toLowerCase(), // aGHO not supported
     ],
-  },
-  [SwapType.DebtSwap]: {
-    [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.ARBITRUM_ONE]: 'ALL',
-    [SupportedChainId.BASE]: 'ALL',
-    [SupportedChainId.SEPOLIA]: 'ALL',
-    [SupportedChainId.AVALANCHE]: 'ALL',
-    [SupportedChainId.POLYGON]: 'ALL',
-    [SupportedChainId.BNB]: 'ALL',
-  },
-  [SwapType.RepayWithCollateral]: {
-    [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.ARBITRUM_ONE]: 'ALL',
-    [SupportedChainId.BASE]: 'ALL',
-    [SupportedChainId.SEPOLIA]: 'ALL',
-    [SupportedChainId.AVALANCHE]: 'ALL',
-    [SupportedChainId.POLYGON]: 'ALL',
-    [SupportedChainId.BNB]: 'ALL',
   },
 };
 

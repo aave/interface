@@ -55,6 +55,9 @@ export enum SWAP {
 
   /// The user's order has failed
   SWAP_FAILED = 'SWAP_FAILED',
+
+  /// The user denied a wallet request
+  USER_DENIED = 'SWAP_USER_DENIED_WALLET_REQUEST',
 }
 
 export const REWARDS = {

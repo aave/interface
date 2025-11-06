@@ -101,6 +101,9 @@ export type TokensSwapState = {
   /** Computed flag that disables actions until resolved. */
   actionsBlocked: boolean;
 
+  /** Whether the limits order button is blocked. */
+  limitsOrderButtonBlocked: boolean;
+
   // Current
   /** Selected swap provider (cowprotocol, paraswap, none). */
   provider: SwapProvider;
@@ -242,6 +245,7 @@ export const swapDefaultState: SwapState = {
   isInvertedSwap: false,
   processedSide: 'sell',
 
+  limitsOrderButtonBlocked: false,
   showSlippageWarning: false,
   showUSDTResetWarning: false,
   showChangeNetworkWarning: false,

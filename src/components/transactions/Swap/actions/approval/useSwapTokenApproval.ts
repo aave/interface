@@ -15,6 +15,7 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { needsUSDTApprovalReset } from 'src/utils/usdtHelpers';
 import { useShallow } from 'zustand/shallow';
 
+import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { isNativeToken } from '../../helpers/cow';
 import { SwapState } from '../../types';
 
@@ -29,6 +30,7 @@ export type SwapTokenApprovalParams = {
   allowPermit?: boolean;
   margin?: number;
   type?: 'approval' | 'delegation';
+  trackingHandlers?: TrackAnalyticsHandlers;
 };
 
 export type SignatureLike = {
@@ -86,6 +88,7 @@ export const useSwapTokenApproval = ({
   allowPermit = true,
   margin = 0,
   type = 'approval',
+  trackingHandlers,
 }: SwapTokenApprovalParams) => {
   const [approvedAmount, setApprovedAmount] = useState<string | undefined>();
   const [requiresApprovalReset, setRequiresApprovalReset] = useState(false);
@@ -424,6 +427,8 @@ export const useSwapTokenApproval = ({
       quoteRefreshPaused: true,
       quoteTimerPausedAt: Date.now(),
     });
+
+    trackingHandlers?.trackApproval(amountToApprove.toString(), usePermit);
   };
 
   return {

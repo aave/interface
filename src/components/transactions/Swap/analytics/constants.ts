@@ -37,4 +37,7 @@ export enum SwapInputChanges {
 
   /// The user has changed the gas limit
   GAS_LIMIT = 'GAS_LIMIT',
+
+  /// The user approved high price impact warning
+  HIGH_PRICE_IMPACT_CONFIRM = 'HIGH_PRICE_IMPACT_CONFIRM',
 }

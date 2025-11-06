@@ -3,10 +3,10 @@ import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
-import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { ActionName, SwapActionFields, TransactionHistoryItem } from 'src/modules/history/types';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { getWalletClient } from 'wagmi/actions';
 
 import { COW_ENV } from '../Swap/helpers/cow';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -25,13 +25,15 @@ export const CancelCowOrderActions = ({ cowOrder, blocked }: CancelCowOrderActio
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
-      const provider = getEthersProvider(wagmiConfig, { chainId: cowOrder.chainId });
-      const signer = (await provider).getSigner();
       const orderBookApi = new OrderBookApi({ chainId: cowOrder.chainId, env: COW_ENV });
+      const walletClient = await getWalletClient(wagmiConfig, { chainId: cowOrder.chainId });
+      if (!walletClient || !walletClient.account) {
+        throw new Error('Wallet not connected for signing');
+      }
       const { signature, signingScheme } = await OrderSigningUtils.signOrderCancellation(
         cowOrder.id,
         cowOrder.chainId,
-        signer
+        walletClient
       );
       await orderBookApi.sendSignedOrderCancellations({
         orderUids: [cowOrder.id],

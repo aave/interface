@@ -79,6 +79,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
     amount: collateralToRepayAmountToApprove.toString(),
     spender: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
     setState,
+    trackingHandlers,
   });
 
   // Use centralized gas estimation
@@ -252,6 +253,9 @@ export const RepayWithCollateralActionsViaParaswap = ({
       setMainTxState({
         loading: false,
       });
+
+      const reason = error instanceof Error ? error.message : undefined;
+      trackingHandlers.trackSwapFailed(reason);
     }
   };
 

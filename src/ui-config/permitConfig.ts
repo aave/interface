@@ -534,16 +534,21 @@ const PERMIT_PROBE_ABI = [
   'function domainSeparator() view returns (bytes32)',
   'function EIP712Domain() view returns (bytes memory)',
   'function permit(address, address, uint256, uint256, uint8, bytes32, bytes32)',
+  // Optional ERC-20 metadata helpers used for EIP-712 domain inference
+  'function name() view returns (string)',
+  'function version() view returns (string)',
 ];
 
 const CACHE_KEY = 'permitCache';
 const CACHE_TTL = 1000 * 60 * 60 * 24 * 7; // 7 days
-const memoryCache = new Map<string, boolean>();
+const memoryCache = new Map<string, PermitCacheEntry>();
 
 // ---- Local cache helpers ----
 interface PermitCacheEntry {
-  value: boolean;
+  supported: boolean;
   timestamp: number;
+  name?: string;
+  version?: string;
 }
 
 const loadCache = (): Record<string, PermitCacheEntry> => {
@@ -567,7 +572,7 @@ const saveCache = (cache: Record<string, PermitCacheEntry>) => {
 
 const getFromCache = (key: string): boolean | undefined => {
   // SSR fallback
-  if (typeof window === 'undefined') return memoryCache.get(key);
+  if (typeof window === 'undefined') return memoryCache.get(key)?.supported;
 
   const cache = loadCache();
   const entry = cache[key];
@@ -579,18 +584,31 @@ const getFromCache = (key: string): boolean | undefined => {
     return;
   }
 
-  return entry.value;
+  return entry.supported;
 };
 
-const setToCache = (key: string, value: boolean) => {
+const setToCache = (key: string, supported: boolean, name?: string, version?: string) => {
   if (typeof window === 'undefined') {
-    memoryCache.set(key, value);
+    memoryCache.set(key, { supported, name, version, timestamp: Date.now() });
     return;
   }
 
   const cache = loadCache();
-  cache[key] = { value, timestamp: Date.now() };
+  cache[key] = { supported, name, version, timestamp: Date.now() } as PermitCacheEntry;
   saveCache(cache);
+};
+
+export const getCachedPermitDomain = (chainId: ChainId, tokenAddress: string) => {
+  const key = `${chainId}:${tokenAddress.toLowerCase()}`;
+  if (typeof window === 'undefined') {
+    const entry = memoryCache.get(key);
+    return entry && entry.name ? { name: entry.name, version: entry.version || '1' } : undefined;
+  }
+  const cache = loadCache();
+  const entry = cache[key];
+  if (!entry) return undefined;
+  if (Date.now() - entry.timestamp > CACHE_TTL) return undefined;
+  return entry.name ? { name: entry.name, version: entry.version || '1' } : undefined;
 };
 
 export const isPermitSupportedWithFallback = async (
@@ -620,14 +638,36 @@ export const isPermitSupportedWithFallback = async (
     }
   };
 
+  const callString = async (fn: string): Promise<string | undefined> => {
+    try {
+      const value = await contract[fn]();
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    } catch {
+      return undefined;
+    }
+  };
+
   const noncesOk = await tryCall('nonces', [zeroAddress]);
   const sepOk =
     (await tryCall('DOMAIN_SEPARATOR')) ||
     (await tryCall('domainSeparator')) ||
     (await tryCall('EIP712Domain'));
-  const supported = noncesOk && sepOk;
-  setToCache(key, supported);
-  return supported;
+  const basicSupported = noncesOk && sepOk;
+  if (basicSupported) {
+    // Only mark supported if we can resolve BOTH name and version reliably
+    const name = await callString('name');
+    const version = await callString('version');
+
+    if (name && version) {
+      setToCache(key, true, name, version);
+      return true;
+    }
+    // Not enough info to build EIP-712 domain safely
+    setToCache(key, false);
+    return false;
+  }
+  setToCache(key, false);
+  return false;
 };
 
 export const customAssetDomains: { [key: string]: { name: string; version: string } } = {

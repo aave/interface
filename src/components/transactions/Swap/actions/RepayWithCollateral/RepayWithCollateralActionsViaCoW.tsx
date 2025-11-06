@@ -117,6 +117,7 @@ export const RepayWithCollateralActionsViaCoW = ({
       spender: precalculatedInstanceAddress,
       setState,
       allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
+      trackingHandlers,
     });
 
   // Use centralized gas estimation

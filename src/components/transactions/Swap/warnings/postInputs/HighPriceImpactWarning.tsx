@@ -3,6 +3,8 @@ import { Box, Checkbox, Typography } from '@mui/material';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 
+import { SwapInputChanges } from '../../analytics/constants';
+import { useHandleAnalytics } from '../../analytics/useTrackAnalytics';
 import { SwapState } from '../../types';
 import { shouldRequireConfirmation, shouldShowWarning, valueLostPercentage } from '../helpers';
 
@@ -13,6 +15,7 @@ export function HighPriceImpactWarning({
   state: SwapState;
   setState: Dispatch<Partial<SwapState>>;
 }) {
+  const trackingHandlers = useHandleAnalytics({ state });
   const lostValue = useMemo(() => {
     if (!state.swapRate) return 0;
 
@@ -36,7 +39,7 @@ export function HighPriceImpactWarning({
     } else {
       setState({ actionsBlocked: false });
     }
-  }, [requireConfirmation, highPriceImpactConfirmed]);
+  }, [requireConfirmation, highPriceImpactConfirmed, state.quoteLastUpdatedAt]);
 
   if (!showWarning) return null;
 
@@ -76,7 +79,12 @@ export function HighPriceImpactWarning({
           <Checkbox
             checked={highPriceImpactConfirmed}
             onChange={() => {
-              setHighPriceImpactConfirmed(!highPriceImpactConfirmed);
+              const next = !highPriceImpactConfirmed;
+              setHighPriceImpactConfirmed(next);
+              trackingHandlers.trackInputChange(
+                SwapInputChanges.HIGH_PRICE_IMPACT_CONFIRM,
+                next ? 'confirmed' : 'unconfirmed'
+              );
             }}
             size="small"
             data-cy={'high-price-impact-checkbox'}

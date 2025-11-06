@@ -18,12 +18,14 @@ export const isSwapSupportedByCowProtocol = (
 ) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) return false;
 
-  const unsupportedAssetsPerChainAndModalType =
-    COW_UNSUPPORTED_ASSETS[swapType] && COW_UNSUPPORTED_ASSETS[swapType][chainId];
+  const unsupportedAssetsPerChainAndModalType = [
+    ...((COW_UNSUPPORTED_ASSETS['ALL'] && COW_UNSUPPORTED_ASSETS['ALL'][chainId]) || []),
+    ...((COW_UNSUPPORTED_ASSETS[swapType] && COW_UNSUPPORTED_ASSETS[swapType][chainId]) || []),
+  ].flat();
 
   if (unsupportedAssetsPerChainAndModalType === undefined) return true; // No unsupported assets for this chain and modal type
 
-  if (unsupportedAssetsPerChainAndModalType === 'ALL') return false; // All assets are unsupported
+  if (unsupportedAssetsPerChainAndModalType.includes('ALL')) return false; // All assets are unsupported
 
   if (
     unsupportedAssetsPerChainAndModalType.includes(assetFrom.toLowerCase()) ||

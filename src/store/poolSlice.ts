@@ -54,7 +54,7 @@ import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvi
 import { SwapTransactionParams } from 'src/hooks/paraswap/common';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { SignedParams } from 'src/hooks/useApprovalTx';
-import { customAssetDomains } from 'src/ui-config/permitConfig';
+import { customAssetDomains, getCachedPermitDomain } from 'src/ui-config/permitConfig';
 import { minBaseTokenRemainingByNetwork, optimizedPath } from 'src/utils/utils';
 import { StateCreator } from 'zustand';
 
@@ -803,20 +803,27 @@ export const createPoolSlice: StateCreator<
       let name = '';
       let version = '1';
 
+      const { chainId } = await provider.getNetwork();
+
       if (customAssetDomains[token.toLowerCase()]) {
         name = customAssetDomains[token.toLowerCase()].name;
         version = customAssetDomains[token.toLowerCase()].version;
-      } else if (v3TokensWithEip712DomainSupport.includes(token.toLowerCase())) {
-        const aaveV3TokenService = new AaveTokenV3Service(token, provider);
-        const domain = await aaveV3TokenService.getEip712Domain();
-        name = domain.name;
-        version = domain.version;
       } else {
-        const tokenERC20Service = new ERC20Service(provider);
-        name = (await tokenERC20Service.getTokenData(token)).name;
+        const cached = getCachedPermitDomain(chainId, token);
+        if (cached) {
+          name = cached.name;
+          version = cached.version;
+        } else if (v3TokensWithEip712DomainSupport.includes(token.toLowerCase())) {
+          const aaveV3TokenService = new AaveTokenV3Service(token, provider);
+          const domain = await aaveV3TokenService.getEip712Domain();
+          name = domain.name;
+          version = domain.version;
+        } else {
+          const tokenERC20Service = new ERC20Service(provider);
+          name = (await tokenERC20Service.getTokenData(token)).name;
+        }
       }
 
-      const { chainId } = await provider.getNetwork();
       const tokenERC2612Service = new ERC20_2612Service(provider);
       const nonce = await tokenERC2612Service.getNonce({ token, owner: get().account });
 
@@ -850,7 +857,7 @@ export const createPoolSlice: StateCreator<
           nonce,
           deadline,
         },
-      };
+      } as const;
       return JSON.stringify(typeData);
     },
     estimateGasLimit: async (tx: PopulatedTransaction, chainId?: number) => {

@@ -56,6 +56,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
     decimals: state.sourceToken.decimals,
     spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
     setState,
+    trackingHandlers,
   });
 
   // Use centralized gas estimation
@@ -238,6 +239,9 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
       setMainTxState({
         loading: false,
       });
+
+      const reason = error instanceof Error ? error.message : 'Swap failed';
+      trackingHandlers.trackSwapFailed(reason);
     }
   };
 

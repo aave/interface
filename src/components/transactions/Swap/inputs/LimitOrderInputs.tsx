@@ -2,6 +2,8 @@ import { ArrowDownIcon, SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
 import { Dispatch } from 'react';
 
+import { SwapInputChanges } from '../analytics/constants';
+import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
 import { Expiry, SwapParams, SwapProvider, SwapState } from '../types';
 import { SwitchAssetInput } from './primitives/SwapAssetInput';
@@ -11,16 +13,24 @@ import { PriceInput } from './shared/PriceInput';
 import { QuoteProgressRing } from './shared/QuoteProgressRing';
 import { SwapInputState } from './SwapInputs';
 
+export type SwapInputsCustomProps = {
+  canSwitchTokens: boolean;
+};
+
 export const LimitOrderInputs = ({
   params,
   state,
   swapState,
   setState,
+  customProps,
+  trackingHandlers,
 }: {
   params: SwapParams;
   state: SwapState;
   swapState: SwapInputState;
   setState: Dispatch<Partial<SwapState>>;
+  customProps?: SwapInputsCustomProps;
+  trackingHandlers: TrackAnalyticsHandlers;
 }) => {
   return (
     <>
@@ -53,6 +63,7 @@ export const LimitOrderInputs = ({
           selectedExpiry={state.expiry}
           setSelectedExpiry={(expiry: Expiry) => {
             setState({ expiry });
+            trackingHandlers.trackInputChange(SwapInputChanges.EXPIRY, expiry.toString());
           }}
         />
       </Box>
@@ -96,12 +107,18 @@ export const LimitOrderInputs = ({
           <Box sx={{ position: 'absolute' }}>
             <IconButton
               onClick={swapState.onSwitchReserves}
+              disabled={!(customProps?.canSwitchTokens ?? false)}
               sx={{
                 border: '1px solid',
                 borderColor: 'divider',
                 transform: 'translateY(-130%)',
                 backgroundColor: 'background.paper',
                 '&:hover': { backgroundColor: 'background.surface' },
+                '&:disabled': {
+                  backgroundColor: 'background.surface',
+                  opacity: '0.7',
+                  color: 'text.secondary',
+                },
               }}
             >
               <SvgIcon

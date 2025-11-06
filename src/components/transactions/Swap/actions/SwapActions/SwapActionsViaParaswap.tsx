@@ -59,6 +59,7 @@ export const SwapActionsViaParaswap = ({
       ? state?.swapRate?.optimalRateData?.tokenTransferProxy
       : undefined,
     setState,
+    trackingHandlers,
   });
 
   // Use centralized gas estimation
@@ -197,6 +198,9 @@ export const SwapActionsViaParaswap = ({
           txHash: undefined,
           loading: false,
         });
+
+        const reason = error instanceof Error ? error.message : 'Swap failed';
+        trackingHandlers.trackSwapFailed(reason);
       }
     } else {
       setTxError(

@@ -75,6 +75,7 @@ export const DebtSwapActionsViaParaswap = ({
       allowPermit: currentMarketData.v3,
       margin: 0.25,
       type: 'delegation',
+      trackingHandlers,
     });
 
   // Use centralized gas estimation
@@ -218,6 +219,9 @@ export const DebtSwapActionsViaParaswap = ({
         txHash: undefined,
         loading: false,
       });
+
+      const reason = error instanceof Error ? error.message : 'Swap failed';
+      trackingHandlers.trackSwapFailed(reason);
     }
   };
 

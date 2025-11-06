@@ -4,6 +4,7 @@ import { Dispatch, useEffect, useMemo } from 'react';
 import { isTxErrorType, TxErrorType } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 
+import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
 import { APP_CODE_PER_SWAP_TYPE } from '../constants/shared.constants';
 import { hasFlashLoanDisabled } from '../errors/shared/FlashLoanDisabledBlockingGuard';
 import { hasInsufficientBalance } from '../errors/shared/InsufficientBalanceGuard';
@@ -97,10 +98,12 @@ export const useSwapQuote = ({
   params,
   state,
   setState,
+  trackingHandlers,
 }: {
   params: SwapParams;
   state: SwapState;
   setState: Dispatch<Partial<SwapState>>;
+  trackingHandlers?: TrackAnalyticsHandlers;
 }) => {
   // Once transaction succeeds, lock the provider to prevent recalculation
   // (useFlashloan or other dependencies might change after invalidateAppState)
@@ -219,6 +222,9 @@ export const useSwapQuote = ({
 
   useEffect(() => {
     if (swapQuote) {
+      const isAutoRefreshed = Boolean(state.quoteLastUpdatedAt);
+      trackingHandlers?.trackSwapQuote(isAutoRefreshed, swapQuote);
+
       setState({
         provider: swapQuote.provider,
         ...quoteToState(swapQuote),

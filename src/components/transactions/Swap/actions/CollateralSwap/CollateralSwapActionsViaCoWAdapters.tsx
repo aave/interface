@@ -113,6 +113,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
       spender: precalculatedInstanceAddress,
       setState,
       allowPermit: !disablePermitDueToActiveOrder, // CoW Adapters do support permit but avoid nonce reuse
+      trackingHandlers,
     });
 
   // Use centralized gas estimation

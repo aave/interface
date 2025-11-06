@@ -25,7 +25,7 @@ export function LowHealthFactorWarning({
     } else {
       setState({ actionsBlocked: false });
     }
-  }, [requireConfirmationHFlow, lowHFConfirmed]);
+  }, [requireConfirmationHFlow, lowHFConfirmed, state.quoteLastUpdatedAt]);
 
   if (state.isLiquidatable || !requireConfirmationHFlow) {
     return null;

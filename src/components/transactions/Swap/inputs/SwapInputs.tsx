@@ -551,39 +551,44 @@ export const SwapInputs = ({
     return () => clearTimeout(t);
   }, [state.outputAmount]);
 
-  const inputAssets = useMemo(
-    () =>
-      state.sourceTokens.filter(
-        (token) =>
+  const filterInputAssets = (allowOwn = false, orderType: OrderType = OrderType.MARKET) =>
+    state.sourceTokens.filter(
+      (token) =>
+        (allowOwn ||
           // Filter out tokens that match the destination token by addressToSwap OR underlyingAddress
           // This prevents the same asset from appearing in both lists (e.g., USDT in CollateralSwap)
-          token.addressToSwap.toLowerCase() !==
+          (token.addressToSwap.toLowerCase() !==
             state.destinationToken.addressToSwap.toLowerCase() &&
-          token.underlyingAddress.toLowerCase() !==
-            state.destinationToken.underlyingAddress.toLowerCase() &&
-          Number(token.balance) !== 0 &&
-          // Remove native tokens for non-Safe smart contract wallets
-          !(
-            state.userIsSmartContractWallet &&
-            !state.userIsSafeWallet &&
-            token.tokenType === TokenType.NATIVE
-          ) &&
-          // Avoid wrapping
-          !(
-            state.destinationToken.tokenType === TokenType.NATIVE &&
-            typeof state.chainId === 'number' &&
-            token.addressToSwap.toLowerCase() ===
-              WRAPPED_NATIVE_CURRENCIES[
-                state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
-              ]?.address.toLowerCase()
-          ) &&
-          !(
-            state.destinationToken.addressToSwap.toLowerCase() ===
-              WRAPPED_NATIVE_CURRENCIES[
-                state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
-              ]?.address.toLowerCase() && token.tokenType === TokenType.NATIVE
-          )
-      ),
+            token.underlyingAddress.toLowerCase() !==
+              state.destinationToken.underlyingAddress.toLowerCase())) &&
+        Number(token.balance) !== 0 &&
+        // Remove native when limit order
+        !(orderType === OrderType.LIMIT && token.tokenType === TokenType.NATIVE) &&
+        // Remove native tokens for non-Safe smart contract wallets
+        !(
+          state.userIsSmartContractWallet &&
+          !state.userIsSafeWallet &&
+          token.tokenType === TokenType.NATIVE
+        ) &&
+        // Avoid wrapping
+        !(
+          state.destinationToken.tokenType === TokenType.NATIVE &&
+          typeof state.chainId === 'number' &&
+          token.addressToSwap.toLowerCase() ===
+            WRAPPED_NATIVE_CURRENCIES[
+              state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
+            ]?.address.toLowerCase()
+        ) &&
+        !(
+          state.destinationToken.addressToSwap.toLowerCase() ===
+            WRAPPED_NATIVE_CURRENCIES[
+              state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
+            ]?.address.toLowerCase() && token.tokenType === TokenType.NATIVE
+        )
+    );
+
+  const inputAssets = useMemo(
+    () => filterInputAssets(false, state.orderType),
     [
       state.sourceTokens,
       state.destinationToken.addressToSwap,
@@ -595,31 +600,34 @@ export const SwapInputs = ({
     ]
   );
 
-  const outputAssets = useMemo(
-    () =>
-      state.destinationTokens.filter(
-        (token) =>
+  const filterOutputAssets = (allowOwn = false) =>
+    state.destinationTokens.filter(
+      (token) =>
+        (allowOwn ||
           // Filter out tokens that match the source token by addressToSwap OR underlyingAddress
           // This prevents the same asset from appearing in both lists (e.g., USDT in CollateralSwap)
-          token.addressToSwap.toLowerCase() !== state.sourceToken.addressToSwap.toLowerCase() &&
-          token.underlyingAddress.toLowerCase() !==
-            state.sourceToken.underlyingAddress.toLowerCase() &&
-          // Avoid wrapping
-          !(
-            state.sourceToken.tokenType === TokenType.NATIVE &&
-            typeof state.chainId === 'number' &&
-            token.addressToSwap.toLowerCase() ===
-              WRAPPED_NATIVE_CURRENCIES[
-                state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
-              ]?.address.toLowerCase()
-          ) &&
-          !(
-            state.sourceToken.addressToSwap.toLowerCase() ===
-              WRAPPED_NATIVE_CURRENCIES[
-                state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
-              ]?.address.toLowerCase() && token.tokenType === TokenType.NATIVE
-          )
-      ),
+          (token.addressToSwap.toLowerCase() !== state.sourceToken.addressToSwap.toLowerCase() &&
+            token.underlyingAddress.toLowerCase() !==
+              state.sourceToken.underlyingAddress.toLowerCase())) &&
+        // Avoid wrapping
+        !(
+          state.sourceToken.tokenType === TokenType.NATIVE &&
+          typeof state.chainId === 'number' &&
+          token.addressToSwap.toLowerCase() ===
+            WRAPPED_NATIVE_CURRENCIES[
+              state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
+            ]?.address.toLowerCase()
+        ) &&
+        !(
+          state.sourceToken.addressToSwap.toLowerCase() ===
+            WRAPPED_NATIVE_CURRENCIES[
+              state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
+            ]?.address.toLowerCase() && token.tokenType === TokenType.NATIVE
+        )
+    );
+
+  const outputAssets = useMemo(
+    () => filterOutputAssets(false),
     [
       state.destinationTokens,
       state.sourceToken.addressToSwap,
@@ -628,6 +636,44 @@ export const SwapInputs = ({
       state.chainId,
     ]
   );
+
+  const allowSwitchTokens = useMemo(() => {
+    const newInputAsset = state.destinationToken;
+    const newOutputAsset = state.sourceToken;
+
+    console.log('newInputAsset', newInputAsset.addressToSwap.toLowerCase());
+    console.log('newOutputAsset', newOutputAsset.addressToSwap.toLowerCase());
+    const newInputAssetExists = filterInputAssets(true, state.orderType).find(
+      (token) => token.addressToSwap.toLowerCase() === newInputAsset.addressToSwap.toLowerCase()
+    );
+    const newOutputAssetExists = filterOutputAssets(true).find(
+      (token) => token.addressToSwap.toLowerCase() === newOutputAsset.addressToSwap.toLowerCase()
+    );
+
+    console.log('newInputAssetExists', newInputAssetExists?.addressToSwap.toLowerCase());
+    console.log('newOutputAssetExists', newOutputAssetExists?.addressToSwap.toLowerCase());
+    console.log('allowSwitchTokens', !!newInputAssetExists && !!newOutputAssetExists);
+    return !!newInputAssetExists && !!newOutputAssetExists;
+  }, [state.sourceToken, state.destinationToken, state.orderType]);
+
+  // Hook to disable limits order based on specific assets conditions
+  useEffect(() => {
+    const inputsInLimitsOrder = filterInputAssets(true, OrderType.LIMIT);
+    const outputsInLimitsOrder = filterOutputAssets(true);
+
+    const canLimitSupportCurrentInputAsset = inputsInLimitsOrder.find(
+      (token) => token.addressToSwap.toLowerCase() === state.sourceToken.addressToSwap.toLowerCase()
+    );
+    const canLimitSupportCurrentOutputAsset = outputsInLimitsOrder.find(
+      (token) =>
+        token.addressToSwap.toLowerCase() === state.destinationToken.addressToSwap.toLowerCase()
+    );
+
+    const limitsOrderButtonBlocked =
+      !canLimitSupportCurrentInputAsset || !canLimitSupportCurrentOutputAsset;
+
+    setState({ limitsOrderButtonBlocked });
+  }, [state.sourceToken, state.destinationToken]);
 
   const swapState: SwapInputState = {
     handleSelectedInputToken,
@@ -645,11 +691,24 @@ export const SwapInputs = ({
 
   if (state.orderType === OrderType.MARKET) {
     return (
-      <MarketOrderInputs params={params} state={state} swapState={swapState} setState={setState} />
+      <MarketOrderInputs
+        params={params}
+        state={state}
+        swapState={swapState}
+        setState={setState}
+        customProps={{ canSwitchTokens: allowSwitchTokens }}
+      />
     );
   } else if (state.orderType === OrderType.LIMIT) {
     return (
-      <LimitOrderInputs params={params} state={state} swapState={swapState} setState={setState} />
+      <LimitOrderInputs
+        params={params}
+        state={state}
+        swapState={swapState}
+        setState={setState}
+        customProps={{ canSwitchTokens: allowSwitchTokens }}
+        trackingHandlers={trackingHandlers}
+      />
     );
   }
 };
