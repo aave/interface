@@ -41,14 +41,14 @@ const getCampaignConfigs = (
   // },
 
   [ChainId.mainnet]: {
-    notifyText: 'The Ink market is now live.',
+    notifyText: "Horizon, Aave's RWA market, is now live.",
     buttonText: 'Get Started',
     buttonAction: {
       type: 'function' as const,
-      value: () => openMarket(CustomMarket.proto_ink_v3),
+      value: () => openMarket(CustomMarket.proto_horizon_v3),
     },
-    bannerVersion: 'ink-market-v0',
-    icon: '/icons/networks/ink.svg',
+    bannerVersion: 'horizon-market-v1',
+    icon: '/icons/markets/horizon.svg',
   },
 
   // [ChainId.polygon]: {
