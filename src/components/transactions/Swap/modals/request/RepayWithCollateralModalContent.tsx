@@ -165,6 +165,7 @@ const getTokensFrom = (
         symbol: nativeToken?.symbol ?? tokenFromList?.symbol ?? borrowPosition.reserve.symbol,
         logoURI:
           nativeToken?.logoURI ?? tokenFromList?.logoURI ?? borrowPosition.reserve.iconSymbol,
+        usdPrice: borrowPosition.reserve.priceInUSD,
         sourceReserve: initialSourceUserReserve,
         destinationReserve: initialTargetUserReserve,
       };
@@ -209,6 +210,7 @@ const getTokensTo = (
           name: baseToken.name,
           balance: position.underlyingBalance,
           chainId,
+          usdPrice: position.reserve.priceInUSD,
           logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
         };
       }

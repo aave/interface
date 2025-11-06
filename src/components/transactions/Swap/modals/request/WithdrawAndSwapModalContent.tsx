@@ -29,6 +29,7 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
 
   const tokensFrom = getTokensFrom(user, initialDefaultTokens, chainId);
 
+  const reserves = useAppDataContext().reserves;
   const { data: initialTokens, isFetching: tokensLoading } = useTokensBalance(
     initialDefaultTokens,
     chainId,
@@ -37,6 +38,9 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
 
   const swappableTokens = initialTokens
     ?.map((token) => {
+      const reserve = reserves.find(
+        (reserve) => reserve.underlyingAsset.toLowerCase() === token.address.toLowerCase()
+      );
       return {
         addressToSwap: token.address,
         addressForUsdPrice: token.address,
@@ -46,6 +50,7 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
         name: token.name,
         balance: token.balance,
         chainId,
+        usdPrice: reserve?.priceInUSD,
         logoURI: token.logoURI,
         tokenType: token.extensions?.isNative ? TokenType.NATIVE : TokenType.ERC20,
       };
@@ -134,6 +139,7 @@ const getTokensFrom = (
           name: baseToken.name,
           balance: position.underlyingBalance,
           chainId,
+          usdPrice: position.reserve.priceInUSD,
           logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
         };
       }

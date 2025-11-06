@@ -5,13 +5,13 @@ import { ExclamationIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { ExpandMore } from '@mui/icons-material';
+import LaunchIcon from '@mui/icons-material/Launch';
 import {
   Box,
   Button,
   CircularProgress,
   IconButton,
   InputBase,
-  ListItemText,
   MenuItem,
   Popover,
   SvgIcon,
@@ -22,8 +22,12 @@ import {
 } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
+import { MarketLogo } from 'src/components/MarketSwitcher';
+import { Link } from 'src/components/primitives/Link';
+import { textCenterEllipsis } from 'src/helpers/text-center-ellipsis';
 import { useRootStore } from 'src/store/root';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { COMMON_SWAPS } from '../../../../../ui-config/TokenList';
 import { BasicModal } from '../../../../primitives/BasicModal';
@@ -109,6 +113,8 @@ export const SwitchAssetInput = ({
   side,
 }: AssetInputProps) => {
   const theme = useTheme();
+  const networkConfig = getNetworkConfig(chainId);
+  const networkName = networkConfig.displayName || networkConfig.name;
   const handleSelect = (asset: SwappableToken) => {
     onSelect && onSelect(asset);
     onChange && onChange('');
@@ -366,7 +372,17 @@ export const SwitchAssetInput = ({
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
               <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
-                <Trans>Select token</Trans>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
+                  <Trans>Select token</Trans>
+                  <MarketLogo
+                    size={16}
+                    logo={networkConfig.networkLogoPath}
+                    sx={{ ml: 1, mr: 0 }}
+                  />
+                  <Typography variant="caption" color="text.secondary">
+                    {networkName}
+                  </Typography>
+                </Box>
               </Typography>
 
               <Box
@@ -475,7 +491,7 @@ export const SwitchAssetInput = ({
                 ) : filteredAssets.length > 0 ? (
                   filteredAssets.map((asset) => (
                     <MenuItem
-                      key={asset.symbol}
+                      key={asset.addressToSwap}
                       value={asset.symbol}
                       data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
                       sx={{
@@ -499,22 +515,104 @@ export const SwitchAssetInput = ({
                         width="28px"
                         sx={{ mr: 2 }}
                       />
-                      <ListItemText
-                        sx={{ flexGrow: 0 }}
-                        primary={
-                          <Typography variant="main16" fontWeight={500}>
-                            {asset.symbol}
-                          </Typography>
-                        }
-                      />
+                      <Box sx={{ display: 'flex', flexDirection: 'column', mr: 2, minWidth: 0 }}>
+                        <Typography variant="main16" fontWeight={500} color="text.primary" noWrap>
+                          {asset.name || asset.symbol}
+                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Link
+                            href={getNetworkConfig(chainId).explorerLinkBuilder({
+                              address: asset.underlyingAddress || asset.addressToSwap,
+                            })}
+                            noLinkStyle
+                            onClick={(e) => {
+                              e.stopPropagation();
+                            }}
+                            sx={{
+                              display:
+                                asset.tokenType === TokenType.NATIVE ? 'none' : 'inline-flex',
+                              alignItems: 'center',
+                              textDecoration: 'none',
+                              '&:hover .launch-icon-text': {
+                                color:
+                                  theme.palette.mode === 'dark'
+                                    ? theme.palette.primary.light
+                                    : theme.palette.primary.main,
+                              },
+                              '&:hover .launch-icon-svg': {
+                                color:
+                                  theme.palette.mode === 'dark'
+                                    ? theme.palette.primary.light
+                                    : theme.palette.primary.main,
+                              },
+                            }}
+                          >
+                            <Typography
+                              variant="caption"
+                              className="launch-icon-text"
+                              color="text.secondary"
+                              noWrap
+                            >
+                              {textCenterEllipsis(
+                                (asset.underlyingAddress || asset.addressToSwap) ?? '',
+                                6,
+                                4
+                              )}
+                            </Typography>
+                            <SvgIcon
+                              className="launch-icon-svg"
+                              sx={{ fontSize: 14, ml: 0.5, color: 'text.secondary' }}
+                            >
+                              <LaunchIcon />
+                            </SvgIcon>
+                          </Link>
+                        </Box>
+                      </Box>
                       {asset.tokenType === TokenType.USER_CUSTOM && (
-                        <SvgIcon sx={{ fontSize: 16, ml: 1 }} color="warning">
+                        <SvgIcon sx={{ fontSize: 16, mr: 1 }} color="warning">
                           <ExclamationIcon />
                         </SvgIcon>
                       )}
-                      {asset.balance && (
-                        <FormattedNumber sx={{ ml: 'auto' }} value={asset.balance} compact />
-                      )}
+                      <Box
+                        sx={{
+                          display: valueToBigNumber(asset.balance || '0').gt(0) ? 'flex' : 'none',
+                          flexDirection: 'column',
+                          ml: 'auto',
+                        }}
+                      >
+                        {asset.balance && (
+                          <FormattedNumber
+                            value={asset.balance}
+                            compact
+                            variant="secondary14"
+                            color="text.primary"
+                            sx={{ textAlign: 'right' }}
+                          />
+                        )}
+                        {asset.usdPrice && (
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              justifyContent: 'flex-end',
+                              width: '100%',
+                            }}
+                          >
+                            <FormattedNumber
+                              value={Number(
+                                valueToBigNumber(asset.balance || '0')
+                                  .multipliedBy(asset.usdPrice)
+                                  .toString()
+                              )}
+                              compact
+                              symbol="USD"
+                              variant="helperText"
+                              color="text.secondary"
+                              symbolsColor="text.secondary"
+                              sx={{ textAlign: 'right' }}
+                            />
+                          </Box>
+                        )}
+                      </Box>
                     </MenuItem>
                   ))
                 ) : (

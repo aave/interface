@@ -31,6 +31,7 @@ export type SwappableToken = {
   name: string;
   balance: string;
   chainId: number;
+  usdPrice?: string;
   tokenType?: TokenType;
   logoURI?: string;
 };

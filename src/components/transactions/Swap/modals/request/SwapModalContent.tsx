@@ -41,6 +41,7 @@ export const SwapModalContent = ({
       const reserve = reserves.find(
         (reserve) => reserve.underlyingAsset.toLowerCase() === token.address.toLowerCase()
       );
+      const wrappedBaseReserve = reserves.find((r) => r.isWrappedBaseAsset);
 
       return {
         addressToSwap: token.address,
@@ -51,6 +52,9 @@ export const SwapModalContent = ({
         name: token.name,
         balance: token.balance,
         chainId,
+        usdPrice:
+          reserve?.priceInUSD ??
+          (token.extensions?.isNative ? wrappedBaseReserve?.priceInUSD : undefined),
         logoURI: reserve?.iconSymbol
           ? `/icons/tokens/${reserve.iconSymbol.toLowerCase()}.svg`
           : token.logoURI,

@@ -161,6 +161,7 @@ const getTokensFrom = (
           name: baseToken.name,
           balance: position.underlyingBalance,
           chainId,
+          usdPrice: position.reserve.priceInUSD,
           logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
         };
       }
@@ -223,6 +224,7 @@ const getTokensTo = (
         name: baseToken.name,
         balance: currentCollateral,
         chainId,
+        usdPrice: reserve.priceInUSD,
         logoURI: baseToken.logoURI,
       };
     })

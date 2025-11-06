@@ -276,7 +276,7 @@ export const useSwapOrderAmounts = ({
     buyAmountFormatted = valueToBigNumber(buyAmountFormatted ?? '0').lt(0)
       ? '0'
       : buyAmountFormatted;
-    
+
     const sellAmountUSD = valueToBigNumber(sellAmountFormatted)
       .multipliedBy(sellTokenPriceUsd)
       .toString();

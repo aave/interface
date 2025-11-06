@@ -233,14 +233,14 @@ export async function getCowProtocolSellRates({
   } else {
     // Calculate Amounts
     const srcSpotAmount =
-      side === 'sell'
+      orderBookQuote.quoteResults.orderToSign.kind === OrderKind.SELL
         ? orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString()
         : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString();
     const srcSpotUSD = BigNumber(srcTokenPriceUsd)
       .multipliedBy(BigNumber(srcSpotAmount).dividedBy(10 ** srcDecimals))
       .toString();
     const destSpotAmount =
-      side === 'sell'
+      orderBookQuote.quoteResults.orderToSign.kind === OrderKind.SELL
         ? orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString()
         : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString();
     const destSpotUSD = BigNumber(destTokenPriceUsd)

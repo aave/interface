@@ -150,8 +150,8 @@ export const useSwapQuote = ({
   const quoteToState = (quote: SwapQuoteType | null | undefined) => {
     if (!quote) return;
 
-    const nextInputAmount = normalizeBN(quote.srcSpotAmount, quote.srcDecimals).toString();
-    const nextOutputAmount = normalizeBN(quote.destSpotAmount, quote.destDecimals).toString();
+    const nextInputAmount = normalizeBN(quote.srcSpotAmount, quote.srcDecimals).toFixed();
+    const nextOutputAmount = normalizeBN(quote.destSpotAmount, quote.destDecimals).toFixed();
     const nextInputAmountUSD = quote.srcSpotUSD;
     const nextOutputAmountUSD = quote.destSpotUSD;
 
@@ -403,7 +403,7 @@ const useMultiProviderSwapQuoteQuery = ({
         state.side === 'sell'
           ? Number(state.debouncedInputAmount || '0') > 0
           : Number(state.debouncedOutputAmount || '0') > 0;
-      
+
       // Basic pre-blockers to avoid provider requests
       const isSameTokenPair =
         state.sourceToken.addressToSwap === state.destinationToken.addressToSwap;
@@ -412,7 +412,8 @@ const useMultiProviderSwapQuoteQuery = ({
 
       return (
         // LIMIT: fetch only once (when no quote yet). MARKET: fetch normally
-        (state.orderType === OrderType.LIMIT && !state.swapRate) &&
+        ((state.orderType === OrderType.LIMIT && !state.swapRate) ||
+          state.orderType === OrderType.MARKET) &&
         hasPositiveUserAmount &&
         !state.actionsBlocked &&
         !isSameTokenPair &&
