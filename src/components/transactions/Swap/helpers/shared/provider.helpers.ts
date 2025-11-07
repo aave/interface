@@ -23,7 +23,7 @@ export const isSwapSupportedByCowProtocol = (
     ...((COW_UNSUPPORTED_ASSETS[swapType] && COW_UNSUPPORTED_ASSETS[swapType][chainId]) || []),
   ].flat();
 
-  if (unsupportedAssetsPerChainAndModalType === undefined) return true; // No unsupported assets for this chain and modal type
+  if (unsupportedAssetsPerChainAndModalType.length === 0) return true; // No unsupported assets for this chain and modal type
 
   if (unsupportedAssetsPerChainAndModalType.includes('ALL')) return false; // All assets are unsupported
 
