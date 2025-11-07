@@ -1,3 +1,4 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { SxProps } from '@mui/material';
 import React, { Dispatch, useEffect } from 'react';
 
@@ -5,7 +6,18 @@ import { SwapError, SwapState } from '../../types';
 import { BalanceLowerThanInput } from './BalanceLowerThanInput';
 
 export const hasInsufficientBalance = (state: SwapState) => {
-  return Number(state.debouncedInputAmount) > Number(state.sourceToken.balance);
+  // Determine which token pays for the swap (handles inverted flows like RepayWithCollateral)
+  const payingToken =
+    state.sellAmountToken || (state.isInvertedSwap ? state.destinationToken : state.sourceToken);
+
+  // Prefer the computed sell amount if available; otherwise derive from the edited side
+  const requiredAmount =
+    state.sellAmountFormatted ||
+    (state.side === 'sell' ? state.debouncedInputAmount : state.debouncedOutputAmount);
+
+  return valueToBigNumber(requiredAmount || 0).isGreaterThan(
+    valueToBigNumber(payingToken.balance || 0)
+  );
 };
 
 export const InsufficientBalanceGuard = ({
@@ -20,8 +32,15 @@ export const InsufficientBalanceGuard = ({
   isSwapFlowSelected: boolean;
 }) => {
   useEffect(() => {
-    const hasInsufficientBalance =
-      Number(state.debouncedInputAmount) > Number(state.sourceToken.balance);
+    const payingToken =
+      state.sellAmountToken || (state.isInvertedSwap ? state.destinationToken : state.sourceToken);
+    const requiredAmount =
+      state.sellAmountFormatted ||
+      (state.side === 'sell' ? state.debouncedInputAmount : state.debouncedOutputAmount);
+
+    const hasInsufficientBalance = valueToBigNumber(requiredAmount || 0).isGreaterThan(
+      valueToBigNumber(payingToken.balance || 0)
+    );
 
     if (hasInsufficientBalance) {
       const isAlreadyBalanceError =
@@ -46,9 +65,25 @@ export const InsufficientBalanceGuard = ({
         setState({ actionsBlocked: false });
       }
     }
-  }, [state.debouncedInputAmount, state.sourceToken.balance]);
+  }, [
+    state.debouncedInputAmount,
+    state.debouncedOutputAmount,
+    state.sourceToken.balance,
+    state.destinationToken.balance,
+    state.sellAmountFormatted,
+    state.isInvertedSwap,
+    state.side,
+  ]);
 
-  if (Number(state.debouncedInputAmount) > Number(state.sourceToken.balance)) {
+  const payingToken =
+    state.sellAmountToken || (state.isInvertedSwap ? state.destinationToken : state.sourceToken);
+  const requiredAmount =
+    state.sellAmountFormatted ||
+    (state.side === 'sell' ? state.debouncedInputAmount : state.debouncedOutputAmount);
+
+  if (
+    valueToBigNumber(requiredAmount || 0).isGreaterThan(valueToBigNumber(payingToken.balance || 0))
+  ) {
     return <BalanceLowerThanInput sx={{ mb: !isSwapFlowSelected ? 0 : 4, ...sx }} />;
   }
 
