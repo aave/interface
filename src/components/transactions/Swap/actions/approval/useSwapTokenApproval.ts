@@ -235,7 +235,6 @@ export const useSwapTokenApproval = ({
         setLoadingPermitData(true);
         const rpc = getProvider(chainId);
         const supported = await isPermitSupportedWithFallback(chainId, token, rpc);
-        console.log('[useSwapTokenApproval] permitSupported', supported);
         if (!cancelled) setPermitSupported(supported);
         setLoadingPermitData(false);
       } catch {

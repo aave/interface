@@ -400,16 +400,62 @@ export const SwitchAssetInput = ({
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
               <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
-                  <Trans>Select token</Trans>
-                  <MarketLogo
-                    size={16}
-                    logo={networkConfig.networkLogoPath}
-                    sx={{ ml: 1, mr: 0 }}
-                  />
-                  <Typography variant="caption" color="text.secondary">
-                    {networkName}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    mt: 2,
+                  }}
+                >
+                  <Typography
+                    variant="main16"
+                    sx={{
+                      fontWeight: 600,
+                      // mr: 1,
+                      lineHeight: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Trans>Select token</Trans>
                   </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 0.5,
+                      height: 24,
+                    }}
+                  >
+                    <MarketLogo
+                      size={16}
+                      logo={networkConfig.networkLogoPath}
+                      sx={{
+                        ml: 0,
+                        mr: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        height: 16,
+                      }}
+                    />
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        height: 16,
+                        lineHeight: 1,
+                        fontWeight: 500,
+                        fontSize: 16,
+                        ml: 0.5,
+                        mt: '1px',
+                      }}
+                    >
+                      {networkName}
+                    </Typography>
+                  </Box>
                 </Box>
               </Typography>
 
@@ -475,7 +521,7 @@ export const SwitchAssetInput = ({
                         <ExternalTokenIcon
                           logoURI={asset.logoURI}
                           symbol={asset.symbol}
-                          sx={{ width: 24, height: 24, mr: 1 }}
+                          sx={{ fontSize: '24px', mr: 1 }}
                         />
                         <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
                           {asset.symbol}
@@ -539,8 +585,8 @@ export const SwitchAssetInput = ({
                       <ExternalTokenIcon
                         symbol={asset.symbol}
                         logoURI={asset.logoURI}
-                        height="28px"
-                        width="28px"
+                        height="24px"
+                        width="24px"
                         sx={{ mr: 2 }}
                       />
                       <Box sx={{ display: 'flex', flexDirection: 'column', mr: 2, minWidth: 0 }}>

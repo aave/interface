@@ -1,6 +1,5 @@
 import {
   AppDataParams,
-  // AppDataRootSchema,
   getOrderToSign,
   LimitTradeParameters,
   OrderKind,
@@ -8,18 +7,12 @@ import {
   SupportedChainId,
 } from '@cowprotocol/cow-sdk';
 import {
-  AAVE_ADAPTER_FACTORY,
-  AAVE_POOL_ADDRESS,
   AaveCollateralSwapSdk,
   AaveFlashLoanType,
-  DEFAULT_HOOK_GAS_LIMIT,
   EncodedOrder,
-  FlashLoanHint,
   FlashLoanHookAmounts,
   HASH_ZERO,
 } from '@cowprotocol/sdk-flash-loans';
-// import { normalize } from '@aave/math-utils';
-import { zeroAddress } from 'viem';
 
 import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
 import { SwapProvider, SwapState, SwapType } from '../../types';
@@ -147,13 +140,12 @@ export const calculateFlashLoanAmounts = (
  * and therefore the quote is more precise and more chances of being executed
  * It's important to send the hooks and flashloan hint but not the exact amounts that will be used in the final
  */
-export const getAppDataForQuote = async ({
-  // user,
-  type,
-  amount,
-  chainId,
-  srcToken,
-}: // srcDecimals,
+export const getAppDataForQuote = async ({}: // user,
+// type,
+// amount,
+// chainId,
+// srcToken,
+// srcDecimals,
 // destToken,
 // destDecimals,
 {
@@ -166,105 +158,123 @@ export const getAppDataForQuote = async ({
   destToken: string;
   destDecimals: number;
 }): Promise<AppDataParams | undefined> => {
-  if (type === SwapType.Swap || type === SwapType.WithdrawAndSwap) {
-    return undefined; // no flashloan needed - plain swap
-  }
+  return undefined;
 
-  // const flashLoanSdk = new AaveCollateralSwapSdk();
-  // const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
-  //   sellAmount: BigInt(normalize(amount, -srcDecimals)),
-  //   flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
-  // });
+  // NOTE: This function is prepared to add solver hooks for accurate network cost estimation,
+  // but such estimations are not currently supported so solvers are absorbing some costs.
+  // Disabled for now; enable when proper support becomes available.
 
-  // let cowType: AaveFlashLoanType;
-  // if (type === SwapType.CollateralSwap) {
-  //   cowType = AaveFlashLoanType.CollateralSwap;
-  // } else if (type === SwapType.DebtSwap) {
-  //   cowType = AaveFlashLoanType.DebtSwap;
-  // } else  if(type === SwapType.RepayWithCollateral) {
-  //   cowType = AaveFlashLoanType.RepayCollateral;
-  // } else {
-  //   throw new Error('Invalid swap type');
+  // if (type === SwapType.Swap || type === SwapType.WithdrawAndSwap) {
+  //   return undefined; // no flashloan needed - plain swap
   // }
 
-  // const hookAmounts: FlashLoanHookAmounts = {
-  //     flashLoanAmount: amount,
-  //     flashLoanFeeAmount: flashLoanFeeAmount.toString(),
-  //     sellAssetAmount: sellAmountToSign.toString(),
-  //     buyAssetAmount: amount,
-  // }
+  // const factory =
+  //   AAVE_ADAPTER_FACTORY[chainId].length > 0 ? AAVE_ADAPTER_FACTORY[chainId] : API_ETH_MOCK_ADDRESS;
+  // const pool =
+  //   AAVE_POOL_ADDRESS[chainId].length > 0 ? AAVE_POOL_ADDRESS[chainId] : API_ETH_MOCK_ADDRESS;
+  // const AAVE_SWAP_TYPE_TO_COW_TYPE: Partial<Record<SwapType, AaveFlashLoanType>> = {
+  //   [SwapType.CollateralSwap]: AaveFlashLoanType.CollateralSwap,
+  //   [SwapType.DebtSwap]: AaveFlashLoanType.DebtSwap,
+  //   [SwapType.RepayWithCollateral]: AaveFlashLoanType.RepayCollateral,
+  // } as const;
+  // const dappId =
+  //   AAVE_DAPP_ID_PER_TYPE[AAVE_SWAP_TYPE_TO_COW_TYPE[type] ?? AaveFlashLoanType.CollateralSwap];
 
-  const flashloan: FlashLoanHint = {
-    amount, // this is actually in UNDERLYING but aave tokens are 1:1
-    receiver: AAVE_ADAPTER_FACTORY[chainId],
-    liquidityProvider: AAVE_POOL_ADDRESS[chainId],
-    protocolAdapter: AAVE_ADAPTER_FACTORY[chainId],
-    token: srcToken,
-  };
+  // // const flashLoanSdk = new AaveCollateralSwapSdk();
+  // // const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
+  // //   sellAmount: BigInt(normalize(amount, -srcDecimals)),
+  // //   flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
+  // // });
 
-  // const limitOrder: LimitTradeParameters = {
-  //   kind: OrderKind.SELL,
-  //   sellToken: srcToken,
-  //   sellTokenDecimals: srcDecimals,
-  //   buyToken: destToken,
-  //   buyTokenDecimals: destDecimals,
-  //   sellAmount: normalize(amount, -srcDecimals).toString(),
-  //   buyAmount: amount,
-  // }
+  // // let cowType: AaveFlashLoanType;
+  // // if (type === SwapType.CollateralSwap) {
+  // //   cowType = AaveFlashLoanType.CollateralSwap;
+  // // } else if (type === SwapType.DebtSwap) {
+  // //   cowType = AaveFlashLoanType.DebtSwap;
+  // // } else  if(type === SwapType.RepayWithCollateral) {
+  // //   cowType = AaveFlashLoanType.RepayCollateral;
+  // // } else {
+  // //   throw new Error('Invalid swap type');
+  // // }
 
-  // const orderToSign = getOrderToSign(
-  //   {
-  //     chainId,
-  //     from: user,
-  //     networkCostsAmount: '0',
-  //     isEthFlow: false,
-  //     applyCostsSlippageAndFees: false,
+  // // const hookAmounts: FlashLoanHookAmounts = {
+  // //     flashLoanAmount: amount,
+  // //     flashLoanFeeAmount: flashLoanFeeAmount.toString(),
+  // //     sellAssetAmount: sellAmountToSign.toString(),
+  // //     buyAssetAmount: amount,
+  // // }
+
+  // const flashloan: FlashLoanHint = {
+  //   amount, // this is actually in UNDERLYING but aave tokens are 1:1
+  //   receiver: factory,
+  //   liquidityProvider: pool,
+  //   protocolAdapter: factory,
+  //   token: srcToken,
+  // };
+
+  // // const limitOrder: LimitTradeParameters = {
+  // //   kind: OrderKind.SELL,
+  // //   sellToken: srcToken,
+  // //   sellTokenDecimals: srcDecimals,
+  // //   buyToken: destToken,
+  // //   buyTokenDecimals: destDecimals,
+  // //   sellAmount: normalize(amount, -srcDecimals).toString(),
+  // //   buyAmount: amount,
+  // // }
+
+  // // const orderToSign = getOrderToSign(
+  // //   {
+  // //     chainId,
+  // //     from: user,
+  // //     networkCostsAmount: '0',
+  // //     isEthFlow: false,
+  // //     applyCostsSlippageAndFees: false,
+  // //   },
+  // //   limitOrder,
+  // //   HASH_ZERO
+  // // );
+
+  // // const encodedOrder: EncodedOrder = {
+  // //   ...OrderSigningUtils.encodeUnsignedOrder(orderToSign),
+  // //   appData: HASH_ZERO,
+  // // }
+
+  // // const hooks = await getOrderHooks(
+  // //   cowType,
+  // //   chainId,
+  // //   user as `0x${string}`,
+  // //   zeroAddress,
+  // //   hookAmounts,
+  // //   {
+  // //     ...encodedOrder,
+  // //     receiver: zeroAddress,
+  // //   },
+  // // );
+
+  // // TODO: send proper calldatas when available so solvers can properly simulate
+  // const hooks = {
+  //   pre: [
+  //     {
+  //       target: factory,
+  //       callData: '0x',
+  //       gasLimit: 160k DEFAULT_HOOK_GAS_LIMIT.pre.toString(),
+  //       dappId,
+  //     },
+  //   ],
+  //   post: [
+  //     {
+  //       target: 0x,
+  //       callData: '0x',
+  //       gasLimit: 160k DEFAULT_HOOK_GAS_LIMIT.post.toString(),
+  //       dappId,
+  //     },
+  //   ],
+  // };
+
+  // return {
+  //   metadata: {
+  //     flashloan,
+  //     hooks,
   //   },
-  //   limitOrder,
-  //   HASH_ZERO
-  // );
-
-  // const encodedOrder: EncodedOrder = {
-  //   ...OrderSigningUtils.encodeUnsignedOrder(orderToSign),
-  //   appData: HASH_ZERO,
-  // }
-
-  // const hooks = await getOrderHooks(
-  //   cowType,
-  //   chainId,
-  //   user as `0x${string}`,
-  //   zeroAddress,
-  //   hookAmounts,
-  //   {
-  //     ...encodedOrder,
-  //     receiver: zeroAddress,
-  //   },
-  // );
-
-  // TODO: send proper calldatas when available so solvers can properly simulate
-  const hooks = {
-    pre: [
-      {
-        target: AAVE_ADAPTER_FACTORY[chainId],
-        callData: '0x',
-        gasLimit: DEFAULT_HOOK_GAS_LIMIT.pre.toString(),
-        dappId: '',
-      },
-    ],
-    post: [
-      {
-        target: zeroAddress,
-        callData: '0x',
-        gasLimit: DEFAULT_HOOK_GAS_LIMIT.post.toString(),
-        dappId: '',
-      },
-    ],
-  };
-
-  return {
-    metadata: {
-      flashloan,
-      hooks,
-    },
-  };
+  // };
 };

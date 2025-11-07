@@ -51,18 +51,24 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
   if (invertedSide === 'buy') {
     // Fee in destination token (buy token)
     partnerFeeFormatted = state.partnerFeeAmountFormatted ?? '0';
-    const partnerFeeAmountPriceUnitUsd = valueToBigNumber(state.sellAmountUSD ?? '0')
-      .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
-      .toNumber();
+    const partnerFeeAmountPriceUnitUsd =
+      state.sellAmountFormatted == '0'
+        ? 0
+        : valueToBigNumber(state.sellAmountUSD ?? '0')
+            .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
+            .toNumber();
     partnerFeeUsd = Number(partnerFeeFormatted) * partnerFeeAmountPriceUnitUsd;
     partnerFeeToken = state.sellAmountToken;
   } else {
     // Fee in source token (sell token)
     partnerFeeFormatted = state.partnerFeeAmountFormatted || '0';
 
-    const partnerFeeAmountPriceUnitUsd = valueToBigNumber(state.buyAmountUSD ?? '0')
-      .dividedBy(valueToBigNumber(state.buyAmountFormatted ?? '0'))
-      .toNumber();
+    const partnerFeeAmountPriceUnitUsd =
+      state.buyAmountFormatted == '0'
+        ? 0
+        : valueToBigNumber(state.buyAmountUSD ?? '0')
+            .dividedBy(valueToBigNumber(state.buyAmountFormatted ?? '0'))
+            .toNumber();
 
     partnerFeeUsd = Number(partnerFeeFormatted) * partnerFeeAmountPriceUnitUsd;
     partnerFeeToken = state.buyAmountToken;

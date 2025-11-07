@@ -235,7 +235,7 @@ export async function getCowProtocolSellRates({
     const srcSpotAmount =
       orderBookQuote.quoteResults.orderToSign.kind === OrderKind.SELL
         ? orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString()
-        : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString();
+        : orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString();
     const srcSpotUSD = BigNumber(srcTokenPriceUsd)
       .multipliedBy(BigNumber(srcSpotAmount).dividedBy(10 ** srcDecimals))
       .toString();

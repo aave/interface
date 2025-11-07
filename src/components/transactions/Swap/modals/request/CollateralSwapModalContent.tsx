@@ -12,7 +12,7 @@ import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
 import { invalidateAppStateForSwap } from '../../helpers/shared';
-import { SwappableToken, SwapParams, SwapType } from '../../types';
+import { SwappableToken, SwapParams, SwapType, TokenType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 
 export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
@@ -164,13 +164,14 @@ const getTokensFrom = (
           underlyingAddress: position.reserve.underlyingAsset,
           decimals: baseToken.decimals,
           symbol: nativeToken?.symbol ?? baseToken.symbol,
-          name: baseToken.name,
+          name: nativeToken?.name ?? baseToken.name,
           balance: position.underlyingBalance,
           chainId,
           usdPrice: position.reserve.priceInUSD,
           supplyAPY: position.reserve.supplyAPY,
           variableBorrowAPY: position.reserve.variableBorrowAPY,
           logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
+          tokenType: nativeToken?.extensions?.isNative ? TokenType.NATIVE : TokenType.ERC20,
         };
       }
       return undefined;
@@ -223,19 +224,30 @@ const getTokensTo = (
             position.reserve.underlyingAsset.toLowerCase() === reserve.underlyingAsset.toLowerCase()
         )?.underlyingBalance ?? '0';
 
+      // Prefer showing native symbol (e.g., ETH) instead of WETH when applicable, but keep underlying address
+      const wrappedNative =
+        WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address?.toLowerCase();
+      const isWrappedNative =
+        wrappedNative && reserve.underlyingAsset.toLowerCase() === wrappedNative;
+      const nativeToken = isWrappedNative
+        ? TOKEN_LIST.tokens.find(
+            (t) => (t as TokenInfoWithBalance).extensions?.isNative && t.chainId === chainId
+          )
+        : undefined;
+
       return {
         addressToSwap: reserve.aTokenAddress,
         addressForUsdPrice: reserve.aTokenAddress,
         underlyingAddress: reserve.underlyingAsset,
         decimals: baseToken.decimals,
-        symbol: baseToken.symbol,
+        symbol: nativeToken?.symbol ?? baseToken.symbol,
         name: baseToken.name,
         balance: currentCollateral,
         chainId,
         usdPrice: reserve.priceInUSD,
         supplyAPY: reserve.supplyAPY,
         variableBorrowAPY: reserve.variableBorrowAPY,
-        logoURI: baseToken.logoURI,
+        logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
       };
     })
     .filter((token) => token !== undefined)

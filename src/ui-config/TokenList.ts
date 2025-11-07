@@ -149,13 +149,12 @@ const NETWORK_ASSETS: TokenInfo[] = [
     },
   },
   {
-    name: 'Ethereum',
-    symbol: 'ETH',
+    name: 'BNB',
+    symbol: 'BNB',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
     chainId: 56, //bnb
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
+    logoURI: 'https://assets.coingecko.com/coins/images/825/standard/bnb-icon2_2x.png?1696501970',
     extensions: {
       isNative: true,
     },
@@ -9597,7 +9596,7 @@ export const TOKEN_LIST: TokenList = {
       name: 'Coinbase Wrapped Staked BTC',
       symbol: 'cbBTC',
       decimals: 8,
-      logoURI: 'https://ethereum-optimism.github.io/data/cbBTC/logo.svg',
+      logoURI: 'https://assets.coingecko.com/coins/images/40143/standard/cbbtc.webp?1726136727',
     },
     {
       name: 'Compound',
