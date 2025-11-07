@@ -148,6 +148,8 @@ export const SwapInputs = ({
   };
 
   const handleRateChange = (rateFromAsset: SwappableToken, newRate: BigNumberValue) => {
+    if (newRate.toString() === '0') return;
+
     // User changed custom price, pause quote refresh in limit orders
     setState({ quoteRefreshPaused: true });
 

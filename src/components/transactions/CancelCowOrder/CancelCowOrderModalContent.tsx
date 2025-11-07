@@ -39,6 +39,15 @@ export const CancelCowOrderModalContent = ({ cowOrder }: CancelCowOrderModalCont
     <>
       {showNetworkWarning && <ChangeNetworkWarning networkName={name} chainId={cowOrder.chainId} />}
       <TxModalDetails showGasStation={false}>
+        <Typography sx={{ mt: 4 }} variant="h2">
+          <Trans>Cancel order</Trans>
+        </Typography>
+        <Typography sx={{ mt: 4 }} variant="subheader2">
+          <Trans>
+            This is an off-chain operation. Keep in mind that a solver may already have filled your
+            order.
+          </Trans>
+        </Typography>
         <DetailsTextLine
           description="Order ID"
           text={cowOrder.id}
