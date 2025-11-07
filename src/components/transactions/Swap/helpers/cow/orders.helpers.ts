@@ -11,6 +11,7 @@ import {
   QuoteAndPost,
   SellTokenSource,
   SigningScheme,
+  SlippageToleranceRequest,
   SupportedChainId,
   WRAPPED_NATIVE_CURRENCIES,
 } from '@cowprotocol/cow-sdk';
@@ -492,6 +493,32 @@ export const getPermitHook = async ({
     gasLimit: txWithGasEstimation.gasLimit?.toString(),
     dappId: PERMIT_HOOK_DAPP_ID,
   };
+};
+
+// This function is used to get the slippage suggestion for a token pair on the respective chain based on the pair volatility.
+export const getSlippageSuggestion = async (request: SlippageToleranceRequest) => {
+  const { sellToken, buyToken } = request;
+
+  try {
+    if (request.chainId && sellToken && buyToken) {
+      const chainSlug = request.chainId; // e.g., 42161 for Arbitrum
+      const sell = sellToken.toLowerCase();
+      const buy = buyToken.toLowerCase();
+      const url = `https://bff.cow.fi/${chainSlug}/markets/${sell}-${buy}/slippageTolerance`;
+
+      const res = await fetch(url);
+
+      if (res.ok) {
+        const result = await res.json();
+        // The endpoint returns { slippageBps: number }
+        // This is expected by the CoW SDK within the Slippage logic.
+        return result;
+      }
+    }
+  } catch (e) {
+    console.error('Error fetching slippage suggestion:', e);
+    return undefined;
+  }
 };
 
 export const addOrderTypeToAppData = (

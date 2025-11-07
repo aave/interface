@@ -89,7 +89,7 @@ export const RepayWithCollateralModalContent = ({
     interestMode,
     resultScreenTokensFromTitle: 'Repay',
     resultScreenTokensToTitle: 'With',
-    resultScreenTitleItems: 'repay',
+    resultScreenTitleItems: ' and repaid',
     customReceivedTitle: 'Repaid',
 
     // Note: Repay With Collateral order is inverted

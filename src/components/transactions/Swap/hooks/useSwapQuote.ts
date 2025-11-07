@@ -392,22 +392,11 @@ const useMultiProviderSwapQuoteQuery = ({
       state.user
     ),
     enabled: (() => {
-      console.log('state.side', state.side);
-      console.log('state.debouncedInputAmount', state.debouncedInputAmount);
-      console.log('state.debouncedOutputAmount', state.debouncedOutputAmount);
-
-      console.log(
-        'limit',
-        (state.orderType === OrderType.LIMIT && !state.swapRate) ||
-          state.orderType === OrderType.MARKET
-      );
-
       // Allow fetch when user has entered a positive amount, even if normalization rounded to '0'
       const hasPositiveUserAmount =
         state.side === 'sell'
           ? Number(state.debouncedInputAmount || '0') > 0
           : Number(state.debouncedOutputAmount || '0') > 0;
-      console.log('hasPositiveUserAmount', hasPositiveUserAmount);
 
       // Basic pre-blockers to avoid provider requests
       const isSameTokenPair =

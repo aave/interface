@@ -13,7 +13,7 @@ import { isNativeToken } from '../../helpers/cow';
 import { CowProtocolRatesType, ProviderRatesParams, SwapProvider } from '../../types';
 import { getAppDataForQuote } from './adapters.helpers';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
-import { priceQualityToUse } from './orders.helpers';
+import { getSlippageSuggestion, priceQualityToUse } from './orders.helpers';
 
 export const getTokenUsdPrice = async (
   chainId: number,
@@ -119,6 +119,7 @@ export async function getCowProtocolSellRates({
               destToken,
               destDecimals,
             }),
+            getSlippageSuggestion,
           }
         )
         .catch((cowError) => {

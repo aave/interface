@@ -59,9 +59,12 @@ export const RepayWithCollateralDetails = ({
   const displayAmountAfterRepayInUsd = debtAmountAfterRepay.multipliedBy(
     state.sourceReserve.reserve.priceInUSD
   );
-  const collateralAmountAfterRepay = tokenToRepayWithBalance
+  const rawCollateralAmountAfterRepay = tokenToRepayWithBalance
     ? valueToBigNumber(tokenToRepayWithBalance).minus(state.sellAmountFormatted ?? '0')
     : valueToBigNumber('0');
+  const collateralAmountAfterRepay = rawCollateralAmountAfterRepay.isNegative()
+    ? valueToBigNumber('0')
+    : rawCollateralAmountAfterRepay;
   const collateralAmountAfterRepayUSD = collateralAmountAfterRepay.multipliedBy(
     state.destinationReserve.reserve.priceInUSD
   );
