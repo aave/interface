@@ -83,10 +83,10 @@ export const COW_APP_DATA = (
     orderClass: {
       orderClass: orderType === OrderType.LIMIT ? OrderClass.LIMIT : OrderClass.MARKET,
     }, // for CoW Swap UI & Analytics
-    quote: {
-      slippageBips,
-      smartSlippage,
-    },
+    ...(orderType === OrderType.MARKET
+      ? { quote: { slippageBips, smartSlippage } }
+      : // Slippage is not used in limit orders
+        {}),
     partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
     hooks,
   },

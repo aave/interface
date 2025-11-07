@@ -15,6 +15,7 @@ import {
   generateCoWExplorerLink,
   getOrder,
   isOrderCancelled,
+  isOrderExpired,
   isOrderFilled,
   isOrderLoading,
 } from 'src/components/transactions/Swap/helpers/cow';
@@ -187,17 +188,23 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
               executedAmount: order.executedBuyAmount,
               executedFee: order.executedFee,
             });
-          } else if (isOrderCancelled(order.status) && !processedOrdersRef.current.has(orderId)) {
+          } else if (
+            (isOrderCancelled(order.status) || isOrderExpired(order.status)) &&
+            !processedOrdersRef.current.has(orderId)
+          ) {
             try {
               updateCowOrderStatus(chainId, account || '', orderId, order.status);
             } catch {}
             processedOrdersRef.current.add(orderId);
-            toast.error('Swap could not be completed.', {
-              action: {
-                label: 'View',
-                onClick: () => window.open(generateCoWExplorerLink(chainId, orderId), '_blank'),
-              },
-            });
+            toast.error(
+              isOrderExpired(order.status) ? 'Swap order expired.' : 'Swap could not be completed.',
+              {
+                action: {
+                  label: 'View',
+                  onClick: () => window.open(generateCoWExplorerLink(chainId, orderId), '_blank'),
+                },
+              }
+            );
             stopTracking(orderId);
             try {
               queryClient.invalidateQueries({

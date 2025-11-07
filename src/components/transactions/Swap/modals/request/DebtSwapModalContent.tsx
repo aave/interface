@@ -60,11 +60,19 @@ export const DebtSwapModalContent = ({ underlyingAsset }: { underlyingAsset: str
     sourceTokens: tokensFrom,
     destinationTokens: tokensTo,
     showSwitchInputAndOutputAssetsButton: false,
+    showOutputBalance: true,
+    outputBalanceTitle: 'Current',
     chainId: currentNetworkConfig.wagmiChain.id,
     titleTokenPostfix: 'debt',
     resultScreenTokensFromTitle: 'Debt sent',
     resultScreenTokensToTitle: 'Debt received',
     resultScreenTitleItems: 'debt',
+
+    // Note: Debt Swap order is inverted
+    inputInputTitleSell: 'Swap at most',
+    outputInputTitleSell: 'Receive',
+    inputInputTitleBuy: 'Swap',
+    outputInputTitleBuy: 'Receive at most',
   };
 
   return <BaseSwapModalContent params={params} />;

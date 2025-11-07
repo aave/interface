@@ -5,7 +5,7 @@ import { Dispatch } from 'react';
 import { SwapInputChanges } from '../analytics/constants';
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
-import { Expiry, SwapParams, SwapProvider, SwapState } from '../types';
+import { Expiry, OrderType, SwapParams, SwapProvider, SwapState } from '../types';
 import { SwitchAssetInput } from './primitives/SwapAssetInput';
 import { ExpirySelector } from './shared/ExpirySelector';
 import { NetworkSelector } from './shared/NetworkSelector';
@@ -32,21 +32,43 @@ export const LimitOrderInputs = ({
   customProps?: SwapInputsCustomProps;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
+  // Prioritize Limit Order specific input/output titles
+  let inputInputTitle;
+  let outputInputTitle;
+
+  if (state.orderType === OrderType.LIMIT) {
+    if (!inputInputTitle) {
+      inputInputTitle =
+        state.processedSide === 'sell' ? params.inputInputTitleSell : params.inputInputTitleBuy;
+    }
+    if (!outputInputTitle) {
+      outputInputTitle =
+        state.processedSide === 'buy' ? params.outputInputTitleBuy : params.outputInputTitleSell;
+    }
+  }
+  // Fallback to global input/output titles
+  if (!inputInputTitle) {
+    inputInputTitle = params.inputInputTitle;
+  }
+  if (!outputInputTitle) {
+    outputInputTitle = params.outputInputTitle;
+  }
+
   return (
     <>
       <Box
         sx={{
           display: 'flex',
           justifyContent:
-            params.inputInputTitle || swapState.showNetworkSelector ? 'space-between' : 'flex-end',
+            inputInputTitle || swapState.showNetworkSelector ? 'space-between' : 'flex-end',
           alignItems: 'center',
         }}
       >
-        {(params.inputInputTitle || swapState.showNetworkSelector) && (
+        {(inputInputTitle || swapState.showNetworkSelector) && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-            {params.inputInputTitle && (
+            {inputInputTitle && (
               <Typography variant="secondary14" color="text.secondary">
-                {params.inputInputTitle}
+                {inputInputTitle}
               </Typography>
             )}
             {swapState.showNetworkSelector && (
@@ -109,7 +131,7 @@ export const LimitOrderInputs = ({
           side="input"
         />
 
-        {params.showSwitchInputAndOutputAssetsButton && !params.outputInputTitle ? (
+        {params.showSwitchInputAndOutputAssetsButton ? (
           <Box sx={{ position: 'absolute' }}>
             <IconButton
               onClick={swapState.onSwitchReserves}
@@ -150,7 +172,7 @@ export const LimitOrderInputs = ({
             )}
           </Box>
         ) : (
-          !params.outputInputTitle && (
+          !outputInputTitle && (
             <Box sx={{ position: 'absolute' }}>
               <IconButton
                 disabled
@@ -194,7 +216,7 @@ export const LimitOrderInputs = ({
         <SwitchAssetInput
           chainId={state.chainId}
           balanceTitle={params.outputBalanceTitle}
-          title={params.outputInputTitle}
+          title={outputInputTitle}
           assets={swapState.outputAssets}
           value={state.outputAmount}
           enableHover={true}

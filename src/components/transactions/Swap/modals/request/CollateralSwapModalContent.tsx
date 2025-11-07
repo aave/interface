@@ -80,6 +80,12 @@ export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsse
     resultScreenTokensFromTitle: 'Collateral sent',
     resultScreenTokensToTitle: 'Collateral received',
     resultScreenTitleItems: 'collateral',
+
+    // Note: Collateral Swap order is not inverted
+    inputInputTitleSell: 'Swap',
+    outputInputTitleSell: 'Receive at most',
+    inputInputTitleBuy: 'Swap at most',
+    outputInputTitleBuy: 'Receive',
   };
 
   return <BaseSwapModalContent params={params} />;

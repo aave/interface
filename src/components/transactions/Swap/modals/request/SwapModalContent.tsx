@@ -92,6 +92,8 @@ export const SwapModalContent = ({
     chainId,
     refreshTokens,
     supportedNetworks: supportedNetworksWithEnabledMarket,
+    showOutputBalance: true,
+    outputBalanceTitle: 'Current balance',
   };
 
   if (tokensLoading) {

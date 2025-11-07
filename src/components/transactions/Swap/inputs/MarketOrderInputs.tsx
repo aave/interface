@@ -107,7 +107,7 @@ export const MarketOrderInputs = ({
           side="input"
         />
 
-        {params.showSwitchInputAndOutputAssetsButton && !params.outputInputTitle ? (
+        {params.showSwitchInputAndOutputAssetsButton ? (
           <Box sx={{ position: 'absolute' }}>
             <IconButton
               onClick={swapState.onSwitchReserves}
@@ -117,7 +117,11 @@ export const MarketOrderInputs = ({
                 borderColor: 'divider',
                 backgroundColor: 'background.paper',
                 '&:hover': { backgroundColor: 'background.surface' },
-                '&:disabled': { backgroundColor: 'background.paper' },
+                '&:disabled': {
+                  backgroundColor: 'background.surface',
+                  opacity: '0.7',
+                  color: 'text.secondary',
+                },
               }}
             >
               <SvgIcon

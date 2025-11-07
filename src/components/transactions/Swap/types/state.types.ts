@@ -74,6 +74,16 @@ export type TokensSwapState = {
   /** Side that was actually quoted after considering inversion (e.g. if the quote route is inverted, the processed side is the opposite of the side). */
   processedSide: SwapKind;
 
+  // Costs (shared across details views)
+  /** Network fee expressed in sell currency, normalized to sell token decimals. */
+  networkFeeAmountInSellFormatted?: string;
+  /** Network fee expressed in buy currency, normalized to buy token decimals. */
+  networkFeeAmountInBuyFormatted?: string;
+  /** Partner fee amount applied to this order, normalized to the fee token units (depends on side). */
+  partnerFeeAmountFormatted?: string;
+  /** Partner fee in basis points used to compute partnerFeeAmountFormatted. */
+  partnerFeeBps?: number;
+
   /** User-selected slippage in percentage (e.g. '0.10' -> 0.10%). */
   slippage: string;
   /** Safe default slippage used for warnings and guardrails. */
@@ -244,6 +254,10 @@ export const swapDefaultState: SwapState = {
   buyAmountUSD: undefined,
   isInvertedSwap: false,
   processedSide: 'sell',
+  networkFeeAmountInSellFormatted: '0',
+  networkFeeAmountInBuyFormatted: '0',
+  partnerFeeAmountFormatted: '0',
+  partnerFeeBps: 0,
 
   limitsOrderButtonBlocked: false,
   showSlippageWarning: false,

@@ -117,6 +117,7 @@ export const calculateFlashLoanAmounts = (
   const flashLoanSdk = new AaveCollateralSwapSdk();
   const sellAmount = state.sellAmountBigInt;
 
+  console.log('[calculateFlashLoanAmounts] sellAmount', sellAmount);
   if (!sellAmount)
     return {
       flashLoanFeeAmount: BigInt(0),

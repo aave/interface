@@ -67,13 +67,7 @@ export const SwapInputs = ({
     resetErrorsAndWarnings();
 
     // Calculate USD per token unit if possible
-    const usdPerToken =
-      state.inputAmount &&
-      state.inputAmount !== '0' &&
-      state.inputAmountUSD &&
-      state.inputAmountUSD !== '0'
-        ? valueToBigNumber(state.inputAmountUSD).dividedBy(state.inputAmount)
-        : undefined;
+    const usdPerToken = state.swapRate?.srcTokenPriceUsd;
 
     const computeUSD = (amt: string) =>
       usdPerToken ? valueToBigNumber(amt).multipliedBy(usdPerToken).toString(10) : '';
@@ -114,13 +108,7 @@ export const SwapInputs = ({
 
   const handleOutputChange = (value: string) => {
     // Calculate USD per token unit if possible, same as in handleInputChange
-    const usdPerToken =
-      state.outputAmount &&
-      state.outputAmount !== '0' &&
-      state.outputAmountUSD &&
-      state.outputAmountUSD !== '0'
-        ? valueToBigNumber(state.outputAmountUSD).dividedBy(state.outputAmount)
-        : undefined;
+    const usdPerToken = state.swapRate?.destTokenPriceUsd;
 
     const computeUSD = (amt: string) =>
       usdPerToken ? valueToBigNumber(amt).multipliedBy(usdPerToken).toString(10) : '';
@@ -597,6 +585,7 @@ export const SwapInputs = ({
       state.userIsSmartContractWallet,
       state.userIsSafeWallet,
       state.chainId,
+      state.orderType,
     ]
   );
 
@@ -634,6 +623,7 @@ export const SwapInputs = ({
       state.sourceToken.underlyingAddress,
       state.sourceToken.tokenType,
       state.chainId,
+      state.orderType,
     ]
   );
 

@@ -91,6 +91,12 @@ export const RepayWithCollateralModalContent = ({
     resultScreenTokensToTitle: 'With',
     resultScreenTitleItems: 'repay',
     customReceivedTitle: 'Repaid',
+
+    // Note: Repay With Collateral order is inverted
+    inputInputTitleSell: 'Repay at most',
+    outputInputTitleSell: 'Using',
+    inputInputTitleBuy: 'Repay',
+    outputInputTitleBuy: 'Use at most',
   };
 
   return <BaseSwapModalContent params={params} />;

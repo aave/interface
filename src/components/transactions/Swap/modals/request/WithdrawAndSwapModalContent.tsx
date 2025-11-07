@@ -91,6 +91,12 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
     showOutputBalance: true,
     inputInputTitle: 'Withdraw',
     outputInputTitle: 'And swap to',
+
+    // Note: Withdraw And Swap order is not inverted
+    inputInputTitleSell: 'Withdraw',
+    outputInputTitleSell: 'And swap to at most',
+    inputInputTitleBuy: 'Withdraw at most',
+    outputInputTitleBuy: 'And swap to',
   };
 
   if (tokensLoading) {

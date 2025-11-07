@@ -60,6 +60,9 @@ export type BaseSwitchRates = {
   afterFeesUSD: string;
   afterFeesAmount: string;
 
+  srcTokenPriceUsd: number;
+  destTokenPriceUsd: number;
+
   provider: SwapProvider;
 };
 
@@ -76,8 +79,6 @@ export type CowProtocolRatesType = BaseSwitchRates & {
 
   suggestedSlippage: number;
   amountAndCosts: QuoteAmountsAndCosts;
-  srcTokenPriceUsd: number;
-  destTokenPriceUsd: number;
 
   order: OrderParameters;
   quoteId?: number;

@@ -1,5 +1,5 @@
 import { BigNumberValue, valueToBigNumber } from '@aave/math-utils';
-import { ExclamationIcon } from '@heroicons/react/outline';
+import { ExclamationIcon, RefreshIcon } from '@heroicons/react/outline';
 import { Box, Button, CircularProgress, InputBase, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
@@ -106,6 +106,14 @@ export const PriceInput = ({
   }, [inputAmount, outputAmount, inputAmountUSD, outputAmountUSD]);
 
   useEffect(() => {
+    if (
+      !amount.fromAmount?.gt(0) ||
+      !amount.toAmount?.gt(0) ||
+      !amount.fromAmountUsd?.gt(0) ||
+      !amount.toAmountUsd?.gt(0)
+    )
+      return;
+
     const rate =
       amount.toAmount && amount.fromAmount ? amount.toAmount.div(amount.fromAmount) : undefined;
     const rateUsd =
@@ -243,7 +251,7 @@ export const PriceInput = ({
           <ExternalTokenIcon
             symbol={toAsset.symbol}
             logoURI={toAsset.logoURI}
-            sx={{ mr: 2, ml: 3, fontSize: '24px' }}
+            sx={{ mr: 2, ml: 1, fontSize: '24px' }}
           />
           <Typography
             data-cy={`assetsSelectedOption_${toAsset.symbol.toUpperCase()}`}
@@ -258,6 +266,36 @@ export const PriceInput = ({
               <ExclamationIcon />
             </SvgIcon>
           )}
+          <Box
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              width: 22,
+              height: 22,
+              borderRadius: '50%',
+              backgroundColor: 'background.paper',
+              ml: 1,
+              transition: 'background-color 0.2s ease',
+              '&:hover': {
+                backgroundColor: 'background.surface',
+              },
+              '&:hover .refresh-spin': {
+                transform: 'rotate(360deg)',
+              },
+            }}
+          >
+            <SvgIcon
+              className="refresh-spin"
+              sx={{
+                fontSize: 14,
+                transition: 'transform 1.2s cubic-bezier(0.4,0,0.2,1)',
+              }}
+            >
+              <RefreshIcon />
+            </SvgIcon>
+          </Box>
         </Button>
       </Box>
 

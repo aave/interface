@@ -55,6 +55,16 @@ export type TokensSwapParams = {
   inputInputTitle?: string;
   /** Optional label above the output-amount field. */
   outputInputTitle?: string;
+
+  /** Optional label above the input-amount field for the buy side. Only in Limit Orders mode.*/
+  inputInputTitleBuy?: string;
+  /** Optional label above the output-amount field for the buy side. Only in Limit Orders mode.*/
+  outputInputTitleBuy?: string;
+  /** Optional label above the input-amount field for the sell side. Only in Limit Orders mode.*/
+  inputInputTitleSell?: string;
+  /** Optional label above the output-amount field for the sell side. Only in Limit Orders mode.*/
+  outputInputTitleSell?: string;
+
   /** Callback to invalidate/refresh app-wide state when closing/completing. */
   invalidateAppState: () => void;
   /** Callback to refresh tokens when the chain/network changes. */

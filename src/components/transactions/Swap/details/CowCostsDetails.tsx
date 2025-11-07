@@ -19,21 +19,14 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
 
   if (!state.swapRate || !isCowProtocolRates(state.swapRate)) return null;
 
-  let networkFeeFormatted;
-  if (!state.isInvertedSwap) {
-    networkFeeFormatted = normalize(
-      state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
-      state.swapRate.destDecimals
-    );
-  } else {
-    networkFeeFormatted = normalize(
-      state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
-      state.swapRate.srcDecimals
-    );
-  }
+  // Prefer unified values exported on state; fall back to raw swapRate if missing
+  const networkFeeFormatted = state.networkFeeAmountInSellFormatted || '0';
 
-  const networkFeeUsd = Number(networkFeeFormatted) * state.swapRate.destTokenPriceUsd;
-  const networkFeeToken = state.destinationToken;
+  const networkFeeUsd =
+    Number(networkFeeFormatted) *
+    (!state.isInvertedSwap ? state.swapRate.srcTokenPriceUsd : state.swapRate.destTokenPriceUsd);
+  const networkFeeToken = !state.isInvertedSwap ? state.sourceToken : state.destinationToken;
+
   // If using flash-loan via CoW we need to account for the flash-loan fee
   const flashloanFeeFormatted = normalize(
     calculateFlashLoanAmounts(state).flashLoanFeeAmount.toString(),
@@ -57,10 +50,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
     partnerFeeToken: typeof state.buyAmountToken | typeof state.sellAmountToken;
   if (invertedSide === 'buy') {
     // Fee in destination token (buy token)
-    partnerFeeFormatted = normalize(
-      state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
-      state.sellAmountToken?.decimals ?? 18
-    );
+    partnerFeeFormatted = state.partnerFeeAmountFormatted ?? '0';
     const partnerFeeAmountPriceUnitUsd = valueToBigNumber(state.sellAmountUSD ?? '0')
       .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
       .toNumber();
@@ -68,10 +58,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
     partnerFeeToken = state.sellAmountToken;
   } else {
     // Fee in source token (sell token)
-    partnerFeeFormatted = normalize(
-      state.swapRate.amountAndCosts.costs.partnerFee.amount.toString(),
-      state.buyAmountToken?.decimals ?? 18
-    );
+    partnerFeeFormatted = state.partnerFeeAmountFormatted || '0';
 
     const partnerFeeAmountPriceUnitUsd = valueToBigNumber(state.buyAmountUSD ?? '0')
       .dividedBy(valueToBigNumber(state.buyAmountFormatted ?? '0'))
