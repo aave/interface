@@ -5,7 +5,7 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
   Record<ModalType, Partial<Record<SupportedChainId, string[] | 'ALL'>>>
 > = {
   [ModalType.CollateralSwap]: {
-    [SupportedChainId.POLYGON]: "ALL", // Waiting for better solvers support
+    [SupportedChainId.POLYGON]: 'ALL', // Waiting for better solvers support
     [SupportedChainId.AVALANCHE]: [
       '0x8eb270e296023e9d92081fdf967ddd7878724424'.toLowerCase(), // AVaMAI not supported
       '0x078f358208685046a11c85e8ad32895ded33a249'.toLowerCase(), // aVaWBTC not supported
