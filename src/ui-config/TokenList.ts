@@ -9592,6 +9592,14 @@ export const TOKEN_LIST: TokenList = {
       },
     },
     {
+      chainId: 8453,
+      address: '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf',
+      name: 'Coinbase Wrapped Staked BTC',
+      symbol: 'cbBTC',
+      decimals: 8,
+      logoURI: 'https://ethereum-optimism.github.io/data/cbBTC/logo.svg',
+    },
+    {
       name: 'Compound',
       address: '0x9e1028F5F1D5eDE59748FFceE5532509976840E0',
       symbol: 'COMP',

@@ -5,9 +5,11 @@ import { BigNumber } from 'ethers';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
+import { findByChainId } from 'src/ui-config/marketsConfig';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 import { parseUnits } from 'viem';
 
@@ -398,6 +400,29 @@ export const SwapTxSuccessView = ({
             {surplusDisplay}
           </Typography>
         )}
+      </Box>
+
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Typography color="text.secondary">
+          <Trans>
+            Swap saved in your{' '}
+            <Link
+              target="_blank"
+              sx={{
+                color: 'text.primary',
+                '&:hover': {
+                  color: 'text.secondary',
+                  transition: 'color 0.2s ease',
+                  cursor: 'pointer',
+                },
+              }}
+              href={`/history?marketName=${findByChainId(chainId)?.market}`}
+            >
+              history
+            </Link>{' '}
+            section.
+          </Trans>
+        </Typography>
       </Box>
     </View>
   );

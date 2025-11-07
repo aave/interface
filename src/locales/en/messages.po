@@ -307,10 +307,6 @@ msgstr "Total supplied"
 msgid "Remaining supply"
 msgstr "Remaining supply"
 
-#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
-msgid "High price impact ({0}%). This route may return less due to low liquidity or small order size."
-msgstr "High price impact ({0}%). This route may return less due to low liquidity or small order size."
-
 #: src/ui-config/errorMapping.tsx
 msgid "There is not enough collateral to cover a new borrow"
 msgstr "There is not enough collateral to cover a new borrow"
@@ -827,6 +823,10 @@ msgstr "Borrowed assets"
 msgid "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 msgstr "Collateral usage is limited because of isolation mode. <0>Learn More</0>"
 
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "Swap saved in your <0>history</0> section."
+msgstr "Swap saved in your <0>history</0> section."
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Migrate your assets"
 msgstr "Migrate your assets"
@@ -1251,10 +1251,6 @@ msgstr "Liquidation at"
 #: src/components/transactions/Swap/details/CowCostsDetails.tsx
 msgid "Costs & Fees"
 msgstr "Costs & Fees"
-
-#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
-msgid "I confirm the swap with a potential {0}% value loss"
-msgstr "I confirm the swap with a potential {0}% value loss"
 
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 msgid "deposited"
@@ -1889,6 +1885,10 @@ msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavail
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Disabling E-Mode"
 msgstr "Disabling E-Mode"
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "This list may not include all your swaps."
+msgstr "This list may not include all your swaps."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Pool addresses provider is not registered"
@@ -3224,6 +3224,10 @@ msgstr "Filter"
 msgid "Learn more about the Ether.fi program"
 msgstr "Learn more about the Ether.fi program"
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "High price impact ({0}%). This route may return {1} due to low liquidity or small order size."
+msgstr "High price impact ({0}%). This route may return {1} due to low liquidity or small order size."
+
 #: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
@@ -3486,6 +3490,10 @@ msgstr "APY"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
 msgstr "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
+
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "I confirm the swap with a potential {0}% value {1}"
+msgstr "I confirm the swap with a potential {0}% value {1}"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Show assets with 0 balance"
