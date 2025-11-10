@@ -109,7 +109,9 @@ export const StakeRewardClaimRestakeModalContent = ({
           chainId={stakingChain}
         />
       )}
-      <CooldownWarning />
+      {stakeData?.stakeCooldownSeconds && (
+        <CooldownWarning cooldownSeconds={stakeData.stakeCooldownSeconds} />
+      )}
       <AssetInput
         value={amount}
         onChange={handleChange}
