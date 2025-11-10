@@ -9,6 +9,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { saveParaswapTxToUserHistory } from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
@@ -157,10 +158,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
       response = await sendTx(txWithGasEstimation);
       await response.wait(1);
       try {
-        const { saveParaswapTxToUserHistory: addParaswapTx } = await import(
-          'src/utils/swapAdapterHistory'
-        );
-        addParaswapTx({
+        saveParaswapTxToUserHistory({
           protocol: 'paraswap',
           txHash: response.hash,
           swapType: params.swapType,

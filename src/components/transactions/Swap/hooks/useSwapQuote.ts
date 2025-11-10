@@ -44,9 +44,15 @@ const getTokenSelectionForQuote = (
 ): TokenSelectionParams => {
   // Note: Consider the quote an approximation, we prefer underlying address for better support while aTokens value should always match
   const srcTokenObj = invertedQuoteRoute ? state.destinationToken : state.sourceToken;
-  const srcToken = srcTokenObj.underlyingAddress;
+  const srcToken =
+    state.useFlashloan == false && state.provider === SwapProvider.PARASWAP
+      ? srcTokenObj.addressToSwap
+      : srcTokenObj.underlyingAddress;
   const destTokenObj = invertedQuoteRoute ? state.sourceToken : state.destinationToken;
-  const destToken = destTokenObj.underlyingAddress;
+  const destToken =
+    state.useFlashloan == false && state.provider === SwapProvider.PARASWAP
+      ? destTokenObj.addressToSwap
+      : destTokenObj.underlyingAddress;
 
   const srcDecimals = invertedQuoteRoute
     ? state.destinationToken.decimals
@@ -170,7 +176,8 @@ export const useSwapQuote = ({
     } else if (quote.provider === 'paraswap') {
       const paraswapSlippage = getParaswapSlippage(
         state.sourceToken.symbol || '',
-        state.destinationToken.symbol || ''
+        state.destinationToken.symbol || '',
+        state.swapType
       );
       slippage = paraswapSlippage;
       autoSlippage = paraswapSlippage;
@@ -302,7 +309,14 @@ const useMultiProviderSwapQuoteQuery = ({
     side,
   } = useMemo(
     () => getTokenSelectionForQuote(requiresQuoteInverted, state),
-    [provider, state.sourceToken, state.destinationToken, state.side, requiresQuoteInverted]
+    [
+      state.provider,
+      state.sourceToken,
+      state.destinationToken,
+      state.side,
+      requiresQuoteInverted,
+      state.useFlashloan,
+    ]
   );
 
   return useQuery<SwapQuoteType | null>({
@@ -401,7 +415,6 @@ const useMultiProviderSwapQuoteQuery = ({
       // Basic pre-blockers to avoid provider requests
       const isSameTokenPair =
         state.sourceToken.addressToSwap === state.destinationToken.addressToSwap;
-      const isInsufficientBalance = hasInsufficientBalance(state);
       const isFlashloanDisabled = hasFlashLoanDisabled(state);
 
       return (
@@ -409,9 +422,7 @@ const useMultiProviderSwapQuoteQuery = ({
         ((state.orderType === OrderType.LIMIT && !state.swapRate) ||
           state.orderType === OrderType.MARKET) &&
         hasPositiveUserAmount &&
-        !state.actionsBlocked &&
         !isSameTokenPair &&
-        !isInsufficientBalance &&
         !isFlashloanDisabled &&
         !state.mainTxState.success &&
         !state.mainTxState.txHash && // Don't fetch quotes once transaction is sent

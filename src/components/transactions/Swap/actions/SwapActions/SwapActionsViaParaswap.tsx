@@ -40,9 +40,7 @@ export const SwapActionsViaParaswap = ({
   const { sendTx } = useWeb3Context();
   const { mutateAsync: fetchParaswapTxParams } = useParaswapSellTxParams(state.chainId);
 
-  console.log('state.slippage', state.slippage);
   const slippageInPercent = (Number(state.slippage) * 100).toString();
-  console.log('slippageInPercent', slippageInPercent);
 
   const {
     requiresApproval,

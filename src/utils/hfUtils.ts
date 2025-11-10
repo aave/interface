@@ -16,11 +16,11 @@ export interface CalculateHFAfterSwapProps {
   fromAmount: BigNumberValue;
   fromAssetData: ComputedReserveData;
   fromAssetUserData: ComputedUserReserve;
-  fromAssetType: 'collateral' | 'debt';
+  fromAssetType: 'collateral' | 'debt' | 'none';
   toAmountAfterSlippage: BigNumberValue;
   toAssetData: ComputedReserveData;
   user: ExtendedFormattedUser;
-  toAssetType: 'collateral' | 'debt';
+  toAssetType: 'collateral' | 'debt' | 'none';
 }
 
 interface CalculateHFAfterSwapRepayProps {

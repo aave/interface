@@ -243,8 +243,8 @@ export const RepayWithCollateralActionsViaCoW = ({
           name: state.buyAmountToken.symbol,
           decimals: state.buyAmountToken.decimals,
         },
-        srcAmount: state.buyAmountBigInt.toString(),
-        destAmount: state.sellAmountBigInt.toString(),
+        srcAmount: state.sellAmountBigInt.toString(),
+        destAmount: state.buyAmountBigInt.toString(),
       });
       trackSwapOrderProgress(result.orderId, state.chainId);
       setState({

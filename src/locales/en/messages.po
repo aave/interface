@@ -1178,6 +1178,10 @@ msgstr "Sorry, an unexpected error happened. In the meantime you may try reloadi
 msgid "{d}d"
 msgstr "{d}d"
 
+#: src/components/transactions/Swap/errors/shared/BalanceLowerThanInput.tsx
+msgid "Your {0} balance is lower than the selected amount."
+msgstr "Your {0} balance is lower than the selected amount."
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
@@ -2226,6 +2230,10 @@ msgstr "Add {0} to wallet to track your balance."
 msgid "Loading..."
 msgstr "Loading..."
 
+#: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
+msgid "This is an off-chain operation. Keep in mind that a solver may already have filled your order."
+msgstr "This is an off-chain operation. Keep in mind that a solver may already have filled your order."
+
 #: src/modules/governance/GovernanceTopPanel.tsx
 msgid "Aave Governance"
 msgstr "Aave Governance"
@@ -2313,10 +2321,6 @@ msgstr "Array parameters that should be equal length are not"
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
 msgid "Repaying {0}"
 msgstr "Repaying {0}"
-
-#: src/components/transactions/Swap/errors/shared/BalanceLowerThanInput.tsx
-msgid "Your balance is lower than the selected amount."
-msgstr "Your balance is lower than the selected amount."
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
@@ -3626,6 +3630,10 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Borrow amount to reach {0}% utilization"
 msgstr "Borrow amount to reach {0}% utilization"
+
+#: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
+msgid "Cancel order"
+msgstr "Cancel order"
 
 #: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx

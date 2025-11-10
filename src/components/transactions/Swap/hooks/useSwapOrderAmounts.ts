@@ -110,10 +110,10 @@ export const useSwapOrderAmounts = ({
       ) {
         networkFeeAmountFormattedInSell = valueToBigNumber(networkFeeAmountFormattedInSell)
           .multipliedBy(3)
-          .toString();
+          .toFixed();
         networkFeeAmountFormattedInBuy = valueToBigNumber(networkFeeAmountFormattedInBuy)
           .multipliedBy(3)
-          .toString();
+          .toFixed();
       }
       networkFeeAmountInSellFormatted = networkFeeAmountFormattedInSell;
       networkFeeAmountInBuyFormatted = networkFeeAmountFormattedInBuy;
@@ -122,7 +122,7 @@ export const useSwapOrderAmounts = ({
         // On a classic sell market order, we send the input amount and receive the amount after partner fees and slippage
 
         if (marketOrderKind === OrderKind.SELL) {
-          sellAmountFormatted = state.inputAmount.toString();
+          sellAmountFormatted = state.inputAmount;
 
           const outputAmountAfterNetworkFees = valueToBigNumber(state.outputAmount).minus(
             networkFeeAmountFormattedInBuy
@@ -133,10 +133,10 @@ export const useSwapOrderAmounts = ({
           const outputAmountAfterSlippage = valueToBigNumber(
             outputAmountAfterPartnerFees
           ).multipliedBy(1 - Number(state.slippage) / 100);
-          buyAmountFormatted = outputAmountAfterSlippage.toString();
+          buyAmountFormatted = outputAmountAfterSlippage.toFixed();
         } else {
           // TODO: check if this is correct
-          buyAmountFormatted = state.inputAmount.toString();
+          buyAmountFormatted = state.inputAmount;
 
           const sellAmountAfterNetworkFees = valueToBigNumber(state.outputAmount).plus(
             networkFeeAmountFormattedInSell
@@ -147,19 +147,19 @@ export const useSwapOrderAmounts = ({
           const sellAmountAfterSlippage = valueToBigNumber(sellAmountAfterPartnerFees).multipliedBy(
             1 + Number(state.slippage) / 100
           );
-          sellAmountFormatted = sellAmountAfterSlippage.toString();
+          sellAmountFormatted = sellAmountAfterSlippage.toFixed();
         }
       } else if (state.orderType === OrderType.LIMIT) {
         if (state.side === 'sell') {
           // on a sell limit order, we send the input amount and receive the amount after partner fees (no slippage applied)
-          sellAmountFormatted = state.inputAmount.toString();
+          sellAmountFormatted = state.inputAmount;
 
           const buyAmountAfterNetworkFees = valueToBigNumber(state.outputAmount).minus(
             networkFeeAmountFormattedInBuy
           );
           buyAmountFormatted = valueToBigNumber(buyAmountAfterNetworkFees)
             .minus(partnerFeeAmount)
-            .toString();
+            .toFixed();
         } else {
           // on a buy limit order, we receive exactly the output amount and send the input amount after partner fees (no slippage applied)
           const sellAmountAfterNetworkFees = valueToBigNumber(state.inputAmount).plus(
@@ -167,9 +167,9 @@ export const useSwapOrderAmounts = ({
           );
           sellAmountFormatted = valueToBigNumber(sellAmountAfterNetworkFees)
             .plus(partnerFeeAmount)
-            .toString();
+            .toFixed();
 
-          buyAmountFormatted = state.outputAmount.toString();
+          buyAmountFormatted = state.outputAmount;
         }
       }
     } else {
@@ -208,10 +208,10 @@ export const useSwapOrderAmounts = ({
       ) {
         networkFeeAmountFormattedInSell = valueToBigNumber(networkFeeAmountFormattedInSell)
           .multipliedBy(3)
-          .toString();
+          .toFixed();
         networkFeeAmountFormattedInBuy = valueToBigNumber(networkFeeAmountFormattedInBuy)
           .multipliedBy(3)
-          .toString();
+          .toFixed();
       }
 
       // console.debug('networkFeeAmountFormattedInSell after trick', networkFeeAmountFormattedInSell);
@@ -222,20 +222,20 @@ export const useSwapOrderAmounts = ({
       if (state.orderType === OrderType.MARKET) {
         // on a classic inverted sell market order, we send the output amount and receive the input amount after partner fees and slippage
         if (marketOrderKind === OrderKind.SELL) {
-          sellAmountFormatted = state.outputAmount.toString();
+          sellAmountFormatted = state.outputAmount;
 
           const inputAmountAfterNetworkFees = valueToBigNumber(state.inputAmount).minus(
             networkFeeAmountFormattedInBuy
           );
           const inputAmountAfterPartnerFees = valueToBigNumber(inputAmountAfterNetworkFees)
             .minus(partnerFeeAmount)
-            .toString();
+            .toFixed();
           const inputAmountAfterSlippage = valueToBigNumber(inputAmountAfterPartnerFees)
             .multipliedBy(1 + Number(state.slippage) / 100)
-            .toString();
+            .toFixed();
           buyAmountFormatted = inputAmountAfterSlippage;
         } else {
-          buyAmountFormatted = state.inputAmount.toString();
+          buyAmountFormatted = state.inputAmount;
 
           const sellAmountAfterNetworkFees = valueToBigNumber(state.outputAmount).plus(
             networkFeeAmountFormattedInSell
@@ -246,29 +246,29 @@ export const useSwapOrderAmounts = ({
           const sellAmountAfterSlippage = valueToBigNumber(sellAmountAfterPartnerFees).multipliedBy(
             1 + Number(state.slippage) / 100
           );
-          sellAmountFormatted = sellAmountAfterSlippage.toString();
+          sellAmountFormatted = sellAmountAfterSlippage.toFixed();
         }
       } else {
         if (processedSide === 'buy') {
           // on an inverted buy limit order, we buy the input amount and sell the output amount after partner fees (no slippage applied)
-          buyAmountFormatted = state.inputAmount.toString();
+          buyAmountFormatted = state.inputAmount;
 
           const sellAmountAfterNetworkFees = valueToBigNumber(state.outputAmount).plus(
             networkFeeAmountFormattedInSell
           );
           sellAmountFormatted = valueToBigNumber(sellAmountAfterNetworkFees)
             .plus(partnerFeeAmount)
-            .toString();
+            .toFixed();
         } else {
           // on an inverted sell limit order, we sell the output amount and buy the input amount after partner fees (no slippage applied)
-          sellAmountFormatted = state.outputAmount.toString();
+          sellAmountFormatted = state.outputAmount;
 
           const buyAmountAfterNetworkFees = valueToBigNumber(state.inputAmount).minus(
             networkFeeAmountFormattedInBuy
           );
           buyAmountFormatted = valueToBigNumber(buyAmountAfterNetworkFees)
             .minus(partnerFeeAmount)
-            .toString();
+            .toFixed();
         }
       }
     }
@@ -293,10 +293,10 @@ export const useSwapOrderAmounts = ({
 
     const sellAmountUSD = valueToBigNumber(sellAmountFormatted)
       .multipliedBy(sellTokenPriceUsd)
-      .toString();
+      .toFixed();
     const buyAmountUSD = valueToBigNumber(buyAmountFormatted)
       .multipliedBy(buyTokenPriceUsd)
-      .toString();
+      .toFixed();
 
     const sellAmountBigInt = BigInt(
       normalizeBN(sellAmountFormatted, -sellAmountToken.decimals).toFixed(0)
@@ -319,7 +319,7 @@ export const useSwapOrderAmounts = ({
       processedSide,
       networkFeeAmountInSellFormatted,
       networkFeeAmountInBuyFormatted,
-      partnerFeeAmountFormatted: partnerFeeAmount.toString(),
+      partnerFeeAmountFormatted: partnerFeeAmount.toFixed(),
       partnerFeeBps: partnetFeeBps,
     });
   }, [

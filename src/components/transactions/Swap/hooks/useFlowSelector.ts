@@ -180,7 +180,6 @@ const getHFAfterSwapParamsFromSwapType = (
         fromAssetType: 'debt',
         toAssetType: 'debt',
       };
-
     case SwapType.RepayWithCollateral:
       return {
         fromAmount: state.sellAmountFormatted.toString(),
@@ -191,6 +190,17 @@ const getHFAfterSwapParamsFromSwapType = (
         user,
         fromAssetType: 'collateral',
         toAssetType: 'debt',
+      };
+    case SwapType.WithdrawAndSwap:
+      return {
+        fromAmount: state.sellAmountFormatted.toString(),
+        toAmountAfterSlippage: state.buyAmountFormatted.toString(),
+        fromAssetData: state.sourceReserve.reserve,
+        toAssetData: state.destinationReserve.reserve,
+        fromAssetUserData: fromAssetUserReserve,
+        fromAssetType: 'collateral',
+        toAssetType: 'none',
+        user,
       };
     default:
       return undefined;

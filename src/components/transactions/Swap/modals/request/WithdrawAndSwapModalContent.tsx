@@ -86,11 +86,14 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
     showTitle: false,
     showSwitchInputAndOutputAssetsButton: false,
     titleTokenPostfix: 'and swap',
-    inputBalanceTitle: 'Available',
+    inputBalanceTitle: 'Supplied',
     outputBalanceTitle: 'Current balance',
     showOutputBalance: true,
     inputInputTitle: 'Withdraw',
     outputInputTitle: 'And swap to',
+    resultScreenTitleItems: 'and withdrawn',
+    resultScreenTokensFromTitle: 'Withdrawn',
+    resultScreenTokensToTitle: 'Received',
 
     // Note: Withdraw And Swap order is not inverted
     inputInputTitleSell: 'Withdraw',
