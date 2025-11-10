@@ -12,7 +12,6 @@ import { getCowProtocolSellRates } from '../helpers/cow';
 import { getParaswapSellRates, getParaswapSlippage } from '../helpers/paraswap';
 import { getSwitchProvider } from '../helpers/shared/provider.helpers';
 import {
-  OrderType,
   SwapParams,
   SwapProvider,
   SwapQuoteType as SwapQuoteType,
@@ -161,13 +160,13 @@ export const useSwapQuote = ({
 
     // Skip update if nothing changed to avoid re-render loops
     if (
-      state.provider === quote.provider &&
-      state.swapRate?.srcSpotAmount === quote.srcSpotAmount &&
-      state.swapRate?.destSpotAmount === quote.destSpotAmount &&
-      state.inputAmount === nextInputAmount &&
-      state.outputAmount === nextOutputAmount &&
-      state.inputAmountUSD === nextInputAmountUSD &&
-      state.outputAmountUSD === nextOutputAmountUSD
+      state.provider == quote.provider &&
+      state.swapRate?.srcSpotAmount == quote.srcSpotAmount &&
+      state.swapRate?.destSpotAmount == quote.destSpotAmount &&
+      state.inputAmount == nextInputAmount &&
+      state.outputAmount == nextOutputAmount &&
+      state.inputAmountUSD == nextInputAmountUSD &&
+      state.outputAmountUSD == nextOutputAmountUSD
     ) {
       return;
     }
@@ -422,9 +421,6 @@ const useMultiProviderSwapQuoteQuery = ({
       const isFlashloanDisabled = hasFlashLoanDisabled(state);
 
       return (
-        // LIMIT: fetch only once (when no quote yet). MARKET: fetch normally
-        ((state.orderType === OrderType.LIMIT && !state.swapRate) ||
-          state.orderType === OrderType.MARKET) &&
         hasPositiveUserAmount &&
         !isSameTokenPair &&
         !isFlashloanDisabled &&
@@ -440,11 +436,9 @@ const useMultiProviderSwapQuoteQuery = ({
     throwOnError: false,
     refetchOnWindowFocus: (query) => (query.state.error ? false : true),
     refetchInterval: (() => {
-      // LIMIT: never refetch periodically after we got the first quote
       const isInsufficientBalance = hasInsufficientBalance(state);
       const isFlashloanDisabled = hasFlashLoanDisabled(state);
-      return state.orderType !== OrderType.LIMIT &&
-        !state.actionsLoading &&
+      return !state.actionsLoading &&
         !state.quoteRefreshPaused &&
         !state.mainTxState.success &&
         !state.mainTxState.txHash &&

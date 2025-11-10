@@ -124,11 +124,13 @@ export const BaseSwapModalContent = ({
           setSwitchType={(orderType: OrderType) => {
             const switchingFromLimitToMarket =
               state.orderType === OrderType.LIMIT && orderType === OrderType.MARKET;
+            const switchingFromMarketToLimit =
+              state.orderType === OrderType.MARKET && orderType === OrderType.LIMIT;
 
             setState({
               orderType,
               actionsLoading: false,
-              ...(switchingFromLimitToMarket
+              ...(switchingFromLimitToMarket || switchingFromMarketToLimit
                 ? {
                     inputAmount: '',
                     debouncedInputAmount: '',

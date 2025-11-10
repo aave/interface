@@ -113,15 +113,23 @@ export const LimitOrderInputs = ({
             !state.error
           }
           onChange={swapState.handleInputChange}
-          onClear={() =>
+          onClear={() => {
             setState({
               inputAmount: '',
               debouncedInputAmount: '',
               inputAmountUSD: '',
               quoteRefreshPaused: true,
               quoteLastUpdatedAt: undefined,
-            })
-          }
+            });
+            if (state.outputAmount === '') {
+              // Both reset to listen quotes
+              setState({
+                swapRate: undefined,
+                quoteRefreshPaused: false,
+                quoteLastUpdatedAt: undefined,
+              });
+            }
+          }}
           usdValue={state.inputAmountUSD || '0'}
           onSelect={swapState.handleSelectedInputToken}
           selectedAsset={state.sourceToken}
@@ -230,15 +238,23 @@ export const LimitOrderInputs = ({
           onChange={(value) => {
             swapState.handleOutputChange(value);
           }}
-          onClear={() =>
+          onClear={() => {
             setState({
               outputAmount: '',
               debouncedOutputAmount: '',
               outputAmountUSD: '',
               quoteRefreshPaused: true,
               quoteLastUpdatedAt: undefined,
-            })
-          }
+            });
+            if (state.inputAmount === '') {
+              // Both reset to listen quotes
+              setState({
+                swapRate: undefined,
+                quoteRefreshPaused: false,
+                quoteLastUpdatedAt: undefined,
+              });
+            }
+          }}
           onSelect={swapState.handleSelectedOutputToken}
           disableInput={false}
           selectedAsset={state.destinationToken}
@@ -250,12 +266,12 @@ export const LimitOrderInputs = ({
 
         <PriceInput
           originAsset={state.sourceToken}
+          originAssetAmount={state.inputAmount}
+          originAssetAmountUSD={state.inputAmountUSD}
           targetAsset={state.destinationToken}
+          targetAssetAmount={state.outputAmount}
+          targetAssetAmountUSD={state.outputAmountUSD}
           loading={state.ratesLoading}
-          inputAmount={state.inputAmount}
-          outputAmount={state.outputAmount}
-          inputAmountUSD={state.inputAmountUSD}
-          outputAmountUSD={state.outputAmountUSD}
           handleRateChange={swapState.handleRateChange}
           disabled={!state.swapRate?.srcSpotAmount || !state.swapRate?.destSpotAmount} // No initial rate set yet
         />

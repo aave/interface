@@ -42,10 +42,10 @@ export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProp
 
 export interface AssetInputProps {
   loading?: boolean;
-  inputAmount: string;
-  outputAmount: string;
-  inputAmountUSD: string;
-  outputAmountUSD: string;
+  originAssetAmount: string;
+  targetAssetAmount: string;
+  originAssetAmountUSD: string;
+  targetAssetAmountUSD: string;
   originAsset: SwappableToken;
   targetAsset: SwappableToken;
   disabled?: boolean;
@@ -53,16 +53,17 @@ export interface AssetInputProps {
 }
 
 export const PriceInput = ({
-  inputAmount,
-  outputAmount,
-  inputAmountUSD,
-  outputAmountUSD,
+  originAssetAmount,
+  targetAssetAmount,
+  originAssetAmountUSD,
+  targetAssetAmountUSD,
   loading = false,
   originAsset,
   targetAsset,
   disabled = false,
   handleRateChange: handleInputsAmountsChange,
 }: AssetInputProps) => {
+  const DEBOUNCE_MS = 300;
   const inputRef = useRef<HTMLDivElement>(null);
   const [fromAsset, setFromAsset] = useState<SwappableToken>(originAsset);
   const [toAsset, setToAsset] = useState<SwappableToken>(targetAsset);
@@ -77,63 +78,108 @@ export const PriceInput = ({
   const [lastMarketRate, setLastMarketRate] = useState<{
     nominal?: BigNumber;
     usd?: BigNumber;
+    baseSymbol?: string;
+    quoteSymbol?: string;
   }>({
     nominal: undefined,
     usd: undefined,
+    baseSymbol: undefined,
+    quoteSymbol: undefined,
   });
+  const rateDebounceRef = useRef<number | undefined>(undefined);
 
   const [amount, setAmount] = useState<{
-    fromAmount?: BigNumber;
-    toAmount?: BigNumber;
-    fromAmountUsd?: BigNumber;
-    toAmountUsd?: BigNumber;
+    originAmount?: BigNumber;
+    targetAmount?: BigNumber;
+    originAmountUsd?: BigNumber;
+    targetAmountUsd?: BigNumber;
   }>({
-    fromAmount: undefined,
-    toAmount: undefined,
-    fromAmountUsd: undefined,
-    toAmountUsd: undefined,
+    originAmount: undefined,
+    targetAmount: undefined,
+    originAmountUsd: undefined,
+    targetAmountUsd: undefined,
   });
 
   useEffect(() => {
-    if (!inputAmount || !outputAmount) return;
+    if (!originAssetAmount || !targetAssetAmount) return;
 
     setAmount({
-      fromAmount: valueToBigNumber(inputAmount),
-      toAmount: valueToBigNumber(outputAmount),
-      fromAmountUsd: valueToBigNumber(inputAmountUSD),
-      toAmountUsd: valueToBigNumber(outputAmountUSD),
+      originAmount: valueToBigNumber(originAssetAmount),
+      targetAmount: valueToBigNumber(targetAssetAmount),
+      originAmountUsd: valueToBigNumber(originAssetAmountUSD),
+      targetAmountUsd: valueToBigNumber(targetAssetAmountUSD),
     });
-  }, [inputAmount, outputAmount, inputAmountUSD, outputAmountUSD]);
+  }, [originAssetAmount, targetAssetAmount, originAssetAmountUSD, targetAssetAmountUSD]);
 
   useEffect(() => {
     if (
-      !amount.fromAmount?.gt(0) ||
-      !amount.toAmount?.gt(0) ||
-      !amount.fromAmountUsd?.gt(0) ||
-      !amount.toAmountUsd?.gt(0)
+      !amount.originAmount?.gt(0) ||
+      !amount.targetAmount?.gt(0) ||
+      !amount.originAmountUsd?.gt(0) ||
+      !amount.targetAmountUsd?.gt(0)
     )
       return;
 
-    const rate =
-      amount.toAmount && amount.fromAmount ? amount.toAmount.div(amount.fromAmount) : undefined;
-    const rateUsd =
-      amount.toAmountUsd && amount.fromAmountUsd
-        ? amount.toAmountUsd.div(amount.fromAmountUsd)
-        : undefined;
+    // Define rate in the direction currently displayed:
+    // "When 1 {fromAsset} is worth ..." so nominal shows quote units per 1 base (fromAsset).
+    const showingOriginAsBase = fromAsset.addressToSwap === originAsset.addressToSwap;
+    const nextNominal = showingOriginAsBase
+      ? amount.targetAmount && amount.originAmount
+        ? amount.targetAmount.div(amount.originAmount)
+        : undefined
+      : amount.originAmount && amount.targetAmount
+      ? amount.originAmount.div(amount.targetAmount)
+      : undefined;
+
+    const nextUsd = showingOriginAsBase
+      ? amount.targetAmountUsd && amount.originAmountUsd
+        ? amount.targetAmountUsd.div(amount.originAmountUsd)
+        : undefined
+      : amount.originAmountUsd && amount.targetAmountUsd
+      ? amount.originAmountUsd.div(amount.targetAmountUsd)
+      : undefined;
 
     setRate({
-      nominal: rate,
-      usd: rateUsd,
+      nominal: nextNominal,
+      usd: nextUsd,
     });
 
     // Capture latest market rate from the most recent quote only once
     if (lastMarketRate.nominal === undefined) {
       setLastMarketRate({
-        nominal: rate,
-        usd: rateUsd,
+        nominal: nextNominal,
+        usd: nextUsd,
+        baseSymbol: fromAsset.symbol,
+        quoteSymbol: toAsset.symbol,
       });
     }
-  }, [amount]);
+  }, [
+    amount.originAmount,
+    amount.targetAmount,
+    amount.originAmountUsd,
+    amount.targetAmountUsd,
+    fromAsset.addressToSwap,
+    originAsset.addressToSwap,
+  ]);
+
+  useEffect(() => {
+    setFromAsset(originAsset);
+    setToAsset(targetAsset);
+    setRate({
+      nominal: undefined,
+      usd: undefined,
+    });
+    setLastMarketRate({
+      nominal: undefined,
+      usd: undefined,
+    });
+    setAmount({
+      originAmount: undefined,
+      targetAmount: undefined,
+      originAmountUsd: undefined,
+      targetAmountUsd: undefined,
+    });
+  }, [originAsset, targetAsset]);
 
   const setNewRate = (newRate: BigNumberValue) => {
     const nextNominal = valueToBigNumber(newRate);
@@ -142,17 +188,17 @@ export const PriceInput = ({
     if (rate.nominal && !rate.nominal.isZero() && rate.usd) {
       kRatio = rate.usd.div(rate.nominal);
     } else if (
-      amount.toAmountUsd &&
-      amount.fromAmountUsd &&
-      amount.toAmount &&
-      amount.fromAmount &&
-      !amount.toAmount.isZero() &&
-      !amount.fromAmount.isZero()
+      amount.targetAmountUsd &&
+      amount.originAmountUsd &&
+      amount.targetAmount &&
+      amount.originAmount &&
+      !amount.targetAmount.isZero() &&
+      !amount.originAmount.isZero()
     ) {
       // Fallback: K = (toUSD/to) / (fromUSD/from) = (toUSD * from) / (fromUSD * to)
-      kRatio = amount.toAmountUsd
-        .times(amount.fromAmount)
-        .div(amount.fromAmountUsd.times(amount.toAmount));
+      kRatio = amount.targetAmountUsd
+        .times(amount.originAmount)
+        .div(amount.originAmountUsd.times(amount.targetAmount));
     }
 
     const nextUsd = kRatio ? nextNominal.times(kRatio) : valueToBigNumber(0);
@@ -163,22 +209,51 @@ export const PriceInput = ({
     });
   };
 
+  // Debounced emitter to upstream handler
+  const emitRateChangeDebounced = (baseToken: SwappableToken, newRate: BigNumber) => {
+    if (rateDebounceRef.current !== undefined) {
+      window.clearTimeout(rateDebounceRef.current);
+    }
+    rateDebounceRef.current = window.setTimeout(() => {
+      handleInputsAmountsChange(baseToken, newRate);
+      setNewRate(newRate);
+    }, DEBOUNCE_MS) as unknown as number;
+  };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (rateDebounceRef.current !== undefined) {
+        window.clearTimeout(rateDebounceRef.current);
+      }
+    };
+  }, []);
+
   const handleSwitchRateDirection = () => {
+    // Also invert the stored market reference rate so the Market button uses the correct direction
+    setLastMarketRate((prev) => {
+      const invNominal =
+        prev.nominal && !prev.nominal.isZero()
+          ? valueToBigNumber(1).div(prev.nominal)
+          : prev.nominal;
+      const invUsd = prev.usd && !prev.usd.isZero() ? valueToBigNumber(1).div(prev.usd) : prev.usd;
+      return {
+        nominal: invNominal,
+        usd: invUsd,
+        baseSymbol: prev.quoteSymbol ?? toAssetAux.symbol,
+        quoteSymbol: prev.baseSymbol ?? fromAssetAux.symbol,
+      };
+    });
+
+    setRate({
+      nominal: rate.nominal ? valueToBigNumber(1).div(rate.nominal) : undefined,
+      usd: rate.usd ? valueToBigNumber(1).div(rate.usd) : undefined,
+    });
+
     const fromAssetAux = fromAsset;
     const toAssetAux = toAsset;
     setFromAsset(toAssetAux);
     setToAsset(fromAssetAux);
-
-    const fromAmount = amount.fromAmount;
-    const fromAmountUsd = amount.fromAmountUsd;
-    const toAmount = amount.toAmount;
-    const toAmountUsd = amount.toAmountUsd;
-    setAmount({
-      fromAmount: toAmount,
-      fromAmountUsd: toAmountUsd,
-      toAmount: fromAmount,
-      toAmountUsd: fromAmountUsd,
-    });
   };
 
   return (
@@ -229,8 +304,9 @@ export const PriceInput = ({
             inputComponent={NumberFormatCustom as any}
             onChange={(e) => {
               const typed = e.target.value;
-              setNewRate(typed);
-              handleInputsAmountsChange(fromAsset, valueToBigNumber(typed));
+              const bn = valueToBigNumber(typed);
+              setNewRate(bn);
+              emitRateChangeDebounced(fromAsset, bn);
             }}
           />
         )}
@@ -326,12 +402,13 @@ export const PriceInput = ({
         </Typography>
         <Button
           size="small"
-          sx={{ minWidth: 0, ml: '7px', p: 0 }}
+          sx={{ minWidth: 0, ml: '7px', py: 0, px: 1 }}
           onClick={() => {
             const marketNominal = lastMarketRate.nominal ? lastMarketRate.nominal.toString() : '0';
-            setNewRate(marketNominal);
-            // Rate expresses how many toAsset units per 1 fromAsset, so pass fromAsset as the base
-            handleInputsAmountsChange(fromAsset, valueToBigNumber(marketNominal));
+            setNewRate(valueToBigNumber(marketNominal));
+            // Honor the stored base direction for the market rate
+            const baseToken = lastMarketRate.baseSymbol === fromAsset.symbol ? fromAsset : toAsset;
+            handleInputsAmountsChange(baseToken, valueToBigNumber(marketNominal));
           }}
           disabled={disabled}
         >

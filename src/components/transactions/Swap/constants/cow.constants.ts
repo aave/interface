@@ -70,8 +70,6 @@ export const COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV = (env: CowEnv) => {
 export const COW_CREATE_ORDER_ABI =
   'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
 
-export const HEADER_WIDGET_APP_CODE = 'aave-v3-interface-widget';
-export const ADAPTER_APP_CODE = 'aave-v3-interface-aps'; // Use this one for contract adapters so we have different dashboards
 export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) => ({
   volumeBps: getAssetGroup(tokenFromSymbol) == getAssetGroup(tokenToSymbol) ? 15 : 25,
   recipient: COW_EVM_RECIPIENT,

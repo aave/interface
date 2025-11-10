@@ -31,6 +31,7 @@ function buildErrorPayload(state: SwapState, error: SwapError) {
     useFlashloan: state.useFlashloan ?? false,
     side: state.side,
     orderType: state.orderType,
+    swapType: state.swapType,
     slippage: state.slippage,
     input: {
       token: state.sourceToken.symbol,

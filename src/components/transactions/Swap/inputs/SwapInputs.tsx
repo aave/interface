@@ -80,10 +80,14 @@ export const SwapInputs = ({
     if (value === '-1') {
       const maxAmount = state.sourceToken.balance;
       setState({
-        quoteRefreshPaused: false,
-        quoteLastUpdatedAt: undefined,
-        quoteTimerPausedAt: undefined,
-        quoteTimerPausedAccumMs: undefined,
+        ...(state.orderType === OrderType.LIMIT && state.swapRate
+          ? {
+              quoteRefreshPaused: true,
+              quoteLastUpdatedAt: undefined,
+              quoteTimerPausedAt: undefined,
+              quoteTimerPausedAccumMs: undefined,
+            }
+          : {}),
         inputAmount: maxAmount,
         inputAmountUSD: computeUSD(maxAmount),
         isMaxSelected: true,
@@ -91,10 +95,14 @@ export const SwapInputs = ({
       });
     } else {
       setState({
-        quoteRefreshPaused: false,
-        quoteLastUpdatedAt: undefined,
-        quoteTimerPausedAt: undefined,
-        quoteTimerPausedAccumMs: undefined,
+        ...(state.orderType === OrderType.LIMIT && state.swapRate
+          ? {
+              quoteRefreshPaused: true,
+              quoteLastUpdatedAt: undefined,
+              quoteTimerPausedAt: undefined,
+              quoteTimerPausedAccumMs: undefined,
+            }
+          : {}),
         inputAmount: value,
         inputAmountUSD: computeUSD(value),
         isMaxSelected: value === state.forcedMaxValue,
@@ -121,10 +129,14 @@ export const SwapInputs = ({
     if (value === '-1') {
       const maxAmount = state.destinationToken.balance;
       setState({
-        quoteRefreshPaused: false,
-        quoteLastUpdatedAt: undefined,
-        quoteTimerPausedAt: undefined,
-        quoteTimerPausedAccumMs: undefined,
+        ...(state.orderType === OrderType.LIMIT && state.swapRate
+          ? {
+              quoteRefreshPaused: true,
+              quoteLastUpdatedAt: undefined,
+              quoteTimerPausedAt: undefined,
+              quoteTimerPausedAccumMs: undefined,
+            }
+          : {}),
         outputAmount: maxAmount,
         outputAmountUSD: computeUSD(maxAmount),
         isMaxSelected: true,
@@ -132,10 +144,14 @@ export const SwapInputs = ({
       });
     } else {
       setState({
-        quoteRefreshPaused: false,
-        quoteLastUpdatedAt: undefined,
-        quoteTimerPausedAt: undefined,
-        quoteTimerPausedAccumMs: undefined,
+        ...(state.orderType === OrderType.LIMIT && state.swapRate
+          ? {
+              quoteRefreshPaused: true,
+              quoteLastUpdatedAt: undefined,
+              quoteTimerPausedAt: undefined,
+              quoteTimerPausedAccumMs: undefined,
+            }
+          : {}),
         outputAmount: value,
         outputAmountUSD: computeUSD(value),
         isMaxSelected: false,
@@ -153,16 +169,17 @@ export const SwapInputs = ({
     // User changed custom price, pause quote refresh in limit orders
     setState({ quoteRefreshPaused: true });
 
-    // When rate is changed, new output amount is calculated based on the input amount
-    let newOutputAmount: string;
-    if (rateFromAsset.addressToSwap === state.sourceToken.addressToSwap) {
-      newOutputAmount = valueToBigNumber(state.inputAmount).multipliedBy(newRate).toString();
-    } else {
-      newOutputAmount = valueToBigNumber(state.outputAmount).dividedBy(newRate).toString();
-    }
+    // Normalize the rate to always be dest per 1 source, then recompute output deterministically
+    const isBaseSource = rateFromAsset.addressToSwap === state.sourceToken.addressToSwap;
+    const rateDestPerSrc = isBaseSource
+      ? valueToBigNumber(newRate)
+      : valueToBigNumber(1).dividedBy(newRate);
+    const newOutputAmount = valueToBigNumber(state.inputAmount || '0')
+      .multipliedBy(rateDestPerSrc)
+      .toString();
 
     setState({
-      quoteRefreshPaused: false,
+      quoteRefreshPaused: true,
       quoteLastUpdatedAt: undefined,
       quoteTimerPausedAt: undefined,
       quoteTimerPausedAccumMs: undefined,

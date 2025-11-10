@@ -1,16 +1,16 @@
 /** All supported swap flows. */
 export enum SwapType {
-  Swap,
-  CollateralSwap,
-  DebtSwap,
-  RepayWithCollateral,
-  WithdrawAndSwap,
+  Swap = 'swap',
+  CollateralSwap = 'collateral_swap',
+  DebtSwap = 'debt_swap',
+  RepayWithCollateral = 'repay_with_collateral',
+  WithdrawAndSwap = 'withdraw_and_swap',
 }
 
 /** Order flavor shown in the UI. */
 export enum OrderType {
-  MARKET,
-  LIMIT,
+  MARKET = 'market',
+  LIMIT = 'limit',
 }
 
 /**
