@@ -95,7 +95,7 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
   ReserveIncentiveAdditionalData & {
     breakdown: MerklIncentivesBreakdown;
     description?: string;
-    rewardsTokensMappedAprs?: {
+    rewardsTokensMappedApys?: {
       token: {
         id: string;
         name: string;
@@ -118,7 +118,7 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
       campaignId: string;
       dailyRewardsRecordId: string;
       onChainCampaignId: string;
-      apr: number;
+      apy: number;
     }[];
   };
 
@@ -245,7 +245,7 @@ export const useMerklIncentives = ({
         return opp.rewardsRecord.breakdowns;
       });
 
-      const rewardsTokensMappedAprs = aprsBreakdowns
+      const rewardsTokensMappedApys = aprsBreakdowns
         .map((aprBreakdown) => {
           const matchingReward = breakdownTokens.find((reward) => {
             const isWhitelisted = whitelistedTokensSet.has(reward.token.address.toLowerCase());
@@ -254,7 +254,7 @@ export const useMerklIncentives = ({
           if (matchingReward) {
             return {
               ...matchingReward,
-              apr: convertAprToApy(aprBreakdown.value / 100),
+              apy: convertAprToApy(aprBreakdown.value / 100),
             };
           }
           return null;
@@ -284,7 +284,7 @@ export const useMerklIncentives = ({
         rewardTokenSymbol: rewardToken.symbol,
         description: description,
         ...incentiveAdditionalData,
-        rewardsTokensMappedAprs,
+        rewardsTokensMappedApys,
         breakdown: {
           protocolAPY,
           protocolIncentivesAPR: protocolIncentivesAPY,

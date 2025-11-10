@@ -185,14 +185,14 @@ export const MerklIncentivesTooltipContent = ({
                   </Typography>
                 </Box>
               </Row>
-            ) : merklIncentives.rewardsTokensMappedAprs &&
-              merklIncentives.rewardsTokensMappedAprs.length > 1 ? (
+            ) : merklIncentives.rewardsTokensMappedApys &&
+              merklIncentives.rewardsTokensMappedApys.length > 1 ? (
               <>
-                {merklIncentives.rewardsTokensMappedAprs.map((reward, index) => {
+                {merklIncentives.rewardsTokensMappedApys.map((reward, index) => {
                   const { tokenIconSymbol, symbol, aToken } = getSymbolMap({
                     rewardTokenSymbol: reward.token.symbol,
                     rewardTokenAddress: reward.token.address,
-                    incentiveAPR: reward.apr.toString(),
+                    incentiveAPR: reward.apy.toString(),
                   });
                   return (
                     <Row
@@ -221,7 +221,7 @@ export const MerklIncentivesTooltipContent = ({
                     >
                       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                         <FormattedNumber
-                          value={merklIncentives.breakdown.isBorrow ? -reward.apr : reward.apr}
+                          value={merklIncentives.breakdown.isBorrow ? -reward.apy : reward.apy}
                           percent
                           variant={typographyVariant}
                         />
