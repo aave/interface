@@ -45,12 +45,16 @@ const getTokenSelectionForQuote = (
   // Note: Consider the quote an approximation, we prefer underlying address for better support while aTokens value should always match
   const srcTokenObj = invertedQuoteRoute ? state.destinationToken : state.sourceToken;
   const srcToken =
-    state.useFlashloan == false && state.provider === SwapProvider.PARASWAP
+    state.useFlashloan == false &&
+    state.provider === SwapProvider.PARASWAP &&
+    state.swapType !== SwapType.WithdrawAndSwap
       ? srcTokenObj.addressToSwap
       : srcTokenObj.underlyingAddress;
   const destTokenObj = invertedQuoteRoute ? state.sourceToken : state.destinationToken;
   const destToken =
-    state.useFlashloan == false && state.provider === SwapProvider.PARASWAP
+    state.useFlashloan == false &&
+    state.provider === SwapProvider.PARASWAP &&
+    state.swapType !== SwapType.WithdrawAndSwap
       ? destTokenObj.addressToSwap
       : destTokenObj.underlyingAddress;
 

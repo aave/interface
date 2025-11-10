@@ -41,6 +41,7 @@ export type SignatureLike = {
   v: number;
 };
 export interface SignedParams {
+  plain: string;
   signature: string;
   splitedSignature: SignatureLike;
   deadline: string;
@@ -349,6 +350,7 @@ export const useSwapTokenApproval = ({
                 ]
               );
         const newSignatureParams = {
+          plain: response.toString(),
           signature: encodedSignature,
           splitedSignature,
           deadline,

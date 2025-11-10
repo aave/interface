@@ -1,36 +1,26 @@
-import { ERC20Service, ProtocolAction } from '@aave/contract-helpers';
-import { valueToBigNumber } from '@aave/math-utils';
+import { normalize } from '@aave/math-utils';
 import { OrderStatus } from '@cowprotocol/cow-sdk';
-import { SignatureLike } from '@ethersproject/bytes';
 import { Trans } from '@lingui/macro';
-import { useQueryClient } from '@tanstack/react-query';
-import { parseUnits } from 'ethers/lib/utils';
-import { Dispatch, useCallback, useEffect, useMemo, useState } from 'react';
+import { Dispatch, useEffect, useMemo } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
-import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { calculateSignedAmount } from 'src/hooks/paraswap/common';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { queryKeysFactory } from 'src/ui-config/queries';
+import { saveParaswapTxToUserHistory } from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { getTransactionParams } from '../../helpers/paraswap';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import { isParaswapRates, ProtocolSwapParams, ProtocolSwapState, SwapState } from '../../types';
-
-interface SignedParams {
-  signature: SignatureLike;
-  deadline: string;
-  amount: string;
-}
+import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 export const WithdrawAndSwapActionsViaParaswap = ({
   state,
   setState,
+  params,
   trackingHandlers,
 }: {
   params: ProtocolSwapParams;
@@ -38,56 +28,36 @@ export const WithdrawAndSwapActionsViaParaswap = ({
   setState: Dispatch<Partial<SwapState>>;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  const [
-    withdrawAndSwitch,
-    currentMarketData,
-    jsonRpcProvider,
-    account,
-    generateApproval,
-    estimateGasLimit,
-    walletApprovalMethodPreference,
-    generateSignatureRequest,
-    addTransaction,
-  ] = useRootStore(
+  const [withdrawAndSwitch, currentMarketData, estimateGasLimit, addTransaction] = useRootStore(
     useShallow((state) => [
       state.withdrawAndSwitch,
       state.currentMarketData,
-      state.jsonRpcProvider,
-      state.account,
-      state.generateApproval,
       state.estimateGasLimit,
-      state.walletApprovalMethodPreference,
-      state.generateSignatureRequest,
       state.addTransaction,
     ])
   );
 
-  const {
-    approvalTxState,
-    mainTxState,
-    loadingTxns,
-    setMainTxState,
-    setTxError,
-    setLoadingTxns,
-    setApprovalTxState,
-  } = useModalContext();
+  const { approvalTxState, mainTxState, setMainTxState, setTxError } = useModalContext();
 
-  const { sendTx, signTxData } = useWeb3Context();
-  const queryClient = useQueryClient();
+  const { sendTx } = useWeb3Context();
 
-  const [approvedAmount, setApprovedAmount] = useState<number | undefined>(undefined);
-  const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
+  // Approval is aToken ERC20 Approval
+  const amountToApprove = useMemo(() => {
+    if (!state.sellAmountFormatted || !state.sellAmountToken) return '0';
+    return calculateSignedAmount(state.sellAmountFormatted, state.sellAmountToken.decimals);
+  }, [state.sellAmountFormatted, state.sellAmountToken]);
 
-  const requiresApproval = useMemo(() => {
-    if (
-      approvedAmount === undefined ||
-      approvedAmount === -1 ||
-      state.inputAmount === '0' ||
-      state.isWrongNetwork
-    )
-      return false;
-    else return approvedAmount <= Number(state.inputAmount);
-  }, [approvedAmount, state.inputAmount, state.isWrongNetwork]);
+  const { requiresApproval, signatureParams, approval, tryPermit, loadingPermitData } =
+    useSwapTokenApproval({
+      chainId: state.chainId,
+      token: state.sourceToken.addressToSwap, // aToken
+      symbol: state.sourceToken.symbol,
+      amount: normalize(amountToApprove.toString(), state.sourceToken?.decimals ?? 18),
+      decimals: state.sourceToken.decimals,
+      spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER,
+      setState,
+      trackingHandlers,
+    });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -97,8 +67,6 @@ export const WithdrawAndSwapActionsViaParaswap = ({
     requiresApprovalReset: state.requiresApprovalReset,
     approvalTxState,
   });
-
-  const useSignature = walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   const action = async () => {
     if (!state.swapRate || !isParaswapRates(state.swapRate)) {
@@ -111,96 +79,73 @@ export const WithdrawAndSwapActionsViaParaswap = ({
       const { swapCallData, augustus } = await getTransactionParams(
         state.side,
         state.chainId,
-        state.sourceToken.addressToSwap,
+        state.sourceToken.underlyingAddress,
         state.sourceToken.decimals,
-        state.destinationToken.addressToSwap,
+        state.destinationToken.underlyingAddress,
         state.destinationToken.decimals,
         state.user,
         state.swapRate.optimalRateData,
         Number(state.slippage)
       );
 
-      // TODO: Fix this not working the tx builder via paraswap
-
       const tx = withdrawAndSwitch({
         poolReserve: state.sourceReserve.reserve,
         targetReserve: state.destinationReserve.reserve,
         isMaxSelected: state.isMaxSelected,
-        amountToSwap: parseUnits(
-          state.inputAmount,
-          state.sourceReserve.reserve.decimals
-        ).toString(),
-        amountToReceive: parseUnits(
-          state.buyAmountFormatted ?? '0',
-          state.destinationReserve.reserve.decimals
-        ).toString(),
+        amountToSwap: state.sellAmountBigInt?.toString() ?? '0',
+        amountToReceive: state.buyAmountBigInt?.toString() ?? '0',
         augustus: augustus,
         txCalldata: swapCallData,
-        signatureParams,
+        signatureParams: {
+          signature: signatureParams?.plain ?? '',
+          deadline: signatureParams?.deadline ?? '',
+          amount: signatureParams?.amount ?? '',
+        },
       });
+
       const txDataWithGasEstimation = await estimateGasLimit(tx);
       const response = await sendTx(txDataWithGasEstimation);
       await response.wait(1);
-      try {
-        const { saveParaswapTxToUserHistory: addParaswapTx } = await import(
-          'src/utils/swapAdapterHistory'
-        );
-        addParaswapTx({
-          protocol: 'paraswap',
-          txHash: response.hash,
-          swapType: state.swapType,
+
+      trackingHandlers.trackSwap();
+      params.invalidateAppState();
+      saveParaswapTxToUserHistory({
+        protocol: 'paraswap',
+        txHash: response.hash,
+        swapType: state.swapType,
+        chainId: state.chainId,
+        account: state.user,
+        timestamp: new Date().toISOString(),
+        status: OrderStatus.FULFILLED,
+        srcToken: {
+          address: state.sourceToken.underlyingAddress,
+          symbol: state.sourceToken.symbol,
+          name: state.sourceToken.symbol,
+          decimals: state.sourceToken.decimals,
+        },
+        destToken: {
+          address: state.destinationToken.underlyingAddress,
+          symbol: state.destinationToken.symbol,
+          name: state.destinationToken.symbol,
+          decimals: state.destinationToken.decimals,
+        },
+        srcAmount: state.sellAmountBigInt?.toString() ?? '0',
+        destAmount: state.buyAmountBigInt?.toString() ?? '0',
+      });
+      addTransaction(
+        response.hash,
+        {
+          txState: 'success',
+        },
+        {
           chainId: state.chainId,
-          account: state.user,
-          timestamp: new Date().toISOString(),
-          status: OrderStatus.FULFILLED,
-          srcToken: {
-            address: state.sourceToken.addressToSwap,
-            symbol: state.sourceToken.symbol,
-            name: state.sourceToken.symbol,
-            decimals: state.sourceToken.decimals,
-          },
-          destToken: {
-            address: state.destinationToken.addressToSwap,
-            symbol: state.destinationToken.symbol,
-            name: state.destinationToken.symbol,
-            decimals: state.destinationToken.decimals,
-          },
-          srcAmount: state.sellAmountBigInt?.toString() ?? '0',
-          destAmount: state.buyAmountBigInt?.toString() ?? '0',
-        });
-      } catch {}
-      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
-      queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
+        }
+      );
+
       setMainTxState({
         txHash: response.hash,
         loading: false,
         success: true,
-      });
-      addTransaction(response.hash, {
-        action: ProtocolAction.withdrawAndSwitch,
-        txState: 'success',
-        asset: state.sourceReserve.reserve.underlyingAsset,
-        amount: parseUnits(state.inputAmount, state.sourceReserve.reserve.decimals).toString(),
-        assetName: state.sourceReserve.reserve.name,
-        outAsset: state.destinationReserve.reserve.underlyingAsset,
-        outAssetName: state.destinationReserve.reserve.name,
-        outAmount: parseUnits(
-          state.buyAmountFormatted ?? '0',
-          state.destinationReserve.reserve.decimals
-        ).toString(),
-        amountUsd: valueToBigNumber(
-          parseUnits(state.inputAmount, state.sourceReserve.reserve.decimals).toString()
-        )
-          .multipliedBy(state.sourceReserve.reserve.priceInUSD)
-          .toString(),
-        outAmountUsd: valueToBigNumber(
-          parseUnits(
-            state.buyAmountFormatted ?? '0',
-            state.destinationReserve.reserve.decimals
-          ).toString()
-        )
-          .multipliedBy(state.destinationReserve.reserve.priceInUSD)
-          .toString(),
       });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
@@ -234,114 +179,51 @@ export const WithdrawAndSwapActionsViaParaswap = ({
     }
   };
 
-  const approval = async () => {
-    const amountToApprove = calculateSignedAmount(
-      state.inputAmount,
-      state.sourceReserve.reserve.decimals
-    );
-    const approvalData = {
-      user: account,
-      token: state.sourceReserve.reserve.aTokenAddress,
-      spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER || '',
-      amount: amountToApprove,
-    };
-    try {
-      if (useSignature) {
-        const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
-        const signatureRequest = await generateSignatureRequest({
-          ...approvalData,
-          deadline,
-        });
-        setApprovalTxState({ ...approvalTxState, loading: true });
-        const response = await signTxData(signatureRequest);
-        setSignatureParams({ signature: response, deadline, amount: amountToApprove });
-        setApprovalTxState({
-          txHash: MOCK_SIGNED_HASH,
-          loading: false,
-          success: true,
-        });
-      } else {
-        const tx = generateApproval(approvalData);
-        const txWithGasEstimation = await estimateGasLimit(tx);
-        setApprovalTxState({ ...approvalTxState, loading: true });
-        const response = await sendTx(txWithGasEstimation);
-        await response.wait(1);
-        setApprovalTxState({
-          txHash: response.hash,
-          loading: false,
-          success: true,
-        });
-        addTransaction(response.hash, {
-          action: ProtocolAction.withdrawAndSwitch,
-          txState: 'success',
-          asset: state.sourceReserve.reserve.aTokenAddress,
-          amount: parseUnits(amountToApprove, state.sourceReserve.reserve.decimals).toString(),
-          assetName: `a${state.sourceReserve.reserve.symbol}`,
-          spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER,
-        });
-        setTxError(undefined);
-        fetchApprovedAmount(state.sourceReserve.reserve.aTokenAddress);
-      }
-    } catch (error) {
-      const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-      setTxError(parsedError);
-      if (!approvalTxState.success) {
-        setApprovalTxState({
-          txHash: undefined,
-          loading: false,
-        });
-        setState({
-          actionsLoading: false,
-        });
-      }
-    }
-  };
-
-  const fetchApprovedAmount = useCallback(
-    async (aTokenAddress: string) => {
-      setLoadingTxns(true);
-      const rpc = jsonRpcProvider();
-      const erc20Service = new ERC20Service(rpc);
-      const approvedTargetAmount = await erc20Service.approvedAmount({
-        user: account,
-        token: aTokenAddress,
-        spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER || '',
-      });
-      setApprovedAmount(approvedTargetAmount);
-      setLoadingTxns(false);
-      setState({
-        actionsLoading: false,
-      });
-    },
-    [jsonRpcProvider, account, currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER, setLoadingTxns]
-  );
-
   useEffect(() => {
-    fetchApprovedAmount(state.sourceReserve.reserve.aTokenAddress);
-  }, [fetchApprovedAmount, state.sourceReserve.reserve.aTokenAddress]);
+    if (state.mainTxState.success) {
+      trackingHandlers.trackSwap();
+      params.invalidateAppState();
+
+      addTransaction(
+        state.mainTxState.txHash || '',
+        {
+          txState: 'success',
+        },
+        {
+          chainId: state.chainId,
+        }
+      );
+
+      setMainTxState({
+        txHash: state.mainTxState.txHash || '',
+        loading: false,
+        success: true,
+      });
+    }
+  }, [state.mainTxState.success]);
 
   return (
     <TxActionsWrapper
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={state.isWrongNetwork}
-      preparingTransactions={loadingTxns}
+      preparingTransactions={state.actionsLoading}
       handleAction={action}
       requiresAmount
       amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
-      handleApproval={() => approval()}
+      handleApproval={approval}
       requiresApproval={requiresApproval}
-      actionText={<Trans>Withdraw and Switch</Trans>}
-      actionInProgressText={<Trans>Withdrawing and Switching</Trans>}
+      actionText={<Trans>Withdraw and Swap</Trans>}
+      actionInProgressText={<Trans>Withdrawing and Swapping</Trans>}
       errorParams={{
         loading: false,
         disabled: state.actionsBlocked || !approvalTxState?.success,
-        content: <Trans>Withdraw and Switch</Trans>,
+        content: <Trans>Withdraw and Swap</Trans>,
         handleClick: action,
       }}
-      fetchingData={state.ratesLoading}
+      fetchingData={state.actionsLoading || loadingPermitData}
       blocked={state.actionsBlocked}
-      tryPermit={true}
+      tryPermit={tryPermit}
     />
   );
 };
