@@ -213,10 +213,6 @@ msgstr "..."
 msgid "Liquidation <0/> threshold"
 msgstr "Liquidation <0/> threshold"
 
-#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
-msgid "Withdrawing and Switching"
-msgstr "Withdrawing and Switching"
-
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
@@ -594,6 +590,10 @@ msgstr "Claim all"
 msgid "Time remaining until the withdraw period ends."
 msgstr "Time remaining until the withdraw period ends."
 
+#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
+msgid "Withdrawing and Swapping"
+msgstr "Withdrawing and Swapping"
+
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
 msgid "Data couldn't be fetched, please reload graph."
 msgstr "Data couldn't be fetched, please reload graph."
@@ -602,11 +602,6 @@ msgstr "Data couldn't be fetched, please reload graph."
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
 msgstr "Dashboard"
-
-#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
-#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
-msgid "Withdraw and Switch"
-msgstr "Withdraw and Switch"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -2167,6 +2162,10 @@ msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially 
 msgid "Staked Underlying"
 msgstr "Staked Underlying"
 
+#: src/components/transactions/Swap/warnings/preInputs/NativeLimitOrderInfo.tsx
+msgid "For security reasons, limit orders are not supported for Native tokens. To place a limit order, use the wrapped version."
+msgstr "For security reasons, limit orders are not supported for Native tokens. To place a limit order, use the wrapped version."
+
 #: src/layouts/components/StakingMenu.tsx
 #: src/layouts/components/StakingMenu.tsx
 msgid "Umbrella"
@@ -2688,6 +2687,8 @@ msgstr "about SuperFest."
 msgid "Testnet mode"
 msgstr "Testnet mode"
 
+#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Withdraw and Swap"
