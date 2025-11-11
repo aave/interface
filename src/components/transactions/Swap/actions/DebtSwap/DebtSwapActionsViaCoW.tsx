@@ -47,8 +47,14 @@ export const DebtSwapActionsViaCoW = ({
 }) => {
   const [user] = useRootStore(useShallow((state) => [state.account]));
 
-  const { mainTxState, loadingTxns, approvalTxState, setMainTxState, setTxError } =
-    useModalContext();
+  const {
+    mainTxState,
+    loadingTxns,
+    approvalTxState,
+    setMainTxState,
+    setTxError,
+    setApprovalTxState,
+  } = useModalContext();
 
   const [precalculatedInstanceAddress, setPrecalculatedInstanceAddress] = useState<
     string | undefined
@@ -105,21 +111,27 @@ export const DebtSwapActionsViaCoW = ({
   const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(state.chainId, sellAssetAddress);
 
   // Approval is to the destination token via delegation Approval
-  const { requiresApproval, approval, tryPermit, signatureParams, loadingPermitData } =
-    useSwapTokenApproval({
-      chainId: state.chainId,
-      token: isProtocolSwapState(state)
-        ? state.destinationReserve.reserve.variableDebtTokenAddress
-        : zeroAddress,
-      symbol: state.destinationToken.symbol,
-      amount: normalize(amountToApprove, state.sellAmountToken?.decimals ?? 18),
-      decimals: state.destinationToken.decimals,
-      spender: precalculatedInstanceAddress,
-      setState,
-      allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
-      type: 'delegation', // Debt swap uses delegation
-      trackingHandlers,
-    });
+  const {
+    requiresApproval,
+    approval,
+    tryPermit,
+    signatureParams,
+    loadingPermitData,
+    approvedAddress,
+  } = useSwapTokenApproval({
+    chainId: state.chainId,
+    token: isProtocolSwapState(state)
+      ? state.destinationReserve.reserve.variableDebtTokenAddress
+      : zeroAddress,
+    symbol: state.destinationToken.symbol,
+    amount: normalize(amountToApprove, state.sellAmountToken?.decimals ?? 18),
+    decimals: state.destinationToken.decimals,
+    spender: precalculatedInstanceAddress,
+    setState,
+    allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
+    type: 'delegation', // Debt swap uses delegation
+    trackingHandlers,
+  });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -210,6 +222,26 @@ export const DebtSwapActionsViaCoW = ({
           collateralPermit: delegationPermit,
         }
       );
+
+      // Safe-check in case any param changed between approval and order posting
+      const instanceAddress = orderPostParams.instanceAddress;
+      if (instanceAddress !== approvedAddress) {
+        console.error(
+          'Some parameters changed between approval and order posting: instanceAddress !== approvedAddress, asking for a new approval',
+          instanceAddress,
+          approvedAddress
+        );
+        // Force re-approve
+        setPrecalculatedInstanceAddress(instanceAddress);
+        setApprovalTxState({
+          txHash: undefined,
+          loading: false,
+          success: false,
+        });
+        setMainTxState({ txHash: undefined, loading: false, success: false });
+
+        return;
+      }
 
       orderPostParams.swapSettings.appData = addOrderTypeToAppData(
         state.orderType,

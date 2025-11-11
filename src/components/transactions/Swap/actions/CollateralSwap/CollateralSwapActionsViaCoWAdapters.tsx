@@ -46,8 +46,14 @@ export const CollateralSwapActionsViaCowAdapters = ({
 }) => {
   const [user] = useRootStore(useShallow((state) => [state.account]));
 
-  const { mainTxState, loadingTxns, approvalTxState, setMainTxState, setTxError } =
-    useModalContext();
+  const {
+    mainTxState,
+    loadingTxns,
+    approvalTxState,
+    setMainTxState,
+    setTxError,
+    setApprovalTxState,
+  } = useModalContext();
 
   const [precalculatedInstanceAddress, setPrecalculatedInstanceAddress] = useState<
     string | undefined
@@ -103,18 +109,24 @@ export const CollateralSwapActionsViaCowAdapters = ({
     state.sellAmountToken?.underlyingAddress || state.sourceToken.addressToSwap;
   const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(state.chainId, sellAssetAddress);
 
-  const { requiresApproval, approval, tryPermit, signatureParams, loadingPermitData } =
-    useSwapTokenApproval({
-      chainId: state.chainId,
-      token: state.sourceToken.addressToSwap,
-      symbol: state.sourceToken.symbol,
-      amount: normalize(amountToApprove.toString(), state.sellAmountToken?.decimals ?? 18),
-      decimals: state.sourceToken.decimals,
-      spender: precalculatedInstanceAddress,
-      setState,
-      allowPermit: !disablePermitDueToActiveOrder, // CoW Adapters do support permit but avoid nonce reuse
-      trackingHandlers,
-    });
+  const {
+    requiresApproval,
+    approval,
+    tryPermit,
+    signatureParams,
+    loadingPermitData,
+    approvedAddress,
+  } = useSwapTokenApproval({
+    chainId: state.chainId,
+    token: state.sourceToken.addressToSwap,
+    symbol: state.sourceToken.symbol,
+    amount: normalize(amountToApprove.toString(), state.sellAmountToken?.decimals ?? 18),
+    decimals: state.sourceToken.decimals,
+    spender: precalculatedInstanceAddress,
+    setState,
+    allowPermit: !disablePermitDueToActiveOrder, // CoW Adapters do support permit but avoid nonce reuse
+    trackingHandlers,
+  });
 
   // Use centralized gas estimation
   useSwapGasEstimation({
@@ -209,6 +221,27 @@ export const CollateralSwapActionsViaCowAdapters = ({
         state.orderType,
         orderPostParams.swapSettings.appData
       );
+
+      // Safe-check in case any param changed between approval and order posting
+      const instanceAddress = orderPostParams.instanceAddress;
+      if (instanceAddress !== approvedAddress) {
+        console.error(
+          'Some parameters changed between approval and order posting: instanceAddress !== approvedAddress, asking for a new approval',
+          instanceAddress,
+          approvedAddress
+        );
+        // Force re-approve
+        setPrecalculatedInstanceAddress(instanceAddress);
+        setApprovalTxState({
+          txHash: undefined,
+          loading: false,
+          success: false,
+        });
+        setMainTxState({ txHash: undefined, loading: false, success: false });
+
+        return;
+      }
+
       const result = await tradingSdk.postLimitOrder(limitOrder, orderPostParams.swapSettings);
 
       trackingHandlers.trackSwap();

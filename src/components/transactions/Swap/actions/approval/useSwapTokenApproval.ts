@@ -92,6 +92,7 @@ export const useSwapTokenApproval = ({
   trackingHandlers,
 }: SwapTokenApprovalParams) => {
   const [approvedAmount, setApprovedAmount] = useState<string | undefined>();
+  const [approvedAddress, setApprovedAddress] = useState<string | undefined>();
   const [requiresApprovalReset, setRequiresApprovalReset] = useState(false);
   const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
   // Keep track of last fetched approval key (token:spender) to avoid duplicate calls for same pair
@@ -145,6 +146,7 @@ export const useSwapTokenApproval = ({
     if (signatureParams || approvalTxState.success) {
       setSignatureParams(undefined);
       setApprovedAmount(undefined);
+      setApprovedAddress(undefined);
       setApprovalTxState({
         txHash: undefined,
         loading: false,
@@ -158,6 +160,7 @@ export const useSwapTokenApproval = ({
     setSignatureParams(undefined);
     setApprovedAmount(undefined);
     lastFetchedApprovalKeyRef.current = undefined;
+    setApprovedAddress(undefined);
     setApprovalTxState({ txHash: undefined, loading: false, success: false });
   }, [token, spender, chainId, type]);
 
@@ -208,7 +211,7 @@ export const useSwapTokenApproval = ({
     }
 
     setApprovedAmount(approvedTargetAmount.toString());
-
+    setApprovedAddress(spender);
     setLoadingTxns(false);
     setState({
       actionsLoading: false,
@@ -363,6 +366,7 @@ export const useSwapTokenApproval = ({
         });
 
         setApprovedAmount(amountToApprove.toString());
+        setApprovedAddress(spender);
         setTxError(undefined);
         setApprovalTxState({
           txHash: MOCK_SIGNED_HASH,
@@ -441,5 +445,6 @@ export const useSwapTokenApproval = ({
     approval,
     tryPermit,
     approvedAmount,
+    approvedAddress,
   };
 };
