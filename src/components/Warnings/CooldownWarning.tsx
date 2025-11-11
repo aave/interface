@@ -7,10 +7,8 @@ import { Link } from '../primitives/Link';
 import { Warning } from '../primitives/Warning';
 import { SecondsToString } from '../SecondsToString';
 
-const TWENTY_DAYS = 20 * 24 * 60 * 60;
-
-export const CooldownWarning = ({ cooldownSeconds }: { cooldownSeconds?: number }) => {
-  const cooldownTime = cooldownSeconds || TWENTY_DAYS;
+export const CooldownWarning = ({ cooldownSeconds }: { cooldownSeconds: number }) => {
+  const cooldownTime = cooldownSeconds;
 
   const trackEvent = useRootStore((store) => store.trackEvent);
   return (

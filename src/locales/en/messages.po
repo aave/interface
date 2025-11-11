@@ -443,6 +443,7 @@ msgid "Allowance required action"
 msgstr "Allowance required action"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/sGho/SGhoHeader.tsx
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Available rewards"
 msgstr "Available rewards"
@@ -532,8 +533,6 @@ msgstr "Available to Stake"
 msgid "Switch Network"
 msgstr "Switch Network"
 
-#: src/components/incentives/IncentivesTooltipContent.tsx
-#: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 msgid "APR"
@@ -891,6 +890,10 @@ msgstr "You've successfully submitted an order."
 #: src/components/transactions/Switch/SwitchAssetInput.tsx
 msgid "Max"
 msgstr "Max"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Points"
+msgstr "Points"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
@@ -2740,6 +2743,7 @@ msgstr "There was some error. Please try changing the parameters or <0><1>copy t
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
+#: src/modules/sGho/SGhoHeader.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UmbrellaClaimActions.tsx
@@ -3434,6 +3438,8 @@ msgstr "Amount must be greater than 0"
 msgid "Selected supply assets"
 msgstr "Selected supply assets"
 
+#: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx

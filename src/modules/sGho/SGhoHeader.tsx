@@ -1,8 +1,9 @@
 import { Stake } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
+import { chainId, evmAddress, useUserMeritRewards } from '@aave/react';
 import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import NumberFlow from '@number-flow/react';
 import { BigNumber } from 'bignumber.js';
 import { formatEther } from 'ethers/lib/utils';
@@ -14,8 +15,10 @@ import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
+import { useModalContext } from 'src/hooks/useModal';
 import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { convertAprToApy } from 'src/utils/utils';
@@ -24,6 +27,19 @@ import { useShallow } from 'zustand/shallow';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { AddTokenDropdown } from '../reserve-overview/AddTokenDropdown';
 import { TokenLinkDropdown } from '../reserve-overview/TokenLinkDropdown';
+
+interface MeritReward {
+  amount: {
+    usd: string;
+    amount: {
+      value: string;
+    };
+  };
+  currency: {
+    symbol: string;
+    address: string;
+  };
+}
 
 export const SGHOHeader: React.FC = () => {
   const theme = useTheme();
@@ -113,6 +129,7 @@ const SGhoHeaderUserDetails = ({
   const { data: stakeAPR, isLoading: isLoadingStakeAPR } = useStakeTokenAPR();
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.gho);
   const { reserves } = useAppDataContext();
+  const { openClaimRewards } = useModalContext();
 
   const {
     addERC20Token,
@@ -125,6 +142,17 @@ const SGhoHeaderUserDetails = ({
   const [currentChainId] = useRootStore(useShallow((state) => [state.currentChainId]));
 
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const { data: meritClaimRewards } = useUserMeritRewards({
+    // Note: currentAccount is not always defined, so we need to check if it is and if not, use a fallback address
+    user: currentAccount ? evmAddress(currentAccount) : evmAddress(ZERO_ADDRESS),
+    chainId: chainId(currentMarketData.chainId),
+  });
+
+  const claimableRewardsUsd =
+    meritClaimRewards?.claimable?.reduce((total: number, reward: MeritReward) => {
+      return total + Number(reward.amount.usd || 0);
+    }, 0) || 0;
 
   const stakeUserData = stakeUserResult?.[0];
   const userSGhoBalance = stakeUserData?.stakeTokenRedeemableAmount || '0';
@@ -260,6 +288,45 @@ const SGhoHeaderUserDetails = ({
           </Typography>
         )}
       </TopInfoPanelItem>
+
+      {currentAccount && (
+        <TopInfoPanelItem
+          title={<Trans>Available rewards</Trans>}
+          loading={isLoadingStakeAPR}
+          hideIcon
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: { xs: 'flex-start', xsm: 'center' },
+              flexDirection: { xs: 'column', xsm: 'row' },
+            }}
+          >
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'Claim_Box'}>
+              <FormattedNumber
+                value={claimableRewardsUsd}
+                variant={valueTypographyVariant}
+                visibleDecimals={2}
+                compact
+                symbol="USD"
+                symbolsColor="#A5A8B6"
+                symbolsVariant={symbolsTypographyVariant}
+                data-cy={'Claim_Value'}
+              />
+            </Box>
+
+            <Button
+              variant="gradient"
+              size="small"
+              onClick={() => openClaimRewards()}
+              sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
+              data-cy={'SGho_Claim_Button'}
+            >
+              <Trans>Claim</Trans>
+            </Button>
+          </Box>
+        </TopInfoPanelItem>
+      )}
 
       <Box sx={{ display: 'inline-flex', alignItems: 'center', height: '40px' }}>
         {poolReserve && (
