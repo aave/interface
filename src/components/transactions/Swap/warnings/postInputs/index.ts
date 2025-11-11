@@ -1,6 +1,7 @@
 export * from './CowAdapterApprovalInfo';
 export * from './CustomTokenWarning';
 export * from './GasEstimationWarning';
+export * from './HighCostsLimitOrderWarning';
 export * from './HighPriceImpactWarning';
 export * from './LimitOrderAmountWarning';
 export * from './LiquidationCriticalWarning';

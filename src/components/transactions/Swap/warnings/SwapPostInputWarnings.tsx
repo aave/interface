@@ -6,6 +6,7 @@ import {
   CowAdapterApprovalInfo,
   CustomTokenWarning,
   GasEstimationWarning,
+  HighCostsLimitOrderWarning,
   HighPriceImpactWarning,
   LimitOrderAmountWarning,
   LiquidationCriticalWarning,
@@ -35,6 +36,7 @@ export const SwapPostInputWarnings = ({
       <CustomTokenWarning state={state} />
       <GasEstimationWarning state={state} />
       <SlippageWarning state={state} />
+      <HighCostsLimitOrderWarning state={state} setState={setState} />
       <USDTResetWarning state={state} />
       <LiquidationCriticalWarning params={params} state={state} setState={setState} />
       <LowHealthFactorWarning params={params} state={state} setState={setState} />
