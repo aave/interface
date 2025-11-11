@@ -14,14 +14,17 @@ import { FormEvent, useEffect, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { Link } from 'src/components/primitives/Link';
 import { BaseSuccessView } from 'src/components/transactions/FlowCommons/BaseSuccess';
-import { CONSENT_KEY } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 import { SUPPORT } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 export const SupportModal = () => {
-  const [feedbackDialogOpen, setFeedbackOpen] = useRootStore(
-    useShallow((state) => [state.feedbackDialogOpen, state.setFeedbackOpen])
+  const [feedbackDialogOpen, setFeedbackOpen, isTrackingEnabled] = useRootStore(
+    useShallow((state) => [
+      state.feedbackDialogOpen,
+      state.setFeedbackOpen,
+      state.isTrackingEnabled,
+    ])
   );
   const [account, trackEvent] = useRootStore(
     useShallow((store) => [store.account, store.trackEvent])
@@ -34,19 +37,14 @@ export const SupportModal = () => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [dirtyEmailField, setDirtyEmailField] = useState(false);
-  const [hasOptedIn, setHasOptedIn] = useState(false);
   const [isShareWalletApproved, setIsShareWalletApproved] = useState(false);
-
+  const hasOptedIn = isTrackingEnabled;
   const onBlur = () => {
     if (!dirtyEmailField) setDirtyEmailField(true);
   };
 
   useEffect(() => {
     if (feedbackDialogOpen) {
-      const optInStatus =
-        typeof window !== 'undefined' ? localStorage.getItem(CONSENT_KEY) === 'true' : false;
-
-      setHasOptedIn(optInStatus);
       setSuccess(false);
       setError(false);
       setEmailError('');

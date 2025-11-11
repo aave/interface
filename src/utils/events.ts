@@ -144,5 +144,5 @@ export const SWITCH_MODAL = {
   SWITCH_TYPE: 'Change switch type',
 };
 export const SUPPORT = {
-  TICKET_CREATED: 'Support Ticket Created', // Este string es lo que ve Amplitude
+  TICKET_CREATED: 'Support Ticket Created',
 } as const;
