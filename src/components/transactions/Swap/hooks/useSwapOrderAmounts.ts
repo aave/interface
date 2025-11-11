@@ -154,18 +154,14 @@ export const useSwapOrderAmounts = ({
           // on a sell limit order, we send the input amount and receive the amount after partner fees (no slippage applied)
           sellAmountFormatted = state.inputAmount;
 
-          const buyAmountAfterNetworkFees = valueToBigNumber(state.outputAmount).minus(
-            networkFeeAmountFormattedInBuy
-          );
-          buyAmountFormatted = valueToBigNumber(buyAmountAfterNetworkFees)
+          // Do not apply network costs on limit orders
+          buyAmountFormatted = valueToBigNumber(state.outputAmount)
             .minus(partnerFeeAmount)
             .toFixed();
         } else {
           // on a buy limit order, we receive exactly the output amount and send the input amount after partner fees (no slippage applied)
-          const sellAmountAfterNetworkFees = valueToBigNumber(state.inputAmount).plus(
-            networkFeeAmountFormattedInSell
-          );
-          sellAmountFormatted = valueToBigNumber(sellAmountAfterNetworkFees)
+          // Do not apply network costs on limit orders
+          sellAmountFormatted = valueToBigNumber(state.inputAmount)
             .plus(partnerFeeAmount)
             .toFixed();
 
@@ -253,20 +249,16 @@ export const useSwapOrderAmounts = ({
           // on an inverted buy limit order, we buy the input amount and sell the output amount after partner fees (no slippage applied)
           buyAmountFormatted = state.inputAmount;
 
-          const sellAmountAfterNetworkFees = valueToBigNumber(state.outputAmount).plus(
-            networkFeeAmountFormattedInSell
-          );
-          sellAmountFormatted = valueToBigNumber(sellAmountAfterNetworkFees)
+          // Do not apply network costs on limit orders
+          sellAmountFormatted = valueToBigNumber(state.outputAmount)
             .plus(partnerFeeAmount)
             .toFixed();
         } else {
           // on an inverted sell limit order, we sell the output amount and buy the input amount after partner fees (no slippage applied)
           sellAmountFormatted = state.outputAmount;
 
-          const buyAmountAfterNetworkFees = valueToBigNumber(state.inputAmount).minus(
-            networkFeeAmountFormattedInBuy
-          );
-          buyAmountFormatted = valueToBigNumber(buyAmountAfterNetworkFees)
+          // Do not apply network costs on limit orders
+          buyAmountFormatted = valueToBigNumber(state.inputAmount)
             .minus(partnerFeeAmount)
             .toFixed();
         }
