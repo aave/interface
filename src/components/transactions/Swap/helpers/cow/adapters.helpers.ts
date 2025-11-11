@@ -15,7 +15,7 @@ import {
 } from '@cowprotocol/sdk-flash-loans';
 
 import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
-import { SwapProvider, SwapState, SwapType } from '../../types';
+import { OrderType, SwapProvider, SwapState, SwapType } from '../../types';
 import { getCowFlashLoanSdk } from './env.helpers';
 
 export const calculateInstanceAddress = async ({
@@ -45,7 +45,7 @@ export const calculateInstanceAddress = async ({
     buyAmount: state.buyAmountBigInt,
     buyToken: state.buyAmountToken,
     side: state.processedSide,
-    slippageBps: Number(state.slippage) * 100,
+    slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
     partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),
   };
 

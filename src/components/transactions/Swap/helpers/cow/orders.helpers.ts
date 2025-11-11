@@ -12,6 +12,7 @@ import {
   SellTokenSource,
   SigningScheme,
   SlippageToleranceRequest,
+  SlippageToleranceResponse,
   SupportedChainId,
   WRAPPED_NATIVE_CURRENCIES,
 } from '@cowprotocol/cow-sdk';
@@ -496,7 +497,9 @@ export const getPermitHook = async ({
 };
 
 // This function is used to get the slippage suggestion for a token pair on the respective chain based on the pair volatility.
-export const getSlippageSuggestion = async (request: SlippageToleranceRequest) => {
+export const getSlippageSuggestion = async (
+  request: SlippageToleranceRequest
+): Promise<SlippageToleranceResponse> => {
   const { sellToken, buyToken } = request;
 
   try {
@@ -517,8 +520,10 @@ export const getSlippageSuggestion = async (request: SlippageToleranceRequest) =
     }
   } catch (e) {
     console.error('Error fetching slippage suggestion:', e);
-    return undefined;
+    return { slippageBps: 0 };
   }
+
+  return { slippageBps: 0 };
 };
 
 export const addOrderTypeToAppData = (

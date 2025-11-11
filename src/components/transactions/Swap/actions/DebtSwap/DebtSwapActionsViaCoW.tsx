@@ -23,7 +23,13 @@ import {
 } from '../../helpers/cow';
 import { calculateInstanceAddress } from '../../helpers/cow/adapters.helpers';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { ExpiryToSecondsMap, isProtocolSwapState, SwapParams, SwapState } from '../../types';
+import {
+  ExpiryToSecondsMap,
+  isProtocolSwapState,
+  OrderType,
+  SwapParams,
+  SwapState,
+} from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
@@ -191,7 +197,7 @@ export const DebtSwapActionsViaCoW = ({
         buyAmount: state.buyAmountBigInt.toString(),
         kind: state.processedSide === 'buy' ? OrderKind.BUY : OrderKind.SELL,
         validTo,
-        slippageBps: Number(state.slippage) * 100,
+        slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
         partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),
       };
 

@@ -18,6 +18,7 @@ import { SwapInputs } from '../../inputs/SwapInputs';
 import { OrderTypeSelector } from '../../shared/OrderTypeSelector';
 import { SwapModalTitle } from '../../shared/SwapModalTitle';
 import {
+  Expiry,
   OrderType,
   SwapDefaultParams,
   swapDefaultState,
@@ -145,6 +146,7 @@ export const BaseSwapModalContent = ({
                     quoteRefreshPaused: false,
                     quoteLastUpdatedAt: undefined,
                     quoteTimerPausedAt: null,
+                    expiry: Expiry.TEN_MINUTES,
                     quoteTimerPausedAccumMs: 0,
                   }
                 : {}),
