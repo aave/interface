@@ -5,7 +5,7 @@ import { Warning } from 'src/components/primitives/Warning';
 import { SwapState } from '../../types';
 
 export function USDTResetWarning({ state }: { state: SwapState }) {
-  if (!state.showUSDTResetWarning) return null;
+  if (!state.requiresApprovalReset) return null;
 
   return (
     <Warning severity="info" sx={{ mt: 5 }}>

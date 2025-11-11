@@ -153,8 +153,6 @@ export type TokensSwapState = {
   // Warnings
   /** Show a high-slippage warning. */
   showSlippageWarning: boolean;
-  /** Show a warning about USDT allowance reset flow. */
-  showUSDTResetWarning: boolean;
   /** Force user to reset approval when switching certain tokens. */
   requiresApprovalReset: boolean;
   /** True if user is connected to the wrong network. */
@@ -261,7 +259,6 @@ export const swapDefaultState: SwapState = {
 
   limitsOrderButtonBlocked: false,
   showSlippageWarning: false,
-  showUSDTResetWarning: false,
   showChangeNetworkWarning: false,
   quoteLastUpdatedAt: null,
   quoteTimerPausedAt: null,

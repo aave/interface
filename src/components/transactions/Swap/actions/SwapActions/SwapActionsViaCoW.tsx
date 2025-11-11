@@ -394,6 +394,7 @@ export const SwapActionsViaCoW = ({
       sx={{
         mt: 6,
       }}
+      requiresApprovalReset={requiresApprovalReset}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={state.isWrongNetwork}

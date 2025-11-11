@@ -177,7 +177,7 @@ export const useSwapTokenApproval = ({
       needsApprovalReset = false;
     }
 
-    setRequiresApprovalReset(false);
+    setRequiresApprovalReset(needsApprovalReset);
     setState({ requiresApprovalReset: needsApprovalReset });
   }, [symbol, chainId, approvedAmount, amount]);
 
@@ -276,12 +276,12 @@ export const useSwapTokenApproval = ({
         const resetTx = {
           data: encodedData,
           to: token,
-          from: spender,
         };
         const resetTxWithGasEstimation = await estimateGasLimit(resetTx, chainId);
         setApprovalTxState({ ...approvalTxState, loading: true });
         const resetResponse = await sendTx(resetTxWithGasEstimation);
         await resetResponse.wait(1);
+        setState({ requiresApprovalReset: false });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.APPROVAL, false);
         setTxError(parsedError);
