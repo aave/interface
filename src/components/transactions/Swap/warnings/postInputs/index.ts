@@ -1,3 +1,4 @@
+export * from './CowAdapterApprovalInfo';
 export * from './CustomTokenWarning';
 export * from './GasEstimationWarning';
 export * from './HighPriceImpactWarning';

@@ -3,6 +3,7 @@ import React, { Dispatch } from 'react';
 
 import { SwapParams, SwapState } from '../types';
 import {
+  CowAdapterApprovalInfo,
   CustomTokenWarning,
   GasEstimationWarning,
   HighPriceImpactWarning,
@@ -30,6 +31,7 @@ export const SwapPostInputWarnings = ({
 
   return (
     <Box sx={{ mt: 6, mb: 2 }}>
+      <CowAdapterApprovalInfo state={state} />
       <CustomTokenWarning state={state} />
       <GasEstimationWarning state={state} />
       <SlippageWarning state={state} />
