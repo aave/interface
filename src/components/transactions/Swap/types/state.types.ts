@@ -15,6 +15,18 @@ import {
 } from './shared.types';
 import { SwappableToken, TokenType } from './tokens.types';
 
+export enum ActionsBlockedReason {
+  ZERO_LTV_BLOCKING = 'ZERO_LTV_BLOCKING',
+  SUPPLY_CAP_BLOCKING = 'SUPPLY_CAP_BLOCKING',
+  HIGH_COSTS_LIMIT_ORDER = 'HIGH_COSTS_LIMIT_ORDER',
+  HIGH_PRICE_IMPACT = 'HIGH_PRICE_IMPACT',
+  LOW_HEALTH_FACTOR = 'LOW_HEALTH_FACTOR',
+  INSUFFICIENT_BALANCE = 'INSUFFICIENT_BALANCE',
+  INSUFFICIENT_LIQUIDITY = 'INSUFFICIENT_LIQUIDITY',
+  FLASH_LOAN_DISABLED = 'FLASH_LOAN_DISABLED',
+  IS_LIQUIDATABLE = 'IS_LIQUIDATABLE',
+}
+
 /**
  * Mutable UI/application state for a token-to-token swap flow.
  *
@@ -108,8 +120,8 @@ export type TokensSwapState = {
   error: SwapError | undefined;
   /** Non-blocking hints presented to the user. */
   warnings: SwapWarning[];
-  /** Computed flag that disables actions until resolved. */
-  actionsBlocked: boolean;
+  /** Computed flags that disable actions until resolved. */
+  actionsBlocked: Partial<Record<ActionsBlockedReason, boolean>>;
 
   /** Whether the limits order button is blocked. */
   limitsOrderButtonBlocked: boolean;
@@ -158,6 +170,17 @@ export type TokensSwapState = {
   /** True if user is connected to the wrong network. */
   isWrongNetwork: boolean;
   showChangeNetworkWarning: boolean;
+};
+
+/**
+ * Check if any of the actions are blocked.
+ */
+export const areActionsBlocked = (state: SwapState): boolean => {
+  return Object.values(state.actionsBlocked).some((blocked) => blocked === true);
+};
+
+export const actionsBlockedReasonsAmount = (state: SwapState): number => {
+  return Object.values(state.actionsBlocked).filter((blocked) => blocked === true).length;
 };
 
 /**
@@ -233,7 +256,7 @@ export const swapDefaultState: SwapState = {
   isMaxSelected: false,
   error: undefined,
   warnings: [],
-  actionsBlocked: false,
+  actionsBlocked: {},
   ratesLoading: false,
   isSwapFlowSelected: false,
   isLiquidatable: false,

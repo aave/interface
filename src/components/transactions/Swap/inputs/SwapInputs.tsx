@@ -58,7 +58,7 @@ export const SwapInputs = ({
     setState({
       error: undefined,
       warnings: [],
-      actionsBlocked: false,
+      actionsBlocked: {},
       actionsLoading: false,
     });
   };
@@ -214,7 +214,7 @@ export const SwapInputs = ({
       actionsLoading: false,
       slippage: '0.1',
       autoSlippage: '',
-      actionsBlocked: false,
+      actionsBlocked: {},
       error: undefined,
       warnings: [],
     });
@@ -277,7 +277,7 @@ export const SwapInputs = ({
           autoSlippage: '',
           error: undefined,
           warnings: [],
-          actionsBlocked: false,
+          actionsBlocked: {},
           actionsLoading: false,
         });
         saveTokenSelection(token, state.destinationToken);
@@ -296,7 +296,7 @@ export const SwapInputs = ({
         autoSlippage: '',
         error: undefined,
         warnings: [],
-        actionsBlocked: false,
+        actionsBlocked: {},
         actionsLoading: false,
       });
       saveTokenSelection(token, state.destinationToken);
@@ -329,7 +329,7 @@ export const SwapInputs = ({
           autoSlippage: '',
           error: undefined,
           warnings: [],
-          actionsBlocked: false,
+          actionsBlocked: {},
           actionsLoading: false,
         });
         saveTokenSelection(state.sourceToken, token);
@@ -348,7 +348,7 @@ export const SwapInputs = ({
         autoSlippage: '',
         error: undefined,
         warnings: [],
-        actionsBlocked: false,
+        actionsBlocked: {},
         actionsLoading: false,
       });
       saveTokenSelection(state.sourceToken, token);

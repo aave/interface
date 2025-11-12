@@ -4,7 +4,7 @@ import { BigNumber } from 'bignumber.js';
 import { ethers } from 'ethers';
 import { Dispatch, useEffect } from 'react';
 
-import { ProtocolSwapState, SwapError, SwapState } from '../../types';
+import { ActionsBlockedReason, ProtocolSwapState, SwapError, SwapState } from '../../types';
 import { InsufficientLiquidityBlockingError } from './InsufficientLiquidityBlockingError';
 
 export const hasInsufficientLiquidity = (state: SwapState) => {
@@ -45,22 +45,30 @@ export const InsufficientLiquidityBlockingGuard = ({
         state.error?.rawError instanceof Error &&
         state.error.rawError.message === 'InsufficientLiquidityError';
 
-      if (!isAlreadyBlockingError || !state.actionsBlocked) {
+      if (!isAlreadyBlockingError) {
         const blockingError: SwapError = {
           rawError: new Error('InsufficientLiquidityError'),
           message: 'Not enough liquidity in target asset to complete the swap.',
           actionBlocked: true,
         };
-        setState({ error: blockingError, actionsBlocked: true });
+        setState({
+          error: blockingError,
+          actionsBlocked: {
+            [ActionsBlockedReason.INSUFFICIENT_LIQUIDITY]: true,
+          },
+        });
       }
     } else {
       const isBlockingError =
         state.error?.rawError instanceof Error &&
         state.error.rawError.message === 'InsufficientLiquidityError';
       if (isBlockingError) {
-        setState({ error: undefined, actionsBlocked: false });
-      } else if (state.actionsBlocked && !state.error?.actionBlocked) {
-        setState({ actionsBlocked: false });
+        setState({
+          error: undefined,
+          actionsBlocked: {
+            [ActionsBlockedReason.INSUFFICIENT_LIQUIDITY]: undefined,
+          },
+        });
       }
     }
   }, [state.buyAmountFormatted, state.destinationReserve?.reserve?.formattedAvailableLiquidity]);

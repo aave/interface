@@ -2,7 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { SxProps } from '@mui/material';
 import { Dispatch, useEffect } from 'react';
 
-import { ProtocolSwapState, SwapError, SwapState } from '../../types';
+import { ActionsBlockedReason, ProtocolSwapState, SwapError, SwapState } from '../../types';
 import { SupplyCapBlockingError } from './SupplyCapBlockingError';
 
 export const hasSupplyCapBlocking = (state: SwapState) => {
@@ -41,22 +41,30 @@ export const SupplyCapBlockingGuard = ({
         state.error?.rawError instanceof Error &&
         state.error.rawError.message === 'SupplyCapBlockingError';
 
-      if (!isAlreadyBlockingError || !state.actionsBlocked) {
+      if (!isAlreadyBlockingError) {
         const blockingError: SwapError = {
           rawError: new Error('SupplyCapBlockingError'),
           message: 'Supply cap reached for target asset.',
           actionBlocked: true,
         };
-        setState({ error: blockingError, actionsBlocked: true });
+        setState({
+          error: blockingError,
+          actionsBlocked: {
+            [ActionsBlockedReason.SUPPLY_CAP_BLOCKING]: true,
+          },
+        });
       }
     } else {
       const isBlockingError =
         state.error?.rawError instanceof Error &&
         state.error.rawError.message === 'SupplyCapBlockingError';
       if (isBlockingError) {
-        setState({ error: undefined, actionsBlocked: false });
-      } else if (state.actionsBlocked && !state.error?.actionBlocked) {
-        setState({ actionsBlocked: false });
+        setState({
+          error: undefined,
+          actionsBlocked: {
+            [ActionsBlockedReason.SUPPLY_CAP_BLOCKING]: undefined,
+          },
+        });
       }
     }
   }, [state.buyAmountFormatted, state.destinationReserve?.reserve?.totalLiquidity]);

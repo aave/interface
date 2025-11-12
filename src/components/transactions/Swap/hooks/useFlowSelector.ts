@@ -11,7 +11,14 @@ import {
   LIQUIDATION_DANGER_THRESHOLD,
   LIQUIDATION_SAFETY_THRESHOLD,
 } from '../constants/shared.constants';
-import { isProtocolSwapState, SwapParams, SwapProvider, SwapState, SwapType } from '../types';
+import {
+  ActionsBlockedReason,
+  isProtocolSwapState,
+  SwapParams,
+  SwapProvider,
+  SwapState,
+  SwapType,
+} from '../types';
 
 /**
  * React hook that decides the execution flow (simple vs flashloan) and
@@ -145,7 +152,9 @@ export const healthFactorSensibleSwapFlowSelector = ({
       hfAfterSwap: Number(hfAfterSwap || '0'),
       useFlashloan,
       isSwapFlowSelected: true,
-      actionsBlocked: state.actionsBlocked || isLiquidatable,
+      actionsBlocked: {
+        [ActionsBlockedReason.IS_LIQUIDATABLE]: isLiquidatable ? true : undefined,
+      },
     });
   }
 };

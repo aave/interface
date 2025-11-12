@@ -5,7 +5,7 @@ import { Warning } from 'src/components/primitives/Warning';
 
 import { SwapInputChanges } from '../../analytics/constants';
 import { useHandleAnalytics } from '../../analytics/useTrackAnalytics';
-import { SwapState } from '../../types';
+import { ActionsBlockedReason, actionsBlockedReasonsAmount, SwapState } from '../../types';
 import { shouldRequireConfirmation, shouldShowWarning, valueLostPercentage } from '../helpers';
 
 export function HighPriceImpactWarning({
@@ -35,13 +35,23 @@ export function HighPriceImpactWarning({
   const [highPriceImpactConfirmed, setHighPriceImpactConfirmed] = useState(false);
   useEffect(() => {
     if (requireConfirmation && !highPriceImpactConfirmed) {
-      setState({ actionsBlocked: true });
+      setState({
+        actionsBlocked: {
+          [ActionsBlockedReason.HIGH_PRICE_IMPACT]: true,
+        },
+      });
     } else {
-      setState({ actionsBlocked: false });
+      setState({
+        actionsBlocked: {
+          [ActionsBlockedReason.HIGH_PRICE_IMPACT]: undefined,
+        },
+      });
     }
   }, [requireConfirmation, highPriceImpactConfirmed, state.quoteLastUpdatedAt]);
 
   if (!showWarning) return null;
+
+  if (actionsBlockedReasonsAmount(state) > 1) return null;
 
   return (
     <Warning

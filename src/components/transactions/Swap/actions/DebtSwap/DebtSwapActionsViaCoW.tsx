@@ -24,6 +24,7 @@ import {
 import { calculateInstanceAddress } from '../../helpers/cow/adapters.helpers';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
+  areActionsBlocked,
   ExpiryToSecondsMap,
   isProtocolSwapState,
   OrderType,
@@ -316,7 +317,7 @@ export const DebtSwapActionsViaCoW = ({
       requiresAmount
       amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       handleApproval={approval}
-      requiresApproval={!state.actionsBlocked && requiresApproval}
+      requiresApproval={!areActionsBlocked(state) && requiresApproval}
       actionText={
         approvalTxState.loading ? (
           <Trans>Checking approval</Trans>
@@ -334,7 +335,7 @@ export const DebtSwapActionsViaCoW = ({
       errorParams={{
         loading: false,
         disabled:
-          state.actionsBlocked ||
+          areActionsBlocked(state) ||
           approvalTxState.loading ||
           (!approvalTxState.success && requiresApproval),
         content: approvalTxState.loading ? (
@@ -345,7 +346,7 @@ export const DebtSwapActionsViaCoW = ({
         handleClick: action,
       }}
       fetchingData={state.actionsLoading || loadingPermitData}
-      blocked={state.actionsBlocked || !precalculatedInstanceAddress}
+      blocked={areActionsBlocked(state) || !precalculatedInstanceAddress}
       tryPermit={tryPermit}
       permitInUse={disablePermitDueToActiveOrder}
     />

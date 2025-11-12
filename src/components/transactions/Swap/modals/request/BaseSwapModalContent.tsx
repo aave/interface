@@ -18,6 +18,7 @@ import { SwapInputs } from '../../inputs/SwapInputs';
 import { OrderTypeSelector } from '../../shared/OrderTypeSelector';
 import { SwapModalTitle } from '../../shared/SwapModalTitle';
 import {
+  ActionsBlockedReason,
   Expiry,
   OrderType,
   SwapDefaultParams,
@@ -54,7 +55,20 @@ export const BaseSwapModalContent = ({
   // Shared core state for all the components
   const [state, setStateBase] = useReducer(
     (state: SwapState, action: Partial<SwapState>): SwapState => {
+      // Deep merge actionsBlocked to prevent overwrites when multiple warnings update simultaneously
       const newState = { ...state, ...action } as SwapState;
+      if (action.actionsBlocked !== undefined) {
+        // Merge actionsBlocked: spread existing, then apply updates (undefined values delete keys)
+        const mergedActionsBlocked = { ...state.actionsBlocked };
+        Object.entries(action.actionsBlocked).forEach(([key, value]) => {
+          if (value === undefined || value === false) {
+            delete mergedActionsBlocked[key as ActionsBlockedReason];
+          } else {
+            mergedActionsBlocked[key as ActionsBlockedReason] = value;
+          }
+        });
+        newState.actionsBlocked = mergedActionsBlocked;
+      }
       return newState;
     },
     swapStateFromParamsOrDefault(params, swapDefaultState)

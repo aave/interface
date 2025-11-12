@@ -14,7 +14,13 @@ import { useShallow } from 'zustand/shallow';
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { getTransactionParams } from '../../helpers/paraswap';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { isParaswapRates, ProtocolSwapParams, ProtocolSwapState, SwapState } from '../../types';
+import {
+  areActionsBlocked,
+  isParaswapRates,
+  ProtocolSwapParams,
+  ProtocolSwapState,
+  SwapState,
+} from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 export const WithdrawAndSwapActionsViaParaswap = ({
@@ -217,12 +223,12 @@ export const WithdrawAndSwapActionsViaParaswap = ({
       actionInProgressText={<Trans>Withdrawing and Swapping</Trans>}
       errorParams={{
         loading: false,
-        disabled: state.actionsBlocked || !approvalTxState?.success,
+        disabled: areActionsBlocked(state) || !approvalTxState?.success,
         content: <Trans>Withdraw and Swap</Trans>,
         handleClick: action,
       }}
       fetchingData={state.actionsLoading || loadingPermitData}
-      blocked={state.actionsBlocked}
+      blocked={areActionsBlocked(state)}
       tryPermit={tryPermit}
     />
   );

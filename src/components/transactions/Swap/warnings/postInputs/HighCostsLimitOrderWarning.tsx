@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 import { useEffect, useMemo } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 
-import { OrderType, SwapState } from '../../types';
+import { ActionsBlockedReason, OrderType, SwapState } from '../../types';
 
 /**
  * Shows a warning on LIMIT orders when total costs exceed 30% of the sell amount.
@@ -69,9 +69,17 @@ export function HighCostsLimitOrderWarning({
   // Disable actions across ALL swap types when costs exceed 100%
   useEffect(() => {
     if (costsPercentOfSell >= 100) {
-      setState({ actionsBlocked: true });
+      setState({
+        actionsBlocked: {
+          [ActionsBlockedReason.HIGH_COSTS_LIMIT_ORDER]: true,
+        },
+      });
     } else {
-      setState({ actionsBlocked: false });
+      setState({
+        actionsBlocked: {
+          [ActionsBlockedReason.HIGH_COSTS_LIMIT_ORDER]: undefined,
+        },
+      });
     }
     // Include quote timestamp to recompute when refreshed
   }, [costsPercentOfSell, state.quoteLastUpdatedAt]);

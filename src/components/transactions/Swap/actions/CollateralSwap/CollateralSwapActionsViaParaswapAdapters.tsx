@@ -14,7 +14,13 @@ import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { isParaswapRates, isProtocolSwapState, SwapParams, SwapState } from '../../types';
+import {
+  areActionsBlocked,
+  isParaswapRates,
+  isProtocolSwapState,
+  SwapParams,
+  SwapState,
+} from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 // import { normalizeBN } from '@aave/math-utils';
 
@@ -129,7 +135,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
         targetReserve: state.destinationReserve.reserve,
         isWrongNetwork: state.isWrongNetwork,
         symbol: state.sourceToken.symbol,
-        blocked: state.actionsBlocked,
+        blocked: areActionsBlocked(state),
         isMaxSelected: isMaxSelected,
         useFlashLoan: true,
         swapCallData: swapCallData,
@@ -278,7 +284,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
       handleAction={action}
       requiresAmount
       amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
-      blocked={state.actionsBlocked || approvalTxState.loading}
+      blocked={areActionsBlocked(state) || approvalTxState.loading}
       handleApproval={approval}
       requiresApproval={requiresApproval}
       actionText={
@@ -292,7 +298,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
       fetchingData={state.actionsLoading || loadingPermitData}
       errorParams={{
         loading: false,
-        disabled: state.actionsBlocked,
+        disabled: areActionsBlocked(state),
         content: <Trans>Swap {state.sourceToken.symbol} collateral</Trans>,
         handleClick: action,
       }}

@@ -12,7 +12,7 @@ import { useShallow } from 'zustand/shallow';
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { isParaswapRates, SwapParams, SwapState } from '../../types';
+import { areActionsBlocked, isParaswapRates, SwapParams, SwapState } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
@@ -225,17 +225,17 @@ export const SwapActionsViaParaswap = ({
       requiresAmount
       amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       handleApproval={() => approval()}
-      requiresApproval={!state.actionsBlocked && requiresApproval}
+      requiresApproval={!areActionsBlocked(state) && requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
       errorParams={{
         loading: false,
-        disabled: state.actionsBlocked || (!approvalTxState.success && requiresApproval),
+        disabled: areActionsBlocked(state) || (!approvalTxState.success && requiresApproval),
         content: <Trans>Swap</Trans>,
         handleClick: action,
       }}
       fetchingData={state.actionsLoading || loadingPermitData}
-      blocked={state.actionsBlocked}
+      blocked={areActionsBlocked(state)}
       tryPermit={tryPermit}
     />
   );

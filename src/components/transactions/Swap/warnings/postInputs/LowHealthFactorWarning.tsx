@@ -3,7 +3,7 @@ import { Box, Checkbox, Typography } from '@mui/material';
 import { Dispatch, useEffect, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 
-import { SwapParams, SwapState } from '../../types';
+import { ActionsBlockedReason, SwapParams, SwapState } from '../../types';
 import { shouldRequireConfirmationHFlow } from '../helpers';
 
 export function LowHealthFactorWarning({
@@ -21,9 +21,17 @@ export function LowHealthFactorWarning({
 
   useEffect(() => {
     if (requireConfirmationHFlow && !lowHFConfirmed) {
-      setState({ actionsBlocked: true });
+      setState({
+        actionsBlocked: {
+          [ActionsBlockedReason.LOW_HEALTH_FACTOR]: true,
+        },
+      });
     } else {
-      setState({ actionsBlocked: false });
+      setState({
+        actionsBlocked: {
+          [ActionsBlockedReason.LOW_HEALTH_FACTOR]: undefined,
+        },
+      });
     }
   }, [requireConfirmationHFlow, lowHFConfirmed, state.quoteLastUpdatedAt]);
 
@@ -48,26 +56,28 @@ export function LowHealthFactorWarning({
           Low health factor after swap. Your position will carry a higher risk of liquidation.
         </Trans>
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          mt: 2,
-        }}
-      >
-        <Typography variant="caption">
-          <Trans>I understand the liquidation risk and want to proceed</Trans>
-        </Typography>
-        <Checkbox
-          checked={lowHFConfirmed}
-          onChange={() => {
-            setLowHFConfirmed(!lowHFConfirmed);
+      {!state.actionsBlocked[ActionsBlockedReason.LOW_HEALTH_FACTOR] && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            mt: 2,
           }}
-          size="small"
-          data-cy={'low-hf-checkbox'}
-        />
-      </Box>
+        >
+          <Typography variant="caption">
+            <Trans>I understand the liquidation risk and want to proceed</Trans>
+          </Typography>
+          <Checkbox
+            checked={lowHFConfirmed}
+            onChange={() => {
+              setLowHFConfirmed(!lowHFConfirmed);
+            }}
+            size="small"
+            data-cy={'low-hf-checkbox'}
+          />
+        </Box>
+      )}
     </Warning>
   );
 }

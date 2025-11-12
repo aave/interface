@@ -1,7 +1,7 @@
 import { SxProps } from '@mui/material';
 import { Dispatch, useEffect } from 'react';
 
-import { SwapError, SwapProvider, SwapState } from '../../types';
+import { ActionsBlockedReason, SwapError, SwapProvider, SwapState } from '../../types';
 import { isProtocolSwapState, ProtocolSwapState } from '../../types/state.types';
 import { FlashLoanDisabledBlockingError } from './FlashLoanDisabledBlockingError';
 
@@ -42,22 +42,30 @@ export const FlashLoanDisabledBlockingGuard = ({
         state.error?.rawError instanceof Error &&
         state.error.rawError.message === 'FlashLoanDisabledError';
 
-      if (!isAlreadyBlockingError || !state.actionsBlocked) {
+      if (!isAlreadyBlockingError) {
         const blockingError: SwapError = {
           rawError: new Error('FlashLoanDisabledError'),
           message: 'Position Swaps disabled for this asset',
           actionBlocked: true,
         };
-        setState({ error: blockingError, actionsBlocked: true });
+        setState({
+          error: blockingError,
+          actionsBlocked: {
+            [ActionsBlockedReason.FLASH_LOAN_DISABLED]: true,
+          },
+        });
       }
     } else {
       const isBlockingError =
         state.error?.rawError instanceof Error &&
         state.error.rawError.message === 'FlashLoanDisabledError';
       if (isBlockingError) {
-        setState({ error: undefined, actionsBlocked: false });
-      } else if (state.actionsBlocked && !state.error?.actionBlocked) {
-        setState({ actionsBlocked: false });
+        setState({
+          error: undefined,
+          actionsBlocked: {
+            [ActionsBlockedReason.FLASH_LOAN_DISABLED]: undefined,
+          },
+        });
       }
     }
   }, [
@@ -65,7 +73,6 @@ export const FlashLoanDisabledBlockingGuard = ({
     state.useFlashloan,
     state.sourceReserve?.reserve?.flashLoanEnabled,
     state.error,
-    state.actionsBlocked,
   ]);
 
   if (hasFlashLoanDisabled(state)) {

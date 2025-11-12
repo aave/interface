@@ -15,7 +15,13 @@ import { useShallow } from 'zustand/shallow';
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { getTransactionParams } from '../../helpers/paraswap';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { isParaswapRates, ProtocolSwapParams, ProtocolSwapState, SwapState } from '../../types';
+import {
+  areActionsBlocked,
+  isParaswapRates,
+  ProtocolSwapParams,
+  ProtocolSwapState,
+  SwapState,
+} from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
@@ -242,11 +248,11 @@ export const DebtSwapActionsViaParaswap = ({
       fetchingData={state.ratesLoading || loadingPermitData}
       errorParams={{
         loading: false,
-        disabled: state.actionsBlocked || !approvalTxState?.success,
+        disabled: areActionsBlocked(state) || !approvalTxState?.success,
         content: <Trans>Swap</Trans>,
         handleClick: action,
       }}
-      blocked={state.actionsBlocked}
+      blocked={areActionsBlocked(state)}
       tryPermit={tryPermit}
     />
   );

@@ -22,7 +22,13 @@ import {
 } from '../../helpers/cow';
 import { calculateInstanceAddress } from '../../helpers/cow/adapters.helpers';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { ExpiryToSecondsMap, OrderType, SwapParams, SwapState } from '../../types';
+import {
+  areActionsBlocked,
+  ExpiryToSecondsMap,
+  OrderType,
+  SwapParams,
+  SwapState,
+} from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
@@ -310,7 +316,7 @@ export const RepayWithCollateralActionsViaCoW = ({
       requiresAmount
       amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       handleApproval={approval}
-      requiresApproval={!state.actionsBlocked && requiresApproval}
+      requiresApproval={!areActionsBlocked(state) && requiresApproval}
       actionText={
         approvalTxState.loading ? (
           <Trans>Checking approval</Trans>
@@ -332,7 +338,7 @@ export const RepayWithCollateralActionsViaCoW = ({
       errorParams={{
         loading: false,
         disabled:
-          state.actionsBlocked ||
+          areActionsBlocked(state) ||
           approvalTxState.loading ||
           (!approvalTxState.success && requiresApproval),
         content: approvalTxState.loading ? (
@@ -345,7 +351,7 @@ export const RepayWithCollateralActionsViaCoW = ({
         handleClick: action,
       }}
       fetchingData={state.actionsLoading || loadingPermitData}
-      blocked={state.actionsBlocked || !precalculatedInstanceAddress}
+      blocked={areActionsBlocked(state) || !precalculatedInstanceAddress}
       tryPermit={tryPermit}
       permitInUse={disablePermitDueToActiveOrder}
     />

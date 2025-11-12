@@ -238,7 +238,7 @@ export const useSwapQuote = ({
         quoteTimerPausedAccumMs: 0,
 
         error: undefined,
-        actionsBlocked: false,
+        actionsBlocked: {},
         warnings: [],
         actionsLoading: false,
       });

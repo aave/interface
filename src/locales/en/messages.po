@@ -217,6 +217,10 @@ msgstr "Liquidation <0/> threshold"
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
+#: src/components/transactions/Swap/warnings/postInputs/HighCostsLimitOrderWarning.tsx
+msgid "Estimated costs are {0}% of the sell amount. This limit order is unlikely to be filled."
+msgstr "Estimated costs are {0}% of the sell amount. This limit order is unlikely to be filled."
+
 #: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
 msgid "Cancellation submited"
 msgstr "Cancellation submited"
@@ -1724,6 +1728,10 @@ msgstr "Participating in staking {symbol} gives annualized rewards. Your wallet 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
+
+#: src/components/transactions/Swap/warnings/postInputs/CowAdapterApprovalInfo.tsx
+msgid "A temporary contract will be used to execute the trade. Your wallet may show a warning for approving a new or empty address."
+msgstr "A temporary contract will be used to execute the trade. Your wallet may show a warning for approving a new or empty address."
 
 #: src/components/infoTooltips/SpkAirdropTooltip.tsx
 msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."

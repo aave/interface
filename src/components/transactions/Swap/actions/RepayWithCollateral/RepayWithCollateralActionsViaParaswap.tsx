@@ -15,7 +15,13 @@ import { TxActionsWrapper } from '../../../TxActionsWrapper';
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { getTransactionParams } from '../../helpers/paraswap';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { isParaswapRates, ProtocolSwapParams, ProtocolSwapState, SwapState } from '../../types';
+import {
+  areActionsBlocked,
+  isParaswapRates,
+  ProtocolSwapParams,
+  ProtocolSwapState,
+  SwapState,
+} from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
@@ -169,7 +175,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
         symbol: state.sourceReserve.reserve.symbol,
         isWrongNetwork: state.isWrongNetwork,
         useFlashLoan: state.useFlashloan || false,
-        blocked: state.actionsBlocked,
+        blocked: areActionsBlocked(state),
         swapCallData,
         augustus,
         signature: signatureParams?.splitedSignature,
@@ -271,7 +277,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
       amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       requiresApproval={requiresApproval}
       isWrongNetwork={state.isWrongNetwork}
-      blocked={state.actionsBlocked}
+      blocked={areActionsBlocked(state)}
       handleAction={action}
       handleApproval={approval}
       actionText={<Trans>Repay {state.sourceReserve.reserve.symbol}</Trans>}
@@ -279,7 +285,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
       fetchingData={state.ratesLoading || loadingPermitData}
       errorParams={{
         loading: false,
-        disabled: state.actionsBlocked,
+        disabled: areActionsBlocked(state),
         content: <Trans>Repay {state.sourceReserve.reserve.symbol}</Trans>,
         handleClick: action,
       }}

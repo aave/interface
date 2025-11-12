@@ -32,6 +32,7 @@ import {
 } from '../../helpers/cow';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
+  areActionsBlocked,
   ExpiryToSecondsMap,
   isCowProtocolRates,
   OrderType,
@@ -403,17 +404,17 @@ export const SwapActionsViaCoW = ({
       requiresAmount
       amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       handleApproval={() => approval()}
-      requiresApproval={!state.actionsBlocked && requiresApproval}
+      requiresApproval={!areActionsBlocked(state) && requiresApproval}
       actionText={<Trans>Swap</Trans>}
       actionInProgressText={<Trans>Swapping</Trans>}
       errorParams={{
         loading: false,
-        disabled: state.actionsBlocked || (!approvalTxState.success && requiresApproval),
+        disabled: areActionsBlocked(state) || (!approvalTxState.success && requiresApproval),
         content: <Trans>Swap</Trans>,
         handleClick: action,
       }}
       fetchingData={state.actionsLoading || loadingPermitData}
-      blocked={state.actionsBlocked}
+      blocked={areActionsBlocked(state)}
       tryPermit={tryPermit}
       permitInUse={disablePermitDueToActiveOrder}
     />
