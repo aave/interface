@@ -59,6 +59,8 @@ export const useFlowSelector = ({
     state.destinationToken,
     state.inputAmount,
     state.outputAmount,
+    state.sellAmountFormatted,
+    state.buyAmountFormatted,
     extendedUser,
     reserves,
     state.swapRate,
@@ -88,7 +90,15 @@ export const healthFactorSensibleSwapFlowSelector = ({
       ur.underlyingAsset.toLowerCase() === state.destinationToken?.underlyingAddress.toLowerCase()
   );
 
-  if (!fromAssetUserReserve || !toAssetUserReserve || !extendedUser || !state.swapRate) return;
+  if (
+    !fromAssetUserReserve ||
+    !toAssetUserReserve ||
+    !extendedUser ||
+    !state.swapRate ||
+    !state.sellAmountFormatted ||
+    !state.buyAmountFormatted
+  )
+    return;
 
   if (!isProtocolSwapState(state)) {
     return;
@@ -131,9 +141,10 @@ export const healthFactorSensibleSwapFlowSelector = ({
     return hfNumber.lt(LIQUIDATION_SAFETY_THRESHOLD) && hfNumber.gte(LIQUIDATION_DANGER_THRESHOLD);
   };
 
-  const isLiquidatable = hfAfterSwap
-    ? valueToBigNumber(hfAfterSwap).lt(LIQUIDATION_DANGER_THRESHOLD) && hfAfterSwap !== '-1'
-    : false;
+  const isLiquidatable =
+    hfAfterSwap && hfAfterSwap !== '-1'
+      ? valueToBigNumber(hfAfterSwap).lt(LIQUIDATION_DANGER_THRESHOLD)
+      : false;
 
   const forceFlashloanFlow =
     state.provider === SwapProvider.COW_PROTOCOL &&
