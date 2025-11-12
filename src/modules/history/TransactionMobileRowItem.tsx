@@ -1,15 +1,22 @@
+import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
 import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ListItem } from 'src/components/lists/ListItem';
+import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
 import { getExplorerLink, getTransactionAction, unixTimestampToFormattedTime } from './helpers';
-import { ActionName, TransactionHistoryItemUnion } from './types';
+import {
+  ActionName,
+  isCowSwapSubset,
+  isSwapTransaction,
+  TransactionHistoryItemUnion,
+} from './types';
 
 function ActionTitle({ action }: { action: ActionName }) {
   return (
@@ -28,6 +35,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
   const [currentNetworkConfig, trackEvent] = useRootStore(
     useShallow((state) => [state.currentNetworkConfig, state.trackEvent])
   );
+  const { openCancelCowOrder } = useModalContext();
   const theme = useTheme();
   const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
   const action = getTransactionAction(transaction);
@@ -78,16 +86,33 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
               <ActionTitle action={action} />
             </Box>
 
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              {' '}
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
               <Typography variant="caption" color="text.muted">
                 {unixTimestampToFormattedTime({ unixTimestamp: timestamp })}
               </Typography>
+              {isSwapTransaction(transaction) &&
+                isCowSwapSubset(transaction) &&
+                transaction.status === OrderStatus.OPEN && (
+                  <Button
+                    sx={{
+                      display: 'flex',
+                      minWidth: 'auto',
+                      height: '20px',
+                      fontSize: '0.6rem',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      px: 1.5,
+                    }}
+                    variant="contained"
+                    onClick={() => openCancelCowOrder(transaction)}
+                  >
+                    <Trans>Cancel</Trans>
+                  </Button>
+                )}
               {explorerLink && (
                 <Button
                   sx={{
                     display: 'flex',
-                    ml: 3,
                     mr: 1,
                     width: '69px',
                     height: '20px',

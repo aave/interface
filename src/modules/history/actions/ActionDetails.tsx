@@ -30,6 +30,7 @@ import {
 interface ActionDetailsProps {
   transaction: TransactionHistoryItemUnion;
   iconSize?: string;
+  showStatusBadgeAsIconOnly?: boolean;
 }
 
 export const ActionTextMap = ({ action }: { action: ActionName }) => {
@@ -65,9 +66,69 @@ export const ActionTextMap = ({ action }: { action: ActionName }) => {
   }
 };
 
-export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsProps) => {
+const StatusBadgeIconOnly = ({
+  title,
+  severity,
+}: {
+  title: React.ReactNode;
+  severity: 'info' | 'success' | 'error';
+}) => {
   const theme = useTheme();
+  return (
+    <DarkTooltip title={title} arrow enterTouchDelay={100} leaveTouchDelay={500} placement="top">
+      <Box>
+        <Warning
+          severity={severity}
+          sx={{
+            my: 0,
+            pt: 0.6,
+            pb: 0.6,
+            pr: 1.5,
+            pl: 1.5,
+            background: 'none',
+            border: 'none',
+            color: theme.palette.text.primary,
+          }}
+        />
+      </Box>
+    </DarkTooltip>
+  );
+};
 
+const StatusBadgeText = ({
+  children,
+  severity,
+}: {
+  children: React.ReactNode;
+  severity: 'info' | 'success' | 'error';
+}) => {
+  const theme = useTheme();
+  return (
+    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+      <Warning
+        severity={severity}
+        sx={{
+          my: 0,
+          pt: 0.6,
+          pb: 0.6,
+          pr: 1.5,
+          pl: 1.5,
+          background: 'none',
+          border: `1px solid ${theme.palette.divider}`,
+          color: theme.palette.text.primary,
+        }}
+      >
+        {children}
+      </Warning>
+    </Box>
+  );
+};
+
+export const ActionDetails = ({
+  transaction,
+  iconSize = '16px',
+  showStatusBadgeAsIconOnly = false,
+}: ActionDetailsProps) => {
   if (isSDKTransaction(transaction) && hasAmount(transaction)) {
     const { amount, reserve } = transaction;
     const action = transaction.__typename;
@@ -404,101 +465,41 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
         {/* Status */}
         {isOrderLoading(swapTx.status) && (
           <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <DarkTooltip
-                title={<Trans>In Progress</Trans>}
-                arrow
-                enterTouchDelay={100}
-                leaveTouchDelay={500}
-                placement="top"
-              >
-                <Box>
-                  <Warning
-                    severity="info"
-                    sx={{
-                      my: 0,
-                      pt: 0.6,
-                      pb: 0.6,
-                      pr: 1.5,
-                      pl: 1.5,
-                      background: 'none',
-                      border: 'none',
-                      color: theme.palette.text.primary,
-                    }}
-                  />
+            {showStatusBadgeAsIconOnly ? (
+              <StatusBadgeIconOnly title={<Trans>In Progress</Trans>} severity="info" />
+            ) : (
+              <>
+                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                  <StatusBadgeIconOnly title={<Trans>In Progress</Trans>} severity="info" />
                 </Box>
-              </DarkTooltip>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Warning
-                severity="info"
-                sx={{
-                  my: 0,
-                  pt: 0.6,
-                  pb: 0.6,
-                  pr: 1.5,
-                  pl: 1.5,
-                  background: 'none',
-                  border: `1px solid ${theme.palette.divider}`,
-                  color: theme.palette.text.primary,
-                }}
-              >
-                <Trans>In Progress</Trans>
-              </Warning>
-            </Box>
+                <StatusBadgeText severity="info">
+                  <Trans>In Progress</Trans>
+                </StatusBadgeText>
+              </>
+            )}
           </Box>
         )}
         {isOrderFilled(swapTx.status) && (
           <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <DarkTooltip
-                title={<Trans>Filled</Trans>}
-                arrow
-                enterTouchDelay={100}
-                leaveTouchDelay={500}
-                placement="top"
-              >
-                <Box>
-                  <Warning
-                    severity="success"
-                    sx={{
-                      my: 0,
-                      pt: 0.6,
-                      pb: 0.6,
-                      pr: 1.5,
-                      pl: 1.5,
-                      background: 'none',
-                      border: 'none',
-                      color: theme.palette.text.primary,
-                    }}
-                  />
+            {showStatusBadgeAsIconOnly ? (
+              <StatusBadgeIconOnly title={<Trans>Filled</Trans>} severity="success" />
+            ) : (
+              <>
+                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                  <StatusBadgeIconOnly title={<Trans>Filled</Trans>} severity="success" />
                 </Box>
-              </DarkTooltip>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Warning
-                severity="success"
-                sx={{
-                  my: 0,
-                  pt: 0.6,
-                  pb: 0.6,
-                  pr: 1.5,
-                  pl: 1.5,
-                  background: 'none',
-                  border: `1px solid ${theme.palette.divider}`,
-                  color: theme.palette.text.primary,
-                }}
-              >
-                <Trans>Filled</Trans>
-              </Warning>
-            </Box>
+                <StatusBadgeText severity="success">
+                  <Trans>Filled</Trans>
+                </StatusBadgeText>
+              </>
+            )}
           </Box>
         )}
 
         {(isOrderCancelled(swapTx.status) || isOrderExpired(swapTx.status)) && (
           <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <DarkTooltip
+            {showStatusBadgeAsIconOnly ? (
+              <StatusBadgeIconOnly
                 title={
                   isOrderCancelled(swapTx.status) ? (
                     <Trans>Cancelled</Trans>
@@ -506,49 +507,31 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
                     <Trans>Expired</Trans>
                   )
                 }
-                arrow
-                placement="top"
-                enterTouchDelay={100}
-                leaveTouchDelay={500}
-              >
-                <Box>
-                  <Warning
+                severity="error"
+              />
+            ) : (
+              <>
+                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                  <StatusBadgeIconOnly
+                    title={
+                      isOrderCancelled(swapTx.status) ? (
+                        <Trans>Cancelled</Trans>
+                      ) : (
+                        <Trans>Expired</Trans>
+                      )
+                    }
                     severity="error"
-                    sx={{
-                      my: 0,
-                      pt: 0.6,
-                      pb: 0.6,
-                      pr: 1.5,
-                      pl: 1.5,
-                      background: 'none',
-                      border: 'none',
-                      color: theme.palette.text.primary,
-                    }}
                   />
                 </Box>
-              </DarkTooltip>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Warning
-                severity="error"
-                sx={{
-                  my: 0,
-                  pt: 0.6,
-                  pb: 0.6,
-                  pr: 1.5,
-                  pl: 1.5,
-                  background: 'none',
-                  border: `1px solid ${theme.palette.divider}`,
-                  color: theme.palette.text.primary,
-                }}
-              >
-                {isOrderCancelled(swapTx.status) ? (
-                  <Trans>Cancelled</Trans>
-                ) : (
-                  <Trans>Expired</Trans>
-                )}
-              </Warning>
-            </Box>
+                <StatusBadgeText severity="error">
+                  {isOrderCancelled(swapTx.status) ? (
+                    <Trans>Cancelled</Trans>
+                  ) : (
+                    <Trans>Expired</Trans>
+                  )}
+                </StatusBadgeText>
+              </>
+            )}
           </Box>
         )}
       </Box>
