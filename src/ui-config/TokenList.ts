@@ -51,7 +51,7 @@ export interface TokenList {
 
 const NETWORK_ASSETS: TokenInfo[] = [
   {
-    name: 'Ethereum',
+    name: 'ETH',
     symbol: 'ETH',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
@@ -64,7 +64,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
   },
   // Sepolia
   {
-    name: 'Ethereum',
+    name: 'ETH',
     symbol: 'ETH',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
@@ -76,7 +76,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
     },
   },
   {
-    name: 'Avalanche',
+    name: 'AVAX',
     symbol: 'AVAX',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
@@ -88,7 +88,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
     },
   },
   {
-    name: 'Polygon',
+    name: 'POL',
     symbol: 'POL',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
@@ -99,7 +99,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
     },
   },
   {
-    name: 'Gnosis',
+    name: 'xDAI',
     symbol: 'xDAI',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
@@ -112,7 +112,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
   },
   // NOTE L2 ETH
   {
-    name: 'Ethereum',
+    name: 'ETH',
     symbol: 'ETH',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
@@ -124,7 +124,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
     },
   },
   {
-    name: 'Ethereum',
+    name: 'ETH',
     symbol: 'ETH',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
@@ -137,7 +137,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
     },
   },
   {
-    name: 'Ethereum',
+    name: 'ETH',
     symbol: 'ETH',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
@@ -160,7 +160,7 @@ const NETWORK_ASSETS: TokenInfo[] = [
     },
   },
   {
-    name: 'Sonic',
+    name: 'S',
     symbol: 'S',
     decimals: 18,
     address: API_ETH_MOCK_ADDRESS,
