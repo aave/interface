@@ -95,8 +95,8 @@ export function HighCostsLimitOrderWarning({
     <Warning severity="warning" icon={false} sx={{ mt: 2 }}>
       <Typography variant="caption">
         <Trans>
-          Estimated costs are {costsPercentOfSell.toFixed(2)}% of the sell amount. This limit order
-          is unlikely to be filled.
+          Estimated costs are {costsPercentOfSell.toFixed(2)}% of the sell amount. This order is
+          unlikely to be filled.
         </Trans>
       </Typography>
     </Warning>

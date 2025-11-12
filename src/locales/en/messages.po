@@ -217,10 +217,6 @@ msgstr "Liquidation <0/> threshold"
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
-#: src/components/transactions/Swap/warnings/postInputs/HighCostsLimitOrderWarning.tsx
-msgid "Estimated costs are {0}% of the sell amount. This limit order is unlikely to be filled."
-msgstr "Estimated costs are {0}% of the sell amount. This limit order is unlikely to be filled."
-
 #: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
 msgid "Cancellation submited"
 msgstr "Cancellation submited"
@@ -1474,6 +1470,7 @@ msgstr "Emode"
 
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Expired"
 msgstr "Expired"
 
@@ -2106,6 +2103,7 @@ msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to
 
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "In Progress"
 msgstr "In Progress"
 
@@ -2499,6 +2497,7 @@ msgstr "Governance"
 #: src/components/TitleWithFiltersAndSearchBar.tsx
 #: src/components/TitleWithSearchBar.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
+#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Cancel"
 msgstr "Cancel"
@@ -3777,6 +3776,7 @@ msgstr "Allows you to decide whether to use a supplied asset as collateral. An a
 
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
+#: src/modules/history/actions/ActionDetails.tsx
 msgid "Cancelled"
 msgstr "Cancelled"
 
@@ -3971,6 +3971,10 @@ msgstr "Close"
 msgid "Debt ceiling is exceeded"
 msgstr "Debt ceiling is exceeded"
 
+#: src/components/transactions/Swap/warnings/postInputs/HighCostsLimitOrderWarning.tsx
+msgid "Estimated costs are {0}% of the sell amount. This order is unlikely to be filled."
+msgstr "Estimated costs are {0}% of the sell amount. This order is unlikely to be filled."
+
 #: src/ui-config/errorMapping.tsx
 msgid "The collateral chosen cannot be liquidated"
 msgstr "The collateral chosen cannot be liquidated"
@@ -4000,6 +4004,7 @@ msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailabl
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
 msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
 
+#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Filled"
