@@ -15,6 +15,8 @@ export const ParaswapSupportedNetworks = [
   ChainId.sonic,
 ];
 
+export const PARASWAP_FLASH_LOAN_FEE_BPS = 5;
+
 // TODO: Optimize Paraswap Values
 export const PARASWAP_GAS_LIMITS: Record<SwapType, number> = {
   [SwapType.Swap]: 1000000,

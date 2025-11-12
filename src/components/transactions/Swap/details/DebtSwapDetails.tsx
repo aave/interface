@@ -14,6 +14,7 @@ import {
 
 import { ProtocolSwapParams, ProtocolSwapState, SwapProvider } from '../types';
 import { CowCostsDetails } from './CowCostsDetails';
+import { ParaswapCostsDetails } from './ParaswapCostsDetails';
 
 export const DebtSwapDetails = ({
   state,
@@ -50,6 +51,7 @@ export const DebtSwapDetails = ({
   return (
     <TxModalDetails gasLimit={state.gasLimit} showGasStation={state.showGasStation}>
       {state.provider === SwapProvider.COW_PROTOCOL && <CowCostsDetails state={state} />}
+      {state.provider === SwapProvider.PARASWAP && <ParaswapCostsDetails state={state} />}
 
       <Row caption={<Trans>Borrow apy</Trans>} captionVariant="description" mb={4}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>

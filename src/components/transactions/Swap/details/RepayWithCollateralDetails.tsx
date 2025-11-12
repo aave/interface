@@ -11,6 +11,7 @@ import {
 } from '../../FlowCommons/TxModalDetails';
 import { ProtocolSwapParams, ProtocolSwapState, SwapProvider } from '../types';
 import { CowCostsDetails } from './CowCostsDetails';
+import { ParaswapCostsDetails } from './ParaswapCostsDetails';
 
 export const RepayWithCollateralDetails = ({
   state,
@@ -72,6 +73,7 @@ export const RepayWithCollateralDetails = ({
   return (
     <TxModalDetails gasLimit={state.gasLimit} showGasStation={state.showGasStation}>
       {state.provider === SwapProvider.COW_PROTOCOL && <CowCostsDetails state={state} />}
+      {state.provider === SwapProvider.PARASWAP && <ParaswapCostsDetails state={state} />}
 
       <DetailsHFLine
         visibleHfChange={!!state.sellAmountFormatted}

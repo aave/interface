@@ -480,10 +480,6 @@ msgstr "Spanish"
 msgid "Withdrawing GHO"
 msgstr "Withdrawing GHO"
 
-#: src/components/infoTooltips/ExecutionFeeTooltip.tsx
-msgid "This is the fee of executing position changes, set by governance."
-msgstr "This is the fee of executing position changes, set by governance."
-
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signing"
 msgstr "Signing"
@@ -2678,6 +2674,10 @@ msgstr "You can not disable E-Mode because that could cause liquidation. To exit
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Powered by"
 msgstr "Powered by"
+
+#: src/components/infoTooltips/ExecutionFeeTooltip.tsx
+msgid "This is the fee for executing position changes, set by governance."
+msgstr "This is the fee for executing position changes, set by governance."
 
 #: src/layouts/AppFooter.tsx
 msgid "FAQS"

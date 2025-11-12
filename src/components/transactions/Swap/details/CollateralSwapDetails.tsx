@@ -26,6 +26,7 @@ import {
 import { getAssetCollateralType } from '../../utils';
 import { SwapParams, SwapProvider, SwapState } from '../types';
 import { CowCostsDetails } from './CowCostsDetails';
+import { ParaswapCostsDetails } from './ParaswapCostsDetails';
 
 export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: SwapState }) => {
   const { user, reserves } = useAppDataContext();
@@ -128,6 +129,7 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
       showGasStation={state.showGasStation}
     >
       {state.provider === SwapProvider.COW_PROTOCOL && <CowCostsDetails state={state} />}
+      {state.provider === SwapProvider.PARASWAP && <ParaswapCostsDetails state={state} />}
 
       {swapSourceCollateralType !== swapTargetCollateralType && (
         <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
