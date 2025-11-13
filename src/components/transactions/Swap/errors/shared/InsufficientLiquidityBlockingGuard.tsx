@@ -5,13 +5,15 @@ import { ethers } from 'ethers';
 import { Dispatch, useEffect } from 'react';
 
 import { ActionsBlockedReason, ProtocolSwapState, SwapError, SwapState } from '../../types';
+import { isProtocolSwapState } from '../../types/state.types';
 import { InsufficientLiquidityBlockingError } from './InsufficientLiquidityBlockingError';
 
 export const hasInsufficientLiquidity = (state: SwapState) => {
-  if (!('destinationReserve' in state)) return false;
-  const protocolState = state as ProtocolSwapState;
-  const reserve = protocolState.destinationReserve?.reserve;
-  const buyAmount = protocolState.buyAmountFormatted;
+  if (!isProtocolSwapState(state)) return false;
+  const reserve = state.isInvertedSwap
+    ? state.sourceReserve?.reserve
+    : state.destinationReserve?.reserve;
+  const buyAmount = state.buyAmountFormatted;
   if (!reserve || !buyAmount) return false;
 
   const availableBorrowCap =
@@ -71,10 +73,17 @@ export const InsufficientLiquidityBlockingGuard = ({
         });
       }
     }
-  }, [state.buyAmountFormatted, state.destinationReserve?.reserve?.formattedAvailableLiquidity]);
+  }, [
+    state.buyAmountFormatted,
+    state.destinationReserve?.reserve?.formattedAvailableLiquidity,
+    state.sourceReserve?.reserve?.formattedAvailableLiquidity,
+    state.isInvertedSwap,
+  ]);
 
   if (hasInsufficientLiquidity(state)) {
-    const symbol = state.destinationReserve?.reserve?.symbol || '';
+    const symbol = state.isInvertedSwap
+      ? state.sourceReserve?.reserve?.symbol
+      : state.destinationReserve?.reserve?.symbol;
     return (
       <InsufficientLiquidityBlockingError
         symbol={symbol}
