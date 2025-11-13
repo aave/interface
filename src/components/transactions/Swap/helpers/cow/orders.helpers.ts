@@ -540,14 +540,3 @@ export const addOrderTypeToAppData = (
     },
   };
 };
-
-export const priceQualityToUse = (swapType: SwapType) => {
-  switch (swapType) {
-    case SwapType.CollateralSwap:
-    case SwapType.RepayWithCollateral:
-    case SwapType.DebtSwap:
-      return PriceQuality.FAST;
-    default:
-      return PriceQuality.FAST;
-  }
-};

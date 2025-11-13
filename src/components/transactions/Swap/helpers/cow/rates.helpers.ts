@@ -13,7 +13,7 @@ import { isNativeToken } from '../../helpers/cow';
 import { CowProtocolRatesType, ProviderRatesParams, SwapProvider } from '../../types';
 import { getAppDataForQuote } from './adapters.helpers';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
-import { getSlippageSuggestion, priceQualityToUse } from './orders.helpers';
+import { getSlippageSuggestion } from './orders.helpers';
 
 export const getTokenUsdPrice = async (
   chainId: number,
@@ -106,9 +106,7 @@ export async function getCowProtocolSellRates({
             partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
           },
           {
-            quoteRequest: {
-              priceQuality: priceQualityToUse(swapType),
-            },
+            // Price Quality is set to OPTIMAL by default
             appData: await getAppDataForQuote({
               user,
               type: swapType,
