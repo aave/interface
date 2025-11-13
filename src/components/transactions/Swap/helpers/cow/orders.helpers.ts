@@ -7,7 +7,6 @@ import {
   OrderKind,
   OrderParameters,
   OrderStatus,
-  PriceQuality,
   QuoteAndPost,
   SellTokenSource,
   SigningScheme,
@@ -28,7 +27,7 @@ import {
   COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV,
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
-import { OrderType, SwapType } from '../../types';
+import { OrderType } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
 export const COW_ENV: CowEnv = 'prod';

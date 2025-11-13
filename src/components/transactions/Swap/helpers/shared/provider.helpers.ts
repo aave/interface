@@ -1,5 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
-
 import {
   COW_UNSUPPORTED_ASSETS,
   isChainIdSupportedByCoWProtocol,
@@ -14,14 +12,27 @@ export const isSwapSupportedByCowProtocol = (
   chainId: number,
   assetFrom: string,
   assetTo: string,
-  swapType: SwapType
+  swapType: SwapType,
+  useFlashloan: boolean
 ) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) return false;
 
+  let swapTypeToUse = swapType;
+  if (useFlashloan == false && swapType === SwapType.CollateralSwap) {
+    swapTypeToUse = SwapType.Swap;
+  }
+
+  // Helper to normalize values that can be string[] or 'ALL' to always be an array
+  const normalizeToArray = (value: string[] | 'ALL' | undefined): string[] => {
+    if (!value) return [];
+    if (value === 'ALL') return ['ALL'];
+    return value;
+  };
+
   const unsupportedAssetsPerChainAndModalType = [
-    ...((COW_UNSUPPORTED_ASSETS['ALL'] && COW_UNSUPPORTED_ASSETS['ALL'][chainId]) || []),
-    ...((COW_UNSUPPORTED_ASSETS[swapType] && COW_UNSUPPORTED_ASSETS[swapType][chainId]) || []),
-  ].flat();
+    ...normalizeToArray(COW_UNSUPPORTED_ASSETS['ALL']?.[chainId]),
+    ...normalizeToArray(COW_UNSUPPORTED_ASSETS[swapTypeToUse]?.[chainId]),
+  ];
 
   if (unsupportedAssetsPerChainAndModalType.length === 0) return true; // No unsupported assets for this chain and modal type
 
@@ -55,20 +66,9 @@ export const getSwitchProvider = ({
   shouldUseFlashloan?: boolean;
   swapType: SwapType;
 }): SwapProvider | undefined => {
-  // TODO: REMOVE
-  if (shouldUseFlashloan) {
-    // CoW Adapters only deployed on Gnosis, Base and Mainnet for now
-    if (
-      chainId !== ChainId.xdai &&
-      chainId !== ChainId.base &&
-      chainId !== ChainId.mainnet &&
-      swapType === SwapType.CollateralSwap
-    ) {
-      return SwapProvider.PARASWAP;
-    }
-  }
-
-  if (isSwapSupportedByCowProtocol(chainId, assetFrom, assetTo, swapType)) {
+  if (
+    isSwapSupportedByCowProtocol(chainId, assetFrom, assetTo, swapType, shouldUseFlashloan ?? false)
+  ) {
     return SwapProvider.COW_PROTOCOL;
   }
 
