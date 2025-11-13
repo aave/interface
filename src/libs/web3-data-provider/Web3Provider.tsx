@@ -96,11 +96,51 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     if (provider) {
       const { from, ...data } = txData;
       const signer = provider.getSigner(from);
-      const txResponse: TransactionResponse = await signer.sendTransaction({
-        ...data,
-        value: data.value ? BigNumber.from(data.value) : undefined,
-      });
-      return txResponse;
+
+      try {
+        const txResponse: TransactionResponse = await signer.sendTransaction({
+          ...data,
+          value: data.value ? BigNumber.from(data.value) : undefined,
+        });
+
+        return txResponse;
+      } catch (error) {
+        // Ethers.js incompatibility with Smart Account ERC-20 paymasters
+        // Transaction may succeed on-chain but fail to return proper response
+        if (error.transactionHash) {
+          const hash = error.transactionHash;
+
+          try {
+            const receipt = await provider.getTransactionReceipt(hash);
+            if (receipt) {
+              const confirmedReceipt = await provider.waitForTransaction(hash, 2);
+              return {
+                hash: hash,
+                nonce: confirmedReceipt.transactionIndex,
+                gasLimit: confirmedReceipt.gasUsed,
+                gasPrice: confirmedReceipt.effectiveGasPrice,
+                data: data.data || '0x',
+                value: data.value ? BigNumber.from(data.value) : BigNumber.from(0),
+                chainId: chainId,
+                confirmations: confirmedReceipt.confirmations,
+                from: confirmedReceipt.from,
+                blockNumber: confirmedReceipt.blockNumber,
+                blockHash: confirmedReceipt.blockHash,
+                wait: async (confirmations?: number) => {
+                  if (!confirmations || confirmations <= 1) {
+                    return receipt;
+                  }
+                  return await provider.waitForTransaction(hash, confirmations);
+                },
+              } as TransactionResponse;
+            }
+            throw new Error(`Transaction not found: ${hash}`);
+          } catch (receiptError) {
+            throw new Error(`Could not verify transaction: ${hash}`);
+          }
+        }
+        throw new Error(error.message || 'Transaction failed');
+      }
     }
     throw new Error('Error sending transaction. Provider not found');
   };
