@@ -4,6 +4,7 @@ import { ViemAdapter } from '@cowprotocol/sdk-viem-adapter';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getPublicClient, getWalletClient } from 'wagmi/actions';
 
+import { HOOK_ADAPTER_PER_TYPE } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import { SwapState } from '../../types';
 import { COW_ENV } from './orders.helpers';
@@ -36,7 +37,9 @@ export const getCowTradingSdkByChainIdAndAppCode = async (
 
 export const getCowFlashLoanSdk = async (chainId: number) => {
   setGlobalAdapter(await getCowAdapter(chainId));
-  return new AaveCollateralSwapSdk();
+  return new AaveCollateralSwapSdk({
+    hookAdapterPerType: HOOK_ADAPTER_PER_TYPE,
+  });
 };
 
 export const getCowAdapter = async (chainId: number) => {

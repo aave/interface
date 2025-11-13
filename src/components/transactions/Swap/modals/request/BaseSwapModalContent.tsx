@@ -24,6 +24,7 @@ import {
   SwapDefaultParams,
   swapDefaultState,
   SwapParams,
+  SwapProvider,
   SwapState,
   swapStateFromParamsOrDefault,
 } from '../../types';
@@ -132,43 +133,45 @@ export const BaseSwapModalContent = ({
     <>
       {params.showTitle && <SwapModalTitle params={params} state={state} />}
 
-      {params.allowLimitOrders && (
-        <OrderTypeSelector
-          switchType={state.orderType}
-          limitsOrderButtonBlocked={state.limitsOrderButtonBlocked ?? false}
-          setSwitchType={(orderType: OrderType) => {
-            const switchingFromLimitToMarket =
-              state.orderType === OrderType.LIMIT && orderType === OrderType.MARKET;
-            const switchingFromMarketToLimit =
-              state.orderType === OrderType.MARKET && orderType === OrderType.LIMIT;
+      {params.allowLimitOrders &&
+        state.provider === SwapProvider.COW_PROTOCOL &&
+        state.isSwapFlowSelected && (
+          <OrderTypeSelector
+            switchType={state.orderType}
+            limitsOrderButtonBlocked={state.limitsOrderButtonBlocked ?? false}
+            setSwitchType={(orderType: OrderType) => {
+              const switchingFromLimitToMarket =
+                state.orderType === OrderType.LIMIT && orderType === OrderType.MARKET;
+              const switchingFromMarketToLimit =
+                state.orderType === OrderType.MARKET && orderType === OrderType.LIMIT;
 
-            setState({
-              orderType,
-              actionsLoading: false,
-              ...(switchingFromLimitToMarket || switchingFromMarketToLimit
-                ? {
-                    inputAmount: '',
-                    debouncedInputAmount: '',
-                    inputAmountUSD: '',
-                    outputAmount: '',
-                    debouncedOutputAmount: '',
-                    outputAmountUSD: '',
-                    swapRate: undefined,
-                    error: undefined,
-                    isLiquidatable: false,
-                    warnings: [],
-                    quoteRefreshPaused: false,
-                    quoteLastUpdatedAt: undefined,
-                    quoteTimerPausedAt: null,
-                    expiry: Expiry.TEN_MINUTES,
-                    quoteTimerPausedAccumMs: 0,
-                  }
-                : {}),
-            });
-            trackingHandlers.trackInputChange(SwapInputChanges.ORDER_TYPE, orderType.toString());
-          }}
-        />
-      )}
+              setState({
+                orderType,
+                actionsLoading: false,
+                ...(switchingFromLimitToMarket || switchingFromMarketToLimit
+                  ? {
+                      inputAmount: '',
+                      debouncedInputAmount: '',
+                      inputAmountUSD: '',
+                      outputAmount: '',
+                      debouncedOutputAmount: '',
+                      outputAmountUSD: '',
+                      swapRate: undefined,
+                      error: undefined,
+                      isLiquidatable: false,
+                      warnings: [],
+                      quoteRefreshPaused: false,
+                      quoteLastUpdatedAt: undefined,
+                      quoteTimerPausedAt: null,
+                      expiry: Expiry.TEN_MINUTES,
+                      quoteTimerPausedAccumMs: 0,
+                    }
+                  : {}),
+              });
+              trackingHandlers.trackInputChange(SwapInputChanges.ORDER_TYPE, orderType.toString());
+            }}
+          />
+        )}
 
       <SwapPreInputWarnings
         params={params}

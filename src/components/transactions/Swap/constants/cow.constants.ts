@@ -1,7 +1,50 @@
 import { CowEnv, OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
+import { AaveFlashLoanType } from '@cowprotocol/sdk-flash-loans';
 
 import { getAssetGroup } from '../helpers/shared/assetCorrelation.helpers';
 import { OrderType, SwapType } from '../types';
+
+export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedChainId, string>> = {
+  [AaveFlashLoanType.CollateralSwap]: {
+    [SupportedChainId.MAINNET]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.GNOSIS_CHAIN]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.ARBITRUM_ONE]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.AVALANCHE]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.BNB]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.POLYGON]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.SEPOLIA]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.BASE]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.LENS]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.LINEA]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+    [SupportedChainId.PLASMA]: '0x29A9b0a13c81d59f13BA0f39DBDCAA1AB2adc95F',
+  },
+  [AaveFlashLoanType.DebtSwap]: {
+    [SupportedChainId.MAINNET]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.GNOSIS_CHAIN]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.ARBITRUM_ONE]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.AVALANCHE]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.BNB]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.POLYGON]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.SEPOLIA]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.BASE]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.LENS]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.LINEA]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+    [SupportedChainId.PLASMA]: '0xbE9A121bb958BBBb027dA728DEC0D5496811b7d1',
+  },
+  [AaveFlashLoanType.RepayCollateral]: {
+    [SupportedChainId.MAINNET]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.GNOSIS_CHAIN]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.ARBITRUM_ONE]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.AVALANCHE]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.BNB]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.POLYGON]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.SEPOLIA]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.BASE]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.LENS]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.LINEA]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+    [SupportedChainId.PLASMA]: '0x8e25d1210FabB0fcAdE92a82C4a89568B4b10E0F',
+  },
+};
 
 export const COW_UNSUPPORTED_ASSETS: Partial<
   Record<SwapType | 'ALL', Partial<Record<SupportedChainId, string[] | 'ALL'>>>
