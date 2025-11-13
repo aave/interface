@@ -2,14 +2,15 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
 
-import { SwapParams, SwapState, SwapType, TokenType } from '../../types';
+import { SwapParams, SwapProvider, SwapState, SwapType, TokenType } from '../../types';
 
 export function NativeLimitOrderInfo({ state, params }: { state: SwapState; params: SwapParams }) {
   // Classic swaps only; show when input token is native
   const isClassicSwap = params.swapType === SwapType.Swap;
   const isNativeInput = state.sourceToken?.tokenType === TokenType.NATIVE;
+  const isCoWProtocol = state.provider === SwapProvider.COW_PROTOCOL;
 
-  if (!isClassicSwap || !isNativeInput) return null;
+  if (!isClassicSwap || !isNativeInput || !isCoWProtocol) return null;
 
   return (
     <Warning severity="info" icon={false} sx={{ mt: 2, mb: 2 }}>
