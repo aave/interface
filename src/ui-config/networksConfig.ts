@@ -274,7 +274,10 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.optimism]: {
     name: 'OP',
-    publicJsonRPCUrl: ['https://optimism-mainnet.public.blastapi.io', 'https://1rpc.io/op'],
+    publicJsonRPCUrl: [
+      'https://public-op-mainnet.fastnode.io',
+      'https://optimism-rpc.publicnode.com',
+    ],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
