@@ -27,6 +27,7 @@ import {
   SwapProvider,
   SwapState,
   swapStateFromParamsOrDefault,
+  SwapType,
 } from '../../types';
 import { SwapPostInputWarnings } from '../../warnings/SwapPostInputWarnings';
 import { SwapPreInputWarnings } from '../../warnings/SwapPreInputWarnings';
@@ -135,7 +136,7 @@ export const BaseSwapModalContent = ({
 
       {params.allowLimitOrders &&
         state.provider === SwapProvider.COW_PROTOCOL &&
-        state.isSwapFlowSelected && (
+        (state.isSwapFlowSelected || state.swapType !== SwapType.CollateralSwap) && (
           <OrderTypeSelector
             switchType={state.orderType}
             limitsOrderButtonBlocked={state.limitsOrderButtonBlocked ?? false}

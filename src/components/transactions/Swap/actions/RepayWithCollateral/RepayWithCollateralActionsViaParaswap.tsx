@@ -86,6 +86,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
     spender: currentMarketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER,
     setState,
     trackingHandlers,
+    swapType: state.swapType,
   });
 
   // Use centralized gas estimation

@@ -135,6 +135,7 @@ export const RepayWithCollateralActionsViaCoW = ({
     setState,
     allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
     trackingHandlers,
+    swapType: state.swapType,
   });
 
   // Use centralized gas estimation

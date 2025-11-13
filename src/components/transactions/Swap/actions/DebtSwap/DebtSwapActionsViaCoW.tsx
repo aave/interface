@@ -137,6 +137,7 @@ export const DebtSwapActionsViaCoW = ({
     allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
     type: 'delegation', // Debt swap uses delegation
     trackingHandlers,
+    swapType: state.swapType,
   });
 
   // Use centralized gas estimation

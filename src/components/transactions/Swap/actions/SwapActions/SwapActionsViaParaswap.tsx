@@ -60,6 +60,7 @@ export const SwapActionsViaParaswap = ({
       : undefined,
     setState,
     trackingHandlers,
+    swapType: state.swapType,
   });
 
   // Use centralized gas estimation

@@ -17,7 +17,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { isNativeToken } from '../../helpers/cow';
-import { SwapState } from '../../types';
+import { SwapState, SwapType } from '../../types';
 
 export type SwapTokenApprovalParams = {
   chainId: number;
@@ -31,6 +31,7 @@ export type SwapTokenApprovalParams = {
   margin?: number;
   type?: 'approval' | 'delegation';
   trackingHandlers?: TrackAnalyticsHandlers;
+  swapType: SwapType;
 };
 
 export type SignatureLike = {
@@ -90,6 +91,7 @@ export const useSwapTokenApproval = ({
   margin = 0,
   type = 'approval',
   trackingHandlers,
+  swapType,
 }: SwapTokenApprovalParams) => {
   const [approvedAmount, setApprovedAmount] = useState<string | undefined>();
   const [approvedAddress, setApprovedAddress] = useState<string | undefined>();
@@ -170,7 +172,10 @@ export const useSwapTokenApproval = ({
     const currentApproved = calculateSignedAmount(approvedAmount?.toString() || '0', decimals, 0);
 
     let needsApprovalReset = false;
-    if (needsUSDTApprovalReset(symbol, chainId, currentApproved, amountToApprove)) {
+    if (
+      needsUSDTApprovalReset(symbol, chainId, currentApproved, amountToApprove) &&
+      swapType == SwapType.Swap
+    ) {
       needsApprovalReset = true;
       setRequiresApprovalReset(true);
     } else {

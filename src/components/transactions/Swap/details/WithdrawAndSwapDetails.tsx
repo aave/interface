@@ -25,7 +25,13 @@ export const WithdrawAndSwapDetails = ({
   const withdrawAmount = state.inputAmount;
   const poolReserve = state.sourceReserve.reserve;
 
-  if (!user || !state.buyAmountFormatted || !state.buyAmountUSD || !state.sellAmountFormatted)
+  if (
+    !user ||
+    !state.buyAmountFormatted ||
+    !state.buyAmountUSD ||
+    !state.sellAmountFormatted ||
+    !state.sellAmountUSD
+  )
     return null;
   const healthFactorAfterWithdraw = calculateHFAfterWithdraw({
     user,
@@ -42,6 +48,7 @@ export const WithdrawAndSwapDetails = ({
         safeSlippage={state.safeSlippage}
         customReceivedTitle={params.customReceivedTitle}
         sellToken={state.sourceToken}
+        sellAmountUSD={state.sellAmountUSD}
         buyToken={state.destinationToken}
         buyAmount={state.buyAmountFormatted}
         sellAmount={state.sellAmountFormatted}

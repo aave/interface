@@ -569,8 +569,12 @@ export const SwapInputs = ({
             token.underlyingAddress.toLowerCase() !==
               state.destinationToken.underlyingAddress.toLowerCase())) &&
         Number(token.balance) !== 0 &&
-        // Remove native when limit order
-        !(orderType === OrderType.LIMIT && token.tokenType === TokenType.NATIVE) &&
+        // Remove native when limit order, but only for classic swaps (CollateralSwap allows native limit orders)
+        !(
+          orderType === OrderType.LIMIT &&
+          token.tokenType === TokenType.NATIVE &&
+          params.swapType === SwapType.Swap
+        ) &&
         // Remove native tokens for non-Safe smart contract wallets
         !(
           state.userIsSmartContractWallet &&

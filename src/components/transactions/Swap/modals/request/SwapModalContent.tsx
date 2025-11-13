@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance, useTokensBalance } from 'src/hooks/generic/useTokensBalance';
 import { useRootStore } from 'src/store/root';
-import { TOKEN_LIST } from 'src/ui-config/TokenList';
+import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
@@ -110,8 +110,43 @@ export const SwapModalContent = ({
 export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalance[] => {
   let customTokenList = TOKEN_LIST.tokens;
   const savedCustomTokens = localStorage.getItem('customTokens');
+
   if (savedCustomTokens) {
-    customTokenList = customTokenList.concat(JSON.parse(savedCustomTokens));
+    try {
+      const parsed = JSON.parse(savedCustomTokens);
+      // Validate that parsed data is an array
+      if (Array.isArray(parsed)) {
+        // Convert SwappableToken format to TokenInfo format for custom tokens
+        const convertedCustomTokens: TokenInfo[] = parsed
+          .map((token) => {
+            // Handle both SwappableToken format (with addressToSwap) and TokenInfo format (with address)
+            const address = token.addressToSwap || token.address || token.underlyingAddress;
+            if (!address) {
+              console.warn('Custom token missing address:', token);
+              return null;
+            }
+            const convertedToken: TokenInfo = {
+              chainId: token.chainId,
+              address: address,
+              name: token.name || '',
+              decimals: token.decimals || 18,
+              symbol: token.symbol || '',
+              logoURI: token.logoURI,
+              tags: token.tags,
+              extensions: token.extensions,
+            };
+            return convertedToken;
+          })
+          .filter((token): token is TokenInfo => token !== null); // Remove invalid tokens with type guard
+
+        customTokenList = customTokenList.concat(convertedCustomTokens);
+      } else {
+        console.warn('customTokens in localStorage is not an array:', parsed);
+      }
+    } catch (error) {
+      console.error('Error parsing customTokens from localStorage:', error);
+      // Continue with default token list if parsing fails
+    }
   }
 
   const transformedTokens = customTokenList.map((token) => {
@@ -124,7 +159,13 @@ export const getFilteredTokensForSwitch = (chainId: number): TokenInfoWithBalanc
   return transformedTokens
     .filter((token) => token.chainId === realChainId)
     .filter((token) => {
-      const key = `${token.chainId}:${token.address.toLowerCase()}`;
+      // Handle both address and addressToSwap properties
+      const address = token.address;
+      if (!address) {
+        console.warn('Token missing address property:', token);
+        return false;
+      }
+      const key = `${token.chainId}:${address.toLowerCase()}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;

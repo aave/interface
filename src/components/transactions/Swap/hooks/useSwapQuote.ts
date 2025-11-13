@@ -88,7 +88,7 @@ const getTokenSelectionForQuote = (
   };
 };
 
-export const QUOTE_REFETCH_INTERVAL = 30000; // 30 seconds
+export const QUOTE_REFETCH_INTERVAL = 5000; // 30 seconds
 
 /**
  * React hook that orchestrates quoting logic across providers.
@@ -438,12 +438,12 @@ const useMultiProviderSwapQuoteQuery = ({
     refetchInterval: (() => {
       const isInsufficientBalance = hasInsufficientBalance(state);
       const isFlashloanDisabled = hasFlashLoanDisabled(state);
+
       return !state.actionsLoading &&
         !state.quoteRefreshPaused &&
         !state.mainTxState.success &&
         !state.mainTxState.txHash &&
         !state.mainTxState.loading &&
-        !state.actionsBlocked &&
         !isInsufficientBalance &&
         !isFlashloanDisabled
         ? QUOTE_REFETCH_INTERVAL

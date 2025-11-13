@@ -64,6 +64,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
     spender: currentMarketData.addresses.SWAP_COLLATERAL_ADAPTER,
     setState,
     trackingHandlers,
+    swapType: state.swapType,
   });
 
   // Use centralized gas estimation

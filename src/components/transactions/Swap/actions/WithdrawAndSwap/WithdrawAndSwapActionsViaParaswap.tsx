@@ -63,6 +63,7 @@ export const WithdrawAndSwapActionsViaParaswap = ({
       spender: currentMarketData.addresses.WITHDRAW_SWITCH_ADAPTER,
       setState,
       trackingHandlers,
+      swapType: state.swapType,
     });
 
   // Use centralized gas estimation

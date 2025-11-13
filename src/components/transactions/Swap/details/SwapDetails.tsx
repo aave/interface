@@ -34,6 +34,7 @@ export const SwapDetails = ({ params, state }: { params: SwapParams; state: Swap
         customReceivedTitle={params.customReceivedTitle}
         sellToken={state.sellAmountToken}
         sellAmount={state.sellAmountFormatted}
+        sellAmountUSD={state.sellAmountUSD}
         buyToken={state.buyAmountToken}
         buyAmount={state.buyAmountFormatted}
         buyAmountUSD={state.buyAmountUSD}
@@ -48,7 +49,7 @@ export const SwapModalTxDetails = ({
   buyToken,
   buyAmount,
   buyAmountUSD,
-  sellAmount,
+  sellAmountUSD,
   safeSlippage,
   customReceivedTitle,
   sellToken,
@@ -62,6 +63,7 @@ export const SwapModalTxDetails = ({
   sellAmount: string;
   buyAmount: string;
   buyAmountUSD: string;
+  sellAmountUSD: string;
   state: SwapState;
 }) => {
   return provider === SwapProvider.COW_PROTOCOL ? (
@@ -71,8 +73,7 @@ export const SwapModalTxDetails = ({
       buyToken={buyToken}
       safeSlippage={safeSlippage}
       customReceivedTitle={customReceivedTitle}
-      sellAmountInUsd={Number(state.sellAmountUSD)}
-      sellAmount={sellAmount}
+      sellAmountUSD={sellAmountUSD}
       buyAmount={buyAmount}
       buyAmountUSD={buyAmountUSD}
     />
@@ -91,8 +92,7 @@ export const IntentTxDetails = ({
   state,
   buyToken,
   customReceivedTitle,
-  sellAmountInUsd,
-  sellAmount,
+  sellAmountUSD,
   buyAmount,
   buyAmountUSD,
 }: {
@@ -101,17 +101,14 @@ export const IntentTxDetails = ({
   sellToken: SwappableToken;
   safeSlippage: number;
   customReceivedTitle?: React.ReactNode;
-  sellAmountInUsd: number;
-  sellAmount: string;
+  sellAmountUSD: string;
   buyAmount: string;
   buyAmountUSD: string;
 }) => {
-  const srcUsd = valueToBigNumber(sellAmount).dividedBy(sellAmountInUsd).toNumber();
+  const receivingInUsd = valueToBigNumber(buyAmountUSD);
+  const sendingInUsd = valueToBigNumber(sellAmountUSD);
 
-  const receivingInUsd = Number(buyAmountUSD);
-  const sendingInUsd = srcUsd;
-
-  const priceImpact = (1 - receivingInUsd / sendingInUsd) * 100;
+  const priceImpact = (1 - receivingInUsd.dividedBy(sendingInUsd).toNumber()) * 100;
 
   return (
     <>

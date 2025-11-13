@@ -100,6 +100,7 @@ export const SwapActionsViaCoW = ({
     setState,
     allowPermit: !disablePermitDueToActiveOrder,
     trackingHandlers,
+    swapType: state.swapType,
   });
 
   // Use centralized gas estimation

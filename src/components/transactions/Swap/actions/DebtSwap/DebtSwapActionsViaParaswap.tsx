@@ -83,6 +83,7 @@ export const DebtSwapActionsViaParaswap = ({
       margin: 0.25,
       type: 'delegation',
       trackingHandlers,
+      swapType: state.swapType,
     });
 
   // Use centralized gas estimation
