@@ -131,9 +131,16 @@ export const HistoryWrapper = () => {
   return (
     <ListWrapper
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-          <Trans>Transactions</Trans>
-        </Typography>
+        <>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
+            <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+              <Trans>Transactions</Trans>
+            </Typography>
+            <Typography variant="secondary12" color="text.secondary" sx={{ mt: 1 }}>
+              <Trans>This list may not include all your swaps.</Trans>
+            </Typography>
+          </Box>
+        </>
       }
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: 8, mt: 6, mb: 4 }}>

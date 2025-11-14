@@ -37,6 +37,7 @@
     "**/*.test.ts",
     "**/*.test.tsx",
     "coverage",
+    "src/components/transactions/Swap/backup/**/*.*",
   ],
   "include": ["custom.d.ts", "next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

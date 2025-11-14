@@ -2,6 +2,7 @@ import { OptimalRate, SwapSide } from '@paraswap/sdk';
 import { RateOptions } from '@paraswap/sdk/dist/methods/swap/rates';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { BigNumber, constants, PopulatedTransaction } from 'ethers';
+import { SwapProvider } from 'src/components/transactions/Swap/types';
 import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { getParaswap } from './common';
@@ -51,7 +52,15 @@ export const useParaswapSellRates = ({
         },
       });
     },
-    queryKey: queryKeysFactory.paraswapRates(chainId, amount, srcToken, destToken, user),
+    queryKey: queryKeysFactory.swapQuote(
+      chainId,
+      SwapProvider.PARASWAP,
+      amount,
+      false,
+      srcToken,
+      destToken,
+      user
+    ),
     enabled: amount !== '0',
     retry: 0,
     refetchOnWindowFocus: (query) => (query.state.error ? false : true),

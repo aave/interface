@@ -9,19 +9,25 @@ import { Cursor } from '@aave/types';
 import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swap/constants/cow.constants';
 import {
-  ADAPTER_APP_CODE,
-  HEADER_WIDGET_APP_CODE,
-} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
-import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
+  APP_CODE_PER_SWAP_TYPE,
+  APP_CODE_VALUES,
+} from 'src/components/transactions/Swap/constants/shared.constants';
+import { COW_ENV } from 'src/components/transactions/Swap/helpers/cow';
+import { SwapType } from 'src/components/transactions/Swap/types';
 import { getTransactionAction, getTransactionId } from 'src/modules/history/helpers';
 import {
   actionFilterMap,
+  ActionName,
+  CowSwapSubset,
   hasCollateralReserve,
   hasPrincipalReserve,
   hasReserve,
   hasSrcOrDestToken,
   HistoryFilters,
+  isCowSwapSubset,
+  swapTypeToTransactionHistoryItemType,
   TransactionHistoryItemUnion,
   UserTransactionItem,
 } from 'src/modules/history/types';
@@ -30,6 +36,11 @@ import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import {
+  CowAdapterEntry,
+  getAdapterSwapHistory,
+  ParaswapAdapterEntry,
+} from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/shallow';
 
 import { useAppDataContext } from './app-data-provider/useAppDataProvider';
@@ -80,8 +91,12 @@ export const applyTxHistoryFilters = ({
 
       // CowSwap structure
       if (hasSrcOrDestToken(txn)) {
-        srcToken = txn.underlyingSrcToken.symbol.toLowerCase();
-        destToken = txn.underlyingDestToken.symbol.toLowerCase();
+        const swapTxn = txn as unknown as {
+          underlyingSrcToken: { symbol: string };
+          underlyingDestToken: { symbol: string };
+        };
+        srcToken = swapTxn.underlyingSrcToken.symbol.toLowerCase();
+        destToken = swapTxn.underlyingDestToken.symbol.toLowerCase();
       }
 
       // handle special case where user searches for ethereum but asset names are abbreviated as ether
@@ -231,145 +246,236 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
 
   const fetchCowSwapsHistory = async (first: number, skip: number) => {
     const chainId = currentMarketData.chainId;
-    if (!isChainIdSupportedByCoWProtocol(chainId)) {
-      return [];
+
+    let apiTxns: TransactionHistoryItemUnion[] = [];
+    if (isChainIdSupportedByCoWProtocol(chainId)) {
+      const orderBookApi = new OrderBookApi({ chainId: chainId, env: COW_ENV });
+      const orders = await orderBookApi.getOrders({
+        owner: account,
+        limit: first,
+        offset: skip,
+      });
+
+      const filteredCowAaveOrders = (
+        await Promise.all(
+          orders.map(async (order) => {
+            try {
+              const appData = JSON.parse(order.fullAppData ?? '{}');
+              const appCode = appData.appCode;
+
+              if (APP_CODE_VALUES.includes(appCode)) {
+                return order;
+              }
+            } catch (error) {
+              console.error('Error parsing app data:', error);
+            }
+            return null;
+          })
+        )
+      ).filter((order) => order !== null);
+
+      apiTxns = await Promise.all(
+        filteredCowAaveOrders.map<Promise<TransactionHistoryItemUnion | null>>(async (order) => {
+          const erc20Service = new ERC20Service(getProvider);
+
+          // Helper function to find token info from pool reserves
+          const findTokenFromReserves: (tokenAddress: string) =>
+            | {
+                address: string;
+                name: string;
+                symbol: string;
+                decimals: number;
+                isAToken?: boolean;
+              }
+            | undefined = (tokenAddress: string) => {
+            const reserve = reserves?.find(
+              (reserve) =>
+                reserve.underlyingAsset.toLowerCase() === tokenAddress.toLowerCase() ||
+                reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase()
+            );
+
+            if (reserve) {
+              return {
+                address: tokenAddress,
+                name: reserve.name,
+                symbol: reserve.symbol,
+                decimals: reserve.decimals,
+                isAToken: reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase(),
+              };
+            }
+            return undefined;
+          };
+
+          let srcToken = findTokenFromReserves(order.sellToken);
+          let destToken = findTokenFromReserves(order.buyToken);
+
+          // Fallback to TOKEN_LIST if not found in pool reserves (for non-Aave tokens)
+          if (!srcToken) {
+            srcToken = TOKEN_LIST.tokens.find(
+              (token) =>
+                token.chainId == chainId &&
+                token.address.toLowerCase() == order.sellToken.toLowerCase()
+            );
+          }
+
+          if (!destToken) {
+            destToken = TOKEN_LIST.tokens.find(
+              (token) =>
+                token.chainId == chainId &&
+                token.address.toLowerCase() == order.buyToken.toLowerCase()
+            );
+          }
+
+          // Custom tokens - only if erc20Service is available
+          if (!srcToken && erc20Service) {
+            srcToken = await erc20Service
+              .getTokenInfo(order.sellToken, chainId)
+              .then((token) => ({ ...token, underlyingAsset: token.address }))
+              .catch(() => {
+                console.error('Error fetching custom token', order.sellToken);
+                return undefined;
+              });
+          }
+
+          if (!destToken && erc20Service) {
+            destToken = await erc20Service
+              .getTokenInfo(order.buyToken, chainId)
+              .then((token) => ({ ...token, underlyingAsset: token.address }))
+              .catch(() => {
+                console.error('Error fetching custom token', order.buyToken);
+                return undefined;
+              });
+          }
+
+          // Otherwise, we can not display it
+          if (!srcToken || !destToken) {
+            return null;
+          }
+
+          // We define the Order's swap type based on the app code
+          const appCode = (() => {
+            try {
+              return JSON.parse(order.fullAppData ?? '{}').appCode;
+            } catch (e) {
+              console.error('Error parsing order.fullAppData:', order.fullAppData, e);
+              return undefined;
+            }
+          })();
+
+          const swapType = Object.entries(APP_CODE_PER_SWAP_TYPE).find(
+            ([, code]) => code === appCode
+          )?.[0] as keyof typeof APP_CODE_PER_SWAP_TYPE | undefined;
+
+          return {
+            action:
+              swapTypeToTransactionHistoryItemType(swapType ?? SwapType.Swap) ?? ActionName.Swap,
+            id: order.uid,
+            timestamp: new Date(order.creationDate).toISOString(),
+            underlyingSrcToken: {
+              underlyingAsset: srcToken.address,
+              name: srcToken.name,
+              symbol: srcToken.symbol,
+              decimals: srcToken.decimals,
+            },
+            srcAToken: srcToken.isAToken,
+            underlyingDestToken: {
+              underlyingAsset: destToken.address,
+              name: destToken.name,
+              symbol: destToken.symbol,
+              decimals: destToken.decimals,
+            },
+            destAToken: destToken.isAToken,
+            protocol: 'cow',
+            srcAmount:
+              order.executedSellAmount && order.executedBuyAmount != '0'
+                ? order.executedSellAmount
+                : order.sellAmount,
+            destAmount:
+              order.executedBuyAmount && order.executedSellAmount != '0'
+                ? order.executedBuyAmount
+                : order.buyAmount,
+            status: order.status,
+            orderId: order.uid,
+            chainId: chainId,
+          };
+        })
+      ).then((txns) => txns.filter((txn) => txn !== null));
     }
 
-    const orderBookApi = new OrderBookApi({ chainId: chainId });
-    const orders = await orderBookApi.getOrders({
-      owner: account,
-      limit: first,
-      offset: skip,
-    });
+    // Merge in locally stored adapter entries (CoW + ParaSwap) for this account/chain
+    // This is needed because Paraswap txs are not included in the subgraph yet and CoW adapters orders are sent by the adapters instances therefore not returned by asking for the user's trades.
+    const localEntries = getAdapterSwapHistory(chainId, account || '');
 
-    const filteredCowAaveOrders = (
-      await Promise.all(
-        orders.map(async (order) => {
-          try {
-            const appData = JSON.parse(order.fullAppData ?? '{}');
-            const appCode = appData.appCode;
+    // Build a set of CoW orderIds returned by API to dedupe
+    const apiCowIds = new Set(
+      apiTxns
+        .filter((t: TransactionHistoryItemUnion) => !!t && isCowSwapSubset(t))
+        .map((t: CowSwapSubset) => t.orderId)
+        .filter(Boolean)
+    );
 
-            if (appCode == HEADER_WIDGET_APP_CODE || appCode == ADAPTER_APP_CODE) {
-              return order;
-            }
-          } catch (error) {
-            console.error('Error parsing app data:', error);
-          }
-          return null;
-        })
-      )
-    ).filter((order) => order !== null);
+    const localCowTxns: TransactionHistoryItemUnion[] = (localEntries as CowAdapterEntry[])
+      .filter((e) => e.protocol === 'cow' && !apiCowIds.has(e.orderId))
+      .map((e: CowAdapterEntry) => ({
+        action: swapTypeToTransactionHistoryItemType(e.swapType) ?? ActionName.Swap,
+        id: e.orderId,
+        timestamp: e.timestamp,
+        underlyingSrcToken: {
+          underlyingAsset: e.srcToken.address,
+          name: e.srcToken.name,
+          symbol: e.srcToken.symbol,
+          decimals: e.srcToken.decimals,
+        },
+        srcAToken: e.srcToken.isAToken,
+        underlyingDestToken: {
+          underlyingAsset: e.destToken.address,
+          name: e.destToken.name,
+          symbol: e.destToken.symbol,
+          decimals: e.destToken.decimals,
+        },
+        destAToken: e.destToken.isAToken,
+        srcAmount: e.srcAmount,
+        destAmount: e.destAmount,
+        status: e.status,
+        protocol: 'cow',
+        orderId: e.orderId,
+        chainId: e.chainId,
+        adapterInstanceAddress: e.adapterInstanceAddress,
+        usedAdapter: e.usedAdapter,
+      }));
 
-    return Promise.all(
-      filteredCowAaveOrders.map<Promise<TransactionHistoryItemUnion | null>>(async (order) => {
-        const erc20Service = new ERC20Service(getProvider);
+    const localParaswapTxns: TransactionHistoryItemUnion[] = (
+      localEntries as ParaswapAdapterEntry[]
+    )
+      .filter((e) => e.protocol === 'paraswap')
+      .map((e: ParaswapAdapterEntry) => ({
+        action: swapTypeToTransactionHistoryItemType(e.swapType) ?? ActionName.Swap,
+        id: e.txHash,
+        timestamp: e.timestamp,
+        underlyingSrcToken: {
+          underlyingAsset: e.srcToken.address,
+          name: e.srcToken.name,
+          symbol: e.srcToken.symbol,
+          decimals: e.srcToken.decimals,
+        },
+        protocol: 'paraswap',
+        srcAToken: e.srcToken.isAToken,
+        underlyingDestToken: {
+          underlyingAsset: e.destToken.address,
+          name: e.destToken.name,
+          symbol: e.destToken.symbol,
+          decimals: e.destToken.decimals,
+        },
+        destAToken: e.destToken.isAToken,
+        srcAmount: e.srcAmount,
+        destAmount: e.destAmount,
+        status: e.status,
+        txHash: e.txHash,
+        chainId: e.chainId,
+      }));
 
-        // Helper function to find token info from pool reserves
-        const findTokenFromReserves: (tokenAddress: string) =>
-          | {
-              address: string;
-              name: string;
-              symbol: string;
-              decimals: number;
-              isAToken?: boolean;
-            }
-          | undefined = (tokenAddress: string) => {
-          const reserve = reserves?.find(
-            (reserve) =>
-              reserve.underlyingAsset.toLowerCase() === tokenAddress.toLowerCase() ||
-              reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase()
-          );
-
-          if (reserve) {
-            return {
-              address: tokenAddress,
-              name: reserve.name,
-              symbol: reserve.symbol,
-              decimals: reserve.decimals,
-              isAToken: reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase(),
-            };
-          }
-          return undefined;
-        };
-
-        let srcToken = findTokenFromReserves(order.sellToken);
-        let destToken = findTokenFromReserves(order.buyToken);
-
-        // Fallback to TOKEN_LIST if not found in pool reserves (for non-Aave tokens)
-        if (!srcToken) {
-          srcToken = TOKEN_LIST.tokens.find(
-            (token) =>
-              token.chainId == chainId &&
-              token.address.toLowerCase() == order.sellToken.toLowerCase()
-          );
-        }
-
-        if (!destToken) {
-          destToken = TOKEN_LIST.tokens.find(
-            (token) =>
-              token.chainId == chainId &&
-              token.address.toLowerCase() == order.buyToken.toLowerCase()
-          );
-        }
-
-        // Custom tokens - only if erc20Service is available
-        if (!srcToken && erc20Service) {
-          srcToken = await erc20Service
-            .getTokenInfo(order.sellToken, chainId)
-            .then((token) => ({ ...token, underlyingAsset: token.address }))
-            .catch(() => {
-              console.error('Error fetching custom token', order.sellToken);
-              return undefined;
-            });
-        }
-
-        if (!destToken && erc20Service) {
-          destToken = await erc20Service
-            .getTokenInfo(order.buyToken, chainId)
-            .then((token) => ({ ...token, underlyingAsset: token.address }))
-            .catch(() => {
-              console.error('Error fetching custom token', order.buyToken);
-              return undefined;
-            });
-        }
-
-        // Otherwise, we can not display it
-        if (!srcToken || !destToken) {
-          return null;
-        }
-
-        return {
-          action: srcToken.isAToken ? 'CowCollateralSwap' : 'CowSwap',
-          id: order.uid,
-          timestamp: new Date(order.creationDate).toISOString(),
-          underlyingSrcToken: {
-            underlyingAsset: srcToken.address,
-            name: srcToken.name,
-            symbol: srcToken.symbol,
-            decimals: srcToken.decimals,
-          },
-          srcAToken: srcToken.isAToken,
-          underlyingDestToken: {
-            underlyingAsset: destToken.address,
-            name: destToken.name,
-            symbol: destToken.symbol,
-            decimals: destToken.decimals,
-          },
-          destAToken: destToken.isAToken,
-          srcAmount:
-            order.executedSellAmount && order.executedBuyAmount != '0'
-              ? order.executedSellAmount
-              : order.sellAmount,
-          destAmount:
-            order.executedBuyAmount && order.executedSellAmount != '0'
-              ? order.executedBuyAmount
-              : order.buyAmount,
-          status: order.status,
-          orderId: order.uid,
-          chainId: chainId,
-        };
-      })
-    ).then((txns) => txns.filter((txn) => txn !== null));
+    const combined = [...apiTxns, ...localCowTxns, ...localParaswapTxns];
+    return combined.sort(sortTransactionsByTimestampDesc);
   };
 
   const PAGE_SIZE = 50; //Limit SDK and CowSwap to same page size

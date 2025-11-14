@@ -7,7 +7,7 @@ import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
-import { WithdrawAndSwitchModalContent } from './WithdrawAndSwitchModalContent';
+import { WithdrawAndSwapModalContent } from '../Swap/modals/request/WithdrawAndSwapModalContent';
 import { WithdrawModalContent } from './WithdrawModalContent';
 import { WithdrawType, WithdrawTypeSelector } from './WithdrawTypeSelector';
 
@@ -51,9 +51,9 @@ export const WithdrawModal = () => {
                     user={user}
                   />
                 )}
-                {withdrawType === WithdrawType.WITHDRAWSWITCH && (
+                {withdrawType === WithdrawType.WITHDRAW_AND_SWAP && (
                   <>
-                    <WithdrawAndSwitchModalContent {...params} user={user} />
+                    <WithdrawAndSwapModalContent underlyingAsset={args.underlyingAsset} />
                   </>
                 )}
               </>

@@ -12,52 +12,123 @@ import {
   isOrderExpired,
   isOrderFilled,
   isOrderLoading,
-} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
+} from 'src/components/transactions/Swap/helpers/cow';
+import { swapTypesThatRequiresInvertedQuote } from 'src/components/transactions/Swap/hooks/useSwapQuote';
 
 import {
+  ActionName,
+  CowSwapSubset,
   hasAmount,
   hasCollateralReserve,
   hasSrcOrDestToken,
-  isCowSwapTransaction,
   isSDKTransaction,
+  TransactionHistoryItem,
+  transactionHistoryItemTypeToSwapType,
   TransactionHistoryItemUnion,
 } from '../types';
 
 interface ActionDetailsProps {
   transaction: TransactionHistoryItemUnion;
   iconSize?: string;
+  showStatusBadgeAsIconOnly?: boolean;
 }
 
-export const ActionTextMap = ({ action }: { action: string }) => {
+export const ActionTextMap = ({ action }: { action: ActionName }) => {
   switch (action) {
     // SDK transactions
-    case 'UserSupplyTransaction':
+    case ActionName.UserSupplyTransaction:
       return <Trans>Supply</Trans>;
-    case 'UserWithdrawTransaction':
+    case ActionName.UserWithdrawTransaction:
       return <Trans>Withdraw</Trans>;
-    case 'UserBorrowTransaction':
+    case ActionName.UserBorrowTransaction:
       return <Trans>Borrow</Trans>;
-    case 'UserRepayTransaction':
+    case ActionName.UserRepayTransaction:
       return <Trans>Repay</Trans>;
-    case 'UserUsageAsCollateralTransaction':
+    case ActionName.UserUsageAsCollateralTransaction:
       return <Trans>Collateral usage</Trans>;
-    case 'UserLiquidationCallTransaction':
+    case ActionName.UserLiquidationCallTransaction:
       return <Trans>Liquidation</Trans>;
 
-    // CowSwap transactions
-    case 'CowSwap':
+    // Swap transactions
+    case ActionName.Swap:
       return <Trans>Swap</Trans>;
-    case 'CowCollateralSwap':
+    case ActionName.CollateralSwap:
       return <Trans>Collateral Swap</Trans>;
+    case ActionName.DebtSwap:
+      return <Trans>Debt Swap</Trans>;
+    case ActionName.RepayWithCollateral:
+      return <Trans>Repay with Collateral</Trans>;
+    case ActionName.WithdrawAndSwap:
+      return <Trans>Withdraw and Swap</Trans>;
 
     default:
       return <Trans>Unknown</Trans>;
   }
 };
 
-export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsProps) => {
+const StatusBadgeIconOnly = ({
+  title,
+  severity,
+}: {
+  title: React.ReactNode;
+  severity: 'info' | 'success' | 'error';
+}) => {
   const theme = useTheme();
+  return (
+    <DarkTooltip title={title} arrow enterTouchDelay={100} leaveTouchDelay={500} placement="top">
+      <Box>
+        <Warning
+          severity={severity}
+          sx={{
+            my: 0,
+            pt: 0.6,
+            pb: 0.6,
+            pr: 1.5,
+            pl: 1.5,
+            background: 'none',
+            border: 'none',
+            color: theme.palette.text.primary,
+          }}
+        />
+      </Box>
+    </DarkTooltip>
+  );
+};
 
+const StatusBadgeText = ({
+  children,
+  severity,
+}: {
+  children: React.ReactNode;
+  severity: 'info' | 'success' | 'error';
+}) => {
+  const theme = useTheme();
+  return (
+    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+      <Warning
+        severity={severity}
+        sx={{
+          my: 0,
+          pt: 0.6,
+          pb: 0.6,
+          pr: 1.5,
+          pl: 1.5,
+          background: 'none',
+          border: `1px solid ${theme.palette.divider}`,
+          color: theme.palette.text.primary,
+        }}
+      >
+        {children}
+      </Warning>
+    </Box>
+  );
+};
+
+export const ActionDetails = ({
+  transaction,
+  iconSize = '16px',
+  showStatusBadgeAsIconOnly = false,
+}: ActionDetailsProps) => {
   if (isSDKTransaction(transaction) && hasAmount(transaction)) {
     const { amount, reserve } = transaction;
     const action = transaction.__typename;
@@ -281,22 +352,39 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
     );
   }
 
-  // For CowSwap transactions
-  if (isCowSwapTransaction(transaction) && hasSrcOrDestToken(transaction)) {
-    const { underlyingSrcToken, underlyingDestToken, srcAmount, destAmount, status } = transaction;
+  // For swap transactions with token pairs (CoW and ParaSwap)
+  if (hasSrcOrDestToken(transaction)) {
+    const swapType = transactionHistoryItemTypeToSwapType(transaction.action);
+    const areInputsInverted = swapType && swapTypesThatRequiresInvertedQuote.includes(swapType);
+    const data = transaction as TransactionHistoryItem<CowSwapSubset>;
+    const swapTx = !areInputsInverted
+      ? data
+      : {
+          ...data,
+          underlyingSrcToken: data.underlyingDestToken,
+          underlyingDestToken: data.underlyingSrcToken,
+          srcAToken: data.destAToken,
+          destAToken: data.srcAToken,
+          srcAmount: data.destAmount,
+          destAmount: data.srcAmount,
+        };
+
+    const formattedCowSwapSrcToken = swapTx.underlyingSrcToken;
+    const formattedCowSwapDestToken = swapTx.underlyingDestToken;
 
     return (
       <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }} pr={4.5}>
           <TokenIcon
-            symbol={underlyingSrcToken.symbol}
+            symbol={formattedCowSwapSrcToken.symbol}
             sx={{ fontSize: iconSize }}
-            aToken={!!transaction.srcAToken}
+            aToken={!!swapTx.srcAToken}
           />
           <DarkTooltip
             title={
               <Typography variant="secondary14" color="common.white">
-                {formatUnits(srcAmount, underlyingSrcToken.decimals)} {underlyingSrcToken.symbol}
+                {formatUnits(swapTx.srcAmount, swapTx.underlyingSrcToken.decimals)}{' '}
+                {formattedCowSwapSrcToken.symbol}
               </Typography>
             }
             arrow
@@ -306,7 +394,7 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
           >
             <Box>
               <FormattedNumber
-                value={formatUnits(srcAmount, underlyingSrcToken.decimals)}
+                value={formatUnits(swapTx.srcAmount, swapTx.underlyingSrcToken.decimals)}
                 variant="secondary14"
                 color="text.primary"
                 sx={{ mr: 1, ml: 1 }}
@@ -317,32 +405,31 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
           <DarkTooltip
             title={
               <Typography variant="secondary14" color="common.white">
-                {underlyingSrcToken.name} ({underlyingSrcToken.symbol})
+                {formattedCowSwapSrcToken.name} ({formattedCowSwapSrcToken.symbol})
               </Typography>
             }
             arrow
             placement="top"
           >
             <Typography variant="secondary14" color="text.primary">
-              {underlyingSrcToken.symbol}
+              {formattedCowSwapSrcToken.symbol}
             </Typography>
           </DarkTooltip>
         </Box>
-
         <SvgIcon sx={{ fontSize: '14px' }}>
           <ArrowNarrowRightIcon />
         </SvgIcon>
-
         <Box sx={{ display: 'flex', alignItems: 'center' }} pl={4.5}>
           <TokenIcon
-            symbol={underlyingDestToken.symbol}
+            symbol={formattedCowSwapDestToken.symbol}
             sx={{ fontSize: iconSize }}
-            aToken={!!transaction.destAToken}
+            aToken={!!swapTx.destAToken}
           />
           <DarkTooltip
             title={
               <Typography variant="secondary14" color="common.white">
-                {formatUnits(destAmount, underlyingDestToken.decimals)} {underlyingDestToken.symbol}
+                {formatUnits(swapTx.destAmount, swapTx.underlyingDestToken.decimals)}{' '}
+                {formattedCowSwapDestToken.symbol}
               </Typography>
             }
             arrow
@@ -352,7 +439,7 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
           >
             <Box>
               <FormattedNumber
-                value={formatUnits(destAmount, underlyingDestToken.decimals)}
+                value={formatUnits(swapTx.destAmount, swapTx.underlyingDestToken.decimals)}
                 variant="secondary14"
                 color="text.primary"
                 visibleDecimals={2}
@@ -363,157 +450,88 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
           <DarkTooltip
             title={
               <Typography variant="secondary14" color="common.white">
-                {underlyingDestToken.name} ({underlyingDestToken.symbol})
+                {formattedCowSwapDestToken.name} ({formattedCowSwapDestToken.symbol})
               </Typography>
             }
             arrow
             placement="top"
           >
             <Typography variant="secondary14" color="text.primary">
-              {underlyingDestToken.symbol}
+              {formattedCowSwapDestToken.symbol}
             </Typography>
           </DarkTooltip>
         </Box>
 
-        {/* Status para CowSwap */}
-        {isOrderLoading(status) && (
+        {/* Status */}
+        {isOrderLoading(swapTx.status) && (
           <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <DarkTooltip
-                title={<Trans>In Progress</Trans>}
-                arrow
-                enterTouchDelay={100}
-                leaveTouchDelay={500}
-                placement="top"
-              >
-                <Box>
-                  <Warning
-                    severity="info"
-                    sx={{
-                      my: 0,
-                      pt: 0.6,
-                      pb: 0.6,
-                      pr: 1.5,
-                      pl: 1.5,
-                      background: 'none',
-                      border: 'none',
-                      color: theme.palette.text.primary,
-                    }}
-                  />
+            {showStatusBadgeAsIconOnly ? (
+              <StatusBadgeIconOnly title={<Trans>In Progress</Trans>} severity="info" />
+            ) : (
+              <>
+                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                  <StatusBadgeIconOnly title={<Trans>In Progress</Trans>} severity="info" />
                 </Box>
-              </DarkTooltip>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Warning
-                severity="info"
-                sx={{
-                  my: 0,
-                  pt: 0.6,
-                  pb: 0.6,
-                  pr: 1.5,
-                  pl: 1.5,
-                  background: 'none',
-                  border: `1px solid ${theme.palette.divider}`,
-                  color: theme.palette.text.primary,
-                }}
-              >
-                <Trans>In Progress</Trans>
-              </Warning>
-            </Box>
+                <StatusBadgeText severity="info">
+                  <Trans>In Progress</Trans>
+                </StatusBadgeText>
+              </>
+            )}
+          </Box>
+        )}
+        {isOrderFilled(swapTx.status) && (
+          <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
+            {showStatusBadgeAsIconOnly ? (
+              <StatusBadgeIconOnly title={<Trans>Filled</Trans>} severity="success" />
+            ) : (
+              <>
+                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                  <StatusBadgeIconOnly title={<Trans>Filled</Trans>} severity="success" />
+                </Box>
+                <StatusBadgeText severity="success">
+                  <Trans>Filled</Trans>
+                </StatusBadgeText>
+              </>
+            )}
           </Box>
         )}
 
-        {isOrderFilled(status) && (
+        {(isOrderCancelled(swapTx.status) || isOrderExpired(swapTx.status)) && (
           <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <DarkTooltip
-                title={<Trans>Filled</Trans>}
-                arrow
-                enterTouchDelay={100}
-                leaveTouchDelay={500}
-                placement="top"
-              >
-                <Box>
-                  <Warning
-                    severity="success"
-                    sx={{
-                      my: 0,
-                      pt: 0.6,
-                      pb: 0.6,
-                      pr: 1.5,
-                      pl: 1.5,
-                      background: 'none',
-                      border: 'none',
-                      color: theme.palette.text.primary,
-                    }}
-                  />
-                </Box>
-              </DarkTooltip>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Warning
-                severity="success"
-                sx={{
-                  my: 0,
-                  pt: 0.6,
-                  pb: 0.6,
-                  pr: 1.5,
-                  pl: 1.5,
-                  background: 'none',
-                  border: `1px solid ${theme.palette.divider}`,
-                  color: theme.palette.text.primary,
-                }}
-              >
-                <Trans>Filled</Trans>
-              </Warning>
-            </Box>
-          </Box>
-        )}
-
-        {(isOrderCancelled(status) || isOrderExpired(status)) && (
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <DarkTooltip
-                title={isOrderCancelled(status) ? <Trans>Cancelled</Trans> : <Trans>Expired</Trans>}
-                arrow
-                placement="top"
-                enterTouchDelay={100}
-                leaveTouchDelay={500}
-              >
-                <Box>
-                  <Warning
-                    severity="error"
-                    sx={{
-                      my: 0,
-                      pt: 0.6,
-                      pb: 0.6,
-                      pr: 1.5,
-                      pl: 1.5,
-                      background: 'none',
-                      border: 'none',
-                      color: theme.palette.text.primary,
-                    }}
-                  />
-                </Box>
-              </DarkTooltip>
-            </Box>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Warning
+            {showStatusBadgeAsIconOnly ? (
+              <StatusBadgeIconOnly
+                title={
+                  isOrderCancelled(swapTx.status) ? (
+                    <Trans>Cancelled</Trans>
+                  ) : (
+                    <Trans>Expired</Trans>
+                  )
+                }
                 severity="error"
-                sx={{
-                  my: 0,
-                  pt: 0.6,
-                  pb: 0.6,
-                  pr: 1.5,
-                  pl: 1.5,
-                  background: 'none',
-                  border: `1px solid ${theme.palette.divider}`,
-                  color: theme.palette.text.primary,
-                }}
-              >
-                {isOrderCancelled(status) ? <Trans>Cancelled</Trans> : <Trans>Expired</Trans>}
-              </Warning>
-            </Box>
+              />
+            ) : (
+              <>
+                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+                  <StatusBadgeIconOnly
+                    title={
+                      isOrderCancelled(swapTx.status) ? (
+                        <Trans>Cancelled</Trans>
+                      ) : (
+                        <Trans>Expired</Trans>
+                      )
+                    }
+                    severity="error"
+                  />
+                </Box>
+                <StatusBadgeText severity="error">
+                  {isOrderCancelled(swapTx.status) ? (
+                    <Trans>Cancelled</Trans>
+                  ) : (
+                    <Trans>Expired</Trans>
+                  )}
+                </StatusBadgeText>
+              </>
+            )}
           </Box>
         )}
       </Box>

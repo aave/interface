@@ -1,17 +1,21 @@
-import { OrderBookApi, OrderSigningUtils } from '@cowprotocol/cow-sdk';
+import { AdapterContext, OrderBookApi, OrderSigningUtils, OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
-import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
-import { ActionFields, TransactionHistoryItem } from 'src/modules/history/types';
+import { ActionName, SwapActionFields, TransactionHistoryItem } from 'src/modules/history/types';
+import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { updateCowOrderStatus } from 'src/utils/swapAdapterHistory';
+import { getWalletClient } from 'wagmi/actions';
 
+import { COW_ENV, getCowAdapter } from '../Swap/helpers/cow';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
+// TODO: check with cow if we can cancel adapters orders
 interface CancelCowOrderActionsProps {
-  cowOrder: TransactionHistoryItem<ActionFields['CowSwap']>;
+  cowOrder: TransactionHistoryItem<SwapActionFields[ActionName.Swap]>;
   blocked: boolean;
 }
 
@@ -19,23 +23,36 @@ export const CancelCowOrderActions = ({ cowOrder, blocked }: CancelCowOrderActio
   const { isWrongNetwork } = useIsWrongNetwork(cowOrder.chainId);
   const { mainTxState, loadingTxns, setMainTxState, setTxError } = useModalContext();
   const queryClient = useQueryClient();
+  const account = useRootStore((state) => state.account);
 
   const action = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
-      const provider = getEthersProvider(wagmiConfig, { chainId: cowOrder.chainId });
-      const signer = (await provider).getSigner();
-      const orderBookApi = new OrderBookApi({ chainId: cowOrder.chainId });
+
+      const adapter = await getCowAdapter(cowOrder.chainId);
+      AdapterContext.getInstance().setAdapter(adapter);
+      const orderBookApi = new OrderBookApi({ chainId: cowOrder.chainId, env: COW_ENV });
+      const walletClient = await getWalletClient(wagmiConfig, { chainId: cowOrder.chainId });
+
+      if (!walletClient || !walletClient.account) {
+        throw new Error('Wallet not connected for signing');
+      }
       const { signature, signingScheme } = await OrderSigningUtils.signOrderCancellation(
         cowOrder.id,
         cowOrder.chainId,
-        signer
+        walletClient
       );
       await orderBookApi.sendSignedOrderCancellations({
         orderUids: [cowOrder.id],
         signature,
         signingScheme,
       });
+
+      // Update order status to cancelled in local storage
+      if (account && cowOrder.id) {
+        updateCowOrderStatus(cowOrder.chainId, account, cowOrder.id, OrderStatus.CANCELLED);
+      }
+
       queryClient.invalidateQueries({ queryKey: 'transactionHistory' });
       setTimeout(() => {
         setMainTxState({

@@ -44,8 +44,16 @@ const FilterLabel: React.FC<FilterLabelProps> = ({ filter }) => {
       return <Trans>Collateral change</Trans>;
     case FilterOptions.LIQUIDATION:
       return <Trans>Liquidation</Trans>;
-    case FilterOptions.COWSWAP:
+    case FilterOptions.SWAP:
       return <Trans>Swap</Trans>;
+    case FilterOptions.COLLATERAL_SWAP:
+      return <Trans>Collateral Swap</Trans>;
+    case FilterOptions.DEBT_SWAP:
+      return <Trans>Debt Swap</Trans>;
+    case FilterOptions.REPAY_WITH_COLLATERAL:
+      return <Trans>Repay with Collateral</Trans>;
+    case FilterOptions.WITHDRAW_AND_SWAP:
+      return <Trans>Withdraw and Swap</Trans>;
   }
 };
 
