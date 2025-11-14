@@ -101,7 +101,8 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
             {isSwapTransaction(transaction) &&
               isCowSwapSubset(transaction) &&
-              transaction.status === OrderStatus.OPEN && (
+              transaction.status === OrderStatus.OPEN &&
+              transaction.action === ActionName.Swap && (
                 <Button variant="contained" onClick={() => openCancelCowOrder(transaction)}>
                   <Trans>Cancel</Trans>
                 </Button>

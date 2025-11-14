@@ -92,7 +92,8 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
               </Typography>
               {isSwapTransaction(transaction) &&
                 isCowSwapSubset(transaction) &&
-                transaction.status === OrderStatus.OPEN && (
+                transaction.status === OrderStatus.OPEN &&
+                transaction.action === ActionName.Swap && (
                   <Button
                     sx={{
                       display: 'flex',
