@@ -7,7 +7,13 @@ import { CancelCowOrderModalContent } from './CancelCowOrderModalContent';
 
 export const CancelCowOrderModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
-    cowOrder: TransactionHistoryItem<SwapActionFields[ActionName.Swap]>;
+    cowOrder: TransactionHistoryItem<
+      | SwapActionFields[ActionName.Swap]
+      | SwapActionFields[ActionName.CollateralSwap]
+      | SwapActionFields[ActionName.DebtSwap]
+      | SwapActionFields[ActionName.RepayWithCollateral]
+      | SwapActionFields[ActionName.WithdrawAndSwap]
+    >;
   }>;
   return (
     <BasicModal open={type === ModalType.CancelCowOrder} setOpen={close}>

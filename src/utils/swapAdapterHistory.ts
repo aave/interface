@@ -21,6 +21,9 @@ export type CowAdapterEntry = {
   destToken: TokenInfo;
   srcAmount: string; // raw units
   destAmount: string; // raw units
+  // Adapter-specific fields for cancellation
+  adapterInstanceAddress?: string; // Instance address for adapter-based swaps
+  usedAdapter?: boolean; // Whether adapter was used (true for DebtSwap, RepayWithCollateral, and CollateralSwap with flashloan)
 };
 
 export type ParaswapAdapterEntry = {

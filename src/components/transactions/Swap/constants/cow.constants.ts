@@ -46,6 +46,20 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
   },
 };
 
+export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
+  [SupportedChainId.MAINNET]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.GNOSIS_CHAIN]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.ARBITRUM_ONE]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.AVALANCHE]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.BNB]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.POLYGON]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.SEPOLIA]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.BASE]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.LENS]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.LINEA]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+  [SupportedChainId.PLASMA]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
+};
+
 export const COW_UNSUPPORTED_ASSETS: Partial<
   Record<SwapType | 'ALL', Partial<Record<SupportedChainId, string[] | 'ALL'>>>
 > = {

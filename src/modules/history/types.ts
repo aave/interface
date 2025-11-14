@@ -56,6 +56,8 @@ export type ParaswapSubset = SwapSubset & {
 export type CowSwapSubset = SwapSubset & {
   protocol: 'cow';
   orderId: string;
+  adapterInstanceAddress?: string; // Instance address for adapter-based swaps
+  usedAdapter?: boolean; // Whether adapter was used
 };
 
 export type SwapActionFields = {

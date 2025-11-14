@@ -1468,6 +1468,10 @@ msgstr "Eligible for incentives through Merkl."
 msgid "Emode"
 msgstr "Emode"
 
+#: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
+msgid "This will cancel the order via an on-chain transaction. Note that the order will not be marked as cancelled in the CoW Protocol system, but will remain open and expire naturally. Keep in mind that a solver may already have filled your order."
+msgstr "This will cancel the order via an on-chain transaction. Note that the order will not be marked as cancelled in the CoW Protocol system, but will remain open and expire naturally. Keep in mind that a solver may already have filled your order."
+
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -3204,6 +3208,10 @@ msgstr "{h}h"
 msgid "After the cooldown is initiated, you will be able to withdraw your assets immediatley."
 msgstr "After the cooldown is initiated, you will be able to withdraw your assets immediatley."
 
+#: src/components/transactions/CancelCowOrder/CancelAdapterOrderActions.tsx
+msgid "Cancelling order..."
+msgstr "Cancelling order..."
+
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
@@ -3639,6 +3647,7 @@ msgstr "Since this asset is frozen, the only available actions are withdraw and 
 msgid "Borrow amount to reach {0}% utilization"
 msgstr "Borrow amount to reach {0}% utilization"
 
+#: src/components/transactions/CancelCowOrder/CancelAdapterOrderActions.tsx
 #: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
 msgid "Cancel order"
 msgstr "Cancel order"

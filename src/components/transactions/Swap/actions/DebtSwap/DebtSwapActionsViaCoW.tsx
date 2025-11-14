@@ -283,6 +283,8 @@ export const DebtSwapActionsViaCoW = ({
           name: state.buyAmountToken.symbol,
           decimals: state.buyAmountToken.decimals,
         },
+        adapterInstanceAddress: instanceAddress,
+        usedAdapter: true, // DebtSwap always uses adapter
         srcAmount: state.sellAmountBigInt.toString(),
         destAmount: state.buyAmountBigInt.toString(),
       });

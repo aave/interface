@@ -282,6 +282,8 @@ export const RepayWithCollateralActionsViaCoW = ({
           name: state.buyAmountToken.symbol,
           decimals: state.buyAmountToken.decimals,
         },
+        adapterInstanceAddress: instanceAddress,
+        usedAdapter: true, // RepayWithCollateral always uses adapter
         srcAmount: state.sellAmountBigInt.toString(),
         destAmount: state.buyAmountBigInt.toString(),
       });

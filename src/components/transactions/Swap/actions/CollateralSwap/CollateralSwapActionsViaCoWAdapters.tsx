@@ -277,6 +277,8 @@ export const CollateralSwapActionsViaCowAdapters = ({
           name: state.buyAmountToken.symbol,
           decimals: state.buyAmountToken.decimals,
         },
+        adapterInstanceAddress: instanceAddress,
+        usedAdapter: true, // CollateralSwap via adapters always uses adapter (flashloan)
         srcAmount: state.sellAmountBigInt.toString(),
         destAmount: state.buyAmountBigInt.toString(),
       });

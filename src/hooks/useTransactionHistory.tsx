@@ -440,6 +440,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         protocol: 'cow',
         orderId: e.orderId,
         chainId: e.chainId,
+        adapterInstanceAddress: e.adapterInstanceAddress,
+        usedAdapter: e.usedAdapter,
       }));
 
     const localParaswapTxns: TransactionHistoryItemUnion[] = (

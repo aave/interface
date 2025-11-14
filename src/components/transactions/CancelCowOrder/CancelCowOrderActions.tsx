@@ -1,11 +1,13 @@
-import { AdapterContext, OrderBookApi, OrderSigningUtils } from '@cowprotocol/cow-sdk';
+import { AdapterContext, OrderBookApi, OrderSigningUtils, OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { ActionName, SwapActionFields, TransactionHistoryItem } from 'src/modules/history/types';
+import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { updateCowOrderStatus } from 'src/utils/swapAdapterHistory';
 import { getWalletClient } from 'wagmi/actions';
 
 import { COW_ENV, getCowAdapter } from '../Swap/helpers/cow';
@@ -21,6 +23,7 @@ export const CancelCowOrderActions = ({ cowOrder, blocked }: CancelCowOrderActio
   const { isWrongNetwork } = useIsWrongNetwork(cowOrder.chainId);
   const { mainTxState, loadingTxns, setMainTxState, setTxError } = useModalContext();
   const queryClient = useQueryClient();
+  const account = useRootStore((state) => state.account);
 
   const action = async () => {
     try {
@@ -44,6 +47,12 @@ export const CancelCowOrderActions = ({ cowOrder, blocked }: CancelCowOrderActio
         signature,
         signingScheme,
       });
+
+      // Update order status to cancelled in local storage
+      if (account && cowOrder.id) {
+        updateCowOrderStatus(cowOrder.chainId, account, cowOrder.id, OrderStatus.CANCELLED);
+      }
+
       queryClient.invalidateQueries({ queryKey: 'transactionHistory' });
       setTimeout(() => {
         setMainTxState({
