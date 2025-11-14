@@ -47,7 +47,7 @@
     "@lingui/core": "^4.14.0",
     "@lingui/react": "^4.14.1",
     "@mui/icons-material": "^5.10.14",
-    "@mui/lab": "5.0.0-alpha.103",
+    "@mui/lab": "5.0.0-alpha.177",
     "@mui/material": "^5.10.9",
     "@number-flow/react": "^0.5.10",
     "@paraswap/sdk": "6.10.0",
