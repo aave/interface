@@ -47,14 +47,16 @@ const getTokenSelectionForQuote = (
   const srcToken =
     state.useFlashloan == false &&
     state.provider === SwapProvider.PARASWAP &&
-    state.swapType !== SwapType.WithdrawAndSwap
+    state.swapType !== SwapType.WithdrawAndSwap &&
+    state.swapType !== SwapType.RepayWithCollateral
       ? srcTokenObj.addressToSwap
       : srcTokenObj.underlyingAddress;
   const destTokenObj = invertedQuoteRoute ? state.sourceToken : state.destinationToken;
   const destToken =
     state.useFlashloan == false &&
     state.provider === SwapProvider.PARASWAP &&
-    state.swapType !== SwapType.WithdrawAndSwap
+    state.swapType !== SwapType.WithdrawAndSwap &&
+    state.swapType !== SwapType.RepayWithCollateral
       ? destTokenObj.addressToSwap
       : destTokenObj.underlyingAddress;
 

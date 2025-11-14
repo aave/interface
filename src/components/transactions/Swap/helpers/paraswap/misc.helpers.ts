@@ -15,5 +15,9 @@ export const getParaswapSlippage = (
     return (Number(baseSlippage) * 2).toString();
   }
 
+  if (swapType === SwapType.RepayWithCollateral) {
+    return (Number(baseSlippage) * 5).toString();
+  }
+
   return baseSlippage;
 };
