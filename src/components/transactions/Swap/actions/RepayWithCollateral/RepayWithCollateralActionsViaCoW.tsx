@@ -1,4 +1,4 @@
-import { normalize } from '@aave/math-utils';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { getOrderToSign, LimitTradeParameters, OrderKind, OrderStatus } from '@cowprotocol/cow-sdk';
 import { AaveFlashLoanType, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
@@ -13,7 +13,11 @@ import { saveCowOrderToUserHistory } from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/react/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
+import {
+  COW_PARTNER_FEE,
+  DUST_PROTECTION_MULTIPLIER,
+  FLASH_LOAN_FEE_BPS,
+} from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
   addOrderTypeToAppData,
@@ -171,6 +175,12 @@ export const RepayWithCollateralActionsViaCoW = ({
       );
       const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
 
+      const buyAmountWithMarginForDustProtection = valueToBigNumber(
+        state.buyAmountBigInt.toString()
+      )
+        .multipliedBy(DUST_PROTECTION_MULTIPLIER)
+        .toFixed(0);
+
       const collateralPermit = signatureParams
         ? {
             amount: signatureParams?.amount,
@@ -193,7 +203,7 @@ export const RepayWithCollateralActionsViaCoW = ({
         buyToken: state.buyAmountToken.underlyingAddress,
         buyTokenDecimals: state.buyAmountToken.decimals,
         sellAmount: sellAmountToSign.toString(),
-        buyAmount: state.buyAmountBigInt.toString(),
+        buyAmount: buyAmountWithMarginForDustProtection.toString(),
         kind: state.processedSide === 'buy' ? OrderKind.BUY : OrderKind.SELL,
         validTo,
         slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
@@ -222,7 +232,7 @@ export const RepayWithCollateralActionsViaCoW = ({
         },
         {
           sellAmount: state.sellAmountBigInt,
-          buyAmount: state.buyAmountBigInt,
+          buyAmount: BigInt(buyAmountWithMarginForDustProtection),
           orderToSign,
           collateralPermit,
         }

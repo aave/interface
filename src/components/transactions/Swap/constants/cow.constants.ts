@@ -60,6 +60,8 @@ export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
   [SupportedChainId.PLASMA]: '0x43c658Ea38bBfD897706fDb35e2468ef5D8F6927',
 };
 
+export const DUST_PROTECTION_MULTIPLIER = 1.001;
+
 export const COW_UNSUPPORTED_ASSETS: Partial<
   Record<SwapType | 'ALL', Partial<Record<SupportedChainId, string[] | 'ALL'>>>
 > = {

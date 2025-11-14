@@ -1,3 +1,4 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import {
   AppDataParams,
   getOrderToSign,
@@ -14,7 +15,11 @@ import {
   HASH_ZERO,
 } from '@cowprotocol/sdk-flash-loans';
 
-import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
+import {
+  COW_PARTNER_FEE,
+  DUST_PROTECTION_MULTIPLIER,
+  FLASH_LOAN_FEE_BPS,
+} from '../../constants/cow.constants';
 import { OrderType, SwapProvider, SwapState, SwapType } from '../../types';
 import { getCowFlashLoanSdk } from './env.helpers';
 
@@ -39,8 +44,24 @@ export const calculateInstanceAddress = async ({
     return;
 
   const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
-  const { sellAmount, buyAmount, sellToken, buyToken, side, slippageBps, partnerFee } = {
+  const {
+    sellAmount,
+    buyAmountWithMarginForDustProtection,
+    buyAmount,
+    sellToken,
+    buyToken,
+    side,
+    slippageBps,
+    partnerFee,
+  } = {
     sellAmount: state.sellAmountBigInt,
+    // @note: We wont have dust for borrow side, but we may have dust in collateral swaps
+    buyAmountWithMarginForDustProtection:
+      state.swapType !== SwapType.CollateralSwap
+        ? valueToBigNumber(state.buyAmountBigInt.toString())
+            .multipliedBy(DUST_PROTECTION_MULTIPLIER)
+            .toFixed(0)
+        : state.buyAmountBigInt,
     sellToken: state.sellAmountToken,
     buyAmount: state.buyAmountBigInt,
     buyToken: state.buyAmountToken,
@@ -89,7 +110,7 @@ export const calculateInstanceAddress = async ({
     flashLoanAmount: sellAmount.toString(),
     flashLoanFeeAmount: flashLoanFeeAmount.toString(),
     sellAssetAmount: sellAmount.toString(),
-    buyAssetAmount: buyAmount.toString(),
+    buyAssetAmount: buyAmountWithMarginForDustProtection.toString(),
   };
 
   return await flashLoanSdk.getExpectedInstanceAddress(

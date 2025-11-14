@@ -1,6 +1,7 @@
 import { normalizeBN } from '@aave/math-utils';
 import { useQuery } from '@tanstack/react-query';
 import { Dispatch, useEffect, useMemo } from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import { isTxErrorType, TxErrorType } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 
@@ -88,7 +89,7 @@ const getTokenSelectionForQuote = (
   };
 };
 
-export const QUOTE_REFETCH_INTERVAL = 5000; // 30 seconds
+export const QUOTE_REFETCH_INTERVAL = 30000; // 30 seconds
 
 /**
  * React hook that orchestrates quoting logic across providers.
@@ -280,6 +281,8 @@ const useMultiProviderSwapQuoteQuery = ({
   provider: SwapProvider;
   requiresQuoteInverted: boolean;
 }) => {
+  const { approvalTxState } = useModalContext();
+
   // Amount to quote depends on side (sell uses input amount, buy uses output amount)
   const amount = useMemo(() => {
     if (state.side === 'sell') {
@@ -427,6 +430,8 @@ const useMultiProviderSwapQuoteQuery = ({
         !state.mainTxState.success &&
         !state.mainTxState.txHash && // Don't fetch quotes once transaction is sent
         !state.mainTxState.loading && // Don't fetch quotes while transaction is processing
+        !approvalTxState?.loading && // Don't fetch quotes while approval is processing
+        !approvalTxState?.success && // Don't fetch quotes while approval is successful
         provider !== SwapProvider.NONE &&
         !state.quoteRefreshPaused &&
         !state.isWrongNetwork
@@ -444,6 +449,8 @@ const useMultiProviderSwapQuoteQuery = ({
         !state.mainTxState.success &&
         !state.mainTxState.txHash &&
         !state.mainTxState.loading &&
+        !approvalTxState?.loading &&
+        !approvalTxState?.success &&
         !isInsufficientBalance &&
         !isFlashloanDisabled
         ? QUOTE_REFETCH_INTERVAL
