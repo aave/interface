@@ -1426,10 +1426,10 @@
     "@cowprotocol/sdk-common" "0.3.0"
     "@cowprotocol/sdk-config" "0.3.0"
 
-"@cowprotocol/sdk-flash-loans@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@cowprotocol/sdk-flash-loans/-/sdk-flash-loans-1.5.0.tgz#c3f4126c5aba99d7691e93b2388d54ccafd74e92"
-  integrity sha512-AmKABf0Vwam0RLWoNLHZekE3zrSey5ZN7KXEZNTMNvgISBb/XAuUZCivpsKMfPZTa11Lv0k/vSaQdIKFV3/zLA==
+"@cowprotocol/sdk-flash-loans@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@cowprotocol/sdk-flash-loans/-/sdk-flash-loans-1.5.2.tgz#d5f8375441bf07a1a7a70ae786dcb969e91b2b73"
+  integrity sha512-RihEc1Gpow4p+b/tLCvptl+TLYNvXsqOC7KvA/5tdk40eOtWUqCiltb66J4FGnc5W8pqmLoRalql4myOMh8dLg==
   dependencies:
     "@cowprotocol/sdk-app-data" "4.1.6"
     "@cowprotocol/sdk-common" "0.3.0"

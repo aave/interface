@@ -37,7 +37,7 @@
     "@amplitude/analytics-browser": "^2.13.0",
     "@cowprotocol/sdk-app-data": "4.1.6",
     "@cowprotocol/cow-sdk": "7.1.1",
-    "@cowprotocol/sdk-flash-loans": "1.5.0",
+    "@cowprotocol/sdk-flash-loans": "1.5.2",
     "@cowprotocol/sdk-viem-adapter": "0.2.0",
     "@bgd-labs/aave-address-book": "^4.36.0",
     "@emotion/cache": "11.10.3",
