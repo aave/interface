@@ -25,6 +25,7 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
   ExpiryToSecondsMap,
+  isCowProtocolRates,
   OrderType,
   SwapParams,
   SwapState,
@@ -188,6 +189,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
         buyToken: state.buyAmountToken.underlyingAddress,
         buyTokenDecimals: state.buyAmountToken.decimals,
         sellAmount: sellAmountToSign.toString(),
+        quoteId: isCowProtocolRates(state.swapRate) ? state.swapRate?.quoteId : undefined,
         buyAmount: state.buyAmountBigInt.toString(),
         kind: state.processedSide === 'buy' ? OrderKind.BUY : OrderKind.SELL,
         validTo,

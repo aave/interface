@@ -30,6 +30,7 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
   ExpiryToSecondsMap,
+  isCowProtocolRates,
   isProtocolSwapState,
   OrderType,
   SwapParams,
@@ -207,6 +208,7 @@ export const DebtSwapActionsViaCoW = ({
         sellAmount: sellAmountToSign.toString(),
         buyAmount: buyAmountWithMarginForDustProtection.toString(),
         kind: state.processedSide === 'buy' ? OrderKind.BUY : OrderKind.SELL,
+        quoteId: isCowProtocolRates(state.swapRate) ? state.swapRate?.quoteId : undefined,
         validTo,
         slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
         partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),

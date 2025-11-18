@@ -20,7 +20,7 @@ import {
   DUST_PROTECTION_MULTIPLIER,
   FLASH_LOAN_FEE_BPS,
 } from '../../constants/cow.constants';
-import { OrderType, SwapProvider, SwapState, SwapType } from '../../types';
+import { isCowProtocolRates, OrderType, SwapProvider, SwapState, SwapType } from '../../types';
 import { getCowFlashLoanSdk } from './env.helpers';
 
 export const calculateInstanceAddress = async ({
@@ -50,6 +50,7 @@ export const calculateInstanceAddress = async ({
     buyAmount,
     sellToken,
     buyToken,
+    quoteId,
     side,
     slippageBps,
     partnerFee,
@@ -65,6 +66,7 @@ export const calculateInstanceAddress = async ({
     sellToken: state.sellAmountToken,
     buyAmount: state.buyAmountBigInt,
     buyToken: state.buyAmountToken,
+    quoteId: isCowProtocolRates(state.swapRate) ? state.swapRate?.quoteId : undefined,
     side: state.processedSide,
     slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
     partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),
@@ -83,6 +85,7 @@ export const calculateInstanceAddress = async ({
     sellAmount: sellAmountToSign.toString(),
     buyAmount: buyAmount.toString(),
     kind: side === 'buy' ? OrderKind.BUY : OrderKind.SELL,
+    quoteId,
     validTo,
     slippageBps,
     partnerFee,
