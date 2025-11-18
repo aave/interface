@@ -96,7 +96,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
   //   [SupportedChainId.SEPOLIA]: 'ALL',
   //   // Base is supported
   // },
-
   // // Specific assets that are not supported for certain chains across all swap types
   // ['ALL']: {
   //   [SupportedChainId.POLYGON]: [
