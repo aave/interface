@@ -31,6 +31,35 @@ export const GENERAL = {
   LIMIT_ORDER: 'Limit Order',
 };
 
+export enum SWAP {
+  /// The user has requested a quote
+  QUOTE = 'SWAP_QUOTE',
+
+  /// The quote has been refreshed
+  QUOTE_REFRESHED = 'SWAP_QUOTE_REFRESHED',
+
+  /// The user has changed inputs
+  INPUT_CHANGES = 'SWAP_INPUT_CHANGES',
+
+  /// An error has occurred
+  ERROR = 'SWAP_ERROR',
+
+  /// The user sent the approval transaction
+  APPROVAL = 'SWAP_APPROVAL',
+
+  /// The user has sent the swap order
+  SWAP = 'SWAP_EXECUTION',
+
+  /// The user's order has been filled
+  SWAP_FILLED = 'SWAP_FILLED',
+
+  /// The user's order has failed
+  SWAP_FAILED = 'SWAP_FAILED',
+
+  /// The user denied a wallet request
+  USER_DENIED = 'SWAP_USER_DENIED_WALLET_REQUEST',
+}
+
 export const REWARDS = {
   CLAIM_ALL_REWARDS: 'Claim All Rewards',
   CLAIM_PROTOCOL_REWARDS: 'Claim Protocol Rewards',

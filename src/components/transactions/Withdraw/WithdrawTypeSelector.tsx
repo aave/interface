@@ -8,7 +8,7 @@ import { useShallow } from 'zustand/shallow';
 
 export enum WithdrawType {
   WITHDRAW,
-  WITHDRAWSWITCH,
+  WITHDRAW_AND_SWAP,
 }
 export function WithdrawTypeSelector({
   withdrawType,
@@ -43,14 +43,14 @@ export function WithdrawTypeSelector({
         </StyledTxModalToggleButton>
 
         <StyledTxModalToggleButton
-          value={WithdrawType.WITHDRAWSWITCH}
-          disabled={withdrawType === WithdrawType.WITHDRAWSWITCH}
+          value={WithdrawType.WITHDRAW_AND_SWAP}
+          disabled={withdrawType === WithdrawType.WITHDRAW_AND_SWAP}
           onClick={() =>
-            trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw and Switch' })
+            trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw and Swap' })
           }
         >
           <Typography variant="buttonM">
-            <Trans>Withdraw & Switch</Trans>
+            <Trans>Withdraw & Swap</Trans>
           </Typography>
         </StyledTxModalToggleButton>
       </StyledTxModalToggleGroup>

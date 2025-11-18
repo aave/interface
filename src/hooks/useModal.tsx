@@ -2,7 +2,7 @@ import { ChainId, Stake } from '@aave/contract-helpers';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { ActionFields, TransactionHistoryItem } from 'src/modules/history/types';
+import { ActionName, SwapActionFields, TransactionHistoryItem } from 'src/modules/history/types';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { GENERAL } from 'src/utils/events';
@@ -14,7 +14,6 @@ export enum ModalType {
   Withdraw,
   Borrow,
   Repay,
-  CollateralChange,
   Stake,
   Unstake,
   StakeCooldown,
@@ -22,14 +21,11 @@ export enum ModalType {
   ClaimRewards,
   Emode,
   Faucet,
-  CollateralSwap,
-  DebtSwitch,
   GovDelegation,
   GovVote,
   V3Migration,
   RevokeGovDelegation,
   StakeRewardsClaimRestake,
-  Switch,
   StakingMigrate,
   GovRepresentatives,
   Bridge,
@@ -41,8 +37,14 @@ export enum ModalType {
   UmbrellaUnstake,
   SavingsGhoDeposit,
   SavingsGhoWithdraw,
-  SwitchLimitOrder,
   CancelCowOrder,
+
+  // Swaps
+  Swap,
+  CollateralSwap,
+  DebtSwap,
+  RepayWithCollateral,
+  WithdrawAndSwap,
 }
 
 export interface ModalArgsType {
@@ -60,7 +62,7 @@ export interface ModalArgsType {
   umbrellaAssetName?: string;
   stataTokenAToken?: string;
   stataTokenAsset?: string;
-  cowOrder?: TransactionHistoryItem<ActionFields['CowSwap']>;
+  cowOrder?: TransactionHistoryItem<SwapActionFields[ActionName.Swap]>;
 }
 
 export type TxStateType = {
@@ -145,7 +147,9 @@ export interface ModalContextType<T extends ModalArgsType> {
   ) => void;
   openSavingsGhoDeposit: () => void;
   openSavingsGhoWithdraw: () => void;
-  openCancelCowOrder: (transaction: TransactionHistoryItem<ActionFields['CowSwap']>) => void;
+  openCancelCowOrder: (
+    transaction: TransactionHistoryItem<SwapActionFields[ActionName.Swap]>
+  ) => void;
   close: () => void;
   closeWithCb: (callback: CallbackFn) => void;
   type?: ModalType;
@@ -260,7 +264,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           funnel,
           usageAsCollateralEnabledOnUser
         ) => {
-          setType(ModalType.CollateralChange);
+          setType(ModalType.CollateralSwap);
           setArgs({ underlyingAsset });
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Toggle Collateral',
@@ -373,7 +377,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
             modal: 'Debt Switch',
             asset: underlyingAsset,
           });
-          setType(ModalType.DebtSwitch);
+          setType(ModalType.DebtSwap);
           setArgs({ underlyingAsset });
         },
         openGovDelegation: () => {
@@ -404,7 +408,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
         },
         openSwitch: (underlyingAsset, chainId) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Swap' });
-          setType(ModalType.Switch);
+          setType(ModalType.Swap);
           setArgs({ underlyingAsset, chainId });
         },
         openStakingMigrate: () => {
@@ -424,7 +428,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
         openCancelCowOrder: (transaction) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Cancel CoW Order',
-            orderId: transaction.orderId,
+            orderId: transaction.id,
           });
           setType(ModalType.CancelCowOrder);
           setArgs({ cowOrder: transaction });
