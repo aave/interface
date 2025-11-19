@@ -56,7 +56,7 @@ export function LowHealthFactorWarning({
           Low health factor after swap. Your position will carry a higher risk of liquidation.
         </Trans>
       </Typography>
-      {!state.actionsBlocked[ActionsBlockedReason.LOW_HEALTH_FACTOR] && (
+      {!state.actionsBlocked[ActionsBlockedReason.IS_LIQUIDATABLE] && (
         <Box
           sx={{
             display: 'flex',

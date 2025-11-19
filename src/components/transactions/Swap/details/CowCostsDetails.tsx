@@ -37,6 +37,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
     .toNumber();
   const flashloanFeeUsd = Number(flashloanFeeFormatted) * flashLoanFeeTokenPriceUnitUsd;
   const flashloanFeeToken = state.sellAmountToken;
+  const isFlashloanUsed = state.useFlashloan;
 
   if (!state.buyAmountToken || !state.sellAmountToken) return null;
 
@@ -74,7 +75,8 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
     partnerFeeToken = state.buyAmountToken;
   }
 
-  const totalCostsInUsd = networkFeeUsd + partnerFeeUsd + (flashloanFeeUsd ?? 0); // + costs.slippageInUsd;
+  const totalCostsInUsd =
+    networkFeeUsd + partnerFeeUsd + (isFlashloanUsed ? flashloanFeeUsd ?? 0 : 0); // + costs.slippageInUsd;
 
   return (
     <Accordion
@@ -183,7 +185,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
             />
           </Box>
         </Row>
-        {!!(flashloanFeeFormatted && flashloanFeeToken && flashloanFeeUsd) && (
+        {!!(flashloanFeeFormatted && flashloanFeeToken && flashloanFeeUsd && isFlashloanUsed) && (
           <Row
             mx={2}
             mb={2}

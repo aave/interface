@@ -433,9 +433,7 @@ const useMultiProviderSwapQuoteQuery = ({
         !state.mainTxState.txHash && // Don't fetch quotes once transaction is sent
         !state.mainTxState.loading && // Don't fetch quotes while transaction is processing
         !approvalTxState?.loading && // Don't fetch quotes while approval is processing
-        !approvalTxState?.success && // Don't fetch quotes while approval is successful
         provider !== SwapProvider.NONE &&
-        !state.quoteRefreshPaused &&
         !state.isWrongNetwork
       );
     })(),

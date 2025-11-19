@@ -53,13 +53,16 @@ export const InsufficientBalanceGuard = ({
         });
       }
     } else {
+      // Clear error and actionsBlocked if balance is sufficient
+      // Check both error and actionsBlocked to handle cases where error was cleared elsewhere
       const isBalanceError =
         state.error?.rawError instanceof Error &&
         state.error.rawError.message === 'BalanceLowerThanInput';
+      const isBalanceBlocked = state.actionsBlocked?.[ActionsBlockedReason.INSUFFICIENT_BALANCE];
 
-      if (isBalanceError) {
+      if (isBalanceError || isBalanceBlocked) {
         setState({
-          error: undefined,
+          ...(isBalanceError ? { error: undefined } : {}),
           actionsBlocked: {
             [ActionsBlockedReason.INSUFFICIENT_BALANCE]: undefined,
           },
@@ -67,16 +70,21 @@ export const InsufficientBalanceGuard = ({
       }
     }
   }, [
+    state.inputAmount,
+    state.outputAmount,
     state.debouncedInputAmount,
     state.debouncedOutputAmount,
     state.sourceToken.balance,
     state.destinationToken.balance,
     state.sellAmountFormatted,
+    state.buyAmountFormatted,
+    state.sellAmountToken,
+    state.buyAmountToken,
     state.isInvertedSwap,
     state.side,
     state.swapType,
-    state.buyAmountFormatted,
-    state.sellAmountFormatted,
+    state.error,
+    state.actionsBlocked,
   ]);
 
   if (hasInsufficientBalance(state)) {

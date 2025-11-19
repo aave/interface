@@ -7,6 +7,7 @@ import {
   swapInputChangeToAnalyticsEventParams,
   swapQuoteToAnalyticsEventParams,
   swapTrackApprovalToAnalyticsEventParams,
+  swapTrackGasEstimationErrorToAnalyticsEventParams,
   swapTrackSwapFailedToAnalyticsEventParams,
   swapTrackSwapFilledToAnalyticsEventParams,
   swapTrackSwapToAnalyticsEventParams,
@@ -22,6 +23,7 @@ export type TrackAnalyticsHandlers = {
   trackSwap: () => void;
   trackSwapFilled: (executedSellAmount: string, executedBuyAmount: string) => void;
   trackSwapFailed: (reason?: string) => void;
+  trackGasEstimationError: (error: SwapError) => void;
 };
 
 /*
@@ -59,5 +61,10 @@ export const useHandleAnalytics = ({ state }: { state: SwapState }) => {
       ),
     trackSwapFailed: (reason?: string) =>
       trackEvent(SWAP.SWAP_FAILED, swapTrackSwapFailedToAnalyticsEventParams(state, reason)),
+    trackGasEstimationError: () =>
+      trackEvent(
+        SWAP.GAS_ESTIMATION_ERROR,
+        swapTrackGasEstimationErrorToAnalyticsEventParams(state)
+      ),
   };
 };
