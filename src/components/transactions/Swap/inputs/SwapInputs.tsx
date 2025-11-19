@@ -88,6 +88,7 @@ export const SwapInputs = ({
               quoteTimerPausedAccumMs: undefined,
             }
           : {}),
+        ...(state.orderType === OrderType.MARKET ? { quoteRefreshPaused: false } : {}),
         inputAmount: maxAmount,
         inputAmountUSD: computeUSD(maxAmount),
         isMaxSelected: true,
@@ -103,6 +104,7 @@ export const SwapInputs = ({
               quoteTimerPausedAccumMs: undefined,
             }
           : {}),
+        ...(state.orderType === OrderType.MARKET ? { quoteRefreshPaused: false } : {}),
         inputAmount: value,
         inputAmountUSD: computeUSD(value),
         isMaxSelected: value === state.forcedMaxValue,
