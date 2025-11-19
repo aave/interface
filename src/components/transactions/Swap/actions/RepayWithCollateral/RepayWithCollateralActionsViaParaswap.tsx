@@ -249,20 +249,20 @@ export const RepayWithCollateralActionsViaParaswap = ({
           ],
           error: undefined, // Clear any existing errors
         });
+        trackingHandlers.trackGasEstimationError(error);
       } else {
         // For other errors, handle normally
         setTxError(parsedError);
         setState({
           actionsLoading: false,
         });
+        const reason = error instanceof Error ? error.message : undefined;
+        trackingHandlers.trackSwapFailed(reason);
       }
 
       setMainTxState({
         loading: false,
       });
-
-      const reason = error instanceof Error ? error.message : undefined;
-      trackingHandlers.trackSwapFailed(reason);
     }
   };
 

@@ -228,6 +228,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
           ],
           error: undefined, // Clear any existing errors
         });
+        trackingHandlers.trackGasEstimationError(error);
       } else {
         // For other errors, handle normally
         setTxError(parsedError);
@@ -239,14 +240,13 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
             actionBlocked: parsedError.actionBlocked,
           },
         });
+        const reason = error instanceof Error ? error.message : 'Swap failed';
+        trackingHandlers.trackSwapFailed(reason);
       }
 
       setMainTxState({
         loading: false,
       });
-
-      const reason = error instanceof Error ? error.message : 'Swap failed';
-      trackingHandlers.trackSwapFailed(reason);
     }
   };
 

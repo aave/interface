@@ -135,3 +135,12 @@ export const swapUserDeniedToAnalyticsEventParams = (state: SwapState): TrackEve
     ...swapStateToAnalyticsEventParams(state),
   };
 };
+
+export const swapTrackGasEstimationErrorToAnalyticsEventParams = (
+  state: SwapState
+): TrackEventProperties => {
+  return {
+    ...swapStateToAnalyticsEventParams(state),
+    errorMessage: 'Gas estimation error',
+  };
+};

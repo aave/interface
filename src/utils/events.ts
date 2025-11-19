@@ -58,6 +58,9 @@ export enum SWAP {
 
   /// The user denied a wallet request
   USER_DENIED = 'SWAP_USER_DENIED_WALLET_REQUEST',
+
+  /// The user has encountered a gas estimation error
+  GAS_ESTIMATION_ERROR = 'SWAP_GAS_ESTIMATION_ERROR',
 }
 
 export const REWARDS = {
