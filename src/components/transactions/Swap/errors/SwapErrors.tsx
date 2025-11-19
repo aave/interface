@@ -3,7 +3,7 @@ import React, { Dispatch, useEffect } from 'react';
 import { useModalContext } from '../../../../hooks/useModal';
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
 import { SwapError, SwapParams, SwapState } from '../types';
-import { isProtocolSwapState } from '../types/state.types';
+import { ActionsBlockedReason, isProtocolSwapState } from '../types/state.types';
 import { errorToConsole } from './shared/console.helpers';
 import {
   FlashLoanDisabledBlockingGuard,
@@ -66,7 +66,9 @@ export const SwapErrors = ({
     }
   }, [state.error]);
 
-  if (hasInsufficientBalance(state)) {
+  const insufficientBalance = hasInsufficientBalance(state);
+
+  if (insufficientBalance || state.actionsBlocked?.[ActionsBlockedReason.INSUFFICIENT_BALANCE]) {
     return (
       <InsufficientBalanceGuard
         state={state}
