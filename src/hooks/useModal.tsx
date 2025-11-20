@@ -14,6 +14,7 @@ export enum ModalType {
   Withdraw,
   Borrow,
   Repay,
+  CollateralChange,
   Stake,
   Unstake,
   StakeCooldown,
@@ -264,7 +265,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           funnel,
           usageAsCollateralEnabledOnUser
         ) => {
-          setType(ModalType.CollateralSwap);
+          setType(ModalType.CollateralChange);
           setArgs({ underlyingAsset });
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Toggle Collateral',

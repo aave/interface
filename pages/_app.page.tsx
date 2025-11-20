@@ -89,6 +89,11 @@ const CancelCowOrderModal = dynamic(() =>
 const ReadOnlyModal = dynamic(() =>
   import('src/components/WalletConnection/ReadOnlyModal').then((module) => module.ReadOnlyModal)
 );
+const CollateralChangeModal = dynamic(() =>
+  import('src/components/transactions/CollateralChange/CollateralChangeModal').then(
+    (module) => module.CollateralChangeModal
+  )
+);
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -166,6 +171,7 @@ export default function MyApp(props: MyAppProps) {
                                   <WithdrawModal />
                                   <BorrowModal />
                                   <RepayModal />
+                                  <CollateralChangeModal />
                                   <ClaimRewardsModal />
                                   <EmodeModal />
                                   <FaucetModal />
