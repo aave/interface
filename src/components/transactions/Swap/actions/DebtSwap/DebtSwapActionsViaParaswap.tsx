@@ -103,10 +103,6 @@ export const DebtSwapActionsViaParaswap = ({
         throw new Error('No swap rate found');
       }
 
-      if (!signatureParams) {
-        throw new Error('Signature params not found');
-      }
-
       const inferredKind = state.swapRate.optimalRateData.side === 'SELL' ? 'sell' : 'buy';
 
       // CallData for ParaswapRoute, which is inversed to the actual swap (dest -> src)
@@ -133,11 +129,15 @@ export const DebtSwapActionsViaParaswap = ({
         isMaxSelected: state.isMaxSelected,
         txCalldata: swapCallData,
         augustus: augustus,
-        signatureParams: {
-          signature: signatureParams.signature,
-          deadline: signatureParams.deadline,
-          amount: signatureParams.amount,
-        },
+        ...(signatureParams != undefined
+          ? {
+              signatureParams: {
+                signature: signatureParams.signature,
+                deadline: signatureParams.deadline,
+                amount: signatureParams.amount,
+              },
+            }
+          : {}),
         isWrongNetwork: state.isWrongNetwork,
       });
 
