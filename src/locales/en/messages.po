@@ -1309,6 +1309,10 @@ msgstr "Swapping"
 msgid "ETH Correlated"
 msgstr "ETH Correlated"
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "You can not use this currency as collateral"
+msgstr "You can not use this currency as collateral"
+
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1564,6 +1568,7 @@ msgstr "View all"
 msgid "Weekly Rewards"
 msgstr "Weekly Rewards"
 
+#: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 #: src/components/transactions/Faucet/FaucetActions.tsx
 msgid "Pending..."
 msgstr "Pending..."
@@ -1734,6 +1739,10 @@ msgstr "A temporary contract will be used to execute the trade. Your wallet may 
 msgid "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for SPK incentive program. Aave Labs does not guarantee the program and accepts no liability."
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
+msgstr "Enabling this asset as collateral increases your borrowing power and Health Factor. However, it can get liquidated if your health factor drops below 1."
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "This action will reduce V2 health factor below liquidation threshold. retain collateral or migrate borrow position to continue."
 msgstr "This action will reduce V2 health factor below liquidation threshold. retain collateral or migrate borrow position to continue."
@@ -1776,6 +1785,10 @@ msgstr "Auto"
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Age"
 msgstr "Age"
+
+#: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
+msgid "Disable {symbol} as collateral"
+msgstr "Disable {symbol} as collateral"
 
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Differential"
@@ -2152,6 +2165,10 @@ msgstr "User denied the operation."
 msgid "Support"
 msgstr "Support"
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "You will exit isolation mode and other tokens can now be used as collateral"
+msgstr "You will exit isolation mode and other tokens can now be used as collateral"
+
 #: src/modules/staking/GhoStakingPanel.tsx
 msgid "Deposit APR"
 msgstr "Deposit APR"
@@ -2300,6 +2317,10 @@ msgstr "Enter a valid address"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Time left to unstake"
 msgstr "Time left to unstake"
+
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
+msgstr "Disabling this asset as collateral affects your borrowing power and Health Factor."
 
 #: src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
 #: src/modules/sGho/SGhoHeader.tsx
@@ -3192,6 +3213,7 @@ msgstr "Proposition"
 msgid "Can be executed"
 msgstr "Can be executed"
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
@@ -3565,6 +3587,10 @@ msgstr "Unstake {symbol}"
 msgid "Enter ETH address or ENS"
 msgstr "Enter ETH address or ENS"
 
+#: src/components/transactions/CollateralChange/CollateralChangeModal.tsx
+msgid "Review tx"
+msgstr "Review tx"
+
 #: src/modules/governance/VoteBar.tsx
 msgid "NAY"
 msgstr "NAY"
@@ -3821,6 +3847,10 @@ msgstr "Discord channel"
 msgid "The caller of the function is not an AToken"
 msgstr "The caller of the function is not an AToken"
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "You do not have supplies in this currency"
+msgstr "You do not have supplies in this currency"
+
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE YAE"
@@ -3923,6 +3953,10 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 msgid "Migrate"
 msgstr "Migrate"
 
+#: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
+msgid "Enable {symbol} as collateral"
+msgstr "Enable {symbol} as collateral"
+
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark mode"
 msgstr "Dark mode"
@@ -3958,6 +3992,10 @@ msgstr "Track wallet"
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
+
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
+msgstr "You can not switch usage as collateral mode for this currency, because it will cause collateral call"
 
 #: src/layouts/AppHeader.tsx
 msgid "The app is running in fork mode."
@@ -4023,6 +4061,7 @@ msgstr "Filled"
 msgid "Remaining debt"
 msgstr "Remaining debt"
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
