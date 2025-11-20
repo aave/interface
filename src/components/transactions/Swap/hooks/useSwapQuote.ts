@@ -439,7 +439,6 @@ const useMultiProviderSwapQuoteQuery = ({
     })(),
     retry: 0,
     throwOnError: false,
-    refetchOnWindowFocus: (query) => (query.state.error ? false : true),
     refetchInterval: (() => {
       const isInsufficientBalance = hasInsufficientBalance(state);
       const isFlashloanDisabled = hasFlashLoanDisabled(state);

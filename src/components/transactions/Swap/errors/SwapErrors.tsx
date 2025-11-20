@@ -2,7 +2,7 @@ import React, { Dispatch, useEffect } from 'react';
 
 import { useModalContext } from '../../../../hooks/useModal';
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
-import { SwapError, SwapParams, SwapState } from '../types';
+import { SwapError, SwapParams, SwapState, SwapType } from '../types';
 import { ActionsBlockedReason, isProtocolSwapState } from '../types/state.types';
 import { errorToConsole } from './shared/console.helpers';
 import {
@@ -108,7 +108,11 @@ export const SwapErrors = ({
     );
   }
 
-  if (isProtocolSwapState(state) && hasInsufficientLiquidity(state)) {
+  if (
+    isProtocolSwapState(state) &&
+    hasInsufficientLiquidity(state) &&
+    state.swapType !== SwapType.RepayWithCollateral
+  ) {
     return (
       <InsufficientLiquidityBlockingGuard
         state={state}

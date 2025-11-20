@@ -4,12 +4,18 @@ import { BigNumber } from 'bignumber.js';
 import { ethers } from 'ethers';
 import { Dispatch, useEffect } from 'react';
 
-import { ActionsBlockedReason, ProtocolSwapState, SwapError, SwapState } from '../../types';
+import {
+  ActionsBlockedReason,
+  ProtocolSwapState,
+  SwapError,
+  SwapState,
+  SwapType,
+} from '../../types';
 import { isProtocolSwapState } from '../../types/state.types';
 import { InsufficientLiquidityBlockingError } from './InsufficientLiquidityBlockingError';
 
 export const hasInsufficientLiquidity = (state: SwapState) => {
-  if (!isProtocolSwapState(state)) return false;
+  if (!isProtocolSwapState(state) || state.swapType === SwapType.RepayWithCollateral) return false;
   const reserve = state.isInvertedSwap
     ? state.sourceReserve?.reserve
     : state.destinationReserve?.reserve;
