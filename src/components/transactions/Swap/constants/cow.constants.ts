@@ -80,7 +80,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.ARBITRUM_ONE]: 'ALL',
     [SupportedChainId.AVALANCHE]: 'ALL',
     [SupportedChainId.BNB]: 'ALL',
-    [SupportedChainId.GNOSIS_CHAIN]: 'ALL',
     [SupportedChainId.MAINNET]: 'ALL',
     [SupportedChainId.POLYGON]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',

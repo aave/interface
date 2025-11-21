@@ -21,6 +21,7 @@ import {
   getCowTradingSdkByChainIdAndAppCode,
 } from '../../helpers/cow';
 import { calculateInstanceAddress } from '../../helpers/cow/adapters.helpers';
+import { simulateCollateralSwapPreHook } from '../../helpers/cow/simulation.helpers';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
@@ -31,6 +32,14 @@ import {
   SwapState,
 } from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
+
+const cowSimulationOnlyFlag = process.env.NEXT_PUBLIC_COW_SIMULATION_ONLY;
+const COW_SIMULATION_ONLY =
+  cowSimulationOnlyFlag === 'true'
+    ? true
+    : cowSimulationOnlyFlag === 'false'
+    ? false
+    : process.env.NODE_ENV !== 'production';
 
 /**
  * Collateral swap via CoW Protocol Flashloan Adapters.
@@ -229,6 +238,43 @@ export const CollateralSwapActionsViaCowAdapters = ({
         state.orderType,
         orderPostParams.swapSettings.appData
       );
+
+      const hooks = orderPostParams.swapSettings.appData?.metadata?.hooks;
+      console.log('[CoW][CollateralSwap] Hooks before order submission', {
+        preHooks: hooks?.pre,
+        postHooks: hooks?.post,
+      });
+      if (COW_SIMULATION_ONLY) {
+        console.info('[CoW][CollateralSwap] Simulation-only mode is active');
+        const simulationOk = await simulateCollateralSwapPreHook({
+          chainId: state.chainId,
+          from: user as `0x${string}`,
+          preHook: hooks?.pre?.[0],
+          flashloan: orderPostParams.swapSettings.appData?.metadata?.flashloan,
+          postHook: hooks?.post?.[0],
+          settlementContext: {
+            receiver: orderPostParams.instanceAddress,
+            buyToken: state.buyAmountToken?.underlyingAddress,
+            buyAmount: state.buyAmountBigInt,
+          },
+        });
+        console.info('[CoW][CollateralSwap] Simulation result', simulationOk);
+        if (!simulationOk) {
+          console.info(
+            '[CoW][CollateralSwap] Simulation failed; skipping CoW order submission in simulation-only mode'
+          );
+          setMainTxState({
+            txHash: undefined,
+            loading: false,
+            success: false,
+          });
+          setState({
+            actionsLoading: false,
+          });
+          return;
+        }
+        console.info('[CoW][CollateralSwap] Simulation passed; proceeding to post order');
+      }
 
       // Safe-check in case any param changed between approval and order posting
       const instanceAddress = orderPostParams.instanceAddress;
