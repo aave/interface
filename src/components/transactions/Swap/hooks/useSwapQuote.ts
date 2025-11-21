@@ -433,12 +433,15 @@ const useMultiProviderSwapQuoteQuery = ({
         !state.mainTxState.txHash && // Don't fetch quotes once transaction is sent
         !state.mainTxState.loading && // Don't fetch quotes while transaction is processing
         !approvalTxState?.loading && // Don't fetch quotes while approval is processing
+        !approvalTxState?.success && // Don't fetch quotes while approval is successful
+        !state.quoteRefreshPaused && // Respect paused refresh state (e.g. after approval or manual edits)
         provider !== SwapProvider.NONE &&
         !state.isWrongNetwork
       );
     })(),
     retry: 0,
     throwOnError: false,
+    refetchOnWindowFocus: false,
     refetchInterval: (() => {
       const isInsufficientBalance = hasInsufficientBalance(state);
       const isFlashloanDisabled = hasFlashLoanDisabled(state);
