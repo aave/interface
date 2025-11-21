@@ -2,12 +2,18 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { SxProps } from '@mui/material';
 import { Dispatch, useEffect } from 'react';
 
-import { ActionsBlockedReason, ProtocolSwapState, SwapError, SwapState } from '../../types';
+import {
+  ActionsBlockedReason,
+  ProtocolSwapState,
+  SwapError,
+  SwapState,
+  SwapType,
+} from '../../types';
 import { isProtocolSwapState } from '../../types/state.types';
 import { SupplyCapBlockingError } from './SupplyCapBlockingError';
 
 export const hasSupplyCapBlocking = (state: SwapState) => {
-  if (!isProtocolSwapState(state)) return false;
+  if (!isProtocolSwapState(state) || state.swapType === SwapType.RepayWithCollateral) return false;
   const reserve = state.isInvertedSwap
     ? state.sourceReserve?.reserve
     : state.destinationReserve?.reserve;

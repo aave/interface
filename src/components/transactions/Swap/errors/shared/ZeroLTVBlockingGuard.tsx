@@ -2,11 +2,15 @@ import { SxProps } from '@mui/material';
 import React, { Dispatch, useEffect } from 'react';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 
-import { ActionsBlockedReason, SwapError, SwapState } from '../../types';
+import { ActionsBlockedReason, SwapError, SwapState, SwapType } from '../../types';
 import { ZeroLTVBlockingError } from './ZeroLTVBlockingError';
 
 export const hasZeroLTVBlocking = (state: SwapState, blockingAssets: string[]) => {
-  return blockingAssets.length > 0 && !blockingAssets.includes(state.sourceToken.symbol);
+  return (
+    blockingAssets.length > 0 &&
+    !blockingAssets.includes(state.sourceToken.symbol) &&
+    state.swapType !== SwapType.RepayWithCollateral
+  );
 };
 
 export const ZeroLTVBlockingGuard = ({

@@ -2,6 +2,7 @@ import { BigNumberValue, valueToBigNumber } from '@aave/math-utils';
 import { WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { useQueryClient } from '@tanstack/react-query';
 import { Dispatch, useEffect, useMemo } from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
 
@@ -54,6 +55,7 @@ export const SwapInputs = ({
   setState: Dispatch<Partial<SwapState>>;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
+  const { setApprovalTxState, approvalTxState } = useModalContext();
   const resetErrorsAndWarnings = () => {
     setState({
       error: undefined,
@@ -65,6 +67,14 @@ export const SwapInputs = ({
 
   const handleInputChange = (value: string) => {
     resetErrorsAndWarnings();
+    // Changing amounts invalidates any prior approval
+    if (approvalTxState?.txHash || approvalTxState?.success || approvalTxState?.loading) {
+      setApprovalTxState({
+        txHash: undefined,
+        loading: false,
+        success: false,
+      });
+    }
 
     // Calculate USD per token unit if possible
     const usdPerToken = state.swapRate?.srcTokenPriceUsd;
@@ -122,6 +132,14 @@ export const SwapInputs = ({
 
     const computeUSD = (amt: string) =>
       usdPerToken ? valueToBigNumber(amt).multipliedBy(usdPerToken).toString(10) : '';
+    // Changing amounts invalidates any prior approval
+    if (approvalTxState?.txHash || approvalTxState?.success || approvalTxState?.loading) {
+      setApprovalTxState({
+        txHash: undefined,
+        loading: false,
+        success: false,
+      });
+    }
 
     if (state.swapRate) {
       // Block quote refreshs if user is changing the output amount after getting quotes
