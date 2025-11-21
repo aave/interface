@@ -77,14 +77,10 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.BASE]: 'ALL', // Base is not supported
   },
   [SwapType.CollateralSwap]: {
-    [SupportedChainId.ARBITRUM_ONE]: 'ALL',
-    [SupportedChainId.AVALANCHE]: 'ALL',
-    [SupportedChainId.BNB]: 'ALL',
-    [SupportedChainId.GNOSIS_CHAIN]: 'ALL',
     [SupportedChainId.MAINNET]: 'ALL',
+    [SupportedChainId.BNB]: 'ALL',
     [SupportedChainId.POLYGON]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
-    // Base is supported
   },
   [SwapType.RepayWithCollateral]: {
     [SupportedChainId.ARBITRUM_ONE]: 'ALL',
@@ -94,7 +90,7 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.MAINNET]: 'ALL',
     [SupportedChainId.POLYGON]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
-    [SupportedChainId.BASE]: 'ALL', // Base is not supported
+    // Base is supported
   },
 
   // Specific assets that are not supported for certain chains across all swap types

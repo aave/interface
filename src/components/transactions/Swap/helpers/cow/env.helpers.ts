@@ -40,6 +40,10 @@ export const getCowFlashLoanSdk = async (chainId: number) => {
   return new AaveCollateralSwapSdk({
     hookAdapterPerType: HOOK_ADAPTER_PER_TYPE,
     aaveAdapterFactory: ADAPTER_FACTORY,
+    hooksGasLimit: {
+      pre: BigInt(300000),
+      post: BigInt(700000),
+    },
   });
 };
 
