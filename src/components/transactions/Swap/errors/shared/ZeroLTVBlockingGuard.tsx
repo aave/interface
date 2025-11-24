@@ -67,7 +67,7 @@ export const ZeroLTVBlockingGuard = ({
         });
       }
     }
-  }, [assetsBlockingWithdraw, state.sourceToken.symbol]);
+  }, [assetsBlockingWithdraw, state.sourceToken.symbol, state.swapType]);
 
   if (hasZeroLTVBlocking(state, assetsBlockingWithdraw)) {
     return <ZeroLTVBlockingError sx={{ mb: !isSwapFlowSelected ? 0 : 4, ...sx }} />;
