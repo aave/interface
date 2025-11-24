@@ -77,9 +77,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.BASE]: 'ALL', // Base is not supported
   },
   [SwapType.CollateralSwap]: {
-    [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.BNB]: 'ALL',
-    [SupportedChainId.POLYGON]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
   },
   [SwapType.RepayWithCollateral]: {
