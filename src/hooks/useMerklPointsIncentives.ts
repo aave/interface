@@ -92,15 +92,15 @@ export const useMerklPointsIncentives = ({
         return null;
       }
 
-      const opportunity = opportunities[0];
+      const opportunity = opportunities.find((opp) => opp.status === OpportunityStatus.LIVE);
+
+      if (!opportunity) {
+        return null;
+      }
 
       const rewardsBreakdown = opportunity.rewardsRecord.breakdowns[0];
 
       if (!rewardsBreakdown) {
-        return null;
-      }
-
-      if (opportunity.status !== OpportunityStatus.LIVE) {
         return null;
       }
 
