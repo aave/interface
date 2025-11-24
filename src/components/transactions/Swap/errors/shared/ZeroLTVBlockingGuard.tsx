@@ -6,11 +6,17 @@ import { ActionsBlockedReason, SwapError, SwapState, SwapType } from '../../type
 import { ZeroLTVBlockingError } from './ZeroLTVBlockingError';
 
 export const hasZeroLTVBlocking = (state: SwapState, blockingAssets: string[]) => {
-  return (
-    blockingAssets.length > 0 &&
-    !blockingAssets.includes(state.sourceToken.symbol) &&
-    state.swapType !== SwapType.RepayWithCollateral
-  );
+  // Never block RepayWithCollateral
+  if (state.swapType === SwapType.RepayWithCollateral) {
+    return false;
+  }
+  // For CollateralSwap, block if the user has any zero-LTV collateral enabled
+  if (state.swapType === SwapType.CollateralSwap) {
+    return blockingAssets.length > 0;
+  }
+  // For other swap types, block if there are zero-LTV assets enabled
+  // and the source token is not one of those (existing behavior)
+  return blockingAssets.length > 0 && !blockingAssets.includes(state.sourceToken.symbol);
 };
 
 export const ZeroLTVBlockingGuard = ({
@@ -38,7 +44,7 @@ export const ZeroLTVBlockingGuard = ({
         const blockingError: SwapError = {
           rawError: new Error('ZeroLTVBlockingError'),
           message:
-            'You have assets with zero LTV that are blocking this operation. Please disable them as collateral first.',
+            'You have assets with zero LTV that are blocking this operation. Please withdraw them or disable them as collateral first.',
           actionBlocked: true,
         };
         setState({
@@ -61,7 +67,7 @@ export const ZeroLTVBlockingGuard = ({
         });
       }
     }
-  }, [assetsBlockingWithdraw, state.sourceToken.symbol]);
+  }, [assetsBlockingWithdraw, state.sourceToken.symbol, state.swapType]);
 
   if (hasZeroLTVBlocking(state, assetsBlockingWithdraw)) {
     return <ZeroLTVBlockingError sx={{ mb: !isSwapFlowSelected ? 0 : 4, ...sx }} />;

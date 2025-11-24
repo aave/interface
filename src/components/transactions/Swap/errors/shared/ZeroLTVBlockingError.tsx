@@ -7,8 +7,8 @@ export const ZeroLTVBlockingError = ({ sx }: { sx?: SxProps }) => {
     <Warning severity="error" sx={{ mt: 4, ...sx }} icon={false}>
       <Typography variant="caption">
         <Trans>
-          You have assets with zero LTV that are blocking this operation. Please disable them as
-          collateral first.
+          You have assets with zero LTV that are blocking this operation. Please withdraw them or
+          disable them as collateral first.
         </Trans>
       </Typography>
     </Warning>
