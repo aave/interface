@@ -1426,10 +1426,17 @@
     "@cowprotocol/sdk-common" "0.3.0"
     "@cowprotocol/sdk-config" "0.3.0"
 
-"@cowprotocol/sdk-flash-loans@1.5.2":
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/@cowprotocol/sdk-flash-loans/-/sdk-flash-loans-1.5.2.tgz#d5f8375441bf07a1a7a70ae786dcb969e91b2b73"
-  integrity sha512-RihEc1Gpow4p+b/tLCvptl+TLYNvXsqOC7KvA/5tdk40eOtWUqCiltb66J4FGnc5W8pqmLoRalql4myOMh8dLg==
+"@cowprotocol/sdk-ethers-v5-adapter@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@cowprotocol/sdk-ethers-v5-adapter/-/sdk-ethers-v5-adapter-0.2.0.tgz#c04ea01fe38635a4afc77ad84078db3987999628"
+  integrity sha512-90YxjDHe6WHwa6NDxXn04KFj71TAQyfuO8T1SI8eWgNTaF9EDEgMrTXmfdBDp7S9WZSBVfyu3XQGOoXe3v4PGQ==
+  dependencies:
+    "@cowprotocol/sdk-common" "0.3.0"
+
+"@cowprotocol/sdk-flash-loans@1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@cowprotocol/sdk-flash-loans/-/sdk-flash-loans-1.5.3.tgz#da3b9c320bae16571f7bedb6f07f099c3db5c9b6"
+  integrity sha512-Bl9h9rGc7el/89VwNKYQi/oWD849xifH21ZmdvEqNp9iEw7X+vtszQU5kCzwwmwCU09i0E7ZY8pgfNb8rRkOBA==
   dependencies:
     "@cowprotocol/sdk-app-data" "4.1.6"
     "@cowprotocol/sdk-common" "0.3.0"
@@ -1471,13 +1478,6 @@
     "@cowprotocol/sdk-order-book" "0.2.0"
     "@cowprotocol/sdk-order-signing" "0.1.11"
     deepmerge "^4.3.1"
-
-"@cowprotocol/sdk-viem-adapter@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@cowprotocol/sdk-viem-adapter/-/sdk-viem-adapter-0.2.0.tgz#5b155a2d7eceb9d6205b3db47b1e71951b4dea19"
-  integrity sha512-7bn2606tLmGba/sQfJYpxniU+Ztn/eKUABi8VVcE7JYaiCaDF5SbWd6i6E1/3LBSd3VoSJq/b77a5aU5g8fkrg==
-  dependencies:
-    "@cowprotocol/sdk-common" "0.3.0"
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"

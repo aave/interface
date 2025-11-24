@@ -1251,6 +1251,10 @@ msgstr "Costs & Fees"
 msgid "deposited"
 msgstr "deposited"
 
+#: src/components/transactions/Swap/errors/shared/ZeroLTVBlockingError.tsx
+msgid "You have assets with zero LTV that are blocking this operation. Please withdraw them or disable them as collateral first."
+msgstr "You have assets with zero LTV that are blocking this operation. Please withdraw them or disable them as collateral first."
+
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
@@ -3279,10 +3283,6 @@ msgstr "Cooldown to unstake"
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "User does not have outstanding variable rate debt on this reserve"
-
-#: src/components/transactions/Swap/errors/shared/ZeroLTVBlockingError.tsx
-msgid "You have assets with zero LTV that are blocking this operation. Please disable them as collateral first."
-msgstr "You have assets with zero LTV that are blocking this operation. Please disable them as collateral first."
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"

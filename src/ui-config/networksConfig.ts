@@ -254,8 +254,8 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.base]: {
     name: 'Base',
     publicJsonRPCUrl: [
-      'https://base.llamarpc.com',
       'https://1rpc.io/base',
+      'https://base.llamarpc.com',
       'https://base.publicnode.com',
       'https://base-mainnet.public.blastapi.io',
     ],

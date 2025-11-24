@@ -1,4 +1,5 @@
 import React, { Dispatch, useEffect } from 'react';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 
 import { useModalContext } from '../../../../hooks/useModal';
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
@@ -35,6 +36,7 @@ export const SwapErrors = ({
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
   const { txError } = useModalContext();
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
 
   useEffect(() => {
     if (txError) {
@@ -78,7 +80,7 @@ export const SwapErrors = ({
     );
   }
 
-  if (hasZeroLTVBlocking(state, [])) {
+  if (hasZeroLTVBlocking(state, assetsBlockingWithdraw)) {
     return (
       <ZeroLTVBlockingGuard
         state={state}
