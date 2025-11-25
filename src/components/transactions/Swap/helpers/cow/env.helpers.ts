@@ -4,7 +4,7 @@ import { AaveCollateralSwapSdk } from '@cowprotocol/sdk-flash-loans';
 import { ethers } from 'ethers';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-import { getWalletClient } from 'wagmi/actions';
+import { getAccount, getWalletClient } from 'wagmi/actions';
 
 import { ADAPTER_FACTORY, HOOK_ADAPTER_PER_TYPE } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
@@ -50,13 +50,20 @@ export const getCowFlashLoanSdk = async (chainId: number) => {
 };
 
 export const getCowAdapter = async (chainId: number) => {
-  const walletClient = await getWalletClient(wagmiConfig, { chainId });
-  if (!walletClient) {
-    throw new Error('Wallet not connected');
-  }
+  const { connector } = getAccount(wagmiConfig);
 
-  const eip1193Provider =
-    walletClient.transport?.value || (typeof window !== 'undefined' ? window.ethereum : undefined);
+  let eip1193Provider = connector ? await connector.getProvider({ chainId }) : undefined;
+
+  if (!eip1193Provider) {
+    const walletClient = await getWalletClient(wagmiConfig, { chainId });
+    if (!walletClient) {
+      throw new Error('Wallet not connected');
+    }
+
+    eip1193Provider =
+      walletClient.transport?.value ||
+      (typeof window !== 'undefined' ? window.ethereum : undefined);
+  }
 
   if (!eip1193Provider) {
     throw new Error('No EIP-1193 provider available for signer');
