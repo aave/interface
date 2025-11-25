@@ -69,9 +69,9 @@ export const useMerklPointsIncentives = ({
       const merklOpportunities: MerklOpportunity[] = await response.json();
       return merklOpportunities;
     },
-    queryKey: ['merklPointsIncentives', market, rewardedAsset, protocolAction],
+    queryKey: ['merklPointsIncentives', market],
     staleTime: 1000 * 60 * 5,
-    enabled,
+    enabled: enabled && !!rewardedAsset && !!protocolAction,
     select: (merklOpportunities) => {
       const opportunities = merklOpportunities.filter((opportunity) => {
         if (!rewardedAsset || !opportunity.explorerAddress || !protocolAction) {
@@ -92,15 +92,15 @@ export const useMerklPointsIncentives = ({
         return null;
       }
 
-      const opportunity = opportunities[0];
+      const opportunity = opportunities.find((opp) => opp.status === OpportunityStatus.LIVE);
+
+      if (!opportunity) {
+        return null;
+      }
 
       const rewardsBreakdown = opportunity.rewardsRecord.breakdowns[0];
 
       if (!rewardsBreakdown) {
-        return null;
-      }
-
-      if (opportunity.status !== OpportunityStatus.LIVE) {
         return null;
       }
 
