@@ -40,7 +40,7 @@ export const useHandleAnalytics = ({ state }: { state: SwapState }) => {
         swapQuoteToAnalyticsEventParams(state, swapQuote)
       ),
     trackSwapError: (error: SwapError) =>
-      trackEvent(SWAP.ERROR, swapErrorToAnalyticsEventParams(error)),
+      trackEvent(SWAP.ERROR, swapErrorToAnalyticsEventParams(state, error)),
     trackUserDenied: () =>
       trackEvent(SWAP.USER_DENIED, swapUserDeniedToAnalyticsEventParams(state)),
     trackInputChange: (fieldChange: SwapInputChanges, newValue: string) =>
