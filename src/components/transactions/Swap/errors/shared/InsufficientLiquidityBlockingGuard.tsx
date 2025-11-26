@@ -15,7 +15,9 @@ import { isProtocolSwapState } from '../../types/state.types';
 import { InsufficientLiquidityBlockingError } from './InsufficientLiquidityBlockingError';
 
 export const hasInsufficientLiquidity = (state: SwapState) => {
-  if (!isProtocolSwapState(state) || state.swapType === SwapType.RepayWithCollateral) return false;
+  // Only relevant for Debt Swaps where target asset availability and borrow cap matter.
+  // Collateral-related flows are handled via SupplyCapBlockingGuard and should not use borrow caps here.
+  if (!isProtocolSwapState(state) || state.swapType !== SwapType.DebtSwap) return false;
   const reserve = state.isInvertedSwap
     ? state.sourceReserve?.reserve
     : state.destinationReserve?.reserve;
