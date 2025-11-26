@@ -1,21 +1,37 @@
 import { formatUnits } from 'ethers/lib/utils';
-import { generateCoWExplorerLink } from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
+import { generateCoWExplorerLink } from 'src/components/transactions/Swap/helpers/cow';
 import { NetworkConfig } from 'src/ui-config/networksConfig';
 
 import {
+  ActionName,
   hasAmountAndReserve,
   hasCollateralReserve,
   hasSrcOrDestToken,
-  isCowSwapTransaction,
+  isCowSwapSubset,
   isSDKTransaction,
+  isSwapTransaction,
   TransactionHistoryItemUnion,
   UserTransactionItem,
 } from './types';
 // Get action for sdk or cowswap transaction
-export const getTransactionAction = (transaction: TransactionHistoryItemUnion): string => {
+export const getTransactionAction = (transaction: TransactionHistoryItemUnion): ActionName => {
   if (isSDKTransaction(transaction)) {
-    return transaction.__typename;
+    switch (transaction.__typename) {
+      case 'UserSupplyTransaction':
+        return ActionName.UserSupplyTransaction;
+      case 'UserWithdrawTransaction':
+        return ActionName.UserWithdrawTransaction;
+      case 'UserBorrowTransaction':
+        return ActionName.UserBorrowTransaction;
+      case 'UserRepayTransaction':
+        return ActionName.UserRepayTransaction;
+      case 'UserUsageAsCollateralTransaction':
+        return ActionName.UserUsageAsCollateralTransaction;
+      case 'UserLiquidationCallTransaction':
+        return ActionName.UserLiquidationCallTransaction;
+    }
   }
+  // For non-SDK transactions action already uses ActionName
   return transaction.action;
 };
 
@@ -78,14 +94,11 @@ export const getExplorerLink = (
   transaction: TransactionHistoryItemUnion,
   currentNetworkConfig: NetworkConfig
 ) => {
-  const action = getTransactionAction(transaction);
-
-  if (
-    (action === 'CowSwap' || action === 'CowCollateralSwap') &&
-    currentNetworkConfig.wagmiChain.id
-  ) {
-    const transactionId = getTransactionId(transaction);
-    return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transactionId);
+  if (isSwapTransaction(transaction) && currentNetworkConfig.wagmiChain.id) {
+    if (isCowSwapSubset(transaction)) {
+      return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transaction.orderId);
+    }
+    return currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
   }
 
   const txHash = getTransactionTxHash(transaction);
@@ -171,7 +184,7 @@ export const formatTransactionData = ({
       srcAmount: undefined,
       destAmount: undefined,
       status: undefined,
-      orderId: undefined,
+      orderIdorTxHash: undefined,
       chainId: undefined,
     };
 
@@ -343,7 +356,7 @@ export const formatTransactionData = ({
     }
 
     // For CowSwap transactions
-    else if (isCowSwapTransaction(transaction) && hasSrcOrDestToken(transaction)) {
+    else if (isSwapTransaction(transaction) && hasSrcOrDestToken(transaction)) {
       const {
         underlyingSrcToken,
         underlyingDestToken,
@@ -351,7 +364,6 @@ export const formatTransactionData = ({
         destAmount,
         status,
         chainId,
-        orderId,
         action,
       } = transaction;
 
@@ -359,7 +371,9 @@ export const formatTransactionData = ({
       newTransaction.id = transaction.id;
       newTransaction.timestamp = Math.floor(Date.parse(transaction.timestamp) / 1000);
       newTransaction.status = status;
-      newTransaction.orderId = orderId;
+      newTransaction.orderIdorTxHash = isCowSwapSubset(transaction)
+        ? transaction.orderId
+        : transaction.txHash;
       newTransaction.chainId = chainId;
 
       try {

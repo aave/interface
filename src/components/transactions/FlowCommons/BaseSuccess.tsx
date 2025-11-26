@@ -95,7 +95,7 @@ export const BaseSuccessView = ({
           onClick={handleClose}
           variant="contained"
           size="large"
-          sx={{ minHeight: '50px', mb: '30px' }}
+          sx={{ minHeight: '50px', mb: '0px' }}
           data-cy="closeButton"
         >
           <Trans>Ok, Close</Trans>

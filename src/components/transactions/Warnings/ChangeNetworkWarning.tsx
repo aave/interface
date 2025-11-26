@@ -70,7 +70,11 @@ export const ChangeNetworkWarning = ({
     switchNetwork(chainId);
   };
   return (
-    <Warning severity="error" icon={false} {...rest}>
+    <Warning
+      severity={isAutoSwitching ? 'info' : switchNetworkError ? 'error' : 'info'}
+      icon={false}
+      {...rest}
+    >
       {isAutoSwitching ? (
         <Typography variant="description" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <CircularProgress size={16} />
