@@ -3765,6 +3765,10 @@ msgstr "This asset is eligible for Kernel points incentive program. Aave Labs do
 msgid "You have no rewards to claim at this time."
 msgstr "You have no rewards to claim at this time."
 
+#: src/components/transactions/Swap/errors/shared/InsufficientBorrowPowerBlockingError.tsx
+msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
+msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
+
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "Restaked"
 msgstr "Restaked"
