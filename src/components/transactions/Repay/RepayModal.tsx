@@ -9,7 +9,7 @@ import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
 import { BasicModal } from '../../primitives/BasicModal';
 import { ModalWrapper } from '../FlowCommons/ModalWrapper';
-import { CollateralRepayModalContent } from './CollateralRepayModalContent';
+import { RepayWithCollateralModalContent } from '../Swap/modals/request/RepayWithCollateralModalContent';
 import { RepayModalContent } from './RepayModalContent';
 import { RepayType, RepayTypeSelector } from './RepayTypeSelector';
 
@@ -53,10 +53,10 @@ export const RepayModal = () => {
                   )}
                   {repayType === RepayType.BALANCE && <RepayModalContent {...params} user={user} />}
                   {repayType === RepayType.COLLATERAL && (
-                    <CollateralRepayModalContent
+                    <RepayWithCollateralModalContent
                       {...params}
                       debtType={args.currentRateMode}
-                      user={user}
+                      underlyingAsset={args.underlyingAsset}
                     />
                   )}
                 </>

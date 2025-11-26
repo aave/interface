@@ -9,12 +9,11 @@ export async function getEthersProvider(config: Config, { chainId }: { chainId?:
 }
 
 function clientToWeb3Provider(client: Client<Transport, Chain, Account>) {
-  const { chain, transport } = client;
-  const network = {
-    chainId: chain.id,
-    name: chain.name,
-    ensAddress: chain.contracts?.ensRegistry?.address,
-  };
-  const provider = new providers.Web3Provider(transport, network);
+  const { transport } = client;
+  // Use 'any' network to tolerate underlying network changes (e.g., Safe Apps init)
+  const provider = new providers.Web3Provider(
+    transport as unknown as providers.ExternalProvider,
+    'any'
+  );
   return provider;
 }

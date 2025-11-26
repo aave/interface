@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography, useTheme } from '@mui/material';
 import { ExtendedReserveIncentiveResponse } from 'src/hooks/useMerklIncentives';
 
+import { PointsBasedCampaignTooltip } from '../infoTooltips/PointsBasedCampaignTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Link } from '../primitives/Link';
 import { Row } from '../primitives/Row';
@@ -19,6 +20,7 @@ export const MerklIncentivesTooltipContent = ({
 
   const merklIncentivesFormatted = getSymbolMap(merklIncentives);
 
+  const isPointsBased = Boolean(merklIncentives?.breakdown?.points);
   return (
     <Box
       sx={{
@@ -146,13 +148,51 @@ export const MerklIncentivesTooltipContent = ({
             )}
 
             {/* Merkl Incentives */}
-            {merklIncentives.allOpportunities && merklIncentives.allOpportunities.length > 1 ? (
+            {isPointsBased ? (
+              <Row
+                height={32}
+                caption={
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      mb: 0,
+                    }}
+                  >
+                    <Typography variant={typographyVariant}>Points</Typography>
+                    <PointsBasedCampaignTooltip
+                      aToken={merklIncentivesFormatted.aToken}
+                      tokenIconSymbol={merklIncentivesFormatted.tokenIconSymbol}
+                      symbol={merklIncentivesFormatted.symbol}
+                      isBorrow={merklIncentives.breakdown.isBorrow}
+                      pointsPerThousandUsd={
+                        merklIncentives.breakdown.points?.pointsPerThousandUsd || 0
+                      }
+                      sx={{ marginLeft: 1 }}
+                    />
+                  </Box>
+                }
+                width="100%"
+              >
+                <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <FormattedNumber
+                    value={merklIncentives.breakdown.points?.pointsPerThousandUsd || 0}
+                    visibleDecimals={2}
+                    variant={typographyVariant}
+                  />
+                  <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+                    <Trans>Points</Trans>
+                  </Typography>
+                </Box>
+              </Row>
+            ) : merklIncentives.rewardsTokensMappedApys &&
+              merklIncentives.rewardsTokensMappedApys.length > 1 ? (
               <>
-                {merklIncentives.allOpportunities.map((opportunity, index) => {
+                {merklIncentives.rewardsTokensMappedApys.map((reward, index) => {
                   const { tokenIconSymbol, symbol, aToken } = getSymbolMap({
-                    rewardTokenSymbol: opportunity.rewardToken.symbol,
-                    rewardTokenAddress: opportunity.rewardToken.address,
-                    incentiveAPR: opportunity.apy.toString(),
+                    rewardTokenSymbol: reward.token.symbol,
+                    rewardTokenAddress: reward.token.address,
+                    incentiveAPR: reward.apy.toString(),
                   });
                   return (
                     <Row
@@ -181,9 +221,7 @@ export const MerklIncentivesTooltipContent = ({
                     >
                       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                         <FormattedNumber
-                          value={
-                            merklIncentives.breakdown.isBorrow ? -opportunity.apy : opportunity.apy
-                          }
+                          value={merklIncentives.breakdown.isBorrow ? -reward.apy : reward.apy}
                           percent
                           variant={typographyVariant}
                         />
@@ -237,6 +275,7 @@ export const MerklIncentivesTooltipContent = ({
                 </Box>
               </Row>
             )}
+
             {/* Total APY */}
             <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
               <Row

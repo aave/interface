@@ -201,6 +201,22 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       iconSymbol: 'ptsusde',
     },
 
+    [AaveV3Plasma.ASSETS.syrupUSDT.UNDERLYING.toLowerCase()]: {
+      symbol: 'syrupUSDT',
+      name: 'syrupUSDT',
+      iconSymbol: 'syrupusdt',
+    },
+    '0x1f84a51296691320478c98b8d77f2bbd17d34350': {
+      symbol: 'PT USDe February 5th 2026',
+      name: 'PT USDe February 2026',
+      iconSymbol: 'ptusde',
+    },
+    '0xe8483517077afa11a9b07f849cee2552f040d7b2': {
+      symbol: 'PT sUSDe February 5th 2026',
+      name: 'PT sUSDe February 2026',
+      iconSymbol: 'ptsusde',
+    },
+
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
     '0x1eff8af5d577060ba4ac8a29a13525bb0ee2a3d5': { iconSymbol: 'BPT_WBTC_WETH' },
