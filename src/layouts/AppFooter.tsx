@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { GitHub, Twitter } from '@mui/icons-material';
+import { GitHub, Instagram, X } from '@mui/icons-material';
 import { Box, styled, SvgIcon, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
@@ -25,12 +25,12 @@ const FOOTER_ICONS = [
   {
     href: 'https://hey.xyz/u/aave',
     icon: <LensLogoIcon />,
-    title: 'Aave',
+    title: 'Aave on Lens',
   },
   {
     href: 'https://twitter.com/aave',
-    icon: <Twitter />,
-    title: 'Lens',
+    icon: <X />,
+    title: 'Twitter',
   },
   {
     href: 'https://discord.com/invite/aave',
@@ -41,6 +41,11 @@ const FOOTER_ICONS = [
     href: 'https://github.com/aave',
     icon: <GitHub />,
     title: 'Github',
+  },
+  {
+    href: 'https://www.instagram.com/aave/',
+    icon: <Instagram />,
+    title: 'Instagram',
   },
 ];
 
