@@ -16,10 +16,10 @@ import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
-import { CowOrderToast } from 'src/components/transactions/Switch/cowprotocol/CowOrderToast';
+import { CowOrderToast } from 'src/components/transactions/Swap/modals/result/CowOrderToast';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { CowOrderToastProvider } from 'src/hooks/useCowOrderToast';
 import { ModalContextProvider } from 'src/hooks/useModal';
+import { SwapOrdersTrackingProvider } from 'src/hooks/useSwapOrdersTracking';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
@@ -31,13 +31,19 @@ import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
 
-const SwitchModal = dynamic(() =>
-  import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
+const SwapModal = dynamic(() =>
+  import('src/components/transactions/Swap/modals/SwapModal').then((module) => module.SwapModal)
 );
 
 const CollateralSwapModal = dynamic(() =>
-  import('src/components/transactions/Switch/CollateralSwap/CollateralSwapModal').then(
+  import('src/components/transactions/Swap/modals/CollateralSwapModal').then(
     (module) => module.CollateralSwapModal
+  )
+);
+
+const DebtSwapModal = dynamic(() =>
+  import('src/components/transactions/Swap/modals/DebtSwapModal').then(
+    (module) => module.DebtSwapModal
   )
 );
 
@@ -51,16 +57,6 @@ const BorrowModal = dynamic(() =>
 const ClaimRewardsModal = dynamic(() =>
   import('src/components/transactions/ClaimRewards/ClaimRewardsModal').then(
     (module) => module.ClaimRewardsModal
-  )
-);
-const CollateralChangeModal = dynamic(() =>
-  import('src/components/transactions/CollateralChange/CollateralChangeModal').then(
-    (module) => module.CollateralChangeModal
-  )
-);
-const DebtSwitchModal = dynamic(() =>
-  import('src/components/transactions/DebtSwitch/DebtSwitchModal').then(
-    (module) => module.DebtSwitchModal
   )
 );
 const EmodeModal = dynamic(() =>
@@ -85,8 +81,18 @@ const StakingMigrateModal = dynamic(() =>
     (module) => module.StakingMigrateModal
   )
 );
+const CancelCowOrderModal = dynamic(() =>
+  import('src/components/transactions/CancelCowOrder/CancelCowOrderModal').then(
+    (module) => module.CancelCowOrderModal
+  )
+);
 const ReadOnlyModal = dynamic(() =>
   import('src/components/WalletConnection/ReadOnlyModal').then((module) => module.ReadOnlyModal)
+);
+const CollateralChangeModal = dynamic(() =>
+  import('src/components/transactions/CollateralChange/CollateralChangeModal').then(
+    (module) => module.CollateralChangeModal
+  )
 );
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -155,7 +161,7 @@ export default function MyApp(props: MyAppProps) {
                   <Web3ContextProvider>
                     <AppGlobalStyles>
                       <AddressBlocked>
-                        <CowOrderToastProvider>
+                        <SwapOrdersTrackingProvider>
                           <ModalContextProvider>
                             <SharedDependenciesProvider>
                               <AppDataProvider>
@@ -166,22 +172,25 @@ export default function MyApp(props: MyAppProps) {
                                   <BorrowModal />
                                   <RepayModal />
                                   <CollateralChangeModal />
-                                  <DebtSwitchModal />
                                   <ClaimRewardsModal />
                                   <EmodeModal />
                                   <FaucetModal />
                                   <TransactionEventHandler />
-                                  <SwitchModal />
-                                  <CollateralSwapModal />
                                   <StakingMigrateModal />
                                   <BridgeModal />
                                   <ReadOnlyModal />
+
+                                  {/* Swap Modals */}
+                                  <SwapModal />
+                                  <CollateralSwapModal />
+                                  <DebtSwapModal />
+                                  <CancelCowOrderModal />
                                   <CowOrderToast />
                                 </GasStationProvider>
                               </AppDataProvider>
                             </SharedDependenciesProvider>
                           </ModalContextProvider>
-                        </CowOrderToastProvider>
+                        </SwapOrdersTrackingProvider>
                       </AddressBlocked>
                     </AppGlobalStyles>
                   </Web3ContextProvider>

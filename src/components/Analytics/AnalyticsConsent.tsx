@@ -2,6 +2,7 @@ import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CookieConsent as AnalyticsConsentBanner } from 'react-cookie-consent';
 import { Link } from 'src/components/primitives/Link';
+import { CONSENT_KEY } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
@@ -27,7 +28,7 @@ export default function AnalyticsBanner() {
   const isMobile = useMediaQuery(breakpoints.down('sm'));
 
   const hasUserMadeChoice =
-    typeof window !== 'undefined' && localStorage.getItem('userAcceptedAnalytics') !== null;
+    typeof window !== 'undefined' && localStorage.getItem(CONSENT_KEY) !== null;
 
   // Note: If they have already chosen don't show again unless configured from footer
   if (hasUserMadeChoice) return null;
@@ -109,7 +110,7 @@ export default function AnalyticsBanner() {
         onAccept={() => {
           optInAnalytics();
         }}
-        cookieName="userAcceptedAnalytics"
+        cookieName={CONSENT_KEY}
       >
         <Box>
           We may employ on-the-spot tracking techniques during your browsing session to collect data

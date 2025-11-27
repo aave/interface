@@ -15,6 +15,7 @@ import {
   AaveV3EthereumEtherFi,
   AaveV3EthereumLido,
   AaveV3Gnosis,
+  AaveV3InkWhitelabel,
   AaveV3Linea,
   AaveV3Metis,
   AaveV3Optimism,
@@ -49,6 +50,7 @@ export type MarketDataType = {
     debtSwitch?: boolean;
     withdrawAndSwitch?: boolean;
     switch?: boolean;
+    limit?: boolean;
   };
   permitDisabled?: boolean; // intended to be used for testnets
   isFork?: boolean;
@@ -105,11 +107,13 @@ export enum CustomMarket {
   proto_sepolia_horizon_v3 = 'proto_sepolia_horizon_v3',
   proto_aptos_v3 = 'proto_aptos_v3',
   proto_plasma_v3 = 'proto_plasma_v3',
+  proto_ink_v3 = 'proto_ink_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
   proto_fuji = 'proto_fuji',
   proto_polygon = 'proto_polygon',
+
   // external
   // permissioned_market = 'permissioned_market',
 }
@@ -133,6 +137,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       debtSwitch: true,
       switch: true,
+      limit: true,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
     addresses: {
@@ -387,6 +392,7 @@ export const marketsData: {
       debtSwitch: true,
       withdrawAndSwitch: true,
       switch: true,
+      limit: true,
     },
     subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B`,
     addresses: {
@@ -419,6 +425,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: '0x6a9D64f93DB660EaCB2b6E9424792c630CdA87d8', // AaveV3BaseSepolia.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: '0xDB1412acf288D5bE057f8e90fd7b1BF4f84bB3B1', // AaveV3BaseSepolia.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3BaseSepolia.L2_ENCODER,
+      FAUCET: '0xD9145b5F45Ad4519c7ACcD6E0A4A82e83bB8A6Dc',
     },
   },
   [CustomMarket.proto_avalanche_v3]: {
@@ -642,6 +649,23 @@ export const marketsData: {
       COLLECTOR: AaveV3Polygon.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Polygon.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Polygon.WITHDRAW_SWAP_ADAPTER,
+    },
+  },
+
+  [CustomMarket.proto_ink_v3]: {
+    marketTitle: 'Ink',
+    market: CustomMarket.proto_ink_v3,
+    chainId: 57073 as ChainId,
+    v3: true,
+    logo: '/icons/networks/ink.svg',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3InkWhitelabel.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3InkWhitelabel.POOL,
+      WETH_GATEWAY: AaveV3InkWhitelabel.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: '0xc851e6147dcE6A469CC33BE3121b6B2D4CaD2763', // custom as doesnt work utils
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3InkWhitelabel.UI_INCENTIVE_DATA_PROVIDER,
+      // COLLECTOR: AaveV3InkWhitelabel.COLLECTOR,
     },
   },
 

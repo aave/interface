@@ -9,9 +9,12 @@ import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { useShallow } from 'zustand/shallow';
 
+import { PermitNonceInfo } from './PermitNonceInfo';
+
 export type RightHelperTextProps = {
   approvalHash?: string;
   tryPermit?: boolean;
+  permitInUse?: boolean;
 };
 
 const ExtLinkIcon = () => (
@@ -20,7 +23,11 @@ const ExtLinkIcon = () => (
   </SvgIcon>
 );
 
-export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProps) => {
+export const RightHelperText = ({
+  approvalHash,
+  tryPermit,
+  permitInUse = false,
+}: RightHelperTextProps) => {
   const [
     account,
     walletApprovalMethodPreference,
@@ -59,6 +66,13 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
           currentMethod={walletApprovalMethodPreference}
           setMethod={(method: ApprovalMethod) => setWalletApprovalMethodPreference(method)}
         />
+      </Box>
+    );
+  // When permit use is disabled by the flow, inform the user why
+  if (!tryPermit && permitInUse)
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+        <PermitNonceInfo />
       </Box>
     );
   if (approvalHash && !usingPermit)

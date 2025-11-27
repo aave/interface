@@ -1,3 +1,4 @@
+import { SwapProvider } from 'src/components/transactions/Swap/types';
 import { MigrationSupplyException } from 'src/store/v3MigrationSlice';
 
 import { MarketDataType } from './marketsConfig';
@@ -89,20 +90,24 @@ export const queryKeysFactory = {
     oracles,
     'userStakeUiData',
   ],
-  paraswapRates: (
+  swapQuote: (
     chainId: number,
+    provider: SwapProvider,
     amount: string,
+    requiresQuoteInverted: boolean,
     srcToken: string,
     destToken: string,
     user: string
-  ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'paraswapRates'],
-  cowProtocolRates: (
-    chainId: number,
-    amount: string,
-    srcToken: string,
-    destToken: string,
-    user: string
-  ) => [...queryKeysFactory.user(user), chainId, amount, srcToken, destToken, 'cowProtocolRates'],
+  ) => [
+    ...queryKeysFactory.user(user),
+    chainId,
+    provider,
+    amount,
+    requiresQuoteInverted,
+    srcToken,
+    destToken,
+    'swapQuote',
+  ],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],
   poolReservesIncentiveDataHumanized: (marketData: MarketDataType) => [
     ...queryKeysFactory.pool,
@@ -154,10 +159,10 @@ export const queryKeysFactory = {
     chainId,
     'tokenDelegatees',
   ],
-  getGhoBridgeBalances: (user: string, marketData: MarketDataType) => [
+  getGhoBridgeBalances: (user: string, chainId: number) => [
     ...queryKeysFactory.gho,
     ...queryKeysFactory.user(user),
-    ...queryKeysFactory.market(marketData),
+    chainId,
     'getGhoBridgeBalances',
   ],
   migrationExceptions: (

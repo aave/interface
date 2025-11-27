@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  Paper,
   SvgIcon,
   Typography,
   useMediaQuery,
@@ -18,8 +17,6 @@ import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTrans
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { TRANSACTION_HISTORY } from 'src/utils/events';
-
-import LandingGhost from '/public/resting-gho-hat-purple.svg';
 
 import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
@@ -43,7 +40,6 @@ export const HistoryWrapper = () => {
     fetchNextPage,
     isFetchingNextPage,
     fetchForDownload,
-    subgraphUrl,
   } = useTransactionHistory({ isFilterActive });
 
   const handleJsonDownload = async () => {
@@ -117,27 +113,6 @@ export const HistoryWrapper = () => {
     [searchQuery, filterQuery, flatTxns]
   );
 
-  if (!subgraphUrl) {
-    return (
-      <Paper
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          p: 4,
-          flex: 1,
-        }}
-      >
-        <LandingGhost style={{ marginBottom: '16px' }} />
-        <Typography variant={downToMD ? 'h4' : 'h3'}>
-          <Trans>Transaction history is not currently available for this market</Trans>
-        </Typography>
-      </Paper>
-    );
-  }
-
   if (!currentAccount) {
     return (
       <ConnectWalletPaper
@@ -156,9 +131,16 @@ export const HistoryWrapper = () => {
   return (
     <ListWrapper
       titleComponent={
-        <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-          <Trans>Transactions</Trans>
-        </Typography>
+        <>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
+            <Typography component="div" variant="h2" sx={{ mr: 4 }}>
+              <Trans>Transactions</Trans>
+            </Typography>
+            <Typography variant="secondary12" color="text.secondary" sx={{ mt: 1 }}>
+              <Trans>This list may not include all your swaps.</Trans>
+            </Typography>
+          </Box>
+        </>
       }
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: 8, mt: 6, mb: 4 }}>
