@@ -165,13 +165,6 @@ export const SupplyInfo = ({
             inlineIncentives={true}
           />
         </PanelItem>
-        {/* //! Doesnt exist in sdk */}
-        {/* {reserve.unbacked && reserve.unbacked !== '0' && (
-          <PanelItem title={<Trans>Unbacked</Trans>}>
-            <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
-            <ReserveSubheader value={reserve.unbackedUSD} />
-          </PanelItem>
-        )} */}
       </Box>
       {renderCharts &&
         (reserve.borrowInfo?.borrowingState === 'ENABLED' ||
