@@ -129,7 +129,6 @@ const SGhoHeaderUserDetails = ({
   const { data: stakeAPR, isLoading: isLoadingStakeAPR } = useStakeTokenAPR();
   const { supplyReserves } = useAppDataContext();
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.gho);
-  const { reserves } = useAppDataContext();
   const { openClaimRewards } = useModalContext();
 
   const {
