@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { useMediaQuery } from '@mui/material';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -46,15 +46,60 @@ type MarketAssetsListProps = {
   reserves: ReserveWithId[];
   loading: boolean;
 };
+
+export type IncentivizedApySide = 'supply' | 'borrow';
+export type IncentivizedApyState = Record<
+  string,
+  Partial<Record<IncentivizedApySide, number | 'Infinity'>>
+>;
+export type ApyUpdateHandler = (
+  reserveId: string,
+  side: IncentivizedApySide,
+  value: number | 'Infinity'
+) => void;
+
+const getComparableApy = (
+  storedValue: number | 'Infinity' | undefined,
+  fallback: number
+): number => {
+  if (storedValue === 'Infinity') {
+    return Number.POSITIVE_INFINITY;
+  }
+  if (typeof storedValue === 'number' && !Number.isNaN(storedValue)) {
+    return storedValue;
+  }
+  return fallback;
+};
+
 export type ReserveWithProtocolIncentives = ReserveWithId & {
   supplyProtocolIncentives: ReturnType<typeof mapAaveProtocolIncentives>;
   borrowProtocolIncentives: ReturnType<typeof mapAaveProtocolIncentives>;
+  onApyChange: ApyUpdateHandler;
 };
 
 export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
   const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
+  const [incentivizedApys, setIncentivizedApys] = useState<IncentivizedApyState>({});
+
+  const handleApyChange = useCallback<ApyUpdateHandler>((reserveId, side, value) => {
+    setIncentivizedApys((prev) => {
+      const current = prev[reserveId]?.[side];
+      if (current === value) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [reserveId]: {
+          ...prev[reserveId],
+          [side]: value,
+        },
+      };
+    });
+  }, []);
+
   const sortedReserves = [...reserves].sort((a, b) => {
     if (!sortName) return 0;
 
@@ -76,8 +121,14 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         break;
 
       case 'supplyInfo.apy.value':
-        aValue = Number(a.supplyInfo.apy.value) || 0;
-        bValue = Number(b.supplyInfo.apy.value) || 0;
+        aValue = getComparableApy(
+          incentivizedApys[a.id]?.supply,
+          Number(a.supplyInfo.apy.value) || 0
+        );
+        bValue = getComparableApy(
+          incentivizedApys[b.id]?.supply,
+          Number(b.supplyInfo.apy.value) || 0
+        );
         break;
 
       case 'borrowInfo.total.usd':
@@ -86,8 +137,14 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         break;
 
       case 'borrowInfo.apy.value':
-        aValue = Number(a.borrowInfo?.apy.value) || 0;
-        bValue = Number(b.borrowInfo?.apy.value) || 0;
+        aValue = getComparableApy(
+          incentivizedApys[a.id]?.borrow,
+          Number(a.borrowInfo?.apy.value) || 0
+        );
+        bValue = getComparableApy(
+          incentivizedApys[b.id]?.borrow,
+          Number(b.borrowInfo?.apy.value) || 0
+        );
         break;
 
       default:
@@ -102,6 +159,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
     ...reserve,
     supplyProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'supply'),
     borrowProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'borrow'),
+    onApyChange: handleApyChange,
   }));
   // Show loading state when loading
   if (loading) {
