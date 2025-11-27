@@ -35,10 +35,7 @@ export class UiPoolService {
   }
 
   private useLegacyUiPoolDataProvider(marketData: MarketDataType) {
-    if (
-      marketData.market === CustomMarket.proto_base_sepolia_v3 ||
-      marketData.market === CustomMarket.proto_sepolia_horizon_v3
-    ) {
+    if (marketData.market === CustomMarket.proto_base_sepolia_v3) {
       return false;
     }
 
