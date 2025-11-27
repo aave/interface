@@ -59,6 +59,8 @@ export const BorrowInfo = ({
   });
 
   const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
+  const apyValue = Number(reserve.borrowInfo?.apy.value);
+
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box
@@ -183,11 +185,7 @@ export const BorrowInfo = ({
           }
         >
           <IncentivesCard
-            value={
-              Number(reserve.borrowInfo?.total.amount.value) > 0
-                ? String(reserve.borrowInfo?.apy.value)
-                : '-1'
-            }
+            value={Number.isFinite(apyValue) ? apyValue : '-1'}
             incentives={borrowProtocolIncentives}
             address={reserve.vToken.address}
             symbol={reserve.underlyingToken.symbol}

@@ -42,6 +42,7 @@ export const SupplyInfo = ({
   debtCeiling,
 }: SupplyInfoProps) => {
   const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
+  const apyValue = Number(reserve.supplyInfo?.apy.value);
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box
@@ -155,7 +156,7 @@ export const SupplyInfo = ({
         )}
         <PanelItem title={<Trans>APY</Trans>}>
           <IncentivesCard
-            value={reserve.supplyInfo.apy.value}
+            value={Number.isFinite(apyValue) ? apyValue : '-1'}
             incentives={supplyProtocolIncentives}
             address={reserve.aToken.address}
             symbol={reserve.underlyingToken.symbol}
