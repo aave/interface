@@ -127,8 +127,8 @@ const SGhoHeaderUserDetails = ({
   stkGho: StakeTokenFormatted;
 }) => {
   const { data: stakeAPR, isLoading: isLoadingStakeAPR } = useStakeTokenAPR();
+  const { supplyReserves } = useAppDataContext();
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.gho);
-  const { reserves } = useAppDataContext();
   const { openClaimRewards } = useModalContext();
 
   const {
@@ -137,7 +137,7 @@ const SGhoHeaderUserDetails = ({
     chainId: connectedChainId,
     currentAccount,
   } = useWeb3Context();
-  const poolReserve = reserves.find((reserve) => reserve.symbol === 'GHO');
+  const poolReserve = supplyReserves.find((reserve) => reserve.underlyingToken.symbol === 'GHO');
   const theme = useTheme();
   const [currentChainId] = useRootStore(useShallow((state) => [state.currentChainId]));
 

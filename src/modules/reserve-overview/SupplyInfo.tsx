@@ -5,6 +5,7 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { AlertTitle, Box, Typography } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
+import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
@@ -15,8 +16,8 @@ import { Warning } from 'src/components/primitives/Warning';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { AssetCapHookData } from 'src/hooks/useAssetCaps';
+import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { AssetCapHookData } from 'src/hooks/useAssetCapsSDK';
 import { GENERAL } from 'src/utils/events';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
@@ -24,7 +25,7 @@ import { SupplyApyGraph } from './graphs/ApyGraphContainer';
 import { PanelItem } from './ReservePanels';
 
 interface SupplyInfoProps {
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
   currentMarketData: MarketDataType;
   renderCharts: boolean;
   showSupplyCapStatus: boolean;
@@ -40,6 +41,8 @@ export const SupplyInfo = ({
   supplyCap,
   debtCeiling,
 }: SupplyInfoProps) => {
+  const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
+  const apyValue = Number(reserve.supplyInfo?.apy.value);
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box
@@ -60,16 +63,16 @@ export const SupplyInfo = ({
                     Maximum amount available to supply is{' '}
                     <FormattedNumber
                       value={
-                        valueToBigNumber(reserve.supplyCap).toNumber() -
-                        valueToBigNumber(reserve.totalLiquidity).toNumber()
+                        valueToBigNumber(reserve.supplyInfo.supplyCap.amount.value).toNumber() -
+                        valueToBigNumber(reserve.supplyInfo.total.value).toNumber()
                       }
                       variant="secondary12"
                     />{' '}
-                    {reserve.symbol} (
+                    {reserve.underlyingToken.symbol} (
                     <FormattedNumber
                       value={
-                        valueToBigNumber(reserve.supplyCapUSD).toNumber() -
-                        valueToBigNumber(reserve.totalLiquidityUSD).toNumber()
+                        valueToBigNumber(reserve.supplyInfo.supplyCap.usd).toNumber() -
+                        valueToBigNumber(reserve.size.usd).toNumber()
                       }
                       variant="secondary12"
                       symbol="USD"
@@ -88,8 +91,8 @@ export const SupplyInfo = ({
                       eventName: GENERAL.TOOL_TIP,
                       eventParams: {
                         tooltip: 'Total Supply',
-                        asset: reserve.underlyingAsset,
-                        assetName: reserve.name,
+                        asset: reserve.underlyingToken.address,
+                        assetName: reserve.underlyingToken.name,
                       },
                     }}
                   >
@@ -110,7 +113,7 @@ export const SupplyInfo = ({
               }
             >
               <Box>
-                <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+                <FormattedNumber value={reserve.supplyInfo.total.value} variant="main16" compact />
                 <Typography
                   component="span"
                   color="text.primary"
@@ -119,10 +122,13 @@ export const SupplyInfo = ({
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber value={reserve.supplyCap} variant="main16" />
+                <FormattedNumber
+                  value={reserve.supplyInfo.supplyCap.amount.value}
+                  variant="main16"
+                />
               </Box>
               <Box>
-                <ReserveSubheader value={reserve.totalLiquidityUSD} />
+                <ReserveSubheader value={reserve.size.usd} />
                 <Typography
                   component="span"
                   color="text.secondary"
@@ -131,7 +137,7 @@ export const SupplyInfo = ({
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <ReserveSubheader value={reserve.supplyCapUSD} />
+                <ReserveSubheader value={reserve.supplyInfo.supplyCap.usd} />
               </Box>
             </PanelItem>
           </>
@@ -144,38 +150,34 @@ export const SupplyInfo = ({
               </Box>
             }
           >
-            <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
-            <ReserveSubheader value={reserve.totalLiquidityUSD} />
+            <FormattedNumber value={reserve.supplyInfo.total.value} variant="main16" compact />
+            <ReserveSubheader value={reserve.size.usd} />
           </PanelItem>
         )}
         <PanelItem title={<Trans>APY</Trans>}>
           <IncentivesCard
-            value={reserve.supplyAPY}
-            incentives={reserve.aIncentivesData || []}
-            address={reserve.aTokenAddress}
-            symbol={reserve.symbol}
+            value={Number.isFinite(apyValue) ? apyValue : '-1'}
+            incentives={supplyProtocolIncentives}
+            address={reserve.aToken.address}
+            symbol={reserve.underlyingToken.symbol}
             variant="main16"
             market={currentMarketData.market}
             protocolAction={ProtocolAction.supply}
             inlineIncentives={true}
           />
         </PanelItem>
-        {reserve.unbacked && reserve.unbacked !== '0' && (
-          <PanelItem title={<Trans>Unbacked</Trans>}>
-            <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
-            <ReserveSubheader value={reserve.unbackedUSD} />
-          </PanelItem>
-        )}
       </Box>
-      {renderCharts && (reserve.borrowingEnabled || Number(reserve.totalDebt) > 0) && (
-        <SupplyApyGraph
-          chain={currentMarketData.chainId}
-          underlyingToken={reserve.underlyingAsset}
-          market={currentMarketData.addresses.LENDING_POOL}
-        />
-      )}
+      {renderCharts &&
+        (reserve.borrowInfo?.borrowingState === 'ENABLED' ||
+          Number(reserve.borrowInfo?.total.amount.value) > 0) && (
+          <SupplyApyGraph
+            chain={currentMarketData.chainId}
+            underlyingToken={reserve.underlyingToken.address}
+            market={currentMarketData.addresses.LENDING_POOL}
+          />
+        )}
       <div>
-        {reserve.isIsolated ? (
+        {reserve.isolationModeConfig?.canBeCollateral ? (
           <Box sx={{ pt: '42px', pb: '12px' }}>
             <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
               <Trans>Collateral usage</Trans>
@@ -194,7 +196,7 @@ export const SupplyInfo = ({
               </Typography>
             </Warning>
           </Box>
-        ) : reserve.reserveLiquidationThreshold !== '0' ? (
+        ) : reserve.supplyInfo.liquidationThreshold.value !== '0' ? (
           <Box
             sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
             paddingTop={'42px'}
@@ -218,7 +220,7 @@ export const SupplyInfo = ({
           </Box>
         )}
       </div>
-      {reserve.reserveLiquidationThreshold !== '0' && (
+      {reserve.supplyInfo.liquidationThreshold.value !== '0' && (
         <Box
           sx={{
             display: 'flex',
@@ -233,8 +235,8 @@ export const SupplyInfo = ({
                   eventName: GENERAL.TOOL_TIP,
                   eventParams: {
                     tooltip: 'MAX LTV',
-                    asset: reserve.underlyingAsset,
-                    assetName: reserve.name,
+                    asset: reserve.underlyingToken.address,
+                    assetName: reserve.underlyingToken.name,
                   },
                 }}
                 variant="description"
@@ -243,7 +245,7 @@ export const SupplyInfo = ({
             }
           >
             <FormattedNumber
-              value={reserve.formattedBaseLTVasCollateral}
+              value={reserve.supplyInfo.maxLTV.value}
               percent
               variant="secondary14"
               visibleDecimals={2}
@@ -257,8 +259,8 @@ export const SupplyInfo = ({
                   eventName: GENERAL.TOOL_TIP,
                   eventParams: {
                     tooltip: 'Liquidation threshold',
-                    asset: reserve.underlyingAsset,
-                    assetName: reserve.name,
+                    asset: reserve.supplyInfo.liquidationThreshold.value,
+                    assetName: reserve.underlyingToken.name,
                   },
                 }}
                 variant="description"
@@ -267,7 +269,7 @@ export const SupplyInfo = ({
             }
           >
             <FormattedNumber
-              value={reserve.formattedReserveLiquidationThreshold}
+              value={reserve.supplyInfo.liquidationThreshold.value}
               percent
               variant="secondary14"
               visibleDecimals={2}
@@ -281,8 +283,8 @@ export const SupplyInfo = ({
                   eventName: GENERAL.TOOL_TIP,
                   eventParams: {
                     tooltip: 'Liquidation penalty',
-                    asset: reserve.underlyingAsset,
-                    assetName: reserve.name,
+                    asset: reserve.supplyInfo.liquidationBonus.value,
+                    assetName: reserve.underlyingToken.name,
                   },
                 }}
                 variant="description"
@@ -291,25 +293,25 @@ export const SupplyInfo = ({
             }
           >
             <FormattedNumber
-              value={reserve.formattedReserveLiquidationBonus}
+              value={reserve.supplyInfo.liquidationBonus.value}
               percent
               variant="secondary14"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>
 
-          {reserve.isIsolated && (
+          {reserve.isolationModeConfig?.canBeCollateral && (
             <ReserveOverviewBox fullWidth>
               <DebtCeilingStatus
-                debt={reserve.isolationModeTotalDebtUSD}
-                ceiling={reserve.debtCeilingUSD}
+                debt={reserve.isolationModeConfig.totalBorrows.usd}
+                ceiling={reserve.isolationModeConfig.debtCeiling.usd}
                 usageData={debtCeiling}
               />
             </ReserveOverviewBox>
           )}
         </Box>
       )}
-      {reserve.symbol == 'stETH' && (
+      {reserve.underlyingToken.symbol == 'stETH' && (
         <Box>
           <Warning severity="info">
             <AlertTitle>
