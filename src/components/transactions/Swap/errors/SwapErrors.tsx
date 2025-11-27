@@ -1,4 +1,5 @@
 import React, { Dispatch, useEffect } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 
 import { useModalContext } from '../../../../hooks/useModal';
@@ -16,6 +17,10 @@ import {
   hasInsufficientBalance,
   InsufficientBalanceGuard,
 } from './shared/InsufficientBalanceGuard';
+import {
+  hasInsufficientBorrowPower,
+  InsufficientBorrowPowerBlockingGuard,
+} from './shared/InsufficientBorrowPowerBlockingGuard';
 import {
   hasInsufficientLiquidity,
   InsufficientLiquidityBlockingGuard,
@@ -37,6 +42,7 @@ export const SwapErrors = ({
 }) => {
   const { txError } = useModalContext();
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
+  const { user: extendedUser } = useAppDataContext();
 
   useEffect(() => {
     if (txError) {
@@ -117,6 +123,21 @@ export const SwapErrors = ({
   ) {
     return (
       <InsufficientLiquidityBlockingGuard
+        state={state}
+        setState={setState}
+        isSwapFlowSelected={state.isSwapFlowSelected}
+      />
+    );
+  }
+
+  if (
+    isProtocolSwapState(state) &&
+    state.swapType === SwapType.DebtSwap &&
+    (hasInsufficientBorrowPower(state, extendedUser?.availableBorrowsUSD) ||
+      state.actionsBlocked?.[ActionsBlockedReason.INSUFFICIENT_BORROW_POWER])
+  ) {
+    return (
+      <InsufficientBorrowPowerBlockingGuard
         state={state}
         setState={setState}
         isSwapFlowSelected={state.isSwapFlowSelected}
