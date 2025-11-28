@@ -74,16 +74,13 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.MAINNET]: 'ALL',
     [SupportedChainId.POLYGON]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
-    [SupportedChainId.BASE]: 'ALL', // Base is not supported
+    // Base is supported
   },
   [SwapType.CollateralSwap]: {
     [SupportedChainId.SEPOLIA]: 'ALL',
   },
   [SwapType.RepayWithCollateral]: {
-    [SupportedChainId.ARBITRUM_ONE]: 'ALL',
-    [SupportedChainId.AVALANCHE]: 'ALL',
     [SupportedChainId.BNB]: 'ALL',
-    [SupportedChainId.GNOSIS_CHAIN]: 'ALL',
     [SupportedChainId.MAINNET]: 'ALL',
     [SupportedChainId.POLYGON]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
