@@ -240,6 +240,7 @@ export const permitByChainAndToken: {
 
   [ChainId.polygon]: {
     '0x4e3decbb3645551b8a19f0ea1678079fcb33fb4c': true,
+    '0xc2132d05d31c914a87c6611c10748aeb04b58e8f': false, // usdt (USDT0 polygon)
 
     // atokens
     '0x17eeff31047d88bc746fd2879db24e35ecf26127': true, // adefault
