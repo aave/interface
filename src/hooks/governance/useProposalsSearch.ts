@@ -18,12 +18,13 @@ const searchProposalsQuery = gql`
 
 export const searchProposals = (query: string) =>
   subgraphRequest<{ proposalSearch: Array<{ proposalId: string }> }>(
-    governanceV3Config.governanceCoreSubgraphUrl,
+    governanceV3Config.governanceCoreSubgraphId,
     searchProposalsQuery,
     {
       query,
       first: SEARCH_RESULTS_LIMIT,
-    }
+    },
+    governanceV3Config.governanceCoreSubgraphGateway
   );
 
 export const useProposalsSearch = (query: string) => {

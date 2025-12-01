@@ -2,9 +2,10 @@
  * Makes a GraphQL request to the subgraph via the server-side proxy
  */
 export async function subgraphRequest<T>(
-  subgraphType: string,
+  subgraphId: string,
   query: string,
-  variables?: Record<string, unknown>
+  variables?: Record<string, unknown>,
+  gateway: 'arbitrum' | 'default' = 'default'
 ): Promise<T> {
   const response = await fetch('/api/subgraph-proxy', {
     method: 'POST',
@@ -12,7 +13,8 @@ export async function subgraphRequest<T>(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      type: subgraphType,
+      subgraphId,
+      gateway,
       query,
       variables,
     }),

@@ -30,11 +30,12 @@ const getProposalQuery = gql`
 
 export const getProposal = async (proposalId: number) => {
   const result = await subgraphRequest<{ proposal: SubgraphProposal }>(
-    governanceV3Config.governanceCoreSubgraphUrl,
+    governanceV3Config.governanceCoreSubgraphId,
     getProposalQuery,
     {
       id: proposalId,
-    }
+    },
+    governanceV3Config.governanceCoreSubgraphGateway
   );
   return result.proposal;
 };

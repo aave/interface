@@ -28,13 +28,15 @@ export interface VotingMachineConfig {
   portalToMachineMap: { [votingPoralAddress: string]: string };
   votingPortalDataHelperAddress: string;
   votingMachineAddress: string;
-  subgraphUrl: string;
+  subgraphId: string;
+  subgraphGateway?: 'arbitrum' | 'default';
 }
 
 export interface GovernanceV3Config {
   coreChainId: ChainId;
   votingChainIds: ChainId[];
-  governanceCoreSubgraphUrl: string;
+  governanceCoreSubgraphId: string;
+  governanceCoreSubgraphGateway?: 'arbitrum' | 'default';
   votingChainConfig: { [chainId: number]: VotingMachineConfig };
   payloadsControllerDataHelpers: { [chainId: number]: string };
   addresses: {
@@ -57,7 +59,7 @@ const sepoliaVotingMachineConfig: VotingMachineConfig = {
   },
   votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
   votingMachineAddress: '0xA1995F1d5A8A247c064a76F336E1C2ecD24Ef0D9',
-  subgraphUrl: '',
+  subgraphId: '',
 };
 
 const fujiVotingMachineConfig: VotingMachineConfig = {
@@ -66,7 +68,7 @@ const fujiVotingMachineConfig: VotingMachineConfig = {
   },
   votingPortalDataHelperAddress: '0x133210F3fe2deEB34e65deB6861ee3dF87393977',
   votingMachineAddress: '0x767AA57554690D23D1E0594E8746271C97e1A1e4',
-  subgraphUrl: '',
+  subgraphId: '',
 };
 
 type GovernanceChainConfig = {
@@ -77,7 +79,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
   [ChainId.sepolia]: {
     coreChainId: ChainId.sepolia,
     votingChainIds: [ChainId.sepolia, ChainId.fuji],
-    governanceCoreSubgraphUrl: '',
+    governanceCoreSubgraphId: '',
     votingChainConfig: {
       [ChainId.sepolia]: sepoliaVotingMachineConfig,
       [ChainId.fuji]: fujiVotingMachineConfig,
@@ -102,7 +104,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
   [ChainId.mainnet]: {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
-    governanceCoreSubgraphUrl: 'governance-core',
+    governanceCoreSubgraphId: 'A7QMszgomC9cnnfpAcqZVLr2DffvkGNfimD8iUSMiurK',
+    governanceCoreSubgraphGateway: 'arbitrum',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
@@ -110,7 +113,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Ethereum.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Ethereum.VOTING_MACHINE,
-        subgraphUrl: `voting-machine-${ChainId.mainnet}`,
+        subgraphId: '2QPwuCfFtQ8WSCZoN3i9SmdoabMzbq2pmg4kRbrhymBV',
+        subgraphGateway: 'arbitrum',
       },
       [ChainId.polygon]: {
         portalToMachineMap: {
@@ -118,7 +122,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Polygon.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Polygon.VOTING_MACHINE,
-        subgraphUrl: `voting-machine-${ChainId.polygon}`,
+        subgraphId: '72ysXwyqW9CvfqD8keWo2fEfdKZQRWGYdgC6cnvTSFKy',
+        subgraphGateway: 'arbitrum',
       },
       [ChainId.avalanche]: {
         portalToMachineMap: {
@@ -126,7 +131,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Avalanche.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Avalanche.VOTING_MACHINE,
-        subgraphUrl: `voting-machine-${ChainId.avalanche}`,
+        subgraphId: 'FngMWWGJV45McvV7GUBkrta9eoEi3sHZoH7MYnFQfZkr',
+        subgraphGateway: 'arbitrum',
       },
     },
     payloadsControllerDataHelpers: {

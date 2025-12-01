@@ -220,32 +220,35 @@ export const getSubgraphProposalMetadata = async (proposal: SubgraphProposal) =>
 
 export const getProposals = (first: number, skip: number) =>
   subgraphRequest<{ proposals: SubgraphProposal[] }>(
-    governanceV3Config.governanceCoreSubgraphUrl,
+    governanceV3Config.governanceCoreSubgraphId,
     getProposalsQuery,
     {
       first,
       skip,
-    }
+    },
+    governanceV3Config.governanceCoreSubgraphGateway
   );
 
 export const getProposalsByState = (first: number, skip: number, stateFilter: ProposalV3State) =>
   subgraphRequest<{ proposals: SubgraphProposal[] }>(
-    governanceV3Config.governanceCoreSubgraphUrl,
+    governanceV3Config.governanceCoreSubgraphId,
     getProposalsByStateQuery,
     {
       first,
       skip,
       stateFilter,
-    }
+    },
+    governanceV3Config.governanceCoreSubgraphGateway
   );
 
 export const getProposalsByIds = (ids: string[]) =>
   subgraphRequest<{ proposals: SubgraphProposal[] }>(
-    governanceV3Config.governanceCoreSubgraphUrl,
+    governanceV3Config.governanceCoreSubgraphId,
     getProposalsByIdQuery,
     {
       ids,
-    }
+    },
+    governanceV3Config.governanceCoreSubgraphGateway
   );
 
 const PAGE_SIZE = 10;
