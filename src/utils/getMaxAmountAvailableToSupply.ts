@@ -1,6 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
+import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { roundToTokenDecimals } from './utils';
 
@@ -54,3 +55,29 @@ export function getMaxAmountAvailableToSupply(
   // Convert amount to smallest allowed precision based on token decimals
   return roundToTokenDecimals(maxAmountToSupply.toString(10), poolReserve.decimals);
 }
+
+export const getMaxAmountAvailableToSupplySDK = ({
+  walletBalance,
+  reserve,
+  isNativeSelected,
+  minRemainingBaseTokenBalance,
+}: {
+  walletBalance: string; // balance ya normalizado a decimales del token
+  reserve: ReserveWithId;
+  isNativeSelected: boolean;
+  minRemainingBaseTokenBalance: string;
+}) => {
+  // 1) saldo de wallet, dejando buffer si es nativo
+  const walletAfterBuffer = isNativeSelected
+    ? BigNumber.max(
+        valueToBigNumber(walletBalance).minus(minRemainingBaseTokenBalance),
+        0
+      ).toString()
+    : walletBalance;
+
+  // 2) límite de protocolo (caps/debt ceiling/estado user) ya calculado por el SDK
+  const protocolLimit = reserve.userState?.suppliable.amount.value ?? '0';
+
+  // 3) máximo final = mínimo entre saldo y límite
+  return BigNumber.min(walletAfterBuffer, protocolLimit).toString();
+};

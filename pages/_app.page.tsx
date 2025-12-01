@@ -71,6 +71,11 @@ const RepayModal = dynamic(() =>
 const SupplyModal = dynamic(() =>
   import('src/components/transactions/Supply/SupplyModal').then((module) => module.SupplyModal)
 );
+const SupplyModalSDK = dynamic(() =>
+  import('src/components/transactions/Supply/SupplyModalSDK').then(
+    (module) => module.SupplyModalSDK
+  )
+);
 const WithdrawModal = dynamic(() =>
   import('src/components/transactions/Withdraw/WithdrawModal').then(
     (module) => module.WithdrawModal
@@ -168,6 +173,7 @@ export default function MyApp(props: MyAppProps) {
                                 <GasStationProvider>
                                   {getLayout(<Component {...pageProps} />)}
                                   <SupplyModal />
+                                  <SupplyModalSDK />
                                   <WithdrawModal />
                                   <BorrowModal />
                                   <RepayModal />

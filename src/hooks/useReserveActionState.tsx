@@ -3,25 +3,20 @@ import { Trans } from '@lingui/macro';
 import { Button, Stack, SvgIcon, Typography } from '@mui/material';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
-import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
 import { useRootStore } from 'src/store/root';
-import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
+import { useAssetCapsSDK } from './useAssetCapsSDK';
 import { useModalContext } from './useModal';
 
 interface ReserveActionStateProps {
   balance: string;
   maxAmountToSupply: string;
   maxAmountToBorrow: string;
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
 }
 
 export const useReserveActionState = ({
@@ -30,8 +25,8 @@ export const useReserveActionState = ({
   maxAmountToBorrow,
   reserve,
 }: ReserveActionStateProps) => {
-  const { user, eModes } = useAppDataContext();
-  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+  const { userState } = useAppDataContext();
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCapsSDK();
   const [currentMarket, currentNetworkConfig, currentChainId, currentMarketData] = useRootStore(
     useShallow((store) => [
       store.currentMarket,
@@ -44,14 +39,23 @@ export const useReserveActionState = ({
 
   const { bridge, name: networkName } = currentNetworkConfig;
 
-  const assetCanBeBorrowedFromPool = user ? assetCanBeBorrowedByUser(reserve, user) : false;
-  const userHasNoCollateralSupplied = user?.totalCollateralMarketReferenceCurrency === '0';
-  const isolationModeBorrowDisabled = user?.isInIsolationMode && !reserve.borrowableInIsolation;
+  const assetCanBeBorrowedFromPool =
+    !!reserve.userState?.canBeBorrowed &&
+    reserve.borrowInfo?.borrowingState !== 'DISABLED' &&
+    !reserve.isPaused &&
+    !reserve.isFrozen;
+  const userHasNoCollateralSupplied = !userState || userState.totalCollateralBase === '0';
+  const isolationModeBorrowDisabled =
+    !!userState?.isInIsolationMode && reserve.isolationModeConfig?.canBeBorrowed === false;
   const eModeBorrowDisabled =
-    user?.isInEmode && !reserve.eModes.find((e) => e.id === user.userEmodeCategoryId);
+    !!userState?.eModeEnabled &&
+    (reserve.userState?.emode?.canBeBorrowed === false || reserve.userState?.emode == null);
 
-  const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
-
+  const isGho = displayGhoForMintableMarket({
+    symbol: reserve.underlyingToken.symbol,
+    currentMarket,
+  });
+  const eModeLabel = reserve.userState?.emode?.label ?? 'Disabled';
   return {
     disableSupplyButton: balance === '0' || maxAmountToSupply === '0' || isGho,
     disableBorrowButton:
@@ -67,7 +71,8 @@ export const useReserveActionState = ({
             {currentNetworkConfig.isTestnet ? (
               <Warning sx={{ mb: 0 }} severity="info" icon={false}>
                 <Trans>
-                  Your {networkName} wallet is empty. Get free test {reserve.name} at
+                  Your {networkName} wallet is empty. Get free test {reserve.underlyingToken.name}{' '}
+                  at
                 </Trans>{' '}
                 {!currentMarketData.addresses.FAUCET ? (
                   <Button
@@ -90,7 +95,7 @@ export const useReserveActionState = ({
                   <Button
                     variant="text"
                     sx={{ verticalAlign: 'top' }}
-                    onClick={() => openFaucet(reserve.underlyingAsset)}
+                    onClick={() => openFaucet(reserve.underlyingToken.address)}
                     disableRipple
                   >
                     <Typography variant="caption">
@@ -111,7 +116,7 @@ export const useReserveActionState = ({
           </>
         )}
 
-        {(balance !== '0' || isGho) && user?.totalCollateralMarketReferenceCurrency === '0' && (
+        {(balance !== '0' || isGho) && userState?.totalCollateralBase === '0' && (
           <Warning sx={{ mb: 0 }} severity="info" icon={false}>
             <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
           </Warning>
@@ -137,8 +142,8 @@ export const useReserveActionState = ({
           <Warning sx={{ mb: 0 }} severity="info" icon={false}>
             <Trans>
               Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
-              {getEmodeMessage(eModes[user.userEmodeCategoryId].label)} category. To manage E-Mode
-              categories visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.
+              {eModeLabel} category. To manage E-Mode categories visit your{' '}
+              <Link href={ROUTES.dashboard}>Dashboard</Link>.
             </Trans>
           </Warning>
         )}
@@ -156,9 +161,9 @@ export const useReserveActionState = ({
           supplyCap?.determineWarningDisplay({ supplyCap, icon: false, sx: { mb: 0 } })}
         {maxAmountToBorrow === '0' &&
           borrowCap?.determineWarningDisplay({ borrowCap, icon: false, sx: { mb: 0 } })}
-        {reserve.isIsolated &&
+        {reserve.isolationModeConfig?.canBeCollateral === true &&
           balance !== '0' &&
-          user?.totalCollateralUSD !== '0' &&
+          userState?.totalCollateralBase !== '0' &&
           debtCeiling?.determineWarningDisplay({ debtCeiling, icon: false, sx: { mb: 0 } })}
       </Stack>
     ),

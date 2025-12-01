@@ -313,6 +313,7 @@ msgstr "{0} Balance{1}"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActionsSDK.tsx
 msgid "Supply {symbol}"
 msgstr "Supply {symbol}"
 
@@ -1136,10 +1137,6 @@ msgstr "Read-only mode. Connect to a wallet to perform transactions."
 msgid "ends"
 msgstr "ends"
 
-#: src/hooks/useReserveActionState.tsx
-msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
-msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
-
 #: src/components/transactions/Swap/warnings/postInputs/LiquidationCriticalWarning.tsx
 msgid "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
 msgstr "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
@@ -1345,6 +1342,8 @@ msgstr "Get GHO"
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
@@ -2420,6 +2419,7 @@ msgstr "supply"
 
 #: pages/dashboard.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
+#: src/components/transactions/Supply/SupplyModalSDK.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -2684,6 +2684,8 @@ msgstr "Withdraw {symbol}"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
 msgid "Supplied"
 msgstr "Supplied"
 
@@ -2753,6 +2755,10 @@ msgstr "Version 3"
 #: src/components/infoTooltips/NetAPYTooltip.tsx
 msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
 msgstr "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
+
+#: src/hooks/useReserveActionState.tsx
+msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {eModeLabel} category. To manage E-Mode categories visit your <0>Dashboard</0>."
+msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {eModeLabel} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid bridge protocol fee"
@@ -3419,6 +3425,8 @@ msgstr "Staked"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
@@ -4024,6 +4032,7 @@ msgstr "The collateral chosen cannot be liquidated"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActionsSDK.tsx
 msgid "Supplying {symbol}"
 msgstr "Supplying {symbol}"
 

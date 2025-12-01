@@ -4,28 +4,28 @@ import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { BasicModal } from '../../primitives/BasicModal';
-import { ModalWrapper } from '../FlowCommons/ModalWrapper';
-import { SupplyModalContentWrapper } from './SupplyModalContent';
+import { ModalWrapperSDK } from '../FlowCommons/ModalWrapperSDK';
+import { SupplyModalContentWrapperSDK } from './SupplyModalContentSDK';
 
-export const SupplyModal = () => {
+export const SupplyModalSDK = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
   //!Debbugging log
-  console.log('Rendering SupplyModal');
+  console.log('Rendering SupplyModalSDK');
   return (
-    <BasicModal open={type === ModalType.Supply} setOpen={close}>
-      <ModalWrapper
+    <BasicModal open={type === ModalType.SupplySDK} setOpen={close}>
+      <ModalWrapperSDK
         action="supply"
         title={<Trans>Supply</Trans>}
         underlyingAsset={args.underlyingAsset}
       >
         {(params) => (
           <UserAuthenticated>
-            {(user) => <SupplyModalContentWrapper {...params} user={user} />}
+            {(user) => <SupplyModalContentWrapperSDK {...params} user={user} />}
           </UserAuthenticated>
         )}
-      </ModalWrapper>
+      </ModalWrapperSDK>
     </BasicModal>
   );
 };

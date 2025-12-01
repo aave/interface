@@ -11,6 +11,7 @@ import { Proposal } from './governance/useProposals';
 
 export enum ModalType {
   Supply,
+  SupplySDK,
   Withdraw,
   Borrow,
   Repay,
@@ -77,6 +78,13 @@ type CallbackFn = () => void;
 
 export interface ModalContextType<T extends ModalArgsType> {
   openSupply: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string,
+    isReserve?: boolean
+  ) => void;
+  openSupplySDK: (
     underlyingAsset: string,
     currentMarket: string,
     name: string,
@@ -206,6 +214,28 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           } else {
             trackEvent(GENERAL.OPEN_MODAL, {
               modal: 'Supply',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          }
+        },
+        openSupplySDK: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
+          setType(ModalType.SupplySDK);
+          setArgs({ underlyingAsset });
+
+          if (isReserve) {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'SupplySDK',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          } else {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'SupplySDK',
               market: currentMarket,
               assetName: name,
               asset: underlyingAsset,

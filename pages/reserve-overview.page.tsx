@@ -5,12 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import {
-  ComputedReserveData,
-  ReserveWithId,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
@@ -46,7 +41,7 @@ const UnStakeModal = dynamic(() =>
 
 export default function ReserveOverview() {
   const router = useRouter();
-  const { supplyReserves, reserves } = useAppDataContext();
+  const { supplyReserves } = useAppDataContext();
   const underlyingAsset = router.query.underlyingAsset as string;
 
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('overview');
@@ -58,9 +53,9 @@ export default function ReserveOverview() {
   }) as ReserveWithId;
 
   //With Reserves
-  const reserveLegacy = reserves.find((reserve) => {
-    return reserve.underlyingAsset.toLowerCase() === underlyingAsset?.toLowerCase();
-  }) as ComputedReserveData;
+  // const reserveLegacy = reserves.find((reserve) => {
+  //   return reserve.underlyingAsset.toLowerCase() === underlyingAsset?.toLowerCase();
+  // }) as ComputedReserveData;
   const [pageEventCalled, setPageEventCalled] = useState(false);
 
   useEffect(() => {
@@ -127,10 +122,7 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            {/* Wrapped in AssetCapsProvider to provide the data using legacy method to avoid braking actions */}
-            <AssetCapsProvider asset={reserveLegacy}>
-              <ReserveActions reserve={reserveLegacy} />
-            </AssetCapsProvider>
+            <ReserveActions reserve={reserve} />
           </Box>
         </Box>
       </ContentContainer>
