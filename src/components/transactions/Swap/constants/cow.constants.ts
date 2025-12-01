@@ -65,17 +65,13 @@ export const DUST_PROTECTION_MULTIPLIER = 1.001;
 export const COW_UNSUPPORTED_ASSETS: Partial<
   Record<SwapType | 'ALL', Partial<Record<SupportedChainId, string[] | 'ALL'>>>
 > = {
-  // For adapters we start supporting only base
   [SwapType.DebtSwap]: {
-    [SupportedChainId.MAINNET]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
-    // Base is supported
   },
   [SwapType.CollateralSwap]: {
     [SupportedChainId.SEPOLIA]: 'ALL',
   },
   [SwapType.RepayWithCollateral]: {
-    [SupportedChainId.MAINNET]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
   },
 
@@ -116,6 +112,11 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.SEPOLIA]: [
       '0xd190eF37dB51Bb955A680fF1A85763CC72d083D4'.toLowerCase(), // aGHO not supported
     ],
+
+    // Safe checks, not supported
+    [SupportedChainId.LENS]: 'ALL',
+    [SupportedChainId.LINEA]: 'ALL',
+    [SupportedChainId.PLASMA]: 'ALL',
   },
 };
 
