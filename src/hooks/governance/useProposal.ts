@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { constants } from 'ethers';
-import request, { gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { lifecycleToBadge } from 'src/modules/governance/StateBadge';
 import {
   getLifecycleState,
@@ -11,6 +11,7 @@ import { VotingMachineService } from 'src/services/VotingMachineService';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { subgraphRequest } from 'src/utils/subgraphRequest';
 
 import {
   getSubgraphProposalMetadata,
@@ -28,7 +29,7 @@ const getProposalQuery = gql`
 `;
 
 export const getProposal = async (proposalId: number) => {
-  const result = await request<{ proposal: SubgraphProposal }>(
+  const result = await subgraphRequest<{ proposal: SubgraphProposal }>(
     governanceV3Config.governanceCoreSubgraphUrl,
     getProposalQuery,
     {

@@ -50,7 +50,7 @@ const prodConfig: Config[] = [
     router: '0x80226fc0ee2b096224eeac085bb9a8cba1146f7d',
     tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // CL Feed
     wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/E11p8T4Ff1DHZbwSUC527hkUb5innVMdTuP6A2s1xtm1`,
+    subgraphUrl: `bridge-${ChainId.mainnet}`,
     feeTokens: [
       {
         name: 'Gho Token',
@@ -84,7 +84,7 @@ const prodConfig: Config[] = [
     router: '0x141fa059441e0ca23ce184b6a78bafd2a517dde8',
     tokenOracle: AaveV3Arbitrum.ASSETS.GHO.ORACLE,
     wrappedNativeOracle: AaveV3Arbitrum.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/GPpZfiGoDChLsiWoMG5fxXdRNEYrsVDrKJ39moGcbz6i`,
+    subgraphUrl: `bridge-${ChainId.arbitrum_one}`,
     feeTokens: [
       {
         name: 'Gho Token',
@@ -118,7 +118,7 @@ const prodConfig: Config[] = [
     router: '0x881e3A65B4d4a04dD529061dd0071cf975F58bCD',
     tokenOracle: '0x42868EFcee13C0E71af89c04fF7d96f5bec479b0',
     wrappedNativeOracle: AaveV3Base.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7RqaLvSMWBv4Z3xmv4kb6Jq3t59ikYG3wpcsTnLgBWzt`,
+    subgraphUrl: `bridge-${ChainId.base}`,
     feeTokens: [
       {
         name: 'Gho Token',
@@ -152,7 +152,7 @@ const prodConfig: Config[] = [
     router: '0xF4c7E640EdA248ef95972845a62bdC74237805dB',
     tokenOracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
     wrappedNativeOracle: AaveV3Avalanche.ASSETS.WAVAX.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7WRSEgg43s2CqpymK2wkHrhQjn4v5fEnufonwRkkokbM`,
+    subgraphUrl: `bridge-${ChainId.avalanche}`,
     feeTokens: [
       {
         name: 'Gho Token',
@@ -186,7 +186,7 @@ const prodConfig: Config[] = [
     router: '0x4aAD6071085df840abD9Baf1697d5D5992bDadce',
     tokenOracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
     wrappedNativeOracle: AaveV3Gnosis.ASSETS.WXDAI.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/CFjU1G9iUtFDqEBTzSePRiPjghjUzQeFX5C67DGSK2Ao`,
+    subgraphUrl: `bridge-${ChainId.xdai}`,
     feeTokens: [
       {
         name: 'XDAI',
@@ -208,7 +208,7 @@ const prodConfig: Config[] = [
     router: '0xca7c90A52B44E301AC01Cb5EB99b2fD99339433A',
     tokenOracle: '0x20fd5f3FCac8883a3A0A2bBcD658A2d2c6EFa6B6',
     wrappedNativeOracle: '0xA17887fd35B14A4c6e6ec87458591941934d444c',
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/CZxebNCRkL9RHpFcQcDnRdQMB4yBM8PFgz5NKEHKtrw6`,
+    subgraphUrl: `bridge-${ChainId.sepolia}`,
     feeTokens: [
       {
         name: 'Ethereum',
@@ -233,7 +233,7 @@ const testnetConfig: Config[] = [
     router: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59',
     tokenOracle: '0x98458D6A99489F15e6eB5aFa67ACFAcf6F211051', // mock oracle
     wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8NWTrc4S6xwaBbajongofytQfQisqYm1zR2ghGEtRFSc`,
+    subgraphUrl: `bridge-${ChainId.arbitrum_sepolia}`,
     feeTokens: [
       // {
       //   name: 'Gho Token',
@@ -271,7 +271,7 @@ const testnetConfig: Config[] = [
     router: '0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165',
     tokenOracle: '0x1f885520b7BD528E46b390040F12E753Dce43004', // mock oracle
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8bpqvL6XBCVhN4heE9rdEwgTketeZ2U5vVGEh5fDoUEH`,
+    subgraphUrl: `bridge-${ChainId.base_sepolia}`,
     feeTokens: [
       // {
       //   name: 'Gho Token',
@@ -309,7 +309,7 @@ const testnetConfig: Config[] = [
     router: '0xD3b06cEbF099CE7DA4AcCf578aaebFDBd6e88a93',
     tokenOracle: '0xFD5ea2e57CDC98D371D8eA899d1F2C24bfFb39BD',
     wrappedNativeOracle: AaveV3BaseSepolia.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8bpqvL6XBCVhN4heE9rdEwgTketeZ2U5vVGEh5fDoUEH`,
+    subgraphUrl: `bridge-${ChainId.base_sepolia}`,
     feeTokens: [
       {
         name: 'Ethereum',

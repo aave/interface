@@ -23,7 +23,6 @@ import {
 
 export const ipfsGateway = 'https://cloudflare-ipfs.com/ipfs';
 export const fallbackIpfsGateway = 'https://ipfs.io/ipfs';
-const subgraphApiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
 
 export interface VotingMachineConfig {
   portalToMachineMap: { [votingPoralAddress: string]: string };
@@ -103,7 +102,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
   [ChainId.mainnet]: {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
-    governanceCoreSubgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/A7QMszgomC9cnnfpAcqZVLr2DffvkGNfimD8iUSMiurK`,
+    governanceCoreSubgraphUrl: 'governance-core',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
@@ -111,7 +110,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Ethereum.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Ethereum.VOTING_MACHINE,
-        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/2QPwuCfFtQ8WSCZoN3i9SmdoabMzbq2pmg4kRbrhymBV`,
+        subgraphUrl: `voting-machine-${ChainId.mainnet}`,
       },
       [ChainId.polygon]: {
         portalToMachineMap: {
@@ -119,7 +118,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Polygon.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Polygon.VOTING_MACHINE,
-        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/72ysXwyqW9CvfqD8keWo2fEfdKZQRWGYdgC6cnvTSFKy`,
+        subgraphUrl: `voting-machine-${ChainId.polygon}`,
       },
       [ChainId.avalanche]: {
         portalToMachineMap: {
@@ -127,7 +126,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Avalanche.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Avalanche.VOTING_MACHINE,
-        subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/FngMWWGJV45McvV7GUBkrta9eoEi3sHZoH7MYnFQfZkr`,
+        subgraphUrl: `voting-machine-${ChainId.avalanche}`,
       },
     },
     payloadsControllerDataHelpers: {

@@ -118,8 +118,6 @@ export enum CustomMarket {
   // permissioned_market = 'permissioned_market',
 }
 
-const apiKey = process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY;
-
 export const marketsData: {
   [key in keyof typeof CustomMarket]: MarketDataType;
 } = {
@@ -139,7 +137,7 @@ export const marketsData: {
       switch: true,
       limit: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Cd2gEDVeqnjBn1hSeqFMitw8Q1iiyV9FYUZkLNRcL87g`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Ethereum.POOL,
@@ -171,7 +169,7 @@ export const marketsData: {
       debtSwitch: true,
       switch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/5vxMbXRhG1oQr55MWC5j6qg78waWujx1wjeuEWDA6j3`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3EthereumLido.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3EthereumLido.POOL,
@@ -199,7 +197,7 @@ export const marketsData: {
       debtSwitch: true,
       switch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/8wR23o1zkS4gpLqLNU4kG3JHYVucqGyopL5utGxP2q1N`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV2Ethereum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV2Ethereum.POOL,
@@ -247,7 +245,7 @@ export const marketsData: {
       collateralRepay: false,
       debtSwitch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/H1Et77RZh3XEf27vkAmJyzgCME2RSFLtDS2f4PPW6CGp`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV2Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV2Polygon.POOL,
@@ -273,7 +271,7 @@ export const marketsData: {
       debtSwitch: true,
       switch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/EZvK18pMhwiCjxwesRLTg81fP33WnR6BnZe5Cvma3H1C`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV2Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV2Avalanche.POOL,
@@ -345,7 +343,7 @@ export const marketsData: {
       debtSwitch: true,
       switch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/GQFbb95cE6d8mV989mL5figjaGaKCQB3xqYrr1bRyXqF`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Base.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Base.POOL,
@@ -394,7 +392,7 @@ export const marketsData: {
       switch: true,
       limit: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/DLuE98kEb5pQNXAcKFQGQgfSQ57Xdou4jnVbAEqMfy3B`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Arbitrum.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Arbitrum.POOL,
@@ -441,7 +439,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       switch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/2h9woxy8RTjHu1HJsCEnmzpPHFArU33avmUh4f71JpVn`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Avalanche.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Avalanche.POOL,
@@ -463,7 +461,7 @@ export const marketsData: {
     chainId: ChainId.linea,
     logo: '/icons/markets/linea.svg',
     v3: true,
-    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/Gz2kjnmRV1fQj3R8cssoZa5y9VTanhrDo4Mh7nWW1wHa`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Linea.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Linea.POOL,
@@ -535,7 +533,7 @@ export const marketsData: {
     market: CustomMarket.proto_sonic_v3,
     chainId: ChainId.sonic,
     v3: true,
-    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/FQcacc4ZJaQVS9euWb76nvpSq2GxavBnUM6DU6tmspbi`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     enabledFeatures: {
       collateralRepay: true,
       liquiditySwap: true,
@@ -570,7 +568,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       switch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/DSfLz8oQBUeU5atALgUFQKMTSYV9mZAVYp4noLSXAfvb`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Optimism.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Optimism.POOL,
@@ -592,7 +590,7 @@ export const marketsData: {
     chainId: ChainId.mainnet,
     v3: true,
     logo: '/icons/markets/horizon.svg',
-    // subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/5vxMbXRhG1oQr55MWC5j6qg78waWujx1wjeuEWDA6j3`,
+    // subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5D39E06b825C1F2B80bf2756a73e28eFAA128ba0',
       LENDING_POOL: '0xAe05Cd22df81871bc7cC2a04BeCfb516bFe332C8',
@@ -636,7 +634,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       switch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/Co2URyXjnxaw8WqxKyVHdirq9Ahhm5vcTs4dMedAq211`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Polygon.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Polygon.POOL,
@@ -700,7 +698,7 @@ export const marketsData: {
       withdrawAndSwitch: true,
       switch: true,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/HtcDaL8L8iZ2KQNNS44EBVmLruzxuNAz1RkBYdui1QUT`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Gnosis.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Gnosis.POOL,
@@ -721,7 +719,7 @@ export const marketsData: {
     market: CustomMarket.proto_bnb_v3,
     chainId: ChainId.bnb,
     v3: true,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/7Jk85XgkV1MQ7u56hD8rr65rfASbayJXopugWkUoBMnZ`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     enabledFeatures: {
       liquiditySwap: true,
       collateralRepay: true,
@@ -748,7 +746,7 @@ export const marketsData: {
     market: CustomMarket.proto_scroll_v3,
     chainId: ChainId.scroll,
     v3: true,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/74JwenoHZb2aAYVGCCSdPWzi9mm745dyHyQQVoZ7Sbub`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Scroll.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Scroll.POOL,
@@ -764,7 +762,7 @@ export const marketsData: {
     market: CustomMarket.proto_zksync_v3,
     chainId: ChainId.zksync,
     v3: true,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/ENYSc8G3WvrbhWH8UZHrqPWYRcuyCaNmaTmoVp7uzabM`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3ZkSync.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3ZkSync.POOL,
@@ -796,7 +794,7 @@ export const marketsData: {
     market: CustomMarket.proto_celo_v3,
     chainId: ChainId.celo,
     v3: true,
-    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/GAVWZzGwQ6d6QbFojyFWxpZ2GB9Rf5hZgGyJHCEry8kn`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Celo.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Celo.POOL,
@@ -811,7 +809,7 @@ export const marketsData: {
     market: CustomMarket.proto_soneium_v3,
     chainId: ChainId.soneium,
     v3: true,
-    subgraphUrl: `https://gateway.thegraph.com/api/${apiKey}/subgraphs/id/5waxmqS3rkRtZPoV2mL5RCToupVxVbTd7hjicxMGebYm`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3Soneium.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3Soneium.POOL,
@@ -838,7 +836,7 @@ export const marketsData: {
       debtSwitch: true,
       switch: false,
     },
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${apiKey}/subgraphs/id/8o4HGApJkAqnvxAHShG4w5xiXihHyL7HkeDdQdRUYmqZ`,
+    subgraphUrl: '', // Not used at runtime - would need proxy if enabled,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3EthereumEtherFi.POOL_ADDRESSES_PROVIDER,
       LENDING_POOL: AaveV3EthereumEtherFi.POOL,

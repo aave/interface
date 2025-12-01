@@ -1,7 +1,7 @@
 import { ProposalMetadata, ProposalV3State, VotingMachineProposal } from '@aave/contract-helpers';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { constants } from 'ethers';
-import request, { gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { lifecycleToBadge, ProposalBadgeState } from 'src/modules/governance/StateBadge';
 import {
   getLifecycleState,
@@ -17,6 +17,7 @@ import { EnhancedPayload, GovernanceV3Service } from 'src/services/GovernanceV3S
 import { VotingMachineService } from 'src/services/VotingMachineService';
 import { governanceV3Config, ipfsGateway } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { subgraphRequest } from 'src/utils/subgraphRequest';
 import invariant from 'tiny-invariant';
 
 export interface SubgraphConstants {
@@ -218,7 +219,7 @@ export const getSubgraphProposalMetadata = async (proposal: SubgraphProposal) =>
 };
 
 export const getProposals = (first: number, skip: number) =>
-  request<{ proposals: SubgraphProposal[] }>(
+  subgraphRequest<{ proposals: SubgraphProposal[] }>(
     governanceV3Config.governanceCoreSubgraphUrl,
     getProposalsQuery,
     {
@@ -228,7 +229,7 @@ export const getProposals = (first: number, skip: number) =>
   );
 
 export const getProposalsByState = (first: number, skip: number, stateFilter: ProposalV3State) =>
-  request<{ proposals: SubgraphProposal[] }>(
+  subgraphRequest<{ proposals: SubgraphProposal[] }>(
     governanceV3Config.governanceCoreSubgraphUrl,
     getProposalsByStateQuery,
     {
@@ -239,7 +240,7 @@ export const getProposalsByState = (first: number, skip: number, stateFilter: Pr
   );
 
 export const getProposalsByIds = (ids: string[]) =>
-  request<{ proposals: SubgraphProposal[] }>(
+  subgraphRequest<{ proposals: SubgraphProposal[] }>(
     governanceV3Config.governanceCoreSubgraphUrl,
     getProposalsByIdQuery,
     {
