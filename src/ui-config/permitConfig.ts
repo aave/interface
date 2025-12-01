@@ -115,63 +115,6 @@ export const permitByChainAndToken: {
     '0x8a2b6f94ff3a89a03e8c02ee92b55af90c9454a2': true, // axaut
     '0x285866acb0d60105b4ed350a463361c2d9afa0e2': true, // apt_susde_27nov2025
     '0x38c503a438185cde29b5cf4dc1442fd6f074f1cc': true, // apt_usde_27nov2025
-
-    // vtokens
-    '0xea51d7853eefb32b6ee06b1c12e6dcca88be0ffe': true, // vweth
-    '0xc96113eed8cab59cd8a66813bcb0ceb29f06d2e4': true, // vwsteth
-    '0x40aabef1aa8f0eec637e0e7d92fbffb2f26a8b7b': true, // vwbtc
-    '0x72e95b8931767c79ba4eee721354d6e99a61d004': true, // vusdc
-    '0xcf8d0c70c850859266f5c338b38f9d663181c314': true, // vdai
-    '0x4228f8895c7dda20227f6a5c6751b8ebf19a6ba8': true, // vlink
-    '0xbae535520abd9f8c85e58929e0006a2c8b372f74': true, // vaave
-    '0x0c91bca95b5fe69164ce583a2ec9429a569798ed': true, // vcbeth
-    '0x6df1c1e379bc5a00a7b4c6e67a203333772f45a8': true, // vusdt
-    '0xae8593dd575fe29a9745056aa91c4b746eee62c8': true, // vreth
-    '0x33652e48e4b74d18520f11bfe58edd2ed2cec5a2': true, // vlusd
-    '0x1b7d3f4b3c032a5ae656e30eea4e8e1ba376068f': true, // vcrv
-    '0x6efc73e54e41b27d2134ff9f98f15550f30df9b1': true, // vmkr
-    '0x8d0de040e8aad872ec3c33a3776de9152d3c34ca': true, // vsnx
-    '0x3d3efceb4ff0966d34d9545d3a2fa2dcdbf451f2': true, // vbal
-    '0xf64178ebd2e2719f2b1233bcb5ef6db4bcc4d09a': true, // vuni
-    '0xc30808705c01289a3d306ca9cab081ba9114ec82': true, // vldo
-    '0xd180d7fdd4092f07428efe801e17bc03576b3192': true, // vens
-    '0xa38fca8c6bf9bda52e76eb78f08caa3be7c5a970': true, // vone_inch
-    '0x88b8358f5bc87c2d7e116cca5b65a9eeb2c5ea3f': true, // vfrax
-    '0x786dbff3f1292ae8f92ea68cf93c30b34b1ed04b': true, // vgho
-    '0x8988eca19d502fd8b9ccd03fa3bd20a6f599bc2a': true, // vrpl
-    '0x8db9d35e117d8b93c6ca9b644b25bad5d9908141': true, // vsdai
-    '0x655568bdd6168325ec7e58bf39b21a856f906dc2': true, // vstg
-    '0x253127ffc04981cea8932f406710661c2f2c3fd2': true, // vknc
-    '0x68e9f0ad4e6f8f5db70f6923d4d6d5b225b83b16': true, // vfxs
-    '0x028f7886f3e937f8479efad64f31b3fe1119857a': true, // vcrvusd
-    '0x57b67e4de077085fd0af2174e9c14871be664546': true, // vpyusd
-    '0x77ad9bf13a52517ad698d65913e8d381300c8bf3': true, // vweeth
-    '0x8838eeff2af391863e1bb8b1df563f86743a8470': true, // voseth
-    '0x015396e1f286289ae23a762088e863b3ec465145': true, // vusde
-    '0x08a8dc81aea67f84745623ac6c72cda3967aab8b': true, // vethx
-    '0xeffde9bfa8ec77c14c364055a200746d6e12bed6': true, // vsusde
-    '0xac50890a80a2731eb1ea2e9b4f29569ceb06d960': true, // vtbtc
-    '0xeb284a70557efe3591b9e6d9d720040e02c54a4d': true, // vcbbtc
-    '0x490e0e6255bf65b43e2e02f7acb783c5e04572ff': true, // vusds
-    '0x6de3e52a1b7294a34e271a508082b1ff4a37e30e': true, // vrseth
-    '0x68aeb290c7727d899b47c56d1c96aeac475cd0dd': true, // vlbtc
-    '0x47ed0509e64615c0d5c6d39af1b38d02bc9fe58f': true, // vebtc
-    '0xbdfe7ad7976d5d7e0965ea83a81ca1bcff7e84a9': true, // vrlusd
-    '0x3c20fbfd32243dd9899301c84bce17413eee0a0c': true, // vpt_eusde_29may2025
-    '0x8c6feaf5d58ba1a6541f9c4af685f62bfcbac3b1': true, // vpt_susde_31jul2025
-    '0xea85a065f87fe28aa8fbf0d6c7dec472b106252c': true, // vusdtb
-    '0xd90da2df915b87fe1621a7f2201fbf4ff2cca031': true, // vpt_usde_31jul2025
-    '0x22517fe16ded08e52e7ea3423a2ea4995b1f1731': true, // vpt_eusde_14aug2025
-    '0x48351fcc9536da440ae9471220f6dc921b0eb703': true, // veusde
-    '0x4a35fd7f93324cc48bc12190d3f37493437b1eff': true, // vfbtc
-    '0x6c82c66622eb360fc973d3f492f9d8e9ea538b08': true, // veurc
-    '0xc9ad8dd111e6384128146467aaf92b81ec422848': true, // vpt_susde_25sep2025
-    '0x0d8486e1cabf3c9407b3dda0cfc4d9c3101fb683': true, // vpt_usde_25sep2025
-    '0x7ec9afe70f8fd603282ebacbc9058a83623e2899': true, // vteth
-    '0x730318db7b830d324fc3feddb1d212ec64bd3141': true, // vezeth
-    '0xa665bb258d2a732c170dfd505924214c0b1ac74f': true, // vxaut
-    '0x690df181701c11c53ea33bbf303c25834b66bd14': true, // vpt_susde_27nov2025
-    '0x2ce7e7b238985a8ad3863de03f200b245b0c1216': true, // vpt_usde_27nov2025
   },
   [ChainId.arbitrum_one]: {
     '0xf97f4df75117a78c1a5a0dbb814af92458539fb4': true,
@@ -214,28 +157,6 @@ export const permitByChainAndToken: {
     '0xea1132120ddcdda2f119e99fa7a27a0d036f7ac9': true, // aezeth
     '0x6b030ff3fb9956b1b69f475b77ae0d3cf2cc5afa': true, // arseth
     '0x62fc96b27a510cf4977b59ff952dc32378cc221d': true, // atbtc
-
-    // vtokens
-    '0x8619d80fb0141ba7f184cbf22fd724116d9f7ffc': true, // vdai
-    '0x953a573793604af8d41f306feb8274190db4ae0e': true, // vlink
-    '0xfccf3cabbe80101232d343252614b6a3ee81c989': true, // vusdc
-    '0x92b42c66840c7ad907b4bf74879ff3ef7c529473': true, // vwbtc
-    '0x0c84331e39d6658cd6e6b9ba04736cc4c4734351': true, // vweth
-    '0xfb00ac187a8eb5afae4eace434f493eb62672df7': true, // vusdt
-    '0xe80761ea617f66f96274ea5e8c37f03960ecc679': true, // vaave
-    '0x4a1c3ad6ed28a636ee1751c69071f6be75deb8b8': true, // veurs
-    '0x77ca01483f379e58174739308945f044e1a764dc': true, // vwsteth
-    '0x34e2ed44ef7466d5f9e0b782b5c08b57475e7907': true, // vmai
-    '0xce186f6cccb0c955445bb9d10c59cae488fea559': true, // vreth
-    '0xa8669021776bc142dfca87c21b4a52595bcbb40a': true, // vlusd
-    '0xf611aeb5013fd2c0511c9cd55c7dc5c1140741a6': true, // vusdcn
-    '0x5d557b07776d12967914379c71a1310e917c7555': true, // vfrax
-    '0x44705f578135cc5d703b4c9c122528c73eb87145': true, // varb
-    '0x3ca5fa07689f266e907439afd1fbb59c44fe12f6': true, // vweeth
-    '0x18248226c16bf76c032817854e7c83a2113b4f06': true, // vgho
-    '0x1ffd28689da7d0148ff0fcb669e9f9f0fc13a219': true, // vezeth
-    '0x80ca0d8c38d2e2bcbab66aa1648bd1c7160500fe': true, // vrseth
-    '0xb5b46f918c2923fc7f26db76e8a6a6e9c4347cf9': true, // vtbtc
   },
 
   [ChainId.polygon]: {
@@ -286,29 +207,6 @@ export const permitByChainAndToken: {
     '0x5274453f4cd5dd7280011a1cca3b9e1b78ec59a6': true, // awsteth_static
     '0xa4d94019934d8333ef880abffbf2fdd611c762bd': true, // ausdcn
     '0x2dca80061632f3f87c9ca28364d1d0c30cd79a19': true, // ausdcn_static
-
-    // vtokens
-    '0x8619d80fb0141ba7f184cbf22fd724116d9f7ffc': true, // vdai
-    '0x953a573793604af8d41f306feb8274190db4ae0e': true, // vlink
-    '0xfccf3cabbe80101232d343252614b6a3ee81c989': true, // vusdc
-    '0x92b42c66840c7ad907b4bf74879ff3ef7c529473': true, // vwbtc
-    '0x0c84331e39d6658cd6e6b9ba04736cc4c4734351': true, // vweth
-    '0xfb00ac187a8eb5afae4eace434f493eb62672df7': true, // vusdt0
-    '0xe80761ea617f66f96274ea5e8c37f03960ecc679': true, // vaave
-    '0x4a1c3ad6ed28a636ee1751c69071f6be75deb8b8': true, // vwpol
-    '0x77ca01483f379e58174739308945f044e1a764dc': true, // vcrv
-    '0x34e2ed44ef7466d5f9e0b782b5c08b57475e7907': true, // vsushi
-    '0xce186f6cccb0c955445bb9d10c59cae488fea559': true, // vghst
-    '0xa8669021776bc142dfca87c21b4a52595bcbb40a': true, // vbal
-    '0xf611aeb5013fd2c0511c9cd55c7dc5c1140741a6': true, // vdpi
-    '0x5d557b07776d12967914379c71a1310e917c7555': true, // veurs
-    '0x44705f578135cc5d703b4c9c122528c73eb87145': true, // vjeur
-    '0x3ca5fa07689f266e907439afd1fbb59c44fe12f6': true, // veura
-    '0x18248226c16bf76c032817854e7c83a2113b4f06': true, // vmimatic
-    '0x6b030ff3fb9956b1b69f475b77ae0d3cf2cc5afa': true, // vstmatic
-    '0xb5b46f918c2923fc7f26db76e8a6a6e9c4347cf9': true, // vmaticx
-    '0x77fa66882a8854d883101fb8501bd3cad347fc32': true, // vwsteth
-    '0xe701126012ec0290822eea17b794454d1af8b030': true, // vusdcn
   },
   [ChainId.avalanche]: {
     '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7': true,
@@ -329,23 +227,6 @@ export const permitByChainAndToken: {
     '0x724dc807b04555b71ed48a6896b6f41593b8c637': true, // aausd
     '0xf611aeb5013fd2c0511c9cd55c7dc5c1140741a6': true, // agho
     '0x8a9fde6925a839f6b1932d16b36ac026f8d3fbdb': true, // aeurc
-
-    // vtokens
-    '0x8619d80fb0141ba7f184cbf22fd724116d9f7ffc': true, // vdaie
-    '0x953a573793604af8d41f306feb8274190db4ae0e': true, // vlinke
-    '0xfccf3cabbe80101232d343252614b6a3ee81c989': true, // vusdc
-    '0x92b42c66840c7ad907b4bf74879ff3ef7c529473': true, // vwbtce
-    '0x0c84331e39d6658cd6e6b9ba04736cc4c4734351': true, // vwethe
-    '0xfb00ac187a8eb5afae4eace434f493eb62672df7': true, // vusdt
-    '0xe80761ea617f66f96274ea5e8c37f03960ecc679': true, // vaavee
-    '0x4a1c3ad6ed28a636ee1751c69071f6be75deb8b8': true, // vwavax
-    '0x77ca01483f379e58174739308945f044e1a764dc': true, // vsavax
-    '0x34e2ed44ef7466d5f9e0b782b5c08b57475e7907': true, // vfrax
-    '0xce186f6cccb0c955445bb9d10c59cae488fea559': true, // vmai
-    '0xa8669021776bc142dfca87c21b4a52595bcbb40a': true, // vbtcb
-    '0xf611aeb5013fd2c0511c9cd55c7dc5c1140741a7': true, // vausd
-    '0x5d557b07776d12967914379c71a1310e917c7556': true, // vgho
-    '0x44705f578135cc5d703b4c9c122528c73eb87146': true, // veurc
   },
   [ChainId.optimism]: {
     '0x76fb31fb4af56892a25e32cfc43de717950c9278': false, // aave
@@ -380,22 +261,6 @@ export const permitByChainAndToken: {
     '0xf9ce3c97b4b54f3d16861420f4816d9f68190b7b': true, // areth_static
     '0x38d693ce1df5aadf7bc62595a37d667ad57922e5': true, // ausdcn
     '0x4dd03dfd36548c840b563745e3fbec320f37ba7e': true, // ausdcn_static
-
-    // vtokens
-    '0x8619d80fb0141ba7f184cbf22fd724116d9f7ffc': true, // vdai
-    '0x953a573793604af8d41f306feb8274190db4ae0e': true, // vlink
-    '0xfccf3cabbe80101232d343252614b6a3ee81c989': true, // vusdc
-    '0x92b42c66840c7ad907b4bf74879ff3ef7c529473': true, // vwbtc
-    '0x0c84331e39d6658cd6e6b9ba04736cc4c4734351': true, // vweth
-    '0xfb00ac187a8eb5afae4eace434f493eb62672df7': true, // vusdt
-    '0xe80761ea617f66f96274ea5e8c37f03960ecc679': true, // vaave
-    '0x4a1c3ad6ed28a636ee1751c69071f6be75deb8b8': true, // vsusd
-    '0x77ca01483f379e58174739308945f044e1a764dc': true, // vop
-    '0x34e2ed44ef7466d5f9e0b782b5c08b57475e7907': true, // vwsteth
-    '0xce186f6cccb0c955445bb9d10c59cae488fea559': true, // vlusd
-    '0xa8669021776bc142dfca87c21b4a52595bcbb40a': true, // vmai
-    '0xf611aeb5013fd2c0511c9cd55c7dc5c1140741a6': true, // vreth
-    '0x5d557b07776d12967914379c71a1310e917c7555': true, // vusdcn
   },
   [ChainId.zksync]: {
     '0x5a7d6b2f92c77fad6ccabd7ee0624e64907eaf3e': true,
@@ -413,16 +278,6 @@ export const permitByChainAndToken: {
     '0xe818a67ee5c0531afaa31aa6e20bcac36227a641': true, // aweeth
     '0xf3c9d58b76ac6ee6811520021e9a9318c49e4cfa': true, // asusde
     '0x5722921bb6c37eaeb78b993765aa5d79cc50052f': true, // awrseth
-
-    // vtokens
-    '0x0049250d15a8550c5a14baa5af5b662a93a525b9': true, // vusdc
-    '0x8992db58077fe8c7b80c1b3a738eae8a7bddba34': true, // vusdt
-    '0x98dc737ea0e9bcb254c3f98510a71c5e11f74238': true, // vweth
-    '0x6ad279f6523f6421fd5b0324a97d8f62eecd80c8': true, // vwsteth
-    '0x6450fd7f877b5bb726f7bc6bf0e6ffabd48d72ad': true, // vzk
-    '0xf31e1599b4480d07fa96a7248c4f05ca84da7fa8': true, // vweeth
-    '0xdebb4ddaaab1676775214552a7a05d6a13f905da': true, // vsusde
-    '0x97dec07366be72884331be21704fd93bf35286f9': true, // vwrseth
   },
   [ChainId.linea]: {
     '0xa219439258ca9da29e9cc4ce5596924745e12b93': true, // usdt
@@ -439,16 +294,6 @@ export const permitByChainAndToken: {
     '0x935efcbefc1df0541afc3fe145134f8c9a0beb89': true, // aezeth
     '0x0c7921ab4888fd06731898b3ffffeb06781d5f4f': true, // aweeth
     '0xcdd80e6211fc767352b198f827200c7e93d7bb04': true, // awrseth
-
-    // vtokens
-    '0x0e7543a9da61b2e71fc880685ed2945b7426a689': true, // vweth
-    '0x74a1b56f5137b00aa0ada1dd964a3a361ecc32e9': true, // vwbtc
-    '0x63ab166e6e1b6fb705b6ca23686fad9705eb3534': true, // vusdc
-    '0x4cedfa47f7d0e9036110b850ce49f4cd47b28a2f': true, // vusdt
-    '0x81c1a619be23050b3242b41a739e6b6cfda56687': true, // vwsteth
-    '0x1fe3452cef885724f8adf1382ee17d05d7e01cab': true, // vezeth
-    '0x37a843725508243952950307ceace7a9f5d5c280': true, // vweeth
-    '0xf3c806a402e4e9101373f76c05880eeac91bb5b9': true, // vwrseth
   },
   [ChainId.sonic]: {
     // adding these in false for clarity
@@ -461,12 +306,6 @@ export const permitByChainAndToken: {
     '0x578ee1ca3a8e1b54554da1bf7c583506c4cd11c6': true, // ausdc
     '0x6c5e14a212c1c3e4baf6f871ac9b1a969918c131': true, // aws
     '0xeaa74d7f42267eb907092af4bc700f667eed0b8b': true, // asts
-
-    // vtokens
-    '0x8619d80fb0141ba7f184cbf22fd724116d9f7ffc': true, // vweth
-    '0x953a573793604af8d41f306feb8274190db4ae0e': true, // vusdc
-    '0xfccf3cabbe80101232d343252614b6a3ee81c989': true, // vws
-    '0x92b42c66840c7ad907b4bf74879ff3ef7c529473': true, // vsts
   },
   [ChainId.celo]: {
     // '0xceba9300f2b948710d2653dd7b07f33a8b32118c': true, // usdc
@@ -482,14 +321,6 @@ export const permitByChainAndToken: {
     '0xbba98352628b0b0c4b40583f593ffcb630935a45': true, // acusd
     '0xc3e77dc389537db1eec7c33b95cf3beeca71a209': true, // acelo
     '0xf385280f36e009c157697d25e0b802efabfd789c': true, // aweth
-
-    // vtokens
-    '0xdbe517c0fa6467873b684eccbed77217e471e862': true, // vusdc
-    '0xe15324a9887999803b931ac45aa89a94a9750052': true, // vusdt
-    '0x5c2b7eb5886b3cec5cce1019e34493da33291af5': true, // vceur
-    '0x05ee3d1fbacbdba1259946033cd7a42fdfcccf0d': true, // vcusd
-    '0xaea37b42955de2ba2e4af6581e46349bcd3ea2d6': true, // vcelo
-    '0x6508cff7c5fba053af00a4e894500e6fa00274b7': true, // vweth
   },
   [ChainId.xdai]: {
     // atokens
@@ -511,17 +342,6 @@ export const permitByChainAndToken: {
     '0xc0333cb85b59a788d8c7cae5e1fd6e229a3e5a65': true, // ausdce
     '0xf0e7ec247b918311afa054e0aedb99d74c31b809': true, // ausdce_static
     '0x3fdcec11b4f15c79d483aedc56f37d302837cf4d': true, // agho
-
-    // vtokens
-    '0x0c0fce05f2314540ecb095bf4d069e5e0ed90ff8': true, // vweth
-    '0x9d881f67f20b49243c98f53d2b9e91e39d02ae09': true, // vwsteth
-    '0xbc59e99198dba71985a66e1713cc89ffec53f7fc': true, // vgno
-    '0x5f6f7b0a87ca3cf3d0b431ae03ef3305180bff4d': true, // vusdc
-    '0x281963d7471ecdc3a2bd4503e24e89691cfe420d': true, // vwxdai
-    '0xb96404e475f337a7e98e4a541c9b71309bb66c5a': true, // veure
-    '0x8fe06e1d8aff42bf6812cacf7854a2249a00bed7': true, // vsdai
-    '0x37b9ad6b5dc8ad977ad716e92f49e9d200e58431': true, // vusdce
-    '0x2766eefe0311bf7421cc30155b03d210bce30df8': true, // vgho
   },
 };
 
