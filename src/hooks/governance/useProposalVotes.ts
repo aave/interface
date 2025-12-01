@@ -61,8 +61,7 @@ const fetchProposalVotes = async (
     getProposalVotes,
     {
       proposalId,
-    },
-    config.subgraphGateway
+    }
   );
   return data.voteEmitteds.map((vote) => ({
     ...vote,

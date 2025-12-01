@@ -34,8 +34,7 @@ export const getProposal = async (proposalId: number) => {
     getProposalQuery,
     {
       id: proposalId,
-    },
-    governanceV3Config.governanceCoreSubgraphGateway
+    }
   );
   return result.proposal;
 };

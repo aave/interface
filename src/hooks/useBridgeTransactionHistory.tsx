@@ -61,11 +61,7 @@ const sendRequestsQuery = gql`
   }
 `;
 
-const getSendRequests = async (
-  subgraphId: string,
-  sender: string,
-  gateway?: 'arbitrum' | 'default'
-) => {
+const getSendRequests = async (subgraphId: string, sender: string) => {
   let result: { ccipsendRequests: SubgraphBridgeTransaction[] } = { ccipsendRequests: [] };
   try {
     result = await subgraphRequest<{ ccipsendRequests: SubgraphBridgeTransaction[] }>(
@@ -73,8 +69,7 @@ const getSendRequests = async (
       sendRequestsQuery,
       {
         sender,
-      },
-      gateway
+      }
     );
   } catch (e) {
     console.error(e);
@@ -120,9 +115,7 @@ export const useBridgeTransactionHistory = (sender: string) => {
   return useQuery({
     queryFn: async () => {
       const txs = await Promise.all(
-        laneConfig.map((config) =>
-          getSendRequests(config.subgraphId, sender, config.subgraphGateway)
-        )
+        laneConfig.map((config) => getSendRequests(config.subgraphId, sender))
       );
       return mergeAndSortTransactions(txs);
     },

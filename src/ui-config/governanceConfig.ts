@@ -29,14 +29,12 @@ export interface VotingMachineConfig {
   votingPortalDataHelperAddress: string;
   votingMachineAddress: string;
   subgraphId: string;
-  subgraphGateway?: 'arbitrum' | 'default';
 }
 
 export interface GovernanceV3Config {
   coreChainId: ChainId;
   votingChainIds: ChainId[];
   governanceCoreSubgraphId: string;
-  governanceCoreSubgraphGateway?: 'arbitrum' | 'default';
   votingChainConfig: { [chainId: number]: VotingMachineConfig };
   payloadsControllerDataHelpers: { [chainId: number]: string };
   addresses: {
@@ -105,7 +103,6 @@ export const governanceChainConfig: GovernanceChainConfig = {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
     governanceCoreSubgraphId: 'A7QMszgomC9cnnfpAcqZVLr2DffvkGNfimD8iUSMiurK',
-    governanceCoreSubgraphGateway: 'arbitrum',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
@@ -114,7 +111,6 @@ export const governanceChainConfig: GovernanceChainConfig = {
         votingPortalDataHelperAddress: GovernanceV3Ethereum.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Ethereum.VOTING_MACHINE,
         subgraphId: '2QPwuCfFtQ8WSCZoN3i9SmdoabMzbq2pmg4kRbrhymBV',
-        subgraphGateway: 'arbitrum',
       },
       [ChainId.polygon]: {
         portalToMachineMap: {
@@ -123,7 +119,6 @@ export const governanceChainConfig: GovernanceChainConfig = {
         votingPortalDataHelperAddress: GovernanceV3Polygon.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Polygon.VOTING_MACHINE,
         subgraphId: '72ysXwyqW9CvfqD8keWo2fEfdKZQRWGYdgC6cnvTSFKy',
-        subgraphGateway: 'arbitrum',
       },
       [ChainId.avalanche]: {
         portalToMachineMap: {
@@ -132,7 +127,6 @@ export const governanceChainConfig: GovernanceChainConfig = {
         votingPortalDataHelperAddress: GovernanceV3Avalanche.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Avalanche.VOTING_MACHINE,
         subgraphId: 'FngMWWGJV45McvV7GUBkrta9eoEi3sHZoH7MYnFQfZkr',
-        subgraphGateway: 'arbitrum',
       },
     },
     payloadsControllerDataHelpers: {

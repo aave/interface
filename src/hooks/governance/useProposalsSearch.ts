@@ -23,8 +23,7 @@ export const searchProposals = (query: string) =>
     {
       query,
       first: SEARCH_RESULTS_LIMIT,
-    },
-    governanceV3Config.governanceCoreSubgraphGateway
+    }
   );
 
 export const useProposalsSearch = (query: string) => {

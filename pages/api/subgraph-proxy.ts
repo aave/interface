@@ -2,13 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const subgraphApiKey = process.env.SUBGRAPH_API_KEY;
 
-const GATEWAY_URLS = {
-  arbitrum: `https://gateway-arbitrum.network.thegraph.com/api/${subgraphApiKey}/subgraphs/id/`,
-  default: `https://gateway.thegraph.com/api/${subgraphApiKey}/subgraphs/id/`,
-};
-
-function buildSubgraphUrl(subgraphId: string, gateway: 'arbitrum' | 'default' = 'default'): string {
-  return `${GATEWAY_URLS[gateway]}${subgraphId}`;
+function buildSubgraphUrl(subgraphId: string): string {
+  return `https://gateway.thegraph.com/api/subgraphs/id/${subgraphId}`;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -44,22 +39,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { subgraphId, gateway = 'default', query, variables } = req.body;
+    const { subgraphId, query, variables } = req.body;
 
     if (!subgraphId || !query) {
       return res.status(400).json({ error: 'Missing required fields: subgraphId and query' });
     }
 
-    if (gateway !== 'arbitrum' && gateway !== 'default') {
-      return res.status(400).json({ error: 'Invalid gateway. Must be "arbitrum" or "default"' });
-    }
-
-    const subgraphUrl = buildSubgraphUrl(subgraphId, gateway);
+    const subgraphUrl = buildSubgraphUrl(subgraphId);
 
     const response = await fetch(subgraphUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${subgraphApiKey}`,
       },
       body: JSON.stringify({
         query,

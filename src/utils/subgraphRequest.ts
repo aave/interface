@@ -4,8 +4,7 @@
 export async function subgraphRequest<T>(
   subgraphId: string,
   query: string,
-  variables?: Record<string, unknown>,
-  gateway: 'arbitrum' | 'default' = 'default'
+  variables?: Record<string, unknown>
 ): Promise<T> {
   const response = await fetch('/api/subgraph-proxy', {
     method: 'POST',
@@ -14,7 +13,6 @@ export async function subgraphRequest<T>(
     },
     body: JSON.stringify({
       subgraphId,
-      gateway,
       query,
       variables,
     }),

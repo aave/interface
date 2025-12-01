@@ -24,7 +24,6 @@ type Config = {
   router: string;
   chainSelector: string;
   subgraphId: string;
-  subgraphGateway?: 'arbitrum' | 'default';
   tokenOracle: string; // Used to get the GHO price
   wrappedNativeOracle: string; // Used to get the fee price in USD
   lockReleaseTokenPool?: string; // Only exists on Ethereum
@@ -52,7 +51,6 @@ const prodConfig: Config[] = [
     tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // CL Feed
     wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
     subgraphId: 'E11p8T4Ff1DHZbwSUC527hkUb5innVMdTuP6A2s1xtm1',
-    subgraphGateway: 'arbitrum',
     feeTokens: [
       {
         name: 'Gho Token',
@@ -87,7 +85,6 @@ const prodConfig: Config[] = [
     tokenOracle: AaveV3Arbitrum.ASSETS.GHO.ORACLE,
     wrappedNativeOracle: AaveV3Arbitrum.ASSETS.WETH.ORACLE,
     subgraphId: 'GPpZfiGoDChLsiWoMG5fxXdRNEYrsVDrKJ39moGcbz6i',
-    subgraphGateway: 'arbitrum',
     feeTokens: [
       {
         name: 'Gho Token',

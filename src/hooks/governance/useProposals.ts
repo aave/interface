@@ -225,8 +225,7 @@ export const getProposals = (first: number, skip: number) =>
     {
       first,
       skip,
-    },
-    governanceV3Config.governanceCoreSubgraphGateway
+    }
   );
 
 export const getProposalsByState = (first: number, skip: number, stateFilter: ProposalV3State) =>
@@ -237,8 +236,7 @@ export const getProposalsByState = (first: number, skip: number, stateFilter: Pr
       first,
       skip,
       stateFilter,
-    },
-    governanceV3Config.governanceCoreSubgraphGateway
+    }
   );
 
 export const getProposalsByIds = (ids: string[]) =>
@@ -247,8 +245,7 @@ export const getProposalsByIds = (ids: string[]) =>
     getProposalsByIdQuery,
     {
       ids,
-    },
-    governanceV3Config.governanceCoreSubgraphGateway
+    }
   );
 
 const PAGE_SIZE = 10;
