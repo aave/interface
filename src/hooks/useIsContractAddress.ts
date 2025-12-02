@@ -6,16 +6,16 @@ export const useIsContractAddress = (address: string, chainId?: number) => {
   const defaultChainId = useRootStore((store) => store.currentChainId);
 
   return useQuery({
-    queryFn: () => {
+    queryFn: async () => {
       try {
         const provider = getProvider(chainId ?? defaultChainId);
-        return provider.getCode(address);
+        return await provider.getCode(address);
       } catch (error) {
         console.error('Error getting code:', error);
         return '0x';
       }
     },
-    queryKey: ['isContractAddress', address],
+    queryKey: ['isContractAddress', address, chainId ?? defaultChainId],
     enabled: address !== '',
     staleTime: Infinity,
     select: (data) => data !== '0x',
