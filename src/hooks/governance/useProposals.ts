@@ -343,8 +343,6 @@ export const useProposals = (proposalStateFilter?: ProposalV3State) => {
         proposals = await fetchSubgraphProposals(pageParam);
       }
 
-      console.log('proposals', proposals);
-
       return fetchProposals(proposals, votingMachineSerivce, governanceV3Service);
     },
     queryKey: ['proposals', proposalStateFilter],
