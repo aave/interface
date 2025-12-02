@@ -1279,6 +1279,7 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/SavingsGhoProgram.tsx
@@ -3760,6 +3761,10 @@ msgstr "This asset is eligible for Kernel points incentive program. Aave Labs do
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "You have no rewards to claim at this time."
 msgstr "You have no rewards to claim at this time."
+
+#: src/components/transactions/Swap/errors/shared/InsufficientBorrowPowerBlockingError.tsx
+msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
+msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "Restaked"
