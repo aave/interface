@@ -57,7 +57,7 @@ const fetchProposalVotes = async (
 ): Promise<ProposalVote[]> => {
   const config = governanceV3Config.votingChainConfig[votingChainId as ChainId];
   const data = await subgraphRequest<{ voteEmitteds: ProposalVote[] }>(
-    config.subgraphId,
+    config.subgraphKey,
     getProposalVotes,
     {
       proposalId,
