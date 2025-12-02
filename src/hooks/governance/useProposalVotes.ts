@@ -2,9 +2,10 @@ import { ChainId } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { Contract } from 'ethers';
-import request, { gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { subgraphRequest } from 'src/utils/subgraphRequest';
 
 export type ProposalVote = {
   proposalId: string;
@@ -54,8 +55,9 @@ const fetchProposalVotes = async (
   proposalId: number,
   votingChainId: ChainId
 ): Promise<ProposalVote[]> => {
-  const data = await request<{ voteEmitteds: ProposalVote[] }>(
-    governanceV3Config.votingChainConfig[votingChainId as ChainId].subgraphUrl,
+  const config = governanceV3Config.votingChainConfig[votingChainId as ChainId];
+  const data = await subgraphRequest<{ voteEmitteds: ProposalVote[] }>(
+    config.subgraphKey,
     getProposalVotes,
     {
       proposalId,
