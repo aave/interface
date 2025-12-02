@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { SUBGRAPH_IDS, SubgraphKey } from 'src/utils/subgraphRequest';
 
 const subgraphApiKey = process.env.SUBGRAPH_API_KEY;
 
@@ -39,13 +40,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { subgraphId, query, variables } = req.body;
+    const {
+      subgraphKey,
+      query,
+      variables,
+    }: { subgraphKey: SubgraphKey; query: string; variables?: Record<string, unknown> } = req.body;
 
-    if (!subgraphId || !query) {
-      return res.status(400).json({ error: 'Missing required fields: subgraphId and query' });
+    if (!subgraphKey || !query) {
+      return res.status(400).json({ error: 'Missing required fields: subgraphKey and query' });
     }
 
-    const subgraphUrl = buildSubgraphUrl(subgraphId);
+    if (!(subgraphKey in SUBGRAPH_IDS)) {
+      return res.status(400).json({ error: 'Invalid subgraph key' });
+    }
+
+    const subgraphUrl = buildSubgraphUrl(SUBGRAPH_IDS[subgraphKey]);
 
     const response = await fetch(subgraphUrl, {
       method: 'POST',
