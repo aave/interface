@@ -1,4 +1,4 @@
-import { bigDecimal, chainId as sdkChainId, evmAddress } from '@aave/client';
+import { bigDecimal, chainId as sdkChainId, evmAddress, signatureFrom } from '@aave/client';
 import { supply } from '@aave/client/actions';
 import { sendWith } from '@aave/client/viem';
 import {
@@ -11,11 +11,14 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { client } from 'pages/_app.page';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
+import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
@@ -23,6 +26,7 @@ import { getWalletClient } from 'wagmi/actions';
 import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
 
 export interface SupplyActionPropsSDK extends BoxProps {
   amountToSupply: string;
@@ -46,23 +50,90 @@ export const SupplyActionsSDK = React.memo(
     symbol,
     blocked,
     decimals,
+    isWrappedBaseAsset,
+    setShowUSDTResetWarning,
     chainId,
     ...props
   }: SupplyActionPropsSDK) => {
-    const [addTransaction, currentMarketData] = useRootStore(
-      useShallow((state) => [state.addTransaction, state.currentMarketData])
-    );
+    const [tryPermit, walletApprovalMethodPreference, addTransaction, currentMarketData] =
+      useRootStore(
+        useShallow((state) => [
+          state.tryPermit,
+          state.walletApprovalMethodPreference,
+          state.addTransaction,
+          state.currentMarketData,
+        ])
+      );
     const { supplyReserves } = useAppDataContext();
-    const { mainTxState, loadingTxns, setLoadingTxns, setMainTxState, setGasLimit, setTxError } =
-      useModalContext();
+    const {
+      approvalTxState,
+      mainTxState,
+      loadingTxns,
+      setLoadingTxns,
+      setMainTxState,
+      setGasLimit,
+      setTxError,
+      setApprovalTxState,
+    } = useModalContext();
     const { currentAccount, chainId: userChainId } = useWeb3Context();
     const queryClient = useQueryClient();
+    const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
 
     const isNativeSupply = poolAddress.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
+    const permitAvailable = tryPermit({ reserveAddress: poolAddress, isWrappedBaseAsset });
+
+    const {
+      data: approvedAmount,
+      refetch: fetchApprovedAmount,
+      isRefetching: fetchingApprovedAmount,
+      isFetchedAfterMount,
+    } = usePoolApprovedAmount(currentMarketData, poolAddress);
 
     useEffect(() => {
-      setGasLimit(String(gasLimitRecommendations[ProtocolAction.supply].recommended));
-    }, [setGasLimit]);
+      setLoadingTxns(fetchingApprovedAmount);
+    }, [fetchingApprovedAmount, setLoadingTxns]);
+
+    useEffect(() => {
+      if (!isFetchedAfterMount) {
+        fetchApprovedAmount();
+      }
+    }, [fetchApprovedAmount, isFetchedAfterMount]);
+
+    const requiresApproval =
+      Number(amountToSupply) !== 0 &&
+      checkRequiresApproval({
+        approvedAmount: approvedAmount?.amount || '0',
+        amount: amountToSupply,
+        signedAmount: signatureParams ? signatureParams.amount : '0',
+      });
+
+    if (requiresApproval && approvalTxState?.success) {
+      setApprovalTxState({});
+    }
+
+    const usePermit = permitAvailable && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+
+    const { approval, requiresApprovalReset } = useApprovalTx({
+      usePermit,
+      approvedAmount,
+      requiresApproval,
+      assetAddress: poolAddress,
+      symbol,
+      decimals,
+      signatureAmount: amountToSupply,
+      onApprovalTxConfirmed: fetchApprovedAmount,
+      onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+      chainId,
+      setShowUSDTResetWarning,
+    });
+
+    useEffect(() => {
+      let supplyGasLimit = Number(gasLimitRecommendations[ProtocolAction.supply].recommended);
+      if (requiresApproval && !approvalTxState.success) {
+        supplyGasLimit += Number(APPROVAL_GAS_LIMIT);
+      }
+      setGasLimit(String(supplyGasLimit));
+    }, [approvalTxState.success, requiresApproval, setGasLimit]);
 
     const handleAction = async () => {
       if (!currentAccount || !amountToSupply || Number(amountToSupply) === 0) return;
@@ -86,7 +157,13 @@ export const SupplyActionsSDK = React.memo(
               erc20: {
                 currency: evmAddress(poolAddress),
                 value: bigDecimal(amountToSupply),
-                permitSig: null,
+                permitSig:
+                  usePermit && signatureParams
+                    ? {
+                        value: signatureFrom(signatureParams.signature as string),
+                        deadline: Number(signatureParams.deadline),
+                      }
+                    : null,
               },
             };
 
@@ -158,9 +235,11 @@ export const SupplyActionsSDK = React.memo(
         preparingTransactions={loadingTxns}
         actionText={<Trans>Supply {symbol}</Trans>}
         actionInProgressText={<Trans>Supplying {symbol}</Trans>}
+        handleApproval={requiresApproval ? approval : undefined}
         handleAction={handleAction}
-        requiresApproval={false}
-        tryPermit={false}
+        requiresApproval={requiresApproval}
+        tryPermit={usePermit}
+        requiresApprovalReset={requiresApprovalReset}
         sx={sx}
         {...props}
       />
