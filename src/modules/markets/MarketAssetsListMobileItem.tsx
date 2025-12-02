@@ -76,12 +76,12 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
   useEffect(() => {
     if (supplyDisplayApy === undefined) return;
     onApyChange(id, 'supply', supplyDisplayApy);
-  }, [id, onApyChange, supplyDisplayApy]);
+  }, [id, supplyDisplayApy]);
 
   useEffect(() => {
     if (!borrowIncentivizedApy || borrowDisplayApy === undefined) return;
     onApyChange(id, 'borrow', borrowDisplayApy);
-  }, [id, onApyChange, borrowDisplayApy, borrowIncentivizedApy]);
+  }, [id, borrowDisplayApy, borrowIncentivizedApy]);
 
   return (
     <ListMobileItemWrapper
