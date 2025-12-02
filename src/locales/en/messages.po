@@ -312,6 +312,7 @@ msgid "{0} Balance{1}"
 msgstr "{0} Balance{1}"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyActionsSDK.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActionsSDK.tsx
 msgid "Supply {symbol}"
@@ -4031,6 +4032,7 @@ msgid "The collateral chosen cannot be liquidated"
 msgstr "The collateral chosen cannot be liquidated"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyActionsSDK.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActionsSDK.tsx
 msgid "Supplying {symbol}"

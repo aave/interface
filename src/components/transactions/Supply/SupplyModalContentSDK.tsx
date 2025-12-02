@@ -58,6 +58,7 @@ import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { USDTResetWarning } from '../Warnings/USDTResetWarning';
 import { SupplyActions } from './SupplyActions';
+import { SupplyActionsSDK } from './SupplyActionsSDK';
 import { SupplyWrappedTokenActionsSDK } from './SupplyWrappedTokenActionsSDK';
 
 export enum ErrorType {
@@ -352,7 +353,7 @@ export const SupplyModalContentSDK = React.memo(
 
         {showUSDTResetWarning && <USDTResetWarning />}
 
-        <SupplyActions {...supplyActionsProps} />
+        <SupplyActionsSDK {...supplyActionsProps} />
       </>
     );
   }
