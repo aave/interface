@@ -13,7 +13,6 @@ namespace NodeJS {
     NEXT_PUBLIC_FORK_URL_RPC?: string;
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: string;
     NEXT_PUBLIC_FIAT_ON_RAMP: string;
-    NEXT_PUBLIC_SUBGRAPH_API_KEY: string;
     NEXT_PUBLIC_IS_CYPRESS_ENABLED: string;
   }
 }
