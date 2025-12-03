@@ -1,3 +1,4 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -158,6 +159,17 @@ const getTokensFrom = (
             )
           : undefined;
 
+        let balance = position.underlyingBalance;
+        if (position.reserve.supplyAPY === '0') {
+          // remove one wei from balance because is rounded up
+          const balanceBN = valueToBigNumber(balance);
+          const decimals = balanceBN.decimalPlaces();
+          if (decimals && decimals > 15) {
+            const oneWei = valueToBigNumber(1).dividedBy(10 ** (decimals ?? 18));
+            balance = balanceBN.minus(oneWei).toString();
+          }
+        }
+
         return {
           addressToSwap: position.reserve.aTokenAddress,
           addressForUsdPrice: position.reserve.aTokenAddress,
@@ -165,7 +177,7 @@ const getTokensFrom = (
           decimals: baseToken.decimals,
           symbol: nativeToken?.symbol ?? baseToken.symbol,
           name: nativeToken?.name ?? baseToken.name,
-          balance: position.underlyingBalance,
+          balance,
           chainId,
           usdPrice: position.reserve.priceInUSD,
           supplyAPY: position.reserve.supplyAPY,
