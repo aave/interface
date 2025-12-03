@@ -1,7 +1,7 @@
 import { SxProps } from '@mui/material';
 import { Dispatch, useEffect } from 'react';
 
-import { ActionsBlockedReason, SwapError, SwapProvider, SwapState } from '../../types';
+import { ActionsBlockedReason, SwapError, SwapState } from '../../types';
 import { isProtocolSwapState, ProtocolSwapState } from '../../types/state.types';
 import { FlashLoanDisabledBlockingError } from './FlashLoanDisabledBlockingError';
 
@@ -10,9 +10,7 @@ export const hasFlashLoanDisabled = (state: SwapState): boolean => {
     return false;
   }
 
-  // Check if provider is Paraswap, using flashloan, and sourceReserve exists
   if (
-    state.provider === SwapProvider.PARASWAP &&
     state.useFlashloan === true &&
     state.sourceReserve?.reserve &&
     !state.sourceReserve.reserve.flashLoanEnabled
