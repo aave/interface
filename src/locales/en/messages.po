@@ -287,6 +287,7 @@ msgid "Borrow cap is exceeded"
 msgstr "Borrow cap is exceeded"
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
+#: src/components/transactions/Borrow/BorrowActionsSDK.tsx
 msgid "Borrow {symbol}"
 msgstr "Borrow {symbol}"
 
@@ -693,6 +694,7 @@ msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModalContentSDK.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
@@ -1929,6 +1931,7 @@ msgstr "GHO balance"
 
 #: pages/dashboard.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
+#: src/components/transactions/Borrow/BorrowModalSDK.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -2499,6 +2502,7 @@ msgid "Forum discussion"
 msgstr "Forum discussion"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModalContentSDK.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
@@ -2657,6 +2661,7 @@ msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModalContentSDK.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
 
@@ -2848,6 +2853,7 @@ msgid "dashboard"
 msgstr "dashboard"
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
+#: src/components/transactions/Borrow/BorrowActionsSDK.tsx
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
 
@@ -4007,6 +4013,7 @@ msgid "The app is running in fork mode."
 msgstr "The app is running in fork mode."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModalContentSDK.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
 

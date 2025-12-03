@@ -16,27 +16,12 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-// import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
-// import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-// import { amountToUsd } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { CapType } from '../../components/caps/helper';
 import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { useReserveActionState } from '../../hooks/useReserveActionState';
-
-// const amountToUSD = (
-//   amount: BigNumberValue,
-//   formattedPriceInMarketReferenceCurrency: string,
-//   marketReferencePriceInUsd: string
-// ) => {
-//   return valueToBigNumber(amount)
-//     .multipliedBy(formattedPriceInMarketReferenceCurrency)
-//     .multipliedBy(marketReferencePriceInUsd)
-//     .shiftedBy(-USD_DECIMALS)
-//     .toString();
-// };
 
 interface ReserveActionsProps {
   reserve: ReserveWithId;
@@ -46,7 +31,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.underlyingToken.symbol);
 
   const { currentAccount } = useWeb3Context();
-  const { openBorrow, openSupplySDK } = useModalContext();
+  const { openBorrowSDK, openSupplySDK } = useModalContext();
   const [currentMarket, currentNetworkConfig, currentMarketData] = useRootStore(
     useShallow((store) => [
       store.currentMarket,
@@ -153,7 +138,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
                 symbol={selectedAsset}
                 disable={disableBorrowButton}
                 onActionClicked={() => {
-                  openBorrow(
+                  openBorrowSDK(
                     reserve.underlyingToken.address,
                     currentMarket,
                     reserve.underlyingToken.name,

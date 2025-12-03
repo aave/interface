@@ -54,6 +54,11 @@ const BridgeModal = dynamic(() =>
 const BorrowModal = dynamic(() =>
   import('src/components/transactions/Borrow/BorrowModal').then((module) => module.BorrowModal)
 );
+const BorrowModalSDK = dynamic(() =>
+  import('src/components/transactions/Borrow/BorrowModalSDK').then(
+    (module) => module.BorrowModalSDK
+  )
+);
 const ClaimRewardsModal = dynamic(() =>
   import('src/components/transactions/ClaimRewards/ClaimRewardsModal').then(
     (module) => module.ClaimRewardsModal
@@ -176,6 +181,7 @@ export default function MyApp(props: MyAppProps) {
                                   <SupplyModalSDK />
                                   <WithdrawModal />
                                   <BorrowModal />
+                                  <BorrowModalSDK />
                                   <RepayModal />
                                   <CollateralChangeModal />
                                   <ClaimRewardsModal />

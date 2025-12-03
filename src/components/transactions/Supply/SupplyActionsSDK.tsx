@@ -238,7 +238,7 @@ export const SupplyActionsSDK = React.memo(
         handleApproval={requiresApproval ? approval : undefined}
         handleAction={handleAction}
         requiresApproval={requiresApproval}
-        tryPermit={usePermit}
+        tryPermit={permitAvailable}
         requiresApprovalReset={requiresApprovalReset}
         sx={sx}
         {...props}

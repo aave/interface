@@ -11,8 +11,6 @@ export const SupplyModal = () => {
   const { type, close, args } = useModalContext() as ModalContextType<{
     underlyingAsset: string;
   }>;
-  //!Debbugging log
-  console.log('Rendering SupplyModal');
   return (
     <BasicModal open={type === ModalType.Supply} setOpen={close}>
       <ModalWrapper

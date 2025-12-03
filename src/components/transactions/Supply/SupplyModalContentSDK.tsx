@@ -1,10 +1,10 @@
 import { bigDecimal, evmAddress } from '@aave/client';
 import { healthFactorPreview } from '@aave/client/actions';
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { ChainId, ChainId as ClientChainId } from '@aave/types';
 import { Trans } from '@lingui/macro';
 import { Skeleton, Stack, Typography } from '@mui/material';
-import { BigNumber } from 'bignumber.js';
 import { parseUnits } from 'ethers/lib/utils';
 import { client } from 'pages/_app.page';
 import React, { useEffect, useState } from 'react';
@@ -194,7 +194,7 @@ export const SupplyModalContentSDK = React.memo(
       }
     };
 
-    const amountInUsd = new BigNumber(amount).multipliedBy(poolReserve.usdExchangeRate ?? '0');
+    const amountInUsd = valueToBigNumber(amount).multipliedBy(poolReserve.usdExchangeRate ?? '0');
 
     const isMaxSelected = amount === maxAmountToSupply;
 
@@ -206,15 +206,13 @@ export const SupplyModalContentSDK = React.memo(
         }
 
         try {
-          const baseAmount = parseUnits(amount, poolReserve.underlyingToken.decimals).toString();
-
           const requestAmount =
             supplyUnWrapped && poolReserve.acceptsNative
-              ? { native: bigDecimal(baseAmount) }
+              ? { native: bigDecimal(amount) }
               : {
                   erc20: {
                     currency: evmAddress(poolReserve.underlyingToken.address),
-                    value: bigDecimal(baseAmount),
+                    value: bigDecimal(amount),
                     permitSig: null,
                   },
                 };
@@ -416,7 +414,7 @@ export const SupplyWrappedTokenModalContentSDK = ({
 
   useEffect(() => {
     if (!exchangeRate) return;
-    const convertedAmount = new BigNumber(tokenInBalance).multipliedBy(exchangeRate).toString();
+    const convertedAmount = valueToBigNumber(tokenInBalance).multipliedBy(exchangeRate).toString();
     setConvertedTokenInAmount(convertedAmount);
   }, [exchangeRate, tokenInBalance]);
 
@@ -433,8 +431,8 @@ export const SupplyWrappedTokenModalContentSDK = ({
   const tokenOutRemainingSupplyCap = remainingCap(supplyCap, totalLiquidity);
 
   let maxAmountOfTokenInToSupply = tokenInBalance;
-  if (BigNumber(convertedTokenInAmount).isGreaterThan(tokenOutRemainingSupplyCap)) {
-    maxAmountOfTokenInToSupply = BigNumber(tokenOutRemainingSupplyCap)
+  if (valueToBigNumber(convertedTokenInAmount).isGreaterThan(tokenOutRemainingSupplyCap)) {
+    maxAmountOfTokenInToSupply = valueToBigNumber(tokenOutRemainingSupplyCap)
       .dividedBy(exchangeRate || '0')
       .toString();
 
@@ -466,8 +464,8 @@ export const SupplyWrappedTokenModalContentSDK = ({
   };
 
   const amountOutForPool = supplyingWrappedToken
-    ? new BigNumber(amount).multipliedBy(exchangeRate || '0')
-    : new BigNumber(amount);
+    ? valueToBigNumber(amount).multipliedBy(exchangeRate || '0')
+    : valueToBigNumber(amount);
   const amountOutForPoolStr = amountOutForPool.toString(10);
 
   const amountInUsd = amountOutForPool.multipliedBy(poolReserve.usdExchangeRate ?? '0');
@@ -532,7 +530,7 @@ export const SupplyWrappedTokenModalContentSDK = ({
 
   if (supplyTxState.success) {
     const successModalAmount = supplyingWrappedToken
-      ? BigNumber(amount)
+      ? valueToBigNumber(amount)
           .dividedBy(exchangeRate || '1')
           .toString()
       : amount;

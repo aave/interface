@@ -14,6 +14,7 @@ export enum ModalType {
   SupplySDK,
   Withdraw,
   Borrow,
+  BorrowSDK,
   Repay,
   CollateralChange,
   Stake,
@@ -98,6 +99,13 @@ export interface ModalContextType<T extends ModalArgsType> {
     funnel: string
   ) => void;
   openBorrow: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string,
+    isReserve?: boolean
+  ) => void;
+  openBorrowSDK: (
     underlyingAsset: string,
     currentMarket: string,
     name: string,
@@ -269,6 +277,27 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
           } else {
             trackEvent(GENERAL.OPEN_MODAL, {
               modal: 'Borrow',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          }
+        },
+        openBorrowSDK: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
+          setType(ModalType.BorrowSDK);
+          setArgs({ underlyingAsset });
+          if (isReserve) {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'BorrowSDK',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          } else {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'BorrowSDK',
               market: currentMarket,
               assetName: name,
               asset: underlyingAsset,
