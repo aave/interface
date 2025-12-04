@@ -70,6 +70,7 @@ export const FlashLoanDisabledBlockingGuard = ({
     state.provider,
     state.useFlashloan,
     state.sourceReserve?.reserve?.flashLoanEnabled,
+    state.destinationReserve?.reserve?.flashLoanEnabled,
     state.error,
   ]);
 
