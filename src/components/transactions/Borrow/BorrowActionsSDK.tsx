@@ -66,8 +66,6 @@ export const BorrowActionsSDK = React.memo(
     const [requiresApproval, setRequiresApproval] = useState(
       borrowNative && poolAddress === API_ETH_MOCK_ADDRESS
     );
-    console.log('BorrowActionsSDK render requiresApproval:', requiresApproval);
-    console.log('PoolAddress', poolAddress);
     useEffect(() => {
       setRequiresApproval(
         borrowNative && poolAddress === API_ETH_MOCK_ADDRESS && !approvalTxState.success

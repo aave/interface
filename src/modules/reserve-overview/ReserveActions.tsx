@@ -1,4 +1,5 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Paper, Skeleton, Stack, Typography, useTheme } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
@@ -16,6 +17,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
+import { getMaxAmountAvailableToSupplySDK } from 'src/utils/getMaxAmountAvailableToSupply';
 import { useShallow } from 'zustand/shallow';
 
 import { CapType } from '../../components/caps/helper';
@@ -29,7 +31,6 @@ interface ReserveActionsProps {
 
 export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.underlyingToken.symbol);
-
   const { currentAccount } = useWeb3Context();
   const { openBorrowSDK, openSupplySDK } = useModalContext();
   const [currentMarket, currentNetworkConfig, currentMarketData] = useRootStore(
@@ -42,28 +43,27 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const { loading: loadingReserves } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
   const { baseAssetSymbol } = currentNetworkConfig;
-  let balance = walletBalances[reserve.underlyingToken.address.toLowerCase()];
-  if (!!reserve.acceptsNative && selectedAsset === baseAssetSymbol) {
-    balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
-  }
-
+  const isNativeSelected = reserve.acceptsNative && selectedAsset === baseAssetSymbol;
+  const walletBalance = isNativeSelected
+    ? walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount ?? '0'
+    : walletBalances[reserve.underlyingToken.address.toLowerCase()]?.amount ?? '0';
+  const underlyingAsset =
+    selectedAsset === baseAssetSymbol ? API_ETH_MOCK_ADDRESS : reserve.underlyingToken.address;
   let maxAmountToBorrow = '0';
-
   let maxAmountToSupply = '0';
-  //! MaxAmountToSupply no funciona para NATIVE TOKEN
+
   if (reserve.userState) {
     maxAmountToBorrow = reserve.userState.borrowable.amount.value || '0';
-    console.log('maxAmountToBorrow', maxAmountToBorrow);
-    maxAmountToSupply = reserve.userState.suppliable.amount.value || '0';
-    console.log('maxAmountToSupply', maxAmountToSupply);
+    maxAmountToSupply = getMaxAmountAvailableToSupplySDK(walletBalance, reserve, underlyingAsset);
   }
 
   const maxAmountToBorrowUsd = reserve.userState?.borrowable.usd || '0';
-
-  const maxAmountToSupplyUsd = reserve.userState?.suppliable.usd || '0';
+  const maxAmountToSupplyUsd = valueToBigNumber(maxAmountToSupply)
+    .multipliedBy(reserve.usdExchangeRate ?? '0')
+    .toString();
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
-    balance: balance?.amount || '0',
+    balance: walletBalance || '0',
     maxAmountToSupply: maxAmountToSupply.toString(),
     maxAmountToBorrow: maxAmountToBorrow.toString(),
     reserve,
@@ -112,7 +112,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
         </Box>
       )}
       <WalletBalance
-        balance={balance.amount}
+        balance={walletBalance}
         symbol={selectedAsset}
         marketTitle={market.marketTitle}
       />
@@ -375,7 +375,11 @@ const WrappedBaseAssetSelector = ({
       color="primary"
       value={selectedAsset}
       exclusive
-      onChange={(_, value) => setSelectedAsset(value)}
+      onChange={(_, value) => {
+        if (value !== null) {
+          setSelectedAsset(value);
+        }
+      }}
       sx={{ mb: 4 }}
     >
       <StyledTxModalToggleButton value={assetSymbol}>

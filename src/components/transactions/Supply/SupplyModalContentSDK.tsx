@@ -72,13 +72,12 @@ export const SupplyModalContentWrapperSDK = (
   const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances } = useWalletBalances(currentMarketData);
   const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCapsSDK();
-  const { supplyReserves } = useAppDataContext(); //! with SDK
+  const { supplyReserves } = useAppDataContext();
   const { poolReserve, reserveUserState, marketUserState } = params;
 
   const wrappedToken = wrappedTokenReserves.find(
     (r) => r.tokenOut.underlyingAsset === params.underlyingAsset
   );
-
   const canSupplyAsWrappedToken =
     wrappedToken &&
     walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
@@ -153,15 +152,10 @@ export const SupplyModalContentSDK = React.memo(
     debtCeilingWarning,
     user,
   }: SupplyModalContentPropsSDK) => {
-    // const { marketReferencePriceInUsd } = useAppDataContext();
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
     const { chainId, currentAccount } = useWeb3Context();
-    const [minRemainingBaseTokenBalance, currentMarketData, currentNetworkConfig] = useRootStore(
-      useShallow((state) => [
-        state.poolComputed.minRemainingBaseTokenBalance,
-        state.currentMarketData,
-        state.currentNetworkConfig,
-      ])
+    const [currentMarketData, currentNetworkConfig] = useRootStore(
+      useShallow((state) => [state.currentMarketData, state.currentNetworkConfig])
     );
 
     // states
@@ -175,12 +169,11 @@ export const SupplyModalContentSDK = React.memo(
     const supplyApy = poolReserve.supplyInfo.apy.value;
 
     // Calculate max amount to supply
-    const maxAmountToSupply = getMaxAmountAvailableToSupplySDK({
+    const maxAmountToSupply = getMaxAmountAvailableToSupplySDK(
       walletBalance,
-      reserve: poolReserve, // ReserveWithId del SDK
-      isNativeSelected: !!poolReserve.acceptsNative && supplyUnWrapped,
-      minRemainingBaseTokenBalance,
-    });
+      poolReserve,
+      underlyingAsset.toLowerCase()
+    );
 
     const handleChange = (value: string) => {
       if (value === '-1') {
@@ -230,17 +223,14 @@ export const SupplyModalContentSDK = React.memo(
           });
 
           if (result.isOk()) {
-            //!Debug
-            console.log('healthFactorPreview result', result.value);
             setHfPreviewAfter(result.value.after?.toString());
           } else {
             setHfPreviewAfter(undefined);
           }
         } catch (error) {
-          console.error('healthFactorPreview failed', error);
           setHfPreviewAfter(undefined);
         }
-      }, 2000);
+      }, 300);
 
       return () => clearTimeout(timer);
     }, [
@@ -343,7 +333,7 @@ export const SupplyModalContentSDK = React.memo(
           <DetailsHFLine
             visibleHfChange={!!amount}
             healthFactor={user ? user.healthFactor : '-1'}
-            futureHealthFactor={hfPreviewAfter?.toString()}
+            futureHealthFactor={hfPreviewAfter?.toString() ? hfPreviewAfter.toString() : '-1'}
           />
         </TxModalDetails>
 
@@ -372,9 +362,6 @@ export const SupplyWrappedTokenModalContentSDK = ({
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { currentAccount } = useWeb3Context();
   const { walletBalances } = useWalletBalances(currentMarketData);
-  const minRemainingBaseTokenBalance = useRootStore(
-    (state) => state.poolComputed.minRemainingBaseTokenBalance
-  );
   const [hfPreviewAfter, setHfPreviewAfter] = useState<string | undefined>();
   const supplyProtocolIncentives = mapAaveProtocolIncentives(poolReserve.incentives, 'supply');
 
@@ -421,12 +408,11 @@ export const SupplyWrappedTokenModalContentSDK = ({
   const supplyCap = poolReserve.supplyInfo.supplyCap.amount.value;
   const totalLiquidity = poolReserve.supplyInfo.total.value;
 
-  const maxAmountToSupplyTokenOut = getMaxAmountAvailableToSupplySDK({
-    walletBalance: tokenOutBalance,
-    reserve: poolReserve,
-    isNativeSelected: false,
-    minRemainingBaseTokenBalance,
-  });
+  const maxAmountToSupplyTokenOut = getMaxAmountAvailableToSupplySDK(
+    tokenOutBalance,
+    poolReserve,
+    poolReserve.underlyingToken.address
+  );
 
   const tokenOutRemainingSupplyCap = remainingCap(supplyCap, totalLiquidity);
 
@@ -512,10 +498,9 @@ export const SupplyWrappedTokenModalContentSDK = ({
           setHfPreviewAfter(undefined);
         }
       } catch (error) {
-        console.error('healthFactorPreview failed', error);
         setHfPreviewAfter(undefined);
       }
-    }, 2000);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [

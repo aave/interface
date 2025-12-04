@@ -71,10 +71,6 @@ export const ModalWrapperSDK: React.FC<{
     );
 
   if (!poolReserveSDK) throw new Error(`Reserve not found for ${underlyingAsset}`);
-
-  //!Debug
-  console.log('poolReserveSDK', poolReserveSDK);
-
   const reserveUserState = poolReserveSDK.userState;
   const marketUserState = sdkMarket?.userState;
 
@@ -82,7 +78,6 @@ export const ModalWrapperSDK: React.FC<{
     poolReserveSDK.acceptsNative && !keepWrappedSymbol
       ? currentNetworkConfig.baseAssetSymbol
       : poolReserveSDK.underlyingToken.symbol;
-  //!Para balacne nativo, no se si esto esta correcto
   const nativeKey = API_ETH_MOCK_ADDRESS.toLowerCase();
   const tokenKey = poolReserveSDK.underlyingToken.address.toLowerCase();
   const nativeBalance = walletBalances[nativeKey]?.amount || '0';
@@ -112,10 +107,6 @@ export const ModalWrapperSDK: React.FC<{
         isWrongNetwork,
         nativeBalance,
         tokenBalance,
-        //!esto es lo que habia, lo he cambiado por lo de arriba como recomendacion para ensenar el correcto balance
-        // nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0',
-        // tokenBalance:
-        //   walletBalances[poolReserveSDK.underlyingToken.address.toLowerCase()]?.amount || '0',
         poolReserve: poolReserveSDK,
         symbol,
         underlyingAsset,

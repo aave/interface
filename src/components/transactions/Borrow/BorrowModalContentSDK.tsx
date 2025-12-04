@@ -57,7 +57,6 @@ export const BorrowModalContentSDK = ({
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { borrowCap } = useAssetCapsSDK();
   const borrowNative = borrowUnWrapped && !!poolReserve.acceptsNative;
-  console.log('BorrowModalContentSDK render borrowNative:', borrowNative);
   const borrowProtocolIncentives = mapAaveProtocolIncentives(poolReserve.incentives, 'borrow');
 
   const [amount, setAmount] = useState('');
@@ -65,7 +64,6 @@ export const BorrowModalContentSDK = ({
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
 
   // amount calculations
-  // const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
   const maxAmountToBorrow = poolReserve.userState?.borrowable.amount.value || '0';
 
   // We set this in a useEffect, so it doesn't constantly change when
@@ -116,14 +114,11 @@ export const BorrowModalContentSDK = ({
         });
 
         if (result.isOk()) {
-          //!Debug
-          console.log('healthFactorPreview result', result.value);
           setHfPreviewAfter(result.value.after?.toString());
         } else {
           setHfPreviewAfter(undefined);
         }
       } catch (error) {
-        console.error('healthFactorPreview failed', error);
         setHfPreviewAfter(undefined);
       }
     }, 300);

@@ -110,17 +110,13 @@ export const getAssetCollateralTypeSdk = ({
   marketUserState?: MarketUserState | null;
   debtCeilingIsMaxed: boolean;
 }) => {
-  // el asset se puede usar como colateral a nivel de protocolo
   if (!reserve.supplyInfo.canBeCollateral) return CollateralType.UNAVAILABLE;
 
   const isIsolationAsset = reserve.isolationModeConfig?.canBeCollateral === true;
   const userIsInIsolationMode = marketUserState?.isInIsolationMode === true;
   const userHasSuppliedReserve = (reserveUserState?.balance.amount.value ?? '0') !== '0';
   const userHasCollateral = (marketUserState?.totalCollateralBase ?? '0') !== '0';
-
-  // No tenemos usageAsCollateralEnabledOnUser; usamos el estado actual del SDK
-  const userCollateralEnabled =
-    reserveUserState?.canBeCollateral === true || !userHasSuppliedReserve;
+  const userCollateralEnabled = reserveUserState?.canBeCollateral === true;
 
   let collateralType: CollateralType = CollateralType.ENABLED;
 
@@ -146,6 +142,6 @@ export const getAssetCollateralTypeSdk = ({
       collateralType = userCollateralEnabled ? CollateralType.ENABLED : CollateralType.DISABLED;
     }
   }
-
+  console.log('collateralType', collateralType);
   return collateralType;
 };
