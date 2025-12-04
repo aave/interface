@@ -169,6 +169,7 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
     ) {
       // No private RPC or there is a fork configured, use public ones directly
       const chainProviders: string[] = [];
+
       if (config.publicJsonRPCUrl.length) {
         config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
       }

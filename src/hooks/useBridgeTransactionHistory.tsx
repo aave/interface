@@ -1,7 +1,8 @@
 import { ChainId } from '@aave/contract-helpers';
 import { useQuery } from '@tanstack/react-query';
-import request, { gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { getChainIdFor, laneConfig } from 'src/components/transactions/Bridge/BridgeConfig';
+import { SubgraphKey, subgraphRequest } from 'src/utils/subgraphRequest';
 
 type SubgraphBridgeTransaction = {
   id: string;
@@ -60,11 +61,11 @@ const sendRequestsQuery = gql`
   }
 `;
 
-const getSendRequests = async (url: string, sender: string) => {
+const getSendRequests = async (subgraphKey: SubgraphKey, sender: string) => {
   let result: { ccipsendRequests: SubgraphBridgeTransaction[] } = { ccipsendRequests: [] };
   try {
-    result = await request<{ ccipsendRequests: SubgraphBridgeTransaction[] }>(
-      url,
+    result = await subgraphRequest<{ ccipsendRequests: SubgraphBridgeTransaction[] }>(
+      subgraphKey,
       sendRequestsQuery,
       {
         sender,
@@ -114,7 +115,7 @@ export const useBridgeTransactionHistory = (sender: string) => {
   return useQuery({
     queryFn: async () => {
       const txs = await Promise.all(
-        laneConfig.map((config) => getSendRequests(config.subgraphUrl, sender))
+        laneConfig.map((config) => getSendRequests(config.subgraphKey, sender))
       );
       return mergeAndSortTransactions(txs);
     },
