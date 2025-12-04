@@ -11,18 +11,19 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { AssetCapHookData } from 'src/hooks/useAssetCaps';
+import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { AssetCapHookData } from 'src/hooks/useAssetCapsSDK';
 import { GENERAL } from 'src/utils/events';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { mapAaveProtocolIncentives } from '../../components/incentives/incentives.helper';
 import { BorrowApyGraph } from './graphs/ApyGraphContainer';
 import { ReserveFactorOverview } from './ReserveFactorOverview';
 import { PanelItem } from './ReservePanels';
 
 interface BorrowInfoProps {
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
   currentMarketData: MarketDataType;
   currentNetworkConfig: NetworkConfig;
   renderCharts: boolean;
@@ -39,19 +40,26 @@ export const BorrowInfo = ({
   borrowCap,
 }: BorrowInfoProps) => {
   const maxAvailableToBorrow = BigNumber.max(
-    valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt)),
+    valueToBigNumber(reserve.borrowInfo!.borrowCap.amount.value).minus(
+      valueToBigNumber(reserve.borrowInfo!.total.amount.value)
+    ),
     0
   ).toNumber();
 
   const maxAvailableToBorrowUSD = BigNumber.max(
-    valueToBigNumber(reserve.borrowCapUSD).minus(valueToBigNumber(reserve.totalDebtUSD)),
+    valueToBigNumber(reserve.borrowInfo!.borrowCap.usd).minus(
+      valueToBigNumber(reserve.borrowInfo!.total.usd)
+    ),
     0
   ).toNumber();
 
   const isGho = displayGhoForMintableMarket({
-    symbol: reserve.symbol,
+    symbol: reserve.underlyingToken.symbol,
     currentMarket: currentMarketData.market,
   });
+
+  const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
+  const apyValue = Number(reserve.borrowInfo?.apy.value);
 
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
@@ -72,7 +80,7 @@ export const BorrowInfo = ({
                   <Trans>
                     Maximum amount available to borrow is{' '}
                     <FormattedNumber value={maxAvailableToBorrow} variant="secondary12" />{' '}
-                    {reserve.symbol} (
+                    {reserve.underlyingToken.symbol} (
                     <FormattedNumber
                       value={maxAvailableToBorrowUSD}
                       variant="secondary12"
@@ -92,8 +100,8 @@ export const BorrowInfo = ({
                       eventName: GENERAL.TOOL_TIP,
                       eventParams: {
                         tooltip: 'Total borrowed',
-                        asset: reserve.underlyingAsset,
-                        assetName: reserve.name,
+                        asset: reserve.underlyingToken.address,
+                        assetName: reserve.underlyingToken.name,
                       },
                     }}
                   >
@@ -114,7 +122,7 @@ export const BorrowInfo = ({
               }
             >
               <Box>
-                <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="main16" />
                 <Typography
                   component="span"
                   color="text.primary"
@@ -123,10 +131,13 @@ export const BorrowInfo = ({
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber value={reserve.borrowCap} variant="main16" />
+                <FormattedNumber
+                  value={reserve.borrowInfo!.borrowCap.amount.value}
+                  variant="main16"
+                />
               </Box>
               <Box>
-                <ReserveSubheader value={reserve.totalDebtUSD} />
+                <ReserveSubheader value={reserve.borrowInfo!.total.usd} />
                 <Typography
                   component="span"
                   color="text.primary"
@@ -135,7 +146,7 @@ export const BorrowInfo = ({
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <ReserveSubheader value={reserve.borrowCapUSD} />
+                <ReserveSubheader value={reserve.borrowInfo!.borrowCap.usd} />
               </Box>
             </PanelItem>
           </>
@@ -148,8 +159,8 @@ export const BorrowInfo = ({
               </Box>
             }
           >
-            <FormattedNumber value={reserve.totalDebt} variant="main16" />
-            <ReserveSubheader value={reserve.totalDebtUSD} />
+            <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="main16" />
+            <ReserveSubheader value={reserve.borrowInfo!.total.usd} />
           </PanelItem>
         )}
         <PanelItem
@@ -162,8 +173,8 @@ export const BorrowInfo = ({
                   eventName: GENERAL.TOOL_TIP,
                   eventParams: {
                     tooltip: 'APY, variable',
-                    asset: reserve.underlyingAsset,
-                    assetName: reserve.name,
+                    asset: reserve.underlyingToken.address,
+                    assetName: reserve.underlyingToken.name,
                   },
                 }}
                 text={<Trans>APY, variable</Trans>}
@@ -174,27 +185,28 @@ export const BorrowInfo = ({
           }
         >
           <IncentivesCard
-            value={reserve.variableBorrowAPY}
-            incentives={reserve.vIncentivesData || []}
-            address={reserve.variableDebtTokenAddress}
-            symbol={reserve.symbol}
+            value={Number.isFinite(apyValue) ? apyValue : '-1'}
+            incentives={borrowProtocolIncentives}
+            address={reserve.vToken.address}
+            symbol={reserve.underlyingToken.symbol}
             variant="main16"
             market={currentMarketData.market}
             protocolAction={ProtocolAction.borrow}
             inlineIncentives={true}
           />
         </PanelItem>
-        {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (
+
+        {reserve.borrowInfo?.borrowCap.usd && reserve.borrowInfo?.borrowCap.usd !== '0' && (
           <PanelItem title={<Trans>Borrow cap</Trans>}>
-            <FormattedNumber value={reserve.borrowCap} variant="main16" />
-            <ReserveSubheader value={reserve.borrowCapUSD} />
+            <FormattedNumber value={reserve.borrowInfo!.borrowCap.amount.value} variant="main16" />
+            <ReserveSubheader value={reserve.borrowInfo!.borrowCap.usd} />
           </PanelItem>
         )}
       </Box>
       {renderCharts && (
         <BorrowApyGraph
           chain={currentMarketData.chainId}
-          underlyingToken={reserve.underlyingAsset}
+          underlyingToken={reserve.underlyingToken.address}
           market={currentMarketData.addresses.LENDING_POOL}
         />
       )}
@@ -210,9 +222,9 @@ export const BorrowInfo = ({
         <ReserveFactorOverview
           collectorContract={currentMarketData.addresses.COLLECTOR}
           explorerLinkBuilder={currentNetworkConfig.explorerLinkBuilder}
-          reserveFactor={reserve.reserveFactor}
-          reserveName={reserve.name}
-          reserveAsset={reserve.underlyingAsset}
+          reserveFactor={reserve.borrowInfo!.reserveFactor.value}
+          reserveName={reserve.underlyingToken.name}
+          reserveAsset={reserve.underlyingToken.address}
         />
       )}
     </Box>

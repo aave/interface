@@ -5,12 +5,9 @@ import { BigNumber } from 'bignumber.js';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
-export const GhoReserveTopDetails = ({ reserve }: { reserve: ComputedReserveData }) => {
+export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) => {
   const { loading } = useAppDataContext();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -19,8 +16,8 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ComputedReserveData
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
   const totalBorrowed = BigNumber.min(
-    valueToBigNumber(reserve.totalDebt),
-    valueToBigNumber(reserve.borrowCap)
+    valueToBigNumber(reserve.borrowInfo?.total.amount.value ?? '0'),
+    valueToBigNumber(reserve.borrowInfo?.borrowCap.amount.value ?? '0')
   ).toNumber();
 
   return (
@@ -41,7 +38,7 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ComputedReserveData
         hideIcon
       >
         <FormattedNumber
-          value={reserve.borrowCap}
+          value={reserve.borrowInfo?.borrowCap.amount.value ?? '0'}
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}

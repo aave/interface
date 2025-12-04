@@ -65,32 +65,14 @@ export const DUST_PROTECTION_MULTIPLIER = 1.001;
 export const COW_UNSUPPORTED_ASSETS: Partial<
   Record<SwapType | 'ALL', Partial<Record<SupportedChainId, string[] | 'ALL'>>>
 > = {
-  // For adapters we start supporting only base
   [SwapType.DebtSwap]: {
-    [SupportedChainId.ARBITRUM_ONE]: 'ALL',
-    [SupportedChainId.AVALANCHE]: 'ALL',
-    [SupportedChainId.BNB]: 'ALL',
-    [SupportedChainId.GNOSIS_CHAIN]: 'ALL',
-    [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.POLYGON]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
-    [SupportedChainId.BASE]: 'ALL', // Base is not supported
   },
   [SwapType.CollateralSwap]: {
-    [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.BNB]: 'ALL',
-    [SupportedChainId.POLYGON]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
   },
   [SwapType.RepayWithCollateral]: {
-    [SupportedChainId.ARBITRUM_ONE]: 'ALL',
-    [SupportedChainId.AVALANCHE]: 'ALL',
-    [SupportedChainId.BNB]: 'ALL',
-    [SupportedChainId.GNOSIS_CHAIN]: 'ALL',
-    [SupportedChainId.MAINNET]: 'ALL',
-    [SupportedChainId.POLYGON]: 'ALL',
     [SupportedChainId.SEPOLIA]: 'ALL',
-    [SupportedChainId.BASE]: 'ALL', // Base is not supported
   },
 
   // Specific assets that are not supported for certain chains across all swap types
@@ -130,6 +112,11 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.SEPOLIA]: [
       '0xd190eF37dB51Bb955A680fF1A85763CC72d083D4'.toLowerCase(), // aGHO not supported
     ],
+
+    // Safe checks, not supported
+    [SupportedChainId.LENS]: 'ALL',
+    [SupportedChainId.LINEA]: 'ALL',
+    [SupportedChainId.PLASMA]: 'ALL',
   },
 };
 

@@ -1,12 +1,12 @@
 import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
-import type { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import type { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { GraphLegend } from './GraphLegend';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
 
 type InteresetRateModelGraphContainerProps = {
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
 };
 
 export type Field = 'variableBorrowRate' | 'utilizationRate';
@@ -41,13 +41,13 @@ export const InterestRateModelGraphContainer = ({
             height={CHART_HEIGHT}
             fields={fields}
             reserve={{
-              baseVariableBorrowRate: reserve.baseVariableBorrowRate,
-              optimalUsageRatio: reserve.optimalUsageRatio,
-              utilizationRate: reserve.borrowUsageRatio,
-              variableRateSlope1: reserve.variableRateSlope1,
-              variableRateSlope2: reserve.variableRateSlope2,
-              totalLiquidityUSD: reserve.totalLiquidityUSD,
-              totalDebtUSD: reserve.totalDebtUSD,
+              baseVariableBorrowRate: String(reserve.borrowInfo?.reserveFactor.raw),
+              optimalUsageRatio: String(reserve.borrowInfo?.optimalUsageRate.raw),
+              utilizationRate: String(reserve.borrowInfo?.utilizationRate.value),
+              variableRateSlope1: String(reserve.borrowInfo?.variableRateSlope1.raw),
+              variableRateSlope2: String(reserve.borrowInfo?.variableRateSlope2.raw),
+              totalLiquidityUSD: reserve.size.usd,
+              totalDebtUSD: String(reserve.borrowInfo?.total.usd),
             }}
           />
         )}

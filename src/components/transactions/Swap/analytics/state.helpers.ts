@@ -41,9 +41,16 @@ export const swapStateToAnalyticsEventParams = (state: SwapState): TrackEventPro
   };
 };
 
-export const swapErrorToAnalyticsEventParams = (error: SwapError): TrackEventProperties => {
+export const swapErrorToAnalyticsEventParams = (
+  state: SwapState,
+  error: SwapError
+): TrackEventProperties => {
   return {
+    ...swapStateToAnalyticsEventParams(state),
+
     errorMessage: error.message,
+    rawErrorName: error.rawError.name,
+    rawErrorMessage: error.rawError.message,
     isActionBlocked: error.actionBlocked,
     stage: error.stage,
   };
