@@ -513,11 +513,7 @@ export const SupplyWrappedTokenModalContentSDK = ({
   ]);
 
   if (supplyTxState.success) {
-    const successModalAmount = supplyingWrappedToken
-      ? valueToBigNumber(amount)
-          .dividedBy(exchangeRate || '1')
-          .toString()
-      : amount;
+    const successModalAmount = supplyingWrappedToken ? amountOutForPool.toString(10) : amount;
 
     return (
       <TxSuccessView
