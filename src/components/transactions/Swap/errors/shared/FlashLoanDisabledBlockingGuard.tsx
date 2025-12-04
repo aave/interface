@@ -10,11 +10,11 @@ export const hasFlashLoanDisabled = (state: SwapState): boolean => {
     return false;
   }
 
-  if (
-    state.useFlashloan === true &&
-    state.sourceReserve?.reserve &&
-    !state.sourceReserve.reserve.flashLoanEnabled
-  ) {
+  const reserve = !state.isInvertedSwap
+    ? state.sourceReserve?.reserve
+    : state.destinationReserve?.reserve;
+
+  if (state.useFlashloan === true && reserve && !reserve.flashLoanEnabled) {
     return true;
   }
 
@@ -70,6 +70,7 @@ export const FlashLoanDisabledBlockingGuard = ({
     state.provider,
     state.useFlashloan,
     state.sourceReserve?.reserve?.flashLoanEnabled,
+    state.destinationReserve?.reserve?.flashLoanEnabled,
     state.error,
   ]);
 
