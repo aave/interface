@@ -65,7 +65,6 @@ export const ModalWrapper: React.FC<{
       return reserve.isWrappedBaseAsset;
     return underlyingAsset === reserve.underlyingAsset;
   }) as ComputedReserveData;
-  console.log('poolReserve', poolReserve);
   const userReserve = user?.userReservesData.find((userReserve) => {
     if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
       return userReserve.reserve.isWrappedBaseAsset;

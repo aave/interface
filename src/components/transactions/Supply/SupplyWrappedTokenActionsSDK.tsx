@@ -92,7 +92,7 @@ export const SupplyWrappedTokenActionsSDK = ({
   }
 
   // Since the only wrapped token right now is sDAI/DAI, disable permit since it is not supported
-  const usePermit = false; // walletApprovalMethodPreference === ApprovalMethod.PERMIT;
+  const usePermit = false;
 
   // Update gas estimation
   let supplyGasLimit = 0;

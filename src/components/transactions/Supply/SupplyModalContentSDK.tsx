@@ -369,15 +369,18 @@ export const SupplyWrappedTokenModalContentSDK = ({
     throw new Error('Wrapped token config is not defined');
   }
 
-  const tokenInBalance = walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset].amount;
-  const tokenOutBalance = walletBalances[wrappedTokenConfig.tokenOut.underlyingAsset].amount;
+  const tokenInBalance =
+    walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset.toLowerCase()]?.amount || '0';
+
+  const tokenOutBalance =
+    walletBalances[wrappedTokenConfig.tokenOut.underlyingAsset.toLowerCase()]?.amount || '0';
 
   const assets = [
     {
       balance: tokenInBalance,
       symbol: wrappedTokenConfig.tokenIn.symbol,
       iconSymbol: wrappedTokenConfig.tokenIn.symbol,
-      address: wrappedTokenConfig.tokenIn.underlyingAsset,
+      address: wrappedTokenConfig.tokenIn.underlyingAsset.toLowerCase(),
     },
   ];
 
@@ -386,7 +389,7 @@ export const SupplyWrappedTokenModalContentSDK = ({
       balance: tokenOutBalance,
       symbol: wrappedTokenConfig.tokenOut.symbol,
       iconSymbol: wrappedTokenConfig.tokenOut.symbol,
-      address: wrappedTokenConfig.tokenOut.underlyingAsset,
+      address: wrappedTokenConfig.tokenOut.underlyingAsset.toLowerCase(),
     });
   }
 
@@ -430,7 +433,8 @@ export const SupplyWrappedTokenModalContentSDK = ({
 
   let supplyingWrappedToken = false;
   if (wrappedTokenConfig) {
-    supplyingWrappedToken = tokenToSupply.address === wrappedTokenConfig.tokenIn.underlyingAsset;
+    supplyingWrappedToken =
+      tokenToSupply.address === wrappedTokenConfig.tokenIn.underlyingAsset.toLowerCase();
   }
 
   const handleChange = (value: string) => {

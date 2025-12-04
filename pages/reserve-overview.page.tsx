@@ -52,10 +52,6 @@ export default function ReserveOverview() {
     return reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase();
   }) as ReserveWithId;
 
-  //With Reserves
-  // const reserveLegacy = reserves.find((reserve) => {
-  //   return reserve.underlyingAsset.toLowerCase() === underlyingAsset?.toLowerCase();
-  // }) as ComputedReserveData;
   const [pageEventCalled, setPageEventCalled] = useState(false);
 
   useEffect(() => {
