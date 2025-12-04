@@ -5,7 +5,6 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ChainId, ChainId as ClientChainId } from '@aave/types';
 import { Trans } from '@lingui/macro';
 import { Skeleton, Stack, Typography } from '@mui/material';
-import { parseUnits } from 'ethers/lib/utils';
 import { client } from 'pages/_app.page';
 import React, { useEffect, useState } from 'react';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
@@ -17,10 +16,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { CollateralType } from 'src/helpers/types';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import {
-  useTokenInForTokenOut,
-  useTokenOutForTokenIn,
-} from 'src/hooks/token-wrapper/useTokenWrapper';
+import { useTokenOutForTokenIn } from 'src/hooks/token-wrapper/useTokenWrapper';
 import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWrappedTokens, WrappedTokenConfig } from 'src/hooks/useWrappedTokens';
@@ -396,17 +392,19 @@ export const SupplyWrappedTokenModalContentSDK = ({
   const [tokenToSupply, setTokenToSupply] = useState<Asset>(assets[0]);
   const [amount, setAmount] = useState('');
   const [convertedTokenInAmount, setConvertedTokenInAmount] = useState<string>('0');
-  const { data: exchangeRate } = useTokenInForTokenOut(
+  const { data: tokenOutPerTokenIn } = useTokenOutForTokenIn(
     '1',
     poolReserve.underlyingToken.decimals,
     wrappedTokenConfig.tokenWrapperAddress
   );
 
   useEffect(() => {
-    if (!exchangeRate) return;
-    const convertedAmount = valueToBigNumber(tokenInBalance).multipliedBy(exchangeRate).toString();
+    if (!tokenOutPerTokenIn) return;
+    const convertedAmount = valueToBigNumber(tokenInBalance)
+      .multipliedBy(tokenOutPerTokenIn)
+      .toString();
     setConvertedTokenInAmount(convertedAmount);
-  }, [exchangeRate, tokenInBalance]);
+  }, [tokenInBalance, tokenOutPerTokenIn]);
 
   const supplyCap = poolReserve.supplyInfo.supplyCap.amount.value;
   const totalLiquidity = poolReserve.supplyInfo.total.value;
@@ -420,9 +418,10 @@ export const SupplyWrappedTokenModalContentSDK = ({
   const tokenOutRemainingSupplyCap = remainingCap(supplyCap, totalLiquidity);
 
   let maxAmountOfTokenInToSupply = tokenInBalance;
+  const rateBN = valueToBigNumber(tokenOutPerTokenIn || '0');
   if (valueToBigNumber(convertedTokenInAmount).isGreaterThan(tokenOutRemainingSupplyCap)) {
     maxAmountOfTokenInToSupply = valueToBigNumber(tokenOutRemainingSupplyCap)
-      .dividedBy(exchangeRate || '0')
+      .dividedBy(rateBN.eq(0) ? '1' : rateBN)
       .toString();
 
     maxAmountOfTokenInToSupply = roundToTokenDecimals(
@@ -454,11 +453,12 @@ export const SupplyWrappedTokenModalContentSDK = ({
   };
 
   const amountOutForPool = supplyingWrappedToken
-    ? valueToBigNumber(amount).multipliedBy(exchangeRate || '0')
+    ? valueToBigNumber(amount).multipliedBy(rateBN)
     : valueToBigNumber(amount);
   const amountOutForPoolStr = amountOutForPool.toString(10);
-
-  const amountInUsd = amountOutForPool.multipliedBy(poolReserve.usdExchangeRate ?? '0');
+  const amountInUsd = supplyingWrappedToken
+    ? valueToBigNumber(amount).multipliedBy(wrappedTokenConfig.tokenIn.priceInUSD ?? '0')
+    : amountOutForPool.multipliedBy(poolReserve.usdExchangeRate ?? '0');
 
   const isMaxSelected =
     amount === (supplyingWrappedToken ? maxAmountOfTokenInToSupply : maxAmountToSupplyTokenOut);
@@ -471,15 +471,10 @@ export const SupplyWrappedTokenModalContentSDK = ({
       }
 
       try {
-        const baseAmount = parseUnits(
-          amountOutForPoolStr,
-          poolReserve.underlyingToken.decimals
-        ).toString();
-
         const requestAmount = {
           erc20: {
             currency: evmAddress(poolReserve.underlyingToken.address),
-            value: bigDecimal(baseAmount),
+            value: bigDecimal(amountOutForPoolStr),
             permitSig: null,
           },
         };
@@ -584,7 +579,7 @@ export const SupplyWrappedTokenModalContentSDK = ({
         <DetailsHFLine
           visibleHfChange={!!amount}
           healthFactor={user ? user.healthFactor : '-1'}
-          futureHealthFactor={hfPreviewAfter}
+          futureHealthFactor={hfPreviewAfter?.toString() ? hfPreviewAfter.toString() : '-1'}
         />
       </TxModalDetails>
 
