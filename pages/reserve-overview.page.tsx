@@ -52,10 +52,6 @@ export default function ReserveOverview() {
     return reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase();
   }) as ReserveWithId;
 
-  //With Reserves
-  const reserveLegacy = reserves.find((reserve) => {
-    return reserve.underlyingAsset.toLowerCase() === underlyingAsset?.toLowerCase();
-  }) as ComputedReserveData;
   const [pageEventCalled, setPageEventCalled] = useState(false);
 
   useEffect(() => {
@@ -122,10 +118,7 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            {/* Wrapped in AssetCapsProvider to provide the data using legacy method to avoid braking actions */}
-            <AssetCapsProvider asset={reserveLegacy}>
-              <ReserveActions reserve={reserveLegacy} />
-            </AssetCapsProvider>
+            <ReserveActions reserve={reserve} />
           </Box>
         </Box>
       </ContentContainer>
