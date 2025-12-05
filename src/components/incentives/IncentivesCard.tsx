@@ -2,7 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { ENABLE_SELF_CAMPAIGN, useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
@@ -32,6 +32,7 @@ interface IncentivesCardProps {
   protocolAction?: ProtocolAction;
   align?: 'center' | 'flex-end';
   inlineIncentives?: boolean;
+  displayAPY?: number | 'Infinity';
 }
 
 export const IncentivesCard = ({
@@ -47,21 +48,10 @@ export const IncentivesCard = ({
   market,
   protocolAction,
   inlineIncentives = false,
+  displayAPY,
 }: IncentivesCardProps) => {
   const router = useRouter();
   const protocolAPY = typeof value === 'string' ? parseFloat(value) : value;
-
-  const protocolIncentivesAPR =
-    incentives?.reduce((sum, inc) => {
-      if (inc.incentiveAPR === 'Infinity' || sum === 'Infinity') {
-        return 'Infinity';
-      }
-      return sum + +inc.incentiveAPR;
-    }, 0 as number | 'Infinity') || 0;
-
-  const protocolIncentivesAPY = convertAprToApy(
-    protocolIncentivesAPR === 'Infinity' ? 0 : protocolIncentivesAPR
-  );
   const { data: meritIncentives } = useMeritIncentives({
     symbol,
     market,
@@ -86,27 +76,48 @@ export const IncentivesCard = ({
     protocolIncentives: incentives || [],
   });
 
-  const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
+  const computedDisplayAPY = useMemo(() => {
+    if (displayAPY !== undefined) {
+      return displayAPY;
+    }
 
-  // TODO: This is a one-off for the Self campaign.
-  // Remove once the Self incentives are finished.
-  const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
-  const totalMeritAPY = meritIncentivesAPR + selfAPY;
+    const protocolIncentivesAPR =
+      incentives?.reduce((sum, inc) => {
+        if (inc.incentiveAPR === 'Infinity' || sum === 'Infinity') {
+          return 'Infinity';
+        }
+        return sum + +inc.incentiveAPR;
+      }, 0 as number | 'Infinity') || 0;
 
-  const merklIncentivesAPR = merklPointsIncentives?.breakdown?.points
-    ? merklPointsIncentives.breakdown.merklIncentivesAPR || 0
-    : merklIncentives?.breakdown?.merklIncentivesAPR || 0;
+    const protocolIncentivesAPY = convertAprToApy(
+      protocolIncentivesAPR === 'Infinity' ? 0 : protocolIncentivesAPR
+    );
 
-  const isBorrow = protocolAction === ProtocolAction.borrow;
+    const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
+    const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
+    const totalMeritAPY = meritIncentivesAPR + selfAPY;
 
-  // If any incentive is infinite, the total should be infinite
-  const hasInfiniteIncentives = protocolIncentivesAPR === 'Infinity';
+    const merklIncentivesAPR = merklPointsIncentives?.breakdown?.points
+      ? merklPointsIncentives.breakdown.merklIncentivesAPR || 0
+      : merklIncentives?.breakdown?.merklIncentivesAPR || 0;
 
-  const displayAPY = hasInfiniteIncentives
-    ? 'Infinity'
-    : isBorrow
-    ? protocolAPY - (protocolIncentivesAPY as number) - totalMeritAPY - merklIncentivesAPR
-    : protocolAPY + (protocolIncentivesAPY as number) + totalMeritAPY + merklIncentivesAPR;
+    const isBorrow = protocolAction === ProtocolAction.borrow;
+    const hasInfiniteIncentives = protocolIncentivesAPR === 'Infinity';
+
+    return hasInfiniteIncentives
+      ? 'Infinity'
+      : isBorrow
+      ? protocolAPY - (protocolIncentivesAPY as number) - totalMeritAPY - merklIncentivesAPR
+      : protocolAPY + (protocolIncentivesAPY as number) + totalMeritAPY + merklIncentivesAPR;
+  }, [
+    displayAPY,
+    incentives,
+    meritIncentives,
+    merklIncentives,
+    merklPointsIncentives,
+    protocolAPY,
+    protocolAction,
+  ]);
 
   const isSghoPage =
     typeof router?.asPath === 'string' && router.asPath.toLowerCase().startsWith('/sgho');
@@ -156,14 +167,14 @@ export const IncentivesCard = ({
     >
       {value.toString() !== '-1' ? (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          {displayAPY === 'Infinity' ? (
+          {computedDisplayAPY === 'Infinity' ? (
             <Typography variant={variant} color={color || 'text.secondary'}>
               ∞ %
             </Typography>
           ) : (
             <FormattedNumber
               data-cy={`apy`}
-              value={displayAPY}
+              value={computedDisplayAPY}
               percent
               variant={variant}
               symbolsVariant={symbolsVariant}
