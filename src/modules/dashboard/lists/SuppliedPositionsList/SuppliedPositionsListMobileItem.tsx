@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -28,6 +29,15 @@ export const SuppliedPositionsListMobileItem = ({
   );
 
   const { openSupply, openCollateralSwap, openWithdraw, openCollateralChange } = useModalContext();
+  // Get legacy reserve data to support Supply, withdraw, swaps modal actions
+  const { reserves: reservesLegacy } = useAppDataContext();
+  const reserveItemLegacy = reservesLegacy.find(
+    (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
+  );
+  const legacyAsset =
+    reserveItemLegacy?.underlyingAsset?.toLowerCase() ||
+    reserve.underlyingToken.address.toLowerCase();
+  const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
 
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
@@ -103,9 +113,9 @@ export const SuppliedPositionsListMobileItem = ({
           canBeEnabledAsCollateral={canBeEnabledAsCollateral!}
           onToggleSwitch={() =>
             openCollateralChange(
-              reserve.underlyingToken.address.toLowerCase(),
+              legacyAsset,
               currentMarket,
-              reserve.underlyingToken.name,
+              legacyName,
               'dashboard',
               usageAsCollateralEnabledOnUser
             )
@@ -118,7 +128,9 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={disableSwap}
             variant="contained"
-            onClick={() => openCollateralSwap(reserve.underlyingToken.address.toLowerCase())}
+            onClick={() =>
+              openCollateralSwap(legacyAsset || reserve.underlyingToken.address.toLowerCase())
+            }
             fullWidth
           >
             <Trans>Swap</Trans>
@@ -129,9 +141,9 @@ export const SuppliedPositionsListMobileItem = ({
             variant="contained"
             onClick={() =>
               openSupply(
-                reserve.underlyingToken.address.toLowerCase(),
+                legacyAsset || reserve.underlyingToken.address.toLowerCase(),
                 currentMarket,
-                reserve.underlyingToken.name,
+                legacyName,
                 'dashboard'
               )
             }
@@ -145,9 +157,9 @@ export const SuppliedPositionsListMobileItem = ({
           variant="outlined"
           onClick={() =>
             openWithdraw(
-              reserve.underlyingToken.address.toLowerCase(),
+              legacyAsset || reserve.underlyingToken.address.toLowerCase(),
               currentMarket,
-              reserve.underlyingToken.name,
+              legacyName,
               'dashboard'
             )
           }

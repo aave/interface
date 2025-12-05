@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -29,7 +30,13 @@ export const BorrowAssetsListMobileItem = ({
   const { openBorrow } = useModalContext();
   const currentMarket = useRootStore((state) => state.currentMarket);
   const { isPaused, isFrozen } = reserve;
-
+  // Get legacy reserve data to support Borrow modal actions
+  const { reserves: reservesLegacy } = useAppDataContext();
+  const reserveItemLegacy = reservesLegacy.find(
+    (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
+  );
+  const legacyAsset = reserveItemLegacy?.underlyingAsset?.toLowerCase();
+  const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
   const disableBorrow = isPaused || isFrozen || Number(availableBorrows) <= 0;
   const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
   const { iconSymbol: iconSymbolFetched } = fetchIconSymbolAndName({
@@ -97,9 +104,9 @@ export const BorrowAssetsListMobileItem = ({
           variant="contained"
           onClick={() =>
             openBorrow(
-              reserve.underlyingToken.address.toLowerCase(),
+              legacyAsset || reserve.underlyingToken.address.toLowerCase(),
               currentMarket,
-              reserve.underlyingToken.name,
+              legacyName,
               'dashboard'
             )
           }

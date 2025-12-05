@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -30,7 +31,13 @@ export const BorrowAssetsListItem = ({
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const { isPaused, isFrozen } = reserve;
-
+  // Get legacy reserve data to support Borrow modal actions
+  const { reserves: reservesLegacy } = useAppDataContext();
+  const reserveItemLegacy = reservesLegacy.find(
+    (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
+  );
+  const legacyAsset = reserveItemLegacy?.underlyingAsset?.toLowerCase();
+  const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
   const disableBorrow = isPaused || isFrozen || Number(availableBorrows) <= 0;
 
   const [trackEvent, currentMarket] = useRootStore(
@@ -108,9 +115,9 @@ export const BorrowAssetsListItem = ({
           variant="contained"
           onClick={() => {
             openBorrow(
-              reserve.underlyingToken.address,
+              legacyAsset || reserve.underlyingToken.address.toLowerCase(),
               currentMarket,
-              reserve.underlyingToken.name,
+              legacyName,
               'dashboard'
             );
           }}
