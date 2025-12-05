@@ -13,10 +13,10 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.BNB]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.POLYGON]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.BASE]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
+    [SupportedChainId.LINEA]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
+    [SupportedChainId.PLASMA]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
-    [SupportedChainId.LINEA]: '',
-    [SupportedChainId.PLASMA]: '',
   },
   [AaveFlashLoanType.DebtSwap]: {
     [SupportedChainId.MAINNET]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
@@ -26,10 +26,10 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.BNB]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.POLYGON]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.BASE]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
+    [SupportedChainId.LINEA]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
+    [SupportedChainId.PLASMA]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
-    [SupportedChainId.LINEA]: '',
-    [SupportedChainId.PLASMA]: '',
   },
   [AaveFlashLoanType.RepayCollateral]: {
     [SupportedChainId.MAINNET]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
@@ -39,10 +39,10 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.BNB]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.POLYGON]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.BASE]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
+    [SupportedChainId.LINEA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
+    [SupportedChainId.PLASMA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
-    [SupportedChainId.LINEA]: '',
-    [SupportedChainId.PLASMA]: '',
   },
 };
 
@@ -54,9 +54,9 @@ export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
   [SupportedChainId.BNB]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
   [SupportedChainId.POLYGON]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
   [SupportedChainId.BASE]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
+  [SupportedChainId.LINEA]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
+  [SupportedChainId.PLASMA]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
   [SupportedChainId.LENS]: '',
-  [SupportedChainId.LINEA]: '',
-  [SupportedChainId.PLASMA]: '',
   [SupportedChainId.SEPOLIA]: '',
 };
 
@@ -111,10 +111,12 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
       '0xd190eF37dB51Bb955A680fF1A85763CC72d083D4'.toLowerCase(), // aGHO not supported
     ],
 
+    [SupportedChainId.LINEA]: [
+      '0xacA92E438df0B2401fF60dA7E4337B687a2435DA'.toLowerCase(), // mUSD, to test no provider supported, remove before prod
+    ],
+
     // Safe checks, not supported
     [SupportedChainId.LENS]: 'ALL',
-    [SupportedChainId.LINEA]: 'ALL',
-    [SupportedChainId.PLASMA]: 'ALL',
   },
 };
 
@@ -127,6 +129,8 @@ export const CoWProtocolSupportedNetworks = [
   SupportedChainId.AVALANCHE,
   SupportedChainId.POLYGON,
   SupportedChainId.BNB,
+  SupportedChainId.LINEA,
+  SupportedChainId.PLASMA,
 ] as const;
 
 export const isChainIdSupportedByCoWProtocol = (chainId: number): chainId is SupportedChainId => {

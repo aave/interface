@@ -368,6 +368,13 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Linea.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Linea.COLLECTOR,
     },
+    enabledFeatures: {
+      liquiditySwap: true,
+      withdrawAndSwitch: true,
+      collateralRepay: true,
+      debtSwitch: true,
+      switch: true,
+    },
   },
   [CustomMarket.proto_sonic_v3]: {
     marketTitle: 'Sonic',
@@ -457,6 +464,13 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Plasma.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Plasma.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Plasma.COLLECTOR,
+    },
+    enabledFeatures: {
+      // liquiditySwap: true,
+      // withdrawAndSwitch: true,
+      // collateralRepay: true,
+      // debtSwitch: true,
+      // switch: true,
     },
   },
   [CustomMarket.proto_polygon_v3]: {

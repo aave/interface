@@ -440,6 +440,10 @@ export const generateCoWExplorerLink = (chainId: SupportedChainId, orderId?: str
       return `${base}/pol/orders/${orderId}`;
     case SupportedChainId.BNB:
       return `${base}/bnb/orders/${orderId}`;
+    case SupportedChainId.LINEA:
+      return `${base}/linea/orders/${orderId}`;
+    case SupportedChainId.PLASMA:
+      return `${base}/plasma/orders/${orderId}`;
     default:
       throw new Error('Define explorer link for chainId: ' + chainId);
   }
