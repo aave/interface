@@ -2,6 +2,7 @@ import {
   COW_UNSUPPORTED_ASSETS,
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
+import { ParaswapSupportedNetworks } from '../../constants/paraswap.constants';
 import { SwapProvider, SwapType } from '../../types';
 
 /**
@@ -51,7 +52,7 @@ export const isSwapSupportedByCowProtocol = (
  * Picks the provider for the current swap based on chain, assets and flow.
  *
  * Notes:
- * - CoW is preferred when supported; fallback to ParaSwap
+ * - CoW is preferred when supported; fallback to ParaSwap if supported on chain
  */
 export const getSwitchProvider = ({
   chainId,
@@ -72,5 +73,9 @@ export const getSwitchProvider = ({
     return SwapProvider.COW_PROTOCOL;
   }
 
-  return SwapProvider.PARASWAP;
+  // Fallback to ParaSwap only if supported on this chain
+  if (ParaswapSupportedNetworks.includes(chainId)) {
+    return SwapProvider.PARASWAP;
+  }
+  return undefined;
 };
