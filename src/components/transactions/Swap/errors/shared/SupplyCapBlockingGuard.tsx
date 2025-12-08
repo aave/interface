@@ -13,7 +13,7 @@ import { isProtocolSwapState } from '../../types/state.types';
 import { SupplyCapBlockingError } from './SupplyCapBlockingError';
 
 export const hasSupplyCapBlocking = (state: SwapState) => {
-  if (!isProtocolSwapState(state) || state.swapType === SwapType.RepayWithCollateral) return false;
+  if (!isProtocolSwapState(state) || state.swapType !== SwapType.CollateralSwap) return false;
   const reserve = state.isInvertedSwap
     ? state.sourceReserve?.reserve
     : state.destinationReserve?.reserve;
