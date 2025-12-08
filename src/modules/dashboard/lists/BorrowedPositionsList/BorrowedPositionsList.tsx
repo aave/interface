@@ -21,6 +21,7 @@ import {
   ReserveWithId,
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import { useEnhancedUserYield } from '../../../../hooks/useEnhancedUserYield';
 import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
@@ -51,7 +52,7 @@ const head = [
 
 export const BorrowedPositionsList = () => {
   const { loading, eModeCategories, borrowReserves, userBorrows, userState } = useAppDataContext();
-
+  const { debtAPY } = useEnhancedUserYield();
   const [currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [store.currentMarketData, store.currentNetworkConfig])
   );
@@ -112,7 +113,7 @@ export const BorrowedPositionsList = () => {
 
         if (isWrappedNative) {
           const nativeData = fetchIconSymbolAndName({
-            symbol: currentNetworkConfig.baseAssetSymbol, // ETH, MATIC, etc
+            symbol: currentNetworkConfig.baseAssetSymbol,
             underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
           });
 
@@ -122,7 +123,7 @@ export const BorrowedPositionsList = () => {
             iconSymbol: nativeData.iconSymbol,
             name: nativeData.name,
             underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-            detailsAddress: position.currency.address, // Dirección real para funcionalidad
+            detailsAddress: position.currency.address,
             id: reserve.id + '_native',
             reserve: updatedReserve,
           };
@@ -270,7 +271,7 @@ export const BorrowedPositionsList = () => {
               />
               <ListTopInfoItem
                 title={<Trans>APY</Trans>}
-                value={userState?.userDebtAPY.value || 0}
+                value={debtAPY || 0}
                 percent
                 tooltip={
                   <TotalBorrowAPYTooltip

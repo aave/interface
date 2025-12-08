@@ -68,7 +68,6 @@ export const DashboardTopPanel = () => {
     : false;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
   const { data: meritClaimRewards } = useUserMeritRewards({
     // Note: currentAccount is not always defined, so we need to check if it is and if not, use a fallback address
     user: currentAccount ? evmAddress(currentAccount) : evmAddress(ZERO_ADDRESS),
@@ -238,7 +237,7 @@ export const DashboardTopPanel = () => {
           )}
         </TopInfoPanelItem>
 
-        {currentAccount && userState?.healthFactor !== '-1' && (
+        {currentAccount && userState?.healthFactor !== '-1' && userState?.healthFactor !== null && (
           <TopInfoPanelItem
             title={
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>

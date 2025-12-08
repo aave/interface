@@ -1,4 +1,4 @@
-import { ProtocolAction } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
@@ -34,9 +34,10 @@ export const SuppliedPositionsListMobileItem = ({
   const reserveItemLegacy = reservesLegacy.find(
     (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
   );
-  const legacyAsset =
-    reserveItemLegacy?.underlyingAsset?.toLowerCase() ||
-    reserve.underlyingToken.address.toLowerCase();
+  const legacyAsset = reserve.acceptsNative
+    ? API_ETH_MOCK_ADDRESS.toLowerCase()
+    : reserveItemLegacy?.underlyingAsset.toLowerCase() ||
+      reserve.underlyingToken.address.toLowerCase();
   const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
 
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
@@ -128,9 +129,7 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={disableSwap}
             variant="contained"
-            onClick={() =>
-              openCollateralSwap(legacyAsset || reserve.underlyingToken.address.toLowerCase())
-            }
+            onClick={() => openCollateralSwap(legacyAsset)}
             fullWidth
           >
             <Trans>Swap</Trans>
@@ -139,14 +138,7 @@ export const SuppliedPositionsListMobileItem = ({
           <Button
             disabled={disableSupply}
             variant="contained"
-            onClick={() =>
-              openSupply(
-                legacyAsset || reserve.underlyingToken.address.toLowerCase(),
-                currentMarket,
-                legacyName,
-                'dashboard'
-              )
-            }
+            onClick={() => openSupply(legacyAsset, currentMarket, legacyName, 'dashboard')}
             fullWidth
           >
             <Trans>Supply</Trans>
@@ -155,14 +147,7 @@ export const SuppliedPositionsListMobileItem = ({
         <Button
           disabled={disableWithdraw}
           variant="outlined"
-          onClick={() =>
-            openWithdraw(
-              legacyAsset || reserve.underlyingToken.address.toLowerCase(),
-              currentMarket,
-              legacyName,
-              'dashboard'
-            )
-          }
+          onClick={() => openWithdraw(legacyAsset, currentMarket, legacyName, 'dashboard')}
           sx={{ ml: 1.5 }}
           fullWidth
         >

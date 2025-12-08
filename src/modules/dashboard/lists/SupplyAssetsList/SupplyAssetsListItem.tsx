@@ -1,4 +1,4 @@
-import { ProtocolAction } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { SwitchHorizontalIcon } from '@heroicons/react/outline';
 import { EyeIcon } from '@heroicons/react/solid';
@@ -120,7 +120,10 @@ export const SupplyAssetsListItemDesktop = ({
 
   const { openSupply, openSwitch } = useModalContext();
   // Get legacy asset for switch and supply modals actions
-  const legacyAsset = reserveItemLegacy?.underlyingAsset?.toLowerCase();
+  const legacyAsset = reserve.acceptsNative
+    ? API_ETH_MOCK_ADDRESS.toLowerCase()
+    : reserveItemLegacy?.underlyingAsset.toLowerCase() ||
+      reserve.underlyingToken.address.toLowerCase();
   const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
@@ -264,12 +267,7 @@ export const SupplyAssetsListItemDesktop = ({
           disabled={disableSupply}
           variant="contained"
           onClick={() => {
-            openSupply(
-              legacyAsset ?? reserve.underlyingToken.address.toLowerCase(),
-              currentMarket,
-              legacyName,
-              'dashboard'
-            );
+            openSupply(legacyAsset, currentMarket, legacyName, 'dashboard');
           }}
         >
           <Trans>Supply</Trans>
@@ -349,6 +347,7 @@ export const SupplyAssetsListItemMobile = ({
   disableSupply,
   canSupplyAsWrappedToken,
   walletBalancesMap,
+  reserveItemLegacy,
 }: SupplyAssetsListItemProps) => {
   const currentMarket = useRootStore((store) => store.currentMarket);
   const { openSupply } = useModalContext();
@@ -357,7 +356,11 @@ export const SupplyAssetsListItemMobile = ({
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCapsSDK();
   const isMaxCapReached = supplyCapUsage.isMaxed;
-
+  const legacyAsset = reserve.acceptsNative
+    ? API_ETH_MOCK_ADDRESS.toLowerCase()
+    : reserveItemLegacy?.underlyingAsset.toLowerCase() ||
+      reserve.underlyingToken.address.toLowerCase();
+  const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
   const wrappedToken = wrappedTokenReserves.find(
     (r) => r.tokenOut.underlyingAsset === underlyingAsset
   );
@@ -481,14 +484,7 @@ export const SupplyAssetsListItemMobile = ({
         <Button
           disabled={disableSupply}
           variant="contained"
-          onClick={() =>
-            openSupply(
-              reserve.underlyingToken.address.toLowerCase(),
-              currentMarket,
-              reserve.underlyingToken.name,
-              'dashboard'
-            )
-          }
+          onClick={() => openSupply(legacyAsset, currentMarket, legacyName, 'dashboard')}
           sx={{ mr: 1.5 }}
           fullWidth
         >

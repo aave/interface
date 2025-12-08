@@ -1,4 +1,4 @@
-import { ProtocolAction } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
@@ -36,7 +36,10 @@ export const BorrowAssetsListItem = ({
   const reserveItemLegacy = reservesLegacy.find(
     (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
   );
-  const legacyAsset = reserveItemLegacy?.underlyingAsset?.toLowerCase();
+  const legacyAsset = reserve.acceptsNative
+    ? API_ETH_MOCK_ADDRESS.toLowerCase()
+    : reserveItemLegacy?.underlyingAsset.toLowerCase() ||
+      reserve.underlyingToken.address.toLowerCase();
   const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
   const disableBorrow = isPaused || isFrozen || Number(availableBorrows) <= 0;
 
@@ -114,12 +117,7 @@ export const BorrowAssetsListItem = ({
           disabled={disableBorrow}
           variant="contained"
           onClick={() => {
-            openBorrow(
-              legacyAsset || reserve.underlyingToken.address.toLowerCase(),
-              currentMarket,
-              legacyName,
-              'dashboard'
-            );
+            openBorrow(legacyAsset, currentMarket, legacyName, 'dashboard');
           }}
         >
           <Trans>Borrow</Trans>

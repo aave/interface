@@ -1,4 +1,4 @@
-import { ProtocolAction } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
@@ -22,7 +22,6 @@ import { ListValueColumn } from '../ListValueColumn';
 export const SuppliedPositionsListItem = ({
   reserve,
   usageAsCollateralEnabledOnUser,
-  underlyingAsset,
   symbol,
   name,
   iconSymbol,
@@ -37,8 +36,11 @@ export const SuppliedPositionsListItem = ({
   const reserveItemLegacy = reservesLegacy.find(
     (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
   );
-  const legacyAsset =
-    reserveItemLegacy?.underlyingAsset?.toLowerCase() || underlyingAsset?.toLowerCase();
+  const legacyAsset = reserve.acceptsNative
+    ? API_ETH_MOCK_ADDRESS.toLowerCase()
+    : reserveItemLegacy?.underlyingAsset.toLowerCase() ||
+      reserve.underlyingToken.address.toLowerCase();
+
   const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
 
   const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);

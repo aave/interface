@@ -7,6 +7,7 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
+import { useEnhancedUserYield } from 'src/hooks/useEnhancedUserYield';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { DASHBOARD, GENERAL } from 'src/utils/events';
@@ -70,6 +71,7 @@ export const SuppliedPositionsList = () => {
   const userSupplyPositions = userSupplies ?? [];
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { earnedAPY } = useEnhancedUserYield();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
@@ -148,7 +150,7 @@ export const SuppliedPositionsList = () => {
 
         if (isWrappedNative) {
           const nativeData = fetchIconSymbolAndName({
-            symbol: currentNetworkConfig.baseAssetSymbol, // ETH, MATIC, etc
+            symbol: currentNetworkConfig.baseAssetSymbol,
             underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
           });
 
@@ -260,7 +262,7 @@ export const SuppliedPositionsList = () => {
               <ListTopInfoItem title={<Trans>Balance</Trans>} value={totalSupplyUSD || 0} />
               <ListTopInfoItem
                 title={<Trans>APY</Trans>}
-                value={userState?.userEarnedAPY.value || 0}
+                value={earnedAPY || 0}
                 percent
                 tooltip={
                   <TotalSupplyAPYTooltip
