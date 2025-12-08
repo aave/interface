@@ -1018,6 +1018,10 @@ msgstr "Disabled"
 msgid "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
 msgstr "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
 
+#: src/layouts/SupportModal.tsx
+msgid "Share my wallet address to help the support team resolve my issue"
+msgstr "Share my wallet address to help the support team resolve my issue"
+
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restaking {symbol}"
 msgstr "Restaking {symbol}"

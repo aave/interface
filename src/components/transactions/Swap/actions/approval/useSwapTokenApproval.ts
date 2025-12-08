@@ -5,6 +5,7 @@ import { defaultAbiCoder, splitSignature } from 'ethers/lib/utils';
 import { Dispatch, useEffect, useMemo, useRef, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { calculateSignedAmount } from 'src/hooks/paraswap/common';
+import { useGetConnectedWalletType } from 'src/hooks/useGetConnectedWalletType';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -103,6 +104,8 @@ export const useSwapTokenApproval = ({
   const { approvalTxState, setLoadingTxns, setTxError, setApprovalTxState } = useModalContext();
   const { sendTx, signTxData } = useWeb3Context();
   const [loadingPermitData, setLoadingPermitData] = useState(true);
+
+  const { isSmartContractWallet } = useGetConnectedWalletType();
 
   const [
     user,
@@ -256,7 +259,7 @@ export const useSwapTokenApproval = ({
     };
   }, [chainId, token]);
 
-  const tryPermit = allowPermit && permitSupported === true;
+  const tryPermit = allowPermit && permitSupported === true && !isSmartContractWallet;
   const usePermit = tryPermit && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   const approval = async () => {
