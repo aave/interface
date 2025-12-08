@@ -9599,6 +9599,14 @@ export const TOKEN_LIST: TokenList = {
       logoURI: 'https://assets.coingecko.com/coins/images/40143/standard/cbbtc.webp?1726136727',
     },
     {
+      chainId: 8453,
+      address: '0x60a3E35Cc302bFA44Cb288Bc5a4F316Fdb1adb42',
+      name: 'EURC',
+      symbol: 'EURC',
+      decimals: 6,
+      logoURI: 'https://assets.coingecko.com/coins/images/26045/standard/euro.png?1696525125',
+    },
+    {
       name: 'Compound',
       address: '0x9e1028F5F1D5eDE59748FFceE5532509976840E0',
       symbol: 'COMP',
