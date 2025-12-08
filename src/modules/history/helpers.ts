@@ -1,17 +1,116 @@
 import { formatUnits } from 'ethers/lib/utils';
-import { fetchIconSymbolAndName, IconSymbolInterface } from 'src/ui-config/reservePatches';
+import { generateCoWExplorerLink } from 'src/components/transactions/Swap/helpers/cow';
+import { NetworkConfig } from 'src/ui-config/networksConfig';
 
 import {
+  ActionName,
   hasAmountAndReserve,
   hasCollateralReserve,
-  hasPrincipalReserve,
-  hasReserve,
-  hasSwapBorrowRate,
+  hasSrcOrDestToken,
+  isCowSwapSubset,
+  isSDKTransaction,
+  isSwapTransaction,
   TransactionHistoryItemUnion,
+  UserTransactionItem,
 } from './types';
+// Get action for sdk or cowswap transaction
+export const getTransactionAction = (transaction: TransactionHistoryItemUnion): ActionName => {
+  if (isSDKTransaction(transaction)) {
+    switch (transaction.__typename) {
+      case 'UserSupplyTransaction':
+        return ActionName.UserSupplyTransaction;
+      case 'UserWithdrawTransaction':
+        return ActionName.UserWithdrawTransaction;
+      case 'UserBorrowTransaction':
+        return ActionName.UserBorrowTransaction;
+      case 'UserRepayTransaction':
+        return ActionName.UserRepayTransaction;
+      case 'UserUsageAsCollateralTransaction':
+        return ActionName.UserUsageAsCollateralTransaction;
+      case 'UserLiquidationCallTransaction':
+        return ActionName.UserLiquidationCallTransaction;
+    }
+  }
+  // For non-SDK transactions action already uses ActionName
+  return transaction.action;
+};
+
+// Get txHash for sdk or cowswap transaction
+export const getTransactionTxHash = (
+  transaction: TransactionHistoryItemUnion
+): string | undefined => {
+  if (isSDKTransaction(transaction)) {
+    return transaction.txHash;
+  }
+  // for cowswap, there is no txHash, return undefined
+  return undefined;
+};
+
+// Get id for sdk or cowswap transaction
+export const getTransactionId = (transaction: TransactionHistoryItemUnion): string => {
+  if (isSDKTransaction(transaction)) {
+    // For sdk transactions, use the txHash as id
+    if (
+      transaction.__typename === 'UserSupplyTransaction' ||
+      transaction.__typename === 'UserWithdrawTransaction' ||
+      transaction.__typename === 'UserBorrowTransaction' ||
+      transaction.__typename === 'UserRepayTransaction'
+    ) {
+      return [
+        transaction.txHash,
+        transaction.__typename,
+        transaction.reserve.underlyingToken.address.toLowerCase(),
+      ].join('-');
+    }
+
+    if (transaction.__typename === 'UserUsageAsCollateralTransaction') {
+      return [
+        transaction.txHash,
+        transaction.__typename,
+        transaction.reserve.underlyingToken.address.toLowerCase(),
+        transaction.enabled ? 'enabled' : 'disabled',
+      ].join('-');
+    }
+
+    if (transaction.__typename === 'UserLiquidationCallTransaction') {
+      return [
+        transaction.txHash,
+        transaction.__typename,
+        transaction.collateral.reserve.underlyingToken.address.toLowerCase(),
+        transaction.debtRepaid.reserve.underlyingToken.address.toLowerCase(),
+      ].join('-');
+    }
+
+    const sdkTransaction = transaction as UserTransactionItem;
+    return `${sdkTransaction.txHash!}-${sdkTransaction.__typename!}`;
+  }
+
+  // For cowswap transactions, use the id field
+  return transaction.id;
+};
+
+// Get explorer link for sdk or cowswap transaction
+export const getExplorerLink = (
+  transaction: TransactionHistoryItemUnion,
+  currentNetworkConfig: NetworkConfig
+) => {
+  if (isSwapTransaction(transaction) && currentNetworkConfig.wagmiChain.id) {
+    if (isCowSwapSubset(transaction)) {
+      return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transaction.orderId);
+    }
+    return currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });
+  }
+
+  const txHash = getTransactionTxHash(transaction);
+  if (!txHash) {
+    return undefined;
+  }
+
+  return currentNetworkConfig.explorerLinkBuilder({ tx: txHash });
+};
 
 export const unixTimestampToFormattedTime = ({ unixTimestamp }: { unixTimestamp: number }) => {
-  const date = new Date(unixTimestamp * 1000);
+  const date = new Date(unixTimestamp);
   const hours24 = date.getHours();
   const hours12 = ((hours24 + 24 - 1) % 12) + 1; // Convert to 12-hour format
   const minutes = date.getMinutes();
@@ -39,20 +138,14 @@ export const groupByDate = (
   transactions: TransactionHistoryItemUnion[]
 ): Record<string, TransactionHistoryItemUnion[]> => {
   return transactions.reduce((grouped, transaction) => {
+    const timestamp = Date.parse(transaction.timestamp);
+
     const date = new Intl.DateTimeFormat(undefined, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-    }).format(
-      new Date(
-        // Check if timestamp is in seconds (Unix timestamp) or milliseconds
-        // Unix timestamps are typically 10 digits (seconds since 1970)
-        // While JavaScript timestamps are 13 digits (milliseconds since 1970)
-        transaction.timestamp < 10000000000
-          ? transaction.timestamp * 1000 // Convert seconds to milliseconds
-          : transaction.timestamp // Already in milliseconds
-      )
-    );
+    }).format(new Date(timestamp));
+
     if (!grouped[date]) {
       grouped[date] = [];
     }
@@ -60,35 +153,6 @@ export const groupByDate = (
     return grouped;
   }, {} as Record<string, TransactionHistoryItemUnion[]>);
 };
-
-interface MappedReserveData {
-  underlyingAsset: string;
-  name: string;
-  symbol: string;
-  iconSymbol: string;
-}
-
-export const fetchIconSymbolAndNameHistorical = ({
-  underlyingAsset,
-  symbol,
-  name,
-}: IconSymbolInterface): MappedReserveData => {
-  // Re-use general patches
-  const reservePatch = fetchIconSymbolAndName({ underlyingAsset, symbol, name });
-
-  // Fix AMM market names and symbol, specific to tx history
-  const updatedPatch = {
-    underlyingAsset,
-    symbol: reservePatch.symbol.includes('Amm')
-      ? reservePatch.iconSymbol.replace(/_/g, '')
-      : reservePatch.symbol,
-    name: reservePatch.name ?? (name || ''),
-    iconSymbol: reservePatch.iconSymbol || '',
-  };
-
-  return updatedPatch;
-};
-
 interface FormatTransactionDataParams {
   data: TransactionHistoryItemUnion[];
   csv: boolean;
@@ -99,61 +163,266 @@ export const formatTransactionData = ({
   data,
   csv,
 }: FormatTransactionDataParams): TransactionHistoryItemUnion[] => {
-  return data.map((transaction: TransactionHistoryItemUnion) => {
-    // Using any since txn objects can have different fields based on ActionFields, using union type + type guards gets extrenely complicated for formatting newTransaction
-    //    since csv requires reserves formatted as strings with escape characters
+  const formattedTransactions = data.map((transaction: TransactionHistoryItemUnion) => {
+    // Structure of the newTransaction object following the actual CSV/JSON order
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const newTransaction: any = { ...transaction };
+    const newTransaction: any = {
+      action: '',
+      fromState: undefined,
+      id: '',
+      reserve: undefined,
+      timestamp: 0,
+      toState: undefined,
+      txHash: undefined,
+      amount: undefined,
+      assetPriceUSD: undefined,
+      // For CowSwap
+      underlyingSrcToken: undefined,
+      srcAToken: undefined,
+      underlyingDestToken: undefined,
+      destAToken: undefined,
+      srcAmount: undefined,
+      destAmount: undefined,
+      status: undefined,
+      orderIdorTxHash: undefined,
+      chainId: undefined,
+    };
 
-    // Format amounts in reserve decimals, and stringify reserve objects to fix CSV formatting
-    if (hasAmountAndReserve(transaction)) {
-      newTransaction.amount = formatUnits(transaction.amount, transaction.reserve.decimals);
-    }
-    if (hasReserve(transaction) && csv) {
-      const jsonString = JSON.stringify(transaction.reserve);
-      newTransaction.reserve = `"${jsonString.replace(/"/g, '""')}"`;
-    }
+    if (isSDKTransaction(transaction)) {
+      newTransaction.id = transaction.txHash;
+      newTransaction.txHash = transaction.txHash;
+      newTransaction.timestamp = Math.floor(Date.parse(transaction.timestamp) / 1000);
 
-    if (hasCollateralReserve(transaction) && transaction.collateralAmount) {
-      newTransaction.collateralAmount = formatUnits(
-        transaction.collateralAmount,
-        transaction.collateralReserve.decimals
-      );
-      if (csv) {
-        const jsonString = JSON.stringify(transaction.collateralReserve);
-        newTransaction.collateralReserve = `"${jsonString.replace(/"/g, '""')}"`;
+      if (hasAmountAndReserve(transaction)) {
+        const { amount, reserve } = transaction;
+
+        switch (transaction.__typename) {
+          case 'UserSupplyTransaction':
+            newTransaction.action = 'Supply';
+            break;
+          case 'UserWithdrawTransaction':
+            newTransaction.action = 'Withdraw';
+            break;
+          case 'UserBorrowTransaction':
+            newTransaction.action = 'Borrow';
+            break;
+          case 'UserRepayTransaction':
+            newTransaction.action = 'Repay';
+            break;
+        }
+
+        try {
+          if (amount.amount.raw && reserve.underlyingToken.decimals) {
+            newTransaction.amount = formatUnits(
+              amount.amount.raw,
+              reserve.underlyingToken.decimals
+            );
+          } else if (amount.amount.value) {
+            newTransaction.amount = amount.amount.value;
+          }
+        } catch (error) {
+          console.warn('Error formatting SDK amount:', error);
+          newTransaction.amount = amount.amount.value || amount.amount.raw;
+        }
+
+        newTransaction.assetPriceUSD = reserve.usdExchangeRate;
+
+        const reserveInfo = {
+          name: reserve.underlyingToken.name,
+          symbol: reserve.underlyingToken.symbol,
+          decimals: reserve.underlyingToken.decimals,
+          underlyingAsset: reserve.underlyingToken.address,
+        };
+
+        if (csv) {
+          newTransaction.reserve = `"${JSON.stringify(reserveInfo).replace(/"/g, '""')}"`;
+        } else {
+          newTransaction.reserve = reserveInfo;
+        }
+
+        delete newTransaction.underlyingSrcToken;
+        delete newTransaction.srcAToken;
+        delete newTransaction.underlyingDestToken;
+        delete newTransaction.destAToken;
+        delete newTransaction.srcAmount;
+        delete newTransaction.destAmount;
+        delete newTransaction.status;
+        delete newTransaction.orderId;
+        delete newTransaction.chainId;
+        delete newTransaction.fromState;
+        delete newTransaction.toState;
+      }
+
+      // For UsageAsCollateral transactions
+      else if (transaction.__typename === 'UserUsageAsCollateralTransaction') {
+        const { enabled, reserve } = transaction;
+
+        newTransaction.action = 'UsageAsCollateral';
+        newTransaction.fromState = !enabled;
+        newTransaction.toState = enabled;
+
+        const reserveInfo = {
+          name: reserve.underlyingToken.name,
+          symbol: reserve.underlyingToken.symbol,
+          underlyingAsset: reserve.underlyingToken.address,
+        };
+
+        if (csv) {
+          newTransaction.reserve = `"${JSON.stringify(reserveInfo).replace(/"/g, '""')}"`;
+        } else {
+          newTransaction.reserve = reserveInfo;
+        }
+
+        delete newTransaction.amount;
+        delete newTransaction.assetPriceUSD;
+        delete newTransaction.underlyingSrcToken;
+        delete newTransaction.srcAToken;
+        delete newTransaction.underlyingDestToken;
+        delete newTransaction.destAToken;
+        delete newTransaction.srcAmount;
+        delete newTransaction.destAmount;
+        delete newTransaction.status;
+        delete newTransaction.orderId;
+        delete newTransaction.chainId;
+      }
+
+      // For LiquidationCall transactions
+      else if (hasCollateralReserve(transaction)) {
+        const { collateral, debtRepaid } = transaction;
+
+        newTransaction.action = 'LiquidationCall';
+
+        if (collateral.amount) {
+          try {
+            newTransaction.collateralAmount = formatUnits(
+              collateral.amount.amount.raw || collateral.amount.amount.value,
+              collateral.reserve.underlyingToken.decimals
+            );
+          } catch (error) {
+            newTransaction.collateralAmount = collateral.amount.amount.value;
+          }
+          newTransaction.collateralAmountUSD = collateral.amount.usd;
+        }
+
+        if (debtRepaid.amount) {
+          try {
+            newTransaction.debtRepaidAmount = formatUnits(
+              debtRepaid.amount.amount.raw || debtRepaid.amount.amount.value,
+              debtRepaid.reserve.underlyingToken.decimals
+            );
+          } catch (error) {
+            newTransaction.debtRepaidAmount = debtRepaid.amount.amount.value;
+          }
+          newTransaction.debtRepaidAmountUSD = debtRepaid.amount.usd;
+        }
+
+        const collateralReserveInfo = {
+          name: collateral.reserve.underlyingToken.name,
+          symbol: collateral.reserve.underlyingToken.symbol,
+          underlyingAsset: collateral.reserve.underlyingToken.address,
+        };
+        const debtReserveInfo = {
+          name: debtRepaid.reserve.underlyingToken.name,
+          symbol: debtRepaid.reserve.underlyingToken.symbol,
+          underlyingAsset: debtRepaid.reserve.underlyingToken.address,
+        };
+
+        if (csv) {
+          newTransaction.collateralReserve = `"${JSON.stringify(collateralReserveInfo).replace(
+            /"/g,
+            '""'
+          )}"`;
+          newTransaction.debtReserve = `"${JSON.stringify(debtReserveInfo).replace(/"/g, '""')}"`;
+        } else {
+          newTransaction.collateralReserve = collateralReserveInfo;
+          newTransaction.debtReserve = debtReserveInfo;
+        }
+
+        delete newTransaction.reserve;
+        delete newTransaction.amount;
+        delete newTransaction.assetPriceUSD;
+        delete newTransaction.underlyingSrcToken;
+        delete newTransaction.srcAToken;
+        delete newTransaction.underlyingDestToken;
+        delete newTransaction.destAToken;
+        delete newTransaction.srcAmount;
+        delete newTransaction.destAmount;
+        delete newTransaction.status;
+        delete newTransaction.orderId;
+        delete newTransaction.chainId;
+        delete newTransaction.fromState;
+        delete newTransaction.toState;
       }
     }
 
-    if (hasPrincipalReserve(transaction) && transaction.principalAmount) {
-      newTransaction.principalAmount = formatUnits(
-        transaction.principalAmount,
-        transaction.principalReserve.decimals
-      );
-      if (csv) {
-        const jsonString = JSON.stringify(transaction.principalReserve);
-        newTransaction.principalReserve = `"${jsonString.replace(/"/g, '""')}"`;
+    // For CowSwap transactions
+    else if (isSwapTransaction(transaction) && hasSrcOrDestToken(transaction)) {
+      const {
+        underlyingSrcToken,
+        underlyingDestToken,
+        srcAmount,
+        destAmount,
+        status,
+        chainId,
+        action,
+      } = transaction;
+
+      newTransaction.action = action;
+      newTransaction.id = transaction.id;
+      newTransaction.timestamp = Math.floor(Date.parse(transaction.timestamp) / 1000);
+      newTransaction.status = status;
+      newTransaction.orderIdorTxHash = isCowSwapSubset(transaction)
+        ? transaction.orderId
+        : transaction.txHash;
+      newTransaction.chainId = chainId;
+
+      try {
+        newTransaction.srcAmount = formatUnits(srcAmount, underlyingSrcToken.decimals);
+        newTransaction.destAmount = formatUnits(destAmount, underlyingDestToken.decimals);
+      } catch (error) {
+        console.warn('Error formatting CowSwap amounts:', error);
+        newTransaction.srcAmount = srcAmount;
+        newTransaction.destAmount = destAmount;
       }
-    }
 
-    if (hasSwapBorrowRate(transaction)) {
-      // RAY units (10^27) * 100 to express as percentage
-      newTransaction.variableBorrowRate = formatUnits(transaction.variableBorrowRate, 25) + ' %';
-      newTransaction.stableBorrowRate = formatUnits(transaction.stableBorrowRate, 25) + ' %';
-    }
+      const srcTokenInfo = {
+        underlyingSrcAsset: underlyingSrcToken.underlyingAsset,
+        name: underlyingSrcToken.name,
+        symbol: underlyingSrcToken.symbol,
+        decimals: underlyingSrcToken.decimals,
+      };
+      const destTokenInfo = {
+        underlyingDestAsset: underlyingDestToken.underlyingAsset,
+        name: underlyingDestToken.name,
+        symbol: underlyingDestToken.symbol,
+        decimals: underlyingDestToken.decimals,
+      };
 
-    // Match V2 action names with V3
-    if (transaction.action === 'Deposit') {
-      newTransaction.action = 'Supply';
-    }
-    if (transaction.action === 'Swap') {
-      newTransaction.action = 'SwapBorrowRate';
-    }
-    // Consistent with UI
-    if (transaction.action === 'RedeemUnderlying') {
-      newTransaction.action = 'Withdraw';
+      if (csv) {
+        newTransaction.underlyingSrcToken = `"${JSON.stringify(srcTokenInfo).replace(/"/g, '""')}"`;
+        newTransaction.underlyingDestToken = `"${JSON.stringify(destTokenInfo).replace(
+          /"/g,
+          '""'
+        )}"`;
+      } else {
+        newTransaction.underlyingSrcToken = srcTokenInfo;
+        newTransaction.underlyingDestToken = destTokenInfo;
+      }
+
+      newTransaction.srcAToken = !!transaction.srcAToken;
+      newTransaction.destAToken = !!transaction.destAToken;
+
+      delete newTransaction.reserve;
+      delete newTransaction.amount;
+      delete newTransaction.assetPriceUSD;
+      delete newTransaction.fromState;
+      delete newTransaction.toState;
+      delete newTransaction.txHash;
     }
 
     return newTransaction;
+  });
+  return formattedTransactions.sort((a, b) => {
+    return b.timestamp - a.timestamp;
   });
 };

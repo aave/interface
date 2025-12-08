@@ -37,10 +37,6 @@ inputs:
     description: wallet connect project id
     required: false
     default: ''
-  NEXT_PUBLIC_SUBGRAPH_API_KEY:
-    description: subgraph api key
-    required: false
-    default: ''
   NEXT_PUBLIC_IS_CYPRESS_ENABLED:
     description: enables cypress
     required: false
@@ -87,5 +83,4 @@ runs:
         NEXT_PUBLIC_MIXPANEL: '${{ inputs.NEXT_PUBLIC_MIXPANEL }}'
         NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
         NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: '${{ inputs.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID }}'
-        NEXT_PUBLIC_SUBGRAPH_API_KEY: '${{ inputs.NEXT_PUBLIC_SUBGRAPH_API_KEY }}'
         NEXT_PUBLIC_IS_CYPRESS_ENABLED: '${{ inputs.NEXT_PUBLIC_IS_CYPRESS_ENABLED }}'

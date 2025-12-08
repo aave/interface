@@ -78,7 +78,13 @@ type MarketLogoProps = {
 export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) => {
   return (
     <Box sx={{ mr: 2, width: size, height: size, position: 'relative', ...sx }}>
-      <img src={logo} alt="" width="100%" height="100%" />
+      <img
+        src={logo}
+        alt=""
+        width="100%"
+        height="100%"
+        style={{ display: 'block', objectFit: 'contain', objectPosition: 'center center' }}
+      />
 
       {testChainName && (
         <Tooltip title={testChainName} arrow>
@@ -126,14 +132,16 @@ const MARKET_ORDER_BY_TITLE: { [title: string]: number } = {
   OP: 9,
   Gnosis: 10,
   Aptos: 11,
-  'BNB Chain': 12,
-  Polygon: 13,
-  Scroll: 14,
-  ZKsync: 15,
-  Celo: 16,
-  Metis: 17,
-  Soneium: 18,
-  EtherFi: 19,
+  Ink: 12,
+
+  'BNB Chain': 13,
+  Polygon: 14,
+  Scroll: 15,
+  ZKsync: 16,
+  Celo: 17,
+  Metis: 18,
+  Soneium: 19,
+  EtherFi: 20,
 };
 
 const getMarketOrder = (marketId: CustomMarket): number => {
@@ -185,6 +193,7 @@ export const MarketSwitcher = () => {
   };
 
   const marketBlurbs: { [key: string]: JSX.Element } = {
+    proto_ink_v3: <Trans>The Ink instance is governed by the Ink Foundation</Trans>,
     proto_mainnet_v3: (
       <Trans>Main Ethereum market with the largest selection of assets and yield options</Trans>
     ),
@@ -348,6 +357,10 @@ export const MarketSwitcher = () => {
             value={selectedMarketVersion}
             exclusive
             onChange={(_, value) => {
+              if (value === SelectedMarketVersion.V2) {
+                window.open('https://v2-market.aave.com/', '_blank', 'noopener');
+                return;
+              }
               if (value !== null) {
                 setSelectedMarketVersion(value);
               }
@@ -369,6 +382,8 @@ export const MarketSwitcher = () => {
               value={SelectedMarketVersion.V3}
               data-cy={`markets_switch_button_v3`}
               sx={{
+                flex: '0 0 96px',
+                px: 1.5,
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
                 '&.Mui-selected, &.Mui-selected:hover': {
                   backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
@@ -398,12 +413,16 @@ export const MarketSwitcher = () => {
               value={SelectedMarketVersion.V2}
               data-cy={`markets_switch_button_v2`}
               sx={{
+                flexGrow: 1.2,
+                flexBasis: 0,
+                px: 2,
                 backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
                 '&.Mui-selected, &.Mui-selected:hover': {
                   backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
                   boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
                 },
                 borderRadius: '4px',
+                padding: 0,
               }}
             >
               <Typography
@@ -416,11 +435,17 @@ export const MarketSwitcher = () => {
                         color: 'transparent',
                       }
                     : {
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
                         color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
                       }
                 }
               >
                 <Trans>Version 2</Trans>
+                <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
+                  <ExternalLinkIcon />
+                </SvgIcon>
               </Typography>
             </StyledToggleButton>
           </StyledToggleButtonGroup>

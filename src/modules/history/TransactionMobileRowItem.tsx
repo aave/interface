@@ -1,18 +1,24 @@
+import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
 import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ListItem } from 'src/components/lists/ListItem';
+import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
-import { unixTimestampToFormattedTime } from './helpers';
-import { getExplorerLink } from './TransactionRowItem';
-import { ActionFields, TransactionHistoryItem } from './types';
+import { getExplorerLink, getTransactionAction, unixTimestampToFormattedTime } from './helpers';
+import {
+  ActionName,
+  isCowSwapSubset,
+  isSwapTransaction,
+  TransactionHistoryItemUnion,
+} from './types';
 
-function ActionTitle({ action }: { action: string }) {
+function ActionTitle({ action }: { action: ActionName }) {
   return (
     <Typography variant="subheader2" color="text.muted">
       <ActionTextMap action={action} />
@@ -21,7 +27,7 @@ function ActionTitle({ action }: { action: string }) {
 }
 
 interface TransactionHistoryItemProps {
-  transaction: TransactionHistoryItem & ActionFields[keyof ActionFields];
+  transaction: TransactionHistoryItemUnion;
 }
 
 function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) {
@@ -29,7 +35,11 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
   const [currentNetworkConfig, trackEvent] = useRootStore(
     useShallow((state) => [state.currentNetworkConfig, state.trackEvent])
   );
+  const { openCancelCowOrder } = useModalContext();
   const theme = useTheme();
+  const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
+  const action = getTransactionAction(transaction);
+  const timestamp = Date.parse(transaction.timestamp);
 
   useEffect(() => {
     if (copyStatus) {
@@ -42,8 +52,6 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
       };
     }
   }, [copyStatus]);
-
-  const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
 
   return (
     <Box>
@@ -75,19 +83,36 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
             }}
           >
             <Box sx={{ display: 'flex', gap: 2 }}>
-              <ActionTitle action={transaction.action} />
+              <ActionTitle action={action} />
             </Box>
 
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              {' '}
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
               <Typography variant="caption" color="text.muted">
-                {unixTimestampToFormattedTime({ unixTimestamp: transaction.timestamp })}
+                {unixTimestampToFormattedTime({ unixTimestamp: timestamp })}
               </Typography>
+              {isSwapTransaction(transaction) &&
+                isCowSwapSubset(transaction) &&
+                transaction.status === OrderStatus.OPEN && (
+                  <Button
+                    sx={{
+                      display: 'flex',
+                      minWidth: 'auto',
+                      height: '20px',
+                      fontSize: '0.6rem',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      px: 1.5,
+                    }}
+                    variant="contained"
+                    onClick={() => openCancelCowOrder(transaction)}
+                  >
+                    <Trans>Cancel</Trans>
+                  </Button>
+                )}
               {explorerLink && (
                 <Button
                   sx={{
                     display: 'flex',
-                    ml: 3,
                     mr: 1,
                     width: '69px',
                     height: '20px',
@@ -104,7 +129,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
                     trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })
                   }
                 >
-                  <Trans>VIEW TX</Trans>{' '}
+                  <Trans>VIEW</Trans>{' '}
                   <SvgIcon
                     sx={{
                       fontSize: '15px',

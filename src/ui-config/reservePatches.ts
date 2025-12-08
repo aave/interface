@@ -85,6 +85,7 @@ export const SYMBOL_NAME_MAP: { [key: string]: string } = {
   ZRX: '0x Coin',
   '1INCH': '1inch Network',
   LUSD: 'LUSD Stablecoin',
+  FBTC: 'FunctionBTC',
 };
 
 export interface IconSymbolInterface {
@@ -197,6 +198,22 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
     [AaveV3Plasma.ASSETS.PT_sUSDE_15JAN2026.UNDERLYING.toLowerCase()]: {
       symbol: 'PT sUSDe January 15th 2026',
       name: 'PT sUSDe January 2026',
+      iconSymbol: 'ptsusde',
+    },
+
+    [AaveV3Plasma.ASSETS.syrupUSDT.UNDERLYING.toLowerCase()]: {
+      symbol: 'syrupUSDT',
+      name: 'syrupUSDT',
+      iconSymbol: 'syrupusdt',
+    },
+    '0x1f84a51296691320478c98b8d77f2bbd17d34350': {
+      symbol: 'PT USDe February 5th 2026',
+      name: 'PT USDe February 2026',
+      iconSymbol: 'ptusde',
+    },
+    '0xe8483517077afa11a9b07f849cee2552f040d7b2': {
+      symbol: 'PT sUSDe February 5th 2026',
+      name: 'PT sUSDe February 2026',
       iconSymbol: 'ptsusde',
     },
 

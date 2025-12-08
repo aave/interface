@@ -28,7 +28,40 @@ export const GENERAL = {
   TRANSACTION_ERROR: 'Transaction Error',
   OPEN_MODAL: 'Open Modal',
   MAX_INPUT_SELECTION: 'Select Max input',
+  LIMIT_ORDER: 'Limit Order',
 };
+
+export enum SWAP {
+  /// The user has requested a quote
+  QUOTE = 'SWAP_QUOTE',
+
+  /// The quote has been refreshed
+  QUOTE_REFRESHED = 'SWAP_QUOTE_REFRESHED',
+
+  /// The user has changed inputs
+  INPUT_CHANGES = 'SWAP_INPUT_CHANGES',
+
+  /// An error has occurred
+  ERROR = 'SWAP_ERROR',
+
+  /// The user sent the approval transaction
+  APPROVAL = 'SWAP_APPROVAL',
+
+  /// The user has sent the swap order
+  SWAP = 'SWAP_EXECUTION',
+
+  /// The user's order has been filled
+  SWAP_FILLED = 'SWAP_FILLED',
+
+  /// The user's order has failed
+  SWAP_FAILED = 'SWAP_FAILED',
+
+  /// The user denied a wallet request
+  USER_DENIED = 'SWAP_USER_DENIED_WALLET_REQUEST',
+
+  /// The user has encountered a gas estimation error
+  GAS_ESTIMATION_ERROR = 'SWAP_GAS_ESTIMATION_ERROR',
+}
 
 export const REWARDS = {
   CLAIM_ALL_REWARDS: 'Claim All Rewards',
@@ -138,4 +171,7 @@ export const GHO_SUCCESS_MODAL = {
   GHO_DOWNLOAD_IMAGE: 'Click download image on GHO borrow',
   GHO_BORROW_VIEW_TX_DETAILS: 'Click view TX details on GHO borrow',
   GHO_FAIL_COPY_IMAGE: 'Failed to copy image to clipboard',
+};
+export const SWITCH_MODAL = {
+  SWITCH_TYPE: 'Change switch type',
 };

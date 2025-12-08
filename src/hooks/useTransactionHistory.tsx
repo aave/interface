@@ -1,33 +1,56 @@
+import {
+  chainId,
+  evmAddress,
+  OrderDirection,
+  PageSize,
+  useUserTransactionHistory,
+} from '@aave/react';
+import { Cursor } from '@aave/types';
 import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swap/constants/cow.constants';
 import {
-  ADAPTER_APP_CODE,
-  HEADER_WIDGET_APP_CODE,
-} from 'src/components/transactions/Switch/cowprotocol/cowprotocol.helpers';
-import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Switch/switch.constants';
+  APP_CODE_PER_SWAP_TYPE,
+  APP_CODE_VALUES,
+} from 'src/components/transactions/Swap/constants/shared.constants';
+import { COW_ENV } from 'src/components/transactions/Swap/helpers/cow';
+import { SwapType } from 'src/components/transactions/Swap/types';
+import { getTransactionAction, getTransactionId } from 'src/modules/history/helpers';
 import {
   actionFilterMap,
+  ActionName,
+  CowSwapSubset,
   hasCollateralReserve,
   hasPrincipalReserve,
   hasReserve,
   hasSrcOrDestToken,
   HistoryFilters,
+  isCowSwapSubset,
+  swapTypeToTransactionHistoryItemType,
   TransactionHistoryItemUnion,
+  UserTransactionItem,
 } from 'src/modules/history/types';
-import {
-  USER_TRANSACTIONS_V2,
-  USER_TRANSACTIONS_V2_WITH_POOL,
-} from 'src/modules/history/v2-user-history-query';
-import { USER_TRANSACTIONS_V3 } from 'src/modules/history/v3-user-history-query';
 import { ERC20Service } from 'src/services/Erc20Service';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import {
+  CowAdapterEntry,
+  getAdapterSwapHistory,
+  ParaswapAdapterEntry,
+} from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/shallow';
 
 import { useAppDataContext } from './app-data-provider/useAppDataProvider';
+
+const sortTransactionsByTimestampDesc = (
+  a: TransactionHistoryItemUnion,
+  b: TransactionHistoryItemUnion
+) => {
+  return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+};
 
 export const applyTxHistoryFilters = ({
   searchQuery,
@@ -50,24 +73,30 @@ export const applyTxHistoryFilters = ({
       let srcToken = '';
       let destToken = '';
 
+      //SDK structure
       if (hasCollateralReserve(txn)) {
-        collateralSymbol = txn.collateralReserve.symbol.toLowerCase();
-        collateralName = txn.collateralReserve.name.toLowerCase();
+        collateralSymbol = txn.collateral.reserve.underlyingToken.symbol.toLowerCase();
+        collateralName = txn.collateral.reserve.underlyingToken.name.toLowerCase();
       }
 
       if (hasPrincipalReserve(txn)) {
-        principalSymbol = txn.principalReserve.symbol.toLowerCase();
-        principalName = txn.principalReserve.name.toLowerCase();
+        principalSymbol = txn.debtRepaid.reserve.underlyingToken.symbol.toLowerCase();
+        principalName = txn.debtRepaid.reserve.underlyingToken.name.toLowerCase();
       }
 
       if (hasReserve(txn)) {
-        symbol = txn.reserve.symbol.toLowerCase();
-        name = txn.reserve.name.toLowerCase();
+        symbol = txn.reserve.underlyingToken.symbol.toLowerCase();
+        name = txn.reserve.underlyingToken.name.toLowerCase();
       }
 
+      // CowSwap structure
       if (hasSrcOrDestToken(txn)) {
-        srcToken = txn.underlyingSrcToken.symbol.toLowerCase();
-        destToken = txn.underlyingDestToken.symbol.toLowerCase();
+        const swapTxn = txn as unknown as {
+          underlyingSrcToken: { symbol: string };
+          underlyingDestToken: { symbol: string };
+        };
+        srcToken = swapTxn.underlyingSrcToken.symbol.toLowerCase();
+        destToken = swapTxn.underlyingDestToken.symbol.toLowerCase();
       }
 
       // handle special case where user searches for ethereum but asset names are abbreviated as ether
@@ -92,7 +121,8 @@ export const applyTxHistoryFilters = ({
   // apply txn type filter
   if (filterQuery.length > 0) {
     filteredTxns = filteredTxns.filter((txn: TransactionHistoryItemUnion) => {
-      if (filterQuery.includes(actionFilterMap(txn.action))) {
+      const action = getTransactionAction(txn);
+      if (filterQuery.includes(actionFilterMap(action))) {
         return true;
       } else {
         return false;
@@ -108,89 +138,107 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   );
 
   const { reserves, loading: reservesLoading } = useAppDataContext();
-
+  const [sdkCursor, setSdkCursor] = useState<Cursor | null>(null);
+  const [sdkTransactions, setSdkTransactions] = useState<UserTransactionItem[]>([]);
+  const sdkTransactionIds = useRef<Set<string>>(new Set());
+  const [isFetchingAllSdkPages, setIsFetchingAllSdkPages] = useState(true);
+  const [hasLoadedInitialSdkPage, setHasLoadedInitialSdkPage] = useState(false);
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
-  // Handle subgraphs with multiple markets (currently only ETH V2 and ETH V2 AMM)
-  let selectedPool: string | undefined = undefined;
-  if (!currentMarketData.v3 && currentMarketData.marketTitle === 'Ethereum') {
-    selectedPool = currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER.toLowerCase();
-  }
+  const isAccountValid = account && account.length > 0;
 
-  interface TransactionHistoryParams {
-    account: string;
-    subgraphUrl: string;
-    first: number;
-    skip: number;
-    v3: boolean;
-    pool?: string;
-  }
-  const fetchTransactionHistory = async ({
-    account,
-    subgraphUrl,
-    first,
-    skip,
-    v3,
-    pool,
-  }: TransactionHistoryParams) => {
-    let query = '';
-    if (v3) {
-      query = USER_TRANSACTIONS_V3;
-    } else if (pool) {
-      query = USER_TRANSACTIONS_V2_WITH_POOL;
-    } else {
-      query = USER_TRANSACTIONS_V2;
-    }
+  const {
+    data: sdkData,
+    loading: sdkLoading,
+    error: sdkError,
+  } = useUserTransactionHistory({
+    market: evmAddress(currentMarketData.addresses.LENDING_POOL),
+    user: isAccountValid
+      ? evmAddress(account as string)
+      : evmAddress('0x0000000000000000000000000000000000000000'),
+    chainId: chainId(currentMarketData.chainId),
+    orderBy: { date: OrderDirection.Desc },
+    pageSize: PageSize.Fifty,
+    cursor: sdkCursor,
+  });
 
-    const requestBody = {
-      query,
-      variables: { userAddress: account, first, skip, pool },
-    };
-    try {
-      const response = await fetch(subgraphUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
+  useEffect(() => {
+    setSdkCursor(null);
+    setSdkTransactions([]);
+    sdkTransactionIds.current.clear();
+    setIsFetchingAllSdkPages(true);
+    setHasLoadedInitialSdkPage(false);
+  }, [account, currentMarketData.addresses.LENDING_POOL, currentMarketData.chainId]);
 
-      if (!response.ok) {
-        throw new Error(`Network error: ${response.status} - ${response.statusText}`);
+  useEffect(() => {
+    if (!sdkData?.items?.length) {
+      if (!sdkLoading && !sdkData?.pageInfo?.next) {
+        setIsFetchingAllSdkPages(false);
+        if (!hasLoadedInitialSdkPage) {
+          setHasLoadedInitialSdkPage(true);
+        }
       }
-
-      const data = await response.json();
-      return data.data?.userTransactions || [];
-    } catch (error) {
-      console.error('Error fetching transaction history:', error);
-      return [];
+      return;
     }
+
+    const newTransactions = sdkData.items.filter((transaction) => {
+      const transactionId = getTransactionId(transaction);
+      if (sdkTransactionIds.current.has(transactionId)) {
+        return false;
+      }
+      sdkTransactionIds.current.add(transactionId);
+      return true;
+    });
+
+    if (newTransactions.length > 0) {
+      setSdkTransactions((prev) => [...prev, ...newTransactions]);
+      if (!hasLoadedInitialSdkPage) {
+        setHasLoadedInitialSdkPage(true);
+      }
+    }
+  }, [sdkData, sdkLoading, hasLoadedInitialSdkPage]);
+
+  useEffect(() => {
+    if (sdkLoading) {
+      setIsFetchingAllSdkPages(true);
+      return;
+    }
+
+    const nextCursor = sdkData?.pageInfo?.next ?? null;
+    if (nextCursor && nextCursor !== sdkCursor) {
+      setIsFetchingAllSdkPages(true);
+      setSdkCursor(nextCursor);
+      return;
+    }
+
+    if (!nextCursor) {
+      setIsFetchingAllSdkPages(false);
+    }
+  }, [sdkData?.pageInfo?.next, sdkLoading, sdkCursor]);
+
+  useEffect(() => {
+    if (sdkError && !hasLoadedInitialSdkPage) {
+      setHasLoadedInitialSdkPage(true);
+      setIsFetchingAllSdkPages(false);
+    }
+  }, [sdkError, hasLoadedInitialSdkPage]);
+
+  const getSDKTransactions = (): UserTransactionItem[] => {
+    return sdkTransactions;
   };
 
   const fetchForDownload = async ({
     searchQuery,
     filterQuery,
   }: HistoryFilters): Promise<TransactionHistoryItemUnion[]> => {
-    const allTransactions = [];
-    const batchSize = 100;
-    let skip = 0;
-    let currentBatchSize = batchSize;
+    const sdkTransactions = getSDKTransactions();
+    const skip = 0;
+    const allCowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, skip);
 
-    // Pagination over multiple sources is not perfect but since this is not a user facing feature, it's not noticeable
-    while (currentBatchSize === batchSize) {
-      const currentBatch = await fetchTransactionHistory({
-        first: batchSize,
-        skip: skip,
-        account,
-        subgraphUrl: currentMarketData.subgraphUrl ?? '',
-        v3: !!currentMarketData.v3,
-        pool: selectedPool,
-      });
-      const cowSwapOrders = await fetchCowSwapsHistory(batchSize, skip * batchSize);
-      allTransactions.push(...currentBatch, ...cowSwapOrders);
-      currentBatchSize = currentBatch.length;
-      skip += batchSize;
-    }
+    const allTransactions: TransactionHistoryItemUnion[] = [
+      ...sdkTransactions,
+      ...allCowSwapOrders,
+    ];
 
     const filteredTxns = applyTxHistoryFilters({ searchQuery, filterQuery, txns: allTransactions });
     return filteredTxns;
@@ -198,149 +246,240 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
 
   const fetchCowSwapsHistory = async (first: number, skip: number) => {
     const chainId = currentMarketData.chainId;
-    if (!isChainIdSupportedByCoWProtocol(chainId)) {
-      return [];
+
+    let apiTxns: TransactionHistoryItemUnion[] = [];
+    if (isChainIdSupportedByCoWProtocol(chainId)) {
+      const orderBookApi = new OrderBookApi({ chainId: chainId, env: COW_ENV });
+      const orders = await orderBookApi.getOrders({
+        owner: account,
+        limit: first,
+        offset: skip,
+      });
+
+      const filteredCowAaveOrders = (
+        await Promise.all(
+          orders.map(async (order) => {
+            try {
+              const appData = JSON.parse(order.fullAppData ?? '{}');
+              const appCode = appData.appCode;
+
+              if (APP_CODE_VALUES.includes(appCode)) {
+                return order;
+              }
+            } catch (error) {
+              console.error('Error parsing app data:', error);
+            }
+            return null;
+          })
+        )
+      ).filter((order) => order !== null);
+
+      apiTxns = await Promise.all(
+        filteredCowAaveOrders.map<Promise<TransactionHistoryItemUnion | null>>(async (order) => {
+          const erc20Service = new ERC20Service(getProvider);
+
+          // Helper function to find token info from pool reserves
+          const findTokenFromReserves: (tokenAddress: string) =>
+            | {
+                address: string;
+                name: string;
+                symbol: string;
+                decimals: number;
+                isAToken?: boolean;
+              }
+            | undefined = (tokenAddress: string) => {
+            const reserve = reserves?.find(
+              (reserve) =>
+                reserve.underlyingAsset.toLowerCase() === tokenAddress.toLowerCase() ||
+                reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase()
+            );
+
+            if (reserve) {
+              return {
+                address: tokenAddress,
+                name: reserve.name,
+                symbol: reserve.symbol,
+                decimals: reserve.decimals,
+                isAToken: reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase(),
+              };
+            }
+            return undefined;
+          };
+
+          let srcToken = findTokenFromReserves(order.sellToken);
+          let destToken = findTokenFromReserves(order.buyToken);
+
+          // Fallback to TOKEN_LIST if not found in pool reserves (for non-Aave tokens)
+          if (!srcToken) {
+            srcToken = TOKEN_LIST.tokens.find(
+              (token) =>
+                token.chainId == chainId &&
+                token.address.toLowerCase() == order.sellToken.toLowerCase()
+            );
+          }
+
+          if (!destToken) {
+            destToken = TOKEN_LIST.tokens.find(
+              (token) =>
+                token.chainId == chainId &&
+                token.address.toLowerCase() == order.buyToken.toLowerCase()
+            );
+          }
+
+          // Custom tokens - only if erc20Service is available
+          if (!srcToken && erc20Service) {
+            srcToken = await erc20Service
+              .getTokenInfo(order.sellToken, chainId)
+              .then((token) => ({ ...token, underlyingAsset: token.address }))
+              .catch(() => {
+                console.error('Error fetching custom token', order.sellToken);
+                return undefined;
+              });
+          }
+
+          if (!destToken && erc20Service) {
+            destToken = await erc20Service
+              .getTokenInfo(order.buyToken, chainId)
+              .then((token) => ({ ...token, underlyingAsset: token.address }))
+              .catch(() => {
+                console.error('Error fetching custom token', order.buyToken);
+                return undefined;
+              });
+          }
+
+          // Otherwise, we can not display it
+          if (!srcToken || !destToken) {
+            return null;
+          }
+
+          // We define the Order's swap type based on the app code
+          const appCode = (() => {
+            try {
+              return JSON.parse(order.fullAppData ?? '{}').appCode;
+            } catch (e) {
+              console.error('Error parsing order.fullAppData:', order.fullAppData, e);
+              return undefined;
+            }
+          })();
+
+          const swapType = Object.entries(APP_CODE_PER_SWAP_TYPE).find(
+            ([, code]) => code === appCode
+          )?.[0] as keyof typeof APP_CODE_PER_SWAP_TYPE | undefined;
+
+          return {
+            action:
+              swapTypeToTransactionHistoryItemType(swapType ?? SwapType.Swap) ?? ActionName.Swap,
+            id: order.uid,
+            timestamp: new Date(order.creationDate).toISOString(),
+            underlyingSrcToken: {
+              underlyingAsset: srcToken.address,
+              name: srcToken.name,
+              symbol: srcToken.symbol,
+              decimals: srcToken.decimals,
+            },
+            srcAToken: srcToken.isAToken,
+            underlyingDestToken: {
+              underlyingAsset: destToken.address,
+              name: destToken.name,
+              symbol: destToken.symbol,
+              decimals: destToken.decimals,
+            },
+            destAToken: destToken.isAToken,
+            protocol: 'cow',
+            srcAmount:
+              order.executedSellAmount && order.executedBuyAmount != '0'
+                ? order.executedSellAmount
+                : order.sellAmount,
+            destAmount:
+              order.executedBuyAmount && order.executedSellAmount != '0'
+                ? order.executedBuyAmount
+                : order.buyAmount,
+            status: order.status,
+            orderId: order.uid,
+            chainId: chainId,
+          };
+        })
+      ).then((txns) => txns.filter((txn) => txn !== null));
     }
 
-    const orderBookApi = new OrderBookApi({ chainId: chainId });
-    const orders = await orderBookApi.getOrders({
-      owner: account,
-      limit: first,
-      offset: skip,
-    });
+    // Merge in locally stored adapter entries (CoW + ParaSwap) for this account/chain
+    // This is needed because Paraswap txs are not included in the subgraph yet and CoW adapters orders are sent by the adapters instances therefore not returned by asking for the user's trades.
+    const localEntries = getAdapterSwapHistory(chainId, account || '');
 
-    const filteredCowAaveOrders = (
-      await Promise.all(
-        orders.map(async (order) => {
-          try {
-            const appData = JSON.parse(order.fullAppData ?? '{}');
-            const appCode = appData.appCode;
+    // Build a set of CoW orderIds returned by API to dedupe
+    const apiCowIds = new Set(
+      apiTxns
+        .filter((t: TransactionHistoryItemUnion) => !!t && isCowSwapSubset(t))
+        .map((t: CowSwapSubset) => t.orderId)
+        .filter(Boolean)
+    );
 
-            if (appCode == HEADER_WIDGET_APP_CODE || appCode == ADAPTER_APP_CODE) {
-              return order;
-            }
-          } catch (error) {
-            console.error('Error parsing app data:', error);
-          }
-          return null;
-        })
-      )
-    ).filter((order) => order !== null);
+    const localCowTxns: TransactionHistoryItemUnion[] = (localEntries as CowAdapterEntry[])
+      .filter((e) => e.protocol === 'cow' && !apiCowIds.has(e.orderId))
+      .map((e: CowAdapterEntry) => ({
+        action: swapTypeToTransactionHistoryItemType(e.swapType) ?? ActionName.Swap,
+        id: e.orderId,
+        timestamp: e.timestamp,
+        underlyingSrcToken: {
+          underlyingAsset: e.srcToken.address,
+          name: e.srcToken.name,
+          symbol: e.srcToken.symbol,
+          decimals: e.srcToken.decimals,
+        },
+        srcAToken: e.srcToken.isAToken,
+        underlyingDestToken: {
+          underlyingAsset: e.destToken.address,
+          name: e.destToken.name,
+          symbol: e.destToken.symbol,
+          decimals: e.destToken.decimals,
+        },
+        destAToken: e.destToken.isAToken,
+        srcAmount: e.srcAmount,
+        destAmount: e.destAmount,
+        status: e.status,
+        protocol: 'cow',
+        orderId: e.orderId,
+        chainId: e.chainId,
+        adapterInstanceAddress: e.adapterInstanceAddress,
+        usedAdapter: e.usedAdapter,
+      }));
 
-    return Promise.all(
-      filteredCowAaveOrders.map<Promise<TransactionHistoryItemUnion | null>>(async (order) => {
-        const erc20Service = new ERC20Service(getProvider);
+    const localParaswapTxns: TransactionHistoryItemUnion[] = (
+      localEntries as ParaswapAdapterEntry[]
+    )
+      .filter((e) => e.protocol === 'paraswap')
+      .map((e: ParaswapAdapterEntry) => ({
+        action: swapTypeToTransactionHistoryItemType(e.swapType) ?? ActionName.Swap,
+        id: e.txHash,
+        timestamp: e.timestamp,
+        underlyingSrcToken: {
+          underlyingAsset: e.srcToken.address,
+          name: e.srcToken.name,
+          symbol: e.srcToken.symbol,
+          decimals: e.srcToken.decimals,
+        },
+        protocol: 'paraswap',
+        srcAToken: e.srcToken.isAToken,
+        underlyingDestToken: {
+          underlyingAsset: e.destToken.address,
+          name: e.destToken.name,
+          symbol: e.destToken.symbol,
+          decimals: e.destToken.decimals,
+        },
+        destAToken: e.destToken.isAToken,
+        srcAmount: e.srcAmount,
+        destAmount: e.destAmount,
+        status: e.status,
+        txHash: e.txHash,
+        chainId: e.chainId,
+      }));
 
-        // Helper function to find token info from pool reserves
-        const findTokenFromReserves: (tokenAddress: string) =>
-          | {
-              address: string;
-              name: string;
-              symbol: string;
-              decimals: number;
-              isAToken?: boolean;
-            }
-          | undefined = (tokenAddress: string) => {
-          const reserve = reserves?.find(
-            (reserve) =>
-              reserve.underlyingAsset.toLowerCase() === tokenAddress.toLowerCase() ||
-              reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase()
-          );
-
-          if (reserve) {
-            return {
-              address: tokenAddress,
-              name: reserve.name,
-              symbol: reserve.symbol,
-              decimals: reserve.decimals,
-              isAToken: reserve.aTokenAddress.toLowerCase() === tokenAddress.toLowerCase(),
-            };
-          }
-          return undefined;
-        };
-
-        let srcToken = findTokenFromReserves(order.sellToken);
-        let destToken = findTokenFromReserves(order.buyToken);
-
-        // Fallback to TOKEN_LIST if not found in pool reserves (for non-Aave tokens)
-        if (!srcToken) {
-          srcToken = TOKEN_LIST.tokens.find(
-            (token) =>
-              token.chainId == chainId &&
-              token.address.toLowerCase() == order.sellToken.toLowerCase()
-          );
-        }
-
-        if (!destToken) {
-          destToken = TOKEN_LIST.tokens.find(
-            (token) =>
-              token.chainId == chainId &&
-              token.address.toLowerCase() == order.buyToken.toLowerCase()
-          );
-        }
-
-        // Custom tokens - only if erc20Service is available
-        if (!srcToken && erc20Service) {
-          srcToken = await erc20Service
-            .getTokenInfo(order.sellToken, chainId)
-            .then((token) => ({ ...token, underlyingAsset: token.address }))
-            .catch(() => {
-              console.error('Error fetching custom token', order.sellToken);
-              return undefined;
-            });
-        }
-
-        if (!destToken && erc20Service) {
-          destToken = await erc20Service
-            .getTokenInfo(order.buyToken, chainId)
-            .then((token) => ({ ...token, underlyingAsset: token.address }))
-            .catch(() => {
-              console.error('Error fetching custom token', order.buyToken);
-              return undefined;
-            });
-        }
-
-        // Otherwise, we can not display it
-        if (!srcToken || !destToken) {
-          return null;
-        }
-
-        return {
-          action: srcToken.isAToken ? 'CowCollateralSwap' : 'CowSwap',
-          id: order.uid,
-          timestamp: Math.floor(new Date(order.creationDate).getTime() / 1000),
-          underlyingSrcToken: {
-            underlyingAsset: srcToken.address,
-            name: srcToken.name,
-            symbol: srcToken.symbol,
-            decimals: srcToken.decimals,
-          },
-          srcAToken: srcToken.isAToken,
-          underlyingDestToken: {
-            underlyingAsset: destToken.address,
-            name: destToken.name,
-            symbol: destToken.symbol,
-            decimals: destToken.decimals,
-          },
-          destAToken: destToken.isAToken,
-          srcAmount:
-            order.executedSellAmount && order.executedBuyAmount != '0'
-              ? order.executedSellAmount
-              : order.sellAmount,
-          destAmount:
-            order.executedBuyAmount && order.executedSellAmount != '0'
-              ? order.executedBuyAmount
-              : order.buyAmount,
-          status: order.status,
-          orderId: order.uid,
-          chainId: chainId,
-        };
-      })
-    ).then((txns) => txns.filter((txn) => txn !== null));
+    const combined = [...apiTxns, ...localCowTxns, ...localParaswapTxns];
+    return combined.sort(sortTransactionsByTimestampDesc);
   };
 
-  const PAGE_SIZE = 100;
-  // Pagination over multiple sources is not perfect but since we are using an infinite query, won't be noticeable
+  const PAGE_SIZE = 50; //Limit SDK and CowSwap to same page size
+
   const {
     data,
     fetchNextPage,
@@ -352,18 +491,10 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   } = useInfiniteQuery({
     queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
     queryFn: async ({ pageParam = 0 }) => {
-      const response = await fetchTransactionHistory({
-        account,
-        subgraphUrl: currentMarketData.subgraphUrl ?? '',
-        first: PAGE_SIZE,
-        skip: pageParam,
-        v3: !!currentMarketData.v3,
-        pool: selectedPool,
-      });
-      const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam * PAGE_SIZE);
-      return [...response, ...cowSwapOrders].sort((a, b) => b.timestamp - a.timestamp);
+      const cowSwapOrders = await fetchCowSwapsHistory(PAGE_SIZE, pageParam);
+      return cowSwapOrders.sort(sortTransactionsByTimestampDesc);
     },
-    enabled: !!account && !!currentMarketData.subgraphUrl && !reservesLoading && !!reserves,
+    enabled: !!account && !reservesLoading && !!reserves && !sdkLoading,
     getNextPageParam: (
       lastPage: TransactionHistoryItemUnion[],
       allPages: TransactionHistoryItemUnion[][]
@@ -376,6 +507,32 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     },
     initialPageParam: 0,
   });
+
+  const mergedData = useMemo(() => {
+    if (!data) {
+      if (sdkTransactions.length === 0) {
+        return data;
+      }
+
+      return {
+        pageParams: [0],
+        pages: [sdkTransactions.slice().sort(sortTransactionsByTimestampDesc)],
+      };
+    }
+
+    const pagesWithSdk = data.pages.map((page, index) => {
+      if (index === 0) {
+        const combined = [...sdkTransactions, ...page];
+        return combined.sort(sortTransactionsByTimestampDesc);
+      }
+      return page;
+    });
+
+    return {
+      ...data,
+      pages: pagesWithSdk,
+    };
+  }, [data, sdkTransactions]);
 
   // If filter is active, keep fetching until all data is returned so that it's guaranteed all filter results will be returned
   useEffect(() => {
@@ -398,15 +555,16 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     }
   }, [shouldKeepFetching, fetchNextPage, reservesLoading]);
 
+  const isInitialSdkLoading = !hasLoadedInitialSdkPage && (sdkLoading || isFetchingAllSdkPages);
+
   return {
-    data,
+    data: mergedData,
     fetchNextPage,
     isFetchingNextPage,
     hasNextPage,
-    isLoading: reservesLoading || isLoadingHistory,
-    isError,
-    error,
+    isLoading: reservesLoading || isLoadingHistory || isInitialSdkLoading,
+    isError: isError || !!sdkError,
+    error: error || sdkError,
     fetchForDownload,
-    subgraphUrl: currentMarketData.subgraphUrl,
   };
 };

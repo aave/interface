@@ -4,6 +4,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
+import { convertAprToApy } from 'src/utils/utils';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { Row } from '../primitives/Row';
@@ -127,6 +128,11 @@ const IncentivesSymbolMap: {
     symbol: 'aCELO',
     aToken: true,
   },
+  aCelcUSD: {
+    tokenIconSymbol: 'cUSD',
+    symbol: 'acUSD',
+    aToken: true,
+  },
   aGnoEURe: {
     tokenIconSymbol: 'EURe',
     symbol: 'aEURe',
@@ -176,6 +182,11 @@ const IncentivesSymbolMap: {
     tokenIconSymbol: 'USDe',
     symbol: 'aUSDe',
     aToken: true,
+  },
+  tydroInkPoints: {
+    tokenIconSymbol: 'TydroInkPoints',
+    symbol: 'TydroInkPoints',
+    aToken: false,
   },
 };
 
@@ -240,14 +251,14 @@ export const IncentivesTooltipContent = ({
           <>
             <FormattedNumber value={+incentiveAPR} percent variant={typographyVariant} />
             <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-              <Trans>APR</Trans>
+              <Trans>APY</Trans>
             </Typography>
           </>
         ) : (
           <>
             <Typography variant={typographyVariant}>∞ %</Typography>
             <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-              <Trans>APR</Trans>
+              <Trans>APY</Trans>
             </Typography>
           </>
         )}
@@ -302,8 +313,9 @@ export const IncentivesTooltipContent = ({
         {incentives.map(getSymbolMap).map((incentive) => {
           const displayAPR =
             isBorrow && incentive.incentiveAPR !== 'Infinity'
-              ? -+incentive.incentiveAPR
+              ? -+incentivesNetAPR
               : incentive.incentiveAPR;
+          const displayAPY = convertAprToApy(displayAPR as number);
 
           return (
             <Row
@@ -332,7 +344,7 @@ export const IncentivesTooltipContent = ({
               key={incentive.rewardTokenAddress}
               width="100%"
             >
-              <Number incentiveAPR={displayAPR} />
+              <Number incentiveAPR={displayAPY} />
             </Row>
           );
         })}

@@ -15,6 +15,17 @@ export type TxErrorType = {
   txAction: TxAction;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const isTxErrorType = (error: any): error is TxErrorType => {
+  return (
+    'blocking' in error &&
+    'actionBlocked' in error &&
+    'rawError' in error &&
+    'error' in error &&
+    'txAction' in error
+  );
+};
+
 export const getErrorTextFromError = (
   error: Error,
   txAction: TxAction,

@@ -302,7 +302,7 @@ export const useTransactionHandler = ({
           },
         });
       } catch (error) {
-        console.log(error, 'error');
+        console.error(error, 'error');
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);
         setMainTxState({
@@ -337,7 +337,7 @@ export const useTransactionHandler = ({
         });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
-        console.log(error, parsedError);
+        console.error(error, parsedError);
         setTxError(parsedError);
         setMainTxState({
           txHash: undefined,

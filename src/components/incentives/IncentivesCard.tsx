@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 import { ENABLE_SELF_CAMPAIGN, useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
+import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
+import { convertAprToApy } from 'src/utils/utils';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { NoData } from '../primitives/NoData';
@@ -57,6 +59,9 @@ export const IncentivesCard = ({
       return sum + +inc.incentiveAPR;
     }, 0 as number | 'Infinity') || 0;
 
+  const protocolIncentivesAPY = convertAprToApy(
+    protocolIncentivesAPR === 'Infinity' ? 0 : protocolIncentivesAPR
+  );
   const { data: meritIncentives } = useMeritIncentives({
     symbol,
     market,
@@ -73,13 +78,24 @@ export const IncentivesCard = ({
     protocolIncentives: incentives || [],
   });
 
+  const { data: merklPointsIncentives } = useMerklPointsIncentives({
+    market,
+    rewardedAsset: address,
+    protocolAction,
+    protocolAPY,
+    protocolIncentives: incentives || [],
+  });
+
   const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
 
   // TODO: This is a one-off for the Self campaign.
   // Remove once the Self incentives are finished.
   const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
   const totalMeritAPY = meritIncentivesAPR + selfAPY;
-  const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
+
+  const merklIncentivesAPR = merklPointsIncentives?.breakdown?.points
+    ? merklPointsIncentives.breakdown.merklIncentivesAPR || 0
+    : merklIncentives?.breakdown?.merklIncentivesAPR || 0;
 
   const isBorrow = protocolAction === ProtocolAction.borrow;
 
@@ -89,8 +105,8 @@ export const IncentivesCard = ({
   const displayAPY = hasInfiniteIncentives
     ? 'Infinity'
     : isBorrow
-    ? protocolAPY - (protocolIncentivesAPR as number) - totalMeritAPY - merklIncentivesAPR
-    : protocolAPY + (protocolIncentivesAPR as number) + totalMeritAPY + merklIncentivesAPR;
+    ? protocolAPY - (protocolIncentivesAPY as number) - totalMeritAPY - merklIncentivesAPR
+    : protocolAPY + (protocolIncentivesAPY as number) + totalMeritAPY + merklIncentivesAPR;
 
   const isSghoPage =
     typeof router?.asPath === 'string' && router.asPath.toLowerCase().startsWith('/sgho');

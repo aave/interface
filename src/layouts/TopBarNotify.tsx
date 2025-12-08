@@ -186,10 +186,28 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
                 )
               ) : null}
             </Typography>
+
+            {sm && currentCampaign.buttonText && currentCampaign.buttonAction ? (
+              <Button
+                size="medium"
+                onClick={handleButtonAction}
+                sx={{
+                  width: '100%',
+                  height: '36px',
+                  background: '#383D51',
+                  color: '#EAEBEF',
+                  mt: 1,
+                  fontSize: '14px',
+                  fontWeight: 500,
+                }}
+              >
+                <Trans>{currentCampaign.buttonText.toUpperCase()}</Trans>
+              </Button>
+            ) : null}
           </Box>
 
           <Box>
-            {!md && currentCampaign.buttonText && currentCampaign.buttonAction ? (
+            {!sm && currentCampaign.buttonText && currentCampaign.buttonAction ? (
               <Button
                 size="small"
                 onClick={handleButtonAction}

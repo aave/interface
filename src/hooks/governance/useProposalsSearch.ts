@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import request, { gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { subgraphRequest } from 'src/utils/subgraphRequest';
 
 import { fetchProposals, fetchSubgraphProposalsByIds } from './useProposals';
 
@@ -16,8 +17,8 @@ const searchProposalsQuery = gql`
 `;
 
 export const searchProposals = (query: string) =>
-  request<{ proposalSearch: Array<{ proposalId: string }> }>(
-    governanceV3Config.governanceCoreSubgraphUrl,
+  subgraphRequest<{ proposalSearch: Array<{ proposalId: string }> }>(
+    governanceV3Config.governanceCoreSubgraphId,
     searchProposalsQuery,
     {
       query,

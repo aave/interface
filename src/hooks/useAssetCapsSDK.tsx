@@ -153,9 +153,11 @@ export const getBorrowCapData = (asset: ReserveWithId) => {
 
   const rawUsage = cap.isZero() ? 0 : totalDebt.dividedBy(cap).multipliedBy(100).toNumber();
 
+  const borrowCapReached = asset?.borrowInfo?.borrowCapReached || rawUsage >= 99.99;
+
   return {
     borrowCapUsage: Number.isFinite(rawUsage) ? rawUsage : 0,
-    borrowCapReached: asset?.borrowInfo?.borrowCapReached || rawUsage >= 99.99,
+    borrowCapReached: borrowCapReached ?? false,
   };
 };
 

@@ -33,6 +33,7 @@ interface TxActionsWrapperProps extends BoxProps {
     handleClick: () => Promise<void>;
   };
   tryPermit?: boolean;
+  permitInUse?: boolean;
   event?: TrackEventProps;
 }
 
@@ -55,6 +56,7 @@ export const TxActionsWrapper = ({
   fetchingData = false,
   errorParams,
   tryPermit,
+  permitInUse = false,
   event,
   ...rest
 }: TxActionsWrapperProps) => {
@@ -143,7 +145,11 @@ export const TxActionsWrapper = ({
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
       {approvalParams && !readOnlyModeAddress && (
         <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
-          <RightHelperText approvalHash={approvalTxState?.txHash} tryPermit={tryPermit} />
+          <RightHelperText
+            approvalHash={approvalTxState?.txHash}
+            tryPermit={tryPermit}
+            permitInUse={permitInUse}
+          />
         </Box>
       )}
 
