@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
-import { useMemo } from 'react';
 import {
   type ReserveWithId,
   useAppDataContext,
@@ -22,11 +21,10 @@ export const InterestRateModelGraphContainer = ({
   reserve,
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
   const { reserves: reservesLegacy } = useAppDataContext();
-  const reserveData = useMemo(() => {
-    return reservesLegacy.find(
-      (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
-    );
-  }, [reservesLegacy, reserve]);
+
+  const reserveData = reservesLegacy.find(
+    (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
+  );
 
   const CHART_HEIGHT = 155;
   const fields: Fields = [
