@@ -142,22 +142,6 @@ export const BorrowedPositionsList = () => {
     userBorrows,
   ]);
 
-  // const userdebtAPY = useMemo(() => {
-  //   const totalDebtUSD = borrowedPositions.reduce(
-  //     (sum, position) => sum + Number(position?.balancePosition?.usd || '0'),
-  //     0
-  //   );
-
-  //   const weightedSupplyAPY = borrowedPositions.reduce((sum, position) => {
-  //     const balanceUSD = Number(position?.balancePosition?.usd || '0');
-  //     const apy = Number(position?.apyPosition?.value || '0');
-  //     return sum + balanceUSD * apy;
-  //   }, 0);
-
-  //   const debtAPY = totalDebtUSD > 0 ? weightedSupplyAPY / totalDebtUSD : 0;
-
-  //   return { debtAPY, totalDebtUSD };
-  // }, [borrowedPositions]);
   const disableEModeSwitch = useMemo(() => {
     if (!userState?.eModeEnabled) {
       return 0;

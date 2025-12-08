@@ -61,6 +61,7 @@ export type ReserveWithId = Reserve & {
   underlyingBalance?: string;
   usageAsCollateralEnabledOnUser?: boolean;
   isCollateralPosition?: boolean;
+  canBeEnabledAsCollateral?: boolean;
   apyPosition?: PercentValue;
   balancePosition?: TokenAmount;
 };

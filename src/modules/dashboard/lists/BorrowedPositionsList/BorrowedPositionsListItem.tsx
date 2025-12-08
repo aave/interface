@@ -1,4 +1,4 @@
-import { ProtocolAction } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
@@ -46,8 +46,10 @@ export const BorrowedPositionsListItem = ({
   const reserveItemLegacy = reservesLegacy.find(
     (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
   );
-  const legacyAsset =
-    reserveItemLegacy?.underlyingAsset?.toLowerCase() || item.underlyingAsset?.toLowerCase();
+  const legacyAsset = reserve.acceptsNative
+    ? API_ETH_MOCK_ADDRESS.toLowerCase()
+    : reserveItemLegacy?.underlyingAsset.toLowerCase() ||
+      reserve.underlyingToken.address.toLowerCase();
   const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
 
   const disableBorrow =
@@ -83,12 +85,7 @@ export const BorrowedPositionsListItem = ({
       openDebtSwitch(legacyAsset ?? item.reserve.underlyingToken.address);
     },
     onOpenBorrow: () => {
-      openBorrow(
-        legacyAsset ?? item.reserve.underlyingToken.address.toLowerCase(),
-        currentMarket,
-        legacyName,
-        'dashboard'
-      );
+      openBorrow(legacyAsset, currentMarket, legacyName, 'dashboard');
     },
     onOpenRepay: () => {
       openRepay(

@@ -105,7 +105,7 @@ export const SupplyAssetsList = () => {
       const walletBalanceUSD = reserve.userState?.balance.usd;
       const availableToDeposit = reserve.userState?.suppliable.amount.value;
       const availableToDepositUSD = reserve.userState?.suppliable.usd;
-      const usageAsCollateralEnabledOnUser = reserve.userState?.canBeCollateral ?? false;
+      const usageAsCollateralEnabledOnUser = reserve.supplyInfo.canBeCollateral ?? false;
 
       if (reserve.acceptsNative !== null) {
         const baseAvailableToDeposit =

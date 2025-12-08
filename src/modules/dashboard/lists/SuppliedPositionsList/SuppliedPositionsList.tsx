@@ -142,8 +142,8 @@ export const SuppliedPositionsList = () => {
           ...reserve,
           supplyAPY: Number(position.apy.value),
           underlyingBalance: position.balance.usd,
-          usageAsCollateralEnabledOnUser: position.canBeCollateral,
-          isCollateralPosition: position.isCollateral,
+          usageAsCollateralEnabledOnUser: position.isCollateral,
+          canBeEnabledAsCollateral: position.canBeCollateral,
           apyPosition: position.apy,
           balancePosition: position.balance,
         };
@@ -162,7 +162,7 @@ export const SuppliedPositionsList = () => {
               iconSymbol: nativeData.iconSymbol,
               name: nativeData.name,
               underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-              detailsAddress: position.currency.address, // Dirección real para funcionalidad
+              detailsAddress: position.currency.address,
               id: reserve.id + '_native',
               reserve: updatedReserve,
             },

@@ -20,6 +20,7 @@ import { ListValueRow } from '../ListValueRow';
 export const SuppliedPositionsListMobileItem = ({
   reserve,
   usageAsCollateralEnabledOnUser,
+  canBeEnabledAsCollateral,
   symbol,
   name,
   iconSymbol,
@@ -56,7 +57,6 @@ export const SuppliedPositionsListMobileItem = ({
       : reserve.underlyingToken.symbol;
 
   const supplyProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'supply');
-  const canBeEnabledAsCollateral = reserve.usageAsCollateralEnabledOnUser;
   const disableSwap = isPaused || reserve.underlyingToken.symbol == 'stETH';
   const disableWithdraw = isPaused;
   const disableSupply = isFrozen || isPaused;
@@ -110,8 +110,8 @@ export const SuppliedPositionsListMobileItem = ({
         <ListItemUsedAsCollateral
           disabled={isPaused}
           isIsolated={reserve.userState!.isInIsolationMode}
-          usageAsCollateralEnabledOnUser={reserve.isCollateralPosition!}
-          canBeEnabledAsCollateral={canBeEnabledAsCollateral!}
+          usageAsCollateralEnabledOnUser={!!usageAsCollateralEnabledOnUser}
+          canBeEnabledAsCollateral={!!canBeEnabledAsCollateral}
           onToggleSwitch={() =>
             openCollateralChange(
               legacyAsset,

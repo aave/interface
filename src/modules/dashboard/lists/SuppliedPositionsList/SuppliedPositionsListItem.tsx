@@ -22,6 +22,7 @@ import { ListValueColumn } from '../ListValueColumn';
 export const SuppliedPositionsListItem = ({
   reserve,
   usageAsCollateralEnabledOnUser,
+  canBeEnabledAsCollateral,
   symbol,
   name,
   iconSymbol,
@@ -44,8 +45,6 @@ export const SuppliedPositionsListItem = ({
   const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
 
   const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
-
-  const canBeEnabledAsCollateral = reserve.usageAsCollateralEnabledOnUser;
 
   const disableSwap = isPaused || reserve.underlyingToken.symbol == 'stETH';
   const disableWithdraw = isPaused;
@@ -103,8 +102,8 @@ export const SuppliedPositionsListItem = ({
         <ListItemUsedAsCollateral
           disabled={reserve.isPaused}
           isIsolated={reserve.userState!.isInIsolationMode}
-          usageAsCollateralEnabledOnUser={reserve.isCollateralPosition!}
-          canBeEnabledAsCollateral={canBeEnabledAsCollateral!}
+          usageAsCollateralEnabledOnUser={!!usageAsCollateralEnabledOnUser}
+          canBeEnabledAsCollateral={!!canBeEnabledAsCollateral}
           onToggleSwitch={() => {
             openCollateralChange(
               legacyAsset,
