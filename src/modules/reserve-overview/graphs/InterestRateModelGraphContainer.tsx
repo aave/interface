@@ -1,6 +1,9 @@
 import { Box } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
-import type { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  type ReserveWithId,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { GraphLegend } from './GraphLegend';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
@@ -17,6 +20,12 @@ export type Fields = { name: Field; color: string; text: string }[];
 export const InterestRateModelGraphContainer = ({
   reserve,
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
+  const { reserves: reservesLegacy } = useAppDataContext();
+
+  const reserveData = reservesLegacy.find(
+    (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
+  );
+
   const CHART_HEIGHT = 155;
   const fields: Fields = [
     { name: 'variableBorrowRate', text: 'Borrow APR, variable', color: '#B6509E' },
@@ -41,7 +50,7 @@ export const InterestRateModelGraphContainer = ({
             height={CHART_HEIGHT}
             fields={fields}
             reserve={{
-              baseVariableBorrowRate: String(reserve.borrowInfo?.reserveFactor.raw),
+              baseVariableBorrowRate: String(reserveData?.baseVariableBorrowRate),
               optimalUsageRatio: String(reserve.borrowInfo?.optimalUsageRate.raw),
               utilizationRate: String(reserve.borrowInfo?.utilizationRate.value),
               variableRateSlope1: String(reserve.borrowInfo?.variableRateSlope1.raw),
