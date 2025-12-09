@@ -196,6 +196,7 @@ msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 #: src/components/transactions/Swap/warnings/postInputs/USDTResetWarning.tsx
 #: src/components/transactions/Warnings/USDTResetWarning.tsx
 msgid "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
@@ -261,6 +262,7 @@ msgstr "Please enter a valid wallet address."
 
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
@@ -300,6 +302,7 @@ msgstr "Total supplied"
 
 #: src/components/transactions/Swap/details/WithdrawAndSwapDetails.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Remaining supply"
 msgstr "Remaining supply"
@@ -329,6 +332,7 @@ msgid "Max LTV"
 msgstr "Max LTV"
 
 #: src/components/transactions/Repay/RepayModal.tsx
+#: src/components/transactions/Repay/RepayModalSDK.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -484,6 +488,7 @@ msgid "Signing"
 msgstr "Signing"
 
 #: src/components/transactions/Repay/RepayActions.tsx
+#: src/components/transactions/Repay/RepayActionsSDK.tsx
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
 
@@ -515,6 +520,7 @@ msgid "Copy error message"
 msgstr "Copy error message"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 msgid "repaid"
 msgstr "repaid"
 
@@ -621,6 +627,7 @@ msgstr "Loading data..."
 
 #: src/components/transactions/SavingsGho/SavingsGhoWithdrawModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 msgid "withdrew"
 msgstr "withdrew"
 
@@ -1344,6 +1351,7 @@ msgid "Get GHO"
 msgstr "Get GHO"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
@@ -1669,6 +1677,7 @@ msgstr "Protocol APY"
 
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
+#: src/components/transactions/Withdraw/WithdrawModalSDK.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -2022,6 +2031,7 @@ msgid "Stake cooldown activated"
 msgstr "Stake cooldown activated"
 
 #: src/components/transactions/Withdraw/WithdrawError.tsx
+#: src/components/transactions/Withdraw/WithdrawErrorSDK.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
 
@@ -2454,6 +2464,7 @@ msgid "Aave aToken"
 msgstr "Aave aToken"
 
 #: src/components/transactions/Withdraw/WithdrawError.tsx
+#: src/components/transactions/Withdraw/WithdrawErrorSDK.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
 msgstr "You can not withdraw this amount because it will cause collateral call"
 
@@ -2495,6 +2506,7 @@ msgid "Vote YAE"
 msgstr "Vote YAE"
 
 #: src/components/transactions/Repay/RepayActions.tsx
+#: src/components/transactions/Repay/RepayActionsSDK.tsx
 msgid "Repaying {symbol}"
 msgstr "Repaying {symbol}"
 
@@ -2509,6 +2521,7 @@ msgstr "Forum discussion"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Borrow/BorrowModalContentSDK.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
 msgstr "Available"
@@ -2546,6 +2559,7 @@ msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 
@@ -2690,6 +2704,8 @@ msgid "Balance"
 msgstr "Balance"
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
+#: src/components/transactions/Withdraw/WithdrawActionsSDK.tsx
+#: src/components/transactions/Withdraw/WithdrawActionsSDK.tsx
 msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
 
@@ -3233,6 +3249,7 @@ msgstr "Can be executed"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawError.tsx
+#: src/components/transactions/Withdraw/WithdrawErrorSDK.tsx
 msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 
@@ -3259,6 +3276,7 @@ msgid "Something went wrong"
 msgstr "Something went wrong"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 
@@ -4081,11 +4099,13 @@ msgid "Filled"
 msgstr "Filled"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 msgid "Remaining debt"
 msgstr "Remaining debt"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx

@@ -463,6 +463,7 @@ export const SupplyWrappedTokenModalContentSDK = ({
   const isMaxSelected =
     amount === (supplyingWrappedToken ? maxAmountOfTokenInToSupply : maxAmountToSupplyTokenOut);
 
+  // health factor calculations
   useEffect(() => {
     const timer = setTimeout(async () => {
       if (!amount || amount === '0' || !currentAccount) {

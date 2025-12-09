@@ -1,5 +1,9 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { MarketUserState } from '@aave/graphql/import';
+import {
+  MarketUserReserveBorrowPosition,
+  MarketUserReserveSupplyPosition,
+  MarketUserState,
+} from '@aave/graphql/import';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
 import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -21,6 +25,8 @@ export interface ModalWrapperSDKProps {
   poolReserve: ReserveWithId;
   reserveUserState?: ReserveWithId['userState'];
   marketUserState?: MarketUserState | null;
+  userSupplies?: MarketUserReserveSupplyPosition[];
+  userBorrows?: MarketUserReserveBorrowPosition[];
   symbol: string;
   tokenBalance: string;
   nativeBalance: string;
@@ -49,7 +55,13 @@ export const ModalWrapperSDK: React.FC<{
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { walletBalances } = useWalletBalances(currentMarketData);
-  const { supplyReserves, borrowReserves, market: sdkMarket } = useAppDataContext();
+  const {
+    supplyReserves,
+    borrowReserves,
+    market: sdkMarket,
+    userSupplies,
+    userBorrows,
+  } = useAppDataContext();
   const { txError, mainTxState } = useModalContext();
 
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
@@ -57,6 +69,8 @@ export const ModalWrapperSDK: React.FC<{
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
+  if (!underlyingAsset) return null;
+
   const addr = underlyingAsset.toLowerCase();
   const poolReserveSDK =
     supplyReserves.find((reserve) =>
@@ -112,6 +126,8 @@ export const ModalWrapperSDK: React.FC<{
         underlyingAsset,
         reserveUserState: reserveUserState,
         marketUserState: marketUserState,
+        userSupplies: userSupplies,
+        userBorrows: userBorrows,
       })}
     </AssetCapsProviderSDK>
   );

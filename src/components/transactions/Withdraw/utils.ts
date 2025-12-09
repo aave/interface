@@ -1,9 +1,11 @@
+import { MarketUserState } from '@aave/client';
 import { valueToBigNumber } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
   ExtendedFormattedUser,
+  ReserveWithId,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const calculateMaxWithdrawAmount = (
@@ -36,6 +38,43 @@ export const calculateMaxWithdrawAmount = (
       maxAmountToWithdraw,
       maxCollateralToWithdrawInETH.dividedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     );
+  }
+
+  return maxAmountToWithdraw;
+};
+
+export const calculateMaxWithdrawAmountSDK = (
+  marketUserState: MarketUserState | null | undefined,
+  reserveUserState: ReserveWithId['userState'] | undefined,
+  poolReserve: ReserveWithId,
+  underlyingBalance: BigNumber
+) => {
+  const unborrowedLiquidity = valueToBigNumber(
+    poolReserve.borrowInfo?.availableLiquidity.amount.value ?? '0'
+  );
+  let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
+
+  if (!marketUserState) return maxAmountToWithdraw;
+
+  const userEMode = poolReserve.eModeInfo.find(
+    (elem) => elem.categoryId === reserveUserState?.emode?.categoryId
+  );
+  const reserveLt =
+    (reserveUserState?.emode && userEMode
+      ? userEMode.liquidationThreshold.value
+      : poolReserve.supplyInfo.liquidationThreshold.value) ?? '0';
+
+  const totalDebtBase = valueToBigNumber(marketUserState.totalDebtBase ?? '0');
+  const totalCollateralBase = valueToBigNumber(marketUserState.totalCollateralBase ?? '0');
+  if (reserveUserState?.canBeCollateral && reserveLt !== '0' && totalDebtBase.gt('0')) {
+    const minCollateralBase = totalDebtBase.multipliedBy('1.01').div(reserveLt);
+    const maxCollateralToWithdrawInBase = totalCollateralBase.minus(minCollateralBase);
+    if (maxCollateralToWithdrawInBase.gt('0')) {
+      maxAmountToWithdraw = BigNumber.min(
+        maxAmountToWithdraw,
+        maxCollateralToWithdrawInBase.dividedBy(poolReserve.usdExchangeRate)
+      );
+    }
   }
 
   return maxAmountToWithdraw;

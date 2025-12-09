@@ -1,4 +1,11 @@
-import type { EmodeMarketCategory, Market, MarketUserState, Reserve } from '@aave/graphql';
+import type {
+  EmodeMarketCategory,
+  Market,
+  MarketUserReserveBorrowPosition,
+  MarketUserReserveSupplyPosition,
+  MarketUserState,
+  Reserve,
+} from '@aave/graphql';
 import { UserReserveData } from '@aave/math-utils';
 import { client } from 'pages/_app.page';
 import React, { PropsWithChildren, useContext } from 'react';
@@ -19,6 +26,8 @@ import { usePoolReservesHumanized } from '../pool/usePoolReserves';
 import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
 import { useMarketsData } from './useMarketsData';
+import { useUserBorrows } from './useUserBorrows';
+import { useUserSupplies } from './useUserSupplies';
 
 /**
  * removes the marketPrefix from a symbol
@@ -52,6 +61,8 @@ export interface AppDataContextType {
   supplyReserves: ReserveWithId[];
   borrowReserves: ReserveWithId[];
   eModeCategories: EmodeMarketCategory[];
+  userSupplies?: MarketUserReserveSupplyPosition[];
+  userBorrows?: MarketUserReserveBorrowPosition[];
   userState?: MarketUserState;
   /** Legacy fields (deprecated) kept temporarily for incremental migration */
   reserves: ComputedReserveData[];
@@ -74,6 +85,16 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const currentMarketData = useRootStore((state) => state.currentMarketData);
 
   const { data, isPending } = useMarketsData({
+    client,
+    marketData: currentMarketData,
+    account: currentAccount,
+  });
+  const { data: userSuppliesData, isPending: userSuppliesLoading } = useUserSupplies({
+    client,
+    marketData: currentMarketData,
+    account: currentAccount,
+  });
+  const { data: userBorrowsData, isPending: userBorrowsLoading } = useUserBorrows({
     client,
     marketData: currentMarketData,
     account: currentAccount,
@@ -120,7 +141,12 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const isReservesLoading = reservesDataLoading || formattedPoolReservesLoading;
   const isUserDataLoading = userReservesDataLoading || userSummaryLoading;
 
-  const loading = isPending || isReservesLoading || (!!currentAccount && isUserDataLoading);
+  const loading =
+    isPending ||
+    isReservesLoading ||
+    userSuppliesLoading ||
+    userBorrowsLoading ||
+    (!!currentAccount && isUserDataLoading);
 
   return (
     <AppDataContext.Provider
@@ -129,6 +155,8 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
         market: sdkMarket,
         totalBorrows,
         supplyReserves,
+        userSupplies: userSuppliesData,
+        userBorrows: userBorrowsData,
         borrowReserves,
         eModeCategories,
         userState: marketUserState,
