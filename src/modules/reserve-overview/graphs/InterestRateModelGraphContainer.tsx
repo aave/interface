@@ -21,6 +21,7 @@ export const InterestRateModelGraphContainer = ({
   reserve,
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
   const { reserves: reservesLegacy } = useAppDataContext();
+
   const reserveData = reservesLegacy.find(
     (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
   );
