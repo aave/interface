@@ -9,25 +9,32 @@ import { useRootStore } from 'src/store/root';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { useShallow } from 'zustand/shallow';
 
+import { isHorizonMarket } from '../../constants/shared.constants';
 import { invalidateAppStateForSwap } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType, TokenType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 import { getDefaultOutputToken, getFilteredTokensForSwitch } from './SwapModalContent';
 
 export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
-  const { account, chainIdInApp: chainId } = useRootStore(
+  const {
+    account,
+    chainIdInApp: chainId,
+    currentMarket,
+  } = useRootStore(
     useShallow((store) => ({
       account: store.account,
       chainIdInApp: store.currentChainId,
+      currentMarket: store.currentMarket,
     }))
   );
 
   const queryClient = useQueryClient();
   const { user } = useAppDataContext();
+  const isHorizon = isHorizonMarket(currentMarket);
 
   const initialDefaultTokens = useMemo(() => getFilteredTokensForSwitch(chainId), [chainId]);
 
-  const tokensFrom = getTokensFrom(user, initialDefaultTokens, chainId);
+  const tokensFrom = getTokensFrom(user, initialDefaultTokens, chainId, isHorizon);
 
   const reserves = useAppDataContext().reserves;
   const { data: initialTokens, isFetching: tokensLoading } = useTokensBalance(
@@ -41,6 +48,7 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
       const reserve = reserves.find(
         (reserve) => reserve.underlyingAsset.toLowerCase() === token.address.toLowerCase()
       );
+      if (isHorizon && !reserve?.borrowingEnabled) return undefined;
       return {
         addressToSwap: token.address,
         addressForUsdPrice: token.address,
@@ -57,6 +65,7 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
         tokenType: token.extensions?.isNative ? TokenType.NATIVE : TokenType.ERC20,
       };
     })
+    .filter((token) => token != undefined)
     .filter((token) => token.balance !== '0')
     .sort((a, b) => Number(b.balance) - Number(a.balance));
 
@@ -117,11 +126,14 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
 const getTokensFrom = (
   user: ExtendedFormattedUser | undefined,
   baseTokensInfo: TokenInfo[],
-  chainId: number
+  chainId: number,
+  isHorizon: boolean
 ): SwappableToken[] => {
   // Tokens From should be the supplied tokens
   const suppliedPositions =
-    user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0') || [];
+    user?.userReservesData
+      .filter((userReserve) => userReserve.underlyingBalance !== '0')
+      .filter((userReserve) => !isHorizon || userReserve.reserve.borrowingEnabled) || [];
 
   return suppliedPositions
     .map<SwappableToken | undefined>((position) => {

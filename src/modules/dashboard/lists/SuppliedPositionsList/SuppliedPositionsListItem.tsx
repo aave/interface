@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
+import { isHorizonMarket } from 'src/components/transactions/Swap/constants/shared.constants';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -33,7 +34,10 @@ export const SuppliedPositionsListItem = ({
     useShallow((store) => [store.trackEvent, store.currentMarketData, store.currentMarket])
   );
 
-  const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  const isHorizon = isHorizonMarket(currentMarket);
+  const collateralSwapEnabledForReserve = !isHorizon || reserve.borrowingEnabled;
+  const showSwitchButton =
+    isFeatureEnabled.liquiditySwap(currentMarketData) && collateralSwapEnabledForReserve;
 
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&

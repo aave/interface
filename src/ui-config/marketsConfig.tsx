@@ -579,6 +579,12 @@ export const marketsData: {
     chainId: ChainId.mainnet,
     v3: true,
     logo: '/icons/markets/horizon.svg',
+    enabledFeatures: {
+      liquiditySwap: true,
+      withdrawAndSwitch: true,
+      collateralRepay: true,
+      debtSwitch: true,
+    },
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: '0x5D39E06b825C1F2B80bf2756a73e28eFAA128ba0',
       LENDING_POOL: '0xAe05Cd22df81871bc7cC2a04BeCfb516bFe332C8',

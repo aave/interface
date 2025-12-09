@@ -1,3 +1,5 @@
+import { CustomMarket } from 'src/ui-config/marketsConfig';
+
 import { SwapType } from '../types';
 
 export const SAFETY_MODULE_TOKENS = [
@@ -23,3 +25,8 @@ export const APP_CODE_PER_SWAP_TYPE: Record<SwapType, string> = {
 };
 
 export const APP_CODE_VALUES = Object.values(APP_CODE_PER_SWAP_TYPE);
+
+export const isHorizonMarket = (currentMarket: string) =>
+  currentMarket === CustomMarket.proto_horizon_v3 ||
+  currentMarket === CustomMarket.proto_sepolia_horizon_v3 ||
+  currentMarket === ('fork_proto_horizon_v3' as CustomMarket);
