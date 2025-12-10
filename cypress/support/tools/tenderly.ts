@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { JsonRpcProvider } from '@ethersproject/providers';
-import axios from 'axios';
 import { Contract, getDefaultProvider, utils, Wallet } from 'ethers';
 
 import ERC20_ABI from '../../fixtures/erc20_abi.json';
@@ -16,12 +15,20 @@ export const DEFAULT_TEST_ACCOUNT = {
   address: WALLET.address.toLowerCase(),
 };
 
-const tenderly = axios.create({
-  baseURL: 'https://api.tenderly.co/api/v1/',
-  headers: {
-    'X-Access-Key': TENDERLY_KEY,
-  },
-});
+const tenderlyFetch = async (endpoint: string, options: RequestInit = {}) => {
+  const response = await fetch(`https://api.tenderly.co/api/v1/${endpoint}`, {
+    ...options,
+    headers: {
+      'X-Access-Key': TENDERLY_KEY,
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`Tenderly API error: ${response.status} ${response.statusText}`);
+  }
+  return response.json();
+};
 
 export class TenderlyVnet {
   public _vnetNetworkID: number;
@@ -42,20 +49,23 @@ export class TenderlyVnet {
   }
 
   async init() {
-    const response = await tenderly.post(
+    const response = await tenderlyFetch(
       `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets`,
       {
-        fork_config: {
-          network_id: this._vnetNetworkID,
-          block_number: 'latest',
-        },
-        virtual_network_config: {
-          chain_config: { chain_id: this._chainID },
-        },
+        method: 'POST',
+        body: JSON.stringify({
+          fork_config: {
+            network_id: this._vnetNetworkID,
+            block_number: 'latest',
+          },
+          virtual_network_config: {
+            chain_config: { chain_id: this._chainID },
+          },
+        }),
       }
     );
-    this.vnet_id = response.data.id;
-    this._vnet_admin_rpc = response.data.rpcs.find(
+    this.vnet_id = response.id;
+    this._vnet_admin_rpc = response.rpcs.find(
       (rpc: { name: string }) => rpc.name === 'Admin RPC'
     )?.url;
   }
@@ -67,17 +77,20 @@ export class TenderlyVnet {
 
   async add_balance_rpc(address: string) {
     this.checkVnetInitialized();
-    return axios({
-      url: this.get_rpc_url(),
-      method: 'post',
+    const response = await fetch(this.get_rpc_url(), {
+      method: 'POST',
       headers: { 'content-type': 'text/plain' },
-      data: JSON.stringify({
+      body: JSON.stringify({
         jsonrpc: '2.0',
         method: 'tenderly_setBalance',
         params: [address, '0x21e19e0c9bab2400000'],
         id: '1234',
       }),
     });
+    if (!response.ok) {
+      throw new Error(`RPC error: ${response.status} ${response.statusText}`);
+    }
+    return response.json();
   }
 
   async unpauseMarket(): Promise<void> {
@@ -122,15 +135,20 @@ export class TenderlyVnet {
   }
 
   async getTopHolder(token: string) {
-    const res = (
-      await axios.get(`https://api.ethplorer.io/getTopTokenHolders/${token}?apiKey=freekey`)
-    ).data.holders[0].address;
-    return res;
+    const response = await fetch(
+      `https://api.ethplorer.io/getTopTokenHolders/${token}?apiKey=freekey`
+    );
+    if (!response.ok) {
+      throw new Error(`Ethplorer API error: ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data.holders[0].address;
   }
 
   async deleteVnet() {
-    await tenderly.delete(
-      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets/${this.vnet_id}`
+    await tenderlyFetch(
+      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets/${this.vnet_id}`,
+      { method: 'DELETE' }
     );
   }
 }
