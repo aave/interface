@@ -4,17 +4,11 @@ import assets from '../../../../fixtures/assets.json';
 import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyOptimismFork } from '../../../../support/steps/configuration.steps';
-import {
-  borrow,
-  changeBorrowType,
-  repay,
-  supply,
-  withdraw,
-} from '../../../../support/steps/main.steps';
+import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 
 const tokensToRequest: RequestedTokens = {
-  aETHOptimismV3: 9000,
+  aETHOptimismV3: 1,
 };
 
 const testData = {
@@ -26,50 +20,23 @@ const testData = {
         apyType: constants.borrowAPYType.variable,
         hasApproval: true,
       },
-      {
-        asset: assets.optimismMarket.USDC,
-        amount: 25,
-        apyType: constants.borrowAPYType.stable,
-        hasApproval: true,
-      },
-    ],
-    changeBorrowType: [
-      {
-        asset: assets.optimismMarket.USDC,
-        apyType: constants.borrowAPYType.stable,
-        newAPY: constants.borrowAPYType.variable,
-        hasApproval: true,
-      },
-      {
-        asset: assets.optimismMarket.USDC,
-        apyType: constants.borrowAPYType.variable,
-        newAPY: constants.borrowAPYType.stable,
-        hasApproval: true,
-      },
     ],
     deposit: {
       asset: assets.optimismMarket.USDC,
       amount: 10.1,
       hasApproval: false,
     },
-    repayCollateral: {
-      asset: assets.optimismMarket.USDC,
-      apyType: constants.apyType.stable,
-      amount: 2,
-      hasApproval: false,
-      repayOption: constants.repayType.collateral,
-    },
     repay: [
       {
         asset: assets.optimismMarket.USDC,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         amount: 2,
         hasApproval: true,
         repayOption: constants.repayType.wallet,
       },
       {
         asset: assets.optimismMarket.USDC,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         repayableAsset: assets.optimismMarket.aUSDC,
         amount: 2,
         hasApproval: true,
@@ -95,8 +62,8 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.optimismMarket.USDC.shortName,
-        amount: 44.0,
-        apyType: constants.borrowAPYType.stable,
+        amount: 21.0,
+        apyType: constants.borrowAPYType.variable,
       },
     ],
   },
@@ -110,10 +77,6 @@ describe('USDC INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
   });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
-  });
-  repay(testData.testCases.repayCollateral, skipTestState, false);
-  testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
-    changeBorrowType(changeAPRCase, skipTestState, true);
   });
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {

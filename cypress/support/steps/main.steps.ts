@@ -119,20 +119,6 @@ export const borrow = (
         .click();
       cy.get(`[data-cy=Modal] h2:contains("Borrow ${_shortName}")`).should('be.visible');
     });
-    it(`Choose ${apyType} borrow option`, () => {
-      switch (apyType) {
-        case constants.borrowAPYType.variable:
-          cy.get('[data-cy=Modal] [role=group] button p')
-            .contains('Variable')
-            .click({ force: true });
-          break;
-        case constants.borrowAPYType.stable:
-          cy.get('[data-cy=Modal] [role=group] button p').contains('Stable').click({ force: true });
-          break;
-        default:
-          break;
-      }
-    });
     it(`Borrow ${isMaxAmount ? 'MAX' : amount} amount for ${_shortName}`, () => {
       cy.setAmount(amount, isMaxAmount);
     });
@@ -396,7 +382,7 @@ export const withdrawAndSwitch = (
       cy.get(`[data-cy=Modal] h2:contains("Withdraw ${_shortNameFrom}")`).should('be.visible');
 
       cy.get('[data-cy=Modal] button')
-        .contains('Withdraw & Switch')
+        .contains('Withdraw & Swap')
         .click({ force: true })
         .should('not.be.disabled');
     });

@@ -93,23 +93,6 @@ export class TenderlyVnet {
     return response.json();
   }
 
-  async unpauseMarket(): Promise<void> {
-    const _url = this.get_rpc_url();
-    const provider = new JsonRpcProvider(_url);
-    const emergencyAdmin = '0x4365F8e70CF38C6cA67DE41448508F2da8825500';
-    const signer = await provider.getSigner(emergencyAdmin);
-    // constant addresses:
-
-    const poolConfigurator = new Contract(
-      '0x8145eddDf43f50276641b55bd3AD95944510021E',
-      POOL_CONFIG_ABI,
-      signer
-    );
-
-    await poolConfigurator.setPoolPause(false, { from: signer._address, gasLimit: '4000000' });
-    return;
-  }
-
   async getERC20Token(
     walletAddress: string,
     tokenAddress: string,

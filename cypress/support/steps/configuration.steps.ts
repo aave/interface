@@ -12,7 +12,6 @@ export const configEnvWithTenderly = ({
   chainId,
   market,
   tokens,
-  unpause,
   wallet,
   enableTestnet = false,
   urlSuffix = '',
@@ -20,7 +19,6 @@ export const configEnvWithTenderly = ({
   chainId: number;
   market: string;
   tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
-  unpause?: boolean;
   wallet?: { address: string; privateKey: string };
   enableTestnet?: boolean;
   urlSuffix?: string;
@@ -35,9 +33,6 @@ export const configEnvWithTenderly = ({
     await tenderly.init();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await tenderly.add_balance_rpc(walletAddress);
-    if (unpause) {
-      await tenderly.unpauseMarket();
-    }
 
     if (tokens) {
       await Promise.all(
@@ -115,7 +110,7 @@ const createConfigWithTenderlyFork =
     wallet?: { address: string; privateKey: string };
     urlSuffix?: string;
   }) =>
-    configEnvWithTenderly({ chainId, market, tokens, unpause: v3, wallet, urlSuffix });
+    configEnvWithTenderly({ chainId, market, tokens, wallet, urlSuffix });
 
 export const configEnvWithTenderlyMainnetFork = createConfigWithTenderlyFork(
   ChainId.mainnet,
