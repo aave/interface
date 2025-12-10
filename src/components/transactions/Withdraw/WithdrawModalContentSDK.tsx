@@ -65,7 +65,8 @@ export const WithdrawModalContentSDK = ({
   const isMaxSelected = _amount === '-1';
 
   const userSuppliedPosition = userSupplies?.find(
-    (supply) => supply.currency.address === poolReserve.underlyingToken.address
+    (supply) =>
+      supply.currency.address.toLowerCase() === poolReserve.underlyingToken.address.toLowerCase()
   );
 
   const underlyingBalance = valueToBigNumber(userSuppliedPosition?.balance.amount.value ?? '0');
@@ -80,8 +81,8 @@ export const WithdrawModalContentSDK = ({
     underlyingBalance
   );
 
-  const withdrawAmount = isMaxSelected ? maxAmountToWithdraw.toString(10) : _amount;
-  const normalizedWithdrawAmount = valueToBigNumber(withdrawAmount || '0').toString(10);
+  const withdrawAmount = isMaxSelected ? maxAmountToWithdraw.toFixed() : _amount;
+  const normalizedWithdrawAmount = valueToBigNumber(withdrawAmount || '0').toFixed();
 
   const requestAmount: WithdrawRequest['amount'] =
     withdrawUnWrapped && poolReserve.acceptsNative

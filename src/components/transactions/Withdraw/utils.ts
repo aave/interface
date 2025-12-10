@@ -50,7 +50,9 @@ export const calculateMaxWithdrawAmountSDK = (
   underlyingBalance: BigNumber
 ) => {
   const unborrowedLiquidity = valueToBigNumber(
-    poolReserve.borrowInfo?.availableLiquidity.amount.value ?? '0'
+    poolReserve.borrowInfo?.availableLiquidity.amount.value ??
+      poolReserve.supplyInfo.total.value ??
+      '0'
   );
   let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
 

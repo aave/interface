@@ -142,6 +142,5 @@ export const getAssetCollateralTypeSdk = ({
       collateralType = userCollateralEnabled ? CollateralType.ENABLED : CollateralType.DISABLED;
     }
   }
-  console.log('collateralType', collateralType);
   return collateralType;
 };

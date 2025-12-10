@@ -68,6 +68,7 @@ export const RepayModalContentSDK = ({
   const [hfPreviewAfter, setHfPreviewAfter] = useState<string | undefined>();
   const { currentAccount } = useWeb3Context();
   const networkConfig = getNetworkConfig(currentChainId);
+  const HF_INFINITY_THRESHOLD = 1_000_000;
 
   const userBorrowedPosition = userBorrows?.find(
     (borrow) => borrow.currency.address === poolReserve.underlyingToken.address
@@ -92,7 +93,6 @@ export const RepayModalContentSDK = ({
     maxAmountToRepay = BigNumber.min(underlyingBalanceAtokens, debt);
     balance = underlyingBalanceAtokens;
   } else {
-    //! mira que quizas hay que quirtar el minRemainingBaseTokenBalance, ya que ya se calcula en e SDK
     const normalizedWalletBalance = valueToBigNumber(tokenToRepayWith.balance).minus(
       poolReserve.underlyingToken.symbol === networkConfig.baseAssetSymbol
         ? minRemainingBaseTokenBalance
@@ -167,8 +167,6 @@ export const RepayModalContentSDK = ({
       currentMarketData.v3 &&
       !displayGhoForMintableMarket({ symbol: poolReserve.underlyingToken.symbol, currentMarket })
     ) {
-      //! mirar aqui , quizas bug
-      // const aTokenBalance = valueToBigNumber(userSuppliedPosition?.balance.amount.value || '0');
       const maxBalance = BigNumber.max(
         underlyingBalanceAtokens,
         BigNumber.min(underlyingBalanceAtokens, debt).toString(10)
@@ -198,10 +196,9 @@ export const RepayModalContentSDK = ({
   // health factor preview via SDK
   useEffect(() => {
     const timer = setTimeout(async () => {
-      const amountForPreview = isMaxSelected ? repayMax : amount;
-      const normalized = valueToBigNumber(amountForPreview || '0');
+      const normalized = valueToBigNumber(amount || '0');
 
-      if (!amountForPreview || normalized.isZero()) {
+      if (!amount || normalized.isZero()) {
         setHfPreviewAfter(undefined);
         return;
       }
@@ -229,7 +226,6 @@ export const RepayModalContentSDK = ({
         });
 
         if (result.isOk()) {
-          console.log('HF PREVIEW REPAY SDK', result.value);
           setHfPreviewAfter(result.value.after?.toString());
         } else {
           setHfPreviewAfter(undefined);
@@ -250,6 +246,15 @@ export const RepayModalContentSDK = ({
     tokenToRepayWith.address,
     currentAccount,
   ]);
+
+  // calculating Healthfactor for display
+  const hfRaw =
+    hfPreviewAfter !== undefined && !Number.isNaN(Number(hfPreviewAfter))
+      ? Number(hfPreviewAfter)
+      : undefined;
+
+  const futureHfForDisplay =
+    hfRaw !== undefined && hfRaw > HF_INFINITY_THRESHOLD ? '-1' : hfPreviewAfter;
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.usdExchangeRate ?? '0');
@@ -303,7 +308,7 @@ export const RepayModalContentSDK = ({
         <DetailsHFLine
           visibleHfChange={!!_amount}
           healthFactor={marketUserState?.healthFactor || '0'}
-          futureHealthFactor={hfPreviewAfter}
+          futureHealthFactor={futureHfForDisplay}
         />
       </TxModalDetails>
 
@@ -324,9 +329,7 @@ export const RepayModalContentSDK = ({
         maxApproveNeeded={safeAmountToRepayAll.toString()}
         poolReserve={poolReserve}
         amountToRepay={isMaxSelected ? repayMax : amount}
-        poolAddress={
-          repayWithATokens ? poolReserve.underlyingToken.address : tokenToRepayWith.address ?? ''
-        }
+        poolAddress={repayWithATokens ? poolReserve.aToken.address : tokenToRepayWith.address ?? ''}
         isWrongNetwork={isWrongNetwork}
         symbol={modalSymbol}
         repayWithATokens={repayWithATokens}

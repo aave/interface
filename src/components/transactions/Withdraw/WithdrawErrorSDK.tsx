@@ -29,7 +29,9 @@ export const useWithdrawErrorSDK = ({
 
   let blockingError: ErrorType | undefined = undefined;
   const unborrowedLiquidity = valueToBigNumber(
-    poolReserve.borrowInfo?.availableLiquidity.amount.value ?? '0'
+    poolReserve.borrowInfo?.availableLiquidity.amount.value ??
+      poolReserve.supplyInfo.total.value ?? // DecimalValue total supply
+      '0'
   );
 
   if (!withdrawTxState.success && !withdrawTxState.txHash) {
@@ -43,9 +45,7 @@ export const useWithdrawErrorSDK = ({
     } else if (
       !blockingError &&
       (unborrowedLiquidity.eq('0') ||
-        valueToBigNumber(withdrawAmount).gt(
-          poolReserve.borrowInfo?.availableLiquidity.amount.value ?? '0'
-        ))
+        valueToBigNumber(withdrawAmount).gt(unborrowedLiquidity ?? '0'))
     ) {
       blockingError = ErrorType.POOL_DOES_NOT_HAVE_ENOUGH_LIQUIDITY;
     }
