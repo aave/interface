@@ -859,14 +859,14 @@
       "wrapped": false
     },
     "USDC": {
-      "fullName": "USDC",
-      "shortName": "USDC",
+      "fullName": "USDC.e",
+      "shortName": "USDC.e",
       "collateral": true,
       "wrapped": false
     },
     "aUSDC": {
-      "fullName": "aUSDC",
-      "shortName": "aUSDC",
+      "fullName": "aUSDC.e",
+      "shortName": "aUSDC.e",
       "collateral": true,
       "wrapped": false
     },

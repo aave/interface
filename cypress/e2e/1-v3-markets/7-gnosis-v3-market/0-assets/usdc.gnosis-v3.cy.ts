@@ -8,7 +8,7 @@ import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 
 const tokensToRequest: RequestedTokens = {
-  axDAIGnosisV3: 9000,
+  axDAIGnosisV3: 1000,
 };
 
 const testData = {
