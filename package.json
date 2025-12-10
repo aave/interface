@@ -158,5 +158,8 @@
     "budget": null,
     "budgetPercentIncreaseRed": 20,
     "showDetails": true
+  },
+  "resolutions": {
+    "form-data": "^4.0.4"
   }
 }
