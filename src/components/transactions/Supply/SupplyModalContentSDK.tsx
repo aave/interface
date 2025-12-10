@@ -53,7 +53,6 @@ import { AAVEWarning } from '../Warnings/AAVEWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
 import { USDTResetWarning } from '../Warnings/USDTResetWarning';
-import { SupplyActions } from './SupplyActions';
 import { SupplyActionsSDK } from './SupplyActionsSDK';
 import { SupplyWrappedTokenActionsSDK } from './SupplyWrappedTokenActionsSDK';
 
@@ -116,7 +115,9 @@ export const SupplyModalContentWrapperSDK = (
       (r) => r.tokenOut.underlyingAsset === params.underlyingAsset
     ),
   };
-
+  // Decide which Supply Modal Content to render
+  // Wrapped-token flow (sDAI/DAI wrapper) uses a dedicated Actions component
+  // For other assets, the standard SupplyModalContentSDK is used
   return canSupplyAsWrappedToken ? (
     <SupplyWrappedTokenModalContentSDK {...props} />
   ) : (
@@ -581,7 +582,8 @@ export const SupplyWrappedTokenModalContentSDK = ({
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
-
+      {/* dedicated Actions component for wrapped token supply
+      fallback to standard SupplyActionsSDK for plain ERC20 supply */}
       {supplyingWrappedToken ? (
         <SupplyWrappedTokenActionsSDK
           tokenWrapperAddress={wrappedTokenConfig.tokenWrapperAddress}
@@ -593,7 +595,7 @@ export const SupplyWrappedTokenModalContentSDK = ({
           reserve={poolReserve}
         />
       ) : (
-        <SupplyActions
+        <SupplyActionsSDK
           isWrongNetwork={isWrongNetwork}
           amountToSupply={amount}
           poolAddress={poolReserve.underlyingToken.address}
