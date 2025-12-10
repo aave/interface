@@ -127,9 +127,11 @@ export class TenderlyVnet {
   }
 
   async deleteVnet() {
-    await tenderlyFetch(
-      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets/${this.vnet_id}`,
-      { method: 'DELETE' }
-    );
+    try {
+      await tenderlyFetch(
+        `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets/${this.vnet_id}`,
+        { method: 'DELETE' }
+      );
+    } catch (error) {}
   }
 }
