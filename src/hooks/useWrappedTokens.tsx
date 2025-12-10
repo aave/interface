@@ -35,7 +35,7 @@ const wrappedTokenConfig: {
 };
 
 export const useWrappedTokens = () => {
-  const { supplyReserves } = useAppDataContext(); //! with SDK
+  const { supplyReserves } = useAppDataContext();
   const currentMarket = useRootStore((store) => store.currentMarket);
 
   if (!supplyReserves || supplyReserves.length === 0) {
@@ -63,14 +63,14 @@ export const useWrappedTokens = () => {
         underlyingAsset: tokenInReserve.underlyingToken.address,
         decimals: tokenInReserve.underlyingToken.decimals,
         priceInUSD: tokenInReserve.usdExchangeRate ?? '0',
-        formattedPriceInMarketReferenceCurrency: tokenInReserve.usdExchangeRate ?? '0', //!EL base es USD , controlar si funciona
+        formattedPriceInMarketReferenceCurrency: tokenInReserve.usdExchangeRate ?? '0',
       },
       tokenOut: {
         symbol: tokenOutReserve.underlyingToken.symbol,
         underlyingAsset: tokenOutReserve.underlyingToken.address,
         decimals: tokenOutReserve.underlyingToken.decimals,
         priceInUSD: tokenOutReserve.usdExchangeRate ?? '0',
-        formattedPriceInMarketReferenceCurrency: tokenOutReserve.usdExchangeRate ?? '0', //!EL base es USD , controlar si funciona
+        formattedPriceInMarketReferenceCurrency: tokenOutReserve.usdExchangeRate ?? '0',
       },
       tokenWrapperAddress: config.tokenWrapperContractAddress,
     };
