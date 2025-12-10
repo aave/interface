@@ -69,8 +69,11 @@ export const calculateMaxWithdrawAmountSDK = (
   const totalDebtBase = valueToBigNumber(marketUserState.totalDebtBase ?? '0');
   const totalCollateralBase = valueToBigNumber(marketUserState.totalCollateralBase ?? '0');
   if (reserveUserState?.canBeCollateral && reserveLt !== '0' && totalDebtBase.gt('0')) {
-    const minCollateralBase = totalDebtBase.multipliedBy('1.01').div(reserveLt);
-    const maxCollateralToWithdrawInBase = totalCollateralBase.minus(minCollateralBase);
+    const currentLt = valueToBigNumber(marketUserState.currentLiquidationThreshold?.value ?? '0');
+    const ltWeightedCollateral = totalCollateralBase.multipliedBy(currentLt);
+    const maxCollateralToWithdrawInBase = ltWeightedCollateral
+      .minus(totalDebtBase.multipliedBy('1.01'))
+      .div(reserveLt);
     if (maxCollateralToWithdrawInBase.gt('0')) {
       maxAmountToWithdraw = BigNumber.min(
         maxAmountToWithdraw,
