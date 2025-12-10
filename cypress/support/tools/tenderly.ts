@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { JsonRpcProvider } from '@ethersproject/providers';
 import { Contract, getDefaultProvider, utils, Wallet } from 'ethers';
 
 import ERC20_ABI from '../../fixtures/erc20_abi.json';
-import POOL_CONFIG_ABI from '../../fixtures/poolConfig.json';
 
 const TENDERLY_KEY = Cypress.env('TENDERLY_KEY');
 const TENDERLY_ACCOUNT = Cypress.env('TENDERLY_ACCOUNT');

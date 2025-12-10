@@ -108,7 +108,7 @@ const testData = {
 //due oracle
 describe.skip('BNB INTEGRATION SPEC, BNB V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyBnbFork({ v3: true });
+  configEnvWithTenderlyBnbFork({});
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {

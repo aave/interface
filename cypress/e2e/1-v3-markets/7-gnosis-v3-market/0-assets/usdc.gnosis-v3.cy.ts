@@ -72,7 +72,6 @@ const testData = {
 describe('USDC INTEGRATION SPEC, GNOSIS V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyGnosisFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {

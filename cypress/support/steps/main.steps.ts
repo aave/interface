@@ -91,7 +91,6 @@ export const borrow = (
   {
     asset,
     amount,
-    apyType,
     hasApproval = true,
     isRisk = false,
     isMaxAmount = false,
@@ -99,7 +98,6 @@ export const borrow = (
     asset: { shortName: string; fullName: string };
     amount: number;
     hasApproval: boolean;
-    apyType?: string;
     isRisk?: boolean;
     isMaxAmount?: boolean;
   },

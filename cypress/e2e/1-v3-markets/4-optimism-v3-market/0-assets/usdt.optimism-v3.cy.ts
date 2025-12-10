@@ -4,13 +4,7 @@ import assets from '../../../../fixtures/assets.json';
 import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyOptimismFork } from '../../../../support/steps/configuration.steps';
-import {
-  borrow,
-  changeBorrowType,
-  repay,
-  supply,
-  withdraw,
-} from '../../../../support/steps/main.steps';
+import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
   switchCollateralBlocked,
@@ -85,7 +79,6 @@ const testData = {
 describe.skip('USDT INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyOptimismFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {

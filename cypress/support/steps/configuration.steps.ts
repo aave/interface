@@ -100,13 +100,11 @@ const createConfigWithTenderlyFork =
   ({
     market = defaultMarket,
     tokens,
-    v3,
     wallet,
     urlSuffix,
   }: {
     market?: string;
     tokens?: { tokenAddress: string }[];
-    v3?: boolean;
     wallet?: { address: string; privateKey: string };
     urlSuffix?: string;
   }) =>
