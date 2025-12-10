@@ -125,6 +125,18 @@ export const calculateInstanceAddress = async ({
   );
 };
 
+export const getHooksGasLimit = (
+  collateralsAmount: number
+): {
+  preHookGasLimit: bigint;
+  postHookGasLimit: bigint;
+} => {
+  return {
+    preHookGasLimit: BigInt(300000),
+    postHookGasLimit: BigInt(Math.min(600000 + collateralsAmount * 100000, 1500000)),
+  };
+};
+
 export const calculateFlashLoanAmounts = (
   state: SwapState
 ): {
