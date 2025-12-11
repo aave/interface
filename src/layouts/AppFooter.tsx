@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { GitHub, Instagram, X } from '@mui/icons-material';
+import { GitHub, Instagram, LinkedIn, X } from '@mui/icons-material';
 import { Box, styled, SvgIcon, Typography } from '@mui/material';
+import { DuneIcon, TikTok } from 'public/icons/footer/icons';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
@@ -23,14 +24,24 @@ const StyledLink = styled(Link)<StyledLinkProps>(({ theme }) => ({
 
 const FOOTER_ICONS = [
   {
-    href: 'https://hey.xyz/u/aave',
-    icon: <LensLogoIcon />,
-    title: 'Aave on Lens',
-  },
-  {
     href: 'https://twitter.com/aave',
     icon: <X />,
     title: 'Twitter',
+  },
+  {
+    href: 'https://www.instagram.com/aave/',
+    icon: <Instagram />,
+    title: 'Instagram',
+  },
+  {
+    href: 'https://www.tiktok.com/@aavelabs',
+    icon: <TikTok />,
+    title: 'TikTok',
+  },
+  {
+    href: 'https://www.linkedin.com/company/aavelabs/',
+    icon: <LinkedIn />,
+    title: 'Linkedin',
   },
   {
     href: 'https://discord.com/invite/aave',
@@ -38,14 +49,19 @@ const FOOTER_ICONS = [
     title: 'Discord',
   },
   {
+    href: 'https://dune.com/aavelabs',
+    icon: <DuneIcon />,
+    title: 'Dune',
+  },
+  {
     href: 'https://github.com/aave',
     icon: <GitHub />,
     title: 'Github',
   },
   {
-    href: 'https://www.instagram.com/aave/',
-    icon: <Instagram />,
-    title: 'Instagram',
+    href: 'https://hey.xyz/u/aave',
+    icon: <LensLogoIcon />,
+    title: 'Aave on Lens',
   },
 ];
 
