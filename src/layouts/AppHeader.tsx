@@ -28,7 +28,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { ENABLE_TESTNET, FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
+import { ENABLE_TESTNET, FORK_ENABLED, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
@@ -106,6 +106,8 @@ export function AppHeader() {
       state.currentMarketData,
     ])
   );
+
+  const showSwitchButton = isFeatureEnabled.switch(currentMarketData);
 
   const { openSwitch, openBridge, openReadMode } = useModalContext();
   const { readOnlyMode } = useWeb3Context();
@@ -312,6 +314,7 @@ export function AppHeader() {
               variant="surface"
               sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
               aria-label="Switch tool"
+              disabled={!showSwitchButton}
             >
               {!smd && (
                 <Typography component="span" typography="subheader1">
