@@ -38,7 +38,7 @@ const donors: Donors = {
   },
   aAVAXAvalancheV3: {
     name: 'aAVAX',
-    donorWalletAddress: '0xAe783a7C8C607EFe00548A0592BF9cDb50903B79',
+    donorWalletAddress: '0xaF63AE8b29B4A48E28B9892f019187d88F69923C',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
   },
   aMATICPolygonV3: {
