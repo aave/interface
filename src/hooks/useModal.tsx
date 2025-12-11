@@ -11,9 +11,13 @@ import { Proposal } from './governance/useProposals';
 
 export enum ModalType {
   Supply,
+  SupplySDK,
   Withdraw,
+  WithdrawSDK,
   Borrow,
+  BorrowSDK,
   Repay,
+  RepaySDK,
   CollateralChange,
   Stake,
   Unstake,
@@ -83,7 +87,20 @@ export interface ModalContextType<T extends ModalArgsType> {
     funnel: string,
     isReserve?: boolean
   ) => void;
+  openSupplySDK: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string,
+    isReserve?: boolean
+  ) => void;
   openWithdraw: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string
+  ) => void;
+  openWithdrawSDK: (
     underlyingAsset: string,
     currentMarket: string,
     name: string,
@@ -96,7 +113,21 @@ export interface ModalContextType<T extends ModalArgsType> {
     funnel: string,
     isReserve?: boolean
   ) => void;
+  openBorrowSDK: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string,
+    isReserve?: boolean
+  ) => void;
   openRepay: (
+    underlyingAsset: string,
+    isFrozen: boolean,
+    currentMarket: string,
+    name: string,
+    funnel: string
+  ) => void;
+  openRepaySDK: (
     underlyingAsset: string,
     isFrozen: boolean,
     currentMarket: string,
@@ -213,12 +244,46 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
             });
           }
         },
+        openSupplySDK: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
+          setType(ModalType.SupplySDK);
+          setArgs({ underlyingAsset });
+
+          if (isReserve) {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'SupplySDK',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          } else {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'SupplySDK',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          }
+        },
         openWithdraw: (underlyingAsset, currentMarket, name, funnel) => {
           setType(ModalType.Withdraw);
           setArgs({ underlyingAsset });
 
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Withdraw',
+            market: currentMarket,
+            assetName: name,
+            asset: underlyingAsset,
+            funnel: funnel,
+          });
+        },
+        openWithdrawSDK: (underlyingAsset, currentMarket, name, funnel) => {
+          setType(ModalType.WithdrawSDK);
+          setArgs({ underlyingAsset });
+
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'WithdrawSDK',
             market: currentMarket,
             assetName: name,
             asset: underlyingAsset,
@@ -246,12 +311,45 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
             });
           }
         },
+        openBorrowSDK: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
+          setType(ModalType.BorrowSDK);
+          setArgs({ underlyingAsset });
+          if (isReserve) {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'BorrowSDK',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          } else {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'BorrowSDK',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          }
+        },
         openRepay: (underlyingAsset, isFrozen, currentMarket, name, funnel) => {
           setType(ModalType.Repay);
           setArgs({ underlyingAsset, isFrozen });
 
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Repay',
+            asset: underlyingAsset,
+            assetName: name,
+            market: currentMarket,
+            funnel,
+          });
+        },
+        openRepaySDK: (underlyingAsset, isFrozen, currentMarket, name, funnel) => {
+          setType(ModalType.RepaySDK);
+          setArgs({ underlyingAsset, isFrozen });
+
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'RepaySDK',
             asset: underlyingAsset,
             assetName: name,
             market: currentMarket,
