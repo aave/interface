@@ -227,7 +227,7 @@ export const SupplyActionsSDK = React.memo(
       <TxActionsWrapper
         blocked={blocked}
         mainTxState={mainTxState}
-        approvalTxState={{}}
+        approvalTxState={approvalTxState}
         isWrongNetwork={isWrongNetwork}
         requiresAmount
         amount={amountToSupply}
