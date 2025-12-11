@@ -99,6 +99,7 @@ Cypress.Commands.add(
 );
 
 Cypress.Commands.add('getDashBoardBorrowedRow', (assetName: string) => {
+  cy.doSwitchToDashboardBorrowView();
   return cy.get(`[data-cy='dashboardBorrowedListItem_${assetName.toUpperCase()}']`).first();
 });
 
