@@ -30,15 +30,8 @@ const testData = {
       {
         asset: assets.ethereumV3Market.USDC,
         apyType: constants.apyType.variable,
-        amount: 25,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
-      {
-        asset: assets.ethereumV3Market.USDC,
-        apyType: constants.apyType.variable,
         amount: 2,
-        hasApproval: true,
+        hasApproval: false,
         repayOption: constants.repayType.wallet,
       },
       {
@@ -69,7 +62,7 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.ethereumV3Market.USDC.shortName,
-        amount: 21.0,
+        amount: 46.0,
         apyType: constants.borrowAPYType.variable,
       },
     ],
