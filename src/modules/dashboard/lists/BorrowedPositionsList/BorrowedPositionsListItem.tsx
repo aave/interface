@@ -5,7 +5,6 @@ import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { Row } from 'src/components/primitives/Row';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
@@ -39,18 +38,16 @@ export const BorrowedPositionsListItem = ({
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
-  const { reserves: reservesLegacy } = useAppDataContext();
 
   const reserve = item.reserve;
-  // Get legacy reserve data to support Borrow, Repay, Debt Switch modal actions
-  const reserveItemLegacy = reservesLegacy.find(
-    (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingToken.address.toLowerCase()
-  );
-  const legacyAsset = reserve.acceptsNative
+
+  const assetMappedLegacyModal = reserve.acceptsNative
     ? API_ETH_MOCK_ADDRESS.toLowerCase()
-    : reserveItemLegacy?.underlyingAsset.toLowerCase() ||
-      reserve.underlyingToken.address.toLowerCase();
-  const legacyName = reserveItemLegacy?.name || reserve.underlyingToken.name;
+    : reserve.underlyingToken.address.toLowerCase();
+
+  const swapUnderlyingAsset = reserve.underlyingToken.address.toLowerCase();
+
+  const nameMappedLegacyModal = reserve.underlyingToken.name;
 
   const disableBorrow =
     reserve.borrowInfo?.borrowingState === 'DISABLED' ||
@@ -82,17 +79,17 @@ export const BorrowedPositionsListItem = ({
     borrowAPY: Number(item.apyPosition?.value ?? 0),
     borrowProtocolIncentives: borrowProtocolIncentives,
     onDetbSwitchClick: () => {
-      openDebtSwitch(legacyAsset ?? item.reserve.underlyingToken.address);
+      openDebtSwitch(swapUnderlyingAsset);
     },
     onOpenBorrow: () => {
-      openBorrow(legacyAsset, currentMarket, legacyName, 'dashboard');
+      openBorrow(assetMappedLegacyModal, currentMarket, nameMappedLegacyModal, 'dashboard');
     },
     onOpenRepay: () => {
       openRepay(
-        legacyAsset ?? item.reserve.underlyingToken.address.toLowerCase(),
+        assetMappedLegacyModal,
         item.reserve.isFrozen,
         currentMarket,
-        legacyName,
+        nameMappedLegacyModal,
         'dashboard'
       );
     },

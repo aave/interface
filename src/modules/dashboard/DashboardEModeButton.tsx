@@ -39,11 +39,9 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
   const isEModeDisabled = userEmodeCategoryId === 0;
 
   const EModeLabelMessage = () => {
-    // ✅ Cuando E-mode está deshabilitado, mostrar "DISABLED"
     if (isEModeDisabled) {
       return <Trans>DISABLED</Trans>;
     }
-    // Solo cuando está habilitado, mostrar la categoría
     return <Trans>{_eModes[userEmodeCategoryId]?.label}</Trans>;
   };
 

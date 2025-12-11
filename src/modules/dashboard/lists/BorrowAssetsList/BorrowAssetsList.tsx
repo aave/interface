@@ -15,6 +15,7 @@ import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GENERAL } from 'src/utils/events';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/react/shallow';
 
 import { CapType } from '../../../../components/caps/helper';
 import { AvailableTooltip } from '../../../../components/infoTooltips/AvailableTooltip';
@@ -75,10 +76,14 @@ const head = [
 export const BorrowAssetsList = () => {
   const { data, isLoading, error } = useCoingeckoCategories();
   const [selectedCategories, setSelectedCategories] = useState<AssetCategory[]>([]);
+  const [currentNetworkConfig, currentMarketData, currentMarket] = useRootStore(
+    useShallow((store) => [
+      store.currentNetworkConfig,
+      store.currentMarketData,
+      store.currentMarket,
+    ])
+  );
 
-  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const currentMarket = useRootStore((store) => store.currentMarket);
   const { borrowReserves: reserves, loading, userState } = useAppDataContext();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));

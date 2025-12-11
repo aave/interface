@@ -106,9 +106,7 @@ export const SuppliedPositionsList = () => {
   }, [userSupplyPositions]);
 
   const suppliedPositions = useMemo(() => {
-    if (!userSupplyPositions.length) {
-      return [];
-    }
+    if (loading || !supplyReservesLookup.size || !userSupplyPositions.length) return [];
 
     return userSupplyPositions
       .map((position: MarketUserReserveSupplyPosition) => {
@@ -189,7 +187,7 @@ export const SuppliedPositionsList = () => {
       (sum, position) => sum + Number(position?.balancePosition?.usd || '0'),
       0
     );
-  }, [suppliedPositions]);
+  }, [suppliedPositions, isShowSmallBalanceAssets]);
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = suppliedPositions as DashboardReserve[];
