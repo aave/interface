@@ -32,7 +32,6 @@ export const SuppliedPositionsListMobileItem = ({
   const assetMappedLegacy = reserve.acceptsNative
     ? API_ETH_MOCK_ADDRESS.toLowerCase()
     : reserve.underlyingToken.address.toLowerCase();
-  console.log('assetMappedLegacy', assetMappedLegacy);
   const swapUnderlyingAsset = reserve.underlyingToken.address.toLowerCase();
   const nameMappedLegacy = reserve.underlyingToken.name;
 
