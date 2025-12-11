@@ -20,7 +20,8 @@ import {
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
 } from '../../helpers/cow';
-import { calculateInstanceAddress } from '../../helpers/cow/adapters.helpers';
+import { calculateInstanceAddress, getHooksGasLimit } from '../../helpers/cow/adapters.helpers';
+import { useCollateralsAmount } from '../../hooks/useCollateralsAmount';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
@@ -52,6 +53,8 @@ export const CollateralSwapActionsViaCowAdapters = ({
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
   const [user] = useRootStore(useShallow((state) => [state.account]));
+
+  const collateralsAmount = useCollateralsAmount();
 
   const {
     mainTxState,
@@ -216,6 +219,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
           validTo,
           owner: user as `0x${string}`,
           flashLoanFeeAmount,
+          hooksGasLimit: getHooksGasLimit(collateralsAmount),
         },
         {
           sellAmount: state.sellAmountBigInt,
