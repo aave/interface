@@ -31,7 +31,7 @@ const getCampaignConfigs = () => ({
       target: '_blank' as const,
     },
     bannerVersion: 'aave-app-waitlist-v2',
-    icon: '/icons/networks/sonic.svg',
+    // icon: '/icons/networks/sonic.svg',
   },
 
   [ChainId.mainnet]: {
