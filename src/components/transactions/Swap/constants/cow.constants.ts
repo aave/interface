@@ -111,10 +111,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
       '0xd190eF37dB51Bb955A680fF1A85763CC72d083D4'.toLowerCase(), // aGHO not supported
     ],
 
-    [SupportedChainId.LINEA]: [
-      '0xacA92E438df0B2401fF60dA7E4337B687a2435DA'.toLowerCase(), // mUSD, to test no provider supported, remove before prod
-    ],
-
     // Safe checks, not supported
     [SupportedChainId.LENS]: 'ALL',
   },
