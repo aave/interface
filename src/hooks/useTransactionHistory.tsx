@@ -414,35 +414,66 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         .filter(Boolean)
     );
 
-    const localCowTxns: TransactionHistoryItemUnion[] = (localEntries as CowAdapterEntry[])
-      .filter((e) => e.protocol === 'cow' && !apiCowIds.has(e.orderId))
-      .map((e: CowAdapterEntry) => ({
-        action: swapTypeToTransactionHistoryItemType(e.swapType) ?? ActionName.Swap,
-        id: e.orderId,
-        timestamp: e.timestamp,
-        underlyingSrcToken: {
-          underlyingAsset: e.srcToken.address,
-          name: e.srcToken.name,
-          symbol: e.srcToken.symbol,
-          decimals: e.srcToken.decimals,
-        },
-        srcAToken: e.srcToken.isAToken,
-        underlyingDestToken: {
-          underlyingAsset: e.destToken.address,
-          name: e.destToken.name,
-          symbol: e.destToken.symbol,
-          decimals: e.destToken.decimals,
-        },
-        destAToken: e.destToken.isAToken,
-        srcAmount: e.srcAmount,
-        destAmount: e.destAmount,
-        status: e.status,
-        protocol: 'cow',
-        orderId: e.orderId,
-        chainId: e.chainId,
-        adapterInstanceAddress: e.adapterInstanceAddress,
-        usedAdapter: e.usedAdapter,
-      }));
+    const localCowTxns: TransactionHistoryItemUnion[] = await Promise.all(
+      (localEntries as CowAdapterEntry[])
+        .filter((e) => e.protocol === 'cow' && !apiCowIds.has(e.orderId))
+        .map(async (e: CowAdapterEntry) => {
+          let srcAmount = e.srcAmount;
+          let destAmount = e.destAmount;
+          let status = e.status;
+          try {
+            if (isChainIdSupportedByCoWProtocol(chainId)) {
+              const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
+              const order = await orderBookApi.getOrder(e.orderId, { chainId });
+              // Prefer executed amounts if non-zero
+              if (order?.executedSellAmount && order.executedSellAmount !== '0') {
+                srcAmount = order.executedSellAmount;
+              }
+              if (order?.executedBuyAmount && order.executedBuyAmount !== '0') {
+                destAmount = order.executedBuyAmount;
+              }
+              if (order?.status) {
+                status = order.status;
+              }
+            }
+          } catch (err) {
+            // Keep local amounts if API fails
+            console.error(
+              'Error enriching CoW adapter order with executed amounts',
+              e.orderId,
+              err
+            );
+          }
+
+          return {
+            action: swapTypeToTransactionHistoryItemType(e.swapType) ?? ActionName.Swap,
+            id: e.orderId,
+            timestamp: e.timestamp,
+            underlyingSrcToken: {
+              underlyingAsset: e.srcToken.address,
+              name: e.srcToken.name,
+              symbol: e.srcToken.symbol,
+              decimals: e.srcToken.decimals,
+            },
+            srcAToken: e.srcToken.isAToken,
+            underlyingDestToken: {
+              underlyingAsset: e.destToken.address,
+              name: e.destToken.name,
+              symbol: e.destToken.symbol,
+              decimals: e.destToken.decimals,
+            },
+            destAToken: e.destToken.isAToken,
+            srcAmount,
+            destAmount,
+            status,
+            protocol: 'cow',
+            orderId: e.orderId,
+            chainId: e.chainId,
+            adapterInstanceAddress: e.adapterInstanceAddress,
+            usedAdapter: e.usedAdapter,
+          } as TransactionHistoryItemUnion;
+        })
+    );
 
     const localParaswapTxns: TransactionHistoryItemUnion[] = (
       localEntries as ParaswapAdapterEntry[]
