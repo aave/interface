@@ -1,13 +1,11 @@
 import {
   EmodeDataHumanized,
-  LegacyUiPoolDataProvider,
   ReservesDataHumanized,
   UiPoolDataProvider,
   UserReserveDataHumanized,
 } from '@aave/contract-helpers';
 import { Provider } from '@ethersproject/providers';
-import { CustomMarket, MarketDataType } from 'src/ui-config/marketsConfig';
-import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 export type UserReservesDataHumanized = {
   userReserves: UserReserveDataHumanized[];
@@ -19,32 +17,11 @@ export class UiPoolService {
 
   private async getUiPoolDataService(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
-    if (this.useLegacyUiPoolDataProvider(marketData)) {
-      return new LegacyUiPoolDataProvider({
-        uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER,
-        provider,
-        chainId: marketData.chainId,
-      });
-    } else {
-      return new UiPoolDataProvider({
-        uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER as string,
-        provider,
-        chainId: marketData.chainId,
-      });
-    }
-  }
-
-  private useLegacyUiPoolDataProvider(marketData: MarketDataType) {
-    if (marketData.market === CustomMarket.proto_base_sepolia_v3) {
-      return false;
-    }
-
-    if (ENABLE_TESTNET || !marketData.v3) {
-      // it's a v2 market, or it does not have v3.1 upgrade
-      return true;
-    }
-
-    return false;
+    return new UiPoolDataProvider({
+      uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER as string,
+      provider,
+      chainId: marketData.chainId,
+    });
   }
 
   async getReservesHumanized(marketData: MarketDataType): Promise<ReservesDataHumanized> {
