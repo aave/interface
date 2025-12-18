@@ -127,11 +127,7 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base_sepolia]: {
     name: 'Base Sepolia',
-    publicJsonRPCUrl: [
-      'https://base-sepolia.blockpi.network/v1/rpc/public',
-      'https://sepolia.base.org',
-      'https://base-sepolia.gateway.tenderly.co',
-    ],
+    publicJsonRPCUrl: ['https://sepolia.base.org', 'https://base-sepolia.gateway.tenderly.co'],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
