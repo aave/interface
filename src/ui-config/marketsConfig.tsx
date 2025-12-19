@@ -446,7 +446,7 @@ export const marketsData: {
   [CustomMarket.proto_plasma_v3]: {
     marketTitle: 'Plasma',
     market: CustomMarket.proto_plasma_v3,
-    chainId: 9745 as ChainId,
+    chainId: ChainId.plasma,
     v3: true,
     logo: '/icons/networks/plasma.svg',
     addresses: {
@@ -490,7 +490,7 @@ export const marketsData: {
   [CustomMarket.proto_ink_v3]: {
     marketTitle: 'Ink',
     market: CustomMarket.proto_ink_v3,
-    chainId: 57073 as ChainId,
+    chainId: ChainId.ink,
     v3: true,
     logo: '/icons/networks/ink.svg',
     addresses: {
