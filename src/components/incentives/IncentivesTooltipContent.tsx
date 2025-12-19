@@ -128,9 +128,9 @@ const IncentivesSymbolMap: {
     symbol: 'aCELO',
     aToken: true,
   },
-  aCelcUSD: {
-    tokenIconSymbol: 'cUSD',
-    symbol: 'acUSD',
+  aCelUSDm: {
+    tokenIconSymbol: 'USDm',
+    symbol: 'aUSDm',
     aToken: true,
   },
   aGnoEURe: {
