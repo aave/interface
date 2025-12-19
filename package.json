@@ -31,7 +31,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave/contract-helpers": "1.36.1",
+    "@aave/contract-helpers": "1.36.4-1c7d92ba9411792e35b0c4289a0bba27ddf86e1f.6",
     "@aave/graphql": "^0.10.0",
     "@aave/math-utils": "1.36.1",
     "@aave/react": "^0.8.1",

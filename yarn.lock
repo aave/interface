@@ -26,10 +26,10 @@
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
-"@aave/contract-helpers@1.36.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.36.1.tgz#729735e6be4f8a1872e1e3400591485fc2198b76"
-  integrity sha512-Ppoz11WRA3bjkZqnRA0a/txjfb67fVWh+ucgtN/RR45WI9oDsEmtYsqAwiNR3egvigSeyJASFeei0ijGGoFifw==
+"@aave/contract-helpers@1.36.4-1c7d92ba9411792e35b0c4289a0bba27ddf86e1f.6":
+  version "1.36.4-1c7d92ba9411792e35b0c4289a0bba27ddf86e1f.6"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.36.4-1c7d92ba9411792e35b0c4289a0bba27ddf86e1f.6.tgz#630904ade5c47ff4c65f8be023dbb0e3047bcc02"
+  integrity sha512-ePflK4Ims0e77uYJIZsZpaq58ytMdym2CMomhDJqtt7JCwrqiTNHO98kGDeiEWMuCUIbxi5OWujQwIIaarl6QA==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
