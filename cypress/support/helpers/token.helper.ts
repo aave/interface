@@ -38,17 +38,17 @@ const donors: Donors = {
   },
   aAVAXAvalancheV3: {
     name: 'aAVAX',
-    donorWalletAddress: '0xAe783a7C8C607EFe00548A0592BF9cDb50903B79',
+    donorWalletAddress: '0xaF63AE8b29B4A48E28B9892f019187d88F69923C',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
   },
   aMATICPolygonV3: {
     name: 'aMATIC',
-    donorWalletAddress: '0x07F294e84a9574f657A473f94A242F1FdFAFB823',
+    donorWalletAddress: '0xC956cA6E8FA34A5E86B54c55B0DA4aa9F3EEEDCE',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
   },
   aETHOptimismV3: {
     name: 'aETH',
-    donorWalletAddress: '0x39Be632bfC5A74183FfE124C60e248138e496BC4',
+    donorWalletAddress: '0x7ff422F552c60f5da294Bf2a91C6752667F28F64',
     tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
   },
   aETHBaseV3: {
@@ -58,12 +58,12 @@ const donors: Donors = {
   },
   axDAIGnosisV3: {
     name: 'axDAI',
-    donorWalletAddress: '0x458cd345b4c05e8df39d0a07220feb4ec19f5e6f',
+    donorWalletAddress: '0x8349e897C5802adEC1b2F2FC35c1Cf1aBAb95470',
     tokenAddress: '0xd0Dd6cEF72143E22cCED4867eb0d5F2328715533',
   },
   aBNBBnbV3: {
     name: 'aBNB',
-    donorWalletAddress: '0x2F064D92e862F30041DEA4667eF8899E07Bb4Edf',
+    donorWalletAddress: '0x3acba5B8d07880D6989c24e27D26A92da6E090df',
     tokenAddress: '0x9B00a09492a626678E5A3009982191586C444Df9',
   },
   aETHEthereumV2: {

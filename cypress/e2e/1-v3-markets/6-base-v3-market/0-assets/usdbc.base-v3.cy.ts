@@ -80,7 +80,6 @@ const testData = {
 describe.skip('USDbC INTEGRATION SPEC, BASE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyBaseFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {
