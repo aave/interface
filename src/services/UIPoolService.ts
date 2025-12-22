@@ -18,7 +18,7 @@ export class UiPoolService {
   private async getUiPoolDataService(marketData: MarketDataType) {
     const provider = this.getProvider(marketData.chainId);
     return new UiPoolDataProvider({
-      uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER as string,
+      uiPoolDataProviderAddress: marketData.addresses.UI_POOL_DATA_PROVIDER,
       provider,
       chainId: marketData.chainId,
     });
