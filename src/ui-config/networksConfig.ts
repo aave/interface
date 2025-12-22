@@ -13,6 +13,7 @@ import {
   ink,
   linea,
   mainnet,
+  mantle,
   metis,
   optimism,
   optimismSepolia,
@@ -23,6 +24,7 @@ import {
   sepolia,
   soneium,
   sonic,
+  xLayer,
   zksync,
 } from 'wagmi/chains';
 
@@ -451,6 +453,26 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://explorer.inkonchain.com/',
     networkLogoPath: '/icons/networks/ink.svg',
     wagmiChain: ink,
+  },
+  [ChainId.mantle]: {
+    name: 'Mantle',
+    publicJsonRPCUrl: ['https://mantle-rpc.publicnode.com'],
+    baseAssetSymbol: 'MNT',
+    wrappedBaseAssetSymbol: 'WMNT',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://mantlescan.xyz/',
+    networkLogoPath: '/icons/networks/mantle.svg',
+    wagmiChain: mantle,
+  },
+  [ChainId.xlayer]: {
+    name: 'X Layer',
+    publicJsonRPCUrl: ['https://xlayer.drpc.org'],
+    baseAssetSymbol: 'OKB',
+    wrappedBaseAssetSymbol: 'WOKB',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://web3.okx.com/explorer/x-layer',
+    networkLogoPath: '/icons/networks/xlayer.svg',
+    wagmiChain: xLayer,
   },
 };
 
