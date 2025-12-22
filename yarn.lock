@@ -26,10 +26,10 @@
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
-"@aave/contract-helpers@1.36.4-1c7d92ba9411792e35b0c4289a0bba27ddf86e1f.6":
-  version "1.36.4-1c7d92ba9411792e35b0c4289a0bba27ddf86e1f.6"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.36.4-1c7d92ba9411792e35b0c4289a0bba27ddf86e1f.6.tgz#630904ade5c47ff4c65f8be023dbb0e3047bcc02"
-  integrity sha512-ePflK4Ims0e77uYJIZsZpaq58ytMdym2CMomhDJqtt7JCwrqiTNHO98kGDeiEWMuCUIbxi5OWujQwIIaarl6QA==
+"@aave/contract-helpers@1.37.0":
+  version "1.37.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.37.0.tgz#c899cdb1fa5b356c8a6fce104dfec68fc1031db0"
+  integrity sha512-MYuJZg1+cIGuv4bxI8Nb2qPsPdiPujsQ2sGZSVgYSK1f/ILUFX80ZeKT/l89mQlG9gA9M1y/PZpu1q290rmv0A==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
@@ -52,10 +52,10 @@
     graphql "^16.11.0"
     type-fest "^4.41.0"
 
-"@aave/math-utils@1.36.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.36.1.tgz#3e501962de3700250c213c981ea47b36a8e37a54"
-  integrity sha512-rR1sbDX1IFb1B1TLdi8hZANvtviPeU8hfpLuHC9cwlXluujCdHttnNVODwco1J5d2k6KxnNnc0DZJj2yV7nLTQ==
+"@aave/math-utils@1.37.0":
+  version "1.37.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.37.0.tgz#e572a43a1709d625b7114c26d8481def43082eda"
+  integrity sha512-wFcLPeRMXNW4lwogZTqw9C7wTG37rFn+W2ZJDFRGAyjWBNr5DHAPmrzbDKZxIG8Cjw1eZhW0R6l2EAm1FN5cEw==
 
 "@aave/react@^0.8.1":
   version "0.8.1"
