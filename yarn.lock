@@ -15,21 +15,21 @@
     "@gql.tada/internal" "^1.0.0"
     graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
 
-"@aave/client@0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.9.1.tgz#5a11908715e67bb2a3992d30f9df16c049d9c162"
-  integrity sha512-pWwICirnQdG37sbNBTYqrFCDRN+rRnCGjNPGZtKZj/QxIbQ2p0GEZcGFpUfDw2lDSBsa4VK75T6IFiNn50zmNQ==
+"@aave/client@0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.9.2.tgz#7f9bd4d5a6c3a0b0155d97c1786d24c311372590"
+  integrity sha512-PTbbgzZQWdjUNJQZd0Mvrk5NG5RhLEnhG283fjIYnZCSeu2YUSeyiHTUCONY7C0u5dwdt/CpZZ309isgNkwPVA==
   dependencies:
     "@aave/core" "0.1.0"
-    "@aave/graphql" "0.10.0"
+    "@aave/graphql" "0.11.0"
     "@aave/types" "0.2.0"
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
-"@aave/contract-helpers@1.36.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.36.1.tgz#729735e6be4f8a1872e1e3400591485fc2198b76"
-  integrity sha512-Ppoz11WRA3bjkZqnRA0a/txjfb67fVWh+ucgtN/RR45WI9oDsEmtYsqAwiNR3egvigSeyJASFeei0ijGGoFifw==
+"@aave/contract-helpers@1.37.0":
+  version "1.37.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.37.0.tgz#c899cdb1fa5b356c8a6fce104dfec68fc1031db0"
+  integrity sha512-MYuJZg1+cIGuv4bxI8Nb2qPsPdiPujsQ2sGZSVgYSK1f/ILUFX80ZeKT/l89mQlG9gA9M1y/PZpu1q290rmv0A==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
@@ -42,28 +42,28 @@
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
-"@aave/graphql@0.10.0", "@aave/graphql@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.10.0.tgz#953ad5c74d2c104fe4f4bd6f55d220b99d05b1f1"
-  integrity sha512-CRYjJbd04dUIuQjHcKHmd43y/agQ55NKiW+wKwz8M2vhyUb2qNP9I/fPKmEo+K+Stdr+ybcF8QMXBupRbMvEUA==
+"@aave/graphql@0.11.0", "@aave/graphql@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.11.0.tgz#16c9c8be81068c6ecee89afbfdcec3c806a44347"
+  integrity sha512-jXQdgHo8Q0nz7slKKdIOVJvbAO92XnrlEjglbBI8ycrBlnT3eDhh2moCGj/f1kSauc/Y/fsvIlC/rrmemeR3LA==
   dependencies:
     "@aave/types" "0.2.0"
     gql.tada "^1.8.13"
     graphql "^16.11.0"
     type-fest "^4.41.0"
 
-"@aave/math-utils@1.36.1":
-  version "1.36.1"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.36.1.tgz#3e501962de3700250c213c981ea47b36a8e37a54"
-  integrity sha512-rR1sbDX1IFb1B1TLdi8hZANvtviPeU8hfpLuHC9cwlXluujCdHttnNVODwco1J5d2k6KxnNnc0DZJj2yV7nLTQ==
+"@aave/math-utils@1.37.0":
+  version "1.37.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.37.0.tgz#e572a43a1709d625b7114c26d8481def43082eda"
+  integrity sha512-wFcLPeRMXNW4lwogZTqw9C7wTG37rFn+W2ZJDFRGAyjWBNr5DHAPmrzbDKZxIG8Cjw1eZhW0R6l2EAm1FN5cEw==
 
-"@aave/react@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.8.1.tgz#11a92ad9f193700ac10d5b9fe1e3a6244e7b50dd"
-  integrity sha512-XZdWocic1xKNCb4x+cSsbAMHEJwsJf0D1hQmhQ5s9kisQOWGde23OsMaXPcS0Zh4XB4u5KMQWCrM7/CFMZqAQA==
+"@aave/react@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.8.2.tgz#2971e9a44a312d4957d6508a795b550ceab2c5a0"
+  integrity sha512-4r3zkikrPNb2iAIz2A2AWuI7Ve+GXA+FL+RHvZXybLzj1C6XSVIjCGQoLNxoDobyu7OEvzNVPU/iRxcnzrv62g==
   dependencies:
-    "@aave/client" "0.9.1"
-    "@aave/graphql" "0.10.0"
+    "@aave/client" "0.9.2"
+    "@aave/graphql" "0.11.0"
     "@aave/types" "0.2.0"
     urql "^4.2.2"
 
@@ -1209,10 +1209,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bgd-labs/aave-address-book@^4.36.3":
-  version "4.36.3"
-  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.36.3.tgz#5a565e9507a71546f723093422a9d0abfee6b132"
-  integrity sha512-s8LjAry382FeRyY7ajxpbWVNA6ejGEiUW8HI/Ya/Jwt33JTKtKUBHcloapB1T0Cez/X6eawuxdJhYzZJSmrfOw==
+"@bgd-labs/aave-address-book@^4.38.0":
+  version "4.38.0"
+  resolved "https://registry.yarnpkg.com/@bgd-labs/aave-address-book/-/aave-address-book-4.38.0.tgz#75b03aff9fc691e4d1cc37896093f2f563618003"
+  integrity sha512-qic555Lqm/qC4BeZsiOmafxnm8E4R04kGhfWPsKjilRFnORHaBPs2+FhIv2wJmO8/xJaKT92pWrUJfc/Brbr0A==
 
 "@coinbase/wallet-sdk@4.3.0":
   version "4.3.0"

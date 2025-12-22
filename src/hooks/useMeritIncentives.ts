@@ -632,21 +632,21 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     CELO: [
       {
         action: MeritAction.CELO_SUPPLY_CELO,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
       },
       {
         action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.supply,
         customMessage: celoSupplyMultipleBorrowUsdtMessage,
       },
       {
         action: MeritAction.CELO_BORROW_CELO,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopBorrowMessage,
@@ -655,21 +655,21 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     ['USD₮']: [
       {
         action: MeritAction.CELO_SUPPLY_USDT,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
       },
       {
         action: MeritAction.CELO_BORROW_USDT,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopBorrowMessage,
       },
       {
         action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.borrow,
         customMessage: celoSupplyMultipleBorrowUsdtMessage,
@@ -678,14 +678,14 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     USDC: [
       {
         action: MeritAction.CELO_SUPPLY_USDC,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
       },
       {
         action: MeritAction.CELO_BORROW_USDC,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopBorrowMessage,
@@ -694,21 +694,21 @@ export const MERIT_DATA_MAP: Record<string, Record<string, MeritReserveIncentive
     WETH: [
       {
         action: MeritAction.CELO_SUPPLY_WETH,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.supply,
         customMessage: antiLoopMessage,
       },
       {
         action: MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.supply,
         customMessage: celoSupplyMultipleBorrowUsdtMessage,
       },
       {
         action: MeritAction.CELO_BORROW_WETH,
-        rewardTokenAddress: AaveV3Celo.ASSETS.cUSD.A_TOKEN,
+        rewardTokenAddress: AaveV3Celo.ASSETS.USDm.A_TOKEN,
         rewardTokenSymbol: 'aCelUSDm',
         protocolAction: ProtocolAction.borrow,
         customMessage: antiLoopBorrowMessage,

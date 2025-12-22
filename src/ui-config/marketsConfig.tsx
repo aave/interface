@@ -274,7 +274,7 @@ export const marketsData: {
       SWAP_COLLATERAL_ADAPTER: AaveV3Base.SWAP_COLLATERAL_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Base.WITHDRAW_SWAP_ADAPTER,
       DEBT_SWITCH_ADAPTER: AaveV3Base.DEBT_SWAP_ADAPTER,
-      GHO_TOKEN_ADDRESS: '0x6bb7a212910682dcfdbd5bcbb3e28fb4e8da10ee',
+      GHO_TOKEN_ADDRESS: AaveV3Base.ASSETS.GHO.UNDERLYING,
     },
   },
 
@@ -315,12 +315,12 @@ export const marketsData: {
     permitDisabled: true,
     chainId: ChainId.base_sepolia,
     addresses: {
-      LENDING_POOL_ADDRESS_PROVIDER: '0xE4C23309117Aa30342BFaae6c95c6478e0A4Ad00', // AaveV3BaseSepolia.POOL_ADDRESSES_PROVIDER,
-      LENDING_POOL: '0x8bAB6d1b75f19e9eD9fCe8b9BD338844fF79aE27', // AaveV3BaseSepolia.POOL,
-      WETH_GATEWAY: '0x0568130e794429D2eEBC4dafE18f25Ff1a1ed8b6', // AaveV3BaseSepolia.WETH_GATEWAY,
-      WALLET_BALANCE_PROVIDER: '0x2c4D1F4EC7F4FfA09a5E1C9e74fD3A10f21Bd811', // AaveV3BaseSepolia.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: '0x6a9D64f93DB660EaCB2b6E9424792c630CdA87d8', // AaveV3BaseSepolia.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: '0xDB1412acf288D5bE057f8e90fd7b1BF4f84bB3B1', // AaveV3BaseSepolia.UI_INCENTIVE_DATA_PROVIDER,
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3BaseSepolia.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3BaseSepolia.POOL,
+      WETH_GATEWAY: AaveV3BaseSepolia.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3BaseSepolia.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: '0xd3815B9f70E0cD7F17F7d5e4A8bc8dd7e53CAe44', // AaveV3BaseSepolia.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3BaseSepolia.UI_INCENTIVE_DATA_PROVIDER,
       L2_ENCODER: AaveV3BaseSepolia.L2_ENCODER,
       FAUCET: '0xD9145b5F45Ad4519c7ACcD6E0A4A82e83bB8A6Dc',
     },
@@ -436,7 +436,7 @@ export const marketsData: {
       // REPAY_WITH_COLLATERAL_ADAPTER: AaveV3EthereumLido.REPAY_WITH_COLLATERAL_ADAPTER,
       // SWAP_COLLATERAL_ADAPTER: AaveV3EthereumLido.SWAP_COLLATERAL_ADAPTER,
       WALLET_BALANCE_PROVIDER: '0xd8F7829ceB2692C90e418e0963b5Cbcbafc260Bd',
-      UI_POOL_DATA_PROVIDER: '0x2581d1f2Ce3860b651bF84AF416e7d28d9500D7F',
+      UI_POOL_DATA_PROVIDER: AaveV3Ethereum.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: '0xC5E1717BEafC680E0148DD561591410b69650a5F',
       COLLECTOR: '0x8b8d44751a933f190dde25A69E8cC6F9101b5435',
       // WITHDRAW_SWITCH_ADAPTER: AaveV3EthereumLido.WITHDRAW_SWAP_ADAPTER,
@@ -446,7 +446,7 @@ export const marketsData: {
   [CustomMarket.proto_plasma_v3]: {
     marketTitle: 'Plasma',
     market: CustomMarket.proto_plasma_v3,
-    chainId: 9745 as ChainId,
+    chainId: ChainId.plasma,
     v3: true,
     logo: '/icons/networks/plasma.svg',
     addresses: {
@@ -454,7 +454,7 @@ export const marketsData: {
       LENDING_POOL: AaveV3Plasma.POOL,
       WETH_GATEWAY: AaveV3Plasma.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: AaveV3Plasma.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: '0xc851e6147dcE6A469CC33BE3121b6B2D4CaD2763', //AaveV3Plasma.UI_POOL_DATA_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Plasma.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Plasma.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Plasma.COLLECTOR,
     },
@@ -490,7 +490,7 @@ export const marketsData: {
   [CustomMarket.proto_ink_v3]: {
     marketTitle: 'Ink',
     market: CustomMarket.proto_ink_v3,
-    chainId: 57073 as ChainId,
+    chainId: ChainId.ink,
     v3: true,
     logo: '/icons/networks/ink.svg',
     addresses: {
@@ -498,7 +498,7 @@ export const marketsData: {
       LENDING_POOL: AaveV3InkWhitelabel.POOL,
       WETH_GATEWAY: AaveV3InkWhitelabel.WETH_GATEWAY,
       WALLET_BALANCE_PROVIDER: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
-      UI_POOL_DATA_PROVIDER: '0xc851e6147dcE6A469CC33BE3121b6B2D4CaD2763', // custom as doesnt work utils
+      UI_POOL_DATA_PROVIDER: AaveV3InkWhitelabel.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3InkWhitelabel.UI_INCENTIVE_DATA_PROVIDER,
       // COLLECTOR: AaveV3InkWhitelabel.COLLECTOR,
     },

@@ -127,11 +127,7 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base_sepolia]: {
     name: 'Base Sepolia',
-    publicJsonRPCUrl: [
-      'https://base-sepolia.blockpi.network/v1/rpc/public',
-      'https://sepolia.base.org',
-      'https://base-sepolia.gateway.tenderly.co',
-    ],
+    publicJsonRPCUrl: ['https://sepolia.base.org', 'https://base-sepolia.gateway.tenderly.co'],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -431,7 +427,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     },
     wagmiChain: soneium,
   },
-  [9745]: {
+  [ChainId.plasma]: {
     name: 'Plasma',
     publicJsonRPCUrl: ['https://rpc.plasma.to'],
     baseAssetSymbol: 'XPL',
@@ -446,7 +442,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       url: 'https://stargate.finance/bridge?srcChain=ethereum&srcToken=0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE&dstChain=plasma&dstToken=0x9895D81bB462A195b4922ED7De0e3ACD007c32CB',
     },
   },
-  [57073]: {
+  [ChainId.ink]: {
     name: 'Ink',
     publicJsonRPCUrl: ['https://ink.drpc.org'],
     baseAssetSymbol: 'ETH',
