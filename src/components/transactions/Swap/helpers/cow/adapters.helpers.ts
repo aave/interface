@@ -1,4 +1,5 @@
-import { valueToBigNumber } from '@aave/math-utils';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { normalize, valueToBigNumber } from '@aave/math-utils';
 import {
   AppDataParams,
   getOrderToSign,
@@ -8,9 +9,12 @@ import {
   SupportedChainId,
 } from '@cowprotocol/cow-sdk';
 import {
+  AAVE_ADAPTER_FACTORY,
+  AAVE_POOL_ADDRESS,
   AaveCollateralSwapSdk,
   AaveFlashLoanType,
   EncodedOrder,
+  FlashLoanHint,
   FlashLoanHookAmounts,
   HASH_ZERO,
 } from '@cowprotocol/sdk-flash-loans';
@@ -176,38 +180,40 @@ export const calculateFlashLoanAmounts = (
  * and therefore the quote is more precise and more chances of being executed
  * It's important to send the hooks and flashloan hint but not the exact amounts that will be used in the final
  */
-export const getAppDataForQuote = async ({}: // user,
-// type,
-// amount,
-// chainId,
-// srcToken,
-// srcDecimals,
-// destToken,
-// destDecimals,
-{
+export const getAppDataForQuote = async ({
+  user,
+  type,
+  sellAmount,
+  buyAmount,
+  chainId,
+  srcToken,
+  srcDecimals,
+  destToken,
+  destDecimals,
+}: {
+  // user,
   user: string;
   type: SwapType;
-  amount: string;
+  sellAmount: string;
+  buyAmount: string;
   chainId: SupportedChainId;
   srcToken: string;
   srcDecimals: number;
   destToken: string;
   destDecimals: number;
 }): Promise<AppDataParams | undefined> => {
-  return undefined;
-
   // NOTE: This function is prepared to add solver hooks for accurate network cost estimation,
   // but such estimations are not currently supported so solvers are absorbing some costs.
   // Disabled for now; enable when proper support becomes available.
 
-  // if (type === SwapType.Swap || type === SwapType.WithdrawAndSwap) {
-  //   return undefined; // no flashloan needed - plain swap
-  // }
+  if (type === SwapType.Swap || type === SwapType.WithdrawAndSwap) {
+    return undefined; // no flashloan needed - plain swap
+  }
 
-  // const factory =
-  //   AAVE_ADAPTER_FACTORY[chainId].length > 0 ? AAVE_ADAPTER_FACTORY[chainId] : API_ETH_MOCK_ADDRESS;
-  // const pool =
-  //   AAVE_POOL_ADDRESS[chainId].length > 0 ? AAVE_POOL_ADDRESS[chainId] : API_ETH_MOCK_ADDRESS;
+  const factory =
+    AAVE_ADAPTER_FACTORY[chainId].length > 0 ? AAVE_ADAPTER_FACTORY[chainId] : API_ETH_MOCK_ADDRESS;
+  const pool =
+    AAVE_POOL_ADDRESS[chainId].length > 0 ? AAVE_POOL_ADDRESS[chainId] : API_ETH_MOCK_ADDRESS;
   // const AAVE_SWAP_TYPE_TO_COW_TYPE: Partial<Record<SwapType, AaveFlashLoanType>> = {
   //   [SwapType.CollateralSwap]: AaveFlashLoanType.CollateralSwap,
   //   [SwapType.DebtSwap]: AaveFlashLoanType.DebtSwap,
@@ -216,101 +222,89 @@ export const getAppDataForQuote = async ({}: // user,
   // const dappId =
   //   AAVE_DAPP_ID_PER_TYPE[AAVE_SWAP_TYPE_TO_COW_TYPE[type] ?? AaveFlashLoanType.CollateralSwap];
 
-  // // const flashLoanSdk = new AaveCollateralSwapSdk();
-  // // const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
-  // //   sellAmount: BigInt(normalize(amount, -srcDecimals)),
-  // //   flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
-  // // });
+  const flashLoanSdk = new AaveCollateralSwapSdk();
+  const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
+    sellAmount: BigInt(normalize(sellAmount, -srcDecimals)),
+    flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
+  });
 
-  // // let cowType: AaveFlashLoanType;
-  // // if (type === SwapType.CollateralSwap) {
-  // //   cowType = AaveFlashLoanType.CollateralSwap;
-  // // } else if (type === SwapType.DebtSwap) {
-  // //   cowType = AaveFlashLoanType.DebtSwap;
-  // // } else  if(type === SwapType.RepayWithCollateral) {
-  // //   cowType = AaveFlashLoanType.RepayCollateral;
-  // // } else {
-  // //   throw new Error('Invalid swap type');
-  // // }
+  let cowType: AaveFlashLoanType;
+  if (type === SwapType.CollateralSwap) {
+    cowType = AaveFlashLoanType.CollateralSwap;
+  } else if (type === SwapType.DebtSwap) {
+    cowType = AaveFlashLoanType.DebtSwap;
+  } else if (type === SwapType.RepayWithCollateral) {
+    cowType = AaveFlashLoanType.RepayCollateral;
+  } else {
+    throw new Error('Invalid swap type');
+  }
 
-  // // const hookAmounts: FlashLoanHookAmounts = {
-  // //     flashLoanAmount: amount,
-  // //     flashLoanFeeAmount: flashLoanFeeAmount.toString(),
-  // //     sellAssetAmount: sellAmountToSign.toString(),
-  // //     buyAssetAmount: amount,
-  // // }
+  const hookAmounts: FlashLoanHookAmounts = {
+    flashLoanAmount: sellAmount,
+    flashLoanFeeAmount: flashLoanFeeAmount.toString(),
+    sellAssetAmount: sellAmountToSign.toString(),
+    buyAssetAmount: buyAmount,
+  };
 
-  // const flashloan: FlashLoanHint = {
-  //   amount, // this is actually in UNDERLYING but aave tokens are 1:1
-  //   receiver: factory,
-  //   liquidityProvider: pool,
-  //   protocolAdapter: factory,
-  //   token: srcToken,
-  // };
+  const flashloan: FlashLoanHint = {
+    amount: sellAmount, // this is actually in UNDERLYING but aave tokens are 1:1
+    receiver: factory,
+    liquidityProvider: pool,
+    protocolAdapter: factory,
+    token: srcToken,
+  };
 
-  // // const limitOrder: LimitTradeParameters = {
-  // //   kind: OrderKind.SELL,
-  // //   sellToken: srcToken,
-  // //   sellTokenDecimals: srcDecimals,
-  // //   buyToken: destToken,
-  // //   buyTokenDecimals: destDecimals,
-  // //   sellAmount: normalize(amount, -srcDecimals).toString(),
-  // //   buyAmount: amount,
-  // // }
+  const limitOrder: LimitTradeParameters = {
+    kind: OrderKind.SELL,
+    sellToken: srcToken,
+    sellTokenDecimals: srcDecimals,
+    buyToken: destToken,
+    buyTokenDecimals: destDecimals,
+    sellAmount: normalize(sellAmount, -srcDecimals).toString(),
+    buyAmount: buyAmount,
+  };
 
-  // // const orderToSign = getOrderToSign(
-  // //   {
-  // //     chainId,
-  // //     from: user,
-  // //     networkCostsAmount: '0',
-  // //     isEthFlow: false,
-  // //     applyCostsSlippageAndFees: false,
-  // //   },
-  // //   limitOrder,
-  // //   HASH_ZERO
-  // // );
+  const orderToSign = getOrderToSign(
+    {
+      chainId,
+      from: user,
+      networkCostsAmount: '0',
+      isEthFlow: false,
+      applyCostsSlippageAndFees: false,
+    },
+    limitOrder,
+    HASH_ZERO
+  );
 
-  // // const encodedOrder: EncodedOrder = {
-  // //   ...OrderSigningUtils.encodeUnsignedOrder(orderToSign),
-  // //   appData: HASH_ZERO,
-  // // }
+  const encodedOrder: EncodedOrder = {
+    ...OrderSigningUtils.encodeUnsignedOrder(orderToSign),
+    appData: HASH_ZERO,
+  };
 
-  // // const hooks = await getOrderHooks(
-  // //   cowType,
-  // //   chainId,
-  // //   user as `0x${string}`,
-  // //   zeroAddress,
-  // //   hookAmounts,
-  // //   {
-  // //     ...encodedOrder,
-  // //     receiver: zeroAddress,
-  // //   },
-  // // );
+  const adapterInstance = await flashLoanSdk.getExpectedInstanceAddress(
+    cowType,
+    chainId,
+    user as `0x${string}`,
+    hookAmounts,
+    encodedOrder
+  );
 
-  // // TODO: send proper calldatas when available so solvers can properly simulate
-  // const hooks = {
-  //   pre: [
-  //     {
-  //       target: factory,
-  //       callData: '0x',
-  //       gasLimit: 160k DEFAULT_HOOK_GAS_LIMIT.pre.toString(),
-  //       dappId,
-  //     },
-  //   ],
-  //   post: [
-  //     {
-  //       target: 0x,
-  //       callData: '0x',
-  //       gasLimit: 160k DEFAULT_HOOK_GAS_LIMIT.post.toString(),
-  //       dappId,
-  //     },
-  //   ],
-  // };
+  const hooks = await flashLoanSdk.getOrderHooks(
+    cowType,
+    chainId,
+    user as `0x${string}`,
+    adapterInstance,
+    hookAmounts,
+    {
+      ...encodedOrder,
+      receiver: adapterInstance,
+    }
+  );
 
-  // return {
-  //   metadata: {
-  //     flashloan,
-  //     hooks,
-  //   },
-  // };
+  return {
+    metadata: {
+      flashloan,
+      hooks,
+    },
+  };
 };
