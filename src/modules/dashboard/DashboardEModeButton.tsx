@@ -13,7 +13,6 @@ import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 import { Link } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { TypographyGradient } from '../../components/primitives/TypographyGradient';
-import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming';
 
 interface DashboardEModeButtonProps {
   userEmodeCategoryId: number;
@@ -21,7 +20,7 @@ interface DashboardEModeButtonProps {
 
 export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButtonProps) => {
   const { openEmode } = useModalContext();
-  const { eModes: _eModes } = useAppDataContext();
+  const { eModeCategories: _eModes } = useAppDataContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const iconButtonSize = 12;
@@ -39,9 +38,12 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
 
   const isEModeDisabled = userEmodeCategoryId === 0;
 
-  const EModeLabelMessage = () => (
-    <Trans>{getEmodeMessage(_eModes[userEmodeCategoryId].label)}</Trans>
-  );
+  const EModeLabelMessage = () => {
+    if (isEModeDisabled) {
+      return <Trans>DISABLED</Trans>;
+    }
+    return <Trans>{_eModes[userEmodeCategoryId]?.label}</Trans>;
+  };
 
   return (
     <Box

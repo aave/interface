@@ -1,7 +1,7 @@
 import { Box, Divider, Skeleton, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { Link, ROUTES } from '../primitives/Link';
@@ -38,7 +38,7 @@ export const ListMobileItem = ({
   isIsolated,
   onIconError,
 }: ListMobileItemProps) => {
-  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCapsSDK();
   return (
     <Box>
       <Divider />
@@ -75,6 +75,7 @@ export const ListMobileItem = ({
                     )}
                   </Box>
                 </Box>
+
                 {showSupplyCapTooltips && supplyCap.displayMaxedTooltip({ supplyCap })}
                 {showBorrowCapTooltips && borrowCap.displayMaxedTooltip({ borrowCap })}
                 {showDebtCeilingTooltips && debtCeiling.displayMaxedTooltip({ debtCeiling })}
