@@ -1,5 +1,5 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Paper, Skeleton, Stack, Typography, useTheme } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
@@ -10,19 +10,14 @@ import { Warning } from 'src/components/primitives/Warning';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import {
-  ComputedReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
-import { amountToUsd } from 'src/utils/utils';
+import { getMaxAmountAvailableToSupplySDK } from 'src/utils/getMaxAmountAvailableToSupply';
 import { useShallow } from 'zustand/shallow';
 
 import { CapType } from '../../components/caps/helper';
@@ -30,72 +25,45 @@ import { AvailableTooltip } from '../../components/infoTooltips/AvailableTooltip
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { useReserveActionState } from '../../hooks/useReserveActionState';
 
-const amountToUSD = (
-  amount: BigNumberValue,
-  formattedPriceInMarketReferenceCurrency: string,
-  marketReferencePriceInUsd: string
-) => {
-  return valueToBigNumber(amount)
-    .multipliedBy(formattedPriceInMarketReferenceCurrency)
-    .multipliedBy(marketReferencePriceInUsd)
-    .shiftedBy(-USD_DECIMALS)
-    .toString();
-};
-
 interface ReserveActionsProps {
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
 }
 
 export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
-  const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
-
+  const [selectedAsset, setSelectedAsset] = useState<string>(reserve.underlyingToken.symbol);
   const { currentAccount } = useWeb3Context();
-  const { openBorrow, openSupply } = useModalContext();
-  const [currentMarket, currentNetworkConfig, currentMarketData, minRemainingBaseTokenBalance] =
-    useRootStore(
-      useShallow((store) => [
-        store.currentMarket,
-        store.currentNetworkConfig,
-        store.currentMarketData,
-        store.poolComputed.minRemainingBaseTokenBalance,
-      ])
-    );
-  const { user, loading: loadingReserves, marketReferencePriceInUsd } = useAppDataContext();
+  const { openBorrowSDK, openSupplySDK } = useModalContext();
+  const [currentMarket, currentNetworkConfig, currentMarketData] = useRootStore(
+    useShallow((store) => [
+      store.currentMarket,
+      store.currentNetworkConfig,
+      store.currentMarketData,
+    ])
+  );
+  const { loading: loadingReserves } = useAppDataContext();
   const { walletBalances, loading: loadingWalletBalance } = useWalletBalances(currentMarketData);
   const { baseAssetSymbol } = currentNetworkConfig;
-  let balance = walletBalances[reserve.underlyingAsset];
-  if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
-    balance = walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()];
-  }
-
+  const isNativeSelected = reserve.acceptsNative && selectedAsset === baseAssetSymbol;
+  const walletBalance = isNativeSelected
+    ? walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount ?? '0'
+    : walletBalances[reserve.underlyingToken.address.toLowerCase()]?.amount ?? '0';
+  const underlyingAsset =
+    selectedAsset === baseAssetSymbol ? API_ETH_MOCK_ADDRESS : reserve.underlyingToken.address;
   let maxAmountToBorrow = '0';
   let maxAmountToSupply = '0';
 
-  if (user) {
-    maxAmountToBorrow = getMaxAmountAvailableToBorrow(reserve, user).toString();
-
-    maxAmountToSupply = getMaxAmountAvailableToSupply(
-      balance?.amount || '0',
-      reserve,
-      reserve.underlyingAsset,
-      minRemainingBaseTokenBalance
-    ).toString();
+  if (reserve.userState) {
+    maxAmountToBorrow = reserve.userState.borrowable.amount.value || '0';
+    maxAmountToSupply = getMaxAmountAvailableToSupplySDK(walletBalance, reserve, underlyingAsset);
   }
 
-  const maxAmountToBorrowUsd = amountToUsd(
-    maxAmountToBorrow,
-    reserve.formattedPriceInMarketReferenceCurrency,
-    marketReferencePriceInUsd
-  ).toString();
-
-  const maxAmountToSupplyUsd = amountToUSD(
-    maxAmountToSupply,
-    reserve.formattedPriceInMarketReferenceCurrency,
-    marketReferencePriceInUsd
-  ).toString();
+  const maxAmountToBorrowUsd = reserve.userState?.borrowable.usd || '0';
+  const maxAmountToSupplyUsd = valueToBigNumber(maxAmountToSupply)
+    .multipliedBy(reserve.usdExchangeRate ?? '0')
+    .toString();
 
   const { disableSupplyButton, disableBorrowButton, alerts } = useReserveActionState({
-    balance: balance?.amount || '0',
+    balance: walletBalance || '0',
     maxAmountToSupply: maxAmountToSupply.toString(),
     maxAmountToBorrow: maxAmountToBorrow.toString(),
     reserve,
@@ -110,10 +78,22 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   }
 
   const onSupplyClicked = () => {
-    if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
-      openSupply(API_ETH_MOCK_ADDRESS.toLowerCase(), currentMarket, reserve.name, 'reserve', true);
+    if (!!reserve.acceptsNative && selectedAsset === baseAssetSymbol) {
+      openSupplySDK(
+        API_ETH_MOCK_ADDRESS.toLowerCase(),
+        currentMarket,
+        reserve.underlyingToken.name,
+        'reserve',
+        true
+      );
     } else {
-      openSupply(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve', true);
+      openSupplySDK(
+        reserve.underlyingToken.address,
+        currentMarket,
+        reserve.underlyingToken.name,
+        'reserve',
+        true
+      );
     }
   };
 
@@ -121,10 +101,10 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
   return (
     <PaperWrapper>
-      {reserve.isWrappedBaseAsset && (
+      {!!reserve.acceptsNative && (
         <Box>
           <WrappedBaseAssetSelector
-            assetSymbol={reserve.symbol}
+            assetSymbol={reserve.underlyingToken.symbol}
             baseAssetSymbol={baseAssetSymbol}
             selectedAsset={selectedAsset}
             setSelectedAsset={setSelectedAsset}
@@ -132,7 +112,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
         </Box>
       )}
       <WalletBalance
-        balance={balance.amount}
+        balance={walletBalance}
         symbol={selectedAsset}
         marketTitle={market.marketTitle}
       />
@@ -150,7 +130,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
               disable={disableSupplyButton}
               onActionClicked={onSupplyClicked}
             />
-            {reserve.borrowingEnabled && (
+            {reserve.borrowInfo?.borrowingState === 'ENABLED' && (
               <BorrowAction
                 reserve={reserve}
                 value={maxAmountToBorrow.toString()}
@@ -158,7 +138,13 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
                 symbol={selectedAsset}
                 disable={disableBorrowButton}
                 onActionClicked={() => {
-                  openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve', true);
+                  openBorrowSDK(
+                    reserve.underlyingToken.address,
+                    currentMarket,
+                    reserve.underlyingToken.name,
+                    'reserve',
+                    true
+                  );
                 }}
               />
             )}
@@ -262,7 +248,7 @@ interface ActionProps {
   symbol: string;
   disable: boolean;
   onActionClicked: () => void;
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
 }
 
 const SupplyAction = ({
@@ -283,8 +269,8 @@ const SupplyAction = ({
           eventName: GENERAL.TOOL_TIP,
           eventParams: {
             tooltip: 'Available to supply: your info',
-            asset: reserve.underlyingAsset,
-            assetName: reserve.name,
+            asset: reserve.underlyingToken.address,
+            assetName: reserve.underlyingToken.name,
           },
         }}
       />
@@ -337,8 +323,8 @@ const BorrowAction = ({
           eventName: GENERAL.TOOL_TIP,
           eventParams: {
             tooltip: 'Available to borrow: your info',
-            asset: reserve.underlyingAsset,
-            assetName: reserve.name,
+            asset: reserve.underlyingToken.address,
+            assetName: reserve.underlyingToken.name,
           },
         }}
       />
@@ -389,7 +375,11 @@ const WrappedBaseAssetSelector = ({
       color="primary"
       value={selectedAsset}
       exclusive
-      onChange={(_, value) => setSelectedAsset(value)}
+      onChange={(_, value) => {
+        if (value !== null) {
+          setSelectedAsset(value);
+        }
+      }}
       sx={{ mb: 4 }}
     >
       <StyledTxModalToggleButton value={assetSymbol}>

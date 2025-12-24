@@ -196,6 +196,7 @@ msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 #: src/components/transactions/Swap/warnings/postInputs/USDTResetWarning.tsx
 #: src/components/transactions/Warnings/USDTResetWarning.tsx
 msgid "USDT on Ethereum requires approval reset before a new approval. This will require an additional transaction."
@@ -261,6 +262,7 @@ msgstr "Please enter a valid wallet address."
 
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
@@ -287,6 +289,7 @@ msgid "Borrow cap is exceeded"
 msgstr "Borrow cap is exceeded"
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
+#: src/components/transactions/Borrow/BorrowActionsSDK.tsx
 msgid "Borrow {symbol}"
 msgstr "Borrow {symbol}"
 
@@ -299,6 +302,7 @@ msgstr "Total supplied"
 
 #: src/components/transactions/Swap/details/WithdrawAndSwapDetails.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Remaining supply"
 msgstr "Remaining supply"
@@ -312,7 +316,9 @@ msgid "{0} Balance{1}"
 msgstr "{0} Balance{1}"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyActionsSDK.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActionsSDK.tsx
 msgid "Supply {symbol}"
 msgstr "Supply {symbol}"
 
@@ -326,6 +332,7 @@ msgid "Max LTV"
 msgstr "Max LTV"
 
 #: src/components/transactions/Repay/RepayModal.tsx
+#: src/components/transactions/Repay/RepayModalSDK.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -481,6 +488,7 @@ msgid "Signing"
 msgstr "Signing"
 
 #: src/components/transactions/Repay/RepayActions.tsx
+#: src/components/transactions/Repay/RepayActionsSDK.tsx
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
 
@@ -512,6 +520,7 @@ msgid "Copy error message"
 msgstr "Copy error message"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 msgid "repaid"
 msgstr "repaid"
 
@@ -618,6 +627,7 @@ msgstr "Loading data..."
 
 #: src/components/transactions/SavingsGho/SavingsGhoWithdrawModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 msgid "withdrew"
 msgstr "withdrew"
 
@@ -691,6 +701,7 @@ msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModalContentSDK.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
@@ -1140,10 +1151,6 @@ msgstr "Read-only mode. Connect to a wallet to perform transactions."
 msgid "ends"
 msgstr "ends"
 
-#: src/hooks/useReserveActionState.tsx
-msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
-msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
-
 #: src/components/transactions/Swap/warnings/postInputs/LiquidationCriticalWarning.tsx
 msgid "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
 msgstr "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
@@ -1344,12 +1351,15 @@ msgid "Get GHO"
 msgstr "Get GHO"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
@@ -1667,6 +1677,7 @@ msgstr "Protocol APY"
 
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
+#: src/components/transactions/Withdraw/WithdrawModalSDK.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
@@ -1934,6 +1945,7 @@ msgstr "GHO balance"
 
 #: pages/dashboard.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
+#: src/components/transactions/Borrow/BorrowModalSDK.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -2019,6 +2031,7 @@ msgid "Stake cooldown activated"
 msgstr "Stake cooldown activated"
 
 #: src/components/transactions/Withdraw/WithdrawError.tsx
+#: src/components/transactions/Withdraw/WithdrawErrorSDK.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
 msgstr "These funds have been borrowed and are not available for withdrawal at this time."
 
@@ -2425,6 +2438,7 @@ msgstr "supply"
 
 #: pages/dashboard.page.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
+#: src/components/transactions/Supply/SupplyModalSDK.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -2450,6 +2464,7 @@ msgid "Aave aToken"
 msgstr "Aave aToken"
 
 #: src/components/transactions/Withdraw/WithdrawError.tsx
+#: src/components/transactions/Withdraw/WithdrawErrorSDK.tsx
 msgid "You can not withdraw this amount because it will cause collateral call"
 msgstr "You can not withdraw this amount because it will cause collateral call"
 
@@ -2491,6 +2506,7 @@ msgid "Vote YAE"
 msgstr "Vote YAE"
 
 #: src/components/transactions/Repay/RepayActions.tsx
+#: src/components/transactions/Repay/RepayActionsSDK.tsx
 msgid "Repaying {symbol}"
 msgstr "Repaying {symbol}"
 
@@ -2503,7 +2519,9 @@ msgid "Forum discussion"
 msgstr "Forum discussion"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModalContentSDK.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
 msgstr "Available"
@@ -2541,6 +2559,7 @@ msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 
@@ -2661,6 +2680,7 @@ msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModalContentSDK.tsx
 msgid "Borrowed"
 msgstr "Borrowed"
 
@@ -2684,11 +2704,15 @@ msgid "Balance"
 msgstr "Balance"
 
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
+#: src/components/transactions/Withdraw/WithdrawActionsSDK.tsx
+#: src/components/transactions/Withdraw/WithdrawActionsSDK.tsx
 msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
 msgid "Supplied"
 msgstr "Supplied"
 
@@ -2758,6 +2782,10 @@ msgstr "Version 3"
 #: src/components/infoTooltips/NetAPYTooltip.tsx
 msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
 msgstr "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
+
+#: src/hooks/useReserveActionState.tsx
+msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {eModeLabel} category. To manage E-Mode categories visit your <0>Dashboard</0>."
+msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {eModeLabel} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid bridge protocol fee"
@@ -2846,6 +2874,7 @@ msgid "dashboard"
 msgstr "dashboard"
 
 #: src/components/transactions/Borrow/BorrowActions.tsx
+#: src/components/transactions/Borrow/BorrowActionsSDK.tsx
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
 
@@ -3220,6 +3249,7 @@ msgstr "Can be executed"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawError.tsx
+#: src/components/transactions/Withdraw/WithdrawErrorSDK.tsx
 msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 
@@ -3246,6 +3276,7 @@ msgid "Something went wrong"
 msgstr "Something went wrong"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 
@@ -3424,6 +3455,8 @@ msgstr "Staked"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
+#: src/components/transactions/Supply/SupplyModalContentSDK.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
@@ -4007,6 +4040,7 @@ msgid "The app is running in fork mode."
 msgstr "The app is running in fork mode."
 
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
+#: src/components/transactions/Borrow/BorrowModalContentSDK.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
 
@@ -4032,7 +4066,9 @@ msgid "The collateral chosen cannot be liquidated"
 msgstr "The collateral chosen cannot be liquidated"
 
 #: src/components/transactions/Supply/SupplyActions.tsx
+#: src/components/transactions/Supply/SupplyActionsSDK.tsx
 #: src/components/transactions/Supply/SupplyWrappedTokenActions.tsx
+#: src/components/transactions/Supply/SupplyWrappedTokenActionsSDK.tsx
 msgid "Supplying {symbol}"
 msgstr "Supplying {symbol}"
 
@@ -4063,11 +4099,13 @@ msgid "Filled"
 msgstr "Filled"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
+#: src/components/transactions/Repay/RepayModalContentSDK.tsx
 msgid "Remaining debt"
 msgstr "Remaining debt"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContentSDK.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
