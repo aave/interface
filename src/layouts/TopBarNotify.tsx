@@ -31,12 +31,15 @@ interface CampaignConfig {
 interface NetworkCampaigns {
   [chainId: number]: CampaignConfig;
 }
-
+interface RouteCampaigns {
+  [route: string]: CampaignConfig;
+}
 interface TopBarNotifyProps {
   campaigns: NetworkCampaigns;
+  routeCampaigns?: RouteCampaigns;
 }
 
-export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
+export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotifyProps) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
@@ -49,7 +52,7 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
     return campaigns[currentChainId] || null;
   };
 
-  const currentCampaign = getCurrentCampaign();
+  const currentCampaign = routeCampaigns?.[router.pathname] ?? getCurrentCampaign() ?? null;
 
   const [showWarning, setShowWarning] = useState(() => {
     if (!currentCampaign) return false;
@@ -103,13 +106,13 @@ export default function TopBarNotify({ campaigns }: TopBarNotifyProps) {
       case 'route':
         router.push(currentCampaign.buttonAction.value);
         break;
-        // case 'modal':
-        //   console.log(
-        //     'Modal action:',
-        //     currentCampaign.buttonAction.value,
-        //     currentCampaign.buttonAction.params
-        //   );
-        break;
+      // case 'modal':
+      //   console.log(
+      //     'Modal action:',
+      //     currentCampaign.buttonAction.value,
+      //     currentCampaign.buttonAction.params
+      //   );
+      // break;
     }
   };
 
