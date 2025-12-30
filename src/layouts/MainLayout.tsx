@@ -118,12 +118,25 @@ const getCampaignConfigs = () => ({
   },
 });
 
+const routeCampaigns = {
+  '/sgho': {
+    notifyText: "Earn 4% higher yield on savings GHO using OKX's GHO staking vault.",
+    buttonText: 'Learn more',
+    buttonAction: {
+      type: 'url' as const,
+      value: 'https://web3.okx.com/earn/activity/aave-gho',
+      target: '_blank' as const,
+    },
+    bannerVersion: 'sgho-okx-v1',
+  },
+};
+
 export function MainLayout({ children }: { children: ReactNode }) {
   const campaignConfigs = getCampaignConfigs();
 
   return (
     <>
-      <TopBarNotify campaigns={campaignConfigs} />
+      <TopBarNotify campaigns={campaignConfigs} routeCampaigns={routeCampaigns} />
 
       <AppHeader />
       <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
