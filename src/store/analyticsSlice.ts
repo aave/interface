@@ -151,7 +151,7 @@ export const createAnalyticsSlice: StateCreator<
           init(AMPLITUDE_API_KEY, {
             autocapture: false,
             trackingOptions: {
-              ipAddress: true,
+              ipAddress: false,
               language: false,
               platform: false,
             },
