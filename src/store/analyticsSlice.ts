@@ -95,7 +95,7 @@ export const createAnalyticsSlice: StateCreator<
             autocapture: true, // disable if we don't want to capture every click and page view on the site
             trackingOptions: {
               ipAddress: true,
-              language: false,
+              language: true,
               platform: true,
             },
           });
@@ -111,7 +111,7 @@ export const createAnalyticsSlice: StateCreator<
             // serverZone: 'EU',
             autocapture: false,
             trackingOptions: {
-              ipAddress: true,
+              ipAddress: false,
               language: false,
               platform: false,
             },
