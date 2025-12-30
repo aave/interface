@@ -94,7 +94,7 @@ export const createAnalyticsSlice: StateCreator<
             // serverZone: 'EU',
             autocapture: true, // disable if we don't want to capture every click and page view on the site
             trackingOptions: {
-              ipAddress: false,
+              ipAddress: true,
               language: false,
               platform: true,
             },
@@ -111,7 +111,7 @@ export const createAnalyticsSlice: StateCreator<
             // serverZone: 'EU',
             autocapture: false,
             trackingOptions: {
-              ipAddress: false,
+              ipAddress: true,
               language: false,
               platform: false,
             },
@@ -151,7 +151,7 @@ export const createAnalyticsSlice: StateCreator<
           init(AMPLITUDE_API_KEY, {
             autocapture: false,
             trackingOptions: {
-              ipAddress: false,
+              ipAddress: true,
               language: false,
               platform: false,
             },
