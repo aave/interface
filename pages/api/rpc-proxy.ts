@@ -47,6 +47,14 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
 };
 
 function getRpcUrl(chainId: number): string | null {
+  // Temp patch for Mantle and X Layer
+  if (chainId === ChainId.mantle) {
+    return 'https://mantle-rpc.publicnode.com';
+  }
+  if (chainId === ChainId.xlayer) {
+    return 'https://xlayer.drpc.org';
+  }
+
   const config = NETWORK_CONFIG[chainId];
   if (!config) return null;
   return `https://${config.network}.g.alchemy.com/v2/${config.apiKey}`;
