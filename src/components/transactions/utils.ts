@@ -1,6 +1,10 @@
+import { MarketUserState, ReserveUserState } from '@aave/graphql/import';
 import { BigNumber } from 'bignumber.js';
 import { CollateralType } from 'src/helpers/types';
-import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ComputedUserReserveData,
+  ReserveWithId,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export enum ErrorType {
   SUPPLY_CAP_REACHED,
@@ -92,5 +96,51 @@ export const getAssetCollateralType = (
     }
   }
 
+  return collateralType;
+};
+
+export const getAssetCollateralTypeSdk = ({
+  reserve,
+  reserveUserState,
+  marketUserState,
+  debtCeilingIsMaxed,
+}: {
+  reserve: ReserveWithId;
+  reserveUserState?: ReserveUserState | null;
+  marketUserState?: MarketUserState | null;
+  debtCeilingIsMaxed: boolean;
+}) => {
+  if (!reserve.supplyInfo.canBeCollateral) return CollateralType.UNAVAILABLE;
+
+  const isIsolationAsset = reserve.isolationModeConfig?.canBeCollateral === true;
+  const userIsInIsolationMode = marketUserState?.isInIsolationMode === true;
+  const userHasSuppliedReserve = (reserveUserState?.balance.amount.value ?? '0') !== '0';
+  const userHasCollateral = (marketUserState?.totalCollateralBase ?? '0') !== '0';
+  const userCollateralEnabled = reserveUserState?.canBeCollateral === true;
+
+  let collateralType: CollateralType = CollateralType.ENABLED;
+
+  if (isIsolationAsset) {
+    if (debtCeilingIsMaxed) return CollateralType.UNAVAILABLE;
+    if (userIsInIsolationMode) {
+      if (userHasSuppliedReserve) {
+        collateralType = userCollateralEnabled
+          ? CollateralType.ISOLATED_ENABLED
+          : CollateralType.DISABLED;
+      } else if (userHasCollateral) {
+        collateralType = CollateralType.UNAVAILABLE_DUE_TO_ISOLATION;
+      }
+    } else {
+      collateralType = userHasCollateral
+        ? CollateralType.ISOLATED_DISABLED
+        : CollateralType.ISOLATED_ENABLED;
+    }
+  } else {
+    if (userIsInIsolationMode) {
+      collateralType = CollateralType.UNAVAILABLE_DUE_TO_ISOLATION;
+    } else if (userHasSuppliedReserve) {
+      collateralType = userCollateralEnabled ? CollateralType.ENABLED : CollateralType.DISABLED;
+    }
+  }
   return collateralType;
 };

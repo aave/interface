@@ -292,7 +292,7 @@ export const DetailsIncentivesLine = ({
 
 export interface DetailsHFLineProps {
   healthFactor: string;
-  futureHealthFactor: string;
+  futureHealthFactor: string | undefined;
   visibleHfChange: boolean;
   loading?: boolean;
 }
@@ -324,7 +324,7 @@ export const DetailsHFLine = ({
                   {ArrowRightIcon}
 
                   <HealthFactorNumber
-                    value={isNaN(Number(futureHealthFactor)) ? healthFactor : futureHealthFactor}
+                    value={isNaN(Number(futureHealthFactor)) ? healthFactor : futureHealthFactor!}
                     variant="secondary14"
                   />
                 </>
