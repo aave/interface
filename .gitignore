@@ -48,3 +48,6 @@ package-lock.json
 .idea
 .vscode
 .env.development
+
+# Sentry Config File
+.env.sentry-build-plugin
