@@ -8,7 +8,7 @@ import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip
 import { StETHCollateralToolTip } from 'src/components/infoTooltips/StETHCollateralToolTip';
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { DASHBOARD_LIST_COLUMN_WIDTHS } from 'src/utils/dashboardSortUtils';
@@ -59,7 +59,7 @@ export const ListItemWrapper = ({
   },
   ...rest
 }: ListItemWrapperProps) => {
-  const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
+  const { supplyCap, borrowCap, debtCeiling } = useAssetCapsSDK();
 
   const showFrozenTooltip = frozen && symbol !== 'renFIL' && symbol !== 'BUSD';
   const showRenFilTooltip = frozen && symbol === 'renFIL';
