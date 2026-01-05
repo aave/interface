@@ -91,7 +91,7 @@ export const useSwapOrderAmounts = ({
       ? getFlashLoanFeeBps(state.provider)
       : 0;
     const flashLoanFeeAmount =
-      state.processedSide == 'sell'
+      state.side == 'sell'
         ? valueToBigNumber(state.outputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000)
         : valueToBigNumber(state.inputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000);
 
@@ -357,5 +357,6 @@ export const useSwapOrderAmounts = ({
     state.side,
     state.swapType,
     state.orderType,
+    state.useFlashloan
   ]);
 };
