@@ -151,7 +151,6 @@ export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) 
 });
 
 export const FLASH_LOAN_FEE_BPS = 5;
-export const VALID_TO_HALF_HOUR = Math.floor(Date.now() / 1000) + 60 * 10; // 10 minutes
 
 export const COW_APP_DATA = (
   tokenFromSymbol: string,
