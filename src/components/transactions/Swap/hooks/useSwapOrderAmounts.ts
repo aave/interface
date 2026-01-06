@@ -357,6 +357,6 @@ export const useSwapOrderAmounts = ({
     state.side,
     state.swapType,
     state.orderType,
-    state.useFlashloan
+    state.useFlashloan,
   ]);
 };

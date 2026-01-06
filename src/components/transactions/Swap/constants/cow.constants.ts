@@ -60,7 +60,7 @@ export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
   [SupportedChainId.SEPOLIA]: '',
 };
 
-export const DUST_PROTECTION_MULTIPLIER = 1.001;
+export const DUST_PROTECTION_MULTIPLIER = 1.0003; // 3 BPS
 
 export const COW_UNSUPPORTED_ASSETS: Partial<
   Record<SwapType | 'ALL', Partial<Record<SupportedChainId, string[] | 'ALL'>>>
@@ -151,7 +151,7 @@ export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) 
 });
 
 export const FLASH_LOAN_FEE_BPS = 5;
-export const VALID_TO_HALF_HOUR = Math.floor(Date.now() / 1000) + 60 * 30; // 30 minutes
+export const VALID_TO_HALF_HOUR = Math.floor(Date.now() / 1000) + 60 * 10; // 10 minutes
 
 export const COW_APP_DATA = (
   tokenFromSymbol: string,
