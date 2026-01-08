@@ -17,7 +17,7 @@ interface CompactNumberProps {
 
 const POSTFIXES = ['', 'K', 'M', 'B', 'T', 'P', 'E', 'Z', 'Y'];
 
-export const compactNumber = ({
+const compactNumber = ({
   value,
   visibleDecimals = 2,
   roundDown,
