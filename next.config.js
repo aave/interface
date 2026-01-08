@@ -32,6 +32,8 @@ module.exports = withBundleAnalyzer({
   // assetPrefix: "./",
   trailingSlash: true,
   pageExtensions,
+  staticPageGenerationTimeout: 1000,
+  outputFileTracing: false,
   // NOTE: Needed for SAFE testing locally
   // async headers() {
   //   return [
