@@ -19,6 +19,7 @@ import {
   addOrderTypeToAppData,
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
+  overrideSmartSlippageOnAppData,
 } from '../../helpers/cow';
 import { calculateInstanceAddress, getHooksGasLimit } from '../../helpers/cow/adapters.helpers';
 import { useCollateralsAmount } from '../../hooks/useCollateralsAmount';
@@ -231,6 +232,11 @@ export const CollateralSwapActionsViaCowAdapters = ({
 
       orderPostParams.swapSettings.appData = addOrderTypeToAppData(
         state.orderType,
+        orderPostParams.swapSettings.appData
+      );
+
+      orderPostParams.swapSettings.appData = overrideSmartSlippageOnAppData(
+        state,
         orderPostParams.swapSettings.appData
       );
 

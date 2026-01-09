@@ -27,7 +27,7 @@ import {
   COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV,
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
-import { OrderType } from '../../types';
+import { OrderType, SwapState } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
 export const COW_ENV: CowEnv = 'prod';
@@ -535,6 +535,24 @@ export const addOrderTypeToAppData = (
       ...appData?.metadata,
       orderClass: {
         orderClass: orderType === OrderType.LIMIT ? OrderClass.LIMIT : OrderClass.MARKET,
+      },
+    },
+  };
+};
+
+export const overrideSmartSlippageOnAppData = (state: SwapState, appData: AppDataParams) => {
+  const slippageBips =
+    state.orderType === OrderType.LIMIT ? 0 : Math.round(Number(state.slippage) * 100); // percent to bps
+  const smartSlippage = state.swapRate?.suggestedSlippage == Number(state.slippage);
+
+  return {
+    ...appData,
+    metadata: {
+      ...appData?.metadata,
+      quote: {
+        ...appData?.metadata?.quote,
+        slippageBips: appData?.metadata?.quote?.slippageBips ?? slippageBips,
+        smartSlippage,
       },
     },
   };
