@@ -466,11 +466,11 @@ export const marketsData: {
       COLLECTOR: AaveV3Plasma.COLLECTOR,
     },
     enabledFeatures: {
-      // liquiditySwap: true,
-      // withdrawAndSwitch: true,
-      // collateralRepay: true,
-      // debtSwitch: true,
-      // switch: true,
+      liquiditySwap: true,
+      withdrawAndSwitch: true,
+      collateralRepay: true,
+      debtSwitch: true,
+      switch: true,
     },
   },
   [CustomMarket.proto_polygon_v3]: {
