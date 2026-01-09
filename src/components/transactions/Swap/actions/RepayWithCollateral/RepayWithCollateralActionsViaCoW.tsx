@@ -19,6 +19,7 @@ import {
   addOrderTypeToAppData,
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
+  overrideSmartSlippageOnAppData,
 } from '../../helpers/cow';
 import {
   accountForDustProtection,
@@ -251,6 +252,11 @@ export const RepayWithCollateralActionsViaCoW = ({
 
       orderPostParams.swapSettings.appData = addOrderTypeToAppData(
         state.orderType,
+        orderPostParams.swapSettings.appData
+      );
+
+      orderPostParams.swapSettings.appData = overrideSmartSlippageOnAppData(
+        state,
         orderPostParams.swapSettings.appData
       );
 

@@ -20,6 +20,7 @@ import {
   addOrderTypeToAppData,
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
+  overrideSmartSlippageOnAppData,
 } from '../../helpers/cow';
 import {
   accountForDustProtection,
@@ -275,6 +276,12 @@ export const DebtSwapActionsViaCoW = ({
         state.orderType,
         orderPostParams.swapSettings.appData
       );
+
+      orderPostParams.swapSettings.appData = overrideSmartSlippageOnAppData(
+        state,
+        orderPostParams.swapSettings.appData
+      );
+
       const result = await tradingSdk.postLimitOrder(limitOrder, orderPostParams.swapSettings);
 
       trackingHandlers.trackSwap();
