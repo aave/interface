@@ -1,12 +1,13 @@
-import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import { MarketUserReserveBorrowPosition } from '@aave/graphql/import';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { GENERAL } from 'src/utils/events';
@@ -17,9 +18,10 @@ import { BorrowPowerTooltip } from '../../../../components/infoTooltips/BorrowPo
 import { TotalBorrowAPYTooltip } from '../../../../components/infoTooltips/TotalBorrowAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
 import {
-  ComputedUserReserveData,
+  ReserveWithId,
   useAppDataContext,
 } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import { useEnhancedUserYield } from '../../../../hooks/useEnhancedUserYield';
 import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
@@ -49,7 +51,8 @@ const head = [
 ];
 
 export const BorrowedPositionsList = () => {
-  const { user, loading, eModes, reserves } = useAppDataContext();
+  const { loading, eModeCategories, borrowReserves, userBorrows, userState } = useAppDataContext();
+  const { debtAPY } = useEnhancedUserYield();
   const [currentMarketData, currentNetworkConfig] = useRootStore(
     useShallow((store) => [store.currentMarketData, store.currentNetworkConfig])
   );
@@ -57,50 +60,142 @@ export const BorrowedPositionsList = () => {
   const [sortDesc, setSortDesc] = useState(false);
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const showEModeButton = currentMarketData.v3 && Object.keys(eModes).length > 1;
+  const showEModeButton = currentMarketData.v3 && Object.keys(eModeCategories).length > 1;
   const [tooltipOpen, setTooltipOpen] = useState<boolean>(false);
 
-  if (loading || !user)
+  const borrowReservesLookup = useMemo(() => {
+    const map = new Map<string, ReserveWithId>();
+    borrowReserves.forEach((reserve) => {
+      const address = reserve.underlyingToken.address?.toLowerCase();
+      if (address) {
+        map.set(address, reserve);
+      }
+    });
+    return map;
+  }, [borrowReserves]);
+
+  let borrowedPositions = useMemo(() => {
+    if (!userBorrows?.length) {
+      return [];
+    }
+
+    return userBorrows
+      .map((position: MarketUserReserveBorrowPosition) => {
+        const underlyingTokenAddress = position.currency.address.toLowerCase();
+        const reserve = borrowReservesLookup.get(underlyingTokenAddress);
+
+        if (!reserve) {
+          console.warn(
+            '[BorrowedPositionsList] Missing reserve snapshot for borrowed position',
+            position.currency.symbol,
+            position.currency.address
+          );
+          return null;
+        }
+
+        if (isAssetHidden(currentMarketData.market, underlyingTokenAddress)) {
+          return null;
+        }
+
+        if (position.debt.amount.value === '0') {
+          return null;
+        }
+
+        const isWrappedNative = reserve.acceptsNative !== null;
+
+        const updatedReserve: ReserveWithId = {
+          ...reserve,
+          borrowAPY: Number(position.apy.value),
+          underlyingBalance: position.debt.usd,
+          apyPosition: position.apy,
+          balancePosition: position.debt,
+        };
+
+        if (isWrappedNative) {
+          const nativeData = fetchIconSymbolAndName({
+            symbol: currentNetworkConfig.baseAssetSymbol,
+            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+          });
+
+          return {
+            ...updatedReserve,
+            symbol: nativeData.symbol,
+            iconSymbol: nativeData.iconSymbol,
+            name: nativeData.name,
+            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+            detailsAddress: position.currency.address,
+            id: reserve.id + '_native',
+            reserve: updatedReserve,
+          };
+        }
+
+        return {
+          ...updatedReserve,
+          reserve: updatedReserve,
+        };
+      })
+      .filter(Boolean);
+  }, [
+    currentMarketData.market,
+    currentNetworkConfig.baseAssetSymbol,
+    borrowReservesLookup,
+    userBorrows,
+  ]);
+
+  const disableEModeSwitch = useMemo(() => {
+    if (!userState?.eModeEnabled) {
+      return 0;
+    }
+
+    const eligibleReserves = borrowReserves.filter((reserve) => {
+      const userEmodeCategory = reserve.userState?.emode?.categoryId;
+      if (!userEmodeCategory) return false;
+
+      return reserve.eModeInfo?.find((e) => e.categoryId === userEmodeCategory && e.canBeBorrowed);
+    });
+
+    return eligibleReserves.length < 2;
+  }, [userState?.eModeEnabled, borrowReserves]);
+  const userEmodeCategoryId = useMemo(() => {
+    if (!userState?.eModeEnabled) {
+      return 0;
+    }
+
+    const reserveWithEmode = borrowReserves.find((reserve) =>
+      reserve.eModeInfo.find(
+        (e) => e.categoryId === reserve.userState?.emode?.categoryId && e.canBeBorrowed
+      )
+    );
+
+    return reserveWithEmode?.userState?.emode?.categoryId || 0;
+  }, [userState?.eModeEnabled, borrowReserves]);
+
+  if (loading || !userBorrows)
     return <ListLoader title={<Trans>Your borrows</Trans>} head={head.map((c) => c.title)} />;
 
-  let borrowPositions =
-    user?.userReservesData.reduce((acc, userReserve) => {
-      if (userReserve.variableBorrows !== '0') {
-        acc.push({
-          ...userReserve,
-          borrowRateMode: InterestRate.Variable,
-          reserve: {
-            ...userReserve.reserve,
-            ...(userReserve.reserve.isWrappedBaseAsset
-              ? fetchIconSymbolAndName({
-                  symbol: currentNetworkConfig.baseAssetSymbol,
-                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-                })
-              : {}),
-          },
-        });
-      }
-      return acc;
-    }, [] as (ComputedUserReserveData & { borrowRateMode: InterestRate })[]) || [];
-
   // Move GHO to top of borrowed positions list
-  const ghoReserve = borrowPositions.filter((pos) => pos.reserve.symbol === GHO_SYMBOL);
+  const ghoReserve = borrowedPositions.filter(
+    (pos) => pos?.reserve.underlyingToken.symbol === GHO_SYMBOL
+  );
   if (ghoReserve.length > 0) {
-    borrowPositions = borrowPositions.filter((pos) => pos.reserve.symbol !== GHO_SYMBOL);
-    borrowPositions.unshift(ghoReserve[0]);
+    borrowedPositions = borrowedPositions.filter(
+      (pos) => pos?.reserve.underlyingToken.symbol !== GHO_SYMBOL
+    );
+    borrowedPositions.unshift(ghoReserve[0]);
   }
 
-  const maxBorrowAmount = valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0').plus(
-    user?.availableBorrowsMarketReferenceCurrency || '0'
+  const maxBorrowAmount = valueToBigNumber(userState?.totalDebtBase || '0').plus(
+    userState?.availableBorrowsBase || '0'
   );
+
   const collateralUsagePercent = maxBorrowAmount.eq(0)
     ? '0'
-    : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
+    : valueToBigNumber(userState?.totalDebtBase || '0')
         .div(maxBorrowAmount)
         .toFixed();
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
-  const preSortedReserves = borrowPositions as DashboardReserve[];
+  const preSortedReserves = borrowedPositions as DashboardReserve[];
   const sortedReserves = handleSortDashboardReserves(
     sortDesc,
     sortName,
@@ -108,12 +203,6 @@ export const BorrowedPositionsList = () => {
     preSortedReserves,
     true
   ).filter((reserve) => !isAssetHidden(currentMarketData.market, reserve.underlyingAsset));
-
-  const disableEModeSwitch =
-    user.isInEmode &&
-    reserves.filter((reserve) =>
-      reserve.eModes.find((e) => e.id === user.userEmodeCategoryId && e.borrowingEnabled)
-    ).length < 2;
 
   const RenderHeader: React.FC = () => {
     return (
@@ -152,7 +241,7 @@ export const BorrowedPositionsList = () => {
       localStorageName="borrowedAssetsDashboardTableCollapse"
       subTitleComponent={
         showEModeButton ? (
-          <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />
+          <DashboardEModeButton userEmodeCategoryId={userState ? userEmodeCategoryId! : 0} />
         ) : undefined
       }
       noData={!sortedReserves.length}
@@ -160,10 +249,13 @@ export const BorrowedPositionsList = () => {
         <>
           {!!sortedReserves.length && (
             <>
-              <ListTopInfoItem title={<Trans>Balance</Trans>} value={user?.totalBorrowsUSD || 0} />
+              <ListTopInfoItem
+                title={<Trans>Balance</Trans>}
+                value={userState?.totalDebtBase || 0}
+              />
               <ListTopInfoItem
                 title={<Trans>APY</Trans>}
-                value={user?.debtAPY || 0}
+                value={debtAPY || 0}
                 percent
                 tooltip={
                   <TotalBorrowAPYTooltip
@@ -198,12 +290,12 @@ export const BorrowedPositionsList = () => {
         <>
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
-            <AssetCapsProvider
+            <AssetCapsProviderSDK
               asset={item.reserve}
               key={item.underlyingAsset + item.borrowRateMode}
             >
               <BorrowedPositionsListItem item={item} disableEModeSwitch={disableEModeSwitch} />
-            </AssetCapsProvider>
+            </AssetCapsProviderSDK>
           ))}
         </>
       ) : (
