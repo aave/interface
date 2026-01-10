@@ -35,7 +35,7 @@ export const BorrowedPositionsListItem = ({
   );
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
-  const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
+  const { openBorrow, openRepaySDK, openDebtSwitch } = useModalContext();
 
   const reserve = item.reserve;
 
@@ -76,7 +76,7 @@ export const BorrowedPositionsListItem = ({
       openBorrow(reserve.underlyingAsset, currentMarket, reserve.name, 'dashboard');
     },
     onOpenRepay: () => {
-      openRepay(
+      openRepaySDK(
         reserve.underlyingAsset,
         reserve.isFrozen,
         currentMarket,
