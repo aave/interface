@@ -1,15 +1,6 @@
 import { ChainId, valueToWei } from '@aave/contract-helpers';
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import {
-  AaveV3Arbitrum,
-  AaveV3Avalanche,
-  AaveV3Base,
-  AaveV3BNB,
-  AaveV3Ethereum,
-  AaveV3Gnosis,
-  AaveV3Optimism,
-  AaveV3Polygon,
-} from '@bgd-labs/aave-address-book';
+import { AaveV3Arbitrum } from '@bgd-labs/aave-address-book';
 import {
   BuildTxFunctions,
   constructBuildTx,
@@ -74,29 +65,10 @@ type ParaswapChainMap = {
 };
 
 const paraswapNetworks: ParaswapChainMap = {
-  [ChainId.mainnet]: {
-    paraswap: ParaSwap(ChainId.mainnet),
-    feeTarget: AaveV3Ethereum.COLLECTOR,
-  },
-  [ChainId.polygon]: {
-    paraswap: ParaSwap(ChainId.polygon),
-    feeTarget: AaveV3Polygon.COLLECTOR,
-  },
-  [ChainId.avalanche]: {
-    paraswap: ParaSwap(ChainId.avalanche),
-    feeTarget: AaveV3Avalanche.COLLECTOR,
-  },
   [ChainId.arbitrum_one]: {
     paraswap: ParaSwap(ChainId.arbitrum_one),
     feeTarget: AaveV3Arbitrum.COLLECTOR,
   },
-  [ChainId.optimism]: {
-    paraswap: ParaSwap(ChainId.optimism),
-    feeTarget: AaveV3Optimism.COLLECTOR,
-  },
-  [ChainId.base]: { paraswap: ParaSwap(ChainId.base), feeTarget: AaveV3Base.COLLECTOR },
-  [ChainId.bnb]: { paraswap: ParaSwap(ChainId.bnb), feeTarget: AaveV3BNB.COLLECTOR },
-  [ChainId.xdai]: { paraswap: ParaSwap(ChainId.xdai), feeTarget: AaveV3Gnosis.COLLECTOR },
 };
 
 export const getParaswap = (chainId: ChainId) => {

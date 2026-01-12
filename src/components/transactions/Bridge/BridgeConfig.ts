@@ -1,15 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import {
-  AaveV3Arbitrum,
-  AaveV3ArbitrumSepolia,
-  AaveV3Base,
-  AaveV3BaseSepolia,
-  AaveV3Ethereum,
-  AaveV3Sepolia,
-  GhoArbitrum,
-  GhoBase,
-  GhoEthereum,
-} from '@bgd-labs/aave-address-book';
+import { AaveV3Arbitrum, AaveV3ArbitrumSepolia, GhoArbitrum } from '@bgd-labs/aave-address-book';
 import { constants } from 'ethers';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { BaseNetworkConfig, networkConfigs } from 'src/ui-config/networksConfig';
@@ -41,44 +31,6 @@ export interface SupportedNetworkWithChainId extends BaseNetworkConfig {
 }
 
 const prodConfig: Config[] = [
-  {
-    sourceChainId: ChainId.mainnet,
-    chainSelector: '5009297550715157269',
-    lockReleaseTokenPool: GhoEthereum.GHO_CCIP_TOKEN_POOL,
-    router: '0x80226fc0ee2b096224eeac085bb9a8cba1146f7d',
-    tokenOracle: '0x3f12643d3f6f874d39c2a4c9f2cd6f2dbac877fc', // CL Feed
-    wrappedNativeOracle: AaveV3Ethereum.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/E11p8T4Ff1DHZbwSUC527hkUb5innVMdTuP6A2s1xtm1`,
-    feeTokens: [
-      {
-        name: 'Gho Token',
-        address: AaveV3Ethereum.ASSETS.GHO.UNDERLYING,
-        symbol: 'GHO',
-        decimals: 18,
-        chainId: ChainId.mainnet,
-        logoURI:
-          'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-        oracle: AaveV3Ethereum.ASSETS.GHO.ORACLE,
-        extensions: {
-          isNative: false,
-        },
-        balance: '0',
-      },
-      {
-        name: 'Ethereum',
-        symbol: 'ETH',
-        decimals: 18,
-        address: constants.AddressZero, // Use zero address for network token ccip
-        chainId: ChainId.mainnet,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-        extensions: {
-          isNative: true,
-        },
-        balance: '0',
-      },
-    ],
-  },
   {
     sourceChainId: ChainId.arbitrum_one,
     chainSelector: '4949039107694359620',
@@ -117,71 +69,9 @@ const prodConfig: Config[] = [
       },
     ],
   },
-  {
-    sourceChainId: ChainId.base,
-    chainSelector: '15971525489660198786',
-    burnMintTokenPool: GhoBase.GHO_CCIP_TOKEN_POOL,
-    router: '0x881e3A65B4d4a04dD529061dd0071cf975F58bCD',
-    tokenOracle: '0x42868EFcee13C0E71af89c04fF7d96f5bec479b0',
-    wrappedNativeOracle: AaveV3Base.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/7RqaLvSMWBv4Z3xmv4kb6Jq3t59ikYG3wpcsTnLgBWzt`,
-    feeTokens: [
-      {
-        name: 'Ethereum',
-        symbol: 'ETH',
-        decimals: 18,
-        address: constants.AddressZero, // Use zero address for network token ccip
-        chainId: ChainId.base,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-        extensions: {
-          isNative: true,
-        },
-        balance: '0',
-      },
-    ],
-  },
 ];
 
 const testnetConfig: Config[] = [
-  {
-    sourceChainId: ChainId.sepolia,
-    lockReleaseTokenPool: '0xd8bDb685320f7118085d5C8D0c2016A644881D40',
-    chainSelector: '16015286601757825753',
-    router: '0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59',
-    tokenOracle: '0x98458D6A99489F15e6eB5aFa67ACFAcf6F211051', // mock oracle
-    wrappedNativeOracle: AaveV3Sepolia.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8NWTrc4S6xwaBbajongofytQfQisqYm1zR2ghGEtRFSc`,
-    feeTokens: [
-      // {
-      //   name: 'Gho Token',
-      //   address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
-      //   symbol: 'GHO',
-      //   decimals: 18,
-      //   chainId: 11155111,
-      //   logoURI:
-      //     'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-      //   oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
-      //   extensions: {
-      //     isNative: false,
-      //   },
-      //   balance: '0',
-      // },
-      {
-        name: 'Ethereum',
-        symbol: 'ETH',
-        decimals: 18,
-        address: constants.AddressZero, // Use zero address for network token ccip
-        chainId: 11155111,
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-        extensions: {
-          isNative: true,
-        },
-        balance: '0',
-      },
-    ],
-  },
   {
     sourceChainId: ChainId.arbitrum_sepolia,
     burnMintTokenPool: '0xb4A1e95A2FA7ed83195C6c16660fCCa720163FF6',
@@ -191,50 +81,12 @@ const testnetConfig: Config[] = [
     wrappedNativeOracle: AaveV3ArbitrumSepolia.ASSETS.WETH.ORACLE,
     subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8bpqvL6XBCVhN4heE9rdEwgTketeZ2U5vVGEh5fDoUEH`,
     feeTokens: [
-      // {
-      //   name: 'Gho Token',
-      //   address: AaveV3Sepolia.ASSETS.GHO.UNDERLYING,
-      //   symbol: 'GHO',
-      //   decimals: 18,
-      //   chainId: 421614,
-      //   logoURI:
-      //     'https://assets.coingecko.com/coins/images/30663/standard/gho-token-logo.png?1720517092',
-      //   oracle: AaveV3Sepolia.ASSETS.GHO.ORACLE,
-      //   extensions: {
-      //     isNative: false,
-      //   },
-      //   balance: '0',
-      // },
       {
         name: 'Ethereum',
         symbol: 'ETH',
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: 421614, // Arb
-        logoURI:
-          'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
-        extensions: {
-          isNative: true,
-        },
-        balance: '0',
-      },
-    ],
-  },
-  {
-    sourceChainId: ChainId.base_sepolia,
-    burnMintTokenPool: '0x2a33945f942913b730aB36A24150A96c3D0CC9E9',
-    chainSelector: '10344971235874465080',
-    router: '0xD3b06cEbF099CE7DA4AcCf578aaebFDBd6e88a93',
-    tokenOracle: '0xFD5ea2e57CDC98D371D8eA899d1F2C24bfFb39BD',
-    wrappedNativeOracle: AaveV3BaseSepolia.ASSETS.WETH.ORACLE,
-    subgraphUrl: `https://gateway.thegraph.com/api/${process.env.NEXT_PUBLIC_SUBGRAPH_API_KEY}/subgraphs/id/8bpqvL6XBCVhN4heE9rdEwgTketeZ2U5vVGEh5fDoUEH`,
-    feeTokens: [
-      {
-        name: 'Ethereum',
-        symbol: 'ETH',
-        decimals: 18,
-        address: constants.AddressZero,
-        chainId: ChainId.base_sepolia,
         logoURI:
           'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
         extensions: {
