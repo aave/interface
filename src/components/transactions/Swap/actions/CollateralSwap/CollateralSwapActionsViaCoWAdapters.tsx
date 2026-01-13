@@ -19,8 +19,10 @@ import {
   addOrderTypeToAppData,
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
+  overrideSmartSlippageOnAppData,
 } from '../../helpers/cow';
-import { calculateInstanceAddress } from '../../helpers/cow/adapters.helpers';
+import { calculateInstanceAddress, getHooksGasLimit } from '../../helpers/cow/adapters.helpers';
+import { useCollateralsAmount } from '../../hooks/useCollateralsAmount';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
@@ -52,6 +54,8 @@ export const CollateralSwapActionsViaCowAdapters = ({
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
   const [user] = useRootStore(useShallow((state) => [state.account]));
+
+  const collateralsAmount = useCollateralsAmount();
 
   const {
     mainTxState,
@@ -216,6 +220,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
           validTo,
           owner: user as `0x${string}`,
           flashLoanFeeAmount,
+          hooksGasLimit: getHooksGasLimit(collateralsAmount),
         },
         {
           sellAmount: state.sellAmountBigInt,
@@ -227,6 +232,11 @@ export const CollateralSwapActionsViaCowAdapters = ({
 
       orderPostParams.swapSettings.appData = addOrderTypeToAppData(
         state.orderType,
+        orderPostParams.swapSettings.appData
+      );
+
+      orderPostParams.swapSettings.appData = overrideSmartSlippageOnAppData(
+        state,
         orderPostParams.swapSettings.appData
       );
 

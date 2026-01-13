@@ -60,7 +60,7 @@ export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
   [SupportedChainId.SEPOLIA]: '',
 };
 
-export const DUST_PROTECTION_MULTIPLIER = 1.001;
+export const DUST_PROTECTION_MULTIPLIER = 1.0003; // 3 BPS
 
 export const COW_UNSUPPORTED_ASSETS: Partial<
   Record<SwapType | 'ALL', Partial<Record<SupportedChainId, string[] | 'ALL'>>>
@@ -102,8 +102,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     ],
     [SupportedChainId.BASE]: [
       '0x90072A4aA69B5Eb74984Ab823EFC5f91e90b3a72'.toLowerCase(), // alBTC does not have good solver liquidity
-      '0x6Bb7a212910682DCFdbd5BCBb3e28FB4E8da10Ee'.toLowerCase(), // GHO does not have good solver liquidity
-      '0x60a3E35Cc302bFA44Cb288Bc5a4F316Fdb1adb42'.toLowerCase(), // EURC does not have good solver liquidity
     ],
     [SupportedChainId.MAINNET]: [
       '0x00907f9921424583e7ffBfEdf84F92B7B2Be4977'.toLowerCase(), // aGHO not supported
@@ -153,7 +151,6 @@ export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) 
 });
 
 export const FLASH_LOAN_FEE_BPS = 5;
-export const VALID_TO_HALF_HOUR = Math.floor(Date.now() / 1000) + 60 * 30; // 30 minutes
 
 export const COW_APP_DATA = (
   tokenFromSymbol: string,

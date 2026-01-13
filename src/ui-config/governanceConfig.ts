@@ -144,8 +144,8 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.sonic]: GovernanceV3Sonic.PC_DATA_HELPER,
       [ChainId.celo]: GovernanceV3Celo.PC_DATA_HELPER,
       [ChainId.soneium]: GovernanceV3Soneium.PC_DATA_HELPER,
-      [9745]: GovernanceV3Plasma.PC_DATA_HELPER,
-      [57073]: GovernanceV3Ink.PC_DATA_HELPER,
+      [ChainId.plasma]: GovernanceV3Plasma.PC_DATA_HELPER,
+      [ChainId.ink]: GovernanceV3Ink.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,

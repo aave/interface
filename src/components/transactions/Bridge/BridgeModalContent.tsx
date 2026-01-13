@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { AaveV3InkWhitelabel } from '@bgd-labs/aave-address-book';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
@@ -58,11 +59,11 @@ const defaultNetwork = supportedNetworksWithBridge[0];
 function getUseBridgeTokensParams(chainId: number): UseBridgeTokensParams {
   const tokenOracle = getConfigFor(chainId).tokenOracle;
 
-  if (chainId === 57073) {
+  if (chainId === ChainId.ink) {
     // no market config available yet for ink, so values are set here
     return {
       chainId,
-      ghoTokenAddress: '0xfc421aD3C883Bf9E7C4f42dE845C4e4405799e73',
+      ghoTokenAddress: AaveV3InkWhitelabel.ASSETS.GHO.UNDERLYING,
       tokenOracle,
       walletBalanceProviderAddress: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
     };
@@ -324,7 +325,7 @@ export const BridgeModalContent = () => {
   );
 
   // There's no market config available for ink yet, so skip showing gas station since it relies on having a market
-  const showGasStation = sourceNetworkObj.chainId !== 57073;
+  const showGasStation = sourceNetworkObj.chainId !== ChainId.ink;
 
   return (
     <>

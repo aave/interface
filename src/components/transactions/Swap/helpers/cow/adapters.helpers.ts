@@ -23,6 +23,17 @@ import {
 import { isCowProtocolRates, OrderType, SwapProvider, SwapState, SwapType } from '../../types';
 import { getCowFlashLoanSdk } from './env.helpers';
 
+export const accountForDustProtection = (
+  amount: string,
+  swapType: SwapType,
+  orderType: OrderType
+) => {
+  return (swapType == SwapType.DebtSwap || swapType == SwapType.RepayWithCollateral) &&
+    orderType == OrderType.MARKET
+    ? valueToBigNumber(amount).multipliedBy(DUST_PROTECTION_MULTIPLIER).toFixed(0)
+    : amount;
+};
+
 export const calculateInstanceAddress = async ({
   user,
   validTo,
@@ -45,7 +56,7 @@ export const calculateInstanceAddress = async ({
 
   const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
   const {
-    sellAmount,
+    sellAmountWithMarginForDustProtection,
     buyAmountWithMarginForDustProtection,
     buyAmount,
     sellToken,
@@ -55,14 +66,16 @@ export const calculateInstanceAddress = async ({
     slippageBps,
     partnerFee,
   } = {
-    sellAmount: state.sellAmountBigInt,
-    // @note: We wont have dust for borrow side, but we may have dust in collateral swaps
-    buyAmountWithMarginForDustProtection:
-      state.swapType !== SwapType.CollateralSwap
-        ? valueToBigNumber(state.buyAmountBigInt.toString())
-            .multipliedBy(DUST_PROTECTION_MULTIPLIER)
-            .toFixed(0)
-        : state.buyAmountBigInt,
+    sellAmountWithMarginForDustProtection: accountForDustProtection(
+      state.sellAmountBigInt.toString(),
+      state.swapType,
+      state.orderType
+    ),
+    buyAmountWithMarginForDustProtection: accountForDustProtection(
+      state.buyAmountBigInt.toString(),
+      state.swapType,
+      state.orderType
+    ),
     sellToken: state.sellAmountToken,
     buyAmount: state.buyAmountBigInt,
     buyToken: state.buyAmountToken,
@@ -74,7 +87,7 @@ export const calculateInstanceAddress = async ({
 
   const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
     flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
-    sellAmount: sellAmount,
+    sellAmount: BigInt(sellAmountWithMarginForDustProtection),
   });
 
   const limitOrder: LimitTradeParameters = {
@@ -110,9 +123,9 @@ export const calculateInstanceAddress = async ({
   };
 
   const hookAmounts: FlashLoanHookAmounts = {
-    flashLoanAmount: sellAmount.toString(),
+    flashLoanAmount: sellAmountWithMarginForDustProtection.toString(),
     flashLoanFeeAmount: flashLoanFeeAmount.toString(),
-    sellAssetAmount: sellAmount.toString(),
+    sellAssetAmount: sellAmountWithMarginForDustProtection.toString(),
     buyAssetAmount: buyAmountWithMarginForDustProtection.toString(),
   };
 
@@ -123,6 +136,18 @@ export const calculateInstanceAddress = async ({
     hookAmounts,
     encodedOrder
   );
+};
+
+export const getHooksGasLimit = (
+  collateralsAmount: number
+): {
+  preHookGasLimit: bigint;
+  postHookGasLimit: bigint;
+} => {
+  return {
+    preHookGasLimit: BigInt(300000),
+    postHookGasLimit: BigInt(Math.min(600000 + collateralsAmount * 100000, 1500000)),
+  };
 };
 
 export const calculateFlashLoanAmounts = (

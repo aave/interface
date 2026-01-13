@@ -203,7 +203,7 @@ const prodConfig: Config[] = [
     ],
   },
   {
-    sourceChainId: 57073,
+    sourceChainId: ChainId.ink,
     chainSelector: '3461204551265785888',
     burnMintTokenPool: '0xDe6539018B095353A40753Dc54C91C68c9487D4E',
     router: '0xca7c90A52B44E301AC01Cb5EB99b2fD99339433A',
@@ -216,7 +216,7 @@ const prodConfig: Config[] = [
         symbol: 'ETH',
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
-        chainId: 57073,
+        chainId: ChainId.ink,
         extensions: {
           isNative: true,
         },
