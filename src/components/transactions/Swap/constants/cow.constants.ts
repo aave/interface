@@ -145,10 +145,29 @@ export const COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV = (env: CowEnv) => {
 export const COW_CREATE_ORDER_ABI =
   'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
 
-export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) => ({
-  volumeBps: getAssetGroup(tokenFromSymbol) == getAssetGroup(tokenToSymbol) ? 15 : 25,
-  recipient: COW_EVM_RECIPIENT,
-});
+const DEFAULT_PARTNER_FEE_SAME_GROUP_BPS = 15;
+const DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS = 25;
+const PARTNER_FEE_BPS_BY_SWAP_TYPE: Partial<Record<SwapType, number>> = {
+  [SwapType.DebtSwap]: 0,
+};
+
+export const COW_PARTNER_FEE = (
+  tokenFromSymbol: string,
+  tokenToSymbol: string,
+  swapType?: SwapType
+) => {
+  const swapTypeBps = swapType !== undefined ? PARTNER_FEE_BPS_BY_SWAP_TYPE[swapType] : undefined;
+
+  const defaultBps =
+    getAssetGroup(tokenFromSymbol) == getAssetGroup(tokenToSymbol)
+      ? DEFAULT_PARTNER_FEE_SAME_GROUP_BPS
+      : DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS;
+
+  return {
+    volumeBps: swapTypeBps !== undefined ? swapTypeBps : defaultBps,
+    recipient: COW_EVM_RECIPIENT,
+  };
+};
 
 export const FLASH_LOAN_FEE_BPS = 5;
 
@@ -159,6 +178,7 @@ export const COW_APP_DATA = (
   smartSlippage: boolean,
   orderType: OrderType,
   appCode: string,
+  swapType?: SwapType,
   hooks?: Record<string, unknown>
 ) => ({
   appCode: appCode,
@@ -171,7 +191,7 @@ export const COW_APP_DATA = (
       ? { quote: { slippageBips, smartSlippage } }
       : // Slippage is not used in limit orders
         {}),
-    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
+    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol, swapType),
     hooks,
   },
 });
