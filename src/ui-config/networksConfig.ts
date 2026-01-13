@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { arbitrum, arbitrumSepolia, Chain } from 'wagmi/chains';
+import { arbitrum, arbitrumSepolia, Chain, mainnet } from 'wagmi/chains';
 
 export type ExplorerLinkBuilderProps = {
   tx?: string;
@@ -74,6 +74,22 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
 };
 
 export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
+  [ChainId.mainnet]: {
+    name: 'Ethereum',
+    publicJsonRPCUrl: [
+      'https://rpc.ankr.com/eth',
+      'https://rpc.flashbots.net',
+      'https://eth-mainnet.public.blastapi.io',
+    ],
+    publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://etherscan.io',
+    networkLogoPath: '/icons/networks/ethereum.svg',
+    wagmiChain: mainnet,
+  },
   [ChainId.arbitrum_one]: {
     name: 'Arbitrum',
     privateJsonRPCUrl: 'https://arb-mainnet.g.alchemy.com/v2/2oA-8BGeYqHHpd2uCU49IzeZDL9skdSm', //'https://arbitrum-one.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
