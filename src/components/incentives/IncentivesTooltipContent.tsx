@@ -188,6 +188,11 @@ const IncentivesSymbolMap: {
     symbol: 'TydroInkPoints',
     aToken: false,
   },
+  aEthUSDG: {
+    tokenIconSymbol: 'USDG',
+    symbol: 'aUSDG',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
