@@ -220,7 +220,11 @@ export const DebtSwapActionsViaCoW = ({
         quoteId: isCowProtocolRates(state.swapRate) ? state.swapRate?.quoteId : undefined,
         validTo,
         slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
-        partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),
+        partnerFee: COW_PARTNER_FEE(
+          state.sellAmountToken.symbol,
+          state.buyAmountToken.symbol,
+          state.swapType
+        ),
       };
 
       const orderToSign = getOrderToSign(

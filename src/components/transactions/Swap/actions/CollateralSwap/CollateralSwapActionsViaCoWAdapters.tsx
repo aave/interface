@@ -198,7 +198,11 @@ export const CollateralSwapActionsViaCowAdapters = ({
         kind: state.processedSide === 'buy' ? OrderKind.BUY : OrderKind.SELL,
         validTo,
         slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
-        partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),
+        partnerFee: COW_PARTNER_FEE(
+          state.sellAmountToken.symbol,
+          state.buyAmountToken.symbol,
+          state.swapType
+        ),
       };
 
       const orderToSign = getOrderToSign(

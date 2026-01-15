@@ -82,7 +82,11 @@ export const calculateInstanceAddress = async ({
     quoteId: isCowProtocolRates(state.swapRate) ? state.swapRate?.quoteId : undefined,
     side: state.processedSide,
     slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
-    partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),
+    partnerFee: COW_PARTNER_FEE(
+      state.sellAmountToken.symbol,
+      state.buyAmountToken.symbol,
+      state.swapType
+    ),
   };
 
   const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
