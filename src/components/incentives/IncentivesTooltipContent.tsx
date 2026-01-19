@@ -193,6 +193,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDG',
     aToken: true,
   },
+  aOP: {
+    tokenIconSymbol: 'OP',
+    symbol: 'aOP',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
