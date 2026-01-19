@@ -1,5 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
-import { arbitrum, arbitrumSepolia, Chain, mainnet } from 'wagmi/chains';
+import { arbitrumSepolia, Chain } from 'wagmi/chains';
+
+const MONAD_CHAIN_ID = 105;
 
 export type ExplorerLinkBuilderProps = {
   tx?: string;
@@ -52,16 +54,19 @@ export type NetworkConfig = {
 
 export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 
-const ratesHistoryApiUrl = `${process.env.NEXT_PUBLIC_API_BASEURL}/data/rates-history`;
-
 export const testnetConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.arbitrum_sepolia]: {
     name: 'Arbitrum Sepolia',
+    privateJsonRPCUrl:
+      process.env.NEXT_PUBLIC_ARBITRUM_SEPOLIA_RPC_URL || 'https://sepolia-rollup.arbitrum.io/rpc',
+    privateJsonRPCWSUrl:
+      process.env.NEXT_PUBLIC_ARBITRUM_SEPOLIA_WS_RPC_URL || 'wss://sepolia-rollup.arbitrum.io/rpc',
     publicJsonRPCUrl: [
-      'https://sepolia-rollup.arbitrum.io/rpc',
+      process.env.NEXT_PUBLIC_ARBITRUM_SEPOLIA_RPC_URL || 'https://sepolia-rollup.arbitrum.io/rpc',
       'https://public.stackup.sh/api/v1/node/arbitrum-sepolia',
     ],
-    publicJsonRPCWSUrl: 'https://sepolia-rollup.arbitrum.io/rpc',
+    publicJsonRPCWSUrl:
+      process.env.NEXT_PUBLIC_ARBITRUM_SEPOLIA_WS_RPC_URL || 'wss://sepolia-rollup.arbitrum.io/rpc',
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -73,45 +78,43 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
   },
 };
 
-export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
-  [ChainId.mainnet]: {
-    name: 'Ethereum',
-    publicJsonRPCUrl: [
-      'https://rpc.ankr.com/eth',
-      'https://rpc.flashbots.net',
-      'https://eth-mainnet.public.blastapi.io',
-    ],
-    publicJsonRPCWSUrl: 'wss://eth-mainnet.alchemyapi.io/v2/demo',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://etherscan.io',
-    networkLogoPath: '/icons/networks/ethereum.svg',
-    wagmiChain: mainnet,
+const monadChain: Chain = {
+  id: MONAD_CHAIN_ID,
+  name: 'Monad',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'MON',
+    symbol: 'MON',
   },
-  [ChainId.arbitrum_one]: {
-    name: 'Arbitrum',
-    privateJsonRPCUrl: 'https://arb-mainnet.g.alchemy.com/v2/2oA-8BGeYqHHpd2uCU49IzeZDL9skdSm', //'https://arbitrum-one.rpc.grove.city/v1/62b3314e123e6f00397f19ca',
-    publicJsonRPCUrl: [
-      'https://arb1.arbitrum.io/rpc',
-      'https://rpc.ankr.com/arbitrum',
-      'https://1rpc.io/arb',
-    ],
-    publicJsonRPCWSUrl: 'wss://arb1.arbitrum.io/rpc',
-    baseUniswapAdapter: '0x0',
-    baseAssetSymbol: 'ETH',
-    wrappedBaseAssetSymbol: 'WETH',
-    baseAssetDecimals: 18,
-    explorerLink: 'https://arbiscan.io',
-    networkLogoPath: '/icons/networks/arbitrum.svg',
-    bridge: {
-      icon: '/icons/bridge/arbitrum.svg',
-      name: 'Arbitrum Bridge',
-      url: 'https://bridge.arbitrum.io',
+  rpcUrls: {
+    default: {
+      http: [process.env.NEXT_PUBLIC_MONAD_RPC_URL || 'https://rpc.monad.xyz'],
     },
-    ratesHistoryApiUrl,
-    wagmiChain: arbitrum,
+  },
+  blockExplorers: {
+    default: {
+      name: 'Monad Explorer',
+      url: process.env.NEXT_PUBLIC_MONAD_EXPLORER_URL || 'https://explorer.monad.xyz',
+    },
+  },
+  testnet: false,
+};
+
+export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
+  [MONAD_CHAIN_ID]: {
+    name: 'Monad',
+    displayName: 'Monad',
+    privateJsonRPCUrl: process.env.NEXT_PUBLIC_MONAD_RPC_URL || 'https://rpc.monad.xyz',
+    privateJsonRPCWSUrl: process.env.NEXT_PUBLIC_MONAD_WS_RPC_URL,
+    publicJsonRPCUrl: [process.env.NEXT_PUBLIC_MONAD_RPC_URL || 'https://rpc.monad.xyz'],
+    publicJsonRPCWSUrl: process.env.NEXT_PUBLIC_MONAD_WS_RPC_URL,
+    baseUniswapAdapter: '0x0',
+    baseAssetSymbol: 'MON',
+    wrappedBaseAssetSymbol: 'WMON',
+    baseAssetDecimals: 18,
+    explorerLink: process.env.NEXT_PUBLIC_MONAD_EXPLORER_URL || 'https://explorer.monad.xyz',
+    networkLogoPath: '/icons/networks/monad.svg',
+    wagmiChain: monadChain,
   },
 };
 

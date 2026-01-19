@@ -39,11 +39,6 @@ const BridgeModal = dynamic(() =>
 const BorrowModal = dynamic(() =>
   import('src/components/transactions/Borrow/BorrowModal').then((module) => module.BorrowModal)
 );
-const ClaimRewardsModal = dynamic(() =>
-  import('src/components/transactions/ClaimRewards/ClaimRewardsModal').then(
-    (module) => module.ClaimRewardsModal
-  )
-);
 const CollateralChangeModal = dynamic(() =>
   import('src/components/transactions/CollateralChange/CollateralChangeModal').then(
     (module) => module.CollateralChangeModal
@@ -72,11 +67,6 @@ const SwapModal = dynamic(() =>
 const WithdrawModal = dynamic(() =>
   import('src/components/transactions/Withdraw/WithdrawModal').then(
     (module) => module.WithdrawModal
-  )
-);
-const StakingMigrateModal = dynamic(() =>
-  import('src/components/transactions/StakingMigrate/StakingMigrateModal').then(
-    (module) => module.StakingMigrateModal
   )
 );
 const ReadOnlyModal = dynamic(() =>
@@ -130,11 +120,12 @@ export default function MyApp(props: MyAppProps) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <Meta
-        title={'Open Source Liquidity Protocol'}
+        title={process.env.NEXT_PUBLIC_APP_NAME || 'Custom Protocol'}
         description={
-          'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
+          process.env.NEXT_PUBLIC_APP_DESCRIPTION ||
+          'Non-custodial liquidity protocol to create liquidity markets and earn interest on supplying and borrowing assets.'
         }
-        imageUrl="https://app.aave.com/aave-com-opengraph.png"
+        imageUrl={process.env.NEXT_PUBLIC_APP_OG_IMAGE || 'https://app.example.com/og-image.png'}
       />
       <NoSsr>
         <LanguageProvider>
@@ -158,13 +149,11 @@ export default function MyApp(props: MyAppProps) {
                               <RepayModal />
                               <CollateralChangeModal />
                               <DebtSwitchModal />
-                              <ClaimRewardsModal />
                               <EmodeModal />
                               <SwapModal />
                               <FaucetModal />
                               <TransactionEventHandler />
                               <SwitchModal />
-                              <StakingMigrateModal />
                               <BridgeModal />
                               <ReadOnlyModal />
                             </GasStationProvider>
