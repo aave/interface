@@ -58,7 +58,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { email, text, walletAddress } = req.body;
+    const { email, text, walletAddress, country } = req.body;
+
+    const sanitizedCountry = typeof country === 'string' ? country.trim() : '';
 
     if (!email || !text) {
       return res.status(400).json({ message: 'Email and text are required.' });
@@ -71,6 +73,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!text?.trim()) {
       return res.status(400).json({ error: 'Missing inquiry' });
     }
+
     let sanitizedWalletAddress: string | undefined = undefined;
     if (walletAddress && typeof walletAddress === 'string') {
       const candidate = walletAddress.trim();
@@ -171,6 +174,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             key: 'wallet_address',
             type: 'STRING',
             stringValue: sanitizedWalletAddress ?? '',
+          },
+          {
+            key: 'webform_country',
+            type: 'STRING',
+            stringValue: sanitizedCountry,
           },
         ],
       },
