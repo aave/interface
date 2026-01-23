@@ -198,6 +198,11 @@ const IncentivesSymbolMap: {
     symbol: 'aOP',
     aToken: true,
   },
+  'aUSD₮': {
+    tokenIconSymbol: 'usd₮',
+    symbol: 'aUSDT',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
