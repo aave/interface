@@ -13,6 +13,7 @@ import {
   ink,
   linea,
   mainnet,
+  mantle,
   metis,
   optimism,
   optimismSepolia,
@@ -451,6 +452,16 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://explorer.inkonchain.com/',
     networkLogoPath: '/icons/networks/ink.svg',
     wagmiChain: ink,
+  },
+  [ChainId.mantle]: {
+    name: 'Mantle',
+    publicJsonRPCUrl: ['https://rpc.mantle.xyz'],
+    baseAssetSymbol: 'MNT',
+    wrappedBaseAssetSymbol: 'WMNT',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://mantlescan.xyz',
+    networkLogoPath: '/icons/networks/mantle.svg',
+    wagmiChain: mantle,
   },
 };
 
