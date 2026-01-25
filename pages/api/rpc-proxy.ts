@@ -27,10 +27,10 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
   [ChainId.soneium]: { network: 'soneium-mainnet', apiKey: process.env.SONEIUM_RPC_API_KEY || '' },
   [ChainId.ink]: { network: 'ink-mainnet', apiKey: process.env.INK_RPC_API_KEY || '' },
   [ChainId.plasma]: { network: 'plasma-mainnet', apiKey: process.env.PLASMA_RPC_API_KEY || '' },
-  [ChainId.mantle]: {
-    network: 'mantle-mainnet',
-    apiKey: process.env.MANTLE_RPC_API_KEY || 'https://rpc.mantle.xyz',
-  },
+  // [ChainId.mantle]: {
+  //   network: 'mantle-mainnet',
+  //   apiKey: process.env.MANTLE_RPC_API_KEY
+  // },
 
   // Testnets
   [ChainId.sepolia]: { network: 'eth-sepolia', apiKey: process.env.MAINNET_RPC_API_KEY || '' },
@@ -51,6 +51,10 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
 };
 
 function getRpcUrl(chainId: number): string | null {
+  // Note: workaround for mantle mainnet
+  if (chainId === 5000) {
+    return 'https://rpc.mantle.xyz';
+  }
   const config = NETWORK_CONFIG[chainId];
   if (!config) return null;
   return `https://${config.network}.g.alchemy.com/v2/${config.apiKey}`;
