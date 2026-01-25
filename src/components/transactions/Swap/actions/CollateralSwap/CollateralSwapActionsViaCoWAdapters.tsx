@@ -19,6 +19,7 @@ import {
   addOrderTypeToAppData,
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
+  overrideSmartSlippageOnAppData,
 } from '../../helpers/cow';
 import { calculateInstanceAddress, getHooksGasLimit } from '../../helpers/cow/adapters.helpers';
 import { useCollateralsAmount } from '../../hooks/useCollateralsAmount';
@@ -197,7 +198,11 @@ export const CollateralSwapActionsViaCowAdapters = ({
         kind: state.processedSide === 'buy' ? OrderKind.BUY : OrderKind.SELL,
         validTo,
         slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
-        partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),
+        partnerFee: COW_PARTNER_FEE(
+          state.sellAmountToken.symbol,
+          state.buyAmountToken.symbol,
+          state.swapType
+        ),
       };
 
       const orderToSign = getOrderToSign(
@@ -231,6 +236,11 @@ export const CollateralSwapActionsViaCowAdapters = ({
 
       orderPostParams.swapSettings.appData = addOrderTypeToAppData(
         state.orderType,
+        orderPostParams.swapSettings.appData
+      );
+
+      orderPostParams.swapSettings.appData = overrideSmartSlippageOnAppData(
+        state,
         orderPostParams.swapSettings.appData
       );
 

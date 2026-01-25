@@ -103,7 +103,7 @@ export async function getCowProtocolSellRates({
             buyTokenDecimals: destDecimals,
             signer,
             appCode: appCode,
-            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
+            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol, swapType),
           },
           {
             // Price Quality is set to OPTIMAL by default

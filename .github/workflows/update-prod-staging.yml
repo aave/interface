@@ -19,7 +19,7 @@ jobs:
       name: ${{ matrix.environment.name }}
       url: https://${{ matrix.environment.domain }}
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
 
       - name: download build
         uses: actions/download-artifact@v4
@@ -43,7 +43,7 @@ jobs:
           echo "TAG=release-$(date '+%Y-%m-%d_%H-%M')" >> ${GITHUB_ENV}
 
       - name: Create GH release
-        uses: ncipollo/release-action@4c75f0f2e4ae5f3c807cf0904605408e319dcaac # v1.10.0
+        uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
         with:
           name: Production release
           artifacts: app.tar.gz

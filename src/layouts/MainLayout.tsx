@@ -118,17 +118,18 @@ const getCampaignConfigs = () => ({
   },
 });
 
+// For defining Route specific campaigns if needed in future
 const routeCampaigns = {
-  '/sgho': {
-    notifyText: "Earn 4% higher yield on savings GHO using OKX's GHO staking vault.",
-    buttonText: 'Learn more',
-    buttonAction: {
-      type: 'url' as const,
-      value: 'https://web3.okx.com/earn/activity/aave-gho',
-      target: '_blank' as const,
-    },
-    bannerVersion: 'sgho-okx-v1',
-  },
+  // '/sgho': {
+  //   notifyText: "Earn 4% higher yield on savings GHO using OKX's GHO staking vault.",
+  //   buttonText: 'Learn more',
+  //   buttonAction: {
+  //     type: 'url' as const,
+  //     value: 'https://web3.okx.com/earn/activity/aave-gho',
+  //     target: '_blank' as const,
+  //   },
+  //   bannerVersion: 'sgho-okx-v1',
+  // },
 };
 
 export function MainLayout({ children }: { children: ReactNode }) {
