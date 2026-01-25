@@ -56,13 +56,15 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         {reserve.isFrozen && !offboardingDiscussion ? (
           <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
             <Trans>
-              This asset is frozen due to an Aave community decision.{' '}
-              <Link
-                href={getFrozenProposalLink(reserve.symbol, currentMarket)}
-                sx={{ textDecoration: 'underline' }}
-              >
-                <Trans>More details</Trans>
-              </Link>
+              This asset is frozen due to a protocol governance decision.{' '}
+              {getFrozenProposalLink(reserve.symbol, currentMarket) && (
+                <Link
+                  href={getFrozenProposalLink(reserve.symbol, currentMarket)}
+                  sx={{ textDecoration: 'underline' }}
+                >
+                  <Trans>More details</Trans>
+                </Link>
+              )}
             </Trans>
           </Warning>
         ) : offboardingDiscussion ? (
@@ -81,16 +83,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
           reserve.symbol === 'MAI' ? (
             <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
               <Trans>
-                MAI has been paused due to a community decision. Supply, borrows and repays are
-                impacted.{' '}
-                <Link
-                  href={
-                    'https://governance.aave.com/t/arfc-add-mai-to-arbitrum-aave-v3-market/12759/8'
-                  }
-                  sx={{ textDecoration: 'underline' }}
-                >
-                  <Trans>More details</Trans>
-                </Link>
+                MAI has been paused due to a protocol governance decision. Supply, borrows and
+                repays are impacted.
               </Trans>
             </Warning>
           ) : (

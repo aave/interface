@@ -24,44 +24,52 @@ let prodChains = Object.values(prodNetworkConfig).map((config) => config.wagmiCh
   ...Chain[]
 ];
 
-const { name, baseAssetDecimals, baseAssetSymbol } = networkConfigs[FORK_BASE_CHAIN_ID];
-
-const forkChain: Chain = {
-  id: FORK_CHAIN_ID,
-  name: `${name} Fork`,
-  nativeCurrency: {
-    decimals: baseAssetDecimals,
-    name: baseAssetSymbol,
-    symbol: baseAssetSymbol,
-  },
-  rpcUrls: {
-    default: { http: [FORK_RPC_URL] },
-  },
-  testnet: false,
-};
-
-if (FORK_ENABLED) {
+let forkChain: Chain | undefined;
+if (FORK_ENABLED && networkConfigs[FORK_BASE_CHAIN_ID]) {
+  const { name, baseAssetDecimals, baseAssetSymbol } = networkConfigs[FORK_BASE_CHAIN_ID];
+  forkChain = {
+    id: FORK_CHAIN_ID,
+    name: `${name} Fork`,
+    nativeCurrency: {
+      decimals: baseAssetDecimals,
+      name: baseAssetSymbol,
+      symbol: baseAssetSymbol,
+    },
+    rpcUrls: {
+      default: { http: [FORK_RPC_URL] },
+    },
+    testnet: false,
+  };
   prodChains = [forkChain, ...prodChains];
 }
 
+// Custom protocol branding
 const defaultConfig = {
   walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
-  appName: 'Aave',
-  appDescription: 'Non-custodial liquidity protocol',
-  appUrl: 'https://app.aave.com',
-  appIcon: 'https://avatars.githubusercontent.com/u/47617460?s=200&v=4',
+  appName: process.env.NEXT_PUBLIC_APP_NAME || 'Custom Protocol',
+  appDescription: process.env.NEXT_PUBLIC_APP_DESCRIPTION || 'Non-custodial liquidity protocol',
+  appUrl: process.env.NEXT_PUBLIC_APP_URL || 'https://app.example.com',
+  appIcon:
+    process.env.NEXT_PUBLIC_APP_ICON ||
+    'https://avatars.githubusercontent.com/u/47617460?s=200&v=4',
 };
 
-const cypressConfig = createConfig(
-  getDefaultConfig({
-    chains: [forkChain],
-    connectors: [injected()],
-    ...defaultConfig,
-  })
-);
+const cypressConfig = forkChain
+  ? createConfig(
+      getDefaultConfig({
+        chains: [forkChain],
+        connectors: [injected()],
+        ...defaultConfig,
+      })
+    )
+  : null;
 
 const getTransport = (chainId: number) => {
-  return networkConfigs[chainId].publicJsonRPCUrl[0];
+  const config = networkConfigs[chainId];
+  if (!config || !config.publicJsonRPCUrl || config.publicJsonRPCUrl.length === 0) {
+    throw new Error(`No RPC URL configured for chain ${chainId}`);
+  }
+  return config.publicJsonRPCUrl[0];
 };
 
 const buildTransports = (chains: CreateConfigParameters['chains']) =>
@@ -92,4 +100,4 @@ const prodConfig = createConfig({
 
 const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
 
-export const wagmiConfig = isCypressEnabled ? cypressConfig : prodConfig;
+export const wagmiConfig = isCypressEnabled && cypressConfig ? cypressConfig : prodConfig;

@@ -603,10 +603,6 @@ msgstr "Some migrated assets will not be used as collateral due to enabled isola
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
-msgstr "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
-
 #: src/modules/reserve-overview/AddTokenDropdown.tsx
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Underlying token"
@@ -701,10 +697,6 @@ msgstr "At a discount"
 msgid "Asset category"
 msgstr "Asset category"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
-msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
-msgstr "This asset is frozen due to an Aave community decision. <0>More details</0>"
-
 #: src/components/transactions/Faucet/FaucetModal.tsx
 #: src/modules/dashboard/lists/ListBottomText.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
@@ -714,10 +706,6 @@ msgstr "This asset is frozen due to an Aave community decision. <0>More details<
 #: src/ui-config/menu-items/index.tsx
 msgid "Faucet"
 msgstr "Faucet"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Optimized for efficiency and risk by supporting blue-chip collateral assets"
-msgstr "Optimized for efficiency and risk by supporting blue-chip collateral assets"
 
 #: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
 msgid "The fee includes the gas cost to complete the transaction on the destination chain and the fee paid to Chainlink CCIP service providers. You can chose to pay in the network token or GHO. <0>Learn more</0>"
@@ -824,10 +812,6 @@ msgstr "Collateralization"
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
 msgstr "You can report incident to our <0>Discord</0> or<1>Github</1>."
-
-#: src/components/MarketSwitcher.tsx
-msgid "Main Ethereum market with the largest selection of assets and yield options"
-msgstr "Main Ethereum market with the largest selection of assets and yield options"
 
 #: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
@@ -1027,9 +1011,12 @@ msgstr "Cooldown period"
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Select Market"
+msgstr "Select Market"
+
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/ZkSyncIgniteIncentivesTooltipContent.tsx
-#: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
@@ -1048,6 +1035,10 @@ msgstr "Liquidation at"
 #: src/modules/staking/GhoDiscountProgram.tsx
 msgid "{0}"
 msgstr "{0}"
+
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "MAI has been paused due to a protocol governance decision. Supply, borrows and repays are impacted."
+msgstr "MAI has been paused due to a protocol governance decision. Supply, borrows and repays are impacted."
 
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
@@ -1072,7 +1063,6 @@ msgstr "Reward(s) to claim"
 #: src/components/transactions/Stake/StakeActions.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/ui-config/menu-items/index.tsx
 msgid "Stake"
 msgstr "Stake"
 
@@ -1595,6 +1585,10 @@ msgstr "Borrow"
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
+#: src/modules/reserve-overview/ReserveConfiguration.tsx
+msgid "This asset is frozen due to a protocol governance decision. {0}"
+msgstr "This asset is frozen due to a protocol governance decision. {0}"
+
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
@@ -2063,10 +2057,6 @@ msgstr "Available"
 msgid "You did not participate in this proposal"
 msgstr "You did not participate in this proposal"
 
-#: src/ui-config/menu-items/index.tsx
-msgid "Governance"
-msgstr "Governance"
-
 #: src/components/TitleWithSearchBar.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Cancel"
@@ -2297,10 +2287,6 @@ msgstr "This address is blocked on app.aave.com because it is associated with on
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Version 3"
-msgstr "Version 3"
 
 #: src/modules/reserve-overview/Gho/GhoDiscountCalculator.tsx
 msgid "You may borrow up to <0/> GHO at <1/> (max discount)"
@@ -2596,10 +2582,6 @@ msgstr "Balancer Pool"
 #: src/components/transactions/Repay/CollateralRepayModalContent.tsx
 msgid "Expected amount to repay"
 msgstr "Expected amount to repay"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Version 2"
-msgstr "Version 2"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets. <0>Learn more</0>"
