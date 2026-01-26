@@ -35,9 +35,15 @@ export const SuppliedPositionsListItem = ({
 
   const showSwitchButton = isFeatureEnabled.liquiditySwap(currentMarketData);
 
+  // Check if asset has non-zero liquidation threshold (base or in user's e-mode)
+  const userEMode = reserve.eModes?.find((e) => e.id === user?.userEmodeCategoryId);
+  const hasLiquidationThreshold =
+    reserve.reserveLiquidationThreshold !== '0' ||
+    !!(user?.isInEmode && userEMode?.collateralEnabled);
+
   const canBeEnabledAsCollateral = user
     ? !debtCeiling.isMaxed &&
-      reserve.reserveLiquidationThreshold !== '0' &&
+      hasLiquidationThreshold &&
       ((!reserve.isIsolated && !user.isInIsolationMode) ||
         user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
         (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'))
