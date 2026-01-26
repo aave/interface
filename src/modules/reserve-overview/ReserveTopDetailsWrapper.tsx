@@ -168,12 +168,14 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                     <Box sx={{ display: 'flex' }}>
                       <TokenLinkDropdown
                         poolReserve={poolReserve}
+                        iconSymbol={displayIconSymbol}
                         downToSM={downToSM}
                         hideAToken={isGho}
                       />
                       {currentAccount && (
                         <AddTokenDropdown
                           poolReserve={poolReserve}
+                          iconSymbol={displayIconSymbol}
                           downToSM={downToSM}
                           switchNetwork={switchNetwork}
                           addERC20Token={addERC20Token}
@@ -205,12 +207,14 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
               <Box sx={{ display: 'flex' }}>
                 <TokenLinkDropdown
                   poolReserve={poolReserve}
+                  iconSymbol={displayIconSymbol}
                   downToSM={downToSM}
                   hideAToken={isGho}
                 />
                 {currentAccount && (
                   <AddTokenDropdown
                     poolReserve={poolReserve}
+                    iconSymbol={displayIconSymbol}
                     downToSM={downToSM}
                     switchNetwork={switchNetwork}
                     addERC20Token={addERC20Token}

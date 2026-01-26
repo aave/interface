@@ -199,7 +199,7 @@ const IncentivesSymbolMap: {
     aToken: true,
   },
   'aUSD₮': {
-    tokenIconSymbol: 'usd₮',
+    tokenIconSymbol: 'usdt',
     symbol: 'aUSDT',
     aToken: true,
   },
