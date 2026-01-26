@@ -1,11 +1,13 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import type { MarketUserReserveSupplyPosition } from '@aave/graphql';
 import { Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useMemo, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
+import { useEnhancedUserYield } from 'src/hooks/useEnhancedUserYield';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { DASHBOARD, GENERAL } from 'src/utils/events';
@@ -14,13 +16,15 @@ import { CollateralSwitchTooltip } from '../../../../components/infoTooltips/Col
 import { CollateralTooltip } from '../../../../components/infoTooltips/CollateralTooltip';
 import { TotalSupplyAPYTooltip } from '../../../../components/infoTooltips/TotalSupplyAPYTooltip';
 import { ListWrapper } from '../../../../components/lists/ListWrapper';
-import { useAppDataContext } from '../../../../hooks/app-data-provider/useAppDataProvider';
+import {
+  ReserveWithId,
+  useAppDataContext,
+} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import {
   DASHBOARD_LIST_COLUMN_WIDTHS,
   DashboardReserve,
   handleSortDashboardReserves,
 } from '../../../../utils/dashboardSortUtils';
-import { amountToUsd } from '../../../../utils/utils';
 import { ListTopInfoItem } from '../../../dashboard/lists/ListTopInfoItem';
 import { DashboardContentNoData } from '../../DashboardContentNoData';
 import { DashboardListTopPanel } from '../../DashboardListTopPanel';
@@ -63,9 +67,11 @@ const head = [
 export const SMALL_BALANCE_THRESHOLD = 0.001;
 
 export const SuppliedPositionsList = () => {
-  const { user, loading, marketReferencePriceInUsd } = useAppDataContext();
+  const { loading, supplyReserves, userState, userSupplies } = useAppDataContext();
+  const userSupplyPositions = userSupplies ?? [];
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const { earnedAPY } = useEnhancedUserYield();
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const [sortName, setSortName] = useState('');
@@ -77,56 +83,111 @@ export const SuppliedPositionsList = () => {
     localStorage.getItem(localStorageName) === 'true'
   );
 
-  const userHasSmallBalanceAssets = useMemo(() => {
-    return user?.userReservesData.some((userReserve) => {
-      if (userReserve.underlyingBalance === '0') return false;
-
-      const balanceUSD = amountToUsd(
-        userReserve.underlyingBalance,
-        userReserve.reserve.formattedPriceInMarketReferenceCurrency,
-        marketReferencePriceInUsd
-      );
-
-      return Number(balanceUSD) <= SMALL_BALANCE_THRESHOLD;
+  const supplyReservesLookup = useMemo(() => {
+    const map = new Map<string, ReserveWithId>();
+    supplyReserves.forEach((reserve) => {
+      const address = reserve.underlyingToken.address?.toLowerCase();
+      if (address) {
+        map.set(address, reserve);
+      }
     });
-  }, [user?.userReservesData, marketReferencePriceInUsd]);
+    return map;
+  }, [supplyReserves]);
+
+  const userHasSmallBalanceAssets = useMemo(() => {
+    return userSupplyPositions.some((position) => {
+      const balanceValue = Number(position.balance.amount.value ?? '0');
+      if (balanceValue <= 0) {
+        return false;
+      }
+      const balanceUSD = Number(position.balance.usd ?? '0');
+      return balanceUSD > 0 && balanceUSD <= SMALL_BALANCE_THRESHOLD;
+    });
+  }, [userSupplyPositions]);
 
   const suppliedPositions = useMemo(() => {
-    return (
-      user?.userReservesData
-        .filter(
-          (userReserve) =>
-            userReserve.underlyingBalance !== '0' &&
-            !isAssetHidden(currentMarketData.market, userReserve.reserve.underlyingAsset)
-        )
-        .filter((userReserve) => {
-          if (userReserve.underlyingBalance === '0') return false;
+    if (loading || !supplyReservesLookup.size || !userSupplyPositions.length) return [];
 
-          if (!!isShowSmallBalanceAssets) return true;
+    return userSupplyPositions
+      .map((position: MarketUserReserveSupplyPosition) => {
+        const underlyingTokenAddress = position.currency.address.toLowerCase();
+        const reserve = supplyReservesLookup.get(underlyingTokenAddress);
 
-          // Filter out dust amounts < $0.01 USD
-          const balanceUSD = amountToUsd(
-            userReserve.underlyingBalance,
-            userReserve.reserve.formattedPriceInMarketReferenceCurrency,
-            marketReferencePriceInUsd
+        if (!reserve) {
+          console.warn(
+            '[SuppliedPositionsList] Missing reserve snapshot for supplied position',
+            position.currency.symbol,
+            position.currency.address
           );
-          return Number(balanceUSD) >= SMALL_BALANCE_THRESHOLD;
-        })
-        .map((userReserve) => ({
-          ...userReserve,
-          supplyAPY: userReserve.reserve.supplyAPY, // Note: added only for table sort
-          reserve: {
-            ...userReserve.reserve,
-            ...(userReserve.reserve.isWrappedBaseAsset
-              ? fetchIconSymbolAndName({
-                  symbol: currentNetworkConfig.baseAssetSymbol,
-                  underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
-                })
-              : {}),
-          },
-        })) || []
+          return null;
+        }
+
+        if (isAssetHidden(currentMarketData.market, underlyingTokenAddress)) {
+          return null;
+        }
+
+        if (position.balance.amount.value === '0') {
+          return null;
+        }
+
+        const balanceUSD = Number(position.balance.usd ?? '0');
+        if (!isShowSmallBalanceAssets && balanceUSD < SMALL_BALANCE_THRESHOLD) {
+          return null;
+        }
+        const isWrappedNative = reserve.acceptsNative !== null;
+
+        const updatedReserve: ReserveWithId = {
+          ...reserve,
+          supplyAPY: Number(position.apy.value),
+          underlyingBalance: position.balance.usd,
+          usageAsCollateralEnabledOnUser: position.isCollateral,
+          canBeEnabledAsCollateral: position.canBeCollateral,
+          apyPosition: position.apy,
+          balancePosition: position.balance,
+        };
+
+        if (isWrappedNative) {
+          const nativeData = fetchIconSymbolAndName({
+            symbol: currentNetworkConfig.baseAssetSymbol,
+            underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+          });
+
+          return [
+            // Native token if isWrappedNative
+            {
+              ...updatedReserve,
+              symbol: nativeData.symbol,
+              iconSymbol: nativeData.iconSymbol,
+              name: nativeData.name,
+              underlyingAsset: API_ETH_MOCK_ADDRESS.toLowerCase(),
+              detailsAddress: position.currency.address,
+              id: reserve.id + '_native',
+              reserve: updatedReserve,
+            },
+          ];
+        }
+
+        return {
+          ...updatedReserve,
+          reserve: updatedReserve,
+        };
+      })
+      .flat()
+      .filter(Boolean);
+  }, [
+    currentMarketData.market,
+    currentNetworkConfig.baseAssetSymbol,
+    isShowSmallBalanceAssets,
+    supplyReservesLookup,
+    userSupplyPositions,
+  ]);
+
+  const totalSupplyUSD = useMemo(() => {
+    return suppliedPositions.reduce(
+      (sum, position) => sum + Number(position?.balancePosition?.usd || '0'),
+      0
     );
-  }, [isShowSmallBalanceAssets, user?.userReservesData, marketReferencePriceInUsd]);
+  }, [suppliedPositions, isShowSmallBalanceAssets]);
 
   // Transform to the DashboardReserve schema so the sort utils can work with it
   const preSortedReserves = suppliedPositions as DashboardReserve[];
@@ -196,13 +257,10 @@ export const SuppliedPositionsList = () => {
         <>
           {!!sortedReserves.length && (
             <>
-              <ListTopInfoItem
-                title={<Trans>Balance</Trans>}
-                value={user?.totalLiquidityUSD || 0}
-              />
+              <ListTopInfoItem title={<Trans>Balance</Trans>} value={totalSupplyUSD || 0} />
               <ListTopInfoItem
                 title={<Trans>APY</Trans>}
-                value={user?.earnedAPY || 0}
+                value={earnedAPY || 0}
                 percent
                 tooltip={
                   <TotalSupplyAPYTooltip
@@ -216,7 +274,7 @@ export const SuppliedPositionsList = () => {
               />
               <ListTopInfoItem
                 title={<Trans>Collateral</Trans>}
-                value={user?.totalCollateralUSD || 0}
+                value={userState?.totalCollateralBase || 0}
                 tooltip={
                   <CollateralTooltip
                     setOpen={setTooltipOpen}
@@ -237,13 +295,13 @@ export const SuppliedPositionsList = () => {
           {!downToXSM && <RenderHeader />}
           {sortedReserves.map((item) => (
             <Fragment key={item.underlyingAsset}>
-              <AssetCapsProvider asset={item.reserve}>
+              <AssetCapsProviderSDK asset={item.reserve}>
                 {downToXSM ? (
                   <SuppliedPositionsListMobileItem {...item} />
                 ) : (
                   <SuppliedPositionsListItem {...item} />
                 )}
-              </AssetCapsProvider>
+              </AssetCapsProviderSDK>
             </Fragment>
           ))}
         </>

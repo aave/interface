@@ -1,8 +1,10 @@
-import { ProtocolAction } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useRootStore } from 'src/store/root';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
@@ -16,30 +18,41 @@ import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
 
 export const BorrowAssetsListMobileItem = ({
+  reserve,
   symbol,
   iconSymbol,
   name,
   availableBorrows,
   availableBorrowsInUSD,
-  borrowCap,
   totalBorrows,
-  variableBorrowRate,
-  vIncentivesData,
-  variableDebtTokenAddress,
-  underlyingAsset,
-  isFreezed,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
   const currentMarket = useRootStore((state) => state.currentMarket);
+  const { isPaused, isFrozen } = reserve;
+  const assetMappedLegacy = reserve.acceptsNative
+    ? API_ETH_MOCK_ADDRESS.toLowerCase()
+    : reserve.underlyingToken.address.toLowerCase();
 
-  const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
+  const nameMappedLegacy = reserve.underlyingToken.name;
 
+  const disableBorrow = isPaused || isFrozen || Number(availableBorrows) <= 0;
+  const borrowProtocolIncentives = mapAaveProtocolIncentives(reserve.incentives, 'borrow');
+  const { iconSymbol: iconSymbolFetched } = fetchIconSymbolAndName({
+    underlyingAsset: reserve.underlyingToken.address,
+    symbol: reserve.underlyingToken.symbol,
+    name: reserve.underlyingToken.name,
+  });
+
+  const displayIconSymbol =
+    iconSymbolFetched?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
+      ? iconSymbolFetched
+      : reserve.underlyingToken.symbol;
   return (
     <ListMobileItemWrapper
-      symbol={symbol}
-      iconSymbol={iconSymbol}
-      name={name}
-      underlyingAsset={underlyingAsset}
+      symbol={symbol || reserve.underlyingToken.symbol}
+      iconSymbol={iconSymbol || displayIconSymbol}
+      name={name || reserve.underlyingToken.name}
+      underlyingAsset={reserve.underlyingToken.address.toLowerCase()}
       currentMarket={currentMarket}
       showExternalIncentivesTooltips={showExternalIncentivesTooltip(
         symbol,
@@ -55,7 +68,7 @@ export const BorrowAssetsListMobileItem = ({
         capsComponent={
           <CapsHint
             capType={CapType.borrowCap}
-            capAmount={borrowCap}
+            capAmount={reserve.borrowInfo?.borrowCap.amount.value.toString() || '0'}
             totalAmount={totalBorrows}
             withoutText
           />
@@ -74,10 +87,10 @@ export const BorrowAssetsListMobileItem = ({
         mb={2}
       >
         <IncentivesCard
-          value={Number(variableBorrowRate)}
-          incentives={vIncentivesData}
-          address={variableDebtTokenAddress}
-          symbol={symbol}
+          value={Number(reserve.borrowInfo?.apy.value || '0')}
+          incentives={borrowProtocolIncentives}
+          address={reserve.vToken.address}
+          symbol={reserve.underlyingToken.symbol}
           variant="secondary14"
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
@@ -87,7 +100,9 @@ export const BorrowAssetsListMobileItem = ({
         <Button
           disabled={disableBorrow}
           variant="contained"
-          onClick={() => openBorrow(underlyingAsset, currentMarket, name, 'dashboard')}
+          onClick={() =>
+            openBorrow(assetMappedLegacy, currentMarket, nameMappedLegacy, 'dashboard')
+          }
           sx={{ mr: 1.5 }}
           fullWidth
         >
@@ -96,7 +111,10 @@ export const BorrowAssetsListMobileItem = ({
         <Button
           variant="outlined"
           component={Link}
-          href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
+          href={ROUTES.reserveOverview(
+            reserve.underlyingToken.address.toLowerCase(),
+            currentMarket
+          )}
           fullWidth
         >
           <Trans>Details</Trans>

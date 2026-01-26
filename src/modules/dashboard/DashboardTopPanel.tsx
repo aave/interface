@@ -41,7 +41,8 @@ interface MeritReward {
 }
 
 export const DashboardTopPanel = () => {
-  const { user, reserves, loading } = useAppDataContext();
+  const { user, loading, userState, supplyReserves } = useAppDataContext();
+
   const { currentAccount } = useWeb3Context();
   const { netAPY: enhancedNetAPY, hasEnhancedData } = useEnhancedUserYield();
   const [open, setOpen] = useState(false);
@@ -62,12 +63,11 @@ export const DashboardTopPanel = () => {
     ])
   );
   const { market } = getMarketInfoById(currentMarket);
-  const showMigrateButton = user
-    ? isMigrateToV3Available && currentAccount !== '' && Number(user.totalLiquidityUSD) > 0
+  const showMigrateButton = userState
+    ? isMigrateToV3Available && currentAccount !== '' && Number(userState.totalCollateralBase) > 0
     : false;
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
   const { data: meritClaimRewards } = useUserMeritRewards({
     // Note: currentAccount is not always defined, so we need to check if it is and if not, use a fallback address
     user: currentAccount ? evmAddress(currentAccount) : evmAddress(ZERO_ADDRESS),
@@ -93,12 +93,16 @@ export const DashboardTopPanel = () => {
           // getting price from reserves for the native rewards for v2 markets
           if (!currentMarketData.v3 && Number(rewardBalance) > 0) {
             if (currentMarketData.chainId === ChainId.mainnet) {
-              const aave = reserves.find((reserve) => reserve.symbol === 'AAVE');
-              tokenPrice = aave ? Number(aave.priceInUSD) : 0;
+              const aave = supplyReserves.find(
+                (reserve) => reserve.underlyingToken.symbol === 'AAVE'
+              );
+              tokenPrice = aave ? Number(aave.usdExchangeRate) : 0;
             } else {
-              reserves.forEach((reserve) => {
-                if (reserve.symbol === currentNetworkConfig.wrappedBaseAssetSymbol) {
-                  tokenPrice = Number(reserve.priceInUSD);
+              supplyReserves.forEach((reserve) => {
+                if (
+                  reserve.underlyingToken.symbol === currentNetworkConfig.wrappedBaseAssetSymbol
+                ) {
+                  tokenPrice = Number(reserve.usdExchangeRate);
                 }
               });
             }
@@ -133,13 +137,14 @@ export const DashboardTopPanel = () => {
 
   // Aggregate total claimable rewards (base + merit)
   const claimableRewardsUsd = baseClaimableRewardsUsd + meritRewardsUsd;
-
   const loanToValue =
-    user?.totalCollateralMarketReferenceCurrency === '0'
+    userState?.totalCollateralBase === '0'
       ? '0'
-      : valueToBigNumber(user?.totalBorrowsMarketReferenceCurrency || '0')
-          .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
+      : valueToBigNumber(userState?.totalDebtBase || '0')
+          .dividedBy(userState?.totalCollateralBase || '1')
           .toFixed();
+
+  const currentLoanToValue = userState ? userState.ltv.value.toString() : '0';
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
@@ -188,7 +193,7 @@ export const DashboardTopPanel = () => {
         <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading} hideIcon>
           {currentAccount ? (
             <FormattedNumber
-              value={Number(user?.netWorthUSD || 0)}
+              value={Number(userState?.netWorth || 0)}
               symbol="USD"
               variant={valueTypographyVariant}
               visibleDecimals={2}
@@ -216,9 +221,11 @@ export const DashboardTopPanel = () => {
           loading={loading}
           hideIcon
         >
-          {currentAccount && user && Number(user.netWorthUSD) > 0 ? (
+          {currentAccount && userState && Number(userState.netWorth) > 0 ? (
             <FormattedNumber
-              value={hasEnhancedData ? enhancedNetAPY : user ? user.netAPY : 0}
+              value={
+                hasEnhancedData ? enhancedNetAPY : userState ? Number(userState.netAPY.value) : 0
+              }
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
@@ -230,7 +237,7 @@ export const DashboardTopPanel = () => {
           )}
         </TopInfoPanelItem>
 
-        {currentAccount && user?.healthFactor !== '-1' && (
+        {currentAccount && userState?.healthFactor !== '-1' && userState?.healthFactor !== null && (
           <TopInfoPanelItem
             title={
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -241,7 +248,7 @@ export const DashboardTopPanel = () => {
             hideIcon
           >
             <HealthFactorNumber
-              value={user?.healthFactor || '-1'}
+              value={userState?.healthFactor || '-1'}
               variant={valueTypographyVariant}
               onInfoClick={() => {
                 trackEvent(DASHBOARD.VIEW_RISK_DETAILS);
@@ -289,10 +296,10 @@ export const DashboardTopPanel = () => {
       <LiquidationRiskParametresInfoModal
         open={open}
         setOpen={setOpen}
-        healthFactor={user?.healthFactor || '-1'}
+        healthFactor={userState?.healthFactor || '-1'}
         loanToValue={loanToValue}
-        currentLoanToValue={user?.currentLoanToValue || '0'}
-        currentLiquidationThreshold={user?.currentLiquidationThreshold || '0'}
+        currentLoanToValue={currentLoanToValue}
+        currentLiquidationThreshold={userState?.currentLiquidationThreshold.value || '0'}
       />
     </>
   );

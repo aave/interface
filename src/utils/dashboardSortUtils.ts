@@ -3,10 +3,7 @@ import { BorrowAssetsItem } from 'src/modules/dashboard/lists/BorrowAssetsList/t
 import { SupplyAssetsItem } from 'src/modules/dashboard/lists/SupplyAssetsList/types';
 
 // Sorting keys
-import {
-  ComputedReserveData,
-  ComputedUserReserveData,
-} from '../hooks/app-data-provider/useAppDataProvider';
+import { ReserveWithId } from '../hooks/app-data-provider/useAppDataProvider';
 
 // Helpers
 export const DASHBOARD_LIST_COLUMN_WIDTHS = {
@@ -17,16 +14,13 @@ export const DASHBOARD_LIST_COLUMN_WIDTHS = {
 
 // Note: Create a single type that works with all four dashboards list and all 8 list item components
 // Each list item may need a combination of a few types but not all, i.e. positions vs assets and supplied vs borrowed
-type DashboardReserveData = ComputedUserReserveData &
-  ComputedReserveData &
-  BorrowAssetsItem &
-  SupplyAssetsItem;
+type DashboardReserveData = ReserveWithId & BorrowAssetsItem & SupplyAssetsItem;
 
 export type DashboardReserve = DashboardReserveData & {
   // Additions
   borrowRateMode: InterestRate; // for the borrow positions list
   // Overrides
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
 };
 
 export const handleSortDashboardReserves = (
@@ -58,7 +52,7 @@ const handleSortDesc = (
   } else {
     if (isBorrowedPosition) {
       positions.sort(
-        (a, b) => Number(b.reserve.variableBorrowAPY) - Number(a.reserve.variableBorrowAPY)
+        (a, b) => Number(b.reserve.borrowInfo?.apy.value) - Number(a.reserve.borrowInfo?.apy.value)
       );
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -84,7 +78,7 @@ const sortAsc = (
     // Note because borrow positions have extra logic we need to have this
     if (isBorrowedPosition) {
       positions.sort(
-        (a, b) => Number(a.reserve.variableBorrowAPY) - Number(b.reserve.variableBorrowAPY)
+        (a, b) => Number(a.reserve.borrowInfo?.apy.value) - Number(b.reserve.borrowInfo?.apy.value)
       );
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -103,20 +97,33 @@ const handleSymbolSort = (
   if (sortDesc) {
     if (sortPosition === 'position') {
       return positions.sort((a, b) =>
-        a.reserve.symbol.toUpperCase() < b.reserve.symbol.toUpperCase() ? -1 : 1
+        a.reserve.underlyingToken.symbol.toUpperCase() <
+        b.reserve.underlyingToken.symbol.toUpperCase()
+          ? -1
+          : 1
       );
     }
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    return positions.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
+    return positions.sort((a, b) =>
+      a.reserve.underlyingToken.symbol.toUpperCase() <
+      b.reserve.underlyingToken.symbol.toUpperCase()
+        ? -1
+        : 1
+    );
   }
 
   if (sortPosition === 'position') {
     return positions.sort((a, b) =>
-      b.reserve.symbol.toUpperCase() < a.reserve.symbol.toUpperCase() ? -1 : 1
+      b.reserve.underlyingToken.symbol.toUpperCase() <
+      a.reserve.underlyingToken.symbol.toUpperCase()
+        ? -1
+        : 1
     );
   }
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  return positions.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
+  return positions.sort((a, b) =>
+    b.underlyingToken.symbol.toUpperCase() < a.underlyingToken.symbol.toUpperCase() ? -1 : 1
+  );
 };
