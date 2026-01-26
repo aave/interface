@@ -12,6 +12,7 @@ import { RESERVE_DETAILS } from 'src/utils/events';
 
 interface AddTokenDropdownProps {
   poolReserve: ReserveWithId;
+  iconSymbol?: string;
   downToSM: boolean;
   switchNetwork: (chainId: number) => Promise<void>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
@@ -24,6 +25,7 @@ interface AddTokenDropdownProps {
 
 export const AddTokenDropdown = ({
   poolReserve,
+  iconSymbol,
   downToSM,
   switchNetwork,
   addERC20Token,
@@ -164,7 +166,10 @@ export const AddTokenDropdown = ({
             handleClose();
           }}
         >
-          <TokenIcon symbol={poolReserve.underlyingToken.symbol} sx={{ fontSize: '20px' }} />
+          <TokenIcon
+            symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
+            sx={{ fontSize: '20px' }}
+          />
           <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
             {poolReserve.underlyingToken.symbol}
           </Typography>
@@ -201,7 +206,7 @@ export const AddTokenDropdown = ({
               }}
             >
               <TokenIcon
-                symbol={poolReserve.underlyingToken.symbol}
+                symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
                 sx={{ fontSize: '20px' }}
                 aToken={true}
               />
