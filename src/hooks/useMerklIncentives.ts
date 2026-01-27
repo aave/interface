@@ -143,7 +143,8 @@ type WhitelistApiResponse = {
   additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData>;
 };
 
-const MERKL_ENDPOINT = 'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave'; // Merkl API
+const MERKL_ENDPOINT =
+  'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave&items=100&status=LIVE'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
