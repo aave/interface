@@ -884,6 +884,10 @@ msgstr "Repay {0} with {1}"
 msgid "GHO Balance"
 msgstr "GHO Balance"
 
+#: src/layouts/SupportModal.tsx
+msgid "Country (optional)"
+msgstr "Country (optional)"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
 msgstr "Techpaper"
