@@ -88,7 +88,6 @@ describe.skip('ISOLATED MODE SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({
     market: 'fork_proto_polygon_v3',
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   describe('Get isolated asset', () => {

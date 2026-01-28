@@ -44,7 +44,6 @@ const testData = {
 describe.skip('SWAP, BASE V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyBaseFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.swap.forEach((swapCase) => {

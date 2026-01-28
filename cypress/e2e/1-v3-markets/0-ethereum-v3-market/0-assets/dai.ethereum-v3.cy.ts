@@ -92,7 +92,6 @@ const testData = {
 describe.skip('DAI INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAEthereumV3Fork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {
