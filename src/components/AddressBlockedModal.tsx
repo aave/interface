@@ -7,16 +7,29 @@ import { BasicModal } from './primitives/BasicModal';
 export interface AddressBlockedProps {
   address: string;
   onDisconnectWallet: () => void;
-  message?: string;
+  isError?: boolean;
+  errorMessage?: string;
+  onRetry?: () => void;
 }
 
 export const AddressBlockedModal = ({
   address,
   onDisconnectWallet,
-  message,
+  isError = false,
+  errorMessage,
+  onRetry,
 }: AddressBlockedProps) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   const setOpen = (_value: boolean) => {}; // ignore, we want the modal to not be dismissable
+
+  const description = isError ? (
+    errorMessage || <Trans>Something went wrong. Please try again later.</Trans>
+  ) : (
+    <Trans>
+      Sorry, we are unable to connect your wallet. <br />
+      Please try again with another wallet or contact support.
+    </Trans>
+  );
 
   return (
     <BasicModal open={true} withCloseButton={false} setOpen={setOpen}>
@@ -38,25 +51,21 @@ export const AddressBlockedModal = ({
           {address}
         </Typography>
         <Typography variant="description" sx={{ textAlign: 'center', mb: 4 }}>
-          {message ? (
-            message
-          ) : (
-            <>
-              <Trans>Something went wrong. Please try again later.</Trans>
-              <br />
-              <Typography variant="helperText" sx={{ mb: 1 }}>
-                {' '}
-                <Trans>error code: 2455</Trans>{' '}
-              </Typography>
-            </>
-          )}
+          {description}
         </Typography>
-        <Button variant="contained" onClick={onDisconnectWallet}>
-          <SvgIcon fontSize="small" sx={{ mx: 1 }}>
-            <LogoutIcon />
-          </SvgIcon>
-          <Trans>Disconnect Wallet</Trans>
-        </Button>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          {isError && onRetry && (
+            <Button variant="outlined" onClick={onRetry}>
+              <Trans>Retry</Trans>
+            </Button>
+          )}
+          <Button variant="contained" onClick={onDisconnectWallet}>
+            <SvgIcon fontSize="small" sx={{ mx: 1 }}>
+              <LogoutIcon />
+            </SvgIcon>
+            <Trans>Disconnect Wallet</Trans>
+          </Button>
+        </Box>
       </Box>
     </BasicModal>
   );

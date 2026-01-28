@@ -18,6 +18,7 @@ import { TransactionEventHandler } from 'src/components/TransactionEventHandler'
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
 import { CowOrderToast } from 'src/components/transactions/Swap/modals/result/CowOrderToast';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ComplianceProvider } from 'src/hooks/compliance/compliance';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { SwapOrdersTrackingProvider } from 'src/hooks/useSwapOrdersTracking';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
@@ -160,38 +161,40 @@ export default function MyApp(props: MyAppProps) {
                 >
                   <Web3ContextProvider>
                     <AppGlobalStyles>
-                      <AddressBlocked>
-                        <SwapOrdersTrackingProvider>
-                          <ModalContextProvider>
-                            <SharedDependenciesProvider>
-                              <AppDataProvider>
-                                <GasStationProvider>
-                                  {getLayout(<Component {...pageProps} />)}
-                                  <SupplyModal />
-                                  <WithdrawModal />
-                                  <BorrowModal />
-                                  <RepayModal />
-                                  <CollateralChangeModal />
-                                  <ClaimRewardsModal />
-                                  <EmodeModal />
-                                  <FaucetModal />
-                                  <TransactionEventHandler />
-                                  <StakingMigrateModal />
-                                  <BridgeModal />
-                                  <ReadOnlyModal />
+                      <ComplianceProvider>
+                        <AddressBlocked>
+                          <SwapOrdersTrackingProvider>
+                            <ModalContextProvider>
+                              <SharedDependenciesProvider>
+                                <AppDataProvider>
+                                  <GasStationProvider>
+                                    {getLayout(<Component {...pageProps} />)}
+                                    <SupplyModal />
+                                    <WithdrawModal />
+                                    <BorrowModal />
+                                    <RepayModal />
+                                    <CollateralChangeModal />
+                                    <ClaimRewardsModal />
+                                    <EmodeModal />
+                                    <FaucetModal />
+                                    <TransactionEventHandler />
+                                    <StakingMigrateModal />
+                                    <BridgeModal />
+                                    <ReadOnlyModal />
 
-                                  {/* Swap Modals */}
-                                  <SwapModal />
-                                  <CollateralSwapModal />
-                                  <DebtSwapModal />
-                                  <CancelCowOrderModal />
-                                  <CowOrderToast />
-                                </GasStationProvider>
-                              </AppDataProvider>
-                            </SharedDependenciesProvider>
-                          </ModalContextProvider>
-                        </SwapOrdersTrackingProvider>
-                      </AddressBlocked>
+                                    {/* Swap Modals */}
+                                    <SwapModal />
+                                    <CollateralSwapModal />
+                                    <DebtSwapModal />
+                                    <CancelCowOrderModal />
+                                    <CowOrderToast />
+                                  </GasStationProvider>
+                                </AppDataProvider>
+                              </SharedDependenciesProvider>
+                            </ModalContextProvider>
+                          </SwapOrdersTrackingProvider>
+                        </AddressBlocked>
+                      </ComplianceProvider>
                     </AppGlobalStyles>
                   </Web3ContextProvider>
                 </ConnectKitProvider>
