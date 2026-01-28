@@ -1,9 +1,11 @@
+import { MarketUserState } from '@aave/client';
 import { valueToBigNumber } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
   ExtendedFormattedUser,
+  ReserveWithId,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const calculateMaxWithdrawAmount = (
@@ -40,6 +42,48 @@ export const calculateMaxWithdrawAmount = (
       maxAmountToWithdraw,
       maxCollateralToWithdrawInETH.dividedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
     );
+  }
+
+  return maxAmountToWithdraw;
+};
+
+export const calculateMaxWithdrawAmountSDK = (
+  marketUserState: MarketUserState | null | undefined,
+  reserveUserState: ReserveWithId['userState'] | undefined,
+  poolReserve: ReserveWithId,
+  underlyingBalance: BigNumber
+) => {
+  const unborrowedLiquidity = valueToBigNumber(
+    poolReserve.borrowInfo?.availableLiquidity.amount.value ??
+      poolReserve.supplyInfo.total.value ??
+      '0'
+  );
+  let maxAmountToWithdraw = BigNumber.min(underlyingBalance, unborrowedLiquidity);
+
+  if (!marketUserState) return maxAmountToWithdraw;
+
+  const userEMode = poolReserve.eModeInfo.find(
+    (elem) => elem.categoryId === reserveUserState?.emode?.categoryId
+  );
+  const reserveLt =
+    (reserveUserState?.emode && userEMode
+      ? userEMode.liquidationThreshold.value
+      : poolReserve.supplyInfo.liquidationThreshold.value) ?? '0';
+
+  const totalDebtBase = valueToBigNumber(marketUserState.totalDebtBase ?? '0');
+  const totalCollateralBase = valueToBigNumber(marketUserState.totalCollateralBase ?? '0');
+  if (reserveUserState?.canBeCollateral && reserveLt !== '0' && totalDebtBase.gt('0')) {
+    const currentLt = valueToBigNumber(marketUserState.currentLiquidationThreshold?.value ?? '0');
+    const ltWeightedCollateral = totalCollateralBase.multipliedBy(currentLt);
+    const maxCollateralToWithdrawInBase = ltWeightedCollateral
+      .minus(totalDebtBase.multipliedBy('1.01'))
+      .div(reserveLt);
+    if (maxCollateralToWithdrawInBase.gt('0')) {
+      maxAmountToWithdraw = BigNumber.min(
+        maxAmountToWithdraw,
+        maxCollateralToWithdrawInBase.dividedBy(poolReserve.usdExchangeRate)
+      );
+    }
   }
 
   return maxAmountToWithdraw;

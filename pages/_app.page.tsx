@@ -54,6 +54,11 @@ const BridgeModal = dynamic(() =>
 const BorrowModal = dynamic(() =>
   import('src/components/transactions/Borrow/BorrowModal').then((module) => module.BorrowModal)
 );
+const BorrowModalSDK = dynamic(() =>
+  import('src/components/transactions/Borrow/BorrowModalSDK').then(
+    (module) => module.BorrowModalSDK
+  )
+);
 const ClaimRewardsModal = dynamic(() =>
   import('src/components/transactions/ClaimRewards/ClaimRewardsModal').then(
     (module) => module.ClaimRewardsModal
@@ -68,12 +73,25 @@ const FaucetModal = dynamic(() =>
 const RepayModal = dynamic(() =>
   import('src/components/transactions/Repay/RepayModal').then((module) => module.RepayModal)
 );
+const RepayModalSDK = dynamic(() =>
+  import('src/components/transactions/Repay/RepayModalSDK').then((module) => module.RepayModalSDK)
+);
 const SupplyModal = dynamic(() =>
   import('src/components/transactions/Supply/SupplyModal').then((module) => module.SupplyModal)
+);
+const SupplyModalSDK = dynamic(() =>
+  import('src/components/transactions/Supply/SupplyModalSDK').then(
+    (module) => module.SupplyModalSDK
+  )
 );
 const WithdrawModal = dynamic(() =>
   import('src/components/transactions/Withdraw/WithdrawModal').then(
     (module) => module.WithdrawModal
+  )
+);
+const WithdrawModalSDK = dynamic(() =>
+  import('src/components/transactions/Withdraw/WithdrawModalSDK').then(
+    (module) => module.WithdrawModalSDK
   )
 );
 const StakingMigrateModal = dynamic(() =>
@@ -168,9 +186,13 @@ export default function MyApp(props: MyAppProps) {
                                 <GasStationProvider>
                                   {getLayout(<Component {...pageProps} />)}
                                   <SupplyModal />
+                                  <SupplyModalSDK />
                                   <WithdrawModal />
+                                  <WithdrawModalSDK />
                                   <BorrowModal />
+                                  <BorrowModalSDK />
                                   <RepayModal />
+                                  <RepayModalSDK />
                                   <CollateralChangeModal />
                                   <ClaimRewardsModal />
                                   <EmodeModal />

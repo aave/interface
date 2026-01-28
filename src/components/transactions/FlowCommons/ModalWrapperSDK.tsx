@@ -1,13 +1,14 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
+import {
+  MarketUserReserveBorrowPosition,
+  MarketUserReserveSupplyPosition,
+  MarketUserState,
+} from '@aave/graphql/import';
 import React from 'react';
 import { ReactElement } from 'react-markdown/lib/react-markdown';
-import {
-  ComputedReserveData,
-  ComputedUserReserveData,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
 import { useIsWrongNetwork } from 'src/hooks/useIsWrongNetwork';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -15,14 +16,17 @@ import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { TxErrorView } from './Error';
+import { TxModalTitle } from './TxModalTitle';
 
-export interface ModalWrapperProps {
+export interface ModalWrapperSDKProps {
   underlyingAsset: string;
-  poolReserve: ComputedReserveData;
-  userReserve: ComputedUserReserveData;
+  poolReserve: ReserveWithId;
+  reserveUserState?: ReserveWithId['userState'];
+  marketUserState?: MarketUserState | null;
+  userSupplies?: MarketUserReserveSupplyPosition[];
+  userBorrows?: MarketUserReserveBorrowPosition[];
   symbol: string;
   tokenBalance: string;
   nativeBalance: string;
@@ -30,14 +34,14 @@ export interface ModalWrapperProps {
   action?: string;
 }
 
-export const ModalWrapper: React.FC<{
+export const ModalWrapperSDK: React.FC<{
   underlyingAsset: string;
   title: ReactElement;
   requiredChainId?: number;
   // if true wETH will stay wETH otherwise wETH will be returned as ETH
   keepWrappedSymbol?: boolean;
   hideTitleSymbol?: boolean;
-  children: (props: ModalWrapperProps) => React.ReactNode;
+  children: (props: ModalWrapperSDKProps) => React.ReactNode;
   action?: string;
 }> = ({
   hideTitleSymbol,
@@ -51,7 +55,13 @@ export const ModalWrapper: React.FC<{
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { walletBalances } = useWalletBalances(currentMarketData);
-  const { user, reserves } = useAppDataContext();
+  const {
+    supplyReserves,
+    borrowReserves,
+    market: sdkMarket,
+    userSupplies,
+    userBorrows,
+  } = useAppDataContext();
   const { txError, mainTxState } = useModalContext();
 
   const { isWrongNetwork, requiredChainId } = useIsWrongNetwork(_requiredChainId);
@@ -59,25 +69,38 @@ export const ModalWrapper: React.FC<{
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
+  if (!underlyingAsset) return null;
 
-  const poolReserve = reserves.find((reserve) => {
-    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
-      return reserve.isWrappedBaseAsset;
-    return underlyingAsset === reserve.underlyingAsset;
-  }) as ComputedReserveData;
-  const userReserve = user?.userReservesData.find((userReserve) => {
-    if (underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase())
-      return userReserve.reserve.isWrappedBaseAsset;
-    return underlyingAsset === userReserve.underlyingAsset;
-  }) as ComputedUserReserveData;
+  const addr = underlyingAsset.toLowerCase();
+  const poolReserveSDK =
+    supplyReserves.find((reserve) =>
+      addr === API_ETH_MOCK_ADDRESS.toLowerCase()
+        ? !!reserve.acceptsNative
+        : addr === reserve.underlyingToken.address.toLowerCase()
+    ) ||
+    borrowReserves.find((reserve) =>
+      addr === API_ETH_MOCK_ADDRESS.toLowerCase()
+        ? !!reserve.acceptsNative
+        : addr === reserve.underlyingToken.address.toLowerCase()
+    );
+
+  if (!poolReserveSDK) throw new Error(`Reserve not found for ${underlyingAsset}`);
+  const reserveUserState = poolReserveSDK.userState;
+  const marketUserState = sdkMarket?.userState;
 
   const symbol =
-    poolReserve.isWrappedBaseAsset && !keepWrappedSymbol
+    poolReserveSDK.acceptsNative && !keepWrappedSymbol
       ? currentNetworkConfig.baseAssetSymbol
-      : poolReserve.symbol;
-
+      : poolReserveSDK.underlyingToken.symbol;
+  const nativeKey = API_ETH_MOCK_ADDRESS.toLowerCase();
+  const tokenKey = poolReserveSDK.underlyingToken.address.toLowerCase();
+  const nativeBalance = walletBalances[nativeKey]?.amount || '0';
+  const tokenBalance =
+    addr === nativeKey && poolReserveSDK.acceptsNative
+      ? nativeBalance
+      : walletBalances[tokenKey]?.amount || '0';
   return (
-    <AssetCapsProvider asset={poolReserve}>
+    <AssetCapsProviderSDK asset={poolReserveSDK}>
       {!mainTxState.success && (
         <TxModalTitle title={title} symbol={hideTitleSymbol ? undefined : symbol} />
       )}
@@ -96,13 +119,16 @@ export const ModalWrapper: React.FC<{
       )}
       {children({
         isWrongNetwork,
-        nativeBalance: walletBalances[API_ETH_MOCK_ADDRESS.toLowerCase()]?.amount || '0',
-        tokenBalance: walletBalances[poolReserve.underlyingAsset.toLowerCase()]?.amount || '0',
-        poolReserve,
+        nativeBalance,
+        tokenBalance,
+        poolReserve: poolReserveSDK,
         symbol,
         underlyingAsset,
-        userReserve,
+        reserveUserState: reserveUserState,
+        marketUserState: marketUserState,
+        userSupplies: userSupplies,
+        userBorrows: userBorrows,
       })}
-    </AssetCapsProvider>
+    </AssetCapsProviderSDK>
   );
 };

@@ -27,7 +27,8 @@ export const SuppliedPositionsListItem = ({
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, aTokenAddress, isFrozen, isActive, isPaused } = reserve;
-  const { openSupply, openWithdraw, openCollateralChange, openCollateralSwap } = useModalContext();
+  const { openSupply, openWithdrawSDK, openCollateralChange, openCollateralSwap } =
+    useModalContext();
   const { debtCeiling } = useAssetCaps();
   const [trackEvent, currentMarketData, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarketData, store.currentMarket])
@@ -141,7 +142,7 @@ export const SuppliedPositionsListItem = ({
           disabled={disableWithdraw}
           variant="outlined"
           onClick={() => {
-            openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
+            openWithdrawSDK(underlyingAsset, currentMarket, reserve.name, 'dashboard');
           }}
         >
           <Trans>Withdraw</Trans>

@@ -1,6 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
+import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { roundToTokenDecimals } from './utils';
 
@@ -53,4 +54,43 @@ export function getMaxAmountAvailableToSupply(
 
   // Convert amount to smallest allowed precision based on token decimals
   return roundToTokenDecimals(maxAmountToSupply.toString(10), poolReserve.decimals);
+}
+
+export function getMaxAmountAvailableToSupplySDK(
+  walletBalance: string,
+  poolReserve: ReserveWithId,
+  underlyingAsset: string
+): string {
+  if (poolReserve.isFrozen) {
+    return '0';
+  }
+
+  // Calculate max amount to supply
+  let maxAmountToSupply = valueToBigNumber(walletBalance);
+
+  // keep a bit for other transactions
+  if (
+    maxAmountToSupply.gt(0) &&
+    underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase()
+  ) {
+    maxAmountToSupply;
+  }
+
+  // make sure we don't try to supply more then maximum supply cap
+  if (poolReserve.supplyInfo.supplyCap.amount.value !== '0') {
+    maxAmountToSupply = BigNumber.min(
+      maxAmountToSupply,
+      remainingCap(
+        poolReserve.supplyInfo.supplyCap.amount.value,
+        poolReserve.supplyInfo.total.value
+      )
+    );
+  }
+
+  if (maxAmountToSupply.lte(0)) {
+    return '0';
+  }
+
+  // Convert amount to smallest allowed precision based on token decimals
+  return roundToTokenDecimals(maxAmountToSupply.toString(10), poolReserve.underlyingToken.decimals);
 }
