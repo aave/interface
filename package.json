@@ -67,6 +67,7 @@
     "@visx/scale": "^2.2.2",
     "@visx/shape": "^2.12.2",
     "@visx/tooltip": "^2.16.0",
+    "@walletconnect/ethereum-provider": "^2.23.0",
     "@wagmi/core": "^2.17.1",
     "blo": "^1.1.1",
     "connectkit": "1.9.0",
@@ -96,6 +97,14 @@
     "viem": "^2.37.6",
     "wagmi": "^2.15.2",
     "zustand": "^5.0.2"
+  },
+  "resolutions": {
+    "@walletconnect/ethereum-provider": "^2.23.0",
+    "@walletconnect/sign-client": "^2.23.0",
+    "@walletconnect/types": "^2.23.0",
+    "@walletconnect/universal-provider": "^2.23.0",
+    "@noble/hashes": "^1.8.0",
+  "@noble/curves": "^1.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
