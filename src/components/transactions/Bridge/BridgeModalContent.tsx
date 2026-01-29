@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { AaveV3InkWhitelabel } from '@bgd-labs/aave-address-book';
+import { AaveV3InkWhitelabel, AaveV3Mantle } from '@bgd-labs/aave-address-book';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -66,6 +66,14 @@ function getUseBridgeTokensParams(chainId: number): UseBridgeTokensParams {
       ghoTokenAddress: AaveV3InkWhitelabel.ASSETS.GHO.UNDERLYING,
       tokenOracle,
       walletBalanceProviderAddress: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
+    };
+  } else if (chainId === ChainId.mantle) {
+    // no active market config available yet for mantle, this is needed for gho ccip
+    return {
+      chainId,
+      ghoTokenAddress: '0xfc421aD3C883Bf9E7C4f42dE845C4e4405799e73',
+      tokenOracle,
+      walletBalanceProviderAddress: AaveV3Mantle.WALLET_BALANCE_PROVIDER,
     };
   }
 
