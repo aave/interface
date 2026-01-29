@@ -224,6 +224,28 @@ const prodConfig: Config[] = [
       },
     ],
   },
+  {
+    sourceChainId: ChainId.mantle,
+    chainSelector: '1556008542357238666',
+    burnMintTokenPool: '0xDe6539018B095353A40753Dc54C91C68c9487D4E',
+    router: '0x670052635a9850bb45882Cb2eCcF66bCff0F41B7',
+    tokenOracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
+    wrappedNativeOracle: '0xD97F20bEbeD74e8144134C4b148fE93417dd0F96',
+    subgraphKey: 'ccip-mantle',
+    feeTokens: [
+      {
+        name: 'Mantle',
+        symbol: 'MNT',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: ChainId.mantle,
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
+  },
 ];
 
 const testnetConfig: Config[] = [
