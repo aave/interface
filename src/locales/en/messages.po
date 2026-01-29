@@ -348,6 +348,7 @@ msgid "Migrate to {0} v3 Market"
 msgstr "Migrate to {0} v3 Market"
 
 #: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
 msgid "Voting results"
 msgstr "Voting results"
 
@@ -448,6 +449,7 @@ msgstr "Claiming individual protocol reward only. Merit rewards excluded - selec
 msgid "To continue, you need to grant smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 msgstr "To continue, you need to grant smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 
+#: src/modules/governance/proposal/VotersListCacheContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "View all votes"
 msgstr "View all votes"
@@ -536,6 +538,7 @@ msgid "Total"
 msgstr "Total"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "{stepName}"
 msgstr "{stepName}"
 
@@ -551,6 +554,8 @@ msgstr "The cooldown period is the time required prior to unstaking your tokens 
 
 #: src/modules/governance/proposal/VotingResults.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
 msgid "Reached"
 msgstr "Reached"
 
@@ -564,6 +569,7 @@ msgstr "Borrowing is unavailable because you’re using Isolation mode. To manag
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/ProposalOverview.tsx
+#: src/modules/governance/proposal/ProposalOverviewCache.tsx
 msgid "Share on Lens"
 msgstr "Share on Lens"
 
@@ -708,10 +714,12 @@ msgid "Staking balance"
 msgstr "Staking balance"
 
 #: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
 msgid "Quorum"
 msgstr "Quorum"
 
 #: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
 msgid "Current votes"
 msgstr "Current votes"
 
@@ -958,6 +966,8 @@ msgstr "This asset has been paused due to a community decision. Supply, withdraw
 msgid "Collateral is (mostly) the same currency that is being borrowed"
 msgstr "Collateral is (mostly) the same currency that is being borrowed"
 
+#: src/modules/governance/proposal/VotersListCacheModal.tsx
+#: src/modules/governance/proposal/VotersListCacheModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Addresses ({0})"
@@ -1636,6 +1646,7 @@ msgid "Unstake"
 msgstr "Unstake"
 
 #: src/modules/governance/proposal/ProposalOverview.tsx
+#: src/modules/governance/proposal/ProposalOverviewCache.tsx
 msgid "Proposal overview"
 msgstr "Proposal overview"
 
@@ -1707,6 +1718,10 @@ msgstr "The weighted average of APY for all borrowed assets, including incentive
 msgid "Please connect your wallet to view transaction history."
 msgstr "Please connect your wallet to view transaction history."
 
+#: src/modules/governance/proposal/VotersListCacheContainer.tsx
+#: src/modules/governance/proposal/VotersListCacheModal.tsx
+#: src/modules/governance/proposal/VotersListCacheModal.tsx
+#: src/modules/governance/proposal/VotersListCacheModal.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
@@ -1784,6 +1799,8 @@ msgstr "Execution fee"
 
 #: src/modules/governance/proposal/VotingResults.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
 msgid "Not reached"
 msgstr "Not reached"
 
@@ -1800,6 +1817,7 @@ msgid "Disable {symbol} as collateral"
 msgstr "Disable {symbol} as collateral"
 
 #: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
 msgid "Differential"
 msgstr "Differential"
 
@@ -1808,6 +1826,7 @@ msgid "Invalid signature"
 msgstr "Invalid signature"
 
 #: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
 msgid "State"
 msgstr "State"
 
@@ -1816,6 +1835,7 @@ msgid "There are no stake assets configured for this market"
 msgstr "There are no stake assets configured for this market"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
 
@@ -2266,6 +2286,7 @@ msgid "Aave Governance"
 msgstr "Aave Governance"
 
 #: src/modules/governance/proposal/ProposalOverview.tsx
+#: src/modules/governance/proposal/ProposalOverviewCache.tsx
 msgid "Raw-Ipfs"
 msgstr "Raw-Ipfs"
 
@@ -2359,6 +2380,7 @@ msgid "from the"
 msgstr "from the"
 
 #: src/modules/governance/proposal/ProposalOverview.tsx
+#: src/modules/governance/proposal/ProposalOverviewCache.tsx
 msgid "An error has occurred fetching the proposal."
 msgstr "An error has occurred fetching the proposal."
 
@@ -2396,6 +2418,7 @@ msgid "Asset"
 msgstr "Asset"
 
 #: src/modules/governance/proposal/ProposalOverview.tsx
+#: src/modules/governance/proposal/ProposalOverviewCache.tsx
 msgid "Share on twitter"
 msgstr "Share on twitter"
 
@@ -2403,6 +2426,7 @@ msgstr "Share on twitter"
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 msgstr "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 
+#: src/modules/governance/proposal/VotersListCacheContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Addresses"
 msgstr "Addresses"
@@ -2499,6 +2523,7 @@ msgid "Bridge {symbol}"
 msgstr "Bridge {symbol}"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
 
@@ -2577,6 +2602,7 @@ msgstr "Liquidation"
 msgid "Aave debt token"
 msgstr "Aave debt token"
 
+#: src/modules/governance/proposal/VotersListCacheContainer.tsx
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
 msgstr "Top 10 addresses"
@@ -2712,6 +2738,7 @@ msgstr "This is the fee for executing position changes, set by governance."
 msgid "FAQS"
 msgstr "FAQS"
 
+#: src/modules/governance/proposal/VotersListCacheModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Voted NAY"
 msgstr "Voted NAY"
@@ -3084,6 +3111,7 @@ msgstr "DAI balance will be converted via DSR contracts and then supplied as sDA
 msgid "Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in {marketName} v3 market."
 msgstr "Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in {marketName} v3 market."
 
+#: src/modules/governance/proposal/VotersListCacheModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Voted YAE"
 msgstr "Voted YAE"
@@ -3906,6 +3934,7 @@ msgid "Selected assets have successfully migrated. Visit the Market Dashboard to
 msgstr "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 
 #: src/modules/governance/proposal/VotingResults.tsx
+#: src/modules/governance/proposal/VotingResultsCache.tsx
 msgid "Current differential"
 msgstr "Current differential"
 

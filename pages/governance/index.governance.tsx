@@ -6,11 +6,16 @@ import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GovernanceTopPanel } from 'src/modules/governance/GovernanceTopPanel';
+import { ProposalsCacheList } from 'src/modules/governance/ProposalsCacheList';
 import { ProposalsV3List } from 'src/modules/governance/ProposalsV3List';
 import { UserGovernanceInfo } from 'src/modules/governance/UserGovernanceInfo';
 import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../../src/components/ContentContainer';
+
+// Toggle between local cache and subgraph flag
+const USE_GOVERNANCE_CACHE = process.env.NEXT_PUBLIC_USE_GOVERNANCE_CACHE === 'true';
+const ProposalsList = USE_GOVERNANCE_CACHE ? ProposalsCacheList : ProposalsV3List;
 
 const GovDelegationModal = dynamic(() =>
   import('../../src/components/transactions/GovDelegation/GovDelegationModal').then(
@@ -69,14 +74,14 @@ export default function Governance() {
         </StyledToggleButtonGroup>
         {isMobile ? (
           mode === Tabs.PROPOSALS ? (
-            <ProposalsV3List />
+            <ProposalsList />
           ) : (
             <UserGovernanceInfo />
           )
         ) : (
           <Grid container spacing={4}>
             <Grid item md={8}>
-              <ProposalsV3List />
+              <ProposalsList />
             </Grid>
             <Grid item md={4}>
               <UserGovernanceInfo />
