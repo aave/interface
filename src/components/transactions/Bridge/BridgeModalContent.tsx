@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { AaveV3InkWhitelabel, AaveV3Mantle } from '@bgd-labs/aave-address-book';
+import { AaveV3InkWhitelabel } from '@bgd-labs/aave-address-book';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
