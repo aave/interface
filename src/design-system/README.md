@@ -16,14 +16,20 @@ design-system/
 ├── components/              # Компоненты дизайн-системы
 │   ├── Button/             # Компонент Button
 │   │   ├── Button.tsx      # Реализация
-│   │   ├── Button.stories.tsx  # Storybook stories
 │   │   └── README.md       # Документация
-│   └── Switch/             # Компонент Switch
-│       ├── Switch.tsx      # Реализация
-│       ├── Switch.stories.tsx  # Storybook stories
+│   ├── Switch/             # Компонент Switch
+│   │   ├── Switch.tsx      # Реализация
+│   │   └── README.md       # Документация
+│   ├── Table/              # Таблица (Container, Table, Head, Body, Row, Cell)
+│   │   ├── Table.tsx       # Реализация
+│   │   └── README.md       # Документация
+│   └── Label/              # Метка для полей формы
+│       ├── Label.tsx       # Реализация
 │       └── README.md       # Документация
 └── guidelines/              # Руководящие принципы
-    └── usage.md            # Правила использования
+    ├── usage.md            # Правила использования
+    ├── table.md            # Таблица (Table, thead, tbody, tr, td)
+    └── label.md            # Label (метки, FormControlLabel, Typography)
 ```
 
 ## Основные принципы
@@ -38,8 +44,9 @@ design-system/
 Импортируйте компоненты из дизайн-системы:
 
 ```tsx
-import { Button } from 'src/design-system/components/Button';
-import { Switch } from 'src/design-system/components/Switch';
+import { Button, Switch } from 'src/design-system/components';
+import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from 'src/design-system/components';
+import { Label } from 'src/design-system/components';
 ```
 
 ## Тема

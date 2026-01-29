@@ -12,11 +12,11 @@
 
 ```tsx
 // ✅ Правильно
-import { DesignSystemButton as Button } from 'src/design-system/components/Button';
-import { DesignSystemSwitch as Switch } from 'src/design-system/components/Switch';
+import { Button, Switch, Label } from 'src/design-system/components';
+import { Table, TableContainer, TableHead, TableBody, TableRow, TableCell } from 'src/design-system/components';
 
 // ❌ Неправильно
-import { Button } from '@mui/material';
+import { Button, Table, TableCell } from '@mui/material';
 ```
 
 ### Переиспользование
@@ -59,6 +59,19 @@ import { Button } from '@mui/material';
 3. **Состояния:**
    - Используйте `disabled` для недоступных опций
    - Для loading состояния используйте обёртку с индикатором
+
+### Table
+
+1. **Импорт:** `Table`, `TableContainer`, `TableHead`, `TableBody`, `TableRow`, `TableCell`, `tableCellClasses` из `src/design-system/components`.
+2. **Структура:** `TableContainer` → `Table` → `TableHead`/`TableBody` → `TableRow` → `TableCell`.
+3. **Заголовки:** в ячейках `TableHead` используйте `Typography variant="helperText"`.
+4. **Прокрутка:** при `maxHeight` у `TableContainer` используйте `Table` с `stickyHeader` для фиксированного заголовка.
+
+### Label
+
+1. **Импорт:** `Label` из `src/design-system/components`.
+2. **Использование:** метки над полями ввода и селектами. Для Switch/Checkbox — `FormControlLabel`.
+3. **Доступность:** задавайте `htmlFor` и `id` у поля для связи с меткой.
 
 ## Цветовая палитра
 
