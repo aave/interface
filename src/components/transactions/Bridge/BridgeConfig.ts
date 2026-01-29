@@ -24,7 +24,7 @@ type Config = {
   sourceChainId: ChainId | number;
   router: string;
   chainSelector: string;
-  subgraphKey: SubgraphKey;
+  subgraphKey: SubgraphKey | 'unsupported';
   tokenOracle: string; // Used to get the GHO price
   wrappedNativeOracle: string; // Used to get the fee price in USD
   lockReleaseTokenPool?: string; // Only exists on Ethereum
@@ -231,7 +231,7 @@ const prodConfig: Config[] = [
     router: '0x670052635a9850bb45882Cb2eCcF66bCff0F41B7',
     tokenOracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
     wrappedNativeOracle: '0xD97F20bEbeD74e8144134C4b148fE93417dd0F96',
-    subgraphKey: 'ccip-mantle',
+    subgraphKey: 'unsupported',
     feeTokens: [
       {
         name: 'Mantle',
