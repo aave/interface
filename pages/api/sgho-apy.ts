@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       endDate,
     });
 
-    res.status(200).json(result);
+    return res.status(200).json(result);
   } catch (error) {
     console.error('API route error:', error);
 
@@ -45,9 +45,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         error: 'Failed to fetch data from external service',
       });
     }
-  }
 
-  res.status(500).json({
-    error: 'Internal server error',
-  });
+    return res.status(500).json({
+      error: 'Internal server error',
+    });
+  }
 }
