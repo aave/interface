@@ -7,6 +7,7 @@ import {
   AaveV3BaseSepolia,
   AaveV3Ethereum,
   AaveV3Gnosis,
+  AaveV3InkWhitelabel,
   AaveV3Sepolia,
   GhoArbitrum,
   GhoAvalanche,
@@ -14,6 +15,7 @@ import {
   GhoEthereum,
   GhoGnosis,
   GhoInk,
+  GhoMantle,
 } from '@bgd-labs/aave-address-book';
 import { constants } from 'ethers';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
@@ -211,7 +213,7 @@ const prodConfig: Config[] = [
     burnMintTokenPool: GhoInk.GHO_CCIP_TOKEN_POOL,
     router: '0xca7c90A52B44E301AC01Cb5EB99b2fD99339433A',
     tokenOracle: '0x20fd5f3FCac8883a3A0A2bBcD658A2d2c6EFa6B6',
-    wrappedNativeOracle: '0xA17887fd35B14A4c6e6ec87458591941934d444c',
+    wrappedNativeOracle: AaveV3InkWhitelabel.ASSETS.WETH.ORACLE,
     subgraphKey: 'ccip-ink',
     feeTokens: [
       {
@@ -230,7 +232,7 @@ const prodConfig: Config[] = [
   {
     sourceChainId: ChainId.mantle,
     chainSelector: '1556008542357238666',
-    burnMintTokenPool: '0xDe6539018B095353A40753Dc54C91C68c9487D4E',
+    burnMintTokenPool: GhoMantle.GHO_CCIP_TOKEN_POOL,
     router: '0x670052635a9850bb45882Cb2eCcF66bCff0F41B7',
     tokenOracle: '0x360d8aa8F6b09B7BC57aF34db2Eb84dD87bf4d12',
     wrappedNativeOracle: '0xD97F20bEbeD74e8144134C4b148fE93417dd0F96',
