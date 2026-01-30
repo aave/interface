@@ -16,6 +16,7 @@ import {
   AaveV3Gnosis,
   AaveV3InkWhitelabel,
   AaveV3Linea,
+  AaveV3Mantle,
   AaveV3Metis,
   AaveV3Optimism,
   AaveV3Plasma,
@@ -98,6 +99,7 @@ export enum CustomMarket {
   proto_aptos_v3 = 'proto_aptos_v3',
   proto_plasma_v3 = 'proto_plasma_v3',
   proto_ink_v3 = 'proto_ink_v3',
+  proto_mantle_v3 = 'proto_mantle_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -712,6 +714,25 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Metis.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Metis.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Metis.COLLECTOR,
+    },
+  },
+  [CustomMarket.proto_mantle_v3]: {
+    marketTitle: 'Mantle',
+    market: CustomMarket.proto_mantle_v3,
+    chainId: ChainId.mantle,
+    v3: true,
+    enabledFeatures: {
+      incentives: true,
+    },
+    subgraphUrl: '',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Mantle.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Mantle.POOL,
+      WETH_GATEWAY: AaveV3Mantle.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Mantle.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Mantle.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Mantle.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Mantle.COLLECTOR,
     },
   },
 } as const;
