@@ -108,7 +108,7 @@ const testData = {
 //due frozen Matic
 describe('MATIC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3', v3: true });
+  configEnvWithTenderlyPolygonFork({ market: 'fork_proto_polygon_v3' });
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {

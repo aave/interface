@@ -42,7 +42,7 @@ const testData = {
 //skip while multiply fork eth markets present
 describe.skip('E-MODE SPEC, ETHEREUM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAEthereumV3Fork({ v3: true });
+  configEnvWithTenderlyAEthereumV3Fork({});
   describe('Prepare min health factor state, with stable coins', () => {
     supply(testData.testCases.deposit1, skipTestState, true);
     borrow(testData.testCases.borrow, skipTestState, true);

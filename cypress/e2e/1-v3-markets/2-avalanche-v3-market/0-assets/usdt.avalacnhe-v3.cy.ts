@@ -4,20 +4,14 @@ import assets from '../../../../fixtures/assets.json';
 import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../../support/steps/configuration.steps';
-import {
-  borrow,
-  changeBorrowType,
-  repay,
-  supply,
-  withdraw,
-} from '../../../../support/steps/main.steps';
+import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import {
   dashboardAssetValuesVerification,
   switchCollateralBlocked,
 } from '../../../../support/steps/verification.steps';
 
 const tokensToRequest: RequestedTokens = {
-  aAVAXAvalancheV3: 9000,
+  aAVAXAvalancheV3: 1,
 };
 
 const testData = {
@@ -29,43 +23,16 @@ const testData = {
         apyType: constants.borrowAPYType.variable,
         hasApproval: true,
       },
-      {
-        asset: assets.avalancheV3Market.USDT,
-        amount: 10,
-        apyType: constants.borrowAPYType.stable,
-        hasApproval: true,
-      },
-    ],
-    changeBorrowType: [
-      {
-        asset: assets.avalancheV3Market.USDT,
-        apyType: constants.borrowAPYType.stable,
-        newAPY: constants.borrowAPYType.variable,
-        hasApproval: true,
-      },
-      {
-        asset: assets.avalancheV3Market.USDT,
-        apyType: constants.borrowAPYType.variable,
-        newAPY: constants.borrowAPYType.stable,
-        hasApproval: true,
-      },
     ],
     deposit: {
       asset: assets.avalancheV3Market.USDT,
       amount: 10.1,
       hasApproval: false,
     },
-    repayCollateral: {
-      asset: assets.avalancheV3Market.USDT,
-      apyType: constants.apyType.stable,
-      amount: 2,
-      hasApproval: false,
-      repayOption: constants.repayType.default,
-    },
     repay: [
       {
         asset: assets.avalancheV3Market.USDT,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         repayableAsset: assets.avalancheV3Market.aUSDT,
         amount: 2,
         hasApproval: true,
@@ -73,7 +40,7 @@ const testData = {
       },
       {
         asset: assets.avalancheV3Market.USDT,
-        apyType: constants.apyType.stable,
+        apyType: constants.apyType.variable,
         amount: 2,
         hasApproval: false,
         repayOption: constants.repayType.collateral,
@@ -102,8 +69,8 @@ const testData = {
       {
         type: constants.dashboardTypes.borrow,
         assetName: assets.avalancheV3Market.USDT.shortName,
-        amount: 14.0,
-        apyType: constants.borrowAPYType.stable,
+        amount: 21.0,
+        apyType: constants.borrowAPYType.variable,
       },
     ],
   },
@@ -113,15 +80,10 @@ describe.skip('USDT INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({
     market: 'fork_proto_avalanche_v3',
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
-  });
-  repay(testData.testCases.repayCollateral, skipTestState, false);
-  testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
-    changeBorrowType(changeAPRCase, skipTestState, true);
   });
   supply(testData.testCases.deposit, skipTestState, true);
   testData.testCases.repay.forEach((repayCase) => {
