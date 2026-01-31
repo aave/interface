@@ -1,6 +1,7 @@
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
+import { BigNumber as BigNumberJS } from 'bignumber.js';
 import { BigNumber, PopulatedTransaction } from 'ethers';
 import { Dispatch } from 'react';
 import { calculateSignedAmount } from 'src/hooks/paraswap/common';
@@ -127,6 +128,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
         // Account slippage to make sure we have enough collateral to repay with
         repayWithAmount = valueToBigNumber(state.outputAmount || '0')
           .multipliedBy(1 + Number(state.slippage) / 100)
+          .decimalPlaces(state.destinationToken.decimals, BigNumberJS.ROUND_CEIL)
           .toFixed(state.destinationToken.decimals);
       } else {
         // If buy order i want use exactly the collateral to repay with amount
