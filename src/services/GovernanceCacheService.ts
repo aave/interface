@@ -4,7 +4,7 @@
  */
 
 const CACHE_ENDPOINT =
-  process.env.NEXT_PUBLIC_GOVERNANCE_CACHE_URL || 'http://localhost:3001/graphql';
+  process.env.NEXT_PUBLIC_GOVERNANCE_CACHE_URL || 'http://localhost:3002/graphql';
 
 interface CacheProposal {
   proposalId: number | string;

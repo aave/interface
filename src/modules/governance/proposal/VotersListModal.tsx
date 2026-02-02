@@ -4,24 +4,23 @@ import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
+import { ProposalVoteDisplayInfo, VotersSplitDisplay } from 'src/modules/governance/types';
 
 import { BasicModal } from '../../../components/primitives/BasicModal';
-import { ProposalVoteInfo } from '../utils/formatProposal';
 import { VoteBar } from '../VoteBar';
 import { VotersList } from './VotersList';
 
 type VotersListModalProps = {
   open: boolean;
   close: () => void;
-  proposal: ProposalVoteInfo;
-  voters: ProposalVotes;
+  voteInfo: ProposalVoteDisplayInfo;
+  voters: VotersSplitDisplay;
 };
 
 export const VotersListModal = ({
   open,
   close,
-  proposal,
+  voteInfo,
   voters,
 }: VotersListModalProps): JSX.Element | null => {
   const { breakpoints } = useTheme();
@@ -33,14 +32,14 @@ export const VotersListModal = ({
     borderRadius: 1,
   };
 
-  if (!proposal || !voters) return null;
+  if (!voteInfo || !voters) return null;
 
   const yesVotesUI = (
     <>
       <VoteBar
         yae
-        percent={proposal.forPercent}
-        votes={proposal.forVotes}
+        percent={voteInfo.forPercent}
+        votes={voteInfo.forVotes}
         sx={{
           ...borderBaseStyle,
           px: 4,
@@ -78,8 +77,8 @@ export const VotersListModal = ({
   const noVotesUI = (
     <>
       <VoteBar
-        percent={proposal.againstPercent}
-        votes={proposal.againstVotes}
+        percent={voteInfo.againstPercent}
+        votes={voteInfo.againstVotes}
         sx={{
           ...borderBaseStyle,
           px: 4,
