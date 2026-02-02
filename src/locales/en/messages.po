@@ -885,6 +885,10 @@ msgstr "Repay {0} with {1}"
 msgid "GHO Balance"
 msgstr "GHO Balance"
 
+#: src/layouts/SupportModal.tsx
+msgid "Country (optional)"
+msgstr "Country (optional)"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
 msgstr "Techpaper"
@@ -2888,6 +2892,10 @@ msgstr "Safety Module"
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
 msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Transaction history for Plasma not supported yet, coming soon."
+msgstr "Transaction history for Plasma not supported yet, coming soon."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
