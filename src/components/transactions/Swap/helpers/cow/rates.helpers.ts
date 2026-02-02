@@ -103,7 +103,7 @@ export async function getCowProtocolSellRates({
             buyTokenDecimals: destDecimals,
             signer,
             appCode: appCode,
-            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol),
+            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol, swapType),
           },
           {
             // Price Quality is set to OPTIMAL by default
@@ -198,8 +198,8 @@ export async function getCowProtocolSellRates({
       .toString();
     const destSpotAmount =
       side === 'sell'
-        ? orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString()
-        : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString();
+        ? orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString()
+        : orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString();
     const destSpotUSD = BigNumber(srcTokenPriceUsd)
       .multipliedBy(BigNumber(destSpotAmount).dividedBy(10 ** srcDecimals))
       .toString();

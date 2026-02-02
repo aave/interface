@@ -884,6 +884,10 @@ msgstr "Repay {0} with {1}"
 msgid "GHO Balance"
 msgstr "GHO Balance"
 
+#: src/layouts/SupportModal.tsx
+msgid "Country (optional)"
+msgstr "Country (optional)"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
 msgstr "Techpaper"
@@ -1013,6 +1017,10 @@ msgstr "Disabled"
 #: src/components/infoTooltips/GhoRateTooltip.tsx
 msgid "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
 msgstr "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
+
+#: src/layouts/SupportModal.tsx
+msgid "Share my wallet address to help the support team resolve my issue"
+msgstr "Share my wallet address to help the support team resolve my issue"
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restaking {symbol}"
@@ -1275,6 +1283,7 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
+#: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
@@ -2097,10 +2106,6 @@ msgstr "Loading quote..."
 #: src/components/infoTooltips/EstimatedCostsForLimitSwap.tsx
 msgid "Estimated Costs & Fees"
 msgstr "Estimated Costs & Fees"
-
-#: src/modules/reserve-overview/SupplyInfo.tsx
-msgid "Unbacked"
-msgstr "Unbacked"
 
 #: src/components/infoTooltips/EModeTooltip.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
@@ -3771,6 +3776,10 @@ msgstr "This asset is eligible for Kernel points incentive program. Aave Labs do
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "You have no rewards to claim at this time."
 msgstr "You have no rewards to claim at this time."
+
+#: src/components/transactions/Swap/errors/shared/InsufficientBorrowPowerBlockingError.tsx
+msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
+msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "Restaked"

@@ -2,7 +2,8 @@ import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { OrderKind } from '@cowprotocol/cow-sdk';
 import { Dispatch, useEffect } from 'react';
 
-import { COW_PARTNER_FEE } from '../constants/cow.constants';
+import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../constants/cow.constants';
+import { PARASWAP_FLASH_LOAN_FEE_BPS } from '../constants/paraswap.constants';
 import {
   isCowProtocolRates,
   OrderType,
@@ -19,6 +20,14 @@ const marketOrderKindPerSwapType: Record<SwapType, OrderKind> = {
   [SwapType.DebtSwap]: OrderKind.BUY,
   [SwapType.RepayWithCollateral]: OrderKind.BUY,
   [SwapType.WithdrawAndSwap]: OrderKind.SELL,
+};
+
+const isPositionSwap = (swapType: SwapType, usingFlashloan: boolean) => {
+  return swapType != SwapType.Swap && usingFlashloan;
+};
+
+const getFlashLoanFeeBps = (provider: SwapProvider) => {
+  return provider === SwapProvider.COW_PROTOCOL ? FLASH_LOAN_FEE_BPS : PARASWAP_FLASH_LOAN_FEE_BPS;
 };
 
 /**
@@ -70,13 +79,22 @@ export const useSwapOrderAmounts = ({
     let networkFeeAmountInBuyFormatted = '0';
     const partnetFeeBps =
       state.provider === SwapProvider.COW_PROTOCOL
-        ? COW_PARTNER_FEE(state.sourceToken.symbol, state.destinationToken.symbol).volumeBps
+        ? COW_PARTNER_FEE(state.sourceToken.symbol, state.destinationToken.symbol, state.swapType)
+            .volumeBps
         : 0;
     const partnerFeeAmount =
       state.side === 'sell'
         ? valueToBigNumber(state.outputAmount).multipliedBy(partnetFeeBps).dividedBy(10000)
         : valueToBigNumber(state.inputAmount).multipliedBy(partnetFeeBps).dividedBy(10000);
     // const partnerFeeToken = state.side === 'sell' ? state.destinationToken : state.sourceToken;
+
+    const flashLoanFeeBps = isPositionSwap(state.swapType, state.useFlashloan ?? false)
+      ? getFlashLoanFeeBps(state.provider)
+      : 0;
+    const flashLoanFeeAmount =
+      state.side == 'sell'
+        ? valueToBigNumber(state.outputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000)
+        : valueToBigNumber(state.inputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000);
 
     if (!isInvertedSwap) {
       // on classic swaps, minimum is calculated from the output token and sent amount is from the input token
@@ -130,8 +148,11 @@ export const useSwapOrderAmounts = ({
           const outputAmountAfterPartnerFees = valueToBigNumber(outputAmountAfterNetworkFees).minus(
             partnerFeeAmount
           );
-          const outputAmountAfterSlippage = valueToBigNumber(
+          const outputAmountAfterFlashLoanFees = valueToBigNumber(
             outputAmountAfterPartnerFees
+          ).minus(flashLoanFeeAmount);
+          const outputAmountAfterSlippage = valueToBigNumber(
+            outputAmountAfterFlashLoanFees
           ).multipliedBy(1 - Number(state.slippage) / 100);
           buyAmountFormatted = outputAmountAfterSlippage.toFixed();
         } else {
@@ -144,9 +165,12 @@ export const useSwapOrderAmounts = ({
           const sellAmountAfterPartnerFees = valueToBigNumber(sellAmountAfterNetworkFees).plus(
             partnerFeeAmount
           );
-          const sellAmountAfterSlippage = valueToBigNumber(sellAmountAfterPartnerFees).multipliedBy(
-            1 + Number(state.slippage) / 100
+          const sellAmountAfterFlashLoanFees = valueToBigNumber(sellAmountAfterPartnerFees).plus(
+            flashLoanFeeAmount
           );
+          const sellAmountAfterSlippage = valueToBigNumber(
+            sellAmountAfterFlashLoanFees
+          ).multipliedBy(1 + Number(state.slippage) / 100);
           sellAmountFormatted = sellAmountAfterSlippage.toFixed();
         }
       } else if (state.orderType === OrderType.LIMIT) {
@@ -157,12 +181,14 @@ export const useSwapOrderAmounts = ({
           // Do not apply network costs on limit orders
           buyAmountFormatted = valueToBigNumber(state.outputAmount)
             .minus(partnerFeeAmount)
+            .minus(flashLoanFeeAmount)
             .toFixed();
         } else {
           // on a buy limit order, we receive exactly the output amount and send the input amount after partner fees (no slippage applied)
           // Do not apply network costs on limit orders
           sellAmountFormatted = valueToBigNumber(state.inputAmount)
             .plus(partnerFeeAmount)
+            .plus(flashLoanFeeAmount)
             .toFixed();
 
           buyAmountFormatted = state.outputAmount;
@@ -226,7 +252,10 @@ export const useSwapOrderAmounts = ({
           const inputAmountAfterPartnerFees = valueToBigNumber(inputAmountAfterNetworkFees)
             .minus(partnerFeeAmount)
             .toFixed();
-          const inputAmountAfterSlippage = valueToBigNumber(inputAmountAfterPartnerFees)
+          const inputAmountAfterFlashLoanFees = valueToBigNumber(inputAmountAfterPartnerFees).minus(
+            flashLoanFeeAmount
+          );
+          const inputAmountAfterSlippage = valueToBigNumber(inputAmountAfterFlashLoanFees)
             .multipliedBy(1 + Number(state.slippage) / 100)
             .toFixed();
           buyAmountFormatted = inputAmountAfterSlippage;
@@ -239,9 +268,12 @@ export const useSwapOrderAmounts = ({
           const sellAmountAfterPartnerFees = valueToBigNumber(sellAmountAfterNetworkFees).plus(
             partnerFeeAmount
           );
-          const sellAmountAfterSlippage = valueToBigNumber(sellAmountAfterPartnerFees).multipliedBy(
-            1 + Number(state.slippage) / 100
+          const sellAmountAfterFlashLoanFees = valueToBigNumber(sellAmountAfterPartnerFees).plus(
+            flashLoanFeeAmount
           );
+          const sellAmountAfterSlippage = valueToBigNumber(
+            sellAmountAfterFlashLoanFees
+          ).multipliedBy(1 + Number(state.slippage) / 100);
           sellAmountFormatted = sellAmountAfterSlippage.toFixed();
         }
       } else {
@@ -252,6 +284,7 @@ export const useSwapOrderAmounts = ({
           // Do not apply network costs on limit orders
           sellAmountFormatted = valueToBigNumber(state.outputAmount)
             .plus(partnerFeeAmount)
+            .plus(flashLoanFeeAmount)
             .toFixed();
         } else {
           // on an inverted sell limit order, we sell the output amount and buy the input amount after partner fees (no slippage applied)
@@ -260,6 +293,7 @@ export const useSwapOrderAmounts = ({
           // Do not apply network costs on limit orders
           buyAmountFormatted = valueToBigNumber(state.inputAmount)
             .minus(partnerFeeAmount)
+            .minus(flashLoanFeeAmount)
             .toFixed();
         }
       }
@@ -312,6 +346,7 @@ export const useSwapOrderAmounts = ({
       networkFeeAmountInSellFormatted,
       networkFeeAmountInBuyFormatted,
       partnerFeeAmountFormatted: partnerFeeAmount.toFixed(),
+      flashLoanFeeAmountFormatted: flashLoanFeeAmount.toFixed(),
       partnerFeeBps: partnetFeeBps,
     });
   }, [
@@ -323,5 +358,6 @@ export const useSwapOrderAmounts = ({
     state.side,
     state.swapType,
     state.orderType,
+    state.useFlashloan,
   ]);
 };

@@ -20,9 +20,13 @@ export const calculateMaxWithdrawAmount = (
     user.isInEmode && userEMode
       ? userEMode.eMode.formattedLiquidationThreshold
       : poolReserve.formattedReserveLiquidationThreshold;
+  // Check if asset has non-zero liquidation threshold (base or in user's e-mode)
+  const hasLiquidationThreshold =
+    poolReserve.reserveLiquidationThreshold !== '0' ||
+    (user.isInEmode && userEMode?.collateralEnabled);
   if (
     userReserve?.usageAsCollateralEnabledOnUser &&
-    poolReserve.reserveLiquidationThreshold !== '0' &&
+    hasLiquidationThreshold &&
     user.totalBorrowsMarketReferenceCurrency !== '0'
   ) {
     // if we have any borrowings we should check how much we can withdraw to a minimum HF of 1.01

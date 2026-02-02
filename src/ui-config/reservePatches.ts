@@ -200,6 +200,16 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe January 2026',
       iconSymbol: 'ptsusde',
     },
+    [AaveV3Plasma.ASSETS.PT_USDe_9APR2026.UNDERLYING.toLowerCase()]: {
+      symbol: 'PT USDe April 9th 2026',
+      name: 'PT USDe April 2026',
+      iconSymbol: 'ptusde',
+    },
+    [AaveV3Plasma.ASSETS.PT_sUSDE_9APR2026.UNDERLYING.toLowerCase()]: {
+      symbol: 'PT sUSDe April 9th 2026',
+      name: 'PT sUSDe April 2026',
+      iconSymbol: 'ptsusde',
+    },
 
     [AaveV3Plasma.ASSETS.syrupUSDT.UNDERLYING.toLowerCase()]: {
       symbol: 'syrupUSDT',

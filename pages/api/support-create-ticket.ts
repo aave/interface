@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { CREATE_THREAD_MUTATION, UPSERT_CUSTOMER_MUTATION } from './plain-mutations';
@@ -57,7 +58,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { email, text } = req.body;
+    const { email, text, walletAddress, country } = req.body;
+
+    const sanitizedCountry = typeof country === 'string' ? country.trim() : '';
 
     if (!email || !text) {
       return res.status(400).json({ message: 'Email and text are required.' });
@@ -69,6 +72,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (!text?.trim()) {
       return res.status(400).json({ error: 'Missing inquiry' });
+    }
+
+    let sanitizedWalletAddress: string | undefined = undefined;
+    if (walletAddress && typeof walletAddress === 'string') {
+      const candidate = walletAddress.trim();
+      if (ethers.utils.isAddress(candidate)) {
+        sanitizedWalletAddress = ethers.utils.getAddress(candidate);
+      } else {
+        console.warn('Invalid walletAddress format provided');
+      }
     }
 
     const upsertCustomerVariables = {
@@ -109,6 +122,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         customerIdentifier: {
           emailAddress: email,
         },
+
         components: [
           {
             componentText: {
@@ -153,6 +167,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             componentSpacer: {
               spacerSize: 'M',
             },
+          },
+        ],
+        threadFields: [
+          {
+            key: 'wallet_address',
+            type: 'STRING',
+            stringValue: sanitizedWalletAddress ?? '',
+          },
+          {
+            key: 'webform_country',
+            type: 'STRING',
+            stringValue: sanitizedCountry,
           },
         ],
       },

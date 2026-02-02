@@ -2,26 +2,27 @@ import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
-import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
 import { BorrowInfo } from '../BorrowInfo';
 import { ReserveEModePanel } from '../ReserveEModePanel';
 import { PanelRow, PanelTitle } from '../ReservePanels';
+
 // import { SavingsGho } from './SavingsGho';
 
 type GhoReserveConfigurationProps = {
-  reserve: ComputedReserveData;
+  reserve: ReserveWithId;
 };
 
 export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = ({ reserve }) => {
   const [currentNetworkConfig, currentMarketData] = useRootStore(
     useShallow((store) => [store.currentNetworkConfig, store.currentMarketData])
   );
-  const { borrowCap } = useAssetCaps();
-  const showBorrowCapStatus = reserve.borrowCap !== '0';
+  const { borrowCap } = useAssetCapsSDK();
+  const showBorrowCapStatus = reserve.borrowInfo?.borrowCap.amount.value !== '0';
 
   return (
     <>
@@ -115,7 +116,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           />
         </Box>
       </PanelRow>
-      {reserve.eModes.length > 0 && (
+      {reserve.eModeInfo?.length > 0 && (
         <>
           <Divider sx={{ my: { xs: 6, sm: 10 } }} />
           <ReserveEModePanel reserve={reserve} />

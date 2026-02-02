@@ -6,9 +6,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { ActionName, SwapActionFields, TransactionHistoryItem } from 'src/modules/history/types';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { updateCowOrderStatus } from 'src/utils/swapAdapterHistory';
-import { getWalletClient } from 'wagmi/actions';
 
 import { COW_ENV, getCowAdapter } from '../Swap/helpers/cow';
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -32,15 +30,12 @@ export const CancelCowOrderActions = ({ cowOrder, blocked }: CancelCowOrderActio
       const adapter = await getCowAdapter(cowOrder.chainId);
       AdapterContext.getInstance().setAdapter(adapter);
       const orderBookApi = new OrderBookApi({ chainId: cowOrder.chainId, env: COW_ENV });
-      const walletClient = await getWalletClient(wagmiConfig, { chainId: cowOrder.chainId });
-
-      if (!walletClient || !walletClient.account) {
-        throw new Error('Wallet not connected for signing');
-      }
+      const signer = adapter.signer;
+      if (!signer) throw new Error('Wallet not connected for signing');
       const { signature, signingScheme } = await OrderSigningUtils.signOrderCancellation(
         cowOrder.id,
         cowOrder.chainId,
-        walletClient
+        signer
       );
       await orderBookApi.sendSignedOrderCancellations({
         orderUids: [cowOrder.id],

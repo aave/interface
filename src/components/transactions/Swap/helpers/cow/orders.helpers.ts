@@ -27,7 +27,7 @@ import {
   COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV,
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
-import { OrderType } from '../../types';
+import { OrderType, SwapState, SwapType } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
 export const COW_ENV: CowEnv = 'prod';
@@ -74,6 +74,7 @@ export type CowProtocolActionParams = {
   signatureParams?: SignedParams;
   estimateGasLimit?: (tx: PopulatedTransaction, chainId?: number) => Promise<PopulatedTransaction>;
   validTo: number;
+  swapType?: SwapType;
 };
 
 export const getPreSignTransaction = async ({
@@ -94,6 +95,7 @@ export const getPreSignTransaction = async ({
   tokenDestDecimals,
   kind,
   validTo,
+  swapType,
 }: CowProtocolActionParams) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -125,7 +127,8 @@ export const getPreSignTransaction = async ({
         slippageBps,
         smartSlippage,
         orderType,
-        appCode
+        appCode,
+        swapType
       ),
       additionalParams: {
         signingScheme: SigningScheme.PRESIGN,
@@ -165,6 +168,7 @@ export const sendOrder = async ({
   signatureParams,
   estimateGasLimit,
   validTo,
+  swapType,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
 
@@ -199,6 +203,7 @@ export const sendOrder = async ({
     smartSlippage,
     orderType,
     appCode,
+    swapType,
     hooks
   );
 
@@ -289,6 +294,7 @@ export const getUnsignerOrder = async ({
   validTo,
   srcToken,
   receiver,
+  swapType,
 }: {
   sellAmount: string;
   buyAmount: string;
@@ -304,10 +310,19 @@ export const getUnsignerOrder = async ({
   validTo: number;
   srcToken?: string;
   receiver?: string;
+  swapType?: SwapType;
 }) => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
-    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage, orderType, appCode)
+    COW_APP_DATA(
+      tokenFromSymbol,
+      tokenToSymbol,
+      slippageBps,
+      smartSlippage,
+      orderType,
+      appCode,
+      swapType
+    )
   );
 
   return {
@@ -346,10 +361,19 @@ export const populateEthFlowTx = async (
   smartSlippage: boolean,
   appCode: string,
   orderType: OrderType,
+  swapType?: SwapType,
   quoteId?: number
 ): Promise<PopulatedTransaction> => {
   const appDataHex = await hashAppData(
-    COW_APP_DATA(tokenFromSymbol, tokenToSymbol, slippageBps, smartSlippage, orderType, appCode)
+    COW_APP_DATA(
+      tokenFromSymbol,
+      tokenToSymbol,
+      slippageBps,
+      smartSlippage,
+      orderType,
+      appCode,
+      swapType
+    )
   );
 
   const orderData = {
@@ -440,6 +464,10 @@ export const generateCoWExplorerLink = (chainId: SupportedChainId, orderId?: str
       return `${base}/pol/orders/${orderId}`;
     case SupportedChainId.BNB:
       return `${base}/bnb/orders/${orderId}`;
+    case SupportedChainId.LINEA:
+      return `${base}/linea/orders/${orderId}`;
+    case SupportedChainId.PLASMA:
+      return `${base}/plasma/orders/${orderId}`;
     default:
       throw new Error('Define explorer link for chainId: ' + chainId);
   }
@@ -535,6 +563,24 @@ export const addOrderTypeToAppData = (
       ...appData?.metadata,
       orderClass: {
         orderClass: orderType === OrderType.LIMIT ? OrderClass.LIMIT : OrderClass.MARKET,
+      },
+    },
+  };
+};
+
+export const overrideSmartSlippageOnAppData = (state: SwapState, appData: AppDataParams) => {
+  const slippageBips =
+    state.orderType === OrderType.LIMIT ? 0 : Math.round(Number(state.slippage) * 100); // percent to bps
+  const smartSlippage = state.swapRate?.suggestedSlippage == Number(state.slippage);
+
+  return {
+    ...appData,
+    metadata: {
+      ...appData?.metadata,
+      quote: {
+        ...appData?.metadata?.quote,
+        slippageBips: appData?.metadata?.quote?.slippageBips ?? slippageBips,
+        smartSlippage,
       },
     },
   };

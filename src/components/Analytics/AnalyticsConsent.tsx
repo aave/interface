@@ -1,14 +1,21 @@
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import * as Sentry from '@sentry/nextjs';
 import React, { useEffect, useState } from 'react';
 import { CookieConsent as AnalyticsConsentBanner } from 'react-cookie-consent';
 import { Link } from 'src/components/primitives/Link';
 import { CONSENT_KEY } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
+import { useAccount } from 'wagmi';
 import { useShallow } from 'zustand/shallow';
 
 export default function AnalyticsBanner() {
-  const [optInAnalytics, optOutAnalytics, analyticsConfigOpen] = useRootStore(
-    useShallow((store) => [store.acceptAnalytics, store.rejectAnalytics, store.analyticsConfigOpen])
+  const [optInAnalytics, optOutAnalytics, analyticsConfigOpen, isTrackingEnabled] = useRootStore(
+    useShallow((store) => [
+      store.acceptAnalytics,
+      store.rejectAnalytics,
+      store.analyticsConfigOpen,
+      store.isTrackingEnabled,
+    ])
   );
 
   const [bannerVisible, setBannerVisible] = useState(false);
@@ -26,6 +33,20 @@ export default function AnalyticsBanner() {
 
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
+
+  // Bind Sentry user to wallet if analytics consent is accepted
+  const { isConnected, address, connector } = useAccount();
+  useEffect(() => {
+    const hasConsent = isTrackingEnabled;
+    if (hasConsent && isConnected && address) {
+      Sentry.setUser({
+        wallet: address,
+        wallet_type: connector?.name,
+      } as Record<string, unknown>);
+    } else {
+      Sentry.setUser(null);
+    }
+  }, [isTrackingEnabled, isConnected, address, connector]);
 
   const hasUserMadeChoice =
     typeof window !== 'undefined' && localStorage.getItem(CONSENT_KEY) !== null;

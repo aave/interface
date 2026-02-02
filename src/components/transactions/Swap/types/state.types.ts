@@ -25,6 +25,7 @@ export enum ActionsBlockedReason {
   INSUFFICIENT_LIQUIDITY = 'INSUFFICIENT_LIQUIDITY',
   FLASH_LOAN_DISABLED = 'FLASH_LOAN_DISABLED',
   IS_LIQUIDATABLE = 'IS_LIQUIDATABLE',
+  INSUFFICIENT_BORROW_POWER = 'INSUFFICIENT_BORROW_POWER',
 }
 
 /**
@@ -93,6 +94,8 @@ export type TokensSwapState = {
   networkFeeAmountInBuyFormatted?: string;
   /** Partner fee amount applied to this order, normalized to the fee token units (depends on side). */
   partnerFeeAmountFormatted?: string;
+  /** Flash loan fee amount applied to this order, normalized to the fee token units (depends on side). */
+  flashLoanFeeAmountFormatted?: string;
   /** Partner fee in basis points used to compute partnerFeeAmountFormatted. */
   partnerFeeBps?: number;
 
@@ -278,8 +281,8 @@ export const swapDefaultState: SwapState = {
   networkFeeAmountInSellFormatted: '0',
   networkFeeAmountInBuyFormatted: '0',
   partnerFeeAmountFormatted: '0',
+  flashLoanFeeAmountFormatted: '0',
   partnerFeeBps: 0,
-
   limitsOrderButtonBlocked: false,
   showSlippageWarning: false,
   showChangeNetworkWarning: false,

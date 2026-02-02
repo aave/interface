@@ -1,4 +1,4 @@
-import { normalize, valueToBigNumber } from '@aave/math-utils';
+import { normalize } from '@aave/math-utils';
 import { getOrderToSign, LimitTradeParameters, OrderKind, OrderStatus } from '@cowprotocol/cow-sdk';
 import { AaveFlashLoanType, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
@@ -14,18 +14,20 @@ import { zeroAddress } from 'viem';
 import { useShallow } from 'zustand/react/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import {
-  COW_PARTNER_FEE,
-  DUST_PROTECTION_MULTIPLIER,
-  FLASH_LOAN_FEE_BPS,
-} from '../../constants/cow.constants';
+import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
   addOrderTypeToAppData,
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
+  overrideSmartSlippageOnAppData,
 } from '../../helpers/cow';
-import { calculateInstanceAddress } from '../../helpers/cow/adapters.helpers';
+import {
+  accountForDustProtection,
+  calculateInstanceAddress,
+  getHooksGasLimit,
+} from '../../helpers/cow/adapters.helpers';
+import { useCollateralsAmount } from '../../hooks/useCollateralsAmount';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
@@ -58,6 +60,8 @@ export const DebtSwapActionsViaCoW = ({
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
   const [user] = useRootStore(useShallow((state) => [state.account]));
+
+  const debtAmount = useCollateralsAmount();
 
   const {
     mainTxState,
@@ -178,11 +182,16 @@ export const DebtSwapActionsViaCoW = ({
       );
       const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
 
-      const buyAmountWithMarginForDustProtection = valueToBigNumber(
-        state.buyAmountBigInt.toString()
-      )
-        .multipliedBy(DUST_PROTECTION_MULTIPLIER)
-        .toFixed(0);
+      const sellAmountWithMarginForDustProtection = accountForDustProtection(
+        state.sellAmountBigInt.toString(),
+        state.swapType,
+        state.orderType
+      );
+      const buyAmountWithMarginForDustProtection = accountForDustProtection(
+        state.buyAmountBigInt.toString(),
+        state.swapType,
+        state.orderType
+      );
 
       const delegationPermit = signatureParams
         ? {
@@ -196,7 +205,7 @@ export const DebtSwapActionsViaCoW = ({
 
       const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
         flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
-        sellAmount: state.sellAmountBigInt,
+        sellAmount: BigInt(sellAmountWithMarginForDustProtection),
       });
 
       // On Debt Swap, the side is inverted for the swap
@@ -211,7 +220,11 @@ export const DebtSwapActionsViaCoW = ({
         quoteId: isCowProtocolRates(state.swapRate) ? state.swapRate?.quoteId : undefined,
         validTo,
         slippageBps: state.orderType == OrderType.MARKET ? Number(state.slippage) * 100 : undefined,
-        partnerFee: COW_PARTNER_FEE(state.sellAmountToken.symbol, state.buyAmountToken.symbol),
+        partnerFee: COW_PARTNER_FEE(
+          state.sellAmountToken.symbol,
+          state.buyAmountToken.symbol,
+          state.swapType
+        ),
       };
 
       const orderToSign = getOrderToSign(
@@ -233,9 +246,10 @@ export const DebtSwapActionsViaCoW = ({
           validTo,
           owner: user as `0x${string}`,
           flashLoanFeeAmount,
+          hooksGasLimit: getHooksGasLimit(debtAmount),
         },
         {
-          sellAmount: state.sellAmountBigInt,
+          sellAmount: BigInt(sellAmountWithMarginForDustProtection),
           buyAmount: BigInt(buyAmountWithMarginForDustProtection),
           orderToSign,
           collateralPermit: delegationPermit,
@@ -266,6 +280,12 @@ export const DebtSwapActionsViaCoW = ({
         state.orderType,
         orderPostParams.swapSettings.appData
       );
+
+      orderPostParams.swapSettings.appData = overrideSmartSlippageOnAppData(
+        state,
+        orderPostParams.swapSettings.appData
+      );
+
       const result = await tradingSdk.postLimitOrder(limitOrder, orderPostParams.swapSettings);
 
       trackingHandlers.trackSwap();
