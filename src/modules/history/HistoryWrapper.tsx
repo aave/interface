@@ -268,9 +268,9 @@ export const HistoryWrapper = () => {
         >
           <Typography sx={{ my: 24 }} variant="h3" color="text.primary">
             {currentMarket === 'proto_plasma_v3' ? (
-              <Trans>Transaction history for Plasma not supported yet, coming soon</Trans>
+              <Trans>Transaction history for Plasma not supported yet, coming soon.</Trans>
             ) : (
-              <Trans>No transactions yet</Trans>
+              <Trans>No transactions yet.</Trans>
             )}
           </Typography>
         </Box>
