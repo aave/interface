@@ -146,6 +146,7 @@ const ProposalStep = ({
           )}
         </Box>
         {substeps && subtimelineOpen && (
+          // @ts-expect-error TODO: MUI lab Timeline type mismatch
           <Timeline
             sx={{
               [`& .${timelineItemClasses.root}:before`]: {
@@ -308,6 +309,7 @@ export const ProposalLifecycleCache = ({ proposal }: ProposalLifecycleCacheProps
         <Trans>Proposal details</Trans>
       </Typography>
 
+      {/* @ts-expect-error TODO: MUI lab Timeline type mismatch */}
       <Timeline
         position="right"
         sx={{
