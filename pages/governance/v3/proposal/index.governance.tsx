@@ -54,7 +54,7 @@ export default function ProposalPage() {
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             <ProposalOverview
-              proposal={proposal}
+              proposal={proposal ?? undefined}
               error={!!proposalError}
               loading={proposalLoading}
             />
