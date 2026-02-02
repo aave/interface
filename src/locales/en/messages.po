@@ -1764,10 +1764,6 @@ msgstr "This action will reduce V2 health factor below liquidation threshold. re
 msgid "{currentMethod}"
 msgstr "{currentMethod}"
 
-#: src/modules/history/HistoryWrapper.tsx
-msgid "Transaction history for Plasma not supported yet, coming soon"
-msgstr "Transaction history for Plasma not supported yet, coming soon"
-
 #: src/modules/bridge/BridgeTransactionListItem.tsx
 msgid "View TX"
 msgstr "View TX"
@@ -2618,6 +2614,7 @@ msgstr "Staking Rewards"
 msgid "Bridge GHO"
 msgstr "Bridge GHO"
 
+#: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "No transactions yet."
 msgstr "No transactions yet."
@@ -2898,6 +2895,10 @@ msgstr "Safety Module"
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
 msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Transaction history for Plasma not supported yet, coming soon."
+msgstr "Transaction history for Plasma not supported yet, coming soon."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
@@ -3581,10 +3582,6 @@ msgstr "These assets are temporarily frozen or paused by Aave community decision
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
 msgstr "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
-
-#: src/modules/history/HistoryWrapper.tsx
-msgid "No transactions yet"
-msgstr "No transactions yet"
 
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "You don't have any bridge transactions"
