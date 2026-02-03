@@ -22,14 +22,12 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { LensIcon } from 'src/components/icons/LensIcon';
 import { Warning } from 'src/components/primitives/Warning';
-import { Proposal } from 'src/hooks/governance/useProposals';
-// import { FormattedProposalTime } from 'src/modules/governance/FormattedProposalTime';
-import { StateBadge } from 'src/modules/governance/StateBadge';
-// import { IpfsType } from 'src/static-build/ipfs';
-// import { CustomProposalType } from 'src/static-build/proposal';
+import { ProposalDetailDisplay } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { ipfsGateway } from 'src/ui-config/governanceConfig';
 import { GENERAL } from 'src/utils/events';
+
+import { StateBadge } from '../StateBadge';
 
 const CenterAlignedImage = styled('img')({
   display: 'block',
@@ -43,7 +41,7 @@ const StyledLink = styled('a')({
 
 interface ProposalOverviewProps {
   error: boolean;
-  proposal?: Proposal;
+  proposal?: ProposalDetailDisplay;
   loading: boolean;
 }
 
@@ -68,7 +66,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
           {proposal ? (
             <>
               <Typography variant="h2" sx={{ mb: 6 }}>
-                {proposal.subgraphProposal.proposalMetadata.title || <Skeleton />}
+                {proposal.title || <Skeleton />}
               </Typography>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <Box
@@ -82,19 +80,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
                     <StateBadge state={proposal.badgeState} loading={loading} />
                   </Box>
-
-                  {/*
-                   !loading && (
-                     <FormattedProposalTime
-                       state={proposal.state}
-                       executionTime={proposal.executionTime}
-                       startTimestamp={proposal.startTimestamp}
-                       executionTimeWithGracePeriod={proposal.executionTimeWithGracePeriod}
-                       expirationTimestamp={proposal.expirationTimestamp}
-                     />
-
-                     )
-                     */}
+                  {proposal.author && (
+                    <Typography variant="caption" color="text.secondary">
+                      by {proposal.author}
+                    </Typography>
+                  )}
                 </Box>
                 <Box sx={{ flexGrow: 1 }} />
                 <Button
@@ -104,11 +94,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   rel="noopener"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.subgraphProposal.id,
+                      AIP: proposal.id,
                       Link: 'Raw Ipfs',
                     })
                   }
-                  href={`${ipfsGateway}/${proposal.subgraphProposal.proposalMetadata.ipfsHash}`}
+                  href={`${ipfsGateway}/${proposal.ipfsHash}`}
                   startIcon={
                     <SvgIcon sx={{ '& path': { strokeWidth: '1' } }}>
                       <DownloadIcon />
@@ -124,13 +114,13 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   rel="noopener noreferrer"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.subgraphProposal.id,
+                      AIP: proposal.id,
                       Link: 'Share on twitter',
                     })
                   }
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                    proposal.subgraphProposal.proposalMetadata.title
-                  )}&url=${window.location.href}`}
+                    proposal.title
+                  )}&url=${typeof window !== 'undefined' ? window.location.href : ''}`}
                   startIcon={<Twitter />}
                 >
                   {lgUp && <Trans>Share on twitter</Trans>}
@@ -142,11 +132,15 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   rel="noopener noreferrer"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.subgraphProposal.id,
+                      AIP: proposal.id,
                       Link: 'Share on lens',
                     })
                   }
-                  href={`https://hey.xyz/?url=${window.location.href}&text=Check out this proposal on aave governance 👻👻 - ${proposal.subgraphProposal.proposalMetadata.title}&hashtags=Aave&preview=true`}
+                  href={`https://hey.xyz/?url=${
+                    typeof window !== 'undefined' ? window.location.href : ''
+                  }&text=Check out this proposal on aave governance - ${
+                    proposal.title
+                  }&hashtags=Aave&preview=true`}
                   startIcon={
                     <LensIcon
                       color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
@@ -214,7 +208,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 },
               }}
             >
-              {proposal.subgraphProposal.proposalMetadata.description}
+              {proposal.description}
             </ReactMarkdown>
           ) : (
             <>

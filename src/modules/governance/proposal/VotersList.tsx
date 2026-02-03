@@ -1,13 +1,13 @@
 import { Box, Theme } from '@mui/material';
 import { SxProps } from '@mui/system';
 import { Fragment } from 'react';
-import { ProposalVote } from 'src/hooks/governance/useProposalVotes';
+import { VoteDisplay } from 'src/modules/governance/types';
 
 import { VotersListItem } from './VotersListItem';
 
 type VotersListProps = {
   compact?: boolean;
-  voters: ProposalVote[];
+  voters: VoteDisplay[];
   sx?: SxProps<Theme>;
 };
 
