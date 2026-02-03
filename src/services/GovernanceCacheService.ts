@@ -3,6 +3,8 @@
  * instead of the subgraph
  */
 
+import { networkConfigs } from 'src/ui-config/networksConfig';
+
 const CACHE_ENDPOINT =
   process.env.NEXT_PUBLIC_GOVERNANCE_CACHE_URL || 'http://localhost:3002/graphql';
 
@@ -506,7 +508,6 @@ interface ProposalPayloadsResponse {
         proposalId: string;
         payloadId: number;
         chainId: number;
-        network: string | null;
         payloadsController: string;
         creator: string | null;
         maximumAccessLevel: number | null;
@@ -528,7 +529,6 @@ export async function getProposalPayloadsFromCache(proposalId: string): Promise<
           proposalId
           payloadId
           chainId
-          network
           payloadsController
           creator
           maximumAccessLevel
@@ -550,7 +550,7 @@ export async function getProposalPayloadsFromCache(proposalId: string): Promise<
     proposalId: p.proposalId,
     payloadId: p.payloadId,
     chainId: p.chainId,
-    network: p.network || '',
+    network: networkConfigs[p.chainId as keyof typeof networkConfigs]?.name || `Chain ${p.chainId}`,
     payloadsController: p.payloadsController,
     creator: p.creator,
     maximumAccessLevel: p.maximumAccessLevel,

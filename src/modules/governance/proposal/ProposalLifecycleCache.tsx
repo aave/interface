@@ -24,44 +24,21 @@ import {
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
-import { useProposalPayloadsCache } from 'src/hooks/governance/useProposalDetailCache';
-import { ProposalDetail } from 'src/services/GovernanceCacheService';
+import { ProposalDetail, ProposalPayload } from 'src/services/GovernanceCacheService';
 import { useRootStore } from 'src/store/root';
+import { networkConfigs } from 'src/ui-config/networksConfig';
 import { GENERAL } from 'src/utils/events';
 
-// Network logos mapping
-const NETWORK_LOGOS: Record<string, string> = {
-  ethereum: '/icons/networks/ethereum.svg',
-  polygon: '/icons/networks/polygon.svg',
-  avalanche: '/icons/networks/avalanche.svg',
-  optimism: '/icons/networks/optimism.svg',
-  arbitrum: '/icons/networks/arbitrum.svg',
-  base: '/icons/networks/base.svg',
-  gnosis: '/icons/networks/gnosis.svg',
-  metis: '/icons/networks/metis.svg',
-  bnb: '/icons/networks/binance.svg',
-  scroll: '/icons/networks/scroll.svg',
-  zksync: '/icons/networks/zksync.svg',
-  linea: '/icons/networks/linea.svg',
-};
+const getNetworkName = (chainId: number) =>
+  networkConfigs[chainId as keyof typeof networkConfigs]?.name || `Chain ${chainId}`;
 
-const NETWORK_NAMES: Record<string, string> = {
-  ethereum: 'Ethereum',
-  polygon: 'Polygon',
-  avalanche: 'Avalanche',
-  optimism: 'Optimism',
-  arbitrum: 'Arbitrum',
-  base: 'Base',
-  gnosis: 'Gnosis',
-  metis: 'Metis',
-  bnb: 'BNB Chain',
-  scroll: 'Scroll',
-  zksync: 'zkSync',
-  linea: 'Linea',
-};
+const getNetworkLogo = (chainId: number) =>
+  networkConfigs[chainId as keyof typeof networkConfigs]?.networkLogoPath;
 
 interface ProposalLifecycleCacheProps {
   proposal?: ProposalDetail | null;
+  payloads?: ProposalPayload[];
+  payloadsLoading?: boolean;
 }
 
 const formatTime = (timestamp: string | null) => {
@@ -165,10 +142,12 @@ const ProposalStep = ({
   );
 };
 
-export const ProposalLifecycleCache = ({ proposal }: ProposalLifecycleCacheProps) => {
+export const ProposalLifecycleCache = ({
+  proposal,
+  payloads,
+  payloadsLoading,
+}: ProposalLifecycleCacheProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const proposalId = proposal ? parseInt(proposal.id, 10) : 0;
-  const { data: payloads, isLoading: payloadsLoading } = useProposalPayloadsCache(proposalId);
 
   if (!proposal || payloadsLoading) {
     return (
@@ -184,11 +163,11 @@ export const ProposalLifecycleCache = ({ proposal }: ProposalLifecycleCacheProps
 
   // Build payload creation substeps
   const payloadCreationSubsteps: StepProps[] = (payloads || []).map((p) => ({
-    stepName: `Payload ${p.payloadId} created on ${NETWORK_NAMES[p.network] || p.network}`,
+    stepName: `Payload ${p.payloadId} created on ${getNetworkName(p.chainId)}`,
     timestamp: p.createdAt,
     completed: true,
     active: false,
-    networkLogo: NETWORK_LOGOS[p.network],
+    networkLogo: getNetworkLogo(p.chainId),
   }));
 
   // Add proposal creation as last substep
@@ -198,7 +177,7 @@ export const ProposalLifecycleCache = ({ proposal }: ProposalLifecycleCacheProps
     completed: true,
     active: false,
     lastStep: true,
-    networkLogo: NETWORK_LOGOS['ethereum'],
+    networkLogo: getNetworkLogo(1),
   });
 
   // Build payload execution substeps
@@ -210,7 +189,7 @@ export const ProposalLifecycleCache = ({ proposal }: ProposalLifecycleCacheProps
     timestamp: proposal.queuedAt,
     completed: !!proposal.queuedAt,
     active: state === 'queued' && !proposal.executedAt,
-    networkLogo: NETWORK_LOGOS['ethereum'],
+    networkLogo: getNetworkLogo(1),
   });
 
   // Proposal executed
@@ -219,24 +198,24 @@ export const ProposalLifecycleCache = ({ proposal }: ProposalLifecycleCacheProps
     timestamp: proposal.executedAt,
     completed: state === 'executed',
     active: false,
-    networkLogo: NETWORK_LOGOS['ethereum'],
+    networkLogo: getNetworkLogo(1),
   });
 
   // Per-chain payload queued and executed
   (payloads || []).forEach((p) => {
     payloadExecutionSubsteps.push({
-      stepName: `Payload ${p.payloadId} queued on ${NETWORK_NAMES[p.network] || p.network}`,
+      stepName: `Payload ${p.payloadId} queued on ${getNetworkName(p.chainId)}`,
       timestamp: p.queuedAt,
       completed: !!p.queuedAt,
       active: p.state === 'queued',
-      networkLogo: NETWORK_LOGOS[p.network],
+      networkLogo: getNetworkLogo(p.chainId),
     });
     payloadExecutionSubsteps.push({
-      stepName: `Payload ${p.payloadId} executed on ${NETWORK_NAMES[p.network] || p.network}`,
+      stepName: `Payload ${p.payloadId} executed on ${getNetworkName(p.chainId)}`,
       timestamp: p.executedAt,
       completed: p.state === 'executed',
       active: false,
-      networkLogo: NETWORK_LOGOS[p.network],
+      networkLogo: getNetworkLogo(p.chainId),
     });
   });
 
