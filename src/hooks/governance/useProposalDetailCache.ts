@@ -179,6 +179,8 @@ export function getVotingTimeRemaining(endTime: string | null): {
   };
 }
 
+const USE_GOVERNANCE_CACHE = process.env.NEXT_PUBLIC_USE_GOVERNANCE_CACHE === 'true';
+
 /**
  * Hook to fetch payloads for a proposal
  */
@@ -186,7 +188,7 @@ export const useProposalPayloadsCache = (proposalId: number) => {
   return useQuery({
     queryFn: () => getProposalPayloadsFromCache(String(proposalId)),
     queryKey: ['proposal-payloads-cache', proposalId],
-    enabled: !isNaN(proposalId),
+    enabled: USE_GOVERNANCE_CACHE && !isNaN(proposalId),
     refetchOnMount: false,
     refetchOnReconnect: false,
   });
