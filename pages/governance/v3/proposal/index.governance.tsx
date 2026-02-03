@@ -6,6 +6,7 @@ import {
   useGovernanceProposalDetail,
   useGovernanceVotersSplit,
 } from 'src/hooks/governance/useGovernanceProposals';
+import { useProposalPayloadsCache } from 'src/hooks/governance/useProposalDetailCache';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ProposalLifecycle } from 'src/modules/governance/proposal/ProposalLifecycle';
 import { ProposalLifecycleCache } from 'src/modules/governance/proposal/ProposalLifecycleCache';
@@ -38,6 +39,7 @@ export default function ProposalPage() {
     : undefined;
 
   const voters = useGovernanceVotersSplit(proposalId, votingChainId);
+  const { data: payloads, isLoading: payloadsLoading } = useProposalPayloadsCache(proposalId);
 
   return (
     <>
@@ -70,7 +72,11 @@ export default function ProposalPage() {
             {proposal?.rawProposal ? (
               <ProposalLifecycle proposal={proposal.rawProposal} />
             ) : proposal?.rawCacheDetail ? (
-              <ProposalLifecycleCache proposal={proposal.rawCacheDetail} />
+              <ProposalLifecycleCache
+                proposal={proposal.rawCacheDetail}
+                payloads={payloads}
+                payloadsLoading={payloadsLoading}
+              />
             ) : null}
           </Grid>
         </Grid>

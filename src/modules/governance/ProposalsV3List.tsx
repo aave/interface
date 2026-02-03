@@ -7,6 +7,8 @@ import {
   useGovernanceProposals,
   useGovernanceProposalsSearch,
 } from 'src/hooks/governance/useGovernanceProposals';
+import { useRootStore } from 'src/store/root';
+import { GOVERNANCE_PAGE } from 'src/utils/events';
 
 import { ProposalListHeader } from './ProposalListHeader';
 import { StateBadge, stringToState } from './StateBadge';
@@ -14,6 +16,8 @@ import { ProposalListItem } from './types';
 import { VoteBar } from './VoteBar';
 
 const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <Box
       sx={{
@@ -25,6 +29,7 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
       }}
       component={Link}
       href={ROUTES.dynamicRenderedProposal(+proposal.id)}
+      onClick={() => trackEvent(GOVERNANCE_PAGE.VIEW_AIP, { AIP: proposal.id })}
     >
       <Stack
         direction="column"

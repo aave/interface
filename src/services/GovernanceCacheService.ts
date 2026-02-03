@@ -3,6 +3,8 @@
  * instead of the subgraph
  */
 
+import { networkConfigs } from 'src/ui-config/networksConfig';
+
 const CACHE_ENDPOINT =
   process.env.NEXT_PUBLIC_GOVERNANCE_CACHE_URL || 'http://localhost:3002/graphql';
 
@@ -71,7 +73,14 @@ async function graphqlRequest<T>(query: string, variables?: Record<string, unkno
     throw new Error(`GraphQL request failed: ${response.status}`);
   }
 
-  return response.json();
+  const json = await response.json();
+
+  if (json.errors?.length) {
+    const first = json.errors[0];
+    throw new Error(`GraphQL error: ${first.message}`);
+  }
+
+  return json as T;
 }
 
 function mapCacheProposal(p: CacheProposal): SimplifiedProposal {
@@ -94,48 +103,55 @@ function mapCacheProposal(p: CacheProposal): SimplifiedProposal {
   };
 }
 
+const PROPOSALS_FIELDS = `
+  proposalId
+  network
+  creator
+  accessLevel
+  ipfsHash
+  title
+  author
+  shortDescription
+  discussions
+  snapshotBlockHash
+  votingDuration
+  votesFor
+  votesAgainst
+  state
+  stateId
+`;
+
+const GET_PROPOSALS_QUERY = `
+  query GetProposals($first: Int, $offset: Int) {
+    allProposalsViews(first: $first, offset: $offset, orderBy: PROPOSAL_ID_DESC) {
+      nodes { ${PROPOSALS_FIELDS} }
+    }
+  }
+`;
+
+const GET_PROPOSALS_FILTERED_QUERY = `
+  query GetProposalsFiltered($first: Int, $offset: Int, $state: String!) {
+    allProposalsViews(
+      first: $first
+      offset: $offset
+      orderBy: PROPOSAL_ID_DESC
+      filter: { state: { equalTo: $state } }
+    ) {
+      nodes { ${PROPOSALS_FIELDS} }
+    }
+  }
+`;
+
 export async function getProposalsFromCache(
   limit = 10,
   offset = 0,
   stateFilter?: string
 ): Promise<SimplifiedProposal[]> {
-  const stateCondition = stateFilter ? `state: { equalTo: "${stateFilter}" }` : '';
-  const filterClause = stateCondition ? `filter: { ${stateCondition} }` : '';
+  const query = stateFilter ? GET_PROPOSALS_FILTERED_QUERY : GET_PROPOSALS_QUERY;
+  const variables: Record<string, unknown> = { first: limit, offset };
+  if (stateFilter) variables.state = stateFilter;
 
-  const query = `
-    query GetProposals($first: Int, $offset: Int) {
-      allProposalsViews(
-        first: $first
-        offset: $offset
-        orderBy: PROPOSAL_ID_DESC
-        ${filterClause}
-      ) {
-        nodes {
-          proposalId
-          network
-          creator
-          accessLevel
-          ipfsHash
-          title
-          author
-          shortDescription
-          discussions
-          snapshotBlockHash
-          votingDuration
-          votesFor
-          votesAgainst
-          state
-          stateId
-        }
-      }
-    }
-  `;
-
-  const response = await graphqlRequest<ProposalsViewResponse>(query, {
-    first: limit,
-    offset,
-  });
-
+  const response = await graphqlRequest<ProposalsViewResponse>(query, variables);
   return response.data.allProposalsViews.nodes.map(mapCacheProposal);
 }
 
@@ -190,7 +206,7 @@ export async function searchProposalsFromCache(
 
 export async function getProposalByIdFromCache(id: string): Promise<SimplifiedProposal | null> {
   const query = `
-    query GetProposal($id: String!) {
+    query GetProposal($id: BigFloat!) {
       allProposalsViews(filter: { proposalId: { equalTo: $id } }) {
         nodes {
           proposalId
@@ -214,7 +230,7 @@ export async function getProposalByIdFromCache(id: string): Promise<SimplifiedPr
     }
   `;
 
-  const response = await graphqlRequest<ProposalsViewResponse>(query, { id });
+  const response = await graphqlRequest<ProposalsViewResponse>(query, { id: parseFloat(id) });
   const nodes = response.data.allProposalsViews.nodes;
 
   if (nodes.length === 0) return null;
@@ -492,7 +508,6 @@ interface ProposalPayloadsResponse {
         proposalId: string;
         payloadId: number;
         chainId: number;
-        network: string | null;
         payloadsController: string;
         creator: string | null;
         maximumAccessLevel: number | null;
@@ -514,7 +529,6 @@ export async function getProposalPayloadsFromCache(proposalId: string): Promise<
           proposalId
           payloadId
           chainId
-          network
           payloadsController
           creator
           maximumAccessLevel
@@ -536,7 +550,7 @@ export async function getProposalPayloadsFromCache(proposalId: string): Promise<
     proposalId: p.proposalId,
     payloadId: p.payloadId,
     chainId: p.chainId,
-    network: p.network || '',
+    network: networkConfigs[p.chainId as keyof typeof networkConfigs]?.name || `Chain ${p.chainId}`,
     payloadsController: p.payloadsController,
     creator: p.creator,
     maximumAccessLevel: p.maximumAccessLevel,

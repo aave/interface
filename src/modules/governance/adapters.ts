@@ -1,3 +1,4 @@
+import { normalizeBN } from '@aave/math-utils';
 import { Proposal } from 'src/hooks/governance/useProposals';
 import {
   ProposalDetail,
@@ -42,8 +43,7 @@ export function cacheStateToBadge(state: string): ProposalBadgeState {
 
 /** Convert 18-decimal vote count string to human-readable number */
 function formatVotes(votes: string): number {
-  const raw = parseFloat(votes) || 0;
-  return raw / 1e18;
+  return normalizeBN(votes || '0', 18).toNumber();
 }
 
 /**
@@ -170,6 +170,6 @@ export function adaptCacheVote(vote: ProposalVote): VoteDisplay {
   return {
     voter: vote.voter,
     support: vote.support,
-    votingPower: (parseFloat(vote.votingPower) / 1e18).toString(),
+    votingPower: normalizeBN(vote.votingPower, 18).toString(),
   };
 }

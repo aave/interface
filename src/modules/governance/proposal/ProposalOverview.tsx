@@ -162,7 +162,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
               components={{
                 table({ node, ...props }) {
                   return (
-                    <TableContainer component={Paper} variant="outlined">
+                    <TableContainer component={Paper} variant="outlined" sx={{ my: 4 }}>
                       <Table {...props} sx={{ wordBreak: 'normal' }} />
                     </TableContainer>
                   );
@@ -200,11 +200,85 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 a({ node, ...rest }) {
                   return <StyledLink {...rest} />;
                 },
+                h1({ node, ...rest }) {
+                  return <Typography variant="h2" sx={{ mt: 8, mb: 2 }} {...rest} />;
+                },
                 h2({ node, ...rest }) {
-                  return <Typography variant="subheader1" sx={{ mt: 6 }} gutterBottom {...rest} />;
+                  return <Typography variant="subheader1" sx={{ mt: 6, mb: 2 }} {...rest} />;
+                },
+                h3({ node, ...rest }) {
+                  return <Typography variant="subheader1" sx={{ mt: 4, mb: 2 }} {...rest} />;
+                },
+                h4({ node, ...rest }) {
+                  return <Typography variant="subheader2" sx={{ mt: 4, mb: 2 }} {...rest} />;
                 },
                 p({ node, ...rest }) {
-                  return <Typography variant="description" {...rest} />;
+                  return <Typography variant="description" sx={{ mb: 3 }} {...rest} />;
+                },
+                ul({ node, ...rest }) {
+                  return <Box component="ul" sx={{ pl: 4, mb: 3, '& li': { mb: 1 } }} {...rest} />;
+                },
+                ol({ node, ...rest }) {
+                  return <Box component="ol" sx={{ pl: 4, mb: 3, '& li': { mb: 1 } }} {...rest} />;
+                },
+                li({ node, ...rest }) {
+                  return <Typography component="li" variant="description" {...rest} />;
+                },
+                blockquote({ node, ...rest }) {
+                  return (
+                    <Box
+                      component="blockquote"
+                      sx={{
+                        borderLeft: '4px solid',
+                        borderColor: 'divider',
+                        pl: 4,
+                        my: 3,
+                        ml: 0,
+                      }}
+                      {...rest}
+                    />
+                  );
+                },
+                code({
+                  node,
+                  inline,
+                  ...rest
+                }: { node?: unknown; inline?: boolean } & Record<string, unknown>) {
+                  return inline ? (
+                    <Box
+                      component="code"
+                      sx={{
+                        bgcolor: 'background.default',
+                        px: 1,
+                        py: 0.25,
+                        borderRadius: 0.5,
+                        fontSize: '0.875em',
+                      }}
+                      {...rest}
+                    />
+                  ) : (
+                    <Box
+                      component="pre"
+                      sx={{
+                        bgcolor: 'background.default',
+                        p: 3,
+                        borderRadius: 1,
+                        overflow: 'auto',
+                        my: 3,
+                        '& code': { fontSize: '0.875em' },
+                      }}
+                    >
+                      <code {...rest} />
+                    </Box>
+                  );
+                },
+                hr() {
+                  return (
+                    <Box
+                      component="hr"
+                      sx={{ my: 4, border: 'none', borderTop: '1px solid', borderColor: 'divider' }}
+                    />
+                  );
                 },
               }}
             >
