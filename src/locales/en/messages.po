@@ -540,6 +540,7 @@ msgid "Total"
 msgstr "Total"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "{stepName}"
 msgstr "{stepName}"
 
@@ -887,6 +888,10 @@ msgstr "Repay {0} with {1}"
 #: src/modules/sGho/SGhoDepositPanel.tsx
 msgid "GHO Balance"
 msgstr "GHO Balance"
+
+#: src/layouts/SupportModal.tsx
+msgid "Country (optional)"
+msgstr "Country (optional)"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
@@ -1708,8 +1713,6 @@ msgid "Please connect your wallet to view transaction history."
 msgstr "Please connect your wallet to view transaction history."
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
-#: src/modules/governance/proposal/VotersListContainer.tsx
-#: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
@@ -1820,6 +1823,7 @@ msgid "There are no stake assets configured for this market"
 msgstr "There are no stake assets configured for this market"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
 
@@ -1879,10 +1883,6 @@ msgstr "Amount in cooldown"
 #: src/modules/umbrella/helpers/SharesTooltip.tsx
 msgid "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool, and the amount of underlying you can redeem depends on the current exchange rate between shares and the underlying."
 msgstr "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool, and the amount of underlying you can redeem depends on the current exchange rate between shares and the underlying."
-
-#: src/modules/governance/proposal/VotersListContainer.tsx
-msgid "Failed to load proposal voters. Please refresh the page."
-msgstr "Failed to load proposal voters. Please refresh the page."
 
 #: src/modules/migration/MigrationList.tsx
 msgid "Liquidation Threshold"
@@ -2503,6 +2503,7 @@ msgid "Bridge {symbol}"
 msgstr "Bridge {symbol}"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
 
@@ -2895,6 +2896,10 @@ msgstr "Safety Module"
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
 msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Transaction history for Plasma not supported yet, coming soon."
+msgstr "Transaction history for Plasma not supported yet, coming soon."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"

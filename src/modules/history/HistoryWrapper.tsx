@@ -33,6 +33,7 @@ export const HistoryWrapper = () => {
 
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const currentMarket = useRootStore((store) => store.currentMarket);
 
   const {
     data: transactions,
@@ -266,7 +267,11 @@ export const HistoryWrapper = () => {
           }}
         >
           <Typography sx={{ my: 24 }} variant="h3" color="text.primary">
-            <Trans>No transactions yet.</Trans>
+            {currentMarket === 'proto_plasma_v3' ? (
+              <Trans>Transaction history for Plasma not supported yet, coming soon.</Trans>
+            ) : (
+              <Trans>No transactions yet.</Trans>
+            )}
           </Typography>
         </Box>
       ) : (

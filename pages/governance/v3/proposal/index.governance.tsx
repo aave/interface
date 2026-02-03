@@ -2,10 +2,14 @@ import { Grid } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
-import { useProposal } from 'src/hooks/governance/useProposal';
-import { useProposalVotes } from 'src/hooks/governance/useProposalVotes';
+import {
+  useGovernanceProposalDetail,
+  useGovernanceVotersSplit,
+} from 'src/hooks/governance/useGovernanceProposals';
+import { useProposalPayloadsCache } from 'src/hooks/governance/useProposalDetailCache';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ProposalLifecycle } from 'src/modules/governance/proposal/ProposalLifecycle';
+import { ProposalLifecycleCache } from 'src/modules/governance/proposal/ProposalLifecycleCache';
 import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOverview';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
@@ -22,26 +26,28 @@ const GovVoteModal = dynamic(() =>
 export default function ProposalPage() {
   const { query } = useRouter();
   const proposalId = Number(query.proposalId);
+
   const {
     data: proposal,
     isLoading: proposalLoading,
-    error: newProposalError,
-  } = useProposal(proposalId);
+    error: proposalError,
+  } = useGovernanceProposalDetail(proposalId);
 
-  const proposalVotes = useProposalVotes({
-    proposalId,
-    votingChainId: proposal
-      ? +proposal.subgraphProposal.votingPortal.votingMachineChainId
-      : undefined,
-  });
+  // For graph path, get votingChainId from rawProposal
+  const votingChainId = proposal?.rawProposal
+    ? +proposal.rawProposal.subgraphProposal.votingPortal.votingMachineChainId
+    : undefined;
+
+  const voters = useGovernanceVotersSplit(proposalId, votingChainId);
+  const { data: payloads, isLoading: payloadsLoading } = useProposalPayloadsCache(proposalId);
 
   return (
     <>
       {proposal && (
         <Meta
           imageUrl="https://app.aave.com/aaveMetaLogo-min.jpg"
-          title={proposal.subgraphProposal.proposalMetadata.title}
-          description={proposal.subgraphProposal.proposalMetadata.shortDescription}
+          title={proposal.title}
+          description={proposal.shortDescription}
         />
       )}
       <ProposalTopPanel />
@@ -50,19 +56,28 @@ export default function ProposalPage() {
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             <ProposalOverview
-              proposal={proposal}
-              error={!!newProposalError}
+              proposal={proposal ?? undefined}
+              error={!!proposalError}
               loading={proposalLoading}
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            {proposal && <VoteInfo proposal={proposal} />}
+            {proposal?.rawProposal && <VoteInfo proposal={proposal.rawProposal} />}
             <VotingResults
               proposal={proposal}
-              proposalVotes={proposalVotes}
+              voters={voters}
               loading={proposalLoading}
+              votesLoading={voters.isFetching}
             />
-            <ProposalLifecycle proposal={proposal} />
+            {proposal?.rawProposal ? (
+              <ProposalLifecycle proposal={proposal.rawProposal} />
+            ) : proposal?.rawCacheDetail ? (
+              <ProposalLifecycleCache
+                proposal={proposal.rawCacheDetail}
+                payloads={payloads}
+                payloadsLoading={payloadsLoading}
+              />
+            ) : null}
           </Grid>
         </Grid>
       </ContentContainer>
