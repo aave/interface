@@ -4080,6 +4080,10 @@ msgstr "Supply balance"
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
 
+#: src/components/AddressBlockedModal.tsx
+msgid "Unable to Connect"
+msgstr "Unable to Connect"
+
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Umbrella is the upgraded version of the Safety Module. Manage your previously staked assets"
 msgstr "Umbrella is the upgraded version of the Safety Module. Manage your previously staked assets"
