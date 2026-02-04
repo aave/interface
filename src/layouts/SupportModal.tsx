@@ -1,6 +1,7 @@
 import { XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
@@ -15,6 +16,7 @@ import { BasicModal } from 'src/components/primitives/BasicModal';
 import { Link } from 'src/components/primitives/Link';
 import { BaseSuccessView } from 'src/components/transactions/FlowCommons/BaseSuccess';
 import { useRootStore } from 'src/store/root';
+import { COUNTRIES } from 'src/utils/countries';
 import { SUPPORT } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
@@ -38,6 +40,7 @@ export const SupportModal = () => {
   const [emailError, setEmailError] = useState('');
   const [dirtyEmailField, setDirtyEmailField] = useState(false);
   const [isShareWalletApproved, setIsShareWalletApproved] = useState(false);
+  const [country, setCountry] = useState<string | null>(null);
   const hasOptedIn = isTrackingEnabled;
   const onBlur = () => {
     if (!dirtyEmailField) setDirtyEmailField(true);
@@ -77,6 +80,7 @@ export const SupportModal = () => {
     const payload = {
       text: value,
       email: email,
+      country: country || undefined,
       walletAddress: (hasOptedIn || isShareWalletApproved) && account ? account : undefined,
     };
 
@@ -109,6 +113,7 @@ export const SupportModal = () => {
       setValue('');
       setEmail('');
       setIsShareWalletApproved(false);
+      setCountry(null);
     }
   };
 
@@ -121,6 +126,7 @@ export const SupportModal = () => {
     setDirtyEmailField(false);
     setSuccess(false);
     setError(false);
+    setCountry(null);
   };
 
   return (
@@ -240,6 +246,34 @@ export const SupportModal = () => {
                 />
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                   <Typography color="text.secondary">
+                    <Trans>Country (optional)</Trans>
+                  </Typography>
+                </Box>
+                <Autocomplete
+                  options={COUNTRIES}
+                  value={country}
+                  onChange={(_, newValue) => setCountry(newValue)}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      padding: '0 !important',
+                    },
+                    '& .MuiAutocomplete-input': {
+                      padding: '6px 8px !important',
+                    },
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      placeholder="Select your country"
+                      fullWidth
+                      sx={{
+                        mb: 2,
+                      }}
+                    />
+                  )}
+                />
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                  <Typography color="text.secondary">
                     <Trans>Inquiry</Trans>
                   </Typography>
                 </Box>
@@ -261,31 +295,27 @@ export const SupportModal = () => {
                   }}
                 />
 
-                {account && (
+                {account && !hasOptedIn && (
                   <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1.5 }}>
-                    {!hasOptedIn ? (
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={isShareWalletApproved}
-                            onChange={(e) => setIsShareWalletApproved(e.target.checked)}
-                            color="primary"
-                            size="small"
-                          />
-                        }
-                        label={
-                          <Box>
-                            <Typography color="text.primary">
-                              <Trans>
-                                Share my wallet address to help the support team resolve my issue
-                              </Trans>
-                            </Typography>
-                          </Box>
-                        }
-                      />
-                    ) : (
-                      ''
-                    )}
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={isShareWalletApproved}
+                          onChange={(e) => setIsShareWalletApproved(e.target.checked)}
+                          color="primary"
+                          size="small"
+                        />
+                      }
+                      label={
+                        <Box>
+                          <Typography color="text.primary">
+                            <Trans>
+                              Share my wallet address to help the support team resolve my issue
+                            </Trans>
+                          </Typography>
+                        </Box>
+                      }
+                    />
                   </Box>
                 )}
                 <Box display="flex" flexDirection={'row-reverse'} mt={3}>
