@@ -61,8 +61,6 @@ export default async function handler(
       },
     });
 
-    console.log('RESPONSE---', response);
-
     if (!response.ok) {
       if (response.status === 401) {
         console.error('Compliance API: Invalid secret');
@@ -75,7 +73,6 @@ export default async function handler(
     }
 
     const data: ComplianceApiResponse = await response.json();
-    console.log('DATA---', data);
 
     return res.status(200).json({
       result: data.result,

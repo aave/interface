@@ -507,10 +507,6 @@ msgstr "Markets"
 msgid "Proposals"
 msgstr "Proposals"
 
-#: src/components/AddressBlockedModal.tsx
-msgid "Retry"
-msgstr "Retry"
-
 #: pages/500.page.tsx
 msgid "Copy error message"
 msgstr "Copy error message"
@@ -1735,10 +1731,6 @@ msgstr "Fee"
 #: src/modules/umbrella/helpers/Helpers.tsx
 msgid "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 msgstr "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
-
-#: src/components/AddressBlockedModal.tsx
-msgid "Sorry, we are unable to connect your wallet. <0/>Please try again with another wallet or contact support."
-msgstr "Sorry, we are unable to connect your wallet. <0/>Please try again with another wallet or contact support."
 
 #: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
@@ -3089,6 +3081,10 @@ msgstr "and about SPK program"
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 
+#: src/components/AddressBlockedModal.tsx
+msgid "Refresh"
+msgstr "Refresh"
+
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in {marketName} v3 market."
 msgstr "Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in {marketName} v3 market."
@@ -3118,10 +3114,6 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 #: src/components/transactions/Warnings/CowLowerThanMarketWarning.tsx
 msgid "The selected rate is lower than the market price. You might incur a loss if you proceed."
 msgstr "The selected rate is lower than the market price. You might incur a loss if you proceed."
-
-#: src/components/AddressBlockedModal.tsx
-msgid "Something went wrong. Please try again later."
-msgstr "Something went wrong. Please try again later."
 
 #: src/modules/sGho/SGhoDepositPanel.tsx
 msgid "Deposit GHO and earn {0}% APY"
@@ -3415,10 +3407,6 @@ msgstr "The caller of this function must be a pool"
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
-
-#: src/components/AddressBlockedModal.tsx
-msgid "Connection Failed"
-msgstr "Connection Failed"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Interest rate strategy"
@@ -3728,6 +3716,10 @@ msgstr "Claim all protocol rewards"
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Connection Error"
+msgstr "Connection Error"
 
 #: src/components/transactions/Swap/errors/shared/GasEstimationError.tsx
 msgid "Tip: Try improving your order parameters"

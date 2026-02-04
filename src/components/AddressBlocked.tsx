@@ -12,7 +12,7 @@ type ComplianceGateProps = {
 };
 
 export const AddressBlocked = ({ children }: ComplianceGateProps) => {
-  const { status, recheck, errorMessage } = useCompliance();
+  const { status, recheck } = useCompliance();
   const { currentAccount, readOnlyMode } = useWeb3Context();
   const { disconnect } = useDisconnect();
   const shouldCheck = !readOnlyMode && !ENABLE_TESTNET;
@@ -34,7 +34,6 @@ export const AddressBlocked = ({ children }: ComplianceGateProps) => {
         address={currentAccount}
         onDisconnectWallet={() => disconnect()}
         isError={showErrorOverlay}
-        errorMessage={errorMessage}
         onRetry={showErrorOverlay ? recheck : undefined}
       />
     </MainLayout>
