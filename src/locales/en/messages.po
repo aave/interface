@@ -507,6 +507,10 @@ msgstr "Markets"
 msgid "Proposals"
 msgstr "Proposals"
 
+#: src/components/AddressBlockedModal.tsx
+msgid "Retry"
+msgstr "Retry"
+
 #: pages/500.page.tsx
 msgid "Copy error message"
 msgstr "Copy error message"
@@ -1064,10 +1068,6 @@ msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to v3"
 msgstr "Migrate to v3"
-
-#: src/components/AddressBlockedModal.tsx
-msgid "error code: 2455"
-msgstr "error code: 2455"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
@@ -1735,6 +1735,10 @@ msgstr "Fee"
 #: src/modules/umbrella/helpers/Helpers.tsx
 msgid "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 msgstr "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Sorry, we are unable to connect your wallet. <0/>Please try again with another wallet or contact support."
+msgstr "Sorry, we are unable to connect your wallet. <0/>Please try again with another wallet or contact support."
 
 #: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
