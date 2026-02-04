@@ -34,27 +34,26 @@ export const AddressBlockedModal = ({
           <ExclamationCircleIcon />
         </SvgIcon>
         <Typography variant="h2">
-          <Trans>Connection Error</Trans>
+          {isError ? <Trans>Connection Error</Trans> : <Trans>Unable to Connect</Trans>}
         </Typography>
         <Typography variant="helperText" sx={{ my: 4 }}>
           {address}
         </Typography>
         <Box sx={{ display: 'flex', gap: 2 }}>
-          {isError && onRetry ? (
+          {isError && onRetry && (
             <Button variant="contained" onClick={onRetry}>
               <SvgIcon fontSize="small" sx={{ mx: 1 }}>
                 <RefreshIcon />
               </SvgIcon>
               <Trans>Refresh</Trans>
             </Button>
-          ) : (
-            <Button variant="contained" onClick={onDisconnectWallet}>
-              <SvgIcon fontSize="small" sx={{ mx: 1 }}>
-                <LogoutIcon />
-              </SvgIcon>
-              <Trans>Disconnect Wallet</Trans>
-            </Button>
           )}
+          <Button variant="contained" onClick={onDisconnectWallet}>
+            <SvgIcon fontSize="small" sx={{ mx: 1 }}>
+              <LogoutIcon />
+            </SvgIcon>
+            <Trans>Disconnect Wallet</Trans>
+          </Button>
         </Box>
       </Box>
     </BasicModal>
