@@ -227,7 +227,7 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       iconSymbol: 'ptsusde',
     },
     '0xaebf0bb9f57e89260d57f31af34eb58657d96ce0': {
-      symbol: 'PT-USDe-7MAY2026',
+      symbol: 'PT USDe May 7th 2026',
       name: 'PT USDe May 2026',
       iconSymbol: 'ptusde',
     },
