@@ -14,7 +14,7 @@ export const ColorModeContext = React.createContext({
 type Mode = 'light' | 'dark';
 
 /**
- * Main Layout component which wrapps around the whole app
+ * Main Layout component which wraps around the whole app
  * @param param0
  * @returns
  */
