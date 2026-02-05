@@ -12,6 +12,7 @@ import {
   GovernanceV3Ink,
   GovernanceV3Linea,
   GovernanceV3Mantle,
+  GovernanceV3MegaEth,
   GovernanceV3Metis,
   GovernanceV3Optimism,
   GovernanceV3Plasma,
@@ -148,6 +149,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.plasma]: GovernanceV3Plasma.PC_DATA_HELPER,
       [ChainId.ink]: GovernanceV3Ink.PC_DATA_HELPER,
       [ChainId.mantle]: GovernanceV3Mantle.PC_DATA_HELPER,
+      [4326]: GovernanceV3MegaEth.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,

@@ -14,6 +14,7 @@ import {
   linea,
   mainnet,
   mantle,
+  megaeth,
   metis,
   optimism,
   optimismSepolia,
@@ -462,6 +463,16 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://mantlescan.xyz',
     networkLogoPath: '/icons/networks/mantle.svg',
     wagmiChain: mantle,
+  },
+  [4326]: {
+    name: 'MegaETH',
+    publicJsonRPCUrl: ['https://mainnet.megaeth.com/rpc'],
+    baseAssetSymbol: 'ETH',
+    wrappedBaseAssetSymbol: 'WETH',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://mega.etherscan.io/',
+    networkLogoPath: '/icons/networks/megaeth.svg',
+    wagmiChain: megaeth,
   },
 };
 

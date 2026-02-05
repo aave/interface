@@ -51,6 +51,11 @@ function getRpcUrl(chainId: number): string | null {
   if (chainId === 5000) {
     return 'https://rpc.mantle.xyz';
   }
+
+  if (chainId === 4326) {
+    return 'https://mainnet.megaeth.com/rpc';
+  }
+
   const config = NETWORK_CONFIG[chainId];
   if (!config) return null;
   return `https://${config.network}.g.alchemy.com/v2/${config.apiKey}`;
