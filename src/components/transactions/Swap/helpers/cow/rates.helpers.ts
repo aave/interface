@@ -122,7 +122,12 @@ export async function getCowProtocolSellRates({
         )
         .catch((cowError) => {
           console.error(cowError);
-          throw new Error(cowError?.body?.errorType);
+          const errorMessage =
+            cowError?.body?.errorType ||
+            cowError?.body?.description ||
+            cowError?.message ||
+            'Failed to get quote from CoW Protocol';
+          throw new Error(errorMessage);
         }),
       getTokenUsdPrice(chainId, srcTokenWrapped, isInputTokenCustom ?? false, isMainnet),
       getTokenUsdPrice(chainId, destTokenWrapped, isOutputTokenCustom ?? false, isMainnet),

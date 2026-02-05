@@ -183,7 +183,8 @@ const getTokensFrom = (
           supplyAPY: position.reserve.supplyAPY,
           variableBorrowAPY: position.reserve.variableBorrowAPY,
           logoURI: nativeToken?.logoURI ?? baseToken.logoURI,
-          tokenType: nativeToken?.extensions?.isNative ? TokenType.NATIVE : TokenType.ERC20,
+          // Always ERC20 for collateral - underlying is WBNB/WETH even when displayed as BNB/ETH
+          tokenType: TokenType.ERC20,
         };
       }
       return undefined;
