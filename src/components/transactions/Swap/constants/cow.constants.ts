@@ -17,6 +17,7 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.PLASMA]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
+    [SupportedChainId.INK]: '',
   },
   [AaveFlashLoanType.DebtSwap]: {
     [SupportedChainId.MAINNET]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
@@ -30,6 +31,7 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.PLASMA]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
+    [SupportedChainId.INK]: '',
   },
   [AaveFlashLoanType.RepayCollateral]: {
     [SupportedChainId.MAINNET]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
@@ -43,6 +45,7 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.PLASMA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
+    [SupportedChainId.INK]: '',
   },
 };
 
@@ -58,6 +61,7 @@ export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
   [SupportedChainId.PLASMA]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
   [SupportedChainId.LENS]: '',
   [SupportedChainId.SEPOLIA]: '',
+  [SupportedChainId.INK]: '',
 };
 
 export const DUST_PROTECTION_MULTIPLIER = 1.0003; // 3 BPS
@@ -127,6 +131,7 @@ export const CoWProtocolSupportedNetworks = [
   SupportedChainId.BNB,
   SupportedChainId.LINEA,
   SupportedChainId.PLASMA,
+  SupportedChainId.INK,
 ] as const;
 
 export const isChainIdSupportedByCoWProtocol = (chainId: number): chainId is SupportedChainId => {

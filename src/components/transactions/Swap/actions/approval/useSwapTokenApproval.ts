@@ -105,7 +105,7 @@ export const useSwapTokenApproval = ({
   const { sendTx, signTxData } = useWeb3Context();
   const [loadingPermitData, setLoadingPermitData] = useState(true);
 
-  const { isSmartContractWallet } = useGetConnectedWalletType();
+  const { isSmartContractWallet, isLoading: isLoadingWalletType } = useGetConnectedWalletType();
 
   const [
     user,
@@ -259,13 +259,21 @@ export const useSwapTokenApproval = ({
     };
   }, [chainId, token]);
 
-  const tryPermit = allowPermit && permitSupported === true && !isSmartContractWallet;
+  const tryPermit =
+    allowPermit && permitSupported === true && !isSmartContractWallet && !isLoadingWalletType;
   const usePermit = tryPermit && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   const approval = async () => {
     if (!spender) {
       return;
     }
+
+    // Pause quote refresh immediately when approval starts to prevent instance address
+    // from changing mid-approval (especially important for Safe wallets where tx takes longer)
+    setState({
+      quoteRefreshPaused: true,
+      quoteTimerPausedAt: Date.now(),
+    });
 
     const amountToApprove = calculateSignedAmount(
       normalizeBN(amount, -decimals).toString(),
@@ -299,7 +307,9 @@ export const useSwapTokenApproval = ({
         });
         setState({
           actionsLoading: false,
+          quoteRefreshPaused: false,
         });
+        return;
       }
       fetchApprovedAmountFromContract().then(() => {
         setApprovalTxState({
@@ -308,6 +318,7 @@ export const useSwapTokenApproval = ({
         });
         setState({
           actionsLoading: false,
+          quoteRefreshPaused: false,
         });
       });
 
@@ -390,6 +401,7 @@ export const useSwapTokenApproval = ({
         });
         setState({
           actionsLoading: false,
+          quoteRefreshPaused: false,
         });
       }
     } else {
@@ -432,15 +444,10 @@ export const useSwapTokenApproval = ({
         });
         setState({
           actionsLoading: false,
+          quoteRefreshPaused: false,
         });
       }
     }
-
-    // Stop loading quotes
-    setState({
-      quoteRefreshPaused: true,
-      quoteTimerPausedAt: Date.now(),
-    });
 
     trackingHandlers?.trackApproval(amountToApprove.toString(), usePermit);
   };
