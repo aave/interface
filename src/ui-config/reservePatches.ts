@@ -236,6 +236,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe May 2026',
       iconSymbol: 'ptsusde',
     },
+    '0xfafddbb3fc7688494971a79cc65dca3ef82079e7': {
+      symbol: 'USDm',
+      name: 'MegaUSD',
+      iconSymbol: 'megausd',
+    },
 
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
