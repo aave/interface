@@ -125,7 +125,10 @@ export function buildVoteProposalFromGraph(proposal: Proposal): VoteProposalData
 }
 
 /** Build VoteProposalData from a cache ProposalDetail. Returns undefined if voting chain can't be determined. */
-export function buildVoteProposalFromCache(detail: ProposalDetail): VoteProposalData | undefined {
+export function buildVoteProposalFromCache(
+  detail: ProposalDetail,
+  userVote?: ProposalVote | null
+): VoteProposalData | undefined {
   if (!detail.votingMachineAddress) return undefined;
 
   const votingMachineChainId = votingMachineAddressToChainId(detail.votingMachineAddress);
@@ -143,7 +146,10 @@ export function buildVoteProposalFromCache(detail: ProposalDetail): VoteProposal
       detail.state === 'active'
         ? VotingMachineProposalState.Active
         : VotingMachineProposalState.Finished,
-    // votedInfo not available from cache — user's on-chain vote status is unknown
+    votedInfo:
+      userVote && userVote.votingPower !== '0'
+        ? { support: userVote.support, votingPower: userVote.votingPower }
+        : undefined,
   };
 }
 
@@ -209,7 +215,10 @@ export function adaptCacheProposalToListItem(p: SimplifiedProposal): ProposalLis
   };
 }
 
-export function adaptCacheProposalToDetail(p: ProposalDetail): ProposalDetailDisplay {
+export function adaptCacheProposalToDetail(
+  p: ProposalDetail,
+  userVote?: ProposalVote | null
+): ProposalDetailDisplay {
   const voteInfo = calculateCacheVoteDisplayInfo(
     p.votesFor,
     p.votesAgainst,
@@ -227,7 +236,7 @@ export function adaptCacheProposalToDetail(p: ProposalDetail): ProposalDetailDis
     badgeState: cacheStateToBadge(p.state),
     voteInfo,
     rawCacheDetail: p,
-    voteProposalData: buildVoteProposalFromCache(p),
+    voteProposalData: buildVoteProposalFromCache(p, userVote),
   };
 }
 

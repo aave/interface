@@ -20,6 +20,7 @@ import {
   getProposalDetailFromCache,
   getProposalsFromCache,
   getProposalVotesFromCache,
+  getUserVoteFromCache,
   searchProposalsFromCache,
 } from 'src/services/GovernanceCacheService';
 import { useRootStore } from 'src/store/root';
@@ -215,9 +216,12 @@ export const useGovernanceProposalDetail = (proposalId: number) => {
     queryFn: async () => {
       const detail = await getProposalDetailFromCache(String(proposalId));
       if (!detail) return null;
-      return adaptCacheProposalToDetail(detail);
+
+      const userVote = user ? await getUserVoteFromCache(String(proposalId), user) : null;
+
+      return adaptCacheProposalToDetail(detail, userVote);
     },
-    queryKey: ['governance-detail-cache', proposalId],
+    queryKey: ['governance-detail-cache', proposalId, user],
     enabled: USE_GOVERNANCE_CACHE && !isNaN(proposalId),
     refetchOnMount: false,
     refetchOnReconnect: false,

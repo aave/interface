@@ -452,6 +452,54 @@ export async function getProposalVotesFromCache(
   }));
 }
 
+export async function getUserVoteFromCache(
+  proposalId: string,
+  voter: string
+): Promise<ProposalVote | null> {
+  const query = `
+    query GetUserVote($proposalId: BigFloat!, $voter: String!) {
+      getUserVote(pProposalId: $proposalId, pVoter: $voter) {
+        nodes {
+          voter
+          support
+          votingPower
+          votingNetwork
+          votedAt
+        }
+      }
+    }
+  `;
+
+  const response = await graphqlRequest<{
+    data: {
+      getUserVote: {
+        nodes: Array<{
+          voter: string;
+          support: boolean;
+          votingPower: string;
+          votingNetwork: string;
+          votedAt: string | null;
+        }>;
+      };
+    };
+  }>(query, {
+    proposalId: parseFloat(proposalId),
+    voter,
+  });
+
+  const nodes = response.data.getUserVote.nodes;
+  if (nodes.length === 0) return null;
+
+  const v = nodes[0];
+  return {
+    voter: v.voter,
+    support: v.support,
+    votingPower: v.votingPower,
+    votingNetwork: v.votingNetwork,
+    votedAt: v.votedAt,
+  };
+}
+
 export async function getProposalVoteCountsFromCache(
   proposalId: string
 ): Promise<{ forCount: number; againstCount: number; totalCount: number }> {
