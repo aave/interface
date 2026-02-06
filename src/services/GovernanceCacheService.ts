@@ -269,6 +269,8 @@ export interface ProposalDetail {
   votingStartTime: string | null;
   votingEndTime: string | null;
   l1BlockHash: string | null;
+  // VotingMachine contract address (identifies the voting chain)
+  votingMachineAddress: string | null;
   // Voting thresholds
   quorum: string | null;
   requiredDifferential: string | null;
@@ -311,6 +313,7 @@ interface ProposalDetailResponse {
         votingStartTime: string | null;
         votingEndTime: string | null;
         l1BlockHash: string | null;
+        votingMachineAddress: string | null;
         quorum: string | null;
         requiredDifferential: string | null;
       }>;
@@ -362,6 +365,7 @@ export async function getProposalDetailFromCache(id: string): Promise<ProposalDe
           votingStartTime
           votingEndTime
           l1BlockHash
+          votingMachineAddress
           quorum
           requiredDifferential
         }
@@ -401,6 +405,7 @@ export async function getProposalDetailFromCache(id: string): Promise<ProposalDe
     votingStartTime: p.votingStartTime,
     votingEndTime: p.votingEndTime,
     l1BlockHash: p.l1BlockHash,
+    votingMachineAddress: p.votingMachineAddress,
     quorum: p.quorum,
     requiredDifferential: p.requiredDifferential,
   };

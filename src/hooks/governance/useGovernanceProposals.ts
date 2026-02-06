@@ -11,7 +11,7 @@ import {
   adaptGraphProposalToListItem,
 } from 'src/modules/governance/adapters';
 import { lifecycleToBadge } from 'src/modules/governance/StateBadge';
-import { ProposalListItem, VotersSplitDisplay } from 'src/modules/governance/types';
+import { ProposalListItem, VoteDisplay, VotersSplitDisplay } from 'src/modules/governance/types';
 import {
   getLifecycleState,
   getProposalVoteInfo,
@@ -41,6 +41,7 @@ const USE_GOVERNANCE_CACHE = process.env.NEXT_PUBLIC_USE_GOVERNANCE_CACHE === 't
 const PAGE_SIZE = 10;
 const VOTES_PAGE_SIZE = 50;
 const SEARCH_RESULTS_LIMIT = 10;
+export const ENS_REVERSE_REGISTRAR = '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C';
 
 // ============================================
 // Subgraph search query
@@ -331,7 +332,7 @@ export const useGovernanceVotersSplit = (
       const votes = await fetchSubgraphVotes(proposalId, votingChainId as ChainId);
       try {
         const provider = getProvider(governanceV3Config.coreChainId);
-        const contract = new Contract('0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', ensAbi);
+        const contract = new Contract(ENS_REVERSE_REGISTRAR, ensAbi);
         const connectedContract = contract.connect(provider);
         const ensNames: string[] = await connectedContract.getNames(votes.map((v) => v.voter));
         return votes.map((vote, i) => ({
@@ -349,9 +350,44 @@ export const useGovernanceVotersSplit = (
     refetchOnReconnect: false,
   });
 
+  // ENS resolution for cache path voters
+  const cacheVoterAddresses = USE_GOVERNANCE_CACHE
+    ? [
+        ...(cacheForData?.pages.flatMap((p) => p.votes.map((v) => v.voter)) || []),
+        ...(cacheAgainstData?.pages.flatMap((p) => p.votes.map((v) => v.voter)) || []),
+      ]
+    : [];
+
+  const { data: cacheEnsNames } = useQuery({
+    queryFn: async () => {
+      const provider = getProvider(governanceV3Config.coreChainId);
+      const contract = new Contract(ENS_REVERSE_REGISTRAR, ensAbi);
+      const connectedContract = contract.connect(provider);
+      const names: string[] = await connectedContract.getNames(cacheVoterAddresses);
+      const map: Record<string, string> = {};
+      cacheVoterAddresses.forEach((addr, i) => {
+        if (names[i]) map[addr.toLowerCase()] = names[i];
+      });
+      return map;
+    },
+    queryKey: ['governance-voters-ens', proposalId, cacheVoterAddresses.length],
+    enabled: USE_GOVERNANCE_CACHE && cacheVoterAddresses.length > 0,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+  });
+
   if (USE_GOVERNANCE_CACHE) {
-    const yaeVotes = cacheForData?.pages.flatMap((p) => p.votes.map(adaptCacheVote)) || [];
-    const nayVotes = cacheAgainstData?.pages.flatMap((p) => p.votes.map(adaptCacheVote)) || [];
+    const withEns = (vote: VoteDisplay): VoteDisplay => ({
+      ...vote,
+      ensName: cacheEnsNames?.[vote.voter.toLowerCase()],
+    });
+    const yaeVotes = (cacheForData?.pages.flatMap((p) => p.votes.map(adaptCacheVote)) || []).map(
+      withEns
+    );
+    const nayVotes = (
+      cacheAgainstData?.pages.flatMap((p) => p.votes.map(adaptCacheVote)) || []
+    ).map(withEns);
     const combinedVotes = [...yaeVotes, ...nayVotes].sort(
       (a, b) => parseFloat(b.votingPower) - parseFloat(a.votingPower)
     );
@@ -366,21 +402,29 @@ export const useGovernanceVotersSplit = (
   const sortByPower = (a: { votingPower: string }, b: { votingPower: string }) =>
     +a.votingPower < +b.votingPower ? 1 : +a.votingPower > +b.votingPower ? -1 : 0;
 
+  const toVoteDisplay = (v: {
+    voter: string;
+    support: boolean;
+    votingPower: string;
+    ensName?: string;
+  }): VoteDisplay => ({
+    voter: v.voter,
+    support: v.support,
+    votingPower: v.votingPower,
+    ensName: v.ensName,
+  });
+
   const yaeVotes =
     graphVotes
       ?.filter((v) => v.support)
       .sort(sortByPower)
-      .map((v) => ({ voter: v.voter, support: v.support, votingPower: v.votingPower })) || [];
+      .map(toVoteDisplay) || [];
   const nayVotes =
     graphVotes
       ?.filter((v) => !v.support)
       .sort(sortByPower)
-      .map((v) => ({ voter: v.voter, support: v.support, votingPower: v.votingPower })) || [];
-  const combinedVotes = graphVotes
-    ? [...graphVotes]
-        .sort(sortByPower)
-        .map((v) => ({ voter: v.voter, support: v.support, votingPower: v.votingPower }))
-    : [];
+      .map(toVoteDisplay) || [];
+  const combinedVotes = graphVotes ? [...graphVotes].sort(sortByPower).map(toVoteDisplay) : [];
 
   return { yaeVotes, nayVotes, combinedVotes, isFetching: graphFetching };
 };

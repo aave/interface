@@ -33,10 +33,7 @@ export default function ProposalPage() {
     error: proposalError,
   } = useGovernanceProposalDetail(proposalId);
 
-  // For graph path, get votingChainId from rawProposal
-  const votingChainId = proposal?.rawProposal
-    ? +proposal.rawProposal.subgraphProposal.votingPortal.votingMachineChainId
-    : undefined;
+  const votingChainId = proposal?.voteProposalData?.votingMachineChainId;
 
   const voters = useGovernanceVotersSplit(proposalId, votingChainId);
   const { data: payloads, isLoading: payloadsLoading } = useProposalPayloadsCache(proposalId);
@@ -62,7 +59,7 @@ export default function ProposalPage() {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            {proposal?.rawProposal && <VoteInfo proposal={proposal.rawProposal} />}
+            {proposal?.voteProposalData && <VoteInfo voteData={proposal.voteProposalData} />}
             <VotingResults
               proposal={proposal}
               voters={voters}
