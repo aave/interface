@@ -38,14 +38,14 @@ export class WalletBalanceService {
       walletBalanceProviderAddress
     );
 
-    const options: { blockTag?: string | number } = {};
+    const options: { blockTag?: string } = {};
     if (blockHash) {
       // Resolve block hash to block number — passing a raw 256-bit hash as blockTag
       // causes "number too large" errors on most RPC providers including Alchemy.
       const provider = this.getProvider(chainId);
       const block = await provider.getBlock(blockHash);
       if (block) {
-        options.blockTag = block.number;
+        options.blockTag = `0x${block.number.toString(16)}`;
       }
     }
     const balances = await walletBalanceService.batchBalanceOf(
