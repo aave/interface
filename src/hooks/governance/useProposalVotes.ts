@@ -7,6 +7,8 @@ import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { subgraphRequest } from 'src/utils/subgraphRequest';
 
+import { ENS_REVERSE_REGISTRAR } from './useGovernanceProposals';
+
 export type ProposalVote = {
   proposalId: string;
   support: boolean;
@@ -71,7 +73,7 @@ const fetchProposalVotes = async (
 
 const fetchProposalVotesEnsNames = async (addresses: string[]) => {
   const provider = getProvider(governanceV3Config.coreChainId);
-  const contract = new Contract('0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', abi);
+  const contract = new Contract(ENS_REVERSE_REGISTRAR, abi);
   const connectedContract = contract.connect(provider);
   return connectedContract.getNames(addresses) as Promise<string[]>;
 };

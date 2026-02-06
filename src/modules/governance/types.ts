@@ -1,3 +1,4 @@
+import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Proposal } from 'src/hooks/governance/useProposals';
 import { ProposalDetail } from 'src/services/GovernanceCacheService';
 
@@ -52,6 +53,24 @@ export type ProposalDetailDisplay = {
   rawProposal?: Proposal;
   /** Present only for cache data path. Used by ProposalLifecycleCache. */
   rawCacheDetail?: ProposalDetail;
+  /** Voting data derived from either data path. Used by VoteInfo and GovVoteModal. */
+  voteProposalData?: VoteProposalData;
+};
+
+/**
+ * Minimal data needed by VoteInfo and the vote modal flow.
+ * Built from either the graph Proposal or the cache ProposalDetail.
+ */
+export type VoteProposalData = {
+  proposalId: string;
+  snapshotBlockHash: string;
+  votingMachineChainId: number;
+  votingAssets: string[];
+  votingState: VotingMachineProposalState;
+  votedInfo?: {
+    support: boolean;
+    votingPower: string;
+  };
 };
 
 /**
@@ -62,6 +81,7 @@ export type VoteDisplay = {
   voter: string;
   support: boolean;
   votingPower: string;
+  ensName?: string;
 };
 
 /**

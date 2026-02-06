@@ -7,37 +7,32 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
-import { Proposal } from 'src/hooks/governance/useProposals';
 import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
+import { VoteProposalData } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 
 import { networkConfigs } from '../../../ui-config/networksConfig';
 
 interface VoteInfoProps {
-  proposal: Proposal;
+  voteData: VoteProposalData;
 }
 
-export function VoteInfo({ proposal }: VoteInfoProps) {
+export function VoteInfo({ voteData }: VoteInfoProps) {
   const { openGovVote } = useModalContext();
   const user = useRootStore((state) => state.account);
-  const voteOnProposal = proposal.votingMachineData.votedInfo;
-  const votingChainId = proposal.subgraphProposal.votingPortal.votingMachineChainId;
+  const voteOnProposal = voteData.votedInfo;
+  const votingChainId = voteData.votingMachineChainId;
   const network = networkConfigs[votingChainId];
 
   const blockHash =
-    proposal.subgraphProposal.snapshotBlockHash === constants.HashZero
-      ? 'latest'
-      : proposal.subgraphProposal.snapshotBlockHash;
+    voteData.snapshotBlockHash === constants.HashZero ? 'latest' : voteData.snapshotBlockHash;
 
-  const { data: powerAtProposalStart } = useVotingPowerAt(
-    blockHash,
-    proposal.votingMachineData.votingAssets
-  );
+  const { data: powerAtProposalStart } = useVotingPowerAt(blockHash, voteData.votingAssets);
 
-  const voteOngoing = proposal.votingMachineData.state === VotingMachineProposalState.Active;
+  const voteOngoing = voteData.votingState === VotingMachineProposalState.Active;
 
-  const didVote = powerAtProposalStart && voteOnProposal?.votingPower !== '0';
+  const didVote = powerAtProposalStart && voteOnProposal && voteOnProposal.votingPower !== '0';
   const showAlreadyVotedMsg = !!user && voteOnProposal && didVote;
 
   const showCannotVoteMsg = !!user && voteOngoing && Number(powerAtProposalStart) === 0;
@@ -112,7 +107,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
               />
             </Row>
           )}
-          {showAlreadyVotedMsg && (
+          {showAlreadyVotedMsg && voteOnProposal && (
             <Warning severity={voteOnProposal.support ? 'success' : 'error'} sx={{ my: 2 }}>
               <Typography variant="subheader1">
                 <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
@@ -121,7 +116,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 <Trans>
                   With a voting power of{' '}
                   <FormattedNumber
-                    value={formatUnits(proposal.votingMachineData.votedInfo.votingPower, 18) || 0}
+                    value={formatUnits(voteOnProposal.votingPower, 18) || 0}
                     variant="caption"
                     visibleDecimals={2}
                   />
@@ -140,7 +135,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 color="success"
                 variant="contained"
                 fullWidth
-                onClick={() => openGovVote(proposal, true, powerAtProposalStart)}
+                onClick={() => openGovVote(voteData, true, powerAtProposalStart)}
               >
                 <Trans>Vote YAE</Trans>
               </Button>
@@ -148,7 +143,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
                 color="error"
                 variant="contained"
                 fullWidth
-                onClick={() => openGovVote(proposal, false, powerAtProposalStart)}
+                onClick={() => openGovVote(voteData, false, powerAtProposalStart)}
                 sx={{ mt: 2 }}
               >
                 <Trans>Vote NAY</Trans>

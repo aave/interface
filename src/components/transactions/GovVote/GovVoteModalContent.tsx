@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useTheme } from '@mui/material';
-import { Proposal } from 'src/hooks/governance/useProposals';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { VoteProposalData } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { AIP } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -17,7 +17,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovVoteActions } from './GovVoteActions';
 
 export type GovVoteModalContentProps = {
-  proposal: Proposal;
+  proposal: VoteProposalData;
   support: boolean;
   power: string;
 };
@@ -63,7 +63,7 @@ export const GovVoteModalContent = ({
     }
   };
 
-  const proposalVotingChain = +proposal.subgraphProposal.votingPortal.votingMachineChainId;
+  const proposalVotingChain = proposal.votingMachineChainId;
 
   const isWrongNetwork = connectedChainId !== proposalVotingChain;
 
