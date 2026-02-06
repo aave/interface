@@ -236,16 +236,6 @@ export const GovVoteActions = ({
 
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
-    console.log('[GovVote] proposal data:', {
-      proposalId,
-      blockHash,
-      votingChainId,
-      votingMachineAddress,
-      support,
-      user,
-      assets,
-      tokenPowers,
-    });
     try {
       const proofs = await getVotingBalanceProofs(user, assets, ChainId.mainnet, blockHash);
 
@@ -281,6 +271,12 @@ export const GovVoteActions = ({
               queryKey: ['governance-detail-cache', proposalId, user],
             });
             queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
+            queryClient.invalidateQueries({
+              queryKey: ['governance-voters-cache-for', proposalId],
+            });
+            queryClient.invalidateQueries({
+              queryKey: ['governance-voters-cache-against', proposalId],
+            });
             return;
           } else {
             setTimeout(checkForStatus, 5000);
@@ -308,6 +304,12 @@ export const GovVoteActions = ({
         queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
         queryClient.invalidateQueries({ queryKey: ['governance-detail-cache', proposalId, user] });
         queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
+        queryClient.invalidateQueries({
+          queryKey: ['governance-voters-cache-for', proposalId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['governance-voters-cache-against', proposalId],
+        });
       }
     } catch (err) {
       setMainTxState({
