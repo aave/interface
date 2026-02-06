@@ -431,7 +431,7 @@ export const marketsData: {
     },
   },
   [CustomMarket.proto_horizon_v3]: {
-    marketTitle: 'Horizon RWA',
+    marketTitle: 'Aave Horizon',
     market: CustomMarket.proto_horizon_v3,
     chainId: ChainId.mainnet,
     v3: true,

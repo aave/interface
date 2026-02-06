@@ -127,7 +127,7 @@ const MARKET_ORDER_BY_TITLE: { [title: string]: number } = {
   Arbitrum: 4,
   Avalanche: 5,
   Linea: 6,
-  'Horizon RWA': 7,
+  'Aave Horizon': 7,
   Sonic: 8,
   OP: 9,
   Gnosis: 10,
