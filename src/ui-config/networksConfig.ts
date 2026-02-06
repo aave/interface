@@ -464,7 +464,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     networkLogoPath: '/icons/networks/mantle.svg',
     wagmiChain: mantle,
   },
-  [4326]: {
+  [megaeth.id]: {
     name: 'MegaETH',
     publicJsonRPCUrl: ['https://mainnet.megaeth.com/rpc'],
     baseAssetSymbol: 'ETH',
