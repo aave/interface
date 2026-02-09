@@ -37,6 +37,7 @@ export const useGetBridgeMessage = ({
     return debounce(async () => {
       const provider = getProvider(sourceChainId);
       const sourceRouterAddress = getRouterFor(sourceChainId);
+      console.log('Source Router Address:', sourceRouterAddress);
       const sourceRouter = new Contract(sourceRouterAddress, routerAbi, provider);
 
       try {

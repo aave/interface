@@ -26,6 +26,9 @@ import {
   AaveV3Soneium,
   AaveV3Sonic,
   AaveV3ZkSync,
+  GhoAvalanche,
+  GhoGnosis,
+  GhoMantle,
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
 
@@ -354,7 +357,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Avalanche.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Avalanche.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Avalanche.WITHDRAW_SWAP_ADAPTER,
-      GHO_TOKEN_ADDRESS: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
+      GHO_TOKEN_ADDRESS: GhoAvalanche.GHO_TOKEN,
     },
   },
   [CustomMarket.proto_linea_v3]: {
@@ -554,6 +557,7 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Mantle.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Mantle.COLLECTOR,
       L2_ENCODER: AaveV3Mantle.L2_ENCODER,
+      GHO_TOKEN_ADDRESS: GhoMantle.GHO_TOKEN,
     },
   },
   [CustomMarket.proto_fuji]: {
@@ -599,7 +603,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Gnosis.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Gnosis.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Gnosis.WITHDRAW_SWAP_ADAPTER,
-      GHO_TOKEN_ADDRESS: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
+      GHO_TOKEN_ADDRESS: GhoGnosis.GHO_TOKEN,
     },
   },
   [CustomMarket.proto_bnb_v3]: {

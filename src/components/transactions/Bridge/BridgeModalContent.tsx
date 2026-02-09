@@ -57,18 +57,6 @@ import { useTimeToDestination } from './useGetFinalityTime';
 const defaultNetwork = supportedNetworksWithBridge[0];
 
 function getUseBridgeTokensParams(chainId: number): UseBridgeTokensParams {
-  const tokenOracle = getConfigFor(chainId).tokenOracle;
-
-  if (chainId === ChainId.ink) {
-    // no market config available yet for ink, so values are set here
-    return {
-      chainId,
-      ghoTokenAddress: AaveV3InkWhitelabel.ASSETS.GHO.UNDERLYING,
-      tokenOracle,
-      walletBalanceProviderAddress: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
-    };
-  }
-
   const market = Object.values(marketsData).filter(
     (md) => md.chainId === chainId && md.v3 === true && md.addresses.GHO_TOKEN_ADDRESS
   )[0];
