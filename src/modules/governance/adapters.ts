@@ -1,10 +1,13 @@
+import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
+import { constants } from 'ethers';
 import { Proposal } from 'src/hooks/governance/useProposals';
 import {
   ProposalDetail,
   ProposalVote,
   SimplifiedProposal,
 } from 'src/services/GovernanceCacheService';
+import { governanceV3Config } from 'src/ui-config/governanceConfig';
 
 import { ProposalBadgeState } from './StateBadge';
 import {
@@ -12,6 +15,7 @@ import {
   ProposalListItem,
   ProposalVoteDisplayInfo,
   VoteDisplay,
+  VoteProposalData,
 } from './types';
 
 // ============================================
@@ -80,6 +84,76 @@ export function calculateCacheVoteDisplayInfo(
 }
 
 // ============================================
+// VoteProposalData builders
+// ============================================
+
+/**
+ * Parse rindexer FixedBytes format into a clean hex string.
+ * e.g. "FixedBytes(0xabc123..., 32)" → "0xabc123..."
+ */
+function parseFixedBytes(raw: string | null): string | null {
+  if (!raw) return null;
+  const match = raw.match(/FixedBytes\((0x[a-fA-F0-9]+)/);
+  return match ? match[1] : raw;
+}
+
+/** Map a VotingMachine contract address to its chain ID via governance config. */
+function votingMachineAddressToChainId(address: string): number | undefined {
+  const lowerAddress = address.toLowerCase();
+  for (const [chainId, config] of Object.entries(governanceV3Config.votingChainConfig)) {
+    if (config.votingMachineAddress.toLowerCase() === lowerAddress) {
+      return Number(chainId);
+    }
+  }
+  return undefined;
+}
+
+/** Build VoteProposalData from a graph Proposal. */
+export function buildVoteProposalFromGraph(proposal: Proposal): VoteProposalData {
+  const votedInfo = proposal.votingMachineData.votedInfo;
+  return {
+    proposalId: proposal.subgraphProposal.id,
+    snapshotBlockHash: proposal.subgraphProposal.snapshotBlockHash,
+    votingMachineChainId: +proposal.subgraphProposal.votingPortal.votingMachineChainId,
+    votingAssets: proposal.votingMachineData.votingAssets,
+    votingState: proposal.votingMachineData.state,
+    votedInfo:
+      votedInfo && votedInfo.votingPower !== '0'
+        ? { support: votedInfo.support, votingPower: votedInfo.votingPower }
+        : undefined,
+  };
+}
+
+/** Build VoteProposalData from a cache ProposalDetail. Returns undefined if voting chain can't be determined. */
+export function buildVoteProposalFromCache(
+  detail: ProposalDetail,
+  userVote?: ProposalVote | null
+): VoteProposalData | undefined {
+  if (!detail.votingMachineAddress) return undefined;
+
+  const votingMachineChainId = votingMachineAddressToChainId(detail.votingMachineAddress);
+  if (votingMachineChainId === undefined) return undefined;
+
+  const { aaveTokenAddress, aAaveTokenAddress, stkAaveTokenAddress } =
+    governanceV3Config.votingAssets;
+
+  return {
+    proposalId: detail.id,
+    snapshotBlockHash: parseFixedBytes(detail.snapshotBlockHash) || constants.HashZero,
+    votingMachineChainId,
+    votingAssets: [aaveTokenAddress, aAaveTokenAddress, stkAaveTokenAddress],
+    votingState:
+      detail.state === 'active'
+        ? VotingMachineProposalState.Active
+        : VotingMachineProposalState.Finished,
+    votedInfo:
+      userVote && userVote.votingPower !== '0'
+        ? { support: userVote.support, votingPower: userVote.votingPower }
+        : undefined,
+  };
+}
+
+// ============================================
 // Graph -> canonical adapters
 // ============================================
 
@@ -121,6 +195,7 @@ export function adaptGraphProposalToDetail(p: Proposal): ProposalDetailDisplay {
     discussions: p.subgraphProposal.proposalMetadata.discussions || null,
     ipfsHash: p.subgraphProposal.proposalMetadata.ipfsHash,
     rawProposal: p,
+    voteProposalData: buildVoteProposalFromGraph(p),
   };
 }
 
@@ -140,7 +215,10 @@ export function adaptCacheProposalToListItem(p: SimplifiedProposal): ProposalLis
   };
 }
 
-export function adaptCacheProposalToDetail(p: ProposalDetail): ProposalDetailDisplay {
+export function adaptCacheProposalToDetail(
+  p: ProposalDetail,
+  userVote?: ProposalVote | null
+): ProposalDetailDisplay {
   const voteInfo = calculateCacheVoteDisplayInfo(
     p.votesFor,
     p.votesAgainst,
@@ -158,6 +236,7 @@ export function adaptCacheProposalToDetail(p: ProposalDetail): ProposalDetailDis
     badgeState: cacheStateToBadge(p.state),
     voteInfo,
     rawCacheDetail: p,
+    voteProposalData: buildVoteProposalFromCache(p, userVote),
   };
 }
 
