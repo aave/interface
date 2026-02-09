@@ -80,11 +80,11 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
                     <StateBadge state={proposal.badgeState} loading={loading} />
                   </Box>
-                  {proposal.author && (
+                  {/* {proposal.author && (
                     <Typography variant="caption" color="text.secondary">
                       by {proposal.author}
                     </Typography>
-                  )}
+                  )} */}
                 </Box>
                 <Box sx={{ flexGrow: 1 }} />
                 <Button
