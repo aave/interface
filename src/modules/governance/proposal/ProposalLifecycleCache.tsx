@@ -192,11 +192,11 @@ export const ProposalLifecycleCache = ({
     networkLogo: getNetworkLogo(1),
   });
 
-  // Proposal executed
+  // Proposal executed (GovernanceCore dispatched payloads cross-chain)
   payloadExecutionSubsteps.push({
     stepName: 'Proposal executed',
     timestamp: proposal.executedAt,
-    completed: state === 'executed',
+    completed: !!proposal.executedAt,
     active: false,
     networkLogo: getNetworkLogo(1),
   });
@@ -249,12 +249,14 @@ export const ProposalLifecycleCache = ({
   ];
 
   // Add final state step
+  const allPayloadsExecuted = (payloads || []).every((p) => p.state === 'executed');
+
   if (state === 'queued' || state === 'executed') {
     steps.push({
       stepName: 'Payloads executed',
-      timestamp: proposal.executedAt || proposal.queuedAt,
-      completed: state === 'executed',
-      active: state === 'queued',
+      timestamp: allPayloadsExecuted ? proposal.executedAt : proposal.queuedAt,
+      completed: state === 'executed' && allPayloadsExecuted,
+      active: (state === 'executed' && !allPayloadsExecuted) || state === 'queued',
       lastStep: true,
       substeps: payloadExecutionSubsteps,
     });
