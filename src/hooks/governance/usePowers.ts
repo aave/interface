@@ -9,7 +9,7 @@ export const usePowers = (blockHash?: string) => {
   const user = useRootStore((store) => store.account);
   return useQuery({
     queryFn: () => governanceService.getPowers(governanceV3Config.coreChainId, user, blockHash),
-    queryKey: queryKeysFactory.powers(user, governanceV3Config.coreChainId),
+    queryKey: queryKeysFactory.powers(user, governanceV3Config.coreChainId, blockHash),
     enabled: !!user,
     refetchInterval: POLLING_INTERVAL,
   });
