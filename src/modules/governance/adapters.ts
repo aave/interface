@@ -1,6 +1,5 @@
 import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
-import { constants } from 'ethers';
 import { Proposal } from 'src/hooks/governance/useProposals';
 import {
   ProposalDetail,
@@ -137,9 +136,12 @@ export function buildVoteProposalFromCache(
   const { aaveTokenAddress, aAaveTokenAddress, stkAaveTokenAddress } =
     governanceV3Config.votingAssets;
 
+  const snapshotBlockHash = parseFixedBytes(detail.snapshotBlockHash);
+  if (!snapshotBlockHash) return undefined;
+
   return {
     proposalId: detail.id,
-    snapshotBlockHash: parseFixedBytes(detail.snapshotBlockHash) || constants.HashZero,
+    snapshotBlockHash,
     votingMachineChainId,
     votingAssets: [aaveTokenAddress, aAaveTokenAddress, stkAaveTokenAddress],
     votingState:

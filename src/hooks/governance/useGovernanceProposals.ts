@@ -374,7 +374,7 @@ export const useGovernanceVotersSplit = (
       });
       return map;
     },
-    queryKey: ['governance-voters-ens', proposalId, cacheVoterAddresses.length],
+    queryKey: ['governance-voters-ens', proposalId, cacheVoterAddresses],
     enabled: USE_GOVERNANCE_CACHE && cacheVoterAddresses.length > 0,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
