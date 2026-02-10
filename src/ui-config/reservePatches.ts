@@ -236,6 +236,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe May 2026',
       iconSymbol: 'ptsusde',
     },
+    '0x9bf45ab47747f4b4dd09b3c2c73953484b4eb375': {
+      symbol: 'PT srUSDe 2nd 2026',
+      name: 'PT Strata Senior USDe 2nd 2026',
+      iconSymbol: 'srusde',
+    },
     '0xfafddbb3fc7688494971a79cc65dca3ef82079e7': {
       symbol: 'USDm',
       name: 'MegaUSD',
