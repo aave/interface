@@ -79,7 +79,7 @@ export class GovernanceService {
       const provider = this.getProvider(govChainId);
       const block = await provider.getBlock(blockHash);
       if (block) {
-        options.blockTag = block.number.toString();
+        options.blockTag = `0x${block.number.toString(16)}`;
       }
     }
 
