@@ -2,12 +2,11 @@ import { ChainId, Stake } from '@aave/contract-helpers';
 import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { VoteProposalData } from 'src/modules/governance/types';
 import { ActionName, SwapActionFields, TransactionHistoryItem } from 'src/modules/history/types';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { GENERAL } from 'src/utils/events';
-
-import { Proposal } from './governance/useProposals';
 
 export enum ModalType {
   Supply,
@@ -50,7 +49,7 @@ export enum ModalType {
 
 export interface ModalArgsType {
   underlyingAsset?: string;
-  proposal?: Proposal;
+  proposal?: VoteProposalData;
   support?: boolean;
   power?: string;
   icon?: string;
@@ -139,7 +138,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openGovDelegation: () => void;
   openRevokeGovDelegation: () => void;
   openV3Migration: () => void;
-  openGovVote: (proposal: Proposal, support: boolean, power: string) => void;
+  openGovVote: (proposal: VoteProposalData, support: boolean, power: string) => void;
   openSwitch: (underlyingAsset?: string, chainId?: number) => void;
   openBridge: () => void;
   openStakingMigrate: () => void;
@@ -392,7 +391,7 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
         openGovVote: (proposal, support, power) => {
           trackEvent(GENERAL.OPEN_MODAL, {
             modal: 'Vote',
-            proposalId: proposal.subgraphProposal.id,
+            proposalId: proposal.proposalId,
             voteSide: support,
           });
           setType(ModalType.GovVote);
