@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { SwitchVerticalIcon } from '@heroicons/react/outline';
+import { ExternalLinkIcon, SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -15,7 +15,7 @@ import { BigNumber } from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
-import { Link, ROUTES } from 'src/components/primitives/Link';
+import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
@@ -72,7 +72,7 @@ function getUseBridgeTokensParams(chainId: number): UseBridgeTokensParams {
 }
 
 export const BridgeModalContent = () => {
-  const { mainTxState: bridgeTxState, txError, close, gasLimit } = useModalContext();
+  const { mainTxState: bridgeTxState, txError, gasLimit } = useModalContext();
   const user = useRootStore((state) => state.account);
   const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
@@ -295,12 +295,13 @@ export const BridgeModalContent = () => {
           <Box mt={5}>
             <Button
               component={Link}
-              href={ROUTES.bridge}
+              href={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
+              target="_blank"
+              rel="noopener"
               variant="outlined"
               size="small"
-              onClick={close}
             >
-              <Trans>View Bridge Transactions</Trans>
+              <Trans>View on CCIP Explorer</Trans>
             </Button>
           </Box>
         }
@@ -358,11 +359,17 @@ export const BridgeModalContent = () => {
           >
             <Button
               component={Link}
-              href={ROUTES.bridge}
+              href={`https://ccip.chain.link/address/${user}`}
+              target="_blank"
+              rel="noopener"
               sx={{ mr: 8 }}
               variant="surface"
               size="small"
-              onClick={close}
+              endIcon={
+                <SvgIcon sx={{ width: 14, height: 14 }}>
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              }
             >
               <Trans>Transactions</Trans>
             </Button>
