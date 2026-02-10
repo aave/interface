@@ -203,13 +203,16 @@ export const ProposalLifecycleCache = ({
 
   // Per-chain payload queued and executed
   (payloads || []).forEach((p) => {
-    payloadExecutionSubsteps.push({
-      stepName: `Payload ${p.payloadId} queued on ${getNetworkName(p.chainId)}`,
-      timestamp: p.queuedAt,
-      completed: !!p.queuedAt,
-      active: p.state === 'queued',
-      networkLogo: getNetworkLogo(p.chainId),
-    });
+    // Only show queued substep if there's an actual queued timestamp
+    if (p.queuedAt || p.state === 'queued') {
+      payloadExecutionSubsteps.push({
+        stepName: `Payload ${p.payloadId} queued on ${getNetworkName(p.chainId)}`,
+        timestamp: p.queuedAt,
+        completed: !!p.queuedAt,
+        active: p.state === 'queued',
+        networkLogo: getNetworkLogo(p.chainId),
+      });
+    }
     payloadExecutionSubsteps.push({
       stepName: `Payload ${p.payloadId} executed on ${getNetworkName(p.chainId)}`,
       timestamp: p.executedAt,
