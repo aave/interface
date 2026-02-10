@@ -252,7 +252,7 @@ export const ProposalLifecycleCache = ({
   ];
 
   // Add final state step
-  const allPayloadsExecuted = (payloads || []).every((p) => p.state === 'executed');
+  const allPayloadsExecuted = !!payloads?.length && payloads.every((p) => p.state === 'executed');
 
   if (state === 'queued' || state === 'executed') {
     steps.push({
