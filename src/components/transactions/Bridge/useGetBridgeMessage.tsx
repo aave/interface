@@ -37,7 +37,6 @@ export const useGetBridgeMessage = ({
     return debounce(async () => {
       const provider = getProvider(sourceChainId);
       const sourceRouterAddress = getRouterFor(sourceChainId);
-      console.log('Source Router Address:', sourceRouterAddress);
       const sourceRouter = new Contract(sourceRouterAddress, routerAbi, provider);
 
       try {
@@ -91,7 +90,6 @@ export const useGetBridgeMessage = ({
         let transactionCostUsd;
 
         if (feeToken === constants.AddressZero) {
-          console.log('fee token ETH');
           // Handling for Ether (native token)
           const sourceLaneConfig = laneConfig.find(
             (config) => config.sourceChainId === sourceChainId
