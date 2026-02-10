@@ -35,9 +35,9 @@ import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { AssetInput } from '../AssetInput';
+import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
-import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
 import { BridgeAmount } from './BridgeAmount';
@@ -290,29 +290,18 @@ export const BridgeModalContent = () => {
 
   if (bridgeTxState.success) {
     return (
-      <TxSuccessView
-        customAction={
-          <Box mt={5}>
-            <Button
-              component={Link}
-              href={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
-              target="_blank"
-              rel="noopener"
-              variant="outlined"
-              size="small"
-            >
-              <Trans>View on CCIP Explorer</Trans>
-            </Button>
-          </Box>
-        }
-        customText={
+      <BaseSuccessView
+        txHash={bridgeTxState.txHash}
+        customExplorerLink={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
+        customExplorerLinkText={<Trans>View on CCIP Explorer</Trans>}
+      >
+        <Typography sx={{ mt: 2, textAlign: 'center' }}>
           <Trans>
             Asset has been successfully sent to CCIP contract. You can check the status of the
             transactions below
           </Trans>
-        }
-        action={<Trans>Bridged Via CCIP</Trans>}
-      />
+        </Typography>
+      </BaseSuccessView>
     );
   }
 
