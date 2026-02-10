@@ -3,6 +3,9 @@
   "version": "3.0.1",
   "private": true,
   "license": "BSD-3-Clause",
+  "resolutions": {
+    "h3": "^1.15.5"
+  },
   "scripts": {
     "dev": "next dev",
     "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
