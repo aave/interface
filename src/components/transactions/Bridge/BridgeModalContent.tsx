@@ -93,13 +93,29 @@ export const BridgeModalContent = () => {
   const { data: estimatedTimeToDestination, isFetching: loadingEstimatedTime } =
     useTimeToDestination(sourceNetworkObj.chainId);
 
-  const getFilteredFeeTokens = (chainId: number) => {
-    return laneConfig
-      .filter((token) => token.sourceChainId === chainId)
+  const getFilteredFeeTokens = (sourceChainId: number, destinationChainId: number) => {
+    const sourceFeeTokens = laneConfig
+      .filter((config) => config.sourceChainId === sourceChainId)
       .flatMap((config) => config.feeTokens);
+
+    const destinationFeeTokenSymbols = new Set(
+      laneConfig
+        .filter((config) => config.sourceChainId === destinationChainId)
+        .flatMap((config) => config.feeTokens)
+        .map((token) => token.symbol)
+    );
+
+    // Only include non-native fee tokens (e.g. GHO) if the destination chain also supports them.
+    // This prevents using a fee token on a lane where the onRamp doesn't support it.
+    return sourceFeeTokens.filter(
+      (token) => token.extensions?.isNative || destinationFeeTokenSymbols.has(token.symbol)
+    );
   };
 
-  const filteredFeeTokensByChainId = getFilteredFeeTokens(sourceNetworkObj.chainId);
+  const filteredFeeTokensByChainId = getFilteredFeeTokens(
+    sourceNetworkObj.chainId,
+    destinationNetworkObj.chainId
+  );
 
   const { data: feeTokenListWithBalance, isFetching: loadingTokenBalances } = useTokensBalance(
     filteredFeeTokensByChainId,
@@ -130,6 +146,17 @@ export const BridgeModalContent = () => {
       setSelectedFeeToken(feeTokenListWithBalance[0]);
     }
   }, [feeTokenListWithBalance, sourceNetworkObj]);
+
+  useEffect(() => {
+    // Reset selected fee token when destination changes if current selection is no longer valid
+    const validSymbols = filteredFeeTokensByChainId.map((t) => t.symbol);
+    if (selectedFeeToken && !validSymbols.includes(selectedFeeToken.symbol)) {
+      setSelectedFeeToken(
+        feeTokenListWithBalance?.find((t) => validSymbols.includes(t.symbol)) ||
+          filteredFeeTokensByChainId[0]
+      );
+    }
+  }, [destinationNetworkObj]);
 
   useEffect(() => {
     // reset when source network changes
@@ -215,7 +242,10 @@ export const BridgeModalContent = () => {
     setSourceNetworkObj(destinationNetworkObj);
     setDestinationNetworkObj(currentSourceNetworkObj);
 
-    const newFilteredFeeTokens = getFilteredFeeTokens(destinationNetworkObj.chainId);
+    const newFilteredFeeTokens = getFilteredFeeTokens(
+      destinationNetworkObj.chainId,
+      currentSourceNetworkObj.chainId
+    );
     setSelectedFeeToken(newFilteredFeeTokens[0]);
   };
 

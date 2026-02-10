@@ -43,7 +43,7 @@ export const useGetBridgeMessage = ({
         const tokenAmounts: TokenAmount[] = [
           {
             token: sourceTokenAddress,
-            amount: parseUnits(amount, 18).toString() || '0',
+            amount: parseUnits(amount && Number(amount) ? amount : '0', 18).toString(),
           },
         ];
 
@@ -66,7 +66,7 @@ export const useGetBridgeMessage = ({
         const destinationChainSelector = getChainSelectorFor(destinationChainId);
         const fees: BigNumber = await sourceRouter.getFee(destinationChainSelector, message);
 
-        const amountBN = utils.parseUnits(amount, 18);
+        const amountBN = utils.parseUnits(amount && Number(amount) ? amount : '0', 18);
         const updatedAmount = amountBN.sub(fees);
 
         // If the fee token is not the native token, we need to update the tokenAmounts to subtract fees
@@ -139,6 +139,7 @@ export const useGetBridgeMessage = ({
         setBridgeFee(fees.toString());
       } catch (e) {
         setError(e.message);
+        console.log('---------');
         console.error(e);
       } finally {
         setLoading(false);
