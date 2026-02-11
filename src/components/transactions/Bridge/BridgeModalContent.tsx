@@ -1,6 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { AaveV3InkWhitelabel } from '@bgd-labs/aave-address-book';
-import { SwitchVerticalIcon } from '@heroicons/react/outline';
+import { ExternalLinkIcon, SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -16,7 +15,7 @@ import { BigNumber } from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
-import { Link, ROUTES } from 'src/components/primitives/Link';
+import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
@@ -36,9 +35,9 @@ import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { getNetworkConfig, marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { AssetInput } from '../AssetInput';
+import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
-import { TxSuccessView } from '../FlowCommons/Success';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
 import { BridgeAmount } from './BridgeAmount';
@@ -57,18 +56,6 @@ import { useTimeToDestination } from './useGetFinalityTime';
 const defaultNetwork = supportedNetworksWithBridge[0];
 
 function getUseBridgeTokensParams(chainId: number): UseBridgeTokensParams {
-  const tokenOracle = getConfigFor(chainId).tokenOracle;
-
-  if (chainId === ChainId.ink) {
-    // no market config available yet for ink, so values are set here
-    return {
-      chainId,
-      ghoTokenAddress: AaveV3InkWhitelabel.ASSETS.GHO.UNDERLYING,
-      tokenOracle,
-      walletBalanceProviderAddress: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
-    };
-  }
-
   const market = Object.values(marketsData).filter(
     (md) => md.chainId === chainId && md.v3 === true && md.addresses.GHO_TOKEN_ADDRESS
   )[0];
@@ -85,7 +72,7 @@ function getUseBridgeTokensParams(chainId: number): UseBridgeTokensParams {
 }
 
 export const BridgeModalContent = () => {
-  const { mainTxState: bridgeTxState, txError, close, gasLimit } = useModalContext();
+  const { mainTxState: bridgeTxState, txError, gasLimit } = useModalContext();
   const user = useRootStore((state) => state.account);
   const [destinationAccount, setDestinationAccount] = useState(user);
   const [amount, setAmount] = useState('');
@@ -106,13 +93,29 @@ export const BridgeModalContent = () => {
   const { data: estimatedTimeToDestination, isFetching: loadingEstimatedTime } =
     useTimeToDestination(sourceNetworkObj.chainId);
 
-  const getFilteredFeeTokens = (chainId: number) => {
-    return laneConfig
-      .filter((token) => token.sourceChainId === chainId)
+  const getFilteredFeeTokens = (sourceChainId: number, destinationChainId: number) => {
+    const sourceFeeTokens = laneConfig
+      .filter((config) => config.sourceChainId === sourceChainId)
       .flatMap((config) => config.feeTokens);
+
+    const destinationFeeTokenSymbols = new Set(
+      laneConfig
+        .filter((config) => config.sourceChainId === destinationChainId)
+        .flatMap((config) => config.feeTokens)
+        .map((token) => token.symbol)
+    );
+
+    // Only include non-native fee tokens (e.g. GHO) if the destination chain also supports them.
+    // This prevents using a fee token on a lane where the onRamp doesn't support it.
+    return sourceFeeTokens.filter(
+      (token) => token.extensions?.isNative || destinationFeeTokenSymbols.has(token.symbol)
+    );
   };
 
-  const filteredFeeTokensByChainId = getFilteredFeeTokens(sourceNetworkObj.chainId);
+  const filteredFeeTokensByChainId = getFilteredFeeTokens(
+    sourceNetworkObj.chainId,
+    destinationNetworkObj.chainId
+  );
 
   const { data: feeTokenListWithBalance, isFetching: loadingTokenBalances } = useTokensBalance(
     filteredFeeTokensByChainId,
@@ -143,6 +146,17 @@ export const BridgeModalContent = () => {
       setSelectedFeeToken(feeTokenListWithBalance[0]);
     }
   }, [feeTokenListWithBalance, sourceNetworkObj]);
+
+  useEffect(() => {
+    // Reset selected fee token when destination changes if current selection is no longer valid
+    const validSymbols = filteredFeeTokensByChainId.map((t) => t.symbol);
+    if (selectedFeeToken && !validSymbols.includes(selectedFeeToken.symbol)) {
+      setSelectedFeeToken(
+        feeTokenListWithBalance?.find((t) => validSymbols.includes(t.symbol)) ||
+          filteredFeeTokensByChainId[0]
+      );
+    }
+  }, [destinationNetworkObj]);
 
   useEffect(() => {
     // reset when source network changes
@@ -228,7 +242,10 @@ export const BridgeModalContent = () => {
     setSourceNetworkObj(destinationNetworkObj);
     setDestinationNetworkObj(currentSourceNetworkObj);
 
-    const newFilteredFeeTokens = getFilteredFeeTokens(destinationNetworkObj.chainId);
+    const newFilteredFeeTokens = getFilteredFeeTokens(
+      destinationNetworkObj.chainId,
+      currentSourceNetworkObj.chainId
+    );
     setSelectedFeeToken(newFilteredFeeTokens[0]);
   };
 
@@ -273,28 +290,18 @@ export const BridgeModalContent = () => {
 
   if (bridgeTxState.success) {
     return (
-      <TxSuccessView
-        customAction={
-          <Box mt={5}>
-            <Button
-              component={Link}
-              href={ROUTES.bridge}
-              variant="outlined"
-              size="small"
-              onClick={close}
-            >
-              <Trans>View Bridge Transactions</Trans>
-            </Button>
-          </Box>
-        }
-        customText={
+      <BaseSuccessView
+        txHash={bridgeTxState.txHash}
+        customExplorerLink={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
+        customExplorerLinkText={<Trans>View on CCIP Explorer</Trans>}
+      >
+        <Typography sx={{ mt: 2, textAlign: 'center' }}>
           <Trans>
             Asset has been successfully sent to CCIP contract. You can check the status of the
             transactions below
           </Trans>
-        }
-        action={<Trans>Bridged Via CCIP</Trans>}
-      />
+        </Typography>
+      </BaseSuccessView>
     );
   }
 
@@ -341,11 +348,17 @@ export const BridgeModalContent = () => {
           >
             <Button
               component={Link}
-              href={ROUTES.bridge}
+              href={`https://ccip.chain.link/address/${user}`}
+              target="_blank"
+              rel="noopener"
               sx={{ mr: 8 }}
               variant="surface"
               size="small"
-              onClick={close}
+              endIcon={
+                <SvgIcon sx={{ width: 14, height: 14 }}>
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              }
             >
               <Trans>Transactions</Trans>
             </Button>

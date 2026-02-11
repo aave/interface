@@ -1,5 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { mantle, megaeth } from 'viem/chains';
 
 // Documentation: ./server-side-rpc-proxy.md
 const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
@@ -27,6 +28,8 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
   [ChainId.soneium]: { network: 'soneium-mainnet', apiKey: process.env.SONEIUM_RPC_API_KEY || '' },
   [ChainId.ink]: { network: 'ink-mainnet', apiKey: process.env.INK_RPC_API_KEY || '' },
   [ChainId.plasma]: { network: 'plasma-mainnet', apiKey: process.env.PLASMA_RPC_API_KEY || '' },
+  [megaeth.id]: { network: 'megaeth-mainnet', apiKey: process.env.MEGAETH_RPC_API_KEY || '' },
+  [mantle.id]: { network: 'mantle-mainnet', apiKey: process.env.MANTLE_RPC_API_KEY || '' },
 
   // Testnets
   [ChainId.sepolia]: { network: 'eth-sepolia', apiKey: process.env.MAINNET_RPC_API_KEY || '' },

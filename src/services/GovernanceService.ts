@@ -74,11 +74,17 @@ export class GovernanceService {
 
     const options: { blockTag?: string } = {};
     if (blockHash) {
-      options.blockTag = blockHash;
+      // Resolve block hash to block number — passing a raw 256-bit hash as blockTag
+      // causes "number too large" errors on most RPC providers including Alchemy.
+      const provider = this.getProvider(govChainId);
+      const block = await provider.getBlock(blockHash);
+      if (block) {
+        options.blockTag = `0x${block.number.toString(16)}`;
+      }
     }
 
     const [aaveTokenPower, stkAaveTokenPower, aAaveTokenPower] =
-      // pass blockhash here as optional
+      // pass block number here as optional
       await aaveGovernanceService.getTokensPower(
         {
           user: user,

@@ -5,9 +5,9 @@ import { AbiCoder, keccak256, RLP } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useGovernanceTokensAndPowers } from 'src/hooks/governance/useGovernanceTokensAndPowers';
-import { Proposal } from 'src/hooks/governance/useProposals';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { VoteProposalData } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -54,7 +54,7 @@ export type AssetsBalanceSlots = Record<
 export type GovVoteActionsProps = {
   isWrongNetwork: boolean;
   blocked: boolean;
-  proposal: Proposal;
+  proposal: VoteProposalData;
   support: boolean;
 };
 
@@ -200,11 +200,11 @@ export const GovVoteActions = ({
   const { sendTx, signTxData } = useWeb3Context();
   const queryClient = useQueryClient();
 
-  const tokenPowers = useGovernanceTokensAndPowers(proposal.subgraphProposal.snapshotBlockHash);
+  const tokenPowers = useGovernanceTokensAndPowers(proposal.snapshotBlockHash);
   const [signature, setSignature] = useState<string | undefined>(undefined);
-  const proposalId = +proposal.subgraphProposal.id;
-  const blockHash = proposal.subgraphProposal.snapshotBlockHash;
-  const votingChainId = +proposal.subgraphProposal.votingPortal.votingMachineChainId;
+  const proposalId = +proposal.proposalId;
+  const blockHash = proposal.snapshotBlockHash;
+  const votingChainId = proposal.votingMachineChainId;
   const votingMachineAddress =
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
 
@@ -241,7 +241,6 @@ export const GovVoteActions = ({
       const votingMachineService = new VotingMachineService(votingMachineAddress);
 
       if (withGelatoRelayer && signature) {
-        // For gasless voting, if relayer is supported
         // const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
         //   user,
         //   proposalId,
@@ -265,7 +264,16 @@ export const GovVoteActions = ({
         //       success: true,
         //     });
         //     queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
+        //     queryClient.invalidateQueries({
+        //       queryKey: ['governance-detail-cache', proposalId, user],
+        //     });
         //     queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
+        //     queryClient.invalidateQueries({
+        //       queryKey: ['governance-voters-cache-for', proposalId],
+        //     });
+        //     queryClient.invalidateQueries({
+        //       queryKey: ['governance-voters-cache-against', proposalId],
+        //     });
         //     return;
         //   } else {
         //     setTimeout(checkForStatus, 5000);
@@ -291,7 +299,14 @@ export const GovVoteActions = ({
         });
 
         queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
+        queryClient.invalidateQueries({ queryKey: ['governance-detail-cache', proposalId, user] });
         queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
+        queryClient.invalidateQueries({
+          queryKey: ['governance-voters-cache-for', proposalId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['governance-voters-cache-against', proposalId],
+        });
       }
     } catch (err) {
       setMainTxState({

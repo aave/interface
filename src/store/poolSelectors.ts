@@ -72,7 +72,7 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
               underlyingAsset: r.underlyingAsset,
               symbol,
               iconSymbol,
-              collateral: e.collateralEnabled && r.baseLTVasCollateral !== '0',
+              collateral: e.collateralEnabled,
               borrowable: e.borrowingEnabled,
             },
           ],
@@ -82,7 +82,7 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
           underlyingAsset: r.underlyingAsset,
           symbol,
           iconSymbol,
-          collateral: e.collateralEnabled && r.baseLTVasCollateral !== '0',
+          collateral: e.collateralEnabled,
           borrowable: e.borrowingEnabled,
         });
       }

@@ -184,6 +184,7 @@ export const SwapActionsViaCoW = ({
             smartSlippage,
             appCode,
             state.orderType,
+            params.swapType,
             state.swapRate.quoteId
           );
           const txWithGasEstimation = await estimateGasLimit(ethFlowTx, state.chainId);
@@ -218,6 +219,7 @@ export const SwapActionsViaCoW = ({
               appCode,
               orderType: state.orderType,
               validTo,
+              swapType: params.swapType,
             });
             const calculatedOrderId = await calculateUniqueOrderId(state.chainId, unsignerOrder);
 
@@ -230,7 +232,8 @@ export const SwapActionsViaCoW = ({
                   slippageBps,
                   smartSlippage,
                   state.orderType,
-                  APP_CODE_PER_SWAP_TYPE[params.swapType]
+                  APP_CODE_PER_SWAP_TYPE[params.swapType],
+                  params.swapType
                 )
               ),
               state.chainId
@@ -286,6 +289,7 @@ export const SwapActionsViaCoW = ({
                 appCode,
                 orderBookQuote: state.swapRate?.orderBookQuote,
                 orderType: state.orderType,
+                swapType: params.swapType,
                 kind:
                   state.orderType === OrderType.MARKET
                     ? OrderKind.SELL
@@ -331,6 +335,7 @@ export const SwapActionsViaCoW = ({
                 slippageBps,
                 smartSlippage,
                 orderType: state.orderType,
+                swapType: params.swapType,
                 kind:
                   state.orderType === OrderType.MARKET
                     ? OrderKind.SELL

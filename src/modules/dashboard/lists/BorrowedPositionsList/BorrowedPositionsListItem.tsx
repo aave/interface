@@ -4,10 +4,12 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { Row } from 'src/components/primitives/Row';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
@@ -36,15 +38,11 @@ export const BorrowedPositionsListItem = ({
   const theme = useTheme();
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
+  const { user } = useAppDataContext();
 
   const reserve = item.reserve;
 
-  const disableBorrow =
-    !reserve.isActive ||
-    !reserve.borrowingEnabled ||
-    reserve.isFrozen ||
-    reserve.isPaused ||
-    borrowCap.isMaxed;
+  const disableBorrow = !assetCanBeBorrowedByUser(reserve, user) || borrowCap.isMaxed;
 
   const disableRepay = !reserve.isActive || reserve.isPaused;
 

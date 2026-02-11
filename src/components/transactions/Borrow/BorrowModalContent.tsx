@@ -16,7 +16,10 @@ import { useModalContext } from 'src/hooks/useModal';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import {
+  assetCanBeBorrowedByUser,
+  getMaxAmountAvailableToBorrow,
+} from 'src/utils/getMaxAmountAvailableToBorrow';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { CapType } from '../../caps/helper';
@@ -100,7 +103,7 @@ export const BorrowModalContent = ({
   let blockingError: ErrorType | undefined = undefined;
   if (valueToBigNumber(amount).gt(poolReserve.formattedAvailableLiquidity)) {
     blockingError = ErrorType.NOT_ENOUGH_LIQUIDITY;
-  } else if (!poolReserve.borrowingEnabled) {
+  } else if (!assetCanBeBorrowedByUser(poolReserve, user)) {
     blockingError = ErrorType.BORROWING_NOT_AVAILABLE;
   }
 

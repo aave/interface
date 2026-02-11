@@ -79,7 +79,8 @@ export const useSwapOrderAmounts = ({
     let networkFeeAmountInBuyFormatted = '0';
     const partnetFeeBps =
       state.provider === SwapProvider.COW_PROTOCOL
-        ? COW_PARTNER_FEE(state.sourceToken.symbol, state.destinationToken.symbol).volumeBps
+        ? COW_PARTNER_FEE(state.sourceToken.symbol, state.destinationToken.symbol, state.swapType)
+            .volumeBps
         : 0;
     const partnerFeeAmount =
       state.side === 'sell'

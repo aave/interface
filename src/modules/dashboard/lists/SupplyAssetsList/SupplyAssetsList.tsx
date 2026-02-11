@@ -123,9 +123,14 @@ export const SupplyAssetsList = () => {
         (userRes) => userRes.usageAsCollateralEnabledOnUser && userRes.reserve.id !== reserve.id
       );
 
+      // Check if asset has non-zero liquidation threshold (base or in user's e-mode)
+      const userEMode = reserve.eModes?.find((e) => e.id === user?.userEmodeCategoryId);
+      const hasLiquidationThreshold =
+        reserve.reserveLiquidationThreshold !== '0' ||
+        (user?.isInEmode && userEMode?.collateralEnabled);
+
       const usageAsCollateralEnabledOnUser = !user?.isInIsolationMode
-        ? reserve.reserveLiquidationThreshold !== '0' &&
-          (!isIsolated || (isIsolated && !hasDifferentCollateral))
+        ? hasLiquidationThreshold && (!isIsolated || (isIsolated && !hasDifferentCollateral))
         : !isIsolated
         ? false
         : !hasDifferentCollateral;

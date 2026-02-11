@@ -20,7 +20,10 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import {
+  assetCanBeBorrowedByUser,
+  getMaxAmountAvailableToBorrow,
+} from 'src/utils/getMaxAmountAvailableToBorrow';
 import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
 import { amountToUsd } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
@@ -150,7 +153,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
               disable={disableSupplyButton}
               onActionClicked={onSupplyClicked}
             />
-            {reserve.borrowingEnabled && (
+            {assetCanBeBorrowedByUser(reserve, user) && (
               <BorrowAction
                 reserve={reserve}
                 value={maxAmountToBorrow.toString()}

@@ -125,7 +125,10 @@ export const BridgeActions = React.memo(
       signatureAmount: amountToBridge,
       onApprovalTxConfirmed: fetchApprovedAmount,
       chainId: sourceChainId,
-      amountToApprove: parseUnits(amountToBridge || '0', 18).toString(),
+      amountToApprove: parseUnits(
+        amountToBridge && Number(amountToBridge) ? amountToBridge : '0',
+        18
+      ).toString(),
     });
 
     // Update gas estimation

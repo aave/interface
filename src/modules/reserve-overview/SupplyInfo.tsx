@@ -169,7 +169,8 @@ export const SupplyInfo = ({
       </Box>
       {renderCharts &&
         (reserve.borrowInfo?.borrowingState === 'ENABLED' ||
-          Number(reserve.borrowInfo?.total.amount.value) > 0) && (
+          Number(reserve.borrowInfo?.total.amount.value) > 0 ||
+          reserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed)) && (
           <SupplyApyGraph
             chain={currentMarketData.chainId}
             underlyingToken={reserve.underlyingToken.address}
@@ -209,7 +210,7 @@ export const SupplyInfo = ({
               <Trans>Can be collateral</Trans>
             </Typography>
           </Box>
-        ) : (
+        ) : reserve.eModeInfo?.some((eMode) => eMode.canBeCollateral) ? null : (
           <Box sx={{ pt: '42px', pb: '12px' }}>
             <Typography variant="subheader1" color="text.main">
               <Trans>Collateral usage</Trans>

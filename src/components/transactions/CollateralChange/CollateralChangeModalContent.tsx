@@ -40,6 +40,12 @@ export const CollateralChangeModalContent = ({
     userReserve.usageAsCollateralEnabledOnUser
   );
 
+  // Check if asset has non-zero liquidation threshold (base or in user's e-mode)
+  const userEMode = poolReserve.eModes?.find((e) => e.id === user?.userEmodeCategoryId);
+  const hasLiquidationThreshold =
+    poolReserve.reserveLiquidationThreshold !== '0' ||
+    (user?.isInEmode && userEMode?.collateralEnabled);
+
   // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
   const currenttotalCollateralMarketReferenceCurrency = valueToBigNumber(
@@ -70,11 +76,7 @@ export const CollateralChangeModalContent = ({
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
   } else if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
     blockingError = ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY;
-  } else if (
-    (!userReserve.usageAsCollateralEnabledOnUser &&
-      poolReserve.reserveLiquidationThreshold === '0') ||
-    poolReserve.reserveLiquidationThreshold === '0'
-  ) {
+  } else if (!userReserve.usageAsCollateralEnabledOnUser && !hasLiquidationThreshold) {
     blockingError = ErrorType.CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL;
   } else if (
     userReserve.usageAsCollateralEnabledOnUser &&

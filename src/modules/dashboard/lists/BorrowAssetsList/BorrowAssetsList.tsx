@@ -130,7 +130,7 @@ export const BorrowAssetsList = () => {
         totalBorrows: reserve.totalDebt,
         availableBorrows,
         availableBorrowsInUSD,
-        variableBorrowRate: reserve.borrowingEnabled ? Number(reserve.variableBorrowAPY) : -1,
+        variableBorrowRate: Number(reserve.variableBorrowAPY),
         iconSymbol: reserve.iconSymbol,
         ...(reserve.isWrappedBaseAsset
           ? fetchIconSymbolAndName({

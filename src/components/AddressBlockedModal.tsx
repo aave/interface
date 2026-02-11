@@ -1,4 +1,4 @@
-import { ExclamationCircleIcon, LogoutIcon } from '@heroicons/react/outline';
+import { ExclamationCircleIcon, LogoutIcon, RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 
@@ -7,13 +7,15 @@ import { BasicModal } from './primitives/BasicModal';
 export interface AddressBlockedProps {
   address: string;
   onDisconnectWallet: () => void;
-  message?: string;
+  isError?: boolean;
+  onRetry?: () => void;
 }
 
 export const AddressBlockedModal = ({
   address,
   onDisconnectWallet,
-  message,
+  isError = false,
+  onRetry,
 }: AddressBlockedProps) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   const setOpen = (_value: boolean) => {}; // ignore, we want the modal to not be dismissable
@@ -32,31 +34,27 @@ export const AddressBlockedModal = ({
           <ExclamationCircleIcon />
         </SvgIcon>
         <Typography variant="h2">
-          <Trans>Connection Failed</Trans>
+          {isError ? <Trans>Connection Error</Trans> : <Trans>Unable to Connect</Trans>}
         </Typography>
         <Typography variant="helperText" sx={{ my: 4 }}>
           {address}
         </Typography>
-        <Typography variant="description" sx={{ textAlign: 'center', mb: 4 }}>
-          {message ? (
-            message
-          ) : (
-            <>
-              <Trans>Something went wrong. Please try again later.</Trans>
-              <br />
-              <Typography variant="helperText" sx={{ mb: 1 }}>
-                {' '}
-                <Trans>error code: 2455</Trans>{' '}
-              </Typography>
-            </>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          {isError && onRetry && (
+            <Button variant="contained" onClick={onRetry}>
+              <SvgIcon fontSize="small" sx={{ mx: 1 }}>
+                <RefreshIcon />
+              </SvgIcon>
+              <Trans>Refresh</Trans>
+            </Button>
           )}
-        </Typography>
-        <Button variant="contained" onClick={onDisconnectWallet}>
-          <SvgIcon fontSize="small" sx={{ mx: 1 }}>
-            <LogoutIcon />
-          </SvgIcon>
-          <Trans>Disconnect Wallet</Trans>
-        </Button>
+          <Button variant="contained" onClick={onDisconnectWallet}>
+            <SvgIcon fontSize="small" sx={{ mx: 1 }}>
+              <LogoutIcon />
+            </SvgIcon>
+            <Trans>Disconnect Wallet</Trans>
+          </Button>
+        </Box>
       </Box>
     </BasicModal>
   );

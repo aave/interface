@@ -536,6 +536,7 @@ msgid "Total"
 msgstr "Total"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "{stepName}"
 msgstr "{stepName}"
 
@@ -633,6 +634,10 @@ msgstr "Add to wallet"
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid amount to mint"
 msgstr "Invalid amount to mint"
+
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "View on CCIP Explorer"
+msgstr "View on CCIP Explorer"
 
 #: src/components/AddressBlockedModal.tsx
 msgid "Disconnect Wallet"
@@ -744,10 +749,6 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Underlying token"
 msgstr "Underlying token"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "Bridged Via CCIP"
-msgstr "Bridged Via CCIP"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
@@ -883,6 +884,10 @@ msgstr "Repay {0} with {1}"
 #: src/modules/sGho/SGhoDepositPanel.tsx
 msgid "GHO Balance"
 msgstr "GHO Balance"
+
+#: src/layouts/SupportModal.tsx
+msgid "Country (optional)"
+msgstr "Country (optional)"
 
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
@@ -1059,10 +1064,6 @@ msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to v3"
 msgstr "Migrate to v3"
-
-#: src/components/AddressBlockedModal.tsx
-msgid "error code: 2455"
-msgstr "error code: 2455"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
@@ -1544,10 +1545,6 @@ msgstr "You cancelled the transaction."
 msgid "Borrow info"
 msgstr "Borrow info"
 
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "View Bridge Transactions"
-msgstr "View Bridge Transactions"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Invalid return value of the flashloan executor function"
@@ -1708,8 +1705,6 @@ msgid "Please connect your wallet to view transaction history."
 msgstr "Please connect your wallet to view transaction history."
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
-#: src/modules/governance/proposal/VotersListContainer.tsx
-#: src/modules/governance/proposal/VotersListContainer.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
 #: src/modules/governance/proposal/VotersListModal.tsx
@@ -1816,6 +1811,7 @@ msgid "There are no stake assets configured for this market"
 msgstr "There are no stake assets configured for this market"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
 
@@ -1875,10 +1871,6 @@ msgstr "Amount in cooldown"
 #: src/modules/umbrella/helpers/SharesTooltip.tsx
 msgid "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool, and the amount of underlying you can redeem depends on the current exchange rate between shares and the underlying."
 msgstr "Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership in the pool, and the amount of underlying you can redeem depends on the current exchange rate between shares and the underlying."
-
-#: src/modules/governance/proposal/VotersListContainer.tsx
-msgid "Failed to load proposal voters. Please refresh the page."
-msgstr "Failed to load proposal voters. Please refresh the page."
 
 #: src/modules/migration/MigrationList.tsx
 msgid "Liquidation Threshold"
@@ -2499,6 +2491,7 @@ msgid "Bridge {symbol}"
 msgstr "Bridge {symbol}"
 
 #: src/modules/governance/proposal/ProposalLifecycle.tsx
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
 
@@ -2892,6 +2885,10 @@ msgstr "Safety Module"
 msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
 msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
 
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Transaction history for Plasma not supported yet, coming soon."
+msgstr "Transaction history for Plasma not supported yet, coming soon."
+
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
 msgstr "Select slippage tolerance"
@@ -3080,6 +3077,10 @@ msgstr "and about SPK program"
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 
+#: src/components/AddressBlockedModal.tsx
+msgid "Refresh"
+msgstr "Refresh"
+
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in {marketName} v3 market."
 msgstr "Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in {marketName} v3 market."
@@ -3109,10 +3110,6 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 #: src/components/transactions/Warnings/CowLowerThanMarketWarning.tsx
 msgid "The selected rate is lower than the market price. You might incur a loss if you proceed."
 msgstr "The selected rate is lower than the market price. You might incur a loss if you proceed."
-
-#: src/components/AddressBlockedModal.tsx
-msgid "Something went wrong. Please try again later."
-msgstr "Something went wrong. Please try again later."
 
 #: src/modules/sGho/SGhoDepositPanel.tsx
 msgid "Deposit GHO and earn {0}% APY"
@@ -3406,10 +3403,6 @@ msgstr "The caller of this function must be a pool"
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
-
-#: src/components/AddressBlockedModal.tsx
-msgid "Connection Failed"
-msgstr "Connection Failed"
 
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
 msgid "Interest rate strategy"
@@ -3719,6 +3712,10 @@ msgstr "Claim all protocol rewards"
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "No assets selected to migrate."
 msgstr "No assets selected to migrate."
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Connection Error"
+msgstr "Connection Error"
 
 #: src/components/transactions/Swap/errors/shared/GasEstimationError.tsx
 msgid "Tip: Try improving your order parameters"
@@ -4078,6 +4075,10 @@ msgstr "Supply balance"
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Liquidation risk parameters"
 msgstr "Liquidation risk parameters"
+
+#: src/components/AddressBlockedModal.tsx
+msgid "Unable to Connect"
+msgstr "Unable to Connect"
 
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Umbrella is the upgraded version of the Safety Module. Manage your previously staked assets"

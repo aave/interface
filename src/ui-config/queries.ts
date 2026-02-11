@@ -17,11 +17,12 @@ export const queryKeysFactory = {
     marketData.market,
   ],
   user: (user: string) => [user],
-  powers: (user: string, chainId: number) => [
+  powers: (user: string, chainId: number, blockHash?: string) => [
     ...queryKeysFactory.governance,
     ...queryKeysFactory.user(user),
     chainId,
     'powers',
+    blockHash,
   ],
   voteOnProposal: (user: string, proposalId: number, marketData: MarketDataType) => [
     ...queryKeysFactory.governance,

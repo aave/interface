@@ -13,10 +13,11 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.BNB]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.POLYGON]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.BASE]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
+    [SupportedChainId.LINEA]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
+    [SupportedChainId.PLASMA]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
-    [SupportedChainId.LINEA]: '',
-    [SupportedChainId.PLASMA]: '',
+    [SupportedChainId.INK]: '',
   },
   [AaveFlashLoanType.DebtSwap]: {
     [SupportedChainId.MAINNET]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
@@ -26,10 +27,11 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.BNB]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.POLYGON]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.BASE]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
+    [SupportedChainId.LINEA]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
+    [SupportedChainId.PLASMA]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
-    [SupportedChainId.LINEA]: '',
-    [SupportedChainId.PLASMA]: '',
+    [SupportedChainId.INK]: '',
   },
   [AaveFlashLoanType.RepayCollateral]: {
     [SupportedChainId.MAINNET]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
@@ -39,10 +41,11 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.BNB]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.POLYGON]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.BASE]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
+    [SupportedChainId.LINEA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
+    [SupportedChainId.PLASMA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
-    [SupportedChainId.LINEA]: '',
-    [SupportedChainId.PLASMA]: '',
+    [SupportedChainId.INK]: '',
   },
 };
 
@@ -54,10 +57,11 @@ export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
   [SupportedChainId.BNB]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
   [SupportedChainId.POLYGON]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
   [SupportedChainId.BASE]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
+  [SupportedChainId.LINEA]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
+  [SupportedChainId.PLASMA]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
   [SupportedChainId.LENS]: '',
-  [SupportedChainId.LINEA]: '',
-  [SupportedChainId.PLASMA]: '',
   [SupportedChainId.SEPOLIA]: '',
+  [SupportedChainId.INK]: '',
 };
 
 export const DUST_PROTECTION_MULTIPLIER = 1.0003; // 3 BPS
@@ -113,8 +117,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
 
     // Safe checks, not supported
     [SupportedChainId.LENS]: 'ALL',
-    [SupportedChainId.LINEA]: 'ALL',
-    [SupportedChainId.PLASMA]: 'ALL',
   },
 };
 
@@ -127,6 +129,9 @@ export const CoWProtocolSupportedNetworks = [
   SupportedChainId.AVALANCHE,
   SupportedChainId.POLYGON,
   SupportedChainId.BNB,
+  SupportedChainId.LINEA,
+  SupportedChainId.PLASMA,
+  SupportedChainId.INK,
 ] as const;
 
 export const isChainIdSupportedByCoWProtocol = (chainId: number): chainId is SupportedChainId => {
@@ -145,10 +150,29 @@ export const COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV = (env: CowEnv) => {
 export const COW_CREATE_ORDER_ABI =
   'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
 
-export const COW_PARTNER_FEE = (tokenFromSymbol: string, tokenToSymbol: string) => ({
-  volumeBps: getAssetGroup(tokenFromSymbol) == getAssetGroup(tokenToSymbol) ? 15 : 25,
-  recipient: COW_EVM_RECIPIENT,
-});
+const DEFAULT_PARTNER_FEE_SAME_GROUP_BPS = 15;
+const DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS = 25;
+const PARTNER_FEE_BPS_BY_SWAP_TYPE: Partial<Record<SwapType, number>> = {
+  [SwapType.DebtSwap]: 0,
+};
+
+export const COW_PARTNER_FEE = (
+  tokenFromSymbol: string,
+  tokenToSymbol: string,
+  swapType?: SwapType
+) => {
+  const swapTypeBps = swapType !== undefined ? PARTNER_FEE_BPS_BY_SWAP_TYPE[swapType] : undefined;
+
+  const defaultBps =
+    getAssetGroup(tokenFromSymbol) == getAssetGroup(tokenToSymbol)
+      ? DEFAULT_PARTNER_FEE_SAME_GROUP_BPS
+      : DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS;
+
+  return {
+    volumeBps: swapTypeBps !== undefined ? swapTypeBps : defaultBps,
+    recipient: COW_EVM_RECIPIENT,
+  };
+};
 
 export const FLASH_LOAN_FEE_BPS = 5;
 
@@ -159,6 +183,7 @@ export const COW_APP_DATA = (
   smartSlippage: boolean,
   orderType: OrderType,
   appCode: string,
+  swapType?: SwapType,
   hooks?: Record<string, unknown>
 ) => ({
   appCode: appCode,
@@ -171,7 +196,7 @@ export const COW_APP_DATA = (
       ? { quote: { slippageBips, smartSlippage } }
       : // Slippage is not used in limit orders
         {}),
-    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol),
+    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol, swapType),
     hooks,
   },
 });

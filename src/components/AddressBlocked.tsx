@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { useAddressAllowed } from 'src/hooks/useAddressAllowed';
+import { useCompliance } from 'src/hooks/compliance/compliance';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
@@ -7,24 +7,35 @@ import { useDisconnect } from 'wagmi';
 
 import { AddressBlockedModal } from './AddressBlockedModal';
 
-export const AddressBlocked = ({ children }: { children: ReactNode }) => {
+type ComplianceGateProps = {
+  children: ReactNode;
+};
+
+export const AddressBlocked = ({ children }: ComplianceGateProps) => {
+  const { status, recheck } = useCompliance();
   const { currentAccount, readOnlyMode } = useWeb3Context();
   const { disconnect } = useDisconnect();
-  const screenAddress = readOnlyMode || ENABLE_TESTNET ? '' : currentAccount;
-  const { isAllowed, message } = useAddressAllowed(screenAddress);
+  const shouldCheck = !readOnlyMode && !ENABLE_TESTNET;
 
-  if (!isAllowed) {
-    return (
-      <MainLayout>
-        <AddressBlockedModal
-          address={currentAccount}
-          onDisconnectWallet={() => disconnect()}
-          message={message}
-        />
-        ;
-      </MainLayout>
-    );
+  const showBlockedOverlay = status === 'non-compliant';
+  const showErrorOverlay = status === 'error';
+
+  if (!shouldCheck) {
+    return <>{children}</>;
   }
 
-  return <>{children}</>;
+  if (!showBlockedOverlay && !showErrorOverlay) {
+    return <>{children}</>;
+  }
+
+  return (
+    <MainLayout>
+      <AddressBlockedModal
+        address={currentAccount}
+        onDisconnectWallet={() => disconnect()}
+        isError={showErrorOverlay}
+        onRetry={showErrorOverlay ? recheck : undefined}
+      />
+    </MainLayout>
+  );
 };

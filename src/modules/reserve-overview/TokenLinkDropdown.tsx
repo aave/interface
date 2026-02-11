@@ -13,6 +13,7 @@ import { RESERVE_DETAILS } from '../../utils/events';
 
 interface TokenLinkDropdownProps {
   poolReserve: ReserveWithId;
+  iconSymbol?: string;
   downToSM: boolean;
   hideAToken?: boolean;
   hideVariableDebtToken?: boolean;
@@ -20,6 +21,7 @@ interface TokenLinkDropdownProps {
 
 export const TokenLinkDropdown = ({
   poolReserve,
+  iconSymbol,
   downToSM,
   hideAToken,
   hideVariableDebtToken,
@@ -51,8 +53,10 @@ export const TokenLinkDropdown = ({
 
   const showVariableDebtToken =
     !hideVariableDebtToken &&
-    (poolReserve.borrowInfo?.borrowingState === 'ENABLED' ||
-      Number(poolReserve.borrowInfo?.total.amount.value) > 0);
+    !!poolReserve.borrowInfo &&
+    (poolReserve.borrowInfo.borrowingState !== 'DISABLED' ||
+      Number(poolReserve.borrowInfo.total.amount.value) > 0 ||
+      !!poolReserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed));
 
   return (
     <>
@@ -107,7 +111,10 @@ export const TokenLinkDropdown = ({
           target="_blank"
           divider={showVariableDebtToken}
         >
-          <TokenIcon symbol={poolReserve.underlyingToken.symbol} sx={{ fontSize: '20px' }} />
+          <TokenIcon
+            symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
+            sx={{ fontSize: '20px' }}
+          />
           <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
             {poolReserve.underlyingToken.symbol}
           </Typography>
@@ -140,7 +147,7 @@ export const TokenLinkDropdown = ({
               divider={showVariableDebtToken}
             >
               <TokenIcon
-                symbol={poolReserve.underlyingToken.symbol}
+                symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
                 aToken={true}
                 sx={{ fontSize: '20px' }}
               />
@@ -177,7 +184,7 @@ export const TokenLinkDropdown = ({
             }}
           >
             <TokenIcon
-              symbol={poolReserve.underlyingToken.symbol}
+              symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
               waToken={true} //TODO: get a specific icon for variable debt token or apply waToken style
               sx={{ fontSize: '20px' }}
             />

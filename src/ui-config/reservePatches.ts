@@ -226,6 +226,26 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe February 2026',
       iconSymbol: 'ptsusde',
     },
+    '0xaebf0bb9f57e89260d57f31af34eb58657d96ce0': {
+      symbol: 'PT USDe May 7th 2026',
+      name: 'PT USDe May 2026',
+      iconSymbol: 'ptusde',
+    },
+    '0x3de0ff76e8b528c092d47b9dac775931cef80f49': {
+      symbol: 'PT sUSDe May 7th 2026',
+      name: 'PT sUSDe May 2026',
+      iconSymbol: 'ptsusde',
+    },
+    '0x9bf45ab47747f4b4dd09b3c2c73953484b4eb375': {
+      symbol: 'PT srUSDe 2nd 2026',
+      name: 'PT Strata Senior USDe 2nd 2026',
+      iconSymbol: 'srusde',
+    },
+    '0xfafddbb3fc7688494971a79cc65dca3ef82079e7': {
+      symbol: 'USDm',
+      name: 'MegaUSD',
+      iconSymbol: 'megausd',
+    },
 
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
