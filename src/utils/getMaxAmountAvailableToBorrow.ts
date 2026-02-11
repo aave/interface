@@ -100,14 +100,14 @@ export function assetCanBeBorrowedByUser(
     isFrozen,
     isPaused,
   }: ComputedReserveData,
-  user: ExtendedFormattedUser
+  user?: ExtendedFormattedUser
 ) {
-  if (!borrowingEnabled || !isActive || isFrozen || isPaused) return false;
+  if (!isActive || isFrozen || isPaused) return false;
   if (user?.isInEmode) {
     const reserveEmode = eModes.find((emode) => emode.id === user.userEmodeCategoryId);
     if (!reserveEmode) return false;
     return reserveEmode.borrowingEnabled;
   }
   if (user?.isInIsolationMode && !borrowableInIsolation) return false;
-  return true;
+  return borrowingEnabled;
 }

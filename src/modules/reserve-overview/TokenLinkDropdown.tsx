@@ -53,8 +53,10 @@ export const TokenLinkDropdown = ({
 
   const showVariableDebtToken =
     !hideVariableDebtToken &&
-    (poolReserve.borrowInfo?.borrowingState === 'ENABLED' ||
-      Number(poolReserve.borrowInfo?.total.amount.value) > 0);
+    !!poolReserve.borrowInfo &&
+    (poolReserve.borrowInfo.borrowingState !== 'DISABLED' ||
+      Number(poolReserve.borrowInfo.total.amount.value) > 0 ||
+      !!poolReserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed));
 
   return (
     <>
