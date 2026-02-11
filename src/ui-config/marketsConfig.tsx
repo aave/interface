@@ -16,6 +16,7 @@ import {
   AaveV3Gnosis,
   AaveV3InkWhitelabel,
   AaveV3Linea,
+  AaveV3Mantle,
   AaveV3MegaEth,
   AaveV3Metis,
   AaveV3Optimism,
@@ -25,6 +26,9 @@ import {
   AaveV3Soneium,
   AaveV3Sonic,
   AaveV3ZkSync,
+  GhoAvalanche,
+  GhoGnosis,
+  GhoMantle,
 } from '@bgd-labs/aave-address-book';
 import { ReactNode } from 'react';
 
@@ -100,6 +104,7 @@ export enum CustomMarket {
   proto_plasma_v3 = 'proto_plasma_v3',
   proto_ink_v3 = 'proto_ink_v3',
   proto_megaeth_v3 = 'proto_megaeth_v3',
+  proto_mantle_v3 = 'proto_mantle_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -352,7 +357,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Avalanche.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Avalanche.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Avalanche.WITHDRAW_SWAP_ADAPTER,
-      GHO_TOKEN_ADDRESS: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
+      GHO_TOKEN_ADDRESS: GhoAvalanche.GHO_TOKEN,
     },
   },
   [CustomMarket.proto_linea_v3]: {
@@ -516,6 +521,7 @@ export const marketsData: {
       WALLET_BALANCE_PROVIDER: AaveV3InkWhitelabel.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: AaveV3InkWhitelabel.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3InkWhitelabel.UI_INCENTIVE_DATA_PROVIDER,
+      GHO_TOKEN_ADDRESS: AaveV3InkWhitelabel.ASSETS.GHO.UNDERLYING,
       // COLLECTOR: AaveV3InkWhitelabel.COLLECTOR,
     },
   },
@@ -535,6 +541,24 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3MegaEth.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3MegaEth.COLLECTOR,
       L2_ENCODER: AaveV3MegaEth.L2_ENCODER,
+    },
+  },
+  [CustomMarket.proto_mantle_v3]: {
+    marketTitle: 'Mantle',
+    market: CustomMarket.proto_mantle_v3,
+    chainId: ChainId.mantle,
+    v3: true,
+    logo: '/icons/networks/mantle.svg',
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3Mantle.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3Mantle.POOL,
+      WETH_GATEWAY: AaveV3Mantle.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3Mantle.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3Mantle.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3Mantle.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3Mantle.COLLECTOR,
+      L2_ENCODER: AaveV3Mantle.L2_ENCODER,
+      GHO_TOKEN_ADDRESS: GhoMantle.GHO_TOKEN,
     },
   },
   [CustomMarket.proto_fuji]: {
@@ -580,7 +604,7 @@ export const marketsData: {
       COLLECTOR: AaveV3Gnosis.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Gnosis.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Gnosis.WITHDRAW_SWAP_ADAPTER,
-      GHO_TOKEN_ADDRESS: '0xfc421ad3c883bf9e7c4f42de845c4e4405799e73',
+      GHO_TOKEN_ADDRESS: GhoGnosis.GHO_TOKEN,
     },
   },
   [CustomMarket.proto_bnb_v3]: {

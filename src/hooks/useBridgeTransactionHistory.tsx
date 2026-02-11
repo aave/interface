@@ -115,7 +115,12 @@ export const useBridgeTransactionHistory = (sender: string) => {
   return useQuery({
     queryFn: async () => {
       const txs = await Promise.all(
-        laneConfig.map((config) => getSendRequests(config.subgraphKey, sender))
+        laneConfig.map((config) => {
+          if (config.subgraphKey) {
+            return getSendRequests(config.subgraphKey, sender);
+          }
+          return Promise.resolve([]);
+        })
       );
       return mergeAndSortTransactions(txs);
     },

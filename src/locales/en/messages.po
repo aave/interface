@@ -635,6 +635,10 @@ msgstr "Add to wallet"
 msgid "Invalid amount to mint"
 msgstr "Invalid amount to mint"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "View on CCIP Explorer"
+msgstr "View on CCIP Explorer"
+
 #: src/components/AddressBlockedModal.tsx
 msgid "Disconnect Wallet"
 msgstr "Disconnect Wallet"
@@ -745,10 +749,6 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Underlying token"
 msgstr "Underlying token"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "Bridged Via CCIP"
-msgstr "Bridged Via CCIP"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
@@ -1544,10 +1544,6 @@ msgstr "You cancelled the transaction."
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Borrow info"
 msgstr "Borrow info"
-
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "View Bridge Transactions"
-msgstr "View Bridge Transactions"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
