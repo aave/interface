@@ -160,6 +160,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
         />
         {reserve.borrowInfo?.borrowingState === 'DISABLED' &&
           !reserve.isFrozen &&
+          !reserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed) &&
           reserve.borrowInfo.total.amount.value !== '0' && <ReserveSubheader value={'Disabled'} />}
       </Row>
       <Button

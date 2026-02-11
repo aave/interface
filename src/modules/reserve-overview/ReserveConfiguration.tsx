@@ -125,20 +125,22 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       </PanelRow>
 
       {(reserve.borrowInfo?.borrowingState === 'ENABLED' ||
-        Number(reserve.borrowInfo?.total.amount.value) > 0) && (
+        Number(reserve.borrowInfo?.total.amount.value) > 0 ||
+        reserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed)) && (
         <>
           <Divider sx={{ my: { xs: 6, sm: 10 } }} />
           <PanelRow>
             <PanelTitle>Borrow info</PanelTitle>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-              {reserve.borrowInfo?.borrowingState === 'DISABLED' && (
-                <Warning sx={{ mb: '40px' }} severity="error">
-                  <BorrowDisabledWarning
-                    symbol={reserve.underlyingToken.symbol}
-                    currentMarket={currentMarket}
-                  />
-                </Warning>
-              )}
+              {reserve.borrowInfo?.borrowingState !== 'ENABLED' &&
+                !reserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed) && (
+                  <Warning sx={{ mb: '40px' }} severity="error">
+                    <BorrowDisabledWarning
+                      symbol={reserve.underlyingToken.symbol}
+                      currentMarket={currentMarket}
+                    />
+                  </Warning>
+                )}
               <BorrowInfo
                 reserve={reserve}
                 currentMarketData={currentMarketData}
@@ -160,7 +162,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
       )}
 
       {(reserve.borrowInfo?.borrowingState === 'ENABLED' ||
-        Number(reserve.borrowInfo?.total.amount.value) > 0) && (
+        Number(reserve.borrowInfo?.total.amount.value) > 0 ||
+        reserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed)) && (
         <>
           <Divider sx={{ my: { xs: 6, sm: 10 } }} />
 
