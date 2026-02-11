@@ -18,7 +18,12 @@ export const configEnvWithTenderly = ({
 }: {
   chainId: number;
   market: string;
-  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
+  tokens?: {
+    tokenAddress: string;
+    donorAddress?: string;
+    tokenCount?: string;
+    isAToken?: boolean;
+  }[];
   wallet?: { address: string; privateKey: string };
   enableTestnet?: boolean;
   urlSuffix?: string;
@@ -41,7 +46,8 @@ export const configEnvWithTenderly = ({
             walletAddress,
             token.tokenAddress,
             token.donorAddress,
-            token.tokenCount
+            token.tokenCount,
+            token.isAToken
           )
         )
       );
@@ -104,7 +110,7 @@ const createConfigWithTenderlyFork =
     urlSuffix,
   }: {
     market?: string;
-    tokens?: { tokenAddress: string }[];
+    tokens?: { tokenAddress: string; isAToken?: boolean }[];
     wallet?: { address: string; privateKey: string };
     urlSuffix?: string;
   }) =>

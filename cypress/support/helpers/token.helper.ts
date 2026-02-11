@@ -4,6 +4,7 @@ export interface DonorInfo {
   name: string;
   donorWalletAddress: string;
   tokenAddress: string;
+  isAToken?: boolean;
 }
 
 export interface Donors {
@@ -20,66 +21,79 @@ const donors: Donors = {
     name: 'aAAVE',
     donorWalletAddress: '0xE466d6Cf6E2C3F3f8345d39633d4A968EC879bD5',
     tokenAddress: '0xFFC97d72E13E01096502Cb8Eb52dEe56f74DAD7B',
+    isAToken: true,
   },
   aDAIEthereumV3: {
     name: 'aDAI',
     donorWalletAddress: '0x018008bfb33d285247A21d44E50697654f754e63',
     tokenAddress: '0xaD0135AF20fa82E106607257143d0060A7eB5cBf',
+    isAToken: true,
   },
   aETHEthereumV3: {
     name: 'aETH',
     donorWalletAddress: '0x01d1f55d94a53a9517c07f793f35320FAA0D2DCf',
     tokenAddress: '0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8',
+    isAToken: true,
   },
   aETHArbitrumV3: {
     name: 'aETH',
     donorWalletAddress: '0xb7fb2b774eb5e2dad9c060fb367acbdc7fa7099b',
     tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+    isAToken: true,
   },
   aAVAXAvalancheV3: {
     name: 'aAVAX',
     donorWalletAddress: '0xaF63AE8b29B4A48E28B9892f019187d88F69923C',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
+    isAToken: true,
   },
   aMATICPolygonV3: {
     name: 'aMATIC',
     donorWalletAddress: '0xC956cA6E8FA34A5E86B54c55B0DA4aa9F3EEEDCE',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
+    isAToken: true,
   },
   aETHOptimismV3: {
     name: 'aETH',
     donorWalletAddress: '0x7ff422F552c60f5da294Bf2a91C6752667F28F64',
     tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+    isAToken: true,
   },
   aETHBaseV3: {
     name: 'aETH',
     donorWalletAddress: '0xb463c4d7c574bd0a05a1320186378dd6a7aeaa33',
     tokenAddress: '0xD4a0e0b9149BCee3C920d2E00b5dE09138fd8bb7',
+    isAToken: true,
   },
   axDAIGnosisV3: {
     name: 'axDAI',
     donorWalletAddress: '0x8349e897C5802adEC1b2F2FC35c1Cf1aBAb95470',
     tokenAddress: '0xd0Dd6cEF72143E22cCED4867eb0d5F2328715533',
+    isAToken: true,
   },
   aBNBBnbV3: {
     name: 'aBNB',
     donorWalletAddress: '0x3acba5B8d07880D6989c24e27D26A92da6E090df',
     tokenAddress: '0x9B00a09492a626678E5A3009982191586C444Df9',
+    isAToken: true,
   },
   aETHEthereumV2: {
     name: 'aETH',
     donorWalletAddress: '0x1111567E0954E74f6bA7c4732D534e75B81DC42E',
     tokenAddress: '0x030bA81f1c18d280636F32af80b9AAd02Cf0854e',
+    isAToken: true,
   },
   aMATICPolygonV2: {
     name: 'aMATIC',
     donorWalletAddress: '0xaFDAbFb6227507fF6522b8a242168F6b5F353a6E',
     tokenAddress: '0x8dF3aad3a84da6b69A4DA8aeC3eA40d9091B2Ac4',
+    isAToken: true,
   },
   aAVAXAvalancheV2: {
     name: 'aAVAX',
     donorWalletAddress: '0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6',
     tokenAddress: '0xDFE521292EcE2A4f44242efBcD66Bc594CA9714B',
+    isAToken: true,
   },
 };
 
@@ -98,6 +112,7 @@ export const tokenSet = (requestedTokens: RequestedTokens): TokenRequest[] => {
         donorAddress: donorInfo.donorWalletAddress,
         tokenCount: tokenAmount.toString(),
         name: donorInfo.name,
+        isAToken: donorInfo.isAToken,
       });
     }
   }

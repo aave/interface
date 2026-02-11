@@ -95,7 +95,8 @@ export class TenderlyVnet {
     walletAddress: string,
     tokenAddress: string,
     donorAddress?: string,
-    tokenCount?: string
+    tokenCount?: string,
+    isAToken?: boolean
   ) {
     cy.log('walletAddress ' + walletAddress);
     cy.log('tokenAddress ' + tokenAddress);
@@ -113,6 +114,32 @@ export class TenderlyVnet {
     const topHolderSigner = await provider.getSigner(TOP_HOLDER_ADDRESS);
     const token = new Contract(tokenAddress, ERC20_ABI, topHolderSigner);
     await token.transfer(walletAddress, utils.parseEther(tokenCount || '10'));
+
+    if (isAToken) {
+      await this.enableCollateralForAToken(walletAddress, tokenAddress, provider);
+    }
+  }
+
+  async enableCollateralForAToken(
+    walletAddress: string,
+    aTokenAddress: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    provider: any
+  ) {
+    const aTokenAbi = [
+      'function UNDERLYING_ASSET_ADDRESS() view returns (address)',
+      'function POOL() view returns (address)',
+    ];
+    const poolAbi = ['function setUserUseReserveAsCollateral(address asset, bool useAsCollateral)'];
+
+    const aToken = new Contract(aTokenAddress, aTokenAbi, provider);
+    const underlyingAsset = await aToken.UNDERLYING_ASSET_ADDRESS();
+    const poolAddress = await aToken.POOL();
+
+    // @ts-ignore
+    const walletSigner = await provider.getSigner(walletAddress);
+    const pool = new Contract(poolAddress, poolAbi, walletSigner);
+    await pool.setUserUseReserveAsCollateral(underlyingAsset, true);
   }
 
   async getTopHolder(token: string) {

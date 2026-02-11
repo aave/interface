@@ -5,6 +5,7 @@ export interface TokenRequest {
   donorAddress?: string;
   tokenCount?: string;
   name: string;
+  isAToken?: boolean;
 }
 
 export class TenderlyActions {
@@ -20,7 +21,8 @@ export class TenderlyActions {
             window.address,
             token.tokenAddress,
             _addressFrom,
-            token.tokenCount
+            token.tokenCount,
+            token.isAToken
           );
         })
       );
