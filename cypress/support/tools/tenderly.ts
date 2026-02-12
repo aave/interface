@@ -29,10 +29,10 @@ const tenderlyFetch = async (endpoint: string, options: RequestInit = {}) => {
 };
 
 export class TenderlyVnet {
-  public _vnetNetworkID: number;
-  public _chainID: number;
-  private _vnet_admin_rpc: string;
-  private vnet_id?: string;
+  public declare _vnetNetworkID: number;
+  public declare _chainID: number;
+  private declare _vnet_admin_rpc: string;
+  private declare vnet_id: string | undefined;
 
   constructor({ vnetNetworkID }: { vnetNetworkID: number }) {
     this._vnetNetworkID = vnetNetworkID;
@@ -63,9 +63,8 @@ export class TenderlyVnet {
       }
     );
     this.vnet_id = response.id;
-    this._vnet_admin_rpc = response.rpcs.find(
-      (rpc: { name: string }) => rpc.name === 'Admin RPC'
-    )?.url;
+    const adminRpc = response.rpcs.find((rpc: { name: string }) => rpc.name === 'Admin RPC');
+    this._vnet_admin_rpc = adminRpc ? adminRpc.url : '';
   }
 
   get_rpc_url() {
