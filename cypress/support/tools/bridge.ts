@@ -12,7 +12,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { providers, Signer, utils } from 'ethers';
 
 export class CustomizedBridge extends Eip1193Bridge {
-  declare chainId: number;
+  chainId: number;
 
   constructor(signer: Signer, provider?: providers.Provider, chainId?: number) {
     super(signer as any, provider);
