@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Contract, getDefaultProvider, utils, Wallet } from 'ethers';
+import { Contract, getDefaultProvider, providers, utils, Wallet } from 'ethers';
 
 import ERC20_ABI from '../../fixtures/erc20_abi.json';
 
@@ -116,28 +116,26 @@ export class TenderlyVnet {
     await token.transfer(walletAddress, utils.parseEther(tokenCount || '10'));
 
     if (isAToken) {
-      await this.enableCollateralForAToken(walletAddress, tokenAddress, provider);
+      await this.enableCollateralForAToken(walletAddress, tokenAddress);
     }
   }
 
-  async enableCollateralForAToken(
-    walletAddress: string,
-    aTokenAddress: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    provider: any
-  ) {
+  async enableCollateralForAToken(walletAddress: string, aTokenAddress: string) {
     const aTokenAbi = [
       'function UNDERLYING_ASSET_ADDRESS() view returns (address)',
       'function POOL() view returns (address)',
     ];
     const poolAbi = ['function setUserUseReserveAsCollateral(address asset, bool useAsCollateral)'];
 
+    const rpcUrl = this.get_rpc_url();
+    const provider = new providers.JsonRpcProvider(rpcUrl);
+
     const aToken = new Contract(aTokenAddress, aTokenAbi, provider);
     const underlyingAsset = await aToken.UNDERLYING_ASSET_ADDRESS();
     const poolAddress = await aToken.POOL();
 
     // @ts-ignore
-    const walletSigner = await provider.getSigner(walletAddress);
+    const walletSigner = provider.getSigner(walletAddress);
     const pool = new Contract(poolAddress, poolAbi, walletSigner);
     await pool.setUserUseReserveAsCollateral(underlyingAsset, true);
   }
