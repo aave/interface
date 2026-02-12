@@ -45,7 +45,7 @@ const testData = {
     ],
     withdraw: {
       asset: assets.avalancheV3Market.DAI,
-      isCollateral: true,
+      isCollateral: false,
       amount: 1,
       hasApproval: true,
     },
@@ -64,7 +64,7 @@ const testData = {
         assetName: assets.avalancheV3Market.DAI.shortName,
         amount: 7.1,
         collateralType: constants.collateralType.isCollateral,
-        isCollateral: true,
+        isCollateral: false,
       },
       {
         type: constants.dashboardTypes.borrow,
