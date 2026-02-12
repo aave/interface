@@ -67,7 +67,7 @@ const donors: Donors = {
   },
   axDAIGnosisV3: {
     name: 'axDAI',
-    donorWalletAddress: '0x8349e897C5802adEC1b2F2FC35c1Cf1aBAb95470',
+    donorWalletAddress: '0x9065A0F9545817d18b58436771b4d87Bda8f008B',
     tokenAddress: '0xd0Dd6cEF72143E22cCED4867eb0d5F2328715533',
     isAToken: true,
   },
