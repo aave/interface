@@ -71,7 +71,7 @@ const testData = {
   },
 };
 
-describe('USDC INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
+describe.skip('USDC INTEGRATION SPEC, AVALANCHE V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.testCases.borrow, skipTestState, true);

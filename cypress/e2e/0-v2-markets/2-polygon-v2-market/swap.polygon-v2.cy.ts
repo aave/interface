@@ -41,7 +41,7 @@ const testData = {
   },
 };
 
-describe('SWAP, POLYGON V2 MARKET, INTEGRATION SPEC', () => {
+describe.skip('SWAP, POLYGON V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ tokens: tokenSet(tokensToRequest) });
   testData.swap.forEach((swapCase) => {

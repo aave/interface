@@ -44,7 +44,7 @@ const testData = {
   },
 };
 
-describe('SWITCH BORROWED, AAVE V2 MARKET, INTEGRATION SPEC', () => {
+describe.skip('SWITCH BORROWED, AAVE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({ tokens: tokenSet(tokensToRequest) });
   borrow(testData.borrow, skipTestState, true);

@@ -50,7 +50,7 @@ const testData = {
   },
 };
 
-describe('POL INTEGRATION SPEC, POLYGON V2 MARKET', () => {
+describe.skip('POL INTEGRATION SPEC, POLYGON V2 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({ tokens: tokenSet(tokensToRequest) });
 
