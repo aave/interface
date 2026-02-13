@@ -2,7 +2,6 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
-import * as React from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';

@@ -1,5 +1,5 @@
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CookieConsent as AnalyticsConsentBanner } from 'react-cookie-consent';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';

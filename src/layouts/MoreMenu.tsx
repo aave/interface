@@ -71,7 +71,7 @@ export function MoreMenu() {
             component={Link}
             href={item.makeLink ? item.makeLink(walletAddress) : item.link}
             key={index}
-            onClick={() => trackEvent(NAV_BAR.MORE_NAV, { nav_link: item.title })}
+            onClick={() => trackEvent(NAV_BAR.MORE_NAV, { nav_link: i18n._(item.title) })}
           >
             <ListItemIcon>
               <SvgIcon sx={{ fontSize: '20px' }}>{item.icon}</SvgIcon>

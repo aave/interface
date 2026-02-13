@@ -1,4 +1,4 @@
-import * as React from 'react';
+;
 import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';

@@ -1,7 +1,6 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
-import * as React from 'react';
 import { useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';

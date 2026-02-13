@@ -2,7 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton, SvgIcon } from '@mui/material';
-import React from 'react';
+import { JSX } from 'react';
 import { GhoIncentivesCard } from 'src/components/incentives/GhoIncentivesCard';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';

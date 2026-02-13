@@ -13,7 +13,7 @@ import {
 import { BigNumber } from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';

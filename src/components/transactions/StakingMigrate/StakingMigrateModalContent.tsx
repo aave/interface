@@ -32,7 +32,7 @@ export const StakingMigrateModalContent = () => {
   const stakeBptV2Data = stkBptV2Data?.[0];
 
   const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
+  const amountRef = useRef<string>(undefined);
 
   const maxAmountToMigrate = normalize(stakeUserData?.stakeTokenUserBalance || '0', 18);
   const isMaxSelected = _amount === '-1';

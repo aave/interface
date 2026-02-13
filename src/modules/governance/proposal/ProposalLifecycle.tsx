@@ -218,7 +218,6 @@ export const ProposalLifecycle = ({ proposal }: { proposal: Proposal | undefined
         <Trans>Proposal details</Trans>
       </Typography>
 
-      {/* @ts-expect-error TODO: need think about "tx" type */}
       <Timeline
         position="right"
         sx={{
@@ -344,7 +343,6 @@ const ProposalStep = ({
           )}
         </Box>
         {substeps && subtimelineOpen && (
-          // @ts-expect-error TODO: need think about "tx" type
           <Timeline>
             {substeps.map((elem) => (
               <ProposalStep key={elem.stepName?.toString()} {...elem} />

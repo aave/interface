@@ -1,4 +1,3 @@
-import React from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 

@@ -1,6 +1,5 @@
 import { XIcon } from '@heroicons/react/outline';
 import { IconButton, SvgIcon } from '@mui/material';
-import React from 'react';
 
 interface MobileCloseButtonProps {
   setOpen: (value: boolean) => void;

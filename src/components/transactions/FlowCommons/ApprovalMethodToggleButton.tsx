@@ -10,7 +10,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import * as React from 'react';
+import { MouseEvent, useState } from 'react';
 import { ApprovalMethod } from 'src/store/walletSlice';
 
 interface ApprovalMethodToggleButtonProps {
@@ -22,9 +22,9 @@ export const ApprovalMethodToggleButton = ({
   currentMethod,
   setMethod,
 }: ApprovalMethodToggleButtonProps) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

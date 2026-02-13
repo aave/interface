@@ -1,5 +1,4 @@
 import { Box, Switch } from '@mui/material';
-import React from 'react';
 
 import { IsolatedEnabledBadge } from '../../components/isolationMode/IsolatedBadge';
 

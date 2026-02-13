@@ -1,4 +1,3 @@
-import React from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { useUserMigrationReserves } from 'src/hooks/migration/useUserMigrationReserves';
 import { useUserSummaryForMigration } from 'src/hooks/migration/useUserSummaryForMigration';

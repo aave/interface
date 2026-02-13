@@ -12,7 +12,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { JSX, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/mixPanelEvents';
@@ -194,7 +194,7 @@ export const MarketSwitcher = () => {
                           color: '#fff',
                           px: 2,
                           borderRadius: '12px',
-                          background: (theme) => theme.palette.gradients.aaveGradient,
+                          background: (theme) => theme.palette.background.default,
                           display: 'flex',
                           alignItems: 'center',
                         }}
@@ -332,9 +332,7 @@ export const MarketSwitcher = () => {
                 sx={
                   selectedMarketVersion === SelectedMarketVersion.V3
                     ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
+                        color: (theme) => theme.palette.text.primary,
                       }
                     : {
                         color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
@@ -361,9 +359,7 @@ export const MarketSwitcher = () => {
                 sx={
                   selectedMarketVersion === SelectedMarketVersion.V2
                     ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
+                        color: (theme) => theme.palette.text.primary,
                       }
                     : {
                         color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',

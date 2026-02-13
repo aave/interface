@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
 import { FeedbackModal } from 'src/layouts/FeedbackDialog';
 import { useRootStore } from 'src/store/root';

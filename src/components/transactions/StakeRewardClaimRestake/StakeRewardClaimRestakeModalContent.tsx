@@ -2,7 +2,7 @@ import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
@@ -49,7 +49,7 @@ export const StakeRewardClaimRestakeModalContent = ({
   // hardcoded as all rewards will be in aave token
   const rewardsSymbol = 'AAVE';
   const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
+  const amountRef = useRef<string>(undefined);
 
   const maxAmountToClaim = normalize(stakeUserData?.userIncentivesToClaim || '0', 18);
   const isMaxSelected = _amount === '-1';

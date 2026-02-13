@@ -2,7 +2,7 @@ import { Stake } from '@aave/contract-helpers';
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, GridLegacy, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
@@ -160,8 +160,8 @@ export default function Staking() {
               </StyledToggleButtonGroup>
             </Box>
 
-            <Grid container spacing={4}>
-              <Grid
+            <GridLegacy container spacing={4}>
+              <GridLegacy
                 item
                 xs={12}
                 lg={STAGING_ENV || ENABLE_TESTNET ? 12 : 6}
@@ -206,8 +206,8 @@ export default function Staking() {
                     <GhoDiscountProgram />
                   </Box>
                 </StakingPanel>
-              </Grid>
-              <Grid
+              </GridLegacy>
+              <GridLegacy
                 item
                 xs={12}
                 lg={6}
@@ -225,9 +225,9 @@ export default function Staking() {
                   onUnstakeAction={() => openUnstake(Stake.gho, 'GHO')}
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.gho, 'AAVE')}
                 />
-              </Grid>
+              </GridLegacy>
 
-              <Grid
+              <GridLegacy
                 item
                 xs={12}
                 lg={6}
@@ -246,9 +246,9 @@ export default function Staking() {
                   onStakeRewardClaimAction={() => openStakeRewardsClaim(Stake.bptv2, 'AAVE')}
                   headerAction={<GetABPToken />}
                 />
-              </Grid>
+              </GridLegacy>
 
-              <Grid
+              <GridLegacy
                 item
                 xs={12}
                 lg={6}
@@ -317,8 +317,8 @@ export default function Staking() {
                     )}
                   </StakingPanel>
                 )}
-              </Grid>
-            </Grid>
+              </GridLegacy>
+            </GridLegacy>
           </>
         ) : (
           <ConnectWalletPaperStaking

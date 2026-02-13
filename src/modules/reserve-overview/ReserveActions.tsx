@@ -3,7 +3,7 @@ import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Paper, Skeleton, Stack, Typography, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
-import React, { ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';

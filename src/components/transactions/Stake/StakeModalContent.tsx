@@ -2,7 +2,7 @@ import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -46,7 +46,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
 
   // states
   const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
+  const amountRef = useRef<string>(undefined);
 
   const walletBalance = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
 

@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
-import React from 'react';
 
 import { ActionFields, TransactionHistoryItem } from '../types';
 

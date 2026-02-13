@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { SxProps, Theme } from '@mui/system';
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, JSX, ReactNode, useContext } from 'react';
 import { BorrowCapMaxedTooltip } from 'src/components/infoTooltips/BorrowCapMaxedTooltip';
 import { DebtCeilingMaxedTooltip } from 'src/components/infoTooltips/DebtCeilingMaxedTooltip';
 import { SupplyCapMaxedTooltip } from 'src/components/infoTooltips/SupplyCapMaxedTooltip';

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { GridLegacy, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
@@ -74,14 +74,14 @@ export default function Governance() {
             <UserGovernanceInfo />
           )
         ) : (
-          <Grid container spacing={4}>
-            <Grid item md={8}>
+          <GridLegacy container spacing={4}>
+            <GridLegacy item md={8}>
               <ProposalsV3List />
-            </Grid>
-            <Grid item md={4}>
+            </GridLegacy>
+            <GridLegacy item md={4}>
               <UserGovernanceInfo />
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         )}
       </ContentContainer>
     </>

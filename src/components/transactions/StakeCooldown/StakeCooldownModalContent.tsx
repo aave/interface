@@ -6,7 +6,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { formatEther, parseUnits } from 'ethers/lib/utils';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';

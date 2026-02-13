@@ -1,5 +1,16 @@
 declare module '*/locales/en/messages.js';
 
+declare module '*.svg' {
+  import { FC, SVGProps } from 'react';
+  const content: FC<SVGProps<SVGSVGElement>>;
+  export default content;
+}
+
+declare module '*.svg?url' {
+  const content: string;
+  export default content;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 namespace NodeJS {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

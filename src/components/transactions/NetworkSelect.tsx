@@ -7,7 +7,6 @@ import {
   SelectChangeEvent,
   Typography,
 } from '@mui/material';
-import * as React from 'react';
 
 import { SupportedNetworkWithChainId } from './Bridge/BridgeConfig';
 

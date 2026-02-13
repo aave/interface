@@ -1,5 +1,4 @@
 import { styled, ToggleButton, ToggleButtonProps } from '@mui/material';
-import React from 'react';
 
 const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) => ({
   border: '0px',
@@ -19,14 +18,10 @@ const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) =
     justifyContent: 'center',
 
     '.MuiTypography-subheader1': {
-      background: theme.palette.gradients.aaveGradient,
-      backgroundClip: 'text',
-      textFillColor: 'transparent',
+      color: theme.palette.text.primary,
     },
     '.MuiTypography-secondary14': {
-      background: theme.palette.gradients.aaveGradient,
-      backgroundClip: 'text',
-      textFillColor: 'transparent',
+      color: theme.palette.text.primary,
     },
   },
 })) as typeof ToggleButton;

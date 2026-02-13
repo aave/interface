@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { CircularProgress, Grid, Paper, PaperProps, Typography } from '@mui/material';
+import { CircularProgress, GridLegacy, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { StakingPanelNoWallet } from 'src/modules/staking/StakingPanelNoWallet';
 
@@ -46,17 +46,17 @@ export const ConnectWalletPaperStaking = ({
               )}
             </Typography>
             <ConnectWalletButton funnel={'Staking page'} />
-            <Grid container spacing={1} pt={6} sx={{ maxWidth: '758px', textAlign: 'right' }}>
-              <Grid item xs={12} md={4}>
+            <GridLegacy container spacing={1} pt={6} sx={{ maxWidth: '758px', textAlign: 'right' }}>
+              <GridLegacy item xs={12} md={4}>
                 <StakingPanelNoWallet stakedToken={'GHO'} icon={'gho'} />
-              </Grid>
-              <Grid item xs={12} md={4}>
+              </GridLegacy>
+              <GridLegacy item xs={12} md={4}>
                 <StakingPanelNoWallet stakedToken={'AAVE'} icon={'aave'} />
-              </Grid>
-              <Grid item xs={12} md={4}>
+              </GridLegacy>
+              <GridLegacy item xs={12} md={4}>
                 <StakingPanelNoWallet stakedToken={'ABPT V2'} icon={'stkbptv2'} />
-              </Grid>
-            </Grid>
+              </GridLegacy>
+            </GridLegacy>
           </>
         )}
       </>

@@ -3,7 +3,7 @@ import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -45,7 +45,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
 
   // states
   const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
+  const amountRef = useRef<string>(undefined);
 
   let amountToUnstake = stakeUserData?.userCooldownAmount;
   if (stakeData?.inPostSlashingPeriod) {

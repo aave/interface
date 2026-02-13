@@ -12,7 +12,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import React, { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 

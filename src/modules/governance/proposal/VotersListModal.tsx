@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { Box, GridLegacy, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { JSX, useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
@@ -120,14 +120,14 @@ export const VotersListModal = ({
         <Trans>Votes</Trans>
       </Typography>
       {mdUp ? (
-        <Grid container spacing={4} sx={{ mt: 4 }}>
-          <Grid item xs={6}>
+        <GridLegacy container spacing={4} sx={{ mt: 4 }}>
+          <GridLegacy item xs={6}>
             {yesVotesUI}
-          </Grid>
-          <Grid item xs={6}>
+          </GridLegacy>
+          <GridLegacy item xs={6}>
             {noVotesUI}
-          </Grid>
-        </Grid>
+          </GridLegacy>
+        </GridLegacy>
       ) : (
         <>
           <StyledToggleButtonGroup

@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Menu, MenuItem, Typography } from '@mui/material';
-import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { WalletIcon } from 'src/components/icons/WalletIcon';

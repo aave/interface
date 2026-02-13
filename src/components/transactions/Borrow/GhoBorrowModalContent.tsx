@@ -6,7 +6,7 @@ import {
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, SvgIcon, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   GhoIncentivesCard,
   GhoIncentivesCardProps,

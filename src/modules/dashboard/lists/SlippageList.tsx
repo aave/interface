@@ -11,7 +11,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import * as React from 'react';
+import { MouseEvent, ReactNode, useState } from 'react';
 import { SlippageTooltip } from 'src/components/infoTooltips/SlippageTooltip';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/mixPanelEvents';
@@ -21,7 +21,7 @@ import Paraswap from '/public/icons/other/paraswap.svg';
 interface ListSlippageButtonProps {
   setSlippage: (value: string) => void;
   selectedSlippage: string;
-  slippageTooltipHeader?: React.ReactNode;
+  slippageTooltipHeader?: ReactNode;
 }
 
 export const ListSlippageButton = ({
@@ -29,11 +29,11 @@ export const ListSlippageButton = ({
   selectedSlippage,
   slippageTooltipHeader,
 }: ListSlippageButtonProps) => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

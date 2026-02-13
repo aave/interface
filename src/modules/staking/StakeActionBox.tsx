@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Row } from '../../components/primitives/Row';
@@ -43,7 +43,7 @@ export const StakeActionBox = ({
           bottom: -1,
           left: -1,
           right: -1,
-          background: gradientBorder ? theme.palette.gradients.aaveGradient : 'transparent',
+          background: gradientBorder ? theme.palette.background.default : 'transparent',
         },
       })}
     >

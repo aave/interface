@@ -7,7 +7,7 @@ type NoSearchResultsProps = {
   subtitle?: ReactNode;
 };
 
-export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm, subtitle }) => {
+export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm = '', subtitle }) => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
 

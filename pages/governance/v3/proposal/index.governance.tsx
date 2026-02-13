@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { GridLegacy } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
@@ -47,15 +47,15 @@ export default function ProposalPage() {
       <ProposalTopPanel />
 
       <ContentContainer>
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={8}>
+        <GridLegacy container spacing={4}>
+          <GridLegacy item xs={12} md={8}>
             <ProposalOverview
               proposal={proposal}
               error={!!newProposalError}
               loading={proposalLoading}
             />
-          </Grid>
-          <Grid item xs={12} md={4}>
+          </GridLegacy>
+          <GridLegacy item xs={12} md={4}>
             {proposal && <VoteInfo proposal={proposal} />}
             <VotingResults
               proposal={proposal}
@@ -63,8 +63,8 @@ export default function ProposalPage() {
               loading={proposalLoading}
             />
             <ProposalLifecycle proposal={proposal} />
-          </Grid>
-        </Grid>
+          </GridLegacy>
+        </GridLegacy>
       </ContentContainer>
     </>
   );

@@ -1,6 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useState } from 'react';
+import { JSX, useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import { ProposalVotes } from 'src/hooks/governance/useProposalVotes';
 import { useRootStore } from 'src/store/root';

@@ -8,7 +8,7 @@ import {
 import { Trans } from '@lingui/macro';
 import Typography from '@mui/material/Typography';
 import { BigNumber } from 'bignumber.js';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ExtendedFormattedUser,
   useAppDataContext,
@@ -66,7 +66,7 @@ export const RepayModalContent = ({
   const [assets, setAssets] = useState<RepayAsset[]>([tokenToRepayWith]);
   const [repayMax, setRepayMax] = useState('');
   const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
+  const amountRef = useRef<string>(undefined);
 
   const networkConfig = getNetworkConfig(currentChainId);
 

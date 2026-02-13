@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro';
-import React from 'react';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
 
 import { BasicModal } from '../../primitives/BasicModal';

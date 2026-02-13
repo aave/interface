@@ -4,7 +4,8 @@ import {
   CreditCardIcon,
   QuestionMarkCircleIcon,
 } from '@heroicons/react/outline';
-import { t } from '@lingui/macro';
+import type { MessageDescriptor } from '@lingui/core';
+import { msg } from '@lingui/macro';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
 import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
@@ -13,7 +14,7 @@ import { MarketDataType } from '../marketsConfig';
 
 interface Navigation {
   link: string;
-  title: string;
+  title: MessageDescriptor;
   isVisible?: (data: MarketDataType) => boolean | undefined;
   dataCy?: string;
 }
@@ -21,17 +22,17 @@ interface Navigation {
 export const navigation: Navigation[] = [
   {
     link: ROUTES.dashboard,
-    title: t`Dashboard`,
+    title: msg`Dashboard`,
     dataCy: 'menuDashboard',
   },
   {
     link: ROUTES.markets,
-    title: t`Markets`,
+    title: msg`Markets`,
     dataCy: 'menuMarkets',
   },
   {
     link: ROUTES.staking,
-    title: t`Stake`,
+    title: msg`Stake`,
     dataCy: 'menuStake',
     isVisible: () =>
       process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
@@ -40,7 +41,7 @@ export const navigation: Navigation[] = [
   },
   {
     link: ROUTES.governance,
-    title: t`Governance`,
+    title: msg`Governance`,
     dataCy: 'menuGovernance',
     // isVisible: () =>
     //   process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
@@ -49,7 +50,7 @@ export const navigation: Navigation[] = [
   },
   {
     link: ROUTES.faucet,
-    title: t`Faucet`,
+    title: msg`Faucet`,
     isVisible: () => process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET,
   },
 ];
@@ -62,17 +63,17 @@ interface MoreMenuItem extends Navigation {
 const moreMenuItems: MoreMenuItem[] = [
   {
     link: 'https://docs.aave.com/faq/',
-    title: t`FAQ`,
+    title: msg`FAQ`,
     icon: <QuestionMarkCircleIcon />,
   },
   {
     link: 'https://docs.aave.com/portal/',
-    title: t`Developers`,
+    title: msg`Developers`,
     icon: <BookOpenIcon />,
   },
   {
     link: 'https://legacy-markets.aave.com/',
-    title: t`Legacy Markets`,
+    title: msg`Legacy Markets`,
     icon: <ArrowCircleRightIcon />,
   },
 ];
@@ -83,7 +84,7 @@ if (fiatEnabled === 'true') {
     link: 'https://global.transak.com',
     makeLink: (walletAddress) =>
       `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
-    title: t`Buy Crypto With Fiat`,
+    title: msg`Buy Crypto With Fiat`,
     icon: <CreditCardIcon />,
   });
 }

@@ -1,6 +1,7 @@
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
 import { blo } from 'blo';
+import { JSX } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ProposalVote } from 'src/hooks/governance/useProposalVotes';

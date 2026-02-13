@@ -7,7 +7,7 @@ import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { hexToAscii } from 'src/utils/utils';
 import { UserRejectedRequestError } from 'viem';
-import { useAccount, useConnect, useSwitchChain, useWatchAsset } from 'wagmi';
+import { useAccount, useConnect, useSwitchChain, useWalletClient } from 'wagmi';
 
 import { Web3Context } from '../hooks/useWeb3Context';
 import { getEthersProvider } from './adapters/EthersAdapter';
@@ -41,7 +41,7 @@ let didAutoConnectForCypress = false;
 
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const { switchChainAsync } = useSwitchChain();
-  const { watchAssetAsync } = useWatchAsset();
+  const { data: walletClient } = useWalletClient();
   const { chainId, address } = useAccount();
   const { connect, connectors } = useConnect();
 
@@ -143,30 +143,34 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     decimals,
     image,
   }: ERC20TokenType): Promise<boolean> => {
-    const provider = await getEthersProvider(wagmiConfig, { chainId });
-    if (provider) {
-      if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
-        let tokenSymbol = symbol;
-        if (!tokenSymbol) {
-          const { getTokenData } = new ERC20Service(provider);
-          const { symbol } = await getTokenData(address);
-          tokenSymbol = symbol;
-        }
+    if (!walletClient) return false;
 
-        await watchAssetAsync({
-          type: 'ERC20',
-          options: {
-            address,
-            symbol: tokenSymbol,
-            decimals,
-            image,
-          },
-        });
-
-        return true;
-      }
+    if (address.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase()) {
+      return false;
     }
-    return false;
+
+    let tokenSymbol = symbol;
+
+    if (!tokenSymbol) {
+      const provider = await getEthersProvider(wagmiConfig, { chainId });
+      if (!provider) return false;
+
+      const { getTokenData } = new ERC20Service(provider);
+      const tokenData = await getTokenData(address);
+      tokenSymbol = tokenData.symbol;
+    }
+
+    await walletClient.watchAsset({
+      type: 'ERC20',
+      options: {
+        address,
+        symbol: tokenSymbol,
+        decimals,
+        image,
+      },
+    });
+
+    return true;
   };
 
   useEffect(() => {

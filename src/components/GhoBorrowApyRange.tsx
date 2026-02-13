@@ -1,12 +1,5 @@
-import {
-  Box,
-  Skeleton,
-  Typography,
-  TypographyProps,
-  TypographyPropsVariantOverrides,
-} from '@mui/material';
-import { Variant } from '@mui/material/styles/createTypography';
-import { OverridableStringUnion } from '@mui/types';
+import type { TypographyProps } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import React from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
@@ -15,8 +8,8 @@ import { FormattedNumber } from './primitives/FormattedNumber';
 interface GhoBorrowApyRangeProps extends TypographyProps {
   minVal?: number;
   maxVal?: number;
-  percentVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
-  hyphenVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
+  percentVariant?: TypographyProps['variant'];
+  hyphenVariant?: TypographyProps['variant'];
 }
 
 /**

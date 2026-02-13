@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React from 'react';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 

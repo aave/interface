@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { GridLegacy } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
@@ -169,11 +169,11 @@ export default function IpfsPreview() {
 
       {!loading && (
         <ContentContainer>
-          <Grid container spacing={4}>
-            <Grid item xs={12} md={8}>
+          <GridLegacy container spacing={4}>
+            <GridLegacy item xs={12} md={8}>
               <ProposalOverview proposal={proposal} error={error} loading={loading} />
-            </Grid>
-          </Grid>
+            </GridLegacy>
+          </GridLegacy>
         </ContentContainer>
       )}
     </>

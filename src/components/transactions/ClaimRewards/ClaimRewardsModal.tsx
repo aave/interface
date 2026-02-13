@@ -1,4 +1,3 @@
-import React from 'react';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalType, useModalContext } from 'src/hooks/useModal';

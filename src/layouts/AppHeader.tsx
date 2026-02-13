@@ -17,7 +17,6 @@ import {
   useTheme,
 } from '@mui/material';
 import Box from '@mui/material/Box';
-import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';

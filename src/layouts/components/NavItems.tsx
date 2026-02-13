@@ -1,6 +1,5 @@
 import { useLingui } from '@lingui/react';
 import { Button, List, ListItem, Typography, useMediaQuery, useTheme } from '@mui/material';
-import * as React from 'react';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/mixPanelEvents';
 import { useShallow } from 'zustand/shallow';
@@ -56,14 +55,14 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 variant="h2"
                 color="#F1F1F3"
                 sx={{ width: '100%', p: 4 }}
-                onClick={() => handleClick(item.title, true)}
+                onClick={() => handleClick(i18n._(item.title), true)}
               >
                 {i18n._(item.title)}
               </Typography>
             ) : (
               <Button
                 component={Link}
-                onClick={() => handleClick(item.title, false)}
+                onClick={() => handleClick(i18n._(item.title), false)}
                 href={item.link}
                 sx={(theme) => ({
                   color: '#F1F1F3',
@@ -81,7 +80,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                     height: '2px',
                     bottom: '-6px',
                     left: '0',
-                    background: theme.palette.gradients.aaveGradient,
+                    background: theme.palette.background.default,
                     transformOrigin: 'bottom right',
                     transition: 'transform 0.25s ease-out',
                   },

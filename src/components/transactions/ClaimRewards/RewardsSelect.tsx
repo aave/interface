@@ -3,7 +3,6 @@ import { Box, Divider, FormLabel, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import * as React from 'react';
 import { Reward } from 'src/helpers/types';
 
 import { FormattedNumber } from '../../primitives/FormattedNumber';

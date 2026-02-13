@@ -1,5 +1,5 @@
 import { Box, CircularProgress } from '@mui/material';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import {
   ExtendedFormattedUser,
   useAppDataContext,

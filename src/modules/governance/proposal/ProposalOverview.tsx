@@ -193,15 +193,21 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 thead({ node, ...props }) {
                   return <TableHead {...props} />;
                 },
-                img({ src: _src, alt }) {
-                  if (!_src) return null;
-                  const src = /^\.\.\//.test(_src)
-                    ? _src.replace(
+                img({ src, alt }) {
+                  if (!src) return null;
+
+                  if (typeof src !== 'string') {
+                    return <CenterAlignedImage src={URL.createObjectURL(src)} alt={alt} />;
+                  }
+
+                  const resolvedSrc = /^\.\.\//.test(src)
+                    ? src.replace(
                         '../',
                         'https://raw.githubusercontent.com/aave/aip/main/content/'
                       )
-                    : _src;
-                  return <CenterAlignedImage src={src} alt={alt} />;
+                    : src;
+
+                  return <CenterAlignedImage src={resolvedSrc} alt={alt} />;
                 },
                 a({ node, ...rest }) {
                   return <StyledLink {...rest} />;

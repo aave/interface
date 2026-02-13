@@ -1,11 +1,6 @@
 import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import type { TypographyProps } from '@mui/material';
 import { Typography } from '@mui/material';
-import { Variant } from '@mui/material/styles/createTypography';
-import type {
-  TypographyProps,
-  TypographyPropsVariantOverrides,
-} from '@mui/material/Typography/Typography';
-import type { OverridableStringUnion } from '@mui/types';
 import type { ElementType } from 'react';
 
 interface CompactNumberProps {
@@ -66,7 +61,7 @@ export type FormattedNumberProps = TypographyProps<ElementType, { component?: El
   compact?: boolean;
   percent?: boolean;
   symbolsColor?: string;
-  symbolsVariant?: OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>;
+  symbolsVariant?: TypographyProps['variant'];
   roundDown?: boolean;
   compactThreshold?: number;
 };
