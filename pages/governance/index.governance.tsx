@@ -57,12 +57,12 @@ export default function Governance() {
           }}
         >
           <StyledToggleButton value={Tabs.PROPOSALS} disabled={mode === Tabs.PROPOSALS}>
-            <Typography variant="subheader1">
+            <Typography variant="subtitle1">
               <Trans>Proposals</Trans>
             </Typography>
           </StyledToggleButton>
           <StyledToggleButton value={Tabs.INFORMATION} disabled={mode === Tabs.INFORMATION}>
-            <Typography variant="subheader1">
+            <Typography variant="subtitle1">
               <Trans>Your info</Trans>
             </Typography>
           </StyledToggleButton>

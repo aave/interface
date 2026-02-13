@@ -28,7 +28,7 @@ export const DelegationTypeSelector = ({
         value={DelegationType.ALL}
         disabled={delegationType === DelegationType.ALL}
       >
-        <Typography variant="buttonM">
+        <Typography variant="button">
           <Trans>Both</Trans>
         </Typography>
       </StyledTxModalToggleButton>
@@ -37,7 +37,7 @@ export const DelegationTypeSelector = ({
         value={DelegationType.VOTING}
         disabled={delegationType === DelegationType.VOTING}
       >
-        <Typography variant="buttonM">
+        <Typography variant="button">
           <Trans>Voting</Trans>
         </Typography>
       </StyledTxModalToggleButton>
@@ -46,7 +46,7 @@ export const DelegationTypeSelector = ({
         value={DelegationType.PROPOSITION}
         disabled={delegationType === DelegationType.PROPOSITION}
       >
-        <Typography variant="buttonM">
+        <Typography variant="button">
           <Trans>Proposition</Trans>
         </Typography>
       </StyledTxModalToggleButton>

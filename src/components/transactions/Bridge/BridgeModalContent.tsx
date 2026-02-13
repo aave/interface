@@ -436,7 +436,7 @@ export const BridgeModalContent = () => {
                 loading={loadingBridgeMessage || loadingTokenBalances}
               />
             )}
-            <Row caption={estimatedTimeTooltip} captionVariant="description" mb={4}>
+            <Row caption={estimatedTimeTooltip} captionVariant="body2" mb={4}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {loadingEstimatedTime ? (
                   <Skeleton
@@ -446,11 +446,11 @@ export const BridgeModalContent = () => {
                     sx={{ borderRadius: '4px' }}
                   />
                 ) : (
-                  <Typography variant="secondary14">{estimatedTimeToDestination}</Typography>
+                  <Typography variant="body2">{estimatedTimeToDestination}</Typography>
                 )}
               </Box>
             </Row>
-            {/* <Row caption={'Bridged Amount'} captionVariant="description" mb={4}>
+            {/* <Row caption={'Bridged Amount'} captionVariant="body2" mb={4}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {loadingBridgeMessage ? (
                   <Skeleton
@@ -460,7 +460,7 @@ export const BridgeModalContent = () => {
                     sx={{ borderRadius: '4px' }}
                   />
                 ) : (
-                  <Typography variant="secondary14">{estimatedTimeToDestination}</Typography>
+                  <Typography variant="body2">{estimatedTimeToDestination}</Typography>
                 )}
               </Box> */}
             <Row /> {/* Spacer */}

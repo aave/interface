@@ -135,7 +135,7 @@ export const FeedbackModal = () => {
                 </SvgIcon>
               </Box>
 
-              <Typography variant="subheader1" sx={{ mt: 2 }}>
+              <Typography variant="subtitle1" sx={{ mt: 2 }}>
                 <Trans>
                   Submission did not work, please try again later or contact wecare@avara.xyz
                 </Trans>
@@ -149,7 +149,7 @@ export const FeedbackModal = () => {
             </Typography>
 
             <Typography
-              variant="subheader1"
+              variant="subtitle1"
               color="text.secondary"
               sx={{ textAlign: 'center', mb: 2, mt: 4 }}
             >
@@ -159,7 +159,7 @@ export const FeedbackModal = () => {
               </Trans>{' '}
               <Link
                 target="_blank"
-                variant="subheader1"
+                variant="subtitle1"
                 color="text.secondary"
                 href="https://discord.com/invite/aave"
                 underline="always"

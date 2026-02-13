@@ -75,7 +75,7 @@ export const CapsCircularStatus = ({ value, tooltipContent, onClick }: CapsCircu
           value={value <= 2 ? 2 : value > 100 ? 100 : value}
         />
         <Typography
-          variant="secondary14"
+          variant="body2"
           sx={{
             position: 'absolute',
             top: 0,

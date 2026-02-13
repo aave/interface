@@ -292,7 +292,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
               <Typography
-                variant="secondary12"
+                variant="caption"
                 color="text.secondary"
                 sx={{ mb: 2, mr: 2, fontWeight: 400 }}
               >
@@ -339,7 +339,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                         mx: 1,
                       }}
                     />
-                    <Typography variant="subheader2" color="text.secondary">
+                    <Typography variant="subtitle2" color="text.secondary">
                       <Trans>Total interest accrued</Trans>
                     </Typography>
                   </Stack>
@@ -347,7 +347,7 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                     value={tooltipData.accruedInterestWithDiscount}
                     visibleDecimals={2}
                     symbol="USD"
-                    variant="main12"
+                    variant="caption"
                     color="text.secondary"
                     compact
                   />
@@ -363,11 +363,11 @@ export const GhoInterestRateGraph = withTooltip<AreaProps, TooltipData>(
                         mx: 1,
                       }}
                     />
-                    <Typography variant="subheader2" color="text.secondary">
+                    <Typography variant="subtitle2" color="text.secondary">
                       <Trans>Effective interest rate</Trans>
                     </Typography>
                   </Stack>
-                  <Typography variant="main12" color="text.secondary">
+                  <Typography variant="caption" color="text.secondary">
                     {(tooltipData.interestRate * 100).toFixed(2)}%
                   </Typography>
                 </Stack>

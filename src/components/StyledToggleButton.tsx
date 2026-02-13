@@ -17,10 +17,10 @@ const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) =
     display: 'flex',
     justifyContent: 'center',
 
-    '.MuiTypography-subheader1': {
+    '.MuiTypography-subtitle1': {
       color: theme.palette.text.primary,
     },
-    '.MuiTypography-secondary14': {
+    '.MuiTypography-body2': {
       color: theme.palette.text.primary,
     },
   },
@@ -33,7 +33,7 @@ const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ the
   borderRadius: '4px',
 
   '&.Mui-selected, &.Mui-selected:hover': {
-    border: `1px solid ${theme.palette.other.standardInputLine}`,
+    border: `1px solid ${theme.palette.divider}`,
     backgroundColor: '#FFFFFF',
     borderRadius: '4px !important',
   },

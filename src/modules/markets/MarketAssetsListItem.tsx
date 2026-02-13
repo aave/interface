@@ -71,7 +71,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
               p: { xs: '0', xsm: '3.625px 0px' },
             }}
           >
-            <Typography variant="subheader2" color="text.muted" noWrap>
+            <Typography variant="subtitle2" color="text.muted" noWrap>
               {reserve.symbol}
               {reserve.isIsolated && (
                 <span style={{ marginLeft: '8px' }}>
@@ -87,7 +87,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber compact value={reserve.totalLiquidity} variant="main16" />
+        <FormattedNumber compact value={reserve.totalLiquidity} variant="body1" />
         <ReserveSubheader value={reserve.totalLiquidityUSD} />
       </ListColumn>
 
@@ -97,8 +97,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           incentives={reserve.aIncentivesData || []}
           address={reserve.aTokenAddress}
           symbol={reserve.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
+          variant="body1"
+          symbolsVariant="body1"
           tooltip={
             <>
               {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
@@ -113,11 +113,11 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
       <ListColumn>
         {reserve.borrowingEnabled || Number(reserve.totalDebt) > 0 ? (
           <>
-            <FormattedNumber compact value={reserve.totalDebt} variant="main16" />{' '}
+            <FormattedNumber compact value={reserve.totalDebt} variant="body1" />{' '}
             <ReserveSubheader value={reserve.totalDebtUSD} />
           </>
         ) : (
-          <NoData variant={'secondary14'} color="text.secondary" />
+          <NoData variant={'body2'} color="text.secondary" />
         )}
       </ListColumn>
 
@@ -127,8 +127,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ComputedReserveData) => {
           incentives={reserve.vIncentivesData || []}
           address={reserve.variableDebtTokenAddress}
           symbol={reserve.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
+          variant="body1"
+          symbolsVariant="body1"
           tooltip={
             <>
               {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}

@@ -23,10 +23,16 @@ const theme = createTheme({
     text: {
       primary: '#B3CCD9',
       secondary: '#192328',
+      muted: '#546066',
     },
 
     background: {
       default: '#000000',
+      paper: '#192328',
+      surface: '#192328',
+      surface2: '#0D1112',
+      disabled: '#0D1112',
+      header: '#192328',
     },
 
     info: {
@@ -43,6 +49,7 @@ const theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
+      xsm: 600,
       sm: 768,
       md: 1024,
       lg: 1440,

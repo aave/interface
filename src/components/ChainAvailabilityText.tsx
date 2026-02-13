@@ -25,7 +25,7 @@ export const ChainAvailabilityText: React.FC<ChainAvailabilityTextProps> = ({
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', ...wrapperSx }}>
-      <Typography variant="subheader2" sx={{ mr: 2, color: '#C0CBF6' }}>
+      <Typography variant="subtitle2" sx={{ mr: 2, color: '#C0CBF6' }}>
         <Trans>Available on</Trans>
       </Typography>
       <Box
@@ -36,7 +36,7 @@ export const ChainAvailabilityText: React.FC<ChainAvailabilityTextProps> = ({
       >
         <img src={network.networkLogoPath} height="100%" width="100%" alt="Ethereum Mainnet" />
       </Box>
-      <Typography variant="subheader2" sx={{ ml: 1, color: '#C0CBF6' }}>
+      <Typography variant="subtitle2" sx={{ ml: 1, color: '#C0CBF6' }}>
         {networkToTextMapper(chainId, network)}
       </Typography>
     </Box>

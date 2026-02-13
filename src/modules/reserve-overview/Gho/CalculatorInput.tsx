@@ -83,7 +83,7 @@ export const CalculatorInput = ({
 
   return (
     <Box sx={{ position: 'relative' }}>
-      <Typography variant="subheader2" gutterBottom>
+      <Typography variant="subtitle2" gutterBottom>
         <Trans>{title}</Trans>
       </Typography>
       <OutlinedInput

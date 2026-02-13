@@ -168,7 +168,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
-      <Typography variant="description" sx={{ mb: 6 }}>
+      <Typography variant="body2" sx={{ mb: 6 }}>
         <Trans>
           The cooldown period is {timeMessage(stakeCooldownSeconds)}. After{' '}
           {timeMessage(stakeCooldownSeconds)} of cooldown, you will enter unstake window of{' '}
@@ -182,7 +182,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
               link: 'Cooldown Learn More',
             })
           }
-          variant="description"
+          variant="body2"
           href="https://docs.aave.com/faq/migration-and-staking"
           sx={{ textDecoration: 'underline' }}
         >
@@ -201,12 +201,12 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
           pb: '30px',
         }}
       >
-        <Typography variant="description" color="text.primary">
+        <Typography variant="body2" color="text.primary">
           <Trans>Amount to unstake</Trans>
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
-          <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
+          <FormattedNumber value={amountToCooldown} variant="body2" color="text.primary" />
         </Box>
       </Box>
 
@@ -220,18 +220,18 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
           pb: '30px',
         }}
       >
-        <Typography variant="description" color="text.primary">
+        <Typography variant="body2" color="text.primary">
           <Trans>Unstake window</Trans>
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="secondary14" component="span">
+            <Typography variant="body2" component="span">
               {dateMessage(stakeCooldownSeconds)}
             </Typography>
             <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
               <ArrowNarrowRightIcon />
             </SvgIcon>
-            <Typography variant="secondary14" component="span">
+            <Typography variant="body2" component="span">
               {dateMessage(stakeCooldownSeconds + stakeUnstakeWindow)}
             </Typography>
           </Box>
@@ -261,7 +261,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
             ml: 'auto',
           }}
         >
-          <Typography variant="helperText" mb={1}>
+          <Typography variant="caption" mb={1}>
             <Trans>You unstake here</Trans>
           </Typography>
           <SvgIcon sx={{ fontSize: '13px' }}>
@@ -316,18 +316,18 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
-            <Typography variant="helperText" mb={1}>
+            <Typography variant="caption" mb={1}>
               <Trans>Cooldown period</Trans>
             </Typography>
-            <Typography variant="subheader2" color="error.main">
+            <Typography variant="subtitle2" color="error.main">
               <Trans>{timeMessage(stakeCooldownSeconds)}</Trans>
             </Typography>
           </Box>
           <Box sx={{ textAlign: 'right' }}>
-            <Typography variant="helperText" mb={1}>
+            <Typography variant="caption" mb={1}>
               <Trans>Unstake window</Trans>
             </Typography>
-            <Typography variant="subheader2" color="success.main">
+            <Typography variant="subtitle2" color="success.main">
               <Trans>{timeMessage(stakeUnstakeWindow)}</Trans>
             </Typography>
           </Box>
@@ -335,7 +335,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
       </Box>
 
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
+        <Typography variant="caption" color="red">
           {handleBlocked()}
         </Typography>
       )}

@@ -60,7 +60,7 @@ export const BaseSuccessView = ({ txHash, children, hideTx }: BaseSuccessTxViewP
       {!hideTx && (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <Link
-            variant="helperText"
+            variant="caption"
             href={currentNetworkConfig.explorerLinkBuilder({
               tx: txHash ? txHash : mainTxState.txHash,
             })}

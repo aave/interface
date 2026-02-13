@@ -164,7 +164,7 @@ export const CollateralChangeModalContent = ({
       </TxModalDetails>
 
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           <BlockingError />
         </Typography>
       )}

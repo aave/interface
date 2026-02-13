@@ -62,6 +62,28 @@ const buttonConfig = () => ({
             backgroundColor: 'transparent',
           },
         }),
+
+        ...(ownerState.variant === 'gradient' && {
+          background: `linear-gradient(90deg, ${theme.palette.accent.main} 0%, ${theme.palette.primary.main} 100%)`,
+          color: theme.palette.text.primary,
+          border: 'none',
+
+          '&:hover': {
+            opacity: 0.9,
+          },
+        }),
+
+        ...(ownerState.variant === 'surface' && {
+          backgroundColor: theme.palette.background.paper ?? theme.palette.primary.dark,
+          color: ownerState.color,
+          border: `1px solid ${theme.palette.divider}`,
+          transition: 'color 0.25s ease, background-color 0.25s ease',
+
+          '&:hover': {
+            color: theme.palette.text.secondary,
+            backgroundColor: theme.palette.accent.main,
+          },
+        }),
       }),
     },
   },

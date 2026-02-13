@@ -17,8 +17,8 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ComputedReserveData
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
-  const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
+  const valueTypographyVariant = downToSM ? 'body1' : 'h6';
+  const symbolsTypographyVariant = downToSM ? 'body1' : 'h6';
 
   const totalBorrowed = BigNumber.min(
     valueToBigNumber(reserve.totalDebt),

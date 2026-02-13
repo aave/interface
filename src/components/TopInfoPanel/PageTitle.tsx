@@ -35,7 +35,7 @@ export const PageTitle = ({ pageTitle, withMarketSwitcher, withMigrateButton }: 
       {pageTitle && (downToXSM || !withMarketSwitcher) && (
         <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
           <Typography
-            variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
+            variant={downToXSM ? 'h2' : upToLG ? 'body1' : 'h1'}
             sx={{
               color: withMarketSwitcher ? 'text.muted' : 'text.white',
               mr: { xs: 5, xsm: 3 },

@@ -52,7 +52,7 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
   if (!approvalHash && !isSigned && tryPermit)
     return (
       <Box sx={{ display: 'inline-flex', alignItems: 'center', mb: 2 }}>
-        <Typography variant="subheader2" color="text.secondary">
+        <Typography variant="subtitle2" color="text.secondary">
           <Trans>Approve with</Trans>&nbsp;
         </Typography>
         <ApprovalMethodToggleButton
@@ -73,7 +73,7 @@ export const RightHelperText = ({ approvalHash, tryPermit }: RightHelperTextProp
       >
         {approvalHash && (
           <Link
-            variant="helperText"
+            variant="caption"
             href={currentNetworkConfig.explorerLinkBuilder({ tx: approvalHash })}
             sx={{ display: 'inline-flex', alignItems: 'center' }}
             underline="hover"

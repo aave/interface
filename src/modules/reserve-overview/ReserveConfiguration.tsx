@@ -163,7 +163,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <FormattedNumber
                     value={reserve.borrowUsageRatio}
                     percent
-                    variant="main16"
+                    variant="body1"
                     compact
                   />
                 </PanelItem>

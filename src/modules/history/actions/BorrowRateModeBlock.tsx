@@ -14,13 +14,13 @@ export const BorrowRateModeBlock = ({
   if (borrowRateMode === 'Variable' || borrowRateMode === '2') {
     return (
       <>
-        <Typography variant="description" color="text.primary" pr={0.5}>
+        <Typography variant="body2" color="text.primary" pr={0.5}>
           <Trans>Variable</Trans>
         </Typography>
-        <Typography variant="secondary14" color="text.primary" pr={0.5}>
+        <Typography variant="body2" color="text.primary" pr={0.5}>
           {Number(formatUnits(swapBorrowRateTx.variableBorrowRate, 25)).toFixed(2)}%
         </Typography>
-        <Typography variant="description" color="text.primary">
+        <Typography variant="body2" color="text.primary">
           <Trans>APY</Trans>
         </Typography>
       </>
@@ -28,13 +28,13 @@ export const BorrowRateModeBlock = ({
   } else {
     return (
       <>
-        <Typography variant="description" color="text.primary" pr={0.5}>
+        <Typography variant="body2" color="text.primary" pr={0.5}>
           <Trans>Stable</Trans>
         </Typography>
-        <Typography variant="secondary14" color="text.primary" pr={0.5}>
+        <Typography variant="body2" color="text.primary" pr={0.5}>
           {Number(formatUnits(swapBorrowRateTx.stableBorrowRate, 25)).toFixed(2)}%
         </Typography>
-        <Typography variant="description" color="text.primary">
+        <Typography variant="body2" color="text.primary">
           <Trans>APY</Trans>
         </Typography>
       </>

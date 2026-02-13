@@ -84,13 +84,13 @@ export const LTVContent = ({
               value={currentLiquidationThreshold}
               visibleDecimals={2}
               color="error.main"
-              variant="subheader2"
+              variant="subtitle2"
               percent
               symbolsColor="error.main"
             />
             <Typography
               sx={{ display: 'flex' }}
-              variant="helperText"
+              variant="caption"
               lineHeight="12px"
               color="error.main"
             >
@@ -143,16 +143,16 @@ export const LTVContent = ({
               bottom: 'calc(100% + 2px)',
             }}
           >
-            <FormattedNumber value={loanToValue} percent visibleDecimals={2} variant="main12" />
+            <FormattedNumber value={loanToValue} percent visibleDecimals={2} variant="caption" />
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <Typography variant="helperText" color="text.muted" mr={0.5}>
+              <Typography variant="caption" color="text.muted" mr={0.5}>
                 <Trans>MAX</Trans>
               </Typography>
               <FormattedNumber
                 value={currentLoanToValue}
                 percent
                 visibleDecimals={2}
-                variant="helperText"
+                variant="caption"
                 color="text.muted"
                 symbolsColor="text.muted"
               />

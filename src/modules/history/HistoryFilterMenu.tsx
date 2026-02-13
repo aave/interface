@@ -107,7 +107,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
 
       return (
         <Box sx={{ display: 'flex' }}>
-          <Typography variant="description" color={theme.palette.primary.main} sx={{ mr: 1 }}>
+          <Typography variant="body2" color={theme.palette.primary.main} sx={{ mr: 1 }}>
             TXs:
           </Typography>
           {displayedFilters}
@@ -148,7 +148,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
             <SortIcon />
           </SvgIcon>
           <Typography
-            variant="subheader1"
+            variant="subtitle1"
             color="text.primary"
             sx={{
               ml: 1,
@@ -207,7 +207,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
             justifyContent: 'space-between',
           }}
         >
-          <Typography variant="subheader1" color="text.primary">
+          <Typography variant="subtitle1" color="text.primary">
             <Trans>All transactions</Trans>
           </Typography>
           {allSelected && (
@@ -244,7 +244,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
                     justifyContent: 'space-between',
                   }}
                 >
-                  <Typography variant="subheader1" color="text.primary">
+                  <Typography variant="subtitle1" color="text.primary">
                     <FilterLabel filter={option} />
                   </Typography>
                   {currentFilter.includes(option) && (

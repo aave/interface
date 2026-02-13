@@ -86,7 +86,7 @@ export const ReadOnlyModal = () => {
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <TxModalTitle title="Watch Wallet" />
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
-          <Typography variant="subheader1" color="text.secondary">
+          <Typography variant="subtitle1" color="text.secondary">
             <Trans>Watch a wallet balance in read-only mode</Trans>
           </Typography>
           <ReadOnlyModeTooltip />
@@ -132,7 +132,7 @@ export const ReadOnlyModal = () => {
           </Button>
         </form>
         {validAddressError && (
-          <Typography variant="helperText" color="error.main">
+          <Typography variant="caption" color="error.main">
             <Trans>Please enter a valid wallet address.</Trans>
           </Typography>
         )}

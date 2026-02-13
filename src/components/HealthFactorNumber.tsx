@@ -34,7 +34,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       data-cy={'HealthFactorTopPannel'}
     >
       {value === '-1' ? (
-        <Typography variant="secondary14" color={palette.success.main}>
+        <Typography variant="body2" color={palette.success.main}>
           ∞
         </Typography>
       ) : (

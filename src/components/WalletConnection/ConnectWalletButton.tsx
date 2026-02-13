@@ -31,7 +31,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel }) =>
                 <UserDisplay
                   avatarProps={{ size: AvatarSize.SM }}
                   oneLiner={true}
-                  titleProps={{ variant: 'buttonM' }}
+                  titleProps={{ variant: 'button' }}
                 />
               ) : (
                 <Trans>Connect wallet</Trans>

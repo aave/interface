@@ -43,7 +43,7 @@ export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm = '
       {subtitle && (
         <Typography
           sx={{ width: '280px', textAlign: 'center' }}
-          variant="description"
+          variant="body2"
           color="text.secondary"
         >
           {subtitle}

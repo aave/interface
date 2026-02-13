@@ -32,7 +32,7 @@ export function ReserveOverviewBox({
         }}
       >
         {title && (
-          <Typography variant="secondary14" color="text.secondary" component="span">
+          <Typography variant="body2" color="text.secondary" component="span">
             {title}
           </Typography>
         )}

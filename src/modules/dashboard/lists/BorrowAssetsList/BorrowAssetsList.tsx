@@ -56,7 +56,7 @@ const head = [
         capType={CapType.borrowCap}
         text={<Trans>Available</Trans>}
         key="availableBorrows"
-        variant="subheader2"
+        variant="subtitle2"
       />
     ),
     sortKey: 'availableBorrows',
@@ -71,7 +71,7 @@ const head = [
         }}
         text={<Trans>APY, variable</Trans>}
         key="variableBorrowAPY"
-        variant="subheader2"
+        variant="subtitle2"
       />
     ),
     sortKey: 'variableBorrowAPY',

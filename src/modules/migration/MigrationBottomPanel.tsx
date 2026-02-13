@@ -232,7 +232,7 @@ export const MigrationBottomPanel = ({
                 />
               }
               label={
-                <Typography variant="description" sx={{ position: 'relative', top: 1 }}>
+                <Typography variant="body2" sx={{ position: 'relative', top: 1 }}>
                   <Trans>I fully understand the risks of migrating.</Trans>
                 </Typography>
               }

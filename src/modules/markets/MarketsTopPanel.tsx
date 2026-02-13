@@ -26,8 +26,8 @@ export const MarketsTopPanel = () => {
     }
   );
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
-  const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
+  const valueTypographyVariant = downToSM ? 'body1' : 'h6';
+  const symbolsVariant = downToSM ? 'body1' : 'h6';
 
   return (
     <TopInfoPanel

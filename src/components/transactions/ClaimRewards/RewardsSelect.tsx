@@ -68,7 +68,7 @@ export const RewardsSelect = ({
         }}
       >
         <MenuItem value={'all'}>
-          <Typography variant="subheader1">
+          <Typography variant="subtitle1">
             <Trans>Claim all rewards</Trans>
           </Typography>
         </MenuItem>
@@ -77,7 +77,7 @@ export const RewardsSelect = ({
           <MenuItem value={reward.symbol} key={`reward-token-${reward.symbol}`}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <TokenIcon symbol={reward.symbol} sx={{ fontSize: '24px', mr: 3 }} />
-              <Typography variant="subheader1" sx={{ mr: 1 }}>
+              <Typography variant="subtitle1" sx={{ mr: 1 }}>
                 {reward.symbol}
               </Typography>
               <Typography

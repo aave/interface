@@ -172,7 +172,7 @@ export const HistoryWrapperMobile = () => {
                 open={Boolean(menuAnchorEl)}
                 onClose={handleDownloadMenuClose}
               >
-                <Typography variant="subheader2" color="text.secondary" sx={{ mx: 4, my: 3 }}>
+                <Typography variant="subtitle2" color="text.secondary" sx={{ mx: 4, my: 3 }}>
                   <Trans>Export data to</Trans>
                 </Typography>
                 <MenuItem
@@ -186,7 +186,7 @@ export const HistoryWrapperMobile = () => {
                       <DocumentDownloadIcon width={22} height={22} />
                     </SvgIcon>
                   </ListItemIcon>
-                  <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
+                  <ListItemText primaryTypographyProps={{ variant: 'subtitle1' }}>
                     <Trans>.JSON</Trans>
                   </ListItemText>
                 </MenuItem>
@@ -201,7 +201,7 @@ export const HistoryWrapperMobile = () => {
                       <DocumentDownloadIcon width={22} height={22} />
                     </SvgIcon>
                   </ListItemIcon>
-                  <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
+                  <ListItemText primaryTypographyProps={{ variant: 'subtitle1' }}>
                     <Trans>.CSV</Trans>
                   </ListItemText>
                 </MenuItem>
@@ -224,7 +224,7 @@ export const HistoryWrapperMobile = () => {
                 key={searchResetKey}
               />
               <Button onClick={() => handleCancelClick()}>
-                <Typography variant="buttonM">
+                <Typography variant="button">
                   <Trans>Cancel</Trans>
                 </Typography>
               </Button>
@@ -275,7 +275,7 @@ export const HistoryWrapperMobile = () => {
           <Typography variant="h3" color="text.primary">
             <Trans>Nothing found</Trans>
           </Typography>
-          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">
+          <Typography sx={{ mt: 1, mb: 4 }} variant="body2" color="text.secondary">
             <Trans>
               We couldn&apos;t find any transactions related to your search. Try again with a
               different asset name, or reset filters.

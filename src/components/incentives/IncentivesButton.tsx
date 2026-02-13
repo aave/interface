@@ -34,7 +34,7 @@ const BlankIncentives = () => {
         justifyContent: 'center',
       }}
     >
-      <Typography variant="main12" color="text.secondary">
+      <Typography variant="caption" color="text.secondary">
         &nbsp;
       </Typography>
     </Box>
@@ -196,7 +196,7 @@ const Content = ({
         <FormattedNumber
           value={incentivesNetAPR}
           percent
-          variant="secondary12"
+          variant="caption"
           color="text.secondary"
         />
       );
@@ -206,13 +206,13 @@ const Content = ({
           value={incentivesNetAPR}
           percent
           compact
-          variant="secondary12"
+          variant="caption"
           color="text.secondary"
         />
       );
     } else if (incentivesNetAPR === 'Infinity') {
       return (
-        <Typography variant="main12" color="text.secondary">
+        <Typography variant="caption" color="text.secondary">
           ∞
         </Typography>
       );
@@ -321,7 +321,7 @@ const ContentEthenaButton = ({ points }: { points: number }) => {
       }}
     >
       <Box sx={{ mr: 2 }}>
-        <Typography component="span" variant="secondary12" color="text.secondary">
+        <Typography component="span" variant="caption" color="text.secondary">
           {`${points}x`}
         </Typography>
       </Box>

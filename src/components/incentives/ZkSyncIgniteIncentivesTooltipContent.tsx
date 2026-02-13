@@ -13,7 +13,7 @@ export const ZkSyncIgniteIncentivesTooltipContent = ({
 }: {
   zkSyncIgniteIncentives: ExtendedReserveIncentiveResponse;
 }) => {
-  const typographyVariant = 'secondary12';
+  const typographyVariant = 'caption';
 
   const zkSyncIgniteIncentivesFormatted = getSymbolMap(zkSyncIgniteIncentives);
 

@@ -66,11 +66,11 @@ export const BorrowAssetsListMobileItem = ({
           <VariableAPYTooltip
             text={<Trans>APY, variable</Trans>}
             key="APY_dash_mob_variable_ type"
-            variant="description"
+            variant="body2"
           />
         }
         align="flex-start"
-        captionVariant="description"
+        captionVariant="body2"
         mb={2}
       >
         <IncentivesCard
@@ -78,7 +78,7 @@ export const BorrowAssetsListMobileItem = ({
           incentives={vIncentivesData}
           address={variableDebtTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="body2"
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />

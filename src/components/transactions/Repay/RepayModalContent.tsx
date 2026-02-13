@@ -248,7 +248,7 @@ export const RepayModalContent = ({
       />
 
       {maxRepayWithDustRemaining && (
-        <Typography color="warning.main" variant="helperText">
+        <Typography color="warning.main" variant="caption">
           <Trans>
             You don’t have enough funds in your wallet to repay the full amount. If you proceed to
             repay with your current amount of funds, you will still have a small borrowing position

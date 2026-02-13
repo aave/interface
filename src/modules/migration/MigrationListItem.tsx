@@ -147,7 +147,7 @@ export const MigrationListItem = ({
           <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
 
           <Box sx={{ pl: '12px', overflow: 'hidden', display: 'flex' }}>
-            <Typography variant="subheader1" color={baseColor} noWrap sx={{ pr: 1 }}>
+            <Typography variant="subtitle1" color={baseColor} noWrap sx={{ pr: 1 }}>
               {userReserve.reserve.symbol}
             </Typography>
             {disabled !== undefined && (
@@ -167,7 +167,7 @@ export const MigrationListItem = ({
               value={v2APY}
               symbol={userReserve.reserve.symbol}
               incentives={v2Incentives}
-              variant="main14"
+              variant="body2"
               color={baseColor}
               market={currentMarket}
             />
@@ -183,7 +183,7 @@ export const MigrationListItem = ({
               value={v3APY}
               symbol={userReserve.reserve.symbol}
               incentives={v3Incentives}
-              variant="main14"
+              variant="body2"
               color={baseColor}
               market={currentMarket}
             />
@@ -197,7 +197,7 @@ export const MigrationListItem = ({
               userReserve.reserve.reserveLiquidationThreshold !== '0' ? (
                 <CheckRoundedIcon fontSize="small" color="success" />
               ) : (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="body2" color={baseColorSecondary} />
               )}
 
               <SvgIcon sx={{ px: 1.5 }}>
@@ -215,7 +215,7 @@ export const MigrationListItem = ({
                   enabledAsCollateral={enabledAsCollateral}
                 />
               ) : !enabledAsCollateral ? (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="body2" color={baseColorSecondary} />
               ) : isIsolated ? (
                 <Box
                   sx={{
@@ -239,7 +239,7 @@ export const MigrationListItem = ({
         {isSupplyList &&
           (loadingRates ? (
             <ListColumn>
-              <NoData variant="main14" color="text.secondary" />
+              <NoData variant="body2" color="text.secondary" />
             </ListColumn>
           ) : (
             <ListColumn>
@@ -247,7 +247,7 @@ export const MigrationListItem = ({
                 <FormattedNumber
                   value={userReserve.reserve.formattedBaseLTVasCollateral}
                   percent
-                  variant="secondary14"
+                  variant="body2"
                   color={baseColor}
                 />
                 <SvgIcon sx={{ px: 1.5 }}>
@@ -261,7 +261,7 @@ export const MigrationListItem = ({
                 <FormattedNumber
                   value={v3Rates?.ltv || 0}
                   percent
-                  variant="secondary14"
+                  variant="body2"
                   color={baseColor}
                 />
               </Box>
@@ -277,7 +277,7 @@ export const MigrationListItem = ({
                 sx={{ width: '50px', background: theme.palette.background.paper }}
                 disabled
               >
-                <Typography variant="buttonS" color={baseColor}>
+                <Typography variant="button" color={baseColor}>
                   {borrowApyType}
                 </Typography>
               </Button>
@@ -295,7 +295,7 @@ export const MigrationListItem = ({
                 sx={{ width: '50px', background: theme.palette.background.paper }}
                 disabled
               >
-                <Typography variant="buttonS" color={baseColor}>
+                <Typography variant="button" color={baseColor}>
                   Variable
                 </Typography>
               </Button>
@@ -306,7 +306,7 @@ export const MigrationListItem = ({
         {!isSupplyList &&
           (loadingRates ? (
             <ListColumn>
-              <NoData variant="main14" color="text.secondary" />
+              <NoData variant="body2" color="text.secondary" />
             </ListColumn>
           ) : (
             <ListColumn>
@@ -314,7 +314,7 @@ export const MigrationListItem = ({
                 <FormattedNumber
                   value={userReserve.reserve.formattedReserveLiquidationThreshold}
                   percent
-                  variant="secondary14"
+                  variant="body2"
                   color={baseColor}
                 />
                 <SvgIcon sx={{ px: 1.5 }}>
@@ -328,7 +328,7 @@ export const MigrationListItem = ({
                 <FormattedNumber
                   value={v3Rates?.liquidationThreshold ?? -1}
                   percent
-                  variant="secondary14"
+                  variant="body2"
                   color={baseColor}
                 />
               </Box>
@@ -336,10 +336,10 @@ export const MigrationListItem = ({
           ))}
 
         <ListColumn>
-          <FormattedNumber value={amount} variant="secondary14" color={baseColor} />
+          <FormattedNumber value={amount} variant="body2" color={baseColor} />
           <FormattedNumber
             value={amountInUSD}
-            variant="secondary12"
+            variant="caption"
             color={baseColor}
             symbol="USD"
             symbolsColor={baseColor}

@@ -98,7 +98,7 @@ export const IncentivesTooltipContent = ({
   incentivesNetAPR,
   symbol,
 }: IncentivesTooltipContentProps) => {
-  const typographyVariant = 'secondary12';
+  const typographyVariant = 'caption';
 
   const Number = ({ incentiveAPR }: { incentiveAPR: 'Infinity' | number | string }) => {
     return (

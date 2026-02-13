@@ -6,12 +6,12 @@ import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper'
 export const MarketAssetsListMobileItemLoader = () => {
   return (
     <ListMobileItemWrapper loading>
-      <Row caption={<Skeleton width={100} height={20} />} captionVariant="description" mb={3}>
+      <Row caption={<Skeleton width={100} height={20} />} captionVariant="body2" mb={3}>
         <Skeleton width={45} height={20} />
       </Row>
       <Row
         caption={<Skeleton width={100} height={20} />}
-        captionVariant="description"
+        captionVariant="body2"
         mb={3}
         align="flex-start"
       >
@@ -20,12 +20,12 @@ export const MarketAssetsListMobileItemLoader = () => {
 
       <Divider sx={{ mb: 3 }} />
 
-      <Row caption={<Skeleton width={100} height={20} />} captionVariant="description" mb={3}>
+      <Row caption={<Skeleton width={100} height={20} />} captionVariant="body2" mb={3}>
         <Skeleton width={45} height={20} />
       </Row>
       <Row
         caption={<Skeleton width={100} height={20} />}
-        captionVariant="description"
+        captionVariant="body2"
         mb={3}
         align="flex-start"
       >
@@ -33,7 +33,7 @@ export const MarketAssetsListMobileItemLoader = () => {
       </Row>
       <Row
         caption={<Skeleton width={100} height={20} />}
-        captionVariant="description"
+        captionVariant="body2"
         mb={4}
         align="flex-start"
       >

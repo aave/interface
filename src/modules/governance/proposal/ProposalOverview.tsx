@@ -158,7 +158,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
               </Box>
             </>
           ) : (
-            <Typography variant="buttonL">
+            <Typography variant="button">
               <Skeleton />
             </Typography>
           )}
@@ -213,10 +213,10 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   return <StyledLink {...rest} />;
                 },
                 h2({ node, ...rest }) {
-                  return <Typography variant="subheader1" sx={{ mt: 6 }} gutterBottom {...rest} />;
+                  return <Typography variant="subtitle1" sx={{ mt: 6 }} gutterBottom {...rest} />;
                 },
                 p({ node, ...rest }) {
-                  return <Typography variant="description" {...rest} />;
+                  return <Typography variant="body2" {...rest} />;
                 },
               }}
             >

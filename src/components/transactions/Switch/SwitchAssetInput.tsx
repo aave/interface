@@ -232,7 +232,7 @@ export const SwitchAssetInput = ({
           />
           <Typography
             data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
-            variant="main16"
+            variant="body1"
             color="text.primary"
           >
             {selectedAsset.symbol}
@@ -312,7 +312,7 @@ export const SwitchAssetInput = ({
                     symbol={asset.symbol}
                     sx={{ width: 24, height: 24, mr: 1 }}
                   />
-                  <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
+                  <Typography variant="body2" color="text.primary" sx={{ mr: 1 }}>
                     {asset.symbol}
                   </Typography>
                 </Box>
@@ -357,7 +357,7 @@ export const SwitchAssetInput = ({
               ))
             ) : (
               <Typography
-                variant="main14"
+                variant="body2"
                 color="text.primary"
                 sx={{ width: 'auto', textAlign: 'center', m: 4 }}
               >
@@ -378,7 +378,7 @@ export const SwitchAssetInput = ({
             value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
             compact
             symbol="USD"
-            variant="secondary12"
+            variant="caption"
             color="text.muted"
             symbolsColor="text.muted"
             flexGrow={1}
@@ -387,12 +387,12 @@ export const SwitchAssetInput = ({
 
         {selectedAsset.balance && onChange && (
           <>
-            <Typography component="div" variant="secondary12" color="text.secondary">
+            <Typography component="div" variant="caption" color="text.secondary">
               <Trans>Balance</Trans>
               <FormattedNumber
                 value={selectedAsset.balance}
                 compact
-                variant="secondary12"
+                variant="caption"
                 color="text.secondary"
                 symbolsColor="text.disabled"
                 sx={{ ml: 1 }}

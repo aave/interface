@@ -39,7 +39,7 @@ export const ChangeNetworkWarning = ({
           </Trans>
         </Typography>
       ) : (
-        <Typography variant="description">
+        <Typography variant="body2">
           <Trans>Please switch to {networkName}.</Trans>{' '}
           <Button
             variant="text"
@@ -47,7 +47,7 @@ export const ChangeNetworkWarning = ({
             onClick={handleSwitchNetwork}
             disableRipple
           >
-            <Typography variant="description">
+            <Typography variant="body2">
               <Trans>Switch Network</Trans>
             </Typography>
           </Button>

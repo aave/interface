@@ -69,7 +69,7 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
           </SvgIcon>
         </ListItemIcon>
         <ListItemText disableTypography>
-          <Typography variant="subheader2">
+          <Typography variant="subtitle2">
             <Trans>Select language</Trans>
           </Typography>
         </ListItemText>

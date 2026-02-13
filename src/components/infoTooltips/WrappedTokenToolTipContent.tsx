@@ -24,7 +24,7 @@ export const WrappedTokenTooltipContent = ({
 
   return (
     <Stack direction="column" gap={3}>
-      <Typography variant="tooltip">
+      <Typography variant="caption">
         <Trans>
           DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching
           incurs no additional costs and no slippage.
@@ -32,7 +32,7 @@ export const WrappedTokenTooltipContent = ({
       </Typography>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Box>
-          <Typography variant="secondary12">
+          <Typography variant="caption">
             <Trans>Exchange rate</Trans>
           </Typography>
         </Box>
@@ -43,20 +43,20 @@ export const WrappedTokenTooltipContent = ({
             <FormattedNumber
               value="1"
               visibleDecimals={0}
-              variant="secondary12"
+              variant="caption"
               color="text.primary"
             />
-            <Typography variant="tooltip">{tokenInSymbol}</Typography>
+            <Typography variant="caption">{tokenInSymbol}</Typography>
             <SvgIcon color="primary" sx={{ fontSize: '12px' }}>
               <ArrowNarrowRightIcon />
             </SvgIcon>
             <FormattedNumber
               value={exchangeRate || '0'}
               visibleDecimals={4}
-              variant="secondary12"
+              variant="caption"
               color="text.primary"
             />
-            <Typography variant="tooltip">{tokenOutSymbol}</Typography>
+            <Typography variant="caption">{tokenOutSymbol}</Typography>
           </Stack>
         )}
       </Stack>

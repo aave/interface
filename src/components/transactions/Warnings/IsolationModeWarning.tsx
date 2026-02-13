@@ -12,7 +12,7 @@ interface IsolationModeWarningProps {
 export const IsolationModeWarning = ({ asset, severity }: IsolationModeWarningProps) => {
   return (
     <Warning severity={severity || 'info'} sx={{ mb: 3 }}>
-      <Typography variant="subheader1" mb={0.5}>
+      <Typography variant="subtitle1" mb={0.5}>
         <Trans>You are entering Isolation mode</Trans>
       </Typography>
       <Typography>

@@ -85,7 +85,7 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
             />
             {sm && (
               <Button sx={{ ml: 2 }} onClick={() => handleCancelClick()}>
-                <Typography variant="buttonM">
+                <Typography variant="button">
                   <Trans>Cancel</Trans>
                 </Typography>
               </Button>

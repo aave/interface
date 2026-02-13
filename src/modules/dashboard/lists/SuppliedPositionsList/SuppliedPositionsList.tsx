@@ -50,7 +50,7 @@ const head = [
         }}
         text={<Trans>Collateral</Trans>}
         key="Collateral"
-        variant="subheader2"
+        variant="subtitle2"
       />
     ),
     sortKey: 'usageAsCollateralEnabledOnUser',

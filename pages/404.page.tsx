@@ -35,7 +35,7 @@ export default function Aave404Page() {
           <Box sx={{ maxWidth: 444, m: '0 auto' }}>
             <img width="100%" height="auto" src="/404/404.svg" alt="404 - Page not found" />
           </Box>
-          <Typography variant="display1" sx={{ mt: 2 }}>
+          <Typography variant="body1" sx={{ mt: 2 }}>
             <Trans>Page not found</Trans>
           </Typography>
           <Typography sx={{ mt: 3, mb: 5, maxWidth: 480 }}>

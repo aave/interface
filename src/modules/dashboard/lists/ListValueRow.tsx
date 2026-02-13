@@ -20,12 +20,12 @@ export const ListValueRow = ({
   disabled,
 }: ListValueRowProps) => {
   return (
-    <Row caption={title} captionVariant="description" align="flex-start" mb={2}>
+    <Row caption={title} captionVariant="body2" align="flex-start" mb={2}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
           <FormattedNumber
             value={value}
-            variant="secondary14"
+            variant="body2"
             color={disabled ? 'text.disabled' : 'text.primary'}
           />
           {capsComponent}
@@ -34,7 +34,7 @@ export const ListValueRow = ({
         {!disabled && (
           <FormattedNumber
             value={subValue}
-            variant="secondary12"
+            variant="caption"
             color="text.secondary"
             symbol="USD"
             mb={0.5}

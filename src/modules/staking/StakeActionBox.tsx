@@ -69,7 +69,7 @@ export const StakeActionBox = ({
           <FormattedNumber
             value={value}
             visibleDecimals={2}
-            variant="secondary21"
+            variant="subtitle1"
             color={+value === 0 ? 'text.muted' : 'text.primary'}
             data-cy={`amountNative`}
           />
@@ -77,7 +77,7 @@ export const StakeActionBox = ({
             value={valueUSD}
             symbol="USD"
             visibleDecimals={2}
-            variant="secondary12"
+            variant="caption"
             color={+valueUSD === 0 ? 'text.muted' : 'text.secondary'}
             symbolsColor={+valueUSD === 0 ? 'text.muted' : 'text.secondary'}
             data-cy={`amountUSD`}

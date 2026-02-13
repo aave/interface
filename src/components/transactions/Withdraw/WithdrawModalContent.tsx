@@ -143,7 +143,7 @@ export const WithdrawModalContent = ({
       />
 
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           {errorComponent}
         </Typography>
       )}
@@ -207,7 +207,7 @@ export const WithdrawModalContent = ({
               size="small"
               data-cy={`risk-checkbox`}
             />
-            <Typography variant="description">
+            <Typography variant="body2">
               <Trans>I acknowledge the risks involved.</Trans>
             </Typography>
           </Box>

@@ -71,24 +71,24 @@ export const DebtCeilingStatus = ({
         <Box>
           <FormattedNumber
             value={debt}
-            variant="main14"
+            variant="body2"
             symbol="USD"
-            symbolsVariant="secondary14"
+            symbolsVariant="body2"
             visibleDecimals={2}
           />
           <Typography
             component="span"
             color="text.secondary"
-            variant="secondary14"
+            variant="body2"
             sx={{ display: 'inline-block', mx: 1 }}
           >
             <Trans>of</Trans>
           </Typography>
           <FormattedNumber
             value={ceiling}
-            variant="main14"
+            variant="body2"
             symbol="USD"
-            symbolsVariant="secondary14"
+            symbolsVariant="body2"
             visibleDecimals={2}
           />
         </Box>

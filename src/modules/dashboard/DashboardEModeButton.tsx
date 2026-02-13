@@ -50,7 +50,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         e.stopPropagation();
       }}
     >
-      <Typography mr={1} variant="description" color="text.secondary">
+      <Typography mr={1} variant="body2" color="text.secondary">
         <Trans>E-Mode</Trans>
       </Typography>
 
@@ -104,11 +104,11 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           </SvgIcon>
 
           {isEModeDisabled ? (
-            <Typography variant="buttonS" color="text.secondary">
+            <Typography variant="button" color="text.secondary">
               <EModeLabelMessage />
             </Typography>
           ) : (
-            <TypographyGradient variant="buttonS">
+            <TypographyGradient variant="button">
               <EModeLabelMessage />
             </TypographyGradient>
           )}
@@ -133,7 +133,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         keepMounted={true}
       >
         <Box sx={{ px: 4, pt: 2, pb: 3 }}>
-          <Typography variant="subheader1" mb={isEModeDisabled ? 1 : 3}>
+          <Typography variant="subtitle1" mb={isEModeDisabled ? 1 : 3}>
             <Trans>Efficiency mode (E-Mode)</Trans>
           </Typography>
 
@@ -162,7 +162,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                       >
                         <LightningBoltGradient />
                       </SvgIcon>
-                      <Typography variant="subheader2" color="text.primary">
+                      <Typography variant="subtitle2" color="text.primary">
                         <EModeLabelMessage />
                       </Typography>
                     </Box>
@@ -180,7 +180,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                         mr: '5px',
                       }}
                     />
-                    <Typography variant="subheader2" color="success.main">
+                    <Typography variant="subtitle2" color="success.main">
                       <Trans>Enabled</Trans>
                     </Typography>
                   </Box>

@@ -163,7 +163,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                   typography: 'h3',
                 },
                 typography: {
-                  xs: 'subheader1',
+                  xs: 'subtitle1',
                   md: 'h4',
                 },
               })}
@@ -173,7 +173,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
             <Typography
               sx={(theme) => ({
                 [theme.breakpoints.up(1125)]: {
-                  typography: 'description',
+                  typography: 'body2',
                 },
                 typography: {
                   xs: 'caption',
@@ -227,7 +227,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                     <FormattedNumber
                       symbol="USD"
                       compact
-                      variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                      variant={isCustomBreakpoint ? 'h3' : isMd ? 'body1' : 'body2'}
                       value={totalBorrowed}
                     />
                     <Stack direction="row" gap={1} sx={{ marginTop: 0.5 }}>
@@ -246,7 +246,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 <Typography
                   sx={{
                     ['@media screen and (min-width: 1125px)']: {
-                      typography: 'description',
+                      typography: 'body2',
                     },
                     typography: {
                       xs: 'caption',
@@ -269,14 +269,14 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
               <GhoBorrowApyRange
                 minVal={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
                 maxVal={ghoReserveData.ghoVariableBorrowAPY}
-                variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                hyphenVariant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                variant={isCustomBreakpoint ? 'h3' : isMd ? 'body1' : 'body2'}
+                percentVariant={isCustomBreakpoint ? 'h3' : isMd ? 'body1' : 'body2'}
+                hyphenVariant={isCustomBreakpoint ? 'h3' : isMd ? 'body1' : 'body2'}
               />
               <Typography
                 sx={{
                   ['@media screen and (min-width: 1125px)']: {
-                    typography: 'description',
+                    typography: 'body2',
                   },
                   typography: {
                     xs: 'caption',
@@ -288,7 +288,7 @@ export const GhoBanner = ({ reserve }: GhoBannerProps) => {
                 <TextWithTooltip
                   sx={{
                     ['@media screen and (min-width: 1125px)']: {
-                      typography: 'description',
+                      typography: 'body2',
                     },
                     typography: {
                       xs: 'caption',

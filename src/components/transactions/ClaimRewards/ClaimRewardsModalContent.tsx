@@ -156,7 +156,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
       )}
 
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           {handleBlocked()}
         </Typography>
       )}
@@ -175,7 +175,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
             <>
               <Row
                 caption={<Trans>Balance</Trans>}
-                captionVariant="description"
+                captionVariant="body2"
                 align="flex-start"
                 mb={selectedReward.symbol !== 'all' ? 0 : 4}
               >
@@ -192,14 +192,14 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                     >
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <TokenIcon symbol={reward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                        <FormattedNumber value={Number(reward.balance)} variant="secondary14" />
-                        <Typography ml={1} variant="secondary14">
+                        <FormattedNumber value={Number(reward.balance)} variant="body2" />
+                        <Typography ml={1} variant="body2">
                           {reward.symbol}
                         </Typography>
                       </Box>
                       <FormattedNumber
                         value={Number(reward.balanceUsd)}
-                        variant="helperText"
+                        variant="caption"
                         compact
                         symbol="USD"
                         color="text.secondary"

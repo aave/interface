@@ -29,7 +29,7 @@ export const FaucetButton = () => {
         variant="outlined"
         size="small"
       >
-        <Typography variant="buttonS">
+        <Typography variant="button">
           <Trans>{currentNetworkConfig.name} Faucet</Trans>
         </Typography>
       </Button>

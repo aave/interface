@@ -96,7 +96,7 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
             <Row
               caption={
                 <>
-                  <Typography variant="description">
+                  <Typography variant="body2">
                     <Trans>Voting power</Trans>
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
@@ -107,14 +107,14 @@ export function VoteInfo({ proposal }: VoteInfoProps) {
             >
               <FormattedNumber
                 value={powerAtProposalStart || 0}
-                variant="main16"
+                variant="body1"
                 visibleDecimals={2}
               />
             </Row>
           )}
           {showAlreadyVotedMsg && (
             <Warning severity={voteOnProposal.support ? 'success' : 'error'} sx={{ my: 2 }}>
-              <Typography variant="subheader1">
+              <Typography variant="subtitle1">
                 <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
               </Typography>
               <Typography variant="caption">

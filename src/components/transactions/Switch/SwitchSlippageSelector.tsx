@@ -78,7 +78,7 @@ export const SwitchSlippageSelector = ({
           open={open}
           onClose={handleClose}
         >
-          <Typography variant="subheader2" mb={5}>
+          <Typography variant="subtitle2" mb={5}>
             <Trans>Max slippage</Trans>
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: '8px' }}>
@@ -108,7 +108,7 @@ export const SwitchSlippageSelector = ({
                     value={option}
                     visibleDecimals={2}
                     symbol="%"
-                    variant="subheader2"
+                    variant="subtitle2"
                     color="primary.main"
                     symbolsColor="primary.main"
                   />

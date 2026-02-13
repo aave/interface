@@ -250,13 +250,13 @@ export const WithdrawAndSwitchModalContent = ({
       />
 
       {error && !loadingSkeleton && !withdrawAndUnwrap && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           {error}
         </Typography>
       )}
 
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           {errorComponent}
         </Typography>
       )}
@@ -277,7 +277,7 @@ export const WithdrawAndSwitchModalContent = ({
                         symbol={swapTarget.reserve.iconSymbol}
                         sx={{ mr: 1, fontSize: '14px' }}
                       />
-                      <FormattedNumber value={minimumAmountReceived} variant="secondary12" />
+                      <FormattedNumber value={minimumAmountReceived} variant="caption" />
                     </Stack>
                   </Stack>
                 </Stack>
@@ -334,7 +334,7 @@ export const WithdrawAndSwitchModalContent = ({
               size="small"
               data-cy={`risk-checkbox`}
             />
-            <Typography variant="description">
+            <Typography variant="body2">
               <Trans>I acknowledge the risks involved.</Trans>
             </Typography>
           </Box>

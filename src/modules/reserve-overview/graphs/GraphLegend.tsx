@@ -23,7 +23,7 @@ export function GraphLegend({
               borderRadius: '50%',
             }}
           />
-          <Typography variant="description" color="text.secondary">
+          <Typography variant="body2" color="text.secondary">
             {label.text}
           </Typography>
         </Box>

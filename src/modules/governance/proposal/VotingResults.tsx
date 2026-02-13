@@ -40,7 +40,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
           {proposalVotes && (
             <VotersListContainer proposal={proposal.votingInfo} proposalVotes={proposalVotes} />
           )}
-          <Row caption={<Trans>State</Trans>} sx={{ height: 48 }} captionVariant="description">
+          <Row caption={<Trans>State</Trans>} sx={{ height: 48 }} captionVariant="body2">
             <Box
               sx={{
                 display: 'flex',
@@ -62,7 +62,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
               */}
             </Box>
           </Row>
-          <Row caption={<Trans>Quorum</Trans>} sx={{ height: 48 }} captionVariant="description">
+          <Row caption={<Trans>Quorum</Trans>} sx={{ height: 48 }} captionVariant="body2">
             <CheckBadge
               loading={loading}
               text={
@@ -74,7 +74,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
               }
               checked={proposal.votingInfo.quorumReached}
               sx={{ height: 48 }}
-              variant="description"
+              variant="body2"
             />
           </Row>
           <Row
@@ -87,7 +87,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
               </>
             }
             sx={{ height: 48 }}
-            captionVariant="description"
+            captionVariant="body2"
           >
             <Box sx={{ textAlign: 'right' }}>
               <FormattedNumber
@@ -109,7 +109,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
           <Row
             caption={<Trans>Differential</Trans>}
             sx={{ height: 48 }}
-            captionVariant="description"
+            captionVariant="body2"
           >
             <CheckBadge
               loading={loading}
@@ -122,7 +122,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
               }
               checked={proposal.votingInfo.differentialReached}
               sx={{ height: 48 }}
-              variant="description"
+              variant="body2"
             />
           </Row>
           <Row
@@ -135,7 +135,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
               </>
             }
             sx={{ height: 48 }}
-            captionVariant="description"
+            captionVariant="body2"
           >
             <Box sx={{ textAlign: 'right' }}>
               <FormattedNumber
@@ -157,7 +157,7 @@ export const VotingResults = ({ proposal, loading, proposalVotes }: VotingResult
           <Row
             caption={<Trans>Total voting power</Trans>}
             sx={{ height: 48 }}
-            captionVariant="description"
+            captionVariant="body2"
           >
             <FormattedNumber
               value={normalize(proposal.totalVotingSupply, 18)}

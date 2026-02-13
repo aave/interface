@@ -41,6 +41,7 @@
     "coverage"
   ],
   "include": [
+    "src",
     "custom.d.ts",
     "next-env.d.ts",
     "**/*.ts",

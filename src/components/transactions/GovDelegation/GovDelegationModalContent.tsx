@@ -162,7 +162,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
           (powers.aavePropositionDelegatee === constants.AddressZero &&
             powers.stkAavePropositionDelegatee === constants.AddressZero))) || (
         <>
-          <Typography variant="description" color="text.secondary" sx={{ mb: 1 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
             <Trans>{isRevokeModal ? 'Power to revoke' : 'Power to delegate'}</Trans>
           </Typography>
           <DelegationTypeSelector
@@ -173,13 +173,13 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       )}
 
       {isRevokeModal ? (
-        <Typography variant="description" color="text.secondary" sx={{ mt: 6, mb: 2 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 6, mb: 2 }}>
           <Trans>Balance to revoke</Trans>
         </Typography>
       ) : (
         <TextWithTooltip
           text="Balance to delegate"
-          variant="description"
+          variant="body2"
           textColor="text.secondary"
           wrapperProps={{ mt: 6, mb: 2 }}
           event={{
@@ -209,7 +209,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
       />
       {!isRevokeModal && (
         <>
-          <Typography variant="description" color="text.secondary" mb={1}>
+          <Typography variant="body2" color="text.secondary" mb={1}>
             <Trans>Recipient address</Trans>
           </Typography>
           <FormControl

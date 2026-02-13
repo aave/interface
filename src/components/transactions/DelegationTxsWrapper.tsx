@@ -125,7 +125,7 @@ export const DelegationTxsWrapper = ({
         {content}
       </Button>
       {readOnlyModeAddress && (
-        <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
+        <Typography variant="caption" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
           <Trans>Read-only mode. Connect to a wallet to perform transactions.</Trans>
         </Typography>
       )}

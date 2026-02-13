@@ -44,7 +44,7 @@ export const VotersListContainer = ({ proposal, proposalVotes }: VotersListProps
     return (
       <Box sx={{ mt: 8, mb: 12 }}>
         <Row sx={{ mb: 3 }}>
-          <Typography sx={{ ml: 'auto' }} variant="subheader2" color="text.secondary">
+          <Typography sx={{ ml: 'auto' }} variant="subtitle2" color="text.secondary">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -58,12 +58,12 @@ export const VotersListContainer = ({ proposal, proposalVotes }: VotersListProps
     return (
       <Box sx={{ mt: 8, mb: 12 }}>
         <Row sx={{ mb: 3 }}>
-          <Typography sx={{ ml: 'auto' }} variant="subheader2" color="text.secondary">
+          <Typography sx={{ ml: 'auto' }} variant="subtitle2" color="text.secondary">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 8 }}>
-          <Typography variant="helperText" color="error.main">
+          <Typography variant="caption" color="error.main">
             <Trans>Failed to load proposal voters. Please refresh the page.</Trans>
           </Typography>
         </Box>
@@ -75,14 +75,14 @@ export const VotersListContainer = ({ proposal, proposalVotes }: VotersListProps
   return (
     <Box sx={{ my: 8 }}>
       <Row sx={{ mb: 3 }}>
-        <Typography variant="subheader2" color="text.secondary">
+        <Typography variant="subtitle2" color="text.secondary">
           {proposalVotes.combinedVotes.length > 10 ? (
             <Trans>Top 10 addresses</Trans>
           ) : (
             <Trans>Addresses</Trans>
           )}
         </Typography>
-        <Typography variant="subheader2" color="text.secondary">
+        <Typography variant="subtitle2" color="text.secondary">
           <Trans>Votes</Trans>
         </Typography>
       </Row>

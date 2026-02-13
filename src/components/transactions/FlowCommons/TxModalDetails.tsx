@@ -91,7 +91,7 @@ export const DetailsNumberLine = ({
   ...rest
 }: DetailsNumberLineProps) => {
   return (
-    <Row caption={description} captionVariant="description" mb={4}>
+    <Row caption={description} captionVariant="body2" mb={4}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {loading ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
@@ -99,11 +99,11 @@ export const DetailsNumberLine = ({
           <>
             {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
             {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
-            <FormattedNumber value={value} variant="secondary14" {...rest} />
+            <FormattedNumber value={value} variant="body2" {...rest} />
             {futureValue && (
               <>
                 {ArrowRightIcon}
-                <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
+                <FormattedNumber value={futureValue} variant="body2" {...rest} />
               </>
             )}
           </>
@@ -139,7 +139,7 @@ export const DetailsNumberLineWithSub = ({
   loading = false,
 }: DetailsNumberLineWithSubProps) => {
   return (
-    <Row caption={description} captionVariant="description" mb={4} align="flex-start">
+    <Row caption={description} captionVariant="body2" mb={4} align="flex-start">
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         {loading ? (
           <>
@@ -156,9 +156,9 @@ export const DetailsNumberLineWithSub = ({
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {value && (
                 <>
-                  <FormattedNumber value={value} variant="secondary14" color={color} />
+                  <FormattedNumber value={value} variant="body2" color={color} />
                   {!hideSymbolSuffix && (
-                    <Typography ml={1} variant="secondary14">
+                    <Typography ml={1} variant="body2">
                       {symbol}
                     </Typography>
                   )}
@@ -166,9 +166,9 @@ export const DetailsNumberLineWithSub = ({
                 </>
               )}
               {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
-              <FormattedNumber value={futureValue} variant="secondary14" color={color} />
+              <FormattedNumber value={futureValue} variant="body2" color={color} />
               {!hideSymbolSuffix && (
-                <Typography ml={1} variant="secondary14">
+                <Typography ml={1} variant="body2">
                   {symbol}
                 </Typography>
               )}
@@ -176,11 +176,11 @@ export const DetailsNumberLineWithSub = ({
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {valueUSD && (
                 <>
-                  <FormattedNumber value={valueUSD} variant="helperText" compact symbol="USD" />
+                  <FormattedNumber value={valueUSD} variant="caption" compact symbol="USD" />
                   {ArrowRightIcon}
                 </>
               )}
-              <FormattedNumber value={futureValueUSD} variant="helperText" compact symbol="USD" />
+              <FormattedNumber value={futureValueUSD} variant="caption" compact symbol="USD" />
             </Box>
           </>
         )}
@@ -195,7 +195,7 @@ export interface DetailsCollateralLine {
 
 export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine) => {
   return (
-    <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
+    <Row caption={<Trans>Collateralization</Trans>} captionVariant="body2" mb={4}>
       <CollateralState collateralType={collateralType} />
     </Row>
   );
@@ -211,22 +211,22 @@ export const CollateralState = ({ collateralType }: CollateralStateProps) => {
       {
         {
           [CollateralType.ENABLED]: (
-            <Typography variant="description" color="success.main">
+            <Typography variant="body2" color="success.main">
               <Trans>Enabled</Trans>
             </Typography>
           ),
           [CollateralType.ISOLATED_ENABLED]: (
             <IsolatedEnabledBadge
-              typographyProps={{ variant: 'description', color: 'warning.main' }}
+              typographyProps={{ variant: 'body2', color: 'warning.main' }}
             />
           ),
           [CollateralType.DISABLED]: (
-            <Typography variant="description" color="error.main">
+            <Typography variant="body2" color="error.main">
               <Trans>Disabled</Trans>
             </Typography>
           ),
           [CollateralType.UNAVAILABLE]: (
-            <Typography variant="description" color="error.main">
+            <Typography variant="body2" color="error.main">
               <Trans>Unavailable</Trans>
             </Typography>
           ),
@@ -256,7 +256,7 @@ export const DetailsIncentivesLine = ({
 }: DetailsIncentivesLineProps) => {
   if (!incentives || incentives.filter((i) => i.incentiveAPR !== '0').length === 0) return null;
   return (
-    <Row caption={<Trans>Rewards APR</Trans>} captionVariant="description" mb={4} minHeight={24}>
+    <Row caption={<Trans>Rewards APR</Trans>} captionVariant="body2" mb={4} minHeight={24}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {loading ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
@@ -268,7 +268,7 @@ export const DetailsIncentivesLine = ({
                 {ArrowRightIcon}
                 <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
                 {futureIncentives && futureIncentives.length === 0 && (
-                  <Typography variant="secondary14">
+                  <Typography variant="body2">
                     <Trans>None</Trans>
                   </Typography>
                 )}
@@ -298,7 +298,7 @@ export const DetailsHFLine = ({
   return (
     <Row
       caption={<Trans>Health factor</Trans>}
-      captionVariant="description"
+      captionVariant="body2"
       mb={4}
       align="flex-start"
     >
@@ -308,7 +308,7 @@ export const DetailsHFLine = ({
             <Skeleton variant="rectangular" height={20} width={80} sx={{ borderRadius: '4px' }} />
           ) : (
             <>
-              <HealthFactorNumber value={healthFactor} variant="secondary14" />
+              <HealthFactorNumber value={healthFactor} variant="body2" />
 
               {visibleHfChange && (
                 <>
@@ -316,7 +316,7 @@ export const DetailsHFLine = ({
 
                   <HealthFactorNumber
                     value={isNaN(Number(futureHealthFactor)) ? healthFactor : futureHealthFactor}
-                    variant="secondary14"
+                    variant="body2"
                   />
                 </>
               )}
@@ -324,7 +324,7 @@ export const DetailsHFLine = ({
           )}
         </Box>
 
-        <Typography variant="helperText" color="text.secondary">
+        <Typography variant="caption" color="text.secondary">
           <Trans>Liquidation at</Trans>
           {' <1.0'}
         </Typography>
@@ -345,7 +345,7 @@ export const DetailsUnwrapSwitch = ({
   label,
 }: DetailsUnwrapSwitchProps) => {
   return (
-    <Row captionVariant="description" sx={{ mt: 5 }}>
+    <Row captionVariant="body2" sx={{ mt: 5 }}>
       <FormControlLabel
         sx={{ mx: 0 }}
         control={

@@ -119,14 +119,14 @@ export const GovRepresentativesContent = ({
                     width="16px"
                     alt="network logo"
                   />
-                  <Typography variant="description" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary">
                     {networkConfigs[r.chainId].name}
                   </Typography>
                 </Stack>
                 <FormControlLabel
                   sx={{ mr: 0 }}
                   label={
-                    <Typography sx={{ mr: 1 }} variant="subheader1" color="error.main">
+                    <Typography sx={{ mr: 1 }} variant="subtitle1" color="error.main">
                       <Trans>Remove</Trans>
                     </Typography>
                   }
@@ -166,7 +166,7 @@ export const GovRepresentativesContent = ({
               />
               <Typography
                 sx={{ visibility: r.invalid && !r.remove ? 'visible' : 'hidden' }}
-                variant="helperText"
+                variant="caption"
                 color="error.main"
               >
                 <Trans>Can&apos;t validate the wallet address. Try again.</Trans>

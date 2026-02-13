@@ -102,7 +102,7 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
       )}
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
+        <Typography variant="caption" color="red">
           {handleBlocked()}
         </Typography>
       )}

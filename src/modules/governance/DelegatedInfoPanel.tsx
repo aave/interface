@@ -54,7 +54,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
             caption={
               <ExternalUserDisplay
                 avatarProps={{ size: AvatarSize.XS }}
-                titleProps={{ variant: 'subheader1' }}
+                titleProps={{ variant: 'subtitle1' }}
                 address={aaveDelegatee}
               />
             }
@@ -62,9 +62,9 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
               <FormattedNumber
                 value={Number(aavePower) + Number(stkAavePower) + Number(aAavePower)}
-                variant="subheader1"
+                variant="subtitle1"
               />
-              <Typography variant="helperText" color="text.secondary">
+              <Typography variant="caption" color="text.secondary">
                 AAVE + stkAAVE + aAAVE
               </Typography>
             </Box>
@@ -77,14 +77,14 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 caption={
                   <ExternalUserDisplay
                     avatarProps={{ size: AvatarSize.XS }}
-                    titleProps={{ variant: 'subheader1' }}
+                    titleProps={{ variant: 'subtitle1' }}
                     address={aaveDelegatee}
                   />
                 }
               >
                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                   <TokenIcon symbol="AAVE" sx={{ width: 16, height: 16 }} />
-                  <FormattedNumber value={aavePower} variant="subheader1" />
+                  <FormattedNumber value={aavePower} variant="subtitle1" />
                 </Box>
               </Row>
             )}
@@ -94,14 +94,14 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 caption={
                   <ExternalUserDisplay
                     avatarProps={{ size: AvatarSize.XS }}
-                    titleProps={{ variant: 'subheader1' }}
+                    titleProps={{ variant: 'subtitle1' }}
                     address={stkAaveDelegatee}
                   />
                 }
               >
                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                   <TokenIcon symbol="stkAAVE" sx={{ width: 16, height: 16 }} />
-                  <FormattedNumber value={stkAavePower} variant="subheader1" />
+                  <FormattedNumber value={stkAavePower} variant="subtitle1" />
                 </Box>
               </Row>
             )}
@@ -112,14 +112,14 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 caption={
                   <ExternalUserDisplay
                     avatarProps={{ size: AvatarSize.XS }}
-                    titleProps={{ variant: 'subheader1' }}
+                    titleProps={{ variant: 'subtitle1' }}
                     address={aAaveDelegatee}
                   />
                 }
               >
                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                   <TokenIcon aToken symbol="aave" sx={{ width: 16, height: 16 }} />
-                  <FormattedNumber value={aAavePower} variant="subheader1" />
+                  <FormattedNumber value={aAavePower} variant="subtitle1" />
                 </Box>
               </Row>
             )}
@@ -175,7 +175,7 @@ export const DelegatedInfoPanel = () => {
           <Link
             href="https://docs.aave.com/developers/v/2.0/protocol-governance/governance"
             target="_blank"
-            variant="description"
+            variant="body2"
             color="text.secondary"
             sx={{ textDecoration: 'underline', ml: 1 }}
             onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { link: 'Learn More Delegation' })}
@@ -184,7 +184,7 @@ export const DelegatedInfoPanel = () => {
           </Link>
         </Typography>
         {disableButton ? (
-          <Typography variant="description" color="text.muted" mt={6}>
+          <Typography variant="body2" color="text.muted" mt={6}>
             <Trans>You have no AAVE/stkAAVE/aAave balance to delegate.</Trans>
           </Typography>
         ) : (

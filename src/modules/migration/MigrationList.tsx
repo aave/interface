@@ -89,13 +89,13 @@ export const MigrationList = ({
         paperSx={{ border: 0, boxShadow: 'none' }}
         titleComponent={
           <Box display="block">
-            <Typography component="div" variant="subheader2" sx={{ mr: 4 }}>
+            <Typography component="div" variant="subtitle2" sx={{ mr: 4 }}>
               {titleComponent}
             </Typography>
             {isolatedReserveV3 && !isolatedReserveV3.enteringIsolationMode && (
               <Box sx={{ pt: '16px' }}>
                 <Warning severity="warning" icon={false} sx={{ mb: 0 }}>
-                  <Typography variant="caption" color={theme.palette.warning[100]}>
+                  <Typography variant="caption" color="warning.main">
                     <Trans>
                       Some migrated assets will not be used as collateral due to enabled isolation
                       mode in {marketName} V3 Market. Visit{' '}

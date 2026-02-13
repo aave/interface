@@ -41,11 +41,11 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
   return (
     <Box {...rest}>
       <Box sx={{ display: 'flex' }}>
-        <Typography variant="description" sx={{ mr: 2 }}>
+        <Typography variant="body2" sx={{ mr: 2 }}>
           {yae ? <Trans>YAE</Trans> : <Trans>NAY</Trans>}
         </Typography>
         {loading ? (
-          <Typography variant="secondary14" sx={{ flexGrow: 1, lineHeight: '1rem' }}>
+          <Typography variant="body2" sx={{ flexGrow: 1, lineHeight: '1rem' }}>
             <Skeleton width={40} />
           </Typography>
         ) : (
@@ -54,12 +54,12 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
               value={votes}
               visibleDecimals={0}
               sx={{ mr: 1 }}
-              variant="secondary14"
+              variant="body2"
               roundDown
               compact={compact}
             />
             {!compact && (
-              <Typography variant="description" component="span" color="text.secondary">
+              <Typography variant="body2" component="span" color="text.secondary">
                 AAVE
               </Typography>
             )}

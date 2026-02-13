@@ -32,9 +32,9 @@ export const SwitchRates = ({ rates, srcSymbol, destSymbol }: SwitchRatesProps) 
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 6 }}>
       <FormattedNumber
         visibleDecimals={0}
-        variant="main12"
+        variant="caption"
         symbol={isSwitched ? destSymbol : srcSymbol}
-        symbolsVariant="secondary12"
+        symbolsVariant="caption"
         symbolsColor="text.secondary"
         value={'1'}
       />
@@ -48,9 +48,9 @@ export const SwitchRates = ({ rates, srcSymbol, destSymbol }: SwitchRatesProps) 
         </SvgIcon>
       </ButtonBase>
       <FormattedNumber
-        variant="main12"
+        variant="caption"
         symbol={isSwitched ? srcSymbol : destSymbol}
-        symbolsVariant="secondary12"
+        symbolsVariant="caption"
         symbolsColor="text.secondary"
         value={rate.toString()}
         visibleDecimals={3}

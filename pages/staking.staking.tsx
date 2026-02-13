@@ -143,17 +143,17 @@ export default function Staking() {
                 sx={{ width: { xs: '100%', xsm: '359px' } }}
               >
                 <StyledToggleButton value="aave" disabled={mode === 'aave'}>
-                  <Typography variant="subheader1">
+                  <Typography variant="subtitle1">
                     <Trans>Stake AAVE</Trans>
                   </Typography>
                 </StyledToggleButton>
                 <StyledToggleButton value="gho" disabled={mode === 'gho'}>
-                  <Typography variant="subheader1">
+                  <Typography variant="subtitle1">
                     <Trans>Stake GHO</Trans>
                   </Typography>
                 </StyledToggleButton>
                 <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
-                  <Typography variant="subheader1">
+                  <Typography variant="subtitle1">
                     <Trans>Stake ABPT</Trans>
                   </Typography>
                 </StyledToggleButton>

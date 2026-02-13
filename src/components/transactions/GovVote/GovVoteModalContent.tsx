@@ -107,7 +107,7 @@ export const GovVoteModalContent = ({
         <ChangeNetworkWarning networkName={networkConfig.name} chainId={proposalVotingChain} />
       )}
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
+        <Typography variant="caption" color="red">
           {handleBlocked()}
         </Typography>
       )}

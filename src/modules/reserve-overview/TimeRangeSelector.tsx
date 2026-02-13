@@ -77,7 +77,7 @@ export const TimeRangeSelector = ({
               ...props.sx?.button,
             })}
           >
-            <Typography variant="buttonM">{interval}</Typography>
+            <Typography variant="button">{interval}</Typography>
           </ToggleButton>
         );
       })}

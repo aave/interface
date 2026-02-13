@@ -12,7 +12,7 @@ interface CheckBadgeProps extends BoxProps {
 export function CheckBadge({
   checked,
   text,
-  variant = 'subheader2',
+  variant = 'subtitle2',
   loading,
   ...rest
 }: CheckBadgeProps) {

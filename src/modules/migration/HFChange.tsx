@@ -17,7 +17,7 @@ export const HFChange = ({ caption, hfCurrent, hfAfter, loading }: HFChangeProps
     <Row
       caption={caption}
       sx={{ mb: { xs: 3, lg: 4 }, '&:last-of-type': { mb: 0 } }}
-      captionVariant={'description'}
+      captionVariant={'body2'}
     >
       <Box sx={{ textAlign: 'right' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
@@ -27,7 +27,7 @@ export const HFChange = ({ caption, hfCurrent, hfAfter, loading }: HFChangeProps
           </SvgIcon>
           {!loading ? <HealthFactorNumber value={hfAfter} /> : <Skeleton width={50} />}
         </Box>
-        <Typography variant="helperText" color="text.secondary">
+        <Typography variant="caption" color="text.secondary">
           <Trans>Liquidation at</Trans>
           {' <1.0'}
         </Typography>

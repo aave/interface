@@ -54,10 +54,10 @@ export const ListSlippageButton = ({
             text={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Trans>
-                  <Typography color="text.secondary" variant="description">
+                  <Typography color="text.secondary" variant="body2">
                     Slippage tolerance{' '}
                   </Typography>
-                  <Typography color="text.main" variant="secondary14" sx={{ px: '4px' }}>
+                  <Typography color="text.main" variant="body2" sx={{ px: '4px' }}>
                     {selectedSlippage}%{' '}
                   </Typography>
                   <SvgIcon sx={{ fontSize: '14px !important', mr: '4px' }}>
@@ -66,7 +66,7 @@ export const ListSlippageButton = ({
                 </Trans>
               </Box>
             }
-            variant="secondary14"
+            variant="body2"
           />
         }
         disabled={false}
@@ -84,7 +84,7 @@ export const ListSlippageButton = ({
         data-cy={`slippageMenu_${selectedSlippage}`}
       >
         <Box sx={{ px: '16px', py: '12px' }}>
-          <Typography variant="secondary12" color="text.secondary">
+          <Typography variant="caption" color="text.secondary">
             <Trans>Select slippage tolerance</Trans>
           </Typography>
         </Box>
@@ -103,7 +103,7 @@ export const ListSlippageButton = ({
                 handleClose();
               }}
             >
-              <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
+              <ListItemText primaryTypographyProps={{ variant: 'subtitle1' }}>
                 {slippageValue}%
               </ListItemText>
               <ListItemIcon>
@@ -116,7 +116,7 @@ export const ListSlippageButton = ({
         <Divider />
         <Box sx={{ px: '16px', py: '12px', display: 'inline-flex', alignItems: 'center' }}>
           <Typography
-            variant="secondary12"
+            variant="caption"
             color="text.secondary"
             sx={{ display: 'flex', alignItems: 'center' }}
           >
@@ -134,7 +134,7 @@ export const ListSlippageButton = ({
               <Paraswap />
             </SvgIcon>
           </Typography>
-          <Typography variant="main12" color="text.secondary">
+          <Typography variant="caption" color="text.secondary">
             Paraswap
           </Typography>
         </Box>

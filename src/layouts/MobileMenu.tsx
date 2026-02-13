@@ -34,7 +34,7 @@ interface MobileMenuProps {
 const MenuItemsWrapper = ({ children, title }: { children: ReactNode; title: ReactNode }) => (
   <Box sx={{ mb: 6, '&:last-of-type': { mb: 0, '.MuiDivider-root': { display: 'none' } } }}>
     <Box sx={{ px: 2 }}>
-      <Typography variant="subheader2" sx={{ color: '#A5A8B6', px: 4, py: 2 }}>
+      <Typography variant="subtitle2" sx={{ color: '#A5A8B6', px: 4, py: 2 }}>
         {title}
       </Typography>
 

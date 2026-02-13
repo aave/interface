@@ -129,7 +129,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         balanceText={<Trans>Wallet balance</Trans>}
       />
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
+        <Typography variant="caption" color="red">
           {handleBlocked()}
         </Typography>
       )}

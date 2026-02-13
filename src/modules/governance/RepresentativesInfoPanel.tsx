@@ -54,7 +54,7 @@ export const RepresentativesInfoPanel = () => {
         </Stack>
         <Stack gap={8} sx={{ mt: 2 }}>
           <Stack direction="column">
-            <Typography variant="description" color="text.secondary">
+            <Typography variant="body2" color="text.secondary">
               {isAddressSelectedAsRepresentative ? (
                 <Trans>
                   Representing smart contract wallet (ie. Safe) addresses on other chains.
@@ -111,7 +111,7 @@ const Representatives = ({
                   <PlusIcon />
                 </SvgIcon>
               </IconButton>
-              <Typography variant="subheader1" color="text.muted">
+              <Typography variant="subtitle1" color="text.muted">
                 <Trans>Connect</Trans>
               </Typography>
             </Stack>
@@ -165,7 +165,7 @@ const Network = ({
   return (
     <Stack direction="row" alignItems="center" gap={2}>
       <img src={networkLogoPath} height="16px" width="16px" alt="network logo" />
-      <Typography variant="subheader1">{networkName}</Typography>
+      <Typography variant="subtitle1">{networkName}</Typography>
     </Stack>
   );
 };
@@ -175,7 +175,7 @@ const AddressLink = ({ explorerLink, address }: { explorerLink: string; address:
     <Link href={`${explorerLink}/address/${address}`}>
       <Stack direction="row" alignItems="center" gap={1}>
         <CompactableTypography
-          variant="subheader1"
+          variant="subtitle1"
           compactMode={CompactMode.MD}
           compact
           sx={{ ml: 4 }}

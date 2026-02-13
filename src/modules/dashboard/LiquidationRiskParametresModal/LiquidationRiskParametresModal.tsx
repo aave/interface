@@ -66,7 +66,7 @@ export const LiquidationRiskParametresInfoModal = ({
           href="https://docs.aave.com/faq/"
           sx={{ textDecoration: 'underline' }}
           color="text.primary"
-          variant="description"
+          variant="body2"
         >
           <Trans>Learn more</Trans>
         </Link>
@@ -83,7 +83,7 @@ export const LiquidationRiskParametresInfoModal = ({
         topValue={
           <HealthFactorNumber
             value={healthFactor}
-            variant="main12"
+            variant="caption"
             sx={{ color: 'common.white' }}
           />
         }
@@ -107,7 +107,7 @@ export const LiquidationRiskParametresInfoModal = ({
           <FormattedNumber
             value={loanToValue}
             percent
-            variant="main12"
+            variant="caption"
             color="common.white"
             symbolsColor="common.white"
           />

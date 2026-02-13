@@ -135,7 +135,7 @@ export const BridgeDestinationInput = ({
               ? 'visible'
               : 'hidden',
         }}
-        variant="helperText"
+        variant="caption"
         color="error.main"
       >
         <Trans>Enter a valid address</Trans>

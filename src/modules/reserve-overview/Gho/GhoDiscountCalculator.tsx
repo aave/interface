@@ -141,7 +141,7 @@ export const GhoDiscountCalculator = () => {
             <Trans>
               <Typography
                 component="span"
-                variant="subheader2"
+                variant="subtitle2"
                 color="text.highlight"
                 onClick={handleAddStkAaveForMaxDiscount}
                 sx={{
@@ -169,7 +169,7 @@ export const GhoDiscountCalculator = () => {
             <Trans>
               <Typography
                 component="span"
-                variant="subheader2"
+                variant="subtitle2"
                 color="text.highlight"
                 onClick={handleAddStkAaveForMaxDiscount}
                 sx={{
@@ -189,7 +189,7 @@ export const GhoDiscountCalculator = () => {
                   Add{' '}
                   <FormattedNumber
                     value={additionalStkAaveToReachMax}
-                    variant="subheader2"
+                    variant="subtitle2"
                     visibleDecimals={2}
                     sx={{
                       '.MuiTypography-root': { ml: 0 },
@@ -311,7 +311,7 @@ export const GhoDiscountCalculator = () => {
 
   return (
     <>
-      <Typography variant="subheader1" gutterBottom>
+      <Typography variant="subtitle1" gutterBottom>
         <Trans>Staking discount</Trans>
       </Typography>
       <Typography variant="caption" color="text.secondary" mb={6}>
@@ -343,7 +343,7 @@ const GhoDiscountParametersComponent: React.FC<{
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        <Typography variant="subheader1">
+        <Typography variant="subtitle1">
           <Trans>Discount model parameters</Trans>
         </Typography>
       </Box>
@@ -360,10 +360,10 @@ const GhoDiscountParametersComponent: React.FC<{
           fullWidth={downToXsm}
           loading={loading}
         >
-          <Typography variant="secondary14" display="flex" alignItems="center">
+          <Typography variant="body2" display="flex" alignItems="center">
             <TokenIcon symbol="GHO" sx={{ fontSize: '14px', mr: 1 }} />
             {ghoReserveData.ghoDiscountedPerToken}
-            <Typography component="span" variant="secondary14" color="text.primary" sx={{ mx: 1 }}>
+            <Typography component="span" variant="body2" color="text.primary" sx={{ mx: 1 }}>
               <Trans>to</Trans>
             </Typography>{' '}
             <TokenIcon symbol="stkAAVE" sx={{ fontSize: '14px', mr: 1 }} />1
@@ -377,7 +377,7 @@ const GhoDiscountParametersComponent: React.FC<{
           <FormattedNumber
             value={ghoReserveData.ghoDiscountRate}
             percent
-            variant="secondary14"
+            variant="body2"
             color="text.primary"
             sx={{ mr: 1 }}
             visibleDecimals={0}
@@ -391,7 +391,7 @@ const GhoDiscountParametersComponent: React.FC<{
           <FormattedNumber
             value={ghoReserveData.ghoBorrowAPYWithMaxDiscount}
             percent
-            variant="secondary14"
+            variant="body2"
             color="text.primary"
           />
         </DiscountModelParameter>
@@ -405,7 +405,7 @@ const GhoDiscountParametersComponent: React.FC<{
             <FormattedNumber
               value={ghoReserveData.ghoMinDiscountTokenBalanceForDiscount}
               visibleDecimals={3}
-              variant="secondary14"
+              variant="body2"
               color="text.primary"
             />
           </Stack>
@@ -420,7 +420,7 @@ const GhoDiscountParametersComponent: React.FC<{
             <FormattedNumber
               value={ghoReserveData.ghoMinDebtTokenBalanceForDiscount}
               visibleDecimals={2}
-              variant="secondary14"
+              variant="body2"
               color="text.primary"
             />
           </Stack>
@@ -465,7 +465,7 @@ const DiscountModelParameter = ({
   return (
     <ReserveOverviewBox
       fullWidth={fullWidth}
-      title={<Typography variant="description">{title}</Typography>}
+      title={<Typography variant="body2">{title}</Typography>}
     >
       {loading ? <Skeleton variant="text" width={75} /> : children}
     </ReserveOverviewBox>

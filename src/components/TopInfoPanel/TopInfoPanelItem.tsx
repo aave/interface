@@ -73,7 +73,7 @@ export const TopInfoPanelItem = ({
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <Typography
             sx={{ color: variant === 'dark' ? '#A5A8B6' : '#62677B' }}
-            variant={upToSM ? 'description' : 'caption'}
+            variant={upToSM ? 'body2' : 'caption'}
             component="div"
           >
             {title}

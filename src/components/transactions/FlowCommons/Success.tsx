@@ -52,7 +52,7 @@ export const TxSuccessView = ({
         {action && amount && symbol && (
           <Typography>
             <Trans>
-              You {action} <FormattedNumber value={Number(amount)} compact variant="secondary14" />{' '}
+              You {action} <FormattedNumber value={Number(amount)} compact variant="body2" />{' '}
               {symbol}
             </Trans>
           </Typography>
@@ -97,7 +97,7 @@ export const TxSuccessView = ({
               aToken={addToken && addToken.aToken ? true : false}
               sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
             />
-            <Typography variant="description" color="text.primary" sx={{ mx: '24px' }}>
+            <Typography variant="body2" color="text.primary" sx={{ mx: '24px' }}>
               <Trans>
                 Add {addToken && addToken.aToken ? 'aToken ' : 'token '} to wallet to track your
                 balance.
@@ -124,7 +124,7 @@ export const TxSuccessView = ({
                 />
               )}
               <WalletIcon sx={{ width: '20px', height: '20px' }} />
-              <Typography variant="buttonM" color="white" ml="4px">
+              <Typography variant="button" color="white" ml="4px">
                 <Trans>Add to wallet</Trans>
               </Typography>
             </Button>

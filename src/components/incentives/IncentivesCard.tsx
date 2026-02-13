@@ -17,8 +17,8 @@ interface IncentivesCardProps {
   value: string | number;
   incentives?: ReserveIncentiveResponse[];
   address?: string;
-  variant?: 'main14' | 'main16' | 'secondary14';
-  symbolsVariant?: 'secondary14' | 'secondary16';
+  variant?: 'body1' | 'body2';
+  symbolsVariant?: 'body1' | 'body2';
   align?: 'center' | 'flex-end';
   color?: string;
   tooltip?: ReactNode;
@@ -31,7 +31,7 @@ export const IncentivesCard = ({
   value,
   incentives,
   address,
-  variant = 'secondary14',
+  variant = 'body2',
   symbolsVariant,
   align,
   color,

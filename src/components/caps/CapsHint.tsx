@@ -42,14 +42,14 @@ export const CapsHint = ({
 
       {!withoutText && (
         <>
-          <Typography variant="tooltip" color="text.secondary">
+          <Typography variant="caption" color="text.secondary">
             {title}
           </Typography>
           <FormattedNumber
             value={value >= 0 ? value : 0}
             compact
             symbol={isUSD ? 'USD' : undefined}
-            variant="tooltip"
+            variant="caption"
           />
         </>
       )}

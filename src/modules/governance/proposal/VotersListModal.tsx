@@ -56,10 +56,10 @@ export const VotersListModal = ({
             borderColor: 'divider',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subtitle2" color="text.secondary">
             <Trans>Addresses ({voters.yaeVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subtitle2" color="text.secondary">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -95,10 +95,10 @@ export const VotersListModal = ({
             borderColor: 'divider',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subtitle2" color="text.secondary">
             <Trans>Addresses ({voters.nayVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subtitle2" color="text.secondary">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -138,12 +138,12 @@ export const VotersListModal = ({
             sx={{ width: '100%', height: '44px', mt: 8, mb: 6 }}
           >
             <StyledToggleButton value="yaes" disabled={voteView === 'yaes'}>
-              <Typography variant="subheader1">
+              <Typography variant="subtitle1">
                 <Trans>Voted YAE</Trans>
               </Typography>
             </StyledToggleButton>
             <StyledToggleButton value="nays" disabled={voteView === 'nays'}>
-              <Typography variant="subheader1">
+              <Typography variant="subtitle1">
                 <Trans>Voted NAY</Trans>
               </Typography>
             </StyledToggleButton>

@@ -188,7 +188,7 @@ export const HistoryWrapper = () => {
             <SvgIcon>
               <DocumentDownloadIcon width={22} height={22} />
             </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
+            <Typography variant="button" color="text.primary">
               <Trans>.CSV</Trans>
             </Typography>
           </Box>
@@ -206,7 +206,7 @@ export const HistoryWrapper = () => {
             <SvgIcon>
               <DocumentDownloadIcon width={22} height={22} />
             </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
+            <Typography variant="button" color="text.primary">
               <Trans>.JSON</Trans>
             </Typography>
           </Box>
@@ -252,7 +252,7 @@ export const HistoryWrapper = () => {
           <Typography variant="h3" color="text.primary">
             <Trans>Nothing found</Trans>
           </Typography>
-          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">
+          <Typography sx={{ mt: 1, mb: 4 }} variant="body2" color="text.secondary">
             <Trans>
               We couldn&apos;t find any transactions related to your search. Try again with a
               different asset name, or reset filters.

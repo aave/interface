@@ -37,7 +37,7 @@ export function WithdrawTypeSelector({
             trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw' })
           }
         >
-          <Typography variant="buttonM">
+          <Typography variant="button">
             <Trans>Withdraw</Trans>
           </Typography>
         </StyledTxModalToggleButton>
@@ -49,7 +49,7 @@ export function WithdrawTypeSelector({
             trackEvent(WITHDRAW_MODAL.SWITCH_WITHDRAW_TYPE, { withdrawType: 'Withdraw and Switch' })
           }
         >
-          <Typography variant="buttonM">
+          <Typography variant="button">
             <Trans>Withdraw & Switch</Trans>
           </Typography>
         </StyledTxModalToggleButton>

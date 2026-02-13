@@ -296,7 +296,7 @@ const SupplyAction = ({
   return (
     <Stack>
       <AvailableTooltip
-        variant="description"
+        variant="body2"
         text={<Trans>Available to supply</Trans>}
         capType={CapType.supplyCap}
         event={{
@@ -318,7 +318,7 @@ const SupplyAction = ({
           <ValueWithSymbol value={value} symbol={symbol} />
           <FormattedNumber
             value={usdValue}
-            variant="subheader2"
+            variant="subtitle2"
             color="text.muted"
             symbolsColor="text.muted"
             symbol="USD"
@@ -350,7 +350,7 @@ const BorrowAction = ({
   return (
     <Stack>
       <AvailableTooltip
-        variant="description"
+        variant="body2"
         text={<Trans>Available to borrow</Trans>}
         capType={CapType.borrowCap}
         event={{
@@ -372,7 +372,7 @@ const BorrowAction = ({
           <ValueWithSymbol value={value} symbol={symbol} />
           <FormattedNumber
             value={usdValue}
-            variant="subheader2"
+            variant="subtitle2"
             color="text.muted"
             symbolsColor="text.muted"
             symbol="USD"
@@ -413,11 +413,11 @@ const WrappedBaseAssetSelector = ({
       sx={{ mb: 4 }}
     >
       <StyledTxModalToggleButton value={assetSymbol}>
-        <Typography variant="buttonM">{assetSymbol}</Typography>
+        <Typography variant="button">{assetSymbol}</Typography>
       </StyledTxModalToggleButton>
 
       <StyledTxModalToggleButton value={baseAssetSymbol}>
-        <Typography variant="buttonM">{baseAssetSymbol}</Typography>
+        <Typography variant="button">{baseAssetSymbol}</Typography>
       </StyledTxModalToggleButton>
     </StyledTxModalToggleGroup>
   );
@@ -433,7 +433,7 @@ const ValueWithSymbol = ({ value, symbol, children }: ValueWithSymbolProps) => {
   return (
     <Stack direction="row" alignItems="center" gap={1}>
       <FormattedNumber value={value} variant="h4" color="text.primary" />
-      <Typography variant="buttonL" color="text.secondary">
+      <Typography variant="button" color="text.secondary">
         {symbol}
       </Typography>
       {children}
@@ -466,7 +466,7 @@ const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => 
         <WalletIcon sx={{ stroke: `${theme.palette.text.secondary}` }} />
       </Box>
       <Box>
-        <Typography variant="description" color="text.secondary">
+        <Typography variant="body2" color="text.secondary">
           Wallet balance
         </Typography>
         <ValueWithSymbol value={balance} symbol={symbol}>

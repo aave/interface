@@ -63,7 +63,7 @@ export const ListMobileItem = ({
                 <Box sx={{ ml: 2 }}>
                   <Typography variant="h4">{name}</Typography>
                   <Box display="flex" alignItems="center">
-                    <Typography variant="subheader2" color="text.muted">
+                    <Typography variant="subtitle2" color="text.muted">
                       {symbol}
                     </Typography>
                     {isIsolated && (

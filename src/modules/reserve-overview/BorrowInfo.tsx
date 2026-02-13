@@ -63,11 +63,11 @@ export const BorrowInfo = ({
                 <>
                   <Trans>
                     Maximum amount available to borrow is{' '}
-                    <FormattedNumber value={maxAvailableToBorrow} variant="secondary12" />{' '}
+                    <FormattedNumber value={maxAvailableToBorrow} variant="caption" />{' '}
                     {reserve.symbol} (
                     <FormattedNumber
                       value={maxAvailableToBorrowUSD}
-                      variant="secondary12"
+                      variant="caption"
                       symbol="USD"
                     />
                     ).
@@ -106,23 +106,23 @@ export const BorrowInfo = ({
               }
             >
               <Box>
-                <FormattedNumber value={reserve.totalDebt} variant="main16" />
+                <FormattedNumber value={reserve.totalDebt} variant="body1" />
                 <Typography
                   component="span"
                   color="text.primary"
-                  variant="secondary16"
+                  variant="body1"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber value={reserve.borrowCap} variant="main16" />
+                <FormattedNumber value={reserve.borrowCap} variant="body1" />
               </Box>
               <Box>
                 <ReserveSubheader value={reserve.totalDebtUSD} />
                 <Typography
                   component="span"
                   color="text.primary"
-                  variant="secondary16"
+                  variant="body1"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>
@@ -140,7 +140,7 @@ export const BorrowInfo = ({
               </Box>
             }
           >
-            <FormattedNumber value={reserve.totalDebt} variant="main16" />
+            <FormattedNumber value={reserve.totalDebt} variant="body1" />
             <ReserveSubheader value={reserve.totalDebtUSD} />
           </PanelItem>
         )}
@@ -157,11 +157,11 @@ export const BorrowInfo = ({
               }}
               text={<Trans>APY, variable</Trans>}
               key="APY_res_variable_type"
-              variant="description"
+              variant="body2"
             />
           }
         >
-          <FormattedNumber value={reserve.variableBorrowAPY} percent variant="main16" />
+          <FormattedNumber value={reserve.variableBorrowAPY} percent variant="body1" />
           <IncentivesButton
             symbol={reserve.symbol}
             incentives={reserve.vIncentivesData}
@@ -170,7 +170,7 @@ export const BorrowInfo = ({
         </PanelItem>
         {reserve.borrowCapUSD && reserve.borrowCapUSD !== '0' && (
           <PanelItem title={<Trans>Borrow cap</Trans>}>
-            <FormattedNumber value={reserve.borrowCap} variant="main16" />
+            <FormattedNumber value={reserve.borrowCap} variant="body1" />
             <ReserveSubheader value={reserve.borrowCapUSD} />
           </PanelItem>
         )}
@@ -186,7 +186,7 @@ export const BorrowInfo = ({
         sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
         paddingTop={'42px'}
       >
-        <Typography variant="subheader1" color="text.main">
+        <Typography variant="subtitle1" color="text.main">
           <Trans>Collector Info</Trans>
         </Typography>
       </Box>

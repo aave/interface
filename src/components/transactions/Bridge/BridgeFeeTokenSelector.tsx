@@ -57,7 +57,7 @@ export const BridgeFeeTokenSelector = ({
   );
 
   return (
-    <Row caption={feeTooltip} captionVariant="description" mb={4}>
+    <Row caption={feeTooltip} captionVariant="body2" mb={4}>
       <FormControl sx={{ mr: 'auto' }}>
         <Select
           labelId="token-select-label"
@@ -119,7 +119,7 @@ export const BridgeFeeTokenSelector = ({
         </Select>
       </FormControl>
       {!bridgeFeeFormatted && !loading ? (
-        <NoData variant="secondary14" color="text.secondary" />
+        <NoData variant="body2" color="text.secondary" />
       ) : loading ? (
         <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
       ) : (
@@ -129,12 +129,12 @@ export const BridgeFeeTokenSelector = ({
             <FormattedNumber
               value={bridgeFeeFormatted}
               symbol={selectedFeeToken?.symbol}
-              variant="secondary14"
+              variant="body2"
             />
           </Stack>
           <FormattedNumber
             value={bridgeFeeUSD}
-            variant="helperText"
+            variant="caption"
             compact
             symbol="USD"
             color="text.secondary"

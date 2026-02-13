@@ -64,12 +64,12 @@ export default function ReserveOverview() {
             sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
           >
             <StyledToggleButton value="overview" disabled={mode === 'overview'}>
-              <Typography variant="subheader1">
+              <Typography variant="subtitle1">
                 <Trans>Overview</Trans>
               </Typography>
             </StyledToggleButton>
             <StyledToggleButton value="actions" disabled={mode === 'actions'}>
-              <Typography variant="subheader1">
+              <Typography variant="subtitle1">
                 <Trans>Your info</Trans>
               </Typography>
             </StyledToggleButton>

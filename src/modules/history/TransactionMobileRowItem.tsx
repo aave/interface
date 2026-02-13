@@ -13,7 +13,7 @@ import { ActionFields, TransactionHistoryItem } from './types';
 
 function ActionTitle({ action }: { action: string }) {
   return (
-    <Typography variant="subheader2" color="text.muted">
+    <Typography variant="subtitle2" color="text.muted">
       <ActionTextMap action={action} />
     </Typography>
   );

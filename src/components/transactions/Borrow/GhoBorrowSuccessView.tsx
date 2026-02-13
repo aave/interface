@@ -200,7 +200,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
             <Typography>
               <Trans>
                 You {action}{' '}
-                <FormattedNumber value={Number(amount)} compact variant="secondary14" /> {symbol}
+                <FormattedNumber value={Number(amount)} compact variant="body2" /> {symbol}
               </Trans>
             </Typography>
           )}
@@ -216,7 +216,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
           })}
           target="_blank"
         >
-          <Typography variant="buttonS">
+          <Typography variant="button">
             <Trans>Review tx details</Trans>
           </Typography>
         </Button>
@@ -251,7 +251,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
                     )
                   }
                 >
-                  <Typography variant="buttonS" color="white">
+                  <Typography variant="button" color="white">
                     {clickedCopyImage ? <Trans>COPIED!</Trans> : <Trans>COPY IMAGE</Trans>}
                   </Typography>
                 </CopyImageButton>
@@ -275,7 +275,7 @@ export const GhoBorrowSuccessView = ({ txHash, action, amount, symbol }: Success
                     )
                   }
                 >
-                  <Typography variant="buttonS" color="white">
+                  <Typography variant="button" color="white">
                     <Trans>Download</Trans>
                   </Typography>
                 </CopyImageButton>

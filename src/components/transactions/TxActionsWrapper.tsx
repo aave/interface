@@ -112,7 +112,7 @@ export const TxActionsWrapper = ({
     return {
       content: (
         <ApprovalTooltip
-          variant="buttonL"
+          variant="button"
           iconSize={20}
           iconMargin={2}
           color="white"
@@ -161,7 +161,7 @@ export const TxActionsWrapper = ({
         {content}
       </Button>
       {readOnlyModeAddress && (
-        <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
+        <Typography variant="caption" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
           <Trans>Read-only mode. Connect to a wallet to perform transactions.</Trans>
         </Typography>
       )}

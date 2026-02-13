@@ -230,7 +230,7 @@ const GhoBorrowedPositionsListItemMobile = ({
         subValue={userGhoBorrowBalance}
         disabled={userGhoBorrowBalance === 0}
       />
-      <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
+      <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="body2" mb={2}>
         <GhoIncentivesCard
           withTokenIcon={hasDiscount}
           value={ghoLoadingData ? -1 : borrowRateAfterDiscount}
@@ -240,7 +240,7 @@ const GhoBorrowedPositionsListItemMobile = ({
           userQualifiesForDiscount={hasDiscount}
         />
       </Row>
-      <Row caption={<Trans>APY type</Trans>} captionVariant="description" mb={2}>
+      <Row caption={<Trans>APY type</Trans>} captionVariant="body2" mb={2}>
         <ContentWithTooltip tooltipContent={FixedAPYTooltipText} offset={[0, -4]} withoutHover>
           <Button variant="outlined" size="small" color="primary">
             GHO RATE

@@ -56,7 +56,7 @@ const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
   };
   const color = COLOR_MAP[state] || '#000';
   return theme.unstable_sx({
-    ...theme.typography.subheader2,
+    ...theme.typography.subtitle2,
     color,
     border: '1px solid',
     borderColor: alpha(color, 0.5),

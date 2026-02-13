@@ -204,13 +204,13 @@ const BorrowedPositionsListItemMobile = ({
         disabled={Number(totalBorrows) === 0}
       />
 
-      <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="description" mb={2}>
+      <Row caption={<Trans>APY</Trans>} align="flex-start" captionVariant="body2" mb={2}>
         <IncentivesCard
           value={borrowAPY}
           incentives={incentives}
           address={variableDebtTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="body2"
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />

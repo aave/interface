@@ -20,7 +20,7 @@ export const BridgeButton = ({ bridge }: Pick<NetworkConfig, 'bridge'>) => {
       variant="outlined"
       href={bridge.url || ''}
     >
-      <Typography variant="buttonS">{bridge.name}</Typography>
+      <Typography variant="button">{bridge.name}</Typography>
     </Button>
   );
 };

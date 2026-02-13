@@ -80,7 +80,7 @@ export const ApyGraphContainer = ({
       }}
     >
       <CircularProgress size={20} sx={{ mb: 2, opacity: 0.5 }} />
-      <Typography variant="subheader1" color="text.muted">
+      <Typography variant="subtitle1" color="text.muted">
         <Trans>Loading data...</Trans>
       </Typography>
     </Box>
@@ -97,7 +97,7 @@ export const ApyGraphContainer = ({
         justifyContent: 'center',
       }}
     >
-      <Typography variant="subheader1">
+      <Typography variant="subtitle1">
         <Trans>Something went wrong</Trans>
       </Typography>
       <Typography variant="caption" sx={{ mb: 3 }}>

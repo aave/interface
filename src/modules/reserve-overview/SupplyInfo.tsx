@@ -62,7 +62,7 @@ export const SupplyInfo = ({
                         valueToBigNumber(reserve.supplyCap).toNumber() -
                         valueToBigNumber(reserve.totalLiquidity).toNumber()
                       }
-                      variant="secondary12"
+                      variant="caption"
                     />{' '}
                     {reserve.symbol} (
                     <FormattedNumber
@@ -70,7 +70,7 @@ export const SupplyInfo = ({
                         valueToBigNumber(reserve.supplyCapUSD).toNumber() -
                         valueToBigNumber(reserve.totalLiquidityUSD).toNumber()
                       }
-                      variant="secondary12"
+                      variant="caption"
                       symbol="USD"
                     />
                     ).
@@ -109,23 +109,23 @@ export const SupplyInfo = ({
               }
             >
               <Box>
-                <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+                <FormattedNumber value={reserve.totalLiquidity} variant="body1" compact />
                 <Typography
                   component="span"
                   color="text.primary"
-                  variant="secondary16"
+                  variant="body1"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber value={reserve.supplyCap} variant="main16" />
+                <FormattedNumber value={reserve.supplyCap} variant="body1" />
               </Box>
               <Box>
                 <ReserveSubheader value={reserve.totalLiquidityUSD} />
                 <Typography
                   component="span"
                   color="text.secondary"
-                  variant="secondary12"
+                  variant="caption"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>
@@ -143,12 +143,12 @@ export const SupplyInfo = ({
               </Box>
             }
           >
-            <FormattedNumber value={reserve.totalLiquidity} variant="main16" compact />
+            <FormattedNumber value={reserve.totalLiquidity} variant="body1" compact />
             <ReserveSubheader value={reserve.totalLiquidityUSD} />
           </PanelItem>
         )}
         <PanelItem title={<Trans>APY</Trans>}>
-          <FormattedNumber value={reserve.supplyAPY} percent variant="main16" />
+          <FormattedNumber value={reserve.supplyAPY} percent variant="body1" />
           <IncentivesButton
             symbol={reserve.symbol}
             incentives={reserve.aIncentivesData}
@@ -157,7 +157,7 @@ export const SupplyInfo = ({
         </PanelItem>
         {reserve.unbacked && reserve.unbacked !== '0' && (
           <PanelItem title={<Trans>Unbacked</Trans>}>
-            <FormattedNumber value={reserve.unbacked} variant="main16" symbol={reserve.name} />
+            <FormattedNumber value={reserve.unbacked} variant="body1" symbol={reserve.name} />
             <ReserveSubheader value={reserve.unbackedUSD} />
           </PanelItem>
         )}
@@ -172,11 +172,11 @@ export const SupplyInfo = ({
       <div>
         {reserve.isIsolated ? (
           <Box sx={{ pt: '42px', pb: '12px' }}>
-            <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
+            <Typography variant="subtitle1" color="text.main" paddingBottom={'12px'}>
               <Trans>Collateral usage</Trans>
             </Typography>
             <Warning severity="warning">
-              <Typography variant="subheader1">
+              <Typography variant="subtitle1">
                 <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
               </Typography>
               <Typography variant="caption">
@@ -194,17 +194,17 @@ export const SupplyInfo = ({
             sx={{ display: 'inline-flex', alignItems: 'center', pt: '42px', pb: '12px' }}
             paddingTop={'42px'}
           >
-            <Typography variant="subheader1" color="text.main">
+            <Typography variant="subtitle1" color="text.main">
               <Trans>Collateral usage</Trans>
             </Typography>
             <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
-            <Typography variant="subheader1" sx={{ color: '#46BC4B' }}>
+            <Typography variant="subtitle1" sx={{ color: '#46BC4B' }}>
               <Trans>Can be collateral</Trans>
             </Typography>
           </Box>
         ) : (
           <Box sx={{ pt: '42px', pb: '12px' }}>
-            <Typography variant="subheader1" color="text.main">
+            <Typography variant="subtitle1" color="text.main">
               <Trans>Collateral usage</Trans>
             </Typography>
             <Warning sx={{ my: '12px' }} severity="warning">
@@ -232,7 +232,7 @@ export const SupplyInfo = ({
                     assetName: reserve.name,
                   },
                 }}
-                variant="description"
+                variant="body2"
                 text={<Trans>Max LTV</Trans>}
               />
             }
@@ -240,7 +240,7 @@ export const SupplyInfo = ({
             <FormattedNumber
               value={reserve.formattedBaseLTVasCollateral}
               percent
-              variant="secondary14"
+              variant="body2"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>
@@ -256,7 +256,7 @@ export const SupplyInfo = ({
                     assetName: reserve.name,
                   },
                 }}
-                variant="description"
+                variant="body2"
                 text={<Trans>Liquidation threshold</Trans>}
               />
             }
@@ -264,7 +264,7 @@ export const SupplyInfo = ({
             <FormattedNumber
               value={reserve.formattedReserveLiquidationThreshold}
               percent
-              variant="secondary14"
+              variant="body2"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>
@@ -280,7 +280,7 @@ export const SupplyInfo = ({
                     assetName: reserve.name,
                   },
                 }}
-                variant="description"
+                variant="body2"
                 text={<Trans>Liquidation penalty</Trans>}
               />
             }
@@ -288,7 +288,7 @@ export const SupplyInfo = ({
             <FormattedNumber
               value={reserve.formattedReserveLiquidationBonus}
               percent
-              variant="secondary14"
+              variant="body2"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>

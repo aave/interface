@@ -13,7 +13,7 @@ export const MeritIncentivesTooltipContent = ({
 }: {
   meritIncentives: ExtendedReserveIncentiveResponse;
 }) => {
-  const typographyVariant = 'secondary12';
+  const typographyVariant = 'caption';
 
   const meritIncentivesFormatted = getSymbolMap(meritIncentives);
 

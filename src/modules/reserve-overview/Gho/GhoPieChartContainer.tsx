@@ -111,7 +111,7 @@ const GhoPieChartDesktop = ({
       }}
     >
       <Stack alignItems="center" gap={1} sx={{ position: 'absolute', top: 65 }}>
-        <Typography variant="subheader2">Borrow APY</Typography>
+        <Typography variant="subtitle2">Borrow APY</Typography>
         <FormattedNumber
           variant="h1"
           symbolsColor="text.primary"
@@ -158,7 +158,7 @@ const GhoPieChartMobile = ({
       }}
     >
       <Stack alignItems="center" gap={1} sx={{ position: 'absolute', top: 58 }}>
-        <Typography variant="subheader2">Borrow APY</Typography>
+        <Typography variant="subtitle2">Borrow APY</Typography>
         <FormattedNumber
           variant="h1"
           symbolsColor="text.primary"
@@ -206,17 +206,17 @@ const PieChartLegend = ({
             }}
           >
             <TableCell align="left" sx={{ pl: 0 }}>
-              <Typography variant="helperText">
+              <Typography variant="caption">
                 <Trans>Borrow balance</Trans>
               </Typography>
             </TableCell>
             <TableCell align="right">
-              <Typography variant="helperText">
+              <Typography variant="caption">
                 <Trans>Amount</Trans>
               </Typography>
             </TableCell>
             <TableCell align="right" sx={{ pr: 0 }}>
-              <Typography variant="helperText">APY</Typography>
+              <Typography variant="caption">APY</Typography>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -247,11 +247,11 @@ const PieChartLegend = ({
               </Stack>
             </TableCell>
             <TableCell align="right">
-              <FormattedNumber variant="subheader2" value={amountAtDiscount} align="right" />
+              <FormattedNumber variant="subtitle2" value={amountAtDiscount} align="right" />
             </TableCell>
             <TableCell sx={{ pr: 0 }} align="right">
               <FormattedNumber
-                variant="subheader2"
+                variant="subtitle2"
                 value={discountedAmountRate}
                 percent
                 visibleDecimals={2}
@@ -283,13 +283,13 @@ const PieChartLegend = ({
             </TableCell>
             <TableCell align="right">
               <FormattedNumber
-                variant="subheader2"
+                variant="subtitle2"
                 visibleDecimals={2}
                 value={amountThatExceedsDiscount}
               />
             </TableCell>
             <TableCell sx={{ pr: 0 }} align="right">
-              <FormattedNumber variant="subheader2" value={baseRate} percent />
+              <FormattedNumber variant="subtitle2" value={baseRate} percent />
             </TableCell>
           </TableRow>
         </TableBody>

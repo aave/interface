@@ -182,7 +182,7 @@ export const SupplyAssetsListItemDesktop = ({
             >
               <FormattedNumber
                 value={0}
-                variant="secondary14"
+                variant="body2"
                 sx={{ mb: '2px' }}
                 symbolsColor="common.white"
               />
@@ -193,7 +193,7 @@ export const SupplyAssetsListItemDesktop = ({
                     walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
                   }
                   visibleDecimals={2}
-                  variant="secondary12"
+                  variant="caption"
                   color="text.secondary"
                 />
               </Stack>
@@ -229,7 +229,7 @@ export const SupplyAssetsListItemDesktop = ({
 
       <ListColumn>
         {debtCeiling.isMaxed ? (
-          <NoData variant="main14" color="text.secondary" />
+          <NoData variant="body2" color="text.secondary" />
         ) : (
           <ListItemCanBeCollateral
             isIsolated={isIsolated}
@@ -357,7 +357,7 @@ export const SupplyAssetsListItemMobile = ({
         <Row
           caption={<Trans>Supply balance</Trans>}
           align="flex-start"
-          captionVariant="description"
+          captionVariant="body2"
           mb={2}
         >
           <ContentWithTooltip
@@ -380,7 +380,7 @@ export const SupplyAssetsListItemMobile = ({
             >
               <FormattedNumber
                 value={0}
-                variant="secondary14"
+                variant="body2"
                 sx={{ mb: '2px' }}
                 symbolsColor="common.white"
               />
@@ -391,7 +391,7 @@ export const SupplyAssetsListItemMobile = ({
                     walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
                   }
                   visibleDecimals={2}
-                  variant="secondary12"
+                  variant="caption"
                   color="text.secondary"
                 />
               </Stack>
@@ -418,7 +418,7 @@ export const SupplyAssetsListItemMobile = ({
       <Row
         caption={<Trans>Supply APY</Trans>}
         align="flex-start"
-        captionVariant="description"
+        captionVariant="body2"
         mb={2}
       >
         <IncentivesCard
@@ -426,7 +426,7 @@ export const SupplyAssetsListItemMobile = ({
           incentives={aIncentivesData}
           address={aTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="body2"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -435,7 +435,7 @@ export const SupplyAssetsListItemMobile = ({
       <Row
         caption={<Trans>Can be collateral</Trans>}
         align="flex-start"
-        captionVariant="description"
+        captionVariant="body2"
         mb={2}
       >
         <ListItemCanBeCollateral

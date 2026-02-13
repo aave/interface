@@ -68,7 +68,7 @@ export const HFContent = ({ healthFactor }: HFContentProps) => {
               bottom: 'calc(100% + 2px)',
             }}
           >
-            <FormattedNumber value={formattedHealthFactor} variant="main12" visibleDecimals={2} />
+            <FormattedNumber value={formattedHealthFactor} variant="caption" visibleDecimals={2} />
           </Box>
         </Box>
       </Box>
@@ -90,10 +90,10 @@ export const HFContent = ({ healthFactor }: HFContentProps) => {
           },
         }}
       >
-        <FormattedNumber value={1} visibleDecimals={2} color="error.main" variant="subheader2" />
+        <FormattedNumber value={1} visibleDecimals={2} color="error.main" variant="subtitle2" />
         <Typography
           sx={{ display: 'flex' }}
-          variant="helperText"
+          variant="caption"
           lineHeight="12px"
           color="error.main"
         >

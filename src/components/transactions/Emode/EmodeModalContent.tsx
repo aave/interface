@@ -124,7 +124,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
           <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
-            <Typography variant="subheader1" color="#4F1919">
+            <Typography variant="subtitle1" color="#4F1919">
               <Trans>Cannot disable E-Mode</Trans>
             </Typography>
             <Typography variant="caption">
@@ -204,7 +204,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
       {blockingError === ErrorType.EMODE_DISABLED_LIQUIDATION && <Blocked />}
       {showLiquidationRiskWarning && (
         <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
-          <Typography variant="subheader1" color="#4F1919">
+          <Typography variant="subtitle1" color="#4F1919">
             <Trans>Liquidation risk</Trans>
           </Typography>
           <Typography variant="caption">
@@ -218,7 +218,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
 
       <TxModalDetails gasLimit={gasLimit}>
         {user.userEmodeCategoryId !== 0 && (
-          <Row caption={<Trans>Disable E-Mode</Trans>} captionVariant="description" mb={4}>
+          <Row caption={<Trans>Disable E-Mode</Trans>} captionVariant="body2" mb={4}>
             <Switch
               disableRipple
               checked={disableEmode}
@@ -228,9 +228,9 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
         )}
         <Collapse in={disableEmode}>
           <Row
-            captionVariant="description"
+            captionVariant="body2"
             my={2}
-            caption={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+            caption={<MaxLTVTooltip variant="body2" text={<Trans>Max LTV</Trans>} />}
           >
             <Stack direction="row">
               {showLTVChange && (
@@ -239,7 +239,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                     percent
                     visibleDecimals={2}
                     value={user.currentLoanToValue}
-                    variant="secondary12"
+                    variant="caption"
                   />
                   <ArrowRight />
                 </>
@@ -248,7 +248,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                 percent
                 visibleDecimals={2}
                 value={newSummary.currentLoanToValue}
-                variant="secondary12"
+                variant="caption"
               />
             </Stack>
           </Row>
@@ -322,7 +322,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                                 mr: '5px',
                               }}
                             />
-                            <Typography variant="subheader2" color="success.main">
+                            <Typography variant="subtitle2" color="success.main">
                               <Trans>Enabled</Trans>
                             </Typography>
                           </Box>
@@ -347,9 +347,9 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
             )}
             <Divider />
             <Row
-              captionVariant="description"
+              captionVariant="body2"
               my={2}
-              caption={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+              caption={<MaxLTVTooltip variant="body2" text={<Trans>Max LTV</Trans>} />}
             >
               <Stack direction="row">
                 {showLTVChange && (
@@ -358,7 +358,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                       percent
                       visibleDecimals={2}
                       value={user.currentLoanToValue}
-                      variant="secondary12"
+                      variant="caption"
                     />
                     <ArrowRight />
                   </>
@@ -367,7 +367,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                   percent
                   visibleDecimals={2}
                   value={Number(selectedEmode.ltv) / 10000}
-                  variant="secondary12"
+                  variant="caption"
                 />
               </Stack>
             </Row>
@@ -390,17 +390,17 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                     }}
                   >
                     <TableCell align="center" sx={{ pl: 0, width: '120px' }}>
-                      <Typography variant="helperText">
+                      <Typography variant="caption">
                         <Trans>Asset</Trans>
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography variant="helperText">
+                      <Typography variant="caption">
                         <Trans>Collateral</Trans>
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography variant="helperText">
+                      <Typography variant="caption">
                         <Trans>Borrowable</Trans>
                       </Typography>
                     </TableCell>
@@ -422,7 +422,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                       <TableCell align="center" sx={{ py: 1 }}>
                         <Stack direction="row" gap={1} alignItems="center">
                           <TokenIcon symbol={asset.iconSymbol} sx={{ fontSize: '16px' }} />
-                          <Typography variant="secondary12">{asset.symbol}</Typography>
+                          <Typography variant="caption">{asset.symbol}</Typography>
                         </Stack>
                       </TableCell>
                       <TableCell align="center">

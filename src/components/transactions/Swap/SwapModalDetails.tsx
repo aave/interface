@@ -74,7 +74,7 @@ export const SwapModalDetails = ({
         percent
         loading={loading}
       />
-      <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
+      <Row caption={<Trans>Collateralization</Trans>} captionVariant="body2" mb={4}>
         <Box
           sx={{
             display: 'flex',
@@ -118,7 +118,7 @@ export const SwapModalDetails = ({
 
       <Row
         caption={<Trans>Supply balance after switch</Trans>}
-        captionVariant="description"
+        captionVariant="body2"
         mb={4}
         align="flex-start"
       >
@@ -142,7 +142,7 @@ export const SwapModalDetails = ({
                   />
                   <FormattedNumber
                     value={sourceAmountAfterSwap.toString()}
-                    variant="secondary14"
+                    variant="body2"
                     compact
                   />
                 </Box>
@@ -150,7 +150,7 @@ export const SwapModalDetails = ({
                   value={sourceAmountAfterSwap
                     .multipliedBy(valueToBigNumber(swapSource.reserve.priceInUSD))
                     .toString()}
-                  variant="helperText"
+                  variant="caption"
                   compact
                   symbol="USD"
                   symbolsColor="text.secondary"
@@ -180,7 +180,7 @@ export const SwapModalDetails = ({
                   />
                   <FormattedNumber
                     value={targetAmountAfterSwap.toString()}
-                    variant="secondary14"
+                    variant="body2"
                     compact
                   />
                 </Box>
@@ -188,7 +188,7 @@ export const SwapModalDetails = ({
                   value={targetAmountAfterSwap
                     .multipliedBy(valueToBigNumber(swapTarget.reserve.priceInUSD))
                     .toString()}
-                  variant="helperText"
+                  variant="caption"
                   compact
                   symbol="USD"
                   symbolsColor="text.secondary"

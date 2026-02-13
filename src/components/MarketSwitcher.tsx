@@ -174,7 +174,7 @@ export const MarketSwitcher = () => {
                 />
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Typography
-                    variant={upToLG ? 'display1' : 'h1'}
+                    variant={upToLG ? 'body1' : 'h1'}
                     sx={{
                       fontSize: downToXSM ? '1.55rem' : undefined,
                       color: 'common.white',
@@ -199,7 +199,7 @@ export const MarketSwitcher = () => {
                           alignItems: 'center',
                         }}
                       >
-                        <Typography variant="subheader2">V3</Typography>
+                        <Typography variant="subtitle2">V3</Typography>
                       </Box>
                       <SvgIcon
                         fontSize="medium"
@@ -223,7 +223,7 @@ export const MarketSwitcher = () => {
                           alignItems: 'center',
                         }}
                       >
-                        <Typography variant="subheader2">V2</Typography>
+                        <Typography variant="subtitle2">V2</Typography>
                       </Box>
                       <SvgIcon
                         fontSize="medium"
@@ -286,7 +286,7 @@ export const MarketSwitcher = () => {
       }}
     >
       <Box>
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
+        <Typography variant="subtitle2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
           <Trans>
             {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
           </Trans>
@@ -328,7 +328,7 @@ export const MarketSwitcher = () => {
               }}
             >
               <Typography
-                variant="buttonM"
+                variant="button"
                 sx={
                   selectedMarketVersion === SelectedMarketVersion.V3
                     ? {
@@ -355,7 +355,7 @@ export const MarketSwitcher = () => {
               }}
             >
               <Typography
-                variant="buttonM"
+                variant="button"
                 sx={
                   selectedMarketVersion === SelectedMarketVersion.V2
                     ? {
@@ -394,7 +394,7 @@ export const MarketSwitcher = () => {
               {marketNaming.name} {market.isFork ? 'Fork' : ''}
             </ListItemText>
             <ListItemText sx={{ textAlign: 'right' }}>
-              <Typography color="text.muted" variant="description">
+              <Typography color="text.muted" variant="body2">
                 {marketNaming.testChainName}
               </Typography>
             </ListItemText>

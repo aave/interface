@@ -36,7 +36,7 @@ export default function Aave500Page() {
             backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : '',
           }}
         >
-          <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
+          <Typography variant="body1" sx={{ mt: 8, mb: 3 }}>
             <Trans>Something went wrong</Trans>
           </Typography>
           <Typography sx={{ mt: 2, mb: 5, maxWidth: 480 }}>

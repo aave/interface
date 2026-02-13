@@ -285,12 +285,12 @@ export const SwapModalContent = ({
         loading={loadingSkeleton}
       />
       {error && !loadingSkeleton && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           {error}
         </Typography>
       )}
       {!error && blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           <BlockingError />
         </Typography>
       )}
@@ -316,7 +316,7 @@ export const SwapModalContent = ({
                       symbol={swapTarget.reserve.iconSymbol}
                       sx={{ mr: 1, fontSize: '14px' }}
                     />
-                    <FormattedNumber value={minimumReceived} variant="secondary12" />
+                    <FormattedNumber value={minimumReceived} variant="caption" />
                   </Stack>
                 </Stack>
               </Stack>

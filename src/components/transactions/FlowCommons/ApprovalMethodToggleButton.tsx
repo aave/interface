@@ -38,7 +38,7 @@ export const ApprovalMethodToggleButton = ({
         sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
         data-cy={`approveButtonChange`}
       >
-        <Typography variant="subheader2" color="info.main">
+        <Typography variant="subtitle2" color="info.main">
           <Trans>{currentMethod}</Trans>
         </Typography>
         <SvgIcon sx={{ fontSize: 16, ml: 1, color: 'info.main' }}>
@@ -67,7 +67,7 @@ export const ApprovalMethodToggleButton = ({
             handleClose();
           }}
         >
-          <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
+          <ListItemText primaryTypographyProps={{ variant: 'subtitle1' }}>
             <Trans>{ApprovalMethod.PERMIT}</Trans>
           </ListItemText>
           <ListItemIcon>
@@ -86,7 +86,7 @@ export const ApprovalMethodToggleButton = ({
             handleClose();
           }}
         >
-          <ListItemText primaryTypographyProps={{ variant: 'subheader1' }}>
+          <ListItemText primaryTypographyProps={{ variant: 'subtitle1' }}>
             <Trans>{ApprovalMethod.APPROVE}</Trans>
           </ListItemText>
           <ListItemIcon>

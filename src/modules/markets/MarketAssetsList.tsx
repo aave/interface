@@ -34,7 +34,7 @@ const listHeaders = [
       <VariableAPYTooltip
         text={<Trans>Borrow APY, variable</Trans>}
         key="APY_list_variable_type"
-        variant="subheader2"
+        variant="subtitle2"
       />
     ),
     sortKey: 'variableBorrowAPY',

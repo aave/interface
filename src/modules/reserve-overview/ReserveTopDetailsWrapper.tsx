@@ -56,7 +56,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
 
   const [tokenSymbol, setTokenSymbol] = useState(poolReserve.iconSymbol.toLowerCase());
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  const valueTypographyVariant = downToSM ? 'body1' : 'h6';
 
   const ReserveIcon = () => {
     return (
@@ -121,7 +121,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo size={20} logo={logo} />
-              <Typography variant="subheader1" sx={{ color: 'common.white' }}>
+              <Typography variant="subtitle1" sx={{ color: 'common.white' }}>
                 {market.marketTitle} <Trans>Market</Trans>
               </Typography>
               {market.v3 && (
@@ -134,7 +134,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                     background: (theme) => theme.palette.background.default,
                   }}
                 >
-                  <Typography variant="subheader2">Version 3</Typography>
+                  <Typography variant="subtitle2">Version 3</Typography>
                 </Box>
               )}
             </Box>

@@ -70,7 +70,7 @@ export const GhoDiscountProgram = () => {
         /> */}
         <Box display="flex" flexDirection="column" alignItems={['flex-start']} gap={3}>
           <Typography
-            variant="subheader1"
+            variant="subtitle1"
             color="text.primary"
             width={['221px', '400px']}
             textAlign={['left']}

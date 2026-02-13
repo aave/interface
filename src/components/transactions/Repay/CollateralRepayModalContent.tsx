@@ -302,12 +302,12 @@ export function CollateralRepayModalContent({
         disableInput
       />
       {error && !loadingSkeleton && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           {error}
         </Typography>
       )}
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           <BlockingError />
         </Typography>
       )}
@@ -329,7 +329,7 @@ export function CollateralRepayModalContent({
                           symbol={poolReserve.iconSymbol}
                           sx={{ mr: 1, fontSize: '14px' }}
                         />
-                        <FormattedNumber value={outputAmountWithSlippage} variant="secondary12" />
+                        <FormattedNumber value={outputAmountWithSlippage} variant="caption" />
                       </Stack>
                     </Stack>
                   </>
@@ -342,7 +342,7 @@ export function CollateralRepayModalContent({
                           symbol={tokenToRepayWith.iconSymbol || ''}
                           sx={{ mr: 1, fontSize: '14px' }}
                         />
-                        <FormattedNumber value={inputAmountWithSlippage} variant="secondary12" />
+                        <FormattedNumber value={inputAmountWithSlippage} variant="caption" />
                       </Stack>
                     </Stack>
                   </>

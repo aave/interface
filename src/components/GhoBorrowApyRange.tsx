@@ -61,7 +61,7 @@ const GhoBorrowApyRange: React.FC<GhoBorrowApyRangeProps> = ({
             {...rest}
           />
           <Typography
-            variant={hyphenVariant ?? 'secondary16'}
+            variant={hyphenVariant ?? 'body1'}
             color="text.secondary"
             sx={{ mx: 0.5 }}
           >

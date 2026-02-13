@@ -19,7 +19,7 @@ export const ParaswapErrorDisplay: React.FC<ErrorProps> = ({ txError }) => {
         txError.rawError.message !== USER_DENIED_TRANSACTION && (
           <Box sx={{ pt: 4 }}>
             <Warning severity="info">
-              <Typography variant="description">
+              <Typography variant="body2">
                 {' '}
                 <Trans> Tip: Try increasing slippage or reduce input amount</Trans>
               </Typography>

@@ -59,7 +59,7 @@ export const MigrationMobileList = ({
                 justifyContent: 'center',
               }}
             >
-              <Typography variant="subheader2" color="text.secondary">
+              <Typography variant="subtitle2" color="text.secondary">
                 <Trans>
                   {numSelected}/{numAvailable} assets selected
                 </Trans>

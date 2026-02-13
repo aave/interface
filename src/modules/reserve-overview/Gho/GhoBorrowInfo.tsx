@@ -96,9 +96,9 @@ const GhoBorrowInfoDesktop = ({
           <>
             <Trans>
               Maximum amount available to borrow is{' '}
-              <FormattedNumber value={maxAvailableToBorrow} variant="secondary12" />{' '}
+              <FormattedNumber value={maxAvailableToBorrow} variant="caption" />{' '}
               {reserve.symbol} (
-              <FormattedNumber value={maxAvailableToBorrowUSD} variant="secondary12" symbol="USD" />
+              <FormattedNumber value={maxAvailableToBorrowUSD} variant="caption" symbol="USD" />
               ).
             </Trans>
           </>
@@ -112,23 +112,23 @@ const GhoBorrowInfoDesktop = ({
         }
       >
         <Box>
-          <FormattedNumber value={totalBorrowed} variant="main16" compact />
+          <FormattedNumber value={totalBorrowed} variant="body1" compact />
           <Typography
             component="span"
             color="text.primary"
-            variant="secondary16"
+            variant="body1"
             sx={{ display: 'inline-block', mx: 1 }}
           >
             <Trans>of</Trans>
           </Typography>
-          <FormattedNumber value={reserve.borrowCap} variant="main16" />
+          <FormattedNumber value={reserve.borrowCap} variant="body1" />
         </Box>
         <Box>
           <ReserveSubheader value={totalBorrowedUSD} />
           <Typography
             component="span"
             color="text.secondary"
-            variant="secondary12"
+            variant="caption"
             sx={{ display: 'inline-block', mx: 1 }}
           >
             <Trans>of</Trans>
@@ -138,7 +138,7 @@ const GhoBorrowInfoDesktop = ({
       </PanelItem>
       <Box mt={{ xs: 6, sm: 0 }}>
         <PanelItem title={<FixedAPYTooltip text={<Trans>APY, borrow rate</Trans>} />}>
-          <FormattedNumber value={ghoReserveData.ghoVariableBorrowAPY} percent variant="main16" />
+          <FormattedNumber value={ghoReserveData.ghoVariableBorrowAPY} percent variant="body1" />
         </PanelItem>
       </Box>
     </Stack>
@@ -167,23 +167,23 @@ const GhoBorrowInfoMobile = ({
           }
         >
           <Box>
-            <FormattedNumber value={totalBorrowed} variant="main16" />
+            <FormattedNumber value={totalBorrowed} variant="body1" />
             <Typography
               component="span"
               color="text.primary"
-              variant="secondary16"
+              variant="body1"
               sx={{ display: 'inline-block', mx: 1 }}
             >
               <Trans>of</Trans>
             </Typography>
-            <FormattedNumber value={reserve.borrowCap} variant="main16" />
+            <FormattedNumber value={reserve.borrowCap} variant="body1" />
           </Box>
           <Box>
             <ReserveSubheader value={totalBorrowedUSD} />
             <Typography
               component="span"
               color="text.secondary"
-              variant="secondary12"
+              variant="caption"
               sx={{ display: 'inline-block', mx: 1 }}
             >
               <Trans>of</Trans>
@@ -193,7 +193,7 @@ const GhoBorrowInfoMobile = ({
         </PanelItem>
         <Box mt={{ xs: 6, sm: 0 }}>
           <PanelItem title={<FixedAPYTooltip text={<Trans>APY, borrow rate</Trans>} />}>
-            <FormattedNumber value={ghoReserveData.ghoVariableBorrowAPY} percent variant="main16" />
+            <FormattedNumber value={ghoReserveData.ghoVariableBorrowAPY} percent variant="body1" />
           </PanelItem>
         </Box>
       </Stack>
@@ -211,11 +211,11 @@ const GhoBorrowInfoMobile = ({
             <>
               <Trans>
                 Maximum amount available to borrow is{' '}
-                <FormattedNumber value={maxAvailableToBorrow} variant="secondary12" />{' '}
+                <FormattedNumber value={maxAvailableToBorrow} variant="caption" />{' '}
                 {reserve.symbol} (
                 <FormattedNumber
                   value={maxAvailableToBorrowUSD}
-                  variant="secondary12"
+                  variant="caption"
                   symbol="USD"
                 />
                 ).

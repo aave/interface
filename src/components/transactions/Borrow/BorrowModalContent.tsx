@@ -177,7 +177,7 @@ export const BorrowModalContent = ({
       />
 
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           {handleBlocked()}
         </Typography>
       )}

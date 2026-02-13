@@ -6,7 +6,7 @@ import { TxErrorType } from 'src/ui-config/errorMapping';
 export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
   return (
     <Warning severity="error" sx={{ mt: 4, mb: 0 }}>
-      <Typography variant="description">
+      <Typography variant="body2">
         {txError.error ? (
           <>
             {txError.error}{' '}
@@ -15,7 +15,7 @@ export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
               variant="text"
               onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
             >
-              <Typography variant="description">
+              <Typography variant="body2">
                 <Trans>copy the error</Trans>
               </Typography>
             </Button>
@@ -27,7 +27,7 @@ export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
               sx={{ verticalAlign: 'top' }}
               onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
             >
-              <Typography variant="description">copy the error</Typography>
+              <Typography variant="body2">copy the error</Typography>
             </Button>
           </Trans>
         )}

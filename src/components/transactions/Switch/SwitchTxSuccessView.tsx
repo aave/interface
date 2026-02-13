@@ -53,8 +53,8 @@ export const SwitchTxSuccessView = ({
           }}
         >
           <ExternalTokenIcon sx={{ fontSize: '20px' }} logoURI={iconUri} symbol={iconSymbol} />
-          <FormattedNumber value={Number(amount)} compact variant="main14" />
-          <Typography variant="secondary14">{symbol}</Typography>
+          <FormattedNumber value={Number(amount)} compact variant="body2" />
+          <Typography variant="body2">{symbol}</Typography>
           <SvgIcon sx={{ fontSize: '14px' }}>
             <ArrowRightIcon fontSize="14px" />
           </SvgIcon>
@@ -63,8 +63,8 @@ export const SwitchTxSuccessView = ({
             logoURI={outIconUri}
             symbol={outIconSymbol}
           />
-          <FormattedNumber value={Number(outAmount)} variant="main14" />
-          <Typography variant="secondary14">{outSymbol}</Typography>
+          <FormattedNumber value={Number(outAmount)} variant="body2" />
+          <Typography variant="body2">{outSymbol}</Typography>
         </Box>
       </Box>
     </BaseSuccessView>

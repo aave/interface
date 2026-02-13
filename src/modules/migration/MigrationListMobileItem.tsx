@@ -125,7 +125,7 @@ export const MigrationListMobileItem = ({
             <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
 
             <Box sx={{ pl: '12px', overflow: 'hidden', display: 'flex' }}>
-              <Typography variant="subheader1" color={baseColorPrimary} noWrap sx={{ pr: 1 }}>
+              <Typography variant="subtitle1" color={baseColorPrimary} noWrap sx={{ pr: 1 }}>
                 {userReserve.reserve.symbol}
               </Typography>
               {disabled !== undefined && (
@@ -143,16 +143,16 @@ export const MigrationListMobileItem = ({
 
       <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2, pb: 4, pl: 12 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography variant="description" color={baseColorSecondary}>
+          <Typography variant="body2" color={baseColorSecondary}>
             <Trans>Current v2 Balance</Trans>
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
             <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 0.5 }}>
-              <FormattedNumber value={amount} variant="secondary14" color={baseColorPrimary} />
+              <FormattedNumber value={amount} variant="body2" color={baseColorPrimary} />
             </Box>
             <FormattedNumber
               value={amountInUSD}
-              variant="secondary12"
+              variant="caption"
               color={baseColorSecondary}
               symbolsColor={baseColorSecondary}
               symbol="USD"
@@ -167,7 +167,7 @@ export const MigrationListMobileItem = ({
             justifyContent: 'space-between',
           }}
         >
-          <Typography variant="description" color={baseColorSecondary}>
+          <Typography variant="body2" color={baseColorSecondary}>
             <Trans>APY change</Trans>
           </Typography>
 
@@ -176,7 +176,7 @@ export const MigrationListMobileItem = ({
               value={v2APY}
               symbol={userReserve.reserve.symbol}
               incentives={v2Incentives}
-              variant="main14"
+              variant="body2"
               color={baseColorPrimary}
               market={currentMarket}
             />
@@ -192,7 +192,7 @@ export const MigrationListMobileItem = ({
               value={v3APY}
               symbol={userReserve.reserve.symbol}
               incentives={v3Incentives}
-              variant="main14"
+              variant="body2"
               color={baseColorPrimary}
               market={currentMarket}
             />
@@ -207,7 +207,7 @@ export const MigrationListMobileItem = ({
               alignItems: 'center',
             }}
           >
-            <Typography variant="description" color={baseColorSecondary}>
+            <Typography variant="body2" color={baseColorSecondary}>
               <Trans>Collateral change</Trans>
             </Typography>
 
@@ -216,7 +216,7 @@ export const MigrationListMobileItem = ({
               userReserve.reserve.reserveLiquidationThreshold !== '0' ? (
                 <CheckRoundedIcon fontSize="small" color="success" />
               ) : (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="body2" color={baseColorSecondary} />
               )}
 
               <SvgIcon sx={{ px: 1.5 }}>
@@ -234,7 +234,7 @@ export const MigrationListMobileItem = ({
                   enabledAsCollateral={enabledAsCollateral}
                 />
               ) : !enabledAsCollateral ? (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="body2" color={baseColorSecondary} />
               ) : isIsolated ? (
                 <Box
                   sx={{
@@ -264,7 +264,7 @@ export const MigrationListMobileItem = ({
               justifyContent: 'space-between',
             }}
           >
-            <Typography variant="description" color={baseColorSecondary}>
+            <Typography variant="body2" color={baseColorSecondary}>
               <Trans>APY type change</Trans>
             </Typography>
             <Box sx={{ display: 'flex' }}>
@@ -274,7 +274,7 @@ export const MigrationListMobileItem = ({
                 sx={{ width: '50px', background: 'white' }}
                 disabled
               >
-                <Typography variant="buttonS" color={baseColorPrimary}>
+                <Typography variant="button" color={baseColorPrimary}>
                   {borrowApyType}
                 </Typography>
               </Button>
@@ -292,7 +292,7 @@ export const MigrationListMobileItem = ({
                 sx={{ width: '50px', background: 'white' }}
                 disabled
               >
-                <Typography variant="buttonS" color={baseColorPrimary}>
+                <Typography variant="button" color={baseColorPrimary}>
                   Variable
                 </Typography>
               </Button>
@@ -308,19 +308,19 @@ export const MigrationListMobileItem = ({
               justifyContent: 'space-between',
             }}
           >
-            <Typography variant="description" color={baseColorSecondary}>
+            <Typography variant="body2" color={baseColorSecondary}>
               <Trans>Max LTV</Trans>
             </Typography>
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="main14" color="text.secondary" />
+                <NoData variant="body2" color="text.secondary" />
               ) : (
                 <>
                   <FormattedNumber
                     value={userReserve.reserve.formattedBaseLTVasCollateral}
                     percent
-                    variant="main14"
+                    variant="body2"
                     color={baseColorPrimary}
                   />
                   <SvgIcon sx={{ px: 1.5 }}>
@@ -336,7 +336,7 @@ export const MigrationListMobileItem = ({
                   <FormattedNumber
                     value={v3Rates?.ltv || 0}
                     percent
-                    variant="main14"
+                    variant="body2"
                     color={baseColorPrimary}
                   />
                 </>
@@ -353,19 +353,19 @@ export const MigrationListMobileItem = ({
               justifyContent: 'space-between',
             }}
           >
-            <Typography variant="description" color={baseColorSecondary}>
+            <Typography variant="body2" color={baseColorSecondary}>
               <Trans>Liquidation threshold</Trans>
             </Typography>
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="main14" color="text.secondary" />
+                <NoData variant="body2" color="text.secondary" />
               ) : (
                 <>
                   <FormattedNumber
                     value={userReserve.reserve.formattedReserveLiquidationThreshold}
                     percent
-                    variant="main14"
+                    variant="body2"
                     color={baseColorPrimary}
                   />
                   <SvgIcon sx={{ px: 1.5 }}>
@@ -381,7 +381,7 @@ export const MigrationListMobileItem = ({
                   <FormattedNumber
                     value={v3Rates?.liquidationThreshold || 0}
                     percent
-                    variant="main14"
+                    variant="body2"
                     color={baseColorPrimary}
                   />
                 </>

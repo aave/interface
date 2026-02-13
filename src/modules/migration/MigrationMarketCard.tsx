@@ -70,7 +70,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
         width: '100%',
       }}
     >
-      <Typography variant="subheader2" color="text.primary" sx={{ mb: 2 }}>
+      <Typography variant="subtitle2" color="text.primary" sx={{ mb: 2 }}>
         From
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 6 }}>
@@ -83,7 +83,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
         >
           <Avatar src="/aave.svg" sx={{ width: 36, height: 36 }} />
         </Badge>
-        <Typography variant="subheader1" sx={{ ml: 5 }}>
+        <Typography variant="subtitle1" sx={{ ml: 5 }}>
           {formatMarketName(marketData)}
         </Typography>
         {selectableMarkets && setFromMarketData && (
@@ -107,7 +107,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
               {selectableMarkets.map((selectableMarket) => (
                 <Box key={selectableMarket.title}>
                   <Box sx={{ py: 2, px: 4 }}>
-                    <Typography color="text.secondary" variant="subheader2">
+                    <Typography color="text.secondary" variant="subtitle2">
                       {selectableMarket.title}
                     </Typography>
                   </Box>
@@ -130,7 +130,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
                         >
                           <Avatar src="/aave.svg" sx={{ width: 24, height: 24 }} />
                         </Badge>
-                        <Typography variant="secondary14" sx={{ ml: 3 }}>
+                        <Typography variant="body2" sx={{ ml: 3 }}>
                           {`${market.marketTitle}${market.isFork ? ' Fork' : ''}`}
                         </Typography>
                       </MenuItem>

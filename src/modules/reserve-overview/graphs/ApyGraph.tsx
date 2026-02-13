@@ -183,7 +183,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
                     borderRadius: '99px',
                   }}
                 >
-                  <Typography sx={{ m: 1 }} noWrap variant="secondary12">
+                  <Typography sx={{ m: 1 }} noWrap variant="caption">
                     Avg {avgFormatted}%
                   </Typography>
                 </Stack>
@@ -312,7 +312,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
               <Typography
-                variant="secondary12"
+                variant="caption"
                 color="text.secondary"
                 sx={{ mb: 2, mr: 2, fontWeight: 400 }}
               >
@@ -328,7 +328,7 @@ export const ApyGraph = withTooltip<AreaProps, TooltipData>(
                   <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
                     {field.text}
                   </Typography>
-                  <Typography variant="main12" color="text.primary">
+                  <Typography variant="caption" color="text.primary">
                     {getData(tooltipData, field.name).toFixed(2)}%
                   </Typography>
                 </Box>
@@ -392,7 +392,7 @@ export const PlaceholderChart = ({
 
         <Annotation x={width / 2} y={height / 2}>
           <HtmlLabel showAnchorLine={false}>
-            <Typography noWrap variant="subheader1" color="text.muted">
+            <Typography noWrap variant="subtitle1" color="text.muted">
               No data available
             </Typography>
           </HtmlLabel>

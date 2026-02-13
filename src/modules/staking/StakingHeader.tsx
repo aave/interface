@@ -26,8 +26,8 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
-  const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
+  const valueTypographyVariant = downToSM ? 'body1' : 'h6';
+  const symbolsTypographyVariant = downToSM ? 'body1' : 'h6';
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const total = Object.values(tvl || {}).reduce((acc, item) => acc + item, 0);
@@ -56,7 +56,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
             {/* <img src={`/aave-logo-purple.svg`} width="64px" height="64px" alt="" /> */}
             <Typography
-              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
+              variant={downToXSM ? 'h2' : upToLG ? 'body1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
             >
               <Trans>Staking</Trans>

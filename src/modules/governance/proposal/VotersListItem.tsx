@@ -78,7 +78,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
             }
           >
             <Typography
-              variant="subheader1"
+              variant="subtitle1"
               color="primary"
               sx={{ display: 'flex', alignItems: 'center' }}
             >
@@ -98,11 +98,11 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
             maxWidth: compact ? 82 : 96,
           }}
         >
-          <Typography variant="subheader1" color={voter.support ? 'success.main' : 'error.main'}>
+          <Typography variant="subtitle1" color={voter.support ? 'success.main' : 'error.main'}>
             {voter.support ? 'YAE' : 'NAY'}
           </Typography>
           <FormattedNumber
-            variant="subheader1"
+            variant="subtitle1"
             color="primary"
             value={displayVotingPower}
             visibleDecimals={displayVotingPowerDecimals}

@@ -80,7 +80,7 @@ export const DebtSwitchModalDetails = ({
 
   return (
     <>
-      <Row caption={<Trans>Borrow apy</Trans>} captionVariant="description" mb={4}>
+      <Row caption={<Trans>Borrow apy</Trans>} captionVariant="body2" mb={4}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {loading ? (
             <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
@@ -93,7 +93,7 @@ export const DebtSwitchModalDetails = ({
                 <GhoIncentivesCard
                   useApyRange={false}
                   rangeValues={ghoData.ghoApyRange}
-                  variant="main14"
+                  variant="body2"
                   color="text.secondary"
                   value={ghoData.userCurrentBorrowApy}
                   data-cy={`apyType`}
@@ -107,7 +107,7 @@ export const DebtSwitchModalDetails = ({
                   userQualifiesForDiscount={ghoData.qualifiesForDiscount}
                 />
               ) : (
-                <FormattedNumber value={sourceBorrowAPY} variant="secondary14" percent />
+                <FormattedNumber value={sourceBorrowAPY} variant="body2" percent />
               )}
               {ArrowRightIcon}
               {displayGhoForMintableMarket({
@@ -117,7 +117,7 @@ export const DebtSwitchModalDetails = ({
                 <GhoIncentivesCard
                   useApyRange={ghoData.qualifiesForDiscount && !ghoData.inputAmount}
                   rangeValues={ghoData.inputAmount === 0 ? ghoData.ghoApyRange : switchToRange}
-                  variant="main14"
+                  variant="body2"
                   color="text.secondary"
                   value={
                     ghoData.inputAmount === 0 ? ghoData.userBorrowApyAfterMaxSwitch : switchToApy
@@ -133,7 +133,7 @@ export const DebtSwitchModalDetails = ({
                   userQualifiesForDiscount={ghoData.qualifiesForDiscount}
                 />
               ) : (
-                <FormattedNumber value={targetBorrowAPY} variant="secondary14" percent />
+                <FormattedNumber value={targetBorrowAPY} variant="body2" percent />
               )}
             </>
           )}
@@ -150,7 +150,7 @@ export const DebtSwitchModalDetails = ({
 
       <Row
         caption={<Trans>Borrow balance after switch</Trans>}
-        captionVariant="description"
+        captionVariant="body2"
         mb={4}
         align="flex-start"
       >
@@ -174,7 +174,7 @@ export const DebtSwitchModalDetails = ({
                   />
                   <FormattedNumber
                     value={sourceAmountAfterSwap.toString()}
-                    variant="secondary14"
+                    variant="body2"
                     compact
                   />
                 </Box>
@@ -182,7 +182,7 @@ export const DebtSwitchModalDetails = ({
                   value={sourceAmountAfterSwap
                     .multipliedBy(valueToBigNumber(switchSource.reserve.priceInUSD))
                     .toString()}
-                  variant="helperText"
+                  variant="caption"
                   compact
                   symbol="USD"
                   symbolsColor="text.secondary"
@@ -212,7 +212,7 @@ export const DebtSwitchModalDetails = ({
                   />
                   <FormattedNumber
                     value={targetAmountAfterSwap.toString()}
-                    variant="secondary14"
+                    variant="body2"
                     compact
                   />
                 </Box>
@@ -220,7 +220,7 @@ export const DebtSwitchModalDetails = ({
                   value={targetAmountAfterSwap
                     .multipliedBy(valueToBigNumber(switchTarget.reserve.priceInUSD))
                     .toString()}
-                  variant="helperText"
+                  variant="caption"
                   compact
                   symbol="USD"
                   symbolsColor="text.secondary"

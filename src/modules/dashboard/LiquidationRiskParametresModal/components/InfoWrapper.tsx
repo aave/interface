@@ -34,7 +34,7 @@ export const InfoWrapper = ({
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ width: 'calc(100% - 72px)' }}>
-          <Typography variant="subheader1" mb={1}>
+          <Typography variant="subtitle1" mb={1}>
             {topTitle}
           </Typography>
           <Typography variant="caption" color="text.secondary">
@@ -59,7 +59,7 @@ export const InfoWrapper = ({
 
       <Box>{children}</Box>
 
-      <Typography variant="secondary12" color="text.secondary" textAlign="left">
+      <Typography variant="caption" color="text.secondary" textAlign="left">
         {bottomText}
       </Typography>
     </Box>

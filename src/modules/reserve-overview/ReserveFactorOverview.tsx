@@ -47,7 +47,7 @@ export const ReserveFactorOverview = ({
             }}
             text={<Trans>Reserve factor</Trans>}
             key="res_factor"
-            variant="description"
+            variant="body2"
             collectorLink={
               collectorContract
                 ? explorerLinkBuilder({
@@ -58,12 +58,12 @@ export const ReserveFactorOverview = ({
           />
         }
       >
-        <FormattedNumber value={reserveFactor} percent variant="secondary14" visibleDecimals={2} />
+        <FormattedNumber value={reserveFactor} percent variant="body2" visibleDecimals={2} />
       </ReserveOverviewBox>
 
       <ReserveOverviewBox
         title={
-          <Typography variant="description">
+          <Typography variant="body2">
             <Trans>Collector Contract</Trans>
           </Typography>
         }
@@ -82,7 +82,7 @@ export const ReserveFactorOverview = ({
           sx={{ textDecoration: 'none' }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="description" color="text.secondary">
+            <Typography variant="body2" color="text.secondary">
               <Trans>View contract</Trans>
             </Typography>
             <SvgIcon sx={{ ml: 1, fontSize: 14 }}>

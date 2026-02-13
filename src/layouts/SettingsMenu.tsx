@@ -89,7 +89,7 @@ export function SettingsMenu() {
         keepMounted={true}
       >
         <MenuItem disabled sx={{ mb: '4px' }}>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subtitle2" color="text.secondary">
             <Trans>Global settings</Trans>
           </Typography>
         </MenuItem>

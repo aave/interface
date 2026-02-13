@@ -358,10 +358,10 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="main12" color="primary" sx={{ mr: 2 }}>
+                <Typography variant="caption" color="primary" sx={{ mr: 2 }}>
                   <Trans>Utilization Rate</Trans>
                 </Typography>
-                <Typography variant="main12" color="primary">
+                <Typography variant="caption" color="primary">
                   {tooltipData.utilization}%
                 </Typography>
               </Box>
@@ -381,7 +381,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                     <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
                       <Trans>Borrow amount to reach {tooltipData.utilization}% utilization</Trans>
                     </Typography>
-                    <Typography variant="main12" color="primary">
+                    <Typography variant="caption" color="primary">
                       $
                       {new Intl.NumberFormat('en-US', {
                         minimumFractionDigits: 2,
@@ -399,7 +399,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                         Repayment amount to reach {tooltipData.utilization}% utilization
                       </Trans>
                     </Typography>
-                    <Typography variant="main12" color="primary">
+                    <Typography variant="caption" color="primary">
                       $
                       {new Intl.NumberFormat('en-US', {
                         minimumFractionDigits: 2,
@@ -420,7 +420,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                   <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
                     {field.text}
                   </Typography>
-                  <Typography variant="main12" color="text.primary">
+                  <Typography variant="caption" color="text.primary">
                     {tooltipValueAccessors[field.name](tooltipData).toFixed(2)}%
                   </Typography>
                 </Box>

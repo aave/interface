@@ -99,8 +99,8 @@ export const DashboardTopPanel = () => {
           .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
           .toFixed();
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
-  const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
+  const valueTypographyVariant = downToSM ? 'body1' : 'h6';
+  const noDataTypographyVariant = downToSM ? 'body1' : 'h6';
 
   return (
     <>
@@ -114,7 +114,7 @@ export const DashboardTopPanel = () => {
                 width: '100%',
               }}
             >
-              <Typography variant="buttonM">
+              <Typography variant="button">
                 <Trans>Migrate to {market.marketTitle} v3 Market</Trans>
               </Typography>
             </Button>
@@ -133,7 +133,7 @@ export const DashboardTopPanel = () => {
               <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
                 <Link href={ROUTES.marketMigrationTool(currentMarket)}>
                   <Button variant="gradient" sx={{ height: '20px' }}>
-                    <Typography variant="buttonS" data-cy={`migration-button`}>
+                    <Typography variant="button" data-cy={`migration-button`}>
                       <Trans>Migrate to v3</Trans>
                     </Typography>
                   </Button>

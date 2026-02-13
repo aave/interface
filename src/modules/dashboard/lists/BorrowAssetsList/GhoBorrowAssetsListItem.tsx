@@ -133,7 +133,7 @@ const GhoBorrowAssetsListItemDesktop = ({
         >
           <TokenIcon symbol={iconSymbol} fontSize="large" />
           <Tooltip title={`${name} (${symbol})`} arrow placement="top">
-            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+            <Typography variant="subtitle1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
               {symbol}
             </Typography>
           </Tooltip>
@@ -144,7 +144,7 @@ const GhoBorrowAssetsListItemDesktop = ({
           <AvailableTooltip
             capType={CapType.borrowCap}
             text={<Trans>Available</Trans>}
-            variant="subheader2"
+            variant="subtitle2"
             color="text.secondary"
             ml={-1}
           />
@@ -163,7 +163,7 @@ const GhoBorrowAssetsListItemDesktop = ({
       <ListColumn>
         <FixedAPYTooltip
           text={<Trans>APY, borrow rate</Trans>}
-          variant="subheader2"
+          variant="subtitle2"
           color="text.secondary"
         />
         <GhoIncentivesCard
@@ -228,11 +228,11 @@ const GhoBorrowAssetsListItemMobile = ({
           <FixedAPYTooltip
             text={<Trans>APY, borrow rate</Trans>}
             key="APY_dash_mob_variable_ type"
-            variant="description"
+            variant="body2"
           />
         }
         align="flex-start"
-        captionVariant="description"
+        captionVariant="body2"
         mb={2}
       >
         <Stack alignItems="end">

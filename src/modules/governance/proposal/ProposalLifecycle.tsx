@@ -317,12 +317,12 @@ const ProposalStep = ({
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {networkLogo && <Avatar sx={{ width: 16, height: 16, mr: 2 }} src={networkLogo} />}
-              <Typography variant="main14">
+              <Typography variant="body2">
                 <Trans>{stepName}</Trans>
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Typography variant="tooltip" color="text.muted">
+              <Typography variant="caption" color="text.muted">
                 {formatTime(timestamp)}
               </Typography>
               {transactionHash && (

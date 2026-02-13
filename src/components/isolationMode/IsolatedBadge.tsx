@@ -57,7 +57,7 @@ export const IsolatedEnabledBadge = ({
     >
       <Box sx={sx}>
         <Typography
-          variant="secondary12"
+          variant="caption"
           sx={{
             lineHeight: '0.75rem',
           }}
@@ -87,7 +87,7 @@ export const IsolatedDisabledBadge = () => {
       }
     >
       <Box sx={contentSx}>
-        <Typography variant="description" color="error.main">
+        <Typography variant="body2" color="error.main">
           <Trans>Unavailable</Trans>
         </Typography>
         <InfoIcon />
@@ -106,7 +106,7 @@ export const UnavailableDueToIsolationBadge = () => {
       }
     >
       <Box sx={contentSx}>
-        <Typography variant="description" color="error.main">
+        <Typography variant="body2" color="error.main">
           <Trans>Unavailable</Trans>
         </Typography>
         <InfoIcon />
@@ -119,7 +119,7 @@ const IsolationModeTooltipTemplate = ({ content }: { content: ReactNode }) => {
   return (
     <Box>
       <Box sx={{ mb: 4 }}>{content}</Box>
-      <Typography variant="subheader2" color="text.secondary">
+      <Typography variant="subtitle2" color="text.secondary">
         <Trans>
           Learn more in our{' '}
           <Link href="https://docs.aave.com/faq/aave-v3-features#isolation-mode" fontWeight={500}>

@@ -35,7 +35,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
               <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
                 <LightningBoltGradient />
               </SvgIcon>
-              <Typography variant="subheader1">{getEmodeMessage(e.eMode.label)}</Typography>
+              <Typography variant="subtitle1">{getEmodeMessage(e.eMode.label)}</Typography>
               <ConfigStatus enabled={e.collateralEnabled} label="Collateral" />
               <ConfigStatus enabled={e.borrowingEnabled} label="Borrowable" />
             </Box>
@@ -48,19 +48,19 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
               }}
             >
               <ReserveOverviewBox
-                title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
+                title={<MaxLTVTooltip variant="body2" text={<Trans>Max LTV</Trans>} />}
               >
                 <FormattedNumber
                   value={e.eMode.formattedLtv}
                   percent
-                  variant="secondary14"
+                  variant="body2"
                   visibleDecimals={2}
                 />
               </ReserveOverviewBox>
               <ReserveOverviewBox
                 title={
                   <LiquidationThresholdTooltip
-                    variant="description"
+                    variant="body2"
                     text={<Trans>Liquidation threshold</Trans>}
                   />
                 }
@@ -68,14 +68,14 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 <FormattedNumber
                   value={e.eMode.formattedLiquidationThreshold}
                   percent
-                  variant="secondary14"
+                  variant="body2"
                   visibleDecimals={2}
                 />
               </ReserveOverviewBox>
               <ReserveOverviewBox
                 title={
                   <LiquidationPenaltyTooltip
-                    variant="description"
+                    variant="body2"
                     text={<Trans>Liquidation penalty</Trans>}
                   />
                 }
@@ -83,7 +83,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 <FormattedNumber
                   value={e.eMode.formattedLiquidationBonus}
                   percent
-                  variant="secondary14"
+                  variant="body2"
                   visibleDecimals={2}
                 />
               </ReserveOverviewBox>
@@ -147,7 +147,7 @@ const ConfigStatus = ({ enabled, label }: { enabled: boolean; label: string }) =
       ) : (
         <CloseIcon fontSize="small" color="error" sx={{ ml: 2 }} />
       )}
-      <Typography variant="subheader1" sx={{ color: enabled ? '#46BC4B' : '#F24E4E' }}>
+      <Typography variant="subtitle1" sx={{ color: enabled ? '#46BC4B' : '#F24E4E' }}>
         <Trans>{label}</Trans>
       </Typography>
     </>

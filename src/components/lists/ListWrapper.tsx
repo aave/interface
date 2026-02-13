@@ -154,7 +154,7 @@ export const ListWrapper = ({
                 : undefined;
             }}
           >
-            <Typography variant="buttonM" color="text.secondary">
+            <Typography variant="button" color="text.secondary">
               {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
             </Typography>
             <span />

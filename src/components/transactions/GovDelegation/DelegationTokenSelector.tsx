@@ -52,8 +52,8 @@ export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
                   symbol={token === 'aAAVE' ? 'aave' : token}
                   sx={{ width: 16, height: 16 }}
                 />
-                <Typography variant="subheader1">{token}</Typography>
-                {index < symbol.length - 1 && <Typography variant="subheader1">+</Typography>}
+                <Typography variant="subtitle1">{token}</Typography>
+                {index < symbol.length - 1 && <Typography variant="subtitle1">+</Typography>}
               </>
             ))
           ) : (
@@ -63,13 +63,13 @@ export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
                 symbol={symbol === 'aAAVE' ? 'aave' : symbol}
                 sx={{ width: 16, height: 16 }}
               />
-              <Typography variant="subheader1">{symbol}</Typography>
+              <Typography variant="subtitle1">{symbol}</Typography>
             </>
           )}
         </Box>
       }
     >
-      <FormattedNumber variant="secondary14" color="text.secondary" value={amount} />
+      <FormattedNumber variant="body2" color="text.secondary" value={amount} />
     </Row>
   );
 };

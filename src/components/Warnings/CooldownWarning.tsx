@@ -10,7 +10,7 @@ export const CooldownWarning = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
   return (
     <Warning severity="warning" sx={{ '.MuiAlert-message': { p: 0 }, mb: 6 }}>
-      <Typography variant="subheader1">
+      <Typography variant="subtitle1">
         <Trans>Cooldown period warning</Trans>
       </Typography>
       <Typography variant="caption">

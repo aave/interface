@@ -62,7 +62,7 @@ export function MoreMenu() {
         keepMounted={true}
       >
         <MenuItem divider={true} component={Link} onClick={handleClose} href="/v3-migration">
-          <Typography variant="subheader1">
+          <Typography variant="subtitle1">
             <Trans>Migrate to Aave V3</Trans>
           </Typography>
         </MenuItem>

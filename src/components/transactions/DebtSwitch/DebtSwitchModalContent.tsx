@@ -204,12 +204,12 @@ export const DebtSwitchModalContent = ({
       <TxSuccessView
         customAction={
           <Stack gap={3}>
-            <Typography variant="description" color="text.primary">
+            <Typography variant="body2" color="text.primary">
               <Trans>You&apos;ve successfully switched borrow position.</Trans>
             </Typography>
             <Stack direction="row" alignItems="center" justifyContent="center" gap={1}>
               <TokenIcon symbol={poolReserve.iconSymbol} sx={{ mx: 1 }} />
-              <FormattedNumber value={amountRef.current} compact variant="subheader1" />
+              <FormattedNumber value={amountRef.current} compact variant="subtitle1" />
               {poolReserve.symbol}
               <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
                 <ArrowNarrowRightIcon />
@@ -218,7 +218,7 @@ export const DebtSwitchModalContent = ({
               <FormattedNumber
                 value={maxAmountToReceiveWithSlippage}
                 compact
-                variant="subheader1"
+                variant="subtitle1"
               />
               {switchTarget.reserve.symbol}
             </Stack>
@@ -329,12 +329,12 @@ export const DebtSwitchModalContent = ({
         }
       />
       {error && !loadingSkeleton && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           {error}
         </Typography>
       )}
       {!error && blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           <BlockingError />
         </Typography>
       )}
@@ -357,7 +357,7 @@ export const DebtSwitchModalContent = ({
                       symbol={switchTarget.reserve.iconSymbol}
                       sx={{ mr: 1, fontSize: '14px' }}
                     />
-                    <FormattedNumber value={maxAmountToReceiveWithSlippage} variant="secondary12" />
+                    <FormattedNumber value={maxAmountToReceiveWithSlippage} variant="caption" />
                   </Stack>
                 </Stack>
               </Stack>
@@ -412,10 +412,10 @@ const SelectOptionListHeader = () => {
   return (
     <ListSubheader sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}`, mt: -1 })}>
       <Stack direction="row" sx={{ py: 4 }} gap={14}>
-        <Typography variant="subheader2">
+        <Typography variant="subtitle2">
           <Trans>Select an asset</Trans>
         </Typography>
-        <Typography variant="subheader2">
+        <Typography variant="subtitle2">
           <Trans>Borrow APY</Trans>
         </Typography>
       </Stack>
@@ -436,10 +436,10 @@ const SwitchTargetSelectOption = ({ asset }: { asset: SwitchTargetAsset }) => {
         <FormattedNumber
           value={asset.variableApy}
           percent
-          variant="main14"
+          variant="body2"
           color="text.secondary"
         />
-        <Typography variant="helperText" color="text.secondary">
+        <Typography variant="caption" color="text.secondary">
           <Trans>Variable rate</Trans>
         </Typography>
       </Box>
@@ -476,7 +476,7 @@ const GhoSwitchTargetSelectOption = ({
         <GhoIncentivesCard
           useApyRange={qualifiesForDiscount}
           rangeValues={ghoApyRange}
-          variant="main14"
+          variant="body2"
           color="text.secondary"
           value={userBorrowApyAfterMaxSwitch ?? -1}
           data-cy={`apyType`}
@@ -486,7 +486,7 @@ const GhoSwitchTargetSelectOption = ({
           withTokenIcon={qualifiesForDiscount}
           userQualifiesForDiscount={qualifiesForDiscount}
         />
-        <Typography variant="helperText" color="text.secondary">
+        <Typography variant="caption" color="text.secondary">
           <Trans>Fixed rate</Trans>
         </Typography>
       </Box>

@@ -9,7 +9,7 @@ export const MobileListItemLoader = () => {
       <Row
         caption={<Skeleton width={100} height={20} />}
         align="flex-start"
-        captionVariant="description"
+        captionVariant="body2"
         mb={2}
       >
         <Skeleton width={70} height={20} />
@@ -18,7 +18,7 @@ export const MobileListItemLoader = () => {
       <Row
         caption={<Skeleton width={100} height={20} />}
         align="flex-start"
-        captionVariant="description"
+        captionVariant="body2"
         mb={2}
       >
         <Skeleton width={70} height={20} />
@@ -27,7 +27,7 @@ export const MobileListItemLoader = () => {
       <Row
         caption={<Skeleton width={100} height={20} />}
         align="flex-start"
-        captionVariant="description"
+        captionVariant="body2"
         mb={2}
       >
         <Skeleton width={70} height={20} />

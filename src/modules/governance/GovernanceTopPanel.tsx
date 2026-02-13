@@ -52,7 +52,7 @@ export const GovernanceTopPanel = () => {
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
             {/* <img src={`/aave.svg`} width="32px" height="32px" alt="" /> */}
             <Typography
-              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
+              variant={downToXSM ? 'h2' : upToLG ? 'body1' : 'h1'}
               sx={{ ml: 2, mr: 3 }}
             >
               <Trans>Aave Governance</Trans>

@@ -127,7 +127,7 @@ export const UnStakeModalContent = ({ stakeAssetName, icon }: UnStakeProps) => {
         balanceText={<Trans>Staking balance</Trans>}
       />
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
+        <Typography variant="caption" color="red">
           {handleBlocked()}
         </Typography>
       )}

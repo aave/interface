@@ -35,7 +35,7 @@ export function VotingPowerInfoPanel() {
           <Box sx={{ display: 'flex', flexDirection: 'column', mr: '25%' }}>
             <TextWithTooltip
               text="Voting power"
-              variant="description"
+              variant="body2"
               textColor="text.secondary"
               event={{
                 eventName: GENERAL.TOOL_TIP,
@@ -46,13 +46,13 @@ export function VotingPowerInfoPanel() {
               }}
             >
               <>
-                <Typography variant="subheader2">
+                <Typography variant="subtitle2">
                   <Trans>
                     Your voting power is based on your AAVE/stkAAVE balance and received
                     delegations.
                   </Trans>
                 </Typography>
-                <Typography variant="subheader2" mt={4}>
+                <Typography variant="subtitle2" mt={4}>
                   <Trans>Use it to vote for or against active proposals.</Trans>
                 </Typography>
               </>
@@ -67,7 +67,7 @@ export function VotingPowerInfoPanel() {
           <Box>
             <TextWithTooltip
               text="Proposition power"
-              variant="description"
+              variant="body2"
               textColor="text.secondary"
               event={{
                 eventName: GENERAL.TOOL_TIP,
@@ -78,13 +78,13 @@ export function VotingPowerInfoPanel() {
               }}
             >
               <>
-                <Typography variant="subheader2">
+                <Typography variant="subtitle2">
                   <Trans>
                     Your proposition power is based on your AAVE/stkAAVE balance and received
                     delegations.
                   </Trans>
                 </Typography>
-                <Typography variant="subheader2" mt={4}>
+                <Typography variant="subtitle2" mt={4}>
                   <Trans>
                     To submit a proposal for minor changes to the protocol, you&apos;ll need at
                     least 80.00K power. If you want to change the core code base, you&apos;ll need
@@ -92,7 +92,7 @@ export function VotingPowerInfoPanel() {
                     <Link
                       href="https://docs.aave.com/developers/v/2.0/protocol-governance/governance"
                       target="_blank"
-                      variant="description"
+                      variant="body2"
                       sx={{ textDecoration: 'underline', ml: 1 }}
                     >
                       <Trans>Learn more.</Trans>

@@ -254,7 +254,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
             <Stack direction="column" ml={2} alignItems="start" justifyContent="center">
               <Stack direction="row">
-                <Typography variant={xsm ? 'subheader1' : 'h4'}>{stakedToken}</Typography>
+                <Typography variant={xsm ? 'subtitle1' : 'h4'}>{stakedToken}</Typography>
                 <Box sx={{ display: { xsm: 'none' } }}>{TokenContractTooltip}</Box>
               </Stack>
               <Typography
@@ -299,7 +299,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
         >
           <Stack direction="row">
             <Typography
-              variant={xsm ? 'subheader2' : 'description'}
+              variant={xsm ? 'subtitle2' : 'body2'}
               color={xsm ? 'text.secondary' : 'text.primary'}
             >
               <Trans>Staking APR</Trans>
@@ -327,7 +327,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               sx={{ mr: 2 }}
               value={stakeData.stakeApyFormatted}
               percent
-              variant="secondary14"
+              variant="body2"
             />
             {stakedToken === 'GHO' ? (
               <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
@@ -344,12 +344,12 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           }}
         >
           <Typography
-            variant={xsm ? 'subheader2' : 'description'}
+            variant={xsm ? 'subtitle2' : 'body2'}
             color={xsm ? 'text.secondary' : 'text.primary'}
           >
             <Trans>Max slashing</Trans>
           </Typography>
-          <FormattedNumber value={maxSlash} percent variant="secondary14" />
+          <FormattedNumber value={maxSlash} percent variant="body2" />
         </Box>
         <Box
           sx={{
@@ -361,7 +361,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           }}
         >
           <Typography
-            variant={xsm ? 'subheader2' : 'description'}
+            variant={xsm ? 'subtitle2' : 'body2'}
             color={xsm ? 'text.secondary' : 'text.primary'}
           >
             <Trans>Wallet Balance</Trans>
@@ -482,17 +482,17 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             bottomLineComponent={
               <>
                 {isCooldownActive && !isUnstakeWindowActive ? (
-                  <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                  <Typography variant="body2" sx={{ display: 'inline-flex', gap: 1 }}>
                     <SecondsToString seconds={stakeCooldownSeconds - userCooldownDelta} />
                   </Typography>
                 ) : isUnstakeWindowActive ? (
-                  <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                  <Typography variant="body2" sx={{ display: 'inline-flex', gap: 1 }}>
                     <SecondsToString
                       seconds={stakeUnstakeWindow + stakeCooldownSeconds - userCooldownDelta}
                     />
                   </Typography>
                 ) : (
-                  <Typography variant="secondary14">
+                  <Typography variant="body2">
                     <SecondsToString seconds={stakeCooldownSeconds} />
                   </Typography>
                 )}
@@ -516,7 +516,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                     <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
                     <FormattedNumber
                       value={formatEther(stakeUserData?.userCooldownAmount || 0)}
-                      variant="secondary14"
+                      variant="body2"
                       color="text.primary"
                     />
                   </Box>
@@ -638,7 +638,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <FormattedNumber
               value={aavePerMonth}
               visibleDecimals={2}
-              variant="secondary14"
+              variant="body2"
               color={+aavePerMonth === 0 ? 'text.disabled' : 'text.primary'}
             />
           }

@@ -154,10 +154,10 @@ export function AppHeader() {
 
   const testnetTooltip = (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
-      <Typography variant="subheader1">
+      <Typography variant="subtitle1">
         <Trans>Testnet mode is ON</Trans>
       </Typography>
-      <Typography variant="description">
+      <Typography variant="body2">
         <Trans>The app is running in testnet mode. Learn how it works in</Trans>{' '}
         <Link
           href="https://aave.com/faq"
@@ -174,10 +174,10 @@ export function AppHeader() {
 
   const forkTooltip = (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
-      <Typography variant="subheader1">
+      <Typography variant="subtitle1">
         <Trans>Fork mode is ON</Trans>
       </Typography>
-      <Typography variant="description">
+      <Typography variant="body2">
         <Trans>The app is running in fork mode.</Trans>
       </Typography>
       <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableFork}>
@@ -331,7 +331,7 @@ export function AppHeader() {
             <UserDisplay
               avatarProps={{ size: AvatarSize.SM }}
               oneLiner={true}
-              titleProps={{ variant: 'buttonM' }}
+              titleProps={{ variant: 'button' }}
             />
           </Button>
         ) : (

@@ -71,7 +71,7 @@ export const SupplyAssetsListMobileItem = ({
       <Row
         caption={<Trans>Supply APY</Trans>}
         align="flex-start"
-        captionVariant="description"
+        captionVariant="body2"
         mb={2}
       >
         <IncentivesCard
@@ -79,7 +79,7 @@ export const SupplyAssetsListMobileItem = ({
           incentives={aIncentivesData}
           address={aTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="body2"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -88,7 +88,7 @@ export const SupplyAssetsListMobileItem = ({
       <Row
         caption={<Trans>Can be collateral</Trans>}
         align="flex-start"
-        captionVariant="description"
+        captionVariant="body2"
         mb={2}
       >
         <ListItemCanBeCollateral

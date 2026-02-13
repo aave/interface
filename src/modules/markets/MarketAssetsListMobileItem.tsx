@@ -43,7 +43,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
       currentMarket={currentMarket}
       isIsolated={reserve.isIsolated}
     >
-      <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
+      <Row caption={<Trans>Total supplied</Trans>} captionVariant="body2" mb={3}>
         <Box
           sx={{
             display: 'flex',
@@ -53,13 +53,13 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
             textAlign: 'center',
           }}
         >
-          <FormattedNumber compact value={reserve.totalLiquidity} variant="secondary14" />
+          <FormattedNumber compact value={reserve.totalLiquidity} variant="body2" />
           <ReserveSubheader value={reserve.totalLiquidityUSD} rightAlign={true} />
         </Box>
       </Row>
       <Row
         caption={<Trans>Supply APY</Trans>}
-        captionVariant="description"
+        captionVariant="body2"
         mb={3}
         align="flex-start"
       >
@@ -69,7 +69,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           incentives={reserve.aIncentivesData || []}
           address={reserve.aTokenAddress}
           symbol={reserve.symbol}
-          variant="secondary14"
+          variant="body2"
           tooltip={
             <>
               {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
@@ -83,7 +83,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
 
       <Divider sx={{ mb: 3 }} />
 
-      <Row caption={<Trans>Total borrowed</Trans>} captionVariant="description" mb={3}>
+      <Row caption={<Trans>Total borrowed</Trans>} captionVariant="body2" mb={3}>
         <Box
           sx={{
             display: 'flex',
@@ -95,11 +95,11 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
         >
           {Number(reserve.totalDebt) > 0 ? (
             <>
-              <FormattedNumber compact value={reserve.totalDebt} variant="secondary14" />
+              <FormattedNumber compact value={reserve.totalDebt} variant="body2" />
               <ReserveSubheader value={reserve.totalDebtUSD} rightAlign={true} />
             </>
           ) : (
-            <NoData variant={'secondary14'} color="text.secondary" />
+            <NoData variant={'body2'} color="text.secondary" />
           )}
         </Box>
       </Row>
@@ -108,10 +108,10 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           <VariableAPYTooltip
             text={<Trans>Borrow APY, variable</Trans>}
             key="APY_list_mob_variable_type"
-            variant="description"
+            variant="body2"
           />
         }
-        captionVariant="description"
+        captionVariant="body2"
         mb={3}
         align="flex-start"
       >
@@ -121,7 +121,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ComputedReserveData) 
           incentives={reserve.vIncentivesData || []}
           address={reserve.variableDebtTokenAddress}
           symbol={reserve.symbol}
-          variant="secondary14"
+          variant="body2"
           tooltip={
             <>
               {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}

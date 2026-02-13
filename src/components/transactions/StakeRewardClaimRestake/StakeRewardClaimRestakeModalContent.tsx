@@ -123,7 +123,7 @@ export const StakeRewardClaimRestakeModalContent = ({
       />
 
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="red">
+        <Typography variant="caption" color="red">
           {handleBlocked()}
         </Typography>
       )}

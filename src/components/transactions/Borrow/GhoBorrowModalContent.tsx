@@ -183,7 +183,7 @@ export const GhoBorrowModalContent = ({
       />
 
       {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
+        <Typography variant="caption" color="error.main">
           <BlockingError />
         </Typography>
       )}
@@ -199,12 +199,12 @@ export const GhoBorrowModalContent = ({
             <Box>
               <FixedAPYTooltip
                 text={<Trans>APY, borrow rate</Trans>}
-                variant="subheader2"
+                variant="subtitle2"
                 color="text.secondary"
               />
             </Box>
           }
-          captionVariant="description"
+          captionVariant="body2"
           mb={4}
           align="flex-start"
         >
@@ -226,11 +226,11 @@ export const GhoBorrowModalContent = ({
           </Box>
         </Row>
         {discountAvailable && (
-          <Typography variant="helperText" color="text.secondary">
+          <Typography variant="caption" color="text.secondary">
             <Trans>
               Discount applied for{' '}
               <FormattedNumber
-                variant="helperText"
+                variant="caption"
                 color="text.secondary"
                 visibleDecimals={2}
                 value={userStakedAaveBalance}
@@ -292,7 +292,7 @@ const BorrowAPY = ({
   onDetailsClick,
 }: BorrowAPYProps) => {
   if (ghoLoadingData || (!hasGhoBorrowPositions && borrowAmount === '' && discountAvailable)) {
-    return <NoData variant="secondary14" color="text.secondary" />;
+    return <NoData variant="body2" color="text.secondary" />;
   }
 
   type SharedIncentiveProps = Omit<GhoIncentivesCardProps, 'value' | 'borrowAmount'> & {
@@ -363,5 +363,5 @@ const BorrowAPY = ({
     );
   }
 
-  return <NoData variant="secondary14" color="text.secondary" />;
+  return <NoData variant="body2" color="text.secondary" />;
 };

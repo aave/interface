@@ -13,7 +13,7 @@ export const GasButton: React.FC<GasButtonProps> = ({ value, gwei, ...props }) =
   return (
     <ToggleButton value={value} aria-label={value} sx={{ p: 2, height: '36px' }} {...props}>
       {gwei ? (
-        <Typography variant={props.selected ? 'subheader1' : 'description'}>
+        <Typography variant={props.selected ? 'subtitle1' : 'body2'}>
           {parseFloat(formatUnits(gwei, 'gwei')).toLocaleString(undefined, {
             maximumFractionDigits: 2,
           })}

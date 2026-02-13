@@ -122,7 +122,7 @@ export const AddTokenDropdown = ({
         data-cy="addToWaletSelector"
       >
         <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-          <Typography variant="secondary12" color="text.secondary">
+          <Typography variant="caption" color="text.secondary">
             <Trans>Underlying token</Trans>
           </Typography>
         </Box>
@@ -154,14 +154,14 @@ export const AddTokenDropdown = ({
           }}
         >
           <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} />
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+          <Typography variant="subtitle1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
             {poolReserve.symbol}
           </Typography>
         </MenuItem>
         {!hideAToken && (
           <Box>
             <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-              <Typography variant="secondary12" color="text.secondary">
+              <Typography variant="caption" color="text.secondary">
                 <Trans>Aave aToken</Trans>
               </Typography>
             </Box>
@@ -190,7 +190,7 @@ export const AddTokenDropdown = ({
               }}
             >
               <TokenIcon symbol={poolReserve.iconSymbol} sx={{ fontSize: '20px' }} aToken={true} />
-              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
+              <Typography variant="subtitle1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
                 {`a${poolReserve.symbol}`}
               </Typography>
             </MenuItem>
