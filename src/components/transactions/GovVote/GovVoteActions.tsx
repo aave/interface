@@ -268,11 +268,26 @@ export const GovVoteActions = ({
               success: true,
             });
 
+            const power = parseFloat(args?.power || '0');
             const votingPowerWei = args?.power ? parseUnits(args.power, 18).toString() : '1';
             const updater = (old: ProposalDetailDisplay | null | undefined) => {
               if (!old?.voteProposalData) return old;
+              const forVotes = old.voteInfo.forVotes + (support ? power : 0);
+              const againstVotes = old.voteInfo.againstVotes + (support ? 0 : power);
+              const total = forVotes + againstVotes;
+              const currentDifferential = forVotes - againstVotes;
               return {
                 ...old,
+                voteInfo: {
+                  ...old.voteInfo,
+                  forVotes,
+                  againstVotes,
+                  forPercent: total > 0 ? forVotes / total : 0,
+                  againstPercent: total > 0 ? againstVotes / total : 0,
+                  currentDifferential,
+                  quorumReached: forVotes >= old.voteInfo.quorum,
+                  differentialReached: currentDifferential >= old.voteInfo.requiredDifferential,
+                },
                 voteProposalData: {
                   ...old.voteProposalData,
                   votedInfo: { support, votingPower: votingPowerWei },
@@ -316,13 +331,28 @@ export const GovVoteActions = ({
           success: true,
         });
 
-        // Optimistically update votedInfo so "You voted" shows immediately
-        // without waiting for the cache service to index the vote
+        // Optimistically update votedInfo and vote counts so the UI reflects
+        // the vote immediately without waiting for the cache service to index
+        const power = parseFloat(args?.power || '0');
         const votingPowerWei = args?.power ? parseUnits(args.power, 18).toString() : '1';
         const updater = (old: ProposalDetailDisplay | null | undefined) => {
           if (!old?.voteProposalData) return old;
+          const forVotes = old.voteInfo.forVotes + (support ? power : 0);
+          const againstVotes = old.voteInfo.againstVotes + (support ? 0 : power);
+          const total = forVotes + againstVotes;
+          const currentDifferential = forVotes - againstVotes;
           return {
             ...old,
+            voteInfo: {
+              ...old.voteInfo,
+              forVotes,
+              againstVotes,
+              forPercent: total > 0 ? forVotes / total : 0,
+              againstPercent: total > 0 ? againstVotes / total : 0,
+              currentDifferential,
+              quorumReached: forVotes >= old.voteInfo.quorum,
+              differentialReached: currentDifferential >= old.voteInfo.requiredDifferential,
+            },
             voteProposalData: {
               ...old.voteProposalData,
               votedInfo: { support, votingPower: votingPowerWei },
