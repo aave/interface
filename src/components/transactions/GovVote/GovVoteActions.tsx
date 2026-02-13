@@ -2,13 +2,13 @@ import { ChainId } from '@aave/contract-helpers';
 import { GelatoRelay } from '@gelatonetwork/relay-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
-import { AbiCoder, keccak256, RLP } from 'ethers/lib/utils';
+import { AbiCoder, keccak256, parseUnits, RLP } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useGovernanceTokensAndPowers } from 'src/hooks/governance/useGovernanceTokensAndPowers';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { VoteProposalData } from 'src/modules/governance/types';
+import { ProposalDetailDisplay, VoteProposalData } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -194,6 +194,7 @@ export const GovVoteActions = ({
     setApprovalTxState,
     approvalTxState,
     setTxError,
+    args,
   } = useModalContext();
   const user = useRootStore((store) => store.account);
 
@@ -266,16 +267,30 @@ export const GovVoteActions = ({
               loading: false,
               success: true,
             });
-            queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
-            queryClient.invalidateQueries({
-              queryKey: ['governance-detail-cache', proposalId, user],
-            });
+
+            const votingPowerWei = args?.power ? parseUnits(args.power, 18).toString() : '1';
+            const updater = (old: ProposalDetailDisplay | null | undefined) => {
+              if (!old?.voteProposalData) return old;
+              return {
+                ...old,
+                voteProposalData: {
+                  ...old.voteProposalData,
+                  votedInfo: { support, votingPower: votingPowerWei },
+                },
+              };
+            };
+            queryClient.setQueryData(['governance-detail-cache', proposalId, user], updater);
+            queryClient.setQueryData(['governance-detail-graph', proposalId, user], updater);
+
             queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
             queryClient.invalidateQueries({
               queryKey: ['governance-voters-cache-for', proposalId],
             });
             queryClient.invalidateQueries({
               queryKey: ['governance-voters-cache-against', proposalId],
+            });
+            queryClient.invalidateQueries({
+              queryKey: ['governance-voters-graph', proposalId],
             });
             return;
           } else {
@@ -301,14 +316,31 @@ export const GovVoteActions = ({
           success: true,
         });
 
-        queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
-        queryClient.invalidateQueries({ queryKey: ['governance-detail-cache', proposalId, user] });
+        // Optimistically update votedInfo so "You voted" shows immediately
+        // without waiting for the cache service to index the vote
+        const votingPowerWei = args?.power ? parseUnits(args.power, 18).toString() : '1';
+        const updater = (old: ProposalDetailDisplay | null | undefined) => {
+          if (!old?.voteProposalData) return old;
+          return {
+            ...old,
+            voteProposalData: {
+              ...old.voteProposalData,
+              votedInfo: { support, votingPower: votingPowerWei },
+            },
+          };
+        };
+        queryClient.setQueryData(['governance-detail-cache', proposalId, user], updater);
+        queryClient.setQueryData(['governance-detail-graph', proposalId, user], updater);
+
         queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
         queryClient.invalidateQueries({
           queryKey: ['governance-voters-cache-for', proposalId],
         });
         queryClient.invalidateQueries({
           queryKey: ['governance-voters-cache-against', proposalId],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['governance-voters-graph', proposalId],
         });
       }
     } catch (err) {
