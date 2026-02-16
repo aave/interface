@@ -89,7 +89,7 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
     });
   });
 
-  // If all reserves have an eMode cateogry other than 0, we need to add the default empty one.
+  // If all reserves have an eMode category other than 0, we need to add the default empty one.
   // The UI assumes that there is always an eMode category 0, which is 'none'.
   if (!eModes[0]) {
     eModes[0] = {

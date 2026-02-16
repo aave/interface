@@ -174,7 +174,7 @@ export interface PoolSlice {
   claimRewards: (
     args: ClaimRewardsActionsProps & { formattedReserves: FormattedReservesAndIncentives[] }
   ) => Promise<EthereumTransactionTypeExtended[]>;
-  // TODO: optimize types to use only neccessary properties
+  // TODO: optimize types to use only necessary properties
   swapCollateral: (args: SwapActionProps) => Promise<EthereumTransactionTypeExtended[]>;
   withdrawAndSwitch: (args: WithdrawAndSwitchActionProps) => PopulatedTransaction;
   repay: (args: RepayArgs) => PopulatedTransaction;
