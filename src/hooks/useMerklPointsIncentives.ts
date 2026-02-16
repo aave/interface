@@ -30,7 +30,7 @@ type ReserveIncentiveAdditionalData = {
 // Hardcoded Merkl endpoint for INK/tydro incentives
 const INK_POINT_TOKEN_ADDRESSES = ['0x40aBd730Cc9dA34a8EE9823fEaBDBa35E50c4ac7'];
 const MERKL_TYDRO_ENDPOINT =
-  'https://api.merkl.xyz/v4/opportunities?mainProtocolId=tydro&chainName=ink'; // Merkl API
+  'https://api.merkl.xyz/v4/opportunities?mainProtocolId=tydro&chainName=ink&items=100&status=LIVE'; // Merkl API
 
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
@@ -74,15 +74,20 @@ export const useMerklPointsIncentives = ({
     enabled: enabled && !!rewardedAsset && !!protocolAction,
     select: (merklOpportunities) => {
       const opportunities = merklOpportunities.filter((opportunity) => {
-        if (!rewardedAsset || !opportunity.explorerAddress || !protocolAction) {
+        if (!rewardedAsset || !protocolAction) {
           return false;
         }
-        const matchingToken = opportunity.tokens.find(
+
+        // Prefer explorerAddress (aToken/vToken) but fall back to token list to handle
+        // API inconsistencies where explorerAddress isn't aligned with token[0].
+        const matchesExplorer =
+          opportunity.explorerAddress?.toLowerCase() === rewardedAsset.toLowerCase();
+        const matchesToken = opportunity.tokens.some(
           (token) => token.address.toLowerCase() === rewardedAsset.toLowerCase()
         );
 
         return (
-          matchingToken &&
+          (matchesExplorer || matchesToken) &&
           checkOpportunityAction(opportunity.action, protocolAction) &&
           opportunity.chainId === currentChainId
         );
@@ -92,13 +97,21 @@ export const useMerklPointsIncentives = ({
         return null;
       }
 
-      const opportunity = opportunities.find((opp) => opp.status === OpportunityStatus.LIVE);
+      const pointsOpportunities = opportunities.filter((opp) =>
+        opp.rewardsRecord.breakdowns.some((breakdown) =>
+          INK_POINT_TOKEN_ADDRESSES.includes(breakdown.token.address)
+        )
+      );
+
+      const opportunity = pointsOpportunities.find((opp) => opp.status === OpportunityStatus.LIVE);
 
       if (!opportunity) {
         return null;
       }
 
-      const rewardsBreakdown = opportunity.rewardsRecord.breakdowns[0];
+      const rewardsBreakdown = opportunity.rewardsRecord.breakdowns.find((breakdown) =>
+        INK_POINT_TOKEN_ADDRESSES.includes(breakdown.token.address)
+      );
 
       if (!rewardsBreakdown) {
         return null;
