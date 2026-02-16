@@ -28,7 +28,8 @@ type ReserveIncentiveAdditionalData = {
 };
 
 // Hardcoded Merkl endpoint for INK/tydro incentives
-const INK_POINT_TOKEN_ADDRESSES = ['0x40aBd730Cc9dA34a8EE9823fEaBDBa35E50c4ac7'];
+// Normalize to lowercase for case-insensitive comparison
+const INK_POINT_TOKEN_ADDRESSES = ['0x40aBd730Cc9dA34a8EE9823fEaBDBa35E50c4ac7'.toLowerCase()];
 const MERKL_TYDRO_ENDPOINT =
   'https://api.merkl.xyz/v4/opportunities?mainProtocolId=tydro&chainName=ink&items=100&status=LIVE'; // Merkl API
 
@@ -99,7 +100,7 @@ export const useMerklPointsIncentives = ({
 
       const pointsOpportunities = opportunities.filter((opp) =>
         opp.rewardsRecord.breakdowns.some((breakdown) =>
-          INK_POINT_TOKEN_ADDRESSES.includes(breakdown.token.address)
+          INK_POINT_TOKEN_ADDRESSES.includes(breakdown.token.address.toLowerCase())
         )
       );
 
@@ -110,7 +111,7 @@ export const useMerklPointsIncentives = ({
       }
 
       const rewardsBreakdown = opportunity.rewardsRecord.breakdowns.find((breakdown) =>
-        INK_POINT_TOKEN_ADDRESSES.includes(breakdown.token.address)
+        INK_POINT_TOKEN_ADDRESSES.includes(breakdown.token.address.toLowerCase())
       );
 
       if (!rewardsBreakdown) {
@@ -122,7 +123,7 @@ export const useMerklPointsIncentives = ({
 
       const rewardToken = rewardsBreakdown.token;
 
-      if (!INK_POINT_TOKEN_ADDRESSES.includes(rewardToken.address)) {
+      if (!INK_POINT_TOKEN_ADDRESSES.includes(rewardToken.address.toLowerCase())) {
         return null;
       }
 
