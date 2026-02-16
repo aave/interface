@@ -296,7 +296,7 @@ export const SupportModal = () => {
                 />
 
                 {account && !hasOptedIn && (
-                  <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1.5 }}>
+                  <Box sx={{ mt: 2, p: 2, bgcolor: 'background.surface', borderRadius: 1.5 }}>
                     <FormControlLabel
                       control={
                         <Checkbox
