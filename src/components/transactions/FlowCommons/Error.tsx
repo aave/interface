@@ -2,10 +2,26 @@ import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
+import { useShallow } from 'zustand/shallow';
 
 export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
   const { close } = useModalContext();
+  const [setFeedbackOpen, setSupportPrefillMessage] = useRootStore(
+    useShallow((state) => [state.setFeedbackOpen, state.setSupportPrefillMessage])
+  );
+
+  const handleGetSupport = () => {
+    const rawMessage = txError?.rawError?.message
+      ? txError.rawError.message.toString()
+      : 'Unknown error';
+    const template = `I am coming from a transaction failure with this error:\n\n"${rawMessage}"`;
+
+    setSupportPrefillMessage(template);
+    setFeedbackOpen(true);
+    close();
+  };
 
   return (
     <>
@@ -47,18 +63,22 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           </Trans>
         </Typography>
 
-        <Button
-          variant="outlined"
-          onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
-          size="small"
-          sx={{ mt: 6 }}
-        >
-          <Trans>Copy error text</Trans>
+        <Box sx={{ display: 'flex', gap: 2, mt: 6 }}>
+          <Button variant="outlined" onClick={handleGetSupport} size="small">
+            <Trans>Get support</Trans>
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
+            size="small"
+          >
+            <Trans>Copy error text</Trans>
 
-          <SvgIcon sx={{ ml: 0.5, fontSize: '12px' }}>
-            <DuplicateIcon />
-          </SvgIcon>
-        </Button>
+            <SvgIcon sx={{ ml: 0.5, fontSize: '12px' }}>
+              <DuplicateIcon />
+            </SvgIcon>
+          </Button>
+        </Box>
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12 }}>
         <Button onClick={close} variant="contained" size="large" sx={{ minHeight: '44px' }}>

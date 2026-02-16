@@ -7,6 +7,8 @@ export type LayoutSlice = {
   mobileDrawerOpen: boolean;
   feedbackDialogOpen: boolean;
   setFeedbackOpen: (eventName: boolean) => void;
+  supportPrefillMessage?: string;
+  setSupportPrefillMessage: (message?: string) => void;
 };
 
 export const createLayoutSlice: StateCreator<
@@ -18,11 +20,15 @@ export const createLayoutSlice: StateCreator<
   return {
     mobileDrawerOpen: false,
     feedbackDialogOpen: false,
+    supportPrefillMessage: undefined,
     setMobileDrawerOpen: (value: boolean) => {
       set({ mobileDrawerOpen: value });
     },
     setFeedbackOpen: (value: boolean) => {
       set({ feedbackDialogOpen: value });
+    },
+    setSupportPrefillMessage: (message?: string) => {
+      set({ supportPrefillMessage: message });
     },
   };
 };

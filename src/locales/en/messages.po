@@ -1065,6 +1065,10 @@ msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgid "Migrate to v3"
 msgstr "Migrate to v3"
 
+#: src/components/transactions/FlowCommons/Error.tsx
+msgid "Get support"
+msgstr "Get support"
+
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"
 msgstr "The source chain time to finality is the main factor that determines the time to destination. <0>Learn more</0>"

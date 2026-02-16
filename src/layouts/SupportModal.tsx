@@ -21,11 +21,19 @@ import { SUPPORT } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 export const SupportModal = () => {
-  const [feedbackDialogOpen, setFeedbackOpen, isTrackingEnabled] = useRootStore(
+  const [
+    feedbackDialogOpen,
+    setFeedbackOpen,
+    isTrackingEnabled,
+    supportPrefillMessage,
+    setSupportPrefillMessage,
+  ] = useRootStore(
     useShallow((state) => [
       state.feedbackDialogOpen,
       state.setFeedbackOpen,
       state.isTrackingEnabled,
+      state.supportPrefillMessage,
+      state.setSupportPrefillMessage,
     ])
   );
   const [account, trackEvent] = useRootStore(
@@ -51,8 +59,9 @@ export const SupportModal = () => {
       setSuccess(false);
       setError(false);
       setEmailError('');
+      setValue(supportPrefillMessage || '');
     }
-  }, [feedbackDialogOpen]);
+  }, [feedbackDialogOpen, supportPrefillMessage]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const emailValue = e.target.value;
@@ -114,6 +123,7 @@ export const SupportModal = () => {
       setEmail('');
       setIsShareWalletApproved(false);
       setCountry(null);
+      setSupportPrefillMessage(undefined);
     }
   };
 
@@ -127,6 +137,7 @@ export const SupportModal = () => {
     setSuccess(false);
     setError(false);
     setCountry(null);
+    setSupportPrefillMessage(undefined);
   };
 
   return (
@@ -296,7 +307,7 @@ export const SupportModal = () => {
                 />
 
                 {account && !hasOptedIn && (
-                  <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.50', borderRadius: 1.5 }}>
+                  <Box sx={{ mt: 2, p: 2, bgcolor: 'background.surface', borderRadius: 1.5 }}>
                     <FormControlLabel
                       control={
                         <Checkbox
