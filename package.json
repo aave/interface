@@ -44,7 +44,7 @@
     "@cowprotocol/sdk-ethers-v5-adapter": "0.3.5",
     "@cowprotocol/sdk-flash-loans": "1.7.4",
     "@emotion/cache": "11.10.3",
-    "@emotion/react": "11.10.4",
+    "@emotion/react": "11.14.0",
     "@emotion/server": "latest",
     "@emotion/styled": "11.10.4",
     "@gelatonetwork/relay-sdk": "^5.5.5",
