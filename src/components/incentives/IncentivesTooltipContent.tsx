@@ -208,6 +208,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDe',
     aToken: true,
   },
+  aManWMNT: {
+    tokenIconSymbol: 'WMNT',
+    symbol: 'aWMNT',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
