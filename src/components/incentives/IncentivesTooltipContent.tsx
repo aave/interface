@@ -203,6 +203,16 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDT',
     aToken: true,
   },
+  aManUSDe: {
+    tokenIconSymbol: 'USDe',
+    symbol: 'aUSDe',
+    aToken: true,
+  },
+  aManWMNT: {
+    tokenIconSymbol: 'WMNT',
+    symbol: 'aWMNT',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
