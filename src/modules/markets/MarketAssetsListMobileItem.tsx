@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider } from '@mui/material';
+import { useEffect } from 'react';
 import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { SpkAirdropTooltip } from 'src/components/infoTooltips/SpkAirdropTooltip';
 import { SuperFestTooltip } from 'src/components/infoTooltips/SuperFestTooltip';
@@ -17,6 +18,7 @@ import { IncentivesCard } from '../../components/incentives/IncentivesCard';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
+import { useIncentivizedApy } from '../../hooks/useIncentivizedApy';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 import { ReserveWithProtocolIncentives } from './MarketAssetsList';
 
@@ -24,6 +26,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
+  const { onApyChange, id } = reserve;
 
   const externalIncentivesTooltipsSupplySide = showExternalIncentivesTooltip(
     reserve.underlyingToken.symbol,
@@ -45,6 +48,40 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
     iconSymbol?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
       ? iconSymbol
       : reserve.underlyingToken.symbol;
+
+  const supplyIncentivizedApy = useIncentivizedApy({
+    symbol: reserve.underlyingToken.symbol,
+    market: currentMarket,
+    rewardedAsset: reserve.aToken.address,
+    protocolAction: ProtocolAction.supply,
+    protocolAPY: reserve.supplyInfo.apy.value,
+    protocolIncentives: reserve.supplyProtocolIncentives,
+  });
+
+  const shouldShowBorrow =
+    !!reserve.borrowInfo && Number(reserve.borrowInfo.total.amount.value) > 0;
+
+  const borrowIncentivizedApy = useIncentivizedApy({
+    symbol: reserve.underlyingToken.symbol,
+    market: currentMarket,
+    rewardedAsset: shouldShowBorrow ? reserve.vToken.address : '',
+    protocolAction: ProtocolAction.borrow,
+    protocolAPY: reserve.borrowInfo?.apy.value ?? 0,
+    protocolIncentives: reserve.borrowProtocolIncentives,
+  });
+
+  const supplyDisplayApy = supplyIncentivizedApy.displayAPY;
+  const borrowDisplayApy = borrowIncentivizedApy?.displayAPY;
+
+  useEffect(() => {
+    if (supplyDisplayApy === undefined) return;
+    onApyChange(id, 'supply', supplyDisplayApy);
+  }, [id, supplyDisplayApy]);
+
+  useEffect(() => {
+    if (!borrowIncentivizedApy || borrowDisplayApy === undefined) return;
+    onApyChange(id, 'borrow', borrowDisplayApy);
+  }, [id, borrowDisplayApy, borrowIncentivizedApy]);
 
   return (
     <ListMobileItemWrapper
@@ -97,6 +134,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           }
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
+          displayAPY={supplyDisplayApy}
         />
       </Row>
 
@@ -157,6 +195,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           }
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
+          displayAPY={borrowDisplayApy}
         />
         {reserve.borrowInfo?.borrowingState === 'DISABLED' &&
           !reserve.isFrozen &&
