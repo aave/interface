@@ -14,7 +14,7 @@ const skipSetup = ({ skip, updateSkipStatus }: { skip: SkipType; updateSkipStatu
       this.skip();
     }
   });
-  afterEach(function onAfterEach() {
+  afterEach(function onAfterEach(this: Mocha.Context) {
     if ((this.currentTest as Mocha.Test).state === 'failed' && updateSkipStatus) {
       skip.set(true);
     }

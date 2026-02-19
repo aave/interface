@@ -31,7 +31,7 @@ export const skipSetup = ({
     });
   });
 
-  afterEach(function onAfterEach() {
+  afterEach(function onAfterEach(this: Mocha.Context) {
     if ((this.currentTest as Mocha.Test).state === 'failed' && updateSkipStatus) {
       skip.set(true);
     }

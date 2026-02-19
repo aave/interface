@@ -40,6 +40,11 @@ export const navigation: Navigation[] = [
       !ENABLE_TESTNET,
   },
   {
+    link: ROUTES.stakingK613,
+    title: msg`K613 Staking`,
+    dataCy: 'menuStakingK613',
+  },
+  {
     link: ROUTES.governance,
     title: msg`Governance`,
     dataCy: 'menuGovernance',

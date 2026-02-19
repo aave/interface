@@ -1,0 +1,1893 @@
+{
+    "abi": [
+        {
+            "type": "constructor",
+            "inputs": [
+                {
+                    "name": "xk613Token",
+                    "type": "address",
+                    "internalType": "address"
+                },
+                {
+                    "name": "epochDuration_",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "DEFAULT_ADMIN_ROLE",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "MIN_INITIAL_DEPOSIT",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "MIN_PENALTY_FLUSH",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "PAUSER_ROLE",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "REWARDS_NOTIFIER_ROLE",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "accRewardPerShare",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "addPendingPenalty",
+            "inputs": [
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "advanceEpoch",
+            "inputs": [],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "balanceOf",
+            "inputs": [
+                {
+                    "name": "",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "claim",
+            "inputs": [],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "deposit",
+            "inputs": [
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "epochDuration",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "getRoleAdmin",
+            "inputs": [
+                {
+                    "name": "role",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "grantRole",
+            "inputs": [
+                {
+                    "name": "role",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                },
+                {
+                    "name": "account",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "hasRole",
+            "inputs": [
+                {
+                    "name": "role",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                },
+                {
+                    "name": "account",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bool",
+                    "internalType": "bool"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "lastEpochFlushAt",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "nextEpochAt",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "notifyReward",
+            "inputs": [
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "pause",
+            "inputs": [],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "paused",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bool",
+                    "internalType": "bool"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "pendingPenalties",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "pendingRewards",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "pendingRewardsOf",
+            "inputs": [
+                {
+                    "name": "account",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "renounceRole",
+            "inputs": [
+                {
+                    "name": "role",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                },
+                {
+                    "name": "callerConfirmation",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "revokeRole",
+            "inputs": [
+                {
+                    "name": "role",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                },
+                {
+                    "name": "account",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "setStaking",
+            "inputs": [
+                {
+                    "name": "staking_",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "staking",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "supportsInterface",
+            "inputs": [
+                {
+                    "name": "interfaceId",
+                    "type": "bytes4",
+                    "internalType": "bytes4"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "bool",
+                    "internalType": "bool"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "totalDeposits",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "unpause",
+            "inputs": [],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "userPendingRewards",
+            "inputs": [
+                {
+                    "name": "",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "userRewardDebt",
+            "inputs": [
+                {
+                    "name": "",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "function",
+            "name": "withdraw",
+            "inputs": [
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "internalType": "uint256"
+                }
+            ],
+            "outputs": [],
+            "stateMutability": "nonpayable"
+        },
+        {
+            "type": "function",
+            "name": "xk613",
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "address",
+                    "internalType": "contract IERC20"
+                }
+            ],
+            "stateMutability": "view"
+        },
+        {
+            "type": "event",
+            "name": "Claimed",
+            "inputs": [
+                {
+                    "name": "account",
+                    "type": "address",
+                    "indexed": true,
+                    "internalType": "address"
+                },
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "indexed": false,
+                    "internalType": "uint256"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "Deposited",
+            "inputs": [
+                {
+                    "name": "account",
+                    "type": "address",
+                    "indexed": true,
+                    "internalType": "address"
+                },
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "indexed": false,
+                    "internalType": "uint256"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "EpochAdvanced",
+            "inputs": [
+                {
+                    "name": "timestamp",
+                    "type": "uint256",
+                    "indexed": false,
+                    "internalType": "uint256"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "Paused",
+            "inputs": [
+                {
+                    "name": "account",
+                    "type": "address",
+                    "indexed": false,
+                    "internalType": "address"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "PenaltyAdded",
+            "inputs": [
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "indexed": false,
+                    "internalType": "uint256"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "RewardNotified",
+            "inputs": [
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "indexed": false,
+                    "internalType": "uint256"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "RoleAdminChanged",
+            "inputs": [
+                {
+                    "name": "role",
+                    "type": "bytes32",
+                    "indexed": true,
+                    "internalType": "bytes32"
+                },
+                {
+                    "name": "previousAdminRole",
+                    "type": "bytes32",
+                    "indexed": true,
+                    "internalType": "bytes32"
+                },
+                {
+                    "name": "newAdminRole",
+                    "type": "bytes32",
+                    "indexed": true,
+                    "internalType": "bytes32"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "RoleGranted",
+            "inputs": [
+                {
+                    "name": "role",
+                    "type": "bytes32",
+                    "indexed": true,
+                    "internalType": "bytes32"
+                },
+                {
+                    "name": "account",
+                    "type": "address",
+                    "indexed": true,
+                    "internalType": "address"
+                },
+                {
+                    "name": "sender",
+                    "type": "address",
+                    "indexed": true,
+                    "internalType": "address"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "RoleRevoked",
+            "inputs": [
+                {
+                    "name": "role",
+                    "type": "bytes32",
+                    "indexed": true,
+                    "internalType": "bytes32"
+                },
+                {
+                    "name": "account",
+                    "type": "address",
+                    "indexed": true,
+                    "internalType": "address"
+                },
+                {
+                    "name": "sender",
+                    "type": "address",
+                    "indexed": true,
+                    "internalType": "address"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "StakingUpdated",
+            "inputs": [
+                {
+                    "name": "staking",
+                    "type": "address",
+                    "indexed": true,
+                    "internalType": "address"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "Unpaused",
+            "inputs": [
+                {
+                    "name": "account",
+                    "type": "address",
+                    "indexed": false,
+                    "internalType": "address"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "event",
+            "name": "Withdrawn",
+            "inputs": [
+                {
+                    "name": "account",
+                    "type": "address",
+                    "indexed": true,
+                    "internalType": "address"
+                },
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "indexed": false,
+                    "internalType": "uint256"
+                }
+            ],
+            "anonymous": false
+        },
+        {
+            "type": "error",
+            "name": "AccessControlBadConfirmation",
+            "inputs": []
+        },
+        {
+            "type": "error",
+            "name": "AccessControlUnauthorizedAccount",
+            "inputs": [
+                {
+                    "name": "account",
+                    "type": "address",
+                    "internalType": "address"
+                },
+                {
+                    "name": "neededRole",
+                    "type": "bytes32",
+                    "internalType": "bytes32"
+                }
+            ]
+        },
+        {
+            "type": "error",
+            "name": "EnforcedPause",
+            "inputs": []
+        },
+        {
+            "type": "error",
+            "name": "ExpectedPause",
+            "inputs": []
+        },
+        {
+            "type": "error",
+            "name": "InsufficientBalance",
+            "inputs": []
+        },
+        {
+            "type": "error",
+            "name": "InvalidEpochDuration",
+            "inputs": []
+        },
+        {
+            "type": "error",
+            "name": "MinimumInitialDeposit",
+            "inputs": []
+        },
+        {
+            "type": "error",
+            "name": "NoRewards",
+            "inputs": []
+        },
+        {
+            "type": "error",
+            "name": "ReentrancyGuardReentrantCall",
+            "inputs": []
+        },
+        {
+            "type": "error",
+            "name": "SafeERC20FailedOperation",
+            "inputs": [
+                {
+                    "name": "token",
+                    "type": "address",
+                    "internalType": "address"
+                }
+            ]
+        },
+        {
+            "type": "error",
+            "name": "ZeroAddress",
+            "inputs": []
+        },
+        {
+            "type": "error",
+            "name": "ZeroAmount",
+            "inputs": []
+        }
+    ],
+    "bytecode": {
+        "object": "0x60c060405234801561000f575f5ffd5b50604051612837380380612837833981810160405281019061003191906103a3565b600161004f61004461018160201b60201c565b6101aa60201b60201c565b5f01819055505f73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16036100ba576040517fd92e233d00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5f81036100f3576040517fd1ebf1e200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6101055f5f1b336101b360201b60201c565b506101367f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a336101b360201b60201c565b508173ffffffffffffffffffffffffffffffffffffffff1660808173ffffffffffffffffffffffffffffffffffffffff16815250508060a081815250504260028190555050506103e1565b5f7f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f005f1b905090565b5f819050919050565b5f6101c483836102a860201b60201c565b61029e5760015f5f8581526020019081526020015f205f015f8473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f6101000a81548160ff02191690831515021790555061023b61030b60201b60201c565b73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16847f2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d60405160405180910390a4600190506102a2565b5f90505b92915050565b5f5f5f8481526020019081526020015f205f015f8373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f9054906101000a900460ff16905092915050565b5f33905090565b5f5ffd5b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f61033f82610316565b9050919050565b61034f81610335565b8114610359575f5ffd5b50565b5f8151905061036a81610346565b92915050565b5f819050919050565b61038281610370565b811461038c575f5ffd5b50565b5f8151905061039d81610379565b92915050565b5f5f604083850312156103b9576103b8610312565b5b5f6103c68582860161035c565b92505060206103d78582860161038f565b9150509250929050565b60805160a05161240b61042c5f395f8181610a6701528181610e69015281816115480152611b2c01525f818161089a01528181610dca0152818161148501526115a5015261240b5ff3fe608060405234801561000f575f5ffd5b5060043610610204575f3560e01c80637d88209711610118578063a217fddf116100ab578063da566df61161007a578063da566df61461057a578063e63ab1e914610598578063eded3fda146105b6578063f8e8289e146105d4578063fc9d7711146105f257610204565b8063a217fddf14610506578063a750e69414610524578063b6b55f2514610542578063d547741f1461055e57610204565b80638deb8fc8116100e75780638deb8fc81461047e5780638ff390991461049c57806391d14854146104b8578063939d6237146104e857610204565b80637d8820971461041c5780638456cb591461043a57806389423406146104445780638aef97ce1461046057610204565b80633f4ba83a1161019b5780634e71d92d1161016a5780634e71d92d1461038a5780634ff0876a146103945780635c975abb146103b257806360993b5b146103d057806370a08231146103ec57610204565b80633f4ba83a14610314578063497a04e01461031e5780634bf6f9e71461033c5780634cf088d91461036c57610204565b80632f2ff15d116101d75780632f2ff15d146102a257806336568abe146102be5780633988bad8146102da5780633cf80e6c1461030a57610204565b806301ffc9a714610208578063248a9ca3146102385780632ad876e0146102685780632e1a7d4d14610286575b5f5ffd5b610222600480360381019061021d9190611fb4565b610622565b60405161022f9190611ff9565b60405180910390f35b610252600480360381019061024d9190612045565b61069b565b60405161025f919061207f565b60405180910390f35b6102706106b7565b60405161027d91906120b0565b60405180910390f35b6102a0600480360381019061029b91906120f3565b6106c0565b005b6102bc60048036038101906102b79190612178565b610937565b005b6102d860048036038101906102d39190612178565b610959565b005b6102f460048036038101906102ef91906121b6565b6109d4565b60405161030191906120b0565b60405180910390f35b610312610c46565b005b61031c610c73565b005b610326610ca8565b60405161033391906120b0565b60405180910390f35b610356600480360381019061035191906121b6565b610cb4565b60405161036391906120b0565b60405180910390f35b610374610cc9565b60405161038191906121f0565b60405180910390f35b610392610cee565b005b61039c610e67565b6040516103a991906120b0565b60405180910390f35b6103ba610e8b565b6040516103c79190611ff9565b60405180910390f35b6103ea60048036038101906103e591906120f3565b610ea0565b005b610406600480360381019061040191906121b6565b610fb5565b60405161041391906120b0565b60405180910390f35b610424610fca565b60405161043191906120b0565b60405180910390f35b610442610fd0565b005b61045e600480360381019061045991906120f3565b611005565b005b6104686110a3565b60405161047591906120b0565b60405180910390f35b6104866110a9565b60405161049391906120b0565b60405180910390f35b6104b660048036038101906104b191906121b6565b6110af565b005b6104d260048036038101906104cd9190612178565b611242565b6040516104df9190611ff9565b60405180910390f35b6104f06112a5565b6040516104fd91906120b0565b60405180910390f35b61050e6112ab565b60405161051b919061207f565b60405180910390f35b61052c6112b1565b604051610539919061207f565b60405180910390f35b61055c600480360381019061055791906120f3565b6112d5565b005b61057860048036038101906105739190612178565b611523565b005b610582611545565b60405161058f91906120b0565b60405180910390f35b6105a0611579565b6040516105ad919061207f565b60405180910390f35b6105be61159d565b6040516105cb91906120b0565b60405180910390f35b6105dc6115a3565b6040516105e99190612264565b60405180910390f35b61060c600480360381019061060791906121b6565b6115c7565b60405161061991906120b0565b60405180910390f35b5f7f7965db0b000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916827bffffffffffffffffffffffffffffffffffffffffffffffffffffffff191614806106945750610693826115dc565b5b9050919050565b5f5f5f8381526020019081526020015f20600101549050919050565b64e8d4a5100081565b6106c8611645565b6106d0611667565b5f8103610709576040517f1f2a200500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8060075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20541015610780576040517ff4d678b800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610789336116a8565b8060075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546107d591906122aa565b925050819055508060065f8282546107ed91906122aa565b92505081905550670de0b6b3a764000060035460075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205461084891906122dd565b610852919061234b565b60085f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20819055506108de33827f000000000000000000000000000000000000000000000000000000000000000073ffffffffffffffffffffffffffffffffffffffff1661183d9092919063ffffffff16565b3373ffffffffffffffffffffffffffffffffffffffff167f7084f5476618d8e60b11ef0d7d3f06914655adb8793e28ff7f018d4c76d505d58260405161092491906120b0565b60405180910390a2610934611890565b50565b6109408261069b565b610949816118aa565b61095383836118be565b50505050565b6109616119a7565b73ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16146109c5576040517f6697b23200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6109cf82826119ae565b505050565b5f5f60065403610a235760095f8373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20549050610c41565b5f60035490505f6004541115610a6457600654670de0b6b3a7640000600454610a4c91906122dd565b610a56919061234b565b81610a61919061237b565b90505b5f7f0000000000000000000000000000000000000000000000000000000000000000600254610a93919061237b565b42101590505f670de0b6b3a7640000600554101580610abc57505f600554118015610abb5750815b5b90508015610af557600654670de0b6b3a7640000600554610add91906122dd565b610ae7919061234b565b83610af2919061237b565b92505b5f60075f8773ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205490505f670de0b6b3a76400008583610b4c91906122dd565b610b56919061234b565b90505f60085f8973ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20548211610ba3575f610bed565b60085f8973ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205482610bec91906122aa565b5b90508060095f8a73ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f2054610c38919061237b565b96505050505050505b919050565b610c4e611645565b610c56611667565b5f6006541115610c6957610c68611a97565b5b610c71611890565b565b7f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a610c9d816118aa565b610ca5611c51565b50565b670de0b6b3a764000081565b6008602052805f5260405f205f915090505481565b600a5f9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b610cf6611645565b610cfe611667565b610d07336116a8565b5f60095f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205490505f8103610d81576040517f3fb087f400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5f60095f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f2081905550610e0e33827f000000000000000000000000000000000000000000000000000000000000000073ffffffffffffffffffffffffffffffffffffffff1661183d9092919063ffffffff16565b3373ffffffffffffffffffffffffffffffffffffffff167fd8138f8a3f377c5259ca548e70e4c2de94f129f5a11036a15b69513cba2b426a82604051610e5491906120b0565b60405180910390a250610e65611890565b565b7f000000000000000000000000000000000000000000000000000000000000000081565b5f60015f9054906101000a900460ff16905090565b610ea8611645565b7f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d056610ed2816118aa565b610eda611667565b5f8203610f13576040517f1f2a200500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5f60065403610f39578160045f828254610f2d919061237b565b92505081905550610fa9565b600654670de0b6b3a764000083610f5091906122dd565b610f5a919061234b565b60035f828254610f6a919061237b565b925050819055507ff9a5da3a173eca8cd77c02ece3ff1467b8aa461ed3822201817f2d72fbc5428382604051610fa091906120b0565b60405180910390a15b50610fb2611890565b50565b6007602052805f5260405f205f915090505481565b60065481565b7f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a610ffa816118aa565b611002611cb2565b50565b61100d611645565b7f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d056611037816118aa565b61103f611667565b5f820315611097578160055f828254611058919061237b565b925050819055507f9db9090d4cd2fd574fb4903fcd18a7a99e1a8f3bdcf7ee81e24b8dfd209267b68260405161108e91906120b0565b60405180910390a15b506110a0611890565b50565b60025481565b60055481565b5f5f1b6110bb816118aa565b5f73ffffffffffffffffffffffffffffffffffffffff16600a5f9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff161461115c5761115a7f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d056600a5f9054906101000a900473ffffffffffffffffffffffffffffffffffffffff166119ae565b505b81600a5f6101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505f73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16146111fb576111f97f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d056836118be565b505b8173ffffffffffffffffffffffffffffffffffffffff167fe189a719dae2bf18df1013cfa028ecce01f9fafdbd456a862fa18e6d0143e3c260405160405180910390a25050565b5f5f5f8481526020019081526020015f205f015f8373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f9054906101000a900460ff16905092915050565b60035481565b5f5f1b81565b7f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d05681565b6112dd611645565b6112e5611667565b5f810361131e576040517f1f2a200500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5f600654148015611333575064e8d4a5100081105b1561136a576040517f306cc97600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b611373336116a8565b8060075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546113bf919061237b565b925050819055508060065f8282546113d7919061237b565b92505081905550670de0b6b3a764000060035460075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205461143291906122dd565b61143c919061234b565b60085f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20819055506114ca3330837f000000000000000000000000000000000000000000000000000000000000000073ffffffffffffffffffffffffffffffffffffffff16611d13909392919063ffffffff16565b3373ffffffffffffffffffffffffffffffffffffffff167f2da466a7b24304f47e87fa2e1e5a81b9831ce54fec19055ce277ca2f39ba42c48260405161151091906120b0565b60405180910390a2611520611890565b50565b61152c8261069b565b611535816118aa565b61153f83836119ae565b50505050565b5f7f0000000000000000000000000000000000000000000000000000000000000000600254611574919061237b565b905090565b7f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a81565b60045481565b7f000000000000000000000000000000000000000000000000000000000000000081565b6009602052805f5260405f205f915090505481565b5f7f01ffc9a7000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916827bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916149050919050565b61164d611d68565b600261165f61165a611da9565b611dd2565b5f0181905550565b61166f610e8b565b156116a6576040517fd93c066500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b565b6116b0611a97565b5f60075f8373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205490505f670de0b6b3a76400006003548361170991906122dd565b611713919061234b565b905060085f8473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20548111156117f65760085f8473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f2054816117a391906122aa565b60095f8573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546117ee919061237b565b925050819055505b8060085f8573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f2081905550505050565b61184a8383836001611ddb565b61188b57826040517f5274afe700000000000000000000000000000000000000000000000000000000815260040161188291906121f0565b60405180910390fd5b505050565b60016118a261189d611da9565b611dd2565b5f0181905550565b6118bb816118b66119a7565b611e3d565b50565b5f6118c98383611242565b61199d5760015f5f8581526020019081526020015f205f015f8473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f6101000a81548160ff02191690831515021790555061193a6119a7565b73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16847f2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d60405160405180910390a4600190506119a1565b5f90505b92915050565b5f33905090565b5f6119b98383611242565b15611a8d575f5f5f8581526020019081526020015f205f015f8473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f6101000a81548160ff021916908315150217905550611a2a6119a7565b73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16847ff6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b60405160405180910390a460019050611a91565b5f90505b92915050565b5f6006540315611c4f575f6004541115611b29575f60045490505f600481905550600654670de0b6b3a764000082611acf91906122dd565b611ad9919061234b565b60035f828254611ae9919061237b565b925050819055507ff9a5da3a173eca8cd77c02ece3ff1467b8aa461ed3822201817f2d72fbc5428381604051611b1f91906120b0565b60405180910390a1505b5f7f0000000000000000000000000000000000000000000000000000000000000000600254611b58919061237b565b42101590505f670de0b6b3a7640000600554101580611b8157505f600554118015611b805750815b5b90508015611c4c575f60055490505f600581905550600654670de0b6b3a764000082611bad91906122dd565b611bb7919061234b565b60035f828254611bc7919061237b565b925050819055507ff9a5da3a173eca8cd77c02ece3ff1467b8aa461ed3822201817f2d72fbc5428381604051611bfd91906120b0565b60405180910390a18215611c4a57426002819055507fb7f0e37f8e78f28f1f21b98f426d307e949c22f2997ca4b562ee90c3e5b30b3042604051611c4191906120b0565b60405180910390a15b505b50505b565b611c59611e8e565b5f60015f6101000a81548160ff0219169083151502179055507f5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa611c9b6119a7565b604051611ca891906121f0565b60405180910390a1565b611cba611667565b6001805f6101000a81548160ff0219169083151502179055507f62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258611cfc6119a7565b604051611d0991906121f0565b60405180910390a1565b611d21848484846001611ece565b611d6257836040517f5274afe7000000000000000000000000000000000000000000000000000000008152600401611d5991906121f0565b60405180910390fd5b50505050565b611d70611f3f565b15611da7576040517f3ee5aeb500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b565b5f7f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f005f1b905090565b5f819050919050565b5f5f63a9059cbb60e01b9050604051815f525f1960601c86166004528460245260205f60445f5f8b5af1925060015f51148316611e2f578383151615611e23573d5f823e3d81fd5b5f873b113d1516831692505b806040525050949350505050565b611e478282611242565b611e8a5780826040517fe2517d3f000000000000000000000000000000000000000000000000000000008152600401611e819291906123ae565b60405180910390fd5b5050565b611e96610e8b565b611ecc576040517f8dfc202b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b565b5f5f6323b872dd60e01b9050604051815f525f1960601c87166004525f1960601c86166024528460445260205f60645f5f8c5af1925060015f51148316611f2c578383151615611f20573d5f823e3d81fd5b5f883b113d1516831692505b806040525f606052505095945050505050565b5f6002611f52611f4d611da9565b611dd2565b5f015414905090565b5f5ffd5b5f7fffffffff0000000000000000000000000000000000000000000000000000000082169050919050565b611f9381611f5f565b8114611f9d575f5ffd5b50565b5f81359050611fae81611f8a565b92915050565b5f60208284031215611fc957611fc8611f5b565b5b5f611fd684828501611fa0565b91505092915050565b5f8115159050919050565b611ff381611fdf565b82525050565b5f60208201905061200c5f830184611fea565b92915050565b5f819050919050565b61202481612012565b811461202e575f5ffd5b50565b5f8135905061203f8161201b565b92915050565b5f6020828403121561205a57612059611f5b565b5b5f61206784828501612031565b91505092915050565b61207981612012565b82525050565b5f6020820190506120925f830184612070565b92915050565b5f819050919050565b6120aa81612098565b82525050565b5f6020820190506120c35f8301846120a1565b92915050565b6120d281612098565b81146120dc575f5ffd5b50565b5f813590506120ed816120c9565b92915050565b5f6020828403121561210857612107611f5b565b5b5f612115848285016120df565b91505092915050565b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f6121478261211e565b9050919050565b6121578161213d565b8114612161575f5ffd5b50565b5f813590506121728161214e565b92915050565b5f5f6040838503121561218e5761218d611f5b565b5b5f61219b85828601612031565b92505060206121ac85828601612164565b9150509250929050565b5f602082840312156121cb576121ca611f5b565b5b5f6121d884828501612164565b91505092915050565b6121ea8161213d565b82525050565b5f6020820190506122035f8301846121e1565b92915050565b5f819050919050565b5f61222c6122276122228461211e565b612209565b61211e565b9050919050565b5f61223d82612212565b9050919050565b5f61224e82612233565b9050919050565b61225e81612244565b82525050565b5f6020820190506122775f830184612255565b92915050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601160045260245ffd5b5f6122b482612098565b91506122bf83612098565b92508282039050818111156122d7576122d661227d565b5b92915050565b5f6122e782612098565b91506122f283612098565b925082820261230081612098565b915082820484148315176123175761231661227d565b5b5092915050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601260045260245ffd5b5f61235582612098565b915061236083612098565b9250826123705761236f61231e565b5b828204905092915050565b5f61238582612098565b915061239083612098565b92508282019050808211156123a8576123a761227d565b5b92915050565b5f6040820190506123c15f8301856121e1565b6123ce6020830184612070565b939250505056fea264697066735822122058ae24d7bdc784a901116396da82bea9d42b805a999544a21c56ab9889a2b4bc64736f6c63430008210033",
+        "sourceMap": "662:8378:38:-:0;;;2745:404;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;2365:1:32;2539:46;:29;:27;;;:29;;:::i;:::-;:44;;;:46;;:::i;:::-;:52;;:66;;;;2837:1:38;2815:24;;:10;:24;;;2811:50;;2848:13;;;;;;;;;;;;;;2811:50;2893:1;2875:14;:19;2871:54;;2903:22;;;;;;;;;;;;;;2871:54;2935:42;2241:4:20;2946:18:38;;2966:10;2935;;;:42;;:::i;:::-;;2987:35;1081:24;3011:10;2987;;;:35;;:::i;:::-;;3047:10;3032:26;;;;;;;;;;3084:14;3068:30;;;;;;3127:15;3108:16;:34;;;;2745:404;;662:8378;;4636:127:32;4706:7;1505:66;4732:24;;4725:31;;4636:127;:::o;2679:163:33:-;2740:21;2822:4;2812:14;;2679:163;;;:::o;6155:316:20:-;6232:4;6253:22;6261:4;6267:7;6253;;;:22;;:::i;:::-;6248:217;;6323:4;6291:6;:12;6298:4;6291:12;;;;;;;;;;;:20;;:29;6312:7;6291:29;;;;;;;;;;;;;;;;:36;;;;;;;;;;;;;;;;;;6373:12;:10;;;:12;;:::i;:::-;6346:40;;6364:7;6346:40;;6358:4;6346:40;;;;;;;;;;6407:4;6400:11;;;;6248:217;6449:5;6442:12;;6155:316;;;;;:::o;2830:136::-;2907:4;2930:6;:12;2937:4;2930:12;;;;;;;;;;;:20;;:29;2951:7;2930:29;;;;;;;;;;;;;;;;;;;;;;;;;2923:36;;2830:136;;;;:::o;656:96:30:-;709:7;735:10;728:17;;656:96;:::o;88:117:52:-;197:1;194;187:12;334:126;371:7;411:42;404:5;400:54;389:65;;334:126;;;:::o;466:96::-;503:7;532:24;550:5;532:24;:::i;:::-;521:35;;466:96;;;:::o;568:122::-;641:24;659:5;641:24;:::i;:::-;634:5;631:35;621:63;;680:1;677;670:12;621:63;568:122;:::o;696:143::-;753:5;784:6;778:13;769:22;;800:33;827:5;800:33;:::i;:::-;696:143;;;;:::o;845:77::-;882:7;911:5;900:16;;845:77;;;:::o;928:122::-;1001:24;1019:5;1001:24;:::i;:::-;994:5;991:35;981:63;;1040:1;1037;1030:12;981:63;928:122;:::o;1056:143::-;1113:5;1144:6;1138:13;1129:22;;1160:33;1187:5;1160:33;:::i;:::-;1056:143;;;;:::o;1205:507::-;1284:6;1292;1341:2;1329:9;1320:7;1316:23;1312:32;1309:119;;;1347:79;;:::i;:::-;1309:119;1467:1;1492:64;1548:7;1539:6;1528:9;1524:22;1492:64;:::i;:::-;1482:74;;1438:128;1605:2;1631:64;1687:7;1678:6;1667:9;1663:22;1631:64;:::i;:::-;1621:74;;1576:129;1205:507;;;;;:::o;662:8378:38:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;",
+        "linkReferences": {}
+    },
+    "deployedBytecode": {
+        "object": "0x608060405234801561000f575f5ffd5b5060043610610204575f3560e01c80637d88209711610118578063a217fddf116100ab578063da566df61161007a578063da566df61461057a578063e63ab1e914610598578063eded3fda146105b6578063f8e8289e146105d4578063fc9d7711146105f257610204565b8063a217fddf14610506578063a750e69414610524578063b6b55f2514610542578063d547741f1461055e57610204565b80638deb8fc8116100e75780638deb8fc81461047e5780638ff390991461049c57806391d14854146104b8578063939d6237146104e857610204565b80637d8820971461041c5780638456cb591461043a57806389423406146104445780638aef97ce1461046057610204565b80633f4ba83a1161019b5780634e71d92d1161016a5780634e71d92d1461038a5780634ff0876a146103945780635c975abb146103b257806360993b5b146103d057806370a08231146103ec57610204565b80633f4ba83a14610314578063497a04e01461031e5780634bf6f9e71461033c5780634cf088d91461036c57610204565b80632f2ff15d116101d75780632f2ff15d146102a257806336568abe146102be5780633988bad8146102da5780633cf80e6c1461030a57610204565b806301ffc9a714610208578063248a9ca3146102385780632ad876e0146102685780632e1a7d4d14610286575b5f5ffd5b610222600480360381019061021d9190611fb4565b610622565b60405161022f9190611ff9565b60405180910390f35b610252600480360381019061024d9190612045565b61069b565b60405161025f919061207f565b60405180910390f35b6102706106b7565b60405161027d91906120b0565b60405180910390f35b6102a0600480360381019061029b91906120f3565b6106c0565b005b6102bc60048036038101906102b79190612178565b610937565b005b6102d860048036038101906102d39190612178565b610959565b005b6102f460048036038101906102ef91906121b6565b6109d4565b60405161030191906120b0565b60405180910390f35b610312610c46565b005b61031c610c73565b005b610326610ca8565b60405161033391906120b0565b60405180910390f35b610356600480360381019061035191906121b6565b610cb4565b60405161036391906120b0565b60405180910390f35b610374610cc9565b60405161038191906121f0565b60405180910390f35b610392610cee565b005b61039c610e67565b6040516103a991906120b0565b60405180910390f35b6103ba610e8b565b6040516103c79190611ff9565b60405180910390f35b6103ea60048036038101906103e591906120f3565b610ea0565b005b610406600480360381019061040191906121b6565b610fb5565b60405161041391906120b0565b60405180910390f35b610424610fca565b60405161043191906120b0565b60405180910390f35b610442610fd0565b005b61045e600480360381019061045991906120f3565b611005565b005b6104686110a3565b60405161047591906120b0565b60405180910390f35b6104866110a9565b60405161049391906120b0565b60405180910390f35b6104b660048036038101906104b191906121b6565b6110af565b005b6104d260048036038101906104cd9190612178565b611242565b6040516104df9190611ff9565b60405180910390f35b6104f06112a5565b6040516104fd91906120b0565b60405180910390f35b61050e6112ab565b60405161051b919061207f565b60405180910390f35b61052c6112b1565b604051610539919061207f565b60405180910390f35b61055c600480360381019061055791906120f3565b6112d5565b005b61057860048036038101906105739190612178565b611523565b005b610582611545565b60405161058f91906120b0565b60405180910390f35b6105a0611579565b6040516105ad919061207f565b60405180910390f35b6105be61159d565b6040516105cb91906120b0565b60405180910390f35b6105dc6115a3565b6040516105e99190612264565b60405180910390f35b61060c600480360381019061060791906121b6565b6115c7565b60405161061991906120b0565b60405180910390f35b5f7f7965db0b000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916827bffffffffffffffffffffffffffffffffffffffffffffffffffffffff191614806106945750610693826115dc565b5b9050919050565b5f5f5f8381526020019081526020015f20600101549050919050565b64e8d4a5100081565b6106c8611645565b6106d0611667565b5f8103610709576040517f1f2a200500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8060075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20541015610780576040517ff4d678b800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610789336116a8565b8060075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546107d591906122aa565b925050819055508060065f8282546107ed91906122aa565b92505081905550670de0b6b3a764000060035460075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205461084891906122dd565b610852919061234b565b60085f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20819055506108de33827f000000000000000000000000000000000000000000000000000000000000000073ffffffffffffffffffffffffffffffffffffffff1661183d9092919063ffffffff16565b3373ffffffffffffffffffffffffffffffffffffffff167f7084f5476618d8e60b11ef0d7d3f06914655adb8793e28ff7f018d4c76d505d58260405161092491906120b0565b60405180910390a2610934611890565b50565b6109408261069b565b610949816118aa565b61095383836118be565b50505050565b6109616119a7565b73ffffffffffffffffffffffffffffffffffffffff168173ffffffffffffffffffffffffffffffffffffffff16146109c5576040517f6697b23200000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6109cf82826119ae565b505050565b5f5f60065403610a235760095f8373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20549050610c41565b5f60035490505f6004541115610a6457600654670de0b6b3a7640000600454610a4c91906122dd565b610a56919061234b565b81610a61919061237b565b90505b5f7f0000000000000000000000000000000000000000000000000000000000000000600254610a93919061237b565b42101590505f670de0b6b3a7640000600554101580610abc57505f600554118015610abb5750815b5b90508015610af557600654670de0b6b3a7640000600554610add91906122dd565b610ae7919061234b565b83610af2919061237b565b92505b5f60075f8773ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205490505f670de0b6b3a76400008583610b4c91906122dd565b610b56919061234b565b90505f60085f8973ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20548211610ba3575f610bed565b60085f8973ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205482610bec91906122aa565b5b90508060095f8a73ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f2054610c38919061237b565b96505050505050505b919050565b610c4e611645565b610c56611667565b5f6006541115610c6957610c68611a97565b5b610c71611890565b565b7f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a610c9d816118aa565b610ca5611c51565b50565b670de0b6b3a764000081565b6008602052805f5260405f205f915090505481565b600a5f9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b610cf6611645565b610cfe611667565b610d07336116a8565b5f60095f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205490505f8103610d81576040517f3fb087f400000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5f60095f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f2081905550610e0e33827f000000000000000000000000000000000000000000000000000000000000000073ffffffffffffffffffffffffffffffffffffffff1661183d9092919063ffffffff16565b3373ffffffffffffffffffffffffffffffffffffffff167fd8138f8a3f377c5259ca548e70e4c2de94f129f5a11036a15b69513cba2b426a82604051610e5491906120b0565b60405180910390a250610e65611890565b565b7f000000000000000000000000000000000000000000000000000000000000000081565b5f60015f9054906101000a900460ff16905090565b610ea8611645565b7f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d056610ed2816118aa565b610eda611667565b5f8203610f13576040517f1f2a200500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5f60065403610f39578160045f828254610f2d919061237b565b92505081905550610fa9565b600654670de0b6b3a764000083610f5091906122dd565b610f5a919061234b565b60035f828254610f6a919061237b565b925050819055507ff9a5da3a173eca8cd77c02ece3ff1467b8aa461ed3822201817f2d72fbc5428382604051610fa091906120b0565b60405180910390a15b50610fb2611890565b50565b6007602052805f5260405f205f915090505481565b60065481565b7f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a610ffa816118aa565b611002611cb2565b50565b61100d611645565b7f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d056611037816118aa565b61103f611667565b5f820315611097578160055f828254611058919061237b565b925050819055507f9db9090d4cd2fd574fb4903fcd18a7a99e1a8f3bdcf7ee81e24b8dfd209267b68260405161108e91906120b0565b60405180910390a15b506110a0611890565b50565b60025481565b60055481565b5f5f1b6110bb816118aa565b5f73ffffffffffffffffffffffffffffffffffffffff16600a5f9054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff161461115c5761115a7f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d056600a5f9054906101000a900473ffffffffffffffffffffffffffffffffffffffff166119ae565b505b81600a5f6101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505f73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16146111fb576111f97f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d056836118be565b505b8173ffffffffffffffffffffffffffffffffffffffff167fe189a719dae2bf18df1013cfa028ecce01f9fafdbd456a862fa18e6d0143e3c260405160405180910390a25050565b5f5f5f8481526020019081526020015f205f015f8373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f9054906101000a900460ff16905092915050565b60035481565b5f5f1b81565b7f5cdba25167d99b7ec892ee2622f05561f779da5483692d63a6740a77a2c8d05681565b6112dd611645565b6112e5611667565b5f810361131e576040517f1f2a200500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b5f600654148015611333575064e8d4a5100081105b1561136a576040517f306cc97600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b611373336116a8565b8060075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546113bf919061237b565b925050819055508060065f8282546113d7919061237b565b92505081905550670de0b6b3a764000060035460075f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205461143291906122dd565b61143c919061234b565b60085f3373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20819055506114ca3330837f000000000000000000000000000000000000000000000000000000000000000073ffffffffffffffffffffffffffffffffffffffff16611d13909392919063ffffffff16565b3373ffffffffffffffffffffffffffffffffffffffff167f2da466a7b24304f47e87fa2e1e5a81b9831ce54fec19055ce277ca2f39ba42c48260405161151091906120b0565b60405180910390a2611520611890565b50565b61152c8261069b565b611535816118aa565b61153f83836119ae565b50505050565b5f7f0000000000000000000000000000000000000000000000000000000000000000600254611574919061237b565b905090565b7f65d7a28e3265b37a6474929f336521b332c1681b933f6cb9f3376673440d862a81565b60045481565b7f000000000000000000000000000000000000000000000000000000000000000081565b6009602052805f5260405f205f915090505481565b5f7f01ffc9a7000000000000000000000000000000000000000000000000000000007bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916827bffffffffffffffffffffffffffffffffffffffffffffffffffffffff1916149050919050565b61164d611d68565b600261165f61165a611da9565b611dd2565b5f0181905550565b61166f610e8b565b156116a6576040517fd93c066500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b565b6116b0611a97565b5f60075f8373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205490505f670de0b6b3a76400006003548361170991906122dd565b611713919061234b565b905060085f8473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f20548111156117f65760085f8473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f2054816117a391906122aa565b60095f8573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f8282546117ee919061237b565b925050819055505b8060085f8573ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f2081905550505050565b61184a8383836001611ddb565b61188b57826040517f5274afe700000000000000000000000000000000000000000000000000000000815260040161188291906121f0565b60405180910390fd5b505050565b60016118a261189d611da9565b611dd2565b5f0181905550565b6118bb816118b66119a7565b611e3d565b50565b5f6118c98383611242565b61199d5760015f5f8581526020019081526020015f205f015f8473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f6101000a81548160ff02191690831515021790555061193a6119a7565b73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16847f2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d60405160405180910390a4600190506119a1565b5f90505b92915050565b5f33905090565b5f6119b98383611242565b15611a8d575f5f5f8581526020019081526020015f205f015f8473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020019081526020015f205f6101000a81548160ff021916908315150217905550611a2a6119a7565b73ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff16847ff6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b60405160405180910390a460019050611a91565b5f90505b92915050565b5f6006540315611c4f575f6004541115611b29575f60045490505f600481905550600654670de0b6b3a764000082611acf91906122dd565b611ad9919061234b565b60035f828254611ae9919061237b565b925050819055507ff9a5da3a173eca8cd77c02ece3ff1467b8aa461ed3822201817f2d72fbc5428381604051611b1f91906120b0565b60405180910390a1505b5f7f0000000000000000000000000000000000000000000000000000000000000000600254611b58919061237b565b42101590505f670de0b6b3a7640000600554101580611b8157505f600554118015611b805750815b5b90508015611c4c575f60055490505f600581905550600654670de0b6b3a764000082611bad91906122dd565b611bb7919061234b565b60035f828254611bc7919061237b565b925050819055507ff9a5da3a173eca8cd77c02ece3ff1467b8aa461ed3822201817f2d72fbc5428381604051611bfd91906120b0565b60405180910390a18215611c4a57426002819055507fb7f0e37f8e78f28f1f21b98f426d307e949c22f2997ca4b562ee90c3e5b30b3042604051611c4191906120b0565b60405180910390a15b505b50505b565b611c59611e8e565b5f60015f6101000a81548160ff0219169083151502179055507f5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa611c9b6119a7565b604051611ca891906121f0565b60405180910390a1565b611cba611667565b6001805f6101000a81548160ff0219169083151502179055507f62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258611cfc6119a7565b604051611d0991906121f0565b60405180910390a1565b611d21848484846001611ece565b611d6257836040517f5274afe7000000000000000000000000000000000000000000000000000000008152600401611d5991906121f0565b60405180910390fd5b50505050565b611d70611f3f565b15611da7576040517f3ee5aeb500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b565b5f7f9b779b17422d0df92223018b32b4d1fa46e071723d6817e2486d003becc55f005f1b905090565b5f819050919050565b5f5f63a9059cbb60e01b9050604051815f525f1960601c86166004528460245260205f60445f5f8b5af1925060015f51148316611e2f578383151615611e23573d5f823e3d81fd5b5f873b113d1516831692505b806040525050949350505050565b611e478282611242565b611e8a5780826040517fe2517d3f000000000000000000000000000000000000000000000000000000008152600401611e819291906123ae565b60405180910390fd5b5050565b611e96610e8b565b611ecc576040517f8dfc202b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b565b5f5f6323b872dd60e01b9050604051815f525f1960601c87166004525f1960601c86166024528460445260205f60645f5f8c5af1925060015f51148316611f2c578383151615611f20573d5f823e3d81fd5b5f883b113d1516831692505b806040525f606052505095945050505050565b5f6002611f52611f4d611da9565b611dd2565b5f015414905090565b5f5ffd5b5f7fffffffff0000000000000000000000000000000000000000000000000000000082169050919050565b611f9381611f5f565b8114611f9d575f5ffd5b50565b5f81359050611fae81611f8a565b92915050565b5f60208284031215611fc957611fc8611f5b565b5b5f611fd684828501611fa0565b91505092915050565b5f8115159050919050565b611ff381611fdf565b82525050565b5f60208201905061200c5f830184611fea565b92915050565b5f819050919050565b61202481612012565b811461202e575f5ffd5b50565b5f8135905061203f8161201b565b92915050565b5f6020828403121561205a57612059611f5b565b5b5f61206784828501612031565b91505092915050565b61207981612012565b82525050565b5f6020820190506120925f830184612070565b92915050565b5f819050919050565b6120aa81612098565b82525050565b5f6020820190506120c35f8301846120a1565b92915050565b6120d281612098565b81146120dc575f5ffd5b50565b5f813590506120ed816120c9565b92915050565b5f6020828403121561210857612107611f5b565b5b5f612115848285016120df565b91505092915050565b5f73ffffffffffffffffffffffffffffffffffffffff82169050919050565b5f6121478261211e565b9050919050565b6121578161213d565b8114612161575f5ffd5b50565b5f813590506121728161214e565b92915050565b5f5f6040838503121561218e5761218d611f5b565b5b5f61219b85828601612031565b92505060206121ac85828601612164565b9150509250929050565b5f602082840312156121cb576121ca611f5b565b5b5f6121d884828501612164565b91505092915050565b6121ea8161213d565b82525050565b5f6020820190506122035f8301846121e1565b92915050565b5f819050919050565b5f61222c6122276122228461211e565b612209565b61211e565b9050919050565b5f61223d82612212565b9050919050565b5f61224e82612233565b9050919050565b61225e81612244565b82525050565b5f6020820190506122775f830184612255565b92915050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601160045260245ffd5b5f6122b482612098565b91506122bf83612098565b92508282039050818111156122d7576122d661227d565b5b92915050565b5f6122e782612098565b91506122f283612098565b925082820261230081612098565b915082820484148315176123175761231661227d565b5b5092915050565b7f4e487b71000000000000000000000000000000000000000000000000000000005f52601260045260245ffd5b5f61235582612098565b915061236083612098565b9250826123705761236f61231e565b5b828204905092915050565b5f61238582612098565b915061239083612098565b92508282019050808211156123a8576123a761227d565b5b92915050565b5f6040820190506123c15f8301856121e1565b6123ce6020830184612070565b939250505056fea264697066735822122058ae24d7bdc784a901116396da82bea9d42b805a999544a21c56ab9889a2b4bc64736f6c63430008210033",
+        "sourceMap": "662:8378:38:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2541:202:20;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;3786:120;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;1329:50:38;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;4369:485;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;4202:136:20;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;5304:245;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;8162:876:38;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;6504:120;;;:::i;:::-;;6322:77;;;:::i;:::-;;1200:48;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;2153:49;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;2354:22;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;4904:329;;;:::i;:::-;;1488:38;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;1726:84:31;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;5297:360:38;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;2103:44;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;2068:28;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;6165:73;;;:::i;:::-;;5780:222;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;1610:31;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;1979;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;3276:377;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;2830:136:20;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;1718:32:38;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;2196:49:20;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;1111:82:38;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;3748:525;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;4618:138:20;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;6717:111:38;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;1043:62;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;1841:29;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;1007;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;2208:53;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;2541:202:20;2626:4;2664:32;2649:47;;;:11;:47;;;;:87;;;;2700:36;2724:11;2700:23;:36::i;:::-;2649:87;2642:94;;2541:202;;;:::o;3786:120::-;3851:7;3877:6;:12;3884:4;3877:12;;;;;;;;;;;:22;;;3870:29;;3786:120;;;:::o;1329:50:38:-;1375:4;1329:50;:::o;4369:485::-;3023:21:32;:19;:21::i;:::-;1350:19:31::1;:17;:19::i;:::-;4463:1:38::2;4453:6;:11:::0;4449:36:::2;;4473:12;;;;;;;;;;;;;;4449:36;4523:6;4499:9;:21;4509:10;4499:21;;;;;;;;;;;;;;;;:30;4495:64;;;4538:21;;;;;;;;;;;;;;4495:64;4569:23;4581:10;4569:11;:23::i;:::-;4627:6;4602:9;:21;4612:10;4602:21;;;;;;;;;;;;;;;;:31;;;;;;;:::i;:::-;;;;;;;;4660:6;4643:13;;:23;;;;;;;:::i;:::-;;;;;;;;4751:4;4730:17;;4706:9;:21;4716:10;4706:21;;;;;;;;;;;;;;;;:41;;;;:::i;:::-;4705:50;;;;:::i;:::-;4676:14;:26;4691:10;4676:26;;;;;;;;;;;;;;;:79;;;;4765:38;4784:10;4796:6;4765:5;:18;;;;:38;;;;;:::i;:::-;4828:10;4818:29;;;4840:6;4818:29;;;;;;:::i;:::-;;;;;;;;3065:20:32::0;:18;:20::i;:::-;4369:485:38;:::o;4202:136:20:-;4276:18;4289:4;4276:12;:18::i;:::-;2473:16;2484:4;2473:10;:16::i;:::-;4306:25:::1;4317:4;4323:7;4306:10;:25::i;:::-;;4202:136:::0;;;:::o;5304:245::-;5419:12;:10;:12::i;:::-;5397:34;;:18;:34;;;5393:102;;5454:30;;;;;;;;;;;;;;5393:102;5505:37;5517:4;5523:18;5505:11;:37::i;:::-;;5304:245;;:::o;8162:876:38:-;8228:7;8268:1;8251:13;;:18;8247:58;;8278:18;:27;8297:7;8278:27;;;;;;;;;;;;;;;;8271:34;;;;8247:58;8315:17;8335;;8315:37;;8383:1;8366:14;;:18;8362:101;;;8439:13;;8431:4;8414:14;;:21;;;;:::i;:::-;8413:39;;;;:::i;:::-;8400:52;;;;;:::i;:::-;;;8362:101;8472:16;8529:13;8510:16;;:32;;;;:::i;:::-;8491:15;:51;;8472:70;;8552:24;1244:4;8579:16;;:37;;:78;;;;8640:1;8621:16;;:20;:35;;;;;8645:11;8621:35;8579:78;8552:105;;8671:19;8667:104;;;8747:13;;8739:4;8720:16;;:23;;;;:::i;:::-;8719:41;;;;:::i;:::-;8706:54;;;;;:::i;:::-;;;8667:104;8780:11;8794:9;:18;8804:7;8794:18;;;;;;;;;;;;;;;;8780:32;;8822:19;8864:4;8851:9;8845:3;:15;;;;:::i;:::-;8844:24;;;;:::i;:::-;8822:46;;8878:15;8910:14;:23;8925:7;8910:23;;;;;;;;;;;;;;;;8896:11;:37;:81;;8976:1;8896:81;;;8950:14;:23;8965:7;8950:23;;;;;;;;;;;;;;;;8936:11;:37;;;;:::i;:::-;8896:81;8878:99;;9024:7;8994:18;:27;9013:7;8994:27;;;;;;;;;;;;;;;;:37;;;;:::i;:::-;8987:44;;;;;;;;8162:876;;;;:::o;6504:120::-;3023:21:32;:19;:21::i;:::-;1350:19:31::1;:17;:19::i;:::-;6594:1:38::2;6578:13;;:17;6574:43;;;6597:20;:18;:20::i;:::-;6574:43;3065:20:32::0;:18;:20::i;:::-;6504:120:38:o;6322:77::-;1081:24;2473:16:20;2484:4;2473:10;:16::i;:::-;6382:10:38::1;:8;:10::i;:::-;6322:77:::0;:::o;1200:48::-;1244:4;1200:48;:::o;2153:49::-;;;;;;;;;;;;;;;;;:::o;2354:22::-;;;;;;;;;;;;;:::o;4904:329::-;3023:21:32;:19;:21::i;:::-;1350:19:31::1;:17;:19::i;:::-;4967:23:38::2;4979:10;4967:11;:23::i;:::-;5000:14;5017:18;:30;5036:10;5017:30;;;;;;;;;;;;;;;;5000:47;;5071:1;5061:6;:11:::0;5057:35:::2;;5081:11;;;;;;;;;;;;;;5057:35;5135:1;5102:18;:30;5121:10;5102:30;;;;;;;;;;;;;;;:34;;;;5146:38;5165:10;5177:6;5146:5;:18;;;;:38;;;;;:::i;:::-;5207:10;5199:27;;;5219:6;5199:27;;;;;;:::i;:::-;;;;;;;;4957:276;3065:20:32::0;:18;:20::i;:::-;4904:329:38:o;1488:38::-;;;:::o;1726:84:31:-;1773:4;1796:7;;;;;;;;;;;1789:14;;1726:84;:::o;5297:360:38:-;3023:21:32;:19;:21::i;:::-;1159:34:38::1;2473:16:20;2484:4;2473:10;:16::i;:::-;1350:19:31::2;:17;:19::i;:::-;5427:1:38::3;5417:6;:11:::0;5413:36:::3;;5437:12;;;;;;;;;;;;;;5413:36;5480:1;5463:13;;:18:::0;5459:93:::3;;5515:6;5497:14;;:24;;;;;;;:::i;:::-;;;;;;;;5535:7;;5459:93;5600:13;;5592:4;5583:6;:13;;;;:::i;:::-;5582:31;;;;:::i;:::-;5561:17;;:52;;;;;;;:::i;:::-;;;;;;;;5628:22;5643:6;5628:22;;;;;;:::i;:::-;;;;;;;;1379:1:31;3054::32::1;3065:20:::0;:18;:20::i;:::-;5297:360:38;:::o;2103:44::-;;;;;;;;;;;;;;;;;:::o;2068:28::-;;;;:::o;6165:73::-;1081:24;2473:16:20;2484:4;2473:10;:16::i;:::-;6223:8:38::1;:6;:8::i;:::-;6165:73:::0;:::o;5780:222::-;3023:21:32;:19;:21::i;:::-;1159:34:38::1;2473:16:20;2484:4;2473:10;:16::i;:::-;1350:19:31::2;:17;:19::i;:::-;5915:1:38::3;5905:6;:11:::0;5901:24;5918:7:::3;5901:24;5954:6;5934:16;;:26;;;;;;;:::i;:::-;;;;;;;;5975:20;5988:6;5975:20;;;;;;:::i;:::-;;;;;;;;1379:1:31;3054::32::1;3065:20:::0;:18;:20::i;:::-;5780:222:38;:::o;1610:31::-;;;;:::o;1979:::-;;;;:::o;3276:377::-;2241:4:20;3332:18:38;;2473:16:20;2484:4;2473:10;:16::i;:::-;3394:1:38::1;3366:30;;3374:7;;;;;;;;;;;3366:30;;;3362:113;;3412:52;1159:34;3455:7;;;;;;;;;;;3412:11;:52::i;:::-;;3362:113;3494:8;3484:7;;:18;;;;;;;;;;;;;;;;;;3536:1;3516:22;;:8;:22;;;3512:96;;3554:43;1159:34;3588:8;3554:10;:43::i;:::-;;3512:96;3637:8;3622:24;;;;;;;;;;;;3276:377:::0;;:::o;2830:136:20:-;2907:4;2930:6;:12;2937:4;2930:12;;;;;;;;;;;:20;;:29;2951:7;2930:29;;;;;;;;;;;;;;;;;;;;;;;;;2923:36;;2830:136;;;;:::o;1718:32:38:-;;;;:::o;2196:49:20:-;2241:4;2196:49;;;:::o;1111:82:38:-;1159:34;1111:82;:::o;3748:525::-;3023:21:32;:19;:21::i;:::-;1350:19:31::1;:17;:19::i;:::-;3841:1:38::2;3831:6;:11:::0;3827:36:::2;;3851:12;;;;;;;;;;;;;;3827:36;3894:1;3877:13;;:18;:50;;;;;1375:4;3899:6;:28;3877:50;3873:86;;;3936:23;;;;;;;;;;;;;;3873:86;3969:23;3981:10;3969:11;:23::i;:::-;4027:6;4002:9;:21;4012:10;4002:21;;;;;;;;;;;;;;;;:31;;;;;;;:::i;:::-;;;;;;;;4060:6;4043:13;;:23;;;;;;;:::i;:::-;;;;;;;;4151:4;4130:17;;4106:9;:21;4116:10;4106:21;;;;;;;;;;;;;;;;:41;;;;:::i;:::-;4105:50;;;;:::i;:::-;4076:14;:26;4091:10;4076:26;;;;;;;;;;;;;;;:79;;;;4165:57;4188:10;4208:4;4215:6;4165:5;:22;;;;:57;;;;;;:::i;:::-;4247:10;4237:29;;;4259:6;4237:29;;;;;;:::i;:::-;;;;;;;;3065:20:32::0;:18;:20::i;:::-;3748:525:38;:::o;4618:138:20:-;4693:18;4706:4;4693:12;:18::i;:::-;2473:16;2484:4;2473:10;:16::i;:::-;4723:26:::1;4735:4;4741:7;4723:11;:26::i;:::-;;4618:138:::0;;;:::o;6717:111:38:-;6763:7;6808:13;6789:16;;:32;;;;:::i;:::-;6782:39;;6717:111;:::o;1043:62::-;1081:24;1043:62;:::o;1841:29::-;;;;:::o;1007:::-;;;:::o;2208:53::-;;;;;;;;;;;;;;;;;:::o;730:146:34:-;806:4;844:25;829:40;;;:11;:40;;;;822:47;;730:146;;;:::o;3749:292:32:-;3872:25;:23;:25::i;:::-;2407:1;3972:46;:29;:27;:29::i;:::-;:44;:46::i;:::-;:52;;:62;;;;3749:292::o;1878:128:31:-;1943:8;:6;:8::i;:::-;1939:61;;;1974:15;;;;;;;;;;;;;;1939:61;1878:128::o;6834:366:38:-;6888:20;:18;:20::i;:::-;6918:11;6932:9;:15;6942:4;6932:15;;;;;;;;;;;;;;;;6918:29;;6957:19;7007:4;6986:17;;6980:3;:23;;;;:::i;:::-;6979:32;;;;:::i;:::-;6957:54;;7039:14;:20;7054:4;7039:20;;;;;;;;;;;;;;;;7025:11;:34;7021:129;;;7118:14;:20;7133:4;7118:20;;;;;;;;;;;;;;;;7104:11;:34;;;;:::i;:::-;7075:18;:24;7094:4;7075:24;;;;;;;;;;;;;;;;:64;;;;;;;:::i;:::-;;;;;;;;7021:129;7182:11;7159:14;:20;7174:4;7159:20;;;;;;;;;;;;;;;:34;;;;6878:322;;6834:366;:::o;1219:204:29:-;1306:37;1320:5;1327:2;1331:5;1338:4;1306:13;:37::i;:::-;1301:116;;1399:5;1366:40;;;;;;;;;;;:::i;:::-;;;;;;;;1301:116;1219:204;;;:::o;4047:253:32:-;2365:1;4227:46;:29;:27;:29::i;:::-;:44;:46::i;:::-;:52;;:66;;;;4047:253::o;3175:103:20:-;3241:30;3252:4;3258:12;:10;:12::i;:::-;3241:10;:30::i;:::-;3175:103;:::o;6155:316::-;6232:4;6253:22;6261:4;6267:7;6253;:22::i;:::-;6248:217;;6323:4;6291:6;:12;6298:4;6291:12;;;;;;;;;;;:20;;:29;6312:7;6291:29;;;;;;;;;;;;;;;;:36;;;;;;;;;;;;;;;;;;6373:12;:10;:12::i;:::-;6346:40;;6364:7;6346:40;;6358:4;6346:40;;;;;;;;;;6407:4;6400:11;;;;6248:217;6449:5;6442:12;;6155:316;;;;;:::o;656:96:30:-;709:7;735:10;728:17;;656:96;:::o;6708:317:20:-;6786:4;6806:22;6814:4;6820:7;6806;:22::i;:::-;6802:217;;;6876:5;6844:6;:12;6851:4;6844:12;;;;;;;;;;;:20;;:29;6865:7;6844:29;;;;;;;;;;;;;;;;:37;;;;;;;;;;;;;;;;;;6927:12;:10;:12::i;:::-;6900:40;;6918:7;6900:40;;6912:4;6900:40;;;;;;;;;;6961:4;6954:11;;;;6802:217;7003:5;6996:12;;6708:317;;;;;:::o;7206:894:38:-;7276:1;7259:13;;:18;7255:31;7279:7;7255:31;7316:1;7299:14;;:18;7295:219;;;7333:14;7350;;7333:31;;7395:1;7378:14;:18;;;;7449:13;;7441:4;7432:6;:13;;;;:::i;:::-;7431:31;;;;:::i;:::-;7410:17;;:52;;;;;;;:::i;:::-;;;;;;;;7481:22;7496:6;7481:22;;;;;;:::i;:::-;;;;;;;;7319:195;7295:219;7523:16;7580:13;7561:16;;:32;;;;:::i;:::-;7542:15;:51;;7523:70;;7603:25;1244:4;7631:16;;:37;;:78;;;;7692:1;7673:16;;:20;:35;;;;;7697:11;7673:35;7631:78;7603:106;;7723:20;7719:375;;;7759:14;7776:16;;7759:33;;7825:1;7806:16;:20;;;;7879:13;;7871:4;7862:6;:13;;;;:::i;:::-;7861:31;;;;:::i;:::-;7840:17;;:52;;;;;;;:::i;:::-;;;;;;;;7911:22;7926:6;7911:22;;;;;;:::i;:::-;;;;;;;;7951:11;7947:137;;;8001:15;7982:16;:34;;;;8039:30;8053:15;8039:30;;;;;;:::i;:::-;;;;;;;;7947:137;7745:349;7719:375;7245:855;;7206:894;:::o;2586:117:31:-;1597:16;:14;:16::i;:::-;2654:5:::1;2644:7;;:15;;;;;;;;;;;;;;;;;;2674:22;2683:12;:10;:12::i;:::-;2674:22;;;;;;:::i;:::-;;;;;;;;2586:117::o:0;2339:115::-;1350:19;:17;:19::i;:::-;2408:4:::1;2398:7:::0;::::1;:14;;;;;;;;;;;;;;;;;;2427:20;2434:12;:10;:12::i;:::-;2427:20;;;;;;:::i;:::-;;;;;;;;2339:115::o:0;1662:232:29:-;1767:47;1785:5;1792:4;1798:2;1802:5;1809:4;1767:17;:47::i;:::-;1762:126;;1870:5;1837:40;;;;;;;;;;;:::i;:::-;;;;;;;;1762:126;1662:232;;;;:::o;3586:157:32:-;3648:25;:23;:25::i;:::-;3644:93;;;3696:30;;;;;;;;;;;;;;3644:93;3586:157::o;4636:127::-;4706:7;1505:66;4732:24;;4725:31;;4636:127;:::o;2679:163:33:-;2740:21;2822:4;2812:14;;2679:163;;;:::o;8373:1244:29:-;8467:12;8491:15;8509:24;;;8491:42;;8600:4;8594:11;8631:8;8625:4;8618:22;8686:1;8682:6;8678:2;8674:15;8670:2;8666:24;8660:4;8653:38;8717:5;8711:4;8704:19;8787:4;8781;8775;8769;8766:1;8759:5;8752;8747:45;8736:56;;9004:1;8997:4;8991:11;8988:18;8979:7;8975:32;8965:606;;9136:6;9126:7;9119:15;9115:28;9112:165;;;9192:16;9186:4;9181:3;9166:43;9242:16;9237:3;9230:29;9112:165;9553:1;9545:5;9533:18;9530:25;9511:16;9504:24;9500:56;9491:7;9487:70;9476:81;;8965:606;9597:3;9591:4;9584:17;8569:1042;;8373:1244;;;;;;:::o;3408:197:20:-;3496:22;3504:4;3510:7;3496;:22::i;:::-;3491:108;;3574:7;3583:4;3541:47;;;;;;;;;;;;:::i;:::-;;;;;;;;3491:108;3408:197;;:::o;2078:126:31:-;2141:8;:6;:8::i;:::-;2136:62;;2172:15;;;;;;;;;;;;;;2136:62;2078:126::o;10165:1393:29:-;10323:12;10347:15;10365:28;;;10347:46;;10460:4;10454:11;10491:8;10485:4;10478:22;10548:1;10544:6;10540:2;10536:15;10530:4;10526:26;10520:4;10513:40;10599:1;10595:6;10591:2;10587:15;10583:2;10579:24;10573:4;10566:38;10630:5;10624:4;10617:19;10700:4;10694;10688;10682;10679:1;10672:5;10665;10660:45;10649:56;;10917:1;10910:4;10904:11;10901:18;10892:7;10888:32;10878:606;;11049:6;11039:7;11032:15;11028:28;11025:165;;;11105:16;11099:4;11094:3;11079:43;11155:16;11150:3;11143:29;11025:165;11466:1;11458:5;11446:18;11443:25;11424:16;11417:24;11413:56;11404:7;11400:70;11389:81;;10878:606;11510:3;11504:4;11497:17;11540:1;11534:4;11527:15;10429:1123;;10165:1393;;;;;;;:::o;4479:151:32:-;4537:4;2407:1;4560:46;:29;:27;:29::i;:::-;:44;:46::i;:::-;:52;;;:63;4553:70;;4479:151;:::o;88:117:52:-;197:1;194;187:12;334:149;370:7;410:66;403:5;399:78;388:89;;334:149;;;:::o;489:120::-;561:23;578:5;561:23;:::i;:::-;554:5;551:34;541:62;;599:1;596;589:12;541:62;489:120;:::o;615:137::-;660:5;698:6;685:20;676:29;;714:32;740:5;714:32;:::i;:::-;615:137;;;;:::o;758:327::-;816:6;865:2;853:9;844:7;840:23;836:32;833:119;;;871:79;;:::i;:::-;833:119;991:1;1016:52;1060:7;1051:6;1040:9;1036:22;1016:52;:::i;:::-;1006:62;;962:116;758:327;;;;:::o;1091:90::-;1125:7;1168:5;1161:13;1154:21;1143:32;;1091:90;;;:::o;1187:109::-;1268:21;1283:5;1268:21;:::i;:::-;1263:3;1256:34;1187:109;;:::o;1302:210::-;1389:4;1427:2;1416:9;1412:18;1404:26;;1440:65;1502:1;1491:9;1487:17;1478:6;1440:65;:::i;:::-;1302:210;;;;:::o;1518:77::-;1555:7;1584:5;1573:16;;1518:77;;;:::o;1601:122::-;1674:24;1692:5;1674:24;:::i;:::-;1667:5;1664:35;1654:63;;1713:1;1710;1703:12;1654:63;1601:122;:::o;1729:139::-;1775:5;1813:6;1800:20;1791:29;;1829:33;1856:5;1829:33;:::i;:::-;1729:139;;;;:::o;1874:329::-;1933:6;1982:2;1970:9;1961:7;1957:23;1953:32;1950:119;;;1988:79;;:::i;:::-;1950:119;2108:1;2133:53;2178:7;2169:6;2158:9;2154:22;2133:53;:::i;:::-;2123:63;;2079:117;1874:329;;;;:::o;2209:118::-;2296:24;2314:5;2296:24;:::i;:::-;2291:3;2284:37;2209:118;;:::o;2333:222::-;2426:4;2464:2;2453:9;2449:18;2441:26;;2477:71;2545:1;2534:9;2530:17;2521:6;2477:71;:::i;:::-;2333:222;;;;:::o;2561:77::-;2598:7;2627:5;2616:16;;2561:77;;;:::o;2644:118::-;2731:24;2749:5;2731:24;:::i;:::-;2726:3;2719:37;2644:118;;:::o;2768:222::-;2861:4;2899:2;2888:9;2884:18;2876:26;;2912:71;2980:1;2969:9;2965:17;2956:6;2912:71;:::i;:::-;2768:222;;;;:::o;2996:122::-;3069:24;3087:5;3069:24;:::i;:::-;3062:5;3059:35;3049:63;;3108:1;3105;3098:12;3049:63;2996:122;:::o;3124:139::-;3170:5;3208:6;3195:20;3186:29;;3224:33;3251:5;3224:33;:::i;:::-;3124:139;;;;:::o;3269:329::-;3328:6;3377:2;3365:9;3356:7;3352:23;3348:32;3345:119;;;3383:79;;:::i;:::-;3345:119;3503:1;3528:53;3573:7;3564:6;3553:9;3549:22;3528:53;:::i;:::-;3518:63;;3474:117;3269:329;;;;:::o;3604:126::-;3641:7;3681:42;3674:5;3670:54;3659:65;;3604:126;;;:::o;3736:96::-;3773:7;3802:24;3820:5;3802:24;:::i;:::-;3791:35;;3736:96;;;:::o;3838:122::-;3911:24;3929:5;3911:24;:::i;:::-;3904:5;3901:35;3891:63;;3950:1;3947;3940:12;3891:63;3838:122;:::o;3966:139::-;4012:5;4050:6;4037:20;4028:29;;4066:33;4093:5;4066:33;:::i;:::-;3966:139;;;;:::o;4111:474::-;4179:6;4187;4236:2;4224:9;4215:7;4211:23;4207:32;4204:119;;;4242:79;;:::i;:::-;4204:119;4362:1;4387:53;4432:7;4423:6;4412:9;4408:22;4387:53;:::i;:::-;4377:63;;4333:117;4489:2;4515:53;4560:7;4551:6;4540:9;4536:22;4515:53;:::i;:::-;4505:63;;4460:118;4111:474;;;;;:::o;4591:329::-;4650:6;4699:2;4687:9;4678:7;4674:23;4670:32;4667:119;;;4705:79;;:::i;:::-;4667:119;4825:1;4850:53;4895:7;4886:6;4875:9;4871:22;4850:53;:::i;:::-;4840:63;;4796:117;4591:329;;;;:::o;4926:118::-;5013:24;5031:5;5013:24;:::i;:::-;5008:3;5001:37;4926:118;;:::o;5050:222::-;5143:4;5181:2;5170:9;5166:18;5158:26;;5194:71;5262:1;5251:9;5247:17;5238:6;5194:71;:::i;:::-;5050:222;;;;:::o;5278:60::-;5306:3;5327:5;5320:12;;5278:60;;;:::o;5344:142::-;5394:9;5427:53;5445:34;5454:24;5472:5;5454:24;:::i;:::-;5445:34;:::i;:::-;5427:53;:::i;:::-;5414:66;;5344:142;;;:::o;5492:126::-;5542:9;5575:37;5606:5;5575:37;:::i;:::-;5562:50;;5492:126;;;:::o;5624:142::-;5690:9;5723:37;5754:5;5723:37;:::i;:::-;5710:50;;5624:142;;;:::o;5772:163::-;5875:53;5922:5;5875:53;:::i;:::-;5870:3;5863:66;5772:163;;:::o;5941:254::-;6050:4;6088:2;6077:9;6073:18;6065:26;;6101:87;6185:1;6174:9;6170:17;6161:6;6101:87;:::i;:::-;5941:254;;;;:::o;6201:180::-;6249:77;6246:1;6239:88;6346:4;6343:1;6336:15;6370:4;6367:1;6360:15;6387:194;6427:4;6447:20;6465:1;6447:20;:::i;:::-;6442:25;;6481:20;6499:1;6481:20;:::i;:::-;6476:25;;6525:1;6522;6518:9;6510:17;;6549:1;6543:4;6540:11;6537:37;;;6554:18;;:::i;:::-;6537:37;6387:194;;;;:::o;6587:410::-;6627:7;6650:20;6668:1;6650:20;:::i;:::-;6645:25;;6684:20;6702:1;6684:20;:::i;:::-;6679:25;;6739:1;6736;6732:9;6761:30;6779:11;6761:30;:::i;:::-;6750:41;;6940:1;6931:7;6927:15;6924:1;6921:22;6901:1;6894:9;6874:83;6851:139;;6970:18;;:::i;:::-;6851:139;6635:362;6587:410;;;;:::o;7003:180::-;7051:77;7048:1;7041:88;7148:4;7145:1;7138:15;7172:4;7169:1;7162:15;7189:185;7229:1;7246:20;7264:1;7246:20;:::i;:::-;7241:25;;7280:20;7298:1;7280:20;:::i;:::-;7275:25;;7319:1;7309:35;;7324:18;;:::i;:::-;7309:35;7366:1;7363;7359:9;7354:14;;7189:185;;;;:::o;7380:191::-;7420:3;7439:20;7457:1;7439:20;:::i;:::-;7434:25;;7473:20;7491:1;7473:20;:::i;:::-;7468:25;;7516:1;7513;7509:9;7502:16;;7537:3;7534:1;7531:10;7528:36;;;7544:18;;:::i;:::-;7528:36;7380:191;;;;:::o;7577:332::-;7698:4;7736:2;7725:9;7721:18;7713:26;;7749:71;7817:1;7806:9;7802:17;7793:6;7749:71;:::i;:::-;7830:72;7898:2;7887:9;7883:18;7874:6;7830:72;:::i;:::-;7577:332;;;;;:::o",
+        "linkReferences": {},
+        "immutableReferences": {
+            "42395": [
+                {
+                    "start": 2202,
+                    "length": 32
+                },
+                {
+                    "start": 3530,
+                    "length": 32
+                },
+                {
+                    "start": 5253,
+                    "length": 32
+                },
+                {
+                    "start": 5541,
+                    "length": 32
+                }
+            ],
+            "42415": [
+                {
+                    "start": 2663,
+                    "length": 32
+                },
+                {
+                    "start": 3689,
+                    "length": 32
+                },
+                {
+                    "start": 5448,
+                    "length": 32
+                },
+                {
+                    "start": 6956,
+                    "length": 32
+                }
+            ]
+        }
+    },
+    "methodIdentifiers": {
+        "DEFAULT_ADMIN_ROLE()": "a217fddf",
+        "MIN_INITIAL_DEPOSIT()": "2ad876e0",
+        "MIN_PENALTY_FLUSH()": "497a04e0",
+        "PAUSER_ROLE()": "e63ab1e9",
+        "REWARDS_NOTIFIER_ROLE()": "a750e694",
+        "accRewardPerShare()": "939d6237",
+        "addPendingPenalty(uint256)": "89423406",
+        "advanceEpoch()": "3cf80e6c",
+        "balanceOf(address)": "70a08231",
+        "claim()": "4e71d92d",
+        "deposit(uint256)": "b6b55f25",
+        "epochDuration()": "4ff0876a",
+        "getRoleAdmin(bytes32)": "248a9ca3",
+        "grantRole(bytes32,address)": "2f2ff15d",
+        "hasRole(bytes32,address)": "91d14854",
+        "lastEpochFlushAt()": "8aef97ce",
+        "nextEpochAt()": "da566df6",
+        "notifyReward(uint256)": "60993b5b",
+        "pause()": "8456cb59",
+        "paused()": "5c975abb",
+        "pendingPenalties()": "8deb8fc8",
+        "pendingRewards()": "eded3fda",
+        "pendingRewardsOf(address)": "3988bad8",
+        "renounceRole(bytes32,address)": "36568abe",
+        "revokeRole(bytes32,address)": "d547741f",
+        "setStaking(address)": "8ff39099",
+        "staking()": "4cf088d9",
+        "supportsInterface(bytes4)": "01ffc9a7",
+        "totalDeposits()": "7d882097",
+        "unpause()": "3f4ba83a",
+        "userPendingRewards(address)": "fc9d7711",
+        "userRewardDebt(address)": "4bf6f9e7",
+        "withdraw(uint256)": "2e1a7d4d",
+        "xk613()": "f8e8289e"
+    },
+    "rawMetadata": "{\"compiler\":{\"version\":\"0.8.33+commit.64118f21\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"xk613Token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"epochDuration_\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"AccessControlBadConfirmation\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"neededRole\",\"type\":\"bytes32\"}],\"name\":\"AccessControlUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"EnforcedPause\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ExpectedPause\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InsufficientBalance\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidEpochDuration\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"MinimumInitialDeposit\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NoRewards\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ReentrancyGuardReentrantCall\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"SafeERC20FailedOperation\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAddress\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"ZeroAmount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Claimed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Deposited\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"name\":\"EpochAdvanced\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Paused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"PenaltyAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"RewardNotified\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"staking\",\"type\":\"address\"}],\"name\":\"StakingUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"Unpaused\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Withdrawn\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"MIN_INITIAL_DEPOSIT\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"MIN_PENALTY_FLUSH\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"PAUSER_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"REWARDS_NOTIFIER_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"accRewardPerShare\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"addPendingPenalty\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"advanceEpoch\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"claim\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"epochDuration\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"lastEpochFlushAt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"nextEpochAt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"notifyReward\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"paused\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingPenalties\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingRewards\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"pendingRewardsOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"callerConfirmation\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"staking_\",\"type\":\"address\"}],\"name\":\"setStaking\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"staking\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalDeposits\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"unpause\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"userPendingRewards\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"userRewardDebt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"xk613\",\"outputs\":[{\"internalType\":\"contract IERC20\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"errors\":{\"AccessControlBadConfirmation()\":[{\"details\":\"The caller of a function is not the expected one. NOTE: Don't confuse with {AccessControlUnauthorizedAccount}.\"}],\"AccessControlUnauthorizedAccount(address,bytes32)\":[{\"details\":\"The `account` is missing a role.\"}],\"EnforcedPause()\":[{\"details\":\"The operation failed because the contract is paused.\"}],\"ExpectedPause()\":[{\"details\":\"The operation failed because the contract is not paused.\"}],\"ReentrancyGuardReentrantCall()\":[{\"details\":\"Unauthorized reentrant call.\"}],\"SafeERC20FailedOperation(address)\":[{\"details\":\"An operation with an ERC-20 token failed.\"}]},\"events\":{\"Paused(address)\":{\"details\":\"Emitted when the pause is triggered by `account`.\"},\"RoleAdminChanged(bytes32,bytes32,bytes32)\":{\"details\":\"Emitted when `newAdminRole` is set as ``role``'s admin role, replacing `previousAdminRole` `DEFAULT_ADMIN_ROLE` is the starting admin for all roles, despite {RoleAdminChanged} not being emitted to signal this.\"},\"RoleGranted(bytes32,address,address)\":{\"details\":\"Emitted when `account` is granted `role`. `sender` is the account that originated the contract call. This account bears the admin role (for the granted role). Expected in cases where the role was granted using the internal {AccessControl-_grantRole}.\"},\"RoleRevoked(bytes32,address,address)\":{\"details\":\"Emitted when `account` is revoked `role`. `sender` is the account that originated the contract call:   - if using `revokeRole`, it is the admin role bearer   - if using `renounceRole`, it is the role bearer (i.e. `account`)\"},\"Unpaused(address)\":{\"details\":\"Emitted when the pause is lifted by `account`.\"}},\"kind\":\"dev\",\"methods\":{\"getRoleAdmin(bytes32)\":{\"details\":\"Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}.\"},\"grantRole(bytes32,address)\":{\"details\":\"Grants `role` to `account`. If `account` had not been already granted `role`, emits a {RoleGranted} event. Requirements: - the caller must have ``role``'s admin role. May emit a {RoleGranted} event.\"},\"hasRole(bytes32,address)\":{\"details\":\"Returns `true` if `account` has been granted `role`.\"},\"pause()\":{\"details\":\"Functions guarded by `whenNotPaused` will revert while the contract is paused.\"},\"paused()\":{\"details\":\"Returns true if the contract is paused, and false otherwise.\"},\"renounceRole(bytes32,address)\":{\"details\":\"Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been revoked `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `callerConfirmation`. May emit a {RoleRevoked} event.\"},\"revokeRole(bytes32,address)\":{\"details\":\"Revokes `role` from `account`. If `account` had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must have ``role``'s admin role. May emit a {RoleRevoked} event.\"},\"supportsInterface(bytes4)\":{\"details\":\"Returns true if this contract implements the interface defined by `interfaceId`. See the corresponding https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section] to learn more about how these ids are created. This function call must use less than 30 000 gas.\"}},\"title\":\"RewardsDistributor\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"MIN_INITIAL_DEPOSIT()\":{\"notice\":\"Minimum first deposit to prevent first-depositor griefing.\"},\"accRewardPerShare()\":{\"notice\":\"Global accumulated rewards per share, scaled by 1e18.\"},\"addPendingPenalty(uint256)\":{\"notice\":\"Adds instant-exit penalty; accumulates until MIN_PENALTY_FLUSH, then distributes. Called by Staking.\"},\"advanceEpoch()\":{\"notice\":\"Triggers flush of pending rewards and penalties. Anyone can call to advance epoch.\"},\"claim()\":{\"notice\":\"Claims accumulated rewards.\"},\"deposit(uint256)\":{\"notice\":\"Deposits xK613 to earn rewards. Caller must approve this contract first.\"},\"epochDuration()\":{\"notice\":\"Epoch duration in seconds. Penalties flush at epoch boundary even if below threshold.\"},\"lastEpochFlushAt()\":{\"notice\":\"Timestamp when penalties were last flushed at epoch boundary.\"},\"nextEpochAt()\":{\"notice\":\"Returns the timestamp when the current epoch ends (or 0 if no epochs).\"},\"notifyReward(uint256)\":{\"notice\":\"Notifies new rewards. Called by Treasury.\"},\"pause()\":{\"notice\":\"Pauses reward-related state-changing operations.\"},\"pendingPenalties()\":{\"notice\":\"Penalties from instant exit; flushed when >= MIN_PENALTY_FLUSH to avoid dust rounding.\"},\"pendingRewards()\":{\"notice\":\"Rewards notified but not yet distributed (when totalDeposits was 0).\"},\"pendingRewardsOf(address)\":{\"notice\":\"Returns pending rewards for an account.\"},\"setStaking(address)\":{\"notice\":\"Sets the staking contract. Grants REWARDS_NOTIFIER_ROLE for penalty rewards. Pass address(0) to disable.\"},\"staking()\":{\"notice\":\"Staking contract; receives REWARDS_NOTIFIER_ROLE for penalty rewards.\"},\"totalDeposits()\":{\"notice\":\"Total xK613 deposited by all users.\"},\"unpause()\":{\"notice\":\"Unpauses the contract, re-enabling state-changing operations.\"},\"withdraw(uint256)\":{\"notice\":\"Withdraws xK613. Must withdraw from RD before initiating exit in Staking.\"},\"xk613()\":{\"notice\":\"xK613 token used for deposits and rewards.\"}},\"notice\":\"Manual deposit/withdraw: users deposit xK613 to earn rewards. Claim anytime. Penalties flush above threshold or at epoch boundary.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/staking/RewardsDistributor.sol\":\"RewardsDistributor\"},\"evmVersion\":\"prague\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/L2-Protocol/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":L2-Protocol/=lib/L2-Protocol/\",\":ds-test/=lib/L2-Protocol/lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/\",\":k613-markets-config/=lib/k613-markets-config/\",\":openzeppelin-contracts-upgradeable/=lib/L2-Protocol/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\",\":shadow-core/=lib/shadow-core/contracts/\",\":solidity-utils/=lib/L2-Protocol/lib/solidity-utils/\"]},\"sources\":{\"lib/openzeppelin-contracts/contracts/access/AccessControl.sol\":{\"keccak256\":\"0x1a6b4f6b7798ab80929d491b89d5427a9b3338c0fd1acd0ba325f69c6f1646af\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7bb7f346c12a14dc622bc105ce3c47202fbc89f4b153a28a63bb68193297330c\",\"dweb:/ipfs/QmagwF8P3bUBXwdo159ueEnY9dLSvEWwK24kk2op58egwG\"]},\"lib/openzeppelin-contracts/contracts/access/IAccessControl.sol\":{\"keccak256\":\"0xbff9f59c84e5337689161ce7641c0ef8e872d6a7536fbc1f5133f128887aba3c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://b308f882e796f7b79c9502deacb0a62983035c6f6f4e962b319ba6a1f4a77d3d\",\"dweb:/ipfs/QmaWCW7ahEQqFjwhSUhV7Ae7WhfNvzSpE7DQ58hvEooqPL\"]},\"lib/openzeppelin-contracts/contracts/interfaces/IERC1363.sol\":{\"keccak256\":\"0xd5ea07362ab630a6a3dee4285a74cf2377044ca2e4be472755ad64d7c5d4b69d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://da5e832b40fc5c3145d3781e2e5fa60ac2052c9d08af7e300dc8ab80c4343100\",\"dweb:/ipfs/QmTzf7N5ZUdh5raqtzbM11yexiUoLC9z3Ws632MCuycq1d\"]},\"lib/openzeppelin-contracts/contracts/interfaces/IERC165.sol\":{\"keccak256\":\"0x0afcb7e740d1537b252cb2676f600465ce6938398569f09ba1b9ca240dde2dfc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1c299900ac4ec268d4570ecef0d697a3013cd11a6eb74e295ee3fbc945056037\",\"dweb:/ipfs/Qmab9owJoxcA7vJT5XNayCMaUR1qxqj1NDzzisduwaJMcZ\"]},\"lib/openzeppelin-contracts/contracts/interfaces/IERC20.sol\":{\"keccak256\":\"0x1a6221315ce0307746c2c4827c125d821ee796c74a676787762f4778671d4f44\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1bb2332a7ee26dd0b0de9b7fe266749f54820c99ab6a3bcb6f7e6b751d47ee2d\",\"dweb:/ipfs/QmcRWpaBeCYkhy68PR3B4AgD7asuQk7PwkWxrvJbZcikLF\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol\":{\"keccak256\":\"0x74ed01eb66b923d0d0cfe3be84604ac04b76482a55f9dd655e1ef4d367f95bc2\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://5282825a626cfe924e504274b864a652b0023591fa66f06a067b25b51ba9b303\",\"dweb:/ipfs/QmeCfPykghhMc81VJTrHTC7sF6CRvaA1FXVq2pJhwYp1dV\"]},\"lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol\":{\"keccak256\":\"0x304d732678032a9781ae85c8f204c8fba3d3a5e31c02616964e75cfdc5049098\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://299ced486011781dc98f638059678323c03079fefae1482abaa2135b22fa92d0\",\"dweb:/ipfs/QmbZNbcPTBxNvwChavN2kkZZs7xHhYL7mv51KrxMhsMs3j\"]},\"lib/openzeppelin-contracts/contracts/utils/Context.sol\":{\"keccak256\":\"0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12\",\"dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF\"]},\"lib/openzeppelin-contracts/contracts/utils/Pausable.sol\":{\"keccak256\":\"0xdb484371dfbb848cb6f5d70464e9ac9b2900e4164ead76bbce4fef0b44bcc68f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f9d6f6f6600a2bec622f699081b58350873b5e63ce05464d17d674a290bb8a7c\",\"dweb:/ipfs/QmQKVzSQY1PM3Bid4QhgVVZyx6B4Jx7XgaQzLKHj38vJz8\"]},\"lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol\":{\"keccak256\":\"0xa516cbf1c7d15d3517c2d668601ce016c54395bf5171918a14e2686977465f53\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1e1d079e8edfb58efd23a311e315a4807b01b5d1cf153f8fa2d0608b9dec3e99\",\"dweb:/ipfs/QmTBExeX2SDTkn5xbk5ssbYSx7VqRp9H4Ux1CY4uQM4b9N\"]},\"lib/openzeppelin-contracts/contracts/utils/StorageSlot.sol\":{\"keccak256\":\"0xcf74f855663ce2ae00ed8352666b7935f6cddea2932fdf2c3ecd30a9b1cd0e97\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9f660b1f351b757dfe01438e59888f31f33ded3afcf5cb5b0d9bf9aa6f320a8b\",\"dweb:/ipfs/QmarDJ5hZEgBtCmmrVzEZWjub9769eD686jmzb2XpSU1cM\"]},\"lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol\":{\"keccak256\":\"0x2d9dc2fe26180f74c11c13663647d38e259e45f95eb88f57b61d2160b0109d3e\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://81233d1f98060113d9922180bb0f14f8335856fe9f339134b09335e9f678c377\",\"dweb:/ipfs/QmWh6R35SarhAn4z2wH8SU456jJSYL2FgucfTFgbHJJN4E\"]},\"lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol\":{\"keccak256\":\"0x8891738ffe910f0cf2da09566928589bf5d63f4524dd734fd9cedbac3274dd5c\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://971f954442df5c2ef5b5ebf1eb245d7105d9fbacc7386ee5c796df1d45b21617\",\"dweb:/ipfs/QmadRjHbkicwqwwh61raUEapaVEtaLMcYbQZWs9gUkgj3u\"]},\"src/staking/RewardsDistributor.sol\":{\"keccak256\":\"0x78e15826a1dafa2d3b5211950eeea62c188e2daf1148d9c7d0071f893884e22f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://7f00259219446585cd627880e5c9e0cf496204e85c4c813273e664b188d813a5\",\"dweb:/ipfs/QmRB7SULMEyH5Gn8cLsFso1jCKBcA7Ssj74MsY2WEVTpPz\"]}},\"version\":1}",
+    "metadata": {
+        "compiler": {
+            "version": "0.8.33+commit.64118f21"
+        },
+        "language": "Solidity",
+        "output": {
+            "abi": [
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "xk613Token",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "epochDuration_",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "constructor"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "AccessControlBadConfirmation"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "neededRole",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "type": "error",
+                    "name": "AccessControlUnauthorizedAccount"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "EnforcedPause"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "ExpectedPause"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "InsufficientBalance"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "InvalidEpochDuration"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "MinimumInitialDeposit"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "NoRewards"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "ReentrancyGuardReentrantCall"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "token",
+                            "type": "address"
+                        }
+                    ],
+                    "type": "error",
+                    "name": "SafeERC20FailedOperation"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "ZeroAddress"
+                },
+                {
+                    "inputs": [],
+                    "type": "error",
+                    "name": "ZeroAmount"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address",
+                            "indexed": true
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256",
+                            "indexed": false
+                        }
+                    ],
+                    "type": "event",
+                    "name": "Claimed",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address",
+                            "indexed": true
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256",
+                            "indexed": false
+                        }
+                    ],
+                    "type": "event",
+                    "name": "Deposited",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "timestamp",
+                            "type": "uint256",
+                            "indexed": false
+                        }
+                    ],
+                    "type": "event",
+                    "name": "EpochAdvanced",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address",
+                            "indexed": false
+                        }
+                    ],
+                    "type": "event",
+                    "name": "Paused",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256",
+                            "indexed": false
+                        }
+                    ],
+                    "type": "event",
+                    "name": "PenaltyAdded",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256",
+                            "indexed": false
+                        }
+                    ],
+                    "type": "event",
+                    "name": "RewardNotified",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "role",
+                            "type": "bytes32",
+                            "indexed": true
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "previousAdminRole",
+                            "type": "bytes32",
+                            "indexed": true
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "newAdminRole",
+                            "type": "bytes32",
+                            "indexed": true
+                        }
+                    ],
+                    "type": "event",
+                    "name": "RoleAdminChanged",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "role",
+                            "type": "bytes32",
+                            "indexed": true
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address",
+                            "indexed": true
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address",
+                            "indexed": true
+                        }
+                    ],
+                    "type": "event",
+                    "name": "RoleGranted",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "role",
+                            "type": "bytes32",
+                            "indexed": true
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address",
+                            "indexed": true
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "sender",
+                            "type": "address",
+                            "indexed": true
+                        }
+                    ],
+                    "type": "event",
+                    "name": "RoleRevoked",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "staking",
+                            "type": "address",
+                            "indexed": true
+                        }
+                    ],
+                    "type": "event",
+                    "name": "StakingUpdated",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address",
+                            "indexed": false
+                        }
+                    ],
+                    "type": "event",
+                    "name": "Unpaused",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address",
+                            "indexed": true
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256",
+                            "indexed": false
+                        }
+                    ],
+                    "type": "event",
+                    "name": "Withdrawn",
+                    "anonymous": false
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "DEFAULT_ADMIN_ROLE",
+                    "outputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "",
+                            "type": "bytes32"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "MIN_INITIAL_DEPOSIT",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "MIN_PENALTY_FLUSH",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "PAUSER_ROLE",
+                    "outputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "",
+                            "type": "bytes32"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "REWARDS_NOTIFIER_ROLE",
+                    "outputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "",
+                            "type": "bytes32"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "accRewardPerShare",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "addPendingPenalty"
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "advanceEpoch"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "balanceOf",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "claim"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "deposit"
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "epochDuration",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "role",
+                            "type": "bytes32"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "getRoleAdmin",
+                    "outputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "",
+                            "type": "bytes32"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "role",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "grantRole"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "role",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "hasRole",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "lastEpochFlushAt",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "nextEpochAt",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "notifyReward"
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "pause"
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "paused",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "pendingPenalties",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "pendingRewards",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "pendingRewardsOf",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "role",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "callerConfirmation",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "renounceRole"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes32",
+                            "name": "role",
+                            "type": "bytes32"
+                        },
+                        {
+                            "internalType": "address",
+                            "name": "account",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "revokeRole"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "staking_",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "setStaking"
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "staking",
+                    "outputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "bytes4",
+                            "name": "interfaceId",
+                            "type": "bytes4"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "supportsInterface",
+                    "outputs": [
+                        {
+                            "internalType": "bool",
+                            "name": "",
+                            "type": "bool"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "totalDeposits",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "unpause"
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "userPendingRewards",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "address",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "userRewardDebt",
+                    "outputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "",
+                            "type": "uint256"
+                        }
+                    ]
+                },
+                {
+                    "inputs": [
+                        {
+                            "internalType": "uint256",
+                            "name": "amount",
+                            "type": "uint256"
+                        }
+                    ],
+                    "stateMutability": "nonpayable",
+                    "type": "function",
+                    "name": "withdraw"
+                },
+                {
+                    "inputs": [],
+                    "stateMutability": "view",
+                    "type": "function",
+                    "name": "xk613",
+                    "outputs": [
+                        {
+                            "internalType": "contract IERC20",
+                            "name": "",
+                            "type": "address"
+                        }
+                    ]
+                }
+            ],
+            "devdoc": {
+                "kind": "dev",
+                "methods": {
+                    "getRoleAdmin(bytes32)": {
+                        "details": "Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}."
+                    },
+                    "grantRole(bytes32,address)": {
+                        "details": "Grants `role` to `account`. If `account` had not been already granted `role`, emits a {RoleGranted} event. Requirements: - the caller must have ``role``'s admin role. May emit a {RoleGranted} event."
+                    },
+                    "hasRole(bytes32,address)": {
+                        "details": "Returns `true` if `account` has been granted `role`."
+                    },
+                    "pause()": {
+                        "details": "Functions guarded by `whenNotPaused` will revert while the contract is paused."
+                    },
+                    "paused()": {
+                        "details": "Returns true if the contract is paused, and false otherwise."
+                    },
+                    "renounceRole(bytes32,address)": {
+                        "details": "Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been revoked `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `callerConfirmation`. May emit a {RoleRevoked} event."
+                    },
+                    "revokeRole(bytes32,address)": {
+                        "details": "Revokes `role` from `account`. If `account` had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must have ``role``'s admin role. May emit a {RoleRevoked} event."
+                    },
+                    "supportsInterface(bytes4)": {
+                        "details": "Returns true if this contract implements the interface defined by `interfaceId`. See the corresponding https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[ERC section] to learn more about how these ids are created. This function call must use less than 30 000 gas."
+                    }
+                },
+                "version": 1
+            },
+            "userdoc": {
+                "kind": "user",
+                "methods": {
+                    "MIN_INITIAL_DEPOSIT()": {
+                        "notice": "Minimum first deposit to prevent first-depositor griefing."
+                    },
+                    "accRewardPerShare()": {
+                        "notice": "Global accumulated rewards per share, scaled by 1e18."
+                    },
+                    "addPendingPenalty(uint256)": {
+                        "notice": "Adds instant-exit penalty; accumulates until MIN_PENALTY_FLUSH, then distributes. Called by Staking."
+                    },
+                    "advanceEpoch()": {
+                        "notice": "Triggers flush of pending rewards and penalties. Anyone can call to advance epoch."
+                    },
+                    "claim()": {
+                        "notice": "Claims accumulated rewards."
+                    },
+                    "deposit(uint256)": {
+                        "notice": "Deposits xK613 to earn rewards. Caller must approve this contract first."
+                    },
+                    "epochDuration()": {
+                        "notice": "Epoch duration in seconds. Penalties flush at epoch boundary even if below threshold."
+                    },
+                    "lastEpochFlushAt()": {
+                        "notice": "Timestamp when penalties were last flushed at epoch boundary."
+                    },
+                    "nextEpochAt()": {
+                        "notice": "Returns the timestamp when the current epoch ends (or 0 if no epochs)."
+                    },
+                    "notifyReward(uint256)": {
+                        "notice": "Notifies new rewards. Called by Treasury."
+                    },
+                    "pause()": {
+                        "notice": "Pauses reward-related state-changing operations."
+                    },
+                    "pendingPenalties()": {
+                        "notice": "Penalties from instant exit; flushed when >= MIN_PENALTY_FLUSH to avoid dust rounding."
+                    },
+                    "pendingRewards()": {
+                        "notice": "Rewards notified but not yet distributed (when totalDeposits was 0)."
+                    },
+                    "pendingRewardsOf(address)": {
+                        "notice": "Returns pending rewards for an account."
+                    },
+                    "setStaking(address)": {
+                        "notice": "Sets the staking contract. Grants REWARDS_NOTIFIER_ROLE for penalty rewards. Pass address(0) to disable."
+                    },
+                    "staking()": {
+                        "notice": "Staking contract; receives REWARDS_NOTIFIER_ROLE for penalty rewards."
+                    },
+                    "totalDeposits()": {
+                        "notice": "Total xK613 deposited by all users."
+                    },
+                    "unpause()": {
+                        "notice": "Unpauses the contract, re-enabling state-changing operations."
+                    },
+                    "withdraw(uint256)": {
+                        "notice": "Withdraws xK613. Must withdraw from RD before initiating exit in Staking."
+                    },
+                    "xk613()": {
+                        "notice": "xK613 token used for deposits and rewards."
+                    }
+                },
+                "version": 1
+            }
+        },
+        "settings": {
+            "remappings": [
+                "@openzeppelin/contracts-upgradeable/=lib/L2-Protocol/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/contracts/",
+                "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+                "L2-Protocol/=lib/L2-Protocol/",
+                "ds-test/=lib/L2-Protocol/lib/forge-std/lib/ds-test/src/",
+                "erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
+                "forge-std/=lib/forge-std/src/",
+                "halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/",
+                "k613-markets-config/=lib/k613-markets-config/",
+                "openzeppelin-contracts-upgradeable/=lib/L2-Protocol/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/",
+                "openzeppelin-contracts/=lib/openzeppelin-contracts/",
+                "shadow-core/=lib/shadow-core/contracts/",
+                "solidity-utils/=lib/L2-Protocol/lib/solidity-utils/"
+            ],
+            "optimizer": {
+                "enabled": false,
+                "runs": 200
+            },
+            "metadata": {
+                "bytecodeHash": "ipfs"
+            },
+            "compilationTarget": {
+                "src/staking/RewardsDistributor.sol": "RewardsDistributor"
+            },
+            "evmVersion": "prague",
+            "libraries": {}
+        },
+        "sources": {
+            "lib/openzeppelin-contracts/contracts/access/AccessControl.sol": {
+                "keccak256": "0x1a6b4f6b7798ab80929d491b89d5427a9b3338c0fd1acd0ba325f69c6f1646af",
+                "urls": [
+                    "bzz-raw://7bb7f346c12a14dc622bc105ce3c47202fbc89f4b153a28a63bb68193297330c",
+                    "dweb:/ipfs/QmagwF8P3bUBXwdo159ueEnY9dLSvEWwK24kk2op58egwG"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/access/IAccessControl.sol": {
+                "keccak256": "0xbff9f59c84e5337689161ce7641c0ef8e872d6a7536fbc1f5133f128887aba3c",
+                "urls": [
+                    "bzz-raw://b308f882e796f7b79c9502deacb0a62983035c6f6f4e962b319ba6a1f4a77d3d",
+                    "dweb:/ipfs/QmaWCW7ahEQqFjwhSUhV7Ae7WhfNvzSpE7DQ58hvEooqPL"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/interfaces/IERC1363.sol": {
+                "keccak256": "0xd5ea07362ab630a6a3dee4285a74cf2377044ca2e4be472755ad64d7c5d4b69d",
+                "urls": [
+                    "bzz-raw://da5e832b40fc5c3145d3781e2e5fa60ac2052c9d08af7e300dc8ab80c4343100",
+                    "dweb:/ipfs/QmTzf7N5ZUdh5raqtzbM11yexiUoLC9z3Ws632MCuycq1d"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/interfaces/IERC165.sol": {
+                "keccak256": "0x0afcb7e740d1537b252cb2676f600465ce6938398569f09ba1b9ca240dde2dfc",
+                "urls": [
+                    "bzz-raw://1c299900ac4ec268d4570ecef0d697a3013cd11a6eb74e295ee3fbc945056037",
+                    "dweb:/ipfs/Qmab9owJoxcA7vJT5XNayCMaUR1qxqj1NDzzisduwaJMcZ"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/interfaces/IERC20.sol": {
+                "keccak256": "0x1a6221315ce0307746c2c4827c125d821ee796c74a676787762f4778671d4f44",
+                "urls": [
+                    "bzz-raw://1bb2332a7ee26dd0b0de9b7fe266749f54820c99ab6a3bcb6f7e6b751d47ee2d",
+                    "dweb:/ipfs/QmcRWpaBeCYkhy68PR3B4AgD7asuQk7PwkWxrvJbZcikLF"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol": {
+                "keccak256": "0x74ed01eb66b923d0d0cfe3be84604ac04b76482a55f9dd655e1ef4d367f95bc2",
+                "urls": [
+                    "bzz-raw://5282825a626cfe924e504274b864a652b0023591fa66f06a067b25b51ba9b303",
+                    "dweb:/ipfs/QmeCfPykghhMc81VJTrHTC7sF6CRvaA1FXVq2pJhwYp1dV"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol": {
+                "keccak256": "0x304d732678032a9781ae85c8f204c8fba3d3a5e31c02616964e75cfdc5049098",
+                "urls": [
+                    "bzz-raw://299ced486011781dc98f638059678323c03079fefae1482abaa2135b22fa92d0",
+                    "dweb:/ipfs/QmbZNbcPTBxNvwChavN2kkZZs7xHhYL7mv51KrxMhsMs3j"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/utils/Context.sol": {
+                "keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+                "urls": [
+                    "bzz-raw://6a708e8a5bdb1011c2c381c9a5cfd8a9a956d7d0a9dc1bd8bcdaf52f76ef2f12",
+                    "dweb:/ipfs/Qmax9WHBnVsZP46ZxEMNRQpLQnrdE4dK8LehML1Py8FowF"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/utils/Pausable.sol": {
+                "keccak256": "0xdb484371dfbb848cb6f5d70464e9ac9b2900e4164ead76bbce4fef0b44bcc68f",
+                "urls": [
+                    "bzz-raw://f9d6f6f6600a2bec622f699081b58350873b5e63ce05464d17d674a290bb8a7c",
+                    "dweb:/ipfs/QmQKVzSQY1PM3Bid4QhgVVZyx6B4Jx7XgaQzLKHj38vJz8"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/utils/ReentrancyGuard.sol": {
+                "keccak256": "0xa516cbf1c7d15d3517c2d668601ce016c54395bf5171918a14e2686977465f53",
+                "urls": [
+                    "bzz-raw://1e1d079e8edfb58efd23a311e315a4807b01b5d1cf153f8fa2d0608b9dec3e99",
+                    "dweb:/ipfs/QmTBExeX2SDTkn5xbk5ssbYSx7VqRp9H4Ux1CY4uQM4b9N"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/utils/StorageSlot.sol": {
+                "keccak256": "0xcf74f855663ce2ae00ed8352666b7935f6cddea2932fdf2c3ecd30a9b1cd0e97",
+                "urls": [
+                    "bzz-raw://9f660b1f351b757dfe01438e59888f31f33ded3afcf5cb5b0d9bf9aa6f320a8b",
+                    "dweb:/ipfs/QmarDJ5hZEgBtCmmrVzEZWjub9769eD686jmzb2XpSU1cM"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/utils/introspection/ERC165.sol": {
+                "keccak256": "0x2d9dc2fe26180f74c11c13663647d38e259e45f95eb88f57b61d2160b0109d3e",
+                "urls": [
+                    "bzz-raw://81233d1f98060113d9922180bb0f14f8335856fe9f339134b09335e9f678c377",
+                    "dweb:/ipfs/QmWh6R35SarhAn4z2wH8SU456jJSYL2FgucfTFgbHJJN4E"
+                ],
+                "license": "MIT"
+            },
+            "lib/openzeppelin-contracts/contracts/utils/introspection/IERC165.sol": {
+                "keccak256": "0x8891738ffe910f0cf2da09566928589bf5d63f4524dd734fd9cedbac3274dd5c",
+                "urls": [
+                    "bzz-raw://971f954442df5c2ef5b5ebf1eb245d7105d9fbacc7386ee5c796df1d45b21617",
+                    "dweb:/ipfs/QmadRjHbkicwqwwh61raUEapaVEtaLMcYbQZWs9gUkgj3u"
+                ],
+                "license": "MIT"
+            },
+            "src/staking/RewardsDistributor.sol": {
+                "keccak256": "0x78e15826a1dafa2d3b5211950eeea62c188e2daf1148d9c7d0071f893884e22f",
+                "urls": [
+                    "bzz-raw://7f00259219446585cd627880e5c9e0cf496204e85c4c813273e664b188d813a5",
+                    "dweb:/ipfs/QmRB7SULMEyH5Gn8cLsFso1jCKBcA7Ssj74MsY2WEVTpPz"
+                ],
+                "license": "MIT"
+            }
+        },
+        "version": 1
+    },
+    "id": 38
+}
