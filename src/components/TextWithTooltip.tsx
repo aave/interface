@@ -20,6 +20,7 @@ export interface TextWithTooltipProps extends TypographyProps {
   event?: TrackEventProps;
   open?: boolean;
   setOpen?: (open: boolean) => void;
+  placement?: 'bottom' | 'left' | 'right';
 }
 
 export const TextWithTooltip = ({
@@ -34,6 +35,7 @@ export const TextWithTooltip = ({
   event,
   open: openProp = false,
   setOpen: setOpenProp,
+  placement = 'bottom',
   ...rest
 }: TextWithTooltipProps) => {
   const [open, setOpen] = useState(openProp);
@@ -52,7 +54,12 @@ export const TextWithTooltip = ({
         </Typography>
       )}
 
-      <ContentWithTooltip tooltipContent={<>{children}</>} open={open} setOpen={toggleOpen}>
+      <ContentWithTooltip
+        tooltipContent={<>{children}</>}
+        open={open}
+        setOpen={toggleOpen}
+        placement={placement}
+      >
         <IconButton
           sx={{
             display: 'flex',

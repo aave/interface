@@ -392,7 +392,11 @@ const WrappedBaseAssetSelector = ({
       color="primary"
       value={selectedAsset}
       exclusive
-      onChange={(_, value) => setSelectedAsset(value)}
+      onChange={(_, value) => {
+        if (value !== null) {
+          setSelectedAsset(value);
+        }
+      }}
       sx={{ mb: 4 }}
     >
       <StyledTxModalToggleButton value={assetSymbol}>
