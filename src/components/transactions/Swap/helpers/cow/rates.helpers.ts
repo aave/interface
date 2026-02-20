@@ -111,7 +111,8 @@ export async function getCowProtocolSellRates({
               user,
               type: swapType,
               chainId,
-              amount,
+              sellAmount: amount,
+              buyAmount: amount, // TODO: Should we ask first for a normal quote and then a second quote having a realistic buy amount?
               srcToken,
               srcDecimals,
               destToken,
