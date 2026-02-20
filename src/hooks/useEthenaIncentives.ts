@@ -1,4 +1,9 @@
-import { AaveV3Ethereum, AaveV3EthereumLido, AaveV3Plasma } from '@bgd-labs/aave-address-book';
+import {
+  AaveV3Ethereum,
+  AaveV3EthereumLido,
+  AaveV3Mantle,
+  AaveV3Plasma,
+} from '@bgd-labs/aave-address-book';
 
 const getEthenaData = (assetAddress: string): number | undefined =>
   ETHENA_DATA_MAP.get(assetAddress);
@@ -9,6 +14,8 @@ const ETHENA_DATA_MAP: Map<string, number> = new Map([
   [AaveV3Plasma.ASSETS.sUSDe.A_TOKEN, 5],
   [AaveV3Plasma.ASSETS.USDe.A_TOKEN, 5],
   [AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN, 5],
+  [AaveV3Mantle.ASSETS.sUSDe.A_TOKEN, 5],
+  [AaveV3Mantle.ASSETS.USDe.A_TOKEN, 5],
 
   [AaveV3Ethereum.ASSETS.PT_eUSDE_29MAY2025.A_TOKEN, 2],
   [AaveV3Ethereum.ASSETS.PT_eUSDE_14AUG2025.A_TOKEN, 2],

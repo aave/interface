@@ -213,6 +213,11 @@ const IncentivesSymbolMap: {
     symbol: 'aWMNT',
     aToken: true,
   },
+  aManwrsETH: {
+    tokenIconSymbol: 'wrsETH',
+    symbol: 'awrsETH',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
