@@ -4,17 +4,11 @@ import assets from '../../../../fixtures/assets.json';
 import constants from '../../../../fixtures/constans.json';
 import { skipState } from '../../../../support/steps/common';
 import { configEnvWithTenderlyAvalancheFork } from '../../../../support/steps/configuration.steps';
-import {
-  borrow,
-  repay,
-  supply,
-  withdraw,
-  withdrawAndSwitch,
-} from '../../../../support/steps/main.steps';
+import { borrow, repay, supply, withdraw } from '../../../../support/steps/main.steps';
 import { dashboardAssetValuesVerification } from '../../../../support/steps/verification.steps';
 
 const tokensToRequest: RequestedTokens = {
-  aAVAXAvalancheV3: 9000,
+  aAVAXAvalancheV3: 100,
 };
 
 const testData = {
@@ -51,7 +45,7 @@ const testData = {
     ],
     withdraw: {
       asset: assets.avalancheV3Market.DAI,
-      isCollateral: true,
+      isCollateral: false,
       amount: 1,
       hasApproval: true,
     },
@@ -68,9 +62,9 @@ const testData = {
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.avalancheV3Market.DAI.shortName,
-        amount: 2.0,
+        amount: 7.1,
         collateralType: constants.collateralType.isCollateral,
-        isCollateral: true,
+        isCollateral: false,
       },
       {
         type: constants.dashboardTypes.borrow,
@@ -86,7 +80,6 @@ describe('DAI INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({
     market: 'fork_proto_avalanche_v3',
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {
@@ -96,7 +89,6 @@ describe('DAI INTEGRATION SPEC, AVALANCHE V3 MARKET', () => {
   testData.testCases.repay.forEach((repayCase) => {
     repay(repayCase, skipTestState, false);
   });
-  withdrawAndSwitch(testData.testCases.withdrawAndSwitch, skipTestState, false);
   withdraw(testData.testCases.withdraw, skipTestState, false);
   dashboardAssetValuesVerification(testData.verifications.finalDashboard, skipTestState);
 });

@@ -76,7 +76,6 @@ const testData = {
 describe('WBTC INTEGRATION SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyArbitrumFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {

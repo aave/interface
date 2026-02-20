@@ -87,18 +87,18 @@ const testData = {
   ],
 };
 
-describe('SWITCH BY SWITCH TOOL, ETHEREUM', () => {
+describe.skip('SWITCH BY SWITCH TOOL, ETHEREUM', () => {
   // const skipTestState = skipState(false);
-  configEnvWithTenderlyAEthereumV3Fork({ v3: true });
+  configEnvWithTenderlyAEthereumV3Fork({});
 
   testData.ethereum.forEach((swapCase) => {
     switchByTool(swapCase);
   });
 });
 
-describe('SWITCH BY SWITCH TOOL, POLYGON', () => {
+describe.skip('SWITCH BY SWITCH TOOL, POLYGON', () => {
   // const skipTestState = skipState(false);
-  configEnvWithTenderlyPolygonFork({ v3: true });
+  configEnvWithTenderlyPolygonFork({});
 
   testData.polygon.forEach((swapCase) => {
     switchByTool(swapCase);

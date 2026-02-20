@@ -37,7 +37,6 @@ const testData = {
 describe.skip('E-MODE SPEC, BASE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyBaseFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   describe('Prepare min health factor state, with stable coins', () => {

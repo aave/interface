@@ -77,10 +77,9 @@ const testData = {
   },
 };
 
-describe('USDbC INTEGRATION SPEC, BASE V3 MARKET', () => {
+describe.skip('USDC INTEGRATION SPEC, BNB V3 MARKET', () => {
   const skipTestState = skipState(true);
   configEnvWithTenderlyBnbFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {

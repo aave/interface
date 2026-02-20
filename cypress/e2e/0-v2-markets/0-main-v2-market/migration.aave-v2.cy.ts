@@ -190,7 +190,7 @@ describe.skip('MIGRATION, ETHEREUM V2 MARKET, MIGRATE TO EMPTY MARKET SPEC', () 
 //skip while unstable
 describe.skip('MIGRATION, ETHEREUM V2 MARKET, MIGRATE TO NOT EMPTY MARKET SPEC', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyAEthereumV3Fork({ v3: true });
+  configEnvWithTenderlyAEthereumV3Fork({});
   describe(`Prepare v3 market`, () => {
     supply(testData.v3Market.depositBase, skipTestState, true);
     testData.v3Market.borrow.forEach(($borrow) => {

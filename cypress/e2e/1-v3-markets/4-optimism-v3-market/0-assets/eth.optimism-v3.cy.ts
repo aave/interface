@@ -108,7 +108,7 @@ const testData = {
 
 describe('ETH INTEGRATION SPEC, OPTIMISM V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyOptimismFork({ v3: true });
+  configEnvWithTenderlyOptimismFork({});
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {

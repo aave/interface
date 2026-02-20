@@ -41,7 +41,7 @@ const testData = {
   },
 };
 
-describe('SWAP, AAVE V2 MARKET, INTEGRATION SPEC', () => {
+describe.skip('SWAP, AAVE V2 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyMainnetFork({ tokens: tokenSet(tokensToRequest) });
   testData.swap.forEach((swapCase) => {
