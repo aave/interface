@@ -2,13 +2,13 @@ import { ChainId } from '@aave/contract-helpers';
 import { GelatoRelay } from '@gelatonetwork/relay-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
-import { AbiCoder, keccak256, RLP } from 'ethers/lib/utils';
+import { AbiCoder, keccak256, parseUnits, RLP } from 'ethers/lib/utils';
 import { useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useGovernanceTokensAndPowers } from 'src/hooks/governance/useGovernanceTokensAndPowers';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { VoteProposalData } from 'src/modules/governance/types';
+import { ProposalDetailDisplay, VoteProposalData } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
@@ -194,6 +194,7 @@ export const GovVoteActions = ({
     setApprovalTxState,
     approvalTxState,
     setTxError,
+    args,
   } = useModalContext();
   const user = useRootStore((store) => store.account);
 
@@ -234,6 +235,58 @@ export const GovVoteActions = ({
     });
   }
 
+  const optimisticallyUpdateVote = () => {
+    const power = parseFloat(args?.power || '0');
+    const votingPowerWei = parseUnits(args?.power || '0', 18).toString();
+    const updater = (old: ProposalDetailDisplay | null | undefined) => {
+      if (!old?.voteProposalData) return old;
+      const forVotes = old.voteInfo.forVotes + (support ? power : 0);
+      const againstVotes = old.voteInfo.againstVotes + (support ? 0 : power);
+      const total = forVotes + againstVotes;
+      const currentDifferential = forVotes - againstVotes;
+      return {
+        ...old,
+        voteInfo: {
+          ...old.voteInfo,
+          forVotes,
+          againstVotes,
+          forPercent: total > 0 ? forVotes / total : 0,
+          againstPercent: total > 0 ? againstVotes / total : 0,
+          currentDifferential,
+          quorumReached: forVotes >= old.voteInfo.quorum,
+          differentialReached: currentDifferential >= old.voteInfo.requiredDifferential,
+        },
+        voteProposalData: {
+          ...old.voteProposalData,
+          votedInfo: { support, votingPower: votingPowerWei },
+        },
+      };
+    };
+    queryClient.setQueryData(['governance-detail-cache', proposalId, user], updater);
+    queryClient.setQueryData(['governance-detail-graph', proposalId, user], updater);
+
+    queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
+    queryClient.invalidateQueries({
+      queryKey: ['governance-voters-cache-for', proposalId],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['governance-voters-cache-against', proposalId],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['governance-voters-graph', proposalId],
+    });
+
+    // Invalidate the same detail queries we just wrote to. setQueryData above
+    // gives instant UI feedback, while this triggers a background refetch to
+    // replace the optimistic snapshot with real indexed data.
+    queryClient.invalidateQueries({
+      queryKey: ['governance-detail-cache', proposalId, user],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ['governance-detail-graph', proposalId, user],
+    });
+  };
+
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
     try {
@@ -266,17 +319,8 @@ export const GovVoteActions = ({
               loading: false,
               success: true,
             });
-            queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
-            queryClient.invalidateQueries({
-              queryKey: ['governance-detail-cache', proposalId, user],
-            });
-            queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
-            queryClient.invalidateQueries({
-              queryKey: ['governance-voters-cache-for', proposalId],
-            });
-            queryClient.invalidateQueries({
-              queryKey: ['governance-voters-cache-against', proposalId],
-            });
+
+            optimisticallyUpdateVote();
             return;
           } else {
             setTimeout(checkForStatus, 5000);
@@ -294,22 +338,14 @@ export const GovVoteActions = ({
         const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
 
         const response = await sendTx(txWithEstimatedGas);
-        await response.wait(1);
+        await response.wait(3);
         setMainTxState({
           txHash: response.hash,
           loading: false,
           success: true,
         });
 
-        queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
-        queryClient.invalidateQueries({ queryKey: ['governance-detail-cache', proposalId, user] });
-        queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
-        queryClient.invalidateQueries({
-          queryKey: ['governance-voters-cache-for', proposalId],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ['governance-voters-cache-against', proposalId],
-        });
+        optimisticallyUpdateVote();
       }
     } catch (err) {
       setMainTxState({
