@@ -215,7 +215,7 @@ const IncentivesSymbolMap: {
   },
   aManwrsETH: {
     tokenIconSymbol: 'wrsETH',
-    symbol: 'aWrsETH',
+    symbol: 'awrsETH',
     aToken: true,
   },
 };
