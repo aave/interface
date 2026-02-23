@@ -1,6 +1,6 @@
 import { DuplicateIcon, XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
@@ -31,7 +31,7 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          mb: '92px',
+          mb: '60px',
         }}
       >
         <Box
@@ -55,15 +55,11 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
           <Trans>Transaction failed</Trans>
         </Typography>
 
-        <Typography>
-          <Trans>
-            You can report incident to our{' '}
-            <Link href="https://discord.com/invite/aave">Discord</Link> or
-            <Link href="https://github.com/aave/interface">Github</Link>.
-          </Trans>
+        <Typography sx={{ mt: 1 }}>
+          <Trans>Need help? Our support team can assist.</Trans>
         </Typography>
 
-        <Box sx={{ display: 'flex', gap: 2, mt: 6 }}>
+        <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
           <Button variant="outlined" onClick={handleGetSupport} size="small">
             <Trans>Get support</Trans>
           </Button>

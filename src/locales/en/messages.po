@@ -243,6 +243,10 @@ msgstr "Please connect your wallet to swap collateral."
 msgid "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
 msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
 
+#: src/components/transactions/FlowCommons/Error.tsx
+msgid "Need help? Our support team can assist."
+msgstr "Need help? Our support team can assist."
+
 #: src/modules/sGho/SavingsGhoCard.tsx
 msgid "Initiate Withdraw"
 msgstr "Initiate Withdraw"
@@ -1001,10 +1005,6 @@ msgstr "Claiming all protocol rewards only. Merit rewards excluded - select \"cl
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Collateralization"
 msgstr "Collateralization"
-
-#: src/components/transactions/FlowCommons/Error.tsx
-msgid "You can report incident to our <0>Discord</0> or<1>Github</1>."
-msgstr "You can report incident to our <0>Discord</0> or<1>Github</1>."
 
 #: src/components/MarketSwitcher.tsx
 msgid "Main Ethereum market with the largest selection of assets and yield options"
