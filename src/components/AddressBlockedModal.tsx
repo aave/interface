@@ -1,6 +1,8 @@
 import { ExclamationCircleIcon, LogoutIcon, RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/react/shallow';
 
 import { BasicModal } from './primitives/BasicModal';
 
@@ -19,7 +21,17 @@ export const AddressBlockedModal = ({
 }: AddressBlockedProps) => {
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
   const setOpen = (_value: boolean) => {}; // ignore, we want the modal to not be dismissable
+  const [setFeedbackOpen, setSupportPrefillMessage] = useRootStore(
+    useShallow((state) => [state.setFeedbackOpen, state.setSupportPrefillMessage])
+  );
+  const handleGetSupport = () => {
+    const walletAddress = address ? address : 'Address not available';
+    const template = `My wallet seems to be blocked:\n\n"${walletAddress}"`;
 
+    setSupportPrefillMessage(template);
+    setFeedbackOpen(true);
+    close();
+  };
   return (
     <BasicModal open={true} withCloseButton={false} setOpen={setOpen}>
       <Box
@@ -48,6 +60,10 @@ export const AddressBlockedModal = ({
               <Trans>Refresh</Trans>
             </Button>
           )}
+
+          <Button variant="outlined" onClick={handleGetSupport} size="small">
+            <Trans>Get support</Trans>
+          </Button>
           <Button variant="contained" onClick={onDisconnectWallet}>
             <SvgIcon fontSize="small" sx={{ mx: 1 }}>
               <LogoutIcon />
