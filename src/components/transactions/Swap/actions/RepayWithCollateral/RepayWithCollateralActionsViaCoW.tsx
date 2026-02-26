@@ -81,8 +81,11 @@ export const RepayWithCollateralActionsViaCoW = ({
     [state.expiry]
   );
 
-  // Pre-compute instance address
+  // Pre-compute instance address.
+  // Skip recalculation while approval is in progress or succeeded to prevent in-flight quote
+  // responses from changing the adapter address and invalidating the user's signature.
   useEffect(() => {
+    if (approvalTxState.loading || approvalTxState.success) return;
     calculateInstanceAddress({
       user,
       validTo,
@@ -113,6 +116,8 @@ export const RepayWithCollateralActionsViaCoW = ({
     state.orderType,
     state.chainId,
     APP_CODE_PER_SWAP_TYPE[state.swapType],
+    approvalTxState.loading,
+    approvalTxState.success,
   ]);
 
   // Approval is aToken ERC20 Approval
