@@ -58,7 +58,6 @@ export const calculateInstanceAddress = async ({
   const {
     sellAmountWithMarginForDustProtection,
     buyAmountWithMarginForDustProtection,
-    buyAmount,
     sellToken,
     buyToken,
     quoteId,
@@ -77,7 +76,6 @@ export const calculateInstanceAddress = async ({
       state.orderType
     ),
     sellToken: state.sellAmountToken,
-    buyAmount: state.buyAmountBigInt,
     buyToken: state.buyAmountToken,
     quoteId: isCowProtocolRates(state.swapRate) ? state.swapRate?.quoteId : undefined,
     side: state.processedSide,
@@ -100,7 +98,7 @@ export const calculateInstanceAddress = async ({
     buyToken: buyToken.underlyingAddress,
     buyTokenDecimals: buyToken.decimals,
     sellAmount: sellAmountToSign.toString(),
-    buyAmount: buyAmount.toString(),
+    buyAmount: buyAmountWithMarginForDustProtection.toString(),
     kind: side === 'buy' ? OrderKind.BUY : OrderKind.SELL,
     quoteId,
     validTo,
