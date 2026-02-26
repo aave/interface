@@ -4,7 +4,9 @@ import { Theme } from '@mui/material/styles';
 const buttonConfig = () => ({
   MuiButton: {
     styleOverrides: {
-      root: ({ ownerState }: { ownerState: ButtonOwnProps; theme: Theme }) => ({
+      root: ({ ownerState, theme }: { ownerState: ButtonOwnProps; theme: Theme }) => ({
+        textTransform: 'capitalize',
+
         ...(ownerState.size === 'small' && {
           paddingBlock: 4,
           paddingInline: 8,
@@ -18,6 +20,15 @@ const buttonConfig = () => ({
 
           '&:hover': {
             backgroundColor: '#ffffff14',
+          },
+        }),
+
+        ...(ownerState.color === 'primary' && {
+          transition: 'opacity 0.25s ease',
+
+          '&:hover': {
+            backgroundColor: theme.palette.primary.main,
+            opacity: 0.8,
           },
         }),
       }),

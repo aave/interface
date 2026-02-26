@@ -8,15 +8,13 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ConnectKitProvider } from 'connectkit';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ReactNode, useEffect, useState } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
-import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
+import ModalProvider from 'src/components/Modals/ModalProvider';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ModalContextProvider } from 'src/hooks/useModal';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
@@ -27,61 +25,6 @@ import { useShallow } from 'zustand/shallow';
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-
-const SwitchModal = dynamic(() =>
-  import('src/components/transactions/Switch/SwitchModal').then((module) => module.SwitchModal)
-);
-
-const BridgeModal = dynamic(() =>
-  import('src/components/transactions/Bridge/BridgeModal').then((module) => module.BridgeModal)
-);
-
-const BorrowModal = dynamic(() =>
-  import('src/components/transactions/Borrow/BorrowModal').then((module) => module.BorrowModal)
-);
-const ClaimRewardsModal = dynamic(() =>
-  import('src/components/transactions/ClaimRewards/ClaimRewardsModal').then(
-    (module) => module.ClaimRewardsModal
-  )
-);
-const CollateralChangeModal = dynamic(() =>
-  import('src/components/transactions/CollateralChange/CollateralChangeModal').then(
-    (module) => module.CollateralChangeModal
-  )
-);
-const DebtSwitchModal = dynamic(() =>
-  import('src/components/transactions/DebtSwitch/DebtSwitchModal').then(
-    (module) => module.DebtSwitchModal
-  )
-);
-const EmodeModal = dynamic(() =>
-  import('src/components/transactions/Emode/EmodeModal').then((module) => module.EmodeModal)
-);
-const FaucetModal = dynamic(() =>
-  import('src/components/transactions/Faucet/FaucetModal').then((module) => module.FaucetModal)
-);
-const RepayModal = dynamic(() =>
-  import('src/components/transactions/Repay/RepayModal').then((module) => module.RepayModal)
-);
-const SupplyModal = dynamic(() =>
-  import('src/components/transactions/Supply/SupplyModal').then((module) => module.SupplyModal)
-);
-const SwapModal = dynamic(() =>
-  import('src/components/transactions/Swap/SwapModal').then((module) => module.SwapModal)
-);
-const WithdrawModal = dynamic(() =>
-  import('src/components/transactions/Withdraw/WithdrawModal').then(
-    (module) => module.WithdrawModal
-  )
-);
-const StakingMigrateModal = dynamic(() =>
-  import('src/components/transactions/StakingMigrate/StakingMigrateModal').then(
-    (module) => module.StakingMigrateModal
-  )
-);
-const ReadOnlyModal = dynamic(() =>
-  import('src/components/WalletConnection/ReadOnlyModal').then((module) => module.ReadOnlyModal)
-);
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -147,30 +90,14 @@ export default function MyApp(props: MyAppProps) {
                 <Web3ContextProvider>
                   <AppGlobalStyles>
                     <AddressBlocked>
-                      <ModalContextProvider>
-                        <SharedDependenciesProvider>
-                          <AppDataProvider>
-                            <GasStationProvider>
-                              {getLayout(<Component {...pageProps} />)}
-                              <SupplyModal />
-                              <WithdrawModal />
-                              <BorrowModal />
-                              <RepayModal />
-                              <CollateralChangeModal />
-                              <DebtSwitchModal />
-                              <ClaimRewardsModal />
-                              <EmodeModal />
-                              <SwapModal />
-                              <FaucetModal />
-                              <TransactionEventHandler />
-                              <SwitchModal />
-                              <StakingMigrateModal />
-                              <BridgeModal />
-                              <ReadOnlyModal />
-                            </GasStationProvider>
-                          </AppDataProvider>
-                        </SharedDependenciesProvider>
-                      </ModalContextProvider>
+                      <ModalProvider />
+                      <SharedDependenciesProvider>
+                        <AppDataProvider>
+                          <GasStationProvider>
+                            {getLayout(<Component {...pageProps} />)}
+                          </GasStationProvider>
+                        </AppDataProvider>
+                      </SharedDependenciesProvider>
                     </AddressBlocked>
                   </AppGlobalStyles>
                 </Web3ContextProvider>

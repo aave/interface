@@ -1,11 +1,16 @@
-import { AccountCircleSharp, SwapHorizOutlined } from '@mui/icons-material';
+import { AccountCircleSharp, Settings, SwapHorizOutlined } from '@mui/icons-material';
 import { Box, Button, Tab } from '@mui/material';
 import Image from 'next/image';
 import MaxWidthContainer from 'src/components/MaxWidthContainer';
+import { WALLET_ADDRESS } from 'src/components/Modals/const';
+import { ModalType } from 'src/components/Modals/types';
+import { useModalStore } from 'src/store/useModalStore';
 
 import { Container, IconButton, Tabs } from './styles';
 
 export default function Header() {
+  const openModal = useModalStore((s) => s.openModal);
+
   return (
     <Container>
       <MaxWidthContainer>
@@ -20,11 +25,15 @@ export default function Header() {
             <Button variant="outlined" endIcon={<SwapHorizOutlined />}>
               Swap
             </Button>
-            <Button variant="outlined" startIcon={<AccountCircleSharp />}>
+            <Button
+              variant="outlined"
+              startIcon={<AccountCircleSharp />}
+              onClick={() => openModal(ModalType.Wallet, { address: WALLET_ADDRESS })}
+            >
               0x56...6810
             </Button>
             <IconButton>
-              <AccountCircleSharp />
+              <Settings />
             </IconButton>
           </Box>
         </Box>

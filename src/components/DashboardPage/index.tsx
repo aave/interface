@@ -1,10 +1,10 @@
 import { Badge, Box, Button, Typography } from '@mui/material';
 import Image from 'next/image';
+import AssetsTable from 'src/components/AssetsTable';
 import Header from 'src/components/Header';
+import InfoCard from 'src/components/InfoCard';
 import MaxWidthContainer from 'src/components/MaxWidthContainer';
 
-import AssetsTable from '../AssetsTable';
-import InfoCard from '../InfoCard';
 import { FirstBlock, HorizontalDivider, RightContainer, V3 } from './styles';
 
 export default function DashboardPage() {
@@ -66,7 +66,6 @@ export default function DashboardPage() {
           <InfoCard title="Your borrows" extra="E-Mode" />
         </Box>
 
-        {/* Assets tables */}
         <Box display="flex" gap={3} mt={4}>
           <AssetsTable type="supply" />
           <AssetsTable type="borrow" />

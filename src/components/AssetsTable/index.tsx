@@ -1,4 +1,4 @@
-import { MoreHorizOutlined } from '@mui/icons-material';
+import { Check, MoreHorizOutlined } from '@mui/icons-material';
 import {
   Alert,
   Button,
@@ -14,14 +14,17 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
+import { useState } from 'react';
 
 import { Paper } from './styles';
 
 export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
   const isSupply = type === 'supply';
 
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+
   return (
-    <Paper>
+    <Paper isOpen={isOpen}>
       <Stack direction="row" justifyContent="space-between" mb={3}>
         <Typography variant="h6">{isSupply ? 'Assets to supply' : 'Assets to borrow'}</Typography>
 
@@ -29,8 +32,8 @@ export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
           <Select size="small" defaultValue="all">
             <MenuItem value="all">All categories</MenuItem>
           </Select>
-          <Button variant="text" color="secondary">
-            Hide
+          <Button variant="text" color="secondary" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? 'Hide –' : 'Show +'}
           </Button>
         </Stack>
       </Stack>
@@ -67,14 +70,16 @@ export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
 
               {isSupply && (
                 <TableCell align="center">
-                  <Typography color="success.main">✓</Typography>
+                  <Typography color="success.main">
+                    <Check />
+                  </Typography>
                 </TableCell>
               )}
 
               <TableCell align="right">
                 {isSupply ? (
                   <Stack direction="row" spacing={1} justifyContent="flex-end">
-                    <Button size="small" variant="contained" color="secondary">
+                    <Button size="small" variant="contained" color="inherit">
                       Supply
                     </Button>
                     <IconButton size="small">
@@ -83,7 +88,7 @@ export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
                   </Stack>
                 ) : (
                   <Stack direction="row" spacing={2} justifyContent="flex-end">
-                    <Button size="small" variant="contained" color="secondary">
+                    <Button size="small" variant="contained" color="inherit">
                       Borrow
                     </Button>
                     <Button variant="text" size="small" color="secondary">
