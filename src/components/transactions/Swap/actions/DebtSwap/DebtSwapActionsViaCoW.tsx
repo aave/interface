@@ -152,6 +152,7 @@ export const DebtSwapActionsViaCoW = ({
     type: 'delegation', // Debt swap uses delegation
     trackingHandlers,
     swapType: state.swapType,
+    validTo,
   });
 
   // Use centralized gas estimation
