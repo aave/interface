@@ -26,7 +26,7 @@ export const AddressBlockedModal = ({
   );
   const handleGetSupport = () => {
     const walletAddress = address ? address : 'Address not available';
-    const template = `My wallet seems to be blocked:\n\n"${walletAddress}"`;
+    const template = `Unable to Connect:\n\n"${walletAddress}"`;
 
     setSupportPrefillMessage(template);
     setFeedbackOpen(true);
@@ -61,7 +61,7 @@ export const AddressBlockedModal = ({
             </Button>
           )}
 
-          <Button variant="outlined" onClick={handleGetSupport} size="small">
+          <Button variant="contained" onClick={handleGetSupport} size="small">
             <Trans>Get support</Trans>
           </Button>
           <Button variant="contained" onClick={onDisconnectWallet}>
