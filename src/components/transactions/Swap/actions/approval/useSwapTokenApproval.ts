@@ -33,6 +33,9 @@ export type SwapTokenApprovalParams = {
   type?: 'approval' | 'delegation';
   trackingHandlers?: TrackAnalyticsHandlers;
   swapType: SwapType;
+  /** Unix timestamp (seconds) for the order's validTo. When provided, the permit deadline
+   *  will match this value so the permit stays valid for the order's entire lifetime. */
+  validTo?: number;
 };
 
 export type SignatureLike = {
@@ -93,6 +96,7 @@ export const useSwapTokenApproval = ({
   type = 'approval',
   trackingHandlers,
   swapType,
+  validTo,
 }: SwapTokenApprovalParams) => {
   const [approvedAmount, setApprovedAmount] = useState<string | undefined>();
   const [approvedAddress, setApprovedAddress] = useState<string | undefined>();
@@ -335,7 +339,7 @@ export const useSwapTokenApproval = ({
     if (usePermit) {
       // Permit approval
       try {
-        const deadline = Math.floor(Date.now() / 1000 + 3600).toString();
+        const deadline = (validTo ?? Math.floor(Date.now() / 1000 + 3600)).toString();
         let signatureRequest: string;
         if (type === 'delegation') {
           signatureRequest = await generateCreditDelegationSignatureRequest({
