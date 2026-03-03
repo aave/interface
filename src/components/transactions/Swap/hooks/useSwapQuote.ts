@@ -227,8 +227,13 @@ export const useSwapQuote = ({
     }
   }, [ratesError]);
 
+  // Apply incoming quote to state. Discard in-flight responses that arrive after
+  // the user has started the approval flow (quoteRefreshPaused) to prevent
+  // amount changes that would invalidate the adapter instance address / signature.
   useEffect(() => {
     if (swapQuote) {
+      if (state.quoteRefreshPaused) return;
+
       const isAutoRefreshed = Boolean(state.quoteLastUpdatedAt);
       trackingHandlers?.trackSwapQuote(isAutoRefreshed, swapQuote);
 

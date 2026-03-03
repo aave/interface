@@ -81,6 +81,11 @@ export const SwapActionsViaCoW = ({
     state.sourceToken.addressToSwap
   );
 
+  const validTo = useMemo(
+    () => Math.floor(Date.now() / 1000) + ExpiryToSecondsMap[state.expiry],
+    [state.expiry]
+  );
+
   const {
     requiresApproval,
     requiresApprovalReset,
@@ -101,6 +106,7 @@ export const SwapActionsViaCoW = ({
     allowPermit: !disablePermitDueToActiveOrder,
     trackingHandlers,
     swapType: state.swapType,
+    validTo,
   });
 
   // Use centralized gas estimation
@@ -111,11 +117,6 @@ export const SwapActionsViaCoW = ({
     requiresApprovalReset,
     approvalTxState,
   });
-
-  const validTo = useMemo(
-    () => Math.floor(Date.now() / 1000) + ExpiryToSecondsMap[state.expiry],
-    [state.expiry]
-  );
 
   const { sendTx } = useWeb3Context();
 

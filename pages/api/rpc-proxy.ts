@@ -116,8 +116,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // Expected body: { chainId, method: 'GET' | 'POST', path: string, body?: object }
       const { method, path, body } = req.body;
 
-      if (!path) {
-        return res.status(400).json({ error: 'Missing "path" for Aptos request' });
+      if (!path || !path.startsWith('/') || path.includes('..')) {
+        return res.status(400).json({ error: 'Invalid path for Aptos request' });
       }
 
       const aptosUrl = `${rpcUrl}/v1${path}`;

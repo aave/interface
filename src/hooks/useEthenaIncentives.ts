@@ -16,6 +16,7 @@ const ETHENA_DATA_MAP: Map<string, number> = new Map([
   [AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN, 5],
   [AaveV3Mantle.ASSETS.sUSDe.A_TOKEN, 5],
   [AaveV3Mantle.ASSETS.USDe.A_TOKEN, 5],
+  ['0x24C1FaC3447C45137E5f1c2C54Fe9ed3F1EdeA61', 5], // sUSDe INK
 
   [AaveV3Ethereum.ASSETS.PT_eUSDE_29MAY2025.A_TOKEN, 2],
   [AaveV3Ethereum.ASSETS.PT_eUSDE_14AUG2025.A_TOKEN, 2],
