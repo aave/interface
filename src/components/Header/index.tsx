@@ -1,8 +1,10 @@
 import { AccountCircleSharp, Settings, SwapHorizOutlined } from '@mui/icons-material';
 import { Box, Button, Tab } from '@mui/material';
 import Image from 'next/image';
+import { useState } from 'react';
 import MaxWidthContainer from 'src/components/MaxWidthContainer';
 import { WALLET_ADDRESS } from 'src/components/Modals/const';
+import SettingsMenu from 'src/components/Modals/SettingsMenu';
 import { ModalType } from 'src/components/Modals/types';
 import { useModalStore } from 'src/store/useModalStore';
 
@@ -10,6 +12,7 @@ import { Container, IconButton, Tabs } from './styles';
 
 export default function Header() {
   const openModal = useModalStore((s) => s.openModal);
+  const [settingsAnchor, setSettingsAnchor] = useState<HTMLElement | null>(null);
 
   return (
     <Container>
@@ -32,9 +35,10 @@ export default function Header() {
             >
               0x56...6810
             </Button>
-            <IconButton>
+            <IconButton onClick={(e) => setSettingsAnchor(e.currentTarget)}>
               <Settings />
             </IconButton>
+            <SettingsMenu anchorEl={settingsAnchor} onClose={() => setSettingsAnchor(null)} />
           </Box>
         </Box>
       </MaxWidthContainer>

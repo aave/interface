@@ -3,6 +3,7 @@ import {
   Alert,
   Button,
   IconButton,
+  Menu,
   MenuItem,
   Select,
   Stack,
@@ -15,13 +16,35 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { useState } from 'react';
+import { ModalType } from 'src/components/Modals/types';
+import { useModalStore } from 'src/store/useModalStore';
 
 import { Paper } from './styles';
 
 export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
   const isSupply = type === 'supply';
+  const openModal = useModalStore((s) => s.openModal);
 
   const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+
+  const handleSupply = () => {
+    openModal(ModalType.SupplySuccess, { amount: '0.0030000', token: 'ETH' });
+  };
+
+  const handleBorrow = () => {
+    openModal(ModalType.Borrow, { token: 'K613', available: '5.67' });
+  };
+
+  const handleWithdraw = () => {
+    openModal(ModalType.Withdraw, { token: 'USDT', balance: '9.00' });
+    setMenuAnchor(null);
+  };
+
+  const handleRepay = () => {
+    openModal(ModalType.Repay, { token: 'ETHx', balance: '0.00212' });
+    setMenuAnchor(null);
+  };
 
   return (
     <Paper isOpen={isOpen}>
@@ -79,16 +102,16 @@ export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
               <TableCell align="right">
                 {isSupply ? (
                   <Stack direction="row" spacing={1} justifyContent="flex-end">
-                    <Button size="small" variant="contained" color="inherit">
+                    <Button size="small" variant="contained" color="inherit" onClick={handleSupply}>
                       Supply
                     </Button>
-                    <IconButton size="small">
+                    <IconButton size="small" onClick={(e) => setMenuAnchor(e.currentTarget)}>
                       <MoreHorizOutlined fontSize="small" />
                     </IconButton>
                   </Stack>
                 ) : (
                   <Stack direction="row" spacing={2} justifyContent="flex-end">
-                    <Button size="small" variant="contained" color="inherit">
+                    <Button size="small" variant="contained" color="inherit" onClick={handleBorrow}>
                       Borrow
                     </Button>
                     <Button variant="text" size="small" color="secondary">
@@ -101,6 +124,11 @@ export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
           ))}
         </TableBody>
       </Table>
+
+      <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
+        <MenuItem onClick={handleWithdraw}>Withdraw</MenuItem>
+        <MenuItem onClick={handleRepay}>Repay</MenuItem>
+      </Menu>
     </Paper>
   );
 }

@@ -4,10 +4,14 @@ import AssetsTable from 'src/components/AssetsTable';
 import Header from 'src/components/Header';
 import InfoCard from 'src/components/InfoCard';
 import MaxWidthContainer from 'src/components/MaxWidthContainer';
+import { ModalType } from 'src/components/Modals/types';
+import { useModalStore } from 'src/store/useModalStore';
 
 import { FirstBlock, HorizontalDivider, RightContainer, V3 } from './styles';
 
 export default function DashboardPage() {
+  const openModal = useModalStore((s) => s.openModal);
+
   return (
     <>
       <Header />
@@ -53,7 +57,11 @@ export default function DashboardPage() {
               </Typography>
               <Box display="flex" gap={1} alignItems="center">
                 <Typography variant="h6">$ 0</Typography>
-                <Button variant="contained" size="small">
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={() => openModal(ModalType.ClaimRewards, {})}
+                >
                   CLAIM
                 </Button>
               </Box>

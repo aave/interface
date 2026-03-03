@@ -472,6 +472,10 @@ msgstr "Time remaining until the withdraw period ends."
 msgid "Health factor"
 msgstr "Health factor"
 
+#: src/ui-config/menu-items/index.tsx
+msgid "K613 Staking"
+msgstr "K613 Staking"
+
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Data couldn't be fetched, please reload graph."
 msgstr "Data couldn't be fetched, please reload graph."
@@ -1665,7 +1669,7 @@ msgstr "Disable E-Mode"
 msgid "Get GHO"
 msgstr "Get GHO"
 
-#. placeholder {0}: minStkAaveBalanceReached ? ( <> <FormattedNumber variant="subheader2" value={stkAaveAmount} visibleDecimals={2} />{' '} </> ) : null
+#. placeholder {0}: minStkAaveBalanceReached ? ( <> <FormattedNumber variant="subtitle2" value={stkAaveAmount} visibleDecimals={2} />{' '} </> ) : null
 #: src/components/incentives/GhoIncentivesCard.tsx
 msgid "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
 msgstr "Estimated compounding interest, including discount for Staking {0}AAVE in Safety Module."
@@ -3318,7 +3322,7 @@ msgstr ""
 "          guarantee the program and accepts no liability.\n"
 ""
 
-#. placeholder {0}: loading ? ( <Skeleton variant="rectangular" height={12} width={25} sx={{ borderRadius: '4px', display: 'flex', marginLeft: '4px' }} /> ) : ( <FormattedNumber value={priceImpact} visibleDecimals={2} variant="secondary12" color="text.secondary" sx={{ marginLeft: '4px', color: warning ? 'warning.main' : 'unset' }} /> )
+#. placeholder {0}: loading ? ( <Skeleton variant="rectangular" height={12} width={25} sx={{ borderRadius: '4px', display: 'flex', marginLeft: '4px' }} /> ) : ( <FormattedNumber value={priceImpact} visibleDecimals={2} variant="caption" color="text.secondary" sx={{ marginLeft: '4px', color: warning ? 'warning.main' : 'unset' }} /> )
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"
 msgstr "Price impact {0}%"
