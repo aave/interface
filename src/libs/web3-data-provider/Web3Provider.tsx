@@ -96,10 +96,34 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     if (provider) {
       const { from, ...data } = txData;
       const signer = provider.getSigner(from);
-      const txResponse: TransactionResponse = await signer.sendTransaction({
-        ...data,
-        value: data.value ? BigNumber.from(data.value) : undefined,
-      });
+      const txResponse: TransactionResponse = await signer
+        .sendTransaction({
+          ...data,
+          value: data.value ? BigNumber.from(data.value) : undefined,
+        })
+        .catch(async (error) => {
+          // Some wallets (MetaMask Delegation Framework, Safe) return tx responses
+          // that ethers v5 can't parse (e.g. undefined nonce). The tx was already
+          // sent successfully — recover by waiting for the receipt by hash.
+          if (error.code === 'INVALID_ARGUMENT' && error.transactionHash) {
+            const receipt = await provider.waitForTransaction(error.transactionHash);
+            if (receipt.status === 0) {
+              throw new Error('transaction failed');
+            }
+            return {
+              hash: error.transactionHash,
+              wait: async (confirmations?: number) => {
+                if (confirmations && confirmations > 1) {
+                  const r = await provider.waitForTransaction(error.transactionHash, confirmations);
+                  if (r.status === 0) throw new Error('transaction failed');
+                  return r;
+                }
+                return receipt;
+              },
+            } as TransactionResponse;
+          }
+          throw error;
+        });
       return txResponse;
     }
     throw new Error('Error sending transaction. Provider not found');
