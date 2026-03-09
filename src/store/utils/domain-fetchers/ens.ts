@@ -1,13 +1,21 @@
+import { ChainId } from '@aave/contract-helpers';
 import { DomainType, WalletDomain } from 'src/store/walletDomains';
-import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
+import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { tFetch } from 'src/utils/tFetch';
+import { createPublicClient, http } from 'viem';
+import { mainnet } from 'viem/chains';
 
-const mainnetProvider = getENSProvider();
+const { publicJsonRPCUrl } = getNetworkConfig(ChainId.mainnet);
+
+const viemClient = createPublicClient({
+  chain: mainnet,
+  transport: http(publicJsonRPCUrl[0]),
+});
 
 const getEnsName = async (address: string): Promise<string | null> => {
   try {
-    const name = await mainnetProvider.lookupAddress(address);
-    return name;
+    const name = await viemClient.getEnsName({ address: address as `0x${string}` });
+    return name ?? null;
   } catch (error) {
     console.error('ENS name lookup error', error);
   }
