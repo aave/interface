@@ -1,16 +1,8 @@
-import { ChainId } from '@aave/contract-helpers';
 import { DomainType, WalletDomain } from 'src/store/walletDomains';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { getENSClient } from 'src/utils/marketsAndNetworksConfig';
 import { tFetch } from 'src/utils/tFetch';
-import { createPublicClient, http } from 'viem';
-import { mainnet } from 'viem/chains';
 
-const { publicJsonRPCUrl } = getNetworkConfig(ChainId.mainnet);
-
-const viemClient = createPublicClient({
-  chain: mainnet,
-  transport: http(publicJsonRPCUrl[0]),
-});
+const viemClient = getENSClient();
 
 const getEnsName = async (address: string): Promise<string | null> => {
   try {
