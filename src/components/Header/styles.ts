@@ -8,7 +8,7 @@ export const Container = styled(Box)(({ theme }) => ({
   borderBottomStyle: 'solid',
 }));
 
-export const Tabs = styled(TabsBase)({
+export const Tabs = styled(TabsBase)(({ theme }) => ({
   overflow: 'visible',
 
   '&& .MuiTabs-scroller.MuiTabs-scroller': {
@@ -18,7 +18,24 @@ export const Tabs = styled(TabsBase)({
   '& .MuiTabs-indicator': {
     bottom: -17,
   },
-});
+
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
+}));
+
+export const TabsWrapper = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
+}));
+
+export const MobileMenuButton = styled(Box)(({ theme }) => ({
+  display: 'none',
+  [theme.breakpoints.down('sm')]: {
+    display: 'block',
+  },
+}));
 
 export const IconButton = styled(IconButtonBase)({
   backgroundColor: '#FFFFFF1F',
