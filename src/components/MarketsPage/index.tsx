@@ -315,7 +315,7 @@ export default function MarketsPage() {
                             <Button
                               size="small"
                               variant="contained"
-                              color="inherit"
+                              color="secondary"
                               component={Link}
                               href={ROUTES.reserveOverview(row.underlyingAsset, currentMarket)}
                               noLinkStyle
