@@ -32,9 +32,6 @@ export default function ModalsShowcase() {
         <Button variant="contained" onClick={() => setWalletOpen(true)}>
           Connected Wallet
         </Button>
-        <Button variant="contained" onClick={() => setClaimOpen(true)}>
-          Claim Rewards
-        </Button>
         <Button variant="contained" onClick={() => setSupplySuccessOpen(true)}>
           Supply Success
         </Button>

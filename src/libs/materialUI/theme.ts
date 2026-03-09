@@ -27,7 +27,7 @@ const theme = createTheme({
 
     background: {
       default: '#000000',
-      paper: '#ffffff09',
+      paper: '#0b0b0b',
       surface: '#192328',
       surface2: '#0D1112',
       disabled: '#0D1112',

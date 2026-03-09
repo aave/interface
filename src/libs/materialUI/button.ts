@@ -12,6 +12,15 @@ const buttonConfig = () => ({
           paddingInline: 8,
         }),
 
+        ...(ownerState.color === 'primary' && {
+          transition: 'opacity 0.25s ease',
+
+          '&:hover': {
+            backgroundColor: theme.palette.primary.main,
+            opacity: 0.8,
+          },
+        }),
+
         ...(ownerState.variant === 'outlined' && {
           backgroundColor: '#FFFFFF1F',
           borderColor: '#FFFFFF4D',
@@ -20,15 +29,6 @@ const buttonConfig = () => ({
 
           '&:hover': {
             backgroundColor: '#ffffff14',
-          },
-        }),
-
-        ...(ownerState.color === 'primary' && {
-          transition: 'opacity 0.25s ease',
-
-          '&:hover': {
-            backgroundColor: theme.palette.primary.main,
-            opacity: 0.8,
           },
         }),
       }),
