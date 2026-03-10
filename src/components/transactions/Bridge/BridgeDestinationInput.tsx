@@ -10,7 +10,9 @@ import {
 import { isAddress } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
-import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
+import { getENSClient } from 'src/utils/marketsAndNetworksConfig';
+
+const viemClient = getENSClient();
 
 export const BridgeDestinationInput = ({
   connectedAccount,
@@ -49,7 +51,7 @@ export const BridgeDestinationInput = ({
   useEffect(() => {
     const checkENS = async () => {
       setValidatingENS(true);
-      const resolvedAddress = await getENSProvider().resolveName(destinationAccount);
+      const resolvedAddress = await viemClient.getEnsAddress({ name: destinationAccount });
       if (resolvedAddress) {
         setDestinationAccount(resolvedAddress.toLowerCase());
       }
