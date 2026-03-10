@@ -1,8 +1,6 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { ProviderWithSend } from 'src/components/transactions/GovVote/temporary/VotingMachineService';
-import { createPublicClient, http, PublicClient } from 'viem';
-import { mainnet } from 'viem/chains';
 
 import {
   CustomMarket,
@@ -190,13 +188,10 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
   return providers[chainId];
 };
 
-export const getENSClient = (): PublicClient => {
-  const config = getNetworkConfig(ChainId.mainnet);
-  return createPublicClient({
-    chain: mainnet,
-    transport: http(config.publicJsonRPCUrl[0]),
-    batch: { multicall: true },
-  });
+export const getENSProvider = () => {
+  const chainId = 1;
+  const config = getNetworkConfig(chainId);
+  return new StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
 };
 
 const ammDisableProposal = 'https://governance-v2.aave.com/governance/proposal/44';

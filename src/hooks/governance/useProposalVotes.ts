@@ -1,10 +1,13 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { Contract } from 'ethers';
 import { gql } from 'graphql-request';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
-import { getENSClient } from 'src/utils/marketsAndNetworksConfig';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { subgraphRequest } from 'src/utils/subgraphRequest';
+
+import { ENS_REVERSE_REGISTRAR } from './useGovernanceProposals';
 
 export type ProposalVote = {
   proposalId: string;
@@ -24,7 +27,20 @@ export interface ProposalVotes {
   isFetching: boolean;
 }
 
-const viemClient = getENSClient();
+const abi = [
+  {
+    inputs: [{ internalType: 'contract ENS', name: '_ens', type: 'address' }],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
+  {
+    inputs: [{ internalType: 'address[]', name: 'addresses', type: 'address[]' }],
+    name: 'getNames',
+    outputs: [{ internalType: 'string[]', name: 'r', type: 'string[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
 
 const getProposalVotes = gql`
   query getProposalVotes($proposalId: Int!) {
@@ -55,13 +71,11 @@ const fetchProposalVotes = async (
   }));
 };
 
-const fetchProposalVotesEnsNames = async (addresses: string[]): Promise<string[]> => {
-  const names = await Promise.all(
-    addresses.map((addr) =>
-      viemClient.getEnsName({ address: addr as `0x${string}` }).catch(() => null)
-    )
-  );
-  return names.map((name) => name ?? '');
+const fetchProposalVotesEnsNames = async (addresses: string[]) => {
+  const provider = getProvider(governanceV3Config.coreChainId);
+  const contract = new Contract(ENS_REVERSE_REGISTRAR, abi);
+  const connectedContract = contract.connect(provider);
+  return connectedContract.getNames(addresses) as Promise<string[]>;
 };
 
 export const useProposalVotesQuery = ({
