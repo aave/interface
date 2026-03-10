@@ -1,13 +1,13 @@
 import { DomainType, WalletDomain } from 'src/store/walletDomains';
-import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
+import { getENSClient } from 'src/utils/marketsAndNetworksConfig';
 import { tFetch } from 'src/utils/tFetch';
 
-const mainnetProvider = getENSProvider();
+const viemClient = getENSClient();
 
 const getEnsName = async (address: string): Promise<string | null> => {
   try {
-    const name = await mainnetProvider.lookupAddress(address);
-    return name;
+    const name = await viemClient.getEnsName({ address: address as `0x${string}` });
+    return name ?? null;
   } catch (error) {
     console.error('ENS name lookup error', error);
   }

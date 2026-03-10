@@ -1,9 +1,8 @@
 import { blo } from 'blo';
-import { utils } from 'ethers';
 import { useEffect, useState } from 'react';
-import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
+import { getENSClient } from 'src/utils/marketsAndNetworksConfig';
 
-const mainnetProvider = getENSProvider();
+const viemClient = getENSClient();
 
 interface EnsResponse {
   name?: string;
@@ -13,10 +12,11 @@ interface EnsResponse {
 const useGetEns = (address: string): EnsResponse => {
   const [ensName, setEnsName] = useState<string | undefined>(undefined);
   const [ensAvatar, setEnsAvatar] = useState<string | undefined>(undefined);
+
   const getName = async (address: string) => {
     try {
-      const name = await mainnetProvider.lookupAddress(address);
-      setEnsName(name ? name : undefined);
+      const name = await viemClient.getEnsName({ address: address as `0x${string}` });
+      setEnsName(name ?? undefined);
     } catch (error) {
       console.error('ENS name lookup error', error);
     }
@@ -24,15 +24,8 @@ const useGetEns = (address: string): EnsResponse => {
 
   const getAvatar = async (name: string) => {
     try {
-      const labelHash = utils.keccak256(utils.toUtf8Bytes(name?.replace('.eth', '')));
-      const result: { background_image: string } = await (
-        await fetch(
-          `https://metadata.ens.domains/mainnet/0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85/${labelHash}/`
-        )
-      ).json();
-      setEnsAvatar(
-        result && result.background_image ? result.background_image : blo(address as `0x${string}`)
-      );
+      const avatar = await viemClient.getEnsAvatar({ name });
+      setEnsAvatar(avatar ?? blo(address as `0x${string}`));
     } catch (error) {
       console.error('ENS avatar lookup error', error);
     }
