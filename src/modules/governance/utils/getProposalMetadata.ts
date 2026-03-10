@@ -7,6 +7,16 @@ import { fallbackIpfsGateway, ipfsGateway } from 'src/ui-config/governanceConfig
 type MemorizeMetadata = Record<string, ProposalMetadata>;
 const MEMORIZE: MemorizeMetadata = {};
 
+const SAFE_MATTER_OPTIONS = {
+  engines: {
+    javascript: {
+      parse: () => {
+        throw new Error('JavaScript front matter is not supported');
+      },
+    },
+  },
+};
+
 /**
  * Composes a URI based off of a given IPFS CID hash and gateway
  * @param  {string} hash - The IPFS CID hash
@@ -58,7 +68,7 @@ export async function parseRawIpfs(rawIpfsContent: string, hash: string) {
   if (MEMORIZE[ipfsHash]) return MEMORIZE[ipfsHash];
   try {
     const response: ProposalMetadata = await JSON.parse(rawIpfsContent);
-    const { content, data } = matter(response.description);
+    const { content, data } = matter(response.description, SAFE_MATTER_OPTIONS);
     MEMORIZE[ipfsHash] = {
       ...response,
       ipfsHash,
@@ -66,7 +76,7 @@ export async function parseRawIpfs(rawIpfsContent: string, hash: string) {
       ...data,
     };
   } catch (e) {
-    const { content, data } = matter(rawIpfsContent);
+    const { content, data } = matter(rawIpfsContent, SAFE_MATTER_OPTIONS);
     MEMORIZE[ipfsHash] = {
       ...(data as ProposalMetadata),
       ipfsHash,
@@ -99,7 +109,7 @@ async function fetchFromIpfs(hash: string, gateway: string): Promise<ProposalMet
   // Store in cache
   try {
     const response: ProposalMetadata = await ipfsResponse.json();
-    const { content, data } = matter(response.description);
+    const { content, data } = matter(response.description, SAFE_MATTER_OPTIONS);
     MEMORIZE[ipfsHash] = {
       ...response,
       ipfsHash,
@@ -108,7 +118,7 @@ async function fetchFromIpfs(hash: string, gateway: string): Promise<ProposalMet
     };
   } catch (e) {
     const text = await clone.text();
-    const { content, data } = matter(text);
+    const { content, data } = matter(text, SAFE_MATTER_OPTIONS);
     MEMORIZE[ipfsHash] = {
       ...(data as ProposalMetadata),
       ipfsHash,
