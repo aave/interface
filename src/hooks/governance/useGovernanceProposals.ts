@@ -1,7 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { constants } from 'ethers';
+import { constants, Contract } from 'ethers';
 import { gql } from 'graphql-request';
 import {
   adaptCacheProposalToDetail,
@@ -26,7 +26,7 @@ import {
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
-import { getENSClient } from 'src/utils/marketsAndNetworksConfig';
+import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { subgraphRequest } from 'src/utils/subgraphRequest';
 
 import { getProposal } from './useProposal';
@@ -42,7 +42,7 @@ const USE_GOVERNANCE_CACHE = process.env.NEXT_PUBLIC_USE_GOVERNANCE_CACHE === 't
 const PAGE_SIZE = 10;
 const VOTES_PAGE_SIZE = 50;
 const SEARCH_RESULTS_LIMIT = 10;
-const viemClient = getENSClient();
+export const ENS_REVERSE_REGISTRAR = '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C';
 
 // ============================================
 // Subgraph search query
@@ -77,6 +77,16 @@ const getProposalVotesQuery = gql`
     }
   }
 `;
+
+const ensAbi = [
+  {
+    inputs: [{ internalType: 'address[]', name: 'addresses', type: 'address[]' }],
+    name: 'getNames',
+    outputs: [{ internalType: 'string[]', name: 'r', type: 'string[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
 
 type SubgraphVote = {
   proposalId: string;
@@ -325,14 +335,13 @@ export const useGovernanceVotersSplit = (
     queryFn: async () => {
       const votes = await fetchSubgraphVotes(proposalId, votingChainId as ChainId);
       try {
-        const ensNames = await Promise.all(
-          votes.map((v) =>
-            viemClient.getEnsName({ address: v.voter as `0x${string}` }).catch(() => null)
-          )
-        );
+        const provider = getProvider(governanceV3Config.coreChainId);
+        const contract = new Contract(ENS_REVERSE_REGISTRAR, ensAbi);
+        const connectedContract = contract.connect(provider);
+        const ensNames: string[] = await connectedContract.getNames(votes.map((v) => v.voter));
         return votes.map((vote, i) => ({
           ...vote,
-          ensName: ensNames[i] ?? undefined,
+          ensName: ensNames[i] || undefined,
         }));
       } catch {
         return votes;
@@ -355,11 +364,10 @@ export const useGovernanceVotersSplit = (
 
   const { data: cacheEnsNames } = useQuery({
     queryFn: async () => {
-      const names = await Promise.all(
-        cacheVoterAddresses.map((addr) =>
-          viemClient.getEnsName({ address: addr as `0x${string}` }).catch(() => null)
-        )
-      );
+      const provider = getProvider(governanceV3Config.coreChainId);
+      const contract = new Contract(ENS_REVERSE_REGISTRAR, ensAbi);
+      const connectedContract = contract.connect(provider);
+      const names: string[] = await connectedContract.getNames(cacheVoterAddresses);
       const map: Record<string, string> = {};
       cacheVoterAddresses.forEach((addr, i) => {
         if (names[i]) map[addr.toLowerCase()] = names[i];

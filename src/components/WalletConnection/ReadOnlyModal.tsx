@@ -15,14 +15,12 @@ import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { AUTH } from 'src/utils/events';
-import { getENSClient } from 'src/utils/marketsAndNetworksConfig';
+import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 import { normalize } from 'viem/ens';
 import { useAccount, useDisconnect } from 'wagmi';
 
 import { BasicModal } from '../primitives/BasicModal';
 import { TxModalTitle } from '../transactions/FlowCommons/TxModalTitle';
-
-const viemClient = getENSClient();
 
 export const ReadOnlyModal = () => {
   const { disconnectAsync } = useDisconnect();
@@ -33,6 +31,7 @@ export const ReadOnlyModal = () => {
   const { type, close } = useModalContext();
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
+  const mainnetProvider = getENSProvider();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleReadAddress = async (inputMockWalletAddress: string): Promise<void> => {
@@ -44,7 +43,7 @@ export const ReadOnlyModal = () => {
       if (inputMockWalletAddress.slice(-4) === '.eth') {
         const normalizedENS = normalize(inputMockWalletAddress);
         // Attempt to resolve ENS name and use resolved address if valid
-        const resolvedAddress = await viemClient.getEnsAddress({ name: normalizedENS });
+        const resolvedAddress = await mainnetProvider.resolveName(normalizedENS);
         if (resolvedAddress && utils.isAddress(resolvedAddress)) {
           saveAndClose(resolvedAddress);
         } else {
