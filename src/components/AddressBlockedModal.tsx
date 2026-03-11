@@ -2,7 +2,7 @@ import { ExclamationCircleIcon, LogoutIcon, RefreshIcon } from '@heroicons/react
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { useRootStore } from 'src/store/root';
-import { useShallow } from 'zustand/react/shallow';
+import { useShallow } from 'zustand/shallow';
 
 import { BasicModal } from './primitives/BasicModal';
 
