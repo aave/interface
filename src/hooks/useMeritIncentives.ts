@@ -10,7 +10,7 @@ import {
   AaveV3EthereumLido,
   AaveV3Gnosis,
   AaveV3Sonic,
-} from '@bgd-labs/aave-address-book';
+} from '@aave-dao/aave-address-book';
 import { useQuery } from '@tanstack/react-query';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { convertAprToApy } from 'src/utils/utils';

@@ -4,7 +4,7 @@ import {
   ProtocolAction,
   valueToWei,
 } from '@aave/contract-helpers';
-import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
+import { AaveSafetyModule } from '@aave-dao/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { PopulatedTransaction } from 'ethers';

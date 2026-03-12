@@ -1,7 +1,7 @@
 import { Stake } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { chainId, evmAddress, useUserMeritRewards } from '@aave/react';
-import { AaveSafetyModule } from '@bgd-labs/aave-address-book';
+import { AaveSafetyModule } from '@aave-dao/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import NumberFlow from '@number-flow/react';

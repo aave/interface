@@ -1,5 +1,5 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
-import { AaveSafetyModule, AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { AaveSafetyModule, AaveV3Ethereum } from '@aave-dao/aave-address-book';
 
 export interface StakeConfig {
   chainId: ChainId;

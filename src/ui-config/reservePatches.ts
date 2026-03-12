@@ -5,7 +5,7 @@ import {
   AaveV3Optimism,
   AaveV3Plasma,
   AaveV3Polygon,
-} from '@bgd-labs/aave-address-book';
+} from '@aave-dao/aave-address-book';
 import { unPrefixSymbol } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 /**
@@ -183,8 +183,7 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       iconSymbol: 'ptusde',
     },
 
-    '0x6100E367285b01F48D07953803A2d8dCA5D19873': {
-      //not yet in @bgd-labs/aave-address-book
+    [AaveV3Plasma.ASSETS.WXPL.UNDERLYING.toLowerCase()]: {
       symbol: 'WXLP',
       name: 'Wrapped XLP',
       iconSymbol: 'wxlp',

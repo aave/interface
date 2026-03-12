@@ -1,5 +1,5 @@
 import { StakeDataProviderService } from '@aave/contract-helpers';
-import { UmbrellaEthereum } from '@bgd-labs/aave-address-book';
+import { UmbrellaEthereum } from '@aave-dao/aave-address-book';
 import { Provider } from '@ethersproject/providers';
 import { CustomMarket, MarketDataType } from 'src/ui-config/marketsConfig';
 

@@ -1,4 +1,4 @@
-import { AaveV2Ethereum } from '@bgd-labs/aave-address-book';
+import { AaveV2Ethereum } from '@aave-dao/aave-address-book';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, SvgIcon } from '@mui/material';

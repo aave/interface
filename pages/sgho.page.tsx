@@ -1,5 +1,5 @@
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { AaveV3Ethereum } from '@aave-dao/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import dynamic from 'next/dynamic';
