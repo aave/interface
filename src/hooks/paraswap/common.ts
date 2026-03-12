@@ -10,7 +10,7 @@ import {
   AaveV3Optimism,
   AaveV3Polygon,
   AaveV3Sonic,
-} from '@bgd-labs/aave-address-book';
+} from '@aave-dao/aave-address-book';
 import {
   BuildTxFunctions,
   constructBuildTx,

@@ -8,6 +8,7 @@ import {
   AaveV3Ethereum,
   AaveV3Gnosis,
   AaveV3InkWhitelabel,
+  AaveV3Plasma,
   AaveV3Sepolia,
   GhoArbitrum,
   GhoAvalanche,
@@ -16,7 +17,8 @@ import {
   GhoGnosis,
   GhoInk,
   GhoMantle,
-} from '@bgd-labs/aave-address-book';
+  GhoPlasma,
+} from '@aave-dao/aave-address-book';
 import { constants } from 'ethers';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { BaseNetworkConfig, networkConfigs } from 'src/ui-config/networksConfig';
@@ -243,6 +245,39 @@ const prodConfig: Config[] = [
         decimals: 18,
         address: constants.AddressZero, // Use zero address for network token ccip
         chainId: ChainId.mantle,
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
+  },
+  {
+    sourceChainId: ChainId.plasma,
+    chainSelector: '9335212494177455608',
+    burnMintTokenPool: GhoPlasma.GHO_CCIP_TOKEN_POOL,
+    router: '0xcDca5D374e46A6DDDab50bD2D9acB8c796eC35C3',
+    tokenOracle: GhoPlasma.GHO_ORACLE,
+    wrappedNativeOracle: AaveV3Plasma.ASSETS.WXPL.ORACLE,
+    feeTokens: [
+      {
+        name: 'Gho Token',
+        address: GhoPlasma.GHO_TOKEN,
+        symbol: 'GHO',
+        decimals: 18,
+        chainId: ChainId.plasma,
+        oracle: GhoPlasma.GHO_ORACLE,
+        extensions: {
+          isNative: false,
+        },
+        balance: '0',
+      },
+      {
+        name: 'Plasma',
+        symbol: 'XPL',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: ChainId.plasma,
         extensions: {
           isNative: true,
         },

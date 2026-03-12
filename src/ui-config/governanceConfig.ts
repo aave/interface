@@ -21,7 +21,7 @@ import {
   GovernanceV3Soneium,
   GovernanceV3Sonic,
   GovernanceV3ZkSync,
-} from '@bgd-labs/aave-address-book';
+} from '@aave-dao/aave-address-book';
 import { SubgraphKey } from 'src/utils/subgraphRequest';
 
 export const ipfsGateway = 'https://cloudflare-ipfs.com/ipfs';

@@ -29,7 +29,7 @@ import {
   GhoAvalanche,
   GhoGnosis,
   GhoMantle,
-} from '@bgd-labs/aave-address-book';
+} from '@aave-dao/aave-address-book';
 import { ReactNode } from 'react';
 
 // Enable for premissioned market
