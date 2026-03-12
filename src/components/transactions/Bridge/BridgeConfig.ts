@@ -261,18 +261,6 @@ const prodConfig: Config[] = [
     wrappedNativeOracle: AaveV3Plasma.ASSETS.WXPL.ORACLE,
     feeTokens: [
       {
-        name: 'Gho Token',
-        address: GhoPlasma.GHO_TOKEN,
-        symbol: 'GHO',
-        decimals: 18,
-        chainId: ChainId.plasma,
-        oracle: GhoPlasma.GHO_ORACLE,
-        extensions: {
-          isNative: false,
-        },
-        balance: '0',
-      },
-      {
         name: 'Plasma',
         symbol: 'XPL',
         decimals: 18,
