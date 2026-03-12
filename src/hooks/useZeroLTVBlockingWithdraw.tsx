@@ -16,7 +16,14 @@ export const useZeroLTVBlockingWithdraw = () => {
 
   const zeroLTVBlockingWithdraw: string[] = [];
   userSummary.userReservesData.forEach((userReserve) => {
+    const emodeCategory = userReserve.reserve.eModes.find(
+      (e) => e.id === userSummary.userEmodeCategoryId
+    );
+    const hasEmodeLtv =
+      userSummary.isInEmode && emodeCategory && Number(emodeCategory.eMode.formattedLtv) > 0;
+
     if (
+      !hasEmodeLtv &&
       Number(userReserve.scaledATokenBalance) > 0 &&
       userReserve.reserve.baseLTVasCollateral === '0' &&
       userReserve.usageAsCollateralEnabledOnUser &&
