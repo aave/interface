@@ -5,7 +5,7 @@ import { Dispatch, useEffect, useMemo } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
 
-import { ActionsBlockedReason, OrderType, SwapState } from '../../types';
+import { ActionsBlockedReason, SwapState } from '../../types';
 import { valueLostPercentage } from '../helpers';
 
 const SHIELD_PRICE_IMPACT_THRESHOLD = 0.25;
@@ -28,10 +28,7 @@ export function ShieldSwapWarning({
     return valueLostPercentage(buy, sell);
   }, [state.buyAmountUSD, state.sellAmountUSD, state.swapRate]);
 
-  // Limit orders are off-chain intents that only execute at the user's price,
-  // so price impact doesn't apply the same way as market orders.
-  const isLimitOrder = 'orderType' in state && state.orderType === OrderType.LIMIT;
-  const shouldBlock = shieldEnabled && !isLimitOrder && lostValue > SHIELD_PRICE_IMPACT_THRESHOLD;
+  const shouldBlock = shieldEnabled && lostValue > SHIELD_PRICE_IMPACT_THRESHOLD;
 
   useEffect(() => {
     setState({
