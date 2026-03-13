@@ -55,7 +55,7 @@ export function HighPriceImpactWarning({
 
   return (
     <Warning
-      severity="warning"
+      severity={lostValue > 0.3 ? 'error' : 'warning'}
       icon={false}
       sx={{
         mt: 2,
@@ -67,8 +67,8 @@ export function HighPriceImpactWarning({
     >
       <Typography variant="caption">
         <Trans>
-          High price impact ({(lostValue * 100).toFixed(1)}%). This route may return{' '}
-          {state.isInvertedSwap ? 'more' : 'less'} due to low liquidity or small order size.
+          High price impact (<strong>{(lostValue * 100).toFixed(1)}%</strong>). This route may
+          return {state.isInvertedSwap ? 'more' : 'less'} due to low liquidity or small order size.
         </Trans>
       </Typography>
 
@@ -83,8 +83,8 @@ export function HighPriceImpactWarning({
         >
           <Typography variant="caption">
             <Trans>
-              I confirm the swap with a potential {(lostValue * 100).toFixed(0)}% value{' '}
-              {state.isInvertedSwap ? 'increase' : 'loss'}
+              I confirm the swap with a potential <strong>{(lostValue * 100).toFixed(0)}%</strong>{' '}
+              value {state.isInvertedSwap ? 'increase' : 'loss'}
             </Trans>
           </Typography>
           <Checkbox

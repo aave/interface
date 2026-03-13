@@ -1410,6 +1410,10 @@ msgstr "Due to internal stETH mechanics required for rebasing support, it is not
 msgid "Wrong Network"
 msgstr "Wrong Network"
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "I confirm the swap with a potential <0>{0}%</0> value {1}"
+msgstr "I confirm the swap with a potential <0>{0}%</0> value {1}"
+
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Merkl rewards are claimed through the"
 msgstr "Merkl rewards are claimed through the"
@@ -2641,6 +2645,10 @@ msgstr "You've successfully swapped {0}."
 msgid "Available on"
 msgstr "Available on"
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "High price impact (<0>{0}%</0>). This route may return {1} due to low liquidity or small order size."
+msgstr "High price impact (<0>{0}%</0>). This route may return {1} due to low liquidity or small order size."
+
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
 msgstr "starts"
@@ -3296,10 +3304,6 @@ msgstr "Filter"
 msgid "Learn more about the Ether.fi program"
 msgstr "Learn more about the Ether.fi program"
 
-#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
-msgid "High price impact ({0}%). This route may return {1} due to low liquidity or small order size."
-msgstr "High price impact ({0}%). This route may return {1} due to low liquidity or small order size."
-
 #: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
@@ -3554,10 +3558,6 @@ msgstr "APY"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
 msgstr "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
-
-#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
-msgid "I confirm the swap with a potential {0}% value {1}"
-msgstr "I confirm the swap with a potential {0}% value {1}"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Show assets with 0 balance"
