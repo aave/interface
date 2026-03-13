@@ -3,6 +3,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { mantle, megaeth } from 'viem/chains';
 
 // Documentation: ./server-side-rpc-proxy.md
+
+// Internal IDs for non-EVM chains (not real EVM chain IDs)
+const APTOS_MAINNET = 90001;
+const APTOS_TESTNET = 90002;
+
+const APTOS_CHAIN_IDS = new Set([APTOS_MAINNET, APTOS_TESTNET]);
+
 const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
   // Mainnets
   [ChainId.mainnet]: { network: 'eth-mainnet', apiKey: process.env.MAINNET_RPC_API_KEY || '' },
@@ -30,6 +37,10 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
   [ChainId.plasma]: { network: 'plasma-mainnet', apiKey: process.env.PLASMA_RPC_API_KEY || '' },
   [megaeth.id]: { network: 'megaeth-mainnet', apiKey: process.env.MEGAETH_RPC_API_KEY || '' },
   [mantle.id]: { network: 'mantle-mainnet', apiKey: process.env.MANTLE_RPC_API_KEY || '' },
+  [APTOS_MAINNET]: {
+    network: 'aptos-mainnet',
+    apiKey: process.env.APTOS_RPC_API_KEY || '',
+  },
 
   // Testnets
   [ChainId.sepolia]: { network: 'eth-sepolia', apiKey: process.env.MAINNET_RPC_API_KEY || '' },
@@ -46,6 +57,10 @@ const NETWORK_CONFIG: Record<number, { network: string; apiKey: string }> = {
   [ChainId.scroll_sepolia]: {
     network: 'scroll-sepolia',
     apiKey: process.env.SCROLL_RPC_API_KEY || '',
+  },
+  [APTOS_TESTNET]: {
+    network: 'aptos-testnet',
+    apiKey: process.env.APTOS_RPC_API_KEY || '',
   },
 };
 
@@ -88,7 +103,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { chainId, method, params } = req.body;
+    const { chainId } = req.body;
     const chainIdNumber = typeof chainId === 'string' ? parseInt(chainId) : chainId;
     const rpcUrl = getRpcUrl(chainIdNumber);
 
@@ -96,6 +111,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: `Unsupported chain ID: ${chainIdNumber}` });
     }
 
+    if (APTOS_CHAIN_IDS.has(chainIdNumber)) {
+      // Aptos uses REST API, not JSON-RPC
+      // Expected body: { chainId, method: 'GET' | 'POST', path: string, body?: object }
+      const { method, path, body } = req.body;
+
+      if (!path || !path.startsWith('/') || path.includes('..')) {
+        return res.status(400).json({ error: 'Invalid path for Aptos request' });
+      }
+
+      const aptosUrl = `${rpcUrl}/v1${path}`;
+      const fetchOptions: RequestInit = {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Origin: origin || 'https://app.aave.com',
+          Referer: 'https://app.aave.com/',
+        },
+      };
+
+      if (method === 'POST' && body) {
+        fetchOptions.body = JSON.stringify(body);
+      }
+
+      const response = await fetch(aptosUrl, fetchOptions);
+      const data = await response.json();
+      return res.status(response.status).json(data);
+    }
+
+    // EVM chains: JSON-RPC
+    const { method, params } = req.body;
     const rpcRequest = {
       jsonrpc: '2.0',
       id: Date.now(),
