@@ -27,7 +27,7 @@ const categoryLabels = {
   [AssetCategory.ALL]: <Trans>All</Trans>,
   [AssetCategory.STABLECOINS]: <Trans>Stablecoins</Trans>,
   [AssetCategory.ETH_CORRELATED]: <Trans>ETH Correlated</Trans>,
-  [AssetCategory.PTS]: <Trans>Principle Tokens</Trans>,
+  [AssetCategory.PTS]: <Trans>Principal Tokens</Trans>,
 } as const;
 
 const categories = [
