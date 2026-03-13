@@ -23,8 +23,9 @@ export function ShieldSwapWarning({
     if (!state.swapRate) return 0;
     const sell = Number(state.sellAmountUSD);
     const buy = Number(state.buyAmountUSD);
-    // Skip when amounts aren't populated yet
-    if (!sell || !buy) return 0;
+    // Skip when sell amount isn't populated yet (no quote).
+    // Zero buy with nonzero sell is a real outcome (total value loss) - don't skip it.
+    if (!sell) return 0;
     return valueLostPercentage(buy, sell);
   }, [state.buyAmountUSD, state.sellAmountUSD, state.swapRate]);
 

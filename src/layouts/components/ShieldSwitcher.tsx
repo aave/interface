@@ -16,8 +16,9 @@ export const ShieldSwitcher = ({ component = ListItem }: ShieldSwitcherProps) =>
     <Box
       component={component}
       onClick={() => {
+        const newValue = !shieldEnabled;
         toggleShield();
-        trackEvent(SETTINGS.SHIELD_TOGGLE, { enabled: !shieldEnabled });
+        trackEvent(SETTINGS.SHIELD_TOGGLE, { enabled: newValue });
       }}
       sx={{
         color: { xs: '#F1F1F3', md: 'text.primary' },
