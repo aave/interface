@@ -396,6 +396,10 @@ msgstr "Transactions"
 msgid "For swapping safety module assets please unstake your position <0>here</0>."
 msgstr "For swapping safety module assets please unstake your position <0>here</0>."
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "High price impact (<0>{0}%</0>)! This route will return {1} due to low liquidity or small order size."
+msgstr "High price impact (<0>{0}%</0>)! This route will return {1} due to low liquidity or small order size."
+
 #: src/components/infoTooltips/SwapFeeTooltip.tsx
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 msgstr "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
@@ -1410,10 +1414,6 @@ msgstr "Due to internal stETH mechanics required for rebasing support, it is not
 msgid "Wrong Network"
 msgstr "Wrong Network"
 
-#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
-msgid "I confirm the swap with a potential <0>{0}%</0> value {1}"
-msgstr "I confirm the swap with a potential <0>{0}%</0> value {1}"
-
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Merkl rewards are claimed through the"
 msgstr "Merkl rewards are claimed through the"
@@ -2056,6 +2056,10 @@ msgstr "Migration risks"
 msgid "I understand the liquidation risk and want to proceed"
 msgstr "I understand the liquidation risk and want to proceed"
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "I confirm the swap knowing that I could lose up to <0>{0}%</0> on this swap."
+msgstr "I confirm the swap knowing that I could lose up to <0>{0}%</0> on this swap."
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Covered debt"
 msgstr "Covered debt"
@@ -2562,6 +2566,10 @@ msgstr "Assets to borrow"
 msgid "Data couldn't be loaded."
 msgstr "Data couldn't be loaded."
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "Please review the swap values before confirming."
+msgstr "Please review the swap values before confirming."
+
 #: src/components/transactions/Swap/errors/shared/SupplyCapBlockingError.tsx
 msgid "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
 msgstr "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
@@ -2644,10 +2652,6 @@ msgstr "You've successfully swapped {0}."
 #: src/components/ChainAvailabilityText.tsx
 msgid "Available on"
 msgstr "Available on"
-
-#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
-msgid "High price impact (<0>{0}%</0>). This route may return {1} due to low liquidity or small order size."
-msgstr "High price impact (<0>{0}%</0>). This route may return {1} due to low liquidity or small order size."
 
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
