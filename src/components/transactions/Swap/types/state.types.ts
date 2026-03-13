@@ -26,6 +26,7 @@ export enum ActionsBlockedReason {
   FLASH_LOAN_DISABLED = 'FLASH_LOAN_DISABLED',
   IS_LIQUIDATABLE = 'IS_LIQUIDATABLE',
   INSUFFICIENT_BORROW_POWER = 'INSUFFICIENT_BORROW_POWER',
+  SHIELD_BLOCKED = 'SHIELD_BLOCKED',
 }
 
 /**
@@ -184,6 +185,10 @@ export const areActionsBlocked = (state: SwapState): boolean => {
 
 export const actionsBlockedReasonsAmount = (state: SwapState): number => {
   return Object.values(state.actionsBlocked).filter((blocked) => blocked === true).length;
+};
+
+export const isShieldBlocked = (state: SwapState): boolean => {
+  return state.actionsBlocked[ActionsBlockedReason.SHIELD_BLOCKED] === true;
 };
 
 /**

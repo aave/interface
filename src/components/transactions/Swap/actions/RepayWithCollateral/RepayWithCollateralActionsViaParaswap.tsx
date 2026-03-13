@@ -18,6 +18,7 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
   isParaswapRates,
+  isShieldBlocked,
   ProtocolSwapParams,
   ProtocolSwapState,
   SwapState,
@@ -279,6 +280,7 @@ export const RepayWithCollateralActionsViaParaswap = ({
       requiresApproval={requiresApproval}
       isWrongNetwork={state.isWrongNetwork}
       blocked={areActionsBlocked(state)}
+      blockedText={isShieldBlocked(state) ? <Trans>Blocked by Shield</Trans> : undefined}
       handleAction={action}
       handleApproval={approval}
       actionText={<Trans>Repay {state.sourceReserve.reserve.symbol}</Trans>}
