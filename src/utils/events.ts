@@ -162,6 +162,7 @@ export const SETTINGS = {
   TESTNET_MODE: 'Testnet mode toggled: ',
   LANGUAGE: 'Language selector',
   LANGUAGE_SELECTED: 'Language selected',
+  SHIELD_TOGGLE: 'Shield Toggle',
 };
 
 export const GHO_SUCCESS_MODAL = {

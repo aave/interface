@@ -32,6 +32,7 @@ import {
   areActionsBlocked,
   ExpiryToSecondsMap,
   isCowProtocolRates,
+  isShieldBlocked,
   OrderType,
   SwapParams,
   SwapState,
@@ -391,6 +392,7 @@ export const RepayWithCollateralActionsViaCoW = ({
       }}
       fetchingData={state.actionsLoading || loadingPermitData}
       blocked={areActionsBlocked(state) || !precalculatedInstanceAddress}
+      blockedText={isShieldBlocked(state) ? <Trans>Blocked by Shield</Trans> : undefined}
       tryPermit={tryPermit}
       permitInUse={disablePermitDueToActiveOrder}
     />

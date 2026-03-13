@@ -421,6 +421,10 @@ msgstr "Debt ceiling limits the amount possible to borrow against this asset by 
 msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
 msgstr "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
 
+#: src/components/transactions/Swap/warnings/postInputs/ShieldSwapWarning.tsx
+msgid "Aave Shield: Transaction blocked"
+msgstr "Aave Shield: Transaction blocked"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Variable debt supply is not zero"
 msgstr "Variable debt supply is not zero"
@@ -2208,6 +2212,10 @@ msgstr "The order could't be filled."
 msgid "VOTE NAY"
 msgstr "VOTE NAY"
 
+#: src/layouts/components/ShieldSwitcher.tsx
+msgid "Aave Shield"
+msgstr "Aave Shield"
+
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
 msgstr "Enabling E-Mode"
@@ -2744,6 +2752,10 @@ msgstr "Please connect your wallet to get free testnet assets."
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
 
+#: src/components/transactions/Swap/warnings/postInputs/ShieldSwapWarning.tsx
+msgid "This swap has a price impact of {0}%, which exceeds the 25% safety threshold. To proceed, disable Aave Shield in the settings menu."
+msgstr "This swap has a price impact of {0}%, which exceeds the 25% safety threshold. To proceed, disable Aave Shield in the settings menu."
+
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
@@ -3118,6 +3130,18 @@ msgstr "The selected rate is lower than the market price. You might incur a loss
 #: src/modules/sGho/SGhoDepositPanel.tsx
 msgid "Deposit GHO and earn {0}% APY"
 msgstr "Deposit GHO and earn {0}% APY"
+
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
+msgid "Blocked by Shield"
+msgstr "Blocked by Shield"
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Total emission per day"

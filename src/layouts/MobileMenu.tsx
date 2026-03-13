@@ -23,6 +23,7 @@ import { DrawerWrapper } from './components/DrawerWrapper';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
 import { MobileCloseButton } from './components/MobileCloseButton';
 import { NavItems } from './components/NavItems';
+import { ShieldSwitcher } from './components/ShieldSwitcher';
 import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
 
 interface MobileMenuProps {
@@ -83,6 +84,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             <MenuItemsWrapper title={<Trans>Global settings</Trans>}>
               <List>
                 <DarkModeSwitcher />
+                <ShieldSwitcher />
                 {PROD_ENV && <TestNetModeSwitcher />}
                 <LanguageListItem onClick={() => setIsLanguagesListOpen(true)} />
               </List>

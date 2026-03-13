@@ -17,6 +17,7 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
   isParaswapRates,
+  isShieldBlocked,
   ProtocolSwapParams,
   ProtocolSwapState,
   SwapState,
@@ -231,6 +232,7 @@ export const WithdrawAndSwapActionsViaParaswap = ({
       }}
       fetchingData={state.actionsLoading || loadingPermitData}
       blocked={areActionsBlocked(state)}
+      blockedText={isShieldBlocked(state) ? <Trans>Blocked by Shield</Trans> : undefined}
       tryPermit={tryPermit}
     />
   );

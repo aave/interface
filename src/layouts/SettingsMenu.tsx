@@ -10,6 +10,7 @@ import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
+import { ShieldSwitcher } from './components/ShieldSwitcher';
 import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
 
 export const LANG_MAP = {
@@ -95,6 +96,7 @@ export function SettingsMenu() {
         </MenuItem>
 
         <DarkModeSwitcher component={MenuItem} />
+        <ShieldSwitcher component={MenuItem} />
         {PROD_ENV && <TestNetModeSwitcher />}
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
         <MenuItem onClick={handleOpenReadMode}>
