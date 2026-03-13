@@ -184,9 +184,9 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
     },
 
     [AaveV3Plasma.ASSETS.WXPL.UNDERLYING.toLowerCase()]: {
-      symbol: 'WXLP',
-      name: 'Wrapped XLP',
-      iconSymbol: 'wxlp',
+      symbol: 'WXPL',
+      name: 'Wrapped XPL',
+      iconSymbol: 'wxpl',
     },
 
     [AaveV3Plasma.ASSETS.PT_USDe_15JAN2026.UNDERLYING.toLowerCase()]: {
