@@ -126,8 +126,8 @@ export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
       </Table>
 
       <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)}>
-        <MenuItem onClick={handleWithdraw}>Withdraw</MenuItem>
-        <MenuItem onClick={handleRepay}>Repay</MenuItem>
+        <MenuItem>Switch</MenuItem>
+        <MenuItem>Details</MenuItem>
       </Menu>
     </Paper>
   );

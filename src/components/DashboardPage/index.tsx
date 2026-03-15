@@ -1,61 +1,78 @@
-import { Badge, Box, Button, Typography } from '@mui/material';
+import { Badge, Button, Typography } from '@mui/material';
 import Image from 'next/image';
+import { useState } from 'react';
 import AssetsTable from 'src/components/AssetsTable';
-import Header from 'src/components/Header';
 import InfoCard from 'src/components/InfoCard';
+import Layout from 'src/components/Layout';
 import MaxWidthContainer from 'src/components/MaxWidthContainer';
 import { ModalType } from 'src/components/Modals/types';
+import { useDevice } from 'src/hooks';
 import { useModalStore } from 'src/store/useModalStore';
 
-import { FirstBlock, HorizontalDivider, RightContainer, V3 } from './styles';
+import { DASHBOARD_TABLES } from './const';
+import {
+  CardsContainer,
+  FirstBlock,
+  HorizontalDivider,
+  LeftContainer,
+  RewardsRow,
+  RightContainer,
+  StatBlock,
+  TablesContainer,
+  TableSwitchContainer,
+  TitleContainer,
+  TitleRow,
+  V3,
+} from './styles';
 
 export default function DashboardPage() {
   const openModal = useModalStore((s) => s.openModal);
+  const { isTablet } = useDevice();
+  const [table, setTable] = useState<DASHBOARD_TABLES>(DASHBOARD_TABLES.SUPPLY);
 
   return (
-    <>
-      <Header />
+    <Layout>
       <MaxWidthContainer>
         <FirstBlock>
-          <Box display="flex" flexDirection="column" alignItems="flex-start" gap={3}>
-            <Box display="flex" flexDirection="column" gap={1}>
-              <Box display="flex" alignItems="center" gap={1}>
+          <LeftContainer>
+            <TitleContainer>
+              <TitleRow>
                 <Image src="/icons/networks/ethereum.svg" width={32} height={32} alt="ethereum" />
                 <Typography variant="h4">Core Instance</Typography>
                 <V3>
                   <Badge>V3</Badge>
                 </V3>
-              </Box>
+              </TitleRow>
               <Typography variant="body2" color="text.secondary">
                 Main Ethereum market with the largest selection of assets and yield options
               </Typography>
-            </Box>
+            </TitleContainer>
             <Button size="small" variant="outlined">
               view transactions
             </Button>
-          </Box>
+          </LeftContainer>
           <RightContainer>
-            <Box display="flex" flexDirection="column" gap={1}>
+            <StatBlock>
               <Typography variant="body2" color="text.secondary">
                 Net worth
               </Typography>
               <Typography variant="h6">$ 0</Typography>
-            </Box>
+            </StatBlock>
             <HorizontalDivider />
-            <Box display="flex" flexDirection="column" gap={1}>
+            <StatBlock>
               <Typography variant="body2" color="text.secondary">
                 Net APY
               </Typography>
               <Typography variant="h6" color="text.secondary">
                 –
               </Typography>
-            </Box>
+            </StatBlock>
             <HorizontalDivider />
-            <Box display="flex" flexDirection="column" gap={1}>
+            <StatBlock>
               <Typography variant="body2" color="text.secondary">
                 Net worth
               </Typography>
-              <Box display="flex" gap={1} alignItems="center">
+              <RewardsRow>
                 <Typography variant="h6">$ 0</Typography>
                 <Button
                   variant="contained"
@@ -64,21 +81,42 @@ export default function DashboardPage() {
                 >
                   CLAIM
                 </Button>
-              </Box>
-            </Box>
+              </RewardsRow>
+            </StatBlock>
           </RightContainer>
         </FirstBlock>
 
-        <Box display="flex" gap={3} mt={4}>
-          <InfoCard title="Your supplies" />
-          <InfoCard title="Your borrows" extra="E-Mode" />
-        </Box>
+        <TableSwitchContainer>
+          <Button
+            variant={table === DASHBOARD_TABLES.SUPPLY ? 'contained' : 'text'}
+            color="inherit"
+            fullWidth
+            onClick={() => setTable(DASHBOARD_TABLES.SUPPLY)}
+          >
+            SUPPLY
+          </Button>
+          <Button
+            variant={table === DASHBOARD_TABLES.BORROW ? 'contained' : 'text'}
+            color="inherit"
+            fullWidth
+            onClick={() => setTable(DASHBOARD_TABLES.BORROW)}
+          >
+            BORROW
+          </Button>
+        </TableSwitchContainer>
 
-        <Box display="flex" gap={3} mt={4}>
-          <AssetsTable type="supply" />
-          <AssetsTable type="borrow" />
-        </Box>
+        <CardsContainer>
+          {(!isTablet || table === DASHBOARD_TABLES.SUPPLY) && <InfoCard title="Your supplies" />}
+          {(!isTablet || table === DASHBOARD_TABLES.BORROW) && (
+            <InfoCard title="Your borrows" extra="E-Mode" />
+          )}
+        </CardsContainer>
+
+        <TablesContainer>
+          {(!isTablet || table === DASHBOARD_TABLES.SUPPLY) && <AssetsTable type="supply" />}
+          {(!isTablet || table === DASHBOARD_TABLES.BORROW) && <AssetsTable type="borrow" />}
+        </TablesContainer>
       </MaxWidthContainer>
-    </>
+    </Layout>
   );
 }

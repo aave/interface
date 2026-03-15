@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
-import Header from 'src/components/Header';
+import Layout from 'src/components/Layout';
 import MaxWidthContainer from 'src/components/MaxWidthContainer';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
@@ -143,8 +143,7 @@ export default function MarketsPage() {
   }, [searchQuery, category]);
 
   return (
-    <>
-      <Header />
+    <Layout>
       <MaxWidthContainer>
         <PageWrapper>
           <Title>
@@ -393,6 +392,6 @@ export default function MarketsPage() {
           </CoreAssetsSection>
         </PageWrapper>
       </MaxWidthContainer>
-    </>
+    </Layout>
   );
 }
