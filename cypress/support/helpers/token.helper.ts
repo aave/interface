@@ -80,6 +80,8 @@ const donors: Donors = {
     name: 'aBNB',
     donorWalletAddress: '0x2F064D92e862F30041DEA4667eF8899E07Bb4Edf',
     tokenAddress: '0x9B00a09492a626678E5A3009982191586C444Df9',
+    poolAddress: '0x6807dc923806fE8Fd134338EABCA509979a7e0cB',
+    underlyingAsset: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // WBNB
   },
   aETHEthereumV2: {
     name: 'aETH',
