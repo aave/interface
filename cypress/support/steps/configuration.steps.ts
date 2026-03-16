@@ -9,6 +9,16 @@ import { DEFAULT_TEST_ACCOUNT, TenderlyVnet } from '../tools/tenderly';
 const URL = Cypress.env('URL');
 const PERSIST_FORK_AFTER_RUN = Cypress.env('PERSIST_FORK_AFTER_RUN') || false;
 
+const mockComplianceCheck = () => {
+  cy.intercept('GET', '**/api/preflight-compliance?*', {
+    statusCode: 200,
+    body: {
+      result: true,
+      nextCheck: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    },
+  });
+};
+
 export const configEnvWithTenderly = ({
   chainId,
   market,
@@ -48,6 +58,8 @@ export const configEnvWithTenderly = ({
     if (urlSuffix) {
       url = `${url}/${urlSuffix}`;
     }
+
+    mockComplianceCheck();
 
     const rpc = tenderly.get_rpc_url();
     provider = new JsonRpcProvider(rpc, 3030);
@@ -157,6 +169,8 @@ export const configEnvWithTenderlySepoliaGhoFork = createConfigWithTenderlyFork(
 
 const createConfigWithOrigin = (market: string, mockedAddress: string) => {
   before('Open main page', () => {
+    mockComplianceCheck();
+
     cy.visit(URL, {
       onBeforeLoad(win) {
         // forks are always expected to run on chainId 3030
