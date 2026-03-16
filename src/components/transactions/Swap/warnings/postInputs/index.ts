@@ -7,5 +7,6 @@ export * from './LimitOrderAmountWarning';
 export * from './LiquidationCriticalWarning';
 export * from './LowHealthFactorWarning';
 export * from './SafetyModuleSwapWarning';
+export * from './ShieldSwapWarning';
 export * from './SlippageWarning';
 export * from './USDTResetWarning';

@@ -396,6 +396,10 @@ msgstr "Transactions"
 msgid "For swapping safety module assets please unstake your position <0>here</0>."
 msgstr "For swapping safety module assets please unstake your position <0>here</0>."
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "High price impact (<0>{0}%</0>)! This route will return {1} due to low liquidity or small order size."
+msgstr "High price impact (<0>{0}%</0>)! This route will return {1} due to low liquidity or small order size."
+
 #: src/components/infoTooltips/SwapFeeTooltip.tsx
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 msgstr "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
@@ -420,6 +424,10 @@ msgstr "Debt ceiling limits the amount possible to borrow against this asset by 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
 msgstr "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
+
+#: src/components/transactions/Swap/warnings/postInputs/ShieldSwapWarning.tsx
+msgid "Aave Shield: Transaction blocked"
+msgstr "Aave Shield: Transaction blocked"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Variable debt supply is not zero"
@@ -2048,6 +2056,10 @@ msgstr "Migration risks"
 msgid "I understand the liquidation risk and want to proceed"
 msgstr "I understand the liquidation risk and want to proceed"
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "I confirm the swap knowing that I could lose up to <0>{0}%</0> on this swap."
+msgstr "I confirm the swap knowing that I could lose up to <0>{0}%</0> on this swap."
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Covered debt"
 msgstr "Covered debt"
@@ -2207,6 +2219,10 @@ msgstr "The order could't be filled."
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE NAY"
 msgstr "VOTE NAY"
+
+#: src/layouts/components/ShieldSwitcher.tsx
+msgid "Aave Shield"
+msgstr "Aave Shield"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Enabling E-Mode"
@@ -2550,6 +2566,10 @@ msgstr "Assets to borrow"
 msgid "Data couldn't be loaded."
 msgstr "Data couldn't be loaded."
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "Please review the swap values before confirming."
+msgstr "Please review the swap values before confirming."
+
 #: src/components/transactions/Swap/errors/shared/SupplyCapBlockingError.tsx
 msgid "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
 msgstr "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
@@ -2743,6 +2763,10 @@ msgstr "Please connect your wallet to get free testnet assets."
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
+
+#: src/components/transactions/Swap/warnings/postInputs/ShieldSwapWarning.tsx
+msgid "This swap has a price impact of {0}%, which exceeds the 25% safety threshold. To proceed, disable Aave Shield in the settings menu."
+msgstr "This swap has a price impact of {0}%, which exceeds the 25% safety threshold. To proceed, disable Aave Shield in the settings menu."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
@@ -3119,6 +3143,18 @@ msgstr "The selected rate is lower than the market price. You might incur a loss
 msgid "Deposit GHO and earn {0}% APY"
 msgstr "Deposit GHO and earn {0}% APY"
 
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
+msgid "Blocked by Shield"
+msgstr "Blocked by Shield"
+
 #: src/modules/staking/StakingHeader.tsx
 msgid "Total emission per day"
 msgstr "Total emission per day"
@@ -3271,10 +3307,6 @@ msgstr "Filter"
 #: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 msgid "Learn more about the Ether.fi program"
 msgstr "Learn more about the Ether.fi program"
-
-#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
-msgid "High price impact ({0}%). This route may return {1} due to low liquidity or small order size."
-msgstr "High price impact ({0}%). This route may return {1} due to low liquidity or small order size."
 
 #: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -3530,10 +3562,6 @@ msgstr "APY"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
 msgstr "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
-
-#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
-msgid "I confirm the swap with a potential {0}% value {1}"
-msgstr "I confirm the swap with a potential {0}% value {1}"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Show assets with 0 balance"

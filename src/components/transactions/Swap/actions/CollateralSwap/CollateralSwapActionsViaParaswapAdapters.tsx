@@ -18,6 +18,7 @@ import {
   areActionsBlocked,
   isParaswapRates,
   isProtocolSwapState,
+  isShieldBlocked,
   SwapParams,
   SwapState,
 } from '../../types';
@@ -286,6 +287,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
       requiresAmount
       amount={state.processedSide === 'sell' ? state.sellAmountFormatted : state.buyAmountFormatted}
       blocked={areActionsBlocked(state) || approvalTxState.loading}
+      blockedText={isShieldBlocked(state) ? <Trans>Blocked by Shield</Trans> : undefined}
       handleApproval={approval}
       requiresApproval={requiresApproval}
       actionText={

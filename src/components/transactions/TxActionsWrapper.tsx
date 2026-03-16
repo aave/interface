@@ -25,6 +25,7 @@ interface TxActionsWrapperProps extends BoxProps {
   requiresApprovalReset?: boolean;
   symbol?: string;
   blocked?: boolean;
+  blockedText?: ReactNode;
   fetchingData?: boolean;
   errorParams?: {
     loading: boolean;
@@ -53,6 +54,7 @@ export const TxActionsWrapper = ({
   sx,
   symbol,
   blocked,
+  blockedText,
   fetchingData = false,
   errorParams,
   tryPermit,
@@ -67,7 +69,7 @@ export const TxActionsWrapper = ({
   const isAmountMissing = requiresAmount && requiresAmount && Number(amount) === 0;
 
   function getMainParams() {
-    if (blocked) return { disabled: true, content: actionText };
+    if (blocked) return { disabled: true, content: blockedText || actionText };
     if (
       (txError?.txAction === TxAction.GAS_ESTIMATION ||
         txError?.txAction === TxAction.MAIN_ACTION) &&
