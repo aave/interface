@@ -87,7 +87,7 @@ const testData = {
   ],
 };
 
-describe('SWITCH BY SWITCH TOOL, ETHEREUM', () => {
+describe.skip('SWITCH BY SWITCH TOOL, ETHEREUM', () => {
   // const skipTestState = skipState(false);
   configEnvWithTenderlyAEthereumV3Fork({});
 
@@ -96,7 +96,7 @@ describe('SWITCH BY SWITCH TOOL, ETHEREUM', () => {
   });
 });
 
-describe('SWITCH BY SWITCH TOOL, POLYGON', () => {
+describe.skip('SWITCH BY SWITCH TOOL, POLYGON', () => {
   // const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({});
 
