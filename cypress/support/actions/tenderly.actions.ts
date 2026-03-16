@@ -2,7 +2,6 @@ import { Wallet } from 'ethers';
 
 export interface TokenRequest {
   tokenAddress: string;
-  donorAddress?: string;
   tokenCount?: string;
   name?: string;
   // For aTokens: set the underlying balance then supply to the pool to get the aToken.
@@ -13,20 +12,14 @@ export interface TokenRequest {
 }
 
 export class TenderlyActions {
-  public static tenderlyTokenRequest(tokens: TokenRequest[], addressFrom?: string) {
+  public static tenderlyTokenRequest(tokens: TokenRequest[]) {
     it(`Token request `, () => {
       tokens.forEach(($token) => {
         cy.log(`Request: ${$token.name ?? $token.tokenAddress} ${$token.tokenCount}`);
       });
       Promise.all(
         tokens.map((token) => {
-          const _addressFrom = addressFrom || token.donorAddress;
-          window.tenderly.getERC20Token(
-            window.address,
-            token.tokenAddress,
-            _addressFrom,
-            token.tokenCount
-          );
+          window.tenderly.getERC20Token(window.address, token);
         })
       );
       cy.refresh();
@@ -42,12 +35,7 @@ export class TenderlyActions {
         tokens.map((token) => {
           const wallet = Wallet.createRandom();
           const _addressTo = addressTo || wallet.address;
-          window.tenderly.getERC20Token(
-            _addressTo,
-            token.tokenAddress,
-            window.address,
-            token.tokenCount
-          );
+          window.tenderly.getERC20Token(_addressTo, token);
         })
       );
       cy.refresh();
