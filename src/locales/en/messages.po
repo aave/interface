@@ -2449,6 +2449,7 @@ msgid "Supply"
 msgstr "Supply"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
 msgstr "Cannot disable E-Mode"
 
@@ -3637,6 +3638,10 @@ msgstr "Exchange rate"
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "You unstake here"
 msgstr "You unstake here"
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "You must repay your borrow positions before exiting E-Mode. {0} {1} 0 LTV outside of E-Mode and cannot remain as collateral."
+msgstr "You must repay your borrow positions before exiting E-Mode. {0} {1} 0 LTV outside of E-Mode and cannot remain as collateral."
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
