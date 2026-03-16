@@ -5,6 +5,11 @@ export interface TokenRequest {
   donorAddress?: string;
   tokenCount?: string;
   name: string;
+  // For aTokens: set the underlying balance then supply to the pool to get the aToken.
+  // Set autoSupply: false for tests that are testing the supply flow themselves.
+  poolAddress?: string;
+  underlyingAsset?: string;
+  autoSupply?: boolean;
 }
 
 export class TenderlyActions {

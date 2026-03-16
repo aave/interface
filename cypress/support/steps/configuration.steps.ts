@@ -2,6 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
 
+import { TokenRequest } from '../actions/tenderly.actions';
 import { CustomizedBridge } from '../tools/bridge';
 import { DEFAULT_TEST_ACCOUNT, TenderlyVnet } from '../tools/tenderly';
 
@@ -12,15 +13,13 @@ export const configEnvWithTenderly = ({
   chainId,
   market,
   tokens,
-  unpause,
   wallet,
   enableTestnet = false,
   urlSuffix = '',
 }: {
   chainId: number;
   market: string;
-  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
-  unpause?: boolean;
+  tokens?: TokenRequest[];
   wallet?: { address: string; privateKey: string };
   enableTestnet?: boolean;
   urlSuffix?: string;
@@ -35,20 +34,12 @@ export const configEnvWithTenderly = ({
     await tenderly.init();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await tenderly.add_balance_rpc(walletAddress);
-    if (unpause) {
-      await tenderly.unpauseMarket();
-    }
 
     if (tokens) {
       await Promise.all(
-        tokens.map((token) =>
-          tenderly.getERC20Token(
-            walletAddress,
-            token.tokenAddress,
-            token.donorAddress,
-            token.tokenCount
-          )
-        )
+        tokens.map(async (token) => {
+          await tenderly.getERC20Token(walletAddress, token);
+        })
       );
     }
   });
@@ -94,7 +85,6 @@ export const configEnvWithTenderly = ({
   });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {
-      cy.log('deleting vnet');
       await tenderly.deleteVnet();
     }
   });
@@ -105,17 +95,15 @@ const createConfigWithTenderlyFork =
   ({
     market = defaultMarket,
     tokens,
-    v3,
     wallet,
     urlSuffix,
   }: {
     market?: string;
-    tokens?: { tokenAddress: string }[];
-    v3?: boolean;
+    tokens?: TokenRequest[];
     wallet?: { address: string; privateKey: string };
     urlSuffix?: string;
   }) =>
-    configEnvWithTenderly({ chainId, market, tokens, unpause: v3, wallet, urlSuffix });
+    configEnvWithTenderly({ chainId, market, tokens, wallet, urlSuffix });
 
 export const configEnvWithTenderlyMainnetFork = createConfigWithTenderlyFork(
   ChainId.mainnet,

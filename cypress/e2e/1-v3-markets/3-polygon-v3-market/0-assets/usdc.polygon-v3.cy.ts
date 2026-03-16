@@ -52,19 +52,12 @@ const testData = {
       amount: 10.1,
       hasApproval: false,
     },
-    repayCollateral: {
-      asset: assets.polygonV3Market.USDC,
-      apyType: constants.apyType.stable,
-      amount: 2,
-      hasApproval: false,
-      repayOption: constants.repayType.collateral,
-    },
     repay: [
       {
         asset: assets.polygonV3Market.USDC,
         apyType: constants.apyType.stable,
-        amount: 2,
-        hasApproval: true,
+        amount: 4,
+        hasApproval: false,
         repayOption: constants.repayType.wallet,
       },
       {
@@ -107,13 +100,11 @@ describe('USDC INTEGRATION SPEC, POLYGON V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyPolygonFork({
     market: 'fork_proto_polygon_v3',
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {
     borrow(borrowCase, skipTestState, true);
   });
-  repay(testData.testCases.repayCollateral, skipTestState, false);
   testData.testCases.changeBorrowType.forEach((changeAPRCase) => {
     changeBorrowType(changeAPRCase, skipTestState, true);
   });

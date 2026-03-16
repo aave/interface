@@ -4,6 +4,9 @@ export interface DonorInfo {
   name: string;
   donorWalletAddress: string;
   tokenAddress: string;
+  // For aTokens: pool address and underlying asset needed to enable collateral
+  poolAddress?: string;
+  underlyingAsset?: string;
 }
 
 export interface Donors {
@@ -30,11 +33,15 @@ const donors: Donors = {
     name: 'aETH',
     donorWalletAddress: '0x01d1f55d94a53a9517c07f793f35320FAA0D2DCf',
     tokenAddress: '0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8',
+    poolAddress: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2',
+    underlyingAsset: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH
   },
   aETHArbitrumV3: {
     name: 'aETH',
     donorWalletAddress: '0xb7fb2b774eb5e2dad9c060fb367acbdc7fa7099b',
     tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+    poolAddress: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+    underlyingAsset: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', // WETH
   },
   aAVAXAvalancheV3: {
     name: 'aAVAX',
@@ -50,16 +57,22 @@ const donors: Donors = {
     name: 'aETH',
     donorWalletAddress: '0x39Be632bfC5A74183FfE124C60e248138e496BC4',
     tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+    poolAddress: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+    underlyingAsset: '0x4200000000000000000000000000000000000006', // WETH
   },
   aETHBaseV3: {
     name: 'aETH',
     donorWalletAddress: '0xb463c4d7c574bd0a05a1320186378dd6a7aeaa33',
     tokenAddress: '0xD4a0e0b9149BCee3C920d2E00b5dE09138fd8bb7',
+    poolAddress: '0xA238Dd80C259a72e81d7e4664a9801593F98d1c5',
+    underlyingAsset: '0x4200000000000000000000000000000000000006', // WETH
   },
   axDAIGnosisV3: {
     name: 'axDAI',
     donorWalletAddress: '0x458cd345b4c05e8df39d0a07220feb4ec19f5e6f',
     tokenAddress: '0xd0Dd6cEF72143E22cCED4867eb0d5F2328715533',
+    poolAddress: '0xb50201558B00496A145fE76f7424749556E326D8',
+    underlyingAsset: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d', // WXDAI
   },
   aBNBBnbV3: {
     name: 'aBNB',
@@ -87,7 +100,7 @@ export type RequestedTokens = {
   [key: string]: number;
 };
 
-export const tokenSet = (requestedTokens: RequestedTokens): TokenRequest[] => {
+export const tokenSet = (requestedTokens: RequestedTokens, autoSupply = true): TokenRequest[] => {
   const tokenRequest: TokenRequest[] = [];
 
   for (const [tokenKey, tokenAmount] of Object.entries(requestedTokens)) {
@@ -98,6 +111,9 @@ export const tokenSet = (requestedTokens: RequestedTokens): TokenRequest[] => {
         donorAddress: donorInfo.donorWalletAddress,
         tokenCount: tokenAmount.toString(),
         name: donorInfo.name,
+        poolAddress: donorInfo.poolAddress,
+        underlyingAsset: donorInfo.underlyingAsset,
+        autoSupply: donorInfo.underlyingAsset != null ? autoSupply : undefined,
       });
     }
   }

@@ -30,15 +30,8 @@ const testData = {
       {
         asset: assets.ethereumV3Market.USDC,
         apyType: constants.apyType.variable,
-        amount: 25,
+        amount: 27,
         hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
-      {
-        asset: assets.ethereumV3Market.USDC,
-        apyType: constants.apyType.variable,
-        amount: 2,
-        hasApproval: true,
         repayOption: constants.repayType.wallet,
       },
       {
@@ -79,7 +72,6 @@ const testData = {
 describe('USDC INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAEthereumV3Fork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
 

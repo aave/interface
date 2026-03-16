@@ -44,7 +44,6 @@ const testData = {
 describe('SWAP, ETHEREUM V3 MARKET, INTEGRATION SPEC', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAEthereumV3Fork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
 

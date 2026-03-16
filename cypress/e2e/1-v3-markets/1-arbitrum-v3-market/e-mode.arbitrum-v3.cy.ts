@@ -48,7 +48,6 @@ const testData = {
 describe('E-MODE SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyArbitrumFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   describe('Prepare min health factor state, with stable coins', () => {

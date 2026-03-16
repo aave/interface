@@ -39,7 +39,6 @@ const testData = {
 describe('CRITICAL CONDITIONS SPEC, ARBITRUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyArbitrumFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   borrow(testData.testCases.borrow, skipTestState, true);
