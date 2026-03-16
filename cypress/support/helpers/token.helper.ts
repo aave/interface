@@ -54,6 +54,8 @@ const donors: Donors = {
     name: 'aMATIC',
     donorWalletAddress: '0x07F294e84a9574f657A473f94A242F1FdFAFB823',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
+    poolAddress: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+    underlyingAsset: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', // WPOL
   },
   aETHOptimismV3: {
     name: 'aETH',
