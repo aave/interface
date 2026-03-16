@@ -29,7 +29,7 @@ export const Divider = styled(Box)({
   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
 });
 
-export const Sections = styled(Box)(({ theme }) => ({
+export const Sections = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   gap: 56,

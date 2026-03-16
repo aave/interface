@@ -36,16 +36,6 @@ export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
     openModal(ModalType.Borrow, { token: 'K613', available: '5.67' });
   };
 
-  const handleWithdraw = () => {
-    openModal(ModalType.Withdraw, { token: 'USDT', balance: '9.00' });
-    setMenuAnchor(null);
-  };
-
-  const handleRepay = () => {
-    openModal(ModalType.Repay, { token: 'ETHx', balance: '0.00212' });
-    setMenuAnchor(null);
-  };
-
   return (
     <Paper isOpen={isOpen}>
       <Stack direction="row" justifyContent="space-between" mb={3}>
