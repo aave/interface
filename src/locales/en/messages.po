@@ -2170,6 +2170,10 @@ msgstr "{0} {symbol} to continue"
 msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representative smart contract wallet (ie. Safe) addresses on other chains."
 
+#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+msgid "If you are willing to proceed at your own risk."
+msgstr "If you are willing to proceed at your own risk."
+
 #: src/components/transactions/Swap/errors/shared/UserDenied.tsx
 msgid "User denied the operation."
 msgstr "User denied the operation."
@@ -2565,10 +2569,6 @@ msgstr "Assets to borrow"
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 msgid "Data couldn't be loaded."
 msgstr "Data couldn't be loaded."
-
-#: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
-msgid "Please review the swap values before confirming."
-msgstr "Please review the swap values before confirming."
 
 #: src/components/transactions/Swap/errors/shared/SupplyCapBlockingError.tsx
 msgid "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."

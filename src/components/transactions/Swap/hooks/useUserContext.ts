@@ -9,23 +9,25 @@ import { SwapState } from '../types';
 
 export const useUserContext = ({ setState }: { setState: Dispatch<Partial<SwapState>> }) => {
   const user = useRootStore((store) => store.account);
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyMode } = useWeb3Context();
 
   useEffect(() => {
-    try {
-      if (user && connectedChainId) {
-        setState({ user });
-        getEthersProvider(wagmiConfig, { chainId: connectedChainId }).then((provider) => {
-          Promise.all([isSmartContractWallet(user, provider), isSafeWallet(user, provider)]).then(
-            ([isSmartContract, isSafe]) => {
-              setState({ userIsSmartContractWallet: isSmartContract });
-              setState({ userIsSafeWallet: isSafe });
-            }
-          );
+    if (user && connectedChainId) {
+      setState({ user });
+
+      if (readOnlyMode) return;
+
+      getEthersProvider(wagmiConfig, { chainId: connectedChainId })
+        .then((provider) =>
+          Promise.all([isSmartContractWallet(user, provider), isSafeWallet(user, provider)])
+        )
+        .then(([isSmartContract, isSafe]) => {
+          setState({ userIsSmartContractWallet: isSmartContract });
+          setState({ userIsSafeWallet: isSafe });
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      }
-    } catch (error) {
-      console.error(error);
     }
-  }, [user, connectedChainId]);
+  }, [user, connectedChainId, readOnlyMode]);
 };

@@ -73,7 +73,7 @@ export function HighPriceImpactWarning({
       </Typography>
 
       <Typography variant="caption" sx={{ mt: 1 }}>
-        <Trans>Please review the swap values before confirming.</Trans>
+        <Trans>If you are willing to proceed at your own risk.</Trans>
       </Typography>
 
       {requireConfirmation && (

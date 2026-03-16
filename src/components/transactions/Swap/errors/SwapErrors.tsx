@@ -1,6 +1,7 @@
 import React, { Dispatch, useEffect } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { useModalContext } from '../../../../hooks/useModal';
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
@@ -41,6 +42,7 @@ export const SwapErrors = ({
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
   const { txError } = useModalContext();
+  const { readOnlyMode } = useWeb3Context();
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
   const { user: extendedUser } = useAppDataContext();
 
@@ -147,6 +149,15 @@ export const SwapErrors = ({
 
   if (!state.error) {
     return null;
+  }
+
+  if (readOnlyMode) {
+    return (
+      <GenericError
+        sx={{ mb: !state.isSwapFlowSelected ? 0 : 4 }}
+        message="This transaction is not possible in watch wallet mode. Please leave watch wallet mode and connect a wallet."
+      />
+    );
   }
 
   if (hasUserDenied(state.error)) {
