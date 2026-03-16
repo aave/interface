@@ -4,6 +4,7 @@ export interface TokenRequest {
   tokenAddress: string;
   tokenCount?: string;
   name?: string;
+  decimals?: number;
   // For aTokens: set the underlying balance then supply to the pool to get the aToken.
   // Set autoSupply: false for tests that are testing the supply flow themselves.
   poolAddress?: string;

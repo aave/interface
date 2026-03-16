@@ -95,8 +95,15 @@ export class TenderlyVnet {
 
   async getERC20Token(walletAddress: string, token: TokenRequest) {
     this.checkVnetInitialized();
-    const { tokenAddress, tokenCount, underlyingAsset, poolAddress, autoSupply } = token;
-    const amount = BigInt(tokenCount || '10') * BigInt(10) ** BigInt(18);
+    const {
+      tokenAddress,
+      tokenCount,
+      decimals = 18,
+      underlyingAsset,
+      poolAddress,
+      autoSupply,
+    } = token;
+    const amount = BigInt(tokenCount || '10') * BigInt(10) ** BigInt(decimals);
     const amountHex = '0x' + amount.toString(16);
 
     if (underlyingAsset && poolAddress) {
