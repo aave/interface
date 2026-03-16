@@ -19,7 +19,7 @@ const testData = {
   testCases: {
     deposit: {
       asset: assets.polygonV3Market.POL,
-      amount: 1.09,
+      amount: 11.09,
       hasApproval: true,
     },
     collateral: {
@@ -40,10 +40,10 @@ const testData = {
     },
     borrow: [
       {
-        asset: assets.polygonV3Market.POL,
+        asset: assets.polygonV3Market.DAI,
         amount: 0.06,
         apyType: constants.borrowAPYType.default,
-        hasApproval: false,
+        hasApproval: true,
       },
     ],
     withdraw: [
@@ -63,26 +63,10 @@ const testData = {
     ],
     repay: [
       {
-        asset: assets.polygonV3Market.POL,
+        asset: assets.polygonV3Market.DAI,
         apyType: constants.apyType.variable,
-        amount: 0.01,
-        hasApproval: true,
-        repayOption: constants.repayType.default,
-      },
-      {
-        asset: assets.polygonV3Market.POL,
-        apyType: constants.apyType.variable,
-        repayableAsset: assets.polygonV3Market.WPOL,
         amount: 0.01,
         hasApproval: false,
-        repayOption: constants.repayType.default,
-      },
-      {
-        asset: assets.polygonV3Market.POL,
-        apyType: constants.apyType.variable,
-        repayableAsset: assets.polygonV3Market.aWPOL,
-        amount: 0.01,
-        hasApproval: true,
         repayOption: constants.repayType.default,
       },
     ],
@@ -92,14 +76,14 @@ const testData = {
       {
         type: constants.dashboardTypes.deposit,
         assetName: assets.polygonV3Market.POL.shortName,
-        amount: 1.06,
+        amount: 11.07,
         collateralType: constants.collateralType.isCollateral,
         isCollateral: true,
       },
       {
         type: constants.dashboardTypes.borrow,
-        assetName: assets.polygonV3Market.POL.shortName,
-        amount: 0.03,
+        assetName: assets.polygonV3Market.DAI.shortName,
+        amount: 0.05,
         apyType: constants.borrowAPYType.variable,
       },
     ],
