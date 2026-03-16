@@ -47,6 +47,8 @@ const donors: Donors = {
     name: 'aAVAX',
     donorWalletAddress: '0xAe783a7C8C607EFe00548A0592BF9cDb50903B79',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
+    poolAddress: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+    underlyingAsset: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', // WAVAX
   },
   aMATICPolygonV3: {
     name: 'aMATIC',
