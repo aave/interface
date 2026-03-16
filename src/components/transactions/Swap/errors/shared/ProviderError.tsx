@@ -1,5 +1,6 @@
 import { SxProps, Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { SwapError, SwapProvider, SwapState } from '../../types';
 import { convertCowProtocolErrorMessage } from '../cow/quote.helpers';
@@ -15,6 +16,7 @@ interface QuoteErrorProps {
 }
 
 export const ProviderError = ({ error, sx, provider, state }: QuoteErrorProps) => {
+  const { readOnlyMode } = useWeb3Context();
   let customErrorMessage;
 
   switch (provider) {
@@ -30,6 +32,12 @@ export const ProviderError = ({ error, sx, provider, state }: QuoteErrorProps) =
   }
 
   if (!customErrorMessage) {
+    if (readOnlyMode) {
+      return (
+        <GenericError message="This transaction is not possible in watch wallet mode. Please leave watch wallet mode and connect a wallet." />
+      );
+    }
+
     const errorToCopy = errorToConsoleString(state, error);
     return (
       <GenericError
