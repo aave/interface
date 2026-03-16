@@ -1,5 +1,4 @@
 import { ChainId } from '@aave/contract-helpers';
-import { GelatoRelay } from '@gelatonetwork/relay-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { AbiCoder, keccak256, RLP } from 'ethers/lib/utils';
@@ -242,47 +241,45 @@ export const GovVoteActions = ({
       const votingMachineService = new VotingMachineService(votingMachineAddress);
 
       if (withGelatoRelayer && signature) {
-        const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
-          user,
-          proposalId,
-          support,
-          proofs,
-          signature.toString()
-        );
-
-        const gelatoRelay = new GelatoRelay();
-        const gelatoRequest = {
-          chainId: BigInt(votingChainId),
-          target: votingMachineAddress,
-          data: tx.data || '',
-        };
-
-        const response = await gelatoRelay.sponsoredCall(gelatoRequest, '');
-        setTimeout(async function checkForStatus() {
-          const status = await gelatoRelay.getTaskStatus(response.taskId);
-          if (status?.blockNumber && status.transactionHash) {
-            setMainTxState({
-              txHash: status.transactionHash,
-              loading: false,
-              success: true,
-            });
-            queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
-            queryClient.invalidateQueries({
-              queryKey: ['governance-detail-cache', proposalId, user],
-            });
-            queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
-            queryClient.invalidateQueries({
-              queryKey: ['governance-voters-cache-for', proposalId],
-            });
-            queryClient.invalidateQueries({
-              queryKey: ['governance-voters-cache-against', proposalId],
-            });
-            return;
-          } else {
-            setTimeout(checkForStatus, 5000);
-            return;
-          }
-        }, 5000);
+        // const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
+        //   user,
+        //   proposalId,
+        //   support,
+        //   proofs,
+        //   signature.toString()
+        // );
+        // const gelatoRelay = new GelatoRelay();
+        // const gelatoRequest = {
+        //   chainId: BigInt(votingChainId),
+        //   target: votingMachineAddress,
+        //   data: tx.data || '',
+        // };
+        // const response = await gelatoRelay.sponsoredCall(gelatoRequest, '');
+        // setTimeout(async function checkForStatus() {
+        //   const status = await gelatoRelay.getTaskStatus(response.taskId);
+        //   if (status?.blockNumber && status.transactionHash) {
+        //     setMainTxState({
+        //       txHash: status.transactionHash,
+        //       loading: false,
+        //       success: true,
+        //     });
+        //     queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
+        //     queryClient.invalidateQueries({
+        //       queryKey: ['governance-detail-cache', proposalId, user],
+        //     });
+        //     queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
+        //     queryClient.invalidateQueries({
+        //       queryKey: ['governance-voters-cache-for', proposalId],
+        //     });
+        //     queryClient.invalidateQueries({
+        //       queryKey: ['governance-voters-cache-against', proposalId],
+        //     });
+        //     return;
+        //   } else {
+        //     setTimeout(checkForStatus, 5000);
+        //     return;
+        //   }
+        // }, 5000);
       } else {
         const tx = await votingMachineService.generateSubmitVoteTxData(
           user,
