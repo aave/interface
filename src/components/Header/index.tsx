@@ -32,6 +32,12 @@ export default function Header() {
 
   const { isMobile } = useDevice();
 
+  const onClick = (href: string) => {
+    router.push(href);
+
+    setMobileMenuAnchor(null);
+  };
+
   return (
     <Container>
       <MaxWidthContainer>
@@ -80,14 +86,8 @@ export default function Header() {
                   anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                   transformOrigin={{ vertical: 'top', horizontal: 'left' }}
                 >
-                  {TABS.map((tab) => (
-                    <MenuItem
-                      key={tab.href}
-                      component={Link}
-                      href={tab.href}
-                      noLinkStyle
-                      onClick={() => setMobileMenuAnchor(null)}
-                    >
+                  {TABS.map((tab, index) => (
+                    <MenuItem key={index} onClick={() => onClick(tab.href)}>
                       {tab.label}
                     </MenuItem>
                   ))}
