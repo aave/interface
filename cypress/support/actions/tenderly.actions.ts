@@ -4,7 +4,7 @@ export interface TokenRequest {
   tokenAddress: string;
   donorAddress?: string;
   tokenCount?: string;
-  name: string;
+  name?: string;
   // For aTokens: set the underlying balance then supply to the pool to get the aToken.
   // Set autoSupply: false for tests that are testing the supply flow themselves.
   poolAddress?: string;
@@ -16,7 +16,7 @@ export class TenderlyActions {
   public static tenderlyTokenRequest(tokens: TokenRequest[], addressFrom?: string) {
     it(`Token request `, () => {
       tokens.forEach(($token) => {
-        cy.log(`Request: ${$token.name} ${$token.tokenCount}`);
+        cy.log(`Request: ${$token.name ?? $token.tokenAddress} ${$token.tokenCount}`);
       });
       Promise.all(
         tokens.map((token) => {
@@ -36,7 +36,7 @@ export class TenderlyActions {
   public static tenderlyTokenWithdraw(tokens: TokenRequest[], addressTo?: string) {
     it(`Token withdraw`, () => {
       tokens.forEach(($token) => {
-        cy.log(`Withdraw: ${$token.name} ${$token.tokenCount}`);
+        cy.log(`Withdraw: ${$token.name ?? $token.tokenAddress} ${$token.tokenCount}`);
       });
       Promise.all(
         tokens.map((token) => {
