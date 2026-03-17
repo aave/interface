@@ -51,6 +51,7 @@ import { EmodeActions } from './EmodeActions';
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
   CLOSE_POSITIONS_BEFORE_SWITCHING,
+  ZERO_LTV_COLLATERAL_BLOCKING,
 }
 
 export type EModeCategoryDisplay = EmodeCategory & {
@@ -138,17 +139,46 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     marketReferencePriceInUsd,
   });
 
+  // Check for collateral assets with LTV=0 outside of e-mode that would block exit.
+  // The contract checks getUserReserveLtv with target category=0, which always returns base LTV.
+  // So any collateral with baseLTVasCollateral=0 will cause the exit tx to revert.
+  const zeroLtvCollateralSymbols = user.userReservesData
+    .filter(
+      (userReserve) =>
+        Number(userReserve.scaledATokenBalance) > 0 &&
+        userReserve.reserve.baseLTVasCollateral === '0' &&
+        userReserve.usageAsCollateralEnabledOnUser &&
+        userReserve.reserve.reserveLiquidationThreshold !== '0'
+    )
+    .map((r) => r.reserve.symbol);
+
   // error handling
   let blockingError: ErrorType | undefined = undefined;
   // if user is disabling eMode
   if (user.isInEmode && disableEmode) {
-    if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
-      blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION; // intl.formatMessage(messages.eModeDisabledLiquidation);
+    if (zeroLtvCollateralSymbols.length > 0) {
+      blockingError = ErrorType.ZERO_LTV_COLLATERAL_BLOCKING;
+    } else if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
+      blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION;
     }
   }
 
   const Blocked: React.FC = () => {
     switch (blockingError) {
+      case ErrorType.ZERO_LTV_COLLATERAL_BLOCKING:
+        return (
+          <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
+            <Typography variant="subheader1">
+              <Trans>Cannot disable E-Mode</Trans>
+            </Typography>
+            <Typography variant="caption">
+              <Trans>
+                You must disable {zeroLtvCollateralSymbols.join(', ')} as collateral before exiting
+                E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral.
+              </Trans>
+            </Typography>
+          </Warning>
+        );
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
           <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
@@ -233,7 +263,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
         </Trans>
       </Typography>
 
-      {blockingError === ErrorType.EMODE_DISABLED_LIQUIDATION && <Blocked />}
+      {blockingError !== undefined && <Blocked />}
       {showLiquidationRiskWarning && (
         <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
           <Typography variant="subheader1" color="#4F1919">
