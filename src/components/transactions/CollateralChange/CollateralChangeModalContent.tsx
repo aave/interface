@@ -50,10 +50,12 @@ export const CollateralChangeModalContent = ({
   // Check if asset has non-zero LTV (base or in user's active e-mode)
   const userEMode = poolReserve.eModes?.find((e) => e.id === user?.userEmodeCategoryId);
   const hasNonZeroLtv =
-    poolReserve.baseLTVasCollateral !== '0' || (user?.isInEmode && userEMode?.collateralEnabled);
+    poolReserve.baseLTVasCollateral !== '0' ||
+    (user?.isInEmode && userEMode?.collateralEnabled && !userEMode?.ltvzeroEnabled);
 
-  // Find e-mode categories where this asset can be used as collateral
-  const collateralEmodeCategories = poolReserve.eModes?.filter((e) => e.collateralEnabled) ?? [];
+  // Find e-mode categories where this asset can be used as collateral with non-zero LTV
+  const collateralEmodeCategories =
+    poolReserve.eModes?.filter((e) => e.collateralEnabled && !e.ltvzeroEnabled) ?? [];
 
   // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;

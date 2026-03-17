@@ -139,7 +139,9 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     marketReferencePriceInUsd,
   });
 
-  // Check for collateral assets with LTV=0 outside of e-mode that would block exit
+  // Check for collateral assets with LTV=0 outside of e-mode that would block exit.
+  // The contract checks getUserReserveLtv with target category=0, which always returns base LTV.
+  // So any collateral with baseLTVasCollateral=0 will cause the exit tx to revert.
   const zeroLtvCollateralSymbols = user.userReservesData
     .filter(
       (userReserve) =>
