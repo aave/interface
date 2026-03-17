@@ -1,13 +1,10 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
-import { Contract } from 'ethers';
 import { gql } from 'graphql-request';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { getEnsProfilesMap } from 'src/utils/ens';
 import { subgraphRequest } from 'src/utils/subgraphRequest';
-
-import { ENS_REVERSE_REGISTRAR } from './useGovernanceProposals';
 
 export type ProposalVote = {
   proposalId: string;
@@ -18,6 +15,7 @@ export type ProposalVote = {
 
 export type EnhancedProposalVote = ProposalVote & {
   ensName?: string;
+  ensAvatar?: string;
 };
 
 export interface ProposalVotes {
@@ -26,21 +24,6 @@ export interface ProposalVotes {
   combinedVotes: ProposalVote[];
   isFetching: boolean;
 }
-
-const abi = [
-  {
-    inputs: [{ internalType: 'contract ENS', name: '_ens', type: 'address' }],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  {
-    inputs: [{ internalType: 'address[]', name: 'addresses', type: 'address[]' }],
-    name: 'getNames',
-    outputs: [{ internalType: 'string[]', name: 'r', type: 'string[]' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-];
 
 const getProposalVotes = gql`
   query getProposalVotes($proposalId: Int!) {
@@ -71,13 +54,6 @@ const fetchProposalVotes = async (
   }));
 };
 
-const fetchProposalVotesEnsNames = async (addresses: string[]) => {
-  const provider = getProvider(governanceV3Config.coreChainId);
-  const contract = new Contract(ENS_REVERSE_REGISTRAR, abi);
-  const connectedContract = contract.connect(provider);
-  return connectedContract.getNames(addresses) as Promise<string[]>;
-};
-
 export const useProposalVotesQuery = ({
   proposalId,
   votingChainId,
@@ -88,8 +64,12 @@ export const useProposalVotesQuery = ({
   return useQuery({
     queryFn: async () => {
       const votes = await fetchProposalVotes(proposalId, votingChainId as ChainId);
-      const votesEnsNames = await fetchProposalVotesEnsNames(votes.map((vote) => vote.voter));
-      return votes.map((vote, index) => ({ ...vote, ensName: votesEnsNames[index] }));
+      const ensProfiles = await getEnsProfilesMap(votes.map((vote) => vote.voter));
+      return votes.map((vote) => ({
+        ...vote,
+        ensName: ensProfiles[vote.voter.toLowerCase()]?.name,
+        ensAvatar: ensProfiles[vote.voter.toLowerCase()]?.avatar,
+      }));
     },
     queryKey: ['proposalVotes', proposalId],
     enabled: votingChainId !== undefined && !isNaN(proposalId),

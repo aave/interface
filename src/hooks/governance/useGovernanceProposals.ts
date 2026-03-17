@@ -1,7 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { constants, Contract } from 'ethers';
+import { constants } from 'ethers';
 import { gql } from 'graphql-request';
 import {
   adaptCacheProposalToDetail,
@@ -26,7 +26,7 @@ import {
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
-import { getProvider } from 'src/utils/marketsAndNetworksConfig';
+import { getEnsProfilesMap } from 'src/utils/ens';
 import { subgraphRequest } from 'src/utils/subgraphRequest';
 
 import { getProposal } from './useProposal';
@@ -42,7 +42,6 @@ const USE_GOVERNANCE_CACHE = process.env.NEXT_PUBLIC_USE_GOVERNANCE_CACHE === 't
 const PAGE_SIZE = 10;
 const VOTES_PAGE_SIZE = 50;
 const SEARCH_RESULTS_LIMIT = 10;
-export const ENS_REVERSE_REGISTRAR = '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C';
 
 // ============================================
 // Subgraph search query
@@ -77,16 +76,6 @@ const getProposalVotesQuery = gql`
     }
   }
 `;
-
-const ensAbi = [
-  {
-    inputs: [{ internalType: 'address[]', name: 'addresses', type: 'address[]' }],
-    name: 'getNames',
-    outputs: [{ internalType: 'string[]', name: 'r', type: 'string[]' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-];
 
 type SubgraphVote = {
   proposalId: string;
@@ -334,18 +323,13 @@ export const useGovernanceVotersSplit = (
   const { data: graphVotes, isFetching: graphFetching } = useQuery({
     queryFn: async () => {
       const votes = await fetchSubgraphVotes(proposalId, votingChainId as ChainId);
-      try {
-        const provider = getProvider(governanceV3Config.coreChainId);
-        const contract = new Contract(ENS_REVERSE_REGISTRAR, ensAbi);
-        const connectedContract = contract.connect(provider);
-        const ensNames: string[] = await connectedContract.getNames(votes.map((v) => v.voter));
-        return votes.map((vote, i) => ({
-          ...vote,
-          ensName: ensNames[i] || undefined,
-        }));
-      } catch {
-        return votes;
-      }
+      const ensProfiles = await getEnsProfilesMap(votes.map((vote) => vote.voter));
+
+      return votes.map((vote) => ({
+        ...vote,
+        ensName: ensProfiles[vote.voter.toLowerCase()]?.name,
+        ensAvatar: ensProfiles[vote.voter.toLowerCase()]?.avatar,
+      }));
     },
     queryKey: ['governance-voters-graph', proposalId],
     enabled: !USE_GOVERNANCE_CACHE && votingChainId !== undefined && !isNaN(proposalId),
@@ -362,18 +346,8 @@ export const useGovernanceVotersSplit = (
       ]
     : [];
 
-  const { data: cacheEnsNames } = useQuery({
-    queryFn: async () => {
-      const provider = getProvider(governanceV3Config.coreChainId);
-      const contract = new Contract(ENS_REVERSE_REGISTRAR, ensAbi);
-      const connectedContract = contract.connect(provider);
-      const names: string[] = await connectedContract.getNames(cacheVoterAddresses);
-      const map: Record<string, string> = {};
-      cacheVoterAddresses.forEach((addr, i) => {
-        if (names[i]) map[addr.toLowerCase()] = names[i];
-      });
-      return map;
-    },
+  const { data: cacheEnsProfiles } = useQuery({
+    queryFn: () => getEnsProfilesMap(cacheVoterAddresses),
     queryKey: ['governance-voters-ens', proposalId, cacheVoterAddresses],
     enabled: USE_GOVERNANCE_CACHE && cacheVoterAddresses.length > 0,
     refetchOnMount: false,
@@ -384,7 +358,8 @@ export const useGovernanceVotersSplit = (
   if (USE_GOVERNANCE_CACHE) {
     const withEns = (vote: VoteDisplay): VoteDisplay => ({
       ...vote,
-      ensName: cacheEnsNames?.[vote.voter.toLowerCase()],
+      ensName: cacheEnsProfiles?.[vote.voter.toLowerCase()]?.name,
+      ensAvatar: cacheEnsProfiles?.[vote.voter.toLowerCase()]?.avatar,
     });
     const yaeVotes = (cacheForData?.pages.flatMap((p) => p.votes.map(adaptCacheVote)) || []).map(
       withEns
@@ -411,11 +386,13 @@ export const useGovernanceVotersSplit = (
     support: boolean;
     votingPower: string;
     ensName?: string;
+    ensAvatar?: string;
   }): VoteDisplay => ({
     voter: v.voter,
     support: v.support,
     votingPower: v.votingPower,
     ensName: v.ensName,
+    ensAvatar: v.ensAvatar,
   });
 
   const yaeVotes =
