@@ -150,13 +150,11 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     )
     .map((r) => r.reserve.symbol);
 
-  const hasBorrows = Number(user.totalBorrowsUSD) > 0;
-
   // error handling
   let blockingError: ErrorType | undefined = undefined;
   // if user is disabling eMode
   if (user.isInEmode && disableEmode) {
-    if (hasBorrows && zeroLtvCollateralSymbols.length > 0) {
+    if (zeroLtvCollateralSymbols.length > 0) {
       blockingError = ErrorType.ZERO_LTV_COLLATERAL_BLOCKING;
     } else if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
       blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION;
@@ -173,10 +171,8 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
             </Typography>
             <Typography variant="caption">
               <Trans>
-                You must repay your borrow positions before exiting E-Mode.{' '}
-                {zeroLtvCollateralSymbols.join(', ')}{' '}
-                {zeroLtvCollateralSymbols.length === 1 ? 'has' : 'have'} 0 LTV outside of E-Mode and
-                cannot remain as collateral.
+                You must disable {zeroLtvCollateralSymbols.join(', ')} as collateral before exiting
+                E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral.
               </Trans>
             </Typography>
           </Warning>
