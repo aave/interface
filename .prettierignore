@@ -23,5 +23,6 @@ src/locales/
 *.ico
 *.json
 *.md
+*.mermaid
 *.log
 *.lock

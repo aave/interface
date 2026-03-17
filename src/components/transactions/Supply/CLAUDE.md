@@ -17,22 +17,94 @@ E-Mode (Efficiency Mode) in Aave V3 allows users to get higher LTV (Loan-to-Valu
 2. **Global e-modes** (`eModes` from `useAppDataContext()`): `Record<number, EmodeCategory>` — full category info including all assets in each category with their collateral/borrowable flags.
 3. **User's current e-mode** (`user.userEmodeCategoryId`): The category the user is currently in (0 = none).
 
-### Impact on Health Factor
+## Bitmaps
+
+Each e-mode category has three bitmaps. Each bit represents a reserve (by its on-chain reserve ID). All are **opt-in** — governance explicitly sets each bit.
+
+### `collateralBitmap`
+Marks which assets are recognized as collateral in this e-mode category. If an asset's bit is set, it gets the category's boosted liquidation threshold for HF calculation. If not set, the asset falls back to its base reserve liquidation threshold.
+
+### `borrowableBitmap`
+Marks which assets can be borrowed while in this e-mode. When a user is in an e-mode, they can **only** borrow assets in this bitmap. Switching e-modes reverts if the user has borrows outside the target category's borrowable bitmap.
+
+### `ltvzeroBitmap`
+A subset of `collateralBitmap`. Marks which collateral assets get **0 LTV** (zero borrow power) despite being in the category. The asset still gets the e-mode liquidation threshold (protects HF), but contributes nothing to borrow power. Used by governance for assets that are correlated enough to protect against liquidation but too risky to borrow against at boosted rates. Only checked when the asset is already in `collateralBitmap` — setting it without collateral has no effect.
+
+## LTV Resolution (`getUserReserveLtv`)
+
+The on-chain function that determines an asset's LTV for a user, evaluated in order:
+
+```
+1. Is the user in an e-mode (categoryId != 0)?
+   AND is the asset in that category's collateralBitmap?
+
+   YES → Is the asset in the ltvzeroBitmap?
+         YES → LTV = 0 (zero borrow power)
+         NO  → LTV = category's boosted LTV (e.g. 90%)
+
+   NO  → LTV = base reserve LTV (baseLTVasCollateral)
+         This could be 0 if governance set it that way.
+
+2. If user is NOT in e-mode (categoryId = 0):
+   → LTV = base reserve LTV (always)
+```
+
+## Liquidation Threshold Resolution
+
+Similar but simpler — no ltvzero concept:
+
+```
+1. User in e-mode AND asset in collateralBitmap?
+   YES → liquidation threshold = category's boosted threshold
+   NO  → liquidation threshold = base reserve threshold
+
+2. User NOT in e-mode?
+   → liquidation threshold = base reserve threshold (always)
+```
+
+Key difference from LTV: ltvzero does NOT affect liquidation threshold. A ltvzero asset still gets the boosted liquidation threshold, protecting HF. It just can't generate borrow power.
+
+## Base Reserve Config (outside e-mode)
+
+Set by governance on the reserve itself, not on any e-mode category:
+- `baseLTVasCollateral` — LTV when not boosted by e-mode. If 0, asset cannot be collateral outside e-mode.
+- `liquidationThreshold` — threshold when not boosted by e-mode. If 0, asset cannot be collateral at all.
+- `usageAsCollateralEnabled` — derived from liquidation threshold being non-zero.
+
+## `hasZeroLtvCollateral` Flag
+
+During HF calculation (`calculateUserAccountData`), if any collateral asset has LTV = 0, a flag `hasZeroLtvCollateral` is set. This flag is used in `validateHFAndLtvzero` (called on withdraw/transfer) to enforce: if you have zero-LTV collateral, you must withdraw/transfer that asset first before touching your good collateral. Prevents users from gaming the system.
+
+## Impact on Health Factor
 
 When switching e-modes, the liquidation threshold changes for **ALL** collateral positions, not just the asset being supplied. Some assets may have 0% LTV in the new category. This is why we use `formatUserSummary()` to recalculate the entire user position under the new e-mode, rather than just adjusting the threshold for the newly supplied asset.
 
-### Collateral Options in Supply Modal
+## Cases That Revert
 
-The `CollateralOptionsSelector` component shows users their collateralization choices when supplying:
-- Each e-mode category where the asset can be collateral, with its LTV % and borrowable assets
-- A "Default" option (category 0) with the base reserve LTV
-- E-mode names are abstracted — users see LTV percentages and borrowable asset lists
+### `setUserEMode` reverts when:
 
-When a user selects a different e-mode tier, the supply transaction bundles `setUserEMode` + `supply` into a single atomic multicall on the Pool contract.
+1. **Incompatible borrows** — user has a borrow on an asset not in target category's `borrowableBitmap` (or not `borrowingEnabled` on base config if switching to category 0). Error: `InvalidDebtInEmode`.
 
-### On-Chain Transaction Bundling
+2. **Collateral with 0 LTV** — user has collateral enabled on an asset where `getUserReserveLtv` returns 0 in the target category. This happens when:
+   - Asset is in target's `collateralBitmap` AND `ltvzeroBitmap` → 0
+   - Asset is NOT in target's `collateralBitmap` AND base LTV is 0 → 0
+   Error: `InvalidCollateralInEmode`.
 
-The Aave V3 Pool contract supports `multicall(bytes[])`. When the user selects an e-mode different from their current one, `SupplyActions` encodes both `setUserEMode(categoryId)` and `supply(asset, amount, onBehalfOf, referralCode)` as calldata and sends them as a single multicall transaction. This ensures atomicity — either both succeed or both revert.
+3. **HF drops below 1.0** — after applying the new e-mode, the recalculated health factor is below `HEALTH_FACTOR_LIQUIDATION_THRESHOLD`. Error: `HealthFactorLowerThanLiquidationThreshold`.
+
+### `setUserEMode` does NOT revert when:
+
+- User has no positions (`userConfig.isEmpty()` → skips all checks)
+- Asset is in `collateralBitmap` but NOT in `ltvzeroBitmap` → gets boosted LTV, fine
+- Asset is NOT in `collateralBitmap` but has non-zero base LTV → falls back to base, fine
+- User has the asset supplied but NOT enabled as collateral → `isEnabledAsCollateral` is false, skipped
+
+### Supply never reverts due to LTV/e-mode:
+
+- Supply always succeeds regardless of LTV or e-mode state
+- On first supply, `validateAutomaticUseAsCollateral` decides if collateral is auto-enabled
+- If LTV is 0 (base or via ltvzero), collateral is NOT auto-enabled — asset earns yield only
+- User cannot manually enable collateral on a 0-LTV asset either (`validateUseAsCollateral` blocks it)
 
 ## Caveats for Changing E-Mode
 
@@ -65,7 +137,7 @@ Assets in the old category but not the new one lose their e-mode LTV boost. The 
 
 ### Disabling e-mode (switching to category 0)
 
-All assets revert to their base LTV/liquidation threshold. When switching to category 0, the borrow check validates that each borrowed asset has `borrowingEnabled` on its base reserve config (not the e-mode bitmap). The HF check ensures the position stays above 1.0 at base thresholds.
+All assets revert to their base LTV/liquidation threshold. When switching to category 0, the borrow check validates that each borrowed asset has `borrowingEnabled` on its base reserve config (not the e-mode bitmap). The HF check ensures the position stays above 1.0 at base thresholds. Assets with 0 base LTV that were only collateral-eligible via e-mode will cause the switch to revert if the user still has them enabled as collateral.
 
 ### Supply as first position (no existing borrows)
 
@@ -74,3 +146,17 @@ The simplest case — if `userConfig.isEmpty()`, `validateSetUserEMode` returns 
 ### Isolation mode interaction
 
 If the user is in isolation mode (supplying an isolated asset as sole collateral), e-mode settings are mostly irrelevant because isolation mode overrides the LTV/threshold calculation. The `CollateralOptionsSelector` should not appear for isolated assets since their collateral behavior is governed by isolation mode, not e-mode.
+
+## Collateral Options in Supply Modal
+
+The `CollateralOptionsSelector` component shows users their collateralization choices when supplying:
+- Each e-mode category where the asset can be collateral, with its LTV % and borrowable assets
+- The user's current e-mode always appears and is never blocked (no switch needed)
+- A "Default" option (category 0) with the base reserve LTV (even if 0)
+- Blocked options show a tooltip explaining why (incompatible borrows, 0 LTV collateral)
+
+When a user selects a different e-mode tier, the supply transaction bundles `setUserEMode` + `supply` into a single atomic multicall on the Pool contract.
+
+## On-Chain Transaction Bundling
+
+The Aave V3 Pool contract supports `multicall(bytes[])`. When the user selects an e-mode different from their current one, `SupplyActions` encodes both `setUserEMode(categoryId)` and `supply(asset, amount, onBehalfOf, referralCode)` as calldata and sends them as a single multicall transaction. This ensures atomicity — either both succeed or both revert.
