@@ -172,7 +172,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.mainnet]: {
     name: 'Ethereum',
     publicJsonRPCUrl: [
-      'https://eth-mainnet.g.alchemy.com/v2/A5lVk67jILrHl1VZMVGdwpDSydxdltaW',
       'https://mainnet.gateway.tenderly.co',
       'https://rpc.flashbots.net',
       'https://eth.llamarpc.com',
