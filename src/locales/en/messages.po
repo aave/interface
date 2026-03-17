@@ -1229,6 +1229,10 @@ msgstr "Asset cannot be migrated to {marketName} v3 Market since collateral asse
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "E-Mode required"
+msgstr "E-Mode required"
+
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
@@ -2469,6 +2473,7 @@ msgid "Supply"
 msgstr "Supply"
 
 #: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Cannot disable E-Mode"
 msgstr "Cannot disable E-Mode"
 
@@ -3150,6 +3155,10 @@ msgstr "Voted YAE"
 msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
 msgstr "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
 
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "This asset has 0 LTV and cannot be used as collateral. Enable an E-Mode to use {symbol} as collateral."
+msgstr "This asset has 0 LTV and cannot be used as collateral. Enable an E-Mode to use {symbol} as collateral."
+
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Repay with Collateral"
@@ -3745,6 +3754,10 @@ msgstr "Merit Program rewards can be claimed"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Your supplies"
 msgstr "Your supplies"
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "You must disable {0} as collateral before exiting E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral."
+msgstr "You must disable {0} as collateral before exiting E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral."
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Transaction failed"
