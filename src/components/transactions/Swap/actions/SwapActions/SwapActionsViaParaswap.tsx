@@ -12,7 +12,13 @@ import { useShallow } from 'zustand/shallow';
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
-import { areActionsBlocked, isParaswapRates, SwapParams, SwapState } from '../../types';
+import {
+  areActionsBlocked,
+  isParaswapRates,
+  isShieldBlocked,
+  SwapParams,
+  SwapState,
+} from '../../types';
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
@@ -237,6 +243,7 @@ export const SwapActionsViaParaswap = ({
       }}
       fetchingData={state.actionsLoading || loadingPermitData}
       blocked={areActionsBlocked(state)}
+      blockedText={isShieldBlocked(state) ? <Trans>Blocked by Shield</Trans> : undefined}
       tryPermit={tryPermit}
     />
   );

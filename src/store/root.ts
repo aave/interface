@@ -67,6 +67,9 @@ if (typeof document !== 'undefined') {
 
       // Hydrate favorite markets from localStorage
       useRootStore.getState().hydrateFavoriteMarkets();
+
+      // Hydrate shield preference from localStorage
+      useRootStore.getState().hydrateShield();
     }
   };
 }

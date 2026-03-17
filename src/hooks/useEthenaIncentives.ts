@@ -3,7 +3,7 @@ import {
   AaveV3EthereumLido,
   AaveV3Mantle,
   AaveV3Plasma,
-} from '@bgd-labs/aave-address-book';
+} from '@aave-dao/aave-address-book';
 
 const getEthenaData = (assetAddress: string): number | undefined =>
   ETHENA_DATA_MAP.get(assetAddress);

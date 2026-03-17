@@ -29,7 +29,8 @@ import {
   GhoAvalanche,
   GhoGnosis,
   GhoMantle,
-} from '@bgd-labs/aave-address-book';
+  GhoPlasma,
+} from '@aave-dao/aave-address-book';
 import { ReactNode } from 'react';
 
 // Enable for premissioned market
@@ -471,6 +472,7 @@ export const marketsData: {
       UI_POOL_DATA_PROVIDER: AaveV3Plasma.UI_POOL_DATA_PROVIDER,
       UI_INCENTIVE_DATA_PROVIDER: AaveV3Plasma.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Plasma.COLLECTOR,
+      GHO_TOKEN_ADDRESS: GhoPlasma.GHO_TOKEN,
     },
     enabledFeatures: {
       // liquiditySwap: true,

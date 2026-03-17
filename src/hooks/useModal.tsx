@@ -1,5 +1,5 @@
 import { ChainId, Stake } from '@aave/contract-helpers';
-import { AaveV3Ethereum } from '@bgd-labs/aave-address-book';
+import { AaveV3Ethereum } from '@aave-dao/aave-address-book';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { VoteProposalData } from 'src/modules/governance/types';
