@@ -531,6 +531,10 @@ msgstr "repaid"
 msgid "Available to Stake"
 msgstr "Available to Stake"
 
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Show less"
+msgstr "Show less"
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
 msgstr "Switch Network"
@@ -1089,6 +1093,10 @@ msgstr "Legacy Markets"
 msgid "Learn more."
 msgstr "Learn more."
 
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Active"
+msgstr "Active"
+
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationList.tsx
 msgid "Current v2 balance"
@@ -1220,6 +1228,10 @@ msgstr "Asset cannot be migrated to {marketName} v3 Market since collateral asse
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
+
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "E-Mode required"
+msgstr "E-Mode required"
 
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
@@ -1396,6 +1408,10 @@ msgstr "This represents the threshold at which a borrow position will be conside
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated"
 msgstr "Isolated"
+
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Borrow:"
+msgstr "Borrow:"
 
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switching E-Mode"
@@ -1831,6 +1847,10 @@ msgstr "Proposal details"
 msgid "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
 msgstr "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
 
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "See {0} more"
+msgstr "See {0} more"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
@@ -2214,6 +2234,10 @@ msgstr "Merit Program and Self rewards can be claimed"
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "The order could't be filled."
 msgstr "The order could't be filled."
+
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Collateral options"
+msgstr "Collateral options"
 
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
@@ -2871,6 +2895,10 @@ msgstr "dashboard"
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
 
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Borrow: All eligible assets"
+msgstr "Borrow: All eligible assets"
+
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Staked Balance"
 msgstr "Staked Balance"
@@ -3106,6 +3134,10 @@ msgstr "and about SPK program"
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "LTV"
+msgstr "LTV"
+
 #: src/components/AddressBlockedModal.tsx
 msgid "Refresh"
 msgstr "Refresh"
@@ -3122,6 +3154,10 @@ msgstr "Voted YAE"
 #: src/modules/history/HistoryWrapperMobile.tsx
 msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
 msgstr "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
+
+#: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+msgid "This asset has 0 LTV and cannot be used as collateral. Enable an E-Mode to use {symbol} as collateral."
+msgstr "This asset has 0 LTV and cannot be used as collateral. Enable an E-Mode to use {symbol} as collateral."
 
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx

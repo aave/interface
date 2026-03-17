@@ -3,7 +3,10 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
-import { ExtendedFormattedUser } from 'src/hooks/app-data-provider/useAppDataProvider';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
@@ -12,6 +15,7 @@ import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsHFLine, DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
+import { CollateralOptionsSelector } from '../Supply/CollateralOptionsSelector';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { CollateralChangeActions } from './CollateralChangeActions';
 
@@ -24,6 +28,7 @@ export enum ErrorType {
   CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL,
   CAN_NOT_SWITCH_USAGE_AS_COLLATERAL_MODE,
   ZERO_LTV_WITHDRAW_BLOCKED,
+  ZERO_LTV_ENABLE_EMODE_FIRST,
 }
 
 export const CollateralChangeModalContent = ({
@@ -35,16 +40,20 @@ export const CollateralChangeModalContent = ({
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { debtCeiling } = useAssetCaps();
+  const { reserves, eModes } = useAppDataContext();
 
   const [collateralEnabled, setCollateralEnabled] = useState(
     userReserve.usageAsCollateralEnabledOnUser
   );
+  const [selectedEmodeId, setSelectedEmodeId] = useState<number>(user.userEmodeCategoryId);
 
-  // Check if asset has non-zero liquidation threshold (base or in user's e-mode)
+  // Check if asset has non-zero LTV (base or in user's active e-mode)
   const userEMode = poolReserve.eModes?.find((e) => e.id === user?.userEmodeCategoryId);
-  const hasLiquidationThreshold =
-    poolReserve.reserveLiquidationThreshold !== '0' ||
-    (user?.isInEmode && userEMode?.collateralEnabled);
+  const hasNonZeroLtv =
+    poolReserve.baseLTVasCollateral !== '0' || (user?.isInEmode && userEMode?.collateralEnabled);
+
+  // Find e-mode categories where this asset can be used as collateral
+  const collateralEmodeCategories = poolReserve.eModes?.filter((e) => e.collateralEnabled) ?? [];
 
   // Health factor calculations
   const usageAsCollateralModeAfterSwitch = !userReserve.usageAsCollateralEnabledOnUser;
@@ -76,7 +85,13 @@ export const CollateralChangeModalContent = ({
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
   } else if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
     blockingError = ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY;
-  } else if (!userReserve.usageAsCollateralEnabledOnUser && !hasLiquidationThreshold) {
+  } else if (
+    !userReserve.usageAsCollateralEnabledOnUser &&
+    !hasNonZeroLtv &&
+    collateralEmodeCategories.length > 0
+  ) {
+    blockingError = ErrorType.ZERO_LTV_ENABLE_EMODE_FIRST;
+  } else if (!userReserve.usageAsCollateralEnabledOnUser && !hasNonZeroLtv) {
     blockingError = ErrorType.CAN_NOT_USE_THIS_CURRENCY_AS_COLLATERAL;
   } else if (
     userReserve.usageAsCollateralEnabledOnUser &&
@@ -100,6 +115,8 @@ export const CollateralChangeModalContent = ({
             collateral call
           </Trans>
         );
+      case ErrorType.ZERO_LTV_ENABLE_EMODE_FIRST:
+        return null;
       case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
         return (
           <Trans>
@@ -165,7 +182,30 @@ export const CollateralChangeModalContent = ({
         />
       </TxModalDetails>
 
-      {blockingError !== undefined && (
+      {blockingError === ErrorType.ZERO_LTV_ENABLE_EMODE_FIRST && (
+        <>
+          <Warning severity="info" sx={{ mt: 4, alignItems: 'center' }}>
+            <Typography variant="subheader1">
+              <Trans>E-Mode required</Trans>
+            </Typography>
+            <Typography variant="caption">
+              <Trans>
+                This asset has 0 LTV and cannot be used as collateral. Enable an E-Mode to use{' '}
+                {symbol} as collateral.
+              </Trans>
+            </Typography>
+          </Warning>
+          <CollateralOptionsSelector
+            poolReserve={poolReserve}
+            eModes={eModes}
+            user={user}
+            reserves={reserves}
+            selectedEmodeId={selectedEmodeId}
+            onSelect={setSelectedEmodeId}
+          />
+        </>
+      )}
+      {blockingError !== undefined && blockingError !== ErrorType.ZERO_LTV_ENABLE_EMODE_FIRST && (
         <Typography variant="helperText" color="error.main">
           <BlockingError />
         </Typography>
@@ -178,7 +218,19 @@ export const CollateralChangeModalContent = ({
         poolReserve={poolReserve}
         usageAsCollateral={usageAsCollateralModeAfterSwitch}
         isWrongNetwork={isWrongNetwork}
-        blocked={blockingError !== undefined}
+        blocked={
+          blockingError !== undefined &&
+          !(
+            blockingError === ErrorType.ZERO_LTV_ENABLE_EMODE_FIRST &&
+            selectedEmodeId !== user.userEmodeCategoryId
+          )
+        }
+        selectedEmodeId={
+          blockingError === ErrorType.ZERO_LTV_ENABLE_EMODE_FIRST &&
+          selectedEmodeId !== user.userEmodeCategoryId
+            ? selectedEmodeId
+            : undefined
+        }
       />
     </>
   );
