@@ -43,13 +43,10 @@ export default function DashboardPage() {
                   <Badge>V3</Badge>
                 </V3>
               </TitleRow>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="#BDBDBD">
                 Main Ethereum market with the largest selection of assets and yield options
               </Typography>
             </TitleContainer>
-            <Button size="small" variant="outlined">
-              view transactions
-            </Button>
           </LeftContainer>
           <RightContainer>
             <StatBlock>

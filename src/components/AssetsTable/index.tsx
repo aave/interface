@@ -12,6 +12,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TableSortLabel,
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
@@ -25,11 +26,72 @@ export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
   const isSupply = type === 'supply';
   const openModal = useModalStore((s) => s.openModal);
 
+  type SortKey = 'assets' | 'walletBalance' | 'apy';
+  const [sortKey, setSortKey] = useState<SortKey>('assets');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
+  const [isAlertShown, setIsAlertShown] = useState<boolean>(true);
 
-  const handleSupply = () => {
-    openModal(ModalType.SupplySuccess, { amount: '0.0030000', token: 'ETH' });
+  const rows = [
+    { symbol: 'ETH', tokenIconSrc: '/icons/tokens/eth.svg', walletBalance: 0, apy: 1.86, canBeCollateral: true },
+    { symbol: 'DAI', tokenIconSrc: '/icons/tokens/dai.svg', walletBalance: 128.5, apy: 2.31, canBeCollateral: false },
+    {
+      symbol: 'USDT',
+      tokenIconSrc: '/icons/tokens/usdt.svg',
+      walletBalance: 531.12,
+      apy: 3.04,
+      canBeCollateral: true,
+    },
+    { symbol: 'LINK', tokenIconSrc: '/icons/tokens/link.svg', walletBalance: 42, apy: 5.2, canBeCollateral: false },
+    { symbol: 'MKR', tokenIconSrc: '/icons/tokens/mkr.svg', walletBalance: 1.5, apy: 6.71, canBeCollateral: true },
+    {
+      symbol: 'USDC',
+      tokenIconSrc: '/icons/tokens/usdbc.svg',
+      walletBalance: 2300,
+      apy: 4.12,
+      canBeCollateral: false,
+    },
+    {
+      symbol: 'wstETH',
+      tokenIconSrc: '/icons/tokens/wsteth.svg',
+      walletBalance: 0.22,
+      apy: 7.05,
+      canBeCollateral: true,
+    },
+  ];
+
+  const sortedRows = isSupply
+    ? [...rows].sort((a, b) => {
+        let diff = 0;
+        switch (sortKey) {
+          case 'assets':
+            diff = a.symbol.localeCompare(b.symbol);
+            break;
+          case 'walletBalance':
+            diff = a.walletBalance - b.walletBalance;
+            break;
+          case 'apy':
+            diff = a.apy - b.apy;
+            break;
+        }
+        return sortDirection === 'asc' ? diff : -diff;
+      })
+    : rows;
+
+  const handleRequestSort = (key: SortKey) => {
+    if (!isSupply) return;
+    if (sortKey === key) {
+      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+    } else {
+      setSortKey(key);
+      setSortDirection('asc');
+    }
+  };
+
+  const handleSupply = (token: string, walletBalance: number) => {
+    openModal(ModalType.SupplySuccess, { amount: walletBalance.toFixed(6), token });
   };
 
   const handleBorrow = () => {
@@ -51,48 +113,93 @@ export default function AssetsTable({ type }: { type: 'supply' | 'borrow' }) {
         </Stack>
       </Stack>
 
-      <Alert severity="warning">
-        {isSupply
-          ? 'Your Ethereum wallet is empty. Purchase or transfer assets.'
-          : 'To borrow you need to supply any asset to be used as collateral.'}
-      </Alert>
+      {isAlertShown && (
+        <Alert severity="warning" onClose={() => setIsAlertShown(false)}>
+          {isSupply
+            ? 'Your Ethereum wallet is empty. Purchase or transfer assets.'
+            : 'To borrow you need to supply any asset to be used as collateral.'}
+        </Alert>
+      )}
 
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Assets</TableCell>
-            <TableCell align="right">{isSupply ? 'Wallet Balance' : 'Available'}</TableCell>
-            <TableCell align="right">{isSupply ? 'APY' : 'APY, variable'}</TableCell>
+            <TableCell>
+              {isSupply ? (
+                <TableSortLabel
+                  active={sortKey === 'assets'}
+                  direction={sortKey === 'assets' ? sortDirection : 'asc'}
+                  onClick={() => handleRequestSort('assets')}
+                >
+                  Assets
+                </TableSortLabel>
+              ) : (
+                'Assets'
+              )}
+            </TableCell>
+            <TableCell align="right">
+              {isSupply ? (
+                <TableSortLabel
+                  active={sortKey === 'walletBalance'}
+                  direction={sortKey === 'walletBalance' ? sortDirection : 'asc'}
+                  onClick={() => handleRequestSort('walletBalance')}
+                >
+                  Wallet Balance
+                </TableSortLabel>
+              ) : (
+                'Available'
+              )}
+            </TableCell>
+            <TableCell align="right">
+              {isSupply ? (
+                <TableSortLabel
+                  active={sortKey === 'apy'}
+                  direction={sortKey === 'apy' ? sortDirection : 'asc'}
+                  onClick={() => handleRequestSort('apy')}
+                >
+                  APY
+                </TableSortLabel>
+              ) : (
+                'APY, variable'
+              )}
+            </TableCell>
             {isSupply && <TableCell align="center">Can be collateral</TableCell>}
             <TableCell />
           </TableRow>
         </TableHead>
 
         <TableBody>
-          {Array.from({ length: 7 }).map((_, i) => (
-            <TableRow key={i}>
+          {sortedRows.map((row) => (
+            <TableRow key={row.symbol}>
               <TableCell>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <Image src="/icons/networks/ethereum.svg" width={24} height={24} alt="eth" />
-                  <Typography>ETH</Typography>
+                  <Image src={row.tokenIconSrc} width={24} height={24} alt={row.symbol} />
+                  <Typography>{row.symbol}</Typography>
                 </Stack>
               </TableCell>
 
-              <TableCell align="right">0</TableCell>
-              <TableCell align="right">1.86%</TableCell>
+              <TableCell align="right">{row.walletBalance.toLocaleString(undefined, { maximumFractionDigits: 6 })}</TableCell>
+              <TableCell align="right">{row.apy.toFixed(2)}%</TableCell>
 
               {isSupply && (
                 <TableCell align="center">
-                  <Typography color="success.main">
-                    <Check />
-                  </Typography>
+                  {row.canBeCollateral ? (
+                    <Typography color="success.main">
+                      <Check />
+                    </Typography>
+                  ) : null}
                 </TableCell>
               )}
 
               <TableCell align="right">
                 {isSupply ? (
                   <Stack direction="row" spacing={1} justifyContent="flex-end">
-                    <Button size="small" variant="contained" color="inherit" onClick={handleSupply}>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="inherit"
+                      onClick={() => handleSupply(row.symbol, row.walletBalance)}
+                    >
                       Supply
                     </Button>
                     <IconButton size="small" onClick={(e) => setMenuAnchor(e.currentTarget)}>

@@ -10,7 +10,7 @@ export default function InfoCard({ title, extra }: { title: string; extra?: stri
         {extra && <Typography color="text.secondary">{extra}</Typography>}
       </Stack>
 
-      <Typography mt={4} color="text.secondary">
+      <Typography mt={4} color="#E0E0E0">
         Nothing supplied yet
       </Typography>
     </Paper>

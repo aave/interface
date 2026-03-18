@@ -18,7 +18,7 @@ const switchConfig = () => ({
 
       track: ({ theme }: { theme: Theme }) => ({
         borderRadius: 30,
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.secondary.dark,
         opacity: 1,
         border: '0px solid transparent',
         transition: 'border-color 0.25s ease',
