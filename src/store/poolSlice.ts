@@ -37,10 +37,8 @@ import {
 } from '@aave/contract-helpers/dist/esm/lendingPool-contract/lendingPoolTypes';
 import {
   LPRepayWithPermitParamsType,
-  LPSignedSupplyWithEModeSwitchParamsType,
   LPSignERC20ApprovalType,
   LPSupplyParamsType,
-  LPSupplyWithEModeSwitchParamsType,
   LPSupplyWithPermitType,
 } from '@aave/contract-helpers/dist/esm/v3-pool-contract/lendingPoolTypes';
 import { AaveSafetyModule, AaveV3Ethereum } from '@aave-dao/aave-address-book';
@@ -201,12 +199,6 @@ export interface PoolSlice {
   generateApproval: (args: ApproveType, opts?: GenerateApprovalOpts) => PopulatedTransaction;
   supply: (args: Omit<LPSupplyParamsType, 'user'>) => PopulatedTransaction;
   supplyWithPermit: (args: Omit<LPSupplyWithPermitType, 'user'>) => PopulatedTransaction;
-  supplyWithEmodeSwitch: (
-    args: Omit<LPSupplyWithEModeSwitchParamsType, 'user'>
-  ) => PopulatedTransaction;
-  supplyWithPermitAndEmodeSwitch: (
-    args: Omit<LPSignedSupplyWithEModeSwitchParamsType, 'user'>
-  ) => PopulatedTransaction;
   borrow: (args: Omit<LPBorrowParamsType, 'user'>) => PopulatedTransaction;
   getCreditDelegationApprovedAmount: (
     args: Omit<ApproveDelegationType, 'user' | 'amount'>
@@ -300,26 +292,6 @@ export const createPoolSlice: StateCreator<
         user,
         deadline: args.deadline,
         useOptimizedPath: get().useOptimizedPath(),
-        signature,
-      });
-    },
-    supplyWithEmodeSwitch: (args: Omit<LPSupplyWithEModeSwitchParamsType, 'user'>) => {
-      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
-      const user = get().account;
-      return poolBundle.supplyWithEModeSwitchTxBuilder.generateTxData({
-        ...args,
-        user,
-      });
-    },
-    supplyWithPermitAndEmodeSwitch: (
-      args: Omit<LPSignedSupplyWithEModeSwitchParamsType, 'user'>
-    ) => {
-      const poolBundle = get().getCorrectPoolBundle() as PoolBundle;
-      const user = get().account;
-      const signature = utils.joinSignature(args.signature);
-      return poolBundle.supplyWithEModeSwitchTxBuilder.generateSignedTxData({
-        ...args,
-        user,
         signature,
       });
     },

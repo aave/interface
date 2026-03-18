@@ -152,19 +152,20 @@ export const ConfigStatus = ({
   enabled: boolean;
   label?: string;
   warning?: boolean;
-  warningTooltip?: string;
+  warningTooltip?: React.ReactNode;
 }) => {
+  const defaultWarningTooltip = (
+    <Trans>
+      This asset has 0% LTV, meaning it does not contribute to borrowing power. Existing positions
+      with this asset as collateral still count toward the liquidation threshold and protect your
+      health factor. New positions cannot enable this asset as collateral.
+    </Trans>
+  );
+
   return (
     <>
       {warning ? (
-        <Tooltip
-          title={
-            warningTooltip ||
-            'This asset has 0% LTV, meaning it does not contribute to borrowing power. Existing positions with this asset as collateral still count toward the liquidation threshold and protect your health factor. New positions cannot enable this asset as collateral.'
-          }
-          arrow
-          placement="top"
-        >
+        <Tooltip title={warningTooltip || defaultWarningTooltip} arrow placement="top">
           <WarningAmberIcon fontSize="small" color="warning" sx={{ ml: 2, cursor: 'help' }} />
         </Tooltip>
       ) : enabled ? (

@@ -1027,6 +1027,7 @@ msgstr "Main Ethereum market with the largest selection of assets and yield opti
 
 #: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Disabled"
 msgstr "Disabled"
 
@@ -1534,6 +1535,10 @@ msgstr "Activating Cooldown"
 #: src/components/transactions/Swap/actions/ActionsSkeleton.tsx
 msgid "Comparing best rates..."
 msgstr "Comparing best rates..."
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "This will require two separate transactions: one to change E-Mode and one to supply."
+msgstr "This will require two separate transactions: one to change E-Mode and one to supply."
 
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Recipient address"
@@ -2564,6 +2569,10 @@ msgstr "You did not participate in this proposal"
 msgid "Low health factor after swap. Your position will carry a higher risk of liquidation."
 msgstr "Low health factor after swap. Your position will carry a higher risk of liquidation."
 
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Active {0} borrow is not compatible with this category"
+msgstr "Active {0} borrow is not compatible with this category"
+
 #: src/components/AssetCategoryMultiselect.tsx
 msgid "Principle Tokens"
 msgstr "Principle Tokens"
@@ -2711,6 +2720,10 @@ msgstr "Get ABP Token"
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
 msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
+
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "{0} collateral would have 0% LTV without E-Mode"
+msgstr "{0} collateral would have 0% LTV without E-Mode"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2899,6 +2912,11 @@ msgstr "Claim"
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
+
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "{0} collateral would have 0% LTV in this category"
+msgstr "{0} collateral would have 0% LTV in this category"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
@@ -3319,6 +3337,10 @@ msgstr "Can be executed"
 msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 
+#: src/modules/reserve-overview/ReserveEModePanel.tsx
+msgid "This asset has 0% LTV, meaning it does not contribute to borrowing power. Existing positions with this asset as collateral still count toward the liquidation threshold and protect your health factor. New positions cannot enable this asset as collateral."
+msgstr "This asset has 0% LTV, meaning it does not contribute to borrowing power. Existing positions with this asset as collateral still count toward the liquidation threshold and protect your health factor. New positions cannot enable this asset as collateral."
+
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
 msgstr "Both"
@@ -3627,6 +3649,7 @@ msgstr "Asset cannot be migrated because you have isolated collateral in {market
 msgid "Show assets with 0 balance"
 msgstr "Show assets with 0 balance"
 
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode"
 msgstr "E-Mode"
@@ -3993,6 +4016,10 @@ msgstr "This asset is eligible for {0} Sonic Rewards."
 #: pages/safety-module.page.tsx
 msgid "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
 msgstr "As a result of governance decisions, this ABPT staking pool is now deprecated. You have the flexibility to either migrate all of your tokens to v2 or unstake them without any cooldown period."
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "Category {selectedEmodeId}"
+msgstr "Category {selectedEmodeId}"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."

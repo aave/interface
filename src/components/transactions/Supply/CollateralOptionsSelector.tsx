@@ -1,3 +1,4 @@
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
@@ -6,6 +7,7 @@ import {
   AccordionSummary,
   Box,
   Button,
+  ButtonBase,
   Stack,
   Tooltip,
   Typography,
@@ -27,7 +29,7 @@ export interface CollateralOption {
   borrowableAssets: Array<{ symbol: string; iconSymbol: string }>;
   isCurrentEmode: boolean;
   blocked: boolean;
-  blockReason?: string;
+  blockReason?: React.ReactNode;
 }
 
 interface CollateralOptionsSelectorProps {
@@ -50,7 +52,7 @@ function getBlockReason(
   user: ExtendedFormattedUser,
   eModes: Record<number, EmodeCategory>,
   reserves: ComputedReserveData[]
-): string | undefined {
+): React.ReactNode | undefined {
   // No checks needed if user has no positions
   if (!user.userReservesData.length) return undefined;
 
@@ -67,12 +69,16 @@ function getBlockReason(
 
     const incompatibleBorrow = user.userReservesData.find(
       (ur) =>
-        Number(ur.scaledVariableDebt) > 0 &&
+        valueToBigNumber(ur.scaledVariableDebt).gt(0) &&
         !borrowableAddresses.includes(ur.reserve.underlyingAsset)
     );
 
     if (incompatibleBorrow) {
-      return `Active ${incompatibleBorrow.reserve.symbol} borrow is not compatible with this category`;
+      return (
+        <Trans>
+          Active {incompatibleBorrow.reserve.symbol} borrow is not compatible with this category
+        </Trans>
+      );
     }
   }
 
@@ -87,7 +93,7 @@ function getBlockReason(
     if (targetEmodeId === 0) {
       // Switching to no e-mode: check base LTV
       if (Number(reserve.baseLTVasCollateral) === 0) {
-        return `${reserve.symbol} collateral would have 0% LTV without E-Mode`;
+        return <Trans>{reserve.symbol} collateral would have 0% LTV without E-Mode</Trans>;
       }
     } else {
       // Switching to an e-mode: check if asset is in collateral bitmap with ltvzero
@@ -97,12 +103,12 @@ function getBlockReason(
         reserveTargetEmode.collateralEnabled &&
         reserveTargetEmode.ltvzeroEnabled
       ) {
-        return `${reserve.symbol} collateral would have 0% LTV in this category`;
+        return <Trans>{reserve.symbol} collateral would have 0% LTV in this category</Trans>;
       }
       // If asset is NOT in the category at all, it falls back to base LTV — check that too
       if (!reserveTargetEmode || !reserveTargetEmode.collateralEnabled) {
         if (Number(reserve.baseLTVasCollateral) === 0) {
-          return `${reserve.symbol} collateral would have 0% LTV in this category`;
+          return <Trans>{reserve.symbol} collateral would have 0% LTV in this category</Trans>;
         }
       }
     }
@@ -234,11 +240,18 @@ export const CollateralOptionsSelector = React.memo(
           {visibleOptions.map((option) => {
             const isSelected = selectedEmodeId === option.emodeId;
             const card = (
-              <Box
+              <ButtonBase
                 key={option.emodeId}
                 onClick={() => !option.blocked && onSelect(option.emodeId)}
+                disabled={option.blocked}
+                aria-label={`${(option.ltv * 100).toFixed(0)}% LTV${
+                  option.isCurrentEmode ? ' (active)' : ''
+                }${option.blocked ? ' (unavailable)' : ''}`}
                 sx={(theme) => ({
                   p: 2,
+                  width: '100%',
+                  display: 'block',
+                  textAlign: 'left',
                   border: `1px solid ${
                     isSelected ? theme.palette.primary.main : theme.palette.divider
                   }`,
@@ -332,10 +345,10 @@ export const CollateralOptionsSelector = React.memo(
                     <Trans>Borrow: All eligible assets</Trans>
                   </Typography>
                 )}
-              </Box>
+              </ButtonBase>
             );
             return option.blocked ? (
-              <Tooltip key={option.emodeId} title={option.blockReason || ''} arrow placement="top">
+              <Tooltip key={option.emodeId} title={option.blockReason ?? ''} arrow placement="top">
                 <span>{card}</span>
               </Tooltip>
             ) : (

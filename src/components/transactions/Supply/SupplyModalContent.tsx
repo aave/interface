@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { formatUserSummary, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
@@ -172,6 +172,8 @@ export const SupplyModalContent = React.memo(
     const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
     const [selectedEmodeId, setSelectedEmodeId] = useState<number>(user.userEmodeCategoryId);
     const hasEmodeOptions =
+      !poolReserve.isIsolated &&
+      !user.isInIsolationMode &&
       poolReserve.eModes.filter((e) => e.id !== 0 && e.collateralEnabled).length > 0;
     const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
@@ -222,11 +224,19 @@ export const SupplyModalContent = React.memo(
           marketReferenceCurrencyDecimals,
           marketReferencePriceInUsd,
         });
-        // The summary gives the HF with existing positions under new e-mode,
-        // but we also need to account for the new supply amount
+
+        // Only count the new supply as collateral if isolation mode rules allow it
+        // (mirrors the guard in calculateHFAfterSupply)
+        const supplyCountsAsCollateral =
+          (!user.isInIsolationMode && !poolReserve.isIsolated) ||
+          (user.isInIsolationMode &&
+            user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset);
+
+        const additionalCollateral = supplyCountsAsCollateral ? amountInEth : valueToBigNumber(0);
+
         const newTotalCollateral = valueToBigNumber(
           newSummary.totalCollateralMarketReferenceCurrency
-        ).plus(amountInEth);
+        ).plus(additionalCollateral);
 
         if (newTotalCollateral.lte(0) || newSummary.totalBorrowsMarketReferenceCurrency === '0') {
           return valueToBigNumber('-1');
@@ -241,7 +251,7 @@ export const SupplyModalContent = React.memo(
 
         const newLTWeighted = valueToBigNumber(newSummary.totalCollateralMarketReferenceCurrency)
           .multipliedBy(newSummary.currentLiquidationThreshold)
-          .plus(amountInEth.multipliedBy(reserveLT))
+          .plus(additionalCollateral.multipliedBy(reserveLT))
           .dividedBy(newTotalCollateral);
 
         return newTotalCollateral
@@ -353,11 +363,11 @@ export const SupplyModalContent = React.memo(
           <DetailsCollateralLine collateralType={effectiveCollateralType} />
           {needsEmodeSwitch && (
             <DetailsTextLine
-              description="E-Mode"
+              description={t`E-Mode`}
               text={
                 selectedEmodeId === 0
-                  ? 'Disabled'
-                  : eModes[selectedEmodeId]?.label || `Category ${selectedEmodeId}`
+                  ? t`Disabled`
+                  : eModes[selectedEmodeId]?.label || t`Category ${selectedEmodeId}`
               }
             />
           )}
@@ -390,6 +400,15 @@ export const SupplyModalContent = React.memo(
                   to {eModes[selectedEmodeId]?.label}. Borrowing will be restricted to assets within
                   the new category.
                 </Trans>
+              )}
+              {supplyUnWrapped && (
+                <>
+                  {' '}
+                  <Trans>
+                    This will require two separate transactions: one to change E-Mode and one to
+                    supply.
+                  </Trans>
+                </>
               )}
             </Typography>
           </Warning>

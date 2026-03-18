@@ -1,10 +1,14 @@
-import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  gasLimitRecommendations,
+  ProtocolAction,
+} from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
-import { Contract } from 'ethers';
+import { Contract, PopulatedTransaction } from 'ethers';
 import { parseUnits, splitSignature } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -62,6 +66,7 @@ export const SupplyActions = React.memo(
       tryPermit,
       supply,
       supplyWithPermit,
+      setUserEMode,
       walletApprovalMethodPreference,
       estimateGasLimit,
       addTransaction,
@@ -71,6 +76,7 @@ export const SupplyActions = React.memo(
         state.tryPermit,
         state.supply,
         state.supplyWithPermit,
+        state.setUserEMode,
         state.walletApprovalMethodPreference,
         state.estimateGasLimit,
         state.addTransaction,
@@ -167,50 +173,69 @@ export const SupplyActions = React.memo(
         let action = ProtocolAction.default;
 
         const needsEmodeSwitch = selectedEmodeId !== undefined;
+        const isNativeAsset = poolAddress.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
         if (needsEmodeSwitch) {
-          // Bundle setUserEMode + supply via Pool multicall
-          const poolContractAddress = currentMarketData.addresses.LENDING_POOL;
-          const poolInterface = new Contract(poolContractAddress, POOL_MULTICALL_ABI).interface;
-          const currentAccount = useRootStore.getState().account;
+          if (isNativeAsset) {
+            // Native ETH goes through WETH Gateway which is a separate contract —
+            // can't bundle with Pool.multicall. Send setUserEMode first, then supply.
+            const eModeTxs = await setUserEMode(selectedEmodeId);
+            const eModeTx = await eModeTxs[0].tx();
+            const eModeTxWithGas = await estimateGasLimit(eModeTx as PopulatedTransaction);
+            const eModeResponse = await sendTx(eModeTxWithGas);
+            await eModeResponse.wait(1);
 
-          const setEModeCalldata = poolInterface.encodeFunctionData('setUserEMode', [
-            selectedEmodeId,
-          ]);
-
-          let supplyCalldata: string;
-          if (usePermit && signatureParams) {
-            action = ProtocolAction.supplyWithPermit;
-            const sig = splitSignature(signatureParams.signature);
-            supplyCalldata = poolInterface.encodeFunctionData('supplyWithPermit', [
-              poolAddress,
-              parseUnits(amountToSupply, decimals).toString(),
-              currentAccount,
-              0,
-              signatureParams.deadline,
-              sig.v,
-              sig.r,
-              sig.s,
-            ]);
-          } else {
             action = ProtocolAction.supply;
-            supplyCalldata = poolInterface.encodeFunctionData('supply', [
-              poolAddress,
-              parseUnits(amountToSupply, decimals).toString(),
-              currentAccount,
-              0,
+            let supplyTxData = supply({
+              amount: parseUnits(amountToSupply, decimals).toString(),
+              reserve: poolAddress,
+            });
+            supplyTxData = await estimateGasLimit(supplyTxData);
+            response = await sendTx(supplyTxData);
+            await response.wait(1);
+          } else {
+            // ERC20: Bundle setUserEMode + supply via Pool multicall
+            const poolContractAddress = currentMarketData.addresses.LENDING_POOL;
+            const poolInterface = new Contract(poolContractAddress, POOL_MULTICALL_ABI).interface;
+            const currentAccount = useRootStore.getState().account;
+
+            const setEModeCalldata = poolInterface.encodeFunctionData('setUserEMode', [
+              selectedEmodeId,
             ]);
+
+            let supplyCalldata: string;
+            if (usePermit && signatureParams) {
+              action = ProtocolAction.supplyWithPermit;
+              const sig = splitSignature(signatureParams.signature);
+              supplyCalldata = poolInterface.encodeFunctionData('supplyWithPermit', [
+                poolAddress,
+                parseUnits(amountToSupply, decimals).toString(),
+                currentAccount,
+                0,
+                signatureParams.deadline,
+                sig.v,
+                sig.r,
+                sig.s,
+              ]);
+            } else {
+              action = ProtocolAction.supply;
+              supplyCalldata = poolInterface.encodeFunctionData('supply', [
+                poolAddress,
+                parseUnits(amountToSupply, decimals).toString(),
+                currentAccount,
+                0,
+              ]);
+            }
+
+            let multicallTxData = await new Contract(
+              poolContractAddress,
+              POOL_MULTICALL_ABI
+            ).populateTransaction.multicall([setEModeCalldata, supplyCalldata]);
+            multicallTxData = { ...multicallTxData, from: currentAccount };
+            multicallTxData = await estimateGasLimit(multicallTxData);
+            response = await sendTx(multicallTxData);
+            await response.wait(1);
           }
-
-          let multicallTxData = await new Contract(
-            poolContractAddress,
-            POOL_MULTICALL_ABI
-          ).populateTransaction.multicall([setEModeCalldata, supplyCalldata]);
-          multicallTxData = { ...multicallTxData, from: currentAccount };
-          multicallTxData = await estimateGasLimit(multicallTxData);
-          response = await sendTx(multicallTxData);
-
-          await response.wait(1);
         } else if (usePermit && signatureParams) {
           // Standard supply with permit (no e-mode switch)
           action = ProtocolAction.supplyWithPermit;
