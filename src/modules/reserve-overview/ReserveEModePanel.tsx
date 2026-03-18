@@ -13,6 +13,7 @@ import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { GENERAL, RESERVE_DETAILS } from 'src/utils/events';
+import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -35,7 +36,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
               <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
                 <LightningBoltGradient />
               </SvgIcon>
-              <Typography variant="subheader1">{e.label}</Typography>
+              <Typography variant="subheader1">{replaceUnderscoresWithSpaces(e.label)}</Typography>
               <ConfigStatus
                 enabled={e.canBeCollateral}
                 label="Collateral"

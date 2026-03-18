@@ -145,3 +145,7 @@ export const convertAprToApy = (apr: number): number => {
   const apy = Math.pow(1 + monthlyRate, 12) - 1;
   return apy;
 };
+
+export const replaceUnderscoresWithSpaces = (str?: string): string | undefined => {
+  return str?.replace(/_/g, ' ');
+};
