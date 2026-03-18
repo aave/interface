@@ -76,7 +76,8 @@ function getBlockReason(
     if (incompatibleBorrow) {
       return (
         <Trans>
-          Active {incompatibleBorrow.reserve.symbol} borrow is not compatible with this category
+          Active {incompatibleBorrow.reserve.symbol} borrow is not compatible with this category.
+          Repay your {incompatibleBorrow.reserve.symbol} borrow to use this option.
         </Trans>
       );
     }
@@ -93,7 +94,12 @@ function getBlockReason(
     if (targetEmodeId === 0) {
       // Switching to no e-mode: check base LTV
       if (Number(reserve.baseLTVasCollateral) === 0) {
-        return <Trans>{reserve.symbol} collateral would have 0% LTV without E-Mode</Trans>;
+        return (
+          <Trans>
+            {reserve.symbol} collateral would have 0% LTV without E-Mode. Disable {reserve.symbol}{' '}
+            as collateral to use this option.
+          </Trans>
+        );
       }
     } else {
       // Switching to an e-mode: check if asset is in collateral bitmap with ltvzero
@@ -103,12 +109,22 @@ function getBlockReason(
         reserveTargetEmode.collateralEnabled &&
         reserveTargetEmode.ltvzeroEnabled
       ) {
-        return <Trans>{reserve.symbol} collateral would have 0% LTV in this category</Trans>;
+        return (
+          <Trans>
+            {reserve.symbol} collateral would have 0% LTV in this category. Disable {reserve.symbol}{' '}
+            as collateral to use this option.
+          </Trans>
+        );
       }
       // If asset is NOT in the category at all, it falls back to base LTV — check that too
       if (!reserveTargetEmode || !reserveTargetEmode.collateralEnabled) {
         if (Number(reserve.baseLTVasCollateral) === 0) {
-          return <Trans>{reserve.symbol} collateral would have 0% LTV in this category</Trans>;
+          return (
+            <Trans>
+              {reserve.symbol} collateral would have 0% LTV in this category. Disable{' '}
+              {reserve.symbol} as collateral to use this option.
+            </Trans>
+          );
         }
       }
     }

@@ -499,6 +499,10 @@ msgstr "Signing"
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Disable {0} as collateral to use this category. These assets would have 0% LTV."
+msgstr "Disable {0} as collateral to use this category. These assets would have 0% LTV."
+
 #: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -1858,6 +1862,10 @@ msgstr "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s 
 msgid "See {0} more"
 msgstr "See {0} more"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Cannot switch to this category"
+msgstr "Cannot switch to this category"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
@@ -1886,6 +1894,11 @@ msgstr "stkGHO is now Savings GHO"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
 msgstr "Enabled"
+
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "{0} collateral would have 0% LTV in this category. Disable {1} as collateral to use this option."
+msgstr "{0} collateral would have 0% LTV in this category. Disable {1} as collateral to use this option."
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Funds in the Safety Module"
@@ -2413,6 +2426,10 @@ msgstr "from the"
 msgid "An error has occurred fetching the proposal."
 msgstr "An error has occurred fetching the proposal."
 
+#: src/modules/reserve-overview/SupplyInfo.tsx
+msgid "This asset can only be used as collateral in E-Mode: {0}"
+msgstr "This asset can only be used as collateral in E-Mode: {0}"
+
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -2569,10 +2586,6 @@ msgstr "You did not participate in this proposal"
 msgid "Low health factor after swap. Your position will carry a higher risk of liquidation."
 msgstr "Low health factor after swap. Your position will carry a higher risk of liquidation."
 
-#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
-msgid "Active {0} borrow is not compatible with this category"
-msgstr "Active {0} borrow is not compatible with this category"
-
 #: src/components/AssetCategoryMultiselect.tsx
 msgid "Principle Tokens"
 msgstr "Principle Tokens"
@@ -2626,6 +2639,7 @@ msgstr "Borrowing is disabled due to an Aave community decision. <0>More details
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Collateral usage"
 msgstr "Collateral usage"
 
@@ -2633,6 +2647,10 @@ msgstr "Collateral usage"
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Liquidation"
 msgstr "Liquidation"
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Repay your {0} borrow{1} to use this category."
+msgstr "Repay your {0} borrow{1} to use this category."
 
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Aave debt token"
@@ -2720,10 +2738,6 @@ msgstr "Get ABP Token"
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
 msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
-
-#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
-msgid "{0} collateral would have 0% LTV without E-Mode"
-msgstr "{0} collateral would have 0% LTV without E-Mode"
 
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
@@ -2912,11 +2926,6 @@ msgstr "Claim"
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
-
-#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
-#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
-msgid "{0} collateral would have 0% LTV in this category"
-msgstr "{0} collateral would have 0% LTV in this category"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
@@ -3156,6 +3165,10 @@ msgstr "Deposit"
 #: src/ui-config/errorMapping.tsx
 msgid "Supply cap is exceeded"
 msgstr "Supply cap is exceeded"
+
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "{0} collateral would have 0% LTV without E-Mode. Disable {1} as collateral to use this option."
+msgstr "{0} collateral would have 0% LTV without E-Mode. Disable {1} as collateral to use this option."
 
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
@@ -3424,10 +3437,6 @@ msgstr "Target liquidity"
 #: src/modules/staking/StakingPanel.tsx
 msgid "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 msgstr "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
-
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "All borrow positions outside of this category must be closed to enable this category."
-msgstr "All borrow positions outside of this category must be closed to enable this category."
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -4210,6 +4219,10 @@ msgstr "Umbrella is the upgraded version of the Safety Module. Manage your previ
 #: src/layouts/MobileMenu.tsx
 msgid "Menu"
 msgstr "Menu"
+
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Active {0} borrow is not compatible with this category. Repay your {1} borrow to use this option."
+msgstr "Active {0} borrow is not compatible with this category. Repay your {1} borrow to use this option."
 
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx

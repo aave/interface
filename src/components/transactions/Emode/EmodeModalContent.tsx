@@ -1,4 +1,4 @@
-import { formatUserSummary } from '@aave/math-utils';
+import { formatUserSummary, valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
@@ -20,6 +20,7 @@ import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
 import { EmodeCategory } from 'src/helpers/types';
 import {
+  ComputedReserveData,
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -46,22 +47,65 @@ export enum ErrorType {
 }
 
 export type EModeCategoryDisplay = EmodeCategory & {
-  available: boolean; // indicates if the user can enter this category
+  available: boolean;
+  blockReason: EModeCategoryBlockReason;
 };
 
-// An E-Mode category is available if the user has no borrow positions outside of the category
-function isEModeCategoryAvailable(user: ExtendedFormattedUser, eMode: EmodeCategory): boolean {
+export type EModeCategoryBlockReason = {
+  incompatibleBorrows: string[];
+  zeroLtvCollateral: string[];
+};
+
+// Checks why an E-Mode category is unavailable for the user
+function getEModeCategoryBlockReason(
+  user: ExtendedFormattedUser,
+  eMode: EmodeCategory,
+  reserves: ComputedReserveData[]
+): EModeCategoryBlockReason {
+  const incompatibleBorrows: string[] = [];
+  const zeroLtvCollateral: string[] = [];
+
+  // Check 1: Incompatible borrows
   const borrowableReserves = eMode.assets
     .filter((asset) => asset.borrowable)
     .map((asset) => asset.underlyingAsset);
 
-  const hasIncompatiblePositions = user.userReservesData.some(
-    (userReserve) =>
-      Number(userReserve.scaledVariableDebt) > 0 &&
+  for (const userReserve of user.userReservesData) {
+    if (
+      valueToBigNumber(userReserve.scaledVariableDebt).gt(0) &&
       !borrowableReserves.includes(userReserve.reserve.underlyingAsset)
-  );
+    ) {
+      incompatibleBorrows.push(userReserve.reserve.symbol);
+    }
+  }
 
-  return !hasIncompatiblePositions;
+  // Check 2: Collateral with 0 LTV in target category
+  for (const userReserve of user.userReservesData) {
+    if (!userReserve.usageAsCollateralEnabledOnUser) continue;
+
+    const reserve = reserves.find((r) => r.underlyingAsset === userReserve.reserve.underlyingAsset);
+    if (!reserve) continue;
+
+    const reserveTargetEmode = reserve.eModes.find((e) => e.id === eMode.id);
+
+    if (
+      reserveTargetEmode &&
+      reserveTargetEmode.collateralEnabled &&
+      reserveTargetEmode.ltvzeroEnabled
+    ) {
+      zeroLtvCollateral.push(reserve.symbol);
+    } else if (!reserveTargetEmode || !reserveTargetEmode.collateralEnabled) {
+      if (Number(reserve.baseLTVasCollateral) === 0) {
+        zeroLtvCollateral.push(reserve.symbol);
+      }
+    }
+  }
+
+  return { incompatibleBorrows, zeroLtvCollateral };
+}
+
+function isEModeCategoryAvailable(blockReason: EModeCategoryBlockReason): boolean {
+  return blockReason.incompatibleBorrows.length === 0 && blockReason.zeroLtvCollateral.length === 0;
 }
 
 export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => {
@@ -81,13 +125,17 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
   const [disableEmode, setDisableEmode] = useState(false);
 
   const eModeCategories: Record<number, EModeCategoryDisplay> = Object.fromEntries(
-    Object.entries(eModes).map(([key, value]) => [
-      key,
-      {
-        ...value,
-        available: isEModeCategoryAvailable(user, value),
-      },
-    ])
+    Object.entries(eModes).map(([key, value]) => {
+      const blockReason = getEModeCategoryBlockReason(user, value, reserves);
+      return [
+        key,
+        {
+          ...value,
+          available: isEModeCategoryAvailable(blockReason),
+          blockReason,
+        },
+      ];
+    })
   );
 
   // For Horizon markets, use the next available category after [1]
@@ -133,25 +181,37 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
   // Check for collateral assets with LTV=0 outside of e-mode that would block exit.
   // The contract checks getUserReserveLtv with target category=0, which always returns base LTV.
   // So any collateral with baseLTVasCollateral=0 will cause the exit tx to revert.
+  // DEBUG: log user reserves to diagnose zero LTV detection
+  console.log(
+    '[EmodeModal] userReservesData:',
+    user.userReservesData.map((ur) => ({
+      symbol: ur.reserve.symbol,
+      scaledATokenBalance: ur.scaledATokenBalance,
+      baseLTVasCollateral: ur.reserve.baseLTVasCollateral,
+      usageAsCollateralEnabledOnUser: ur.usageAsCollateralEnabledOnUser,
+      reserveLiquidationThreshold: ur.reserve.reserveLiquidationThreshold,
+    }))
+  );
   const zeroLtvCollateralSymbols = user.userReservesData
     .filter(
       (userReserve) =>
-        Number(userReserve.scaledATokenBalance) > 0 &&
+        valueToBigNumber(userReserve.scaledATokenBalance).gt(0) &&
         userReserve.reserve.baseLTVasCollateral === '0' &&
-        userReserve.usageAsCollateralEnabledOnUser &&
-        userReserve.reserve.reserveLiquidationThreshold !== '0'
+        userReserve.usageAsCollateralEnabledOnUser
     )
     .map((r) => r.reserve.symbol);
+  console.log('[EmodeModal] zeroLtvCollateralSymbols:', zeroLtvCollateralSymbols);
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
-  // if user is disabling eMode
   if (user.isInEmode && disableEmode) {
     if (zeroLtvCollateralSymbols.length > 0) {
       blockingError = ErrorType.ZERO_LTV_COLLATERAL_BLOCKING;
     } else if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
       blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION;
     }
+  } else if (!disableEmode && !selectedEmode.available) {
+    blockingError = ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING;
   }
 
   const Blocked: React.FC = () => {
@@ -184,6 +244,32 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
             </Typography>
           </Warning>
         );
+      case ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING: {
+        const { incompatibleBorrows, zeroLtvCollateral } = selectedEmode.blockReason;
+        return (
+          <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
+            <Typography variant="subheader1">
+              <Trans>Cannot switch to this category</Trans>
+            </Typography>
+            {incompatibleBorrows.length > 0 && (
+              <Typography variant="caption">
+                <Trans>
+                  Repay your {incompatibleBorrows.join(', ')} borrow
+                  {incompatibleBorrows.length > 1 ? 's' : ''} to use this category.
+                </Trans>
+              </Typography>
+            )}
+            {zeroLtvCollateral.length > 0 && (
+              <Typography variant="caption">
+                <Trans>
+                  Disable {zeroLtvCollateral.join(', ')} as collateral to use this category. These
+                  assets would have 0% LTV.
+                </Trans>
+              </Typography>
+            )}
+          </Warning>
+        );
+      }
       default:
         return null;
     }
@@ -390,14 +476,6 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                   ))}
               </Select>
             </Stack>
-            {!selectedEmode.available && (
-              <Typography variant="caption" color="text.secondary" sx={{ mb: 3 }}>
-                <Trans>
-                  All borrow positions outside of this category must be closed to enable this
-                  category.
-                </Trans>
-              </Typography>
-            )}
             <Divider />
             <Row
               captionVariant="description"

@@ -261,12 +261,13 @@ export const SupplyModalContent = React.memo(
       return calculateHFAfterSupply(user, poolReserve, amountInEth);
     })();
 
-    // Override collateral type if switching e-modes changes collateral eligibility
+    // Override collateral type based on the selected e-mode's collateral eligibility,
+    // since getAssetCollateralType only considers base config and doesn't account for e-mode
     const effectiveCollateralType = (() => {
-      if (!needsEmodeSwitch) return collateralType;
+      if (!hasEmodeOptions) return collateralType;
       const targetEmode = poolReserve.eModes.find((e) => e.id === selectedEmodeId);
       if (selectedEmodeId === 0) {
-        // Switching to no e-mode — use base config
+        // Default / no e-mode — use base config
         return Number(poolReserve.baseLTVasCollateral) > 0 && poolReserve.usageAsCollateralEnabled
           ? CollateralType.ENABLED
           : CollateralType.UNAVAILABLE;
@@ -274,7 +275,11 @@ export const SupplyModalContent = React.memo(
       if (targetEmode && targetEmode.collateralEnabled && !targetEmode.ltvzeroEnabled) {
         return CollateralType.ENABLED;
       }
-      return CollateralType.DISABLED;
+      if (targetEmode && targetEmode.collateralEnabled && targetEmode.ltvzeroEnabled) {
+        return CollateralType.DISABLED;
+      }
+      // Not in this category's collateral bitmap — fall back to base
+      return collateralType;
     })();
 
     const supplyActionsProps = {

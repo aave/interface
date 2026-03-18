@@ -211,7 +211,22 @@ export const SupplyInfo = ({
               warning={reserve.supplyInfo.maxLTV.value === '0'}
             />
           </Box>
-        ) : reserve.eModeInfo?.some((eMode) => eMode.canBeCollateral) ? null : (
+        ) : reserve.eModeInfo?.some((eMode) => eMode.canBeCollateral) ? (
+          <Box sx={{ pt: '42px', pb: '12px' }}>
+            <Typography variant="subheader1" color="text.main">
+              <Trans>Collateral usage</Trans>
+            </Typography>
+            <Warning sx={{ my: '12px' }} severity="info">
+              <Trans>
+                This asset can only be used as collateral in E-Mode:{' '}
+                {reserve.eModeInfo
+                  ?.filter((eMode) => eMode.canBeCollateral)
+                  .map((eMode) => eMode.label)
+                  .join(', ')}
+              </Trans>
+            </Warning>
+          </Box>
+        ) : (
           <Box sx={{ pt: '42px', pb: '12px' }}>
             <Typography variant="subheader1" color="text.main">
               <Trans>Collateral usage</Trans>
