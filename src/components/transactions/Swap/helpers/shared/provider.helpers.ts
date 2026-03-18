@@ -67,6 +67,8 @@ export const getSwitchProvider = ({
   shouldUseFlashloan?: boolean;
   swapType: SwapType;
 }): SwapProvider | undefined => {
+  return SwapProvider.PARASWAP; // TODO: TEMPORARY, REMOVE ONCE COW IS FIXED
+
   if (
     isSwapSupportedByCowProtocol(chainId, assetFrom, assetTo, swapType, shouldUseFlashloan ?? false)
   ) {
