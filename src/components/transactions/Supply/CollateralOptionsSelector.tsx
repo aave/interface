@@ -1,8 +1,19 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Stack, Tooltip, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { EmodeAssetTable } from 'src/components/transactions/Emode/EmodeAssetTable';
 import { EmodeCategory } from 'src/helpers/types';
 import {
   ComputedReserveData,
@@ -294,6 +305,21 @@ export const CollateralOptionsSelector = React.memo(
                         <Trans>Active</Trans>
                       </Typography>
                     )}
+                    {option.emodeId === 0 && (
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          px: 1,
+                          py: 0.25,
+                          borderRadius: '4px',
+                          bgcolor: 'text.secondary',
+                          color: '#fff',
+                          fontSize: '10px',
+                        }}
+                      >
+                        <Trans>Default</Trans>
+                      </Typography>
+                    )}
                   </Stack>
                 </Stack>
 
@@ -337,6 +363,30 @@ export const CollateralOptionsSelector = React.memo(
             </Button>
           )}
         </Stack>
+
+        {selectedEmodeId !== 0 && eModes[selectedEmodeId] && (
+          <Accordion
+            disableGutters
+            elevation={0}
+            sx={{
+              mt: 2,
+              '&:before': { display: 'none' },
+              bgcolor: 'transparent',
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{ px: 0, minHeight: 'auto', '& .MuiAccordionSummary-content': { my: 1 } }}
+            >
+              <Typography variant="description" color="text.secondary">
+                <Trans>Category assets</Trans>
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ px: 0 }}>
+              <EmodeAssetTable assets={eModes[selectedEmodeId].assets} maxHeight="200px" />
+            </AccordionDetails>
+          </Accordion>
+        )}
       </Box>
     );
   }

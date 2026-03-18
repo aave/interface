@@ -1,8 +1,6 @@
 import { formatUserSummary } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Collapse,
@@ -12,13 +10,6 @@ import {
   Stack,
   SvgIcon,
   Switch,
-  Table,
-  TableBody,
-  TableCell,
-  tableCellClasses,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
@@ -26,7 +17,6 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { EmodeCategory } from 'src/helpers/types';
 import {
@@ -47,6 +37,7 @@ import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { EmodeActions } from './EmodeActions';
+import { EmodeAssetTable } from './EmodeAssetTable';
 
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
@@ -440,72 +431,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
               futureHealthFactor={newSummary.healthFactor}
             />
 
-            <TableContainer sx={{ maxHeight: '270px' }}>
-              <Table size="small" stickyHeader>
-                <TableHead>
-                  <TableRow
-                    sx={{
-                      [`& .${tableCellClasses.root}`]: {
-                        py: 2,
-                        lineHeight: 0,
-                      },
-                    }}
-                  >
-                    <TableCell align="center" sx={{ pl: 0, width: '120px' }}>
-                      <Typography variant="helperText">
-                        <Trans>Asset</Trans>
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="helperText">
-                        <Trans>Collateral</Trans>
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="helperText">
-                        <Trans>Borrowable</Trans>
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody sx={{ width: '100%' }}>
-                  {selectedEmode.assets.map((asset, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{
-                        pt: 8,
-                        [`& .${tableCellClasses.root}`]: {
-                          borderBottom: 'none',
-                          pt: 3,
-                          pb: 2,
-                        },
-                      }}
-                    >
-                      <TableCell align="center" sx={{ py: 1 }}>
-                        <Stack direction="row" gap={1} alignItems="center">
-                          <TokenIcon symbol={asset.iconSymbol} sx={{ fontSize: '16px' }} />
-                          <Typography variant="secondary12">{asset.symbol}</Typography>
-                        </Stack>
-                      </TableCell>
-                      <TableCell align="center">
-                        {asset.collateral ? (
-                          <CheckRoundedIcon fontSize="small" color="success" />
-                        ) : (
-                          <CloseIcon fontSize="small" color="error" />
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {asset.borrowable ? (
-                          <CheckRoundedIcon fontSize="small" color="success" />
-                        ) : (
-                          <CloseIcon fontSize="small" color="error" />
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <EmodeAssetTable assets={selectedEmode.assets} />
           </Box>
         </Collapse>
       </TxModalDetails>

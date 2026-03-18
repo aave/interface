@@ -1,7 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { AlertTitle, Box, Typography } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
@@ -22,6 +21,7 @@ import { GENERAL } from 'src/utils/events';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
 
 import { SupplyApyGraph } from './graphs/ApyGraphContainer';
+import { ConfigStatus } from './ReserveEModePanel';
 import { PanelItem } from './ReservePanels';
 
 interface SupplyInfoProps {
@@ -205,10 +205,11 @@ export const SupplyInfo = ({
             <Typography variant="subheader1" color="text.main">
               <Trans>Collateral usage</Trans>
             </Typography>
-            <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
-            <Typography variant="subheader1" sx={{ color: '#46BC4B' }}>
-              <Trans>Can be collateral</Trans>
-            </Typography>
+            <ConfigStatus
+              enabled
+              label="Can be collateral"
+              warning={reserve.supplyInfo.maxLTV.value === '0'}
+            />
           </Box>
         ) : reserve.eModeInfo?.some((eMode) => eMode.canBeCollateral) ? null : (
           <Box sx={{ pt: '42px', pb: '12px' }}>

@@ -473,7 +473,6 @@ msgstr "Overview"
 msgid "All transactions"
 msgstr "All transactions"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -1480,7 +1479,6 @@ msgstr "No voting power"
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Can be collateral"
 msgstr "Can be collateral"
 
@@ -1973,6 +1971,10 @@ msgstr "Borrow"
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Category assets"
+msgstr "Category assets"
+
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 msgid "Available to stake"
 msgstr "Available to stake"
@@ -2419,7 +2421,7 @@ msgstr "Available to withdraw"
 msgid "Cooldown"
 msgstr "Cooldown"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Emode/EmodeAssetTable.tsx
 #: src/modules/bridge/BridgeWrapper.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
@@ -2927,7 +2929,7 @@ msgstr "Delegated power"
 msgid "You voted {0}"
 msgstr "You voted {0}"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Emode/EmodeAssetTable.tsx
 msgid "Borrowable"
 msgstr "Borrowable"
 
@@ -3030,6 +3032,10 @@ msgstr "Enable E-Mode"
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is restricted to assets within the selected category. <0>Learn more</0> about how it works and the applied restrictions."
 msgstr "Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is restricted to assets within the selected category. <0>Learn more</0> about how it works and the applied restrictions."
+
+#: src/components/transactions/Emode/EmodeAssetTable.tsx
+msgid "Boosted LTV"
+msgstr "Boosted LTV"
 
 #: src/components/SecondsToString.tsx
 msgid "{s}s"
@@ -3394,6 +3400,7 @@ msgstr "Available to supply"
 msgid "Claiming all protocol rewards and merit rewards together"
 msgstr "Claiming all protocol rewards and merit rewards together"
 
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 #: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Default"
 msgstr "Default"

@@ -47,6 +47,7 @@ import {
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
+  DetailsTextLine,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { getAssetCollateralType } from '../utils';
@@ -250,6 +251,22 @@ export const SupplyModalContent = React.memo(
       return calculateHFAfterSupply(user, poolReserve, amountInEth);
     })();
 
+    // Override collateral type if switching e-modes changes collateral eligibility
+    const effectiveCollateralType = (() => {
+      if (!needsEmodeSwitch) return collateralType;
+      const targetEmode = poolReserve.eModes.find((e) => e.id === selectedEmodeId);
+      if (selectedEmodeId === 0) {
+        // Switching to no e-mode — use base config
+        return Number(poolReserve.baseLTVasCollateral) > 0 && poolReserve.usageAsCollateralEnabled
+          ? CollateralType.ENABLED
+          : CollateralType.UNAVAILABLE;
+      }
+      if (targetEmode && targetEmode.collateralEnabled && !targetEmode.ltvzeroEnabled) {
+        return CollateralType.ENABLED;
+      }
+      return CollateralType.DISABLED;
+    })();
+
     const supplyActionsProps = {
       amountToSupply: amount,
       isWrongNetwork,
@@ -333,7 +350,17 @@ export const SupplyModalContent = React.memo(
             incentives={poolReserve.aIncentivesData}
             symbol={poolReserve.symbol}
           />
-          <DetailsCollateralLine collateralType={collateralType} />
+          <DetailsCollateralLine collateralType={effectiveCollateralType} />
+          {needsEmodeSwitch && (
+            <DetailsTextLine
+              description="E-Mode"
+              text={
+                selectedEmodeId === 0
+                  ? 'Disabled'
+                  : eModes[selectedEmodeId]?.label || `Category ${selectedEmodeId}`
+              }
+            />
+          )}
           <DetailsHFLine
             visibleHfChange={!!amount}
             healthFactor={user ? user.healthFactor : '-1'}
