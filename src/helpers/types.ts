@@ -25,6 +25,7 @@ export type EmodeCategory = {
     iconSymbol: string;
     collateral: boolean;
     borrowable: boolean;
+    ltvzero: boolean;
   }>;
 };
 

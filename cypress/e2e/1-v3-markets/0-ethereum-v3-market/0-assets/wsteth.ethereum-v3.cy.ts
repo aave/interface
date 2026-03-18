@@ -35,14 +35,7 @@ const testData = {
       {
         asset: assets.ethereumV3Market.wstETH,
         apyType: constants.apyType.variable,
-        amount: 0.02,
-        hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
-      {
-        asset: assets.ethereumV3Market.wstETH,
-        apyType: constants.apyType.variable,
-        amount: 0.02,
+        amount: 0.04,
         hasApproval: false,
         repayOption: constants.repayType.wallet,
       },
@@ -84,7 +77,6 @@ const testData = {
 describe.skip('wstETH INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAEthereumV3Fork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
 

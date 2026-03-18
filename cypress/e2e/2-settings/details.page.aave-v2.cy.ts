@@ -55,7 +55,7 @@ describe.skip('VERIFY DETAILS PAGE INTEGRATION SPEC', () => {
         cy.get('[data-cy="close-button"]').click();
       });
       describe('CASE2:Verifing detail page for V3 USDT', () => {
-        configEnvWithTenderlyOptimismFork({ v3: true });
+        configEnvWithTenderlyOptimismFork({});
         describe('Verifing collateral and e-mode  strings on detail page USDT AAVE V3', () => {
           it('Go to detail page for USDT', () => {
             cy.get('[data-cy="menuMarkets"]').click();

@@ -2,25 +2,34 @@ import { ChainId } from '@aave/contract-helpers';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Wallet } from '@ethersproject/wallet';
 
+import { TokenRequest } from '../actions/tenderly.actions';
 import { CustomizedBridge } from '../tools/bridge';
 import { DEFAULT_TEST_ACCOUNT, TenderlyVnet } from '../tools/tenderly';
 
 const URL = Cypress.env('URL');
 const PERSIST_FORK_AFTER_RUN = Cypress.env('PERSIST_FORK_AFTER_RUN') || false;
 
+const mockComplianceCheck = () => {
+  cy.intercept('GET', '**/api/preflight-compliance?*', {
+    statusCode: 200,
+    body: {
+      result: true,
+      nextCheck: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    },
+  });
+};
+
 export const configEnvWithTenderly = ({
   chainId,
   market,
   tokens,
-  unpause,
   wallet,
   enableTestnet = false,
   urlSuffix = '',
 }: {
   chainId: number;
   market: string;
-  tokens?: { tokenAddress: string; donorAddress?: string; tokenCount?: string }[];
-  unpause?: boolean;
+  tokens?: TokenRequest[];
   wallet?: { address: string; privateKey: string };
   enableTestnet?: boolean;
   urlSuffix?: string;
@@ -35,20 +44,12 @@ export const configEnvWithTenderly = ({
     await tenderly.init();
     await new Promise((resolve) => setTimeout(resolve, 3000));
     await tenderly.add_balance_rpc(walletAddress);
-    if (unpause) {
-      await tenderly.unpauseMarket();
-    }
 
     if (tokens) {
       await Promise.all(
-        tokens.map((token) =>
-          tenderly.getERC20Token(
-            walletAddress,
-            token.tokenAddress,
-            token.donorAddress,
-            token.tokenCount
-          )
-        )
+        tokens.map(async (token) => {
+          await tenderly.getERC20Token(walletAddress, token);
+        })
       );
     }
   });
@@ -57,6 +58,8 @@ export const configEnvWithTenderly = ({
     if (urlSuffix) {
       url = `${url}/${urlSuffix}`;
     }
+
+    mockComplianceCheck();
 
     const rpc = tenderly.get_rpc_url();
     provider = new JsonRpcProvider(rpc, 3030);
@@ -94,7 +97,6 @@ export const configEnvWithTenderly = ({
   });
   after(async () => {
     if (!PERSIST_FORK_AFTER_RUN) {
-      cy.log('deleting vnet');
       await tenderly.deleteVnet();
     }
   });
@@ -105,17 +107,15 @@ const createConfigWithTenderlyFork =
   ({
     market = defaultMarket,
     tokens,
-    v3,
     wallet,
     urlSuffix,
   }: {
     market?: string;
-    tokens?: { tokenAddress: string }[];
-    v3?: boolean;
+    tokens?: TokenRequest[];
     wallet?: { address: string; privateKey: string };
     urlSuffix?: string;
   }) =>
-    configEnvWithTenderly({ chainId, market, tokens, unpause: v3, wallet, urlSuffix });
+    configEnvWithTenderly({ chainId, market, tokens, wallet, urlSuffix });
 
 export const configEnvWithTenderlyMainnetFork = createConfigWithTenderlyFork(
   ChainId.mainnet,
@@ -169,6 +169,8 @@ export const configEnvWithTenderlySepoliaGhoFork = createConfigWithTenderlyFork(
 
 const createConfigWithOrigin = (market: string, mockedAddress: string) => {
   before('Open main page', () => {
+    mockComplianceCheck();
+
     cy.visit(URL, {
       onBeforeLoad(win) {
         // forks are always expected to run on chainId 3030

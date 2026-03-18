@@ -1,7 +1,8 @@
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { Box, SvgIcon, Tooltip, Typography } from '@mui/material';
 import { Fragment } from 'react';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
@@ -35,7 +36,11 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 <LightningBoltGradient />
               </SvgIcon>
               <Typography variant="subheader1">{e.label}</Typography>
-              <ConfigStatus enabled={e.canBeCollateral} label="Collateral" />
+              <ConfigStatus
+                enabled={e.canBeCollateral}
+                label="Collateral"
+                warning={e.canBeCollateral && e.hasLtvZero}
+              />
               <ConfigStatus enabled={e.canBeBorrowed} label="Borrowable" />
             </Box>
             <Box
@@ -50,7 +55,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
               >
                 <FormattedNumber
-                  value={e.maxLTV.value}
+                  value={e.hasLtvZero ? 0 : e.maxLTV.value}
                   percent
                   variant="secondary14"
                   visibleDecimals={2}
@@ -138,17 +143,44 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
   );
 };
 
-const ConfigStatus = ({ enabled, label }: { enabled: boolean; label: string }) => {
+export const ConfigStatus = ({
+  enabled,
+  label,
+  warning,
+  warningTooltip,
+}: {
+  enabled: boolean;
+  label?: string;
+  warning?: boolean;
+  warningTooltip?: React.ReactNode;
+}) => {
+  const defaultWarningTooltip = (
+    <Trans>
+      This asset has 0% LTV, meaning it does not contribute to borrowing power. Existing positions
+      with this asset as collateral still count toward the liquidation threshold and protect your
+      health factor. New positions cannot enable this asset as collateral.
+    </Trans>
+  );
+
   return (
     <>
-      {enabled ? (
+      {warning ? (
+        <Tooltip title={warningTooltip || defaultWarningTooltip} arrow placement="top">
+          <WarningAmberIcon fontSize="small" color="warning" sx={{ ml: 2, cursor: 'help' }} />
+        </Tooltip>
+      ) : enabled ? (
         <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
       ) : (
         <CloseIcon fontSize="small" color="error" sx={{ ml: 2 }} />
       )}
-      <Typography variant="subheader1" sx={{ color: enabled ? '#46BC4B' : '#F24E4E' }}>
-        <Trans>{label}</Trans>
-      </Typography>
+      {label && (
+        <Typography
+          variant="subheader1"
+          sx={{ color: warning ? '#E8A838' : enabled ? '#46BC4B' : '#F24E4E' }}
+        >
+          <Trans>{label}</Trans>
+        </Typography>
+      )}
     </>
   );
 };

@@ -6,8 +6,13 @@ import { valueToBigNumber } from '@aave/math-utils';
  * @param chainId - The chain ID
  * @returns true if the token is USDT on Ethereum
  */
-export const isUSDTOnEthereum = (tokenSymbol: string, chainId: number): boolean => {
-  return tokenSymbol.toUpperCase() === 'USDT' && chainId === 1; // Ethereum mainnet
+export const isUSDTOnEthereum = (
+  tokenSymbol: string,
+  chainId: number,
+  underlyingChainId?: number
+): boolean => {
+  const effectiveChainId = underlyingChainId ?? chainId;
+  return tokenSymbol.toUpperCase() === 'USDT' && effectiveChainId === 1; // Ethereum mainnet
 };
 
 /**
@@ -21,10 +26,11 @@ export const needsUSDTApprovalReset = (
   tokenSymbol: string,
   chainId: number,
   currentApproval: string,
-  newApproval: string
+  newApproval: string,
+  underlyingChainId?: number
 ): boolean => {
   return (
-    isUSDTOnEthereum(tokenSymbol, chainId) &&
+    isUSDTOnEthereum(tokenSymbol, chainId, underlyingChainId) &&
     Boolean(currentApproval) &&
     Boolean(newApproval) &&
     valueToBigNumber(currentApproval).isGreaterThan(0) &&

@@ -49,7 +49,7 @@ const testData = {
     ],
     withdraw: {
       asset: assets.ethereumV3Market.LINK,
-      isCollateral: true,
+      isCollateral: false,
       amount: 1,
       hasApproval: true,
     },
@@ -61,7 +61,7 @@ const testData = {
         assetName: assets.ethereumV3Market.LINK.shortName,
         amount: 7.0,
         collateralType: constants.collateralType.isCollateral,
-        isCollateral: true,
+        isCollateral: false,
       },
       {
         type: constants.dashboardTypes.borrow,
@@ -76,7 +76,6 @@ const testData = {
 describe('LINK INTEGRATION SPEC, ETHEREUM V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAEthereumV3Fork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
 

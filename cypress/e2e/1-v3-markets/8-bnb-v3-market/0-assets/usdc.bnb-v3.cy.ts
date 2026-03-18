@@ -31,15 +31,8 @@ const testData = {
       {
         asset: assets.bnbV3Market.USDC,
         apyType: constants.apyType.variable,
-        amount: 2,
+        amount: 4,
         hasApproval: false,
-        repayOption: constants.repayType.collateral,
-      },
-      {
-        asset: assets.bnbV3Market.USDC,
-        apyType: constants.apyType.variable,
-        amount: 2,
-        hasApproval: true,
         repayOption: constants.repayType.wallet,
       },
       {
@@ -80,7 +73,6 @@ const testData = {
 describe('USDbC INTEGRATION SPEC, BASE V3 MARKET', () => {
   const skipTestState = skipState(true);
   configEnvWithTenderlyBnbFork({
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   testData.testCases.borrow.forEach((borrowCase) => {

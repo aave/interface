@@ -93,7 +93,7 @@ const testData = {
 
 describe('xDAI INTEGRATION SPEC, GNOSIS V3 MARKET', () => {
   const skipTestState = skipState(false);
-  configEnvWithTenderlyGnosisFork({ v3: true });
+  configEnvWithTenderlyGnosisFork({});
 
   supply(testData.testCases.deposit, skipTestState, true);
   describe('Check Collateral switching', () => {

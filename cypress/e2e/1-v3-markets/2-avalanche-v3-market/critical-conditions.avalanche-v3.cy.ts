@@ -41,7 +41,6 @@ describe('CRITICAL CONDITIONS SPEC, AVALANCHE V3 MARKET', () => {
   const skipTestState = skipState(false);
   configEnvWithTenderlyAvalancheFork({
     market: 'fork_proto_avalanche_v3',
-    v3: true,
     tokens: tokenSet(tokensToRequest),
   });
   borrow(testData.testCases.borrow, skipTestState, true);

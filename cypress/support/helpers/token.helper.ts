@@ -1,85 +1,66 @@
 import { TokenRequest } from '../actions/tenderly.actions';
 
-export interface DonorInfo {
+export interface TokenInfo {
   name: string;
-  donorWalletAddress: string;
   tokenAddress: string;
+  decimals?: number;
+  // Required to mint the underlying and supply it in Tenderly before tests run.
+  poolAddress: string;
+  underlyingAsset: string;
 }
 
-export interface Donors {
-  [key: string]: DonorInfo;
+export interface TokenCatalog {
+  [key: string]: TokenInfo;
 }
 
-const donors: Donors = {
-  stkAAVE: {
-    name: 'stkAAVE',
-    donorWalletAddress: '0xaFDAbFb6227507fF6522b8a242168F6b5F353a6E',
-    tokenAddress: '0x4da27a545c0c5B758a6BA100e3a049001de870f5',
-  },
-  aAAVE: {
-    name: 'aAAVE',
-    donorWalletAddress: '0xE466d6Cf6E2C3F3f8345d39633d4A968EC879bD5',
-    tokenAddress: '0xFFC97d72E13E01096502Cb8Eb52dEe56f74DAD7B',
-  },
-  aDAIEthereumV3: {
-    name: 'aDAI',
-    donorWalletAddress: '0x018008bfb33d285247A21d44E50697654f754e63',
-    tokenAddress: '0xaD0135AF20fa82E106607257143d0060A7eB5cBf',
-  },
+const tokenCatalog: TokenCatalog = {
   aETHEthereumV3: {
     name: 'aETH',
-    donorWalletAddress: '0x01d1f55d94a53a9517c07f793f35320FAA0D2DCf',
     tokenAddress: '0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8',
+    poolAddress: '0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2',
+    underlyingAsset: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH
   },
   aETHArbitrumV3: {
     name: 'aETH',
-    donorWalletAddress: '0xb7fb2b774eb5e2dad9c060fb367acbdc7fa7099b',
     tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+    poolAddress: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+    underlyingAsset: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', // WETH
   },
   aAVAXAvalancheV3: {
     name: 'aAVAX',
-    donorWalletAddress: '0xAe783a7C8C607EFe00548A0592BF9cDb50903B79',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
+    poolAddress: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+    underlyingAsset: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7', // WAVAX
   },
   aMATICPolygonV3: {
     name: 'aMATIC',
-    donorWalletAddress: '0x07F294e84a9574f657A473f94A242F1FdFAFB823',
     tokenAddress: '0x6d80113e533a2C0fe82EaBD35f1875DcEA89Ea97',
+    poolAddress: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+    underlyingAsset: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', // WPOL
   },
   aETHOptimismV3: {
     name: 'aETH',
-    donorWalletAddress: '0x39Be632bfC5A74183FfE124C60e248138e496BC4',
     tokenAddress: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+    poolAddress: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+    underlyingAsset: '0x4200000000000000000000000000000000000006', // WETH
   },
   aETHBaseV3: {
     name: 'aETH',
-    donorWalletAddress: '0xb463c4d7c574bd0a05a1320186378dd6a7aeaa33',
     tokenAddress: '0xD4a0e0b9149BCee3C920d2E00b5dE09138fd8bb7',
+    poolAddress: '0xA238Dd80C259a72e81d7e4664a9801593F98d1c5',
+    underlyingAsset: '0x4200000000000000000000000000000000000006', // WETH
   },
   axDAIGnosisV3: {
     name: 'axDAI',
-    donorWalletAddress: '0x458cd345b4c05e8df39d0a07220feb4ec19f5e6f',
     tokenAddress: '0xd0Dd6cEF72143E22cCED4867eb0d5F2328715533',
+    poolAddress: '0xb50201558B00496A145fE76f7424749556E326D8',
+    underlyingAsset: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d', // WXDAI
   },
   aBNBBnbV3: {
     name: 'aBNB',
-    donorWalletAddress: '0x2F064D92e862F30041DEA4667eF8899E07Bb4Edf',
     tokenAddress: '0x9B00a09492a626678E5A3009982191586C444Df9',
-  },
-  aETHEthereumV2: {
-    name: 'aETH',
-    donorWalletAddress: '0x1111567E0954E74f6bA7c4732D534e75B81DC42E',
-    tokenAddress: '0x030bA81f1c18d280636F32af80b9AAd02Cf0854e',
-  },
-  aMATICPolygonV2: {
-    name: 'aMATIC',
-    donorWalletAddress: '0xaFDAbFb6227507fF6522b8a242168F6b5F353a6E',
-    tokenAddress: '0x8dF3aad3a84da6b69A4DA8aeC3eA40d9091B2Ac4',
-  },
-  aAVAXAvalancheV2: {
-    name: 'aAVAX',
-    donorWalletAddress: '0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6',
-    tokenAddress: '0xDFE521292EcE2A4f44242efBcD66Bc594CA9714B',
+    poolAddress: '0x6807dc923806fE8Fd134338EABCA509979a7e0cB',
+    underlyingAsset: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // WBNB
   },
 };
 
@@ -87,17 +68,20 @@ export type RequestedTokens = {
   [key: string]: number;
 };
 
-export const tokenSet = (requestedTokens: RequestedTokens): TokenRequest[] => {
+export const tokenSet = (requestedTokens: RequestedTokens, autoSupply = true): TokenRequest[] => {
   const tokenRequest: TokenRequest[] = [];
 
   for (const [tokenKey, tokenAmount] of Object.entries(requestedTokens)) {
-    const donorInfo = donors[tokenKey];
-    if (tokenAmount !== 0 && donorInfo) {
+    const tokenInfo = tokenCatalog[tokenKey];
+    if (tokenAmount !== 0 && tokenInfo) {
       tokenRequest.push({
-        tokenAddress: donorInfo.tokenAddress,
-        donorAddress: donorInfo.donorWalletAddress,
+        tokenAddress: tokenInfo.tokenAddress,
         tokenCount: tokenAmount.toString(),
-        name: donorInfo.name,
+        name: tokenInfo.name,
+        decimals: tokenInfo.decimals,
+        poolAddress: tokenInfo.poolAddress,
+        underlyingAsset: tokenInfo.underlyingAsset,
+        autoSupply,
       });
     }
   }

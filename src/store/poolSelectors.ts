@@ -74,6 +74,7 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
               iconSymbol,
               collateral: e.collateralEnabled,
               borrowable: e.borrowingEnabled,
+              ltvzero: e.ltvzeroEnabled,
             },
           ],
         };
@@ -84,6 +85,7 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
           iconSymbol,
           collateral: e.collateralEnabled,
           borrowable: e.borrowingEnabled,
+          ltvzero: e.ltvzeroEnabled,
         });
       }
     });
