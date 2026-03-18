@@ -2648,10 +2648,6 @@ msgstr "Collateral usage"
 msgid "Liquidation"
 msgstr "Liquidation"
 
-#: src/components/transactions/Emode/EmodeModalContent.tsx
-msgid "Repay your {0} borrow{1} to use this category."
-msgstr "Repay your {0} borrow{1} to use this category."
-
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Aave debt token"
 msgstr "Aave debt token"
@@ -4029,6 +4025,10 @@ msgstr "As a result of governance decisions, this ABPT staking pool is now depre
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Category {selectedEmodeId}"
 msgstr "Category {selectedEmodeId}"
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Repay your {0} {1, plural, one {borrow} other {borrows}} to use this category."
+msgstr "Repay your {0} {1, plural, one {borrow} other {borrows}} to use this category."
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."

@@ -1,6 +1,6 @@
 import { formatUserSummary, valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
+import { Plural, Trans } from '@lingui/macro';
 import {
   Box,
   Collapse,
@@ -60,20 +60,20 @@ export type EModeCategoryBlockReason = {
 function getEModeCategoryBlockReason(
   user: ExtendedFormattedUser,
   eMode: EmodeCategory,
-  reserves: ComputedReserveData[]
+  reservesByAddress: Map<string, ComputedReserveData>
 ): EModeCategoryBlockReason {
   const incompatibleBorrows: string[] = [];
   const zeroLtvCollateral: string[] = [];
 
   // Check 1: Incompatible borrows
-  const borrowableReserves = eMode.assets
-    .filter((asset) => asset.borrowable)
-    .map((asset) => asset.underlyingAsset);
+  const borrowableReserves = new Set(
+    eMode.assets.filter((asset) => asset.borrowable).map((asset) => asset.underlyingAsset)
+  );
 
   for (const userReserve of user.userReservesData) {
     if (
       valueToBigNumber(userReserve.scaledVariableDebt).gt(0) &&
-      !borrowableReserves.includes(userReserve.reserve.underlyingAsset)
+      !borrowableReserves.has(userReserve.reserve.underlyingAsset)
     ) {
       incompatibleBorrows.push(userReserve.reserve.symbol);
     }
@@ -83,7 +83,7 @@ function getEModeCategoryBlockReason(
   for (const userReserve of user.userReservesData) {
     if (!userReserve.usageAsCollateralEnabledOnUser) continue;
 
-    const reserve = reserves.find((r) => r.underlyingAsset === userReserve.reserve.underlyingAsset);
+    const reserve = reservesByAddress.get(userReserve.reserve.underlyingAsset);
     if (!reserve) continue;
 
     const reserveTargetEmode = reserve.eModes.find((e) => e.id === eMode.id);
@@ -124,9 +124,11 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
   const { gasLimit, mainTxState: emodeTxState, txError } = useModalContext();
   const [disableEmode, setDisableEmode] = useState(false);
 
+  const reservesByAddress = new Map(reserves.map((r) => [r.underlyingAsset, r]));
+
   const eModeCategories: Record<number, EModeCategoryDisplay> = Object.fromEntries(
     Object.entries(eModes).map(([key, value]) => {
-      const blockReason = getEModeCategoryBlockReason(user, value, reserves);
+      const blockReason = getEModeCategoryBlockReason(user, value, reservesByAddress);
       return [
         key,
         {
@@ -181,17 +183,6 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
   // Check for collateral assets with LTV=0 outside of e-mode that would block exit.
   // The contract checks getUserReserveLtv with target category=0, which always returns base LTV.
   // So any collateral with baseLTVasCollateral=0 will cause the exit tx to revert.
-  // DEBUG: log user reserves to diagnose zero LTV detection
-  console.log(
-    '[EmodeModal] userReservesData:',
-    user.userReservesData.map((ur) => ({
-      symbol: ur.reserve.symbol,
-      scaledATokenBalance: ur.scaledATokenBalance,
-      baseLTVasCollateral: ur.reserve.baseLTVasCollateral,
-      usageAsCollateralEnabledOnUser: ur.usageAsCollateralEnabledOnUser,
-      reserveLiquidationThreshold: ur.reserve.reserveLiquidationThreshold,
-    }))
-  );
   const zeroLtvCollateralSymbols = user.userReservesData
     .filter(
       (userReserve) =>
@@ -200,7 +191,6 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
         userReserve.usageAsCollateralEnabledOnUser
     )
     .map((r) => r.reserve.symbol);
-  console.log('[EmodeModal] zeroLtvCollateralSymbols:', zeroLtvCollateralSymbols);
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
@@ -254,8 +244,9 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
             {incompatibleBorrows.length > 0 && (
               <Typography variant="caption">
                 <Trans>
-                  Repay your {incompatibleBorrows.join(', ')} borrow
-                  {incompatibleBorrows.length > 1 ? 's' : ''} to use this category.
+                  Repay your {incompatibleBorrows.join(', ')}{' '}
+                  <Plural value={incompatibleBorrows.length} one="borrow" other="borrows" /> to use
+                  this category.
                 </Trans>
               </Typography>
             )}
