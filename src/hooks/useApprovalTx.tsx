@@ -46,15 +46,22 @@ export const useApprovalTx = ({
   amountToApprove?: string;
   setShowUSDTResetWarning?: (showUSDTResetWarning: boolean) => void;
 }) => {
-  const [generateApproval, generateSignatureRequest, estimateGasLimit, addTransaction] =
-    useRootStore(
-      useShallow((store) => [
-        store.generateApproval,
-        store.generateSignatureRequest,
-        store.estimateGasLimit,
-        store.addTransaction,
-      ])
-    );
+  const [
+    generateApproval,
+    generateSignatureRequest,
+    estimateGasLimit,
+    addTransaction,
+    currentNetworkConfig,
+  ] = useRootStore(
+    useShallow((store) => [
+      store.generateApproval,
+      store.generateSignatureRequest,
+      store.estimateGasLimit,
+      store.addTransaction,
+      store.currentNetworkConfig,
+    ])
+  );
+  const underlyingChainId = currentNetworkConfig.underlyingChainId;
 
   const { signTxData, sendTx } = useWeb3Context();
 
@@ -66,7 +73,7 @@ export const useApprovalTx = ({
   useEffect(() => {
     if (
       !chainId ||
-      !isUSDTOnEthereum(symbol, chainId) ||
+      !isUSDTOnEthereum(symbol, chainId, underlyingChainId) ||
       !setShowUSDTResetWarning ||
       !signatureAmount ||
       signatureAmount === '0' ||
@@ -80,14 +87,24 @@ export const useApprovalTx = ({
       ? valueToBigNumber(approvedAmount.amount).toFixed(0)
       : '0';
 
-    if (needsUSDTApprovalReset(symbol, chainId, currentApproved, amountToApprove)) {
+    if (
+      needsUSDTApprovalReset(symbol, chainId, currentApproved, amountToApprove, underlyingChainId)
+    ) {
       setShowUSDTResetWarning(true);
       setRequiresApprovalReset(true);
     } else {
       setShowUSDTResetWarning(false);
       setRequiresApprovalReset(false);
     }
-  }, [symbol, chainId, approvedAmount?.amount, signatureAmount, setShowUSDTResetWarning, decimals]);
+  }, [
+    symbol,
+    chainId,
+    underlyingChainId,
+    approvedAmount?.amount,
+    signatureAmount,
+    setShowUSDTResetWarning,
+    decimals,
+  ]);
 
   const approval = async () => {
     try {

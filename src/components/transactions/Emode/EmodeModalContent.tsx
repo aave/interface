@@ -1,8 +1,6 @@
 import { formatUserSummary } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import CloseIcon from '@mui/icons-material/Close';
 import {
   Box,
   Collapse,
@@ -12,13 +10,6 @@ import {
   Stack,
   SvgIcon,
   Switch,
-  Table,
-  TableBody,
-  TableCell,
-  tableCellClasses,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
@@ -26,7 +17,6 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { Warning } from 'src/components/primitives/Warning';
 import { EmodeCategory } from 'src/helpers/types';
 import {
@@ -47,10 +37,12 @@ import { DetailsHFLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { EmodeActions } from './EmodeActions';
+import { EmodeAssetTable } from './EmodeAssetTable';
 
 export enum ErrorType {
   EMODE_DISABLED_LIQUIDATION,
   CLOSE_POSITIONS_BEFORE_SWITCHING,
+  ZERO_LTV_COLLATERAL_BLOCKING,
 }
 
 export type EModeCategoryDisplay = EmodeCategory & {
@@ -138,17 +130,46 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     marketReferencePriceInUsd,
   });
 
+  // Check for collateral assets with LTV=0 outside of e-mode that would block exit.
+  // The contract checks getUserReserveLtv with target category=0, which always returns base LTV.
+  // So any collateral with baseLTVasCollateral=0 will cause the exit tx to revert.
+  const zeroLtvCollateralSymbols = user.userReservesData
+    .filter(
+      (userReserve) =>
+        Number(userReserve.scaledATokenBalance) > 0 &&
+        userReserve.reserve.baseLTVasCollateral === '0' &&
+        userReserve.usageAsCollateralEnabledOnUser &&
+        userReserve.reserve.reserveLiquidationThreshold !== '0'
+    )
+    .map((r) => r.reserve.symbol);
+
   // error handling
   let blockingError: ErrorType | undefined = undefined;
   // if user is disabling eMode
   if (user.isInEmode && disableEmode) {
-    if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
-      blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION; // intl.formatMessage(messages.eModeDisabledLiquidation);
+    if (zeroLtvCollateralSymbols.length > 0) {
+      blockingError = ErrorType.ZERO_LTV_COLLATERAL_BLOCKING;
+    } else if (Number(newSummary.healthFactor) < 1.01 && newSummary.healthFactor !== '-1') {
+      blockingError = ErrorType.EMODE_DISABLED_LIQUIDATION;
     }
   }
 
   const Blocked: React.FC = () => {
     switch (blockingError) {
+      case ErrorType.ZERO_LTV_COLLATERAL_BLOCKING:
+        return (
+          <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
+            <Typography variant="subheader1">
+              <Trans>Cannot disable E-Mode</Trans>
+            </Typography>
+            <Typography variant="caption">
+              <Trans>
+                You must disable {zeroLtvCollateralSymbols.join(', ')} as collateral before exiting
+                E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral.
+              </Trans>
+            </Typography>
+          </Warning>
+        );
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
           <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
@@ -233,7 +254,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
         </Trans>
       </Typography>
 
-      {blockingError === ErrorType.EMODE_DISABLED_LIQUIDATION && <Blocked />}
+      {blockingError !== undefined && <Blocked />}
       {showLiquidationRiskWarning && (
         <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
           <Typography variant="subheader1" color="#4F1919">
@@ -410,72 +431,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
               futureHealthFactor={newSummary.healthFactor}
             />
 
-            <TableContainer sx={{ maxHeight: '270px' }}>
-              <Table size="small" stickyHeader>
-                <TableHead>
-                  <TableRow
-                    sx={{
-                      [`& .${tableCellClasses.root}`]: {
-                        py: 2,
-                        lineHeight: 0,
-                      },
-                    }}
-                  >
-                    <TableCell align="center" sx={{ pl: 0, width: '120px' }}>
-                      <Typography variant="helperText">
-                        <Trans>Asset</Trans>
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="helperText">
-                        <Trans>Collateral</Trans>
-                      </Typography>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Typography variant="helperText">
-                        <Trans>Borrowable</Trans>
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody sx={{ width: '100%' }}>
-                  {selectedEmode.assets.map((asset, index) => (
-                    <TableRow
-                      key={index}
-                      sx={{
-                        pt: 8,
-                        [`& .${tableCellClasses.root}`]: {
-                          borderBottom: 'none',
-                          pt: 3,
-                          pb: 2,
-                        },
-                      }}
-                    >
-                      <TableCell align="center" sx={{ py: 1 }}>
-                        <Stack direction="row" gap={1} alignItems="center">
-                          <TokenIcon symbol={asset.iconSymbol} sx={{ fontSize: '16px' }} />
-                          <Typography variant="secondary12">{asset.symbol}</Typography>
-                        </Stack>
-                      </TableCell>
-                      <TableCell align="center">
-                        {asset.collateral ? (
-                          <CheckRoundedIcon fontSize="small" color="success" />
-                        ) : (
-                          <CloseIcon fontSize="small" color="error" />
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {asset.borrowable ? (
-                          <CheckRoundedIcon fontSize="small" color="success" />
-                        ) : (
-                          <CloseIcon fontSize="small" color="error" />
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <EmodeAssetTable assets={selectedEmode.assets} />
           </Box>
         </Collapse>
       </TxModalDetails>
