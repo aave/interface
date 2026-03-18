@@ -221,6 +221,10 @@ msgstr "Asset supply is limited to a certain amount to reduce protocol exposure 
 msgid "Cancellation submited"
 msgstr "Cancellation submited"
 
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "This transaction will switch E-Mode from {0} to {1}. Borrowing will be restricted to assets within the new category."
+msgstr "This transaction will switch E-Mode from {0} to {1}. Borrowing will be restricted to assets within the new category."
+
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -2375,6 +2379,10 @@ msgstr "Price"
 msgid "Unstaked"
 msgstr "Unstaked"
 
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "E-Mode change"
+msgstr "E-Mode change"
+
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Vote NAY"
 msgstr "Vote NAY"
@@ -2620,6 +2628,10 @@ msgstr "Liquidation"
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Aave debt token"
 msgstr "Aave debt token"
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "This transaction will enable E-Mode ({0}). Borrowing will be restricted to assets within this category."
+msgstr "This transaction will enable E-Mode ({0}). Borrowing will be restricted to assets within this category."
 
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Top 10 addresses"
@@ -2975,6 +2987,10 @@ msgstr "Use it to vote for or against active proposals."
 #: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Amount received"
 msgstr "Amount received"
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "This transaction will disable E-Mode. All assets will revert to their base LTV and liquidation thresholds."
+msgstr "This transaction will disable E-Mode. All assets will revert to their base LTV and liquidation thresholds."
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Collector Info"

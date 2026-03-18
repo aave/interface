@@ -368,6 +368,33 @@ export const SupplyModalContent = React.memo(
           />
         </TxModalDetails>
 
+        {needsEmodeSwitch && (
+          <Warning severity="info" sx={{ mt: 2 }}>
+            <Typography variant="subheader1">
+              <Trans>E-Mode change</Trans>
+            </Typography>
+            <Typography variant="caption">
+              {user.userEmodeCategoryId === 0 ? (
+                <Trans>
+                  This transaction will enable E-Mode ({eModes[selectedEmodeId]?.label}). Borrowing
+                  will be restricted to assets within this category.
+                </Trans>
+              ) : selectedEmodeId === 0 ? (
+                <Trans>
+                  This transaction will disable E-Mode. All assets will revert to their base LTV and
+                  liquidation thresholds.
+                </Trans>
+              ) : (
+                <Trans>
+                  This transaction will switch E-Mode from {eModes[user.userEmodeCategoryId]?.label}{' '}
+                  to {eModes[selectedEmodeId]?.label}. Borrowing will be restricted to assets within
+                  the new category.
+                </Trans>
+              )}
+            </Typography>
+          </Warning>
+        )}
+
         {txError && <GasEstimationError txError={txError} />}
 
         {showUSDTResetWarning && <USDTResetWarning />}
