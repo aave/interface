@@ -1,10 +1,5 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import { JsonRpcProvider } from '@ethersproject/providers';
-import axios from 'axios';
-import { Contract, getDefaultProvider, utils, Wallet } from 'ethers';
-
-import ERC20_ABI from '../../fixtures/erc20_abi.json';
-import POOL_CONFIG_ABI from '../../fixtures/poolConfig.json';
+import { TokenRequest } from '../actions/tenderly.actions';
+import { Wallet } from 'ethers';
 
 const TENDERLY_KEY = Cypress.env('TENDERLY_KEY');
 const TENDERLY_ACCOUNT = Cypress.env('TENDERLY_ACCOUNT');
@@ -16,12 +11,36 @@ export const DEFAULT_TEST_ACCOUNT = {
   address: WALLET.address.toLowerCase(),
 };
 
-const tenderly = axios.create({
-  baseURL: 'https://api.tenderly.co/api/v1/',
-  headers: {
-    'X-Access-Key': TENDERLY_KEY,
-  },
-});
+const TENDERLY_BASE_URL = 'https://api.tenderly.co/api/v1/';
+
+async function tenderlyFetch(path: string, options: RequestInit = {}) {
+  const response = await fetch(`${TENDERLY_BASE_URL}${path}`, {
+    ...options,
+    headers: {
+      'X-Access-Key': TENDERLY_KEY,
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  if (!response.ok) throw new Error(`Tenderly request failed: ${response.status}`);
+  if (response.status === 204) return null;
+
+  const responseText = await response.text();
+  if (!responseText.trim()) return null;
+
+  return JSON.parse(responseText);
+}
+
+async function adminRpcCall(rpcUrl: string, method: string, params: unknown[]) {
+  const response = await fetch(rpcUrl, {
+    method: 'POST',
+    headers: { 'content-type': 'text/plain' },
+    body: JSON.stringify({ jsonrpc: '2.0', method, params, id: '1234' }),
+  });
+  const result = await response.json();
+  if (result.error) throw new Error(`RPC error (${method}): ${result.error.message}`);
+  return result;
+}
 
 export class TenderlyVnet {
   public _vnetNetworkID: number;
@@ -42,22 +61,23 @@ export class TenderlyVnet {
   }
 
   async init() {
-    const response = await tenderly.post(
+    const data = await tenderlyFetch(
       `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets`,
       {
-        fork_config: {
-          network_id: this._vnetNetworkID,
-          block_number: 'latest',
-        },
-        virtual_network_config: {
-          chain_config: { chain_id: this._chainID },
-        },
+        method: 'POST',
+        body: JSON.stringify({
+          fork_config: {
+            network_id: this._vnetNetworkID,
+            block_number: 'latest',
+          },
+          virtual_network_config: {
+            chain_config: { chain_id: this._chainID },
+          },
+        }),
       }
     );
-    this.vnet_id = response.data.id;
-    this._vnet_admin_rpc = response.data.rpcs.find(
-      (rpc: { name: string }) => rpc.name === 'Admin RPC'
-    )?.url;
+    this.vnet_id = data.id;
+    this._vnet_admin_rpc = data.rpcs.find((rpc: { name: string }) => rpc.name === 'Admin RPC')?.url;
   }
 
   get_rpc_url() {
@@ -67,70 +87,74 @@ export class TenderlyVnet {
 
   async add_balance_rpc(address: string) {
     this.checkVnetInitialized();
-    return axios({
-      url: this.get_rpc_url(),
-      method: 'post',
-      headers: { 'content-type': 'text/plain' },
-      data: JSON.stringify({
-        jsonrpc: '2.0',
-        method: 'tenderly_setBalance',
-        params: [address, '0x21e19e0c9bab2400000'],
-        id: '1234',
-      }),
-    });
+    return adminRpcCall(this.get_rpc_url(), 'tenderly_setBalance', [
+      address,
+      '0x21e19e0c9bab2400000',
+    ]);
   }
 
-  async unpauseMarket(): Promise<void> {
-    const _url = this.get_rpc_url();
-    const provider = new JsonRpcProvider(_url);
-    const emergencyAdmin = '0x4365F8e70CF38C6cA67DE41448508F2da8825500';
-    const signer = await provider.getSigner(emergencyAdmin);
-    // constant addresses:
+  async getERC20Token(walletAddress: string, token: TokenRequest) {
+    this.checkVnetInitialized();
+    const {
+      tokenAddress,
+      tokenCount,
+      decimals = 18,
+      underlyingAsset,
+      poolAddress,
+      autoSupply,
+    } = token;
+    const amount = BigInt(tokenCount || '10') * BigInt(10) ** BigInt(decimals);
+    const amountHex = '0x' + amount.toString(16);
 
-    const poolConfigurator = new Contract(
-      '0x8145eddDf43f50276641b55bd3AD95944510021E',
-      POOL_CONFIG_ABI,
-      signer
-    );
-
-    await poolConfigurator.setPoolPause(false, { from: signer._address, gasLimit: '4000000' });
-    return;
-  }
-
-  async getERC20Token(
-    walletAddress: string,
-    tokenAddress: string,
-    donorAddress?: string,
-    tokenCount?: string
-  ) {
-    cy.log('walletAddress ' + walletAddress);
-    cy.log('tokenAddress ' + tokenAddress);
-    cy.log('donorAddress ' + donorAddress);
-    cy.log('tokenCount ' + tokenCount);
-    let TOP_HOLDER_ADDRESS;
-    const _url = this.get_rpc_url();
-    const provider = getDefaultProvider(_url);
-    if (donorAddress) {
-      TOP_HOLDER_ADDRESS = donorAddress;
+    if (underlyingAsset && poolAddress) {
+      // aToken: fund the underlying asset, then optionally supply to the pool
+      await adminRpcCall(this.get_rpc_url(), 'tenderly_setErc20Balance', [
+        underlyingAsset,
+        [walletAddress],
+        amountHex,
+      ]);
+      if (autoSupply) {
+        await adminRpcCall(this.get_rpc_url(), 'eth_sendTransaction', [
+          {
+            from: walletAddress,
+            to: underlyingAsset,
+            // approve(address,uint256) — approve pool for the exact amount
+            data:
+              '0x095ea7b3' +
+              poolAddress.toLowerCase().replace('0x', '').padStart(64, '0') +
+              amount.toString(16).padStart(64, '0'),
+            gas: '0x30000',
+          },
+        ]);
+        await adminRpcCall(this.get_rpc_url(), 'eth_sendTransaction', [
+          {
+            from: walletAddress,
+            to: poolAddress,
+            // supply(address,uint256,address,uint16)
+            data:
+              '0x617ba037' +
+              underlyingAsset.toLowerCase().replace('0x', '').padStart(64, '0') +
+              amount.toString(16).padStart(64, '0') +
+              walletAddress.toLowerCase().replace('0x', '').padStart(64, '0') +
+              '0'.padStart(64, '0'),
+            gas: '0x100000',
+          },
+        ]);
+      }
     } else {
-      TOP_HOLDER_ADDRESS = await this.getTopHolder(tokenAddress);
+      // Regular ERC20: set balance directly
+      await adminRpcCall(this.get_rpc_url(), 'tenderly_setErc20Balance', [
+        tokenAddress,
+        [walletAddress],
+        amountHex,
+      ]);
     }
-    // @ts-ignore
-    const topHolderSigner = await provider.getSigner(TOP_HOLDER_ADDRESS);
-    const token = new Contract(tokenAddress, ERC20_ABI, topHolderSigner);
-    await token.transfer(walletAddress, utils.parseEther(tokenCount || '10'));
-  }
-
-  async getTopHolder(token: string) {
-    const res = (
-      await axios.get(`https://api.ethplorer.io/getTopTokenHolders/${token}?apiKey=freekey`)
-    ).data.holders[0].address;
-    return res;
   }
 
   async deleteVnet() {
-    await tenderly.delete(
-      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets/${this.vnet_id}`
+    await tenderlyFetch(
+      `account/${TENDERLY_ACCOUNT}/project/${TENDERLY_PROJECT}/vnets/${this.vnet_id}`,
+      { method: 'DELETE' }
     );
   }
 }
