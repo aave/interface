@@ -82,7 +82,6 @@ export type VoteDisplay = {
   support: boolean;
   votingPower: string;
   ensName?: string;
-  ensAvatar?: string;
 };
 
 /**
