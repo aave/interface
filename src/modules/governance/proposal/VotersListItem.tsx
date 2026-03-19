@@ -19,7 +19,7 @@ type VotersListItemProps = {
 };
 
 export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Element | null => {
-  const { voter: address, ensName } = voter;
+  const { voter: address, ensAvatar, ensName } = voter;
   const blockieAvatar = blo(address !== '' ? (address as `0x${string}`) : '0x');
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -55,7 +55,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
     <Box sx={{ my: 6, '&:first-of-type': { mt: 0 }, '&:last-of-type': { mb: 0 } }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <Avatar src={blockieAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
+          <Avatar src={ensAvatar || blockieAvatar} sx={{ width: 24, height: 24, mr: 2 }} />
           <Link
             href={`https://etherscan.io/address/${address}`}
             onClick={() =>
