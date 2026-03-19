@@ -134,6 +134,10 @@ export const ROUTES = {
     `/governance/v3/proposal?proposalId=${proposalId}`,
   reserveOverview: (underlyingAsset: string, marketName: CustomMarket) =>
     `/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${marketName}`,
+  marketAssetDetails: (underlyingAsset: string, marketName: CustomMarket) =>
+    `/markets/details/?underlyingAsset=${encodeURIComponent(
+      underlyingAsset
+    )}&marketName=${encodeURIComponent(marketName)}`,
   history: '/history',
   bridge: '/bridge',
 };

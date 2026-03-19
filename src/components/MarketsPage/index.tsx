@@ -1,10 +1,11 @@
-import { ChevronRight, Search as SearchIcon } from '@mui/icons-material';
+import { Search as SearchIcon } from '@mui/icons-material';
 import {
   Box,
   Button,
   InputAdornment,
   MenuItem,
   Select,
+  SelectChangeEvent,
   Table,
   TableBody,
   TableCell,
@@ -120,16 +121,20 @@ const MARKET_ASSETS: MarketAsset[] = [
   },
 ];
 
-const CATEGORIES = [
-  { value: 'all', label: 'All categories' },
+const CATEGORY_OPTIONS = [
   { value: 'crypto', label: 'Crypto' },
   { value: 'stablecoin', label: 'Stablecoin' },
 ];
 
 export default function MarketsPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [category, setCategory] = useState('all');
+  const [categories, setCategories] = useState<string[]>([]);
   const currentMarket = useRootStore((s) => s.currentMarket) as CustomMarket;
+
+  const handleCategoriesChange = (event: SelectChangeEvent<string[]>) => {
+    const value = event.target.value;
+    setCategories(typeof value === 'string' ? value.split(',') : value);
+  };
 
   const filteredAssets = useMemo(() => {
     return MARKET_ASSETS.filter((item) => {
@@ -137,10 +142,10 @@ export default function MarketsPage() {
         !searchQuery ||
         item.asset.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCategory = category === 'all' || item.category === category;
+      const matchesCategory = categories.length === 0 || categories.includes(item.category);
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, category]);
+  }, [searchQuery, categories]);
 
   return (
     <Layout>
@@ -161,16 +166,6 @@ export default function MarketsPage() {
                       V3
                     </Typography>
                   </V3Badge>
-                  <Button
-                    size="small"
-                    variant="outlined"
-                    endIcon={<ChevronRight />}
-                    component={Link}
-                    href={ROUTES.history}
-                    noLinkStyle
-                  >
-                    view transactions
-                  </Button>
                 </Box>
                 <Typography variant="body2" color="text.secondary">
                   Main Ethereum market with the largest selection of assets and yield options
@@ -224,17 +219,28 @@ export default function MarketsPage() {
           </CoreInstanceBlock>
 
           <CoreAssetsSection>
-            <Box display="flex" flexDirection="column" gap={2}>
+            <Box display="flex" gap={2} justifyContent="space-between">
               <Typography variant="h5">Core assets</Typography>
               <FiltersRow>
                 <Box display="flex" gap={2} flexWrap="wrap">
                   <Select
+                    multiple
                     size="small"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
+                    value={categories}
+                    onChange={handleCategoriesChange}
                     variant="outlined"
+                    displayEmpty
+                    renderValue={(selected) => {
+                      const s = selected as string[];
+                      if (s.length === 0) {
+                        return 'All categories';
+                      }
+                      return s
+                        .map((v) => CATEGORY_OPTIONS.find((c) => c.value === v)?.label ?? v)
+                        .join(', ');
+                    }}
                   >
-                    {CATEGORIES.map((c) => (
+                    {CATEGORY_OPTIONS.map((c) => (
                       <MenuItem key={c.value} value={c.value}>
                         {c.label}
                       </MenuItem>
@@ -316,7 +322,7 @@ export default function MarketsPage() {
                               variant="contained"
                               color="secondary"
                               component={Link}
-                              href={ROUTES.reserveOverview(row.underlyingAsset, currentMarket)}
+                              href={ROUTES.marketAssetDetails(row.underlyingAsset, currentMarket)}
                               noLinkStyle
                             >
                               Details
@@ -348,7 +354,7 @@ export default function MarketsPage() {
                           variant="contained"
                           color="inherit"
                           component={Link}
-                          href={ROUTES.reserveOverview(row.underlyingAsset, currentMarket)}
+                          href={ROUTES.marketAssetDetails(row.underlyingAsset, currentMarket)}
                           noLinkStyle
                         >
                           Details

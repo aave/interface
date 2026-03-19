@@ -9,6 +9,8 @@ export type FaqCategory = {
   items: FaqItem[];
 };
 
+export const faqSectionDomId = (categoryKey: string) => `faq-section-${categoryKey}`;
+
 export const FAQ_CATEGORIES: FaqCategory[] = [
   {
     key: 'general',

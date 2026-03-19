@@ -1,7 +1,6 @@
 import { Cancel, Close } from '@mui/icons-material';
-import { Button, IconButton, Stack, Tab, Typography } from '@mui/material';
+import { Button, IconButton, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
-import { useState } from 'react';
 
 import { BaseModalProps, RepayModalProps } from '../types';
 import {
@@ -13,7 +12,6 @@ import {
   ModalCard,
   OverviewRow,
   OverviewSection,
-  TabsFullWidth,
   TokenInfo,
   TokenInputRow,
 } from './styles';
@@ -21,10 +19,6 @@ import {
 type Props = BaseModalProps & RepayModalProps;
 
 export default function RepayModal({ open, onClose, token, balance }: Props) {
-  const [sourceTab, setSourceTab] = useState(0);
-
-  const isCollateral = sourceTab === 1;
-
   return (
     <Dialog open={open} onClose={onClose}>
       <ModalCard>
@@ -34,11 +28,6 @@ export default function RepayModal({ open, onClose, token, balance }: Props) {
             <Close fontSize="small" />
           </IconButton>
         </Header>
-
-        <TabsFullWidth value={sourceTab} onChange={(_, v) => setSourceTab(v)}>
-          <Tab label="Wallet balance" />
-          <Tab label="Collateral" />
-        </TabsFullWidth>
 
         <Typography variant="caption" sx={{ opacity: 0.5 }}>
           Amount
@@ -58,9 +47,7 @@ export default function RepayModal({ open, onClose, token, balance }: Props) {
                 <Typography variant="caption">{token}</Typography>
               </Stack>
               <BalanceRow>
-                <Typography variant="caption">
-                  {isCollateral ? 'Supply balance' : 'Wallet balance'} {balance}
-                </Typography>
+                <Typography variant="caption">Wallet balance {balance}</Typography>
                 <Typography variant="caption" color="primary">
                   MAX
                 </Typography>
@@ -95,7 +82,7 @@ export default function RepayModal({ open, onClose, token, balance }: Props) {
         </OverviewSection>
 
         <Button variant="contained" size="large" fullWidth>
-          {isCollateral ? `Repay with collateral` : `Repay ${token}`}
+          Repay {token}
         </Button>
       </ModalCard>
     </Dialog>

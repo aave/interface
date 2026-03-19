@@ -1,7 +1,6 @@
 import { Cancel, Close } from '@mui/icons-material';
-import { Button, IconButton, Stack, Tab, Typography } from '@mui/material';
+import { Button, IconButton, Stack, Typography } from '@mui/material';
 import Image from 'next/image';
-import { useState } from 'react';
 
 import { BaseModalProps, WithdrawModalProps } from '../types';
 import {
@@ -14,20 +13,13 @@ import {
   OverviewRow,
   OverviewSection,
   SlippageRow,
-  SwapToSection,
-  TabsFullWidth,
   TokenInfo,
-  TokenInputRow,
+  TokenInputRow
 } from './styles';
 
 type Props = BaseModalProps & WithdrawModalProps;
 
 export default function WithdrawModal({ open, onClose, token, balance }: Props) {
-  const [withdrawTab, setWithdrawTab] = useState(0);
-  const [orderTab, setOrderTab] = useState(1);
-
-  const isSwapMode = withdrawTab === 1;
-
   return (
     <Dialog open={open} onClose={onClose}>
       <ModalCard>
@@ -38,31 +30,11 @@ export default function WithdrawModal({ open, onClose, token, balance }: Props) 
           </IconButton>
         </Header>
 
-        <TabsFullWidth value={withdrawTab} onChange={(_, v) => setWithdrawTab(v)}>
-          <Tab label="withdraw" />
-          <Tab label="withdraw & swap" />
-        </TabsFullWidth>
-
-        {isSwapMode && (
-          <TabsFullWidth value={orderTab} onChange={(_, v) => setOrderTab(v)}>
-            <Tab label="market" />
-            <Tab label="limit" />
-          </TabsFullWidth>
-        )}
-
         <Stack spacing={1} width="100%">
           <SlippageRow>
             <Typography variant="caption" sx={{ opacity: 0.5 }}>
               Withdraw
             </Typography>
-            {isSwapMode && (
-              <Stack direction="row" spacing={0.5}>
-                <Typography variant="caption" sx={{ opacity: 0.5 }}>
-                  Auto Slippage:
-                </Typography>
-                <Typography variant="caption">2.11%</Typography>
-              </Stack>
-            )}
           </SlippageRow>
 
           <TokenInputRow>
@@ -91,30 +63,6 @@ export default function WithdrawModal({ open, onClose, token, balance }: Props) 
             </AmountInput>
           </TokenInputRow>
         </Stack>
-
-        {isSwapMode && (
-          <SwapToSection>
-            <Typography variant="caption" sx={{ opacity: 0.5 }}>
-              And swap to
-            </Typography>
-            <TokenInputRow>
-              <AmountInput>
-                <AmountDisplay>
-                  <Typography variant="h6">0.91742061649</Typography>
-                  <Typography variant="caption" sx={{ opacity: 0.5 }}>
-                    $1.42
-                  </Typography>
-                </AmountDisplay>
-                <TokenInfo>
-                  <Stack direction="row" spacing={0.5} alignItems="center">
-                    <Image src="/icons/networks/ethereum.svg" width={16} height={16} alt="ETH" />
-                    <Typography variant="caption">ETH</Typography>
-                  </Stack>
-                </TokenInfo>
-              </AmountInput>
-            </TokenInputRow>
-          </SwapToSection>
-        )}
 
         <OverviewSection>
           <Typography variant="caption" sx={{ opacity: 0.5 }}>

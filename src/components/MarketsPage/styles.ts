@@ -118,11 +118,14 @@ export const VerticalDivider = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const CoreAssetsSection = styled(Box)(({ theme }) => ({
+export const CoreAssetsSection = styled(PaperBase)(({ theme }) => ({
   marginTop: 24,
+  padding: 24,
+  border: '1px solid #FFFFFF4D',
   display: 'flex',
   flexDirection: 'column',
   gap: 16,
+
   [theme.breakpoints.down('xsm')]: {
     marginTop: 24,
     gap: 16,
@@ -142,7 +145,6 @@ export const FiltersRow = styled(Box)(({ theme }) => ({
 }));
 
 export const TablePaper = styled(PaperBase)(({ theme }) => ({
-  border: `1px solid ${theme.palette.text.secondary}`,
   borderRadius: 4,
   overflow: 'auto',
   backgroundColor: theme.palette.background.paper,
