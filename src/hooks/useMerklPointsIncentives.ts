@@ -31,7 +31,7 @@ type ReserveIncentiveAdditionalData = {
 // Normalize to lowercase for case-insensitive comparison
 const INK_POINT_TOKEN_ADDRESSES = ['0x40aBd730Cc9dA34a8EE9823fEaBDBa35E50c4ac7'.toLowerCase()];
 const MERKL_TYDRO_ENDPOINT =
-  'https://api.merkl.xyz/v4/opportunities?mainProtocolId=tydro&chainName=ink&items=100&status=LIVE'; // Merkl API
+  'https://api-merkl.angle.money/v4/opportunities?mainProtocolId=tydro&chainName=ink&items=100&status=LIVE'; // Merkl API
 
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
