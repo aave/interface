@@ -13,6 +13,7 @@ import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/Wa
 import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { useModalContext } from './useModal';
@@ -137,8 +138,11 @@ export const useReserveActionState = ({
           <Warning sx={{ mb: 0 }} severity="info" icon={false}>
             <Trans>
               Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
-              {getEmodeMessage(eModes[user.userEmodeCategoryId].label)} category. To manage E-Mode
-              categories visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.
+              {replaceUnderscoresWithSpaces(
+                getEmodeMessage(eModes[user.userEmodeCategoryId].label)
+              )}{' '}
+              category. To manage E-Mode categories visit your{' '}
+              <Link href={ROUTES.dashboard}>Dashboard</Link>.
             </Trans>
           </Warning>
         )}
