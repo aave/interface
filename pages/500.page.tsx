@@ -33,7 +33,7 @@ export default function Aave500Page() {
             textAlign: 'center',
             p: 4,
             flex: 1,
-            backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : '',
+            backgroundColor: theme.palette.mode === 'dark' ? 'transparent' : undefined,
           }}
         >
           <Typography variant="display1" sx={{ mt: 8, mb: 3 }}>
