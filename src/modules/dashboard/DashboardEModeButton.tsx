@@ -7,6 +7,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD, GENERAL } from 'src/utils/events';
+import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -40,7 +41,9 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
   const isEModeDisabled = userEmodeCategoryId === 0;
 
   const EModeLabelMessage = () => (
-    <Trans>{getEmodeMessage(_eModes[userEmodeCategoryId].label)}</Trans>
+    <Trans>
+      {replaceUnderscoresWithSpaces(getEmodeMessage(_eModes[userEmodeCategoryId].label))}
+    </Trans>
   );
 
   return (

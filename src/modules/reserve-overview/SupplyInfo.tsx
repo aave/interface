@@ -19,6 +19,7 @@ import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCapsSDK';
 import { GENERAL } from 'src/utils/events';
 import { MarketDataType } from 'src/utils/marketsAndNetworksConfig';
+import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
 
 import { SupplyApyGraph } from './graphs/ApyGraphContainer';
 import { ConfigStatus } from './ReserveEModePanel';
@@ -221,7 +222,7 @@ export const SupplyInfo = ({
                 This asset can only be used as collateral in E-Mode:{' '}
                 {reserve.eModeInfo
                   ?.filter((eMode) => eMode.canBeCollateral)
-                  .map((eMode) => eMode.label)
+                  .map((eMode) => replaceUnderscoresWithSpaces(eMode.label))
                   .join(', ')}
               </Trans>
             </Warning>

@@ -30,7 +30,7 @@ import {
 } from 'src/utils/getMaxAmountAvailableToSupply';
 import { calculateHFAfterSupply } from 'src/utils/hfUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { roundToTokenDecimals } from 'src/utils/utils';
+import { replaceUnderscoresWithSpaces, roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -372,7 +372,8 @@ export const SupplyModalContent = React.memo(
               text={
                 selectedEmodeId === 0
                   ? t`Disabled`
-                  : eModes[selectedEmodeId]?.label || t`Category ${selectedEmodeId}`
+                  : replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label) ||
+                    t`Category ${selectedEmodeId}`
               }
             />
           )}
@@ -391,8 +392,9 @@ export const SupplyModalContent = React.memo(
             <Typography variant="caption">
               {user.userEmodeCategoryId === 0 ? (
                 <Trans>
-                  This transaction will enable E-Mode ({eModes[selectedEmodeId]?.label}). Borrowing
-                  will be restricted to assets within this category.
+                  This transaction will enable E-Mode (
+                  {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}). Borrowing will be
+                  restricted to assets within this category.
                 </Trans>
               ) : selectedEmodeId === 0 ? (
                 <Trans>
@@ -401,9 +403,10 @@ export const SupplyModalContent = React.memo(
                 </Trans>
               ) : (
                 <Trans>
-                  This transaction will switch E-Mode from {eModes[user.userEmodeCategoryId]?.label}{' '}
-                  to {eModes[selectedEmodeId]?.label}. Borrowing will be restricted to assets within
-                  the new category.
+                  This transaction will switch E-Mode from{' '}
+                  {replaceUnderscoresWithSpaces(eModes[user.userEmodeCategoryId]?.label)} to{' '}
+                  {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}. Borrowing will be
+                  restricted to assets within the new category.
                 </Trans>
               )}
               {supplyUnWrapped && (
