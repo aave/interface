@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useState } from 'react';
+import { useAccount } from 'wagmi';
 import { parseUnits } from 'viem';
 import {
   useK613Approve,
@@ -24,10 +25,13 @@ import {
 
 const MAX_UINT256 = BigInt('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
+const STAKING_CHAIN_ID = 421614;
+
 export function K613StakingPanel() {
   const [stakeAmount, setStakeAmount] = useState('');
   const [exitAmount, setExitAmount] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const { chainId } = useAccount();
 
   const {
     stakingAddress,
@@ -161,8 +165,13 @@ export function K613StakingPanel() {
   if (!stakingAddress) {
     return (
       <Paper sx={{ p: 4, textAlign: 'center' }}>
-        <Typography color="text.secondary">
-          Контракт стейкинга не настроен. Добавьте адрес в src/const/addresses.ts
+        <Typography color="text.secondary" sx={{ mb: 1 }}>
+          Staking contract address is configured only for Arbitrum Sepolia (chain ID{' '}
+          {STAKING_CHAIN_ID}). Switch your wallet to that network.
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Current chain ID: {chainId ?? '—'}. The staking address is looked up by network; other chains
+          use an empty placeholder until you add one.
         </Typography>
       </Paper>
     );

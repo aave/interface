@@ -9,7 +9,8 @@ const K613_ABI = (k613Artifact as unknown as { abi: unknown[] }).abi;
 export function useK613StakingAddress() {
   const { chainId } = useAccount();
   const addresses = chainId ? addressesByChainId(chainId) : null;
-  return addresses?.staking || null;
+  const raw = addresses?.staking;
+  return raw && raw.length > 0 ? raw : null;
 }
 
 export function useK613StakingData() {
