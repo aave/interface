@@ -1,10 +1,10 @@
 import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import { addressesByChainId } from 'src/utils/addresses';
-import StakingABI from 'src/abis/StakingABI.json';
-import ERC20ABI from 'src/abis/ERC20ABI.json';
+import K613Artifact from 'src/abis/K613/K613.json';
+import StakingArtifact from 'src/abis/Staking/Staking.json';
 
-const STAKING_ABI = (StakingABI as { abi: unknown[] }).abi;
-const ERC20_ABI = ERC20ABI as unknown[];
+const STAKING_ABI = (StakingArtifact as { abi: unknown[] }).abi;
+const K613_ABI = (K613Artifact as { abi: unknown[] }).abi;
 
 export function useK613StakingAddress() {
   const { chainId } = useAccount();
@@ -82,7 +82,7 @@ export function useK613TokenBalance(tokenAddress: `0x${string}` | undefined) {
 
   return useReadContract({
     address: tokenAddress,
-    abi: ERC20_ABI,
+    abi: K613_ABI,
     functionName: 'balanceOf',
     args: userAddress ? [userAddress] : undefined,
   });
@@ -96,7 +96,7 @@ export function useK613TokenAllowance(
 
   return useReadContract({
     address: tokenAddress,
-    abi: ERC20_ABI,
+    abi: K613_ABI,
     functionName: 'allowance',
     args: userAddress && spenderAddress ? [userAddress, spenderAddress] : undefined,
   });
@@ -172,7 +172,7 @@ export function useK613Approve() {
   const approve = async (tokenAddress: `0x${string}`, spender: `0x${string}`, amount: bigint) => {
     return writeContractAsync({
       address: tokenAddress,
-      abi: ERC20_ABI,
+      abi: K613_ABI,
       functionName: 'approve',
       args: [spender, amount],
     });
