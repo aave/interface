@@ -111,6 +111,14 @@ export const IncentivesCard = ({
   const isSghoPage =
     typeof router?.asPath === 'string' && router.asPath.toLowerCase().startsWith('/sgho');
   const hideMeritValue = symbol === 'GHO' && !isSghoPage;
+  const isMarketsOrDashboardPage =
+    typeof router?.pathname === 'string' &&
+    (router.pathname.startsWith('/dashboard') || router.pathname.startsWith('/markets'));
+  // Hide GHO Merkl value on dashboard/markets; show only the badge icon.
+  const hideMerklValue =
+    symbol === 'GHO' &&
+    (protocolAction === ProtocolAction.borrow || protocolAction === ProtocolAction.supply) &&
+    isMarketsOrDashboardPage;
 
   const incentivesContent = (
     <>
@@ -136,6 +144,7 @@ export const IncentivesCard = ({
         protocolAction={protocolAction}
         protocolAPY={protocolAPY}
         protocolIncentives={incentives || []}
+        hideValue={hideMerklValue}
       />
       <EthenaIncentivesButton rewardedAsset={address} />
       <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
