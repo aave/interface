@@ -173,6 +173,7 @@ export const MerklIncentivesButton = (params: {
   protocolAction?: ProtocolAction;
   protocolAPY?: number;
   protocolIncentives?: ReserveIncentiveResponse[];
+  hideValue?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const { data: merklIncentives } = useMerklIncentives(params);
@@ -197,7 +198,11 @@ export const MerklIncentivesButton = (params: {
       setOpen={setOpen}
       open={open}
     >
-      <Content incentives={[incentiveData]} incentivesNetAPR={incentiveAPR} />
+      <Content
+        incentives={[incentiveData]}
+        incentivesNetAPR={incentiveAPR}
+        hideValue={params.hideValue}
+      />
     </ContentWithTooltip>
   );
 };
