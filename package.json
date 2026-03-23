@@ -4,7 +4,8 @@
   "private": true,
   "license": "BSD-3-Clause",
   "resolutions": {
-    "h3": "^1.15.5"
+    "h3": "^1.15.5",
+    "minimatch": ">=5.1.7"
   },
   "scripts": {
     "dev": "next dev",
