@@ -35,7 +35,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@aave-dao/aave-address-book": "^4.47.6",
+    "@aave-dao/aave-address-book": "^4.47.13", 
     "@aave/contract-helpers": "1.37.1",
     "@aave/graphql": "^0.11.0",
     "@aave/math-utils": "1.37.1",
