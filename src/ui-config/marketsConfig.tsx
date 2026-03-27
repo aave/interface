@@ -551,6 +551,8 @@ export const marketsData: {
     marketTitle: 'X Layer',
     market: CustomMarket.proto_xlayer_v3,
     chainId: ChainId.xlayer,
+    logo: '/icons/networks/xlayer.svg',
+
     v3: true,
     addresses: {
       LENDING_POOL_ADDRESS_PROVIDER: AaveV3XLayer.POOL_ADDRESSES_PROVIDER,
