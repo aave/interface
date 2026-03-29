@@ -15,6 +15,7 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from 'src/hooks/useModal';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useRootStore } from 'src/store/root';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
@@ -30,6 +31,7 @@ import {
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { RepayActions } from './RepayActions';
+import { useRepayError } from './RepayError';
 
 interface RepayAsset extends Asset {
   balance: string;
@@ -57,7 +59,8 @@ export const RepayModalContent = ({
       ])
     );
 
-  // states
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
+
   const [tokenToRepayWith, setTokenToRepayWith] = useState<RepayAsset>({
     address: poolReserve.underlyingAsset,
     symbol: poolReserve.symbol,
@@ -76,6 +79,13 @@ export const RepayModalContent = ({
 
   const repayWithATokens = tokenToRepayWith.address === poolReserve.aTokenAddress;
 
+  const isZeroLTVBlocked = repayWithATokens && assetsBlockingWithdraw.length > 0;
+
+  const { blockingError, errorComponent } = useRepayError({
+    assetsBlockingWithdraw,
+    repayWithATokens,
+  });
+
   const debt = userReserve?.variableBorrows || '0';
   const debtUSD = new BigNumber(debt)
     .multipliedBy(poolReserve.formattedPriceInMarketReferenceCurrency)
@@ -86,7 +96,6 @@ export const RepayModalContent = ({
     .multipliedBy('1.0025')
     .decimalPlaces(poolReserve.decimals, BigNumber.ROUND_UP);
 
-  // calculate max amount abailable to repay
   let maxAmountToRepay: BigNumber;
   let balance: string;
   if (repayWithATokens) {
@@ -116,15 +125,8 @@ export const RepayModalContent = ({
           synthetixProxyByChainId[currentChainId].toLowerCase() ===
             reserve.underlyingAsset.toLowerCase())
       ) {
-        // for native token and synthetix (only mainnet) we can't send -1 as
-        // contract does not accept max unit256
         setRepayMax(safeAmountToRepayAll.toString(10));
       } else {
-        // -1 can always be used for v3 otherwise
-        // for v2 we can onl use -1 when user has more balance than max debt to repay
-        // this is accounted for when maxAmountToRepay.eq(debt) as maxAmountToRepay is
-        // min between debt and walletbalance, so if it enters here for v2 it means
-        // balance is bigger and will be able to transact with -1
         setRepayMax('-1');
       }
     } else {
@@ -136,11 +138,8 @@ export const RepayModalContent = ({
     }
   };
 
-  // token info
   useEffect(() => {
     const repayTokens: RepayAsset[] = [];
-    // set possible repay tokens
-    // if wrapped reserve push both wrapped / native
     if (poolReserve.symbol === networkConfig.wrappedBaseAssetSymbol) {
       const nativeTokenWalletBalance = valueToBigNumber(nativeBalance);
       const maxNativeToken = BigNumber.max(
@@ -153,7 +152,6 @@ export const RepayModalContent = ({
         balance: maxNativeToken.toString(10),
       });
     }
-    // push reserve asset
     const minReserveTokenRepay = BigNumber.min(valueToBigNumber(tokenBalance), debt);
     const maxReserveTokenForRepay = BigNumber.max(minReserveTokenRepay, tokenBalance);
     repayTokens.push({
@@ -162,7 +160,6 @@ export const RepayModalContent = ({
       iconSymbol: poolReserve.iconSymbol,
       balance: maxReserveTokenForRepay.toString(10),
     });
-    // push reserve aToken
     if (
       currentMarketData.v3 &&
       !displayGhoForMintableMarket({ symbol: poolReserve.symbol, currentMarket })
@@ -184,7 +181,6 @@ export const RepayModalContent = ({
     setTokenToRepayWith(repayTokens[0]);
   }, []);
 
-  // debt remaining after repay
   const amountAfterRepay = valueToBigNumber(debt)
     .minus(amount || '0')
     .toString(10);
@@ -195,8 +191,6 @@ export const RepayModalContent = ({
 
   const maxRepayWithDustRemaining = isMaxSelected && amountAfterRepayInUsd.toNumber() > 0;
 
-  // health factor calculations
-  // we use usd values instead of MarketreferenceCurrency so it has same precision
   let newHF = user?.healthFactor;
   if (amount) {
     let collateralBalanceMarketReferenceCurrency: BigNumberValue = user?.totalCollateralUSD || '0';
@@ -223,7 +217,6 @@ export const RepayModalContent = ({
         : calculatedHealthFactor.toString(10);
   }
 
-  // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(reserve.priceInUSD);
 
   if (repayTxState.success)
@@ -249,12 +242,18 @@ export const RepayModalContent = ({
         balanceText={<Trans>Wallet balance</Trans>}
       />
 
+      {blockingError !== undefined && (
+        <Typography variant="helperText" color="error.main">
+          {errorComponent}
+        </Typography>
+      )}
+
       {maxRepayWithDustRemaining && (
         <Typography color="warning.main" variant="helperText">
           <Trans>
-            You don’t have enough funds in your wallet to repay the full amount. If you proceed to
-            repay with your current amount of funds, you will still have a small borrowing position
-            in your dashboard.
+            You don\u2019t have enough funds in your wallet to repay the full amount. If you proceed
+            to repay with your current amount of funds, you will still have a small borrowing
+            position in your dashboard.
           </Trans>
         </Typography>
       )}
@@ -305,6 +304,7 @@ export const RepayModalContent = ({
         setShowUSDTResetWarning={setShowUSDTResetWarning}
         chainId={currentChainId}
         maxAmountToRepay={maxAmountToRepay.toString(10)}
+        blocked={isZeroLTVBlocked}
       />
     </>
   );

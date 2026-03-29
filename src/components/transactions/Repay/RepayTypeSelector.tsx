@@ -13,9 +13,11 @@ export enum RepayType {
 export function RepayTypeSelector({
   repayType,
   setRepayType,
+  collateralDisabled,
 }: {
   repayType: RepayType;
   setRepayType: (type: RepayType) => void;
+  collateralDisabled?: boolean;
 }) {
   const [trackEvent, currentMarketData] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarketData])
@@ -32,7 +34,11 @@ export function RepayTypeSelector({
         color="primary"
         value={repayType}
         exclusive
-        onChange={(_, value) => setRepayType(value)}
+        onChange={(_, value) => {
+          if (value !== null) {
+            setRepayType(value);
+          }
+        }}
       >
         <StyledTxModalToggleButton
           value={RepayType.BALANCE}
@@ -46,7 +52,7 @@ export function RepayTypeSelector({
 
         <StyledTxModalToggleButton
           value={RepayType.COLLATERAL}
-          disabled={repayType === RepayType.COLLATERAL}
+          disabled={repayType === RepayType.COLLATERAL || collateralDisabled}
           onClick={() => trackEvent(REPAY_MODAL.SWITCH_REPAY_TYPE, { repayType: 'Collateral' })}
         >
           <Typography variant="buttonM">

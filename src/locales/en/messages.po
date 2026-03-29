@@ -1072,6 +1072,10 @@ msgstr "We couldn't detect a wallet. Connect a wallet to stake and view your bal
 msgid "Destination"
 msgstr "Destination"
 
+#: src/components/transactions/Repay/RepayModal.tsx
+msgid "Repay with collateral is unavailable because you have assets with zero LTV ({0}) enabled as collateral. Withdraw or disable them as collateral first."
+msgstr "Repay with collateral is unavailable because you have assets with zero LTV ({0}) enabled as collateral. Withdraw or disable them as collateral first."
+
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -2053,6 +2057,10 @@ msgstr "Price impact is the spread between the total value of the entry tokens s
 msgid "Send cancel"
 msgstr "Send cancel"
 
+#: src/components/transactions/Repay/RepayModalContent.tsx
+msgid "You don\\u2019t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
+msgstr "You don\\u2019t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
@@ -2127,6 +2135,10 @@ msgstr "YAE"
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Claiming all merit rewards only"
 msgstr "Claiming all merit rewards only"
+
+#: src/components/transactions/Repay/RepayError.tsx
+msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to repay with aTokens. Please repay using your wallet balance instead."
+msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to repay with aTokens. Please repay using your wallet balance instead."
 
 #: src/components/transactions/FlowCommons/BaseCancelled.tsx
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
@@ -2609,10 +2621,6 @@ msgstr "Ltv validation failed"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
-
-#: src/components/transactions/Repay/RepayModalContent.tsx
-msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
-msgstr "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx

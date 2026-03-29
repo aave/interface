@@ -1,9 +1,12 @@
 import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
+import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
+import { Warning } from 'src/components/primitives/Warning';
 import { UserAuthenticated } from 'src/components/UserAuthenticated';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ModalContextType, ModalType, useModalContext } from 'src/hooks/useModal';
+import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { useRootStore } from 'src/store/root';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 
@@ -23,10 +26,9 @@ export const RepayModal = () => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const [repayType, setRepayType] = useState(RepayType.BALANCE);
 
-  // repay with collateral is only possible:
-  // 1. on chains with paraswap deployed
-  // 2. when you have a different supplied(not necessarily collateral) asset then the one your debt is in
-  // For repaying your debt with the same assets aToken you can use repayWithAToken on aave protocol v3
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
+  const hasZeroLTVBlocking = assetsBlockingWithdraw.length > 0;
+
   const collateralRepayPossible =
     isFeatureEnabled.collateralRepay(currentMarketData) &&
     userReserves.some(
@@ -34,6 +36,8 @@ export const RepayModal = () => {
         userReserve.scaledATokenBalance !== '0' &&
         userReserve.underlyingAsset !== args.underlyingAsset
     );
+
+  const collateralRepayBlocked = collateralRepayPossible && hasZeroLTVBlocking;
 
   const handleClose = () => {
     setRepayType(RepayType.BALANCE);
@@ -49,10 +53,25 @@ export const RepayModal = () => {
               {(user) => (
                 <>
                   {collateralRepayPossible && !mainTxState.txHash && (
-                    <RepayTypeSelector repayType={repayType} setRepayType={setRepayType} />
+                    <RepayTypeSelector
+                      repayType={repayType}
+                      setRepayType={setRepayType}
+                      collateralDisabled={collateralRepayBlocked}
+                    />
+                  )}
+                  {collateralRepayBlocked && (
+                    <Warning severity="warning" sx={{ mt: 2, mb: 2 }}>
+                      <Typography variant="caption">
+                        <Trans>
+                          Repay with collateral is unavailable because you have assets with zero LTV
+                          ({assetsBlockingWithdraw.join(', ')}) enabled as collateral. Withdraw or
+                          disable them as collateral first.
+                        </Trans>
+                      </Typography>
+                    </Warning>
                   )}
                   {repayType === RepayType.BALANCE && <RepayModalContent {...params} user={user} />}
-                  {repayType === RepayType.COLLATERAL && (
+                  {repayType === RepayType.COLLATERAL && !collateralRepayBlocked && (
                     <RepayWithCollateralModalContent
                       {...params}
                       debtType={args.currentRateMode}
