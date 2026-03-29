@@ -25,6 +25,7 @@ import {
   sepolia,
   soneium,
   sonic,
+  xLayer,
   zksync,
 } from 'wagmi/chains';
 
@@ -463,6 +464,21 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://mantlescan.xyz',
     networkLogoPath: '/icons/networks/mantle.svg',
     wagmiChain: mantle,
+  },
+  [ChainId.xlayer]: {
+    name: 'X Layer',
+    publicJsonRPCUrl: ['https://rpc.xlayer.tech', 'https://xlayer.drpc.org'],
+    baseAssetSymbol: 'OKB',
+    wrappedBaseAssetSymbol: 'WOKB',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://www.oklink.com/xlayer',
+    networkLogoPath: '/icons/networks/xlayer.svg',
+    bridge: {
+      icon: '/icons/networks/xlayer.svg',
+      name: 'X Layer Bridge',
+      url: 'https://www.okx.com/xlayer/bridge',
+    },
+    wagmiChain: xLayer,
   },
   [megaeth.id]: {
     name: 'MegaETH',

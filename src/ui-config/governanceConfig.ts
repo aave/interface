@@ -20,6 +20,7 @@ import {
   GovernanceV3Scroll,
   GovernanceV3Soneium,
   GovernanceV3Sonic,
+  GovernanceV3XLayer,
   GovernanceV3ZkSync,
 } from '@aave-dao/aave-address-book';
 import { SubgraphKey } from 'src/utils/subgraphRequest';
@@ -150,6 +151,7 @@ export const governanceChainConfig: GovernanceChainConfig = {
       [ChainId.ink]: GovernanceV3Ink.PC_DATA_HELPER,
       [ChainId.mantle]: GovernanceV3Mantle.PC_DATA_HELPER,
       [4326]: GovernanceV3MegaEth.PC_DATA_HELPER,
+      [ChainId.xlayer]: GovernanceV3XLayer.PC_DATA_HELPER,
     },
     votingAssets: {
       aaveTokenAddress: AaveV3Ethereum.ASSETS.AAVE.UNDERLYING,

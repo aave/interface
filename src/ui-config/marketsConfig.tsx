@@ -25,6 +25,7 @@ import {
   AaveV3Scroll,
   AaveV3Soneium,
   AaveV3Sonic,
+  AaveV3XLayer,
   AaveV3ZkSync,
   GhoAvalanche,
   GhoGnosis,
@@ -106,6 +107,7 @@ export enum CustomMarket {
   proto_ink_v3 = 'proto_ink_v3',
   proto_megaeth_v3 = 'proto_megaeth_v3',
   proto_mantle_v3 = 'proto_mantle_v3',
+  proto_xlayer_v3 = 'proto_xlayer_v3',
   // v2
   proto_mainnet = 'proto_mainnet',
   proto_avalanche = 'proto_avalanche',
@@ -543,6 +545,23 @@ export const marketsData: {
       UI_INCENTIVE_DATA_PROVIDER: AaveV3MegaEth.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3MegaEth.COLLECTOR,
       L2_ENCODER: AaveV3MegaEth.L2_ENCODER,
+    },
+  },
+  [CustomMarket.proto_xlayer_v3]: {
+    marketTitle: 'X Layer',
+    market: CustomMarket.proto_xlayer_v3,
+    chainId: ChainId.xlayer,
+    logo: '/icons/networks/xlayer.svg',
+
+    v3: true,
+    addresses: {
+      LENDING_POOL_ADDRESS_PROVIDER: AaveV3XLayer.POOL_ADDRESSES_PROVIDER,
+      LENDING_POOL: AaveV3XLayer.POOL,
+      WETH_GATEWAY: AaveV3XLayer.WETH_GATEWAY,
+      WALLET_BALANCE_PROVIDER: AaveV3XLayer.WALLET_BALANCE_PROVIDER,
+      UI_POOL_DATA_PROVIDER: AaveV3XLayer.UI_POOL_DATA_PROVIDER,
+      UI_INCENTIVE_DATA_PROVIDER: AaveV3XLayer.UI_INCENTIVE_DATA_PROVIDER,
+      COLLECTOR: AaveV3XLayer.COLLECTOR,
     },
   },
   [CustomMarket.proto_mantle_v3]: {
