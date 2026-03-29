@@ -1,5 +1,4 @@
 import { ChainId } from '@aave/contract-helpers';
-import { xLayer } from 'viem/chains';
 import {
   arbitrum,
   arbitrumSepolia,
@@ -26,6 +25,7 @@ import {
   sepolia,
   soneium,
   sonic,
+  xLayer,
   zksync,
 } from 'wagmi/chains';
 
@@ -478,7 +478,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
       name: 'X Layer Bridge',
       url: 'https://www.okx.com/xlayer/bridge',
     },
-    wagmiChain: xLayer as unknown as Chain,
+    wagmiChain: xLayer,
   },
   [megaeth.id]: {
     name: 'MegaETH',
