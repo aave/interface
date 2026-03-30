@@ -12,8 +12,8 @@ import TopBarNotify from './TopBarNotify';
 
 const getCampaignConfigs = () => ({
   [ChainId.base]: {
-    notifyText: 'Introducing the Aave mobile app, a smarter way to save.',
-    buttonText: 'Join waitlist',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
       value: 'https://aave.com/app',
@@ -23,8 +23,8 @@ const getCampaignConfigs = () => ({
   },
 
   [ChainId.sonic]: {
-    notifyText: 'Introducing the Aave mobile app, a smarter way to save.',
-    buttonText: 'Join waitlist',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
       value: 'https://aave.com/app',
@@ -35,8 +35,8 @@ const getCampaignConfigs = () => ({
   },
 
   [ChainId.mainnet]: {
-    notifyText: 'Introducing the Aave mobile app, a smarter way to save.',
-    buttonText: 'Join waitlist',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
       value: 'https://aave.com/app',
@@ -46,8 +46,8 @@ const getCampaignConfigs = () => ({
   },
 
   [ChainId.polygon]: {
-    notifyText: 'Introducing the Aave mobile app, a smarter way to save.',
-    buttonText: 'Join waitlist',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
       value: 'https://aave.com/app',
@@ -58,8 +58,8 @@ const getCampaignConfigs = () => ({
   },
 
   [ChainId.avalanche]: {
-    notifyText: 'Introducing the Aave mobile app, a smarter way to save.',
-    buttonText: 'Join waitlist',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
       value: 'https://aave.com/app',
@@ -70,8 +70,8 @@ const getCampaignConfigs = () => ({
   },
 
   [ChainId.arbitrum_one]: {
-    notifyText: 'Introducing the Aave mobile app, a smarter way to save.',
-    buttonText: 'Join waitlist',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
       value: 'https://aave.com/app',
@@ -82,8 +82,8 @@ const getCampaignConfigs = () => ({
   },
 
   [ChainId.optimism]: {
-    notifyText: 'Introducing the Aave mobile app, a smarter way to save.',
-    buttonText: 'Join waitlist',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
       value: 'https://aave.com/app',
@@ -94,8 +94,8 @@ const getCampaignConfigs = () => ({
   },
 
   [ChainId.xdai]: {
-    notifyText: 'Introducing the Aave mobile app, a smarter way to save.',
-    buttonText: 'Join waitlist',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
       value: 'https://aave.com/app',
@@ -106,8 +106,8 @@ const getCampaignConfigs = () => ({
   },
 
   [ChainId.bnb]: {
-    notifyText: 'Introducing the Aave mobile app, a smarter way to save.',
-    buttonText: 'Join waitlist',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
       value: 'https://aave.com/app',
