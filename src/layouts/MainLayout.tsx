@@ -16,10 +16,10 @@ const getCampaignConfigs = () => ({
     buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://aave.com/app',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-app-waitlist-v2',
+    bannerVersion: 'aave-pro-mainnet-v0',
   },
 
   [ChainId.sonic]: {
@@ -27,10 +27,10 @@ const getCampaignConfigs = () => ({
     buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://aave.com/app',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-app-waitlist-v2',
+    bannerVersion: 'aave-pro-mainnet-v0',
     // icon: '/icons/networks/sonic.svg',
   },
 
@@ -39,10 +39,10 @@ const getCampaignConfigs = () => ({
     buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://aave.com/app',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-app-waitlist-v2',
+    bannerVersion: 'aave-pro-mainnet-v0',
   },
 
   [ChainId.polygon]: {
@@ -50,10 +50,10 @@ const getCampaignConfigs = () => ({
     buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://aave.com/app',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-app-waitlist-v2',
+    bannerVersion: 'aave-pro-mainnet-v0',
     // icon: '/icons/networks/polygon.svg',
   },
 
@@ -62,10 +62,10 @@ const getCampaignConfigs = () => ({
     buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://aave.com/app',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-app-waitlist-v2',
+    bannerVersion: 'aave-pro-mainnet-v0',
     // icon: '/icons/networks/avalanche.svg',
   },
 
@@ -74,10 +74,10 @@ const getCampaignConfigs = () => ({
     buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://aave.com/app',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-app-waitlist-v2',
+    bannerVersion: 'aave-pro-mainnet-v0',
     // icon: '/icons/networks/arbitrum.svg',
   },
 
@@ -86,10 +86,10 @@ const getCampaignConfigs = () => ({
     buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://aave.com/app',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-app-waitlist-v2',
+    bannerVersion: 'aave-pro-mainnet-v0',
     // icon: '/icons/networks/optimism.svg',
   },
 
@@ -98,10 +98,10 @@ const getCampaignConfigs = () => ({
     buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://aave.com/app',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-app-waitlist-v2',
+    bannerVersion: 'aave-pro-mainnet-v0',
     // icon: '/icons/networks/gnosis.svg',
   },
 
@@ -110,10 +110,10 @@ const getCampaignConfigs = () => ({
     buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://aave.com/app',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-app-waitlist-v2',
+    bannerVersion: 'aave-pro-mainnet-v0',
     // icon: '/icons/networks/binance.svg',
   },
 });
