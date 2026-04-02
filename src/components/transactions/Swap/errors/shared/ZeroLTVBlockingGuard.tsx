@@ -6,16 +6,20 @@ import { ActionsBlockedReason, SwapError, SwapState, SwapType } from '../../type
 import { ZeroLTVBlockingError } from './ZeroLTVBlockingError';
 
 export const hasZeroLTVBlocking = (state: SwapState, blockingAssets: string[]) => {
-  // Never block RepayWithCollateral
-  if (state.swapType === SwapType.RepayWithCollateral) {
+  // DebtSwap (repay old debt + borrow new debt) never triggers validateHFAndLtv
+  // because neither repay nor borrow calls that validation.
+  if (state.swapType === SwapType.DebtSwap) {
     return false;
   }
-  // For CollateralSwap, block if the user has any zero-LTV collateral enabled
+  // CollateralSwap does supply + withdraw. The withdraw triggers validateHFAndLtv
+  // which scans ALL collaterals. Block if any zero-LTV collateral exists.
   if (state.swapType === SwapType.CollateralSwap) {
     return blockingAssets.length > 0;
   }
-  // For other swap types, block if there are zero-LTV assets enabled
-  // and the source token is not one of those (existing behavior)
+  // RepayWithCollateral does repay + withdraw. The withdraw triggers
+  // validateHFAndLtv. Block if there are zero-LTV collateral assets that are
+  // NOT the source token being withdrawn. The pool allows withdrawing a
+  // zero-LTV asset itself (getLtv() == 0 passes the check).
   return blockingAssets.length > 0 && !blockingAssets.includes(state.sourceToken.symbol);
 };
 
