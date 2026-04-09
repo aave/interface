@@ -1,0 +1,23 @@
+src/components/MarketSwitcher.tsx
+  a21de8eac9e82249 7,9,17,114,116-151,181,185-189,198,200-202,204-207,209-211,218-219,237-298,300-398,401-445,447-448,450-455,458-459,461-471,473-504,507-514,516-531,533-536,538,540-545,547-549,551,553-590,592-593,595-596
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "33d4d6d67e0a64f9534c8fc720a328203f1f305d",
+  "prompts": {
+    "a21de8eac9e82249": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1894e402-e3f3-44a7-8018-5fb5c30289a1",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "mark hinschberger",
+      "messages": [],
+      "total_additions": 676,
+      "total_deletions": 614,
+      "accepted_lines": 410,
+      "overriden_lines": 0
+    }
+  }
+}
