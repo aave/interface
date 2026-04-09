@@ -2639,6 +2639,10 @@ msgstr "Please review the swap values before confirming."
 msgid "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
 msgstr "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
 
+#: src/components/MarketSwitcher.tsx
+msgid "L1 Networks"
+msgstr "L1 Networks"
+
 #: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
 msgstr "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
@@ -2890,10 +2894,6 @@ msgstr "Submit"
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Claimed"
 msgstr "Claimed"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Other Chains"
-msgstr "Other Chains"
 
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx

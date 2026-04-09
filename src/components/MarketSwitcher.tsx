@@ -578,7 +578,7 @@ export const MarketSwitcher = () => {
           {/* Other Chains */}
           {other.length > 0 && (
             <Box>
-              {sectionHeader(<Trans>Other Chains</Trans>)}
+              {sectionHeader(<Trans>L1 Networks</Trans>)}
               <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>{other.map(renderGridItem)}</Box>
             </Box>
           )}
