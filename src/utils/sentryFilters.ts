@@ -7,7 +7,6 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
   /connection interrupted while trying to subscribe/i,
   /attempting to use a disconnected port object/i,
   /the source .+ has not been authorized yet/i,
-  /origin not allowed/i,
 
   // MetaMask / wallet connect failures
   /failed to connect to metamask/i,
@@ -37,24 +36,26 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
 
   // WalletConnect
   /websocket connection closed abnormally with code: 3000/i,
-  /jwt validation error/i,
   /websocket connection failed for host: wss:\/\/relay\.walletconnect\.org/i,
   /no matching key\. session topic doesn't exist/i,
-  /proposal expired/i,
+  /walletconnect.+proposal expired/i,
   /request expired\. please try again/i,
   /failed to execute 'transaction' on 'idbdatabase': the database connection is closing/i,
 
-  // User rejections
+  // User rejections (wallet-specific patterns)
   /userrejectedrequesterror/i,
   /user rejected the request/i,
-  /user denied/i,
+  /user rejected transaction/i,
+  /user denied transaction signature/i,
+  /user denied message signature/i,
 
-  // RPC noise from viem buildRequest
-  /unknownrpcerror: an unknown rpc error occurred/i,
-  /internalrpcerror: an internal error was received/i,
+  // Contract revert with no reason string (not actionable from frontend)
+  /missing revert data in call exception/i,
+
+  // Non-Error null rejections (wallet/provider teardown)
+  /non-error promise rejection captured with value: null/i,
 
   // Network / browser noise
-  /aborterror: signal is aborted without reason/i,
   /can't find variable: eip155/i,
 ];
 
@@ -80,16 +81,17 @@ export function shouldIgnoreError(event: Event): boolean {
   const message = event.exception?.values?.[0]?.value ?? event.message ?? '';
   const culprit = (event as Record<string, unknown>).culprit as string | undefined;
   const frames = event.exception?.values?.[0]?.stacktrace?.frames ?? [];
+  const topFilename = frames.length > 0 ? frames[frames.length - 1]?.filename : undefined;
 
+  // Unconditional message-based filters (safe regardless of source)
   if (IGNORED_ERROR_PATTERNS.some((p) => p.test(message))) return true;
 
-  if (culprit && IGNORED_CULPRIT_PATTERNS.some((p) => p.test(culprit))) return true;
+  const isFromInjectedScript =
+    (culprit != null && IGNORED_CULPRIT_PATTERNS.some((p) => p.test(culprit))) ||
+    (topFilename != null && IGNORED_CULPRIT_PATTERNS.some((p) => p.test(topFilename)));
 
-  // Check if the top stack frame comes from an injected script
-  const topFrame = frames[frames.length - 1];
-  if (topFrame?.filename && IGNORED_CULPRIT_PATTERNS.some((p) => p.test(topFrame.filename!))) {
-    return true;
-  }
+  // Drop any error whose stack originates from an injected script
+  if (isFromInjectedScript) return true;
 
   return false;
 }
