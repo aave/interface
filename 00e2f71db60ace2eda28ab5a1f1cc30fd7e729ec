@@ -1,0 +1,23 @@
+sentry.client.config.ts
+  adb7b4aa5734e5fb 17-55
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "00e2f71db60ace2eda28ab5a1f1cc30fd7e729ec",
+  "prompts": {
+    "adb7b4aa5734e5fb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7800621e-c591-4063-9837-39551f14449b",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "mark hinschberger",
+      "messages": [],
+      "total_additions": 45,
+      "total_deletions": 3,
+      "accepted_lines": 39,
+      "overriden_lines": 0
+    }
+  }
+}
