@@ -248,7 +248,7 @@ export const useTransactionHandler = ({
                         txHash: hash,
                         loading: false,
                       });
-                      reject(error);
+                      reject();
                     },
                     approval: true,
                   });
