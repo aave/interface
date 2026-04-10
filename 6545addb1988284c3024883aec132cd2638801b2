@@ -1,0 +1,27 @@
+cypress/e2e/2-settings/switch-market.cy.ts
+  7045fe10a920951e 9
+src/components/MarketSwitcher.tsx
+  7045fe10a920951e 3,272-273,275-280,339-340,343-348,458-459,569-570,572-580
+cypress/support/commands.ts
+  7045fe10a920951e 155
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "6545addb1988284c3024883aec132cd2638801b2",
+  "prompts": {
+    "7045fe10a920951e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9e515cba-0562-4535-85c4-975f699a41ec",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "mark hinschberger",
+      "messages": [],
+      "total_additions": 32,
+      "total_deletions": 14,
+      "accepted_lines": 32,
+      "overriden_lines": 0
+    }
+  }
+}
