@@ -1,10 +1,11 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, XIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon, StarIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
   Divider,
+  Drawer,
   IconButton,
   Popover,
   SvgIcon,
@@ -190,6 +191,7 @@ export const MarketSwitcher = () => {
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   );
@@ -271,7 +273,8 @@ export const MarketSwitcher = () => {
           display: 'flex',
           alignItems: 'center',
           gap: 0.75,
-          px: 1.5,
+          pl: 1.5,
+          pr: 0.75,
           py: 0.5,
           borderRadius: '16px',
           border: '1px solid',
@@ -294,11 +297,24 @@ export const MarketSwitcher = () => {
         <Typography variant="secondary12" noWrap>
           {marketNaming.name}
         </Typography>
+        <IconButton
+          size="small"
+          onClick={(e) => handleStarClick(e, marketId)}
+          sx={{
+            padding: '2px',
+            flexShrink: 0,
+            '& svg': { width: 14, height: 14 },
+          }}
+        >
+          <SvgIcon sx={{ fontSize: '14px', color: 'text.secondary' }}>
+            <XIcon />
+          </SvgIcon>
+        </IconButton>
       </Box>
     );
   };
 
-  const renderGridItem = (marketId: CustomMarket) => {
+  const renderGridItem = (marketId: CustomMarket, isMobile?: boolean) => {
     const { market, logo } = getMarketInfoById(marketId);
     const marketNaming = getMarketHelpData(market.marketTitle);
     const isFavorite = isFavoriteMarket(marketId);
@@ -313,19 +329,19 @@ export const MarketSwitcher = () => {
           alignItems: 'center',
           py: 1.25,
           px: 1.5,
-          width: '33.33%',
+          width: isMobile ? '50%' : '33.33%',
           boxSizing: 'border-box',
           borderRadius: '8px',
           cursor: 'pointer',
           position: 'relative',
           bgcolor: isSelected ? 'action.selected' : 'transparent',
           '&:hover': { bgcolor: isSelected ? 'action.selected' : 'action.hover' },
-          // Star hidden by default, shown on hover or when favorited
-          '& .grid-star': {
-            opacity: isFavorite ? 1 : 0,
+          // Star: always visible on mobile, hover-reveal on desktop
+          '& .grid-fav-btn': {
+            opacity: isMobile || isFavorite ? 1 : 0,
             transition: 'opacity 0.15s',
           },
-          '&:hover .grid-star': {
+          '&:hover .grid-fav-btn': {
             opacity: 1,
           },
         }}
@@ -361,7 +377,7 @@ export const MarketSwitcher = () => {
           </SvgIcon>
         )}
         <IconButton
-          className="grid-star"
+          className="grid-fav-btn"
           size="small"
           onClick={(e) => handleStarClick(e, marketId)}
           sx={{ padding: '1px', ml: 0.5, flexShrink: 0 }}
@@ -391,6 +407,103 @@ export const MarketSwitcher = () => {
 
   const noResults =
     pinned.length === 0 && ethereum.length === 0 && l2.length === 0 && other.length === 0;
+
+  const renderSelectorContent = (mobile: boolean) => (
+    <>
+      {/* Fixed header with search */}
+      <Box sx={{ px: 2, pt: 2, pb: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>
+              {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
+            </Trans>
+          </Typography>
+          {mobile && (
+            <IconButton size="small" onClick={handleClose} sx={{ p: 0.5 }}>
+              <SvgIcon sx={{ fontSize: '18px' }}>
+                <XIcon />
+              </SvgIcon>
+            </IconButton>
+          )}
+        </Box>
+        <TextField
+          inputRef={searchRef}
+          size="small"
+          placeholder="Search markets..."
+          fullWidth
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '8px',
+              height: '36px',
+            },
+          }}
+        />
+      </Box>
+
+      {/* Scrollable content */}
+      <Box sx={{ overflowY: 'auto', flex: 1, pb: 1 }}>
+        {/* Favourites */}
+        {pinned.length > 0 && (
+          <Box sx={{ px: 2, pt: 1, pb: 0.5 }}>
+            <Typography
+              variant="secondary12"
+              color="text.secondary"
+              sx={{ textTransform: 'uppercase', letterSpacing: '0.08em', mb: 1 }}
+            >
+              <Trans>Favourites</Trans>
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              {pinned.map(renderPinnedChip)}
+            </Box>
+            <Divider sx={{ mt: 1.5 }} />
+          </Box>
+        )}
+
+        {/* Ethereum */}
+        {ethereum.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>Ethereum</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+              {ethereum.map((id) => renderGridItem(id, mobile))}
+            </Box>
+            <Divider sx={{ mx: 1.5, my: 1 }} />
+          </Box>
+        )}
+
+        {/* L2 Networks */}
+        {l2.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>L2 Networks</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+              {l2.map((id) => renderGridItem(id, mobile))}
+            </Box>
+            <Divider sx={{ mx: 1.5, my: 1 }} />
+          </Box>
+        )}
+
+        {/* L1 Networks */}
+        {other.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>L1 Networks</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+              {other.map((id) => renderGridItem(id, mobile))}
+            </Box>
+          </Box>
+        )}
+
+        {/* No results */}
+        {noResults && (
+          <Box sx={{ px: 4, py: 3, textAlign: 'center' }}>
+            <Typography variant="description" color="text.secondary">
+              <Trans>No markets found</Trans>
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    </>
+  );
 
   // --- Current market display (trigger) ---
 
@@ -490,109 +603,64 @@ export const MarketSwitcher = () => {
         )}
       </Box>
 
-      {/* Popover */}
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        TransitionProps={{
-          onEntered: () => searchRef.current?.focus(),
-        }}
-        slotProps={{
-          paper: {
-            variant: 'outlined',
-            elevation: 0,
+      {/* Market selector content (shared between Popover and Drawer) */}
+      {isMobile ? (
+        <Drawer
+          anchor="bottom"
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
             sx: {
-              width: 480,
-              maxHeight: 520,
-              overflow: 'hidden',
+              borderTopLeftRadius: '16px',
+              borderTopRightRadius: '16px',
+              maxHeight: '85vh',
               display: 'flex',
               flexDirection: 'column',
-              mt: 1,
+              overflow: 'hidden',
             },
-          },
-        }}
-      >
-        {/* Fixed header with search */}
-        <Box sx={{ px: 2, pt: 2, pb: 1 }}>
-          <Typography variant="subheader2" color="text.secondary" sx={{ mb: 1 }}>
-            <Trans>
-              {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
-            </Trans>
-          </Typography>
-          <TextField
-            inputRef={searchRef}
-            size="small"
-            placeholder="Search markets..."
-            fullWidth
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '8px',
-                height: '36px',
+          }}
+        >
+          {/* Drag handle */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', pt: 1.5, pb: 0.5 }}>
+            <Box
+              sx={{
+                width: 36,
+                height: 4,
+                borderRadius: '2px',
+                bgcolor: 'divider',
+              }}
+            />
+          </Box>
+          {renderSelectorContent(true)}
+        </Drawer>
+      ) : (
+        <Popover
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+          TransitionProps={{
+            onEntered: () => searchRef.current?.focus(),
+          }}
+          slotProps={{
+            paper: {
+              variant: 'outlined',
+              elevation: 0,
+              sx: {
+                width: 480,
+                maxHeight: 520,
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                mt: 1,
               },
-            }}
-          />
-        </Box>
-
-        {/* Scrollable content */}
-        <Box sx={{ overflowY: 'auto', flex: 1, pb: 1 }}>
-          {/* Pinned row */}
-          {pinned.length > 0 && (
-            <Box sx={{ px: 2, pt: 1, pb: 0.5 }}>
-              <Typography
-                variant="secondary12"
-                color="text.secondary"
-                sx={{ textTransform: 'uppercase', letterSpacing: '0.08em', mb: 1 }}
-              >
-                <Trans>Pinned</Trans>
-              </Typography>
-              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                {pinned.map(renderPinnedChip)}
-              </Box>
-              <Divider sx={{ mt: 1.5 }} />
-            </Box>
-          )}
-
-          {/* Ethereum */}
-          {ethereum.length > 0 && (
-            <Box>
-              {sectionHeader(<Trans>Ethereum</Trans>)}
-              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>{ethereum.map(renderGridItem)}</Box>
-              <Divider sx={{ mx: 1.5, my: 1 }} />
-            </Box>
-          )}
-
-          {/* L2 Networks */}
-          {l2.length > 0 && (
-            <Box>
-              {sectionHeader(<Trans>L2 Networks</Trans>)}
-              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>{l2.map(renderGridItem)}</Box>
-              <Divider sx={{ mx: 1.5, my: 1 }} />
-            </Box>
-          )}
-
-          {/* Other Chains */}
-          {other.length > 0 && (
-            <Box>
-              {sectionHeader(<Trans>L1 Networks</Trans>)}
-              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>{other.map(renderGridItem)}</Box>
-            </Box>
-          )}
-
-          {/* No results */}
-          {noResults && (
-            <Box sx={{ px: 4, py: 3, textAlign: 'center' }}>
-              <Typography variant="description" color="text.secondary">
-                <Trans>No markets found</Trans>
-              </Typography>
-            </Box>
-          )}
-        </Box>
-      </Popover>
+            },
+          }}
+        >
+          {renderSelectorContent(false)}
+        </Popover>
+      )}
     </>
   );
 };

@@ -1687,6 +1687,10 @@ msgstr "Proposal overview"
 msgid "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
 
+#: src/components/MarketSwitcher.tsx
+msgid "Favourites"
+msgstr "Favourites"
+
 #: src/components/AssetCategoryMultiselect.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Reset"
@@ -3149,10 +3153,6 @@ msgstr "sGHO Merit APY History"
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "To repay on behalf of a user an explicit amount to repay is needed"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Pinned"
-msgstr "Pinned"
 
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Repayment amount to reach {0}% utilization"
