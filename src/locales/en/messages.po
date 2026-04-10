@@ -1122,6 +1122,10 @@ msgstr "Borrow power used"
 msgid "Operation not supported"
 msgstr "Operation not supported"
 
+#: src/components/MarketSwitcher.tsx
+msgid "L2 Networks"
+msgstr "L2 Networks"
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Linked addresses"
 msgstr "Linked addresses"
@@ -1596,6 +1600,10 @@ msgstr "Learn more about the Kernel points distribution"
 msgid "Please connect your wallet to swap debt."
 msgstr "Please connect your wallet to swap debt."
 
+#: src/components/MarketSwitcher.tsx
+msgid "Ethereum"
+msgstr "Ethereum"
+
 #: src/components/AssetCategoryMultiselect.tsx
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "All"
@@ -1678,6 +1686,10 @@ msgstr "Proposal overview"
 #: src/components/infoTooltips/DebtCeilingMaxedTooltip.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing against this asset is unavailable."
+
+#: src/components/MarketSwitcher.tsx
+msgid "Favourites"
+msgstr "Favourites"
 
 #: src/components/AssetCategoryMultiselect.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
@@ -2631,6 +2643,10 @@ msgstr "Please review the swap values before confirming."
 msgid "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
 msgstr "Supply cap reached for {symbol}. Reduce the amount or choose a different asset."
 
+#: src/components/MarketSwitcher.tsx
+msgid "L1 Networks"
+msgstr "L1 Networks"
+
 #: src/components/Warnings/BorrowDisabledWarning.tsx
 msgid "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
 msgstr "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
@@ -2833,10 +2849,6 @@ msgstr "This swap has a price impact of {0}%, which exceeds the 25% safety thres
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Version 3"
-msgstr "Version 3"
 
 #: src/components/infoTooltips/NetAPYTooltip.tsx
 msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
@@ -3252,10 +3264,6 @@ msgstr "Selected borrow assets"
 #: pages/safety-module.page.tsx
 msgid "Balancer Pool"
 msgstr "Balancer Pool"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Version 2"
-msgstr "Version 2"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets. <0>Learn more</0>"
@@ -4005,6 +4013,10 @@ msgstr "The Aave Protocol is programmed to always use the price of 1 GHO = $1. T
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "You have no AAVE/stkAAVE/aAave balance to delegate."
 msgstr "You have no AAVE/stkAAVE/aAave balance to delegate."
+
+#: src/components/MarketSwitcher.tsx
+msgid "No markets found"
+msgstr "No markets found"
 
 #: src/modules/faucet/FaucetTopPanel.tsx
 msgid "With testnet Faucet you can get free assets to test the Aave Protocol. Make sure to switch your wallet provider to the appropriate testnet network, select desired asset, and click ‘Faucet’ to get tokens transferred to your wallet. The assets on a testnet are not “real,” meaning they have no monetary value. <0>Learn more</0>"

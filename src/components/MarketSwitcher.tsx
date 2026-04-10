@@ -1,12 +1,14 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon, StarIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
+  Divider,
+  Drawer,
   IconButton,
-  ListItemText,
-  MenuItem,
+  InputAdornment,
+  Popover,
   SvgIcon,
   TextField,
   Tooltip,
@@ -14,7 +16,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
@@ -29,8 +31,6 @@ import {
   networkConfigs,
   STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
-import StyledToggleButton from './StyledToggleButton';
-import StyledToggleButtonGroup from './StyledToggleButtonGroup';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -113,12 +113,44 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
   );
 };
 
-enum SelectedMarketVersion {
-  V2,
-  V3,
-}
+type MarketCategory = 'ethereum' | 'l2' | 'other';
 
-// Custom market order requested by BD - TODO: move logic to the backend base on TVL
+const MARKET_CATEGORY: Record<string, MarketCategory> = {
+  // Ethereum mainnet instances
+  Core: 'ethereum',
+  Prime: 'ethereum',
+  Plasma: 'ethereum',
+  EtherFi: 'ethereum',
+  'Aave Horizon': 'ethereum',
+  // L2 networks
+  Base: 'l2',
+  Arbitrum: 'l2',
+  OP: 'l2',
+  Mantle: 'l2',
+  Linea: 'l2',
+  Scroll: 'l2',
+  ZKsync: 'l2',
+  Polygon: 'l2',
+  Ink: 'l2',
+  'X Layer': 'l2',
+  Celo: 'l2',
+  Soneium: 'l2',
+  MegaETH: 'l2',
+  Metis: 'l2',
+  // Other L1 chains
+  Avalanche: 'other',
+  'BNB Chain': 'other',
+  Gnosis: 'other',
+  Sonic: 'other',
+  Aptos: 'other',
+};
+
+const getMarketCategory = (marketId: CustomMarket): MarketCategory => {
+  const { market } = getMarketInfoById(marketId);
+  return MARKET_CATEGORY[market.marketTitle] ?? 'other';
+};
+
+// Custom market order requested by BD - TODO: move logic to the backend based on TVL
 const MARKET_ORDER_BY_TITLE: { [title: string]: number } = {
   Core: 0,
   Prime: 1,
@@ -148,49 +180,50 @@ const MARKET_ORDER_BY_TITLE: { [title: string]: number } = {
 
 const getMarketOrder = (marketId: CustomMarket): number => {
   const { market } = getMarketInfoById(marketId);
-  const marketTitle = market.marketTitle;
-  return MARKET_ORDER_BY_TITLE[marketTitle] ?? 999; // Default to end if not found
+  return MARKET_ORDER_BY_TITLE[market.marketTitle] ?? 999;
 };
 
 export const MarketSwitcher = () => {
-  const [selectedMarketVersion, setSelectedMarketVersion] = useState<SelectedMarketVersion>(
-    SelectedMarketVersion.V3
-  );
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchRef = useRef<HTMLInputElement>(null);
+  const open = Boolean(anchorEl);
+
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   );
   const isFavoriteMarket = useRootStore((store) => store.isFavoriteMarket);
   const toggleFavoriteMarket = useRootStore((store) => store.toggleFavoriteMarket);
-  // Subscribe to favoriteMarkets to trigger re-renders when favorites change
-  useRootStore((store) => store.favoriteMarkets);
+  const favoriteMarkets = useRootStore((store) => store.favoriteMarkets);
 
-  const isV3MarketsAvailable = availableMarkets
-    .map((marketId: CustomMarket) => {
-      const { market } = getMarketInfoById(marketId);
+  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-      return market.v3;
-    })
-    .some((item) => !!item);
+  const handleClose = () => {
+    setAnchorEl(null);
+    setSearchQuery('');
+  };
 
-  const handleMarketSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedMarket = e.target.value as CustomMarket;
-    const market = marketsData[selectedMarket];
-    trackEvent(DASHBOARD.CHANGE_MARKET, { market: selectedMarket });
+  const handleSelectMarket = (marketId: CustomMarket) => {
+    const market = marketsData[marketId];
+    trackEvent(DASHBOARD.CHANGE_MARKET, { market: marketId });
 
     if (market.externalUrl) {
       window.open(market.externalUrl, '_blank');
       return;
     }
 
-    setCurrentMarket(selectedMarket);
+    setCurrentMarket(marketId);
+    handleClose();
   };
 
   const handleStarClick = (e: React.MouseEvent, marketId: CustomMarket) => {
     e.stopPropagation();
-    e.preventDefault();
     toggleFavoriteMarket(marketId);
   };
 
@@ -204,343 +237,467 @@ export const MarketSwitcher = () => {
     ),
   };
 
-  return (
-    <TextField
-      select
-      aria-label="select market"
-      data-cy="marketSelector"
-      value={currentMarket}
-      onChange={handleMarketSelect}
-      sx={{
-        mr: 2,
-        '& .MuiOutlinedInput-notchedOutline': {
-          border: 'none',
-        },
-      }}
-      SelectProps={{
-        native: false,
-        className: 'MarketSwitcher__select',
-        IconComponent: () => null,
-        renderValue: (marketId) => {
-          const { market, logo } = getMarketInfoById(marketId as CustomMarket);
+  // Filter to V3 markets only
+  const v3Markets = useMemo(() => availableMarkets.filter((id) => marketsData[id].v3), []);
 
-          return (
-            <Box>
-              {/* Main Row with Market Name */}
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <MarketLogo
-                  size={upToLG ? 32 : 28}
-                  logo={logo}
-                  testChainName={getMarketHelpData(market.marketTitle).testChainName}
-                />
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Typography
-                    variant={upToLG ? 'display1' : 'h1'}
-                    sx={{
-                      fontSize: downToXSM ? '1.55rem' : undefined,
-                      color: 'common.white',
-                      mr: 1,
-                    }}
-                  >
-                    {getMarketHelpData(market.marketTitle).name} {market.isFork ? 'Fork' : ''}
-                    {upToLG &&
-                    (currentMarket === 'proto_mainnet_v3' || currentMarket === 'proto_lido_v3')
-                      ? 'Instance'
-                      : ' Market'}
-                  </Typography>
-                  {market.v3 ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Box
-                        sx={{
-                          color: '#fff',
-                          px: 2,
-                          borderRadius: '12px',
-                          background: (theme) => theme.palette.gradients.aaveGradient,
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Typography variant="subheader2">V3</Typography>
-                      </Box>
-                      <SvgIcon
-                        fontSize="medium"
-                        sx={{
-                          ml: 1,
-                          color: '#F1F1F3',
-                        }}
-                      >
-                        <ChevronDownIcon />
-                      </SvgIcon>
-                    </Box>
-                  ) : (
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Box
-                        sx={{
-                          color: '#A5A8B6',
-                          px: 2,
-                          borderRadius: '12px',
-                          backgroundColor: '#383D51',
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                      >
-                        <Typography variant="subheader2">V2</Typography>
-                      </Box>
-                      <SvgIcon
-                        fontSize="medium"
-                        sx={{
-                          ml: 1,
-                          color: '#F1F1F3',
-                        }}
-                      >
-                        <ChevronDownIcon />
-                      </SvgIcon>
-                    </Box>
-                  )}
-                </Box>
-              </Box>
+  const { pinned, ethereum, l2, other } = useMemo(() => {
+    const query = searchQuery.toLowerCase();
+    const filtered = v3Markets.filter((id) => {
+      const { market } = getMarketInfoById(id);
+      return market.marketTitle.toLowerCase().includes(query);
+    });
 
-              {marketBlurbs[currentMarket] && (
-                <Typography
-                  sx={{
-                    color: 'common.white',
-                    mt: 0.5,
-                    fontSize: '0.85rem',
-                    wordWrap: 'break-word',
-                    whiteSpace: 'normal',
-                    lineHeight: 1.3,
-                    maxWidth: '100%',
-                  }}
-                >
-                  {marketBlurbs[currentMarket]}
-                </Typography>
-              )}
-            </Box>
-          );
-        },
+    const sorted = filtered.slice().sort((a, b) => getMarketOrder(a) - getMarketOrder(b));
+    const pinned = sorted.filter((id) => isFavoriteMarket(id));
+    const pinnedSet = new Set(pinned);
+    const unpinned = sorted.filter((id) => !pinnedSet.has(id));
 
-        sx: {
-          '&.MarketSwitcher__select .MuiSelect-outlined': {
-            pl: 0,
-            py: 0,
-            backgroundColor: 'transparent !important',
-          },
-          '.MuiSelect-icon': { color: '#F1F1F3' },
-        },
-        MenuProps: {
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'right',
-          },
-          transformOrigin: {
-            vertical: 'top',
-            horizontal: 'right',
-          },
-          PaperProps: {
-            style: {
-              minWidth: 240,
-            },
-            variant: 'outlined',
-            elevation: 0,
-          },
-        },
-      }}
-    >
-      <Box>
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
-          <Trans>
-            {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
-          </Trans>
-        </Typography>
+    return {
+      pinned,
+      ethereum: unpinned.filter((id) => getMarketCategory(id) === 'ethereum'),
+      l2: unpinned.filter((id) => getMarketCategory(id) === 'l2'),
+      other: unpinned.filter((id) => getMarketCategory(id) === 'other'),
+    };
+  }, [v3Markets, searchQuery, favoriteMarkets, isFavoriteMarket]);
+
+  // --- Render helpers ---
+
+  const renderPinnedChip = (marketId: CustomMarket) => {
+    const { market, logo } = getMarketInfoById(marketId);
+    const marketNaming = getMarketHelpData(market.marketTitle);
+    const isSelected = marketId === currentMarket;
+    return (
+      <Box
+        key={marketId}
+        onClick={() => handleSelectMarket(marketId)}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '7px',
+          height: 36,
+          pl: '6px',
+          pr: '10px',
+          py: 1,
+          borderRadius: '48px',
+          border: '1px solid',
+          borderColor: isSelected ? 'primary.main' : 'rgba(0,0,0,0.1)',
+          bgcolor: isSelected ? 'action.selected' : 'transparent',
+          cursor: 'pointer',
+          '&:hover': { bgcolor: 'action.hover' },
+          flexShrink: 0,
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ width: 24, height: 24, flexShrink: 0 }}>
+            <img
+              src={logo}
+              alt=""
+              width="100%"
+              height="100%"
+              style={{ display: 'block', objectFit: 'contain' }}
+            />
+          </Box>
+          <Typography
+            noWrap
+            sx={{ fontSize: '14px', fontWeight: 600, letterSpacing: '0.15px', lineHeight: '20px' }}
+          >
+            {marketNaming.name} {market.isFork ? 'Fork' : ''}
+          </Typography>
+        </Box>
+        <IconButton
+          size="small"
+          onClick={(e) => handleStarClick(e, marketId)}
+          sx={{
+            padding: 0,
+            flexShrink: 0,
+          }}
+        >
+          <SvgIcon sx={{ fontSize: '20px', color: 'text.secondary' }}>
+            <XIcon />
+          </SvgIcon>
+        </IconButton>
       </Box>
-      {isV3MarketsAvailable && (
-        <Box sx={{ mx: '18px', display: 'flex', justifyContent: 'center' }}>
-          <StyledToggleButtonGroup
-            value={selectedMarketVersion}
-            exclusive
-            onChange={(_, value) => {
-              if (value === SelectedMarketVersion.V2) {
-                window.open('https://v2-market.aave.com/', '_blank', 'noopener');
-                return;
-              }
-              if (value !== null) {
-                setSelectedMarketVersion(value);
-              }
-            }}
+    );
+  };
+
+  const renderGridItem = (marketId: CustomMarket, isMobile?: boolean) => {
+    const { market, logo } = getMarketInfoById(marketId);
+    const marketNaming = getMarketHelpData(market.marketTitle);
+    const isFavorite = isFavoriteMarket(marketId);
+    const isSelected = marketId === currentMarket;
+    return (
+      <Box
+        key={marketId}
+        data-cy={`marketSelector_${marketId}`}
+        onClick={() => handleSelectMarket(marketId)}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          py: 1,
+          px: '10px',
+          width: isMobile ? '50%' : '33.33%',
+          boxSizing: 'border-box',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          position: 'relative',
+          bgcolor: isSelected ? 'action.selected' : 'transparent',
+          '&:hover': { bgcolor: isSelected ? 'action.selected' : 'action.hover' },
+          // Star: always visible on mobile, hover-reveal on desktop
+          '& .grid-fav-btn': {
+            opacity: isMobile || isFavorite ? 1 : 0,
+            transition: 'opacity 0.15s',
+          },
+          '&:hover .grid-fav-btn': {
+            opacity: 1,
+          },
+        }}
+      >
+        <Box sx={{ width: 24, height: 24, mr: 1, flexShrink: 0 }}>
+          <img
+            src={logo}
+            alt=""
+            width="100%"
+            height="100%"
+            style={{ display: 'block', objectFit: 'contain' }}
+          />
+        </Box>
+        <Typography
+          noWrap
+          sx={{
+            flex: '1 1 0',
+            minWidth: 0,
+            fontSize: '14px',
+            fontWeight: 600,
+            letterSpacing: '0.15px',
+            lineHeight: '20px',
+          }}
+        >
+          {marketNaming.name} {market.isFork ? 'Fork' : ''}
+        </Typography>
+        {market.externalUrl && (
+          <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
+            <ExternalLinkIcon />
+          </SvgIcon>
+        )}
+        <IconButton
+          className="grid-fav-btn"
+          size="small"
+          onClick={(e) => handleStarClick(e, marketId)}
+          sx={{ padding: '1px', ml: 0.5, flexShrink: 0 }}
+        >
+          <SvgIcon
             sx={{
-              width: '100%',
-              height: '36px',
-              background: theme.palette.primary.main,
-              border: `1px solid ${
-                theme.palette.mode === 'dark' ? 'rgba(235, 235, 237, 0.12)' : '#1B2030'
-              }`,
-              borderRadius: '6px',
-              marginTop: '16px',
-              marginBottom: '12px',
-              padding: '2px',
+              fontSize: '16px',
+              color: isFavorite ? '#FBCC5F' : 'text.disabled',
             }}
           >
-            <StyledToggleButton
-              value={SelectedMarketVersion.V3}
-              data-cy={`markets_switch_button_v3`}
-              sx={{
-                flex: '0 0 96px',
-                px: 1.5,
-                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
-                '&.Mui-selected, &.Mui-selected:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-                },
-                borderRadius: '4px',
-              }}
-            >
-              <Typography
-                variant="buttonM"
-                sx={
-                  selectedMarketVersion === SelectedMarketVersion.V3
-                    ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
-                    : {
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
-                }
-              >
-                <Trans>Version 3</Trans>
-              </Typography>
-            </StyledToggleButton>
-            <StyledToggleButton
-              value={SelectedMarketVersion.V2}
-              data-cy={`markets_switch_button_v2`}
-              sx={{
-                flexGrow: 1.2,
-                flexBasis: 0,
-                px: 2,
-                backgroundColor: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
-                '&.Mui-selected, &.Mui-selected:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-                },
-                borderRadius: '4px',
-                padding: 0,
-              }}
-            >
-              <Typography
-                variant="buttonM"
-                sx={
-                  selectedMarketVersion === SelectedMarketVersion.V2
-                    ? {
-                        backgroundImage: (theme) => theme.palette.gradients.aaveGradient,
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }
-                    : {
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        color: theme.palette.mode === 'dark' ? '#0F121D' : '#FFFFFF',
-                      }
-                }
-              >
-                <Trans>Version 2</Trans>
-                <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Typography>
-            </StyledToggleButton>
-          </StyledToggleButtonGroup>
+            <StarIcon />
+          </SvgIcon>
+        </IconButton>
+      </Box>
+    );
+  };
+
+  const sectionHeader = (label: React.ReactNode) => (
+    <Typography
+      variant="secondary12"
+      color="text.secondary"
+      sx={{
+        letterSpacing: '0.1px',
+        px: 2,
+        py: 1,
+        lineHeight: '16px',
+      }}
+    >
+      {label}
+    </Typography>
+  );
+
+  const noResults =
+    pinned.length === 0 && ethereum.length === 0 && l2.length === 0 && other.length === 0;
+
+  const renderSelectorContent = (mobile: boolean) => (
+    <>
+      {/* Fixed header with search */}
+      <Box sx={{ px: 1.5, pt: 1.5, pb: '2px' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography variant="subheader2" color="text.secondary">
+            <Trans>
+              {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
+            </Trans>
+          </Typography>
+          {mobile && (
+            <IconButton size="small" onClick={handleClose} sx={{ p: 0.5 }}>
+              <SvgIcon sx={{ fontSize: '18px' }}>
+                <XIcon />
+              </SvgIcon>
+            </IconButton>
+          )}
         </Box>
-      )}
-      {availableMarkets
-        .slice() // Create a copy to avoid mutating the original array
-        .sort((a, b) => {
-          const aIsFavorite = isFavoriteMarket(a);
-          const bIsFavorite = isFavoriteMarket(b);
+      </Box>
+      <Box sx={{ px: 1.5, pb: '10px' }}>
+        <TextField
+          inputRef={searchRef}
+          size="small"
+          placeholder="Search Markets"
+          fullWidth
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start" sx={{ mr: '9px' }}>
+                <SvgIcon sx={{ fontSize: 16, color: '#A5A8B6' }}>
+                  <SearchIcon />
+                </SvgIcon>
+              </InputAdornment>
+            ),
+          }}
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '6px',
+              height: '36px',
+              '& fieldset': {
+                borderColor: '#EAEBEF',
+              },
+            },
+            '& .MuiOutlinedInput-input': {
+              fontSize: '14px',
+              letterSpacing: '0.15px',
+              '&::placeholder': {
+                color: '#A5A8B6',
+                opacity: 1,
+              },
+            },
+          }}
+        />
+      </Box>
 
-          // If both are favorites or both are not favorites, maintain custom order
-          if (aIsFavorite === bIsFavorite) {
-            return getMarketOrder(a) - getMarketOrder(b);
-          }
-
-          // Otherwise, favorites come first
-          return aIsFavorite ? -1 : 1;
-        })
-        .map((marketId: CustomMarket) => {
-          const { market, logo } = getMarketInfoById(marketId);
-          const marketNaming = getMarketHelpData(market.marketTitle);
-          const isFavorite = isFavoriteMarket(marketId);
-          return (
-            <MenuItem
-              key={marketId}
-              data-cy={`marketSelector_${marketId}`}
-              value={marketId}
+      {/* Scrollable content */}
+      <Box sx={{ overflowY: 'auto', flex: 1, pb: 1 }}>
+        {/* Favourites */}
+        {pinned.length > 0 && (
+          <Box>
+            <Typography
+              variant="secondary12"
+              color="text.secondary"
               sx={{
-                '.MuiListItemIcon-root': { minWidth: 'unset' },
-                display:
-                  (market.v3 && selectedMarketVersion === SelectedMarketVersion.V2) ||
-                  (!market.v3 && selectedMarketVersion === SelectedMarketVersion.V3)
-                    ? 'none'
-                    : 'flex',
+                letterSpacing: '0.1px',
+                px: 2,
+                py: 1,
+                lineHeight: '16px',
               }}
             >
-              <MarketLogo size={32} logo={logo} testChainName={marketNaming.testChainName} />
-              <ListItemText sx={{ mr: 0 }}>
-                {marketNaming.name} {market.isFork ? 'Fork' : ''}
-              </ListItemText>
-              <ListItemText
+              <Trans>Favourites</Trans>
+            </Typography>
+            <Box sx={{ display: 'flex', gap: '4px', flexWrap: 'wrap', px: 2, pb: '4px' }}>
+              {pinned.map(renderPinnedChip)}
+            </Box>
+            <Divider sx={{ mt: 1 }} />
+          </Box>
+        )}
+
+        {/* Ethereum */}
+        {ethereum.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>Ethereum</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+              {ethereum.map((id) => renderGridItem(id, mobile))}
+            </Box>
+            <Divider sx={{ my: 1 }} />
+          </Box>
+        )}
+
+        {/* L2 Networks */}
+        {l2.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>L2 Networks</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+              {l2.map((id) => renderGridItem(id, mobile))}
+            </Box>
+            <Divider sx={{ my: 1 }} />
+          </Box>
+        )}
+
+        {/* L1 Networks */}
+        {other.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>L1 Networks</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+              {other.map((id) => renderGridItem(id, mobile))}
+            </Box>
+          </Box>
+        )}
+
+        {/* No results */}
+        {noResults && (
+          <Box sx={{ px: 4, py: 3, textAlign: 'center' }}>
+            <Typography variant="description" color="text.secondary">
+              <Trans>No markets found</Trans>
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    </>
+  );
+
+  // --- Current market display (trigger) ---
+
+  const { market: currentMarketData, logo: currentLogo } = getMarketInfoById(currentMarket);
+  const currentMarketNaming = getMarketHelpData(currentMarketData.marketTitle);
+
+  return (
+    <>
+      {/* Trigger */}
+      <Box
+        onClick={handleOpen}
+        data-cy="marketSelector"
+        sx={{
+          mr: 2,
+          cursor: 'pointer',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <MarketLogo
+            size={upToLG ? 32 : 28}
+            logo={currentLogo}
+            testChainName={currentMarketNaming.testChainName}
+          />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography
+              variant={upToLG ? 'display1' : 'h1'}
+              sx={{
+                fontSize: downToXSM ? '1.55rem' : undefined,
+                color: 'common.white',
+                mr: 1,
+              }}
+            >
+              {currentMarketNaming.name} {currentMarketData.isFork ? 'Fork' : ''}
+              {upToLG && (currentMarket === 'proto_mainnet_v3' || currentMarket === 'proto_lido_v3')
+                ? 'Instance'
+                : ' Market'}
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {currentMarketData.v3 ? (
+                <Box
+                  sx={{
+                    color: '#fff',
+                    px: 2,
+                    borderRadius: '12px',
+                    background: (theme) => theme.palette.gradients.aaveGradient,
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant="subheader2">V3</Typography>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    color: '#A5A8B6',
+                    px: 2,
+                    borderRadius: '12px',
+                    backgroundColor: '#383D51',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant="subheader2">V2</Typography>
+                </Box>
+              )}
+              <SvgIcon
+                fontSize="medium"
                 sx={{
-                  textAlign: 'right',
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexDirection: 'row-reverse',
-                  gap: 1,
+                  ml: 1,
+                  color: '#F1F1F3',
+                  transform: open ? 'rotate(180deg)' : 'none',
+                  transition: 'transform 0.2s',
                 }}
               >
-                <Typography color="text.muted" variant="description">
-                  {marketNaming.testChainName}
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                  {market.externalUrl && (
-                    <SvgIcon
-                      sx={{
-                        fontSize: '16px',
-                        color: 'text.muted',
-                      }}
-                    >
-                      <ExternalLinkIcon />
-                    </SvgIcon>
-                  )}
-                  <Tooltip title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
-                    <IconButton
-                      size="small"
-                      onClick={(e) => handleStarClick(e, marketId)}
-                      sx={{
-                        padding: '2px',
-                        '&:hover': {
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        },
-                      }}
-                    >
-                      <SvgIcon
-                        sx={{
-                          fontSize: '18px',
-                          color: isFavorite ? '#FBCC5F' : 'text.disabled',
-                          '&:hover': {
-                            color: isFavorite ? '#FBCC5F' : 'text.secondary',
-                          },
-                        }}
-                      >
-                        <StarIcon />
-                      </SvgIcon>
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </ListItemText>
-            </MenuItem>
-          );
-        })}
-    </TextField>
+                <ChevronDownIcon />
+              </SvgIcon>
+            </Box>
+          </Box>
+        </Box>
+
+        {marketBlurbs[currentMarket] && (
+          <Typography
+            sx={{
+              color: 'common.white',
+              mt: 0.5,
+              fontSize: '0.85rem',
+              wordWrap: 'break-word',
+              whiteSpace: 'normal',
+              lineHeight: 1.3,
+              maxWidth: '100%',
+            }}
+          >
+            {marketBlurbs[currentMarket]}
+          </Typography>
+        )}
+      </Box>
+
+      {/* Market selector content (shared between Popover and Drawer) */}
+      {isMobile ? (
+        <Drawer
+          anchor="bottom"
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            sx: {
+              borderTopLeftRadius: '16px',
+              borderTopRightRadius: '16px',
+              maxHeight: '85vh',
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden',
+            },
+          }}
+        >
+          {/* Drag handle */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', pt: 1.5, pb: 0.5 }}>
+            <Box
+              sx={{
+                width: 36,
+                height: 4,
+                borderRadius: '2px',
+                bgcolor: 'divider',
+              }}
+            />
+          </Box>
+          {renderSelectorContent(true)}
+        </Drawer>
+      ) : (
+        <Popover
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+          TransitionProps={{
+            onEntered: () => searchRef.current?.focus(),
+          }}
+          slotProps={{
+            paper: {
+              elevation: 0,
+              sx: {
+                width: 535,
+                maxHeight: 520,
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                mt: 1,
+                borderRadius: '8px',
+                border: '1px solid rgba(0,0,0,0.04)',
+                boxShadow: '0px 0px 3px 0px rgba(0,0,0,0.1), 0px 4px 20px 0px rgba(0,0,0,0.15)',
+              },
+            },
+          }}
+        >
+          {renderSelectorContent(false)}
+        </Popover>
+      )}
+    </>
   );
 };
