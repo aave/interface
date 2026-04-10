@@ -119,10 +119,10 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   // Ethereum mainnet instances
   Core: 'ethereum',
   Prime: 'ethereum',
-  Plasma: 'ethereum',
   EtherFi: 'ethereum',
   'Aave Horizon': 'ethereum',
   // L2 networks
+  Plasma: 'l2',
   Base: 'l2',
   Arbitrum: 'l2',
   OP: 'l2',
