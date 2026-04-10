@@ -296,7 +296,7 @@ export const MarketSwitcher = () => {
           />
         </Box>
         <Typography variant="secondary12" noWrap>
-          {marketNaming.name}
+          {marketNaming.name} {market.isFork ? 'Fork' : ''}
         </Typography>
         <IconButton
           size="small"
@@ -370,7 +370,7 @@ export const MarketSwitcher = () => {
           />
         </Box>
         <Typography noWrap sx={{ flex: '1 1 0', minWidth: 0 }}>
-          {marketNaming.name}
+          {marketNaming.name} {market.isFork ? 'Fork' : ''}
         </Typography>
         {market.externalUrl && (
           <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
