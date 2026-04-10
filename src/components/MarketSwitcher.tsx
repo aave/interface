@@ -1,6 +1,6 @@
 import { ChevronDownIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon, StarIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
@@ -269,7 +269,15 @@ export const MarketSwitcher = () => {
     return (
       <Box
         key={marketId}
+        role="button"
+        tabIndex={0}
         onClick={() => handleSelectMarket(marketId)}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleSelectMarket(marketId);
+          }
+        }}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -328,8 +336,16 @@ export const MarketSwitcher = () => {
     return (
       <Box
         key={marketId}
+        role="button"
+        tabIndex={0}
         data-cy={`marketSelector_${marketId}`}
         onClick={() => handleSelectMarket(marketId)}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleSelectMarket(marketId);
+          }
+        }}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -439,7 +455,8 @@ export const MarketSwitcher = () => {
         <TextField
           inputRef={searchRef}
           size="small"
-          placeholder="Search Markets"
+          placeholder={t`Search markets...`}
+          inputProps={{ 'aria-label': t`Search markets` }}
           fullWidth
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -549,7 +566,18 @@ export const MarketSwitcher = () => {
     <>
       {/* Trigger */}
       <Box
+        role="button"
+        tabIndex={0}
         onClick={handleOpen}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleOpen(e as unknown as React.MouseEvent<HTMLElement>);
+          }
+        }}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-label={t`Select market`}
         data-cy="marketSelector"
         sx={{
           mr: 2,
