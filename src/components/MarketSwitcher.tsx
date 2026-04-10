@@ -352,19 +352,6 @@ export const MarketSwitcher = () => {
           },
         }}
       >
-        {isSelected && (
-          <Box
-            sx={{
-              position: 'absolute',
-              left: 0,
-              top: 6,
-              bottom: 6,
-              width: 3,
-              borderRadius: '0 2px 2px 0',
-              background: (theme) => theme.palette.gradients.aaveGradient,
-            }}
-          />
-        )}
         <Box sx={{ width: 24, height: 24, mr: 1, flexShrink: 0 }}>
           <img
             src={logo}
