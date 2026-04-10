@@ -1,4 +1,4 @@
-import { ChevronDownIcon, XIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon, StarIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
@@ -7,6 +7,7 @@ import {
   Divider,
   Drawer,
   IconButton,
+  InputAdornment,
   Popover,
   SvgIcon,
   TextField,
@@ -411,8 +412,8 @@ export const MarketSwitcher = () => {
   const renderSelectorContent = (mobile: boolean) => (
     <>
       {/* Fixed header with search */}
-      <Box sx={{ px: 2, pt: 2, pb: 1 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+      <Box sx={{ px: 2, pt: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="subheader2" color="text.secondary">
             <Trans>
               {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
@@ -426,17 +427,39 @@ export const MarketSwitcher = () => {
             </IconButton>
           )}
         </Box>
+      </Box>
+      <Box sx={{ px: 1.5, pt: 1.5, pb: '10px' }}>
         <TextField
           inputRef={searchRef}
           size="small"
-          placeholder="Search markets..."
+          placeholder="Search Markets"
           fullWidth
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start" sx={{ mr: '9px' }}>
+                <SvgIcon sx={{ fontSize: 16, color: '#A5A8B6' }}>
+                  <SearchIcon />
+                </SvgIcon>
+              </InputAdornment>
+            ),
+          }}
           sx={{
             '& .MuiOutlinedInput-root': {
-              borderRadius: '8px',
+              borderRadius: '6px',
               height: '36px',
+              '& fieldset': {
+                borderColor: '#EAEBEF',
+              },
+            },
+            '& .MuiOutlinedInput-input': {
+              fontSize: '14px',
+              letterSpacing: '0.15px',
+              '&::placeholder': {
+                color: '#A5A8B6',
+                opacity: 1,
+              },
             },
           }}
         />
