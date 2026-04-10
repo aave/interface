@@ -403,7 +403,6 @@ export const MarketSwitcher = () => {
       variant="secondary12"
       color="text.secondary"
       sx={{
-        textTransform: 'uppercase',
         letterSpacing: '0.1px',
         px: 2,
         py: 1,
@@ -482,7 +481,6 @@ export const MarketSwitcher = () => {
               variant="secondary12"
               color="text.secondary"
               sx={{
-                textTransform: 'uppercase',
                 letterSpacing: '0.1px',
                 px: 2,
                 py: 1,
