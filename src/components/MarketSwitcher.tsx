@@ -273,41 +273,46 @@ export const MarketSwitcher = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          gap: 0.75,
-          pl: 1.5,
-          pr: 0.75,
-          py: 0.5,
-          borderRadius: '16px',
+          gap: '7px',
+          height: 36,
+          pl: '6px',
+          pr: '10px',
+          py: 1,
+          borderRadius: '48px',
           border: '1px solid',
-          borderColor: isSelected ? 'primary.main' : 'divider',
+          borderColor: isSelected ? 'primary.main' : 'rgba(0,0,0,0.1)',
           bgcolor: isSelected ? 'action.selected' : 'transparent',
           cursor: 'pointer',
           '&:hover': { bgcolor: 'action.hover' },
           flexShrink: 0,
         }}
       >
-        <Box sx={{ width: 20, height: 20, flexShrink: 0 }}>
-          <img
-            src={logo}
-            alt=""
-            width="100%"
-            height="100%"
-            style={{ display: 'block', objectFit: 'contain' }}
-          />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ width: 24, height: 24, flexShrink: 0 }}>
+            <img
+              src={logo}
+              alt=""
+              width="100%"
+              height="100%"
+              style={{ display: 'block', objectFit: 'contain' }}
+            />
+          </Box>
+          <Typography
+            noWrap
+            sx={{ fontSize: '14px', fontWeight: 600, letterSpacing: '0.15px', lineHeight: '20px' }}
+          >
+            {marketNaming.name} {market.isFork ? 'Fork' : ''}
+          </Typography>
         </Box>
-        <Typography variant="secondary12" noWrap>
-          {marketNaming.name} {market.isFork ? 'Fork' : ''}
-        </Typography>
         <IconButton
           size="small"
           onClick={(e) => handleStarClick(e, marketId)}
           sx={{
-            padding: '2px',
+            padding: 0,
             flexShrink: 0,
-            '& svg': { width: 14, height: 14 },
           }}
         >
-          <SvgIcon sx={{ fontSize: '14px', color: 'text.secondary' }}>
+          <SvgIcon sx={{ fontSize: '20px', color: 'text.secondary' }}>
             <XIcon />
           </SvgIcon>
         </IconButton>
@@ -328,8 +333,8 @@ export const MarketSwitcher = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          py: 1.25,
-          px: 1.5,
+          py: 1,
+          px: '10px',
           width: isMobile ? '50%' : '33.33%',
           boxSizing: 'border-box',
           borderRadius: '8px',
@@ -369,7 +374,17 @@ export const MarketSwitcher = () => {
             style={{ display: 'block', objectFit: 'contain' }}
           />
         </Box>
-        <Typography noWrap sx={{ flex: '1 1 0', minWidth: 0 }}>
+        <Typography
+          noWrap
+          sx={{
+            flex: '1 1 0',
+            minWidth: 0,
+            fontSize: '14px',
+            fontWeight: 600,
+            letterSpacing: '0.15px',
+            lineHeight: '20px',
+          }}
+        >
           {marketNaming.name} {market.isFork ? 'Fork' : ''}
         </Typography>
         {market.externalUrl && (
@@ -400,7 +415,13 @@ export const MarketSwitcher = () => {
     <Typography
       variant="secondary12"
       color="text.secondary"
-      sx={{ textTransform: 'uppercase', letterSpacing: '0.08em', px: 1.5, pt: 2, pb: 0.75 }}
+      sx={{
+        textTransform: 'uppercase',
+        letterSpacing: '0.1px',
+        px: 2,
+        py: 1,
+        lineHeight: '16px',
+      }}
     >
       {label}
     </Typography>
@@ -412,7 +433,7 @@ export const MarketSwitcher = () => {
   const renderSelectorContent = (mobile: boolean) => (
     <>
       {/* Fixed header with search */}
-      <Box sx={{ px: 2, pt: 2 }}>
+      <Box sx={{ px: 1.5, pt: 1.5, pb: '2px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="subheader2" color="text.secondary">
             <Trans>
@@ -428,7 +449,7 @@ export const MarketSwitcher = () => {
           )}
         </Box>
       </Box>
-      <Box sx={{ px: 1.5, pt: 1.5, pb: '10px' }}>
+      <Box sx={{ px: 1.5, pb: '10px' }}>
         <TextField
           inputRef={searchRef}
           size="small"
@@ -469,18 +490,24 @@ export const MarketSwitcher = () => {
       <Box sx={{ overflowY: 'auto', flex: 1, pb: 1 }}>
         {/* Favourites */}
         {pinned.length > 0 && (
-          <Box sx={{ px: 2, pt: 1, pb: 0.5 }}>
+          <Box>
             <Typography
               variant="secondary12"
               color="text.secondary"
-              sx={{ textTransform: 'uppercase', letterSpacing: '0.08em', mb: 1 }}
+              sx={{
+                textTransform: 'uppercase',
+                letterSpacing: '0.1px',
+                px: 2,
+                py: 1,
+                lineHeight: '16px',
+              }}
             >
               <Trans>Favourites</Trans>
             </Typography>
-            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', gap: '4px', flexWrap: 'wrap', px: 2, pb: '4px' }}>
               {pinned.map(renderPinnedChip)}
             </Box>
-            <Divider sx={{ mt: 1.5 }} />
+            <Divider sx={{ mt: 1 }} />
           </Box>
         )}
 
@@ -488,10 +515,10 @@ export const MarketSwitcher = () => {
         {ethereum.length > 0 && (
           <Box>
             {sectionHeader(<Trans>Ethereum</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {ethereum.map((id) => renderGridItem(id, mobile))}
             </Box>
-            <Divider sx={{ mx: 1.5, my: 1 }} />
+            <Divider sx={{ my: 1 }} />
           </Box>
         )}
 
@@ -499,10 +526,10 @@ export const MarketSwitcher = () => {
         {l2.length > 0 && (
           <Box>
             {sectionHeader(<Trans>L2 Networks</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {l2.map((id) => renderGridItem(id, mobile))}
             </Box>
-            <Divider sx={{ mx: 1.5, my: 1 }} />
+            <Divider sx={{ my: 1 }} />
           </Box>
         )}
 
@@ -510,7 +537,7 @@ export const MarketSwitcher = () => {
         {other.length > 0 && (
           <Box>
             {sectionHeader(<Trans>L1 Networks</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {other.map((id) => renderGridItem(id, mobile))}
             </Box>
           </Box>
@@ -668,15 +695,17 @@ export const MarketSwitcher = () => {
           }}
           slotProps={{
             paper: {
-              variant: 'outlined',
               elevation: 0,
               sx: {
-                width: 480,
+                width: 535,
                 maxHeight: 520,
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
                 mt: 1,
+                borderRadius: '8px',
+                border: '1px solid rgba(0,0,0,0.04)',
+                boxShadow: '0px 0px 3px 0px rgba(0,0,0,0.1), 0px 4px 20px 0px rgba(0,0,0,0.15)',
               },
             },
           }}
