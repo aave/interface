@@ -27,13 +27,17 @@ export const isTxErrorType = (error: any): error is TxErrorType => {
 };
 
 export const getErrorTextFromError = (
-  error: Error,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any,
   txAction: TxAction,
   blocking = true
 ): TxErrorType => {
   let errorNumber = 1;
 
-  if (error.message.toLowerCase().startsWith('user rejected')) {
+  const errorMessage: string =
+    (error instanceof Error ? error.message : error?.message ?? String(error ?? '')) || '';
+
+  if (errorMessage.toLowerCase().startsWith('user rejected')) {
     return {
       error: errorMapping[4001],
       blocking: false,

@@ -78,9 +78,15 @@ const IGNORED_CULPRIT_PATTERNS: RegExp[] = [
 ];
 
 export function shouldIgnoreError(event: Event): boolean {
-  const message = event.exception?.values?.[0]?.value ?? event.message ?? '';
+  const exceptionValue = event.exception?.values?.[0];
+  const errorType = exceptionValue?.type ?? '';
+  const errorMessage = exceptionValue?.value ?? event.message ?? '';
+  // Combine type + message so patterns can match either field.
+  // Sentry stores the class name in `type` and the description in `value`,
+  // but many wallet errors only populate one of the two.
+  const message = errorType ? `${errorType}: ${errorMessage}` : errorMessage;
   const culprit = (event as Record<string, unknown>).culprit as string | undefined;
-  const frames = event.exception?.values?.[0]?.stacktrace?.frames ?? [];
+  const frames = exceptionValue?.stacktrace?.frames ?? [];
   const topFilename = frames.length > 0 ? frames[frames.length - 1]?.filename : undefined;
 
   // Unconditional message-based filters (safe regardless of source)
