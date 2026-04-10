@@ -122,7 +122,6 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   EtherFi: 'ethereum',
   'Aave Horizon': 'ethereum',
   // L2 networks
-  Plasma: 'l2',
   Base: 'l2',
   Arbitrum: 'l2',
   OP: 'l2',
@@ -138,6 +137,7 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   MegaETH: 'l2',
   Metis: 'l2',
   // Other L1 chains
+  Plasma: 'other',
   Avalanche: 'other',
   'BNB Chain': 'other',
   Gnosis: 'other',
