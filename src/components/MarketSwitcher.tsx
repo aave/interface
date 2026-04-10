@@ -524,23 +524,23 @@ export const MarketSwitcher = () => {
           </Box>
         )}
 
-        {/* L2 Networks */}
-        {l2.length > 0 && (
-          <Box>
-            {sectionHeader(<Trans>L2 Networks</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
-              {l2.map((id) => renderGridItem(id, mobile))}
-            </Box>
-            <Divider sx={{ my: 1 }} />
-          </Box>
-        )}
-
         {/* L1 Networks */}
         {other.length > 0 && (
           <Box>
             {sectionHeader(<Trans>L1 Networks</Trans>)}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {other.map((id) => renderGridItem(id, mobile))}
+            </Box>
+            <Divider sx={{ my: 1 }} />
+          </Box>
+        )}
+
+        {/* L2 Networks */}
+        {l2.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>L2 Networks</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+              {l2.map((id) => renderGridItem(id, mobile))}
             </Box>
           </Box>
         )}
