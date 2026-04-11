@@ -2005,6 +2005,10 @@ msgstr "Borrow"
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Select market"
+msgstr "Select market"
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Category assets"
 msgstr "Category assets"
@@ -2340,6 +2344,10 @@ msgstr "Aave Governance"
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Raw-Ipfs"
 msgstr "Raw-Ipfs"
+
+#: src/components/MarketSwitcher.tsx
+msgid "Search markets"
+msgstr "Search markets"
 
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Efficiency mode (E-Mode)"
@@ -2704,6 +2712,10 @@ msgstr "Staking Rewards"
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Bridge GHO"
 msgstr "Bridge GHO"
+
+#: src/components/MarketSwitcher.tsx
+msgid "Search markets..."
+msgstr "Search markets..."
 
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx

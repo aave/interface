@@ -1,6 +1,6 @@
 import { ChevronDownIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon, StarIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
@@ -119,7 +119,6 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   // Ethereum mainnet instances
   Core: 'ethereum',
   Prime: 'ethereum',
-  Plasma: 'ethereum',
   EtherFi: 'ethereum',
   'Aave Horizon': 'ethereum',
   // L2 networks
@@ -138,6 +137,7 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   MegaETH: 'l2',
   Metis: 'l2',
   // Other L1 chains
+  Plasma: 'other',
   Avalanche: 'other',
   'BNB Chain': 'other',
   Gnosis: 'other',
@@ -269,7 +269,15 @@ export const MarketSwitcher = () => {
     return (
       <Box
         key={marketId}
+        role="button"
+        tabIndex={0}
         onClick={() => handleSelectMarket(marketId)}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleSelectMarket(marketId);
+          }
+        }}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -328,8 +336,16 @@ export const MarketSwitcher = () => {
     return (
       <Box
         key={marketId}
+        role="button"
+        tabIndex={0}
         data-cy={`marketSelector_${marketId}`}
         onClick={() => handleSelectMarket(marketId)}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleSelectMarket(marketId);
+          }
+        }}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -439,7 +455,8 @@ export const MarketSwitcher = () => {
         <TextField
           inputRef={searchRef}
           size="small"
-          placeholder="Search Markets"
+          placeholder={t`Search markets...`}
+          inputProps={{ 'aria-label': t`Search markets` }}
           fullWidth
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -507,23 +524,23 @@ export const MarketSwitcher = () => {
           </Box>
         )}
 
-        {/* L2 Networks */}
-        {l2.length > 0 && (
-          <Box>
-            {sectionHeader(<Trans>L2 Networks</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
-              {l2.map((id) => renderGridItem(id, mobile))}
-            </Box>
-            <Divider sx={{ my: 1 }} />
-          </Box>
-        )}
-
         {/* L1 Networks */}
         {other.length > 0 && (
           <Box>
             {sectionHeader(<Trans>L1 Networks</Trans>)}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {other.map((id) => renderGridItem(id, mobile))}
+            </Box>
+            <Divider sx={{ my: 1 }} />
+          </Box>
+        )}
+
+        {/* L2 Networks */}
+        {l2.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>L2 Networks</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+              {l2.map((id) => renderGridItem(id, mobile))}
             </Box>
           </Box>
         )}
@@ -549,7 +566,18 @@ export const MarketSwitcher = () => {
     <>
       {/* Trigger */}
       <Box
+        role="button"
+        tabIndex={0}
         onClick={handleOpen}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleOpen(e as unknown as React.MouseEvent<HTMLElement>);
+          }
+        }}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-label={t`Select market`}
         data-cy="marketSelector"
         sx={{
           mr: 2,

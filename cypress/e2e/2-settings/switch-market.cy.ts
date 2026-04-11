@@ -6,14 +6,9 @@ const switchToTestNet = () => {
   cy.contains('Testnet mode').click();
 };
 
-const switchMarket = (name: string, version: string, dataCy: string) => {
+const switchMarket = (name: string, _version: string, dataCy: string) => {
   it(`Change the network to ${name}`, () => {
     cy.get('[data-cy="marketSelector"]').click();
-    cy.get(`[data-cy="markets_switch_button_${version}"]`).then(($btn) => {
-      if (!$btn.attr('aria-passed')) {
-        $btn.click();
-      }
-    });
     cy.get(`[data-cy="${dataCy}"]`).click();
   });
 };
