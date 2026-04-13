@@ -98,7 +98,8 @@ export const queryKeysFactory = {
     requiresQuoteInverted: boolean,
     srcToken: string,
     destToken: string,
-    user: string
+    user: string,
+    market?: string
   ) => [
     ...queryKeysFactory.user(user),
     chainId,
@@ -107,6 +108,7 @@ export const queryKeysFactory = {
     requiresQuoteInverted,
     srcToken,
     destToken,
+    market,
     'swapQuote',
   ],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],

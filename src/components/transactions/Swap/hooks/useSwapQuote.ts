@@ -420,7 +420,8 @@ const useMultiProviderSwapQuoteQuery = ({
       requiresQuoteInverted,
       srcToken,
       destToken,
-      state.user
+      state.user,
+      currentMarket
     ),
     enabled: (() => {
       // Allow fetch when user has entered a positive amount, even if normalization rounded to '0'

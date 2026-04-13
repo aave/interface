@@ -122,6 +122,7 @@ export const RepayWithCollateralActionsViaCoW = ({
     APP_CODE_PER_SWAP_TYPE[state.swapType],
     approvalTxState.loading,
     approvalTxState.success,
+    currentMarket,
   ]);
 
   // Approval is aToken ERC20 Approval

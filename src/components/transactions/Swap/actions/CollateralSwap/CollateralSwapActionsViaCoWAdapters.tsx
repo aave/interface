@@ -110,6 +110,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
     state.slippage,
     state.orderType,
     state.chainId,
+    currentMarket,
   ]);
 
   // Approval is aToken ERC20 Approval

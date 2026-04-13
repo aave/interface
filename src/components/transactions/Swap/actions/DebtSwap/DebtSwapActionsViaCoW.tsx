@@ -122,6 +122,7 @@ export const DebtSwapActionsViaCoW = ({
     APP_CODE_PER_SWAP_TYPE[state.swapType],
     approvalTxState.loading,
     approvalTxState.success,
+    currentMarket,
   ]);
 
   const amountToApprove = useMemo(() => {
