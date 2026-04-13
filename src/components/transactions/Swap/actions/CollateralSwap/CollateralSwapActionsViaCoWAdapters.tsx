@@ -54,7 +54,9 @@ export const CollateralSwapActionsViaCowAdapters = ({
   setState: Dispatch<Partial<SwapState>>;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  const [user] = useRootStore(useShallow((state) => [state.account]));
+  const [user, currentMarket] = useRootStore(
+    useShallow((state) => [state.account, state.currentMarket])
+  );
 
   const collateralsAmount = useCollateralsAmount();
 
@@ -83,6 +85,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
       validTo,
       type: AaveFlashLoanType.CollateralSwap,
       state,
+      market: currentMarket,
     })
       .catch((error) => {
         console.error('calculateInstanceAddress error', error);
@@ -203,7 +206,8 @@ export const CollateralSwapActionsViaCowAdapters = ({
         partnerFee: COW_PARTNER_FEE(
           state.sellAmountToken.symbol,
           state.buyAmountToken.symbol,
-          state.swapType
+          state.swapType,
+          currentMarket
         ),
       };
 

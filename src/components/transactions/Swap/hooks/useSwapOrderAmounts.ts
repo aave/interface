@@ -1,6 +1,7 @@
 import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { OrderKind } from '@cowprotocol/cow-sdk';
 import { Dispatch, useEffect } from 'react';
+import { useRootStore } from 'src/store/root';
 
 import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../constants/cow.constants';
 import { PARASWAP_FLASH_LOAN_FEE_BPS } from '../constants/paraswap.constants';
@@ -48,6 +49,8 @@ export const useSwapOrderAmounts = ({
   state: SwapState;
   setState: Dispatch<Partial<SwapState>>;
 }) => {
+  const currentMarket = useRootStore((state) => state.currentMarket);
+
   useEffect(() => {
     if (
       !state.swapRate?.afterFeesAmount ||
@@ -79,8 +82,12 @@ export const useSwapOrderAmounts = ({
     let networkFeeAmountInBuyFormatted = '0';
     const partnetFeeBps =
       state.provider === SwapProvider.COW_PROTOCOL
-        ? COW_PARTNER_FEE(state.sourceToken.symbol, state.destinationToken.symbol, state.swapType)
-            .volumeBps
+        ? COW_PARTNER_FEE(
+            state.sourceToken.symbol,
+            state.destinationToken.symbol,
+            state.swapType,
+            currentMarket
+          ).volumeBps
         : 0;
     const partnerFeeAmount =
       state.side === 'sell'

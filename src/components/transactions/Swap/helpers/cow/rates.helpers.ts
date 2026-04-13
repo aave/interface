@@ -56,6 +56,7 @@ export async function getCowProtocolSellRates({
   isInputTokenCustom,
   isOutputTokenCustom,
   appCode,
+  market,
   setError,
   side = 'sell',
   invertedQuoteRoute = false,
@@ -103,7 +104,7 @@ export async function getCowProtocolSellRates({
             buyTokenDecimals: destDecimals,
             signer,
             appCode: appCode,
-            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol, swapType),
+            partnerFee: COW_PARTNER_FEE(inputSymbol, outputSymbol, swapType, market),
           },
           {
             // Price Quality is set to OPTIMAL by default
