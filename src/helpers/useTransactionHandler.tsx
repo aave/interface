@@ -263,6 +263,8 @@ export const useTransactionHandler = ({
           });
         } catch (error) {
           if (!mounted.current) return;
+          // Skip if error was already handled by the inner errorCallback
+          if (error == null) return;
           const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
           setTxError(parsedError);
           setApprovalTxState({
