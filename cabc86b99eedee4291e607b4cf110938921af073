@@ -1,0 +1,43 @@
+src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+  9fa3f3e6bab14575 71-77,195,231,245-246,303,350
+src/components/transactions/Swap/constants/cow.constants.ts
+  9fa3f3e6bab14575 3-4,161-165,169-170,181,194-195,208
+src/components/transactions/Swap/helpers/cow/orders.helpers.ts
+  9fa3f3e6bab14575 22,78-79,101,134-135,176,212,304,320-321,332-333,373-374,385-386
+src/components/transactions/Swap/hooks/useSwapQuote.ts
+  9fa3f3e6bab14575 5,293,387,404
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+  9fa3f3e6bab14575 63-65,97,234-235
+src/components/transactions/Swap/hooks/useSwapOrderAmounts.ts
+  9fa3f3e6bab14575 4,52-53,85-90
+src/components/transactions/Swap/types/quote.types.ts
+  9fa3f3e6bab14575 33
+src/components/transactions/Swap/helpers/cow/adapters.helpers.ts
+  9fa3f3e6bab14575 17,43,49,89-90
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+  9fa3f3e6bab14575 57-59,88,209-210
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+  9fa3f3e6bab14575 63-65,97,236-237
+src/components/transactions/Swap/helpers/cow/rates.helpers.ts
+  9fa3f3e6bab14575 59,107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "cabc86b99eedee4291e607b4cf110938921af073",
+  "prompts": {
+    "9fa3f3e6bab14575": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "268e7ed5-ffa3-492f-a6c4-25bb65640906",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 4078,
+      "total_deletions": 23,
+      "accepted_lines": 4075,
+      "overriden_lines": 0
+    }
+  }
+}
