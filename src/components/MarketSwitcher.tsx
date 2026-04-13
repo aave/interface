@@ -25,11 +25,9 @@ import { useShallow } from 'zustand/shallow';
 import {
   availableMarkets,
   CustomMarket,
-  ENABLE_TESTNET,
   MarketDataType,
   marketsData,
   networkConfigs,
-  STAGING_ENV,
 } from '../utils/marketsAndNetworksConfig';
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
@@ -296,7 +294,7 @@ export const MarketSwitcher = () => {
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box sx={{ width: 24, height: 24, flexShrink: 0 }}>
+          <Box sx={{ width: 20, height: 20, flexShrink: 0 }}>
             <img
               src={logo}
               alt=""
@@ -349,8 +347,8 @@ export const MarketSwitcher = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          py: 1,
-          px: '10px',
+          py: '10px',
+          px: '12px',
           width: isMobile ? '50%' : '33.33%',
           boxSizing: 'border-box',
           borderRadius: '8px',
@@ -368,7 +366,7 @@ export const MarketSwitcher = () => {
           },
         }}
       >
-        <Box sx={{ width: 24, height: 24, mr: 1, flexShrink: 0 }}>
+        <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
           <img
             src={logo}
             alt=""
@@ -420,7 +418,7 @@ export const MarketSwitcher = () => {
       color="text.secondary"
       sx={{
         letterSpacing: '0.1px',
-        px: 2,
+        px: '24px',
         py: 1,
         lineHeight: '16px',
       }}
@@ -437,11 +435,11 @@ export const MarketSwitcher = () => {
       {/* Fixed header with search */}
       <Box sx={{ px: 1.5, pt: 1.5, pb: '2px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography variant="subheader2" color="text.secondary">
+          {/* <Typography variant="subheader2" color="text.secondary">
             <Trans>
               {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
             </Trans>
-          </Typography>
+          </Typography> */}
           {mobile && (
             <IconButton size="small" onClick={handleClose} sx={{ p: 0.5 }}>
               <SvgIcon sx={{ fontSize: '18px' }}>
@@ -499,14 +497,14 @@ export const MarketSwitcher = () => {
               color="text.secondary"
               sx={{
                 letterSpacing: '0.1px',
-                px: 2,
+                px: '24px',
                 py: 1,
                 lineHeight: '16px',
               }}
             >
               <Trans>Favourites</Trans>
             </Typography>
-            <Box sx={{ display: 'flex', gap: '4px', flexWrap: 'wrap', px: 2, pb: '4px' }}>
+            <Box sx={{ display: 'flex', gap: '4px', flexWrap: 'wrap', px: 1.5, pb: '4px' }}>
               {pinned.map(renderPinnedChip)}
             </Box>
             <Divider sx={{ mt: 1 }} />

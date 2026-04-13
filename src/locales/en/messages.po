@@ -1301,7 +1301,6 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
-#: src/components/MarketSwitcher.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
