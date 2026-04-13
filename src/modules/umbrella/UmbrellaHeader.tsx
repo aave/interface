@@ -62,7 +62,7 @@ export const UmbrellaHeader: React.FC = () => {
               event, your stake may be slashed to cover the deficit.
             </Trans>{' '}
             <Link
-              href="https://aave.com/docs/primitives/umbrella"
+              href="https://aave.com/docs/aave-v3/umbrella"
               sx={{ textDecoration: 'underline', color: '#8E92A3' }}
               onClick={() =>
                 trackEvent(GENERAL.EXTERNAL_LINK, {
