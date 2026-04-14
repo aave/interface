@@ -274,6 +274,8 @@ export interface ProposalDetail {
   // Voting thresholds
   quorum: string | null;
   requiredDifferential: string | null;
+  // Voting config
+  cooldownBeforeVotingStart: number | null;
 }
 
 export interface ProposalVote {
@@ -316,6 +318,7 @@ interface ProposalDetailResponse {
         votingMachineAddress: string | null;
         quorum: string | null;
         requiredDifferential: string | null;
+        coolDownBeforeVotingStart: number | null;
       }>;
     };
   };
@@ -337,7 +340,7 @@ interface ProposalVotesResponse {
 
 export async function getProposalDetailFromCache(id: string): Promise<ProposalDetail | null> {
   const query = `
-    query GetProposalDetail($id: BigFloat!) {
+    query GetProposalDetail($id: String!) {
       getProposalDetail(pProposalId: $id) {
         nodes {
           proposalId
@@ -368,12 +371,13 @@ export async function getProposalDetailFromCache(id: string): Promise<ProposalDe
           votingMachineAddress
           quorum
           requiredDifferential
+          coolDownBeforeVotingStart
         }
       }
     }
   `;
 
-  const response = await graphqlRequest<ProposalDetailResponse>(query, { id: parseFloat(id) });
+  const response = await graphqlRequest<ProposalDetailResponse>(query, { id });
   const nodes = response.data.getProposalDetail.nodes;
 
   if (nodes.length === 0) return null;
@@ -408,6 +412,7 @@ export async function getProposalDetailFromCache(id: string): Promise<ProposalDe
     votingMachineAddress: p.votingMachineAddress,
     quorum: p.quorum,
     requiredDifferential: p.requiredDifferential,
+    cooldownBeforeVotingStart: p.coolDownBeforeVotingStart ?? null,
   };
 }
 
@@ -418,7 +423,7 @@ export async function getProposalVotesFromCache(
   offset = 0
 ): Promise<ProposalVote[]> {
   const query = `
-    query GetProposalVotes($proposalId: BigFloat!, $support: Boolean, $limit: Int, $offset: Int) {
+    query GetProposalVotes($proposalId: String!, $support: Boolean, $limit: Int, $offset: Int) {
       getProposalVotes(
         pProposalId: $proposalId,
         pSupport: $support,
@@ -437,7 +442,7 @@ export async function getProposalVotesFromCache(
   `;
 
   const response = await graphqlRequest<ProposalVotesResponse>(query, {
-    proposalId: parseFloat(proposalId),
+    proposalId,
     support: support ?? null,
     limit,
     offset,
@@ -457,7 +462,7 @@ export async function getUserVoteFromCache(
   voter: string
 ): Promise<ProposalVote | null> {
   const query = `
-    query GetUserVote($proposalId: BigFloat!, $voter: String!) {
+    query GetUserVote($proposalId: String!, $voter: String!) {
       getUserVote(pProposalId: $proposalId, pVoter: $voter) {
         nodes {
           voter
@@ -483,7 +488,7 @@ export async function getUserVoteFromCache(
       };
     };
   }>(query, {
-    proposalId: parseFloat(proposalId),
+    proposalId,
     voter,
   });
 
@@ -504,7 +509,7 @@ export async function getProposalVoteCountsFromCache(
   proposalId: string
 ): Promise<{ forCount: number; againstCount: number; totalCount: number }> {
   const query = `
-    query GetVoteCounts($proposalId: BigFloat!) {
+    query GetVoteCounts($proposalId: String!) {
       forVotes: allProposalVotesViews(
         filter: { proposalId: { equalTo: $proposalId }, support: { equalTo: true } }
       ) {
@@ -523,7 +528,7 @@ export async function getProposalVoteCountsFromCache(
       forVotes: { totalCount: number };
       againstVotes: { totalCount: number };
     };
-  }>(query, { proposalId: parseFloat(proposalId) });
+  }>(query, { proposalId });
 
   const forCount = response.data.forVotes.totalCount;
   const againstCount = response.data.againstVotes.totalCount;
@@ -546,7 +551,7 @@ export interface ProposalPayload {
   network: string;
   payloadsController: string;
   creator: string | null;
-  maximumAccessLevel: number | null;
+  maximumAccessLevelRequired: number | null;
   state: string;
   createdAt: string | null;
   queuedAt: string | null;
@@ -563,7 +568,7 @@ interface ProposalPayloadsResponse {
         chainId: number;
         payloadsController: string;
         creator: string | null;
-        maximumAccessLevel: number | null;
+        maximumAccessLevelRequired: number | null;
         state: string | null;
         createdAt: string | null;
         queuedAt: string | null;
@@ -576,7 +581,7 @@ interface ProposalPayloadsResponse {
 
 export async function getProposalPayloadsFromCache(proposalId: string): Promise<ProposalPayload[]> {
   const query = `
-    query GetProposalPayloads($proposalId: BigFloat!) {
+    query GetProposalPayloads($proposalId: String!) {
       getProposalPayloads(pProposalId: $proposalId) {
         nodes {
           proposalId
@@ -584,7 +589,7 @@ export async function getProposalPayloadsFromCache(proposalId: string): Promise<
           chainId
           payloadsController
           creator
-          maximumAccessLevel
+          maximumAccessLevelRequired
           state
           createdAt
           queuedAt
@@ -596,7 +601,7 @@ export async function getProposalPayloadsFromCache(proposalId: string): Promise<
   `;
 
   const response = await graphqlRequest<ProposalPayloadsResponse>(query, {
-    proposalId: parseFloat(proposalId),
+    proposalId,
   });
 
   return response.data.getProposalPayloads.nodes.map((p) => ({
@@ -606,7 +611,7 @@ export async function getProposalPayloadsFromCache(proposalId: string): Promise<
     network: networkConfigs[p.chainId as keyof typeof networkConfigs]?.name || `Chain ${p.chainId}`,
     payloadsController: p.payloadsController,
     creator: p.creator,
-    maximumAccessLevel: p.maximumAccessLevel,
+    maximumAccessLevelRequired: p.maximumAccessLevelRequired,
     state: p.state || 'created',
     createdAt: p.createdAt,
     queuedAt: p.queuedAt,
