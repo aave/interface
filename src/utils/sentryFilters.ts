@@ -26,6 +26,9 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
   /bitvisionweb is not defined/i,
   /shouldsetpelagusforcurrentprovider is not a function/i,
   /the request by this web3 provider is timeout/i,
+  /cannot redefine property: station/i,
+  /cannot assign to read only property 'tronlink'/i,
+  /wallet must has at least one account/i,
 
   // wagmi / RainbowKit connector noise
   /providernotfounderror: provider not found/i,
@@ -57,11 +60,22 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
 
   // Network / browser noise
   /can't find variable: eip155/i,
+
+  // Browser-specific network errors (no stack, pure connectivity noise)
+  /^TypeError: Load failed$/,
+  /^TypeError: NetworkError when attempting to fetch resource\.?$/,
+  /^TypeError: cancelled$/i,
+
+  // React Native WebView (not our environment)
+  /window\.webkit\.messagehandlers\.reactnativewebview/i,
+
+  // Origin not allowed (wallet content scripts)
+  /^Error: Origin not allowed$/i,
 ];
 
 // Culprit / stack-frame patterns. These catch errors that have generic
 // messages (e.g. "Failed to fetch") but originate from injected scripts.
-const IGNORED_CULPRIT_PATTERNS: RegExp[] = [
+const INJECTED_SCRIPT_PATTERNS: RegExp[] = [
   /injectLeap/i,
   /inject\.chrome/i,
   /extensionServiceWorker/i,
@@ -75,7 +89,31 @@ const IGNORED_CULPRIT_PATTERNS: RegExp[] = [
   /\/btc$/i,
   /\/sui$/i,
   /\/solana$/i,
+  /chrome-extension:\/\//i,
+  /moz-extension:\/\//i,
+  /safari-extension:\/\//i,
+  /window\.fetch\(inspector\)/i,
 ];
+
+function matchesAnyPattern(value: string, patterns: RegExp[]): boolean {
+  return patterns.some((p) => p.test(value));
+}
+
+/** Returns true if ANY stack frame originates from an injected / extension script. */
+function hasInjectedFrame(event: Event): boolean {
+  const culprit = (event as Record<string, unknown>).culprit as string | undefined;
+  if (culprit != null && matchesAnyPattern(culprit, INJECTED_SCRIPT_PATTERNS)) return true;
+
+  const frames = event.exception?.values?.[0]?.stacktrace?.frames ?? [];
+  return frames.some((frame) => {
+    const filename = frame.filename ?? '';
+    const module = frame.module ?? '';
+    return (
+      (filename !== '' && matchesAnyPattern(filename, INJECTED_SCRIPT_PATTERNS)) ||
+      (module !== '' && matchesAnyPattern(module, INJECTED_SCRIPT_PATTERNS))
+    );
+  });
+}
 
 export function shouldIgnoreError(event: Event): boolean {
   const exceptionValue = event.exception?.values?.[0];
@@ -85,19 +123,12 @@ export function shouldIgnoreError(event: Event): boolean {
   // Sentry stores the class name in `type` and the description in `value`,
   // but many wallet errors only populate one of the two.
   const message = errorType ? `${errorType}: ${errorMessage}` : errorMessage;
-  const culprit = (event as Record<string, unknown>).culprit as string | undefined;
-  const frames = exceptionValue?.stacktrace?.frames ?? [];
-  const topFilename = frames.length > 0 ? frames[frames.length - 1]?.filename : undefined;
 
   // Unconditional message-based filters (safe regardless of source)
   if (IGNORED_ERROR_PATTERNS.some((p) => p.test(message))) return true;
 
-  const isFromInjectedScript =
-    (culprit != null && IGNORED_CULPRIT_PATTERNS.some((p) => p.test(culprit))) ||
-    (topFilename != null && IGNORED_CULPRIT_PATTERNS.some((p) => p.test(topFilename)));
-
-  // Drop any error whose stack originates from an injected script
-  if (isFromInjectedScript) return true;
+  // Drop any error where any frame originates from an injected / extension script
+  if (hasInjectedFrame(event)) return true;
 
   return false;
 }
