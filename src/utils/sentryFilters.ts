@@ -107,10 +107,10 @@ function hasInjectedFrame(event: Event): boolean {
   const frames = event.exception?.values?.[0]?.stacktrace?.frames ?? [];
   return frames.some((frame) => {
     const filename = frame.filename ?? '';
-    const module = frame.module ?? '';
+    const frameModule = frame.module ?? '';
     return (
       (filename !== '' && matchesAnyPattern(filename, INJECTED_SCRIPT_PATTERNS)) ||
-      (module !== '' && matchesAnyPattern(module, INJECTED_SCRIPT_PATTERNS))
+      (frameModule !== '' && matchesAnyPattern(frameModule, INJECTED_SCRIPT_PATTERNS))
     );
   });
 }
