@@ -67,6 +67,11 @@ const moreMenuItems: MoreMenuItem[] = [
     title: t`Legacy Markets`,
     icon: <ArrowCircleRightIcon />,
   },
+  {
+    link: 'https://v2-market.aave.com/',
+    title: t`V2 Market`,
+    icon: <ArrowCircleRightIcon />,
+  },
 ];
 
 const fiatEnabled = process.env.NEXT_PUBLIC_FIAT_ON_RAMP;
