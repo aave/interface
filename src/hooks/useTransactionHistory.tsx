@@ -178,7 +178,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       setIsFetchingAllSdkPages(false);
       setHasLoadedInitialSdkPage(true);
     }
-  }, [isValidEvmMarket]);
+  }, [isValidEvmMarket, account]);
 
   useEffect(() => {
     if (!isValidEvmMarket) return;
