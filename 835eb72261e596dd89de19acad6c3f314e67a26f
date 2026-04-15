@@ -1,0 +1,23 @@
+pages/reserve-overview.page.tsx
+  6804917e9ebbc5aa 8,54,59,75-83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "835eb72261e596dd89de19acad6c3f314e67a26f",
+  "prompts": {
+    "6804917e9ebbc5aa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e3de0748-8c4e-4312-9fb0-423b0ca13b23",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 13,
+      "total_deletions": 7,
+      "accepted_lines": 13,
+      "overriden_lines": 0
+    }
+  }
+}
