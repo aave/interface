@@ -40,8 +40,8 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
   // WalletConnect
   /websocket connection closed abnormally with code: 3000/i,
   /websocket connection failed for host: wss:\/\/relay\.walletconnect\.org/i,
-  /no matching key\. session topic doesn't exist/i,
-  /walletconnect.+proposal expired/i,
+  /no matching key\. session/i,
+  /proposal expired/i,
   /request expired\. please try again/i,
   /failed to execute 'transaction' on 'idbdatabase': the database connection is closing/i,
 
@@ -71,6 +71,27 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
 
   // Origin not allowed (wallet content scripts)
   /^Error: Origin not allowed$/i,
+
+  // RainbowKit connector initialization failure
+  /not found rainbowkit/i,
+
+  // AbortError / user navigation
+  /signal is aborted without reason/i,
+  /the user aborted a request/i,
+
+  // WalletConnect / connectivity noise
+  /no internet connection detected/i,
+  /could not detect network/i,
+  /missing or invalid\. record was recently deleted/i,
+
+  // Restricted browser environments
+  /failed to read the 'localstorage'/i,
+
+  // Third-party service network errors
+  /launchdarkly.*network error/i,
+
+  // Next.js internal navigation
+  /attempted to hard navigate to the same url/i,
 ];
 
 // Culprit / stack-frame patterns. These catch errors that have generic
@@ -83,16 +104,20 @@ const INJECTED_SCRIPT_PATTERNS: RegExp[] = [
   /window-provider/i,
   /injected\/injected/i,
   /frame_ant\/frame_ant/i,
-  /\/inpage$/i,
-  /\/inject$/i,
-  /\/injector$/i,
-  /\/btc$/i,
-  /\/sui$/i,
-  /\/solana$/i,
+  /[\/\(]inpage\)?$/i,
+  /[\/\(]inject\)?$/i,
+  /[\/\(]injector\)?$/i,
+  /[\/\(]btc\)?$/i,
+  /[\/\(]sui\)?$/i,
+  /[\/\(]solana\)?$/i,
   /chrome-extension:\/\//i,
   /moz-extension:\/\//i,
   /safari-extension:\/\//i,
   /window\.fetch\(inspector\)/i,
+  /proxy-injected-providers/i,
+  /injected\/hook/i,
+  /[\/\(]inapp\)?$/i,
+  /requestProvider/i,
 ];
 
 function matchesAnyPattern(value: string, patterns: RegExp[]): boolean {
