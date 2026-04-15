@@ -67,9 +67,6 @@ export const getSwitchProvider = ({
   shouldUseFlashloan?: boolean;
   swapType: SwapType;
 }): SwapProvider | undefined => {
-  // Temporary: route all swaps through ParaSwap
-  return SwapProvider.PARASWAP;
-
   if (
     isSwapSupportedByCowProtocol(chainId, assetFrom, assetTo, swapType, shouldUseFlashloan ?? false)
   ) {
