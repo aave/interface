@@ -1,4 +1,4 @@
-import { CowEnv, setGlobalAdapter, TradingSdk } from '@cowprotocol/cow-sdk';
+import { CowEnv, OrderBookApi, setGlobalAdapter, TradingSdk } from '@cowprotocol/cow-sdk';
 import { EthersV5Adapter } from '@cowprotocol/sdk-ethers-v5-adapter';
 import { AaveCollateralSwapSdk } from '@cowprotocol/sdk-flash-loans';
 import { ethers } from 'ethers';
@@ -6,7 +6,11 @@ import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { getAccount, getWalletClient } from 'wagmi/actions';
 
-import { ADAPTER_FACTORY, HOOK_ADAPTER_PER_TYPE } from '../../constants/cow.constants';
+import {
+  ADAPTER_FACTORY,
+  COW_ORDER_BOOK_BASE_URLS,
+  HOOK_ADAPTER_PER_TYPE,
+} from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import { SwapState } from '../../types';
 import { COW_ENV } from './orders.helpers';
@@ -32,7 +36,9 @@ export const getCowTradingSdkByChainIdAndAppCode = async (
       env,
       signer: adapter.signer,
     },
-    {},
+    {
+      orderBookApi: new OrderBookApi({ chainId, env, baseUrls: COW_ORDER_BOOK_BASE_URLS }),
+    },
     adapter
   );
 };

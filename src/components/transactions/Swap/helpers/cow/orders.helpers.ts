@@ -24,7 +24,10 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { SignedParams } from '../../actions/approval/useSwapTokenApproval';
 import {
   COW_APP_DATA,
+  COW_BFF_BASE_URL,
   COW_CREATE_ORDER_ABI,
+  COW_EXPLORER_BASE_URL,
+  COW_ORDER_BOOK_BASE_URLS,
   COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV,
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
@@ -240,7 +243,11 @@ export const sendOrder = async ({
 };
 
 export const getOrderStatus = async (orderId: string, chainId: number) => {
-  const orderBookApi = new OrderBookApi({ chainId: chainId, env: COW_ENV });
+  const orderBookApi = new OrderBookApi({
+    chainId: chainId,
+    env: COW_ENV,
+    baseUrls: COW_ORDER_BOOK_BASE_URLS,
+  });
   const status = await orderBookApi.getOrderCompetitionStatus(orderId, {
     chainId,
   });
@@ -248,7 +255,11 @@ export const getOrderStatus = async (orderId: string, chainId: number) => {
 };
 
 export const getOrder = async (orderId: string, chainId: number) => {
-  const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
+  const orderBookApi = new OrderBookApi({
+    chainId,
+    env: COW_ENV,
+    baseUrls: COW_ORDER_BOOK_BASE_URLS,
+  });
   const order = await orderBookApi.getOrder(orderId, {
     chainId,
   });
@@ -256,7 +267,11 @@ export const getOrder = async (orderId: string, chainId: number) => {
 };
 
 export const getOrders = async (chainId: number, account: string) => {
-  const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
+  const orderBookApi = new OrderBookApi({
+    chainId,
+    env: COW_ENV,
+    baseUrls: COW_ORDER_BOOK_BASE_URLS,
+  });
   const orders = await orderBookApi.getOrders({
     owner: account,
   });
@@ -447,7 +462,11 @@ export const getRecommendedSlippage = (srcUSD: string) => {
 };
 
 export const uploadAppData = async (orderId: string, appDataHex: string, chainId: number) => {
-  const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
+  const orderBookApi = new OrderBookApi({
+    chainId,
+    env: COW_ENV,
+    baseUrls: COW_ORDER_BOOK_BASE_URLS,
+  });
 
   return orderBookApi.uploadAppData(orderId, appDataHex);
 };
@@ -457,7 +476,7 @@ export const generateCoWExplorerLink = (chainId: SupportedChainId, orderId?: str
     return undefined;
   }
 
-  const base = 'https://explorer.cow.fi';
+  const base = COW_EXPLORER_BASE_URL;
   switch (chainId) {
     case SupportedChainId.MAINNET:
       return `${base}/orders/${orderId}`;
@@ -545,7 +564,7 @@ export const getSlippageSuggestion = async (
       const chainSlug = request.chainId; // e.g., 42161 for Arbitrum
       const sell = sellToken.toLowerCase();
       const buy = buyToken.toLowerCase();
-      const url = `https://bff.cow.fi/${chainSlug}/markets/${sell}-${buy}/slippageTolerance`;
+      const url = `${COW_BFF_BASE_URL}/${chainSlug}/markets/${sell}-${buy}/slippageTolerance`;
 
       const res = await fetch(url);
 

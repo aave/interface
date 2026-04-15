@@ -1,10 +1,31 @@
-import { CowEnv, OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
+import { ApiBaseUrls, CowEnv, OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
 import { AaveFlashLoanType } from '@cowprotocol/sdk-flash-loans';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { getAssetGroup } from '../helpers/shared/assetCorrelation.helpers';
 import { OrderType, SwapType } from '../types';
+
+const COW_API_BASE_URL = 'https://api.cow.finance';
+
+export const COW_ORDER_BOOK_BASE_URLS: ApiBaseUrls = {
+  [SupportedChainId.MAINNET]: `${COW_API_BASE_URL}/mainnet`,
+  [SupportedChainId.GNOSIS_CHAIN]: `${COW_API_BASE_URL}/xdai`,
+  [SupportedChainId.ARBITRUM_ONE]: `${COW_API_BASE_URL}/arbitrum_one`,
+  [SupportedChainId.BASE]: `${COW_API_BASE_URL}/base`,
+  [SupportedChainId.SEPOLIA]: `${COW_API_BASE_URL}/sepolia`,
+  [SupportedChainId.POLYGON]: `${COW_API_BASE_URL}/polygon`,
+  [SupportedChainId.AVALANCHE]: `${COW_API_BASE_URL}/avalanche`,
+  [SupportedChainId.LENS]: `${COW_API_BASE_URL}/lens`,
+  [SupportedChainId.BNB]: `${COW_API_BASE_URL}/bnb`,
+  [SupportedChainId.LINEA]: `${COW_API_BASE_URL}/linea`,
+  [SupportedChainId.PLASMA]: `${COW_API_BASE_URL}/plasma`,
+  [SupportedChainId.INK]: `${COW_API_BASE_URL}/ink`,
+};
+
+export const COW_BFF_BASE_URL = 'https://bff.cow.finance';
+
+export const COW_EXPLORER_BASE_URL = 'https://explorer.cow.finance';
 
 export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedChainId, string>> = {
   [AaveFlashLoanType.CollateralSwap]: {
