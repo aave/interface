@@ -5,11 +5,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
-import {
-  ComputedReserveData,
-  ReserveWithId,
-  useAppDataContext,
-} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
 import { MainLayout } from 'src/layouts/MainLayout';
@@ -55,12 +51,12 @@ export default function ReserveOverview() {
   //With SDK
   const reserve = supplyReserves.find((reserve) => {
     return reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase();
-  }) as ReserveWithId;
+  });
 
   //With Reserves
   const reserveLegacy = reserves.find((reserve) => {
     return reserve.underlyingAsset.toLowerCase() === underlyingAsset?.toLowerCase();
-  }) as ComputedReserveData;
+  });
   const [pageEventCalled, setPageEventCalled] = useState(false);
 
   useEffect(() => {
@@ -75,6 +71,15 @@ export default function ReserveOverview() {
   }, [trackEvent, reserve, underlyingAsset, pageEventCalled]);
 
   const isOverview = mode === 'overview';
+
+  // Don't render reserve configuration until SDK data is loaded
+  if (!reserve || !reserveLegacy) {
+    return (
+      <>
+        <ReserveTopDetailsWrapper underlyingAsset={underlyingAsset} />
+      </>
+    );
+  }
 
   return (
     <AssetCapsProviderSDK asset={reserve}>
