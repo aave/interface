@@ -183,20 +183,11 @@ export const ProposalLifecycleCache = ({
   // Build payload execution substeps
   const payloadExecutionSubsteps: StepProps[] = [];
 
-  // Proposal queued
+  // Proposal queued on GovernanceCore
   payloadExecutionSubsteps.push({
     stepName: 'Proposal queued',
     timestamp: proposal.queuedAt,
     completed: !!proposal.queuedAt,
-    active: state === 'queued' && !proposal.executedAt,
-    networkLogo: getNetworkLogo(1),
-  });
-
-  // Proposal executed (GovernanceCore dispatched payloads cross-chain)
-  payloadExecutionSubsteps.push({
-    stepName: 'Proposal executed',
-    timestamp: proposal.executedAt,
-    completed: !!proposal.executedAt,
     active: false,
     networkLogo: getNetworkLogo(1),
   });
@@ -204,7 +195,7 @@ export const ProposalLifecycleCache = ({
   // Per-chain payload queued and executed
   (payloads || []).forEach((p) => {
     // Only show queued substep if there's an actual queued timestamp
-    if (p.queuedAt || p.state === 'queued') {
+    if (p.queuedAt || p.state === 'queued' || p.state === 'executed') {
       payloadExecutionSubsteps.push({
         stepName: `Payload ${p.payloadId} queued on ${getNetworkName(p.chainId)}`,
         timestamp: p.queuedAt,
@@ -227,6 +218,25 @@ export const ProposalLifecycleCache = ({
     payloadExecutionSubsteps[payloadExecutionSubsteps.length - 1].lastStep = true;
   }
 
+  // Estimate voting start time when not yet available from the chain
+  const estimatedVotingStartTime = (() => {
+    if (proposal.votingStartTime) return proposal.votingStartTime;
+    if (proposal.createdAt && proposal.cooldownBeforeVotingStart) {
+      const createdUnix = Math.floor(new Date(proposal.createdAt).getTime() / 1000);
+      return String(createdUnix + proposal.cooldownBeforeVotingStart);
+    }
+    return null;
+  })();
+
+  // Estimate voting end time when not yet available from the chain
+  const estimatedVotingEndTime = (() => {
+    if (proposal.votingEndTime) return proposal.votingEndTime;
+    if (estimatedVotingStartTime && proposal.votingDuration) {
+      return String(parseInt(estimatedVotingStartTime, 10) + parseInt(proposal.votingDuration, 10));
+    }
+    return null;
+  })();
+
   const steps: StepProps[] = [
     {
       stepName: 'Created',
@@ -237,14 +247,14 @@ export const ProposalLifecycleCache = ({
     },
     {
       stepName: 'Open for voting',
-      timestamp: proposal.votingStartTime,
+      timestamp: estimatedVotingStartTime,
       completed: currentStateIndex >= 1,
       active: state === 'active',
       isUnix: true,
     },
     {
       stepName: 'Voting closed',
-      timestamp: proposal.votingEndTime,
+      timestamp: estimatedVotingEndTime,
       completed: currentStateIndex >= 2,
       active: false,
       isUnix: true,
@@ -256,10 +266,10 @@ export const ProposalLifecycleCache = ({
 
   if (state === 'queued' || state === 'executed') {
     steps.push({
-      stepName: 'Payloads executed',
+      stepName: allPayloadsExecuted ? 'Payloads executed' : 'Payload execution',
       timestamp: allPayloadsExecuted ? proposal.executedAt : proposal.queuedAt,
-      completed: state === 'executed' && allPayloadsExecuted,
-      active: (state === 'executed' && !allPayloadsExecuted) || state === 'queued',
+      completed: allPayloadsExecuted,
+      active: !allPayloadsExecuted,
       lastStep: true,
       substeps: payloadExecutionSubsteps,
     });
