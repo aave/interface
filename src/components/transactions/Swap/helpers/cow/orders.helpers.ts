@@ -457,7 +457,7 @@ export const generateCoWExplorerLink = (chainId: SupportedChainId, orderId?: str
     return undefined;
   }
 
-  const base = 'https://explorer.cow.fi';
+  const base = 'https://explorer.cow.finance';
   switch (chainId) {
     case SupportedChainId.MAINNET:
       return `${base}/orders/${orderId}`;
@@ -515,7 +515,7 @@ export const getPermitHook = async ({
 
   const callData = iface.encodeFunctionData('permit', [owner, spender, value, deadline, v, r, s]);
 
-  const PERMIT_HOOK_DAPP_ID = 'cow.fi';
+  const PERMIT_HOOK_DAPP_ID = 'cow.finance';
   const gasLimit = '80000';
 
   const tx: PopulatedTransaction = {
@@ -545,7 +545,7 @@ export const getSlippageSuggestion = async (
       const chainSlug = request.chainId; // e.g., 42161 for Arbitrum
       const sell = sellToken.toLowerCase();
       const buy = buyToken.toLowerCase();
-      const url = `https://bff.cow.fi/${chainSlug}/markets/${sell}-${buy}/slippageTolerance`;
+      const url = `https://bff.cow.finance/${chainSlug}/markets/${sell}-${buy}/slippageTolerance`;
 
       const res = await fetch(url);
 

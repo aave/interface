@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 
 export class CoWProtocolPricesService {
-  private baseUrl = 'https://bff.cow.fi';
+  private baseUrl = 'https://bff.cow.finance';
 
   /**
    * Fetches the USD price of a token from the CoW Protocol API.
