@@ -18,7 +18,6 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.LINEA]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.PLASMA]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.SEPOLIA]: '',
-    [SupportedChainId.LENS]: '',
     [SupportedChainId.INK]: '',
   },
   [AaveFlashLoanType.DebtSwap]: {
@@ -32,7 +31,6 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.LINEA]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.PLASMA]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.SEPOLIA]: '',
-    [SupportedChainId.LENS]: '',
     [SupportedChainId.INK]: '',
   },
   [AaveFlashLoanType.RepayCollateral]: {
@@ -46,7 +44,6 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.LINEA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.PLASMA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.SEPOLIA]: '',
-    [SupportedChainId.LENS]: '',
     [SupportedChainId.INK]: '',
   },
 };
@@ -61,7 +58,6 @@ export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
   [SupportedChainId.BASE]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
   [SupportedChainId.LINEA]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
   [SupportedChainId.PLASMA]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
-  [SupportedChainId.LENS]: '',
   [SupportedChainId.SEPOLIA]: '',
   [SupportedChainId.INK]: '',
 };
@@ -116,9 +112,6 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.SEPOLIA]: [
       '0xd190eF37dB51Bb955A680fF1A85763CC72d083D4'.toLowerCase(), // aGHO not supported
     ],
-
-    // Safe checks, not supported
-    [SupportedChainId.LENS]: 'ALL',
   },
 };
 
