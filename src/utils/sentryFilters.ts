@@ -67,7 +67,7 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
   /^TypeError: cancelled$/i,
 
   // React Native WebView (not our environment)
-  /window\.webkit\.messagehandlers\.reactnativewebview/i,
+  /window\.webkit\.messagehandlers/i,
 
   // Origin not allowed (wallet content scripts)
   /^Error: Origin not allowed$/i,
@@ -92,6 +92,43 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
 
   // Next.js internal navigation
   /attempted to hard navigate to the same url/i,
+
+  // Android WebView Java bridge disconnect
+  /error invoking postmessage: java object is gone/i,
+
+  // TronLink / SunWeb extension
+  /cannot set property tron of #<window>/i,
+  /cannot redefine property: sunweb/i,
+
+  // Wallet extension ethereum property conflicts
+  /can't redefine non-configurable property "?ethereum"?/i,
+
+  // Tonkeeper wallet
+  /destroytonkeeper is not a function/i,
+
+  // Wallet extension DApp timeouts
+  /dapp request timeout/i,
+
+  // IndexedDB access denied (incognito mode / privacy browsers)
+  /denied permission to access the database/i,
+
+  // IndexedDB internal corruption
+  /internal error was encountered in the indexed database server/i,
+
+  // WalletConnect websocket close
+  /websocket error 1006/i,
+
+  // Wallet popup blocked by browser
+  /pop up window failed to open/i,
+
+  // Wagmi connector chain mismatch (user changed network in wallet)
+  /connectorchainmismatcherror/i,
+
+  // Browser permissions policy blocks Clipboard API in iframes (e.g. Safe Wallet)
+  /clipboard api has been blocked/i,
+
+  // Extension sends non-address string to wagmi connector
+  /address "all_wallets" is invalid/i,
 ];
 
 // Culprit / stack-frame patterns. These catch errors that have generic
@@ -118,6 +155,9 @@ const INJECTED_SCRIPT_PATTERNS: RegExp[] = [
   /injected\/hook/i,
   /[\/\(]inapp\)?$/i,
   /requestProvider/i,
+  /blob:app:\/\//i,
+  /[\/\(]initialInject\)?$/i,
+  /requestSolanaProvider/i,
 ];
 
 function matchesAnyPattern(value: string, patterns: RegExp[]): boolean {
