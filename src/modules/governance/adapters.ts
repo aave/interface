@@ -87,13 +87,18 @@ export function calculateCacheVoteDisplayInfo(
 // ============================================
 
 /**
- * Parse rindexer FixedBytes format into a clean hex string.
- * e.g. "FixedBytes(0xabc123..., 32)" → "0xabc123..."
+ * Parse hex bytes into a clean 0x-prefixed hex string.
+ * Handles three formats:
+ *   - rindexer FixedBytes wrapper: "FixedBytes(0xabc123..., 32)" → "0xabc123..."
+ *   - PostgreSQL encode(bytea, 'hex') output: "abc123..." → "0xabc123..."
+ *   - Already prefixed: "0xabc123..." → "0xabc123..."
  */
 function parseFixedBytes(raw: string | null): string | null {
   if (!raw) return null;
   const match = raw.match(/FixedBytes\((0x[a-fA-F0-9]+)/);
-  return match ? match[1] : raw;
+  if (match) return match[1];
+  if (/^[a-fA-F0-9]+$/.test(raw)) return `0x${raw}`;
+  return raw;
 }
 
 /** Map a VotingMachine contract address to its chain ID via governance config. */
