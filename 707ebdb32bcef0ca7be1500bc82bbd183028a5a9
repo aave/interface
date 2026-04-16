@@ -1,0 +1,23 @@
+src/utils/sentryFilters.ts
+  46a2847fb7932a9b 110,113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "707ebdb32bcef0ca7be1500bc82bbd183028a5a9",
+  "prompts": {
+    "46a2847fb7932a9b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ae4e1cf7-ea8c-411d-931b-7008805b9049",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 2,
+      "accepted_lines": 3998,
+      "overriden_lines": 0
+    }
+  }
+}
