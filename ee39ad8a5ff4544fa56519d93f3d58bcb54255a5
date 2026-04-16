@@ -1,0 +1,23 @@
+src/ui-config/marketsConfig.tsx
+  d9456512e11c028e 15,459
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "ee39ad8a5ff4544fa56519d93f3d58bcb54255a5",
+  "prompts": {
+    "d9456512e11c028e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ae2c2aff-9dcd-452a-9c1c-96782b9195bc",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 4,
+      "total_deletions": 2,
+      "accepted_lines": 4,
+      "overriden_lines": 0
+    }
+  }
+}

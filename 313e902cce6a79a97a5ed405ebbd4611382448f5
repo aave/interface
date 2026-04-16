@@ -1,0 +1,36 @@
+src/hooks/useTransactionHistory.tsx
+  6804917e9ebbc5aa 181
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "313e902cce6a79a97a5ed405ebbd4611382448f5",
+  "prompts": {
+    "6804917e9ebbc5aa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e3de0748-8c4e-4312-9fb0-423b0ca13b23",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    },
+    "9fa3f3e6bab14575": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "268e7ed5-ffa3-492f-a6c4-25bb65640906",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}

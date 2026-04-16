@@ -1,0 +1,29 @@
+src/components/transactions/Swap/constants/cow.constants.ts
+  7b5408be1cab4133 1,9-28
+src/services/CoWProtocolPricesService.ts
+  7b5408be1cab4133 4
+src/components/transactions/Swap/helpers/cow/env.helpers.ts
+  7b5408be1cab4133 1,9-13,39-41
+src/components/transactions/Swap/helpers/cow/orders.helpers.ts
+  7b5408be1cab4133 27,29-30,246-250,258-262,270-274,465-469,479,567
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "dc40920d3e77e960773166b7b9ae69685f6a9176",
+  "prompts": {
+    "7b5408be1cab4133": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "13110ce0-5aec-4f80-82fa-e070f2890497",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 62,
+      "total_deletions": 15,
+      "accepted_lines": 58,
+      "overriden_lines": 0
+    }
+  }
+}
