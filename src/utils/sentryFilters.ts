@@ -96,11 +96,6 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
   // Android WebView Java bridge disconnect
   /error invoking postmessage: java object is gone/i,
 
-  // DOM mutation conflicts (browser extensions modifying DOM before React reconciles)
-  /failed to execute 'removechild' on 'node'/i,
-  /failed to execute 'insertbefore' on 'node'/i,
-  /the object can not be found here/i,
-
   // TronLink / SunWeb extension
   /cannot set property tron of #<window>/i,
   /cannot redefine property: sunweb/i,
@@ -134,9 +129,6 @@ const IGNORED_ERROR_PATTERNS: RegExp[] = [
 
   // Extension sends non-address string to wagmi connector
   /address "all_wallets" is invalid/i,
-
-  // Extension proxy function confusion
-  /function\.prototype\.apply was called on .+ which is .+ not a function/i,
 ];
 
 // Culprit / stack-frame patterns. These catch errors that have generic
