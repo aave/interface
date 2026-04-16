@@ -1,0 +1,32 @@
+pages/_app.page.tsx
+  h_075bcc15b434db 4,106
+package.json
+  h_075bcc15b434db 38-39,41
+src/ui-config/marketsConfig.tsx
+  h_075bcc15b434db 147,178,279,310,332,358,377,406,433,456,474,507,526,544,562,578,623,650,667,682,712,727,755,776
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "3bc9bc34492e9c39c61a38b994846ab07921b821",
+  "prompts": {
+    "1b26ce68cd17d30f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d13d56b4-5a39-4046-87e1-1b6232185f28",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe",
+      "messages": [],
+      "total_additions": 785,
+      "total_deletions": 0,
+      "accepted_lines": 761,
+      "overriden_lines": 24
+    }
+  },
+  "humans": {
+    "h_075bcc15b434db": {
+      "author": "Mark Grothe"
+    }
+  }
+}
