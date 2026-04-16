@@ -1,7 +1,7 @@
 import '/public/fonts/inter/inter.css';
 import '/src/styles/variables.css';
 
-import { AaveClient, AaveProvider } from '@aave/react';
+import { AaveClient, AaveProvider, staging } from '@aave/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { NoSsr } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -103,7 +103,7 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-export const client = AaveClient.create();
+export const client = AaveClient.create({ environment: staging });
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;

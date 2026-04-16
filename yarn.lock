@@ -15,10 +15,10 @@
     "@gql.tada/internal" "^1.0.0"
     graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
 
-"@aave-dao/aave-address-book@^4.47.14":
-  version "4.47.14"
-  resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.47.14.tgz#aa5bb3f70dfa4b46adbad07bbf62f7c8ba452e5f"
-  integrity sha512-KO8Dvuwi34rX/bsRYyY6FhhJpkBY7bwuHZNOypSqlKaLK++fZfUZZSlRQ8BKn33BGZaihCInChpdjRBgByJqFQ==
+"@aave-dao/aave-address-book@^4.49.3":
+  version "4.49.3"
+  resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.49.3.tgz#da10709579625abf50cfbf09aaf6d7c7b76e26d6"
+  integrity sha512-bJbPNxuoOvd7P2GlB8WNzMb4pcy5x702P6x5M9gT/HzQ2yP+ekm/ugdiBdISrFCjLAvJ42M1LfexHL5ay2NcPQ==
 
 "@aave/client@0.9.2":
   version "0.9.2"
@@ -31,10 +31,10 @@
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
-"@aave/contract-helpers@1.37.1":
-  version "1.37.1"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.37.1.tgz#20c75564bd70cd8b116c113faffa11c26029abd2"
-  integrity sha512-cPKwiweE8WZKm4a1wmLk/i8e5VKfyXfnk0Wb+raCyvIE9CZoCAU8Vz/2VOvPIDNs4E/Yil5s/ZArV6mq/nidKA==
+"@aave/contract-helpers@1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0+6e45219":
+  version "1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0.tgz#24236944d46b205703f4aa9595b95ec324f36b59"
+  integrity sha512-1U/sMK1n6ecJPzl/iVWTSS0TZ8KP4ggrDdiZjg8RC9kjxcwvvaUQs84ctXAL1McfwLt96u9029aT+/Xx48zvdA==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
@@ -57,10 +57,10 @@
     graphql "^16.11.0"
     type-fest "^4.41.0"
 
-"@aave/math-utils@1.37.1":
-  version "1.37.1"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.37.1.tgz#da0367363ecf872e77b4e4c54c4cf18d636746ac"
-  integrity sha512-K32WEpgyKFi1zopXCWaWIL3i9lR45Rv/LsTYJuILPVQypx/0fRCQQQdZ2MMncI45izxMhFFLOPX1XvWxPwlfoQ==
+"@aave/math-utils@1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0+6e45219":
+  version "1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0.tgz#78b47d31133d73223cf3162b774a4f10f4cea87d"
+  integrity sha512-YtNfTVxAe2IXsp3AcPUKBZRxVbxntfr49tFc7kxLdu0mPMFZ+OWKGV41NsDylP1d8rIQ/PwxymOWOmbpjMxanw==
 
 "@aave/react@^0.8.2":
   version "0.8.2"
