@@ -60,7 +60,9 @@ export const RepayWithCollateralActionsViaCoW = ({
   setState: Dispatch<Partial<SwapState>>;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  const [user] = useRootStore(useShallow((state) => [state.account]));
+  const [user, currentMarket] = useRootStore(
+    useShallow((state) => [state.account, state.currentMarket])
+  );
 
   const collateralsAmount = useCollateralsAmount();
 
@@ -92,6 +94,7 @@ export const RepayWithCollateralActionsViaCoW = ({
       validTo,
       type: AaveFlashLoanType.RepayCollateral,
       state,
+      market: currentMarket,
     })
       .catch((error) => {
         console.error('calculateInstanceAddress error', error);
@@ -119,6 +122,7 @@ export const RepayWithCollateralActionsViaCoW = ({
     APP_CODE_PER_SWAP_TYPE[state.swapType],
     approvalTxState.loading,
     approvalTxState.success,
+    currentMarket,
   ]);
 
   // Approval is aToken ERC20 Approval
@@ -228,7 +232,8 @@ export const RepayWithCollateralActionsViaCoW = ({
         partnerFee: COW_PARTNER_FEE(
           state.sellAmountToken.symbol,
           state.buyAmountToken.symbol,
-          state.swapType
+          state.swapType,
+          currentMarket
         ),
       };
 

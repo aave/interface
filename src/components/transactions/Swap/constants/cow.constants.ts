@@ -1,5 +1,7 @@
 import { CowEnv, OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
 import { AaveFlashLoanType } from '@cowprotocol/sdk-flash-loans';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { getAssetGroup } from '../helpers/shared/assetCorrelation.helpers';
 import { OrderType, SwapType } from '../types';
@@ -156,10 +158,16 @@ const PARTNER_FEE_BPS_BY_SWAP_TYPE: Partial<Record<SwapType, number>> = {
   [SwapType.DebtSwap]: 0,
 };
 
+const getPartnerFeeRecipient = (market: CustomMarket): string => {
+  const collector = marketsData[market]?.addresses?.COLLECTOR;
+  return collector || COW_EVM_RECIPIENT;
+};
+
 export const COW_PARTNER_FEE = (
   tokenFromSymbol: string,
   tokenToSymbol: string,
-  swapType?: SwapType
+  swapType: SwapType,
+  market: CustomMarket
 ) => {
   const swapTypeBps = swapType !== undefined ? PARTNER_FEE_BPS_BY_SWAP_TYPE[swapType] : undefined;
 
@@ -170,7 +178,7 @@ export const COW_PARTNER_FEE = (
 
   return {
     volumeBps: swapTypeBps !== undefined ? swapTypeBps : defaultBps,
-    recipient: COW_EVM_RECIPIENT,
+    recipient: getPartnerFeeRecipient(market),
   };
 };
 
@@ -183,7 +191,8 @@ export const COW_APP_DATA = (
   smartSlippage: boolean,
   orderType: OrderType,
   appCode: string,
-  swapType?: SwapType,
+  swapType: SwapType,
+  market: CustomMarket,
   hooks?: Record<string, unknown>
 ) => ({
   appCode: appCode,
@@ -196,7 +205,7 @@ export const COW_APP_DATA = (
       ? { quote: { slippageBips, smartSlippage } }
       : // Slippage is not used in limit orders
         {}),
-    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol, swapType),
+    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol, swapType, market),
     hooks,
   },
 });
