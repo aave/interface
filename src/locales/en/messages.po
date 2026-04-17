@@ -2135,6 +2135,10 @@ msgstr "Safety of your deposited collateral against the borrowed assets and its 
 msgid "Total borrows"
 msgstr "Total borrows"
 
+#: src/modules/governance/proposal/ProposalOverview.tsx
+msgid "Author"
+msgstr "Author"
+
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "YAE"

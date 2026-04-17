@@ -260,6 +260,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT Strata Senior USDe June 2026',
       iconSymbol: 'ptsrusde',
     },
+    '0x9db38d74a0d29380899ad354121dfb521adb0548': {
+      symbol: 'PT USDG 28MAY2026',
+      name: 'PT USDG May 2026',
+      iconSymbol: 'ptusdg',
+    },
 
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },

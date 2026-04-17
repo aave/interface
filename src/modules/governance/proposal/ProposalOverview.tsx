@@ -80,11 +80,6 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   <Box sx={{ mr: '24px', mb: { xs: '2px', sm: 0 } }}>
                     <StateBadge state={proposal.badgeState} loading={loading} />
                   </Box>
-                  {/* {proposal.author && (
-                    <Typography variant="caption" color="text.secondary">
-                      by {proposal.author}
-                    </Typography>
-                  )} */}
                 </Box>
                 <Box sx={{ flexGrow: 1 }} />
                 <Button
@@ -155,6 +150,14 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
             <Typography variant="buttonL">
               <Skeleton />
             </Typography>
+          )}
+          {proposal?.author && (
+            <Box sx={{ mt: 6, mb: 2 }}>
+              <Typography variant="subheader1">
+                <Trans>Author</Trans>
+              </Typography>
+              <Typography variant="description">{proposal.author}</Typography>
+            </Box>
           )}
           {proposal ? (
             <ReactMarkdown
