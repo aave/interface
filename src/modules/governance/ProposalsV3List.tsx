@@ -1,4 +1,6 @@
-import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import { CheckCircleIcon } from '@heroicons/react/solid';
+import { Trans } from '@lingui/macro';
+import { Box, Paper, Skeleton, Stack, SvgIcon, Typography } from '@mui/material';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { NoSearchResults } from 'src/components/NoSearchResults';
@@ -12,8 +14,29 @@ import { GOVERNANCE_PAGE } from 'src/utils/events';
 
 import { ProposalListHeader } from './ProposalListHeader';
 import { StateBadge, stringToState } from './StateBadge';
-import { ProposalListItem } from './types';
+import { ProposalListItem, UserVoteInfo } from './types';
 import { VoteBar } from './VoteBar';
+
+const VotedIndicator = ({ userVote }: { userVote: UserVoteInfo }) => {
+  const paletteKey = userVote.support ? 'success' : 'error';
+  return (
+    <Box
+      sx={(theme) => ({
+        color: theme.palette[paletteKey].main,
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 0.5,
+      })}
+    >
+      <SvgIcon sx={{ fontSize: 14 }}>
+        <CheckCircleIcon />
+      </SvgIcon>
+      <Typography variant="subheader2" color="inherit">
+        <Trans>You voted {userVote.support ? 'YAE' : 'NAY'}</Trans>
+      </Typography>
+    </Box>
+  );
+};
 
 const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -45,8 +68,9 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
           justifyContent: 'space-between',
         }}
       >
-        <Stack direction="row" gap={3} alignItems="center">
+        <Stack direction="row" gap={3} alignItems="center" flexWrap="wrap">
           <StateBadge state={proposal.badgeState} loading={false} />
+          {proposal.userVote && <VotedIndicator userVote={proposal.userVote} />}
         </Stack>
         <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {proposal.title}
