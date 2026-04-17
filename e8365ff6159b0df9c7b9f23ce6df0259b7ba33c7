@@ -1,0 +1,28 @@
+src/ui-config/reservePatches.ts
+  h_075bcc15b434db 263-267
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "e8365ff6159b0df9c7b9f23ce6df0259b7ba33c7",
+  "prompts": {
+    "1b26ce68cd17d30f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d13d56b4-5a39-4046-87e1-1b6232185f28",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 760,
+      "overriden_lines": 25
+    }
+  },
+  "humans": {
+    "h_075bcc15b434db": {
+      "author": "Mark Grothe"
+    }
+  }
+}
