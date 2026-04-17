@@ -223,6 +223,16 @@ const IncentivesSymbolMap: {
     symbol: 'aGHO',
     aToken: true,
   },
+  aEthrsETH: {
+    tokenIconSymbol: 'rsETH',
+    symbol: 'arsETH',
+    aToken: true,
+  },
+  aManGHO: {
+    tokenIconSymbol: 'GHO',
+    symbol: 'aGHO',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
