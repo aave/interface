@@ -13089,13 +13089,13 @@ export const TOKEN_LIST: TokenList = {
       decimals: 18,
       logoURI: 'https://assets.coingecko.com/coins/images/18834/standard/wstETH.png?1696518295',
     },
-    {
-      chainId: 9745,
-      address: '0xe561FE05C39075312Aa9Bc6af79DdaE981461359',
-      name: 'Wrapped rsETH',
-      symbol: 'wrsETH',
-      decimals: 18,
-    },
+    // {
+    //   chainId: 9745,
+    //   address: '0xe561FE05C39075312Aa9Bc6af79DdaE981461359',
+    //   name: 'Wrapped rsETH',
+    //   symbol: 'wrsETH',
+    //   decimals: 18,
+    // },
     {
       chainId: 9745,
       address: '0x93B544c330F60A2aa05ceD87aEEffB8D38FD8c9a',
@@ -13182,13 +13182,13 @@ export const TOKEN_LIST: TokenList = {
       symbol: 'weETH',
       decimals: 18,
     },
-    {
-      chainId: 59144,
-      address: '0xD2671165570f41BBB3B0097893300b6EB6101E6C',
-      name: 'Wrapped rsETH',
-      symbol: 'wrsETH',
-      decimals: 18,
-    },
+    // {
+    //   chainId: 59144,
+    //   address: '0xD2671165570f41BBB3B0097893300b6EB6101E6C',
+    //   name: 'Wrapped rsETH',
+    //   symbol: 'wrsETH',
+    //   decimals: 18,
+    // },
     {
       chainId: 59144,
       address: '0xacA92E438df0B2401fF60dA7E4337B687a2435DA',
