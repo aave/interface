@@ -11,7 +11,7 @@ type ComplianceApiResponse = {
   useV37?: {
     wethGateway: string;
     uiPoolDataProvider: string;
-  }
+  };
 };
 
 type PreflightResponse = {

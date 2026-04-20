@@ -1,9 +1,8 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useAccount } from 'wagmi';
-
 import { useRootStore } from 'src/store/root';
+import { useAccount } from 'wagmi';
 
 import { checkCompliance } from './service-compliance';
 import { useLocalStorageState } from './useLocalStorageState';
