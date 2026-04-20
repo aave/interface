@@ -15,10 +15,10 @@
     "@gql.tada/internal" "^1.0.0"
     graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
 
-"@aave-dao/aave-address-book@^4.47.14":
-  version "4.47.14"
-  resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.47.14.tgz#aa5bb3f70dfa4b46adbad07bbf62f7c8ba452e5f"
-  integrity sha512-KO8Dvuwi34rX/bsRYyY6FhhJpkBY7bwuHZNOypSqlKaLK++fZfUZZSlRQ8BKn33BGZaihCInChpdjRBgByJqFQ==
+"@aave-dao/aave-address-book@^4.49.3":
+  version "4.49.3"
+  resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.49.3.tgz#da10709579625abf50cfbf09aaf6d7c7b76e26d6"
+  integrity sha512-bJbPNxuoOvd7P2GlB8WNzMb4pcy5x702P6x5M9gT/HzQ2yP+ekm/ugdiBdISrFCjLAvJ42M1LfexHL5ay2NcPQ==
 
 "@aave/client@0.9.2":
   version "0.9.2"
@@ -31,10 +31,10 @@
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
-"@aave/contract-helpers@1.37.1":
-  version "1.37.1"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.37.1.tgz#20c75564bd70cd8b116c113faffa11c26029abd2"
-  integrity sha512-cPKwiweE8WZKm4a1wmLk/i8e5VKfyXfnk0Wb+raCyvIE9CZoCAU8Vz/2VOvPIDNs4E/Yil5s/ZArV6mq/nidKA==
+"@aave/contract-helpers@1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.38.0.tgz#0b2f11d4ce89474a6bd4d05bd63684ded599dc31"
+  integrity sha512-Z0lGFcU77OH+NaAUP3REJ9iGws+Fjndg2xtSHmGCu/ZJUL6MZsEjKhw4U6pxJXVOnCPZQsgflcrANnLX8z/JjA==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
@@ -57,10 +57,10 @@
     graphql "^16.11.0"
     type-fest "^4.41.0"
 
-"@aave/math-utils@1.37.1":
-  version "1.37.1"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.37.1.tgz#da0367363ecf872e77b4e4c54c4cf18d636746ac"
-  integrity sha512-K32WEpgyKFi1zopXCWaWIL3i9lR45Rv/LsTYJuILPVQypx/0fRCQQQdZ2MMncI45izxMhFFLOPX1XvWxPwlfoQ==
+"@aave/math-utils@1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.38.0.tgz#fbeac5cbb5100bccb5f9ebaa80d73b8e7da418b6"
+  integrity sha512-Zeq2Dpflb5zst3OZKHA7UMVI4wcfpxbxA8tXZyVTmw313Q7oF1oOctrEF3JnfyjcyusmU91qdJRrCAXQrQtyXA==
 
 "@aave/react@^0.8.2":
   version "0.8.2"
