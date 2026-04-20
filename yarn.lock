@@ -31,10 +31,10 @@
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
-"@aave/contract-helpers@1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0+6e45219":
-  version "1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0"
-  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0.tgz#24236944d46b205703f4aa9595b95ec324f36b59"
-  integrity sha512-1U/sMK1n6ecJPzl/iVWTSS0TZ8KP4ggrDdiZjg8RC9kjxcwvvaUQs84ctXAL1McfwLt96u9029aT+/Xx48zvdA==
+"@aave/contract-helpers@1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@aave/contract-helpers/-/contract-helpers-1.38.0.tgz#0b2f11d4ce89474a6bd4d05bd63684ded599dc31"
+  integrity sha512-Z0lGFcU77OH+NaAUP3REJ9iGws+Fjndg2xtSHmGCu/ZJUL6MZsEjKhw4U6pxJXVOnCPZQsgflcrANnLX8z/JjA==
   dependencies:
     isomorphic-unfetch "^3.1.0"
 
@@ -57,10 +57,10 @@
     graphql "^16.11.0"
     type-fest "^4.41.0"
 
-"@aave/math-utils@1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0+6e45219":
-  version "1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0"
-  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.37.2-19f1ac1549167ae42847d96ba9a194b99a1893de.0.tgz#78b47d31133d73223cf3162b774a4f10f4cea87d"
-  integrity sha512-YtNfTVxAe2IXsp3AcPUKBZRxVbxntfr49tFc7kxLdu0mPMFZ+OWKGV41NsDylP1d8rIQ/PwxymOWOmbpjMxanw==
+"@aave/math-utils@1.38.0":
+  version "1.38.0"
+  resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.38.0.tgz#fbeac5cbb5100bccb5f9ebaa80d73b8e7da418b6"
+  integrity sha512-Zeq2Dpflb5zst3OZKHA7UMVI4wcfpxbxA8tXZyVTmw313Q7oF1oOctrEF3JnfyjcyusmU91qdJRrCAXQrQtyXA==
 
 "@aave/react@^0.8.2":
   version "0.8.2"
