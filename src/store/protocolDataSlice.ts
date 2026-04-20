@@ -10,13 +10,19 @@ import {
 import { StateCreator } from 'zustand';
 
 import { CustomMarket, MarketDataType } from '../ui-config/marketsConfig';
+import { NetworkConfig } from '../ui-config/networksConfig';
+import { RootStore } from './root';
+import { setQueryParameter } from './utils/queryParams';
 
 type V37Overrides = {
   WETH_GATEWAY: string;
   UI_POOL_DATA_PROVIDER: string;
 };
 
-const applyV37ToMarket = (market: MarketDataType, overrides: V37Overrides | null): MarketDataType => {
+const applyV37ToMarket = (
+  market: MarketDataType,
+  overrides: V37Overrides | null
+): MarketDataType => {
   if (!overrides || market.chainId !== ChainId.mainnet) return market;
   return {
     ...market,
@@ -27,10 +33,6 @@ const applyV37ToMarket = (market: MarketDataType, overrides: V37Overrides | null
     },
   };
 };
-
-import { NetworkConfig } from '../ui-config/networksConfig';
-import { RootStore } from './root';
-import { setQueryParameter } from './utils/queryParams';
 
 type TypePermitParams = {
   reserveAddress: string;
