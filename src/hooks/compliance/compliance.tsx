@@ -30,6 +30,10 @@ type PersistedComplianceState = {
   [address: string]: {
     result: boolean;
     nextCheck: string;
+    useV37?: {
+      wethGateway: string;
+      uiPoolDataProvider: string;
+    };
   };
 };
 
@@ -97,6 +101,8 @@ export const ComplianceProvider = ({ children }: { children: React.ReactNode }) 
               WETH_GATEWAY: response.data.useV37.wethGateway,
               UI_POOL_DATA_PROVIDER: response.data.useV37.uiPoolDataProvider,
             });
+          } else {
+            setV37Overrides(null);
           }
 
           // Update cache for this address
@@ -105,6 +111,7 @@ export const ComplianceProvider = ({ children }: { children: React.ReactNode }) 
             [walletAddress.toLowerCase()]: {
               result: response.data!.result,
               nextCheck: response.data!.nextCheck,
+              useV37: response.data!.useV37,
             },
           }));
 
@@ -167,6 +174,15 @@ export const ComplianceProvider = ({ children }: { children: React.ReactNode }) 
         address,
         nextCheck: cached.nextCheck,
       });
+
+      if (cached.useV37) {
+        setV37Overrides({
+          WETH_GATEWAY: cached.useV37.wethGateway,
+          UI_POOL_DATA_PROVIDER: cached.useV37.uiPoolDataProvider,
+        });
+      } else {
+        setV37Overrides(null);
+      }
 
       // Schedule refresh at nextCheck time
       if (cached.result) {
