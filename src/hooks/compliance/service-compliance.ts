@@ -1,6 +1,10 @@
 export type ComplianceResult = {
   result: boolean;
   nextCheck: string;
+  useV37?: {
+    wethGateway: string;
+    uiPoolDataProvider: string;
+  };
 };
 
 export type ComplianceCheckResponse = {
@@ -20,6 +24,7 @@ export const checkCompliance = async (address: string): Promise<ComplianceCheckR
         data: {
           result: data.result,
           nextCheck: data.nextCheck,
+          useV37: data.useV37,
         },
       };
     }

@@ -15,6 +15,7 @@ export const queryKeysFactory = {
     marketData.chainId,
     !!marketData.isFork,
     marketData.market,
+    marketData.addresses.UI_POOL_DATA_PROVIDER,
   ],
   user: (user: string) => [user],
   powers: (user: string, chainId: number, blockHash?: string) => [

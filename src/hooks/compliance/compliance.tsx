@@ -3,10 +3,12 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useAccount } from 'wagmi';
 
+import { useRootStore } from 'src/store/root';
+
 import { checkCompliance } from './service-compliance';
 import { useLocalStorageState } from './useLocalStorageState';
 
-const STORAGE_KEY = 'compliance-state';
+const STORAGE_KEY = 'compliance-state-v2';
 const MIN_REFRESH_MS = 60 * 1000; // 1 minute minimum between checks
 
 export type ComplianceStatus = 'idle' | 'loading' | 'compliant' | 'non-compliant' | 'error';
@@ -45,6 +47,7 @@ const isExpired = (nextCheck: string | null): boolean => {
 
 export const ComplianceProvider = ({ children }: { children: React.ReactNode }) => {
   const { address, isConnected } = useAccount();
+  const setV37Overrides = useRootStore((state) => state.setV37Overrides);
 
   const [cache, setCache] = useLocalStorageState<PersistedComplianceState>(STORAGE_KEY, {
     defaultValue: {},
@@ -90,6 +93,13 @@ export const ComplianceProvider = ({ children }: { children: React.ReactNode }) 
             errorMessage: undefined,
           });
 
+          if (response.data.useV37) {
+            setV37Overrides({
+              WETH_GATEWAY: response.data.useV37.wethGateway,
+              UI_POOL_DATA_PROVIDER: response.data.useV37.uiPoolDataProvider,
+            });
+          }
+
           // Update cache for this address
           setCache((prev) => ({
             ...prev,
@@ -126,7 +136,7 @@ export const ComplianceProvider = ({ children }: { children: React.ReactNode }) 
         isCheckingRef.current = false;
       }
     },
-    [setCache]
+    [setCache, setV37Overrides]
   );
 
   const recheck = useCallback(async () => {

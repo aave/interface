@@ -1,3 +1,4 @@
+import { ChainId } from '@aave/contract-helpers';
 import { providers, utils } from 'ethers';
 import { permitByChainAndToken } from 'src/ui-config/permitConfig';
 import {
@@ -9,6 +10,24 @@ import {
 import { StateCreator } from 'zustand';
 
 import { CustomMarket, MarketDataType } from '../ui-config/marketsConfig';
+
+type V37Overrides = {
+  WETH_GATEWAY: string;
+  UI_POOL_DATA_PROVIDER: string;
+};
+
+const applyV37ToMarket = (market: MarketDataType, overrides: V37Overrides | null): MarketDataType => {
+  if (!overrides || market.chainId !== ChainId.mainnet) return market;
+  return {
+    ...market,
+    addresses: {
+      ...market.addresses,
+      WETH_GATEWAY: overrides.WETH_GATEWAY,
+      UI_POOL_DATA_PROVIDER: overrides.UI_POOL_DATA_PROVIDER,
+    },
+  };
+};
+
 import { NetworkConfig } from '../ui-config/networksConfig';
 import { RootStore } from './root';
 import { setQueryParameter } from './utils/queryParams';
@@ -23,8 +42,10 @@ export interface ProtocolDataSlice {
   currentMarketData: MarketDataType;
   currentChainId: number;
   currentNetworkConfig: NetworkConfig;
+  v37Overrides: V37Overrides | null;
   jsonRpcProvider: (chainId?: number) => providers.Provider;
   setCurrentMarket: (market: CustomMarket, omitQueryParameterUpdate?: boolean) => void;
+  setV37Overrides: (overrides: V37Overrides | null) => void;
   tryPermit: ({ reserveAddress, isWrappedBaseAsset }: TypePermitParams) => boolean;
 }
 
@@ -41,10 +62,11 @@ export const createProtocolDataSlice: StateCreator<
     currentMarketData: marketsData[initialMarket],
     currentChainId: initialMarketData.chainId,
     currentNetworkConfig: getNetworkConfig(initialMarketData.chainId),
+    v37Overrides: null,
     jsonRpcProvider: (chainId) => getProvider(chainId ?? get().currentChainId),
     setCurrentMarket: (market, omitQueryParameterUpdate) => {
       if (!availableMarkets.includes(market as CustomMarket)) return;
-      const nextMarketData = marketsData[market];
+      const nextMarketData = applyV37ToMarket(marketsData[market], get().v37Overrides);
       localStorage.setItem('selectedMarket', market);
       if (!omitQueryParameterUpdate) {
         setQueryParameter('marketName', market);
@@ -54,6 +76,13 @@ export const createProtocolDataSlice: StateCreator<
         currentMarketData: nextMarketData,
         currentChainId: nextMarketData.chainId,
         currentNetworkConfig: getNetworkConfig(nextMarketData.chainId),
+      });
+    },
+    setV37Overrides: (overrides) => {
+      const currentMarket = get().currentMarket;
+      set({
+        v37Overrides: overrides,
+        currentMarketData: applyV37ToMarket(marketsData[currentMarket], overrides),
       });
     },
     tryPermit: ({ reserveAddress, isWrappedBaseAsset }: TypePermitParams) => {
