@@ -1,12 +1,13 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useRootStore } from 'src/store/root';
 import { useAccount } from 'wagmi';
 
 import { checkCompliance } from './service-compliance';
 import { useLocalStorageState } from './useLocalStorageState';
 
-const STORAGE_KEY = 'compliance-state';
+const STORAGE_KEY = 'compliance-state-v2';
 const MIN_REFRESH_MS = 60 * 1000; // 1 minute minimum between checks
 
 export type ComplianceStatus = 'idle' | 'loading' | 'compliant' | 'non-compliant' | 'error';
@@ -29,6 +30,10 @@ type PersistedComplianceState = {
   [address: string]: {
     result: boolean;
     nextCheck: string;
+    useV37?: {
+      wethGateway: string;
+      uiPoolDataProvider: string;
+    };
   };
 };
 
@@ -45,6 +50,7 @@ const isExpired = (nextCheck: string | null): boolean => {
 
 export const ComplianceProvider = ({ children }: { children: React.ReactNode }) => {
   const { address, isConnected } = useAccount();
+  const setV37Overrides = useRootStore((state) => state.setV37Overrides);
 
   const [cache, setCache] = useLocalStorageState<PersistedComplianceState>(STORAGE_KEY, {
     defaultValue: {},
@@ -90,12 +96,22 @@ export const ComplianceProvider = ({ children }: { children: React.ReactNode }) 
             errorMessage: undefined,
           });
 
+          if (response.data.useV37) {
+            setV37Overrides({
+              WETH_GATEWAY: response.data.useV37.wethGateway,
+              UI_POOL_DATA_PROVIDER: response.data.useV37.uiPoolDataProvider,
+            });
+          } else {
+            setV37Overrides(null);
+          }
+
           // Update cache for this address
           setCache((prev) => ({
             ...prev,
             [walletAddress.toLowerCase()]: {
               result: response.data!.result,
               nextCheck: response.data!.nextCheck,
+              useV37: response.data!.useV37,
             },
           }));
 
@@ -126,7 +142,7 @@ export const ComplianceProvider = ({ children }: { children: React.ReactNode }) 
         isCheckingRef.current = false;
       }
     },
-    [setCache]
+    [setCache, setV37Overrides]
   );
 
   const recheck = useCallback(async () => {
@@ -158,6 +174,15 @@ export const ComplianceProvider = ({ children }: { children: React.ReactNode }) 
         address,
         nextCheck: cached.nextCheck,
       });
+
+      if (cached.useV37) {
+        setV37Overrides({
+          WETH_GATEWAY: cached.useV37.wethGateway,
+          UI_POOL_DATA_PROVIDER: cached.useV37.uiPoolDataProvider,
+        });
+      } else {
+        setV37Overrides(null);
+      }
 
       // Schedule refresh at nextCheck time
       if (cached.result) {
