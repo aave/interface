@@ -2,9 +2,11 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { parseUnits } from 'ethers/lib/utils';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
+import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
@@ -26,17 +28,33 @@ export const WithdrawActions = ({
   blocked,
   sx,
 }: WithdrawActionsProps) => {
-  const withdraw = useRootStore((state) => state.withdraw);
+  const [withdraw, v37Overrides] = useRootStore(
+    useShallow((state) => [state.withdraw, state.v37Overrides])
+  );
 
   const { action, loadingTxns, mainTxState, approvalTxState, approval, requiresApproval } =
     useTransactionHandler({
       tryPermit: false,
-      handleGetTxns: async () =>
-        withdraw({
+      handleGetTxns: async () => {
+        const txs = await withdraw({
           reserve: poolAddress,
           amount: amountToWithdraw,
           aTokenAddress: poolReserve.aTokenAddress,
-        }),
+        });
+        const mappedTxs = txs.map((tx) => ({
+          ...tx,
+          tx: async () => {
+            const txData = await tx.tx();
+            if (!v37Overrides || tx.txType === 'ERC20_APPROVAL') return txData;
+            return {
+              ...txData,
+              value: parseUnits(amountToWithdraw, poolReserve.decimals).toString(),
+              ...(txData.gasLimit ? { gasLimit: txData.gasLimit.mul(110).div(100) } : {}),
+            };
+          },
+        }));
+        return mappedTxs;
+      },
       skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0 || blocked,
       deps: [amountToWithdraw, poolAddress],
       eventTxInfo: {
