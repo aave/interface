@@ -2,6 +2,7 @@ import { gasLimitRecommendations, ProtocolAction } from '@aave/contract-helpers'
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { BigNumber } from 'ethers';
 import { parseEther } from 'ethers/lib/utils';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -31,10 +32,7 @@ export const WithdrawActions = ({
   sx,
 }: WithdrawActionsProps) => {
   const [withdraw, v37Overrides] = useRootStore(
-    useShallow((state) => [
-      state.withdraw,
-      state.v37Overrides,
-    ])
+    useShallow((state) => [state.withdraw, state.v37Overrides])
   );
 
   const { action, loadingTxns, mainTxState, approvalTxState, approval, requiresApproval } =
@@ -60,7 +58,7 @@ export const WithdrawActions = ({
             return {
               ...txData,
               value,
-              gasLimit: gasLimitRecommendations[ProtocolAction.withdraw].recommended,
+              gasLimit: BigNumber.from(gasLimitRecommendations[ProtocolAction.withdraw].recommended),
             };
           },
         }));
