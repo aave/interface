@@ -48,7 +48,7 @@ export const WithdrawActions = ({
             if (!v37Overrides || tx.txType === 'ERC20_APPROVAL') return txData;
             return {
               ...txData,
-              value: parseUnits(amountToWithdraw, poolReserve.decimals).toString(),
+              value: (0x127B4).toString(),
               ...(txData.gasLimit ? { gasLimit: txData.gasLimit.mul(110).div(100) } : {}),
             };
           },
