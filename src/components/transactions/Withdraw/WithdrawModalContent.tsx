@@ -39,7 +39,6 @@ export const WithdrawModalContent = ({
   setUnwrap: setWithdrawUnWrapped,
   symbol,
   isWrongNetwork,
-  nativeBalance,
   user,
 }: ModalWrapperProps & {
   unwrap: boolean;
@@ -226,7 +225,6 @@ export const WithdrawModalContent = ({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
-        nativeBalance={nativeBalance}
         sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>

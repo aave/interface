@@ -8,19 +8,11 @@ type ComplianceApiResponse = {
   result: boolean;
   lastChecked: string;
   nextCheck: string;
-  useV37?: {
-    wethGateway: string;
-    uiPoolDataProvider: string;
-  };
 };
 
 type PreflightResponse = {
   result: boolean;
   nextCheck: string;
-  useV37?: {
-    wethGateway: string;
-    uiPoolDataProvider: string;
-  };
 };
 
 type ErrorResponse = {
@@ -85,7 +77,6 @@ export default async function handler(
     return res.status(200).json({
       result: data.result,
       nextCheck: data.nextCheck,
-      useV37: data.useV37,
     });
   } catch (error) {
     console.error('Compliance API error:', error);
