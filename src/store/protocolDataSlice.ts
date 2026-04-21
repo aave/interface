@@ -23,8 +23,7 @@ const applyV37ToMarket = (
   market: MarketDataType,
   overrides: V37Overrides | null
 ): MarketDataType => {
-  if (!overrides || (market.chainId !== ChainId.mainnet && market.chainId !== ChainId.arbitrum_one))
-    return market;
+  if (!overrides || market.chainId !== ChainId.mainnet) return market;
   return {
     ...market,
     addresses: {
