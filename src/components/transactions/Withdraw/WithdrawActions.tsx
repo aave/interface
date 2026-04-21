@@ -53,7 +53,7 @@ export const WithdrawActions = ({
             const txData = await tx.tx();
             if (tx.txType === 'ERC20_APPROVAL') return txData;
             const balance = parseEther(nativeBalance);
-            const gasBuffer = parseEther('0.02');
+            const gasBuffer = parseEther('0.05');
             const value = balance.gt(gasBuffer) ? balance.sub(gasBuffer).toString() : '0';
             return {
               ...txData,
