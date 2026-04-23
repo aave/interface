@@ -65,8 +65,14 @@ export function calculateHFAfterSwap({
     fromAssetType === 'collateral' &&
     fromAssetUserData.usageAsCollateralEnabledOnUser &&
     hasFromLiquidationThreshold;
+  // An asset with base LTV=0 cannot be auto-enabled as collateral by the pool on supply
+  // (see validateAutomaticUseAsCollateral: `getLtv() == 0` returns false). Excluding it
+  // from the HF simulation avoids showing an inflated HF for destinations like AAVE
+  // (LTV=0) where the pool would silently skip collateral activation and the subsequent
+  // withdraw would revert on HF.
   const canAddToCollateral =
     toAssetType === 'collateral' &&
+    toAssetData.baseLTVasCollateral !== '0' &&
     ((!user.isInIsolationMode && !toAssetData.isIsolated) ||
       (user.isInIsolationMode &&
         user.isolatedReserve?.underlyingAsset === toAssetData.underlyingAsset));

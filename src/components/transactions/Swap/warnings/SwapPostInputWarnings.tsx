@@ -15,6 +15,7 @@ import {
   ShieldSwapWarning,
   SlippageWarning,
   USDTResetWarning,
+  ZeroLTVDestinationWarning,
 } from './postInputs';
 
 export const SwapPostInputWarnings = ({
@@ -41,6 +42,7 @@ export const SwapPostInputWarnings = ({
       <USDTResetWarning state={state} />
       <LiquidationCriticalWarning params={params} state={state} setState={setState} />
       <LowHealthFactorWarning params={params} state={state} setState={setState} />
+      <ZeroLTVDestinationWarning state={state} />
       <HighPriceImpactWarning state={state} setState={setState} />
       <ShieldSwapWarning state={state} setState={setState} />
       <LimitOrderAmountWarning state={state} />
