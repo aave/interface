@@ -1,34 +1,50 @@
+/**
+ * EtherFi partner incentive adapter over the V3 backend.
+ *
+ * Legacy signature: `useEtherfiIncentives(market, symbol, protocolAction)`.
+ * Resolves `(market, symbol)` to the underlying asset via
+ * `useAppDataContext`, then reads `StaticSupplyIncentive` where
+ * `partnerName === "EtherFi"` from `useReserveIncentives`. `protocolAction`
+ * is kept in the signature for compat but no longer affects the lookup —
+ * EtherFi is always supply-side.
+ */
 import { ProtocolAction } from '@aave/contract-helpers';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useRootStore } from 'src/store/root';
 
-import { CustomMarket } from '../ui-config/marketsConfig';
-
-const getetherfiData = (
-  market: string,
-  protocolAction: ProtocolAction,
-  symbol: string
-): number | undefined => ETHERFI_DATA_MAP.get(`${market}-${protocolAction}-${symbol}`);
-
-const ETHERFI_DATA_MAP: Map<string, number> = new Map([
-  [`${CustomMarket.proto_mainnet_v3}-${ProtocolAction.supply}-weETH`, 3],
-  [`${CustomMarket.proto_mainnet_v3}-${ProtocolAction.supply}-eBTC`, 3],
-  [`${CustomMarket.proto_etherfi_v3}-${ProtocolAction.supply}-weETH`, 3],
-  [`${CustomMarket.proto_lido_v3}-${ProtocolAction.supply}-weETH`, 3],
-  [`${CustomMarket.proto_arbitrum_v3}-${ProtocolAction.supply}-weETH`, 3],
-  [`${CustomMarket.proto_base_v3}-${ProtocolAction.supply}-weETH`, 3],
-  [`${CustomMarket.proto_scroll_v3}-${ProtocolAction.supply}-weETH`, 3],
-  [`${CustomMarket.proto_zksync_v3}-${ProtocolAction.supply}-weETH`, 3],
-  [`${CustomMarket.proto_linea_v3}-${ProtocolAction.supply}-weETH`, 3],
-  [`${CustomMarket.proto_plasma_v3}-${ProtocolAction.supply}-weETH`, 3],
-]);
+import { useReserveIncentives } from './useReserveIncentives';
 
 export const useEtherfiIncentives = (
-  market: string,
-  symbol: string,
-  protocolAction?: ProtocolAction
-) => {
-  if (!market || !protocolAction || !symbol) {
-    return undefined;
-  }
+  market?: string,
+  symbol?: string,
+  _protocolAction?: ProtocolAction,
+): number | undefined => {
+  const chainId = useRootStore((s) => s.currentChainId);
+  const { supplyReserves } = useAppDataContext();
 
-  return getetherfiData(market, protocolAction, symbol);
+  // Resolve (market, symbol) → underlying via the reserves snapshot.
+  const reserve = symbol
+    ? supplyReserves.find(
+        (r) => r.underlyingToken.symbol.toLowerCase() === symbol.toLowerCase(),
+      )
+    : undefined;
+  const underlying = reserve?.underlyingToken.address;
+
+  const { data } = useReserveIncentives({
+    market: market ?? '',
+    underlying: underlying ?? '',
+    chainId,
+    enabled: Boolean(market && underlying && chainId),
+  });
+
+  if (!data) return undefined;
+
+  const etherfi = data.find(
+    (i) =>
+      i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'EtherFi',
+  );
+  if (!etherfi || etherfi.__typename !== 'StaticSupplyIncentive') return undefined;
+
+  const value = parseFloat(etherfi.extraApr.formatted);
+  return Number.isFinite(value) ? value : undefined;
 };

@@ -1,0 +1,336 @@
+/**
+ * Reserve-level incentives read through the V3 backend GraphQL API.
+ *
+ * Background: historically the interface pegged to Merkl, aavechan, and a
+ * handful of hardcoded partner maps to render incentives on each reserve.
+ * `aave-v3-backend` now centralizes those sources — Merit (legacy ACI),
+ * governance-native Aave incentives, Aave-owned Merkl campaigns, points
+ * programs, and static partner incentives (Ethena, EtherFi, Sonic) — behind
+ * `Reserve.incentives`. This hook reads that union so downstream UI can
+ * render any variant.
+ *
+ * The 7 legacy hooks (`useMerklIncentives`, `useMerklPointsIncentives`,
+ * `useMeritIncentives`, `useUserMeritIncentives`, `useEthenaIncentives`,
+ * `useEtherfiIncentives`, `useSonicIncentives`) continue to work; they will
+ * be migrated to derive from this hook in a follow-up PR.
+ */
+import { useQuery } from '@tanstack/react-query';
+
+const DEFAULT_ENDPOINT = 'https://api.v3.staging.aave.com/graphql';
+const GRAPHQL_ENDPOINT =
+  process.env.NEXT_PUBLIC_AAVE_V3_API_URL ?? DEFAULT_ENDPOINT;
+
+/** Identifier for a reward program row in `aave-v3-backend`. UUID string. */
+export type RewardId = string;
+
+export type IncentiveCriteria = {
+  __typename: 'IncentiveCriteria';
+  id: string;
+  text: string;
+  userPassed: boolean;
+};
+
+export type PointsProgram = {
+  __typename: 'PointsProgram';
+  id: RewardId;
+  name: string;
+  externalUrl: string | null;
+  iconUrl: string | null;
+};
+
+type PercentValue = {
+  formatted: string;
+  value: string;
+};
+
+type Currency = {
+  address: string;
+  chainId: number;
+};
+
+// ----- Legacy variants (on-chain Merit + governance-native) ------------------
+
+export type MeritSupplyIncentive = {
+  __typename: 'MeritSupplyIncentive';
+  extraSupplyApr: PercentValue;
+  claimLink: string;
+};
+
+export type MeritBorrowIncentive = {
+  __typename: 'MeritBorrowIncentive';
+  borrowAprDiscount: PercentValue;
+  claimLink: string;
+};
+
+export type MeritBorrowAndSupplyIncentiveCondition = {
+  __typename: 'MeritBorrowAndSupplyIncentiveCondition';
+  extraApr: PercentValue;
+  supplyToken: Currency;
+  borrowToken: Currency;
+  claimLink: string;
+};
+
+export type AaveSupplyIncentive = {
+  __typename: 'AaveSupplyIncentive';
+  extraSupplyApr: PercentValue;
+  rewardTokenAddress: string;
+  rewardTokenSymbol: string;
+};
+
+export type AaveBorrowIncentive = {
+  __typename: 'AaveBorrowIncentive';
+  borrowAprDiscount: PercentValue;
+  rewardTokenAddress: string;
+  rewardTokenSymbol: string;
+};
+
+// ----- New variants (Aave-owned Merkl / points / static partners) ------------
+
+export type MerklSupplyIncentive = {
+  __typename: 'MerklSupplyIncentive';
+  id: RewardId;
+  startDate: string;
+  endDate: string;
+  extraApy: PercentValue;
+  payoutToken: Currency;
+  criteria: IncentiveCriteria[];
+  userEligible: boolean;
+};
+
+export type MerklBorrowIncentive = {
+  __typename: 'MerklBorrowIncentive';
+  id: RewardId;
+  startDate: string;
+  endDate: string;
+  discountApy: PercentValue;
+  payoutToken: Currency;
+  criteria: IncentiveCriteria[];
+  userEligible: boolean;
+};
+
+export type SupplyPointsIncentive = {
+  __typename: 'SupplyPointsIncentive';
+  id: RewardId;
+  program: PointsProgram;
+  name: string;
+  startDate: string;
+  endDate: string | null;
+  multiplier: number;
+  criteria: IncentiveCriteria[] | null;
+  userEligible: boolean;
+};
+
+export type BorrowPointsIncentive = {
+  __typename: 'BorrowPointsIncentive';
+  id: RewardId;
+  program: PointsProgram;
+  name: string;
+  startDate: string;
+  endDate: string | null;
+  multiplier: number;
+  criteria: IncentiveCriteria[] | null;
+  userEligible: boolean;
+};
+
+export type StaticSupplyIncentive = {
+  __typename: 'StaticSupplyIncentive';
+  id: RewardId;
+  partnerName: string;
+  partnerIconUrl: string | null;
+  description: string | null;
+  externalClaimUrl: string | null;
+  startDate: string;
+  endDate: string;
+  extraApr: PercentValue;
+  criteria: IncentiveCriteria[];
+  userEligible: boolean;
+};
+
+export type StaticBorrowIncentive = {
+  __typename: 'StaticBorrowIncentive';
+  id: RewardId;
+  partnerName: string;
+  partnerIconUrl: string | null;
+  description: string | null;
+  externalClaimUrl: string | null;
+  startDate: string;
+  endDate: string;
+  discountApr: PercentValue;
+  criteria: IncentiveCriteria[];
+  userEligible: boolean;
+};
+
+export type ReserveIncentive =
+  | MeritSupplyIncentive
+  | MeritBorrowIncentive
+  | MeritBorrowAndSupplyIncentiveCondition
+  | AaveSupplyIncentive
+  | AaveBorrowIncentive
+  | MerklSupplyIncentive
+  | MerklBorrowIncentive
+  | SupplyPointsIncentive
+  | BorrowPointsIncentive
+  | StaticSupplyIncentive
+  | StaticBorrowIncentive;
+
+const RESERVE_INCENTIVES_QUERY = `
+  query ReserveIncentives($request: ReserveRequest!) {
+    reserve(request: $request) {
+      incentives {
+        __typename
+        ... on MeritSupplyIncentive {
+          extraSupplyApr { formatted value }
+          claimLink
+        }
+        ... on MeritBorrowIncentive {
+          borrowAprDiscount { formatted value }
+          claimLink
+        }
+        ... on MeritBorrowAndSupplyIncentiveCondition {
+          extraApr { formatted value }
+          supplyToken { address chainId }
+          borrowToken { address chainId }
+          claimLink
+        }
+        ... on AaveSupplyIncentive {
+          extraSupplyApr { formatted value }
+          rewardTokenAddress
+          rewardTokenSymbol
+        }
+        ... on AaveBorrowIncentive {
+          borrowAprDiscount { formatted value }
+          rewardTokenAddress
+          rewardTokenSymbol
+        }
+        ... on MerklSupplyIncentive {
+          id
+          startDate
+          endDate
+          extraApy { formatted value }
+          payoutToken { address chainId }
+          criteria { id text userPassed }
+          userEligible
+        }
+        ... on MerklBorrowIncentive {
+          id
+          startDate
+          endDate
+          discountApy { formatted value }
+          payoutToken { address chainId }
+          criteria { id text userPassed }
+          userEligible
+        }
+        ... on SupplyPointsIncentive {
+          id
+          program { id name externalUrl iconUrl }
+          name
+          startDate
+          endDate
+          multiplier
+          criteria { id text userPassed }
+          userEligible
+        }
+        ... on BorrowPointsIncentive {
+          id
+          program { id name externalUrl iconUrl }
+          name
+          startDate
+          endDate
+          multiplier
+          criteria { id text userPassed }
+          userEligible
+        }
+        ... on StaticSupplyIncentive {
+          id
+          partnerName
+          partnerIconUrl
+          description
+          externalClaimUrl
+          startDate
+          endDate
+          extraApr { formatted value }
+          criteria { id text userPassed }
+          userEligible
+        }
+        ... on StaticBorrowIncentive {
+          id
+          partnerName
+          partnerIconUrl
+          description
+          externalClaimUrl
+          startDate
+          endDate
+          discountApr { formatted value }
+          criteria { id text userPassed }
+          userEligible
+        }
+      }
+    }
+  }
+`;
+
+type ReserveIncentivesResponse = {
+  data?: {
+    reserve: { incentives: ReserveIncentive[] } | null;
+  };
+  errors?: Array<{ message: string }>;
+};
+
+export type UseReserveIncentivesArgs = {
+  /** V3 Pool address for the market (e.g. `0x87870bca...` for Aave V3 Ethereum Core). */
+  market: string;
+  /** Underlying asset address. */
+  underlying: string;
+  chainId: number;
+  /** Optional user address. When set, `userEligible` on each variant reflects
+   *  the user's actual V3 positions. */
+  user?: string;
+  enabled?: boolean;
+};
+
+/**
+ * Fetches the `ReserveIncentive` union for a specific reserve from the V3
+ * backend. Returns an empty array if the reserve is not found or the backend
+ * fails — upstream display code should tolerate missing variants gracefully.
+ */
+export const useReserveIncentives = ({
+  market,
+  underlying,
+  chainId,
+  user,
+  enabled = true,
+}: UseReserveIncentivesArgs) => {
+  return useQuery<ReserveIncentive[]>({
+    queryKey: ['reserveIncentives', chainId, market, underlying, user ?? null],
+    staleTime: 1000 * 60 * 5,
+    enabled: enabled && Boolean(market && underlying && chainId),
+    queryFn: async () => {
+      const response = await fetch(GRAPHQL_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: RESERVE_INCENTIVES_QUERY,
+          variables: {
+            request: { market, underlyingToken: underlying, chainId, user },
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Reserve incentives query failed: ${response.status}`);
+      }
+
+      const body = (await response.json()) as ReserveIncentivesResponse;
+
+      if (body.errors?.length) {
+        throw new Error(
+          `Reserve incentives query returned errors: ${body.errors
+            .map((e) => e.message)
+            .join(', ')}`,
+        );
+      }
+
+      return body.data?.reserve?.incentives ?? [];
+    },
+  });
+};
