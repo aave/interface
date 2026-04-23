@@ -1,11 +1,14 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { Warning } from 'src/components/primitives/Warning';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { SwapState, SwapType } from '../../types';
 import { isProtocolSwapState } from '../../types/state.types';
 
 export function ZeroLTVDestinationWarning({ state }: { state: SwapState }) {
+  const { user } = useAppDataContext();
+
   if (!isProtocolSwapState(state) || state.swapType !== SwapType.CollateralSwap) {
     return null;
   }
@@ -14,7 +17,18 @@ export function ZeroLTVDestinationWarning({ state }: { state: SwapState }) {
     ? state.sourceReserve?.reserve
     : state.destinationReserve?.reserve;
 
-  if (!destinationReserve || destinationReserve.baseLTVasCollateral !== '0') {
+  if (!destinationReserve) {
+    return null;
+  }
+
+  // Mirror getUserReserveLtv: an asset has effective non-zero LTV when base LTV > 0,
+  // or when the user is in an e-mode where it is collateralEnabled and not ltvzero.
+  const toEmode = destinationReserve.eModes?.find((e) => e.id === user?.userEmodeCategoryId);
+  const hasEffectiveLtv =
+    destinationReserve.baseLTVasCollateral !== '0' ||
+    (user?.isInEmode && toEmode?.collateralEnabled && !toEmode.ltvzeroEnabled);
+
+  if (hasEffectiveLtv) {
     return null;
   }
 
