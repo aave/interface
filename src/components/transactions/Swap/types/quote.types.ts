@@ -1,7 +1,6 @@
 import { OrderParameters, QuoteAmountsAndCosts, QuoteAndPost } from '@cowprotocol/cow-sdk';
 import { OptimalRate } from '@paraswap/core';
 import { TxErrorType } from 'src/ui-config/errorMapping';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { SwapProvider, SwapType } from './shared.types';
 
@@ -30,7 +29,6 @@ export type ProviderRatesParams = {
   isInputTokenCustom?: boolean;
   isOutputTokenCustom?: boolean;
   appCode: string;
-  market: CustomMarket;
 
   setError?: (error: Error | TxErrorType) => void;
 };

@@ -14,7 +14,6 @@ import {
   FlashLoanHookAmounts,
   HASH_ZERO,
 } from '@cowprotocol/sdk-flash-loans';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import {
   COW_PARTNER_FEE,
@@ -40,13 +39,11 @@ export const calculateInstanceAddress = async ({
   validTo,
   type,
   state,
-  market,
 }: {
   user: string;
   validTo: number;
   type: AaveFlashLoanType;
   state: SwapState;
-  market: CustomMarket;
 }) => {
   if (!user) return;
   if (
@@ -86,8 +83,7 @@ export const calculateInstanceAddress = async ({
     partnerFee: COW_PARTNER_FEE(
       state.sellAmountToken.symbol,
       state.buyAmountToken.symbol,
-      state.swapType,
-      market
+      state.swapType
     ),
   };
 
