@@ -1,9 +1,9 @@
 import { ProtocolAction } from '@aave/contract-helpers';
-import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
+import type { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
 import { convertAprToApy } from 'src/utils/utils';
-import { Address, checksumAddress } from 'viem';
+import { type Address, checksumAddress } from 'viem';
 
 enum OpportunityAction {
   LEND = 'LEND',
@@ -146,6 +146,7 @@ type WhitelistApiResponse = {
 const MERKL_ENDPOINT =
   'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave&items=100&status=LIVE'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
+const EXTRA_WHITELIST_TOKENS = ['0xE3190143Eb552456F88464662f0c0C4aC67A77eB'.toLowerCase()];
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
   protocolAction: ProtocolAction
@@ -222,7 +223,10 @@ export const useMerklIncentives = ({
       }
 
       const whitelistedTokensSet = new Set(
-        whitelistData.whitelistedRewardTokens.map((token) => token.toLowerCase())
+        [
+          ...whitelistData.whitelistedRewardTokens.map((token) => token.toLowerCase()),
+          ...EXTRA_WHITELIST_TOKENS,
+        ].filter(Boolean)
       );
 
       const whitelistedOpportunities = validOpportunities.filter((opp) =>
