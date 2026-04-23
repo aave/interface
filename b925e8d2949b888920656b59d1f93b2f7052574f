@@ -1,0 +1,36 @@
+src/hooks/governance/useGovernanceProposals.ts
+  fb7decf383812694 121,126-133,135,152-153,157,176,182-185,188,201-206,209
+src/hooks/governance/useProposals.ts
+  fb7decf383812694 271-272,297
+src/modules/governance/ProposalsV3List.tsx
+  fb7decf383812694 1-3,17,20-40,71,73
+src/modules/governance/types.ts
+  fb7decf383812694 26-32,43
+src/modules/governance/adapters.ts
+  fb7decf383812694 168,175-178,218-221,230-233
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "b925e8d2949b888920656b59d1f93b2f7052574f",
+  "prompts": {
+    "fb7decf383812694": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ad42bf7c-36b6-4d34-8335-8edb40204ace",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "mark hinschberger",
+      "messages": [],
+      "total_additions": 545,
+      "total_deletions": 26,
+      "accepted_lines": 531,
+      "overriden_lines": 0
+    }
+  },
+  "humans": {
+    "h_18722c69eff4ba": {
+      "author": "mark hinschberger"
+    }
+  }
+}
