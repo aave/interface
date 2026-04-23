@@ -147,6 +147,40 @@ const MERKL_ENDPOINT =
   'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave&items=100&status=LIVE'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
 const EXTRA_WHITELIST_TOKENS = ['0xE3190143Eb552456F88464662f0c0C4aC67A77eB'.toLowerCase()];
+const AAVE_NET_APR_DISTRIBUTION_TYPE = 'AAVE_NET_APR';
+const convertApyToApr = (apy: number) => 12 * ((1 + apy) ** (1 / 12) - 1);
+
+const getCampaignIncentiveApr = ({
+  targetAprPercent,
+  distributionType,
+  protocolAction,
+  baseProtocolApy,
+}: {
+  targetAprPercent: number;
+  distributionType?: string;
+  protocolAction?: ProtocolAction;
+  baseProtocolApy: number;
+}) => {
+  const campaignApr = targetAprPercent / 100;
+
+  if (distributionType !== AAVE_NET_APR_DISTRIBUTION_TYPE) {
+    return campaignApr;
+  }
+
+  // For net APR campaigns, derive incentive delta in APY so:
+  // supply => base APY + reward APY = target APY
+  // borrow => base APY - reward APY = target APY
+  // Then convert delta APY back to APR to keep the existing global APR pipeline unchanged.
+  const targetApy = convertAprToApy(campaignApr);
+  const targetMinusBase = targetApy - baseProtocolApy;
+
+  if (protocolAction === ProtocolAction.borrow) {
+    return convertApyToApr(Math.max(-targetMinusBase, 0));
+  }
+
+  return convertApyToApr(Math.max(targetMinusBase, 0));
+};
+
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
   protocolAction: ProtocolAction
@@ -241,10 +275,23 @@ export const useMerklIncentives = ({
       }
 
       const totalMerklAPR = whitelistedOpportunities.reduce((sum, opp) => {
-        return sum + opp.apr / 100;
+        const oppApr = opp.aprRecord.breakdowns.reduce((breakdownSum, breakdown) => {
+          return (
+            breakdownSum +
+            getCampaignIncentiveApr({
+              targetAprPercent: breakdown.value,
+              distributionType: breakdown.distributionType,
+              protocolAction,
+              baseProtocolApy: protocolAPY,
+            })
+          );
+        }, 0);
+
+        return sum + oppApr;
       }, 0);
 
       const merklIncentivesAPY = convertAprToApy(totalMerklAPR);
+      console.log('Total Merkl APR:', totalMerklAPR, '=> APY:', merklIncentivesAPY);
       const aprsBreakdowns = whitelistedOpportunities.flatMap((opp) => opp.aprRecord.breakdowns);
       const breakdownTokens = whitelistedOpportunities.flatMap((opp) => {
         return opp.rewardsRecord.breakdowns;
@@ -259,7 +306,14 @@ export const useMerklIncentives = ({
           if (matchingReward) {
             return {
               ...matchingReward,
-              apy: convertAprToApy(aprBreakdown.value / 100),
+              apy: convertAprToApy(
+                getCampaignIncentiveApr({
+                  targetAprPercent: aprBreakdown.value,
+                  distributionType: aprBreakdown.distributionType,
+                  protocolAction,
+                  baseProtocolApy: protocolAPY,
+                })
+              ),
             };
           }
           return null;
