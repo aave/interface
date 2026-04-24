@@ -15,6 +15,20 @@
  * be migrated to derive from this hook in a follow-up PR.
  */
 import { useQuery } from '@tanstack/react-query';
+import { CustomMarket, marketsData } from 'src/ui-config/marketsConfig';
+
+/**
+ * Consumer code historically passes `currentMarket` — an internal slug like
+ * `"proto_mainnet_v3"` — as `market`. The backend's `ReserveRequest.market`
+ * field expects a V3 Pool address. Resolve the slug → address here so every
+ * existing callsite keeps working while new callers can pass the address
+ * directly.
+ */
+const resolveMarketAddress = (market: string): string => {
+  if (market.startsWith('0x')) return market;
+  const cfg = marketsData[market as CustomMarket];
+  return cfg?.addresses?.LENDING_POOL ?? market;
+};
 
 const DEFAULT_ENDPOINT = 'https://api.v3.staging.aave.com/graphql';
 const GRAPHQL_ENDPOINT =
@@ -300,10 +314,13 @@ export const useReserveIncentives = ({
   user,
   enabled = true,
 }: UseReserveIncentivesArgs) => {
+  const marketAddress = resolveMarketAddress(market);
   return useQuery<ReserveIncentive[]>({
-    queryKey: ['reserveIncentives', chainId, market, underlying, user ?? null],
+    queryKey: ['reserveIncentives', chainId, marketAddress, underlying, user ?? null],
     staleTime: 1000 * 60 * 5,
-    enabled: enabled && Boolean(market && underlying && chainId),
+    enabled:
+      enabled &&
+      Boolean(marketAddress && marketAddress.startsWith('0x') && underlying && chainId),
     queryFn: async () => {
       const response = await fetch(GRAPHQL_ENDPOINT, {
         method: 'POST',
@@ -311,7 +328,7 @@ export const useReserveIncentives = ({
         body: JSON.stringify({
           query: RESERVE_INCENTIVES_QUERY,
           variables: {
-            request: { market, underlyingToken: underlying, chainId, user },
+            request: { market: marketAddress, underlyingToken: underlying, chainId, user },
           },
         }),
       });

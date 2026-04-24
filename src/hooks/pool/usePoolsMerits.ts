@@ -20,9 +20,16 @@ import { client } from 'pages/_app.page';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 
-export type MeritAprByUnderlying = Map<string, { supplyApr: number; borrowApr: number }>;
+/**
+ * Map of `lowercase(underlyingAddress) -> {supplyApr, borrowApr}`. Backed
+ * by a plain Record because react-query's default `structuralSharing`
+ * deep-merges fetched data against the previous value, and `Map` instances
+ * don't round-trip through that merge — they come back as plain objects on
+ * refetch and `.get()` blows up at the consumer.
+ */
+export type MeritAprByUnderlying = Record<string, { supplyApr: number; borrowApr: number }>;
 
-const EMPTY_MAP: MeritAprByUnderlying = new Map();
+const EMPTY_MAP: MeritAprByUnderlying = Object.freeze({});
 
 type Incentive = {
   __typename?: string;
@@ -67,7 +74,7 @@ export const usePoolsMerits = (
         });
         if (response.isErr()) throw response.error;
 
-        const map: MeritAprByUnderlying = new Map();
+        const result: MeritAprByUnderlying = {};
         for (const sdkMarket of response.value) {
           const allReserves = [
             ...(sdkMarket.supplyReserves ?? []),
@@ -75,7 +82,7 @@ export const usePoolsMerits = (
           ];
           for (const r of allReserves) {
             const underlying = r.underlyingToken.address.toLowerCase();
-            const existing = map.get(underlying) ?? { supplyApr: 0, borrowApr: 0 };
+            const existing = result[underlying] ?? { supplyApr: 0, borrowApr: 0 };
             const incentives: Incentive[] = (r.incentives ?? []) as Incentive[];
             for (const inc of incentives) {
               if (!inc.userEligible) continue;
@@ -91,10 +98,10 @@ export const usePoolsMerits = (
                 existing.borrowApr += apr;
               }
             }
-            map.set(underlying, existing);
+            result[underlying] = existing;
           }
         }
-        return map;
+        return result;
       },
     })),
   });

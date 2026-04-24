@@ -34,9 +34,7 @@ const formatUserYield = memoize(
         );
 
         if (reserve) {
-          const meritEntry = meritByUnderlying.get(
-            reserve.underlyingAsset.toLowerCase()
-          );
+          const meritEntry = meritByUnderlying[reserve.underlyingAsset.toLowerCase()];
           if (value.underlyingBalanceUSD !== '0') {
             acc.positiveProportion = acc.positiveProportion.plus(
               new BigNumber(reserve.supplyAPY).multipliedBy(value.underlyingBalanceUSD)

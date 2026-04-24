@@ -81,7 +81,14 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const marketAddress = currentMarketData.addresses.LENDING_POOL.toLowerCase();
 
-  const sdkMarket = data?.find((item) => item.address.toLowerCase() === marketAddress);
+  // react-query's structural sharing can replace our Market[] with a
+  // structurally-similar plain object on refetch when it encounters
+  // non-POJO values (e.g. bigint-ish strings wrapped by the SDK). Guard
+  // before calling Array.prototype methods.
+  const marketsList = Array.isArray(data) ? data : [];
+  const sdkMarket = marketsList.find(
+    (item) => item.address.toLowerCase() === marketAddress,
+  );
 
   const totalBorrows = sdkMarket?.borrowReserves.reduce((acc, reserve) => {
     const value = reserve.borrowInfo?.total?.usd ?? 0;
