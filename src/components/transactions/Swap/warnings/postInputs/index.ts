@@ -10,3 +10,4 @@ export * from './SafetyModuleSwapWarning';
 export * from './ShieldSwapWarning';
 export * from './SlippageWarning';
 export * from './USDTResetWarning';
+export * from './ZeroLTVDestinationWarning';

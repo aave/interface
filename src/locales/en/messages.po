@@ -1329,6 +1329,10 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 msgid "{0}"
 msgstr "{0}"
 
+#: src/components/transactions/Swap/warnings/postInputs/ZeroLTVDestinationWarning.tsx
+msgid "{0} has a Loan-to-Value of 0, so it will not be enabled as collateral automatically after the swap."
+msgstr "{0} has a Loan-to-Value of 0, so it will not be enabled as collateral automatically after the swap."
+
 #: src/layouts/AppFooter.tsx
 msgid "Manage analytics"
 msgstr "Manage analytics"
