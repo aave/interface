@@ -29,18 +29,24 @@ export const useStakeTokenAPR = () => {
     return { ...query, data: null as { apr: string; aprPercentage: number } | null };
   }
 
-  // Find the MeritSupplyIncentive for `ethereum-sgho`. Its `extraSupplyApr`
-  // is the live APR pulled from the merit cron cache; mirrors the legacy
-  // `actionsAPR[ETHEREUM_SGHO]` read.
-  const merit = query.data.find((i) => {
-    const withActionKey = i as unknown as { actionKey?: string | null };
-    return (
-      i.__typename === 'MeritSupplyIncentive' &&
-      withActionKey.actionKey === ETHEREUM_SGHO_ACTION
-    );
-  });
+  // Prefer the MeritSupplyIncentive tagged with `ethereum-sgho` — matches
+  // the legacy `actionsAPR[ETHEREUM_SGHO]` read. Fall back to any GHO Merit
+  // supply incentive so this hook keeps returning a non-null APR on backend
+  // deployments that don't yet expose `actionKey` (there's only ever one
+  // Merit supply campaign on GHO mainnet). The field is read via cast until
+  // the backend-side query schema ships the enrichment.
+  const supplyMerits = query.data.filter(
+    (i): i is Extract<typeof i, { __typename: 'MeritSupplyIncentive' }> =>
+      i.__typename === 'MeritSupplyIncentive',
+  );
+  const merit =
+    supplyMerits.find(
+      (i) =>
+        (i as unknown as { actionKey?: string | null }).actionKey ===
+        ETHEREUM_SGHO_ACTION,
+    ) ?? supplyMerits[0];
 
-  if (!merit || merit.__typename !== 'MeritSupplyIncentive') {
+  if (!merit) {
     return { ...query, data: null };
   }
 

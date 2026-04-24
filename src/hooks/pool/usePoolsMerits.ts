@@ -74,8 +74,17 @@ export const usePoolsMerits = (
         });
         if (response.isErr()) throw response.error;
 
+        // `markets()` returns every market on the chain (Core, Lido,
+        // EtherFi, Horizon, …). Keep only the one this query is keyed on,
+        // otherwise identical underlyings across pools would get merged
+        // and `useUserYield` would credit incentives from the wrong pool.
+        const targetPool = marketData.addresses.LENDING_POOL?.toLowerCase();
+        const scopedMarkets = targetPool
+          ? response.value.filter((m) => m.address?.toLowerCase() === targetPool)
+          : response.value;
+
         const result: MeritAprByUnderlying = {};
-        for (const sdkMarket of response.value) {
+        for (const sdkMarket of scopedMarkets) {
           const allReserves = [
             ...(sdkMarket.supplyReserves ?? []),
             ...(sdkMarket.borrowReserves ?? []),
