@@ -68,13 +68,8 @@ export const SwapActionsViaCoW = ({
   setState: Dispatch<Partial<SwapState>>;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  const [user, estimateGasLimit, addTransaction, currentMarket] = useRootStore(
-    useShallow((state) => [
-      state.account,
-      state.estimateGasLimit,
-      state.addTransaction,
-      state.currentMarket,
-    ])
+  const [user, estimateGasLimit, addTransaction] = useRootStore(
+    useShallow((state) => [state.account, state.estimateGasLimit, state.addTransaction])
   );
 
   const { mainTxState, loadingTxns, setMainTxState, setTxError, approvalTxState } =
@@ -192,7 +187,6 @@ export const SwapActionsViaCoW = ({
             appCode,
             state.orderType,
             params.swapType,
-            currentMarket,
             state.swapRate.quoteId
           );
           const txWithGasEstimation = await estimateGasLimit(ethFlowTx, state.chainId);
@@ -228,7 +222,6 @@ export const SwapActionsViaCoW = ({
               orderType: state.orderType,
               validTo,
               swapType: params.swapType,
-              market: currentMarket,
             });
             const calculatedOrderId = await calculateUniqueOrderId(state.chainId, unsignerOrder);
 
@@ -242,8 +235,7 @@ export const SwapActionsViaCoW = ({
                   smartSlippage,
                   state.orderType,
                   APP_CODE_PER_SWAP_TYPE[params.swapType],
-                  params.swapType,
-                  currentMarket
+                  params.swapType
                 )
               ),
               state.chainId
@@ -300,7 +292,6 @@ export const SwapActionsViaCoW = ({
                 orderBookQuote: state.swapRate?.orderBookQuote,
                 orderType: state.orderType,
                 swapType: params.swapType,
-                market: currentMarket,
                 kind:
                   state.orderType === OrderType.MARKET
                     ? OrderKind.SELL
@@ -347,7 +338,6 @@ export const SwapActionsViaCoW = ({
                 smartSlippage,
                 orderType: state.orderType,
                 swapType: params.swapType,
-                market: currentMarket,
                 kind:
                   state.orderType === OrderType.MARKET
                     ? OrderKind.SELL

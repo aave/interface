@@ -2,7 +2,6 @@ import { normalizeBN } from '@aave/math-utils';
 import { useQuery } from '@tanstack/react-query';
 import { Dispatch, useEffect, useMemo } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
-import { useRootStore } from 'src/store/root';
 import { isTxErrorType, TxErrorType } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 
@@ -290,7 +289,6 @@ const useMultiProviderSwapQuoteQuery = ({
   requiresQuoteInverted: boolean;
 }) => {
   const { approvalTxState } = useModalContext();
-  const currentMarket = useRootStore((state) => state.currentMarket);
 
   // Amount to quote depends on side (sell uses input amount, buy uses output amount)
   const amount = useMemo(() => {
@@ -384,7 +382,6 @@ const useMultiProviderSwapQuoteQuery = ({
             isInputTokenCustom,
             isOutputTokenCustom,
             appCode,
-            market: currentMarket,
             setError,
             side,
             invertedQuoteRoute: requiresQuoteInverted,
@@ -401,7 +398,6 @@ const useMultiProviderSwapQuoteQuery = ({
             destDecimals,
             side,
             appCode,
-            market: currentMarket,
             options: {
               partner: appCode,
             },
@@ -420,8 +416,7 @@ const useMultiProviderSwapQuoteQuery = ({
       requiresQuoteInverted,
       srcToken,
       destToken,
-      state.user,
-      currentMarket
+      state.user
     ),
     enabled: (() => {
       // Allow fetch when user has entered a positive amount, even if normalization rounded to '0'

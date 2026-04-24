@@ -19,7 +19,6 @@ import { AnyAppDataDocVersion, AppDataParams, MetadataApi } from '@cowprotocol/s
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { isSmartContractWallet } from 'src/helpers/provider';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { SignedParams } from '../../actions/approval/useSwapTokenApproval';
 import {
@@ -75,8 +74,7 @@ export type CowProtocolActionParams = {
   signatureParams?: SignedParams;
   estimateGasLimit?: (tx: PopulatedTransaction, chainId?: number) => Promise<PopulatedTransaction>;
   validTo: number;
-  swapType: SwapType;
-  market: CustomMarket;
+  swapType?: SwapType;
 };
 
 export const getPreSignTransaction = async ({
@@ -98,7 +96,6 @@ export const getPreSignTransaction = async ({
   kind,
   validTo,
   swapType,
-  market,
 }: CowProtocolActionParams) => {
   if (!isChainIdSupportedByCoWProtocol(chainId)) {
     throw new Error('Chain not supported.');
@@ -131,8 +128,7 @@ export const getPreSignTransaction = async ({
         smartSlippage,
         orderType,
         appCode,
-        swapType,
-        market
+        swapType
       ),
       additionalParams: {
         signingScheme: SigningScheme.PRESIGN,
@@ -173,7 +169,6 @@ export const sendOrder = async ({
   estimateGasLimit,
   validTo,
   swapType,
-  market,
 }: CowProtocolActionParams) => {
   const signer = provider?.getSigner();
 
@@ -209,7 +204,6 @@ export const sendOrder = async ({
     orderType,
     appCode,
     swapType,
-    market,
     hooks
   );
 
@@ -301,7 +295,6 @@ export const getUnsignerOrder = async ({
   srcToken,
   receiver,
   swapType,
-  market,
 }: {
   sellAmount: string;
   buyAmount: string;
@@ -317,8 +310,7 @@ export const getUnsignerOrder = async ({
   validTo: number;
   srcToken?: string;
   receiver?: string;
-  swapType: SwapType;
-  market: CustomMarket;
+  swapType?: SwapType;
 }) => {
   const metadataApi = new MetadataApi();
   const { appDataHex } = await metadataApi.getAppDataInfo(
@@ -329,8 +321,7 @@ export const getUnsignerOrder = async ({
       smartSlippage,
       orderType,
       appCode,
-      swapType,
-      market
+      swapType
     )
   );
 
@@ -370,8 +361,7 @@ export const populateEthFlowTx = async (
   smartSlippage: boolean,
   appCode: string,
   orderType: OrderType,
-  swapType: SwapType,
-  market: CustomMarket,
+  swapType?: SwapType,
   quoteId?: number
 ): Promise<PopulatedTransaction> => {
   const appDataHex = await hashAppData(
@@ -382,8 +372,7 @@ export const populateEthFlowTx = async (
       smartSlippage,
       orderType,
       appCode,
-      swapType,
-      market
+      swapType
     )
   );
 
