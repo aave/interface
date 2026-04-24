@@ -60,8 +60,6 @@ export const MarketAssetsListContainer = () => {
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
 
   const filteredData = supplyReserves
-    // Filter out any non-active reserves
-    .filter((res) => !res.isPaused)
     // Filter out any hidden assets
     .filter((res) => !isAssetHidden(currentMarketData.market, res.underlyingToken.address))
     // filter out any that don't meet search term criteria
