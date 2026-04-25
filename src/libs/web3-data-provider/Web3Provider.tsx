@@ -5,9 +5,12 @@ import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useRootStore } from 'src/store/root';
+import { getQueryParameter } from 'src/store/utils/queryParams';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
 import { hexToAscii } from 'src/utils/utils';
 import { UserRejectedRequestError } from 'viem';
+import { normalize } from 'viem/ens';
 import { useAccount, useConnect, useSwitchChain, useWatchAsset } from 'wagmi';
 import { useShallow } from 'zustand/shallow';
 
@@ -62,15 +65,51 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
 
+  const handleWalletParameter = async (walletParam: string) => {
+    let validatedAddress: string | null = null;
+
+    // Check if it's already a valid Ethereum address
+    if (utils.isAddress(walletParam)) {
+      validatedAddress = walletParam;
+    }
+    // Check if it could be an ENS name
+    else if (walletParam.endsWith('.eth')) {
+      try {
+        const mainnetProvider = getENSProvider();
+        const normalizedENS = normalize(walletParam);
+        const resolvedAddress = await mainnetProvider.resolveName(normalizedENS);
+
+        if (resolvedAddress && utils.isAddress(resolvedAddress)) {
+          validatedAddress = resolvedAddress;
+        }
+      } catch (error) {
+        console.debug('ENS resolution failed for:', walletParam, error);
+      }
+    }
+
+    // If we have a valid address, set read-only mode
+    if (validatedAddress) {
+      setReadOnlyModeAddress(validatedAddress);
+      localStorage.setItem('readOnlyModeAddress', validatedAddress);
+    }
+  };
+
   useEffect(() => {
     if (didInit) {
       return;
     }
 
-    // If the app loads in readOnlyMode, then we disconnect the wallet if it auto connected
-    const storedReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
-    if (storedReadOnlyAddress && utils.isAddress(storedReadOnlyAddress)) {
-      setReadOnlyModeAddress(storedReadOnlyAddress);
+    // Check for wallet parameter in URL first (takes precedence over localStorage)
+    const walletParam = getQueryParameter('wallet');
+
+    if (walletParam) {
+      handleWalletParameter(walletParam);
+    } else {
+      // Fallback to localStorage if no URL parameter
+      const storedReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
+      if (storedReadOnlyAddress && utils.isAddress(storedReadOnlyAddress)) {
+        setReadOnlyModeAddress(storedReadOnlyAddress);
+      }
     }
 
     didInit = true;
