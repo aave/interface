@@ -1085,6 +1085,7 @@ msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgid "Migrate to v3"
 msgstr "Migrate to v3"
 
+#: src/components/AddressBlockedModal.tsx
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Get support"
 msgstr "Get support"
