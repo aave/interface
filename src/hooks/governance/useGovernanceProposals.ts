@@ -118,13 +118,21 @@ async function fetchSubgraphVotes(proposalId: number, votingChainId: ChainId) {
  */
 export const useGovernanceProposals = () => {
   const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
+  const user = useRootStore((store) => store.account);
 
   const cacheResult = useInfiniteQuery({
     queryFn: async ({ pageParam = 0 }) => {
       const proposals = await getProposalsFromCache(PAGE_SIZE, pageParam * PAGE_SIZE);
-      return { proposals: proposals.map(adaptCacheProposalToListItem) };
+      const userVotes = user
+        ? await Promise.all(
+            proposals.map((p) => getUserVoteFromCache(p.id, user).catch(() => null))
+          )
+        : proposals.map(() => null);
+      return {
+        proposals: proposals.map((p, i) => adaptCacheProposalToListItem(p, userVotes[i])),
+      };
     },
-    queryKey: ['governance-proposals-cache'],
+    queryKey: ['governance-proposals-cache', user],
     enabled: USE_GOVERNANCE_CACHE,
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -141,11 +149,12 @@ export const useGovernanceProposals = () => {
       const enriched = await fetchProposals(
         result.proposals,
         votingMachineSerivce,
-        governanceV3Service
+        governanceV3Service,
+        user
       );
       return { proposals: enriched.proposals.map(adaptGraphProposalToListItem) };
     },
-    queryKey: ['governance-proposals-graph'],
+    queryKey: ['governance-proposals-graph', user],
     enabled: !USE_GOVERNANCE_CACHE,
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -164,15 +173,19 @@ export const useGovernanceProposals = () => {
  */
 export const useGovernanceProposalsSearch = (query: string) => {
   const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
+  const user = useRootStore((store) => store.account);
   const formattedQuery = query.trim().split(' ').join(' & ');
 
   const { data: cacheData, isFetching: cacheFetching } = useQuery({
     queryFn: async () => {
       const results = await searchProposalsFromCache(query, SEARCH_RESULTS_LIMIT);
-      return results.map(adaptCacheProposalToListItem);
+      const userVotes = user
+        ? await Promise.all(results.map((p) => getUserVoteFromCache(p.id, user).catch(() => null)))
+        : results.map(() => null);
+      return results.map((p, i) => adaptCacheProposalToListItem(p, userVotes[i]));
     },
     enabled: USE_GOVERNANCE_CACHE && query.trim() !== '',
-    queryKey: ['governance-search-cache', query],
+    queryKey: ['governance-search-cache', query, user],
   });
 
   const { data: graphIds, isFetching: graphIdsFetching } = useQuery({
@@ -185,10 +198,15 @@ export const useGovernanceProposalsSearch = (query: string) => {
   const { data: graphData, isFetching: graphProposalsFetching } = useQuery({
     queryFn: async () => {
       const proposals = await fetchSubgraphProposalsByIds(graphIds || []);
-      const enriched = await fetchProposals(proposals, votingMachineSerivce, governanceV3Service);
+      const enriched = await fetchProposals(
+        proposals,
+        votingMachineSerivce,
+        governanceV3Service,
+        user
+      );
       return enriched.proposals.map(adaptGraphProposalToListItem);
     },
-    queryKey: ['governance-search-graph-proposals', graphIds],
+    queryKey: ['governance-search-graph-proposals', graphIds, user],
     enabled: !USE_GOVERNANCE_CACHE && graphIds !== undefined && graphIds.length > 0,
   });
 

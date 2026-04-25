@@ -2992,6 +2992,7 @@ msgid "Delegated power"
 msgstr "Delegated power"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
+#: src/modules/governance/ProposalsV3List.tsx
 msgid "You voted {0}"
 msgstr "You voted {0}"
 
