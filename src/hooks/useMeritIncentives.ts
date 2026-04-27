@@ -39,6 +39,12 @@ export type MeritAction = string;
 
 export const ENABLE_SELF_CAMPAIGN = true;
 
+// Merit action keys that should only appear in specific protocol contexts.
+const MERIT_ACTION_PROTOCOL_ALLOWLIST: Record<string, Set<ProtocolAction>> = {
+  'ethereum-sgho': new Set([ProtocolAction.stake]),
+  'ethereum-stkgho': new Set([ProtocolAction.umbrellaStake]),
+};
+
 export type MeritIncentivesBreakdown = {
   protocolAPY: number;
   protocolIncentivesAPR: number;
@@ -143,6 +149,16 @@ export const useMeritIncentives = ({
     const enriched = m as unknown as EnrichedMerit;
     const rewardTokenAddress = enriched.rewardTokenAddress ?? '';
     const rewardTokenSymbol = enriched.rewardTokenSymbol ?? '';
+
+    if (enriched.actionKey) {
+      const allowedProtocolActions = MERIT_ACTION_PROTOCOL_ALLOWLIST[enriched.actionKey];
+      if (
+        allowedProtocolActions &&
+        (!protocolAction || !allowedProtocolActions.has(protocolAction))
+      ) {
+        continue;
+      }
+    }
 
     if (m.__typename === 'MeritSupplyIncentive') {
       apr = parseFloat(m.extraSupplyApr.formatted);

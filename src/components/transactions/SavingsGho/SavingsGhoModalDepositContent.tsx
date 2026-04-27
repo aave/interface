@@ -1,4 +1,4 @@
-import { ChainId, Stake } from '@aave/contract-helpers';
+import { ChainId, ProtocolAction, Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
@@ -38,6 +38,7 @@ export const SavingsGhoModalDepositContent = () => {
   const { data: meritIncentives } = useMeritIncentives({
     symbol: 'GHO',
     market: currentMarketData.market,
+    protocolAction: ProtocolAction.stake,
   });
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();

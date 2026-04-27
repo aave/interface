@@ -13,7 +13,8 @@ import { AaveV3Ethereum } from '@aave-dao/aave-address-book';
 
 import { useReserveIncentives } from './useReserveIncentives';
 
-const MAINNET_V3_MARKET = AaveV3Ethereum.POOL_ADDRESSES_PROVIDER;
+// ReserveRequest.market expects Pool address, not Address Provider
+const MAINNET_V3_MARKET = AaveV3Ethereum.POOL;
 const GHO_UNDERLYING = AaveV3Ethereum.ASSETS.GHO.UNDERLYING;
 const MAINNET_CHAIN_ID = 1;
 const ETHEREUM_SGHO_ACTION = 'ethereum-sgho';
