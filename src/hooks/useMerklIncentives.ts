@@ -106,7 +106,8 @@ export const useMerklIncentives = ({
       ? parseFloat(incentive.discountApy.formatted)
       : 0;
 
-  const merklIncentivesAPY = Number.isFinite(aprPct) ? aprPct / 100 : 0;
+  const merklIncentivesAPR = Number.isFinite(aprPct) ? aprPct / 100 : 0;
+  const merklIncentivesAPY = convertAprToApy(merklIncentivesAPR);
 
   const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
     return sum + (inc.incentiveAPR === 'Infinity' ? 0 : +inc.incentiveAPR);

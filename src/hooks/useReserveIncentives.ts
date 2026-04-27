@@ -68,12 +68,24 @@ export type MeritSupplyIncentive = {
   __typename: 'MeritSupplyIncentive';
   extraSupplyApr: PercentValue;
   claimLink: string;
+  actionKey?: string;
+  rewardTokenAddress?: string;
+  rewardTokenSymbol?: string;
+  customMessage?: string | null;
+  customForumLink?: string | null;
+  selfApr?: PercentValue | null;
 };
 
 export type MeritBorrowIncentive = {
   __typename: 'MeritBorrowIncentive';
   borrowAprDiscount: PercentValue;
   claimLink: string;
+  actionKey?: string;
+  rewardTokenAddress?: string;
+  rewardTokenSymbol?: string;
+  customMessage?: string | null;
+  customForumLink?: string | null;
+  selfApr?: PercentValue | null;
 };
 
 export type MeritBorrowAndSupplyIncentiveCondition = {
@@ -82,6 +94,12 @@ export type MeritBorrowAndSupplyIncentiveCondition = {
   supplyToken: Currency;
   borrowToken: Currency;
   claimLink: string;
+  actionKey?: string;
+  rewardTokenAddress?: string;
+  rewardTokenSymbol?: string;
+  customMessage?: string | null;
+  customForumLink?: string | null;
+  selfApr?: PercentValue | null;
 };
 
 export type AaveSupplyIncentive = {
@@ -109,6 +127,10 @@ export type MerklSupplyIncentive = {
   payoutToken: Currency;
   criteria: IncentiveCriteria[];
   userEligible: boolean;
+  description?: string | null;
+  customMessage?: string | null;
+  customForumLink?: string | null;
+  customClaimMessage?: string | null;
 };
 
 export type MerklBorrowIncentive = {
@@ -120,6 +142,10 @@ export type MerklBorrowIncentive = {
   payoutToken: Currency;
   criteria: IncentiveCriteria[];
   userEligible: boolean;
+  description?: string | null;
+  customMessage?: string | null;
+  customForumLink?: string | null;
+  customClaimMessage?: string | null;
 };
 
 export type SupplyPointsIncentive = {
@@ -195,16 +221,34 @@ const RESERVE_INCENTIVES_QUERY = `
         ... on MeritSupplyIncentive {
           extraSupplyApr { formatted value }
           claimLink
+          actionKey
+          rewardTokenAddress
+          rewardTokenSymbol
+          customMessage
+          customForumLink
+          selfApr { formatted value }
         }
         ... on MeritBorrowIncentive {
           borrowAprDiscount { formatted value }
           claimLink
+          actionKey
+          rewardTokenAddress
+          rewardTokenSymbol
+          customMessage
+          customForumLink
+          selfApr { formatted value }
         }
         ... on MeritBorrowAndSupplyIncentiveCondition {
           extraApr { formatted value }
           supplyToken { address chainId }
           borrowToken { address chainId }
           claimLink
+          actionKey
+          rewardTokenAddress
+          rewardTokenSymbol
+          customMessage
+          customForumLink
+          selfApr { formatted value }
         }
         ... on AaveSupplyIncentive {
           extraSupplyApr { formatted value }
@@ -224,6 +268,10 @@ const RESERVE_INCENTIVES_QUERY = `
           payoutToken { address chainId symbol }
           criteria { id text userPassed }
           userEligible
+          description
+          customMessage
+          customForumLink
+          customClaimMessage
         }
         ... on MerklBorrowIncentive {
           id
@@ -233,6 +281,10 @@ const RESERVE_INCENTIVES_QUERY = `
           payoutToken { address chainId symbol }
           criteria { id text userPassed }
           userEligible
+          description
+          customMessage
+          customForumLink
+          customClaimMessage
         }
         ... on SupplyPointsIncentive {
           id
