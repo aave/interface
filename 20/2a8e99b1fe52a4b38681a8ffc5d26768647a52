@@ -1,0 +1,29 @@
+src/hooks/useReserveIncentives.ts
+  75b9299156f11fb4 7-10,119,194
+src/hooks/useSonicIncentives.tsx
+  75b9299156f11fb4 7-10,38,40,42
+src/hooks/useEthenaIncentives.ts
+  75b9299156f11fb4 7-10,18-20,44,46,48
+src/hooks/useEtherfiIncentives.ts
+  75b9299156f11fb4 6-10,47,49,51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "202a8e99b1fe52a4b38681a8ffc5d26768647a52",
+  "prompts": {
+    "75b9299156f11fb4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2352eaee-0546-4b87-88fd-3bf334c6e5eb",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 31,
+      "total_deletions": 83,
+      "accepted_lines": 31,
+      "overriden_lines": 0
+    }
+  }
+}
