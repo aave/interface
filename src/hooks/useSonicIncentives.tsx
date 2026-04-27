@@ -4,7 +4,10 @@
  * Same shape as `useEthenaIncentives`: legacy signature
  * `useSonicIncentives(rewardedAsset)` where `rewardedAsset` is the aToken
  * address. Resolves aToken → underlying internally via `useAppDataContext`
- * and reads `StaticSupplyIncentive` where `partnerName === "Sonic"`.
+ * and reads the `SupplyPointsIncentive` whose `program.name === "Sonic"`.
+ * Currently the V3 backend ships no Sonic POINTS program (the legacy
+ * `SONIC_DATA_MAP` was empty), so this hook returns `undefined` until BD
+ * adds one through the Slack admin path.
  */
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
@@ -32,10 +35,9 @@ export const useSonicIncentives = (rewardedAsset?: string): number | undefined =
   if (!data) return undefined;
 
   const sonic = data.find(
-    (i) => i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'Sonic'
+    (i) => i.__typename === 'SupplyPointsIncentive' && i.program.name === 'Sonic'
   );
-  if (!sonic || sonic.__typename !== 'StaticSupplyIncentive') return undefined;
+  if (!sonic || sonic.__typename !== 'SupplyPointsIncentive') return undefined;
 
-  const value = parseFloat(sonic.extraApr.formatted);
-  return Number.isFinite(value) ? value : undefined;
+  return Number.isFinite(sonic.multiplier) ? sonic.multiplier : undefined;
 };

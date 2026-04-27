@@ -4,10 +4,10 @@
  * Background: historically the interface pegged to Merkl, aavechan, and a
  * handful of hardcoded partner maps to render incentives on each reserve.
  * `aave-v3-backend` now centralizes those sources — Merit (legacy ACI),
- * governance-native Aave incentives, Aave-owned Merkl campaigns, points
- * programs, and static partner incentives (Ethena, EtherFi, Sonic) — behind
- * `Reserve.incentives`. This hook reads that union so downstream UI can
- * render any variant.
+ * governance-native Aave incentives, Aave-owned Merkl campaigns, and
+ * points / loyalty programs (Aave Points, Tydro Ink, Ethena Rewards,
+ * Ether.fi Loyalty) — behind `Reserve.incentives`. This hook reads
+ * that union so downstream UI can render any variant.
  *
  * The 7 legacy hooks (`useMerklIncentives`, `useMerklPointsIncentives`,
  * `useMeritIncentives`, `useUserMeritIncentives`, `useEthenaIncentives`,
@@ -116,7 +116,7 @@ export type AaveBorrowIncentive = {
   rewardTokenSymbol: string;
 };
 
-// ----- New variants (Aave-owned Merkl / points / static partners) ------------
+// ----- New variants (Aave-owned Merkl + points / partner loyalty programs) --
 
 export type MerklSupplyIncentive = {
   __typename: 'MerklSupplyIncentive';
@@ -182,34 +182,6 @@ export type BorrowPointsIncentive = {
   customForumLink?: string | null;
 };
 
-export type StaticSupplyIncentive = {
-  __typename: 'StaticSupplyIncentive';
-  id: RewardId;
-  partnerName: string;
-  partnerIconUrl: string | null;
-  description: string | null;
-  externalClaimUrl: string | null;
-  startDate: string;
-  endDate: string;
-  extraApr: PercentValue;
-  criteria: IncentiveCriteria[];
-  userEligible: boolean;
-};
-
-export type StaticBorrowIncentive = {
-  __typename: 'StaticBorrowIncentive';
-  id: RewardId;
-  partnerName: string;
-  partnerIconUrl: string | null;
-  description: string | null;
-  externalClaimUrl: string | null;
-  startDate: string;
-  endDate: string;
-  discountApr: PercentValue;
-  criteria: IncentiveCriteria[];
-  userEligible: boolean;
-};
-
 export type ReserveIncentive =
   | MeritSupplyIncentive
   | MeritBorrowIncentive
@@ -219,9 +191,7 @@ export type ReserveIncentive =
   | MerklSupplyIncentive
   | MerklBorrowIncentive
   | SupplyPointsIncentive
-  | BorrowPointsIncentive
-  | StaticSupplyIncentive
-  | StaticBorrowIncentive;
+  | BorrowPointsIncentive;
 
 const RESERVE_INCENTIVES_QUERY = `
   query ReserveIncentives($request: ReserveRequest!) {
@@ -325,30 +295,6 @@ const RESERVE_INCENTIVES_QUERY = `
           description
           customMessage
           customForumLink
-        }
-        ... on StaticSupplyIncentive {
-          id
-          partnerName
-          partnerIconUrl
-          description
-          externalClaimUrl
-          startDate
-          endDate
-          extraApr { formatted value }
-          criteria { id text userPassed }
-          userEligible
-        }
-        ... on StaticBorrowIncentive {
-          id
-          partnerName
-          partnerIconUrl
-          description
-          externalClaimUrl
-          startDate
-          endDate
-          discountApr { formatted value }
-          criteria { id text userPassed }
-          userEligible
         }
       }
     }

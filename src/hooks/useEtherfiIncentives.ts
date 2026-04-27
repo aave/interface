@@ -3,10 +3,11 @@
  *
  * Legacy signature: `useEtherfiIncentives(market, symbol, protocolAction)`.
  * Resolves `(market, symbol)` to the underlying asset via
- * `useAppDataContext`, then reads `StaticSupplyIncentive` where
- * `partnerName === "EtherFi"` from `useReserveIncentives`. EtherFi is a
- * supply-only campaign — borrow contexts get `undefined` so `IncentivesCard`
- * doesn't render the badge on borrow rows.
+ * `useAppDataContext`, then reads the `SupplyPointsIncentive` whose
+ * `program.name === "Ether.fi Loyalty"` from `useReserveIncentives`. EtherFi
+ * is a supply-only loyalty multiplier — borrow contexts get `undefined`
+ * so `IncentivesCard` doesn't render the badge on borrow rows. Ether.fi
+ * pays in loyalty points, not APR — see `EtherFiAirdropTooltipContent`.
  */
 import { ProtocolAction } from '@aave/contract-helpers';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -43,10 +44,9 @@ export const useEtherfiIncentives = (
   if (!isSupplyContext || !data) return undefined;
 
   const etherfi = data.find(
-    (i) => i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'EtherFi'
+    (i) => i.__typename === 'SupplyPointsIncentive' && i.program.name === 'Ether.fi Loyalty'
   );
-  if (!etherfi || etherfi.__typename !== 'StaticSupplyIncentive') return undefined;
+  if (!etherfi || etherfi.__typename !== 'SupplyPointsIncentive') return undefined;
 
-  const value = parseFloat(etherfi.extraApr.formatted);
-  return Number.isFinite(value) ? value : undefined;
+  return Number.isFinite(etherfi.multiplier) ? etherfi.multiplier : undefined;
 };

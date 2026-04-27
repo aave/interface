@@ -4,9 +4,10 @@
  * Legacy signature: `useEthenaIncentives(rewardedAsset)` where
  * `rewardedAsset` is the aToken address. The hook now resolves the aToken
  * to its underlying via `useAppDataContext` and reads the
- * `StaticSupplyIncentive` variant where `partnerName === "Ethena"` from
- * `useReserveIncentives`. Callsites stay unchanged; the hardcoded
- * `ETHENA_DATA_MAP` is gone.
+ * `SupplyPointsIncentive` variant whose `program.name === "Ethena Rewards"`
+ * from `useReserveIncentives`. Callsites stay unchanged; the hardcoded
+ * `ETHENA_DATA_MAP` is gone. Ethena pays in airdrop / sats multipliers,
+ * not in APR — see `EthenaAirdropTooltipContent` for the rendering.
  */
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
@@ -14,9 +15,9 @@ import { useRootStore } from 'src/store/root';
 import { useReserveIncentives } from './useReserveIncentives';
 
 /**
- * Returns the extra APR in percentage points (e.g. `5` for 5%) or
- * `undefined` if no Ethena partner incentive is active for the aToken's
- * underlying reserve.
+ * Returns the Ethena Rewards multiplier (e.g. `5` for 5x) or `undefined`
+ * if no Ethena partner incentive is active for the aToken's underlying
+ * reserve.
  */
 export const useEthenaIncentives = (rewardedAsset?: string): number | undefined => {
   const chainId = useRootStore((s) => s.currentChainId);
@@ -40,10 +41,9 @@ export const useEthenaIncentives = (rewardedAsset?: string): number | undefined 
   if (!data) return undefined;
 
   const ethena = data.find(
-    (i) => i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'Ethena'
+    (i) => i.__typename === 'SupplyPointsIncentive' && i.program.name === 'Ethena Rewards'
   );
-  if (!ethena || ethena.__typename !== 'StaticSupplyIncentive') return undefined;
+  if (!ethena || ethena.__typename !== 'SupplyPointsIncentive') return undefined;
 
-  const value = parseFloat(ethena.extraApr.formatted);
-  return Number.isFinite(value) ? value : undefined;
+  return Number.isFinite(ethena.multiplier) ? ethena.multiplier : undefined;
 };
