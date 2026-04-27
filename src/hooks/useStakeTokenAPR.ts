@@ -37,13 +37,11 @@ export const useStakeTokenAPR = () => {
   // the backend-side query schema ships the enrichment.
   const supplyMerits = query.data.filter(
     (i): i is Extract<typeof i, { __typename: 'MeritSupplyIncentive' }> =>
-      i.__typename === 'MeritSupplyIncentive',
+      i.__typename === 'MeritSupplyIncentive'
   );
   const merit =
     supplyMerits.find(
-      (i) =>
-        (i as unknown as { actionKey?: string | null }).actionKey ===
-        ETHEREUM_SGHO_ACTION,
+      (i) => (i as unknown as { actionKey?: string | null }).actionKey === ETHEREUM_SGHO_ACTION
     ) ?? supplyMerits[0];
 
   if (!merit) {

@@ -11,17 +11,13 @@ import { useRootStore } from 'src/store/root';
 
 import { useReserveIncentives } from './useReserveIncentives';
 
-export const useSonicIncentives = (
-  rewardedAsset?: string,
-): number | undefined => {
+export const useSonicIncentives = (rewardedAsset?: string): number | undefined => {
   const chainId = useRootStore((s) => s.currentChainId);
   const currentMarket = useRootStore((s) => s.currentMarket);
   const { supplyReserves } = useAppDataContext();
 
   const reserve = rewardedAsset
-    ? supplyReserves.find(
-        (r) => r.aToken.address.toLowerCase() === rewardedAsset.toLowerCase(),
-      )
+    ? supplyReserves.find((r) => r.aToken.address.toLowerCase() === rewardedAsset.toLowerCase())
     : undefined;
   const underlying = reserve?.underlyingToken.address;
   const market = reserve?.market.address ?? currentMarket;
@@ -36,8 +32,7 @@ export const useSonicIncentives = (
   if (!data) return undefined;
 
   const sonic = data.find(
-    (i) =>
-      i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'Sonic',
+    (i) => i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'Sonic'
   );
   if (!sonic || sonic.__typename !== 'StaticSupplyIncentive') return undefined;
 

@@ -52,10 +52,7 @@ const parseApr = (value?: { formatted: string } | null): number => {
  * backend's eligibility criteria for that reserve; missing keys mean "no
  * Merit contribution for this position".
  */
-export const usePoolsMerits = (
-  marketsData: MarketDataType[],
-  userAddress?: string | null,
-) => {
+export const usePoolsMerits = (marketsData: MarketDataType[], userAddress?: string | null) => {
   const userAddr = userAddress ? evmAddress(userAddress) : undefined;
 
   return useQueries({

@@ -71,15 +71,14 @@ export const useMerklIncentives = ({
   // Resolve rewardedAsset (aToken or vToken) → underlying via the reserves
   // snapshot. Supply side uses `aToken.address`; borrow side uses
   // `vToken.address`.
-  const reserves =
-    protocolAction === ProtocolAction.borrow ? borrowReserves : supplyReserves;
+  const reserves = protocolAction === ProtocolAction.borrow ? borrowReserves : supplyReserves;
   const reserve = rewardedAsset
     ? reserves.find(
         (r) =>
           (protocolAction === ProtocolAction.borrow
             ? r.vToken?.address
             : r.aToken?.address
-          )?.toLowerCase() === rewardedAsset.toLowerCase(),
+          )?.toLowerCase() === rewardedAsset.toLowerCase()
       )
     : undefined;
   const underlying = reserve?.underlyingToken.address;
@@ -92,9 +91,7 @@ export const useMerklIncentives = ({
   });
 
   const isBorrow = protocolAction === ProtocolAction.borrow;
-  const targetTypename = isBorrow
-    ? 'MerklBorrowIncentive'
-    : 'MerklSupplyIncentive';
+  const targetTypename = isBorrow ? 'MerklBorrowIncentive' : 'MerklSupplyIncentive';
 
   const incentive = query.data?.find((i) => i.__typename === targetTypename);
 
@@ -143,7 +140,7 @@ export const useMerklIncentives = ({
   const extended: ExtendedReserveIncentiveResponse = {
     incentiveAPR: merklIncentivesAPY.toString(),
     rewardTokenAddress: payoutToken?.address ?? '',
-    rewardTokenSymbol: '',
+    rewardTokenSymbol: payoutToken?.symbol ?? '',
     description,
     customMessage,
     customForumLink,

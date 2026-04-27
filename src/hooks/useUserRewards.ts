@@ -15,8 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { RewardId } from './useReserveIncentives';
 
 const DEFAULT_ENDPOINT = 'https://api.v3.staging.aave.com/graphql';
-const GRAPHQL_ENDPOINT =
-  process.env.NEXT_PUBLIC_AAVE_V3_API_URL ?? DEFAULT_ENDPOINT;
+const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_AAVE_V3_API_URL ?? DEFAULT_ENDPOINT;
 
 type TokenAmount = {
   amount: { formatted: string; value: string };
@@ -87,12 +86,7 @@ export type UseUserRewardsArgs = {
   enabled?: boolean;
 };
 
-export const useUserRewards = ({
-  user,
-  chainId,
-  filter,
-  enabled = true,
-}: UseUserRewardsArgs) => {
+export const useUserRewards = ({ user, chainId, filter, enabled = true }: UseUserRewardsArgs) => {
   return useQuery<UserRewards | null>({
     queryKey: ['userRewards', chainId, user, filter ?? null],
     staleTime: 1000 * 30,
@@ -115,9 +109,7 @@ export const useUserRewards = ({
 
       if (body.errors?.length) {
         throw new Error(
-          `userRewards query returned errors: ${body.errors
-            .map((e) => e.message)
-            .join(', ')}`,
+          `userRewards query returned errors: ${body.errors.map((e) => e.message).join(', ')}`
         );
       }
 

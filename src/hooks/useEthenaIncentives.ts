@@ -18,18 +18,14 @@ import { useReserveIncentives } from './useReserveIncentives';
  * `undefined` if no Ethena partner incentive is active for the aToken's
  * underlying reserve.
  */
-export const useEthenaIncentives = (
-  rewardedAsset?: string,
-): number | undefined => {
+export const useEthenaIncentives = (rewardedAsset?: string): number | undefined => {
   const chainId = useRootStore((s) => s.currentChainId);
   const currentMarket = useRootStore((s) => s.currentMarket);
   const { supplyReserves } = useAppDataContext();
 
   // Resolve aToken → underlying via the reserves snapshot.
   const reserve = rewardedAsset
-    ? supplyReserves.find(
-        (r) => r.aToken.address.toLowerCase() === rewardedAsset.toLowerCase(),
-      )
+    ? supplyReserves.find((r) => r.aToken.address.toLowerCase() === rewardedAsset.toLowerCase())
     : undefined;
   const underlying = reserve?.underlyingToken.address;
   const market = reserve?.market.address ?? currentMarket;
@@ -44,8 +40,7 @@ export const useEthenaIncentives = (
   if (!data) return undefined;
 
   const ethena = data.find(
-    (i) =>
-      i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'Ethena',
+    (i) => i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'Ethena'
   );
   if (!ethena || ethena.__typename !== 'StaticSupplyIncentive') return undefined;
 

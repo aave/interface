@@ -13,10 +13,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useRootStore } from 'src/store/root';
 import { convertAprToApy } from 'src/utils/utils';
 
-import {
-  ExtendedReserveIncentiveResponse,
-  MerklIncentivesBreakdown,
-} from './useMerklIncentives';
+import { ExtendedReserveIncentiveResponse, MerklIncentivesBreakdown } from './useMerklIncentives';
 import { useReserveIncentives } from './useReserveIncentives';
 
 type UseMerklPointsIncentivesArgs = {
@@ -39,15 +36,14 @@ export const useMerklPointsIncentives = ({
   const chainId = useRootStore((s) => s.currentChainId);
   const { supplyReserves, borrowReserves } = useAppDataContext();
 
-  const reserves =
-    protocolAction === ProtocolAction.borrow ? borrowReserves : supplyReserves;
+  const reserves = protocolAction === ProtocolAction.borrow ? borrowReserves : supplyReserves;
   const reserve = rewardedAsset
     ? reserves.find(
         (r) =>
           (protocolAction === ProtocolAction.borrow
             ? r.vToken?.address
             : r.aToken?.address
-          )?.toLowerCase() === rewardedAsset.toLowerCase(),
+          )?.toLowerCase() === rewardedAsset.toLowerCase()
       )
     : undefined;
   const underlying = reserve?.underlyingToken.address;
@@ -56,14 +52,11 @@ export const useMerklPointsIncentives = ({
     market,
     underlying: underlying ?? '',
     chainId,
-    enabled:
-      enabled && Boolean(market && underlying && chainId && protocolAction),
+    enabled: enabled && Boolean(market && underlying && chainId && protocolAction),
   });
 
   const isBorrow = protocolAction === ProtocolAction.borrow;
-  const targetTypename = isBorrow
-    ? 'BorrowPointsIncentive'
-    : 'SupplyPointsIncentive';
+  const targetTypename = isBorrow ? 'BorrowPointsIncentive' : 'SupplyPointsIncentive';
 
   const incentive = query.data?.find((i) => i.__typename === targetTypename);
 

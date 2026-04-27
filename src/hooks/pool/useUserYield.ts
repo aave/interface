@@ -4,14 +4,10 @@ import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
 import {
-  emptyMeritMap,
-  MeritAprByUnderlying,
-  usePoolsMerits,
-} from './usePoolsMerits';
-import {
   FormattedReservesAndIncentives,
   usePoolsFormattedReserves,
 } from './usePoolFormattedReserves';
+import { emptyMeritMap, MeritAprByUnderlying, usePoolsMerits } from './usePoolsMerits';
 import { useUserSummariesAndIncentives } from './useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
 
@@ -25,7 +21,7 @@ const formatUserYield = memoize(
   (
     formattedPoolReserves: FormattedReservesAndIncentives[],
     user: FormatUserSummaryAndIncentivesResponse,
-    meritByUnderlying: MeritAprByUnderlying,
+    meritByUnderlying: MeritAprByUnderlying
   ) => {
     const proportions = user.userReservesData.reduce(
       (acc, value) => {
@@ -51,9 +47,7 @@ const formatUserYield = memoize(
             // rules for the program).
             if (meritEntry && meritEntry.supplyApr > 0) {
               acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(meritEntry.supplyApr / 100).multipliedBy(
-                  value.underlyingBalanceUSD
-                )
+                new BigNumber(meritEntry.supplyApr / 100).multipliedBy(value.underlyingBalanceUSD)
               );
             }
           }
@@ -72,9 +66,7 @@ const formatUserYield = memoize(
             // added to the positive proportion to offset borrow interest).
             if (meritEntry && meritEntry.borrowApr > 0) {
               acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(meritEntry.borrowApr / 100).multipliedBy(
-                  value.variableBorrowsUSD
-                )
+                new BigNumber(meritEntry.borrowApr / 100).multipliedBy(value.variableBorrowsUSD)
               );
             }
           }

@@ -17,7 +17,7 @@ import { useReserveIncentives } from './useReserveIncentives';
 export const useEtherfiIncentives = (
   market?: string,
   symbol?: string,
-  protocolAction?: ProtocolAction,
+  protocolAction?: ProtocolAction
 ): number | undefined => {
   const chainId = useRootStore((s) => s.currentChainId);
   const { supplyReserves } = useAppDataContext();
@@ -29,9 +29,7 @@ export const useEtherfiIncentives = (
 
   // Resolve (market, symbol) → underlying via the reserves snapshot.
   const reserve = symbol
-    ? supplyReserves.find(
-        (r) => r.underlyingToken.symbol.toLowerCase() === symbol.toLowerCase(),
-      )
+    ? supplyReserves.find((r) => r.underlyingToken.symbol.toLowerCase() === symbol.toLowerCase())
     : undefined;
   const underlying = reserve?.underlyingToken.address;
 
@@ -45,8 +43,7 @@ export const useEtherfiIncentives = (
   if (!isSupplyContext || !data) return undefined;
 
   const etherfi = data.find(
-    (i) =>
-      i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'EtherFi',
+    (i) => i.__typename === 'StaticSupplyIncentive' && i.partnerName === 'EtherFi'
   );
   if (!etherfi || etherfi.__typename !== 'StaticSupplyIncentive') return undefined;
 

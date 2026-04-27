@@ -57,10 +57,7 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse & {
   customMessage?: string;
   customForumLink?: string;
   activeActions: MeritAction[];
-  actionMessages: Record<
-    string,
-    { customMessage?: string; customForumLink?: string }
-  >;
+  actionMessages: Record<string, { customMessage?: string; customForumLink?: string }>;
   variants: { selfAPY: number | null };
   breakdown: MeritIncentivesBreakdown;
 };
@@ -85,9 +82,7 @@ export const useMeritIncentives = ({
 
   // Resolve symbol → underlying via the reserves snapshot.
   const reserve = symbol
-    ? supplyReserves.find(
-        (r) => r.underlyingToken.symbol.toLowerCase() === symbol.toLowerCase(),
-      )
+    ? supplyReserves.find((r) => r.underlyingToken.symbol.toLowerCase() === symbol.toLowerCase())
     : undefined;
   const underlying = reserve?.underlyingToken.address;
 
@@ -125,10 +120,7 @@ export const useMeritIncentives = ({
   let hasSelf = false;
 
   const activeActions: string[] = [];
-  const actionMessages: Record<
-    string,
-    { customMessage?: string; customForumLink?: string }
-  > = {};
+  const actionMessages: Record<string, { customMessage?: string; customForumLink?: string }> = {};
   let firstRewardTokenAddress = '';
   let firstRewardTokenSymbol = '';
   let firstAction: string | undefined;
@@ -200,14 +192,8 @@ export const useMeritIncentives = ({
   }, 0);
 
   const totalAPY = isBorrow
-    ? protocolAPY -
-      protocolIncentivesAPR -
-      meritIncentivesAPY -
-      (selfIncentivesAPY ?? 0)
-    : protocolAPY +
-      protocolIncentivesAPR +
-      meritIncentivesAPY +
-      (selfIncentivesAPY ?? 0);
+    ? protocolAPY - protocolIncentivesAPR - meritIncentivesAPY - (selfIncentivesAPY ?? 0)
+    : protocolAPY + protocolIncentivesAPR + meritIncentivesAPY + (selfIncentivesAPY ?? 0);
 
   const extended: ExtendedReserveIncentiveResponse = {
     incentiveAPR: meritIncentivesAPY.toString(),
@@ -216,12 +202,8 @@ export const useMeritIncentives = ({
     activeActions,
     actionMessages,
     action: firstAction,
-    customMessage: firstAction
-      ? actionMessages[firstAction]?.customMessage
-      : undefined,
-    customForumLink: firstAction
-      ? actionMessages[firstAction]?.customForumLink
-      : undefined,
+    customMessage: firstAction ? actionMessages[firstAction]?.customMessage : undefined,
+    customForumLink: firstAction ? actionMessages[firstAction]?.customForumLink : undefined,
     variants: { selfAPY: selfIncentivesAPY },
     breakdown: {
       protocolAPY,
@@ -239,4 +221,3 @@ export const useMeritIncentives = ({
 
   return { ...query, data: extended };
 };
-

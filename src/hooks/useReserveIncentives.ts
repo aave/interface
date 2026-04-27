@@ -31,8 +31,7 @@ const resolveMarketAddress = (market: string): string => {
 };
 
 const DEFAULT_ENDPOINT = 'https://api.v3.staging.aave.com/graphql';
-const GRAPHQL_ENDPOINT =
-  process.env.NEXT_PUBLIC_AAVE_V3_API_URL ?? DEFAULT_ENDPOINT;
+const GRAPHQL_ENDPOINT = process.env.NEXT_PUBLIC_AAVE_V3_API_URL ?? DEFAULT_ENDPOINT;
 
 /** Identifier for a reward program row in `aave-v3-backend`. UUID string. */
 export type RewardId = string;
@@ -60,6 +59,7 @@ type PercentValue = {
 type Currency = {
   address: string;
   chainId: number;
+  symbol?: string;
 };
 
 // ----- Legacy variants (on-chain Merit + governance-native) ------------------
@@ -221,7 +221,7 @@ const RESERVE_INCENTIVES_QUERY = `
           startDate
           endDate
           extraApy { formatted value }
-          payoutToken { address chainId }
+          payoutToken { address chainId symbol }
           criteria { id text userPassed }
           userEligible
         }
@@ -230,7 +230,7 @@ const RESERVE_INCENTIVES_QUERY = `
           startDate
           endDate
           discountApy { formatted value }
-          payoutToken { address chainId }
+          payoutToken { address chainId symbol }
           criteria { id text userPassed }
           userEligible
         }
@@ -319,8 +319,7 @@ export const useReserveIncentives = ({
     queryKey: ['reserveIncentives', chainId, marketAddress, underlying, user ?? null],
     staleTime: 1000 * 60 * 5,
     enabled:
-      enabled &&
-      Boolean(marketAddress && marketAddress.startsWith('0x') && underlying && chainId),
+      enabled && Boolean(marketAddress && marketAddress.startsWith('0x') && underlying && chainId),
     queryFn: async () => {
       const response = await fetch(GRAPHQL_ENDPOINT, {
         method: 'POST',
@@ -343,7 +342,7 @@ export const useReserveIncentives = ({
         throw new Error(
           `Reserve incentives query returned errors: ${body.errors
             .map((e) => e.message)
-            .join(', ')}`,
+            .join(', ')}`
         );
       }
 

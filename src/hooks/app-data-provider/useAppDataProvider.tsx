@@ -86,9 +86,7 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   // non-POJO values (e.g. bigint-ish strings wrapped by the SDK). Guard
   // before calling Array.prototype methods.
   const marketsList = Array.isArray(data) ? data : [];
-  const sdkMarket = marketsList.find(
-    (item) => item.address.toLowerCase() === marketAddress,
-  );
+  const sdkMarket = marketsList.find((item) => item.address.toLowerCase() === marketAddress);
 
   const totalBorrows = sdkMarket?.borrowReserves.reduce((acc, reserve) => {
     const value = reserve.borrowInfo?.total?.usd ?? 0;
