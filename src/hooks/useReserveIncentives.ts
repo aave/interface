@@ -158,6 +158,11 @@ export type SupplyPointsIncentive = {
   multiplier: number;
   criteria: IncentiveCriteria[] | null;
   userEligible: boolean;
+  dailyPoints?: number | null;
+  pointsPerThousandUsd?: number | null;
+  description?: string | null;
+  customMessage?: string | null;
+  customForumLink?: string | null;
 };
 
 export type BorrowPointsIncentive = {
@@ -170,6 +175,11 @@ export type BorrowPointsIncentive = {
   multiplier: number;
   criteria: IncentiveCriteria[] | null;
   userEligible: boolean;
+  dailyPoints?: number | null;
+  pointsPerThousandUsd?: number | null;
+  description?: string | null;
+  customMessage?: string | null;
+  customForumLink?: string | null;
 };
 
 export type StaticSupplyIncentive = {
@@ -295,6 +305,11 @@ const RESERVE_INCENTIVES_QUERY = `
           multiplier
           criteria { id text userPassed }
           userEligible
+          dailyPoints
+          pointsPerThousandUsd
+          description
+          customMessage
+          customForumLink
         }
         ... on BorrowPointsIncentive {
           id
@@ -305,6 +320,11 @@ const RESERVE_INCENTIVES_QUERY = `
           multiplier
           criteria { id text userPassed }
           userEligible
+          dailyPoints
+          pointsPerThousandUsd
+          description
+          customMessage
+          customForumLink
         }
         ... on StaticSupplyIncentive {
           id

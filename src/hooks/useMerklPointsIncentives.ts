@@ -84,11 +84,15 @@ export const useMerklPointsIncentives = ({
   const enriched = incentive as unknown as {
     dailyPoints?: number | null;
     pointsPerThousandUsd?: number | null;
+    program?: { name?: string | null } | null;
     customMessage?: string | null;
     customForumLink?: string | null;
   };
   const dailyPoints = enriched.dailyPoints ?? 0;
   const pointsPerThousandUsd = enriched.pointsPerThousandUsd ?? 0;
+  const programName = enriched.program?.name;
+  const customMessage = enriched.customMessage;
+  const customForumLink = enriched.customForumLink;
 
   const breakdown: MerklIncentivesBreakdown = {
     protocolAPY,
@@ -109,9 +113,9 @@ export const useMerklPointsIncentives = ({
   } = {
     incentiveAPR: '0',
     rewardTokenAddress: '',
-    rewardTokenSymbol: incentive.program?.name ?? 'points',
-    customMessage: enriched.customMessage ?? undefined,
-    customForumLink: enriched.customForumLink ?? undefined,
+    rewardTokenSymbol: programName ?? 'points',
+    customMessage: customMessage ?? undefined,
+    customForumLink: customForumLink ?? undefined,
     breakdown,
     points: { dailyPoints, pointsPerThousandUsd },
   };
