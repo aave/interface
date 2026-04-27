@@ -238,6 +238,11 @@ const IncentivesSymbolMap: {
     symbol: 'aGHO',
     aToken: true,
   },
+  aInkWlUSDe: {
+    tokenIconSymbol: 'USDe',
+    symbol: 'aUSDe',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
