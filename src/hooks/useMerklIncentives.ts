@@ -101,9 +101,9 @@ export const useMerklIncentives = ({
 
   const aprPct =
     incentive.__typename === 'MerklSupplyIncentive'
-      ? parseFloat(incentive.extraApy.formatted)
+      ? parseFloat(incentive.extraSupplyApr.formatted)
       : incentive.__typename === 'MerklBorrowIncentive'
-      ? parseFloat(incentive.discountApy.formatted)
+      ? parseFloat(incentive.borrowAprDiscount.formatted)
       : 0;
 
   const merklIncentivesAPR = Number.isFinite(aprPct) ? aprPct / 100 : 0;

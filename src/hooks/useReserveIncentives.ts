@@ -123,7 +123,7 @@ export type MerklSupplyIncentive = {
   id: RewardId;
   startDate: string;
   endDate: string;
-  extraApy: PercentValue;
+  extraSupplyApr: PercentValue;
   payoutToken: Currency;
   criteria: IncentiveCriteria[];
   userEligible: boolean;
@@ -138,7 +138,7 @@ export type MerklBorrowIncentive = {
   id: RewardId;
   startDate: string;
   endDate: string;
-  discountApy: PercentValue;
+  borrowAprDiscount: PercentValue;
   payoutToken: Currency;
   criteria: IncentiveCriteria[];
   userEligible: boolean;
@@ -244,7 +244,7 @@ const RESERVE_INCENTIVES_QUERY = `
           id
           startDate
           endDate
-          extraApy { formatted value }
+          extraSupplyApr { formatted value }
           payoutToken { address chainId symbol }
           criteria { id text userPassed }
           userEligible
@@ -257,7 +257,7 @@ const RESERVE_INCENTIVES_QUERY = `
           id
           startDate
           endDate
-          discountApy { formatted value }
+          borrowAprDiscount { formatted value }
           payoutToken { address chainId symbol }
           criteria { id text userPassed }
           userEligible
