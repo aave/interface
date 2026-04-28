@@ -1,35 +1,49 @@
-import {
-  AaveV3Ethereum,
-  AaveV3EthereumLido,
-  AaveV3Mantle,
-  AaveV3Plasma,
-} from '@aave-dao/aave-address-book';
+/**
+ * Ethena partner incentive adapter over the V3 backend.
+ *
+ * Legacy signature: `useEthenaIncentives(rewardedAsset)` where
+ * `rewardedAsset` is the aToken address. The hook now resolves the aToken
+ * to its underlying via `useAppDataContext` and reads the
+ * `SupplyPointsIncentive` variant whose `program.name === "Ethena Rewards"`
+ * from `useReserveIncentives`. Callsites stay unchanged; the hardcoded
+ * `ETHENA_DATA_MAP` is gone. Ethena pays in airdrop / sats multipliers,
+ * not in APR — see `EthenaAirdropTooltipContent` for the rendering.
+ */
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useRootStore } from 'src/store/root';
 
-const getEthenaData = (assetAddress: string): number | undefined =>
-  ETHENA_DATA_MAP.get(assetAddress);
+import { useReserveIncentives } from './useReserveIncentives';
 
-const ETHENA_DATA_MAP: Map<string, number> = new Map([
-  [AaveV3Ethereum.ASSETS.USDe.A_TOKEN, 5],
-  [AaveV3Ethereum.ASSETS.sUSDe.A_TOKEN, 5],
-  [AaveV3Plasma.ASSETS.sUSDe.A_TOKEN, 5],
-  [AaveV3Plasma.ASSETS.USDe.A_TOKEN, 5],
-  [AaveV3EthereumLido.ASSETS.sUSDe.A_TOKEN, 5],
-  [AaveV3Mantle.ASSETS.sUSDe.A_TOKEN, 5],
-  [AaveV3Mantle.ASSETS.USDe.A_TOKEN, 5],
-  ['0x24C1FaC3447C45137E5f1c2C54Fe9ed3F1EdeA61', 5], // sUSDe INK
+/**
+ * Returns the Ethena Rewards multiplier (e.g. `5` for 5x) or `undefined`
+ * if no Ethena partner incentive is active for the aToken's underlying
+ * reserve.
+ */
+export const useEthenaIncentives = (rewardedAsset?: string): number | undefined => {
+  const chainId = useRootStore((s) => s.currentChainId);
+  const currentMarket = useRootStore((s) => s.currentMarket);
+  const { supplyReserves } = useAppDataContext();
 
-  [AaveV3Ethereum.ASSETS.PT_eUSDE_29MAY2025.A_TOKEN, 2],
-  [AaveV3Ethereum.ASSETS.PT_eUSDE_14AUG2025.A_TOKEN, 2],
-  [AaveV3Ethereum.ASSETS.PT_USDe_31JUL2025.A_TOKEN, 2],
-  [AaveV3Ethereum.ASSETS.PT_sUSDE_31JUL2025.A_TOKEN, 1],
-  [AaveV3Ethereum.ASSETS.PT_sUSDE_31JUL2025.A_TOKEN, 1],
-  [AaveV3Ethereum.ASSETS.PT_sUSDE_25SEP2025.A_TOKEN, 1],
-]);
+  // Resolve aToken → underlying via the reserves snapshot.
+  const reserve = rewardedAsset
+    ? supplyReserves.find((r) => r.aToken.address.toLowerCase() === rewardedAsset.toLowerCase())
+    : undefined;
+  const underlying = reserve?.underlyingToken.address;
+  const market = reserve?.market.address ?? currentMarket;
 
-export const useEthenaIncentives = (rewardedAsset?: string) => {
-  if (!rewardedAsset) {
-    return undefined;
-  }
+  const { data } = useReserveIncentives({
+    market: market ?? '',
+    underlying: underlying ?? '',
+    chainId,
+    enabled: Boolean(market && underlying && chainId),
+  });
 
-  return getEthenaData(rewardedAsset);
+  if (!data) return undefined;
+
+  const ethena = data.find(
+    (i) => i.__typename === 'SupplyPointsIncentive' && i.program.name === 'Ethena Rewards'
+  );
+  if (!ethena || ethena.__typename !== 'SupplyPointsIncentive') return undefined;
+
+  return Number.isFinite(ethena.multiplier) ? ethena.multiplier : undefined;
 };

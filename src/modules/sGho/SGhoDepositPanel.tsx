@@ -1,4 +1,4 @@
-import { ChainId, Stake } from '@aave/contract-helpers';
+import { ChainId, ProtocolAction, Stake } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { TimeWindow } from '@aave/react';
 import { RefreshIcon } from '@heroicons/react/outline';
@@ -243,7 +243,11 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                       <Trans>Current APY</Trans>
                     </Typography>
 
-                    <MeritIncentivesButton symbol={'GHO'} market={CustomMarket.proto_mainnet_v3} />
+                    <MeritIncentivesButton
+                      symbol={'GHO'}
+                      market={CustomMarket.proto_mainnet_v3}
+                      protocolAction={ProtocolAction.stake}
+                    />
                   </Box>
 
                   {!xsm && +availableToStake > 0 && (

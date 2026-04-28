@@ -1,23 +1,15 @@
-import { ProtocolAction } from '@aave/contract-helpers';
 import { FormatUserSummaryAndIncentivesResponse } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
 import memoize from 'micro-memoize';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 
-import { getMeritData } from '../useMeritIncentives';
-import { useUserMeritIncentives } from '../useUserMeritIncentives';
 import {
   FormattedReservesAndIncentives,
   usePoolsFormattedReserves,
 } from './usePoolFormattedReserves';
+import { emptyMeritMap, MeritAprByUnderlying, usePoolsMerits } from './usePoolsMerits';
 import { useUserSummariesAndIncentives } from './useUserSummaryAndIncentives';
 import { combineQueries, SimplifiedUseQueryResult } from './utils';
-
-type UserMeritIncentivesData = {
-  currentAPR: {
-    actionsAPY: Record<string, number>;
-  };
-} | null;
 
 export interface UserYield {
   earnedAPY: number;
@@ -29,8 +21,7 @@ const formatUserYield = memoize(
   (
     formattedPoolReserves: FormattedReservesAndIncentives[],
     user: FormatUserSummaryAndIncentivesResponse,
-    userMeritIncentives?: UserMeritIncentivesData,
-    marketTitle?: string
+    meritByUnderlying: MeritAprByUnderlying
   ) => {
     const proportions = user.userReservesData.reduce(
       (acc, value) => {
@@ -39,6 +30,7 @@ const formatUserYield = memoize(
         );
 
         if (reserve) {
+          const meritEntry = meritByUnderlying[reserve.underlyingAsset.toLowerCase()];
           if (value.underlyingBalanceUSD !== '0') {
             acc.positiveProportion = acc.positiveProportion.plus(
               new BigNumber(reserve.supplyAPY).multipliedBy(value.underlyingBalanceUSD)
@@ -50,22 +42,13 @@ const formatUserYield = memoize(
                 );
               });
             }
-
-            // Add merit incentives for supply positions
-            if (userMeritIncentives?.currentAPR?.actionsAPY) {
-              const meritData = getMeritData(marketTitle || '', reserve.symbol);
-              if (meritData) {
-                meritData.forEach((merit) => {
-                  if (merit.protocolAction === ProtocolAction.supply) {
-                    const meritAPY = userMeritIncentives.currentAPR.actionsAPY[merit.action];
-                    if (meritAPY) {
-                      acc.positiveProportion = acc.positiveProportion.plus(
-                        new BigNumber(meritAPY / 100).multipliedBy(value.underlyingBalanceUSD)
-                      );
-                    }
-                  }
-                });
-              }
+            // Merit supply-side APR — backend already filtered by user
+            // eligibility (only credits when the user passes the criteria
+            // rules for the program).
+            if (meritEntry && meritEntry.supplyApr > 0) {
+              acc.positiveProportion = acc.positiveProportion.plus(
+                new BigNumber(meritEntry.supplyApr / 100).multipliedBy(value.underlyingBalanceUSD)
+              );
             }
           }
           if (value.variableBorrowsUSD !== '0') {
@@ -79,23 +62,12 @@ const formatUserYield = memoize(
                 );
               });
             }
-
-            // Add merit incentives for borrow positions (reduces borrowing cost)
-            if (userMeritIncentives?.currentAPR?.actionsAPY) {
-              const meritData = getMeritData(marketTitle || '', reserve.symbol);
-              if (meritData) {
-                meritData.forEach((merit) => {
-                  if (merit.protocolAction === ProtocolAction.borrow) {
-                    const meritAPY = userMeritIncentives.currentAPR.actionsAPY[merit.action];
-                    if (meritAPY) {
-                      // For borrow positions, merit incentives reduce the effective borrow cost
-                      acc.positiveProportion = acc.positiveProportion.plus(
-                        new BigNumber(meritAPY / 100).multipliedBy(value.variableBorrowsUSD)
-                      );
-                    }
-                  }
-                });
-              }
+            // Merit borrow-side APR (negative on the debt cost, hence
+            // added to the positive proportion to offset borrow interest).
+            if (meritEntry && meritEntry.borrowApr > 0) {
+              acc.positiveProportion = acc.positiveProportion.plus(
+                new BigNumber(meritEntry.borrowApr / 100).multipliedBy(value.variableBorrowsUSD)
+              );
             }
           }
         } else {
@@ -132,21 +104,15 @@ export const useUserYields = (
 ): SimplifiedUseQueryResult<UserYield>[] => {
   const poolsFormattedReservesQuery = usePoolsFormattedReserves(marketsData);
   const userSummaryQuery = useUserSummariesAndIncentives(marketsData);
-  const userMeritIncentivesQuery = useUserMeritIncentives(userAddress);
+  const poolsMeritsQueries = usePoolsMerits(marketsData, userAddress);
 
   return poolsFormattedReservesQuery.map((elem, index) => {
+    const meritMap = poolsMeritsQueries[index]?.data ?? emptyMeritMap();
     const selector = (
       formattedPoolReserves: FormattedReservesAndIncentives[],
       user: FormatUserSummaryAndIncentivesResponse
     ) => {
-      // Get merit incentives data separately
-      const meritIncentives = userMeritIncentivesQuery.data;
-      return formatUserYield(
-        formattedPoolReserves,
-        user,
-        meritIncentives,
-        marketsData[index].market
-      );
+      return formatUserYield(formattedPoolReserves, user, meritMap);
     };
 
     return combineQueries([elem, userSummaryQuery[index]] as const, selector);

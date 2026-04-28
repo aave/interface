@@ -1,4 +1,4 @@
-import { Stake } from '@aave/contract-helpers';
+import { ProtocolAction, Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
@@ -30,8 +30,8 @@ export const SavingsGho = () => {
   const { data: meritIncentives } = useMeritIncentives({
     symbol: 'GHO',
     market: currentMarketData.market,
+    protocolAction: ProtocolAction.stake,
   });
-
   const apr = meritIncentives?.incentiveAPR || '0';
   const aprFormatted = (+apr * 100).toFixed(2);
 
@@ -111,7 +111,11 @@ export const SavingsGho = () => {
             </Box>
           }
         >
-          <MeritIncentivesButton symbol="GHO" market={currentMarketData.market} />
+          <MeritIncentivesButton
+            symbol="GHO"
+            market={currentMarketData.market}
+            protocolAction={ProtocolAction.stake}
+          />
         </PanelItem>
       </Stack>
 

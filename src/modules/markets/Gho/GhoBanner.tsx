@@ -1,4 +1,4 @@
-import { Stake } from '@aave/contract-helpers';
+import { ProtocolAction, Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -22,6 +22,7 @@ export const SavingsGhoBanner = () => {
   const { data: meritIncentives, isLoading: meritIncentivesLoading } = useMeritIncentives({
     symbol: GHO_SYMBOL,
     market: currentMarketData.market,
+    protocolAction: ProtocolAction.stake,
   });
   const { data: stakeGeneralResult, isLoading: stakeDataLoading } = useGeneralStakeUiData(
     currentMarketData,
@@ -178,6 +179,7 @@ const GhoSavingsBannerMobile = () => {
   const { data: meritIncentives, isLoading: meritIncentivesLoading } = useMeritIncentives({
     symbol: GHO_SYMBOL,
     market: currentMarketData.market,
+    protocolAction: ProtocolAction.stake,
   });
   const { data: stakeGeneralResult, isLoading: stakeDataLoading } = useGeneralStakeUiData(
     currentMarketData,
