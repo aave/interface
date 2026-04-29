@@ -1,0 +1,27 @@
+src/components/transactions/Swap/errors/shared/InsufficientLiquidityBlockingGuard.tsx
+  5e631de1637bf1bf 17-22,24-27,29-33,35-47,49-50,99-102,104-108,112-113
+src/components/transactions/Swap/errors/SwapErrors.tsx
+  5e631de1637bf1bf 119
+src/components/transactions/Swap/errors/shared/ZeroLTVBlockingGuard.tsx
+  5e631de1637bf1bf 8-13,15-26,77
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "d36a6d8dc68a2428406874b2538b6e1198b53d8c",
+  "prompts": {
+    "5e631de1637bf1bf": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ea9f76df-448f-44ed-a40e-11ea4a9e384f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 499,
+      "total_deletions": 121,
+      "accepted_lines": 80,
+      "overriden_lines": 0
+    }
+  }
+}
