@@ -21,9 +21,14 @@ import { InsufficientLiquidityBlockingError } from './InsufficientLiquidityBlock
 // source/destination + isInvertedSwap question and mirrors what actually pulls
 // from the lender on-chain.
 export const hasInsufficientLiquidity = (state: SwapState) => {
-  // isProtocolSwapState narrows out SwapType.Swap (direct DEX, no flash loan).
+  // isProtocolSwapState narrows out SwapType.Swap (direct DEX, no Aave call).
   if (!isProtocolSwapState(state)) return false;
-  if (!state.useFlashloan) return false;
+  // Don't gate on `state.useFlashloan`: several protocol paths flash-loan
+  // unconditionally regardless of the flag (CoW DebtSwap / RepayWithCollateral
+  // via forceFlashloanFlow, ParaSwap DebtSwap via DebtSwitchAdapter, ParaSwap
+  // CollateralSwap with `useFlashLoan: true` hardcoded). And even non-
+  // flashloan paths still withdraw/borrow from the pool, which decrements
+  // virtualUnderlyingBalance — the same liquidity ceiling we're guarding.
   if (!state.sellAmountToken || !state.sellAmountFormatted) return false;
 
   const flashLoanedAddress = state.sellAmountToken.underlyingAddress?.toLowerCase();
@@ -97,7 +102,6 @@ export const InsufficientLiquidityBlockingGuard = ({
     }
   }, [
     state.swapType,
-    state.useFlashloan,
     state.sellAmountFormatted,
     state.sellAmountToken?.underlyingAddress,
     state.sourceReserve?.reserve?.formattedAvailableLiquidity,
