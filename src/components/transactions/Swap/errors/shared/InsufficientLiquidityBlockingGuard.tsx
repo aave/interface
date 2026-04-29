@@ -14,26 +14,40 @@ import {
 import { isProtocolSwapState } from '../../types/state.types';
 import { InsufficientLiquidityBlockingError } from './InsufficientLiquidityBlockingError';
 
+// The cow-swap-adapter flash-loans `_sellToken` for every position swap
+// (CollateralSwap / DebtSwap / RepayWithCollateral, see
+// cow-swap-adapters/src/adapters/v3/*Adapter.sol). The interface exposes that
+// asset as `state.sellAmountToken`, so checking against it sidesteps the
+// source/destination + isInvertedSwap question and mirrors what actually pulls
+// from the lender on-chain.
 export const hasInsufficientLiquidity = (state: SwapState) => {
-  // Only relevant for Debt Swaps where target asset availability and borrow cap matter.
-  // Collateral-related flows are handled via SupplyCapBlockingGuard and should not use borrow caps here.
-  if (!isProtocolSwapState(state) || state.swapType !== SwapType.DebtSwap) return false;
-  const reserve = state.isInvertedSwap
-    ? state.sourceReserve?.reserve
-    : state.destinationReserve?.reserve;
-  const buyAmount = state.buyAmountFormatted;
-  if (!reserve || !buyAmount) return false;
+  // isProtocolSwapState narrows out SwapType.Swap (direct DEX, no flash loan).
+  if (!isProtocolSwapState(state)) return false;
+  if (!state.useFlashloan) return false;
+  if (!state.sellAmountToken || !state.sellAmountFormatted) return false;
 
-  const availableBorrowCap =
-    reserve.borrowCap === '0'
-      ? valueToBigNumber(ethers.constants.MaxUint256.toString())
-      : valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt));
-  const availableLiquidity = BigNumber.max(
-    BigNumber.min(valueToBigNumber(reserve.formattedAvailableLiquidity), availableBorrowCap),
-    0
+  const flashLoanedAddress = state.sellAmountToken.underlyingAddress?.toLowerCase();
+  if (!flashLoanedAddress) return false;
+
+  const reserve = [state.sourceReserve?.reserve, state.destinationReserve?.reserve].find(
+    (r) => r?.underlyingAsset?.toLowerCase() === flashLoanedAddress
   );
+  if (!reserve) return false;
 
-  return valueToBigNumber(buyAmount).gt(availableLiquidity);
+  const liquidity = BigNumber.max(valueToBigNumber(reserve.formattedAvailableLiquidity), 0);
+
+  // Borrow cap only matters for DebtSwap, which leaves the user holding new
+  // debt in the flash-loaned asset. Other flash-loan flows repay the loan
+  // in-flight and never touch the borrow cap.
+  const borrowCapRoom =
+    state.swapType === SwapType.DebtSwap
+      ? reserve.borrowCap === '0'
+        ? valueToBigNumber(ethers.constants.MaxUint256.toString())
+        : valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt))
+      : valueToBigNumber(ethers.constants.MaxUint256.toString());
+
+  const effectiveLimit = BigNumber.max(BigNumber.min(liquidity, borrowCapRoom), 0);
+  return valueToBigNumber(state.sellAmountFormatted).gt(effectiveLimit);
 };
 
 export const InsufficientLiquidityBlockingGuard = ({
@@ -82,16 +96,21 @@ export const InsufficientLiquidityBlockingGuard = ({
       }
     }
   }, [
-    state.buyAmountFormatted,
-    state.destinationReserve?.reserve?.formattedAvailableLiquidity,
+    state.swapType,
+    state.useFlashloan,
+    state.sellAmountFormatted,
+    state.sellAmountToken?.underlyingAddress,
     state.sourceReserve?.reserve?.formattedAvailableLiquidity,
-    state.isInvertedSwap,
+    state.sourceReserve?.reserve?.borrowCap,
+    state.sourceReserve?.reserve?.totalDebt,
+    state.destinationReserve?.reserve?.formattedAvailableLiquidity,
+    state.destinationReserve?.reserve?.borrowCap,
+    state.destinationReserve?.reserve?.totalDebt,
   ]);
 
   if (hasInsufficientLiquidity(state)) {
-    const symbol = state.isInvertedSwap
-      ? state.sourceReserve?.reserve?.symbol
-      : state.destinationReserve?.reserve?.symbol;
+    // hasInsufficientLiquidity ensures sellAmountToken is defined.
+    const symbol = state.sellAmountToken?.symbol ?? '';
     return (
       <InsufficientLiquidityBlockingError
         symbol={symbol}
