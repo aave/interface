@@ -146,7 +146,10 @@ type WhitelistApiResponse = {
 const MERKL_ENDPOINT =
   'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave&items=100&status=LIVE'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
-const EXTRA_WHITELIST_TOKENS = ['0xE3190143Eb552456F88464662f0c0C4aC67A77eB'.toLowerCase()];
+const EXTRA_WHITELIST_TOKENS = [
+  '0xE3190143Eb552456F88464662f0c0C4aC67A77eB'.toLowerCase(),
+  '0x78f2cB75D664d6f71433174056c25A5958B4016F'.toLowerCase(),
+]; // Extra tokens to whitelist
 const AAVE_NET_APR_DISTRIBUTION_TYPE = 'AAVE_NET_APR';
 const convertApyToApr = (apy: number) => 12 * ((1 + apy) ** (1 / 12) - 1);
 
@@ -291,7 +294,6 @@ export const useMerklIncentives = ({
       }, 0);
 
       const merklIncentivesAPY = convertAprToApy(totalMerklAPR);
-      console.log('Total Merkl APR:', totalMerklAPR, '=> APY:', merklIncentivesAPY);
       const aprsBreakdowns = whitelistedOpportunities.flatMap((opp) => opp.aprRecord.breakdowns);
       const breakdownTokens = whitelistedOpportunities.flatMap((opp) => {
         return opp.rewardsRecord.breakdowns;
