@@ -233,6 +233,11 @@ const IncentivesSymbolMap: {
     symbol: 'aGHO',
     aToken: true,
   },
+  MEGA: {
+    tokenIconSymbol: 'MEGA',
+    symbol: 'aMEGA',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
