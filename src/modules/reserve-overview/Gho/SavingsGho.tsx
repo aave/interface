@@ -1,9 +1,9 @@
-import { ProtocolAction, Stake } from '@aave/contract-helpers';
+import { Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { SavingsGhoIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { TokenContractTooltip } from 'src/components/infoTooltips/TokenContractTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -11,10 +11,11 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSavingsGhoIncentive } from 'src/hooks/useSavingsGhoIncentive';
 import { StakeActionBox } from 'src/modules/staking/StakeActionBox';
 import { useRootStore } from 'src/store/root';
+import { convertAprToApy } from 'src/utils/utils';
 
 import { PanelItem } from '../ReservePanels';
 
@@ -27,13 +28,10 @@ export const SavingsGho = () => {
   );
   const { openSavingsGhoDeposit, openSavingsGhoWithdraw } = useModalContext();
   const now = useCurrentTimestamp(1);
-  const { data: meritIncentives } = useMeritIncentives({
-    symbol: 'GHO',
-    market: currentMarketData.market,
-    protocolAction: ProtocolAction.stake,
-  });
-  const apr = meritIncentives?.incentiveAPR || '0';
-  const aprFormatted = (+apr * 100).toFixed(2);
+  const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
+  const aprFormatted = savingsGhoIncentive?.aprDecimal
+    ? (convertAprToApy(Number(savingsGhoIncentive.aprDecimal)) * 100).toFixed(2)
+    : '0.00';
 
   const stakeData = stakeGeneralResult?.[0];
   const stakeUserData = stakeUserResult?.[0];
@@ -111,11 +109,7 @@ export const SavingsGho = () => {
             </Box>
           }
         >
-          <MeritIncentivesButton
-            symbol="GHO"
-            market={currentMarketData.market}
-            protocolAction={ProtocolAction.stake}
-          />
+          <SavingsGhoIncentivesButton />
         </PanelItem>
       </Stack>
 

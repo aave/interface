@@ -1,12 +1,11 @@
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography } from '@mui/material';
 import React from 'react';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { SavingsGhoIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 export interface StakingPanelNoWalletProps {
   description?: React.ReactNode;
@@ -106,7 +105,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
             <Typography variant="subheader2" color="text.secondary">
               <Trans>Incentives APR</Trans>
             </Typography>
-            <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
+            <SavingsGhoIncentivesButton />
           </Box>
         )}
       </Box>

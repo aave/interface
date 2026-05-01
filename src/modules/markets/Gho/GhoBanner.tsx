@@ -1,13 +1,13 @@
-import { ProtocolAction, Stake } from '@aave/contract-helpers';
+import { Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { useSavingsGhoIncentive } from 'src/hooks/useSavingsGhoIncentive';
 import { useRootStore } from 'src/store/root';
-import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { convertAprToApy } from 'src/utils/utils';
 
 export const SavingsGhoBanner = () => {
   const theme = useTheme();
@@ -19,11 +19,8 @@ export const SavingsGhoBanner = () => {
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
 
-  const { data: meritIncentives, isLoading: meritIncentivesLoading } = useMeritIncentives({
-    symbol: GHO_SYMBOL,
-    market: currentMarketData.market,
-    protocolAction: ProtocolAction.stake,
-  });
+  const { data: savingsGhoIncentive, isLoading: savingsGhoIncentiveLoading } =
+    useSavingsGhoIncentive();
   const { data: stakeGeneralResult, isLoading: stakeDataLoading } = useGeneralStakeUiData(
     currentMarketData,
     Stake.gho
@@ -134,14 +131,18 @@ export const SavingsGhoBanner = () => {
           </Stack>
         </Stack>
         <Stack>
-          {meritIncentivesLoading ? (
+          {savingsGhoIncentiveLoading ? (
             <Skeleton width={70} height={25} />
           ) : (
             <Stack direction="row" gap={1} alignItems="center">
               <FormattedNumber
                 percent
                 variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                value={meritIncentives?.incentiveAPR || 0}
+                value={
+                  savingsGhoIncentive?.aprDecimal
+                    ? convertAprToApy(Number(savingsGhoIncentive.aprDecimal))
+                    : 0
+                }
               />
             </Stack>
           )}
@@ -176,11 +177,8 @@ export const SavingsGhoBanner = () => {
 
 const GhoSavingsBannerMobile = () => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: meritIncentives, isLoading: meritIncentivesLoading } = useMeritIncentives({
-    symbol: GHO_SYMBOL,
-    market: currentMarketData.market,
-    protocolAction: ProtocolAction.stake,
-  });
+  const { data: savingsGhoIncentive, isLoading: savingsGhoIncentiveLoading } =
+    useSavingsGhoIncentive();
   const { data: stakeGeneralResult, isLoading: stakeDataLoading } = useGeneralStakeUiData(
     currentMarketData,
     Stake.gho
@@ -259,14 +257,18 @@ const GhoSavingsBannerMobile = () => {
               </Typography>
             </Stack>
             <Stack>
-              {meritIncentivesLoading ? (
+              {savingsGhoIncentiveLoading ? (
                 <Skeleton width={70} height={25} />
               ) : (
                 <Stack direction="row" gap={1} alignItems="center">
                   <FormattedNumber
                     percent
                     variant="secondary14"
-                    value={meritIncentives?.incentiveAPR || 0}
+                    value={
+                      savingsGhoIncentive?.aprDecimal
+                        ? convertAprToApy(Number(savingsGhoIncentive.aprDecimal))
+                        : 0
+                    }
                   />
                 </Stack>
               )}
