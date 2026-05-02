@@ -1971,6 +1971,10 @@ msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavail
 msgid "Disabling E-Mode"
 msgstr "Disabling E-Mode"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Legacy"
+msgstr "Legacy"
+
 #: src/modules/history/HistoryWrapper.tsx
 msgid "This list may not include all your swaps."
 msgstr "This list may not include all your swaps."

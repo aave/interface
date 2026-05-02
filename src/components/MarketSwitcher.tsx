@@ -111,13 +111,12 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
   );
 };
 
-type MarketCategory = 'ethereum' | 'l2' | 'other';
+type MarketCategory = 'ethereum' | 'l2' | 'other' | 'legacy';
 
 const MARKET_CATEGORY: Record<string, MarketCategory> = {
   // Ethereum mainnet instances
   Core: 'ethereum',
   Prime: 'ethereum',
-  EtherFi: 'ethereum',
   'Aave Horizon': 'ethereum',
   // L2 networks
   Base: 'l2',
@@ -125,15 +124,11 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   OP: 'l2',
   Mantle: 'l2',
   Linea: 'l2',
-  Scroll: 'l2',
-  ZKsync: 'l2',
   Polygon: 'l2',
   Ink: 'l2',
   'X Layer': 'l2',
   Celo: 'l2',
-  Soneium: 'l2',
   MegaETH: 'l2',
-  Metis: 'l2',
   // Other L1 chains
   Plasma: 'other',
   Avalanche: 'other',
@@ -141,6 +136,12 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   Gnosis: 'other',
   Sonic: 'other',
   Aptos: 'other',
+  // Legacy markets
+  EtherFi: 'legacy',
+  ZKsync: 'legacy',
+  Soneium: 'legacy',
+  Metis: 'legacy',
+  Scroll: 'legacy',
 };
 
 const getMarketCategory = (marketId: CustomMarket): MarketCategory => {
@@ -238,7 +239,7 @@ export const MarketSwitcher = () => {
   // Filter to V3 markets only
   const v3Markets = useMemo(() => availableMarkets.filter((id) => marketsData[id].v3), []);
 
-  const { pinned, ethereum, l2, other } = useMemo(() => {
+  const { pinned, ethereum, l2, other, legacy } = useMemo(() => {
     const query = searchQuery.toLowerCase();
     const filtered = v3Markets.filter((id) => {
       const { market } = getMarketInfoById(id);
@@ -255,6 +256,7 @@ export const MarketSwitcher = () => {
       ethereum: unpinned.filter((id) => getMarketCategory(id) === 'ethereum'),
       l2: unpinned.filter((id) => getMarketCategory(id) === 'l2'),
       other: unpinned.filter((id) => getMarketCategory(id) === 'other'),
+      legacy: unpinned.filter((id) => getMarketCategory(id) === 'legacy'),
     };
   }, [v3Markets, searchQuery, favoriteMarkets, isFavoriteMarket]);
 
@@ -539,6 +541,17 @@ export const MarketSwitcher = () => {
             {sectionHeader(<Trans>L2 Networks</Trans>)}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {l2.map((id) => renderGridItem(id, mobile))}
+            </Box>
+            <Divider sx={{ my: 1 }} />
+          </Box>
+        )}
+
+        {/* Legacy */}
+        {legacy.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>Legacy</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+              {legacy.map((id) => renderGridItem(id, mobile))}
             </Box>
           </Box>
         )}
