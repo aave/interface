@@ -29,7 +29,7 @@ export const SavingsGho = () => {
   const { openSavingsGhoDeposit, openSavingsGhoWithdraw } = useModalContext();
   const now = useCurrentTimestamp(1);
   const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
-  const aprFormatted = savingsGhoIncentive?.aprDecimal
+  const apyFormatted = savingsGhoIncentive?.aprDecimal
     ? (convertAprToApy(Number(savingsGhoIncentive.aprDecimal)) * 100).toFixed(2)
     : '0.00';
 
@@ -59,7 +59,7 @@ export const SavingsGho = () => {
     <Stack direction="column" gap={4}>
       <Typography gutterBottom>
         Stake GHO is now Savings GHO. With no risk of slashing and immediate withdraws available,
-        earn up to {aprFormatted}% APR and claim rewards weekly.
+        earn up to {apyFormatted}% APY and claim rewards weekly.
       </Typography>
       <Stack direction="row">
         <Stack direction="row" alignItems="center" gap={1}>
@@ -105,7 +105,7 @@ export const SavingsGho = () => {
         <PanelItem
           title={
             <Box display="flex" alignItems="center">
-              <Trans>APR</Trans>
+              <Trans>APY</Trans>
             </Box>
           }
         >

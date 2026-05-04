@@ -119,7 +119,7 @@ export const SavingsGhoModalDepositContent = () => {
         </Typography>
       )}
       <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
-        <DetailsNumberLine description={<Trans>APR</Trans>} value={savingsGhoAPY} percent />
+        <DetailsNumberLine description={<Trans>APY</Trans>} value={savingsGhoAPY} percent />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
