@@ -233,10 +233,10 @@ const IncentivesSymbolMap: {
     symbol: 'aGHO',
     aToken: true,
   },
-  MEGA: {
-    tokenIconSymbol: 'MEGA',
-    symbol: 'MEGA',
-    aToken: false,
+  aMegUSDe: {
+    tokenIconSymbol: 'USDe',
+    symbol: 'aUSDe',
+    aToken: true,
   },
 };
 
