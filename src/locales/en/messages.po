@@ -4216,6 +4216,11 @@ msgstr "Isolated Debt Ceiling"
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 
+#: src/components/MarketSwitcher.tsx
+#: src/components/MarketSwitcher.tsx
+msgid "Show legacy markets"
+msgstr "Show legacy markets"
+
 #: src/layouts/SupportModal.tsx
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
 msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
