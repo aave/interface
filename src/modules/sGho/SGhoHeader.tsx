@@ -64,6 +64,10 @@ export const SGHOHeader: React.FC = () => {
     [, , stkGho] = stakeGeneralResult;
   }
 
+  const savingsGhoAPY = savingsGhoIncentive?.aprDecimal
+    ? convertAprToApy(new BigNumber(savingsGhoIncentive.aprDecimal).toNumber())
+    : 0;
+
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
@@ -91,14 +95,14 @@ export const SGHOHeader: React.FC = () => {
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
               Deposit GHO into savings GHO (sGHO) and earn{' '}
-              <Box component="span" sx={{ color: '#338E3C', fontWeight: 'bold' }}>
-                {(
-                  (savingsGhoIncentive?.aprDecimal
-                    ? convertAprToApy(new BigNumber(savingsGhoIncentive.aprDecimal).toNumber())
-                    : 0) * 100
-                ).toFixed(2)}
-                %
-              </Box>{' '}
+              <FormattedNumber
+                component="span"
+                value={savingsGhoAPY}
+                percent
+                visibleDecimals={2}
+                sx={{ color: '#338E3C', fontWeight: 'bold' }}
+                symbolsColor="#338E3C"
+              />{' '}
               APY on your GHO holdings. There are no lockups, no rehypothecation, and you can
               withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance,
               and watch your savings grow earning claimable rewards from merit.

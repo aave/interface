@@ -200,7 +200,10 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                     // fontSize: { xs: '1.1rem', md: '1rem' },
                   }}
                 >
-                  <Trans>Deposit GHO and earn {(stakeApyDecimal * 100).toFixed(2)}% APY</Trans>
+                  <Trans>
+                    Deposit GHO and earn{' '}
+                    <FormattedNumber value={stakeApyDecimal} percent visibleDecimals={2} /> APY
+                  </Trans>
                 </Typography>
               </Box>
               <Box

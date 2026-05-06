@@ -713,6 +713,10 @@ msgstr "Total deposited"
 msgid "You are entering Isolation mode"
 msgstr "You are entering Isolation mode"
 
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Deposit GHO into savings GHO (sGHO) and earn <0/> APY on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
+msgstr "Deposit GHO into savings GHO (sGHO) and earn <0/> APY on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
+
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
@@ -787,6 +791,10 @@ msgstr "Choose one of the on-ramp services"
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
+
+#: src/modules/sGho/SGhoDepositPanel.tsx
+msgid "Deposit GHO and earn <0/> APY"
+msgstr "Deposit GHO and earn <0/> APY"
 
 #: src/components/transactions/Swap/actions/ActionsBlocked.tsx
 msgid "Check errors"
@@ -2761,10 +2769,6 @@ msgstr "Net worth"
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
 
-#: src/modules/sGho/SGhoHeader.tsx
-msgid "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
-msgstr "Deposit GHO into savings GHO (sGHO) and earn <0>{0}%</0> APY on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow earning claimable rewards from merit."
-
 #: src/components/transactions/FlowCommons/Success.tsx
 msgid "You switched to {0} rate"
 msgstr "You switched to {0} rate"
@@ -3250,10 +3254,6 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 #: src/components/transactions/Warnings/CowLowerThanMarketWarning.tsx
 msgid "The selected rate is lower than the market price. You might incur a loss if you proceed."
 msgstr "The selected rate is lower than the market price. You might incur a loss if you proceed."
-
-#: src/modules/sGho/SGhoDepositPanel.tsx
-msgid "Deposit GHO and earn {0}% APY"
-msgstr "Deposit GHO and earn {0}% APY"
 
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
