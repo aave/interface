@@ -1,17 +1,18 @@
-import { ChainId, ProtocolAction, Stake } from '@aave/contract-helpers';
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSavingsGhoIncentive } from 'src/hooks/useSavingsGhoIncentive';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
 import { STAKE } from 'src/utils/events';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { convertAprToApy } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
 
 import { AssetInput } from '../AssetInput';
@@ -35,11 +36,10 @@ export const SavingsGhoModalDepositContent = () => {
       store.currentChainId,
     ])
   );
-  const { data: meritIncentives } = useMeritIncentives({
-    symbol: 'GHO',
-    market: currentMarketData.market,
-    protocolAction: ProtocolAction.stake,
-  });
+  const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
+  const savingsGhoAPY = savingsGhoIncentive?.aprDecimal
+    ? convertAprToApy(Number(savingsGhoIncentive.aprDecimal))
+    : 0;
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
@@ -119,11 +119,7 @@ export const SavingsGhoModalDepositContent = () => {
         </Typography>
       )}
       <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
-        <DetailsNumberLine
-          description={<Trans>APR</Trans>}
-          value={meritIncentives?.incentiveAPR || '0'}
-          percent
-        />
+        <DetailsNumberLine description={<Trans>APY</Trans>} value={savingsGhoAPY} percent />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}

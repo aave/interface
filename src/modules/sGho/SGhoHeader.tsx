@@ -16,7 +16,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
-import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
+import { useSavingsGhoIncentive } from 'src/hooks/useSavingsGhoIncentive';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
@@ -49,7 +49,8 @@ export const SGHOHeader: React.FC = () => {
 
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
 
-  const { data: stakeAPR } = useStakeTokenAPR();
+  // TODO: Use the useSavingsGhoIncentive from sdk when it's ready instead of the one in this file.
+  const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
 
   useEffect(() => {
     trackEvent('Page Viewed', {
@@ -62,6 +63,10 @@ export const SGHOHeader: React.FC = () => {
   if (stakeGeneralResult && Array.isArray(stakeGeneralResult)) {
     [, , stkGho] = stakeGeneralResult;
   }
+
+  const savingsGhoAPY = savingsGhoIncentive?.aprDecimal
+    ? convertAprToApy(new BigNumber(savingsGhoIncentive.aprDecimal).toNumber())
+    : 0;
 
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -90,13 +95,14 @@ export const SGHOHeader: React.FC = () => {
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
             <Trans>
               Deposit GHO into savings GHO (sGHO) and earn{' '}
-              <Box component="span" sx={{ color: '#338E3C', fontWeight: 'bold' }}>
-                {(
-                  (stakeAPR?.apr ? convertAprToApy(new BigNumber(stakeAPR.apr).toNumber()) : 0) *
-                  100
-                ).toFixed(2)}
-                %
-              </Box>{' '}
+              <FormattedNumber
+                component="span"
+                value={savingsGhoAPY}
+                percent
+                visibleDecimals={2}
+                sx={{ color: '#338E3C', fontWeight: 'bold' }}
+                symbolsColor="#338E3C"
+              />{' '}
               APY on your GHO holdings. There are no lockups, no rehypothecation, and you can
               withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance,
               and watch your savings grow earning claimable rewards from merit.
@@ -126,7 +132,8 @@ const SGhoHeaderUserDetails = ({
   symbolsTypographyVariant: 'secondary16' | 'secondary21';
   stkGho: StakeTokenFormatted;
 }) => {
-  const { data: stakeAPR, isLoading: isLoadingStakeAPR } = useStakeTokenAPR();
+  const { data: savingsGhoIncentive, isLoading: isLoadingSavingsGhoIncentive } =
+    useSavingsGhoIncentive();
   const { supplyReserves } = useAppDataContext();
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.gho);
   const { openClaimRewards } = useModalContext();
@@ -160,7 +167,9 @@ const SGhoHeaderUserDetails = ({
 
   // Calculate estimated weekly rewards with precision
   // Formula: (balance * APR) / 52 weeks
-  const aprBN = stakeAPR?.apr ? new BigNumber(stakeAPR.apr) : new BigNumber(0);
+  const aprBN = savingsGhoIncentive?.aprDecimal
+    ? new BigNumber(savingsGhoIncentive.aprDecimal)
+    : new BigNumber(0);
   const balanceBN = new BigNumber(userSGhoBalanceFormatted || '0');
   const weeklyRewardsEstimateBN = balanceBN.multipliedBy(aprBN).dividedBy(52);
   const weeklyRewardsEstimate = weeklyRewardsEstimateBN.toNumber();
@@ -176,9 +185,13 @@ const SGhoHeaderUserDetails = ({
 
   return (
     <>
-      <TopInfoPanelItem hideIcon title={<Trans>APY</Trans>} loading={isLoadingStakeAPR}>
+      <TopInfoPanelItem hideIcon title={<Trans>APY</Trans>} loading={isLoadingSavingsGhoIncentive}>
         <FormattedNumber
-          value={stakeAPR?.apr ? convertAprToApy(valueToBigNumber(stakeAPR.apr).toNumber()) : 0}
+          value={
+            savingsGhoIncentive?.aprDecimal
+              ? convertAprToApy(valueToBigNumber(savingsGhoIncentive.aprDecimal).toNumber())
+              : 0
+          }
           variant={valueTypographyVariant}
           symbolsColor={symbolsColor}
           visibleDecimals={2}
@@ -193,7 +206,7 @@ const SGhoHeaderUserDetails = ({
             <Trans>Total Deposited</Trans>
           </Stack>
         }
-        loading={isLoadingStakeAPR}
+        loading={isLoadingSavingsGhoIncentive}
       >
         <FormattedNumber
           value={stkGho?.totalSupplyUSDFormatted || '0'}
@@ -211,7 +224,7 @@ const SGhoHeaderUserDetails = ({
             <Trans>Price</Trans>
           </Stack>
         }
-        loading={isLoadingStakeAPR}
+        loading={isLoadingSavingsGhoIncentive}
       >
         <FormattedNumber
           value={stkGho?.stakeTokenPriceUSDFormatted || '0'}
@@ -235,7 +248,7 @@ const SGhoHeaderUserDetails = ({
             </TextWithTooltip>
           </Stack>
         }
-        loading={isLoadingStakeAPR}
+        loading={isLoadingSavingsGhoIncentive}
       >
         {balanceBN.gt(0) ? (
           <Typography
@@ -292,7 +305,7 @@ const SGhoHeaderUserDetails = ({
       {currentAccount && (
         <TopInfoPanelItem
           title={<Trans>Available rewards</Trans>}
-          loading={isLoadingStakeAPR}
+          loading={isLoadingSavingsGhoIncentive}
           hideIcon
         >
           <Box

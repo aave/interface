@@ -1,4 +1,4 @@
-import { ChainId, ProtocolAction, Stake } from '@aave/contract-helpers';
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { TimeWindow } from '@aave/react';
 import { RefreshIcon } from '@heroicons/react/outline';
@@ -18,7 +18,7 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { SavingsGhoIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -27,11 +27,10 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSavingsGhoIncentive } from 'src/hooks/useSavingsGhoIncentive';
 import { useSGhoApyHistory } from 'src/hooks/useSGhoApyHistory';
-import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL, SAFETY_MODULE } from 'src/utils/events';
 import { convertAprToApy } from 'src/utils/utils';
 
@@ -78,8 +77,10 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
     error: errorMeritApyHistory,
     refetch: refetchMeritApyHistory,
   } = useSGhoApyHistory({ timeRange: selectedTimeRange });
-  const { data: stakeAPR } = useStakeTokenAPR();
-  const stakeApyDecimal = stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0;
+  const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
+  const stakeApyDecimal = savingsGhoIncentive?.aprDecimal
+    ? convertAprToApy(parseFloat(savingsGhoIncentive.aprDecimal))
+    : 0;
 
   if (!stakeData) {
     return (
@@ -199,7 +200,10 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                     // fontSize: { xs: '1.1rem', md: '1rem' },
                   }}
                 >
-                  <Trans>Deposit GHO and earn {(stakeApyDecimal * 100).toFixed(2)}% APY</Trans>
+                  <Trans>
+                    Deposit GHO and earn{' '}
+                    <FormattedNumber value={stakeApyDecimal} percent visibleDecimals={2} /> APY
+                  </Trans>
                 </Typography>
               </Box>
               <Box
@@ -243,11 +247,7 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
                       <Trans>Current APY</Trans>
                     </Typography>
 
-                    <MeritIncentivesButton
-                      symbol={'GHO'}
-                      market={CustomMarket.proto_mainnet_v3}
-                      protocolAction={ProtocolAction.stake}
-                    />
+                    <SavingsGhoIncentivesButton />
                   </Box>
 
                   {!xsm && +availableToStake > 0 && (
