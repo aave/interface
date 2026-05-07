@@ -229,7 +229,12 @@ export const MarketSwitcher = () => {
   };
 
   const marketBlurbs: { [key: string]: JSX.Element } = {
-    proto_ink_v3: <Trans>The Ink instance is governed by the Ink Foundation</Trans>,
+    proto_ink_v3: (
+      <Trans>
+        This Ink instance is operated by Tydro and governed by the Ink Foundation, independent from
+        Aave DAO operated markets.
+      </Trans>
+    ),
     proto_mainnet_v3: (
       <Trans>Main Ethereum market with the largest selection of assets and yield options</Trans>
     ),

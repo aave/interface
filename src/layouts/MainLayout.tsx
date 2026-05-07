@@ -122,7 +122,7 @@ const getCampaignConfigs = () => ({
     buttonText: 'Learn more',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://x.com/tydrohq/status/2051383181874540957?s=20',
+      value: 'https://x.com/tydrohq/status/2052450869082313086?s=20',
       target: '_blank' as const,
     },
     bannerVersion: 'aave-ink-paused-v0',
