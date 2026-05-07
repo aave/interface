@@ -37,8 +37,8 @@ export const SavingsGhoModalDepositContent = () => {
     ])
   );
   const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
-  const savingsGhoAPY = savingsGhoIncentive?.aprDecimal
-    ? convertAprToApy(Number(savingsGhoIncentive.aprDecimal))
+  const savingsGhoAPY = savingsGhoIncentive?.apr.value
+    ? convertAprToApy(Number(savingsGhoIncentive.apr.value))
     : 0;
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();

@@ -179,7 +179,7 @@ export const SavingsGhoIncentivesButton = ({ hideValue }: { hideValue?: boolean 
     return null;
   }
 
-  const meritIncentivesAPY = convertAprToApy(parseFloat(savingsGhoIncentive.aprDecimal));
+  const meritIncentivesAPY = convertAprToApy(parseFloat(savingsGhoIncentive.apr.value));
   const action = savingsGhoIncentive.actionKey || MeritAction.ETHEREUM_SGHO;
   const meritIncentives: MeritReserveIncentiveResponse = {
     incentiveAPR: meritIncentivesAPY.toString(),

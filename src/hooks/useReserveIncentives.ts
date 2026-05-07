@@ -182,6 +182,34 @@ export type BorrowPointsIncentive = {
   customForumLink?: string | null;
 };
 
+export type PartnerSupplyIncentive = {
+  __typename: 'PartnerSupplyIncentive';
+  id: RewardId;
+  program: PointsProgram;
+  startDate: string;
+  endDate: string;
+  multiplier: number;
+  criteria: IncentiveCriteria[] | null;
+  userEligible: boolean;
+  description?: string | null;
+  customMessage?: string | null;
+  customForumLink?: string | null;
+};
+
+export type PartnerBorrowIncentive = {
+  __typename: 'PartnerBorrowIncentive';
+  id: RewardId;
+  program: PointsProgram;
+  startDate: string;
+  endDate: string;
+  multiplier: number;
+  criteria: IncentiveCriteria[] | null;
+  userEligible: boolean;
+  description?: string | null;
+  customMessage?: string | null;
+  customForumLink?: string | null;
+};
+
 export type ReserveIncentive =
   | MeritSupplyIncentive
   | MeritBorrowIncentive
@@ -191,7 +219,9 @@ export type ReserveIncentive =
   | MerklSupplyIncentive
   | MerklBorrowIncentive
   | SupplyPointsIncentive
-  | BorrowPointsIncentive;
+  | BorrowPointsIncentive
+  | PartnerSupplyIncentive
+  | PartnerBorrowIncentive;
 
 const RESERVE_INCENTIVES_QUERY = `
   query ReserveIncentives($request: ReserveRequest!) {
@@ -292,6 +322,30 @@ const RESERVE_INCENTIVES_QUERY = `
           userEligible
           dailyPoints
           pointsPerThousandUsd
+          description
+          customMessage
+          customForumLink
+        }
+        ... on PartnerSupplyIncentive {
+          id
+          program { id name externalUrl iconUrl }
+          startDate
+          endDate
+          multiplier
+          criteria { id text userPassed }
+          userEligible
+          description
+          customMessage
+          customForumLink
+        }
+        ... on PartnerBorrowIncentive {
+          id
+          program { id name externalUrl iconUrl }
+          startDate
+          endDate
+          multiplier
+          criteria { id text userPassed }
+          userEligible
           description
           customMessage
           customForumLink

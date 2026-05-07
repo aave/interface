@@ -41,9 +41,17 @@ export const useEthenaIncentives = (rewardedAsset?: string): number | undefined 
   if (!data) return undefined;
 
   const ethena = data.find(
-    (i) => i.__typename === 'SupplyPointsIncentive' && i.program.name === 'Ethena Rewards'
+    (i) =>
+      (i.__typename === 'SupplyPointsIncentive' || i.__typename === 'PartnerSupplyIncentive') &&
+      i.program.name === 'Ethena Rewards'
   );
-  if (!ethena || ethena.__typename !== 'SupplyPointsIncentive') return undefined;
+  if (
+    !ethena ||
+    (ethena.__typename !== 'SupplyPointsIncentive' &&
+      ethena.__typename !== 'PartnerSupplyIncentive')
+  ) {
+    return undefined;
+  }
 
   return Number.isFinite(ethena.multiplier) ? ethena.multiplier : undefined;
 };

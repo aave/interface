@@ -44,9 +44,17 @@ export const useEtherfiIncentives = (
   if (!isSupplyContext || !data) return undefined;
 
   const etherfi = data.find(
-    (i) => i.__typename === 'SupplyPointsIncentive' && i.program.name === 'Ether.fi Loyalty'
+    (i) =>
+      (i.__typename === 'SupplyPointsIncentive' || i.__typename === 'PartnerSupplyIncentive') &&
+      i.program.name === 'Ether.fi Loyalty'
   );
-  if (!etherfi || etherfi.__typename !== 'SupplyPointsIncentive') return undefined;
+  if (
+    !etherfi ||
+    (etherfi.__typename !== 'SupplyPointsIncentive' &&
+      etherfi.__typename !== 'PartnerSupplyIncentive')
+  ) {
+    return undefined;
+  }
 
   return Number.isFinite(etherfi.multiplier) ? etherfi.multiplier : undefined;
 };

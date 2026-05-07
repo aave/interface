@@ -78,8 +78,8 @@ export const SGHODepositPanel: React.FC<SGHODepositPanelProps> = ({
     refetch: refetchMeritApyHistory,
   } = useSGhoApyHistory({ timeRange: selectedTimeRange });
   const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
-  const stakeApyDecimal = savingsGhoIncentive?.aprDecimal
-    ? convertAprToApy(parseFloat(savingsGhoIncentive.aprDecimal))
+  const stakeApyDecimal = savingsGhoIncentive?.apr.value
+    ? convertAprToApy(parseFloat(savingsGhoIncentive.apr.value))
     : 0;
 
   if (!stakeData) {
