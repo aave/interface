@@ -1,0 +1,25 @@
+src/utils/sentryFilters.ts
+  da83ba8b8584f8ba 1-95
+sentry.client.config.ts
+  da83ba8b8584f8ba 8-9,19-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "a85b6c5086369c02f0b2c65f32587c907a04e3d4",
+  "prompts": {
+    "da83ba8b8584f8ba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9a4ce2fb-fbb5-458e-9c0c-7f12e3f0fb37",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 104,
+      "total_deletions": 2,
+      "accepted_lines": 102,
+      "overriden_lines": 0
+    }
+  }
+}

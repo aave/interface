@@ -1,0 +1,21 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "c7e98d95c54299481ea98c7a039467da977ebf0d",
+  "prompts": {
+    "7b5408be1cab4133": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "13110ce0-5aec-4f80-82fa-e070f2890497",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 3,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}

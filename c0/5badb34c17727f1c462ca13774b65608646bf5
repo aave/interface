@@ -1,0 +1,25 @@
+src/modules/markets/MarketAssetsListMobileItem.tsx
+  a2ae0cc21c41da81 164
+src/modules/markets/MarketAssetsListItem.tsx
+  a2ae0cc21c41da81 167
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "c05badb34c17727f1c462ca13774b65608646bf5",
+  "prompts": {
+    "a2ae0cc21c41da81": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5f79a959-6ba9-4cca-bf67-86ede3e3e7a2",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 2,
+      "accepted_lines": 948,
+      "overriden_lines": 0
+    }
+  }
+}

@@ -1,0 +1,21 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.6",
+  "base_commit_sha": "334ecb442b6393981f6c5d8d1b37f714ab18c021",
+  "prompts": {
+    "7045fe10a920951e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9e515cba-0562-4535-85c4-975f699a41ec",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "mark hinschberger",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 13,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}

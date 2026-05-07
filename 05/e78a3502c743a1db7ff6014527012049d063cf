@@ -1,0 +1,28 @@
+package.json
+  h_18722c69eff4ba 39,41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "05e78a3502c743a1db7ff6014527012049d063cf",
+  "prompts": {
+    "fb7decf383812694": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ad42bf7c-36b6-4d34-8335-8edb40204ace",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "mark hinschberger",
+      "messages": [],
+      "total_additions": 345,
+      "total_deletions": 0,
+      "accepted_lines": 772,
+      "overriden_lines": 8
+    }
+  },
+  "humans": {
+    "h_18722c69eff4ba": {
+      "author": "mark hinschberger"
+    }
+  }
+}

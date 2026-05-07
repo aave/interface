@@ -1,0 +1,23 @@
+src/components/transactions/Swap/errors/shared/ZeroLTVBlockingGuard.tsx
+  bed686b31f1759aa 9-11,14-15,19-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.5",
+  "base_commit_sha": "8512adc9312ecc7ff49c3e13b7360db3e8c559eb",
+  "prompts": {
+    "bed686b31f1759aa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7f0b41a0-926f-40d5-ad2b-e0e550fc9a1e",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 17,
+      "total_deletions": 13,
+      "accepted_lines": 11,
+      "overriden_lines": 0
+    }
+  }
+}

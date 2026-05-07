@@ -1,0 +1,40 @@
+src/services/GovernanceCacheService.ts
+  f477a46c9590d4b8 277-278,321,343,374,380,415,426,445,465,491,512,531,554,571,584,592,604,614
+src/modules/governance/proposal/ProposalLifecycleCache.tsx
+  f477a46c9590d4b8 186,198,221-239,250,257,269,271-272
+src/modules/governance/proposal/ProposalOverview.tsx
+  f477a46c9590d4b8 154-161
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "c16254ca1a20f0ce9b9600271bd3e2ad1de78351",
+  "prompts": {
+    "f477a46c9590d4b8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "93598095-1fc7-4191-99b3-d75904149d15",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "mark hinschberger",
+      "messages": [],
+      "total_additions": 66,
+      "total_deletions": 45,
+      "accepted_lines": 54,
+      "overriden_lines": 0
+    },
+    "fd54cf3b7d935a47": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "16d98760-cbf6-4e86-b7cc-c9d03c590fc3",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "mark hinschberger",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 113,
+      "overriden_lines": 1
+    }
+  }
+}

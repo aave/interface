@@ -1,0 +1,16 @@
+src/components/transactions/Withdraw/WithdrawModalContent.tsx
+  h_fc799da2088d4e 42,229
+src/components/transactions/Withdraw/WithdrawActions.tsx
+  h_fc799da2088d4e 1,5,20,30,36,49-51,56-59,62-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "98e879ea24388267f4d596a1e4ba14f6099f7e25",
+  "prompts": {},
+  "humans": {
+    "h_fc799da2088d4e": {
+      "author": "Developers"
+    }
+  }
+}

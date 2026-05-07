@@ -1,0 +1,14 @@
+cypress/e2e/1-v3-markets/3-polygon-v3-market/0-assets/wbtc.polygon-v3.cy.ts
+  h_075bcc15b434db 78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "ca3cb74bcb0f8c78884e51972e3a05d8b9914ed6",
+  "prompts": {},
+  "humans": {
+    "h_075bcc15b434db": {
+      "author": "Mark Grothe"
+    }
+  }
+}

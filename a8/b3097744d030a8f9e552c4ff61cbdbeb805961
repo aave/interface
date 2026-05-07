@@ -1,0 +1,25 @@
+src/hooks/compliance/compliance.tsx
+  ea88da25b88e3b78 33-36,104-105,114,178-186
+src/store/protocolDataSlice.ts
+  ea88da25b88e3b78 26-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "a8b3097744d030a8f9e552c4ff61cbdbeb805961",
+  "prompts": {
+    "ea88da25b88e3b78": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f0e82437-61f1-431d-a997-ebbdeaf55028",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Developers",
+      "messages": [],
+      "total_additions": 18,
+      "total_deletions": 1,
+      "accepted_lines": 18,
+      "overriden_lines": 0
+    }
+  }
+}

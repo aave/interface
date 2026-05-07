@@ -1,0 +1,25 @@
+src/utils/hfUtils.ts
+  1d22bb0e4f27cbe6 68-76,79
+src/components/transactions/Swap/warnings/postInputs/ZeroLTVDestinationWarning.tsx
+  1d22bb0e4f27cbe6 4,10-11,20-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "546d2d53a6dc9425ae33a1878e72bb6c14b6bada",
+  "prompts": {
+    "1d22bb0e4f27cbe6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e98d0701-ba0f-4049-97da-cb133ecb467e",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 26,
+      "total_deletions": 8,
+      "accepted_lines": 26,
+      "overriden_lines": 0
+    }
+  }
+}

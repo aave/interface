@@ -1,0 +1,23 @@
+src/hooks/useStakeTokenAPR.ts
+  294dc619d8c286c5 32-47,49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "9e5ff90542f33c57003bea671f964c7dc8775ff7",
+  "prompts": {
+    "294dc619d8c286c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b988b1bc-1541-4768-a390-a7dd901dcd78",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 21,
+      "overriden_lines": 0
+    }
+  }
+}

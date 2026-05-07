@@ -1,0 +1,29 @@
+src/components/transactions/Swap/warnings/SwapPostInputWarnings.tsx
+  1d22bb0e4f27cbe6 18,45
+src/components/transactions/Swap/warnings/postInputs/index.ts
+  1d22bb0e4f27cbe6 13
+src/components/transactions/Swap/warnings/postInputs/ZeroLTVDestinationWarning.tsx
+  1d22bb0e4f27cbe6 1-31
+src/utils/hfUtils.ts
+  1d22bb0e4f27cbe6 68-72,75
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "3b37e3974742f2c2236bea4b02a9fa83caa5dba4",
+  "prompts": {
+    "1d22bb0e4f27cbe6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e98d0701-ba0f-4049-97da-cb133ecb467e",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 345,
+      "total_deletions": 11,
+      "accepted_lines": 41,
+      "overriden_lines": 0
+    }
+  }
+}

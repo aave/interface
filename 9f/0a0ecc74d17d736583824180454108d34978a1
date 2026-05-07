@@ -1,0 +1,25 @@
+next.config.js
+  062b720160a324cc 1,13-19,43-47
+pages/_app.page.tsx
+  062b720160a324cc 4,106-118
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "9f0a0ecc74d17d736583824180454108d34978a1",
+  "prompts": {
+    "062b720160a324cc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a3872dd3-ca5a-4507-9fe0-eef1e4fd7a7e",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 308,
+      "overriden_lines": 0
+    }
+  }
+}

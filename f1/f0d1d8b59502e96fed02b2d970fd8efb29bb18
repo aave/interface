@@ -1,0 +1,25 @@
+src/hooks/useReserveIncentives.ts
+  75b9299156f11fb4 126,141,247,260
+src/hooks/useMerklIncentives.ts
+  75b9299156f11fb4 104,106
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "f1f0d1d8b59502e96fed02b2d970fd8efb29bb18",
+  "prompts": {
+    "75b9299156f11fb4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2352eaee-0546-4b87-88fd-3bf334c6e5eb",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 6,
+      "total_deletions": 6,
+      "accepted_lines": 6,
+      "overriden_lines": 0
+    }
+  }
+}

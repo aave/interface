@@ -1,0 +1,31 @@
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+  9fa3f3e6bab14575 125
+src/ui-config/queries.ts
+  9fa3f3e6bab14575 101-102,111
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+  9fa3f3e6bab14575 125
+src/components/transactions/Swap/hooks/useSwapQuote.ts
+  9fa3f3e6bab14575 423-424
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+  9fa3f3e6bab14575 113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8",
+  "base_commit_sha": "94ac4b6ee9247cb1da3cb7d3b0402b079f3c017d",
+  "prompts": {
+    "9fa3f3e6bab14575": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "268e7ed5-ffa3-492f-a6c4-25bb65640906",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Martin Grabina",
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 4,
+      "accepted_lines": 3999,
+      "overriden_lines": 1
+    }
+  }
+}

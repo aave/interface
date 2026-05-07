@@ -1,0 +1,23 @@
+src/store/protocolDataSlice.ts
+  ea88da25b88e3b78 26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "01dffad12749b2a3fa1ccd13345c473283628a0e",
+  "prompts": {
+    "ea88da25b88e3b78": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f0e82437-61f1-431d-a997-ebbdeaf55028",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Developers",
+      "messages": [],
+      "total_additions": 1,
+      "total_deletions": 2,
+      "accepted_lines": 1,
+      "overriden_lines": 0
+    }
+  }
+}
