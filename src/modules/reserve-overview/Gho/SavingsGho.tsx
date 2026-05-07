@@ -29,8 +29,8 @@ export const SavingsGho = () => {
   const { openSavingsGhoDeposit, openSavingsGhoWithdraw } = useModalContext();
   const now = useCurrentTimestamp(1);
   const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
-  const savingsGhoAPY = savingsGhoIncentive?.apr.value
-    ? convertAprToApy(Number(savingsGhoIncentive.apr.value))
+  const savingsGhoAPY = savingsGhoIncentive?.aprDecimal
+    ? convertAprToApy(Number(savingsGhoIncentive.aprDecimal))
     : 0;
 
   const stakeData = stakeGeneralResult?.[0];

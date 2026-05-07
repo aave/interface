@@ -19,7 +19,7 @@ export const SavingsGhoBanner = () => {
 
   const currentMarketData = useRootStore((store) => store.currentMarketData);
 
-  const { data: savingsGhoIncentive, loading: savingsGhoIncentiveLoading } =
+  const { data: savingsGhoIncentive, isLoading: savingsGhoIncentiveLoading } =
     useSavingsGhoIncentive();
   const { data: stakeGeneralResult, isLoading: stakeDataLoading } = useGeneralStakeUiData(
     currentMarketData,
@@ -139,8 +139,8 @@ export const SavingsGhoBanner = () => {
                 percent
                 variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
                 value={
-                  savingsGhoIncentive?.apr.value
-                    ? convertAprToApy(Number(savingsGhoIncentive.apr.value))
+                  savingsGhoIncentive?.aprDecimal
+                    ? convertAprToApy(Number(savingsGhoIncentive.aprDecimal))
                     : 0
                 }
               />
@@ -177,7 +177,7 @@ export const SavingsGhoBanner = () => {
 
 const GhoSavingsBannerMobile = () => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const { data: savingsGhoIncentive, loading: savingsGhoIncentiveLoading } =
+  const { data: savingsGhoIncentive, isLoading: savingsGhoIncentiveLoading } =
     useSavingsGhoIncentive();
   const { data: stakeGeneralResult, isLoading: stakeDataLoading } = useGeneralStakeUiData(
     currentMarketData,
@@ -265,8 +265,8 @@ const GhoSavingsBannerMobile = () => {
                     percent
                     variant="secondary14"
                     value={
-                      savingsGhoIncentive?.apr.value
-                        ? convertAprToApy(Number(savingsGhoIncentive.apr.value))
+                      savingsGhoIncentive?.aprDecimal
+                        ? convertAprToApy(Number(savingsGhoIncentive.aprDecimal))
                         : 0
                     }
                   />

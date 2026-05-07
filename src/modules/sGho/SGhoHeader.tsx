@@ -63,8 +63,8 @@ export const SGHOHeader: React.FC = () => {
     [, , stkGho] = stakeGeneralResult;
   }
 
-  const savingsGhoAPY = savingsGhoIncentive?.apr.value
-    ? convertAprToApy(new BigNumber(savingsGhoIncentive.apr.value).toNumber())
+  const savingsGhoAPY = savingsGhoIncentive?.aprDecimal
+    ? convertAprToApy(new BigNumber(savingsGhoIncentive.aprDecimal).toNumber())
     : 0;
 
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
@@ -131,7 +131,7 @@ const SGhoHeaderUserDetails = ({
   symbolsTypographyVariant: 'secondary16' | 'secondary21';
   stkGho: StakeTokenFormatted;
 }) => {
-  const { data: savingsGhoIncentive, loading: isLoadingSavingsGhoIncentive } =
+  const { data: savingsGhoIncentive, isLoading: isLoadingSavingsGhoIncentive } =
     useSavingsGhoIncentive();
   const { supplyReserves } = useAppDataContext();
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, Stake.gho);
@@ -166,8 +166,8 @@ const SGhoHeaderUserDetails = ({
 
   // Calculate estimated weekly rewards with precision
   // Formula: (balance * APR) / 52 weeks
-  const aprBN = savingsGhoIncentive?.apr.value
-    ? new BigNumber(savingsGhoIncentive.apr.value)
+  const aprBN = savingsGhoIncentive?.aprDecimal
+    ? new BigNumber(savingsGhoIncentive.aprDecimal)
     : new BigNumber(0);
   const balanceBN = new BigNumber(userSGhoBalanceFormatted || '0');
   const weeklyRewardsEstimateBN = balanceBN.multipliedBy(aprBN).dividedBy(52);
@@ -187,8 +187,8 @@ const SGhoHeaderUserDetails = ({
       <TopInfoPanelItem hideIcon title={<Trans>APY</Trans>} loading={isLoadingSavingsGhoIncentive}>
         <FormattedNumber
           value={
-            savingsGhoIncentive?.apr.value
-              ? convertAprToApy(valueToBigNumber(savingsGhoIncentive.apr.value).toNumber())
+            savingsGhoIncentive?.aprDecimal
+              ? convertAprToApy(valueToBigNumber(savingsGhoIncentive.aprDecimal).toNumber())
               : 0
           }
           variant={valueTypographyVariant}
