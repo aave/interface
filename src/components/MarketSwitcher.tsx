@@ -10,6 +10,7 @@ import {
   InputAdornment,
   Popover,
   SvgIcon,
+  Switch,
   TextField,
   Tooltip,
   Typography,
@@ -111,13 +112,12 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
   );
 };
 
-type MarketCategory = 'ethereum' | 'l2' | 'other';
+type MarketCategory = 'ethereum' | 'l2' | 'other' | 'legacy';
 
 const MARKET_CATEGORY: Record<string, MarketCategory> = {
   // Ethereum mainnet instances
   Core: 'ethereum',
   Prime: 'ethereum',
-  EtherFi: 'ethereum',
   'Aave Horizon': 'ethereum',
   // L2 networks
   Base: 'l2',
@@ -125,15 +125,11 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   OP: 'l2',
   Mantle: 'l2',
   Linea: 'l2',
-  Scroll: 'l2',
-  ZKsync: 'l2',
   Polygon: 'l2',
   Ink: 'l2',
   'X Layer': 'l2',
   Celo: 'l2',
-  Soneium: 'l2',
   MegaETH: 'l2',
-  Metis: 'l2',
   // Other L1 chains
   Plasma: 'other',
   Avalanche: 'other',
@@ -141,6 +137,12 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   Gnosis: 'other',
   Sonic: 'other',
   Aptos: 'other',
+  // Legacy markets
+  EtherFi: 'legacy',
+  ZKsync: 'legacy',
+  Soneium: 'legacy',
+  Metis: 'legacy',
+  Scroll: 'legacy',
 };
 
 const getMarketCategory = (marketId: CustomMarket): MarketCategory => {
@@ -184,6 +186,7 @@ const getMarketOrder = (marketId: CustomMarket): number => {
 export const MarketSwitcher = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showLegacy, setShowLegacy] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const open = Boolean(anchorEl);
 
@@ -238,7 +241,7 @@ export const MarketSwitcher = () => {
   // Filter to V3 markets only
   const v3Markets = useMemo(() => availableMarkets.filter((id) => marketsData[id].v3), []);
 
-  const { pinned, ethereum, l2, other } = useMemo(() => {
+  const { pinned, ethereum, l2, other, legacy } = useMemo(() => {
     const query = searchQuery.toLowerCase();
     const filtered = v3Markets.filter((id) => {
       const { market } = getMarketInfoById(id);
@@ -255,6 +258,7 @@ export const MarketSwitcher = () => {
       ethereum: unpinned.filter((id) => getMarketCategory(id) === 'ethereum'),
       l2: unpinned.filter((id) => getMarketCategory(id) === 'l2'),
       other: unpinned.filter((id) => getMarketCategory(id) === 'other'),
+      legacy: unpinned.filter((id) => getMarketCategory(id) === 'legacy'),
     };
   }, [v3Markets, searchQuery, favoriteMarkets, isFavoriteMarket]);
 
@@ -487,8 +491,13 @@ export const MarketSwitcher = () => {
         />
       </Box>
 
-      {/* Scrollable content */}
-      <Box sx={{ overflowY: 'auto', flex: 1, pb: 1 }}>
+      {/* Content (scrolls on mobile, extends on desktop) */}
+      <Box
+        sx={{
+          pb: 1,
+          ...(mobile && { overflowY: 'auto', flex: 1 }),
+        }}
+      >
         {/* Favourites */}
         {pinned.length > 0 && (
           <Box>
@@ -518,7 +527,9 @@ export const MarketSwitcher = () => {
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {ethereum.map((id) => renderGridItem(id, mobile))}
             </Box>
-            <Divider sx={{ my: 1 }} />
+            {(other.length > 0 || l2.length > 0 || (showLegacy && legacy.length > 0)) && (
+              <Divider sx={{ my: 1 }} />
+            )}
           </Box>
         )}
 
@@ -529,7 +540,7 @@ export const MarketSwitcher = () => {
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {other.map((id) => renderGridItem(id, mobile))}
             </Box>
-            <Divider sx={{ my: 1 }} />
+            {(l2.length > 0 || (showLegacy && legacy.length > 0)) && <Divider sx={{ my: 1 }} />}
           </Box>
         )}
 
@@ -539,6 +550,17 @@ export const MarketSwitcher = () => {
             {sectionHeader(<Trans>L2 Networks</Trans>)}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {l2.map((id) => renderGridItem(id, mobile))}
+            </Box>
+            {showLegacy && legacy.length > 0 && <Divider sx={{ my: 1 }} />}
+          </Box>
+        )}
+
+        {/* Legacy */}
+        {showLegacy && legacy.length > 0 && (
+          <Box>
+            {sectionHeader(<Trans>Legacy</Trans>)}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+              {legacy.map((id) => renderGridItem(id, mobile))}
             </Box>
           </Box>
         )}
@@ -551,6 +573,35 @@ export const MarketSwitcher = () => {
             </Typography>
           </Box>
         )}
+      </Box>
+
+      {/* Legacy markets toggle */}
+      <Box
+        sx={{
+          borderTop: '1px solid',
+          borderColor: 'divider',
+          px: '24px',
+          py: 1,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: '14px',
+            fontWeight: 500,
+            letterSpacing: '0.15px',
+            color: 'text.secondary',
+          }}
+        >
+          <Trans>Show legacy markets</Trans>
+        </Typography>
+        <Switch
+          checked={showLegacy}
+          onChange={(e) => setShowLegacy(e.target.checked)}
+          inputProps={{ 'aria-label': t`Show legacy markets` }}
+        />
       </Box>
     </>
   );
@@ -709,7 +760,6 @@ export const MarketSwitcher = () => {
               elevation: 0,
               sx: {
                 width: 535,
-                maxHeight: 520,
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',

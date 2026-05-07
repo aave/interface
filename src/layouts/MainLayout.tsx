@@ -116,6 +116,17 @@ const getCampaignConfigs = () => ({
     bannerVersion: 'aave-pro-mainnet-v0',
     // icon: '/icons/networks/binance.svg',
   },
+
+  [ChainId.ink]: {
+    notifyText: 'Tydro is temporarily pausing all reserves.',
+    buttonText: 'Learn more',
+    buttonAction: {
+      type: 'url' as const,
+      value: 'https://x.com/tydrohq/status/2051383181874540957?s=20',
+      target: '_blank' as const,
+    },
+    bannerVersion: 'aave-ink-paused-v0',
+  },
 });
 
 // For defining Route specific campaigns if needed in future

@@ -1974,6 +1974,10 @@ msgstr "Protocol borrow cap is at 100% for this asset. Further borrowing unavail
 msgid "Disabling E-Mode"
 msgstr "Disabling E-Mode"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Legacy"
+msgstr "Legacy"
+
 #: src/modules/history/HistoryWrapper.tsx
 msgid "This list may not include all your swaps."
 msgstr "This list may not include all your swaps."
@@ -4207,6 +4211,11 @@ msgstr "Isolated Debt Ceiling"
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 msgid "Protocol supply cap is at 100% for this asset. Further supply unavailable."
 msgstr "Protocol supply cap is at 100% for this asset. Further supply unavailable."
+
+#: src/components/MarketSwitcher.tsx
+#: src/components/MarketSwitcher.tsx
+msgid "Show legacy markets"
+msgstr "Show legacy markets"
 
 #: src/layouts/SupportModal.tsx
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"

@@ -116,11 +116,7 @@ export const SwapErrors = ({
     );
   }
 
-  if (
-    isProtocolSwapState(state) &&
-    hasInsufficientLiquidity(state) &&
-    state.swapType !== SwapType.RepayWithCollateral
-  ) {
+  if (isProtocolSwapState(state) && hasInsufficientLiquidity(state)) {
     return (
       <InsufficientLiquidityBlockingGuard
         state={state}

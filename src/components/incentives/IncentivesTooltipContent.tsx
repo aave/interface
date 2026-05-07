@@ -238,7 +238,7 @@ const IncentivesSymbolMap: {
     symbol: 'aGHO',
     aToken: true,
   },
-  aInkWlUSDe: {
+  aMegUSDe: {
     tokenIconSymbol: 'USDe',
     symbol: 'aUSDe',
     aToken: true,
