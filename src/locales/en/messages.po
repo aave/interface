@@ -681,10 +681,6 @@ msgstr "Balance to revoke"
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
 
-#: src/components/MarketSwitcher.tsx
-msgid "The Ink instance is governed by the Ink Foundation"
-msgstr "The Ink instance is governed by the Ink Foundation"
-
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "View contract"
 msgstr "View contract"
@@ -2757,6 +2753,10 @@ msgstr "Available on"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
 msgstr "starts"
+
+#: src/components/MarketSwitcher.tsx
+msgid "This Ink instance is operated by Tydro and governed by the Ink Foundation, independent from Aave DAO operated markets."
+msgstr "This Ink instance is operated by Tydro and governed by the Ink Foundation, independent from Aave DAO operated markets."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
