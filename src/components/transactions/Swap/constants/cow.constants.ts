@@ -182,7 +182,7 @@ export const COW_PARTNER_FEE = (
   };
 };
 
-export const FLASH_LOAN_FEE_BPS = 5;
+export const FLASH_LOAN_FEE_BPS = 0;
 
 export const COW_APP_DATA = (
   tokenFromSymbol: string,
