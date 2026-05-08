@@ -92,7 +92,7 @@ export const calculateInstanceAddress = async ({
   };
 
   const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
-    flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
+    flashLoanFeeBps: state.flashLoanFeeBps ?? FLASH_LOAN_FEE_BPS,
     sellAmount: BigInt(sellAmountWithMarginForDustProtection),
   });
 
@@ -180,7 +180,7 @@ export const calculateFlashLoanAmounts = (
 
   const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
     sellAmount: sellAmount,
-    flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
+    flashLoanFeeBps: state.flashLoanFeeBps ?? FLASH_LOAN_FEE_BPS,
   });
 
   return {

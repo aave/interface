@@ -3,8 +3,7 @@ import { OrderKind } from '@cowprotocol/cow-sdk';
 import { Dispatch, useEffect } from 'react';
 import { useRootStore } from 'src/store/root';
 
-import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../constants/cow.constants';
-import { PARASWAP_FLASH_LOAN_FEE_BPS } from '../constants/paraswap.constants';
+import { COW_PARTNER_FEE } from '../constants/cow.constants';
 import {
   isCowProtocolRates,
   OrderType,
@@ -13,6 +12,7 @@ import {
   SwapState,
   SwapType,
 } from '../types';
+import { useFlashLoanFeeBps } from './useFlashLoanFeeBps';
 import { swapTypesThatRequiresInvertedQuote } from './useSwapQuote';
 
 const marketOrderKindPerSwapType: Record<SwapType, OrderKind> = {
@@ -25,10 +25,6 @@ const marketOrderKindPerSwapType: Record<SwapType, OrderKind> = {
 
 const isPositionSwap = (swapType: SwapType, usingFlashloan: boolean) => {
   return swapType != SwapType.Swap && usingFlashloan;
-};
-
-const getFlashLoanFeeBps = (provider: SwapProvider) => {
-  return provider === SwapProvider.COW_PROTOCOL ? FLASH_LOAN_FEE_BPS : PARASWAP_FLASH_LOAN_FEE_BPS;
 };
 
 /**
@@ -50,6 +46,12 @@ export const useSwapOrderAmounts = ({
   setState: Dispatch<Partial<SwapState>>;
 }) => {
   const currentMarket = useRootStore((state) => state.currentMarket);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const resolvedFlashLoanFeeBps = useFlashLoanFeeBps({
+    provider: state.provider,
+    swapType: state.swapType,
+    marketData: currentMarketData,
+  });
 
   useEffect(() => {
     if (
@@ -96,7 +98,7 @@ export const useSwapOrderAmounts = ({
     // const partnerFeeToken = state.side === 'sell' ? state.destinationToken : state.sourceToken;
 
     const flashLoanFeeBps = isPositionSwap(state.swapType, state.useFlashloan ?? false)
-      ? getFlashLoanFeeBps(state.provider)
+      ? resolvedFlashLoanFeeBps
       : 0;
     const flashLoanFeeAmount =
       state.side == 'sell'
@@ -354,6 +356,7 @@ export const useSwapOrderAmounts = ({
       networkFeeAmountInBuyFormatted,
       partnerFeeAmountFormatted: partnerFeeAmount.toFixed(),
       flashLoanFeeAmountFormatted: flashLoanFeeAmount.toFixed(),
+      flashLoanFeeBps,
       partnerFeeBps: partnetFeeBps,
     });
   }, [
@@ -366,5 +369,6 @@ export const useSwapOrderAmounts = ({
     state.swapType,
     state.orderType,
     state.useFlashloan,
+    resolvedFlashLoanFeeBps,
   ]);
 };

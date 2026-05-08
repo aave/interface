@@ -31,8 +31,8 @@ export const calculateParaswapFlashLoanFee = (
 
   // Calculate fee: flashloan amount * fee bps / 10000
   // The flashloan amount is the sell amount (collateral being swapped)
-  const flashLoanFeeAmount =
-    (state.sellAmountBigInt * BigInt(PARASWAP_FLASH_LOAN_FEE_BPS)) / BigInt(10000);
+  const feeBps = state.flashLoanFeeBps ?? PARASWAP_FLASH_LOAN_FEE_BPS;
+  const flashLoanFeeAmount = (state.sellAmountBigInt * BigInt(feeBps)) / BigInt(10000);
 
   // Format the fee amount
   const flashLoanFeeFormatted = valueToBigNumber(flashLoanFeeAmount.toString())

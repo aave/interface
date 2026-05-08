@@ -213,7 +213,7 @@ export const RepayWithCollateralActionsViaCoW = ({
         : undefined;
 
       const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
-        flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
+        flashLoanFeeBps: state.flashLoanFeeBps ?? FLASH_LOAN_FEE_BPS,
         sellAmount: BigInt(sellAmountWithMarginForDustProtection),
       });
 
