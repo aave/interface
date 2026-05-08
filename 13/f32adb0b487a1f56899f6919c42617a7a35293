@@ -1,0 +1,24 @@
+src/components/transactions/Swap/hooks/useFlashLoanFeeBps.ts
+  s_a51ccd4991d535::t_f21df0fa4b8d88 28-30,48-56,67,69-71,73,89-94,97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "13f32adb0b487a1f56899f6919c42617a7a35293",
+  "prompts": {},
+  "humans": {
+    "h_7c3b9193a510d5": {
+      "author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  },
+  "sessions": {
+    "s_a51ccd4991d535": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5b49bfca-5ac8-4762-a1f5-6527caa277c2",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
