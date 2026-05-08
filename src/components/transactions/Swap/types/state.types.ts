@@ -289,7 +289,7 @@ export const swapDefaultState: SwapState = {
   networkFeeAmountInBuyFormatted: '0',
   partnerFeeAmountFormatted: '0',
   flashLoanFeeAmountFormatted: '0',
-  flashLoanFeeBps: 0,
+  flashLoanFeeBps: undefined,
   partnerFeeBps: 0,
   limitsOrderButtonBlocked: false,
   showSlippageWarning: false,

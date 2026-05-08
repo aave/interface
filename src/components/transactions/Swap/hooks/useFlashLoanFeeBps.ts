@@ -7,7 +7,9 @@ import {
   AaveV3EthereumEtherFi,
   AaveV3EthereumLido,
   AaveV3Gnosis,
+  AaveV3Linea,
   AaveV3Optimism,
+  AaveV3Plasma,
   AaveV3Polygon,
   AaveV3Sonic,
 } from '@aave-dao/aave-address-book';
@@ -35,6 +37,8 @@ const ACL_MANAGER_BY_MARKET: Partial<Record<CustomMarket, string>> = {
   [CustomMarket.proto_sonic_v3]: AaveV3Sonic.ACL_MANAGER,
   [CustomMarket.proto_gnosis_v3]: AaveV3Gnosis.ACL_MANAGER,
   [CustomMarket.proto_bnb_v3]: AaveV3BNB.ACL_MANAGER,
+  [CustomMarket.proto_linea_v3]: AaveV3Linea.ACL_MANAGER,
+  [CustomMarket.proto_plasma_v3]: AaveV3Plasma.ACL_MANAGER,
 };
 
 const fallbackBps = (provider: SwapProvider): number =>

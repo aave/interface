@@ -98,7 +98,11 @@ export const useSwapOrderAmounts = ({
     // const partnerFeeToken = state.side === 'sell' ? state.destinationToken : state.sourceToken;
 
     const usingFlashloan = isPositionSwap(state.swapType, state.useFlashloan ?? false);
-    if (usingFlashloan && resolvedFlashLoanFeeBps === undefined) return;
+    if (usingFlashloan && resolvedFlashLoanFeeBps === undefined) {
+      // Clear any stale fee from a previous render so submit handlers see the loading state.
+      if (state.flashLoanFeeBps !== undefined) setState({ flashLoanFeeBps: undefined });
+      return;
+    }
     const flashLoanFeeBps = usingFlashloan ? (resolvedFlashLoanFeeBps as number) : 0;
     const flashLoanFeeAmount =
       state.side == 'sell'
