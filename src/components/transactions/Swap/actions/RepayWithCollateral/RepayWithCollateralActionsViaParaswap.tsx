@@ -103,10 +103,6 @@ export const RepayWithCollateralActionsViaParaswap = ({
     if (!state.swapRate || !isParaswapRates(state.swapRate))
       throw new Error('Route required to build transaction');
 
-    if (state.flashLoanFeeBps === undefined) {
-      throw new Error('Flashloan fee unavailable: on-chain ACLManager check has not resolved.');
-    }
-
     setMainTxState({
       txHash: undefined,
       loading: true,

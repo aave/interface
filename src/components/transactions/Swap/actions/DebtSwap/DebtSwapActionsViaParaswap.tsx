@@ -104,10 +104,6 @@ export const DebtSwapActionsViaParaswap = ({
         throw new Error('No swap rate found');
       }
 
-      if (state.flashLoanFeeBps === undefined) {
-        throw new Error('Flashloan fee unavailable: on-chain ACLManager check has not resolved.');
-      }
-
       const inferredKind = state.swapRate.optimalRateData.side === 'SELL' ? 'sell' : 'buy';
 
       // CallData for ParaswapRoute, which is inversed to the actual swap (dest -> src)

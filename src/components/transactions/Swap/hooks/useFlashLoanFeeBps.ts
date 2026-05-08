@@ -25,6 +25,9 @@ import { SwapProvider, SwapType } from '../types';
 
 const ACL_MANAGER_ABI = ['function isFlashBorrower(address) view returns (bool)'];
 
+// CoW per-market ACLManager addresses. Only CoW flows do the on-chain lookup —
+// Paraswap flows always have the user EOA as msg.sender to Pool.flashLoan, so
+// they pay the default premium and don't need a check.
 const ACL_MANAGER_BY_MARKET: Partial<Record<CustomMarket, string>> = {
   [CustomMarket.proto_mainnet_v3]: AaveV3Ethereum.ACL_MANAGER,
   [CustomMarket.proto_lido_v3]: AaveV3EthereumLido.ACL_MANAGER,
@@ -41,41 +44,16 @@ const ACL_MANAGER_BY_MARKET: Partial<Record<CustomMarket, string>> = {
   [CustomMarket.proto_plasma_v3]: AaveV3Plasma.ACL_MANAGER,
 };
 
-const fallbackBps = (provider: SwapProvider): number =>
-  provider === SwapProvider.COW_PROTOCOL ? FLASH_LOAN_FEE_BPS : PARASWAP_FLASH_LOAN_FEE_BPS;
-
-const resolveTarget = (
-  provider: SwapProvider,
-  swapType: SwapType,
-  marketData: MarketDataType
-): string | undefined => {
-  if (provider === SwapProvider.COW_PROTOCOL) {
-    return ADAPTER_FACTORY[marketData.chainId as unknown as SupportedChainId] || undefined;
-  }
-  if (provider === SwapProvider.PARASWAP) {
-    switch (swapType) {
-      case SwapType.CollateralSwap:
-        return marketData.addresses.SWAP_COLLATERAL_ADAPTER;
-      case SwapType.RepayWithCollateral:
-        return marketData.addresses.REPAY_WITH_COLLATERAL_ADAPTER;
-      case SwapType.DebtSwap:
-        return marketData.addresses.DEBT_SWITCH_ADAPTER;
-      case SwapType.WithdrawAndSwap:
-        return marketData.addresses.WITHDRAW_SWITCH_ADAPTER;
-      default:
-        return undefined;
-    }
-  }
-  return undefined;
-};
-
 /**
- * Resolve the flashloan fee bps for the active swap by checking the market's
- * ACLManager.isFlashBorrower for the provider's target address. Returns 0 when
- * the target is whitelisted, the provider's default bps when it's not, and
- * `undefined` whenever we don't have an on-chain answer (query pending,
- * ACLManager unmapped for the market, or no target address resolvable). The
- * caller MUST refuse to submit a transaction while the value is undefined.
+ * Resolve the flashloan fee bps for the active swap.
+ *
+ * - CoW: msg.sender to Pool.flashLoan is the CoW factory. Check
+ *   ACLManager.isFlashBorrower(factory) on chain. Returns 0 when whitelisted,
+ *   FLASH_LOAN_FEE_BPS when not, and `undefined` while the query is pending or
+ *   when we can't run the check (factory or ACLManager not mapped for the
+ *   chain). Submit handlers MUST refuse to send while the value is undefined.
+ * - Paraswap: msg.sender is always the user EOA, so the role can never apply.
+ *   Returns the constant immediately, no on-chain call.
  */
 export const useFlashLoanFeeBps = ({
   provider,
@@ -86,11 +64,13 @@ export const useFlashLoanFeeBps = ({
   swapType: SwapType;
   marketData: MarketDataType;
 }): number | undefined => {
+  const isCow = provider === SwapProvider.COW_PROTOCOL;
   const aclManager = ACL_MANAGER_BY_MARKET[marketData.market];
-  const target = resolveTarget(provider, swapType, marketData);
-  const defaultBps = fallbackBps(provider);
+  const target = isCow
+    ? ADAPTER_FACTORY[marketData.chainId as unknown as SupportedChainId] || undefined
+    : undefined;
 
-  const enabled = Boolean(aclManager && target);
+  const enabled = isCow && Boolean(aclManager && target);
 
   const { data: isWhitelisted } = useQuery({
     queryFn: async (): Promise<boolean> => {
@@ -106,7 +86,13 @@ export const useFlashLoanFeeBps = ({
     staleTime: 5 * 60 * 1000,
   });
 
+  if (!isCow) {
+    // Acknowledge swapType to keep the dep narrow even though Paraswap
+    // doesn't branch on it for fee resolution.
+    void swapType;
+    return PARASWAP_FLASH_LOAN_FEE_BPS;
+  }
   if (!enabled) return undefined;
   if (isWhitelisted === undefined) return undefined;
-  return isWhitelisted ? 0 : defaultBps;
+  return isWhitelisted ? 0 : FLASH_LOAN_FEE_BPS;
 };

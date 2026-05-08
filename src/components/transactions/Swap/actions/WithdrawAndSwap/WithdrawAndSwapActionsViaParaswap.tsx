@@ -82,10 +82,6 @@ export const WithdrawAndSwapActionsViaParaswap = ({
       return;
     }
 
-    if (state.flashLoanFeeBps === undefined) {
-      throw new Error('Flashloan fee unavailable: on-chain ACLManager check has not resolved.');
-    }
-
     try {
       setMainTxState({ ...mainTxState, loading: true });
       const { swapCallData, augustus } = await getTransactionParams(
