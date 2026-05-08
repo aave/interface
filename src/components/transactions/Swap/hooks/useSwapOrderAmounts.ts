@@ -100,14 +100,6 @@ export const useSwapOrderAmounts = ({
     const usingFlashloan = isPositionSwap(state.swapType, state.useFlashloan ?? false);
     if (usingFlashloan && resolvedFlashLoanFeeBps === undefined) return;
     const flashLoanFeeBps = usingFlashloan ? (resolvedFlashLoanFeeBps as number) : 0;
-    console.log('[FlashLoanFeeBps] useSwapOrderAmounts', {
-      swapType: state.swapType,
-      provider: state.provider,
-      useFlashloanRaw: state.useFlashloan,
-      isPositionSwap: usingFlashloan,
-      resolvedFlashLoanFeeBps,
-      flashLoanFeeBpsApplied: flashLoanFeeBps,
-    });
     const flashLoanFeeAmount =
       state.side == 'sell'
         ? valueToBigNumber(state.outputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000)

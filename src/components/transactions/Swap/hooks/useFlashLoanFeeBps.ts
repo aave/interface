@@ -88,51 +88,21 @@ export const useFlashLoanFeeBps = ({
 
   const enabled = Boolean(aclManager && target);
 
-  const {
-    data: isWhitelisted,
-    status,
-    error,
-  } = useQuery({
+  const { data: isWhitelisted } = useQuery({
     queryFn: async (): Promise<boolean> => {
       const contract = new Contract(
         aclManager as string,
         ACL_MANAGER_ABI,
         getProvider(marketData.chainId)
       );
-      const result: boolean = await contract.isFlashBorrower(target);
-      console.log('[FlashLoanFeeBps] queryFn result', {
-        chainId: marketData.chainId,
-        market: marketData.market,
-        provider,
-        swapType,
-        aclManager,
-        target,
-        isFlashBorrower: result,
-      });
-      return result;
+      return contract.isFlashBorrower(target);
     },
     queryKey: ['flashBorrowerCheck', marketData.chainId, aclManager, target],
     enabled,
     staleTime: 5 * 60 * 1000,
   });
 
-  const effective =
-    !enabled || isWhitelisted === undefined ? undefined : isWhitelisted ? 0 : defaultBps;
-
-  console.log('[FlashLoanFeeBps] resolve', {
-    chainId: marketData.chainId,
-    market: marketData.market,
-    provider,
-    swapType,
-    aclManager,
-    target,
-    enabled,
-    queryStatus: status,
-    queryError: error?.message,
-    isWhitelisted,
-    defaultBps,
-    effective,
-  });
-
-  return effective;
+  if (!enabled) return undefined;
+  if (isWhitelisted === undefined) return undefined;
+  return isWhitelisted ? 0 : defaultBps;
 };
