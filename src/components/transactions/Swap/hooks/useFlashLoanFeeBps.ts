@@ -69,8 +69,9 @@ const resolveTarget = (
  * Resolve the flashloan fee bps for the active swap by checking the market's
  * ACLManager.isFlashBorrower for the provider's target address. Returns 0 when
  * the target is whitelisted, the provider's default bps when it's not, and
- * `undefined` while the on-chain query is in flight so callers can hold off
- * computing order amounts until the answer is in.
+ * `undefined` whenever we don't have an on-chain answer (query pending,
+ * ACLManager unmapped for the market, or no target address resolvable). The
+ * caller MUST refuse to submit a transaction while the value is undefined.
  */
 export const useFlashLoanFeeBps = ({
   provider,
@@ -101,7 +102,7 @@ export const useFlashLoanFeeBps = ({
     staleTime: 5 * 60 * 1000,
   });
 
-  if (!enabled) return defaultBps;
+  if (!enabled) return undefined;
   if (isWhitelisted === undefined) return undefined;
   return isWhitelisted ? 0 : defaultBps;
 };

@@ -183,10 +183,13 @@ export const DebtSwapActionsViaCoW = ({
         !state.sellAmountBigInt ||
         !state.sellAmountToken ||
         !state.buyAmountBigInt ||
-        !state.buyAmountToken ||
-        state.flashLoanFeeBps === undefined
+        !state.buyAmountToken
       )
         return;
+
+      if (state.flashLoanFeeBps === undefined) {
+        throw new Error('Flashloan fee unavailable: on-chain ACLManager check has not resolved.');
+      }
 
       const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(
         state.chainId,
