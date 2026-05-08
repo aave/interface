@@ -66,10 +66,11 @@ const resolveTarget = (
 };
 
 /**
- * Resolve the flashloan fee bps for the active swap, defaulting to the
- * provider's hardcoded bps when the on-chain ACLManager check is unavailable
- * or pending. Returns 0 only when the target adapter (Paraswap per-flow) /
- * factory (CoW) is registered as a FLASH_BORROWER on the market's ACLManager.
+ * Resolve the flashloan fee bps for the active swap by checking the market's
+ * ACLManager.isFlashBorrower for the provider's target address. Returns 0 when
+ * the target is whitelisted, the provider's default bps when it's not, and
+ * `undefined` while the on-chain query is in flight so callers can hold off
+ * computing order amounts until the answer is in.
  */
 export const useFlashLoanFeeBps = ({
   provider,
@@ -79,10 +80,10 @@ export const useFlashLoanFeeBps = ({
   provider: SwapProvider;
   swapType: SwapType;
   marketData: MarketDataType;
-}): number => {
+}): number | undefined => {
   const aclManager = ACL_MANAGER_BY_MARKET[marketData.market];
   const target = resolveTarget(provider, swapType, marketData);
-  const fallback = fallbackBps(provider);
+  const defaultBps = fallbackBps(provider);
 
   const enabled = Boolean(aclManager && target);
 
@@ -100,5 +101,7 @@ export const useFlashLoanFeeBps = ({
     staleTime: 5 * 60 * 1000,
   });
 
-  return isWhitelisted === true ? 0 : fallback;
+  if (!enabled) return defaultBps;
+  if (isWhitelisted === undefined) return undefined;
+  return isWhitelisted ? 0 : defaultBps;
 };

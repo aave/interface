@@ -97,9 +97,9 @@ export const useSwapOrderAmounts = ({
         : valueToBigNumber(state.inputAmount).multipliedBy(partnetFeeBps).dividedBy(10000);
     // const partnerFeeToken = state.side === 'sell' ? state.destinationToken : state.sourceToken;
 
-    const flashLoanFeeBps = isPositionSwap(state.swapType, state.useFlashloan ?? false)
-      ? resolvedFlashLoanFeeBps
-      : 0;
+    const usingFlashloan = isPositionSwap(state.swapType, state.useFlashloan ?? false);
+    if (usingFlashloan && resolvedFlashLoanFeeBps === undefined) return;
+    const flashLoanFeeBps = usingFlashloan ? (resolvedFlashLoanFeeBps as number) : 0;
     const flashLoanFeeAmount =
       state.side == 'sell'
         ? valueToBigNumber(state.outputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000)

@@ -13,7 +13,7 @@ import { saveCowOrderToUserHistory } from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/react/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
+import { COW_PARTNER_FEE } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
   addOrderTypeToAppData,
@@ -181,7 +181,8 @@ export const RepayWithCollateralActionsViaCoW = ({
         !state.sellAmountBigInt ||
         !state.sellAmountToken ||
         !state.buyAmountBigInt ||
-        !state.buyAmountToken
+        !state.buyAmountToken ||
+        state.flashLoanFeeBps === undefined
       )
         return;
 
@@ -213,7 +214,7 @@ export const RepayWithCollateralActionsViaCoW = ({
         : undefined;
 
       const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
-        flashLoanFeeBps: state.flashLoanFeeBps ?? FLASH_LOAN_FEE_BPS,
+        flashLoanFeeBps: state.flashLoanFeeBps,
         sellAmount: BigInt(sellAmountWithMarginForDustProtection),
       });
 
