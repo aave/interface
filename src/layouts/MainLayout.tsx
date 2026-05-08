@@ -19,7 +19,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
   },
 
   [ChainId.sonic]: {
@@ -30,7 +30,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/sonic.svg',
   },
 
@@ -42,7 +42,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
   },
 
   [ChainId.polygon]: {
@@ -53,7 +53,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/polygon.svg',
   },
 
@@ -65,7 +65,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/avalanche.svg',
   },
 
@@ -77,7 +77,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/arbitrum.svg',
   },
 
@@ -89,7 +89,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/optimism.svg',
   },
 
@@ -101,7 +101,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/gnosis.svg',
   },
 
@@ -113,7 +113,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/binance.svg',
   },
 
