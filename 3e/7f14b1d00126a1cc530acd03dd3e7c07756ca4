@@ -1,0 +1,33 @@
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+  s_a51ccd4991d535::t_402b69dc4e7709 171,175-177
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
+  s_a51ccd4991d535::t_ddef3ac75e5c5a 84-87
+src/components/transactions/Swap/hooks/useFlashLoanFeeBps.ts
+  s_a51ccd4991d535::t_f61c01ee63b106 72-74,105
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
+  s_a51ccd4991d535::t_b4e536c2d69263 106-109
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+  s_a51ccd4991d535::t_1f91ee9117211b 184,188-190
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+  s_a51ccd4991d535::t_3cb3361cbf8328 186,190-192
+src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
+  s_a51ccd4991d535::t_0f8673f6d5516f 85-88
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
+  s_a51ccd4991d535::t_14a26a5dd3dc51 107-110
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "3e7f14b1d00126a1cc530acd03dd3e7c07756ca4",
+  "prompts": {},
+  "sessions": {
+    "s_a51ccd4991d535": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5b49bfca-5ac8-4762-a1f5-6527caa277c2",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
