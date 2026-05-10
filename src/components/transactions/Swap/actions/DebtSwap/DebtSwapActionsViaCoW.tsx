@@ -60,9 +60,7 @@ export const DebtSwapActionsViaCoW = ({
   setState: Dispatch<Partial<SwapState>>;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  const [user, currentMarket] = useRootStore(
-    useShallow((state) => [state.account, state.currentMarket])
-  );
+  const [user] = useRootStore(useShallow((state) => [state.account]));
 
   const debtAmount = useCollateralsAmount();
 
@@ -94,7 +92,6 @@ export const DebtSwapActionsViaCoW = ({
       validTo,
       type: AaveFlashLoanType.DebtSwap,
       state,
-      market: currentMarket,
     })
       .catch((error) => {
         console.error('calculateInstanceAddress error', error);
@@ -122,7 +119,6 @@ export const DebtSwapActionsViaCoW = ({
     APP_CODE_PER_SWAP_TYPE[state.swapType],
     approvalTxState.loading,
     approvalTxState.success,
-    currentMarket,
   ]);
 
   const amountToApprove = useMemo(() => {
@@ -234,8 +230,7 @@ export const DebtSwapActionsViaCoW = ({
         partnerFee: COW_PARTNER_FEE(
           state.sellAmountToken.symbol,
           state.buyAmountToken.symbol,
-          state.swapType,
-          currentMarket
+          state.swapType
         ),
       };
 
