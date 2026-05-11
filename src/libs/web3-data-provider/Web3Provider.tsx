@@ -44,13 +44,17 @@ let didAutoConnectForCypress = false;
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
-  const { chainId, address } = useAccount();
+  const { chainId, address, status, connector } = useAccount();
   const { connect, connectors } = useConnect();
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-  const [setAccount, setConnectedAccountIsContract] = useRootStore(
-    useShallow((store) => [store.setAccount, store.setConnectedAccountIsContract])
+  const [setAccount, setConnectedAccountIsContract, setWalletType] = useRootStore(
+    useShallow((store) => [
+      store.setAccount,
+      store.setConnectedAccountIsContract,
+      store.setWalletType,
+    ])
   );
 
   const account = address;
@@ -202,6 +206,17 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   useEffect(() => {
     setAccount(account?.toLowerCase());
   }, [account, setAccount]);
+
+  // Drive walletType from wagmi's account state so it survives page reloads.
+  // ConnectKit's `onConnect` prop only fires on fresh connect (not on reconnect),
+  // which caused most transaction events to be tracked with walletType=undefined.
+  useEffect(() => {
+    if (status === 'connected' && connector?.id) {
+      setWalletType(connector.id);
+    } else if (status === 'disconnected') {
+      setWalletType(undefined);
+    }
+  }, [status, connector?.id, setWalletType]);
 
   useEffect(() => {
     if (readOnlyModeAddress) {
