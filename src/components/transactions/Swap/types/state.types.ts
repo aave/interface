@@ -97,6 +97,8 @@ export type TokensSwapState = {
   partnerFeeAmountFormatted?: string;
   /** Flash loan fee amount applied to this order, normalized to the fee token units (depends on side). */
   flashLoanFeeAmountFormatted?: string;
+  /** Flash loan fee in basis points used to compute flashLoanFeeAmountFormatted. Resolved on-chain from ACLManager.isFlashBorrower. */
+  flashLoanFeeBps?: number;
   /** Partner fee in basis points used to compute partnerFeeAmountFormatted. */
   partnerFeeBps?: number;
 
@@ -287,6 +289,7 @@ export const swapDefaultState: SwapState = {
   networkFeeAmountInBuyFormatted: '0',
   partnerFeeAmountFormatted: '0',
   flashLoanFeeAmountFormatted: '0',
+  flashLoanFeeBps: undefined,
   partnerFeeBps: 0,
   limitsOrderButtonBlocked: false,
   showSlippageWarning: false,

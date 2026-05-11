@@ -1,11 +1,12 @@
 import { valueToBigNumber } from '@aave/math-utils';
 
-import { PARASWAP_FLASH_LOAN_FEE_BPS } from '../../constants/paraswap.constants';
 import { SwapProvider, SwapState, SwapType } from '../../types';
 
 /**
  * Calculate flashloan fee amount for Paraswap adapter swaps.
- * The fee is 0.05% (5 bps) of the flashloan amount, which is the sell amount.
+ * The fee bps is resolved on-chain via ACLManager.isFlashBorrower; while the
+ * check is in flight `state.flashLoanFeeBps` is undefined and we return zeros
+ * so the caller doesn't render a stale value.
  *
  * @param state - Swap state
  * @returns Object containing flashloan fee amount in bigint and formatted string
@@ -21,7 +22,8 @@ export const calculateParaswapFlashLoanFee = (
     state.swapType === SwapType.Swap ||
     state.provider !== SwapProvider.PARASWAP ||
     !state.useFlashloan ||
-    !state.sellAmountBigInt
+    !state.sellAmountBigInt ||
+    state.flashLoanFeeBps === undefined
   ) {
     return {
       flashLoanFeeAmount: BigInt(0),
@@ -32,7 +34,7 @@ export const calculateParaswapFlashLoanFee = (
   // Calculate fee: flashloan amount * fee bps / 10000
   // The flashloan amount is the sell amount (collateral being swapped)
   const flashLoanFeeAmount =
-    (state.sellAmountBigInt * BigInt(PARASWAP_FLASH_LOAN_FEE_BPS)) / BigInt(10000);
+    (state.sellAmountBigInt * BigInt(state.flashLoanFeeBps)) / BigInt(10000);
 
   // Format the fee amount
   const flashLoanFeeFormatted = valueToBigNumber(flashLoanFeeAmount.toString())
