@@ -1,0 +1,22 @@
+src/hooks/useGetConnectedWalletType.ts
+  s_a135664e3d78d6::t_3cf251414e77ce 3,17,26,33,36-37,40,46,49-52,55
+src/components/transactions/Swap/actions/approval/useSwapTokenApproval.ts
+  s_a135664e3d78d6::t_4e3e923a68cdb7 112-116
+  s_a135664e3d78d6::t_272ec9f35a590b 270-273,275-279
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "9e98a9f9b919268a24d05d62a603f18b2fb03e67",
+  "prompts": {},
+  "sessions": {
+    "s_a135664e3d78d6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "594492a5-ea73-4d3f-ad16-97e8d3b1d916",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
