@@ -102,12 +102,21 @@ export const RepayModalContent = ({
     maxAmountToRepay = BigNumber.min(normalizedWalletBalance, debt);
   }
 
+  // Truncate to token decimals for any value that may flow back into the input
+  // or into parseUnits(). variableBorrows carries RAY-level precision, so when
+  // wallet >= debt the max collapses to debt with 18+ decimals and parseUnits
+  // throws on submission if the user edits the field. ROUND_DOWN keeps us at
+  // or below wallet balance; the "repay all" path still uses -1 / safeAmountToRepayAll.
+  const maxAmountToRepayDisplay = maxAmountToRepay
+    .decimalPlaces(poolReserve.decimals, BigNumber.ROUND_DOWN)
+    .toString(10);
+
   const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToRepay.toString(10) : _amount;
+  const amount = isMaxSelected ? maxAmountToRepayDisplay : _amount;
 
   const handleChange = (value: string) => {
     const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToRepay.toString(10) : value;
+    amountRef.current = maxSelected ? maxAmountToRepayDisplay : value;
     setAmount(value);
     if (maxSelected && (repayWithATokens || maxAmountToRepay.eq(debt))) {
       if (
@@ -131,7 +140,7 @@ export const RepayModalContent = ({
       setRepayMax(
         safeAmountToRepayAll.lt(balance)
           ? safeAmountToRepayAll.toString(10)
-          : maxAmountToRepay.toString(10)
+          : maxAmountToRepayDisplay
       );
     }
   };
@@ -193,7 +202,11 @@ export const RepayModalContent = ({
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
-  const maxRepayWithDustRemaining = isMaxSelected && amountAfterRepayInUsd.toNumber() > 0;
+  // After truncating maxAmountToRepayDisplay to token decimals, the displayed
+  // amount can leave a sub-decimal residual against the full-precision debt
+  // even though the actual submission (-1 / safeAmountToRepayAll) repays it all.
+  // Compare against the untruncated maxAmountToRepay to detect a real shortfall.
+  const maxRepayWithDustRemaining = isMaxSelected && maxAmountToRepay.lt(debt);
 
   // health factor calculations
   // we use usd values instead of MarketreferenceCurrency so it has same precision
@@ -245,7 +258,7 @@ export const RepayModalContent = ({
         assets={assets}
         onSelect={setTokenToRepayWith}
         isMaxSelected={isMaxSelected}
-        maxValue={maxAmountToRepay.toString(10)}
+        maxValue={maxAmountToRepayDisplay}
         balanceText={<Trans>Wallet balance</Trans>}
       />
 
@@ -304,7 +317,7 @@ export const RepayModalContent = ({
         repayWithATokens={repayWithATokens}
         setShowUSDTResetWarning={setShowUSDTResetWarning}
         chainId={currentChainId}
-        maxAmountToRepay={maxAmountToRepay.toString(10)}
+        maxAmountToRepay={maxAmountToRepayDisplay}
       />
     </>
   );
