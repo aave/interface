@@ -468,6 +468,10 @@ msgstr "To continue, you need to grant smart contracts permission to move your f
 msgid "View all votes"
 msgstr "View all votes"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show assets <$100k supply"
+msgstr "Show assets <$100k supply"
+
 #: pages/reserve-overview.page.tsx
 msgid "Overview"
 msgstr "Overview"
@@ -1918,10 +1922,6 @@ msgstr "Funds in the Safety Module"
 #: pages/500.page.tsx
 msgid "If the error continues to happen,<0/> you may report it to this"
 msgstr "If the error continues to happen,<0/> you may report it to this"
-
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Show Frozen or paused assets"
-msgstr "Show Frozen or paused assets"
 
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoDepositPanel.tsx
@@ -3999,6 +3999,10 @@ msgstr "You {action} <0/> {symbol}"
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Discord channel"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show frozen/paused assets"
+msgstr "Show frozen/paused assets"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
