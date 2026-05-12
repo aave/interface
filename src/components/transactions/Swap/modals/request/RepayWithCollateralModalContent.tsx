@@ -1,6 +1,7 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { useQueryClient } from '@tanstack/react-query';
+import { BigNumber } from 'bignumber.js';
 import {
   ComputedUserReserveData,
   ExtendedFormattedUser,
@@ -102,6 +103,16 @@ export const RepayWithCollateralModalContent = ({
   return <BaseSwapModalContent params={params} />;
 };
 
+// variableBorrows and underlyingBalance carry RAY-level precision
+// (scaledBalance * index / RAY), so their decimal strings can exceed the
+// token's native decimals. Clicking Max pipes that raw string into
+// inputAmount/outputAmount, and the Paraswap action layer forwards it to
+// parseUnits when the value isn't recomputed via safeAmountToRepayAll
+// (e.g. once the user edits the prefilled max) -- parseUnits then throws on
+// the excess decimals. Truncate down to what the token can represent.
+const truncateToTokenDecimals = (value: string, decimals: number) =>
+  new BigNumber(value).decimalPlaces(decimals, BigNumber.ROUND_DOWN).toString(10);
+
 // Tokens from are all current open debt positions
 const getTokensFrom = (
   user: ExtendedFormattedUser | undefined,
@@ -163,7 +174,10 @@ const getTokensFrom = (
         addressForUsdPrice: borrowPosition.underlyingAsset,
         underlyingAddress: borrowPosition.underlyingAsset,
         name: borrowPosition.reserve.name,
-        balance: borrowPosition.variableBorrows,
+        balance: truncateToTokenDecimals(
+          borrowPosition.variableBorrows,
+          borrowPosition.reserve.decimals
+        ),
         chainId,
         decimals: borrowPosition.reserve.decimals,
         symbol: nativeToken?.symbol ?? tokenFromList?.symbol ?? borrowPosition.reserve.symbol,
@@ -216,7 +230,7 @@ const getTokensTo = (
           decimals: baseToken.decimals,
           symbol: nativeToken?.symbol ?? baseToken.symbol,
           name: baseToken.name,
-          balance: position.underlyingBalance,
+          balance: truncateToTokenDecimals(position.underlyingBalance, baseToken.decimals),
           chainId,
           usdPrice: position.reserve.priceInUSD,
           supplyAPY: position.reserve.supplyAPY,
