@@ -43,23 +43,19 @@ const getTokenSelectionForQuote = (
   invertedQuoteRoute: boolean,
   state: SwapState
 ): TokenSelectionParams => {
-  // Note: Consider the quote an approximation, we prefer underlying address for better support while aTokens value should always match
   const srcTokenObj = invertedQuoteRoute ? state.destinationToken : state.sourceToken;
-  const srcToken =
-    state.useFlashloan == false &&
-    state.provider === SwapProvider.PARASWAP &&
-    state.swapType !== SwapType.WithdrawAndSwap &&
-    state.swapType !== SwapType.RepayWithCollateral
-      ? srcTokenObj.addressToSwap
-      : srcTokenObj.underlyingAddress;
   const destTokenObj = invertedQuoteRoute ? state.sourceToken : state.destinationToken;
-  const destToken =
-    state.useFlashloan == false &&
-    state.provider === SwapProvider.PARASWAP &&
-    state.swapType !== SwapType.WithdrawAndSwap &&
-    state.swapType !== SwapType.RepayWithCollateral
-      ? destTokenObj.addressToSwap
-      : destTokenObj.underlyingAddress;
+
+  // Quote tokens must match what the order will post on, otherwise CoW's per-pair volume-fee policy and gas estimate apply to a different pair than the order and the cushion computed in useSwapOrderAmounts comes out short.
+  const usesAddressToSwap =
+    state.useFlashloan === false &&
+    (state.provider === SwapProvider.COW_PROTOCOL ||
+      (state.provider === SwapProvider.PARASWAP &&
+        state.swapType !== SwapType.WithdrawAndSwap &&
+        state.swapType !== SwapType.RepayWithCollateral));
+
+  const srcToken = usesAddressToSwap ? srcTokenObj.addressToSwap : srcTokenObj.underlyingAddress;
+  const destToken = usesAddressToSwap ? destTokenObj.addressToSwap : destTokenObj.underlyingAddress;
 
   const srcDecimals = invertedQuoteRoute
     ? state.destinationToken.decimals
