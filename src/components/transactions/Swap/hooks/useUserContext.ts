@@ -12,23 +12,33 @@ export const useUserContext = ({ setState }: { setState: Dispatch<Partial<SwapSt
   const { chainId: connectedChainId } = useWeb3Context();
 
   useEffect(() => {
-    try {
-      if (user && connectedChainId) {
-        setState({ user });
-        getEthersProvider(wagmiConfig, { chainId: connectedChainId }).then((provider) => {
-          Promise.all([
-            isSmartContractWallet(user, provider),
-            isSafeWallet(user, provider),
-            isEip7702Wallet(user, provider),
-          ]).then(([isSmartContract, isSafe, isEip7702]) => {
-            setState({ userIsSmartContractWallet: isSmartContract });
-            setState({ userIsSafeWallet: isSafe });
-            setState({ userIsEip7702Wallet: isEip7702 });
-          });
+    if (!user || !connectedChainId) return;
+
+    let cancelled = false;
+    setState({ user });
+
+    getEthersProvider(wagmiConfig, { chainId: connectedChainId })
+      .then((provider) =>
+        Promise.all([
+          isSmartContractWallet(user, provider),
+          isSafeWallet(user, provider),
+          isEip7702Wallet(user, provider),
+        ])
+      )
+      .then(([isSmartContract, isSafe, isEip7702]) => {
+        if (cancelled) return;
+        setState({
+          userIsSmartContractWallet: isSmartContract,
+          userIsSafeWallet: isSafe,
+          userIsEip7702Wallet: isEip7702,
         });
-      }
-    } catch (error) {
-      console.error(error);
-    }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [user, connectedChainId]);
 };
