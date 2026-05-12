@@ -10,6 +10,19 @@ export const isSmartContractWallet = async (user: string, provider: JsonRpcProvi
   return code !== '0x';
 };
 
+export const isEip7702Wallet = async (
+  user: string,
+  provider: JsonRpcProvider
+): Promise<boolean> => {
+  try {
+    const code = await provider.getCode(user);
+    return isEip7702EOA(code, user);
+  } catch (error) {
+    console.error('Error detecting EIP-7702 delegation:', error);
+    return false;
+  }
+};
+
 // https://eips.ethereum.org/EIPS/eip-7702#abstract
 function isEip7702EOA(code: string, account: string): boolean {
   return code.startsWith('0xef0100') || code.toLowerCase() === account.toLowerCase();

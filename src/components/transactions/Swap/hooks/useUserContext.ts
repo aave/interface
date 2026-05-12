@@ -1,5 +1,5 @@
 import { Dispatch, useEffect } from 'react';
-import { isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
+import { isEip7702Wallet, isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { useRootStore } from 'src/store/root';
@@ -16,12 +16,15 @@ export const useUserContext = ({ setState }: { setState: Dispatch<Partial<SwapSt
       if (user && connectedChainId) {
         setState({ user });
         getEthersProvider(wagmiConfig, { chainId: connectedChainId }).then((provider) => {
-          Promise.all([isSmartContractWallet(user, provider), isSafeWallet(user, provider)]).then(
-            ([isSmartContract, isSafe]) => {
-              setState({ userIsSmartContractWallet: isSmartContract });
-              setState({ userIsSafeWallet: isSafe });
-            }
-          );
+          Promise.all([
+            isSmartContractWallet(user, provider),
+            isSafeWallet(user, provider),
+            isEip7702Wallet(user, provider),
+          ]).then(([isSmartContract, isSafe, isEip7702]) => {
+            setState({ userIsSmartContractWallet: isSmartContract });
+            setState({ userIsSafeWallet: isSafe });
+            setState({ userIsEip7702Wallet: isEip7702 });
+          });
         });
       }
     } catch (error) {
