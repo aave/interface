@@ -1,0 +1,21 @@
+src/components/transactions/Swap/hooks/useMaxNativeAmount.ts
+  s_ed1ce514435e93::t_b11812c7692b54 42-45,47-48
+src/components/transactions/Swap/inputs/SwapInputs.tsx
+  s_ed1ce514435e93::t_16a83dcee029cf 65,67-68
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "33157e6a2742239008b3a3f0b17e5421dda505e6",
+  "prompts": {},
+  "sessions": {
+    "s_ed1ce514435e93": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "109d335c-f7c3-445a-bee4-f8bc21da10ec",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
