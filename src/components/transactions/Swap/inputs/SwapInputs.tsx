@@ -1,4 +1,4 @@
-import { BigNumberValue, valueToBigNumber } from '@aave/math-utils';
+import { BigNumberValue, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { useQueryClient } from '@tanstack/react-query';
 import { Dispatch, useEffect, useMemo } from 'react';
@@ -56,6 +56,18 @@ export const SwapInputs = ({
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
   const { setApprovalTxState, approvalTxState } = useModalContext();
+
+  // Shave 1 wei from aToken max balances — the SDK's underlyingBalance rounds up vs aToken.balanceOf (two half-up rayMuls vs one), which makes "max" sellAmounts exceed the actually-transferable balance.
+  const getMaxBalanceForToken = (token: SwappableToken): string => {
+    const balance = token.balance || '0';
+    const isAToken =
+      token.addressToSwap.toLowerCase() !== token.underlyingAddress.toLowerCase();
+    if (!isAToken) return balance;
+    const wei = normalizeBN(balance, -token.decimals);
+    if (wei.lte(1)) return balance;
+    return normalize(wei.minus(1).toFixed(0), token.decimals);
+  };
+
   const resetErrorsAndWarnings = () => {
     setState({
       error: undefined,
@@ -88,7 +100,7 @@ export const SwapInputs = ({
     }
 
     if (value === '-1') {
-      const maxAmount = state.sourceToken.balance;
+      const maxAmount = getMaxBalanceForToken(state.sourceToken);
       setState({
         ...(state.orderType === OrderType.LIMIT && state.swapRate
           ? {
@@ -147,7 +159,7 @@ export const SwapInputs = ({
     }
 
     if (value === '-1') {
-      const maxAmount = state.destinationToken.balance;
+      const maxAmount = getMaxBalanceForToken(state.destinationToken);
       setState({
         ...(state.orderType === OrderType.LIMIT && state.swapRate
           ? {
