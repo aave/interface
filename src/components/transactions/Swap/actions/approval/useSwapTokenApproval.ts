@@ -109,7 +109,11 @@ export const useSwapTokenApproval = ({
   const { sendTx, signTxData } = useWeb3Context();
   const [loadingPermitData, setLoadingPermitData] = useState(true);
 
-  const { isSmartContractWallet, isLoading: isLoadingWalletType } = useGetConnectedWalletType();
+  const {
+    isSmartContractWallet,
+    isEip7702Wallet,
+    isLoading: isLoadingWalletType,
+  } = useGetConnectedWalletType();
 
   const [
     user,
@@ -263,8 +267,16 @@ export const useSwapTokenApproval = ({
     };
   }, [chainId, token]);
 
+  // EIP-7702 delegates (Alchemy MA v2, etc.) intercept signTypedData with replay-safe
+  // wrapping (ERC-7739), so ERC-2612 permits and credit-delegation sigs don't ecrecover
+  // to the EOA on-chain. Force these wallets through direct approve / approveDelegation
+  // transactions instead.
   const tryPermit =
-    allowPermit && permitSupported === true && !isSmartContractWallet && !isLoadingWalletType;
+    allowPermit &&
+    permitSupported === true &&
+    !isSmartContractWallet &&
+    !isEip7702Wallet &&
+    !isLoadingWalletType;
   const usePermit = tryPermit && walletApprovalMethodPreference === ApprovalMethod.PERMIT;
 
   const approval = async () => {
