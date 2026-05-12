@@ -26,7 +26,6 @@ import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { WagmiProvider } from 'wagmi';
-import { useShallow } from 'zustand/shallow';
 
 import createEmotionCache from '../src/createEmotionCache';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
@@ -112,9 +111,7 @@ interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
-  const [initializeEventsTracking, setWalletType] = useRootStore(
-    useShallow((store) => [store.initializeEventsTracking, store.setWalletType])
-  );
+  const initializeEventsTracking = useRootStore((store) => store.initializeEventsTracking);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -155,10 +152,7 @@ export default function MyApp(props: MyAppProps) {
           <LanguageProvider>
             <WagmiProvider config={wagmiConfig}>
               <QueryClientProvider client={queryClient}>
-                <ConnectKitProvider
-                  onDisconnect={cleanLocalStorage}
-                  onConnect={({ connectorId }) => setWalletType(connectorId)}
-                >
+                <ConnectKitProvider onDisconnect={cleanLocalStorage}>
                   <Web3ContextProvider>
                     <AppGlobalStyles>
                       <ComplianceProvider>
