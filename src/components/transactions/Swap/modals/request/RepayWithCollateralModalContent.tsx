@@ -103,13 +103,8 @@ export const RepayWithCollateralModalContent = ({
   return <BaseSwapModalContent params={params} />;
 };
 
-// variableBorrows and underlyingBalance carry RAY-level precision
-// (scaledBalance * index / RAY), so their decimal strings can exceed the
-// token's native decimals. Clicking Max pipes that raw string into
-// inputAmount/outputAmount, and the Paraswap action layer forwards it to
-// parseUnits when the value isn't recomputed via safeAmountToRepayAll
-// (e.g. once the user edits the prefilled max) -- parseUnits then throws on
-// the excess decimals. Truncate down to what the token can represent.
+// variableBorrows / underlyingBalance carry RAY-level precision; truncate to
+// the token's decimals so parseUnits downstream doesn't reject the Max value.
 const truncateToTokenDecimals = (value: string, decimals: number) =>
   new BigNumber(value).decimalPlaces(decimals, BigNumber.ROUND_DOWN).toString(10);
 
