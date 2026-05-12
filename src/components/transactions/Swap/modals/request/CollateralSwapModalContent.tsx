@@ -12,7 +12,7 @@ import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
-import { invalidateAppStateForSwap } from '../../helpers/shared';
+import { invalidateAppStateForSwap, truncateToTokenDecimals } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType, TokenType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 
@@ -169,6 +169,7 @@ const getTokensFrom = (
             balance = balanceBN.minus(oneWei).toString();
           }
         }
+        balance = truncateToTokenDecimals(balance, baseToken.decimals);
 
         return {
           addressToSwap: position.reserve.aTokenAddress,
@@ -255,7 +256,7 @@ const getTokensTo = (
         decimals: baseToken.decimals,
         symbol: nativeToken?.symbol ?? baseToken.symbol,
         name: baseToken.name,
-        balance: currentCollateral,
+        balance: truncateToTokenDecimals(currentCollateral, baseToken.decimals),
         chainId,
         usdPrice: reserve.priceInUSD,
         supplyAPY: reserve.supplyAPY,

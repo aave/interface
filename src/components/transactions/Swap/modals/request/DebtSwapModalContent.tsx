@@ -20,7 +20,7 @@ import {
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { useShallow } from 'zustand/shallow';
 
-import { invalidateAppStateForSwap } from '../../helpers/shared';
+import { invalidateAppStateForSwap, truncateToTokenDecimals } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 
@@ -139,7 +139,10 @@ const getTokensFrom = (
         addressForUsdPrice: borrowPosition.underlyingAsset,
         underlyingAddress: borrowPosition.underlyingAsset,
         name: borrowPosition.reserve.name,
-        balance: borrowPosition.variableBorrows,
+        balance: truncateToTokenDecimals(
+          borrowPosition.variableBorrows,
+          borrowPosition.reserve.decimals
+        ),
         chainId,
         decimals: borrowPosition.reserve.decimals,
         symbol: nativeToken?.symbol ?? tokenFromList?.symbol ?? borrowPosition.reserve.symbol,

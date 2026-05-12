@@ -9,7 +9,7 @@ import { useRootStore } from 'src/store/root';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { useShallow } from 'zustand/shallow';
 
-import { invalidateAppStateForSwap } from '../../helpers/shared';
+import { invalidateAppStateForSwap, truncateToTokenDecimals } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType, TokenType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 import { getDefaultOutputToken, getFilteredTokensForSwitch } from './SwapModalContent';
@@ -148,7 +148,7 @@ const getTokensFrom = (
           decimals: baseToken.decimals,
           symbol: nativeToken?.symbol ?? baseToken.symbol,
           name: baseToken.name,
-          balance: position.underlyingBalance,
+          balance: truncateToTokenDecimals(position.underlyingBalance, baseToken.decimals),
           chainId,
           usdPrice: position.reserve.priceInUSD,
           logoURI: nativeToken?.logoURI ?? baseToken.logoURI,

@@ -1,7 +1,6 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { useQueryClient } from '@tanstack/react-query';
-import { BigNumber } from 'bignumber.js';
 import {
   ComputedUserReserveData,
   ExtendedFormattedUser,
@@ -14,7 +13,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { useShallow } from 'zustand/shallow';
 
-import { invalidateAppStateForSwap } from '../../helpers/shared';
+import { invalidateAppStateForSwap, truncateToTokenDecimals } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
 
@@ -102,11 +101,6 @@ export const RepayWithCollateralModalContent = ({
 
   return <BaseSwapModalContent params={params} />;
 };
-
-// variableBorrows / underlyingBalance carry RAY-level precision; truncate to
-// the token's decimals so parseUnits downstream doesn't reject the Max value.
-const truncateToTokenDecimals = (value: string, decimals: number) =>
-  new BigNumber(value).decimalPlaces(decimals, BigNumber.ROUND_DOWN).toString(10);
 
 // Tokens from are all current open debt positions
 const getTokensFrom = (
