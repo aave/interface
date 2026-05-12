@@ -108,7 +108,7 @@ export const BaseSwapModalContent = ({
     setState({ mainTxState });
   }, [mainTxState]);
   const trackingHandlers = useHandleAnalytics({ state });
-  useUserContext({ setState });
+  useUserContext({ chainId: state.chainId, setState });
   useMaxNativeAmount({ params, state, setState });
   useSlippageSelector({ params, state, setState });
   useFlowSelector({ params, state, setState });

@@ -1,23 +1,31 @@
 import { Dispatch, useEffect } from 'react';
 import { isEip7702Wallet, isSafeWallet, isSmartContractWallet } from 'src/helpers/provider';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getEthersProvider } from 'src/libs/web3-data-provider/adapters/EthersAdapter';
 import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 
 import { SwapState } from '../types';
 
-export const useUserContext = ({ setState }: { setState: Dispatch<Partial<SwapState>> }) => {
+// Detect on the swap's target chain, not the wallet's currently connected chain.
+// EIP-7702 delegation is per-chain (the authorization tuple includes chainId), so
+// a user can be 7702 on the swap chain while connected to a different one.
+// Checking the wrong chain would misclassify and route through CoW.
+export const useUserContext = ({
+  chainId,
+  setState,
+}: {
+  chainId: number;
+  setState: Dispatch<Partial<SwapState>>;
+}) => {
   const user = useRootStore((store) => store.account);
-  const { chainId: connectedChainId } = useWeb3Context();
 
   useEffect(() => {
-    if (!user || !connectedChainId) return;
+    if (!user || !chainId) return;
 
     let cancelled = false;
     setState({ user });
 
-    getEthersProvider(wagmiConfig, { chainId: connectedChainId })
+    getEthersProvider(wagmiConfig, { chainId })
       .then((provider) =>
         Promise.all([
           isSmartContractWallet(user, provider),
@@ -40,5 +48,5 @@ export const useUserContext = ({ setState }: { setState: Dispatch<Partial<SwapSt
     return () => {
       cancelled = true;
     };
-  }, [user, connectedChainId]);
+  }, [user, chainId]);
 };
