@@ -39,7 +39,11 @@ export const useMaxNativeAmount = ({
     ? normalize(maxAmount.toString(), nativeDecimals).toString()
     : undefined;
 
+  // Only force a max value for native sells (where we need to reserve gas). For
+  // other tokens, leave forcedMaxValue undefined so the Max button routes through
+  // handleInputChange's '-1' path and the aToken 1-wei shave applies.
+  const isNative = state.sourceToken.tokenType === TokenType.NATIVE;
   useEffect(() => {
-    setState({ forcedMaxValue: maxAmountFormatted });
-  }, [maxAmountFormatted]);
+    setState({ forcedMaxValue: isNative ? maxAmountFormatted : undefined });
+  }, [maxAmountFormatted, isNative]);
 };
