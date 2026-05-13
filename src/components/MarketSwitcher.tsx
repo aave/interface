@@ -545,7 +545,7 @@ export const MarketSwitcher = () => {
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {other.map((id) => renderGridItem(id, mobile))}
             </Box>
-            {(l2.length > 0 || (showLegacy && legacy.length > 0)) && <Divider sx={{ my: 1 }} />}
+            {(l2.length > 0 || showLegacy) && <Divider sx={{ my: 1 }} />}
           </Box>
         )}
 
@@ -556,16 +556,65 @@ export const MarketSwitcher = () => {
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {l2.map((id) => renderGridItem(id, mobile))}
             </Box>
-            {showLegacy && legacy.length > 0 && <Divider sx={{ my: 1 }} />}
+            {showLegacy && <Divider sx={{ my: 1 }} />}
           </Box>
         )}
 
         {/* Legacy */}
-        {showLegacy && legacy.length > 0 && (
+        {showLegacy && (
           <Box>
             {sectionHeader(<Trans>Legacy</Trans>)}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {legacy.map((id) => renderGridItem(id, mobile))}
+              {/* V2 markets external link */}
+              <Box
+                role="button"
+                tabIndex={0}
+                onClick={() => window.open('https://v2-market.aave.com/', '_blank')}
+                onKeyDown={(e: React.KeyboardEvent) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    window.open('https://v2-market.aave.com/', '_blank');
+                  }
+                }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  py: '10px',
+                  px: '12px',
+                  width: mobile ? '50%' : '33.33%',
+                  boxSizing: 'border-box',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  '&:hover': { bgcolor: 'action.hover' },
+                }}
+              >
+                <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
+                  <img
+                    src="/favicon.ico"
+                    alt=""
+                    width="100%"
+                    height="100%"
+                    style={{ display: 'block', objectFit: 'contain' }}
+                  />
+                </Box>
+                <Typography
+                  noWrap
+                  sx={{
+                    flex: '1 1 0',
+                    minWidth: 0,
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    letterSpacing: '0.15px',
+                    lineHeight: '20px',
+                  }}
+                >
+                  <Trans>V2 Markets</Trans>
+                </Typography>
+                <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              </Box>
             </Box>
           </Box>
         )}
