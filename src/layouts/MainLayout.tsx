@@ -118,14 +118,15 @@ const getCampaignConfigs = () => ({
   },
 
   [ChainId.ink]: {
-    notifyText: 'Tydro is temporarily pausing all reserves.',
-    buttonText: 'Learn more',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://x.com/tydrohq/status/2052450869082313086?s=20',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-ink-paused-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
+    // icon: '/icons/networks/ink.svg',
   },
 });
 
