@@ -109,10 +109,6 @@ msgstr "To"
 msgid "FAQ"
 msgstr "FAQ"
 
-#: src/modules/sGho/SavingsGhoCard.tsx
-msgid "Deposit GHO and earn up to <0>{0}%</0> APY"
-msgstr "Deposit GHO and earn up to <0>{0}%</0> APY"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Stable borrowing is not enabled"
 msgstr "Stable borrowing is not enabled"
@@ -139,6 +135,7 @@ msgstr "Rate change"
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
+#: src/modules/sGho/SGhoDepositRow.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "Balance:"
 msgstr "Balance:"
@@ -255,10 +252,6 @@ msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v
 msgid "Need help? Our support team can assist."
 msgstr "Need help? Our support team can assist."
 
-#: src/modules/sGho/SavingsGhoCard.tsx
-msgid "Initiate Withdraw"
-msgstr "Initiate Withdraw"
-
 #: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
 msgstr "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
@@ -278,6 +271,7 @@ msgid "I acknowledge the risks involved."
 msgstr "I acknowledge the risks involved."
 
 #: src/modules/sGho/SGhoHeader.tsx
+#: src/modules/sGho/SGhoSavingsRate.tsx
 #: src/modules/stkGho/StkGhoSavingsRate.tsx
 msgid "Total Deposited"
 msgstr "Total Deposited"
@@ -510,7 +504,6 @@ msgstr "Repay {symbol}"
 msgid "Disable {0} as collateral to use this category. These assets would have 0% LTV."
 msgstr "Disable {0} as collateral to use this category. These assets would have 0% LTV."
 
-#: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Cooling down..."
@@ -554,6 +547,7 @@ msgstr "Switch Network"
 
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoSavingsRate.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "APR"
 msgstr "APR"
@@ -966,6 +960,7 @@ msgid "Gas estimation error"
 msgstr "Gas estimation error"
 
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/stkGho/StkGhoWithdrawRow.tsx
 msgid "Instant"
@@ -1219,6 +1214,7 @@ msgstr "Reload"
 #: src/layouts/components/NavItems.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 msgid "sGHO"
 msgstr "sGHO"
@@ -1265,7 +1261,7 @@ msgstr "This asset is planned to be offboarded due to an Aave Protocol Governanc
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
-#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/stkGho/StkGhoWithdrawRow.tsx
@@ -1370,7 +1366,7 @@ msgstr "Stake"
 msgid "Not enough balance on your wallet"
 msgstr "Not enough balance on your wallet"
 
-#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoDepositRow.tsx
 #: src/modules/staking/GetGhoToken.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
@@ -1698,7 +1694,6 @@ msgid "disabled"
 msgstr "disabled"
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositModal.tsx
-#: src/modules/sGho/SavingsGhoCard.tsx
 msgid "Deposit GHO"
 msgstr "Deposit GHO"
 
@@ -1718,7 +1713,7 @@ msgstr "Protocol APY"
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
-#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/stkGho/StkGhoWithdrawRow.tsx
@@ -1892,6 +1887,7 @@ msgstr "Links"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+#: src/modules/sGho/SGhoDepositRow.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
@@ -2576,7 +2572,6 @@ msgstr "Incentives APR"
 msgid "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 msgstr "To submit a proposal for minor changes to the protocol, you'll need at least 80.00K power. If you want to change the core code base, you'll need 320k power.<0>Learn more.</0>"
 
-#: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "Staking APY"
 msgstr "Staking APY"
@@ -3163,10 +3158,6 @@ msgstr "Available to claim"
 msgid "{numSelected}/{numAvailable} assets selected"
 msgstr "{numSelected}/{numAvailable} assets selected"
 
-#: src/modules/sGho/SGhoApyChart.tsx
-msgid "sGHO Merit APY History"
-msgstr "sGHO Merit APY History"
-
 #: src/ui-config/errorMapping.tsx
 msgid "To repay on behalf of a user an explicit amount to repay is needed"
 msgstr "To repay on behalf of a user an explicit amount to repay is needed"
@@ -3181,7 +3172,7 @@ msgstr "You can not stake this amount because it will cause collateral call"
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
-#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoDepositRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "Deposit"
@@ -3317,7 +3308,7 @@ msgstr "Stake AAVE"
 msgid "Ok, Close"
 msgstr "Ok, Close"
 
-#: src/modules/sGho/SavingsGhoCard.tsx
+#: src/modules/sGho/SGhoCard.tsx
 msgid "Savings GHO (sGHO)"
 msgstr "Savings GHO (sGHO)"
 
@@ -3418,7 +3409,6 @@ msgstr "Filter"
 msgid "Learn more about the Ether.fi program"
 msgstr "Learn more about the Ether.fi program"
 
-#: src/modules/sGho/SavingsGhoCard.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Cooldown to unstake"
@@ -3427,6 +3417,10 @@ msgstr "Cooldown to unstake"
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "User does not have outstanding variable rate debt on this reserve"
+
+#: src/modules/sGho/SGhoSavingsRate.tsx
+msgid "Savings Rate"
+msgstr "Savings Rate"
 
 #: src/modules/faucet/FaucetAssetsList.tsx
 msgid "Test Assets"
@@ -3819,6 +3813,10 @@ msgstr "Please, connect your wallet"
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Merit Program rewards can be claimed"
 msgstr "Merit Program rewards can be claimed"
+
+#: src/modules/sGho/SGhoSavingsRate.tsx
+msgid "APY, fixed rate"
+msgstr "APY, fixed rate"
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx

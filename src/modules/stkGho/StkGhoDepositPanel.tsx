@@ -3,12 +3,12 @@ import { Box, Divider, Grid } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
+import { SavingsCardSkeleton } from 'src/components/SavingsCardSkeleton';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { StkGhoDepositRow } from './StkGhoDepositRow';
 import { StkGhoSavingsRate } from './StkGhoSavingsRate';
-import { StkGhoSkeleton } from './StkGhoSkeleton';
 import { StkGhoWithdrawRow } from './StkGhoWithdrawRow';
 
 export interface StkGhoDepositPanelProps {
@@ -35,7 +35,7 @@ export const StkGhoDepositPanel: React.FC<StkGhoDepositPanelProps> = ({
   const { currentAccount } = useWeb3Context();
 
   if (!stakeData) {
-    return <StkGhoSkeleton hasAccount={!!currentAccount} />;
+    return <SavingsCardSkeleton hasAccount={!!currentAccount} />;
   }
 
   const availableToStake = formatEther(

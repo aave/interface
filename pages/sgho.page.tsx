@@ -1,7 +1,9 @@
+import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { SGhoCard } from 'src/modules/sGho/SGhoCard';
 import { SGHOHeader } from 'src/modules/sGho/SGhoHeader';
 import { StkGhoCard } from 'src/modules/stkGho/StkGhoCard';
 import { useRootStore } from 'src/store/root';
@@ -47,7 +49,17 @@ export default function SavingsGho() {
     <>
       <SGHOHeader />
       <ContentContainer>
-        <StkGhoCard />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            gap: 4,
+            alignItems: 'stretch',
+          }}
+        >
+          <SGhoCard />
+          <StkGhoCard />
+        </Box>
       </ContentContainer>
     </>
   );
