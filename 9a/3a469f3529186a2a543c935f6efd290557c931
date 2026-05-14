@@ -1,0 +1,56 @@
+src/modules/stkGho/StkGhoDepositPanel.tsx
+  s_c16d5a641174ea::t_e2b71abee3adc3 38
+  s_c16d5a641174ea::t_3392ebc69a5f26 6
+src/modules/sGho/SGhoDepositRow.tsx
+  s_c16d5a641174ea::t_344bc819dce08b 72
+  s_c16d5a641174ea::t_bc190f23fa052f 8,15
+  s_c16d5a641174ea::t_a1c45689240a1c 1-7,9-14,16-71,73-99
+pages/sgho.page.tsx
+  s_c16d5a641174ea::t_a6af25fd8ed06e 52-62
+  s_c16d5a641174ea::t_4074ba3618ca8d 1,6
+src/modules/sGho/SGhoWithdrawRow.tsx
+  s_c16d5a641174ea::t_f6e9debd87ba7e 1-45
+src/modules/sGho/SGhoDepositPanel.tsx
+  s_c16d5a641174ea::t_0463b13b1ca10f 35
+  s_c16d5a641174ea::t_54fbbef43f1633 2
+  s_c16d5a641174ea::t_caf2b4409ca6db 46
+  s_c16d5a641174ea::t_6225c59bf71b57 64
+  s_c16d5a641174ea::t_f626975fbe41f5 15,27
+  s_c16d5a641174ea::t_541cb845c3ded2 1,3-14,16-26,28-34,36-45,47-63,65-68
+src/components/SavingsCardSkeleton.tsx
+  s_c16d5a641174ea::t_6306b73bae90d4 1-37
+src/modules/sGho/SGhoCard.tsx
+  s_c16d5a641174ea::t_91d0a5508351dc 1,3-32,35,37-70,72-78
+  s_c16d5a641174ea::t_4b547b13e65647 71
+  s_c16d5a641174ea::t_07b3e68f8ea9bc 2,33-34
+  s_c16d5a641174ea::t_c1dbd9949d354c 36
+pages/_app.page.tsx
+  h_0feed110d555ac 4,105
+src/modules/sGho/SGhoSavingsRate.tsx
+  s_c16d5a641174ea::t_b60f0d5c5f07fa 6,13,16,22-23,27-28,57,64,69
+  s_c16d5a641174ea::t_92f7111c42d782 1-5,7-12,14-15,17-21,24-26,29-56,58-63,65-68,70-88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "9a3a469f3529186a2a543c935f6efd290557c931",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
