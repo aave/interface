@@ -405,6 +405,10 @@ msgstr "High price impact (<0>{0}%</0>)! This route will return {1} due to low l
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 msgstr "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+msgid "Not enough sGHO balance"
+msgstr "Not enough sGHO balance"
+
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Your {networkName} wallet is empty. Get free test assets at"
 msgstr "Your {networkName} wallet is empty. Get free test assets at"
@@ -641,6 +645,7 @@ msgid "Loading data..."
 msgstr "Loading data..."
 
 #: src/components/transactions/SavingsGho/SavingsGhoWithdrawModalContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "withdrew"
 msgstr "withdrew"
@@ -1279,6 +1284,7 @@ msgid "Costs & Fees"
 msgstr "Costs & Fees"
 
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
 msgid "deposited"
 msgstr "deposited"
 
@@ -1362,6 +1368,7 @@ msgid "Stake"
 msgstr "Stake"
 
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
 msgid "Not enough balance on your wallet"
 msgstr "Not enough balance on your wallet"
@@ -1376,6 +1383,7 @@ msgstr "Get GHO"
 #: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
@@ -1705,6 +1713,7 @@ msgstr "Website"
 msgid "Protocol APY"
 msgstr "Protocol APY"
 
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
@@ -1815,6 +1824,7 @@ msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can r
 msgid "Merit Rewards"
 msgstr "Merit Rewards"
 
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 msgid "Withdrawing"
 msgstr "Withdrawing"
@@ -1906,6 +1916,10 @@ msgstr "stkGHO is now Savings GHO"
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "Enabled"
 msgstr "Enabled"
+
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+msgid "sGHO balance"
+msgstr "sGHO balance"
 
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
@@ -2153,6 +2167,10 @@ msgstr "Claiming all merit rewards only"
 msgid "Review tx details"
 msgstr "Review tx details"
 
+#: src/components/transactions/SGhoVault/SGhoVaultDepositModal.tsx
+msgid "Deposit GHO into sGHO"
+msgstr "Deposit GHO into sGHO"
+
 #: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Nothing supplied yet"
@@ -2324,6 +2342,11 @@ msgstr "If your loan to value goes above the liquidation threshold your collater
 msgid "VIEW"
 msgstr "VIEW"
 
+#: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+msgid "You'll receive"
+msgstr "You'll receive"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Interest rate rebalance conditions were not met"
 msgstr "Interest rate rebalance conditions were not met"
@@ -2472,6 +2495,10 @@ msgstr "Available to withdraw"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Cooldown"
 msgstr "Cooldown"
+
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModal.tsx
+msgid "Withdraw sGHO"
+msgstr "Withdraw sGHO"
 
 #: src/components/transactions/Emode/EmodeAssetTable.tsx
 #: src/modules/bridge/BridgeWrapper.tsx
@@ -3171,6 +3198,7 @@ msgid "You can not stake this amount because it will cause collateral call"
 msgstr "You can not stake this amount because it will cause collateral call"
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoDepositRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -3325,6 +3353,7 @@ msgid "No eligible assets to swap."
 msgstr "No eligible assets to swap."
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
 msgid "Depositing"
 msgstr "Depositing"
 

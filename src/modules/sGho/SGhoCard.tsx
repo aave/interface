@@ -16,7 +16,7 @@ export const SGhoCard = () => {
   const currentMarketData = useRootStore((s) => s.currentMarketData);
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
-  const { openSwitch } = useModalContext();
+  const { openSwitch, openSGhoVaultDeposit, openSGhoVaultWithdraw } = useModalContext();
 
   const userAddress = currentAccount ? evmAddress(currentAccount) : evmAddress(ZERO_ADDRESS);
   const requestChainId = chainId(currentMarketData.chainId);
@@ -35,12 +35,11 @@ export const SGhoCard = () => {
   const totalDepositedUSD = vault?.totalAssets?.usd ?? '0';
   const targetRate = vault?.targetRate ? +vault.targetRate.value : 0;
 
-  // TODO: wire to new sGHO deposit/withdraw modals when implemented
   const onDeposit = () => {
-    /* TODO: open new sGHO deposit modal */
+    openSGhoVaultDeposit();
   };
   const onWithdraw = () => {
-    /* TODO: open new sGHO withdraw modal */
+    openSGhoVaultWithdraw();
   };
   const onGetGho = () => {
     openSwitch('', ChainId.mainnet);

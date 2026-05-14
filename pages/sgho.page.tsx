@@ -25,6 +25,16 @@ const StakeRewardClaimModal = dynamic(() =>
     (module) => module.StakeRewardClaimModal
   )
 );
+const SGhoVaultDepositModal = dynamic(() =>
+  import('../src/components/transactions/SGhoVault/SGhoVaultDepositModal').then(
+    (module) => module.SGhoVaultDepositModal
+  )
+);
+const SGhoVaultWithdrawModal = dynamic(() =>
+  import('../src/components/transactions/SGhoVault/SGhoVaultWithdrawModal').then(
+    (module) => module.SGhoVaultWithdrawModal
+  )
+);
 
 export default function SavingsGho() {
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
@@ -73,6 +83,8 @@ SavingsGho.getLayout = function getLayout(page: React.ReactElement) {
       <SavingsGhoDepositModal />
       <SavingsGhoWithdrawModal />
       <StakeRewardClaimModal />
+      <SGhoVaultDepositModal />
+      <SGhoVaultWithdrawModal />
       {/** End of modals */}
     </MainLayout>
   );
