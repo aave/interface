@@ -60,8 +60,7 @@ export const SwapInputs = ({
   // Shave 1 wei from aToken max balances — the SDK's underlyingBalance rounds up vs aToken.balanceOf (two half-up rayMuls vs one), which makes "max" sellAmounts exceed the actually-transferable balance.
   const getMaxBalanceForToken = (token: SwappableToken): string => {
     const balance = token.balance || '0';
-    const isAToken =
-      token.addressToSwap.toLowerCase() !== token.underlyingAddress.toLowerCase();
+    const isAToken = token.addressToSwap.toLowerCase() !== token.underlyingAddress.toLowerCase();
     if (!isAToken) return balance;
     const wei = normalizeBN(balance, -token.decimals);
     if (wei.lte(1)) return balance;
