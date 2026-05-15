@@ -1,0 +1,73 @@
+src/modules/sGho/useSghoVaultPlans.ts
+  s_c16d5a641174ea::t_4c137e69f1b6fa 17-19
+src/modules/sGho/SGhoCard.tsx
+  s_c16d5a641174ea::t_455d520d6eedee 18-21
+src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
+  s_c16d5a641174ea::t_72f2457c6feca6 7,18-22
+  s_c16d5a641174ea::t_c3ca34518c11d3 34,42-49
+src/modules/markets/Gho/GhoBanner.tsx
+  s_c16d5a641174ea::t_ff402f5c667e0c 257,265,274,278
+  s_c16d5a641174ea::t_6554ed04295bf1 240-244,247-251
+  s_c16d5a641174ea::t_ac3a3fb4e27a8b 8
+  s_c16d5a641174ea::t_43b05091b59048 93-97,106-110
+  s_c16d5a641174ea::t_3b88e9094dfbfa 170-172,178-184
+  s_c16d5a641174ea::t_b7f53edb71bb74 190
+  s_c16d5a641174ea::t_08df8066e1b2a6 191-193
+  s_c16d5a641174ea::t_3748721f222b28 122,130,147,154
+  s_c16d5a641174ea::t_bc44711008bc9c 286-293
+  s_c16d5a641174ea::t_6f678c9d9fddf5 31-33
+  s_c16d5a641174ea::t_227cb94ecaa9c9 7,11-21,34,37
+src/hooks/useDebouncedValue.ts
+  s_c16d5a641174ea::t_b3d3396c3f117f 1-18
+src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+  s_c16d5a641174ea::t_aa6cc3d0b7a4a7 106
+  s_c16d5a641174ea::t_75fbb2c9bd99d1 27
+  s_c16d5a641174ea::t_995996efc01c2f 45-51
+  s_c16d5a641174ea::t_08b41a8f4dcc02 53,58-61
+  s_c16d5a641174ea::t_f9816f54465e84 101
+  s_c16d5a641174ea::t_c54c678561c194 6
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_c16d5a641174ea::t_1d2392ccf8a4b4 83
+src/hooks/useSavingsMarketData.ts
+  s_c16d5a641174ea::t_19619800a028db 15,18,21
+src/modules/stkGho/StkGhoCard.tsx
+  s_c16d5a641174ea::t_e4bb5a51b734f2 4
+  s_c16d5a641174ea::t_17000f7b2e7eb8 53
+  s_c16d5a641174ea::t_2ff7ed5d0edda8 52,54-55
+src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+  s_c16d5a641174ea::t_8da632db90018a 28
+  s_c16d5a641174ea::t_d023af1e742375 46-52
+  s_c16d5a641174ea::t_065e16d158ba52 54,59-62
+  s_c16d5a641174ea::t_5c1eafa3d85516 102
+  s_c16d5a641174ea::t_f4755610c62d44 6
+  s_c16d5a641174ea::t_567477af59a260 107
+src/components/transactions/SGhoVault/SGhoVaultWithdrawActions.tsx
+  s_c16d5a641174ea::t_c29f02f4399b4e 7,19-22
+  s_c16d5a641174ea::t_a50cbc9ec9db9a 42,50-55
+src/modules/sGho/SGhoDepositRow.tsx
+  s_c16d5a641174ea::t_5a42c2580eca29 47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "c513e873ad32bfc64cb56f08bb82b9bf2306d7bc",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
