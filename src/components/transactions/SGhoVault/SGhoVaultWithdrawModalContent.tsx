@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { AssetInput } from '../AssetInput';
@@ -28,12 +29,21 @@ export const SGhoVaultWithdrawModalContent = () => {
 
   const [_amount, setAmount] = useState('');
 
+  const handleChange = (value: string) => {
+    if (value === '-1') {
+      setAmount(value);
+    } else {
+      setAmount(roundToTokenDecimals(value, 18));
+    }
+  };
+
   const sharesBalance = vault?.user?.shares.amount.value ?? '0';
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? sharesBalance : _amount;
 
-  const previewAmount = parseFloat(amount) > 0 ? amount : '0';
+  const numericAmount = parseFloat(amount);
+  const previewAmount = !isNaN(numericAmount) && numericAmount > 0 ? numericAmount.toString() : '0';
   const { data: previewAssets } = useSghoVaultPreviewRedeem({
     amount: bigDecimal(previewAmount),
     chainId: sdkChainId,
@@ -64,7 +74,7 @@ export const SGhoVaultWithdrawModalContent = () => {
     <>
       <AssetInput
         value={amount}
-        onChange={setAmount}
+        onChange={handleChange}
         usdValue={amount}
         symbol={SGHO_SYMBOL}
         assets={[{ balance: sharesBalance, symbol: SGHO_SYMBOL }]}
