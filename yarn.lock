@@ -20,13 +20,13 @@
   resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.49.3.tgz#da10709579625abf50cfbf09aaf6d7c7b76e26d6"
   integrity sha512-bJbPNxuoOvd7P2GlB8WNzMb4pcy5x702P6x5M9gT/HzQ2yP+ekm/ugdiBdISrFCjLAvJ42M1LfexHL5ay2NcPQ==
 
-"@aave/client@0.0.0-preview-20260514161621":
-  version "0.0.0-preview-20260514161621"
-  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.0.0-preview-20260514161621.tgz#ddcdbe5d11cbdf8356908e131a0caed7369aeaf0"
-  integrity sha512-vAqLV+TdcffKa4JcBQyKpJxoOJlXI9on5FnBS7jA/sLXUglxPqT1hUNhyoNMgu5EpWsBFNQPlNMfkN9BNb97FA==
+"@aave/client@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.10.0.tgz#ae378f96426d1ea83c4622af13871fbbcef3b326"
+  integrity sha512-haNn1eUvn2LMAdYMAe+/3OPCJCtU0AZEq54N0EmD+onN1tyOgCSxybt9FvzYAFKwKrFj0wNtzCW7Kji4ovHE0g==
   dependencies:
     "@aave/core" "0.1.0"
-    "@aave/graphql" "0.0.0-preview-20260514161621"
+    "@aave/graphql" "0.12.0"
     "@aave/types" "0.2.0"
     "@privy-io/server-auth" "^1.32.5"
     "@urql/core" "^5.2.0"
@@ -48,10 +48,10 @@
     "@urql/core" "^5.2.0"
     graphql "^16.11.0"
 
-"@aave/graphql@0.0.0-preview-20260514161621":
-  version "0.0.0-preview-20260514161621"
-  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.0.0-preview-20260514161621.tgz#af81ac138b9acc23144c56a267505911e3c334a4"
-  integrity sha512-u27CcClzyOuh+QkmAVr4e3zti6SHujelciSOwxm+usSm3QFtJJcvAJaKzRK8cFcEKd5j/zTXM2PSzYfGBh6TPw==
+"@aave/graphql@0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@aave/graphql/-/graphql-0.12.0.tgz#2fc57e5e1a34bf003a0ec8e8fd5cad7836a6e2ad"
+  integrity sha512-QG7zHdbsKMkGC3QNDUb6A5JezaWHcnX9sLd6G1xC30Ke6+KtLLLGfWVI/wJBG23yCbxsY+ujKbJC7zDC5sEO+A==
   dependencies:
     "@aave/types" "0.2.0"
     gql.tada "^1.8.13"
@@ -63,13 +63,13 @@
   resolved "https://registry.yarnpkg.com/@aave/math-utils/-/math-utils-1.38.0.tgz#fbeac5cbb5100bccb5f9ebaa80d73b8e7da418b6"
   integrity sha512-Zeq2Dpflb5zst3OZKHA7UMVI4wcfpxbxA8tXZyVTmw313Q7oF1oOctrEF3JnfyjcyusmU91qdJRrCAXQrQtyXA==
 
-"@aave/react@0.0.0-preview-20260514161621":
-  version "0.0.0-preview-20260514161621"
-  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.0.0-preview-20260514161621.tgz#00a3f217f3a24c83ce073e9e29d60c3de073e3b8"
-  integrity sha512-QVIJ4NEdUCaKKCZjj7i1GblwnFlTOWF2oZXxWSGbIWwJhsqmQL/CPIb9mjWyPEomQWolztlrL/oDvmWCfsflzQ==
+"@aave/react@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@aave/react/-/react-0.9.0.tgz#088aa10dfbedd9345fd35ffc72aeae56da78ab65"
+  integrity sha512-CUPU19nXakE54QBB+KSZL3xSTtD6Ea759JrXqCVSeT4ru6qiGbe86f1JIBMK2cBK8uZDelZ8y7E8kgxzEeGTgw==
   dependencies:
-    "@aave/client" "0.0.0-preview-20260514161621"
-    "@aave/graphql" "0.0.0-preview-20260514161621"
+    "@aave/client" "0.10.0"
+    "@aave/graphql" "0.12.0"
     "@aave/types" "0.2.0"
     urql "^4.2.2"
 

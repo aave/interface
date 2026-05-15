@@ -1,5 +1,5 @@
 import { chainId as toSdkChainId } from '@aave/react';
-import { CustomMarket, MarketDataType } from 'src/ui-config/marketsConfig';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 /**
@@ -15,12 +15,10 @@ export const useSavingsMarketData = () => {
   const targetKey = (
     marketsData[forkKey] ? forkKey : CustomMarket.proto_mainnet_v3
   ) as CustomMarket;
-  const marketData: MarketDataType = marketsData[targetKey];
+  const { chainId } = marketsData[targetKey];
 
   return {
-    marketKey: targetKey,
-    marketData,
-    chainId: marketData.chainId,
-    sdkChainId: toSdkChainId(marketData.chainId),
+    chainId,
+    sdkChainId: toSdkChainId(chainId),
   };
 };

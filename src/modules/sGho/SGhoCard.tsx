@@ -1,7 +1,5 @@
-import { AaveV3Ethereum } from '@aave-dao/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
@@ -9,15 +7,13 @@ import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { SGhoDepositPanel } from './SGhoDepositPanel';
 
 export const SGhoCard = () => {
-  const { marketData, chainId } = useSavingsMarketData();
+  const { chainId } = useSavingsMarketData();
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const { openSwitch, openSGhoVaultDeposit, openSGhoVaultWithdraw } = useModalContext();
   const { vault, loading: vaultLoading } = useSGhoVaultContext();
 
-  const { walletBalances } = useWalletBalances(marketData);
-  const ghoAddress = AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase();
-  const walletGhoBalance = walletBalances[ghoAddress]?.amount ?? '0';
+  const walletGhoBalance = vault?.user?.underlyingBalance.amount.value.toString() ?? '0';
 
   const sghoBalance = vault?.user?.balance.amount.value ?? '0';
   const sghoBalanceUSD = vault?.user?.balance.usd ?? '0';
