@@ -207,12 +207,8 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setAccount(account?.toLowerCase());
   }, [account, setAccount]);
 
-  // Drive walletType from wagmi's account events. useAccountEffect fires for both
-  // fresh connects and reconnects (page reload, redirect-back), so analytics keeps
-  // a real connector id instead of falling back to undefined after a refresh.
-  // It uses watchAccount under the hood and does not subscribe this component to
-  // account state, so destructuring extra fields here would force wagmi's tracked
-  // subscription to deep-equal the connector object on every store tick.
+  // useAccountEffect fires on connect AND reconnect (so analytics survives reloads)
+  // without subscribing this component to wagmi's tracked re-renders.
   useAccountEffect({
     onConnect({ connector }) {
       setWalletType(connector.id);
