@@ -7,6 +7,7 @@ import React from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { useWalletClient } from 'wagmi';
 import { waitForTransactionReceipt } from 'wagmi/actions';
@@ -24,6 +25,7 @@ export const SGhoVaultDepositActions = React.memo(
     const { currentAccount } = useWeb3Context();
     const { chainId: targetChainId, sdkChainId } = useSavingsMarketData();
     const { mainTxState, setMainTxState, setTxError } = useModalContext();
+    const { refresh } = useSGhoVaultContext();
 
     const { data: walletClient } = useWalletClient();
     const [deposit] = useSghoVaultDeposit();
@@ -81,6 +83,10 @@ export const SGhoVaultDepositActions = React.memo(
         // the success view — the user can verify on-chain if needed.
         console.warn('waitForTransactionReceipt failed', e);
       }
+
+      // Repopulate the shared SGhoVault cache so other consumers (header,
+      // card, withdraw modal) reflect the new balances on close.
+      refresh();
 
       setMainTxState({ loading: false, success: true, txHash: submittedTxHash });
     };

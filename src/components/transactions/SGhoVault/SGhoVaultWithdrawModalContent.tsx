@@ -1,10 +1,11 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import { bigDecimal, evmAddress, useSghoVault, useSghoVaultPreviewRedeem } from '@aave/react';
+import { bigDecimal, useSghoVaultPreviewRedeem } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
+import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
@@ -21,9 +22,10 @@ export enum ErrorType {
 const SGHO_SYMBOL = 'sGHO';
 
 export const SGhoVaultWithdrawModalContent = () => {
-  const { chainId: connectedChainId, currentAccount } = useWeb3Context();
+  const { chainId: connectedChainId } = useWeb3Context();
   const { chainId: targetChainId, sdkChainId } = useSavingsMarketData();
   const { mainTxState, txError } = useModalContext();
+  const { vault } = useSGhoVaultContext();
 
   const [_amount, setAmount] = useState('');
 
@@ -34,13 +36,6 @@ export const SGhoVaultWithdrawModalContent = () => {
       setAmount(roundToTokenDecimals(value, 18));
     }
   };
-
-  const { data: vault } = useSghoVault({
-    user: currentAccount
-      ? evmAddress(currentAccount)
-      : evmAddress('0x0000000000000000000000000000000000000000'),
-    chainId: sdkChainId,
-  });
 
   const sharesBalance = vault?.user?.shares.amount.value ?? '0';
 
