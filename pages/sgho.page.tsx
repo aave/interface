@@ -64,9 +64,9 @@ export default function SavingsGho() {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
+            flexDirection: { xs: 'column', mdlg: 'row' },
             gap: 4,
-            alignItems: 'stretch',
+            alignItems: 'flex-start',
           }}
         >
           <SGhoCard />

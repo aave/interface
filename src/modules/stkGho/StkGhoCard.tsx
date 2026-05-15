@@ -38,7 +38,8 @@ export const StkGhoCard = () => {
         pb: { xs: 6, md: 20 },
         px: downToXsm ? 4 : 6,
         flex: 1,
-        width: { xs: '100%', md: 'auto' },
+        minWidth: 0,
+        width: { xs: '100%', mdlg: 'auto' },
       }}
     >
       <Box sx={{ mb: { xs: 4, md: 6 } }}>
