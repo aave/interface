@@ -9,7 +9,7 @@ import { BigNumber } from 'ethers';
 import stringify from 'json-stringify-deterministic';
 import { Dispatch, useMemo } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
-import { isSmartContractWallet } from 'src/helpers/provider';
+import { classifyAccount } from 'src/helpers/eip7702';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -28,6 +28,7 @@ import {
   isNativeToken,
   populateEthFlowTx,
   sendOrder,
+  sendOrderForWrappingDelegate,
   uploadAppData,
 } from '../../helpers/cow';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
@@ -279,7 +280,12 @@ export const SwapActionsViaCoW = ({
         } else {
           let orderId;
           try {
-            if (await isSmartContractWallet(user, provider)) {
+            // Three-way wallet branching:
+            //   contract              -> setPreSignature on-chain
+            //   delegated-eoa-wrapping -> EIP-1271 off-chain, bytes forwarded raw
+            //   eoa / delegated-eoa-plain -> EIP-712 off-chain
+            const walletKind = await classifyAccount(user, provider);
+            if (walletKind === 'contract') {
               const preSignTransaction = await getPreSignTransaction({
                 provider,
                 validTo,
@@ -332,6 +338,42 @@ export const SwapActionsViaCoW = ({
                 loading: false,
                 success: true,
                 txHash: preSignTransaction.orderId,
+              });
+            } else if (walletKind === 'delegated-eoa-wrapping') {
+              orderId = await sendOrderForWrappingDelegate({
+                validTo,
+                tokenSrc: state.sourceToken.addressToSwap,
+                tokenSrcDecimals: state.sourceToken.decimals,
+                tokenDest: state.destinationToken.addressToSwap,
+                tokenDestDecimals: state.destinationToken.decimals,
+                quote: state.swapRate?.order,
+                sellAmount: sellAmountAccountingCosts.toString(),
+                buyAmount: buyAmountAccountingCosts.toString(),
+                slippageBps,
+                smartSlippage,
+                orderType: state.orderType,
+                swapType: params.swapType,
+                market: currentMarket,
+                kind:
+                  state.orderType === OrderType.MARKET
+                    ? OrderKind.SELL
+                    : state.side === 'buy'
+                    ? OrderKind.BUY
+                    : OrderKind.SELL,
+                chainId: state.chainId,
+                user,
+                provider,
+                inputSymbol: state.sourceToken.symbol,
+                outputSymbol: state.destinationToken.symbol,
+                appCode,
+                orderBookQuote: state.swapRate?.orderBookQuote,
+                signatureParams,
+                estimateGasLimit,
+              });
+              setMainTxState({
+                loading: false,
+                success: true,
+                txHash: orderId,
               });
             } else {
               orderId = await sendOrder({

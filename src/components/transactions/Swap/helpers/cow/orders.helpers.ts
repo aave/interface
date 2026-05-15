@@ -6,6 +6,7 @@ import {
   OrderClass,
   OrderKind,
   OrderParameters,
+  OrderSigningUtils,
   OrderStatus,
   QuoteAndPost,
   SellTokenSource,
@@ -233,6 +234,103 @@ export const sendOrder = async ({
         appData,
         additionalParams: {
           applyCostsSlippageAndFees: false,
+        },
+      }
+    )
+    .then((orderResult) => orderResult.orderId);
+};
+
+/**
+ * Send a CoW order for an EIP-7702 delegated EOA whose delegate wraps
+ * signatures at sign time (ERC-7739 / ERC-7579 MA v2). The wallet's
+ * signTypedData returns bytes that verify via the owner's isValidSignature,
+ * which 7702 dispatches to the delegate. Submitted with
+ * `signingScheme: EIP1271` and `from = user EOA`; CoW resolves verification
+ * on-chain via the delegate.
+ */
+export const sendOrderForWrappingDelegate = async ({
+  provider,
+  chainId,
+  user,
+  slippageBps,
+  inputSymbol,
+  outputSymbol,
+  smartSlippage,
+  appCode,
+  orderType,
+  sellAmount,
+  buyAmount,
+  tokenSrc,
+  tokenDest,
+  tokenSrcDecimals,
+  tokenDestDecimals,
+  kind,
+  signatureParams,
+  estimateGasLimit,
+  validTo,
+  swapType,
+  market,
+}: CowProtocolActionParams) => {
+  const signer = provider?.getSigner();
+
+  if (!isChainIdSupportedByCoWProtocol(chainId)) {
+    throw new Error('Chain not supported.');
+  }
+  if (!signer) {
+    throw new Error('No signer found in provider');
+  }
+
+  const permitHook =
+    signatureParams && estimateGasLimit
+      ? await getPermitHook({ tokenAddress: tokenSrc, signatureParams, estimateGasLimit, chainId })
+      : undefined;
+
+  const hooks = permitHook ? { pre: [permitHook] } : undefined;
+
+  const appData = COW_APP_DATA(
+    inputSymbol,
+    outputSymbol,
+    slippageBps,
+    smartSlippage,
+    orderType,
+    appCode,
+    swapType,
+    market,
+    hooks
+  );
+
+  const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(chainId, appCode);
+
+  return tradingSdk
+    .postLimitOrder(
+      {
+        sellAmount,
+        buyAmount,
+        kind: kind == OrderKind.SELL ? OrderKind.SELL : OrderKind.BUY,
+        sellToken: tokenSrc,
+        buyToken: tokenDest,
+        sellTokenDecimals: tokenSrcDecimals,
+        buyTokenDecimals: tokenDestDecimals,
+        validTo,
+        owner: user as `0x${string}`,
+        env: COW_ENV,
+      },
+      {
+        appData,
+        additionalParams: {
+          applyCostsSlippageAndFees: false,
+          signingScheme: SigningScheme.EIP1271,
+          // The wallet's signTypedData wraps internally per its delegate's
+          // spec (7739 / MA v2 / both). We forward bytes verbatim — no
+          // (order, sig) ABI tuple wrap.
+          customEIP1271Signature: async (orderToSign, walletSigner) => {
+            const result = await OrderSigningUtils.signOrder(
+              orderToSign,
+              chainId as SupportedChainId,
+              walletSigner
+            );
+            return result.signature;
+          },
         },
       }
     )
