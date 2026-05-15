@@ -12,12 +12,13 @@ import { marketsData } from 'src/utils/marketsAndNetworksConfig';
  */
 export const useSavingsMarketData = () => {
   const forkKey = `fork_${CustomMarket.proto_mainnet_v3}`;
-  const targetKey = (
+  const marketKey = (
     marketsData[forkKey] ? forkKey : CustomMarket.proto_mainnet_v3
   ) as CustomMarket;
-  const { chainId } = marketsData[targetKey];
+  const { chainId } = marketsData[marketKey];
 
   return {
+    marketKey,
     chainId,
     sdkChainId: toSdkChainId(chainId),
   };

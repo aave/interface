@@ -15,8 +15,10 @@ export const SGhoCard = () => {
 
   const walletGhoBalance = vault?.user?.underlyingBalance.amount.value.toString() ?? '0';
 
-  const sghoBalance = vault?.user?.balance.amount.value ?? '0';
-  const sghoBalanceUSD = vault?.user?.balance.usd ?? '0';
+  // Show the raw sGHO share count (not the underlying GHO-equivalent balance) —
+  // the "sGHO" StakeActionBox should reflect the token the user actually holds.
+  const sghoBalance = vault?.user?.shares.amount.value ?? '0';
+  const sghoBalanceUSD = vault?.user?.shares.usd ?? '0';
   const totalDepositedUSD = vault?.totalAssets?.usd ?? '0';
   const targetRate = vault?.targetRate ? +vault.targetRate.value : 0;
 

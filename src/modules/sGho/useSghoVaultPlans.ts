@@ -14,8 +14,9 @@ import { useQuery } from 'urql';
  * Returns the raw `useQuery` tuple `[{ data, fetching, error, stale }, reexecuteQuery]`
  * so callers can use any urql primitive (e.g. `reexecuteQuery({ requestPolicy: 'network-only' })`).
  *
- * TODO: debounce `amount` upstream (e.g. 300–500ms) before passing into this
- * hook to avoid hitting the backend on every keystroke.
+ * **Pass a debounced `amount`.** Backend simulation per keystroke is expensive
+ * — debounce at the modal level so this hook and the preview hooks share
+ * the same throttled input.
  */
 export const useSghoVaultDepositPlan = ({
   amount,

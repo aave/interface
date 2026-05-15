@@ -44,7 +44,7 @@ export const SGhoDepositRow = ({
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <Typography variant="caption" color="text.secondary">
-              <Trans>Balance:</Trans>
+              <Trans>Available to deposit:</Trans>
             </Typography>
             <FormattedNumber
               value={walletBalance}

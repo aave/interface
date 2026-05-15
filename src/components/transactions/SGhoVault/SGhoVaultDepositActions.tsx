@@ -4,7 +4,7 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { errAsync } from 'neverthrow';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -15,6 +15,11 @@ import { useWalletClient } from 'wagmi';
 import { waitForTransactionReceipt } from 'wagmi/actions';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { APPROVAL_GAS_LIMIT } from '../utils';
+
+// TODO: add to gasLimitRecommendations once the Aave SDK adds vault entries.
+// Observed deposit cost on mainnet: ~94k gas used / 150k limit (Tenderly trace).
+const SGHO_VAULT_DEPOSIT_GAS_LIMIT = 150_000;
 
 export interface SGhoVaultDepositActionsProps extends BoxProps {
   amount: string;
@@ -26,13 +31,22 @@ export const SGhoVaultDepositActions = React.memo(
   ({ amount, isWrongNetwork, blocked, sx, ...props }: SGhoVaultDepositActionsProps) => {
     const { currentAccount } = useWeb3Context();
     const { chainId: targetChainId, sdkChainId } = useSavingsMarketData();
-    const { mainTxState, setMainTxState, setTxError } = useModalContext();
+    const { mainTxState, setMainTxState, setTxError, setGasLimit } = useModalContext();
     const { refresh } = useSGhoVaultContext();
     const queryClient = useQueryClient();
 
     const { data: walletClient } = useWalletClient();
     const [deposit] = useSghoVaultDeposit();
     const [sendTransaction] = useSendTransaction(walletClient);
+
+    // Push a static gas recommendation to the modal context. We don't yet
+    // know whether the plan will require an ERC20 approval (would need a
+    // `useSghoVaultDepositPlan` wiring to detect ApprovalRequired) — until
+    // then, always include the approval bump so the displayed fee is a safe
+    // upper bound. Drops to base when we wire approval-aware state.
+    useEffect(() => {
+      setGasLimit((SGHO_VAULT_DEPOSIT_GAS_LIMIT + APPROVAL_GAS_LIMIT).toString());
+    }, [setGasLimit]);
 
     const action = async () => {
       if (!currentAccount || !walletClient || !amount) return;

@@ -26,11 +26,6 @@ msgstr "Reward APY at target liquidity"
 msgid "Thank you for submitting your inquiry!"
 msgstr "Thank you for submitting your inquiry!"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Save with sGHO"
-msgstr "Save with sGHO"
-
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
 #: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 #: src/components/incentives/SonicIncentivesTooltipContent.tsx
@@ -134,11 +129,6 @@ msgstr "Rate change"
 #: pages/404.page.tsx
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
-
-#: src/modules/sGho/SGhoDepositRow.tsx
-#: src/modules/stkGho/StkGhoDepositRow.tsx
-msgid "Balance:"
-msgstr "Balance:"
 
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "Select token"
@@ -494,6 +484,11 @@ msgstr "Spanish"
 #: src/components/transactions/SavingsGho/SavingsGhoWithdrawActions.tsx
 msgid "Withdrawing GHO"
 msgstr "Withdrawing GHO"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Start Earning"
+msgstr "Start Earning"
 
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signing"
@@ -1235,6 +1230,11 @@ msgstr "Asset cannot be migrated to {marketName} v3 Market since collateral asse
 msgid "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 msgstr "Maximum amount available to supply is limited because protocol supply cap is at {0}%."
 
+#: src/modules/sGho/SGhoDepositRow.tsx
+#: src/modules/stkGho/StkGhoDepositRow.tsx
+msgid "Available to deposit:"
+msgstr "Available to deposit:"
+
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "E-Mode required"
 msgstr "E-Mode required"
@@ -1277,6 +1277,11 @@ msgstr "Cooldown period"
 #: src/modules/migration/HFChange.tsx
 msgid "Liquidation at"
 msgstr "Liquidation at"
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Migrate your sGHO position"
+msgstr "Migrate your sGHO position"
 
 #: src/components/transactions/Swap/details/CowCostsDetails.tsx
 msgid "Costs & Fees"
@@ -1599,6 +1604,10 @@ msgstr "Please connect your wallet to swap debt."
 #: src/components/MarketSwitcher.tsx
 msgid "Ethereum"
 msgstr "Ethereum"
+
+#: src/modules/stkGho/StkGhoCard.tsx
+msgid "Rewards for legacy Savings GHO are ending. Migrate to continue earning."
+msgstr "Rewards for legacy Savings GHO are ending. Migrate to continue earning."
 
 #: src/components/AssetCategoryMultiselect.tsx
 #: src/components/MarketAssetCategoryFilter.tsx
@@ -2881,6 +2890,11 @@ msgstr "Approve Confirmed"
 msgid "This swap has a price impact of {0}%, which exceeds the 25% safety threshold. To proceed, disable Aave Shield in the settings menu."
 msgstr "This swap has a price impact of {0}%, which exceeds the 25% safety threshold. To proceed, disable Aave Shield in the settings menu."
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "Earn into sGHO"
+msgstr "Earn into sGHO"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
@@ -3384,6 +3398,11 @@ msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral t
 msgid "This asset has 0% LTV, meaning it does not contribute to borrowing power. Existing positions with this asset as collateral still count toward the liquidation threshold and protect your health factor. New positions cannot enable this asset as collateral."
 msgstr "This asset has 0% LTV, meaning it does not contribute to borrowing power. Existing positions with this asset as collateral still count toward the liquidation threshold and protect your health factor. New positions cannot enable this asset as collateral."
 
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "GHO yield with instant withdraws."
+msgstr "GHO yield with instant withdraws."
+
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
 msgstr "Both"
@@ -3726,6 +3745,11 @@ msgstr "These assets are temporarily frozen or paused by Aave community decision
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
 msgstr "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
+
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+msgid "To continue claiming rewards, migrate now."
+msgstr "To continue claiming rewards, migrate now."
 
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "You don't have any bridge transactions"
@@ -4138,6 +4162,8 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 msgid "Migrate"
 msgstr "Migrate"
 

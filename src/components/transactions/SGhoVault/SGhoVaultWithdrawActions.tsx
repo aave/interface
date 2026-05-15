@@ -4,7 +4,7 @@ import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { errAsync } from 'neverthrow';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -15,6 +15,11 @@ import { useWalletClient } from 'wagmi';
 import { waitForTransactionReceipt } from 'wagmi/actions';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+
+// TODO: add to gasLimitRecommendations once the Aave SDK adds vault entries.
+// ERC-4626 redeem is typically slightly cheaper than deposit (no
+// safeTransferFrom into the vault); using a conservative 120k.
+const SGHO_VAULT_REDEEM_GAS_LIMIT = 120_000;
 
 export interface SGhoVaultWithdrawActionsProps extends BoxProps {
   amount: string;
@@ -34,13 +39,20 @@ export const SGhoVaultWithdrawActions = React.memo(
   }: SGhoVaultWithdrawActionsProps) => {
     const { currentAccount } = useWeb3Context();
     const { chainId: targetChainId, sdkChainId } = useSavingsMarketData();
-    const { mainTxState, setMainTxState, setTxError } = useModalContext();
+    const { mainTxState, setMainTxState, setTxError, setGasLimit } = useModalContext();
     const { refresh } = useSGhoVaultContext();
     const queryClient = useQueryClient();
 
     const { data: walletClient } = useWalletClient();
     const [redeem] = useSghoVaultRedeemShares();
     const [sendTransaction] = useSendTransaction(walletClient);
+
+    // Push a static gas recommendation to the modal context. Redeeming shares
+    // never needs an ERC20 approval (the user already owns the shares being
+    // burned), so no approval bump.
+    useEffect(() => {
+      setGasLimit(SGHO_VAULT_REDEEM_GAS_LIMIT.toString());
+    }, [setGasLimit]);
 
     const action = async () => {
       if (!currentAccount || !walletClient || !amount) return;
