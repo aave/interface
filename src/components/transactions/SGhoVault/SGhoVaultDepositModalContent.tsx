@@ -1,8 +1,6 @@
-import { ChainId } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import {
   bigDecimal,
-  chainId,
   evmAddress,
   useSghoVaultDeposit,
   useSghoVaultPreviewDeposit,
@@ -14,12 +12,12 @@ import { Typography } from '@mui/material';
 import { errAsync } from 'neverthrow';
 import { useState } from 'react';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useWalletClient } from 'wagmi';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
-import { useRootStore } from '../../../store/root';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -32,14 +30,14 @@ export enum ErrorType {
 
 export const SGhoVaultDepositModalContent = () => {
   const { chainId: connectedChainId, currentAccount } = useWeb3Context();
-  const currentMarketData = useRootStore((s) => s.currentMarketData);
+  const { marketData, chainId: targetChainId, sdkChainId } = useSavingsMarketData();
 
   const [_amount, setAmount] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [txHash, setTxHash] = useState<string>();
   const [txError, setTxErrorState] = useState<TxErrorType>();
 
-  const { walletBalances } = useWalletBalances(currentMarketData);
+  const { walletBalances } = useWalletBalances(marketData);
   const ghoAddress = AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase();
   const walletBalance = walletBalances[ghoAddress]?.amount ?? '0';
 
@@ -49,14 +47,14 @@ export const SGhoVaultDepositModalContent = () => {
   const previewAmount = parseFloat(amount) > 0 ? amount : '0';
   const { data: previewShares } = useSghoVaultPreviewDeposit({
     amount: bigDecimal(previewAmount),
-    chainId: chainId(ChainId.mainnet),
+    chainId: sdkChainId,
   });
 
   const { data: walletClient } = useWalletClient();
   const [deposit] = useSghoVaultDeposit();
   const [sendTransaction] = useSendTransaction(walletClient);
 
-  const isWrongNetwork = connectedChainId !== ChainId.mainnet;
+  const isWrongNetwork = connectedChainId !== targetChainId;
 
   let blockingError: ErrorType | undefined;
   if (amount && valueToBigNumber(amount).gt(walletBalance)) {
@@ -80,7 +78,7 @@ export const SGhoVaultDepositModalContent = () => {
     const result = await deposit({
       amount: { value: bigDecimal(amount) },
       depositor: evmAddress(currentAccount),
-      chainId: chainId(ChainId.mainnet),
+      chainId: sdkChainId,
     }).andThen((plan) => {
       switch (plan.__typename) {
         case 'TransactionRequest':
@@ -131,7 +129,7 @@ export const SGhoVaultDepositModalContent = () => {
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit="" chainId={ChainId.mainnet}>
+      <TxModalDetails gasLimit="" chainId={targetChainId}>
         <DetailsNumberLine
           description={<Trans>You&apos;ll receive</Trans>}
           value={previewShares?.value ?? '0'}

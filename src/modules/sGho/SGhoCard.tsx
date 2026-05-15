@@ -1,32 +1,30 @@
-import { ChainId } from '@aave/contract-helpers';
-import { chainId, evmAddress, useSghoVault } from '@aave/react';
+import { evmAddress, useSghoVault } from '@aave/react';
 import { AaveV3Ethereum } from '@aave-dao/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
-import { useRootStore } from 'src/store/root';
 
 import { SGhoDepositPanel } from './SGhoDepositPanel';
 
 export const SGhoCard = () => {
   const { currentAccount } = useWeb3Context();
-  const currentMarketData = useRootStore((s) => s.currentMarketData);
+  const { marketData, chainId, sdkChainId } = useSavingsMarketData();
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const { openSwitch, openSGhoVaultDeposit, openSGhoVaultWithdraw } = useModalContext();
 
   const userAddress = currentAccount ? evmAddress(currentAccount) : evmAddress(ZERO_ADDRESS);
-  const requestChainId = chainId(currentMarketData.chainId);
 
   const { data: vault, loading: vaultLoading } = useSghoVault({
     user: userAddress,
-    chainId: requestChainId,
+    chainId: sdkChainId,
   });
 
-  const { walletBalances } = useWalletBalances(currentMarketData);
+  const { walletBalances } = useWalletBalances(marketData);
   const ghoAddress = AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase();
   const walletGhoBalance = walletBalances[ghoAddress]?.amount ?? '0';
 
@@ -42,7 +40,7 @@ export const SGhoCard = () => {
     openSGhoVaultWithdraw();
   };
   const onGetGho = () => {
-    openSwitch('', ChainId.mainnet);
+    openSwitch('', chainId);
   };
 
   return (

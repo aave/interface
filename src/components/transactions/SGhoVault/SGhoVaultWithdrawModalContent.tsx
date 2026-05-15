@@ -1,8 +1,6 @@
-import { ChainId } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import {
   bigDecimal,
-  chainId,
   evmAddress,
   useSghoVault,
   useSghoVaultPreviewRedeem,
@@ -13,6 +11,7 @@ import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { errAsync } from 'neverthrow';
 import { useState } from 'react';
+import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { useWalletClient } from 'wagmi';
 
@@ -31,6 +30,7 @@ const SGHO_SYMBOL = 'sGHO';
 
 export const SGhoVaultWithdrawModalContent = () => {
   const { chainId: connectedChainId, currentAccount } = useWeb3Context();
+  const { chainId: targetChainId, sdkChainId } = useSavingsMarketData();
 
   const [_amount, setAmount] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -41,7 +41,7 @@ export const SGhoVaultWithdrawModalContent = () => {
     user: currentAccount
       ? evmAddress(currentAccount)
       : evmAddress('0x0000000000000000000000000000000000000000'),
-    chainId: chainId(ChainId.mainnet),
+    chainId: sdkChainId,
   });
 
   const sharesBalance = vault?.user?.shares.amount.value ?? '0';
@@ -52,14 +52,14 @@ export const SGhoVaultWithdrawModalContent = () => {
   const previewAmount = parseFloat(amount) > 0 ? amount : '0';
   const { data: previewAssets } = useSghoVaultPreviewRedeem({
     amount: bigDecimal(previewAmount),
-    chainId: chainId(ChainId.mainnet),
+    chainId: sdkChainId,
   });
 
   const { data: walletClient } = useWalletClient();
   const [redeem] = useSghoVaultRedeemShares();
   const [sendTransaction] = useSendTransaction(walletClient);
 
-  const isWrongNetwork = connectedChainId !== ChainId.mainnet;
+  const isWrongNetwork = connectedChainId !== targetChainId;
 
   let blockingError: ErrorType | undefined;
   if (amount && valueToBigNumber(amount).gt(sharesBalance)) {
@@ -87,7 +87,7 @@ export const SGhoVaultWithdrawModalContent = () => {
     const result = await redeem({
       amount: amountInput,
       sharesOwner: evmAddress(currentAccount),
-      chainId: chainId(ChainId.mainnet),
+      chainId: sdkChainId,
     }).andThen((plan) => {
       switch (plan.__typename) {
         case 'TransactionRequest':
@@ -138,7 +138,7 @@ export const SGhoVaultWithdrawModalContent = () => {
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit="" chainId={ChainId.mainnet}>
+      <TxModalDetails gasLimit="" chainId={targetChainId}>
         <DetailsNumberLine
           description={<Trans>You&apos;ll receive</Trans>}
           value={previewAssets?.value ?? '0'}

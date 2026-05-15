@@ -1,5 +1,4 @@
-import { ChainId } from '@aave/contract-helpers';
-import { chainId, evmAddress, useSghoVault } from '@aave/react';
+import { evmAddress, useSghoVault } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import NumberFlow from '@number-flow/react';
@@ -9,21 +8,22 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
+import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
-import { useShallow } from 'zustand/shallow';
 
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 
 export const SGHOHeader: React.FC = () => {
   const theme = useTheme();
   const { currentAccount } = useWeb3Context();
-  const [trackEvent] = useRootStore(useShallow((store) => [store.trackEvent]));
+  const trackEvent = useRootStore((store) => store.trackEvent);
+  const { sdkChainId } = useSavingsMarketData();
 
   const { data: vault, loading } = useSghoVault({
     user: currentAccount ? evmAddress(currentAccount) : evmAddress(ZERO_ADDRESS),
-    chainId: chainId(ChainId.mainnet),
+    chainId: sdkChainId,
   });
 
   useEffect(() => {

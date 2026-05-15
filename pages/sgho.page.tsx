@@ -2,12 +2,12 @@ import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { SGhoCard } from 'src/modules/sGho/SGhoCard';
 import { SGHOHeader } from 'src/modules/sGho/SGhoHeader';
 import { StkGhoCard } from 'src/modules/stkGho/StkGhoCard';
 import { useRootStore } from 'src/store/root';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { useShallow } from 'zustand/shallow';
 
 const SavingsGhoDepositModal = dynamic(() =>
@@ -40,14 +40,16 @@ export default function SavingsGho() {
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   );
+  const { marketKey } = useSavingsMarketData();
 
-  // Automatically switch to mainnet if not already on mainnet
-  // since sGHO only exists on Ethereum mainnet
+  // Keep the global currentMarket in sync with the savings target so the rest
+  // of the app (wallet network checks, wallet balances, etc.) lines up with
+  // the chain our data hooks are querying.
   useEffect(() => {
-    if (currentMarket !== CustomMarket.proto_mainnet_v3) {
-      setCurrentMarket(CustomMarket.proto_mainnet_v3);
+    if (currentMarket !== marketKey) {
+      setCurrentMarket(marketKey);
     }
-  }, [currentMarket, setCurrentMarket]);
+  }, [currentMarket, marketKey, setCurrentMarket]);
 
   useEffect(() => {
     trackEvent('Page Viewed', {

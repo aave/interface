@@ -1,4 +1,3 @@
-import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
@@ -9,6 +8,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 interface StkGhoDepositRowProps {
@@ -25,6 +25,7 @@ export const StkGhoDepositRow = ({
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
   const { openSwitch } = useModalContext();
+  const { chainId: targetChainId } = useSavingsMarketData();
 
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const { data: meritIncentives } = useMeritIncentives({
@@ -36,7 +37,7 @@ export const StkGhoDepositRow = ({
   const hasGho = +availableToStake > 0;
 
   const handleGetGho = () => {
-    openSwitch('', ChainId.mainnet);
+    openSwitch('', targetChainId);
   };
 
   const aprDisplay = (
