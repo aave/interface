@@ -1,0 +1,34 @@
+pages/sgho.page.tsx
+  s_c16d5a641174ea::t_fcb163f2f19ff4 69
+  s_c16d5a641174ea::t_6070882a308392 67
+src/modules/stkGho/StkGhoCard.tsx
+  s_c16d5a641174ea::t_081b4c7ba85674 42
+  s_c16d5a641174ea::t_7da3914a1278da 41
+src/modules/sGho/SGhoCard.tsx
+  s_c16d5a641174ea::t_55bf3c54dc7b2f 53
+  s_c16d5a641174ea::t_710e9e3701f524 54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "c23eb62d43c2d6dc7e36d1165c436d9bfa4e2677",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

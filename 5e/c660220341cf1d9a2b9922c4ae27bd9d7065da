@@ -1,0 +1,51 @@
+src/modules/sGho/SGhoCard.tsx
+  s_c16d5a641174ea::t_9b459f2a162b80 1,7,15,24,27
+  s_c16d5a641174ea::t_0990548f6ba401 43
+src/modules/sGho/SGhoHeader.tsx
+  s_c16d5a641174ea::t_58e97e00376101 1
+  s_c16d5a641174ea::t_50976647599e8d 11
+  s_c16d5a641174ea::t_67a46140be18de 21-22,26
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_c16d5a641174ea::t_a28b116805b036 11
+  s_c16d5a641174ea::t_42440eb1b0b400 28,40
+src/hooks/useSavingsMarketData.ts
+  s_c16d5a641174ea::t_4a764f34313ad1 1-14,18-26
+  s_c16d5a641174ea::t_2bc71a9e13a957 15-17
+src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+  s_c16d5a641174ea::t_2ba0c455100dbf 132
+  s_c16d5a641174ea::t_e8b4d91ce278e5 15
+  s_c16d5a641174ea::t_fa0f73a28c21e8 33,40,50,57
+  s_c16d5a641174ea::t_6f77c800fdc835 81
+src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+  s_c16d5a641174ea::t_0edcf335543600 33,44,55,62
+  s_c16d5a641174ea::t_599c9c6e30903a 90
+  s_c16d5a641174ea::t_4982789d001d86 14
+  s_c16d5a641174ea::t_fbc481709b988a 141
+pages/sgho.page.tsx
+  s_c16d5a641174ea::t_dd2a64325682f6 5
+  s_c16d5a641174ea::t_62c396f0bbee7f 43,45-47,49-50,52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "5ec660220341cf1d9a2b9922c4ae27bd9d7065da",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

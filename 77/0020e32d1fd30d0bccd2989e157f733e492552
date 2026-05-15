@@ -1,0 +1,46 @@
+src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+  s_c16d5a641174ea::t_eb82ae04609470 1-165
+src/components/transactions/SGhoVault/SGhoVaultWithdrawModal.tsx
+  s_c16d5a641174ea::t_39248bd51e53c2 1-24
+src/components/transactions/SGhoVault/SGhoVaultDepositModal.tsx
+  s_c16d5a641174ea::t_91fe36a6f4e1b7 1-24
+src/hooks/useModal.tsx
+  s_c16d5a641174ea::t_02b33d88b4f7bf 41
+  s_c16d5a641174ea::t_eb328e0abafe8d 432-436
+  s_c16d5a641174ea::t_103c71325787d6 40
+  s_c16d5a641174ea::t_0baa942a66f201 152
+  s_c16d5a641174ea::t_433fda77b9353a 153
+  s_c16d5a641174ea::t_29515dd7f6a7c3 437-441
+src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+  s_c16d5a641174ea::t_d7fe8191c0dc46 1-158
+pages/sgho.page.tsx
+  s_c16d5a641174ea::t_148c4e71881513 28-32
+  s_c16d5a641174ea::t_5e5c485fff32f5 33-37
+  s_c16d5a641174ea::t_9eb4bfc459c63c 87
+  s_c16d5a641174ea::t_e2e13dd285d3e8 86
+src/modules/sGho/SGhoCard.tsx
+  s_c16d5a641174ea::t_7551d7f256e767 42
+  s_c16d5a641174ea::t_8d863bf3c02670 19
+  s_c16d5a641174ea::t_636207d8535c29 39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "770020e32d1fd30d0bccd2989e157f733e492552",
+  "prompts": {},
+  "humans": {
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+package.json
+  h_0feed110d555ac 40,42
+src/components/transactions/Swap/inputs/SwapInputs.tsx
+  s_c16d5a641174ea::t_d769b1ba9b9922 63
+.gitignore
+  s_c16d5a641174ea::t_7119352e9d163b 47-49
+src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
+  s_c16d5a641174ea::t_14721d82d30c1c 62
+  s_c16d5a641174ea::t_0fd6983f0eac2c 79
+  s_c16d5a641174ea::t_a927a8db6e79c2 134-147
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_c16d5a641174ea::t_a34f210bc5a678 66,69-70,74
+  s_c16d5a641174ea::t_c8f2687a979101 99
+  s_c16d5a641174ea::t_245400e966b0b7 1-3,8,11,13-28,39-40,58-63,65,67-68,71-73,94-95,101-102,120,122-123,125,127-128,130-131,138,141-145
+  s_c16d5a641174ea::t_de2d47f7cd238a 9,36-38,64,75-93,96-98,100,121,124,126,129,132-137,139-140
+  s_c16d5a641174ea::t_d9de27e7069adf 4-7,10,12,29-35,41-57,103-119
+src/modules/stkGho/StkGhoDepositPanel.tsx
+  s_c16d5a641174ea::t_8c9783987c7593 16,30,51,60
+  s_c16d5a641174ea::t_76b146d7c3fb4b 68
+  s_c16d5a641174ea::t_f7154bc3093f7a 5,8,10,12,44-45,49,54-55,58,75-83,91-93
+  s_c16d5a641174ea::t_9248d7a15ccf24 69-73
+  s_c16d5a641174ea::t_87b14ad53af256 1,3-4,6-7,13-15,17-29,31-37,39-43,46-48,50,52-53,56-57,59,61-67,74,84-90,94-96
+  s_c16d5a641174ea::t_63be522437092d 2,11,38
+  s_c16d5a641174ea::t_fc7e8e2b8a619c 9
+src/modules/stkGho/StkGhoSavingsRate.tsx
+  s_c16d5a641174ea::t_78182d7ef8c166 3,33-43,45-53,55-68,70-82
+  h_0feed110d555ac 69
+  s_c16d5a641174ea::t_d63b44fc7d4e8d 1-2,4-32,44,54,83-84
+src/modules/stkGho/StkGhoSkeleton.tsx
+  s_c16d5a641174ea::t_0221cc60f4165d 1-50
+src/modules/stkGho/StkGhoCard.tsx
+  s_c16d5a641174ea::t_dfe6e87f4bb778 62
+  s_c16d5a641174ea::t_fd06905d6b287a 1-61,63-73
+src/modules/stkGho/StkGhoWithdrawRow.tsx
+  s_c16d5a641174ea::t_826a76fda9c573 1-47,49-109
+  s_c16d5a641174ea::t_097d0f36ee4dd2 48
+pages/sgho.page.tsx
+  s_c16d5a641174ea::t_6e5670533aa761 6,50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "1442fcc1a38ff4aca8cf82b9a63248ed182c5198",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
