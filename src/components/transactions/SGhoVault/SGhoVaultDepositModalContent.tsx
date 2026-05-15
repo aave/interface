@@ -8,6 +8,7 @@ import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { AssetInput } from '../AssetInput';
@@ -31,10 +32,19 @@ export const SGhoVaultDepositModalContent = () => {
   const ghoAddress = AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase();
   const walletBalance = walletBalances[ghoAddress]?.amount ?? '0';
 
+  const handleChange = (value: string) => {
+    if (value === '-1') {
+      setAmount(value);
+    } else {
+      setAmount(roundToTokenDecimals(value, 18));
+    }
+  };
+
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? walletBalance : _amount;
 
-  const previewAmount = parseFloat(amount) > 0 ? amount : '0';
+  const numericAmount = parseFloat(amount);
+  const previewAmount = !isNaN(numericAmount) && numericAmount > 0 ? numericAmount.toString() : '0';
   const { data: previewShares } = useSghoVaultPreviewDeposit({
     amount: bigDecimal(previewAmount),
     chainId: sdkChainId,
@@ -65,7 +75,7 @@ export const SGhoVaultDepositModalContent = () => {
     <>
       <AssetInput
         value={amount}
-        onChange={setAmount}
+        onChange={handleChange}
         usdValue={amount}
         symbol={GHO_SYMBOL}
         assets={[{ balance: walletBalance, symbol: GHO_SYMBOL }]}
