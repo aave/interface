@@ -1,43 +1,31 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import {
-  bigDecimal,
-  evmAddress,
-  useSghoVaultDeposit,
-  useSghoVaultPreviewDeposit,
-} from '@aave/react';
-import { useSendTransaction } from '@aave/react/viem';
+import { bigDecimal, useSghoVaultPreviewDeposit } from '@aave/react';
 import { AaveV3Ethereum } from '@aave-dao/aave-address-book';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { errAsync } from 'neverthrow';
 import { useState } from 'react';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
-import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
-import { TxErrorType } from 'src/ui-config/errorMapping';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
-import { useWalletClient } from 'wagmi';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { TxActionsWrapper } from '../TxActionsWrapper';
+import { SGhoVaultDepositActions } from './SGhoVaultDepositActions';
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
 export const SGhoVaultDepositModalContent = () => {
-  const { chainId: connectedChainId, currentAccount } = useWeb3Context();
+  const { chainId: connectedChainId } = useWeb3Context();
   const { marketData, chainId: targetChainId, sdkChainId } = useSavingsMarketData();
-  const { refresh } = useSGhoVaultContext();
+  const { mainTxState, txError } = useModalContext();
 
   const [_amount, setAmount] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [txHash, setTxHash] = useState<string>();
-  const [txError, setTxErrorState] = useState<TxErrorType>();
 
   const { walletBalances } = useWalletBalances(marketData);
   const ghoAddress = AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase();
@@ -51,10 +39,6 @@ export const SGhoVaultDepositModalContent = () => {
     amount: bigDecimal(previewAmount),
     chainId: sdkChainId,
   });
-
-  const { data: walletClient } = useWalletClient();
-  const [deposit] = useSghoVaultDeposit();
-  const [sendTransaction] = useSendTransaction(walletClient);
 
   const isWrongNetwork = connectedChainId !== targetChainId;
 
@@ -72,46 +56,8 @@ export const SGhoVaultDepositModalContent = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    if (!currentAccount || !walletClient || !amount) return;
-    setSubmitting(true);
-    setTxErrorState(undefined);
-
-    const result = await deposit({
-      amount: { value: bigDecimal(amount) },
-      depositor: evmAddress(currentAccount),
-      chainId: sdkChainId,
-    }).andThen((plan) => {
-      switch (plan.__typename) {
-        case 'TransactionRequest':
-          return sendTransaction(plan);
-        case 'ApprovalRequired':
-          return sendTransaction(plan.approval).andThen(() =>
-            sendTransaction(plan.originalTransaction)
-          );
-        case 'InsufficientBalanceError':
-          return errAsync(new Error(`Insufficient balance: ${plan.required.value} GHO required.`));
-      }
-    });
-
-    setSubmitting(false);
-    if (result.isErr()) {
-      setTxErrorState({
-        blocking: true,
-        actionBlocked: true,
-        rawError: result.error as Error,
-        error: <span>{(result.error as Error).message}</span>,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        txAction: 0 as any,
-      });
-    } else {
-      refresh();
-      setTxHash(result.value);
-    }
-  };
-
   if (txError && txError.blocking) return <TxErrorView txError={txError} />;
-  if (txHash) {
+  if (mainTxState.success) {
     return <TxSuccessView action={<Trans>deposited</Trans>} amount={amount} symbol="sGHO" />;
   }
 
@@ -140,19 +86,11 @@ export const SGhoVaultDepositModalContent = () => {
         />
       </TxModalDetails>
 
-      <TxActionsWrapper
-        requiresApproval={false}
-        preparingTransactions={false}
-        mainTxState={{ loading: submitting, success: !!txHash, txHash }}
-        isWrongNetwork={isWrongNetwork}
+      <SGhoVaultDepositActions
         amount={amount}
-        handleAction={handleSubmit}
-        symbol={GHO_SYMBOL}
-        requiresAmount
-        actionText={<Trans>Deposit</Trans>}
-        actionInProgressText={<Trans>Depositing</Trans>}
-        sx={{ mt: '48px' }}
+        isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
+        sx={{ mt: '48px' }}
       />
     </>
   );

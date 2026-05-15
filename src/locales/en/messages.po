@@ -1712,7 +1712,7 @@ msgstr "Website"
 msgid "Protocol APY"
 msgstr "Protocol APY"
 
-#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawActions.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 #: src/components/transactions/Withdraw/WithdrawModal.tsx
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
@@ -1823,7 +1823,7 @@ msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can r
 msgid "Merit Rewards"
 msgstr "Merit Rewards"
 
-#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawActions.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
 msgid "Withdrawing"
 msgstr "Withdrawing"
@@ -3192,7 +3192,7 @@ msgid "You can not stake this amount because it will cause collateral call"
 msgstr "You can not stake this amount because it will cause collateral call"
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
-#: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoDepositRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -3347,7 +3347,7 @@ msgid "No eligible assets to swap."
 msgstr "No eligible assets to swap."
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
-#: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
 msgid "Depositing"
 msgstr "Depositing"
 
