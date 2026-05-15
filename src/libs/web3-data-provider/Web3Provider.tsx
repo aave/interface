@@ -1,6 +1,7 @@
 import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
+import { getAccount, watchAccount } from '@wagmi/core';
 import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
@@ -8,7 +9,7 @@ import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { hexToAscii } from 'src/utils/utils';
 import { UserRejectedRequestError } from 'viem';
-import { useAccount, useAccountEffect, useConnect, useSwitchChain, useWatchAsset } from 'wagmi';
+import { useAccount, useConnect, useSwitchChain, useWatchAsset } from 'wagmi';
 import { useShallow } from 'zustand/shallow';
 
 import { Web3Context } from '../hooks/useWeb3Context';
@@ -207,16 +208,27 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setAccount(account?.toLowerCase());
   }, [account, setAccount]);
 
-  // useAccountEffect fires on connect AND reconnect (so analytics survives reloads)
-  // without subscribing this component to wagmi's tracked re-renders.
-  useAccountEffect({
-    onConnect({ connector }) {
+  // Drive walletType from a direct wagmi store subscription. watchAccount fires for
+  // every state transition into `connected` (including the `connecting(address) ->
+  // connected` path that useAccountEffect.onConnect misses, see wagmi#4221), and
+  // it does not subscribe this component to React renders. Seed once on mount via
+  // getAccount in case the store is already `connected` before the effect installs.
+  useEffect(() => {
+    const { status, connector } = getAccount(wagmiConfig);
+    if (status === 'connected' && connector?.id) {
       setWalletType(connector.id);
-    },
-    onDisconnect() {
-      setWalletType(undefined);
-    },
-  });
+    }
+
+    return watchAccount(wagmiConfig, {
+      onChange(data) {
+        if (data.status === 'connected' && data.connector?.id) {
+          setWalletType(data.connector.id);
+        } else if (data.status === 'disconnected') {
+          setWalletType(undefined);
+        }
+      },
+    });
+  }, [setWalletType]);
 
   useEffect(() => {
     if (readOnlyModeAddress) {
