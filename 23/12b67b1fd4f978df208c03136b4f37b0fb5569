@@ -1,0 +1,14 @@
+src/modules/sGho/SGhoVaultContext.tsx
+  h_be8c3c572e9983 31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "2312b67b1fd4f978df208c03136b4f37b0fb5569",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
