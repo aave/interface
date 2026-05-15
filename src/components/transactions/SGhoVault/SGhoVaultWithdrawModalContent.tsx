@@ -1,26 +1,17 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import {
-  bigDecimal,
-  evmAddress,
-  useSghoVault,
-  useSghoVaultPreviewRedeem,
-  useSghoVaultRedeemShares,
-} from '@aave/react';
-import { useSendTransaction } from '@aave/react/viem';
+import { bigDecimal, evmAddress, useSghoVault, useSghoVaultPreviewRedeem } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { errAsync } from 'neverthrow';
 import { useState } from 'react';
+import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
-import { TxErrorType } from 'src/ui-config/errorMapping';
-import { useWalletClient } from 'wagmi';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
 import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { DetailsNumberLine, TxModalDetails } from '../FlowCommons/TxModalDetails';
-import { TxActionsWrapper } from '../TxActionsWrapper';
+import { SGhoVaultWithdrawActions } from './SGhoVaultWithdrawActions';
 
 export enum ErrorType {
   NOT_ENOUGH_BALANCE,
@@ -31,11 +22,9 @@ const SGHO_SYMBOL = 'sGHO';
 export const SGhoVaultWithdrawModalContent = () => {
   const { chainId: connectedChainId, currentAccount } = useWeb3Context();
   const { chainId: targetChainId, sdkChainId } = useSavingsMarketData();
+  const { mainTxState, txError } = useModalContext();
 
   const [_amount, setAmount] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [txHash, setTxHash] = useState<string>();
-  const [txError, setTxErrorState] = useState<TxErrorType>();
 
   const { data: vault } = useSghoVault({
     user: currentAccount
@@ -55,10 +44,6 @@ export const SGhoVaultWithdrawModalContent = () => {
     chainId: sdkChainId,
   });
 
-  const { data: walletClient } = useWalletClient();
-  const [redeem] = useSghoVaultRedeemShares();
-  const [sendTransaction] = useSendTransaction(walletClient);
-
   const isWrongNetwork = connectedChainId !== targetChainId;
 
   let blockingError: ErrorType | undefined;
@@ -75,49 +60,8 @@ export const SGhoVaultWithdrawModalContent = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    if (!currentAccount || !walletClient || !amount) return;
-    setSubmitting(true);
-    setTxErrorState(undefined);
-
-    const amountInput = isMaxSelected
-      ? { maxRedeem: true as const }
-      : { shares: bigDecimal(amount) };
-
-    const result = await redeem({
-      amount: amountInput,
-      sharesOwner: evmAddress(currentAccount),
-      chainId: sdkChainId,
-    }).andThen((plan) => {
-      switch (plan.__typename) {
-        case 'TransactionRequest':
-          return sendTransaction(plan);
-        case 'ApprovalRequired':
-          return sendTransaction(plan.approval).andThen(() =>
-            sendTransaction(plan.originalTransaction)
-          );
-        case 'InsufficientBalanceError':
-          return errAsync(new Error(`Insufficient sGHO balance: ${plan.required.value} required.`));
-      }
-    });
-
-    setSubmitting(false);
-    if (result.isErr()) {
-      setTxErrorState({
-        blocking: true,
-        actionBlocked: true,
-        rawError: result.error as Error,
-        error: <span>{(result.error as Error).message}</span>,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        txAction: 0 as any,
-      });
-    } else {
-      setTxHash(result.value);
-    }
-  };
-
   if (txError && txError.blocking) return <TxErrorView txError={txError} />;
-  if (txHash) {
+  if (mainTxState.success) {
     return <TxSuccessView action={<Trans>withdrew</Trans>} amount={amount} symbol={SGHO_SYMBOL} />;
   }
 
@@ -146,19 +90,12 @@ export const SGhoVaultWithdrawModalContent = () => {
         />
       </TxModalDetails>
 
-      <TxActionsWrapper
-        requiresApproval={false}
-        preparingTransactions={false}
-        mainTxState={{ loading: submitting, success: !!txHash, txHash }}
-        isWrongNetwork={isWrongNetwork}
+      <SGhoVaultWithdrawActions
         amount={amount}
-        handleAction={handleSubmit}
-        symbol={SGHO_SYMBOL}
-        requiresAmount
-        actionText={<Trans>Withdraw</Trans>}
-        actionInProgressText={<Trans>Withdrawing</Trans>}
-        sx={{ mt: '48px' }}
+        isMaxSelected={isMaxSelected}
+        isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
+        sx={{ mt: '48px' }}
       />
     </>
   );
