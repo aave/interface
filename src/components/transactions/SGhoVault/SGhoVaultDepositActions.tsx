@@ -2,12 +2,14 @@ import { bigDecimal, evmAddress, useSghoVaultDeposit } from '@aave/react';
 import { useSendTransaction } from '@aave/react/viem';
 import { Trans } from '@lingui/macro';
 import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { errAsync } from 'neverthrow';
 import React from 'react';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { useWalletClient } from 'wagmi';
 import { waitForTransactionReceipt } from 'wagmi/actions';
@@ -26,6 +28,7 @@ export const SGhoVaultDepositActions = React.memo(
     const { chainId: targetChainId, sdkChainId } = useSavingsMarketData();
     const { mainTxState, setMainTxState, setTxError } = useModalContext();
     const { refresh } = useSGhoVaultContext();
+    const queryClient = useQueryClient();
 
     const { data: walletClient } = useWalletClient();
     const [deposit] = useSghoVaultDeposit();
@@ -87,6 +90,9 @@ export const SGhoVaultDepositActions = React.memo(
       // Repopulate the shared SGhoVault cache so other consumers (header,
       // card, withdraw modal) reflect the new balances on close.
       refresh();
+      // Also invalidate the React Query 'pool' subtree which covers
+      // useWalletBalances → the user's GHO wallet balance.
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
 
       setMainTxState({ loading: false, success: true, txHash: submittedTxHash });
     };

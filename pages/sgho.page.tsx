@@ -6,7 +6,6 @@ import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { SGhoCard } from 'src/modules/sGho/SGhoCard';
 import { SGHOHeader } from 'src/modules/sGho/SGhoHeader';
-import { SGhoVaultProvider } from 'src/modules/sGho/SGhoVaultContext';
 import { StkGhoCard } from 'src/modules/stkGho/StkGhoCard';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
@@ -80,17 +79,15 @@ export default function SavingsGho() {
 
 SavingsGho.getLayout = function getLayout(page: React.ReactElement) {
   return (
-    <SGhoVaultProvider>
-      <MainLayout>
-        {page}
-        {/** Modals */}
-        <SavingsGhoDepositModal />
-        <SavingsGhoWithdrawModal />
-        <StakeRewardClaimModal />
-        <SGhoVaultDepositModal />
-        <SGhoVaultWithdrawModal />
-        {/** End of modals */}
-      </MainLayout>
-    </SGhoVaultProvider>
+    <MainLayout>
+      {page}
+      {/** Modals */}
+      <SavingsGhoDepositModal />
+      <SavingsGhoWithdrawModal />
+      <StakeRewardClaimModal />
+      <SGhoVaultDepositModal />
+      <SGhoVaultWithdrawModal />
+      {/** End of modals */}
+    </MainLayout>
   );
 };
