@@ -13,6 +13,7 @@ import { errAsync } from 'neverthrow';
 import { useState } from 'react';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
+import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useWalletClient } from 'wagmi';
@@ -31,6 +32,7 @@ export enum ErrorType {
 export const SGhoVaultDepositModalContent = () => {
   const { chainId: connectedChainId, currentAccount } = useWeb3Context();
   const { marketData, chainId: targetChainId, sdkChainId } = useSavingsMarketData();
+  const { refresh } = useSGhoVaultContext();
 
   const [_amount, setAmount] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -103,6 +105,7 @@ export const SGhoVaultDepositModalContent = () => {
         txAction: 0 as any,
       });
     } else {
+      refresh();
       setTxHash(result.value);
     }
   };

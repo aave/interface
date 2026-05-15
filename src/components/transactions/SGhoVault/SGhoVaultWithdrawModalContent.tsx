@@ -2,7 +2,6 @@ import { valueToBigNumber } from '@aave/math-utils';
 import {
   bigDecimal,
   evmAddress,
-  useSghoVault,
   useSghoVaultPreviewRedeem,
   useSghoVaultRedeemShares,
 } from '@aave/react';
@@ -12,6 +11,7 @@ import { Typography } from '@mui/material';
 import { errAsync } from 'neverthrow';
 import { useState } from 'react';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
+import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { useWalletClient } from 'wagmi';
 
@@ -31,18 +31,12 @@ const SGHO_SYMBOL = 'sGHO';
 export const SGhoVaultWithdrawModalContent = () => {
   const { chainId: connectedChainId, currentAccount } = useWeb3Context();
   const { chainId: targetChainId, sdkChainId } = useSavingsMarketData();
+  const { vault, refresh } = useSGhoVaultContext();
 
   const [_amount, setAmount] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [txHash, setTxHash] = useState<string>();
   const [txError, setTxErrorState] = useState<TxErrorType>();
-
-  const { data: vault } = useSghoVault({
-    user: currentAccount
-      ? evmAddress(currentAccount)
-      : evmAddress('0x0000000000000000000000000000000000000000'),
-    chainId: sdkChainId,
-  });
 
   const sharesBalance = vault?.user?.shares.amount.value ?? '0';
 
@@ -112,6 +106,7 @@ export const SGhoVaultWithdrawModalContent = () => {
         txAction: 0 as any,
       });
     } else {
+      refresh();
       setTxHash(result.value);
     }
   };
