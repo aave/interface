@@ -28,7 +28,7 @@ export const SGhoVaultProvider = ({ children }: PropsWithChildren) => {
   });
 
   const refresh = useCallback(() => {
-    reexecuteQuery();
+    reexecuteQuery({ requestPolicy: 'network-only' });
   }, [reexecuteQuery]);
 
   return (
