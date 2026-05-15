@@ -8,7 +8,7 @@ import { useRootStore } from 'src/store/root';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { hexToAscii } from 'src/utils/utils';
 import { UserRejectedRequestError } from 'viem';
-import { useAccount, useConnect, useSwitchChain, useWatchAsset } from 'wagmi';
+import { useAccount, useAccountEffect, useConnect, useSwitchChain, useWatchAsset } from 'wagmi';
 import { useShallow } from 'zustand/shallow';
 
 import { Web3Context } from '../hooks/useWeb3Context';
@@ -44,7 +44,7 @@ let didAutoConnectForCypress = false;
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
-  const { chainId, address, status, connector } = useAccount();
+  const { chainId, address } = useAccount();
   const { connect, connectors } = useConnect();
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
@@ -207,16 +207,20 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setAccount(account?.toLowerCase());
   }, [account, setAccount]);
 
-  // Drive walletType from wagmi's account state so it survives page reloads.
-  // ConnectKit's `onConnect` prop only fires on fresh connect (not on reconnect),
-  // which caused most transaction events to be tracked with walletType=undefined.
-  useEffect(() => {
-    if (status === 'connected' && connector?.id) {
+  // Drive walletType from wagmi's account events. useAccountEffect fires for both
+  // fresh connects and reconnects (page reload, redirect-back), so analytics keeps
+  // a real connector id instead of falling back to undefined after a refresh.
+  // It uses watchAccount under the hood and does not subscribe this component to
+  // account state, so destructuring extra fields here would force wagmi's tracked
+  // subscription to deep-equal the connector object on every store tick.
+  useAccountEffect({
+    onConnect({ connector }) {
       setWalletType(connector.id);
-    } else if (status === 'disconnected') {
+    },
+    onDisconnect() {
       setWalletType(undefined);
-    }
-  }, [status, connector?.id, setWalletType]);
+    },
+  });
 
   useEffect(() => {
     if (readOnlyModeAddress) {
