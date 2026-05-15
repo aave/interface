@@ -1,0 +1,36 @@
+src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+  s_51dae47a30e74b::t_91c3557aa34068 14,34,109
+pages/sgho.page.tsx
+  s_51dae47a30e74b::t_91c3557aa34068 9,83-94
+src/modules/sGho/SGhoCard.tsx
+  s_51dae47a30e74b::t_91c3557aa34068 7,12,16
+src/modules/sGho/SGhoHeader.tsx
+  s_51dae47a30e74b::t_91c3557aa34068 10,18
+src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+  s_51dae47a30e74b::t_91c3557aa34068 16,35,108
+src/modules/sGho/SGhoVaultContext.tsx
+  h_be8c3c572e9983 3,34,36-41,45
+  s_51dae47a30e74b::t_fd24deca26ccca 1,7
+  s_51dae47a30e74b::t_91c3557aa34068 2,4-6,8-33,35,42-44,46-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "ecf61d02015fd0be7fca8830e0245c9a787c8176",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_51dae47a30e74b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e2c92-30ec-7242-99bf-0b0b0e7a8968",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

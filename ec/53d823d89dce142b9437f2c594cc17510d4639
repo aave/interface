@@ -1,0 +1,51 @@
+src/layouts/RsEthBanner.tsx
+  s_22514ba3c60252::t_72600572caea97 1-8,10,12-16,26-62,64-82,84-99
+  s_22514ba3c60252::t_1b967f60160a24 9,20-22,25
+  s_22514ba3c60252::t_cab3965bd5913d 11,17-19,23-24
+  s_22514ba3c60252::t_82b1f3bfe32ef5 63,83
+src/libs/web3-data-provider/Web3Provider.tsx
+  h_be8c3c572e9983 213-219
+src/layouts/MainLayout.tsx
+  s_22514ba3c60252::t_98fc9539dcb251 151,155
+  s_22514ba3c60252::t_7229b39956cb56 12
+  s_22514ba3c60252::t_4da7f515e1b6ca 5
+  s_22514ba3c60252::t_0c407fd3b91210 156-159
+src/hooks/pool/useHasRsEthPosition.ts
+  s_22514ba3c60252::t_8d78d9027c8a68 37-38
+  s_22514ba3c60252::t_05a3a1bc4ca6bb 39-49,51-53
+  s_22514ba3c60252::t_bbc98c432eb905 29-32
+  s_22514ba3c60252::t_bb328d67322002 33,50
+  s_22514ba3c60252::t_595c3b72328e93 34
+  s_22514ba3c60252::t_a350e2d8f6bdee 1
+  s_22514ba3c60252::t_09e04007eacbdc 2-18,27-28,35-36,54
+  s_22514ba3c60252::t_e270ba1455a154 19-26
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_22514ba3c60252::t_e656ca678810f8 190-194
+  s_22514ba3c60252::t_f66dbeb39eed32 18
+  s_22514ba3c60252::t_ae28df55d2affc 125-131
+  s_22514ba3c60252::t_6a2eee98889ed6 252
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "ec53d823d89dce142b9437f2c594cc17510d4639",
+  "prompts": {},
+  "humans": {
+    "h_075bcc15b434db": {
+      "author": "Mark Grothe"
+    },
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_22514ba3c60252": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "094b7b5b-010b-4a97-8bba-a4ffb868c672",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
