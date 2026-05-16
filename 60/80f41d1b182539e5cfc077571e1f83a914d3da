@@ -1,0 +1,30 @@
+src/modules/sGho/SGhoCard.tsx
+  s_c16d5a641174ea::t_8d391743973355 7,12,18-25
+src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+  s_c16d5a641174ea::t_ec5f20ac2acf01 27,32-36
+  s_c16d5a641174ea::t_cb36d8af62d715 11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "6080f41d1b182539e5cfc077571e1f83a914d3da",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
