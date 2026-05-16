@@ -1,19 +1,28 @@
 import { Trans } from '@lingui/macro';
 import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
+import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { SGhoDepositPanel } from './SGhoDepositPanel';
 
 export const SGhoCard = () => {
-  const { chainId } = useSavingsMarketData();
+  const { chainId, marketKey } = useSavingsMarketData();
   const { breakpoints } = useTheme();
   const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const { openSwitch, openSGhoVaultDeposit, openSGhoVaultWithdraw } = useModalContext();
   const { vault, loading: vaultLoading } = useSGhoVaultContext();
 
-  const walletGhoBalance = vault?.user?.underlyingBalance.amount.value.toString() ?? '0';
+  // Read the user's wallet GHO balance on-chain (multicall via wagmi) instead
+  // of from the SDK vault query — the on-chain read refreshes via React
+  // Query's `pool` invalidation and works on forks where the Aave indexer
+  // doesn't see deposits.
+  const marketData = marketsData[marketKey];
+  const { walletBalances } = useWalletBalances(marketData);
+  const ghoAddress = marketData.addresses.GHO_TOKEN_ADDRESS?.toLowerCase() ?? '';
+  const walletGhoBalance = walletBalances[ghoAddress]?.amount ?? '0';
 
   // Show the raw sGHO share count (not the underlying GHO-equivalent balance) —
   // the "sGHO" StakeActionBox should reflect the token the user actually holds.

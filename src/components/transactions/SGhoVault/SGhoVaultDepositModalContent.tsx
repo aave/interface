@@ -3,11 +3,12 @@ import { bigDecimal, useSghoVaultPreviewDeposit } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import { useState } from 'react';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useDebouncedValue } from 'src/hooks/useDebouncedValue';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
-import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { GHO_SYMBOL } from 'src/utils/ghoUtilities';
+import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { useWeb3Context } from '../../../libs/hooks/useWeb3Context';
@@ -23,13 +24,16 @@ export enum ErrorType {
 
 export const SGhoVaultDepositModalContent = () => {
   const { chainId: connectedChainId } = useWeb3Context();
-  const { chainId: targetChainId, sdkChainId } = useSavingsMarketData();
+  const { chainId: targetChainId, sdkChainId, marketKey } = useSavingsMarketData();
   const { mainTxState, txError, gasLimit } = useModalContext();
-  const { vault } = useSGhoVaultContext();
 
   const [_amount, setAmount] = useState('');
 
-  const walletBalance = vault?.user?.underlyingBalance.amount.value.toString() ?? '0';
+  // On-chain wallet GHO balance — see SGhoCard for the same reasoning.
+  const marketData = marketsData[marketKey];
+  const { walletBalances } = useWalletBalances(marketData);
+  const ghoAddress = marketData.addresses.GHO_TOKEN_ADDRESS?.toLowerCase() ?? '';
+  const walletBalance = walletBalances[ghoAddress]?.amount ?? '0';
 
   const handleChange = (value: string) => {
     if (value === '-1') {
