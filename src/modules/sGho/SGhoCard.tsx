@@ -19,7 +19,6 @@ export const SGhoCard = () => {
   // the "sGHO" StakeActionBox should reflect the token the user actually holds.
   const sghoBalance = vault?.user?.shares.amount.value ?? '0';
   const sghoBalanceUSD = vault?.user?.shares.usd ?? '0';
-  const totalDepositedUSD = vault?.totalAssets?.usd ?? '0';
   const targetRate = vault?.targetRate ? +vault.targetRate.value : 0;
 
   const onDeposit = () => {
@@ -54,7 +53,6 @@ export const SGhoCard = () => {
         walletGhoBalance={walletGhoBalance}
         userBalance={sghoBalance}
         userBalanceUSD={sghoBalanceUSD}
-        totalDepositedUSD={totalDepositedUSD}
         rate={targetRate}
         onDeposit={onDeposit}
         onWithdraw={onWithdraw}

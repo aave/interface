@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { SGhoCard } from 'src/modules/sGho/SGhoCard';
 import { SGHOHeader } from 'src/modules/sGho/SGhoHeader';
+import { YourInfoSidebar } from 'src/modules/sGho/YourInfoSidebar';
 import { StkGhoCard } from 'src/modules/stkGho/StkGhoCard';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
@@ -41,6 +43,8 @@ export default function SavingsGho() {
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
   );
   const { marketKey } = useSavingsMarketData();
+  const { currentAccount } = useWeb3Context();
+  const isConnected = !!currentAccount;
 
   // Keep the global currentMarket in sync with the savings target so the rest
   // of the app (wallet network checks, wallet balances, etc.) lines up with
@@ -70,7 +74,7 @@ export default function SavingsGho() {
           }}
         >
           <SGhoCard />
-          <StkGhoCard />
+          {isConnected ? <StkGhoCard /> : <YourInfoSidebar />}
         </Box>
       </ContentContainer>
     </>

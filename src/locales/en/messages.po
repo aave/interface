@@ -183,6 +183,7 @@ msgstr "Learn more about the risks."
 
 #: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/sGho/YourInfoSidebar.tsx
 msgid "Please connect a wallet to view your personal information here."
 msgstr "Please connect a wallet to view your personal information here."
 
@@ -959,6 +960,7 @@ msgid "Gas estimation error"
 msgstr "Gas estimation error"
 
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/stkGho/StkGhoWithdrawRow.tsx
@@ -1213,6 +1215,7 @@ msgstr "Reload"
 #: src/layouts/components/NavItems.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 msgid "sGHO"
@@ -1265,6 +1268,7 @@ msgstr "This asset is planned to be offboarded due to an Aave Protocol Governanc
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1710,6 +1714,7 @@ msgid "disabled"
 msgstr "disabled"
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositModal.tsx
+#: src/modules/sGho/SGhoLoggedOutPreview.tsx
 msgid "Deposit GHO"
 msgstr "Deposit GHO"
 
@@ -1730,6 +1735,7 @@ msgstr "Protocol APY"
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
+#: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -1906,6 +1912,7 @@ msgstr "Links"
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 #: src/modules/sGho/SGhoDepositRow.tsx
+#: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanelNoWallet.tsx
 msgid "Staking APR"
@@ -2366,6 +2373,10 @@ msgstr "Add {0} to wallet to track your balance."
 #: src/components/transactions/Swap/actions/ActionsSkeleton.tsx
 msgid "Loading..."
 msgstr "Loading..."
+
+#: src/modules/sGho/SGhoLoggedOutPreview.tsx
+msgid "Deposit GHO and earn up to {0}% APR"
+msgstr "Deposit GHO and earn up to {0}% APR"
 
 #: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
 msgid "This is an off-chain operation. Keep in mind that a solver may already have filled your order."
@@ -3209,6 +3220,7 @@ msgstr "You can not stake this amount because it will cause collateral call"
 #: src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoDepositRow.tsx
+#: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "Deposit"
@@ -4144,6 +4156,7 @@ msgstr "{0} Faucet"
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/sGho/YourInfoSidebar.tsx
 msgid "Your info"
 msgstr "Your info"
 
