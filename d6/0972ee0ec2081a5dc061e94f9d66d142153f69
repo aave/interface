@@ -1,0 +1,27 @@
+src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
+  h_be8c3c572e9983 106,109
+  s_7a2ee9102ff6a4::t_631eb8193e295d 108
+src/components/transactions/SGhoVault/SGhoVaultWithdrawActions.tsx
+  h_be8c3c572e9983 116,118-119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "d60972ee0ec2081a5dc061e94f9d66d142153f69",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_7a2ee9102ff6a4": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e31be-d3d4-7d72-bd6a-ee538ffd3cb1",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
