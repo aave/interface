@@ -103,7 +103,10 @@ export const SGhoVaultDepositActions = React.memo(
 
       // Repopulate the shared SGhoVault cache so other consumers (header,
       // card, withdraw modal) reflect the new balances on close.
+      // Temp workaround: wait after the refresh() for the request to fire so it goes through
       refresh();
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // Also invalidate the React Query 'pool' subtree which covers
       // useWalletBalances → the user's GHO wallet balance.
       queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
