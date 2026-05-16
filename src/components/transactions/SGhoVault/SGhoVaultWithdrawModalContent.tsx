@@ -2,7 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { bigDecimal, useSghoVaultPreviewRedeem } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDebouncedValue } from 'src/hooks/useDebouncedValue';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
@@ -77,9 +77,26 @@ export const SGhoVaultWithdrawModalContent = () => {
     }
   };
 
+  // Snapshot the amount at submit time — once the redeem mines, the vault
+  // query refetches and (for a max withdraw) `amount` recomputes to 0,
+  // which would otherwise blank the success view.
+  const submittedAmountRef = useRef<string | null>(null);
+  if (mainTxState.txHash && submittedAmountRef.current === null) {
+    submittedAmountRef.current = amount;
+  }
+  if (!mainTxState.txHash && !mainTxState.success && submittedAmountRef.current !== null) {
+    submittedAmountRef.current = null;
+  }
+
   if (txError && txError.blocking) return <TxErrorView txError={txError} />;
   if (mainTxState.success) {
-    return <TxSuccessView action={<Trans>withdrew</Trans>} amount={amount} symbol={SGHO_SYMBOL} />;
+    return (
+      <TxSuccessView
+        action={<Trans>withdrew</Trans>}
+        amount={submittedAmountRef.current ?? amount}
+        symbol={SGHO_SYMBOL}
+      />
+    );
   }
 
   return (

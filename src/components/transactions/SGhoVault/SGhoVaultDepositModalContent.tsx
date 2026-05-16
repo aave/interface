@@ -2,7 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { bigDecimal, useSghoVaultPreviewDeposit } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useDebouncedValue } from 'src/hooks/useDebouncedValue';
 import { useModalContext } from 'src/hooks/useModal';
@@ -80,9 +80,26 @@ export const SGhoVaultDepositModalContent = () => {
     }
   };
 
+  // Snapshot the amount at submit time — once the deposit mines, the on-chain
+  // wallet balance refetches and (for a max deposit) `amount` recomputes to 0,
+  // which would otherwise blank the success view.
+  const submittedAmountRef = useRef<string | null>(null);
+  if (mainTxState.txHash && submittedAmountRef.current === null) {
+    submittedAmountRef.current = amount;
+  }
+  if (!mainTxState.txHash && !mainTxState.success && submittedAmountRef.current !== null) {
+    submittedAmountRef.current = null;
+  }
+
   if (txError && txError.blocking) return <TxErrorView txError={txError} />;
   if (mainTxState.success) {
-    return <TxSuccessView action={<Trans>deposited</Trans>} amount={amount} symbol="sGHO" />;
+    return (
+      <TxSuccessView
+        action={<Trans>deposited</Trans>}
+        amount={submittedAmountRef.current ?? amount}
+        symbol="sGHO"
+      />
+    );
   }
 
   return (
