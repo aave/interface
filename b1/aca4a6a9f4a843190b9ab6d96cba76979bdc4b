@@ -1,0 +1,31 @@
+src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+  s_c16d5a641174ea::t_01fb57e46731d0 5
+  s_c16d5a641174ea::t_5d97bdce056e40 80-90,93-99
+src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+  s_c16d5a641174ea::t_3f7eecdca06ddd 5
+  s_c16d5a641174ea::t_258c74896ec7b0 83-93,96-102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "b1aca4a6a9f4a843190b9ab6d96cba76979bdc4b",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
