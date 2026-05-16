@@ -44,6 +44,9 @@ package-lock.json
 .eslintcache
 .yarn-cache
 
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
+
 # IDE specific
 .idea
 .vscode

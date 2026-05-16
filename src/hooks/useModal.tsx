@@ -37,6 +37,8 @@ export enum ModalType {
   UmbrellaUnstake,
   SavingsGhoDeposit,
   SavingsGhoWithdraw,
+  SGhoVaultDeposit,
+  SGhoVaultWithdraw,
   CancelCowOrder,
 
   // Swaps
@@ -147,6 +149,8 @@ export interface ModalContextType<T extends ModalArgsType> {
   ) => void;
   openSavingsGhoDeposit: () => void;
   openSavingsGhoWithdraw: () => void;
+  openSGhoVaultDeposit: () => void;
+  openSGhoVaultWithdraw: () => void;
   openCancelCowOrder: (
     transaction: TransactionHistoryItem<SwapActionFields[ActionName.Swap]>
   ) => void;
@@ -423,6 +427,16 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
         openSavingsGhoWithdraw: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Savings GHO Withdraw' });
           setType(ModalType.SavingsGhoWithdraw);
+          setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
+        },
+        openSGhoVaultDeposit: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'sGHO Vault Deposit' });
+          setType(ModalType.SGhoVaultDeposit);
+          setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
+        },
+        openSGhoVaultWithdraw: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'sGHO Vault Withdraw' });
+          setType(ModalType.SGhoVaultWithdraw);
           setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
         },
         openCancelCowOrder: (transaction) => {
