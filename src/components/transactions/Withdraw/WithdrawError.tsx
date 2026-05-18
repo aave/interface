@@ -1,5 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { BigNumber } from 'bignumber.js';
 import {
   ComputedReserveData,
   ExtendedFormattedUser,
