@@ -87,7 +87,7 @@ export const CancelAdapterOrderActions = ({
         );
       }
 
-      queryClient.invalidateQueries({ queryKey: 'transactionHistory' });
+      queryClient.invalidateQueries({ queryKey: ['transactionHistory'] });
       setMainTxState({
         ...mainTxState,
         loading: false,
