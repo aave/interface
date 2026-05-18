@@ -39,7 +39,7 @@
     "@aave/contract-helpers": "1.38.0",
     "@aave/graphql": "0.12.0",
     "@aave/math-utils": "1.38.0",
-    "@aave/react": "0.9.0",
+    "@aave/react": "0.9.1",
     "@amplitude/analytics-browser": "^2.13.0",
     "@cowprotocol/cow-sdk": "7.3.4",
     "@cowprotocol/sdk-ethers-v5-adapter": "0.3.5",
