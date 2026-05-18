@@ -6,7 +6,8 @@
   "resolutions": {
     "h3": "^1.15.5",
     "minimatch": ">=5.1.7",
-    "protobufjs": "^6.11.6"
+    "protobufjs": "^6.11.6",
+    "@types/react": "^18.0.0"
   },
   "scripts": {
     "dev": "next dev",
