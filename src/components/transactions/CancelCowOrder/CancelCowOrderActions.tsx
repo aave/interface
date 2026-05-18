@@ -48,7 +48,7 @@ export const CancelCowOrderActions = ({ cowOrder, blocked }: CancelCowOrderActio
         updateCowOrderStatus(cowOrder.chainId, account, cowOrder.id, OrderStatus.CANCELLED);
       }
 
-      queryClient.invalidateQueries({ queryKey: 'transactionHistory' });
+      queryClient.invalidateQueries({ queryKey: ['transactionHistory'] });
       setTimeout(() => {
         setMainTxState({
           ...mainTxState,
