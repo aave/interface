@@ -1,0 +1,29 @@
+src/hooks/governance/useGovernanceTokensAndPowers.ts
+  s_b22ee61692c970::t_1e759f14938397 14
+  s_b22ee61692c970::t_92b40fe8e86456 1
+src/components/transactions/CancelCowOrder/CancelCowOrderActions.tsx
+  s_b22ee61692c970::t_9362b8f6152f0f 51
+src/components/transactions/CancelCowOrder/CancelAdapterOrderActions.tsx
+  s_b22ee61692c970::t_7613a4637af8aa 90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "7ebe2a9e111ba8321bb29cb414163d1f25388bb3",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  },
+  "sessions": {
+    "s_b22ee61692c970": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "540d8a28-c8c7-4825-a094-9b07f2d2c5da",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
