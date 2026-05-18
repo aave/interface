@@ -1,4 +1,4 @@
-import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query';
+import { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/react-query';
 import { ethers } from 'ethers';
 import { BigNumber } from 'ethers/lib/ethers';
 import { Powers } from 'src/services/GovernanceService';
@@ -11,7 +11,9 @@ interface GovernanceTokensAndPowers extends Powers, GovernanceTokensBalance {
   isAaveTokenWithDelegatedPower: boolean;
   isStkAaveTokenWithDelegatedPower: boolean;
   isAAaveTokenWithDelegatedPower: boolean;
-  refetchPowers: (options?: RefetchOptions) => Promise<QueryObserverResult<Powers, unknown>>;
+  refetchPowers: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+  ) => Promise<QueryObserverResult<Powers, unknown>>;
 }
 
 export const useGovernanceTokensAndPowers = (
