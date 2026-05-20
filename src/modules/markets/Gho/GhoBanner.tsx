@@ -163,7 +163,7 @@ export const SavingsGhoBanner = () => {
             color="text.secondary"
             noWrap
           >
-            <Trans>APY</Trans>
+            <Trans>APR</Trans>
           </Typography>
         </Stack>
         <Box />

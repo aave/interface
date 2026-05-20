@@ -545,6 +545,7 @@ msgid "Switch Network"
 msgstr "Switch Network"
 
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
+#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoSavingsRate.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
@@ -3704,7 +3705,6 @@ msgstr "Selected supply assets"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
