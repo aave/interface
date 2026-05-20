@@ -1,0 +1,16 @@
+src/components/primitives/Link.tsx
+  h_873f745f99aed2 3
+src/modules/markets/Gho/GhoBanner.tsx
+  h_873f745f99aed2 166
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "a504310528c063e81c155c8967442014f7309afd",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
