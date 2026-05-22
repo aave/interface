@@ -20,6 +20,11 @@
   resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.49.13.tgz#196583183f0f15500bd322b8d8313c1d54149932"
   integrity sha512-KlyfYo/JRDFnJS/CGFRn6HBoF5Qq+TKn3gS7qLoyPMxK79SOnOAnrk2d6jQEPajyNlmRYrhdaFPgPdXRKBvwRw==
 
+"@aave/account@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@aave/account/-/account-0.2.0.tgz#f052fc281c1d74c4b835610cbf1f02405f0b335a"
+  integrity sha512-fk9KcC0He0WNvUGytxVv4urh8F+zznm6ZdpgKnNvq9jKUpnc2HSSn7mS3n4h13h80WtF8OL6rpL50ctqqc4/Nw==
+
 "@aave/client@0.11.0":
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@aave/client/-/client-0.11.0.tgz#44b9086efec0868f2968ff992d3cd00e73cae36f"
@@ -6639,14 +6644,14 @@ compare-func@^2.0.0:
     array-ify "^1.0.0"
     dot-prop "^5.1.0"
 
-connectkit@1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/connectkit/-/connectkit-1.9.0.tgz#5696ae5d2ad94a8c9c640e4fcfd6f48ed8303f22"
-  integrity sha512-bkqg8zK35pWWG2q8xeo41J1mnBP8D2ffOd/ItB12aad9QZZU20SlEeiQM9iYfRyl0JAH1tqIDlZbXajqZBFfDw==
+connectkit@1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/connectkit/-/connectkit-1.9.2.tgz#ef121018d454e96e02a98785d055a09c92b0ee7f"
+  integrity sha512-ZaYdL2UgHdcVy5j7Cn5C6KUtA5Ev3LEc3mPAzEoH3V3hdu3CdC8jgFTFsgInTXXpsdNpwTEEDPnP245ok7wOYg==
   dependencies:
+    "@aave/account" "^0.2.0"
     buffer "^6.0.3"
     detect-browser "^5.3.0"
-    family "^0.1.1"
     framer-motion "^6.3.11"
     qrcode "^1.5.0"
     react-transition-state "^1.1.4"
@@ -8224,11 +8229,6 @@ extsprintf@^1.2.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.1.tgz#8d172c064867f235c0c84a596806d279bf4bcc07"
   integrity sha512-Wrk35e8ydCKDj/ArClo1VrPVmN8zph5V4AtHwIuHhvMXsKf73UT3BOD+azBIW+3wOJ4FhEH7zyaJCFvChjYvMA==
-
-family@^0.1.1:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/family/-/family-0.1.6.tgz#0b5118bc3966d6be30e7324ec7470d7f26e2e31c"
-  integrity sha512-ulHRThfhz+glfmVfSPcU16N1hZ/uj0Y1D79vl0PeJ3yFfgXlkiBbVwXRJhDQuP8oizxBCl16KT2PrMleiYwrPw==
 
 fast-deep-equal@^3.1.1, fast-deep-equal@^3.1.3:
   version "3.1.3"
