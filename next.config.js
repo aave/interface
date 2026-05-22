@@ -5,11 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const isStaticExport = process.env.BUILD_STATIC === 'true';
-
-// `.ts` is the extension used by API routes; exclude it from static builds
-// since `output: 'export'` fails when API routes are present.
-const pageExtensions = isStaticExport ? ['page.tsx'] : ['page.tsx', 'ts'];
+const pageExtensions = ['page.tsx', 'ts'];
 if (process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true') pageExtensions.push('governance.tsx');
 if (process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true') pageExtensions.push('staking.tsx');
 
@@ -42,7 +38,6 @@ module.exports = withSentryConfig(
     // assetPrefix: "./",
     trailingSlash: true,
     pageExtensions,
-    ...(isStaticExport ? { output: 'export' } : {}),
     // NOTE: Needed for SAFE testing locally
     // async headers() {
     //   return [
