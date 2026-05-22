@@ -1,0 +1,20 @@
+src/hooks/app-data-provider/useAppDataProvider.tsx
+  s_757cbc4db053a5::t_eb43b77588cc17 92-104,107,113
+  s_757cbc4db053a5::t_a310e481851425 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "ffacf3150e2b7c47fafc0733d53344e8b52fb5d8",
+  "prompts": {},
+  "sessions": {
+    "s_757cbc4db053a5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e6fa2e5f-b085-47e5-a3ea-250615615ce8",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
