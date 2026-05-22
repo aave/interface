@@ -17,6 +17,7 @@
     "build:static": "next build && next export",
     "build:optimize-svgs": "find public -type f -name '*.svg' -print0 | xargs -0 -n 1 -P 6 npx svgo --final-newline",
     "serve:static": "npx serve out",
+    "export": "next export",
     "start": "next start",
     "lint:code": "next lint --dir src --dir pages",
     "lint:code:fix": "next lint --dir src --dir pages --fix",
