@@ -1,0 +1,31 @@
+src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+  s_d935f8e100d21b::t_5b6162bd842910 50-51
+  s_d935f8e100d21b::t_6be5e2254199bd 30-37
+  s_d935f8e100d21b::t_ba42e169e784fd 8
+  s_d935f8e100d21b::t_12316ae57ed441 82
+src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+  s_d935f8e100d21b::t_554d703b91f1e0 11
+  s_d935f8e100d21b::t_93bc2855df01ed 35-42,46-47
+  s_d935f8e100d21b::t_4ad79baa06060d 78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "b7dcac93d63e5e55977e598c1f16fcf4279630d2",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_d935f8e100d21b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "01d369d4-8cb0-4fad-b3dc-0f5b4d25e206",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

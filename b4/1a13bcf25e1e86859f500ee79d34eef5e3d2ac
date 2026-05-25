@@ -1,0 +1,16 @@
+next.config.js
+  h_873f745f99aed2 8
+package.json
+  h_873f745f99aed2 19,90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.0",
+  "base_commit_sha": "b41a13bcf25e1e86859f500ee79d34eef5e3d2ac",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
