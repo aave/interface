@@ -1,3 +1,6 @@
+import { PrivacyPreference } from 'src/store/privacySlice';
+import { useRootStore } from 'src/store/root';
+
 export const SUBGRAPH_IDS = {
   'ccip-mainnet': 'E11p8T4Ff1DHZbwSUC527hkUb5innVMdTuP6A2s1xtm1',
   'ccip-arbitrum': 'GPpZfiGoDChLsiWoMG5fxXdRNEYrsVDrKJ39moGcbz6i',
@@ -16,24 +19,61 @@ export const SUBGRAPH_IDS = {
 
 export type SubgraphKey = keyof typeof SUBGRAPH_IDS;
 
-/**
- * Makes a GraphQL request to the subgraph via the server-side proxy
- */
 export async function subgraphRequest<T>(
   subgraphKey: SubgraphKey,
   query: string,
   variables?: Record<string, unknown>
 ): Promise<T> {
+  const isGov = subgraphKey.startsWith('gov-');
+
+  if (isGov) {
+    const preference = useRootStore.getState().privacyPreference;
+    const onionUrl = process.env.NEXT_PUBLIC_QUIXOTE_URL;
+
+    // If Tor is preferred and an onion URL is configured, try querying the onion
+    // directly — Tor Browser will succeed (it routes .onion natively). Regular
+    // browsers will fail immediately (DNS/CORS) and we fall through to the proxy.
+    if (preference === PrivacyPreference.Tor && onionUrl) {
+      try {
+        const response = await fetch(`${onionUrl}/graphql`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query, variables }),
+        });
+        if (!response.ok) throw new Error(`Direct Quixote query failed: ${response.status}`);
+        const result = await response.json();
+        if (result.errors) throw new Error(`GraphQL errors: ${JSON.stringify(result.errors)}`);
+        return result.data;
+      } catch {
+        // Not in Tor Browser or onion unreachable — fall through to proxy
+      }
+    }
+
+    // All other gov cases go through the server-side proxy:
+    // - Tor preference + regular browser → proxy uses QuixoteClient (SOCKS5)
+    // - Clearnet preference → proxy fetches clearnet URL directly
+    const response = await fetch('/api/subgraph-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subgraphKey, query, variables, preference }),
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        `Subgraph request failed: ${response.status} ${response.statusText} - ${JSON.stringify(
+          errorData
+        )}`
+      );
+    }
+    const data = await response.json();
+    if (data.errors) throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+    return data.data;
+  }
+
   const response = await fetch('/api/subgraph-proxy', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      subgraphKey,
-      query,
-      variables,
-    }),
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ subgraphKey, query, variables }),
   });
 
   if (!response.ok) {
@@ -46,10 +86,6 @@ export async function subgraphRequest<T>(
   }
 
   const data = await response.json();
-
-  if (data.errors) {
-    throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
-  }
-
+  if (data.errors) throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
   return data.data;
 }

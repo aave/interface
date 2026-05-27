@@ -25,8 +25,8 @@ import {
 } from '@aave-dao/aave-address-book';
 import { SubgraphKey } from 'src/utils/subgraphRequest';
 
-export const ipfsGateway = 'https://cloudflare-ipfs.com/ipfs';
-export const fallbackIpfsGateway = 'https://ipfs.io/ipfs';
+export const ipfsGateway = 'https://ipfs.io/ipfs';
+export const fallbackIpfsGateway = 'https://dweb.link/ipfs';
 
 export interface VotingMachineConfig {
   portalToMachineMap: { [votingPoralAddress: string]: string };

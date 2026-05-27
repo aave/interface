@@ -1,4 +1,9 @@
-import { ProposalMetadata, ProposalV3State, VotingMachineProposal } from '@aave/contract-helpers';
+import {
+  ProposalMetadata,
+  ProposalV3State,
+  VotingMachineProposal,
+  VotingMachineProposalState,
+} from '@aave/contract-helpers';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { constants } from 'ethers';
 import { gql } from 'graphql-request';
@@ -18,7 +23,6 @@ import { VotingMachineService } from 'src/services/VotingMachineService';
 import { governanceV3Config, ipfsGateway } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 import { subgraphRequest } from 'src/utils/subgraphRequest';
-import invariant from 'tiny-invariant';
 
 export interface SubgraphConstants {
   id: string;
@@ -270,13 +274,16 @@ export async function fetchProposals(
   votingMachineSerivce: VotingMachineService,
   governanceV3Service: GovernanceV3Service
 ) {
-  const votingMachineParams =
-    proposals.map((p) => ({
+  // Proposals with no voting portal (cancelled/expired before portal was assigned,
+  // or subgraph indexing lag) must be excluded from the voting machine fetch.
+  const votingMachineParams = proposals
+    .filter((p) => p.votingPortal.votingMachineChainId !== null)
+    .map((p) => ({
       id: +p.id,
       snapshotBlockHash: p.snapshotBlockHash || constants.HashZero,
       chainId: +p.votingPortal.votingMachineChainId,
       votingMachineAddress: p.votingPortal.votingMachine,
-    })) ?? [];
+    }));
 
   const payloadParams = proposals
     .map(
@@ -297,15 +304,33 @@ export async function fetchProposals(
     governanceV3Service.getMultiChainPayloadsData(payloadParams),
   ]);
   const enhancedProposals = proposals.map<Proposal>((proposal, index) => {
-    const votingMachineData = votingMachineDataes.find(
-      (proposalData) => proposalData.proposalData.id === proposal.id
-    );
+    const votingMachineData: VotingMachineProposal = votingMachineDataes.find(
+      (proposalData) => String(proposalData.proposalData.id) === String(proposal.id)
+    ) ?? {
+      state: VotingMachineProposalState.NotCreated,
+      proposalData: {
+        id: proposal.id,
+        sentToGovernance: false,
+        startTime: 0,
+        endTime: 0,
+        votingClosedAndSentTimestamp: 0,
+        forVotes: proposal.votes?.forVotes ?? '0',
+        againstVotes: proposal.votes?.againstVotes ?? '0',
+        creationBlockNumber: 0,
+        votingClosedAndSentBlockNumber: 0,
+      },
+      votedInfo: { support: false, votingPower: '0' },
+      strategy: '',
+      dataWarehouse: '',
+      votingAssets: [],
+      hasRequiredRoots: false,
+      voteConfig: { votingDuration: '0', l1ProposalBlockHash: constants.HashZero },
+    };
     const payloadsData = payloadsDataes.filter((payloadData) =>
       proposal.payloads.find(
         (p) => p.id.split('_')[1] === payloadData.id && +p.chainId === payloadData.chainId
       )
     );
-    invariant(votingMachineData, 'Voting machine data not found');
     const lifecycleState = getLifecycleState(proposal, votingMachineData, payloadsData);
     const enhancedSubgraphProposal = {
       ...proposal,

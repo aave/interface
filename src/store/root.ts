@@ -8,6 +8,7 @@ import { createFavoriteMarketsSlice, FavoriteMarketsSlice } from './favoriteMark
 import { createGovernanceSlice, GovernanceSlice } from './governanceSlice';
 import { createLayoutSlice, LayoutSlice } from './layoutSlice';
 import { createPoolSlice, PoolSlice } from './poolSlice';
+import { createPrivacySlice, PrivacySlice } from './privacySlice';
 import { createProtocolDataSlice, ProtocolDataSlice } from './protocolDataSlice';
 import { createStakeSlice, StakeSlice } from './stakeSlice';
 import { createTransactionsSlice, TransactionsSlice } from './transactionsSlice';
@@ -28,7 +29,8 @@ export type RootStore = StakeSlice &
   AnalyticsSlice &
   TransactionsSlice &
   LayoutSlice &
-  FavoriteMarketsSlice;
+  FavoriteMarketsSlice &
+  PrivacySlice;
 
 export const useRootStore = create<RootStore>()(
   subscribeWithSelector(
@@ -45,6 +47,7 @@ export const useRootStore = create<RootStore>()(
         ...createTransactionsSlice(...args),
         ...createLayoutSlice(...args),
         ...createFavoriteMarketsSlice(...args),
+        ...createPrivacySlice(...args),
       };
     })
   )
@@ -70,6 +73,9 @@ if (typeof document !== 'undefined') {
 
       // Hydrate shield preference from localStorage
       useRootStore.getState().hydrateShield();
+
+      // Hydrate governance privacy preference from localStorage
+      useRootStore.getState().hydratePrivacyPreference();
     }
   };
 }

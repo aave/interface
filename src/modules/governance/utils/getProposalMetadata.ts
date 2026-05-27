@@ -81,6 +81,7 @@ export async function parseRawIpfs(rawIpfsContent: string, hash: string) {
       ...(data as ProposalMetadata),
       ipfsHash,
       description: content,
+      shortDescription: (data as ProposalMetadata).shortDescription || content.slice(0, 200),
     };
   }
   return MEMORIZE[ipfsHash];
@@ -123,6 +124,7 @@ async function fetchFromIpfs(hash: string, gateway: string): Promise<ProposalMet
       ...(data as ProposalMetadata),
       ipfsHash,
       description: content,
+      shortDescription: (data as ProposalMetadata).shortDescription || content.slice(0, 200),
     };
   }
   return MEMORIZE[ipfsHash];

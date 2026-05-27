@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:tor": "next dev -H 0.0.0.0",
     "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
     "build": "next build",
     "build:analyze": "ANALYZE=true yarn build",
@@ -85,6 +86,7 @@
     "json-stringify-deterministic": "^1.0.12",
     "micro-memoize": "^4.1.2",
     "next": "12.3.7",
+    "quixote-tor-client": "^0.1.0",
     "react": "^18.0.0",
     "react-cookie-consent": "^8.0.1",
     "react-dom": "^18.0.0",

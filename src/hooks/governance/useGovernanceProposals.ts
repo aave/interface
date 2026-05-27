@@ -118,6 +118,7 @@ async function fetchSubgraphVotes(proposalId: number, votingChainId: ChainId) {
  */
 export const useGovernanceProposals = () => {
   const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
+  const privacyPreference = useRootStore((s) => s.privacyPreference);
 
   const cacheResult = useInfiniteQuery({
     queryFn: async ({ pageParam = 0 }) => {
@@ -145,7 +146,7 @@ export const useGovernanceProposals = () => {
       );
       return { proposals: enriched.proposals.map(adaptGraphProposalToListItem) };
     },
-    queryKey: ['governance-proposals-graph'],
+    queryKey: ['governance-proposals-graph', privacyPreference],
     enabled: !USE_GOVERNANCE_CACHE,
     refetchOnMount: false,
     refetchOnReconnect: false,
@@ -164,6 +165,7 @@ export const useGovernanceProposals = () => {
  */
 export const useGovernanceProposalsSearch = (query: string) => {
   const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
+  const privacyPreference = useRootStore((s) => s.privacyPreference);
   const formattedQuery = query.trim().split(' ').join(' & ');
 
   const { data: cacheData, isFetching: cacheFetching } = useQuery({
@@ -178,7 +180,7 @@ export const useGovernanceProposalsSearch = (query: string) => {
   const { data: graphIds, isFetching: graphIdsFetching } = useQuery({
     queryFn: () => searchSubgraphProposals(formattedQuery),
     enabled: !USE_GOVERNANCE_CACHE && query !== '',
-    queryKey: ['governance-search-graph-ids', formattedQuery],
+    queryKey: ['governance-search-graph-ids', formattedQuery, privacyPreference],
     select: (data) => data.proposalSearch.map((prop) => prop.proposalId),
   });
 
@@ -188,7 +190,7 @@ export const useGovernanceProposalsSearch = (query: string) => {
       const enriched = await fetchProposals(proposals, votingMachineSerivce, governanceV3Service);
       return enriched.proposals.map(adaptGraphProposalToListItem);
     },
-    queryKey: ['governance-search-graph-proposals', graphIds],
+    queryKey: ['governance-search-graph-proposals', graphIds, privacyPreference],
     enabled: !USE_GOVERNANCE_CACHE && graphIds !== undefined && graphIds.length > 0,
   });
 
@@ -211,6 +213,7 @@ export const useGovernanceProposalsSearch = (query: string) => {
 export const useGovernanceProposalDetail = (proposalId: number) => {
   const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
+  const privacyPreference = useRootStore((s) => s.privacyPreference);
 
   const cacheResult = useQuery({
     queryFn: async () => {
@@ -270,7 +273,7 @@ export const useGovernanceProposalDetail = (proposalId: number) => {
         votingInfo,
       });
     },
-    queryKey: ['governance-detail-graph', proposalId, user],
+    queryKey: ['governance-detail-graph', proposalId, user, privacyPreference],
     enabled: !USE_GOVERNANCE_CACHE && !isNaN(proposalId),
     refetchOnMount: false,
     refetchOnReconnect: false,

@@ -9,6 +9,7 @@ import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
+import { TorStatusIndicator } from './TorStatusIndicator';
 
 interface ExternalLinkProps {
   text: string;
@@ -58,6 +59,7 @@ export const GovernanceTopPanel = () => {
             >
               <Trans>Aave Governance</Trans>
             </Typography>
+            <TorStatusIndicator />
           </Box>
 
           <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
