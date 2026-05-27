@@ -197,7 +197,7 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
 
       {showBalance && (
         <Row
-          caption={<Trans>Supply balance after switch</Trans>}
+          caption={<Trans>Supply balance after swap</Trans>}
           captionVariant="description"
           mb={4}
           align="flex-start"

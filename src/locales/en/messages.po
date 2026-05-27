@@ -992,10 +992,6 @@ msgstr "I fully understand the risks of migrating."
 msgid "The underlying asset cannot be rescued"
 msgstr "The underlying asset cannot be rescued"
 
-#: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
-msgid "Supply balance after switch"
-msgstr "Supply balance after switch"
-
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
 msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
@@ -2061,10 +2057,6 @@ msgstr "User does not have outstanding stable rate debt on this reserve"
 msgid "Bridge history"
 msgstr "Bridge history"
 
-#: src/components/transactions/Swap/details/DebtSwapDetails.tsx
-msgid "Borrow balance after switch"
-msgstr "Borrow balance after switch"
-
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Show assets with small balance"
 msgstr "Show assets with small balance"
@@ -2171,6 +2163,10 @@ msgstr "Author"
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
 msgstr "YAE"
+
+#: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
+msgid "Supply balance after swap"
+msgstr "Supply balance after swap"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 msgid "Claiming all merit rewards only"
@@ -3073,6 +3069,10 @@ msgstr "Connect"
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"
 msgstr "tokens is not the same as staking them. If you wish to stake your"
+
+#: src/components/transactions/Swap/details/DebtSwapDetails.tsx
+msgid "Borrow balance after swap"
+msgstr "Borrow balance after swap"
 
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Use it to vote for or against active proposals."
