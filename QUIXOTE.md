@@ -61,13 +61,26 @@ http://localhost:9720/tor-info
 ### 5. Wait for indexing to complete
 
 > **Caution:** `config_aave_governance.yaml` uses free public RPC endpoints (Tenderly, drpc, publicnode, etc.). Free RPCs have rate limits and may be unreliable under sustained load. For a faster and more stable setup, replace the `rpc_url` values with your own endpoints.
+
 The config indexes governance and payload events across **21 chains**.
 
 Initial sync takes some time — progress is printed continuously in the Quixote logs, and once each chain reaches the chain head a notification will appear in the logs. The interface will return data correctly once indexing has caught up.
 
-### 6. Start the interface
+### 6. Configure environment variables
 
-Once Quixote is running:
+In your `.env.local`, set the following before starting the interface:
+
+```sh
+NEXT_PUBLIC_USE_GOVERNANCE_CACHE=false
+NEXT_PUBLIC_QUIXOTE_URL=<quixote-onion-address>        # .onion URL logged in step 4
+NEXT_PUBLIC_QUIXOTE_CLEARNET_URL=http://localhost:9720  # default, change if needed
+```
+
+`NEXT_PUBLIC_USE_GOVERNANCE_CACHE` must be `false` so the interface queries Quixote directly instead of using cached governance data.
+
+### 7. Start the interface
+
+Once Quixote is running and the env vars are set:
 
 ```sh
 yarn dev:tor
