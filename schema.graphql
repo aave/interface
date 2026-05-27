@@ -1,0 +1,90 @@
+"Marks a type as a queryable entity backed by a SQL view."
+directive @entity on OBJECT
+
+type Proposal @entity {
+  id: ID!
+  creator: String
+  accessLevel: String
+  ipfsHash: String
+  state: Int
+  votingDuration: String
+  snapshotBlockHash: String
+  votesFor: String
+  votesAgainst: String
+  proposalMetadata: ProposalMetadata
+  payloads: [Payload!]!
+  transactions: ProposalTransactions
+  votingPortal: VotingPortal
+  votingConfig: VotingConfig
+  votes: ProposalVote
+  constants: ProposalConstants
+}
+
+type Payload @entity {
+  id: ID!
+  proposalId: String
+  chainId: String
+  accessLevel: String
+  payloadsController: String
+}
+
+type VoteEmitted @entity {
+  id: ID!
+  proposalId: Int
+  chainId: Int
+  support: Boolean
+  voter: String
+  votingPower: String
+}
+
+type TransactionEntry {
+  id: String
+  blockNumber: String
+  timestamp: String
+}
+
+type ProposalTransactions {
+  id: String
+  created: TransactionEntry
+  active: TransactionEntry
+  queued: TransactionEntry
+  failed: TransactionEntry
+  executed: TransactionEntry
+  canceled: TransactionEntry
+}
+
+type ProposalVote {
+  id: String
+  forVotes: String
+  againstVotes: String
+}
+
+type ProposalConstants {
+  id: String
+  precisionDivider: String
+  cooldownPeriod: String
+  expirationTime: String
+  cancellationFee: String
+}
+
+type VotingPortal {
+  id: String
+  votingMachineChainId: String
+  votingMachine: String
+  enabled: Boolean
+}
+
+type VotingConfig {
+  id: String
+  cooldownBeforeVotingStart: String
+  votingDuration: String
+  yesThreshold: String
+  yesNoDifferential: String
+  minPropositionPower: String
+}
+
+type ProposalMetadata {
+  id: String
+  title: String
+  rawContent: String
+}

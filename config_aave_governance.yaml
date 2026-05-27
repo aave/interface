@@ -1,0 +1,779 @@
+api_server_address: '0.0.0.0'
+api_server_port: 9720
+frontend_address: '0.0.0.0'
+frontend_port: 8500
+database_path: 'postgres://<user>:<password>@localhost:5432/quixote'
+index_jobs:
+  - rpc_url: https://gateway.tenderly.co/public/mainnet
+    contract: '0x9AEE0B04504CeF83A65AC3f0e838D0593BCb2BC7'
+    start_block: 18119225
+    block_range: 1000
+    events:
+      # IGovernanceCore.sol
+      - full_signature: 'ProposalCreated(uint256 indexed proposalId, address indexed creator, uint8 indexed accessLevel, bytes32 ipfsHash)'
+      - full_signature: 'VotingActivated(uint256 indexed proposalId, bytes32 indexed snapshotBlockHash, uint24 votingDuration)'
+      - full_signature: 'ProposalQueued(uint256 indexed proposalId, uint128 votesFor, uint128 votesAgainst)'
+      - full_signature: 'ProposalFailed(uint256 indexed proposalId, uint128 votesFor, uint128 votesAgainst)'
+      - full_signature: 'ProposalExecuted(uint256 indexed proposalId)'
+      - full_signature: 'ProposalCanceled(uint256 indexed proposalId)'
+      - full_signature: 'PayloadSent(uint256 indexed proposalId, uint40 payloadId, address indexed payloadsController, uint256 indexed chainId, uint256 payloadNumberOnProposal, uint256 numberOfPayloadsOnProposal)'
+      - full_signature: 'VoteForwarded(uint256 indexed proposalId, address indexed voter, bool indexed support, (address,uint128)[] votingAssetsWithSlot)'
+      - full_signature: 'VotingConfigUpdated(uint8 indexed accessLevel, uint24 votingDuration, uint24 coolDownBeforeVotingStart, uint256 yesThreshold, uint256 yesNoDifferential, uint256 minPropositionPower)'
+
+  - rpc_url: https://gateway.tenderly.co/public/mainnet
+    contract: '0x06a1795a88b82700896583e123F46BE43877bFb6'
+    start_block: 22065802
+    block_range: 1000
+    events:
+      # IVotingMachineWithProofs.sol
+      - full_signature: 'VoteEmitted(uint256 indexed proposalId, address indexed voter, bool indexed support, uint256 votingPower)'
+      - full_signature: 'ProposalVoteConfigurationBridged(uint256 indexed proposalId, bytes32 indexed blockHash, uint24 votingDuration, bool indexed voteCreated)'
+
+  - rpc_url: https://polygon.drpc.org
+    contract: '0x44c8b753229006A8047A05b90379A7e92185E97C'
+    start_block: 69155019
+    block_range: 1000
+    events:
+      # IVotingMachineWithProofs.sol
+      - full_signature: 'VoteEmitted(uint256 indexed proposalId, address indexed voter, bool indexed support, uint256 votingPower)'
+      - full_signature: 'ProposalVoteConfigurationBridged(uint256 indexed proposalId, bytes32 indexed blockHash, uint24 votingDuration, bool indexed voteCreated)'
+
+  - rpc_url: https://avalanche.rpc.sentio.xyz
+    contract: '0x4D1863d22D0ED8579f8999388BCC833CB057C2d6'
+    start_block: 58844887
+    block_range: 10000
+    events:
+      # IVotingMachineWithProofs.sol
+      - full_signature: 'VoteEmitted(uint256 indexed proposalId, address indexed voter, bool indexed support, uint256 votingPower)'
+      - full_signature: 'ProposalVoteConfigurationBridged(uint256 indexed proposalId, bytes32 indexed blockHash, uint24 votingDuration, bool indexed voteCreated)'
+
+  # IPayloadsControllerCore.sol - PayloadExecuted, PayloadCreated, PayloadQueued, PayloadCancelled per chain
+  - rpc_url: https://gateway.tenderly.co/public/mainnet
+    contract: '0xdAbad81aF85554E9ae636395611C58F7eC1aAEc5'
+    start_block: 18119740
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://polygon.drpc.org
+    contract: '0x401B5D0294E23637c18fcc38b1Bca814CDa2637C'
+    start_block: 47449617
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://avalanche.rpc.sentio.xyz
+    contract: '0x1140CB7CAfAcC745771C2Ea31e7B5C653c5d0B80'
+    start_block: 35087182
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://arbitrum.gateway.tenderly.co
+    contract: '0x89644CA1bB8064760312AE4F03ea41b05dA3637C'
+    start_block: 130388802
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://gateway.tenderly.co/public/optimism
+    contract: '0x0E1a3Af1f9cC76A62eD31eDedca291E63632e7c4'
+    start_block: 109458465
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://bsc-rpc.publicnode.com
+    contract: '0xE5EF2Dd06755A97e975f7E282f828224F2C3e627'
+    start_block: 31675528
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://mainnet.base.org
+    contract: '0x2DC219E716793fb4b21548C0f009Ba3Af753ab01'
+    start_block: 3865110
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://andromeda.metis.io/?owner=1088
+    contract: '0x2233F8A66A728FBa6E1dC95570B25360D07D5524'
+    start_block: 8526430
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://rpc.gnosischain.com
+    contract: '0x9A1F491B86D09fC1484b5fab10041B189B60756b'
+    start_block: 30390469
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://celo.drpc.org
+    contract: '0xE48E10834C04E394A04BF22a565D063D40b9FA42'
+    start_block: 29737417
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://linea.rpc.sentio.xyz
+    contract: '0x3BcE23a1363728091bc57A58a226CF2940C2e074'
+    start_block: 13379933
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://scroll.drpc.org
+    contract: '0x6b6B41c0f8C223715f712BE83ceC3c37bbfDC3fE'
+    start_block: 2166683
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://rpc.soneium.org
+    contract: '0x44D73D7C4b2f98F426Bf8B5e87628d9eE38ef0Cf'
+    start_block: 6475538
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://sonic.drpc.org
+    contract: '0x0846C28Dd54DEA4Fd7Fb31bcc5EB81673D68c695'
+    start_block: 7282346
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://zksync.drpc.org
+    contract: '0x2E79349c3F5e4751E87b966812C9E65E805996F1'
+    start_block: 40070275
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://ink.api.pocket.network
+    contract: '0x44D73D7C4b2f98F426Bf8B5e87628d9eE38ef0Cf'
+    start_block: 9344628
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://rpc.plasma.to
+    contract: '0xe76EB348E65eF163d85ce282125FF5a7F5712A1d'
+    start_block: 699638
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://bob.rpc.sentio.xyz
+    contract: '0x17fa87007bfF1dC7e6b3a36ED936E6355e37237C'
+    start_block: 18093264
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://mantle.api.pocket.network
+    contract: '0xF089f77173A3009A98c45f49D547BF714A7B1e01'
+    start_block: 75528659
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://mainnet.megaeth.com/rpc
+    contract: '0x80e11cB895a23C901a990239E5534054C66476B5'
+    start_block: 2166683
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+  - rpc_url: https://xlayer-mainnet.rpc.sentio.xyz
+    contract: '0x80e11cB895a23C901a990239E5534054C66476B5'
+    start_block: 43483547
+    block_range: 1000
+    events:
+      - full_signature: 'PayloadExecuted(uint40 payloadId)'
+      - full_signature: 'PayloadCreated(uint40 indexed payloadId, address indexed creator, (address,bool,uint8,uint256,string,bytes)[] actions, uint8 indexed maximumAccessLevelRequired)'
+      - full_signature: 'PayloadQueued(uint40 payloadId)'
+      - full_signature: 'PayloadCancelled(uint40 payloadId)'
+
+# SQL executed once at startup, after all event tables are created.
+# Use this for any use-case-specific views, indexes, or derived tables.
+# Nothing here is read by the generic indexer — it just executes it as DDL.
+#
+# Table names follow the pattern:
+#   event_{chain_id}_{event_name_lowercase}_{short_hash}
+# where short_hash = first 5 hex chars of the event selector.
+# You can always look them up with: SELECT event_name, event_hash FROM event_descriptor
+setup_sql:
+  - |
+    CREATE OR REPLACE VIEW aave_payload_executions AS
+    SELECT chain_id, "payloadId", block_number
+    FROM (
+        SELECT 1::NUMERIC       AS chain_id, "payloadId", block_number FROM event_1_payloadexecuted_da608
+        UNION ALL
+        SELECT 137::NUMERIC,               "payloadId", block_number FROM event_137_payloadexecuted_da608
+        UNION ALL
+        SELECT 43114::NUMERIC,             "payloadId", block_number FROM event_43114_payloadexecuted_da608
+        UNION ALL
+        SELECT 42161::NUMERIC,             "payloadId", block_number FROM event_42161_payloadexecuted_da608
+        UNION ALL
+        SELECT 10::NUMERIC,                "payloadId", block_number FROM event_10_payloadexecuted_da608
+        UNION ALL
+        SELECT 56::NUMERIC,                "payloadId", block_number FROM event_56_payloadexecuted_da608
+        UNION ALL
+        SELECT 8453::NUMERIC,              "payloadId", block_number FROM event_8453_payloadexecuted_da608
+        UNION ALL
+        SELECT 1088::NUMERIC,              "payloadId", block_number FROM event_1088_payloadexecuted_da608
+        UNION ALL
+        SELECT 100::NUMERIC,               "payloadId", block_number FROM event_100_payloadexecuted_da608
+        UNION ALL
+        SELECT 42220::NUMERIC,             "payloadId", block_number FROM event_42220_payloadexecuted_da608
+        UNION ALL
+        SELECT 59144::NUMERIC,             "payloadId", block_number FROM event_59144_payloadexecuted_da608
+        UNION ALL
+        SELECT 534352::NUMERIC,            "payloadId", block_number FROM event_534352_payloadexecuted_da608
+        UNION ALL
+        SELECT 1868::NUMERIC,              "payloadId", block_number FROM event_1868_payloadexecuted_da608
+        UNION ALL
+        SELECT 146::NUMERIC,               "payloadId", block_number FROM event_146_payloadexecuted_da608
+        UNION ALL
+        SELECT 324::NUMERIC,               "payloadId", block_number FROM event_324_payloadexecuted_da608
+        UNION ALL
+        SELECT 57073::NUMERIC,             "payloadId", block_number FROM event_57073_payloadexecuted_da608
+        UNION ALL
+        SELECT 9745::NUMERIC,              "payloadId", block_number FROM event_9745_payloadexecuted_da608
+        UNION ALL
+        SELECT 60808::NUMERIC,             "payloadId", block_number FROM event_60808_payloadexecuted_da608
+        UNION ALL
+        SELECT 5000::NUMERIC,              "payloadId", block_number FROM event_5000_payloadexecuted_da608
+        UNION ALL
+        SELECT 4326::NUMERIC,              "payloadId", block_number FROM event_4326_payloadexecuted_da608
+        UNION ALL
+        SELECT 196::NUMERIC,               "payloadId", block_number FROM event_196_payloadexecuted_da608
+    ) t
+  - |
+    CREATE OR REPLACE VIEW aave_blocks AS
+    SELECT chain_id, block_number, block_timestamp
+    FROM (
+        SELECT 1::NUMERIC       AS chain_id, block_number, block_timestamp FROM blocks_1
+        UNION ALL
+        SELECT 137::NUMERIC,               block_number, block_timestamp FROM blocks_137
+        UNION ALL
+        SELECT 43114::NUMERIC,             block_number, block_timestamp FROM blocks_43114
+        UNION ALL
+        SELECT 42161::NUMERIC,             block_number, block_timestamp FROM blocks_42161
+        UNION ALL
+        SELECT 10::NUMERIC,                block_number, block_timestamp FROM blocks_10
+        UNION ALL
+        SELECT 56::NUMERIC,                block_number, block_timestamp FROM blocks_56
+        UNION ALL
+        SELECT 8453::NUMERIC,              block_number, block_timestamp FROM blocks_8453
+        UNION ALL
+        SELECT 1088::NUMERIC,              block_number, block_timestamp FROM blocks_1088
+        UNION ALL
+        SELECT 100::NUMERIC,               block_number, block_timestamp FROM blocks_100
+        UNION ALL
+        SELECT 42220::NUMERIC,             block_number, block_timestamp FROM blocks_42220
+        UNION ALL
+        SELECT 59144::NUMERIC,             block_number, block_timestamp FROM blocks_59144
+        UNION ALL
+        SELECT 534352::NUMERIC,            block_number, block_timestamp FROM blocks_534352
+        UNION ALL
+        SELECT 1868::NUMERIC,              block_number, block_timestamp FROM blocks_1868
+        UNION ALL
+        SELECT 146::NUMERIC,               block_number, block_timestamp FROM blocks_146
+        UNION ALL
+        SELECT 324::NUMERIC,               block_number, block_timestamp FROM blocks_324
+        UNION ALL
+        SELECT 57073::NUMERIC,             block_number, block_timestamp FROM blocks_57073
+        UNION ALL
+        SELECT 9745::NUMERIC,              block_number, block_timestamp FROM blocks_9745
+        UNION ALL
+        SELECT 60808::NUMERIC,             block_number, block_timestamp FROM blocks_60808
+        UNION ALL
+        SELECT 5000::NUMERIC,              block_number, block_timestamp FROM blocks_5000
+        UNION ALL
+        SELECT 4326::NUMERIC,              block_number, block_timestamp FROM blocks_4326
+        UNION ALL
+        SELECT 196::NUMERIC,               block_number, block_timestamp FROM blocks_196
+    ) t
+  - |
+    CREATE OR REPLACE VIEW aave_proposal_execution_status AS
+    SELECT
+        ps."proposalId",
+        COUNT(*)           AS total_payloads,
+        COUNT(pe.chain_id) AS executed_payloads
+    FROM event_1_payloadsent_9c687 ps
+    LEFT JOIN aave_payload_executions pe
+        ON pe.chain_id = ps."chainId" AND pe."payloadId" = ps."payloadId"
+    GROUP BY ps."proposalId"
+  - |
+    CREATE OR REPLACE VIEW aave_proposals AS
+    SELECT
+        pc."proposalId",
+        pc."creator",
+        pc."accessLevel"::TEXT AS "accessLevel",
+        pc."ipfsHash",
+        va."snapshotBlockHash",
+        COALESCE(va."votingDuration", '259200') AS "votingDuration",
+        COALESCE(pq."votesFor",     pf."votesFor",     ve_agg."liveVotesFor"::TEXT,     '0') AS "votesFor",
+        COALESCE(pq."votesAgainst", pf."votesAgainst", ve_agg."liveVotesAgainst"::TEXT, '0') AS "votesAgainst",
+        CASE
+            WHEN pcan."proposalId" IS NOT NULL THEN 6
+            WHEN pex."proposalId"  IS NOT NULL
+                 AND (pes."proposalId" IS NULL OR pes.total_payloads = pes.executed_payloads)
+                                               THEN 4
+            WHEN pf."proposalId"   IS NOT NULL THEN 5
+            WHEN pq."proposalId"   IS NOT NULL THEN 3
+            WHEN va."proposalId"   IS NOT NULL THEN 2
+            ELSE 1
+        END AS state,
+        b_pc.block_timestamp   AS "createdAt",
+        b_va.block_timestamp   AS "votingActivatedAt",
+        COALESCE(b_pq.block_timestamp, b_pf.block_timestamp) AS "closedAt",
+        b_pex.block_timestamp  AS "executedAt",
+        b_pcan.block_timestamp AS "canceledAt",
+        json_build_object(
+            'id',               '0',
+            'precisionDivider', '1000000000000000000',
+            'cooldownPeriod',   '0',
+            'expirationTime',   '2592000',
+            'cancellationFee',  '0'
+        ) AS constants
+    FROM event_1_proposalcreated_cc914 pc
+    LEFT JOIN blocks_1 b_pc    ON b_pc.block_number   = pc.block_number
+    LEFT JOIN event_1_votingactivated_45f1d  va   ON va."proposalId"   = pc."proposalId"
+    LEFT JOIN blocks_1 b_va    ON b_va.block_number   = va.block_number
+    LEFT JOIN event_1_proposalqueued_e39e7   pq   ON pq."proposalId"   = pc."proposalId"
+    LEFT JOIN blocks_1 b_pq    ON b_pq.block_number   = pq.block_number
+    LEFT JOIN event_1_proposalfailed_2bed8   pf   ON pf."proposalId"   = pc."proposalId"
+    LEFT JOIN blocks_1 b_pf    ON b_pf.block_number   = pf.block_number
+    LEFT JOIN event_1_proposalexecuted_712ae pex  ON pex."proposalId"  = pc."proposalId"
+    LEFT JOIN blocks_1 b_pex   ON b_pex.block_number  = pex.block_number
+    LEFT JOIN event_1_proposalcanceled_789cf pcan ON pcan."proposalId" = pc."proposalId"
+    LEFT JOIN blocks_1 b_pcan  ON b_pcan.block_number = pcan.block_number
+    LEFT JOIN aave_proposal_execution_status pes  ON pes."proposalId"  = pc."proposalId"
+    LEFT JOIN (
+        SELECT
+            "proposalId",
+            SUM(CASE WHEN "support" = 'true'  THEN "votingPower" ELSE 0 END) AS "liveVotesFor",
+            SUM(CASE WHEN "support" = 'false' THEN "votingPower" ELSE 0 END) AS "liveVotesAgainst"
+        FROM (
+            SELECT "proposalId", "support", "votingPower" FROM event_1_voteemitted_0c611
+            UNION ALL
+            SELECT "proposalId", "support", "votingPower" FROM event_137_voteemitted_0c611
+            UNION ALL
+            SELECT "proposalId", "support", "votingPower" FROM event_43114_voteemitted_0c611
+        ) ve
+        GROUP BY "proposalId"
+    ) ve_agg ON ve_agg."proposalId" = pc."proposalId"
+  - |
+    CREATE OR REPLACE VIEW aave_payloads AS
+    SELECT
+        ps."proposalId",
+        ps."payloadId",
+        ps."payloadsController",
+        ps."chainId",
+        ps."payloadNumberOnProposal",
+        ps."numberOfPayloadsOnProposal",
+        ps.block_number,
+        b.block_timestamp AS "sentAt"
+    FROM event_1_payloadsent_9c687 ps
+    LEFT JOIN blocks_1 b ON b.block_number = ps.block_number
+  - |
+    CREATE OR REPLACE VIEW aave_payload_created_events AS
+    SELECT chain_id, "payloadId", "creator", "maximumAccessLevelRequired", block_number
+    FROM (
+        SELECT 1::NUMERIC       AS chain_id, "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_1_payloadcreated_1e458
+        UNION ALL
+        SELECT 137::NUMERIC,               "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_137_payloadcreated_1e458
+        UNION ALL
+        SELECT 43114::NUMERIC,             "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_43114_payloadcreated_1e458
+        UNION ALL
+        SELECT 42161::NUMERIC,             "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_42161_payloadcreated_1e458
+        UNION ALL
+        SELECT 10::NUMERIC,                "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_10_payloadcreated_1e458
+        UNION ALL
+        SELECT 56::NUMERIC,                "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_56_payloadcreated_1e458
+        UNION ALL
+        SELECT 8453::NUMERIC,              "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_8453_payloadcreated_1e458
+        UNION ALL
+        SELECT 1088::NUMERIC,              "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_1088_payloadcreated_1e458
+        UNION ALL
+        SELECT 100::NUMERIC,               "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_100_payloadcreated_1e458
+        UNION ALL
+        SELECT 42220::NUMERIC,             "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_42220_payloadcreated_1e458
+        UNION ALL
+        SELECT 59144::NUMERIC,             "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_59144_payloadcreated_1e458
+        UNION ALL
+        SELECT 534352::NUMERIC,            "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_534352_payloadcreated_1e458
+        UNION ALL
+        SELECT 1868::NUMERIC,              "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_1868_payloadcreated_1e458
+        UNION ALL
+        SELECT 146::NUMERIC,               "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_146_payloadcreated_1e458
+        UNION ALL
+        SELECT 324::NUMERIC,               "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_324_payloadcreated_1e458
+        UNION ALL
+        SELECT 57073::NUMERIC,             "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_57073_payloadcreated_1e458
+        UNION ALL
+        SELECT 9745::NUMERIC,              "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_9745_payloadcreated_1e458
+        UNION ALL
+        SELECT 60808::NUMERIC,             "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_60808_payloadcreated_1e458
+        UNION ALL
+        SELECT 5000::NUMERIC,              "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_5000_payloadcreated_1e458
+        UNION ALL
+        SELECT 4326::NUMERIC,              "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_4326_payloadcreated_1e458
+        UNION ALL
+        SELECT 196::NUMERIC,               "payloadId", "creator", "maximumAccessLevelRequired", block_number FROM event_196_payloadcreated_1e458
+    ) t
+  - |
+    CREATE OR REPLACE VIEW aave_payload_queued_events AS
+    SELECT chain_id, "payloadId", block_number
+    FROM (
+        SELECT 1::NUMERIC       AS chain_id, "payloadId", block_number FROM event_1_payloadqueued_1c458
+        UNION ALL
+        SELECT 137::NUMERIC,               "payloadId", block_number FROM event_137_payloadqueued_1c458
+        UNION ALL
+        SELECT 43114::NUMERIC,             "payloadId", block_number FROM event_43114_payloadqueued_1c458
+        UNION ALL
+        SELECT 42161::NUMERIC,             "payloadId", block_number FROM event_42161_payloadqueued_1c458
+        UNION ALL
+        SELECT 10::NUMERIC,                "payloadId", block_number FROM event_10_payloadqueued_1c458
+        UNION ALL
+        SELECT 56::NUMERIC,                "payloadId", block_number FROM event_56_payloadqueued_1c458
+        UNION ALL
+        SELECT 8453::NUMERIC,              "payloadId", block_number FROM event_8453_payloadqueued_1c458
+        UNION ALL
+        SELECT 1088::NUMERIC,              "payloadId", block_number FROM event_1088_payloadqueued_1c458
+        UNION ALL
+        SELECT 100::NUMERIC,               "payloadId", block_number FROM event_100_payloadqueued_1c458
+        UNION ALL
+        SELECT 42220::NUMERIC,             "payloadId", block_number FROM event_42220_payloadqueued_1c458
+        UNION ALL
+        SELECT 59144::NUMERIC,             "payloadId", block_number FROM event_59144_payloadqueued_1c458
+        UNION ALL
+        SELECT 534352::NUMERIC,            "payloadId", block_number FROM event_534352_payloadqueued_1c458
+        UNION ALL
+        SELECT 1868::NUMERIC,              "payloadId", block_number FROM event_1868_payloadqueued_1c458
+        UNION ALL
+        SELECT 146::NUMERIC,               "payloadId", block_number FROM event_146_payloadqueued_1c458
+        UNION ALL
+        SELECT 324::NUMERIC,               "payloadId", block_number FROM event_324_payloadqueued_1c458
+        UNION ALL
+        SELECT 57073::NUMERIC,             "payloadId", block_number FROM event_57073_payloadqueued_1c458
+        UNION ALL
+        SELECT 9745::NUMERIC,              "payloadId", block_number FROM event_9745_payloadqueued_1c458
+        UNION ALL
+        SELECT 60808::NUMERIC,             "payloadId", block_number FROM event_60808_payloadqueued_1c458
+        UNION ALL
+        SELECT 5000::NUMERIC,              "payloadId", block_number FROM event_5000_payloadqueued_1c458
+        UNION ALL
+        SELECT 4326::NUMERIC,              "payloadId", block_number FROM event_4326_payloadqueued_1c458
+        UNION ALL
+        SELECT 196::NUMERIC,               "payloadId", block_number FROM event_196_payloadqueued_1c458
+    ) t
+  - |
+    CREATE OR REPLACE VIEW aave_payload_cancelled_events AS
+    SELECT chain_id, "payloadId", block_number
+    FROM (
+        SELECT 1::NUMERIC       AS chain_id, "payloadId", block_number FROM event_1_payloadcancelled_1f567
+        UNION ALL
+        SELECT 137::NUMERIC,               "payloadId", block_number FROM event_137_payloadcancelled_1f567
+        UNION ALL
+        SELECT 43114::NUMERIC,             "payloadId", block_number FROM event_43114_payloadcancelled_1f567
+        UNION ALL
+        SELECT 42161::NUMERIC,             "payloadId", block_number FROM event_42161_payloadcancelled_1f567
+        UNION ALL
+        SELECT 10::NUMERIC,                "payloadId", block_number FROM event_10_payloadcancelled_1f567
+        UNION ALL
+        SELECT 56::NUMERIC,                "payloadId", block_number FROM event_56_payloadcancelled_1f567
+        UNION ALL
+        SELECT 8453::NUMERIC,              "payloadId", block_number FROM event_8453_payloadcancelled_1f567
+        UNION ALL
+        SELECT 1088::NUMERIC,              "payloadId", block_number FROM event_1088_payloadcancelled_1f567
+        UNION ALL
+        SELECT 100::NUMERIC,               "payloadId", block_number FROM event_100_payloadcancelled_1f567
+        UNION ALL
+        SELECT 42220::NUMERIC,             "payloadId", block_number FROM event_42220_payloadcancelled_1f567
+        UNION ALL
+        SELECT 59144::NUMERIC,             "payloadId", block_number FROM event_59144_payloadcancelled_1f567
+        UNION ALL
+        SELECT 534352::NUMERIC,            "payloadId", block_number FROM event_534352_payloadcancelled_1f567
+        UNION ALL
+        SELECT 1868::NUMERIC,              "payloadId", block_number FROM event_1868_payloadcancelled_1f567
+        UNION ALL
+        SELECT 146::NUMERIC,               "payloadId", block_number FROM event_146_payloadcancelled_1f567
+        UNION ALL
+        SELECT 324::NUMERIC,               "payloadId", block_number FROM event_324_payloadcancelled_1f567
+        UNION ALL
+        SELECT 57073::NUMERIC,             "payloadId", block_number FROM event_57073_payloadcancelled_1f567
+        UNION ALL
+        SELECT 9745::NUMERIC,              "payloadId", block_number FROM event_9745_payloadcancelled_1f567
+        UNION ALL
+        SELECT 60808::NUMERIC,             "payloadId", block_number FROM event_60808_payloadcancelled_1f567
+        UNION ALL
+        SELECT 5000::NUMERIC,              "payloadId", block_number FROM event_5000_payloadcancelled_1f567
+        UNION ALL
+        SELECT 4326::NUMERIC,              "payloadId", block_number FROM event_4326_payloadcancelled_1f567
+        UNION ALL
+        SELECT 196::NUMERIC,               "payloadId", block_number FROM event_196_payloadcancelled_1f567
+    ) t
+  - |
+    CREATE OR REPLACE VIEW aave_votes AS
+    SELECT
+        vf."proposalId",
+        vf."voter",
+        vf."support",
+        vf.block_number,
+        vf.transaction_hash,
+        b.block_timestamp AS "votedAt"
+    FROM event_1_voteforwarded_f78ab vf
+    LEFT JOIN blocks_1 b ON b.block_number = vf.block_number
+  - |
+    CREATE OR REPLACE VIEW aave_vote_emitteds AS
+    SELECT
+        chain_id::TEXT || '-' || "proposalId"::TEXT || '-' || "voter" AS id,
+        CAST(chain_id AS INT)       AS "chainId",
+        CAST("proposalId" AS INT)   AS "proposalId",
+        "support",
+        "voter",
+        CAST("votingPower" AS TEXT) AS "votingPower"
+    FROM (
+        SELECT 1::NUMERIC AS chain_id, "proposalId", "support", "voter", "votingPower"
+          FROM event_1_voteemitted_0c611
+        UNION ALL
+        SELECT 137::NUMERIC, "proposalId", "support", "voter", "votingPower"
+          FROM event_137_voteemitted_0c611
+        UNION ALL
+        SELECT 43114::NUMERIC, "proposalId", "support", "voter", "votingPower"
+          FROM event_43114_voteemitted_0c611
+    ) t
+  - |
+    CREATE OR REPLACE VIEW aave_voting_configs AS
+    SELECT DISTINCT ON ("accessLevel")
+        CAST("accessLevel" AS TEXT)              AS id,
+        CAST("accessLevel" AS TEXT)              AS "accessLevel",
+        CAST("coolDownBeforeVotingStart" AS TEXT) AS "cooldownBeforeVotingStart",
+        CAST("votingDuration" AS TEXT)            AS "votingDuration",
+        CAST("yesThreshold" AS TEXT)              AS "yesThreshold",
+        CAST("yesNoDifferential" AS TEXT)         AS "yesNoDifferential",
+        CAST("minPropositionPower" AS TEXT)        AS "minPropositionPower"
+    FROM event_1_votingconfigupdated_a743f
+    ORDER BY "accessLevel", block_number DESC
+  - |
+    CREATE OR REPLACE VIEW aave_voting_portals AS
+    SELECT
+        pc."proposalId",
+        COALESCE(
+            CASE WHEN b43."proposalId" IS NOT NULL
+                 THEN '0x' || encode(b43.contract_address, 'hex') END,
+            CASE WHEN b137."proposalId" IS NOT NULL
+                 THEN '0x' || encode(b137.contract_address, 'hex') END,
+            CASE WHEN b1."proposalId" IS NOT NULL
+                 THEN '0x' || encode(b1.contract_address, 'hex') END
+        ) AS id,
+        COALESCE(
+            CASE WHEN b43."proposalId" IS NOT NULL
+                 THEN '0x' || encode(b43.contract_address, 'hex') END,
+            CASE WHEN b137."proposalId" IS NOT NULL
+                 THEN '0x' || encode(b137.contract_address, 'hex') END,
+            CASE WHEN b1."proposalId" IS NOT NULL
+                 THEN '0x' || encode(b1.contract_address, 'hex') END
+        ) AS "votingMachine",
+        CAST(CASE
+            WHEN b43."proposalId"  IS NOT NULL THEN 43114
+            WHEN b137."proposalId" IS NOT NULL THEN 137
+            WHEN b1."proposalId"   IS NOT NULL THEN 1
+        END AS TEXT) AS "votingMachineChainId",
+        TRUE AS enabled
+    FROM event_1_proposalcreated_cc914 pc
+    LEFT JOIN event_43114_proposalvoteconfigurationbridged_b97f8 b43
+           ON b43."proposalId" = pc."proposalId"
+    LEFT JOIN event_137_proposalvoteconfigurationbridged_b97f8 b137
+           ON b137."proposalId" = pc."proposalId"
+    LEFT JOIN event_1_proposalvoteconfigurationbridged_b97f8 b1
+           ON b1."proposalId" = pc."proposalId"
+  - |
+    CREATE OR REPLACE VIEW aave_proposal_transactions AS
+    SELECT
+        pc."proposalId",
+        pc."proposalId"::TEXT AS id,
+        CASE WHEN b_pc.block_number IS NOT NULL THEN
+            json_build_object(
+                'id',          pc."proposalId"::TEXT || '-created',
+                'blockNumber', b_pc.block_number::TEXT,
+                'timestamp',   b_pc.block_timestamp::TEXT)
+        END AS created,
+        CASE WHEN b_va.block_number IS NOT NULL THEN
+            json_build_object(
+                'id',          pc."proposalId"::TEXT || '-active',
+                'blockNumber', b_va.block_number::TEXT,
+                'timestamp',   b_va.block_timestamp::TEXT)
+        END AS active,
+        CASE WHEN b_pq.block_number IS NOT NULL THEN
+            json_build_object(
+                'id',          pc."proposalId"::TEXT || '-queued',
+                'blockNumber', b_pq.block_number::TEXT,
+                'timestamp',   b_pq.block_timestamp::TEXT)
+        END AS queued,
+        CASE WHEN b_pf.block_number IS NOT NULL THEN
+            json_build_object(
+                'id',          pc."proposalId"::TEXT || '-failed',
+                'blockNumber', b_pf.block_number::TEXT,
+                'timestamp',   b_pf.block_timestamp::TEXT)
+        END AS failed,
+        CASE WHEN b_pex.block_number IS NOT NULL THEN
+            json_build_object(
+                'id',          pc."proposalId"::TEXT || '-executed',
+                'blockNumber', b_pex.block_number::TEXT,
+                'timestamp',   b_pex.block_timestamp::TEXT)
+        END AS executed,
+        CASE WHEN b_pcan.block_number IS NOT NULL THEN
+            json_build_object(
+                'id',          pc."proposalId"::TEXT || '-canceled',
+                'blockNumber', b_pcan.block_number::TEXT,
+                'timestamp',   b_pcan.block_timestamp::TEXT)
+        END AS canceled
+    FROM event_1_proposalcreated_cc914 pc
+    LEFT JOIN blocks_1 b_pc   ON b_pc.block_number   = pc.block_number
+    LEFT JOIN event_1_votingactivated_45f1d  va   ON va."proposalId"   = pc."proposalId"
+    LEFT JOIN blocks_1 b_va   ON b_va.block_number   = va.block_number
+    LEFT JOIN event_1_proposalqueued_e39e7   pq   ON pq."proposalId"   = pc."proposalId"
+    LEFT JOIN blocks_1 b_pq   ON b_pq.block_number   = pq.block_number
+    LEFT JOIN event_1_proposalfailed_2bed8   pf   ON pf."proposalId"   = pc."proposalId"
+    LEFT JOIN blocks_1 b_pf   ON b_pf.block_number   = pf.block_number
+    LEFT JOIN event_1_proposalexecuted_712ae pex  ON pex."proposalId"  = pc."proposalId"
+    LEFT JOIN blocks_1 b_pex  ON b_pex.block_number  = pex.block_number
+    LEFT JOIN event_1_proposalcanceled_789cf pcan ON pcan."proposalId" = pc."proposalId"
+    LEFT JOIN blocks_1 b_pcan ON b_pcan.block_number = pcan.block_number
+  - |
+    CREATE OR REPLACE VIEW aave_proposal_payloads AS
+    SELECT
+        CAST(ap."proposalId" AS TEXT) || '_' || ap."payloadId"::TEXT AS id,
+        CAST(ap."proposalId" AS TEXT) AS "proposalId",
+        ap."chainId"::TEXT            AS "chainId",
+        COALESCE(pce."maximumAccessLevelRequired"::TEXT, '0') AS "accessLevel",
+        ap."payloadsController"
+    FROM aave_payloads ap
+    LEFT JOIN aave_payload_created_events pce
+           ON pce."payloadId" = ap."payloadId"
+          AND pce.chain_id    = ap."chainId"
+  - |
+    CREATE OR REPLACE VIEW aave_proposal_vote_summaries AS
+    SELECT
+        "proposalId",
+        "proposalId"::TEXT AS id,
+        "votesFor"         AS "forVotes",
+        "votesAgainst"     AS "againstVotes"
+    FROM aave_proposals
+
+graphql:
+  schema: ./schema.graphql
+  entities:
+    - type: Proposal
+      view: aave_proposals
+      id_column: proposalId
+      queries:
+        - name: proposals
+          type: list
+          order_by_fields: [proposalId]
+          filters:
+            - { field: state, column: state, type: Int }
+            - { field: id_in, column: proposalId, type: String }
+        - name: proposal
+          type: single
+        - name: proposalSearch
+          type: search
+          column: proposalId
+      relations:
+        - field: payloads
+          view: aave_proposal_payloads
+          foreign_key: proposalId
+        - field: transactions
+          view: aave_proposal_transactions
+          foreign_key: proposalId
+          singleton: true
+        - field: votingPortal
+          view: aave_voting_portals
+          foreign_key: proposalId
+          singleton: true
+        - field: votingConfig
+          view: aave_voting_configs
+          foreign_key: accessLevel
+          parent_column: accessLevel
+          singleton: true
+        - field: votes
+          view: aave_proposal_vote_summaries
+          foreign_key: proposalId
+          singleton: true
+    - type: VoteEmitted
+      view: aave_vote_emitteds
+      id_column: id
+      queries:
+        - name: voteEmitteds
+          type: list
+          filters:
+            - { field: proposalId, column: proposalId, required: true, type: Int }
+            - { field: chainId, column: chainId, type: Int }
