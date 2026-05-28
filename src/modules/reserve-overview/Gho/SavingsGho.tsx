@@ -3,7 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
+import { SavingsGhoIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { TokenContractTooltip } from 'src/components/infoTooltips/TokenContractTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -11,10 +11,11 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSavingsGhoIncentive } from 'src/hooks/useSavingsGhoIncentive';
 import { StakeActionBox } from 'src/modules/staking/StakeActionBox';
 import { useRootStore } from 'src/store/root';
+import { convertAprToApy } from 'src/utils/utils';
 
 import { PanelItem } from '../ReservePanels';
 
@@ -27,13 +28,10 @@ export const SavingsGho = () => {
   );
   const { openSavingsGhoDeposit, openSavingsGhoWithdraw } = useModalContext();
   const now = useCurrentTimestamp(1);
-  const { data: meritIncentives } = useMeritIncentives({
-    symbol: 'GHO',
-    market: currentMarketData.market,
-  });
-
-  const apr = meritIncentives?.incentiveAPR || '0';
-  const aprFormatted = (+apr * 100).toFixed(2);
+  const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
+  const savingsGhoAPY = savingsGhoIncentive?.aprDecimal
+    ? convertAprToApy(Number(savingsGhoIncentive.aprDecimal))
+    : 0;
 
   const stakeData = stakeGeneralResult?.[0];
   const stakeUserData = stakeUserResult?.[0];
@@ -61,7 +59,8 @@ export const SavingsGho = () => {
     <Stack direction="column" gap={4}>
       <Typography gutterBottom>
         Stake GHO is now Savings GHO. With no risk of slashing and immediate withdraws available,
-        earn up to {aprFormatted}% APR and claim rewards weekly.
+        earn up to <FormattedNumber value={savingsGhoAPY} percent visibleDecimals={2} /> APY and
+        claim rewards weekly.
       </Typography>
       <Stack direction="row">
         <Stack direction="row" alignItems="center" gap={1}>
@@ -107,11 +106,11 @@ export const SavingsGho = () => {
         <PanelItem
           title={
             <Box display="flex" alignItems="center">
-              <Trans>APR</Trans>
+              <Trans>APY</Trans>
             </Box>
           }
         >
-          <MeritIncentivesButton symbol="GHO" market={currentMarketData.market} />
+          <SavingsGhoIncentivesButton />
         </PanelItem>
       </Stack>
 

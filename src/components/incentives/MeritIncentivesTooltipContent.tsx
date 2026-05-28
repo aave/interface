@@ -27,17 +27,19 @@ interface CampaignConfig {
 }
 
 const isCeloAction = (action: MeritAction): boolean => {
-  return [
-    MeritAction.CELO_SUPPLY_CELO,
-    MeritAction.CELO_SUPPLY_USDT,
-    MeritAction.CELO_SUPPLY_USDC,
-    MeritAction.CELO_SUPPLY_WETH,
-    MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
-    MeritAction.CELO_BORROW_CELO,
-    MeritAction.CELO_BORROW_USDT,
-    MeritAction.CELO_BORROW_USDC,
-    MeritAction.CELO_BORROW_WETH,
-  ].includes(action);
+  return (
+    [
+      MeritAction.CELO_SUPPLY_CELO,
+      MeritAction.CELO_SUPPLY_USDT,
+      MeritAction.CELO_SUPPLY_USDC,
+      MeritAction.CELO_SUPPLY_WETH,
+      MeritAction.CELO_SUPPLY_MULTIPLE_BORROW_USDT,
+      MeritAction.CELO_BORROW_CELO,
+      MeritAction.CELO_BORROW_USDT,
+      MeritAction.CELO_BORROW_USDC,
+      MeritAction.CELO_BORROW_WETH,
+    ] as string[]
+  ).includes(action);
 };
 
 const selfCampaignConfig: Map<MeritAction, { limit: string; token: string }> = new Map([
@@ -122,12 +124,15 @@ export const MeritIncentivesTooltipContent = ({
   };
   const meritIncentivesFormatted = getSymbolMap(meritIncentives);
   const isCombinedMeritIncentives: boolean = meritIncentives.activeActions.length > 1;
-  const campaignConfig = getCampaignConfig(meritIncentives.action);
-  const selfConfig = selfCampaignConfig.get(meritIncentives.action);
+  // `action` is now optional (backend-driven). Fall back to an empty string
+  // so the switch/lookup helpers match their STANDARD branch.
+  const primaryAction = meritIncentives.action ?? '';
+  const campaignConfig = getCampaignConfig(primaryAction);
+  const selfConfig = selfCampaignConfig.get(primaryAction);
 
   const remainingCustomMessage = getRemainingMessagesWhenCombined(
     meritIncentives.activeActions,
-    meritIncentives.action,
+    primaryAction,
     isCombinedMeritIncentives,
     meritIncentives.actionMessages
   );

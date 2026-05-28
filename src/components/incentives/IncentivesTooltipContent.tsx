@@ -133,6 +133,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDm',
     aToken: true,
   },
+  aCelUSDT: {
+    tokenIconSymbol: 'USDT',
+    symbol: 'aUSDT',
+    aToken: true,
+  },
   aGnoEURe: {
     tokenIconSymbol: 'EURe',
     symbol: 'aEURe',

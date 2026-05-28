@@ -5,9 +5,14 @@ import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import {
+  ExtendedReserveIncentiveResponse as MeritReserveIncentiveResponse,
+  MeritAction,
+  useMeritIncentives,
+} from 'src/hooks/useMeritIncentives';
 import { ExtendedReserveIncentiveResponse, useMerklIncentives } from 'src/hooks/useMerklIncentives';
 import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
+import { useSavingsGhoIncentive } from 'src/hooks/useSavingsGhoIncentive';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
@@ -128,23 +133,23 @@ const BlankIncentives = () => {
   );
 };
 
-export const MeritIncentivesButton = (params: {
+type MeritIncentivesButtonParams = {
   symbol: string;
   market: string;
   protocolAction?: ProtocolAction;
   protocolAPY?: number;
   protocolIncentives?: ReserveIncentiveResponse[];
   hideValue?: boolean;
+};
+
+const MeritIncentivesButtonContent = ({
+  meritIncentives,
+  hideValue,
+}: {
+  meritIncentives: MeritReserveIncentiveResponse;
+  hideValue?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
-  const { data: meritIncentives } = useMeritIncentives(params);
-
-  if (!meritIncentives) {
-    return null;
-  }
-
-  // Show only merit incentives APR
-  const displayValue = +meritIncentives.incentiveAPR;
 
   return (
     <ContentWithTooltip
@@ -160,10 +165,63 @@ export const MeritIncentivesButton = (params: {
     >
       <Content
         incentives={[meritIncentives]}
-        incentivesNetAPR={displayValue}
-        hideValue={params.hideValue}
+        incentivesNetAPR={+meritIncentives.incentiveAPR}
+        hideValue={hideValue}
       />
     </ContentWithTooltip>
+  );
+};
+
+export const SavingsGhoIncentivesButton = ({ hideValue }: { hideValue?: boolean }) => {
+  const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
+
+  if (!savingsGhoIncentive) {
+    return null;
+  }
+
+  const meritIncentivesAPY = convertAprToApy(parseFloat(savingsGhoIncentive.aprDecimal));
+  const action = savingsGhoIncentive.actionKey || MeritAction.ETHEREUM_SGHO;
+  const meritIncentives: MeritReserveIncentiveResponse = {
+    incentiveAPR: meritIncentivesAPY.toString(),
+    rewardTokenAddress: savingsGhoIncentive.rewardTokenAddress || '',
+    rewardTokenSymbol: savingsGhoIncentive.rewardTokenSymbol || 'sGHO',
+    activeActions: [action],
+    actionMessages: {
+      [action]: {
+        customMessage: savingsGhoIncentive.customMessage ?? undefined,
+        customForumLink: savingsGhoIncentive.customForumLink ?? undefined,
+      },
+    },
+    action,
+    customMessage: savingsGhoIncentive.customMessage ?? undefined,
+    customForumLink: savingsGhoIncentive.customForumLink ?? undefined,
+    variants: { selfAPY: null },
+    breakdown: {
+      protocolAPY: 0,
+      protocolIncentivesAPR: 0,
+      meritIncentivesAPR: meritIncentivesAPY,
+      totalAPY: meritIncentivesAPY,
+      isBorrow: false,
+      breakdown: {
+        protocol: 0,
+        protocolIncentives: 0,
+        meritIncentives: meritIncentivesAPY,
+      },
+    },
+  };
+
+  return <MeritIncentivesButtonContent meritIncentives={meritIncentives} hideValue={hideValue} />;
+};
+
+export const MeritIncentivesButton = (params: MeritIncentivesButtonParams) => {
+  const { data: meritIncentives } = useMeritIncentives(params);
+
+  if (!meritIncentives) {
+    return null;
+  }
+
+  return (
+    <MeritIncentivesButtonContent meritIncentives={meritIncentives} hideValue={params.hideValue} />
   );
 };
 

@@ -23,6 +23,7 @@ interface IncentivesCardProps {
   symbol: string;
   value: string | number;
   incentives?: ReserveIncentiveResponse[];
+  /** aToken / vToken address (legacy; hook resolves underlying internally). */
   address?: string;
   variant?: 'main14' | 'main16' | 'secondary14';
   symbolsVariant?: 'secondary14' | 'secondary16';
