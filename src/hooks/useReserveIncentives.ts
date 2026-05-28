@@ -148,6 +148,14 @@ export type MerklBorrowIncentive = {
   customClaimMessage?: string | null;
 };
 
+/**
+ * Kind of POINTS program. `CAMPAIGN` for Merkl-backed programs that expose
+ * live `dailyPoints` / `pointsPerThousandUsd`; `LOYALTY` for fixed-multiplier
+ * partner programs (Ethena, Ether.fi). For `LOYALTY`, the daily fields are
+ * always null.
+ */
+export type PointsProgramKind = 'CAMPAIGN' | 'LOYALTY';
+
 export type SupplyPointsIncentive = {
   __typename: 'SupplyPointsIncentive';
   id: RewardId;
@@ -158,6 +166,7 @@ export type SupplyPointsIncentive = {
   multiplier: number;
   criteria: IncentiveCriteria[] | null;
   userEligible: boolean;
+  kind: PointsProgramKind;
   dailyPoints?: number | null;
   pointsPerThousandUsd?: number | null;
   description?: string | null;
@@ -175,36 +184,9 @@ export type BorrowPointsIncentive = {
   multiplier: number;
   criteria: IncentiveCriteria[] | null;
   userEligible: boolean;
+  kind: PointsProgramKind;
   dailyPoints?: number | null;
   pointsPerThousandUsd?: number | null;
-  description?: string | null;
-  customMessage?: string | null;
-  customForumLink?: string | null;
-};
-
-export type PartnerSupplyIncentive = {
-  __typename: 'PartnerSupplyIncentive';
-  id: RewardId;
-  program: PointsProgram;
-  startDate: string;
-  endDate: string;
-  multiplier: number;
-  criteria: IncentiveCriteria[] | null;
-  userEligible: boolean;
-  description?: string | null;
-  customMessage?: string | null;
-  customForumLink?: string | null;
-};
-
-export type PartnerBorrowIncentive = {
-  __typename: 'PartnerBorrowIncentive';
-  id: RewardId;
-  program: PointsProgram;
-  startDate: string;
-  endDate: string;
-  multiplier: number;
-  criteria: IncentiveCriteria[] | null;
-  userEligible: boolean;
   description?: string | null;
   customMessage?: string | null;
   customForumLink?: string | null;
@@ -219,9 +201,7 @@ export type ReserveIncentive =
   | MerklSupplyIncentive
   | MerklBorrowIncentive
   | SupplyPointsIncentive
-  | BorrowPointsIncentive
-  | PartnerSupplyIncentive
-  | PartnerBorrowIncentive;
+  | BorrowPointsIncentive;
 
 const RESERVE_INCENTIVES_QUERY = `
   query ReserveIncentives($request: ReserveRequest!) {
@@ -305,6 +285,7 @@ const RESERVE_INCENTIVES_QUERY = `
           multiplier
           criteria { id text userPassed }
           userEligible
+          kind
           dailyPoints
           pointsPerThousandUsd
           description
@@ -320,32 +301,9 @@ const RESERVE_INCENTIVES_QUERY = `
           multiplier
           criteria { id text userPassed }
           userEligible
+          kind
           dailyPoints
           pointsPerThousandUsd
-          description
-          customMessage
-          customForumLink
-        }
-        ... on PartnerSupplyIncentive {
-          id
-          program { id name externalUrl iconUrl }
-          startDate
-          endDate
-          multiplier
-          criteria { id text userPassed }
-          userEligible
-          description
-          customMessage
-          customForumLink
-        }
-        ... on PartnerBorrowIncentive {
-          id
-          program { id name externalUrl iconUrl }
-          startDate
-          endDate
-          multiplier
-          criteria { id text userPassed }
-          userEligible
           description
           customMessage
           customForumLink
