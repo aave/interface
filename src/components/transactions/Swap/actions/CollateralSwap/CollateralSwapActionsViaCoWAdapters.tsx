@@ -13,7 +13,7 @@ import { saveCowOrderToUserHistory } from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/react/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import { COW_PARTNER_FEE, FLASH_LOAN_FEE_BPS } from '../../constants/cow.constants';
+import { COW_PARTNER_FEE } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
   addOrderTypeToAppData,
@@ -172,6 +172,10 @@ export const CollateralSwapActionsViaCowAdapters = ({
       )
         return;
 
+      if (state.flashLoanFeeBps === undefined) {
+        throw new Error('Flashloan fee unavailable: on-chain ACLManager check has not resolved.');
+      }
+
       const tradingSdk = await getCowTradingSdkByChainIdAndAppCode(
         state.chainId,
         APP_CODE_PER_SWAP_TYPE[state.swapType]
@@ -189,7 +193,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
         : undefined;
 
       const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
-        flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
+        flashLoanFeeBps: state.flashLoanFeeBps,
         sellAmount: state.sellAmountBigInt,
       });
 

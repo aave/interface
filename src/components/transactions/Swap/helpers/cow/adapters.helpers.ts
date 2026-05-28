@@ -16,11 +16,7 @@ import {
 } from '@cowprotocol/sdk-flash-loans';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
-import {
-  COW_PARTNER_FEE,
-  DUST_PROTECTION_MULTIPLIER,
-  FLASH_LOAN_FEE_BPS,
-} from '../../constants/cow.constants';
+import { COW_PARTNER_FEE, DUST_PROTECTION_MULTIPLIER } from '../../constants/cow.constants';
 import { isCowProtocolRates, OrderType, SwapProvider, SwapState, SwapType } from '../../types';
 import { getCowFlashLoanSdk } from './env.helpers';
 
@@ -53,7 +49,8 @@ export const calculateInstanceAddress = async ({
     !state.sellAmountBigInt ||
     !state.buyAmountBigInt ||
     !state.sellAmountToken ||
-    !state.buyAmountToken
+    !state.buyAmountToken ||
+    state.flashLoanFeeBps === undefined
   )
     return;
 
@@ -92,7 +89,7 @@ export const calculateInstanceAddress = async ({
   };
 
   const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
-    flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
+    flashLoanFeeBps: state.flashLoanFeeBps,
     sellAmount: BigInt(sellAmountWithMarginForDustProtection),
   });
 
@@ -171,7 +168,11 @@ export const calculateFlashLoanAmounts = (
       finalSellAmount: BigInt(0),
     };
 
-  if (state.swapType === SwapType.Swap || state.provider !== SwapProvider.COW_PROTOCOL) {
+  if (
+    state.swapType === SwapType.Swap ||
+    state.provider !== SwapProvider.COW_PROTOCOL ||
+    state.flashLoanFeeBps === undefined
+  ) {
     return {
       flashLoanFeeAmount: BigInt(0),
       finalSellAmount: sellAmount,
@@ -180,7 +181,7 @@ export const calculateFlashLoanAmounts = (
 
   const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
     sellAmount: sellAmount,
-    flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
+    flashLoanFeeBps: state.flashLoanFeeBps,
   });
 
   return {

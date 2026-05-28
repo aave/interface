@@ -19,7 +19,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
   },
 
   [ChainId.sonic]: {
@@ -30,7 +30,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/sonic.svg',
   },
 
@@ -42,7 +42,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
   },
 
   [ChainId.polygon]: {
@@ -53,7 +53,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/polygon.svg',
   },
 
@@ -65,7 +65,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/avalanche.svg',
   },
 
@@ -77,7 +77,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/arbitrum.svg',
   },
 
@@ -89,7 +89,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/optimism.svg',
   },
 
@@ -101,7 +101,7 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/gnosis.svg',
   },
 
@@ -113,19 +113,20 @@ const getCampaignConfigs = () => ({
       value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-pro-mainnet-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
     // icon: '/icons/networks/binance.svg',
   },
 
   [ChainId.ink]: {
-    notifyText: 'Tydro is temporarily pausing all reserves.',
-    buttonText: 'Learn more',
+    notifyText: 'Aave V4 is now live on Ethereum mainnet.',
+    buttonText: 'Try it out here',
     buttonAction: {
       type: 'url' as const,
-      value: 'https://x.com/tydrohq/status/2051383181874540957?s=20',
+      value: 'https://pro.aave.com/',
       target: '_blank' as const,
     },
-    bannerVersion: 'aave-ink-paused-v0',
+    bannerVersion: 'aave-pro-mainnet-v1',
+    // icon: '/icons/networks/ink.svg',
   },
 });
 

@@ -59,6 +59,7 @@ export type MeritApyGraphContainerProps = {
   onRetry?: () => void;
   lineColor?: string;
   showAverage?: boolean;
+  showLegend?: boolean;
   title?: string;
   height?: number;
   timeRangeSelector?: React.ReactNode;
@@ -75,6 +76,7 @@ export const MeritApyGraphContainer = ({
   onRetry,
   lineColor = '#2EBAC6',
   showAverage = true,
+  showLegend = true,
   title = 'Merit APY',
   height = 155,
   timeRangeSelector,
@@ -129,18 +131,20 @@ export const MeritApyGraphContainer = ({
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: 2,
-          flexShrink: 0,
-        }}
-      >
-        <GraphLegend labels={legendFields} />
-        {timeRangeSelector}
-      </Box>
+      {(showLegend || timeRangeSelector) && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: showLegend ? 'space-between' : 'flex-end',
+            mb: 2,
+            flexShrink: 0,
+          }}
+        >
+          {showLegend && <GraphLegend labels={legendFields} />}
+          {timeRangeSelector}
+        </Box>
+      )}
 
       <Box sx={{ flex: 1, minHeight: height, width: '100%' }}>
         {loading && graphLoading}
