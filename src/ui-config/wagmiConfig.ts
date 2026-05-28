@@ -110,9 +110,14 @@ const narvalConnector = process.env.NEXT_PUBLIC_NARVAL_CLIENT_ID
       config: {
         clientId: process.env.NEXT_PUBLIC_NARVAL_CLIENT_ID,
       },
+      // Must be injected, otherwise ConnectKit(v1.9.0) shows a "not installed" error message.
+      // Remove this once ConnectKit has a fix applied.
+      overrides: {
+        type: 'injected',
+      },
     })
   : undefined;
-const connectors = narvalConnector ? [narvalConnector, ...(baseConnectors ?? [])] : baseConnectors;
+const connectors = narvalConnector ? [...(baseConnectors ?? []), narvalConnector] : baseConnectors;
 
 const prodConfig = createConfig({
   ...prodCkConfig,

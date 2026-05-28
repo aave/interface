@@ -54,7 +54,7 @@
     "@mui/icons-material": "^5.10.14",
     "@mui/lab": "5.0.0-alpha.103",
     "@mui/material": "^5.10.9",
-    "@narval-xyz/connect": "^0.0.8",
+    "@narval-xyz/connect": "1.0.1",
     "@number-flow/react": "^0.5.10",
     "@paraswap/sdk": "6.10.0",
     "@safe-global/safe-apps-provider": "^0.18.4",

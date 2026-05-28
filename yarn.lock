@@ -2978,10 +2978,10 @@
   resolved "https://registry.yarnpkg.com/@multiformats/base-x/-/base-x-4.0.1.tgz#95ff0fa58711789d53aefb2590a8b7a4e715d121"
   integrity sha512-eMk0b9ReBbV23xXU693TAIrLyeO5iTgBZGSJfpqriG8UkYvr/hC9u9pyMlAakDNHWmbhMZCDs6KQO0jzKD8OTw==
 
-"@narval-xyz/connect@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@narval-xyz/connect/-/connect-0.0.8.tgz#f6a66a24631b16eff7bd6ee58903a45ed50b80ba"
-  integrity sha512-YOpKpviahJKwErTzVbXrvj59LzKv1p88yIzWV095xzFeMUcXsBdFFKR8rbZywvdegEdx81/ek3x5DTGL0n1iIw==
+"@narval-xyz/connect@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@narval-xyz/connect/-/connect-1.0.1.tgz#1ed281d6eb3a68dafb32de819ee71ae5059430ad"
+  integrity sha512-inXus1eycMjw2o+SkPIkyYC3Hi4OIlx25SMldx1Uof9vuzXx2tqW01t7cp0CAIkZRkHOsW2DolCMY+TiYi2r+g==
   dependencies:
     ox "^0.9.12"
     zod "^4.3.6"
