@@ -1,0 +1,24 @@
+src/hooks/useEtherfiIncentives.ts
+  s_a47c40eb4bf494::t_56bd9d9d47f4cb 47,49
+src/hooks/useReserveIncentives.ts
+  s_a47c40eb4bf494::t_14d53d3611b33b 151-158,169,187,204
+  s_a47c40eb4bf494::t_9d55dd6669c300 288,304
+src/hooks/useEthenaIncentives.ts
+  s_a47c40eb4bf494::t_ed49b17f4888ff 44,46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "363763dfdf303f83cbd90b8c0df7ab3f91dd5336",
+  "prompts": {},
+  "sessions": {
+    "s_a47c40eb4bf494": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1f2d8774-daac-4930-9dc6-f20b4222a1a3",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
