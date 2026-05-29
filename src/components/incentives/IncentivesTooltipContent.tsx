@@ -238,6 +238,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDe',
     aToken: true,
   },
+  aBascbETH: {
+    tokenIconSymbol: 'cbETH',
+    symbol: 'acbETH',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
