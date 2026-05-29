@@ -1,6 +1,7 @@
 import '/public/fonts/inter/inter.css';
 import '/src/styles/variables.css';
 
+import { local, production, staging } from '@aave/client';
 import { AaveClient, AaveProvider } from '@aave/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { NoSsr } from '@mui/material';
@@ -102,7 +103,14 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-export const client = AaveClient.create();
+const aaveClientEnvironment =
+  process.env.NEXT_PUBLIC_BACKEND_ENVIRONMENT === 'staging'
+    ? staging
+    : process.env.NEXT_PUBLIC_BACKEND_ENVIRONMENT === 'local'
+    ? local
+    : production;
+
+export const client = AaveClient.create({ environment: aaveClientEnvironment });
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;

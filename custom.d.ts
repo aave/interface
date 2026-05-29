@@ -8,6 +8,7 @@ namespace NodeJS {
     NEXT_PUBLIC_ENABLE_STAKING: string;
     NEXT_PUBLIC_ENV: string;
     NEXT_PUBLIC_API_BASEURL: string;
+    NEXT_PUBLIC_BACKEND_ENVIRONMENT?: 'local' | 'production' | 'staging';
     NEXT_PUBLIC_FORK_BASE_CHAIN_ID?: string;
     NEXT_PUBLIC_FORK_CHAIN_ID?: string;
     NEXT_PUBLIC_FORK_URL_RPC?: string;

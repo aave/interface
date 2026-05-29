@@ -152,6 +152,17 @@ const EXTRA_WHITELIST_TOKENS = [
 ]; // Extra tokens to whitelist
 const AAVE_NET_APR_DISTRIBUTION_TYPE = 'AAVE_NET_APR';
 const convertApyToApr = (apy: number) => 12 * ((1 + apy) ** (1 / 12) - 1);
+const normalizeAddress = (address?: string) => address?.toLowerCase();
+
+const opportunityMatchesRewardedAsset = (opportunity: MerklOpportunity, rewardedAsset: string) => {
+  const normalizedRewardedAsset = normalizeAddress(rewardedAsset);
+
+  return [
+    opportunity.explorerAddress,
+    opportunity.identifier,
+    ...opportunity.tokens.map((token) => token.address),
+  ].some((address) => normalizeAddress(address) === normalizedRewardedAsset);
+};
 
 const getCampaignIncentiveApr = ({
   targetAprPercent,
@@ -240,8 +251,7 @@ export const useMerklIncentives = ({
       const opportunities = merklOpportunities.filter(
         (opportunitiy) =>
           rewardedAsset &&
-          opportunitiy.explorerAddress &&
-          opportunitiy.explorerAddress.toLowerCase() === rewardedAsset.toLowerCase() &&
+          opportunityMatchesRewardedAsset(opportunitiy, rewardedAsset) &&
           protocolAction &&
           checkOpportunityAction(opportunitiy.action, protocolAction) &&
           opportunitiy.chainId === currentChainId
