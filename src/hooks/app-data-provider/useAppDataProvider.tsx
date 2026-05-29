@@ -5,6 +5,7 @@ import React, { PropsWithChildren, useContext } from 'react';
 import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { formatEmodes } from '../../store/poolSelectors';
 import {
@@ -88,13 +89,28 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
     return acc + Number(value);
   }, 0);
 
+  const patchUnderlyingToken = (reserve: Reserve) => {
+    const patch = fetchIconSymbolAndName({
+      underlyingAsset: reserve.underlyingToken.address,
+      symbol: reserve.underlyingToken.symbol,
+      name: reserve.underlyingToken.name,
+    });
+    return {
+      ...reserve.underlyingToken,
+      name: patch.name ?? reserve.underlyingToken.name,
+      symbol: patch.symbol ?? reserve.underlyingToken.symbol,
+    };
+  };
+
   const supplyReserves = (sdkMarket?.supplyReserves ?? []).map((reserve) => ({
     ...reserve,
+    underlyingToken: patchUnderlyingToken(reserve),
     id: `${sdkMarket?.address}-${reserve.underlyingToken.address}`,
   }));
 
   const borrowReserves = (sdkMarket?.borrowReserves ?? []).map((reserve) => ({
     ...reserve,
+    underlyingToken: patchUnderlyingToken(reserve),
     id: `${sdkMarket?.address}-${reserve.underlyingToken.address}`,
   }));
 
