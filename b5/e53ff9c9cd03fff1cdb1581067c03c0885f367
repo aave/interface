@@ -1,0 +1,30 @@
+src/hooks/useSonicIncentives.tsx
+  s_81a2baa8798fdc::t_f302b2c850f58a 38-39
+src/hooks/useEthenaIncentives.ts
+  s_81a2baa8798fdc::t_f302b2c850f58a 44-47
+src/hooks/useMerklPointsIncentives.ts
+  s_81a2baa8798fdc::t_f302b2c850f58a 60-66
+src/hooks/useEtherfiIncentives.ts
+  s_81a2baa8798fdc::t_f302b2c850f58a 47-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b5e53ff9c9cd03fff1cdb1581067c03c0885f367",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_81a2baa8798fdc": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e72cb-26bf-7ef2-9d4c-86b87ec05a4c",
+        "model": "gpt-5.5"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}
