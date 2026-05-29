@@ -267,10 +267,12 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       iconSymbol: 'ptusdg',
     },
     [AaveV3EthereumHorizon.ASSETS.USCC.UNDERLYING.toLowerCase()]: {
+      symbol: 'USCC',
       name: 'Bitwise Crypto Carry Fund',
       iconSymbol: 'uscc',
     },
     [AaveV3EthereumHorizon.ASSETS.USTB.UNDERLYING.toLowerCase()]: {
+      symbol: 'USTB',
       name: 'Invesco Short Duration US Government Securities Fund',
       iconSymbol: 'ustb',
     },
