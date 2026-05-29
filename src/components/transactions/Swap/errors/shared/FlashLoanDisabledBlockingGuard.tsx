@@ -14,6 +14,8 @@ export const hasFlashLoanDisabled = (state: SwapState): boolean => {
     ? state.sourceReserve?.reserve
     : state.destinationReserve?.reserve;
 
+  console.error('reserve symbol', reserve?.symbol, 'flashLoanEnabled', reserve?.flashLoanEnabled);
+
   if (state.useFlashloan === true && reserve && !reserve.flashLoanEnabled) {
     return true;
   }
