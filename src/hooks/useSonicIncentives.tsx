@@ -35,7 +35,8 @@ export const useSonicIncentives = (rewardedAsset?: string): number | undefined =
   if (!data) return undefined;
 
   const sonic = data.find(
-    (i) => i.__typename === 'SupplyPointsIncentive' && i.program.name === 'Sonic'
+    (i) =>
+      i.__typename === 'SupplyPointsIncentive' && i.kind === 'LOYALTY' && i.program.name === 'Sonic'
   );
   if (!sonic || sonic.__typename !== 'SupplyPointsIncentive') return undefined;
 
