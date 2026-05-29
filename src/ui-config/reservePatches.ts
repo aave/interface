@@ -283,6 +283,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
     '0x004375dff511095cc5a197a54140a24efef3a416': { iconSymbol: 'UNI_BTC_USDC' },
     '0xbb2b8038a1640196fbe3e38816f3e67cba72d940': { iconSymbol: 'UNI_WBTC_WETH' },
     '0x2fdbadf3c4d5a8666bc06645b8358ab803996e28': { iconSymbol: 'UNI_YFI_WETH' },
+    '0xc96de26018a54d51c097160568752c4e3bd6c364': {
+      iconSymbol: 'FBTC',
+      name: 'Function Bitcoin',
+      symbol: 'FBTC',
+    },
   };
 
   const lowerUnderlyingAsset = underlyingAsset.toLowerCase();
