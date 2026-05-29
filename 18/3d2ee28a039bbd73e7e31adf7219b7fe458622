@@ -1,0 +1,14 @@
+src/ui-config/reservePatches.ts
+  h_be8c3c572e9983 270,275
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "183d2ee28a039bbd73e7e31adf7219b7fe458622",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
