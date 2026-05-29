@@ -56,9 +56,14 @@ export const useMerklPointsIncentives = ({
   });
 
   const isBorrow = protocolAction === ProtocolAction.borrow;
-  const targetTypename = isBorrow ? 'BorrowPointsIncentive' : 'SupplyPointsIncentive';
 
-  const incentive = query.data?.find((i) => i.__typename === targetTypename);
+  const incentive = query.data?.find((i) => {
+    if (isBorrow) {
+      return i.__typename === 'BorrowPointsIncentive' && i.kind === 'CAMPAIGN';
+    }
+
+    return i.__typename === 'SupplyPointsIncentive' && i.kind === 'CAMPAIGN';
+  });
 
   if (
     !incentive ||

@@ -44,7 +44,10 @@ export const useEtherfiIncentives = (
   if (!isSupplyContext || !data) return undefined;
 
   const etherfi = data.find(
-    (i) => i.__typename === 'SupplyPointsIncentive' && i.program.name === 'Ether.fi Loyalty'
+    (i) =>
+      i.__typename === 'SupplyPointsIncentive' &&
+      i.kind === 'LOYALTY' &&
+      i.program.name === 'Ether.fi Loyalty'
   );
   if (!etherfi || etherfi.__typename !== 'SupplyPointsIncentive') {
     return undefined;
