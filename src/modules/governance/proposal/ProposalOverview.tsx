@@ -201,7 +201,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   return <CenterAlignedImage src={src} alt={alt} />;
                 },
                 a({ node, ...rest }) {
-                  return <StyledLink {...rest} />;
+                  return <StyledLink {...rest} target="_blank" rel="noopener noreferrer" />;
                 },
                 h1({ node, ...rest }) {
                   return <Typography variant="h2" sx={{ mt: 8, mb: 2 }} {...rest} />;
