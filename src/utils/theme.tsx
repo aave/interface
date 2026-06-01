@@ -496,6 +496,7 @@ export function getThemedComponents(theme: Theme) {
       MuiLink: {
         defaultProps: {
           variant: 'description',
+          underline: 'none',
         },
       },
       MuiMenu: {
@@ -806,6 +807,13 @@ export function getThemedComponents(theme: Theme) {
               display: 'flex',
               flexDirection: 'column',
             },
+          },
+          a: {
+            color: 'inherit',
+            textDecoration: 'none',
+          },
+          'a:hover, a:focus': {
+            textDecoration: 'none',
           },
         },
       },
