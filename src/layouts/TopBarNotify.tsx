@@ -67,6 +67,8 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
     return warningBarOpen !== 'false';
   });
 
+  const isBannerClickable = sm && Boolean(currentCampaign?.buttonAction);
+
   useEffect(() => {
     if (!currentCampaign) return;
 
@@ -116,6 +118,11 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
     }
   };
 
+  const handleBannerClick = () => {
+    if (!isBannerClickable) return;
+    handleButtonAction();
+  };
+
   // Note: hide warnings when mobile menu is open
   if (mobileDrawerOpen) return null;
 
@@ -140,7 +147,9 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%',
+            cursor: isBannerClickable ? 'pointer' : 'default',
           }}
+          onClick={handleBannerClick}
           variant="dense"
         >
           <Box sx={{ padding: md ? '20px 10px' : '', paddingRight: 0 }}>
@@ -158,7 +167,7 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
                 ''
               )}
 
-              {currentCampaign.learnMoreLink && md ? (
+              {md && currentCampaign.learnMoreLink && !isBannerClickable ? (
                 typeof currentCampaign.learnMoreLink === 'string' ? (
                   <Link
                     sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
@@ -228,7 +237,10 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
           </Box>
           <Button
             sx={{ color: 'white', paddingRight: 0 }}
-            onClick={handleClose}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleClose();
+            }}
             startIcon={<CloseIcon />}
           />
         </Toolbar>
