@@ -38,6 +38,7 @@ export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComp
         shallow={shallow}
         passHref
         locale={locale}
+        legacyBehavior
       >
         <Anchor ref={ref} {...other} />
       </NextLink>
