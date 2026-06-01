@@ -478,11 +478,11 @@ export const marketsData: {
       GHO_TOKEN_ADDRESS: GhoPlasma.GHO_TOKEN,
     },
     enabledFeatures: {
-      // liquiditySwap: true,
-      // withdrawAndSwitch: true,
-      // collateralRepay: true,
-      // debtSwitch: true,
-      // switch: true,
+      liquiditySwap: true,
+      withdrawAndSwitch: true,
+      collateralRepay: true,
+      debtSwitch: true,
+      switch: true,
     },
   },
   [CustomMarket.proto_polygon_v3]: {
