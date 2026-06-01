@@ -53,6 +53,10 @@ export const isSwapSupportedByCowProtocol = (
  *
  * Notes:
  * - CoW is preferred when supported; fallback to ParaSwap if supported on chain
+ * - EIP-7702 delegated EOAs always fall back to ParaSwap. Smart-account delegates
+ *   (Alchemy MA v2, etc.) intercept signTypedData and return wrapped signatures
+ *   that don't ecrecover to the EOA, breaking both EIP-712 order signing and the
+ *   flash-loan adapter's EIP-1271 wrapper.
  */
 export const getSwitchProvider = ({
   chainId,
@@ -60,14 +64,17 @@ export const getSwitchProvider = ({
   assetTo,
   shouldUseFlashloan,
   swapType,
+  userIsEip7702Wallet,
 }: {
   chainId: number;
   assetFrom: string;
   assetTo: string;
   shouldUseFlashloan?: boolean;
   swapType: SwapType;
+  userIsEip7702Wallet?: boolean;
 }): SwapProvider | undefined => {
   if (
+    !userIsEip7702Wallet &&
     isSwapSupportedByCowProtocol(chainId, assetFrom, assetTo, swapType, shouldUseFlashloan ?? false)
   ) {
     return SwapProvider.COW_PROTOCOL;

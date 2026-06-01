@@ -123,6 +123,7 @@ export const useSwapQuote = ({
       assetTo: state.destinationToken.addressToSwap,
       swapType: params.swapType,
       shouldUseFlashloan: state.useFlashloan,
+      userIsEip7702Wallet: state.userIsEip7702Wallet,
     });
   }, [
     state.mainTxState.success,
@@ -132,6 +133,7 @@ export const useSwapQuote = ({
     state.destinationToken.addressToSwap,
     params.swapType,
     state.useFlashloan,
+    state.userIsEip7702Wallet,
   ]);
 
   const requiresQuoteInverted = useMemo(

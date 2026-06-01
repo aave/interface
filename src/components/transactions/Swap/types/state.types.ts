@@ -118,6 +118,8 @@ export type TokensSwapState = {
   userIsSmartContractWallet: boolean;
   /** True if the user is a Safe wallet. */
   userIsSafeWallet: boolean;
+  /** True if the user is an EIP-7702 delegated EOA (CoW signature flow incompatible). */
+  userIsEip7702Wallet: boolean;
   /** Token list for the source picker. */
   sourceTokens: SwappableToken[];
   /** Token list for the destination picker. */
@@ -261,6 +263,7 @@ export const swapDefaultState: SwapState = {
   forcedMaxValue: '',
   userIsSmartContractWallet: false,
   userIsSafeWallet: false,
+  userIsEip7702Wallet: false,
   sourceTokens: [],
   destinationTokens: [],
   isMaxSelected: false,
