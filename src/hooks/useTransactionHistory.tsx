@@ -146,13 +146,16 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   const [shouldKeepFetching, setShouldKeepFetching] = useState(false);
 
   const isAccountValid = account && account.length > 0;
+  const isValidEvmMarket = currentMarketData.addresses.LENDING_POOL.length > 0;
 
   const {
     data: sdkData,
     loading: sdkLoading,
     error: sdkError,
   } = useUserTransactionHistory({
-    market: evmAddress(currentMarketData.addresses.LENDING_POOL),
+    market: isValidEvmMarket
+      ? evmAddress(currentMarketData.addresses.LENDING_POOL)
+      : evmAddress('0x0000000000000000000000000000000000000000'),
     user: isAccountValid
       ? evmAddress(account as string)
       : evmAddress('0x0000000000000000000000000000000000000000'),
@@ -171,6 +174,14 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   }, [account, currentMarketData.addresses.LENDING_POOL, currentMarketData.chainId]);
 
   useEffect(() => {
+    if (!isValidEvmMarket) {
+      setIsFetchingAllSdkPages(false);
+      setHasLoadedInitialSdkPage(true);
+    }
+  }, [isValidEvmMarket, account]);
+
+  useEffect(() => {
+    if (!isValidEvmMarket) return;
     if (!sdkData?.items?.length) {
       if (!sdkLoading && !sdkData?.pageInfo?.next) {
         setIsFetchingAllSdkPages(false);
@@ -196,9 +207,10 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
         setHasLoadedInitialSdkPage(true);
       }
     }
-  }, [sdkData, sdkLoading, hasLoadedInitialSdkPage]);
+  }, [sdkData, sdkLoading, hasLoadedInitialSdkPage, isValidEvmMarket]);
 
   useEffect(() => {
+    if (!isValidEvmMarket) return;
     if (sdkLoading) {
       setIsFetchingAllSdkPages(true);
       return;
@@ -214,7 +226,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     if (!nextCursor) {
       setIsFetchingAllSdkPages(false);
     }
-  }, [sdkData?.pageInfo?.next, sdkLoading, sdkCursor]);
+  }, [sdkData?.pageInfo?.next, sdkLoading, sdkCursor, isValidEvmMarket]);
 
   useEffect(() => {
     if (sdkError && !hasLoadedInitialSdkPage) {
