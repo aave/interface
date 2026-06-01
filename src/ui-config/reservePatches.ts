@@ -1,6 +1,7 @@
 import {
   AaveV3Arbitrum,
   AaveV3Ethereum,
+  AaveV3EthereumHorizon,
   AaveV3Gnosis,
   AaveV3Optimism,
   AaveV3Plasma,
@@ -264,6 +265,16 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       symbol: 'PT USDG 28MAY2026',
       name: 'PT USDG May 2026',
       iconSymbol: 'ptusdg',
+    },
+    [AaveV3EthereumHorizon.ASSETS.USCC.UNDERLYING.toLowerCase()]: {
+      symbol: 'USCC',
+      name: 'Bitwise Crypto Carry Fund',
+      iconSymbol: 'uscc',
+    },
+    [AaveV3EthereumHorizon.ASSETS.USTB.UNDERLYING.toLowerCase()]: {
+      symbol: 'USTB',
+      name: 'Invesco Short Duration US Government Securities Fund',
+      iconSymbol: 'ustb',
     },
 
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
