@@ -222,7 +222,7 @@ export const calculateHFAfterRepay = ({
             fromAssetData.priceInUSD
           ),
           borrowBalanceMarketReferenceCurrency: debtLeftInMarketReference.toString(10),
-          currentLiquidationThreshold: fromAssetData.formattedReserveLiquidationThreshold,
+          currentLiquidationThreshold: reserveLiquidationThreshold,
         }).toString()
       : '0';
 
@@ -296,10 +296,18 @@ export const calculateHFAfterSupply = (
     ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(supplyAmountInEth)
     : '-1';
 
+  const userEmode = user
+    ? poolReserve.eModes.find((e) => e.id === user.userEmodeCategoryId)
+    : undefined;
+  const reserveLiquidationThreshold =
+    user?.isInEmode && userEmode?.collateralEnabled
+      ? userEmode.eMode.formattedLiquidationThreshold
+      : poolReserve.formattedReserveLiquidationThreshold;
+
   const liquidationThresholdAfter = user
     ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
         .multipliedBy(user.currentLiquidationThreshold)
-        .plus(supplyAmountInEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+        .plus(supplyAmountInEth.multipliedBy(reserveLiquidationThreshold))
         .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
     : '-1';
 
