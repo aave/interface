@@ -1,6 +1,7 @@
 import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
+import { getAccount, watchAccount } from '@wagmi/core';
 import { BigNumber, PopulatedTransaction, utils } from 'ethers';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
@@ -44,7 +45,7 @@ let didAutoConnectForCypress = false;
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const { switchChainAsync } = useSwitchChain();
   const { watchAssetAsync } = useWatchAsset();
-  const { chainId, address, status, connector } = useAccount();
+  const { chainId, address } = useAccount();
   const { connect, connectors } = useConnect();
 
   const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
@@ -207,16 +208,27 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     setAccount(account?.toLowerCase());
   }, [account, setAccount]);
 
-  // Drive walletType from wagmi's account state so it survives page reloads.
-  // ConnectKit's `onConnect` prop only fires on fresh connect (not on reconnect),
-  // which caused most transaction events to be tracked with walletType=undefined.
+  // Drive walletType from a direct wagmi store subscription. watchAccount fires for
+  // every state transition into `connected` (including the `connecting(address) ->
+  // connected` path that useAccountEffect.onConnect misses, see wagmi#4221), and
+  // it does not subscribe this component to React renders. Seed once on mount via
+  // getAccount in case the store is already `connected` before the effect installs.
   useEffect(() => {
+    const { status, connector } = getAccount(wagmiConfig);
     if (status === 'connected' && connector?.id) {
       setWalletType(connector.id);
-    } else if (status === 'disconnected') {
-      setWalletType(undefined);
     }
-  }, [status, connector?.id, setWalletType]);
+
+    return watchAccount(wagmiConfig, {
+      onChange(data) {
+        if (data.status === 'connected' && data.connector?.id) {
+          setWalletType(data.connector.id);
+        } else if (data.status === 'disconnected') {
+          setWalletType(undefined);
+        }
+      },
+    });
+  }, [setWalletType]);
 
   useEffect(() => {
     if (readOnlyModeAddress) {

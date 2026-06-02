@@ -84,7 +84,7 @@ export const DebtSwapDetails = ({
       />
 
       <Row
-        caption={<Trans>Borrow balance after switch</Trans>}
+        caption={<Trans>Borrow balance after swap</Trans>}
         captionVariant="description"
         mb={4}
         align="flex-start"

@@ -90,6 +90,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const { chainId, method, params } = req.body;
+
+    if (typeof method !== 'string' || method.startsWith('alchemy_')) {
+      return res.status(400).json({ error: 'Method not allowed' });
+    }
+
     const chainIdNumber = typeof chainId === 'string' ? parseInt(chainId) : chainId;
     const rpcUrl = getRpcUrl(chainIdNumber);
 
