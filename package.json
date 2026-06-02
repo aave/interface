@@ -4,12 +4,6 @@
   "private": true,
   "license": "BSD-3-Clause",
   "resolutions": {
-    "h3": "^1.15.5",
-    "minimatch": ">=5.1.7",
-    "postcss": "^8.5.10",
-    "protobufjs": "^7.5.5",
-    "qs": "^6.14.1",
-    "tmp": "^0.2.6"
   },
   "scripts": {
     "dev": "next dev",
