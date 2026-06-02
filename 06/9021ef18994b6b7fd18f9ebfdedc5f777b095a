@@ -1,0 +1,21 @@
+next.config.js
+  s_e7ae63094f98ec::t_a7c25f6eae26a8 39-41
+package.json
+  s_e7ae63094f98ec::t_5d5ebaf71636a2 19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "069021ef18994b6b7fd18f9ebfdedc5f777b095a",
+  "prompts": {},
+  "sessions": {
+    "s_e7ae63094f98ec": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f6d93f3a-6061-4d9c-9b92-84c15b87775d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
