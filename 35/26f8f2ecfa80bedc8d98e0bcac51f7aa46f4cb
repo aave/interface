@@ -1,0 +1,29 @@
+src/utils/hfUtils.ts
+  h_be8c3c572e9983 302,310
+  s_09a9f916e320c8::t_24cbd2302a3538 225
+  s_09a9f916e320c8::t_4a1c3964cd88c6 299-301,303-306
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "3526f8f2ecfa80bedc8d98e0bcac51f7aa46f4cb",
+  "prompts": {},
+  "humans": {
+    "h_075bcc15b434db": {
+      "author": "Mark Grothe"
+    },
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_09a9f916e320c8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "899dd91f-8051-4a7e-ae30-6125fbe3effb",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
