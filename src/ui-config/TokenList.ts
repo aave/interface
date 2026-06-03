@@ -13020,6 +13020,14 @@ export const TOKEN_LIST: TokenList = {
       logoURI: 'https://assets.coingecko.com/coins/images/34849/standard/staked-gho.png?1736975912',
     },
     {
+      name: 'Savings GHO',
+      address: '0xe1753f2e00940cc31213dd92013cf019dfe4ca1d',
+      symbol: 'sGHO',
+      decimals: 18,
+      chainId: 1,
+      logoURI: '/icons/tokens/sgho.svg',
+    },
+    {
       name: 'USDS Stablecoin',
       address: '0xdc035d45d973e3ec169d2276ddab16f1e407384f',
       symbol: 'USDS',

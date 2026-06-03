@@ -1,6 +1,7 @@
 import {
   AaveV3Arbitrum,
   AaveV3Ethereum,
+  AaveV3EthereumHorizon,
   AaveV3Gnosis,
   AaveV3Optimism,
   AaveV3Plasma,
@@ -265,6 +266,16 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT USDG May 2026',
       iconSymbol: 'ptusdg',
     },
+    [AaveV3EthereumHorizon.ASSETS.USCC.UNDERLYING.toLowerCase()]: {
+      symbol: 'USCC',
+      name: 'Bitwise Crypto Carry Fund',
+      iconSymbol: 'uscc',
+    },
+    [AaveV3EthereumHorizon.ASSETS.USTB.UNDERLYING.toLowerCase()]: {
+      symbol: 'USTB',
+      name: 'Invesco Short Duration US Government Securities Fund',
+      iconSymbol: 'ustb',
+    },
 
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
@@ -283,6 +294,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
     '0x004375dff511095cc5a197a54140a24efef3a416': { iconSymbol: 'UNI_BTC_USDC' },
     '0xbb2b8038a1640196fbe3e38816f3e67cba72d940': { iconSymbol: 'UNI_WBTC_WETH' },
     '0x2fdbadf3c4d5a8666bc06645b8358ab803996e28': { iconSymbol: 'UNI_YFI_WETH' },
+    '0xc96de26018a54d51c097160568752c4e3bd6c364': {
+      iconSymbol: 'FBTC',
+      name: 'Function Bitcoin',
+      symbol: 'FBTC',
+    },
   };
 
   const lowerUnderlyingAsset = underlyingAsset.toLowerCase();

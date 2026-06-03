@@ -222,7 +222,7 @@ export const calculateHFAfterRepay = ({
             fromAssetData.priceInUSD
           ),
           borrowBalanceMarketReferenceCurrency: debtLeftInMarketReference.toString(10),
-          currentLiquidationThreshold: fromAssetData.formattedReserveLiquidationThreshold,
+          currentLiquidationThreshold: reserveLiquidationThreshold,
         }).toString()
       : '0';
 
@@ -292,14 +292,33 @@ export const calculateHFAfterSupply = (
 ) => {
   let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
 
+  const userEmode = user
+    ? poolReserve.eModes.find((e) => e.id === user.userEmodeCategoryId)
+    : undefined;
+
+  // Mirrors validateUseAsCollateral on-chain: asset is only auto-enabled as collateral
+  // when effective LTV > 0. Base LTV covers the non-emode path; emode collateral without
+  // ltvzero covers the boosted path (ltvzero assets have 0 LTV and won't be enabled).
+  const hasEffectiveLtv =
+    poolReserve.baseLTVasCollateral !== '0' ||
+    (user?.isInEmode && userEmode?.collateralEnabled && !userEmode.ltvzeroEnabled);
+
+  const additionalCollateral = hasEffectiveLtv ? supplyAmountInEth : valueToBigNumber(0);
+
+  // Use emode-boosted LT when user is in emode and asset is in that category's collateral bitmap.
+  const reserveLiquidationThreshold =
+    user?.isInEmode && userEmode?.collateralEnabled
+      ? userEmode.eMode.formattedLiquidationThreshold
+      : poolReserve.formattedReserveLiquidationThreshold;
+
   const totalCollateralMarketReferenceCurrencyAfter = user
-    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(supplyAmountInEth)
+    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(additionalCollateral)
     : '-1';
 
   const liquidationThresholdAfter = user
     ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
         .multipliedBy(user.currentLiquidationThreshold)
-        .plus(supplyAmountInEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
+        .plus(additionalCollateral.multipliedBy(reserveLiquidationThreshold))
         .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
     : '-1';
 
