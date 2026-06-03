@@ -193,6 +193,16 @@ const IncentivesSymbolMap: {
     symbol: 'TydroInkPoints',
     aToken: false,
   },
+  'Tydro Ink Points': {
+    tokenIconSymbol: 'TydroInkPoints',
+    symbol: 'Tydro Ink Points',
+    aToken: false,
+  },
+  'Ink Points': {
+    tokenIconSymbol: 'TydroInkPoints',
+    symbol: 'Ink Points',
+    aToken: false,
+  },
   aEthUSDG: {
     tokenIconSymbol: 'USDG',
     symbol: 'aUSDG',
@@ -241,6 +251,11 @@ const IncentivesSymbolMap: {
   aMegUSDe: {
     tokenIconSymbol: 'USDe',
     symbol: 'aUSDe',
+    aToken: true,
+  },
+  aBascbETH: {
+    tokenIconSymbol: 'cbETH',
+    symbol: 'acbETH',
     aToken: true,
   },
 };
