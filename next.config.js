@@ -36,6 +36,9 @@ module.exports = withSentryConfig(
     },
     reactStrictMode: true,
     // assetPrefix: "./",
+    // Next.js 15 static export: `next build` emits the `out/` directory.
+    // Gated behind STATIC_EXPORT so the default build remains a regular build.
+    ...(process.env.STATIC_EXPORT === 'true' ? { output: 'export' } : {}),
     trailingSlash: true,
     pageExtensions,
     // NOTE: Needed for SAFE testing locally

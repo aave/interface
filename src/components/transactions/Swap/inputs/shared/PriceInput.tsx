@@ -1,7 +1,6 @@
 import { BigNumberValue, valueToBigNumber } from '@aave/math-utils';
 import { ExclamationIcon, RefreshIcon } from '@heroicons/react/outline';
 import { Box, Button, CircularProgress, InputBase, SvgIcon, Typography } from '@mui/material';
-import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
