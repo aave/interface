@@ -1,3 +1,4 @@
+import { narval } from '@narval-xyz/connect/wagmi';
 import { Emitter } from '@wagmi/core/internal';
 import { getDefaultConfig } from 'connectkit';
 import {
@@ -80,7 +81,7 @@ const connectorConfig = {
   emitter: new Emitter(''),
 };
 
-const connectors = prodCkConfig.connectors
+const baseConnectors = prodCkConfig.connectors
   ?.map((connector) => {
     // initialize the connector with the emitter so we can access the id
     const c = connector(connectorConfig);
@@ -103,6 +104,20 @@ const connectors = prodCkConfig.connectors
     }
     return 0;
   });
+
+const narvalConnector = process.env.NEXT_PUBLIC_NARVAL_CLIENT_ID
+  ? narval({
+      config: {
+        clientId: process.env.NEXT_PUBLIC_NARVAL_CLIENT_ID,
+      },
+      // Must be injected, otherwise ConnectKit(v1.9.0) shows a "not installed" error message.
+      // Remove this once ConnectKit has a fix applied.
+      overrides: {
+        type: 'injected',
+      },
+    })
+  : undefined;
+const connectors = narvalConnector ? [...(baseConnectors ?? []), narvalConnector] : baseConnectors;
 
 const prodConfig = createConfig({
   ...prodCkConfig,
