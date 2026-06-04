@@ -56,7 +56,7 @@ export const BridgeDestinationInput = ({
       setValidatingENS(false);
     };
 
-    if (destinationAccount.slice(-4) === '.eth') {
+    if (!isAddress(destinationAccount)) {
       checkENS();
     }
   }, [destinationAccount]);

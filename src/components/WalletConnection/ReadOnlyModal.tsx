@@ -38,13 +38,9 @@ export const ReadOnlyModal = () => {
       saveAndClose(inputMockWalletAddress);
     } else {
       // Check if address could be valid ENS before trying to resolve
-      if (inputMockWalletAddress.slice(-4) === '.eth') {
-        const resolvedAddress = await resolveEnsAddress(inputMockWalletAddress);
-        if (resolvedAddress && isAddress(resolvedAddress)) {
-          saveAndClose(resolvedAddress);
-        } else {
-          setValidAddressError(true);
-        }
+      const resolvedAddress = await resolveEnsAddress(inputMockWalletAddress);
+      if (resolvedAddress && isAddress(resolvedAddress)) {
+        saveAndClose(resolvedAddress);
       } else {
         setValidAddressError(true);
       }
@@ -118,9 +114,6 @@ export const ReadOnlyModal = () => {
             size="large"
             fullWidth
             onClick={() => trackEvent(AUTH.MOCK_WALLET)}
-            disabled={
-              !isAddress(inputMockWalletAddress) && inputMockWalletAddress.slice(-4) !== '.eth'
-            }
             aria-label="read-only mode address"
           >
             <Trans>Track wallet</Trans>

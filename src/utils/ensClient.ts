@@ -1,4 +1,11 @@
-import { type Address, type Chain, type PublicClient, createPublicClient, http } from 'viem';
+import {
+  type Address,
+  type Chain,
+  type PublicClient,
+  createPublicClient,
+  http,
+  isAddress,
+} from 'viem';
 import { mainnet } from 'viem/chains';
 import { normalize } from 'viem/ens';
 
@@ -18,9 +25,11 @@ const getEnsPublicClient = (): PublicClient => {
 };
 
 export const lookupEnsName = async (address: string): Promise<string | null> => {
+  if (!isAddress(address)) return null;
+
   try {
     const name = await getEnsPublicClient().getEnsName({
-      address: address as Address,
+      address,
     });
     return name ?? null;
   } catch (error) {
@@ -30,9 +39,16 @@ export const lookupEnsName = async (address: string): Promise<string | null> => 
 };
 
 export const resolveEnsAddress = async (name: string): Promise<Address | null> => {
+  let normalizedName: string;
+  try {
+    normalizedName = normalize(name);
+  } catch {
+    return null;
+  }
+
   try {
     const address = await getEnsPublicClient().getEnsAddress({
-      name: normalize(name),
+      name: normalizedName,
     });
     return address ?? null;
   } catch (error) {
