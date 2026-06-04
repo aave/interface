@@ -1,0 +1,9 @@
+yarn.lock
+  ai_agent 12160-12166,12170
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "03b224fac25ead0672f008498e07ebf2bf4c05c3",
+  "prompts": {}
+}

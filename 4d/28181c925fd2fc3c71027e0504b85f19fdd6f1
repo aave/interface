@@ -1,0 +1,14 @@
+package.json
+  h_873f745f99aed2 9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "4d28181c925fd2fc3c71027e0504b85f19fdd6f1",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
