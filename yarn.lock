@@ -16,9 +16,9 @@
     graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
 
 "@aave-dao/aave-address-book@^4.49.3":
-  version "4.52.5"
-  resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.52.5.tgz#4d88fc1591b048760d49b5b74d251665ea509bdf"
-  integrity sha512-vtNub94kgmLQuSoqhfUCsIFWMxAWqDo2/WfQf6bADvvmEEfFkFlr9jRtzIvZiHk7FlCWKJvxo01mJn4LAoS18Q==
+  version "4.52.7"
+  resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.52.7.tgz#68420a4f174b19bde45c78ae4276f9534eba3dbb"
+  integrity sha512-c/jnD1ZkFOZ8M400Qq/9Zpu8z60AQNzfqyo4kEk8thtv/NU0xt9YZ9Nj22lvzhQp3AZFZJ9XQHxTVQY6A9TZkg==
 
 "@aave/account@^0.2.0":
   version "0.2.0"
@@ -3257,6 +3257,14 @@
   dependencies:
     "@tybys/wasm-util" "^0.10.1"
 
+"@narval-xyz/connect@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@narval-xyz/connect/-/connect-1.0.1.tgz#1ed281d6eb3a68dafb32de819ee71ae5059430ad"
+  integrity sha512-inXus1eycMjw2o+SkPIkyYC3Hi4OIlx25SMldx1Uof9vuzXx2tqW01t7cp0CAIkZRkHOsW2DolCMY+TiYi2r+g==
+  dependencies:
+    ox "^0.9.12"
+    zod "^4.3.6"
+
 "@next/bundle-analyzer@^12.1.0":
   version "12.3.7"
   resolved "https://registry.yarnpkg.com/@next/bundle-analyzer/-/bundle-analyzer-12.3.7.tgz#e6bf87fc09c5e4929c4f7237849d4e6aa8ae8cb3"
@@ -3635,9 +3643,9 @@
     picomatch "^4.0.2"
 
 "@rollup/rollup-linux-x64-gnu@^4.24.0":
-  version "4.61.0"
-  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.61.0.tgz#39ca1c0921780fbbc3978b206c0c74dd92c9b117"
-  integrity sha512-0uMOcf3eZ5K+K4cYHkdxShFMPlPXCOdfDFEFn9dNYAEEd2cVvmOfH7zFgRVoDgmtQ1m9k5q7qfrHzyMAubKYUA==
+  version "4.61.1"
+  resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.61.1.tgz#32085c3f532c59269824ed9239e13f5acbe182b9"
+  integrity sha512-bVWIOIk6pV01p4CdUbPP7CJ/434z+OooYjDuFcR+44N35YvKUC66G8MGnvcWx5mWKW3g61J+t74l3Kj15Kwn2Q==
 
 "@rtsao/scc@^1.1.0":
   version "1.1.0"
@@ -4451,29 +4459,29 @@
   dependencies:
     tslib "^2.8.0"
 
-"@tanstack/query-core@5.100.14":
-  version "5.100.14"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.100.14.tgz#6bf11c9a6a33dbbbba21f05d880b93930d80000c"
-  integrity sha512-5X41dGpxgeaHISCRW2oYwcSycZeULZzAunaudXT9ov1KOTj9xwt0CH6hbwqP1/z74ZWF7rYFnDpyYH07XFcZew==
+"@tanstack/query-core@5.101.0":
+  version "5.101.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.101.0.tgz#45391ce143c270b7e7a55bd1a6696918f20782d1"
+  integrity sha512-cQetA74EB+seWySv1TTKr828TnP0u39m6LykwDXIo84SNortpDkp30TMEjkqtYCNP9c40uT/iwl6MLiufEt0Ow==
 
-"@tanstack/query-devtools@5.100.14":
-  version "5.100.14"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-devtools/-/query-devtools-5.100.14.tgz#1555c8e1e4ea74db85dd2faaea2b7b50e135faf1"
-  integrity sha512-g96SmSSQecYTYcyuAMRXr895GplJv01UGt7qttQWPOUyZ5EGz5tbRc589bMc2m5BsPFD6O0PCEAHdbDYNP6UBw==
+"@tanstack/query-devtools@5.101.0":
+  version "5.101.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-devtools/-/query-devtools-5.101.0.tgz#807c5fae297a20f1b1cb8c3e0adddf9ff98e5068"
+  integrity sha512-MVqw17k08RQtGGLEL654+dX/btbX9p/8WjkznO//zusLTMaObxi3Q+MoFwGVkC9K3tqjn8qrrNhJevXx4fJTeQ==
 
 "@tanstack/react-query-devtools@^5.62.8":
-  version "5.100.14"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-5.100.14.tgz#0774021fdc0b417a86b67b196d5ffb9820cff10c"
-  integrity sha512-JkP5VDgKOw3t/QSA1OABRHEqx8BuNs5MfvZRooNqdvN57SzTuGq3fKR1a2IH5rqa5HDLUm+FOXUEnB9ueHiLzg==
+  version "5.101.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-5.101.0.tgz#b7894eff3fcd78c892e062dcf0a0c479667bf138"
+  integrity sha512-cpZA0+WqKXwrwMfiWZEGGF6QrIWVQFbhBtxqDF5sQsAfrFf47HIE6fiPbQU3wyAUEN2+7UNqLCQe7oG6m3f93w==
   dependencies:
-    "@tanstack/query-devtools" "5.100.14"
+    "@tanstack/query-devtools" "5.101.0"
 
 "@tanstack/react-query@^5.62.8":
-  version "5.100.14"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.100.14.tgz#799fe305421fd84bf2f6df40930c859c945b42ab"
-  integrity sha512-oOr6aRdSFEwWhzxEkD/9ZcItM3+LjBSkeVmadWKwUssAHTsqd/7bOjWrX4AbvEkoEhgAxzN0Xk6H/aYzXiYBAw==
+  version "5.101.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.101.0.tgz#2dd56c5b96ec816d6b6ec9cee5c80ed298974733"
+  integrity sha512-rLlJXSpkqfizLWgkR5+eLeIk0MvTx/meEIR7LRjxic+qxiQP8zVjq7BqQkiCMNLQBlLfuOLqqr6KO5GtrDlmSg==
   dependencies:
-    "@tanstack/query-core" "5.100.14"
+    "@tanstack/query-core" "5.101.0"
 
 "@testing-library/dom@^8.5.0":
   version "8.20.1"
@@ -7493,9 +7501,9 @@ eciesjs@^0.4.11:
     "@noble/hashes" "^1.8.0"
 
 electron-to-chromium@^1.5.328:
-  version "1.5.365"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.365.tgz#65ccc724af6312d34c5b7e8faa0b57a62d5d311d"
-  integrity sha512-xfip4u1QF1s+URFqpA6N+OeFpDGpN7VJz1f3MO3bVL0QYBjpGiZ5/Of7kugvM+o8TTqmanUlviHN3c8M9vYWCw==
+  version "1.5.367"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.367.tgz#ceae3cb3f2939d03a4f0f9b70caf93b7400fa705"
+  integrity sha512-4Mk/mrynCNQ+atY40D3UpmhLWB6AHMbYMlIrPhHcMF6x0L7O0b052FCAsxw1LlaR++UFuNg3D/A6XCuGDa0guQ==
 
 elliptic@6.6.1:
   version "6.6.1"
@@ -13824,9 +13832,9 @@ uncrypto@^0.1.3:
   integrity sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==
 
 undici-types@^7.19.2:
-  version "7.27.0"
-  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.27.0.tgz#281966f8011671562dc66f6ae0f7c54c60d47915"
-  integrity sha512-sqqlwW3zm+cE82GwKdGyn3pcze7LXlx/4jUgA0vtAf6Fa81KMrJqc3VfWmmeOTUIElW9IdPsLwMUIpiOZQgK3A==
+  version "7.27.1"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.27.1.tgz#2a8d26530579afc526793685c6df5dd126f27fc3"
+  integrity sha512-NyfbU7cCMYYxzBT07eOv0/WR3L5j6vmza6sRlF2sDVCkNvsNaCcaFDGu0a4WqzE983tKuSk7YRTY2C+1krumMg==
 
 unfetch@^4.2.0:
   version "4.2.0"
