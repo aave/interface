@@ -1,0 +1,31 @@
+diff --git a/node_modules/@funkit/connect/dist/index.js b/node_modules/@funkit/connect/dist/index.js
+index dc8ada2..5d409f3 100644
+--- a/node_modules/@funkit/connect/dist/index.js
++++ b/node_modules/@funkit/connect/dist/index.js
+@@ -18811,15 +18811,14 @@ var scrollbarHidden2 = "_1s031a01";
+ function subtractScrollbarWidth(padding) {
+   return isSafari() ? padding : padding - SCROLL_BAR_WIDTH;
+ }
+-function PaddedScrollableArea({
++var PaddedScrollableArea = React64.forwardRef(function PaddedScrollableArea2({
+   padding,
+   isScrolling,
+   paddingBottom,
+   children,
+   className,
+-  ref,
+   style
+-}) {
++}, ref) {
+   return /* @__PURE__ */ React64.createElement(
+     Box,
+     {
+@@ -18838,7 +18837,7 @@ function PaddedScrollableArea({
+     },
+     children
+   );
+-}
++});
+ 
+ // src/components/Dialog/FocusTrap.tsx
+ import React65, { useCallback as useCallback20, useEffect as useEffect27, useRef as useRef10 } from "react";

@@ -26,3 +26,5 @@ src/locales/
 *.mermaid
 *.log
 *.lock
+*.patch
+.yarnrc
