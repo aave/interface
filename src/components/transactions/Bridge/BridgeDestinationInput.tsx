@@ -7,10 +7,10 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
-import { isAddress } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
-import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
+import { resolveEnsAddress } from 'src/utils/ensClient';
+import { isAddress } from 'viem';
 
 export const BridgeDestinationInput = ({
   connectedAccount,
@@ -49,14 +49,14 @@ export const BridgeDestinationInput = ({
   useEffect(() => {
     const checkENS = async () => {
       setValidatingENS(true);
-      const resolvedAddress = await getENSProvider().resolveName(destinationAccount);
+      const resolvedAddress = await resolveEnsAddress(destinationAccount);
       if (resolvedAddress) {
         setDestinationAccount(resolvedAddress.toLowerCase());
       }
       setValidatingENS(false);
     };
 
-    if (destinationAccount.slice(-4) === '.eth') {
+    if (!isAddress(destinationAccount)) {
       checkENS();
     }
   }, [destinationAccount]);

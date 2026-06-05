@@ -188,12 +188,6 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
   return providers[chainId];
 };
 
-export const getENSProvider = () => {
-  const chainId = 1;
-  const config = getNetworkConfig(chainId);
-  return new StaticJsonRpcProvider(config.publicJsonRPCUrl[0], chainId);
-};
-
 const ammDisableProposal = 'https://governance-v2.aave.com/governance/proposal/44';
 const ustDisableProposal = 'https://governance-v2.aave.com/governance/proposal/75';
 const kncDisableProposal = 'https://governance-v2.aave.com/governance/proposal/69';
