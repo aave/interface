@@ -1,0 +1,19 @@
+src/components/transactions/Swap/hooks/useSwapQuote.ts
+  s_2bf21af3abca11::t_d8733a39612512 51,57-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "f12961556bec641348a9bc68d58427f479345c29",
+  "prompts": {},
+  "sessions": {
+    "s_2bf21af3abca11": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77e01469-ce50-4cdc-9e5d-cbbcbe0ae562",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
