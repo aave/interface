@@ -1,0 +1,19 @@
+src/modules/governance/proposal/ProposalOverview.tsx
+  s_e00b777abbbd0c::t_b1c68b114cf956 204
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "b43947ee9eb4f47ab872e97a1438375a193d8217",
+  "prompts": {},
+  "sessions": {
+    "s_e00b777abbbd0c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5e909e3-ca0f-48c5-8391-7c3a1f4028be",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

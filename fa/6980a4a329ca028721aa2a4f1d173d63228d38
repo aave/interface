@@ -1,0 +1,16 @@
+src/ui-config/reservePatches.ts
+  h_873f745f99aed2 286
+src/components/primitives/Link.tsx
+  h_873f745f99aed2 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "fa6980a4a329ca028721aa2a4f1d173d63228d38",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

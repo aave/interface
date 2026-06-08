@@ -1,0 +1,25 @@
+src/utils/countries.ts
+  s_cba9e5bef00510::t_c16780f922d41b 28,34,38,51-52,55,58,73,99,119-120,123,132,145,171,177,182,184,186-187,190,195,217-218,220,228,236,242-244
+  s_cba9e5bef00510::t_5cb065d861d289 188-189,191-192,202,208,226,230,237,245,250
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "21bd83a319922101862a68dbe21b54b7cb69da79",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_cba9e5bef00510": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e2055-7778-7dd1-99cd-5fc2d57a4541",
+        "model": "gpt-5.5"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

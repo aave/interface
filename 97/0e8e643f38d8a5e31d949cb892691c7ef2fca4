@@ -1,0 +1,15 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "970e8e643f38d8a5e31d949cb892691c7ef2fca4",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+pages/_app.page.tsx
+  s_c16d5a641174ea::t_710553f35bea8a 105
+  s_c16d5a641174ea::t_bc9f2061776651 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "9fb67fadffef996be4d781a5d332ec9ff1f3297f",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

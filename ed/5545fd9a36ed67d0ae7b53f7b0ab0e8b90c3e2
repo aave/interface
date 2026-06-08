@@ -1,0 +1,14 @@
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+  h_dd1a1ee57491bb 292
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.1",
+  "base_commit_sha": "ed5545fd9a36ed67d0ae7b53f7b0ab0e8b90c3e2",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

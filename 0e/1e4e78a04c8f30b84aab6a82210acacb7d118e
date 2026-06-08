@@ -1,0 +1,37 @@
+src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+  s_c16d5a641174ea::t_b1a72567020a81 8
+  s_c16d5a641174ea::t_e25f0d5b70d473 60
+  s_c16d5a641174ea::t_5c108c8e023ceb 2,17,24,26,89,91,93
+src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+  s_c16d5a641174ea::t_67ddec27ab3827 6
+  s_c16d5a641174ea::t_de94a6a8a3776a 64
+  s_c16d5a641174ea::t_077738ca6eb871 2,14,25,93,95-96,98
+src/components/transactions/SGhoVault/SGhoVaultWithdrawActions.tsx
+  s_c16d5a641174ea::t_39d266debf95e5 1-120
+src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
+  s_c16d5a641174ea::t_496d86ef42c8e5 1-108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "0e1e4e78a04c8f30b84aab6a82210acacb7d118e",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

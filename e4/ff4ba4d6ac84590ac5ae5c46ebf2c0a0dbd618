@@ -1,0 +1,14 @@
+src/components/primitives/Link.tsx
+  h_873f745f99aed2 41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "e4ff4ba4d6ac84590ac5ae5c46ebf2c0a0dbd618",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

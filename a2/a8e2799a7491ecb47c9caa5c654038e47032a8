@@ -1,0 +1,16 @@
+src/components/MarketSwitcher.tsx
+  h_be8c3c572e9983 232
+src/layouts/MainLayout.tsx
+  h_be8c3c572e9983 125
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "a2a8e2799a7491ecb47c9caa5c654038e47032a8",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

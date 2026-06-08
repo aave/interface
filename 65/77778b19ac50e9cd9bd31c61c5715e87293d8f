@@ -1,0 +1,29 @@
+src/components/MarketSwitcher.tsx
+  h_be8c3c572e9983 612
+  s_0c309833e8a3fa::t_16700425992652 564
+  s_0c309833e8a3fa::t_382e27b171fc75 559
+  s_0c309833e8a3fa::t_20ab3589736710 548
+  s_0c309833e8a3fa::t_97ef36cf364905 569-593,595-611,613-617
+  s_0c309833e8a3fa::t_92f63f7027cb07 594
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "6577778b19ac50e9cd9bd31c61c5715e87293d8f",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_0c309833e8a3fa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a875ea70-b550-4289-a970-f4b083d050cd",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

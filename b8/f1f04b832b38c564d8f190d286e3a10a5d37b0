@@ -1,0 +1,25 @@
+src/modules/sGho/SGhoHeader.tsx
+  s_c16d5a641174ea::t_864d3a8c2c0eb4 4,42,52-63,138,176
+  s_c16d5a641174ea::t_504dd4ba14e06d 1-2,21-22,24-27,41,44-51,81,83,85,87-88,93,95,103-104,106,114-115,117,184
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "b8f1f04b832b38c564d8f190d286e3a10a5d37b0",
+  "prompts": {},
+  "humans": {
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_c16d5a641174ea": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ec4f488a-fc02-4b41-8720-413f91474152",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

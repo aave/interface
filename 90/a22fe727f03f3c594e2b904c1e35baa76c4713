@@ -1,0 +1,30 @@
+src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+  s_6f2f3f22fc1734::t_7680c2a16277a1 8,25,27,31
+src/modules/sGho/SGhoCard.tsx
+  h_be8c3c572e9983 10,16
+src/hooks/useSavingsMarketData.ts
+  s_6f2f3f22fc1734::t_f65a6ce080a5df 2,18,21-22
+package.json
+  h_be8c3c572e9983 40,42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "90a22fe727f03f3c594e2b904c1e35baa76c4713",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_6f2f3f22fc1734": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "082bfb15-632a-41b5-85c9-e15660ceeab1",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

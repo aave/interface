@@ -1,0 +1,19 @@
+pages/api/rpc-proxy.ts
+  s_90927c66f6f541::t_61afdc2261bcc7 93-97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "ef107e0e49e6ce49bc9ad0f4838ac915b35ec897",
+  "prompts": {},
+  "sessions": {
+    "s_90927c66f6f541": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "653ad524-169e-48e0-b21d-3aacd2ffe7fd",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

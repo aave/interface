@@ -1,0 +1,18 @@
+src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
+  h_dd1a1ee57491bb 40-41
+src/components/incentives/IncentivesButton.tsx
+  h_dd1a1ee57491bb 182
+src/modules/sGho/SGhoHeader.tsx
+  h_dd1a1ee57491bb 66-67,134,169-170,190-191
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "3eec2b411c98ede74d3dc5529f489475257545cd",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

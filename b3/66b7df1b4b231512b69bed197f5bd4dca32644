@@ -1,0 +1,24 @@
+src/layouts/MainLayout.tsx
+  s_da09c94ba11e8d::t_f931980ababb4e 121-122,125,128-129
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.4",
+  "base_commit_sha": "b366b7df1b4b231512b69bed197f5bd4dca32644",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_da09c94ba11e8d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9bfa6cf1-5511-4052-8b2c-d9848397beb0",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

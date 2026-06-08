@@ -1,0 +1,20 @@
+package.json
+  s_b22ee61692c970::t_362bc8854fbe9c 125-126
+  s_b22ee61692c970::t_ce89b233115e51 10-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "2949e63048311534645589bd6a62bcd3db23aa40",
+  "prompts": {},
+  "sessions": {
+    "s_b22ee61692c970": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "540d8a28-c8c7-4825-a094-9b07f2d2c5da",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+src/components/incentives/IncentivesTooltipContent.tsx
+  h_dd1a1ee57491bb 196-205,256-258
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "f7b6e4ab1e07ab69d2bcaea6b7ea2c183e6b1a73",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

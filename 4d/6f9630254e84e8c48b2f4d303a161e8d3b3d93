@@ -1,0 +1,28 @@
+src/layouts/MainLayout.tsx
+  h_075bcc15b434db 121,125-128
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "4d6f9630254e84e8c48b2f4d303a161e8d3b3d93",
+  "prompts": {
+    "3720c04ad6e6d5a4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bc900cb1-2e09-486f-b811-a1125bb8ac04",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe",
+      "messages": [],
+      "total_additions": 162,
+      "total_deletions": 2,
+      "accepted_lines": 156,
+      "overriden_lines": 5
+    }
+  },
+  "humans": {
+    "h_075bcc15b434db": {
+      "author": "Mark Grothe"
+    }
+  }
+}

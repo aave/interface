@@ -1,0 +1,11 @@
+src/modules/markets/Gho/GhoBanner.tsx
+  h_873f745f99aed2 166
+src/components/primitives/Link.tsx
+  h_873f745f99aed2 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "e16fb2ec0e165e7a63986c24b81e3a5920e4066d",
+  "prompts": {}
+}

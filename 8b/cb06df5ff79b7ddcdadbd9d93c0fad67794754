@@ -1,0 +1,16 @@
+src/components/transactions/Swap/details/CollateralSwapDetails.tsx
+  h_dd1a1ee57491bb 200
+src/components/transactions/Swap/details/DebtSwapDetails.tsx
+  h_dd1a1ee57491bb 87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "8bcb06df5ff79b7ddcdadbd9d93c0fad67794754",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

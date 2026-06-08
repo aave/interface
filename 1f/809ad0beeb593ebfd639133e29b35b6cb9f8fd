@@ -1,0 +1,14 @@
+.nvmrc
+  h_873f745f99aed2 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "1f809ad0beeb593ebfd639133e29b35b6cb9f8fd",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

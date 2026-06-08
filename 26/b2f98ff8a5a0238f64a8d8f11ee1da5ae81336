@@ -1,0 +1,32 @@
+yarn.lock
+  ai_agent 11719-11729,12597
+package.json
+  h_873f745f99aed2 9,90
+  s_b22ee61692c970::t_ce89b233115e51 10,12
+  s_b22ee61692c970::t_362bc8854fbe9c 11,124-125
+  s_b22ee61692c970::t_18f6e0f2a4b35f 19
+next.config.js
+  s_b22ee61692c970::t_44761c91951b70 8-12
+  s_b22ee61692c970::t_acee701312995c 45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "26b2f98ff8a5a0238f64a8d8f11ee1da5ae81336",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  },
+  "sessions": {
+    "s_b22ee61692c970": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "540d8a28-c8c7-4825-a094-9b07f2d2c5da",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

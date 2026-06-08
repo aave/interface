@@ -1,0 +1,28 @@
+pages/_app.page.tsx
+  s_a623aa3d779d93::t_9823e6d5fc3666 4,106-113
+src/hooks/useMerklIncentives.ts
+  s_a623aa3d779d93::t_f564da0fb6f2e7 155-165,254
+custom.d.ts
+  s_a623aa3d779d93::t_2b23c2588f2dd0 11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "3c75d826dddabe530eef32b86e8ffeb90201c9c0",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_a623aa3d779d93": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e73eb-6da8-7913-b17f-8f197a87641f",
+        "model": "gpt-5.5"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

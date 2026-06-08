@@ -1,0 +1,16 @@
+yarn.lock
+  ai_agent 12137-12143,12147,13010
+package.json
+  h_873f745f99aed2 9-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "2a9acddbeb06fde70c0598cfa357e434c72788e9",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

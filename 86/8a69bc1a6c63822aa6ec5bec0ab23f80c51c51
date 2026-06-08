@@ -1,0 +1,19 @@
+cypress/support/e2e.ts
+  s_757cbc4db053a5::t_719cfe6dabe4ee 2-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "868a69bc1a6c63822aa6ec5bec0ab23f80c51c51",
+  "prompts": {},
+  "sessions": {
+    "s_757cbc4db053a5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e6fa2e5f-b085-47e5-a3ea-250615615ce8",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
