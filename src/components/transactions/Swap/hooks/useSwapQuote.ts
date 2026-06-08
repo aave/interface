@@ -48,12 +48,14 @@ const getTokenSelectionForQuote = (
   const destTokenObj = invertedQuoteRoute ? state.sourceToken : state.destinationToken;
 
   // Quote tokens must match what the order will post on, otherwise CoW's per-pair volume-fee policy and gas estimate apply to a different pair than the order and the cushion computed in useSwapOrderAmounts comes out short. Read provider from the active query arg, not state.provider, which lags during provider transitions.
+  // Paraswap collateral swaps go through the adapter (swapAndDeposit or flashloan), which operates on the underlying tokens, so quote the underlying. Quoting the aToken depends on Paraswap pricing it correctly, which it doesn't for every chain (e.g. Sonic aUSDC comes back as 18 decimals / $0).
   const usesAddressToSwap =
     state.useFlashloan === false &&
     (provider === SwapProvider.COW_PROTOCOL ||
       (provider === SwapProvider.PARASWAP &&
         state.swapType !== SwapType.WithdrawAndSwap &&
-        state.swapType !== SwapType.RepayWithCollateral));
+        state.swapType !== SwapType.RepayWithCollateral &&
+        state.swapType !== SwapType.CollateralSwap));
 
   const srcToken = usesAddressToSwap ? srcTokenObj.addressToSwap : srcTokenObj.underlyingAddress;
   const destToken = usesAddressToSwap ? destTokenObj.addressToSwap : destTokenObj.underlyingAddress;

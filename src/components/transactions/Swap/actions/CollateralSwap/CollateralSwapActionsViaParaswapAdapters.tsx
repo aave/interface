@@ -139,7 +139,7 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
         symbol: state.sourceToken.symbol,
         blocked: areActionsBlocked(state),
         isMaxSelected: isMaxSelected,
-        useFlashLoan: true,
+        useFlashLoan: state.useFlashloan ?? false,
         swapCallData: swapCallData,
         augustus: augustus,
         signature: signatureParams?.splitedSignature,

@@ -3,7 +3,6 @@ import { Dispatch } from 'react';
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { ProtocolSwapParams, ProtocolSwapState, SwapProvider, SwapState } from '../../types';
 import { SwapActionsViaCoW } from '../SwapActions/SwapActionsViaCoW';
-import { SwapActionsViaParaswap } from '../SwapActions/SwapActionsViaParaswap';
 import { CollateralSwapActionsViaCowAdapters } from './CollateralSwapActionsViaCoWAdapters';
 import { CollateralSwapActionsViaParaswapAdapters } from './CollateralSwapActionsViaParaswapAdapters';
 
@@ -41,25 +40,16 @@ export const CollateralSwapActions = ({
         );
       }
     case SwapProvider.PARASWAP:
-      if (state.useFlashloan) {
-        return (
-          <CollateralSwapActionsViaParaswapAdapters
-            params={params}
-            state={state}
-            setState={setState}
-            trackingHandlers={trackingHandlers}
-          />
-        );
-      } else {
-        // Essentially traditional aTokens swap
-        return (
-          <SwapActionsViaParaswap
-            params={params}
-            state={state}
-            setState={setState}
-            trackingHandlers={trackingHandlers}
-          />
-        );
-      }
+      // Paraswap can't swap aTokens directly, so always use the adapter. It runs swapAndDeposit
+      // (no flashloan) or a flashloan based on state.useFlashloan, which useFlowSelector sets from
+      // the health-factor impact.
+      return (
+        <CollateralSwapActionsViaParaswapAdapters
+          params={params}
+          state={state}
+          setState={setState}
+          trackingHandlers={trackingHandlers}
+        />
+      );
   }
 };
