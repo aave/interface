@@ -1,0 +1,31 @@
+src/components/transactions/Swap/modals/request/DebtSwapModalContent.tsx
+  s_c764ea9a080558::t_7539c2f05d4b75 23
+  s_c764ea9a080558::t_05775d22c5ce88 142-145
+src/components/transactions/Swap/helpers/shared/misc.helpers.ts
+  s_c764ea9a080558::t_84e35c85ab2504 1,9-14
+src/components/transactions/Swap/modals/request/WithdrawAndSwapModalContent.tsx
+  s_c764ea9a080558::t_c98696bde7d31d 12
+  s_c764ea9a080558::t_877a03038310ef 151
+src/components/transactions/Swap/modals/request/RepayWithCollateralModalContent.tsx
+  s_c764ea9a080558::t_529f424775c93c 16
+src/components/transactions/Swap/modals/request/CollateralSwapModalContent.tsx
+  s_c764ea9a080558::t_e9546d4ad2bdc0 259
+  s_c764ea9a080558::t_754af051622b31 15
+  s_c764ea9a080558::t_508746e400ee8e 172
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "5a586cdbabb0bffcae79b57f336021d6c168ce60",
+  "prompts": {},
+  "sessions": {
+    "s_c764ea9a080558": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "419b8e5f-eca0-4479-8dcd-d72fa8e41c3f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

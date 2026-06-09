@@ -1,0 +1,24 @@
+src/components/transactions/Swap/hooks/__tests__/getTokenSelectionForQuote.test.ts
+  s_ed1ce514435e93::t_a40aaf12b371de 1,3-202
+  s_ed1ce514435e93::t_e0609be0ebdacf 2
+src/components/transactions/Swap/hooks/useSwapQuote.ts
+  s_ed1ce514435e93::t_020beaa1c3fb68 23
+src/components/transactions/Swap/hooks/getTokenSelectionForQuote.ts
+  s_ed1ce514435e93::t_994f5eac5ede07 1-68
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "828e5d44244f3eb331228527b4bef2f87cfc255b",
+  "prompts": {},
+  "sessions": {
+    "s_ed1ce514435e93": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "109d335c-f7c3-445a-bee4-f8bc21da10ec",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

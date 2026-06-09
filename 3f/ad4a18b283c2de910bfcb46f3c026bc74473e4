@@ -1,0 +1,19 @@
+src/ui-config/TokenList.ts
+  s_7db838a7e94f94::t_13c45d9e052822 13023-13029
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "3fad4a18b283c2de910bfcb46f3c026bc74473e4",
+  "prompts": {},
+  "sessions": {
+    "s_7db838a7e94f94": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "89a15890-1e2f-426a-8d70-7dbe956e1ef4",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

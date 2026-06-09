@@ -1,0 +1,19 @@
+src/hooks/useReserveIncentives.ts
+  s_a47c40eb4bf494::t_38f4c696c1ffeb 19-20,26,194
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "200aaca56bdbf2ead947cf2211e873653e4295f3",
+  "prompts": {},
+  "sessions": {
+    "s_a47c40eb4bf494": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1f2d8774-daac-4930-9dc6-f20b4222a1a3",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

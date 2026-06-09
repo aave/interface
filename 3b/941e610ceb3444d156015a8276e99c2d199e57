@@ -1,0 +1,24 @@
+src/libs/web3-data-provider/Web3Provider.tsx
+  s_ff3fe1a6109eac::t_e98c6ce1e0d403 47
+  s_ff3fe1a6109eac::t_04e925112237ec 52-57
+  s_ff3fe1a6109eac::t_f9eefce0b3f737 210-220
+pages/_app.page.tsx
+  s_ff3fe1a6109eac::t_62186ec548b76f 114
+  s_ff3fe1a6109eac::t_23af5ea7bf853a 155
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "3b941e610ceb3444d156015a8276e99c2d199e57",
+  "prompts": {},
+  "sessions": {
+    "s_ff3fe1a6109eac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8db1f7d0-8faa-46c9-8be3-2620066e2ac2",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
