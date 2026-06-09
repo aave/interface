@@ -183,6 +183,9 @@ const getMarketOrder = (marketId: CustomMarket): number => {
   return MARKET_ORDER_BY_TITLE[market.marketTitle] ?? 999;
 };
 
+const AAVE_PRO_URL = 'https://pro.aave.com/';
+const AAVE_PRO_LOGO = '/icons/markets/aave-pro.png';
+
 export const MarketSwitcher = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -335,7 +338,7 @@ export const MarketSwitcher = () => {
     );
   };
 
-  const renderGridItem = (marketId: CustomMarket, isMobile?: boolean) => {
+  const renderGridItem = (marketId: CustomMarket, isMobile?: boolean, width = '33.33%') => {
     const { market, logo } = getMarketInfoById(marketId);
     const marketNaming = getMarketHelpData(market.marketTitle);
     const isFavorite = isFavoriteMarket(marketId);
@@ -358,7 +361,7 @@ export const MarketSwitcher = () => {
           alignItems: 'center',
           py: '10px',
           px: '12px',
-          width: isMobile ? '50%' : '33.33%',
+          width: isMobile ? '50%' : width,
           boxSizing: 'border-box',
           borderRadius: '8px',
           cursor: 'pointer',
@@ -420,6 +423,86 @@ export const MarketSwitcher = () => {
       </Box>
     );
   };
+
+  const renderAaveProLink = (isMobile?: boolean, width = '33.33%') => (
+    <Box
+      role="button"
+      tabIndex={0}
+      onClick={() => window.open(AAVE_PRO_URL, '_blank')}
+      onKeyDown={(e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          window.open(AAVE_PRO_URL, '_blank');
+        }
+      }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        py: '10px',
+        px: '12px',
+        width: isMobile ? '50%' : width,
+        boxSizing: 'border-box',
+        borderRadius: '8px',
+        cursor: 'pointer',
+        '&:hover': { bgcolor: 'action.hover' },
+      }}
+    >
+      <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
+        <img
+          src={AAVE_PRO_LOGO}
+          alt=""
+          width="100%"
+          height="100%"
+          style={{ display: 'block', objectFit: 'contain' }}
+        />
+      </Box>
+      <Box
+        sx={{
+          flex: '1 1 0',
+          minWidth: 0,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+        }}
+      >
+        <Typography
+          noWrap
+          sx={{
+            minWidth: 0,
+            fontSize: '14px',
+            fontWeight: 600,
+            letterSpacing: '0.15px',
+            lineHeight: '20px',
+          }}
+        >
+          <Trans>Aave Pro</Trans>
+        </Typography>
+        <Box
+          component="span"
+          sx={{
+            width: 26,
+            height: 16,
+            borderRadius: '50px',
+            bgcolor: 'rgba(151, 142, 255, 0.1)',
+            color: '#978eff',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            fontSize: '10px',
+            fontWeight: 700,
+            lineHeight: 1,
+            letterSpacing: 0,
+          }}
+        >
+          V4
+        </Box>
+      </Box>
+      <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
+        <ExternalLinkIcon />
+      </SvgIcon>
+    </Box>
+  );
 
   const sectionHeader = (label: React.ReactNode) => (
     <Typography
@@ -530,7 +613,8 @@ export const MarketSwitcher = () => {
           <Box>
             {sectionHeader(<Trans>Ethereum</Trans>)}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
-              {ethereum.map((id) => renderGridItem(id, mobile))}
+              {ethereum.map((id) => renderGridItem(id, mobile, '33%'))}
+              {renderAaveProLink(mobile, '33%')}
             </Box>
             {(other.length > 0 || l2.length > 0 || (showLegacy && legacy.length > 0)) && (
               <Divider sx={{ my: 1 }} />
