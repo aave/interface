@@ -74,7 +74,7 @@ const prodCkConfig = getDefaultConfig({
   ...defaultConfig,
 });
 
-const familyConnectorId = 'familyAccountsProvider';
+const aaveConnectorId = 'aaveAccountProvider';
 
 const connectorConfig = {
   chains: prodCkConfig.chains,
@@ -94,12 +94,12 @@ const baseConnectors = prodCkConfig.connectors
     }
   })
   .sort((a, b) => {
-    // sort connectors so the family connector is last
+    // sort connectors so the aave account connector is last
     // fixes slow wallet connections when running in the Safe UI
-    if (a(connectorConfig).id === familyConnectorId) {
+    if (a(connectorConfig).id === aaveConnectorId) {
       return 1;
     }
-    if (b(connectorConfig).id === familyConnectorId) {
+    if (b(connectorConfig).id === aaveConnectorId) {
       return -1;
     }
     return 0;
