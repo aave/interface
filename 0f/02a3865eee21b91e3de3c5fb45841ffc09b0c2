@@ -1,0 +1,19 @@
+src/hooks/paraswap/useParaswapRates.ts
+  s_2bf21af3abca11::t_8ada82e651cdaa 94-96,100,103
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "0f02a3865eee21b91e3de3c5fb45841ffc09b0c2",
+  "prompts": {},
+  "sessions": {
+    "s_2bf21af3abca11": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77e01469-ce50-4cdc-9e5d-cbbcbe0ae562",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": null
+    }
+  }
+}
