@@ -85,7 +85,7 @@ export function buildFunSupplyConfig(
   reserve: FunSupplyReserve,
   walletAddress: Address | undefined
 ): FunkitCheckoutConfig | undefined {
-  return createAaveSupplyCheckoutConfig({
+  const config = createAaveSupplyCheckoutConfig({
     underlyingAsset: getAddress(reserve.underlyingAsset),
     poolAddress: getAddress(reserve.poolAddress),
     chainId: reserve.chainId,
@@ -103,4 +103,22 @@ export function buildFunSupplyConfig(
       iconSrc: reserve.aTokenBase64 ?? reserve.aToken.imageUrl,
     },
   });
+  if (!config) {
+    return undefined;
+  }
+  // The SDK's same-asset guard (isSameAsPurchasingToken) is bypassed for
+  // checkouts with a post-deposit action like this supply, so the underlying
+  // being supplied must be disabled as a payment source explicitly — otherwise
+  // it gets preselected and the modal auto-continues past source selection.
+  // Scoped to the target chain: the same token on other chains stays a valid
+  // bridge-and-supply source (ENG-4214).
+  return {
+    ...config,
+    disabledSourceTokens: [
+      {
+        tokenAddress: getAddress(reserve.underlyingAsset),
+        tokenChainId: String(reserve.chainId),
+      },
+    ],
+  };
 }
