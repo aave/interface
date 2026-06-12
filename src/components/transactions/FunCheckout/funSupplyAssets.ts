@@ -62,13 +62,17 @@ export type FunSupplyReserve = {
 };
 
 // Aave's supplyAPY is a 0–1 fraction; funkit's `display.supplyAPY` wants a
-// percent string without the % sign (e.g. "2.83").
+// percent string without the % sign (e.g. "2.83"). Rates that would render as
+// 0.00 floor to "<0.01" (Aave's FormattedNumber convention) — the modal styles
+// the APY as earnings-green, which a literal 0.00% would contradict. funkit
+// only string-interpolates this value, so the non-numeric form is safe.
 function toPercentString(apy: string | number): string {
   const fraction = Number(apy);
   if (!Number.isFinite(fraction)) {
     return '0';
   }
-  return (fraction * 100).toFixed(2);
+  const percent = (fraction * 100).toFixed(2);
+  return percent === '0.00' ? '<0.01' : percent;
 }
 
 /**
