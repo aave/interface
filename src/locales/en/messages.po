@@ -613,6 +613,10 @@ msgstr "Time remaining until the withdraw period ends."
 msgid "Withdrawing and Swapping"
 msgstr "Withdrawing and Swapping"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Aave Pro"
+msgstr "Aave Pro"
+
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
 msgid "Data couldn't be fetched, please reload graph."
 msgstr "Data couldn't be fetched, please reload graph."
