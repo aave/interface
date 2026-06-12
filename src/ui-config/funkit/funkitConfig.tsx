@@ -1,6 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
 import { AaveV3Ethereum } from '@aave-dao/aave-address-book';
-import { AAVE_API_KEY } from '@funkit/api-base';
 import { type FunkitConfig } from '@funkit/connect';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 
@@ -12,12 +11,12 @@ import { networkConfigs } from 'src/ui-config/networksConfig';
  * (`with-next/configs/customers.tsx`). The matching theme lives in
  * `./aaveTheme` (ported from `with-next/themes/aave.ts`).
  *
- * The API key is sourced from an env var first (per the repo no-secrets rule),
- * falling back to the published `AAVE_API_KEY` demo key for local dev.
+ * The API key comes from `NEXT_PUBLIC_FUNKIT_API_KEY` (per the repo no-secrets
+ * rule); checkout is non-functional without it.
  */
 export const funkitConfig: FunkitConfig = {
   appName: 'Aave',
-  apiKey: process.env.NEXT_PUBLIC_FUNKIT_API_KEY || AAVE_API_KEY,
+  apiKey: process.env.NEXT_PUBLIC_FUNKIT_API_KEY || '',
   uiCustomizations: {
     alignTitle: 'left',
     // Fonts for the embedded fiat-card (Swapped) widget — separate from the modal

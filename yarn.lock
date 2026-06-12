@@ -2331,7 +2331,7 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.11.tgz#a269e055e40e2f45873bae9d1a2fdccbd314ea3f"
   integrity sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==
 
-"@funkit/api-base@4.5.0", "@funkit/api-base@^4.5.0":
+"@funkit/api-base@4.5.0":
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/@funkit/api-base/-/api-base-4.5.0.tgz#e4a1b5a4e7864d1be9185c1265fc66b179b6463b"
   integrity sha512-OCAGrZlBcdf1SRlWxuDEUBeMa0g56faRRkTF/4ykif8ld23owxHhQ7GqXifn2IiBW6Qwh27CqqoXVo7uN0lP7w==
