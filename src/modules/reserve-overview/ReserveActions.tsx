@@ -9,12 +9,15 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
+import { FunSupplyButton } from 'src/components/transactions/FunCheckout/FunSupplyButton';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import {
   ComputedReserveData,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
@@ -53,7 +56,8 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
   const [selectedAsset, setSelectedAsset] = useState<string>(reserve.symbol);
 
   const { currentAccount } = useWeb3Context();
-  const { openBorrow, openSupply } = useModalContext();
+  const { openBorrow } = useModalContext();
+  const { supplyCap: supplyCapUsage } = useAssetCaps();
   const [currentMarket, currentNetworkConfig, currentMarketData, minRemainingBaseTokenBalance] =
     useRootStore(
       useShallow((store) => [
@@ -112,13 +116,30 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
     return <ActionsSkeleton />;
   }
 
-  const onSupplyClicked = () => {
-    if (reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol) {
-      openSupply(API_ETH_MOCK_ADDRESS.toLowerCase(), currentMarket, reserve.name, 'reserve', true);
-    } else {
-      openSupply(reserve.underlyingAsset, currentMarket, reserve.name, 'reserve', true);
-    }
-  };
+  // The native supply flow on this page can supply the wrapped base asset's
+  // underlying as native ETH (mock address) when the toggle selects it.
+  const supplyUnderlyingAsset =
+    reserve.isWrappedBaseAsset && selectedAsset === baseAssetSymbol
+      ? API_ETH_MOCK_ADDRESS.toLowerCase()
+      : reserve.underlyingAsset;
+
+  // fun-routed assets can be supplied from any EVM asset / fiat via the funkit
+  // checkout, so an empty wallet shouldn't block the button — only a maxed
+  // supply cap does (mirrors SupplyAssetsList). Frozen/paused reserves never
+  // reach this branch (handled above), and fun assets are never GHO, so the
+  // remaining native disable reasons don't apply.
+  const disableSupply = isFunSupplyAsset(currentMarket, supplyUnderlyingAsset)
+    ? supplyCapUsage.isMaxed
+    : disableSupplyButton;
+
+  // Collateral flag shown in the funkit checkout — mirror the dashboard list by
+  // using the user's actual per-position toggle, falling back to reserve-level
+  // eligibility when they hold no position yet. Matched on the real underlying
+  // (not the wrapped-base-asset's native-mock address) so an existing position
+  // is found.
+  const collateralEnabled =
+    user?.userReservesData.find((r) => r.reserve.underlyingAsset === reserve.underlyingAsset)
+      ?.usageAsCollateralEnabledOnUser ?? reserve.usageAsCollateralEnabled;
 
   const { market } = getMarketInfoById(currentMarket);
 
@@ -150,8 +171,9 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
               value={maxAmountToSupply.toString()}
               usdValue={maxAmountToSupplyUsd}
               symbol={selectedAsset}
-              disable={disableSupplyButton}
-              onActionClicked={onSupplyClicked}
+              disable={disableSupply}
+              underlyingAsset={supplyUnderlyingAsset}
+              collateralEnabled={collateralEnabled}
             />
             {assetCanBeBorrowedByUser(reserve, user) && (
               <BorrowAction
@@ -274,8 +296,12 @@ const SupplyAction = ({
   usdValue,
   symbol,
   disable,
-  onActionClicked,
-}: ActionProps) => {
+  underlyingAsset,
+  collateralEnabled,
+}: Omit<ActionProps, 'onActionClicked'> & {
+  underlyingAsset: string;
+  collateralEnabled: boolean;
+}) => {
   return (
     <Stack>
       <AvailableTooltip
@@ -307,16 +333,21 @@ const SupplyAction = ({
             symbol="USD"
           />
         </Box>
-        <Button
+        <FunSupplyButton
           sx={{ height: '36px', width: '96px' }}
-          onClick={onActionClicked}
           disabled={disable}
           fullWidth={false}
           variant="contained"
           data-cy="supplyButton"
-        >
-          <Trans>Supply</Trans>
-        </Button>
+          underlyingAsset={underlyingAsset}
+          name={reserve.name}
+          symbol={symbol}
+          iconSymbol={reserve.iconSymbol}
+          supplyAPY={reserve.supplyAPY}
+          collateralEnabled={collateralEnabled}
+          funnel="reserve"
+          isReserve
+        />
       </Stack>
     </Stack>
   );

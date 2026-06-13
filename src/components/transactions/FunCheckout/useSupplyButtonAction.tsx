@@ -18,16 +18,33 @@ export type SupplyButtonReserve = {
   collateralEnabled: boolean;
 };
 
+/** Call-site-constant options for the native `openSupply` fallback. */
+export type SupplyButtonActionOptions = {
+  /** Analytics funnel passed to `openSupply`. Defaults to `'dashboard'`. */
+  funnel?: string;
+  /** `openSupply`'s `isReserve` flag (set by the reserve-overview page). Defaults to `false`. */
+  isReserve?: boolean;
+};
+
 /**
  * Returns the Supply button's click handler. For the allowlisted assets on the
  * Core mainnet market it opens the funkit checkout modal; for everything else it
- * falls back to the native Aave supply modal (`openSupply`). Shared by all 3
- * Supply list-item variants so the branch lives in one place.
+ * falls back to the native Aave supply modal (`openSupply`). Consumed by
+ * `FunSupplyButton`, which is the single Supply button used across the app, so
+ * the funkit branch lives in one place.
+ *
+ * `funnel`/`isReserve` parameterize only the native fallback so each entry point
+ * (dashboard lists vs. the reserve-overview page) keeps its existing
+ * analytics/navigation behavior.
  *
  * Receipt-token metadata (the aToken's address/symbol/decimals/icon) comes from
  * the SDK reserve already in app state — no integrator-owned copies.
  */
-export function useSupplyButtonAction(): (reserve: SupplyButtonReserve) => void {
+export function useSupplyButtonAction(
+  options?: SupplyButtonActionOptions
+): (reserve: SupplyButtonReserve) => void {
+  const funnel = options?.funnel ?? 'dashboard';
+  const isReserve = options?.isReserve ?? false;
   const currentMarket = useRootStore((store) => store.currentMarket);
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { supplyReserves } = useAppDataContext();
@@ -58,6 +75,6 @@ export function useSupplyButtonAction(): (reserve: SupplyButtonReserve) => void 
       // yet (ssr:false chunk still loading) or the SDK market data isn't in
       // yet — instead of dropping the click.
     }
-    openSupply(reserve.underlyingAsset, currentMarket, reserve.name, 'dashboard');
+    openSupply(reserve.underlyingAsset, currentMarket, reserve.name, funnel, isReserve);
   };
 }

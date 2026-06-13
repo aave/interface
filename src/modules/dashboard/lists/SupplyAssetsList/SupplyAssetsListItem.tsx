@@ -22,8 +22,7 @@ import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
-import { useFunSupplyATokenIcon } from 'src/components/transactions/FunCheckout/useFunSupplyATokenIcon';
-import { useSupplyButtonAction } from 'src/components/transactions/FunCheckout/useSupplyButtonAction';
+import { FunSupplyButton } from 'src/components/transactions/FunCheckout/FunSupplyButton';
 import { WalletBalancesMap } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -120,12 +119,6 @@ export const SupplyAssetsListItemDesktop = ({
   const wrappedTokenReserves = useWrappedTokens();
 
   const { openSwitch } = useModalContext();
-  const handleSupplyClick = useSupplyButtonAction();
-  // Ringed aToken icon for the fun checkout's add-to-wallet (fun-routed rows only)
-  const { aTokenBase64, generator: aTokenIconGenerator } = useFunSupplyATokenIcon(
-    underlyingAsset,
-    iconSymbol
-  );
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
@@ -254,23 +247,15 @@ export const SupplyAssetsListItemDesktop = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        {aTokenIconGenerator}
-        <Button
+        <FunSupplyButton
           disabled={disableSupply}
-          variant="contained"
-          onClick={() => {
-            handleSupplyClick({
-              underlyingAsset,
-              name,
-              symbol,
-              aTokenBase64,
-              supplyAPY,
-              collateralEnabled: usageAsCollateralEnabledOnUser,
-            });
-          }}
-        >
-          <Trans>Supply</Trans>
-        </Button>
+          underlyingAsset={underlyingAsset}
+          name={name}
+          symbol={symbol}
+          iconSymbol={iconSymbol}
+          supplyAPY={supplyAPY}
+          collateralEnabled={usageAsCollateralEnabledOnUser}
+        />
         <Button
           id="supply-extra-button"
           sx={{
@@ -351,13 +336,7 @@ export const SupplyAssetsListItemMobile = ({
   walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
   const currentMarket = useRootStore((store) => store.currentMarket);
-  const handleSupplyClick = useSupplyButtonAction();
   const wrappedTokenReserves = useWrappedTokens();
-  // Ringed aToken icon for the fun checkout's add-to-wallet (fun-routed rows only)
-  const { aTokenBase64, generator: aTokenIconGenerator } = useFunSupplyATokenIcon(
-    underlyingAsset,
-    iconSymbol
-  );
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCaps();
@@ -472,25 +451,17 @@ export const SupplyAssetsListItemMobile = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        {aTokenIconGenerator}
-        <Button
+        <FunSupplyButton
           disabled={disableSupply}
-          variant="contained"
-          onClick={() =>
-            handleSupplyClick({
-              underlyingAsset,
-              name,
-              symbol,
-              aTokenBase64,
-              supplyAPY,
-              collateralEnabled: usageAsCollateralEnabledOnUser,
-            })
-          }
+          underlyingAsset={underlyingAsset}
+          name={name}
+          symbol={symbol}
+          iconSymbol={iconSymbol}
+          supplyAPY={supplyAPY}
+          collateralEnabled={usageAsCollateralEnabledOnUser}
           sx={{ mr: 1.5 }}
           fullWidth
-        >
-          <Trans>Supply</Trans>
-        </Button>
+        />
         <Button
           variant="outlined"
           component={Link}
