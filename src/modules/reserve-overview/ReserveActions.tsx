@@ -9,7 +9,6 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Warning } from 'src/components/primitives/Warning';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
-import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
 import { FunSupplyButton } from 'src/components/transactions/FunCheckout/FunSupplyButton';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import {
@@ -17,7 +16,6 @@ import {
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
-import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
@@ -57,7 +55,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
   const { currentAccount } = useWeb3Context();
   const { openBorrow } = useModalContext();
-  const { supplyCap: supplyCapUsage } = useAssetCaps();
   const [currentMarket, currentNetworkConfig, currentMarketData, minRemainingBaseTokenBalance] =
     useRootStore(
       useShallow((store) => [
@@ -123,15 +120,6 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
       ? API_ETH_MOCK_ADDRESS.toLowerCase()
       : reserve.underlyingAsset;
 
-  // fun-routed assets can be supplied from any EVM asset / fiat via the funkit
-  // checkout, so an empty wallet shouldn't block the button — only a maxed
-  // supply cap does (mirrors SupplyAssetsList). Frozen/paused reserves never
-  // reach this branch (handled above), and fun assets are never GHO, so the
-  // remaining native disable reasons don't apply.
-  const disableSupply = isFunSupplyAsset(currentMarket, supplyUnderlyingAsset)
-    ? supplyCapUsage.isMaxed
-    : disableSupplyButton;
-
   // Collateral flag shown in the funkit checkout — mirror the dashboard list by
   // using the user's actual per-position toggle, falling back to reserve-level
   // eligibility when they hold no position yet. Matched on the real underlying
@@ -171,7 +159,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
               value={maxAmountToSupply.toString()}
               usdValue={maxAmountToSupplyUsd}
               symbol={selectedAsset}
-              disable={disableSupply}
+              disable={disableSupplyButton}
               underlyingAsset={supplyUnderlyingAsset}
               collateralEnabled={collateralEnabled}
             />
