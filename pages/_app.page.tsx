@@ -16,6 +16,7 @@ import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ReactNode, useEffect, useState } from 'react';
 import { AddressBlocked } from 'src/components/AddressBlocked';
+import { DebugCrashBoundary } from 'src/components/DebugCrashBoundary';
 import { Meta } from 'src/components/Meta';
 import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
@@ -161,56 +162,60 @@ export default function MyApp(props: MyAppProps) {
         imageUrl="https://app.aave.com/aave-com-opengraph.png"
       />
       <NoSsr>
-        <AaveProvider client={client}>
-          <LanguageProvider>
-            <WagmiProvider config={wagmiConfig}>
-              <QueryClientProvider client={queryClient}>
-                <ConnectKitProvider onDisconnect={cleanLocalStorage}>
-                  <Web3ContextProvider>
-                    <AppGlobalStyles>
-                      <ComplianceProvider>
-                        <AddressBlocked>
-                          <SwapOrdersTrackingProvider>
-                            <ModalContextProvider>
-                              <SharedDependenciesProvider>
-                                <AppDataProvider>
-                                  <GasStationProvider>
-                                    {getLayout(<Component {...pageProps} />)}
-                                    <SupplyModal />
-                                    <FunkitCheckout />
-                                    <WithdrawModal />
-                                    <BorrowModal />
-                                    <RepayModal />
-                                    <CollateralChangeModal />
-                                    <ClaimRewardsModal />
-                                    <EmodeModal />
-                                    <FaucetModal />
-                                    <TransactionEventHandler />
-                                    <StakingMigrateModal />
-                                    <BridgeModal />
-                                    <ReadOnlyModal />
+        <DebugCrashBoundary label="app">
+          <AaveProvider client={client}>
+            <LanguageProvider>
+              <WagmiProvider config={wagmiConfig}>
+                <QueryClientProvider client={queryClient}>
+                  <ConnectKitProvider onDisconnect={cleanLocalStorage}>
+                    <Web3ContextProvider>
+                      <AppGlobalStyles>
+                        <ComplianceProvider>
+                          <AddressBlocked>
+                            <SwapOrdersTrackingProvider>
+                              <ModalContextProvider>
+                                <SharedDependenciesProvider>
+                                  <AppDataProvider>
+                                    <GasStationProvider>
+                                      <DebugCrashBoundary label="page">
+                                        {getLayout(<Component {...pageProps} />)}
+                                        <SupplyModal />
+                                        <FunkitCheckout />
+                                        <WithdrawModal />
+                                        <BorrowModal />
+                                        <RepayModal />
+                                        <CollateralChangeModal />
+                                        <ClaimRewardsModal />
+                                        <EmodeModal />
+                                        <FaucetModal />
+                                        <TransactionEventHandler />
+                                        <StakingMigrateModal />
+                                        <BridgeModal />
+                                        <ReadOnlyModal />
 
-                                    {/* Swap Modals */}
-                                    <SwapModal />
-                                    <CollateralSwapModal />
-                                    <DebtSwapModal />
-                                    <CancelCowOrderModal />
-                                    <CowOrderToast />
-                                  </GasStationProvider>
-                                </AppDataProvider>
-                              </SharedDependenciesProvider>
-                            </ModalContextProvider>
-                          </SwapOrdersTrackingProvider>
-                        </AddressBlocked>
-                      </ComplianceProvider>
-                    </AppGlobalStyles>
-                  </Web3ContextProvider>
-                </ConnectKitProvider>
-                <ReactQueryDevtools initialIsOpen={false} />
-              </QueryClientProvider>
-            </WagmiProvider>
-          </LanguageProvider>
-        </AaveProvider>
+                                        {/* Swap Modals */}
+                                        <SwapModal />
+                                        <CollateralSwapModal />
+                                        <DebtSwapModal />
+                                        <CancelCowOrderModal />
+                                        <CowOrderToast />
+                                      </DebugCrashBoundary>
+                                    </GasStationProvider>
+                                  </AppDataProvider>
+                                </SharedDependenciesProvider>
+                              </ModalContextProvider>
+                            </SwapOrdersTrackingProvider>
+                          </AddressBlocked>
+                        </ComplianceProvider>
+                      </AppGlobalStyles>
+                    </Web3ContextProvider>
+                  </ConnectKitProvider>
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+              </WagmiProvider>
+            </LanguageProvider>
+          </AaveProvider>
+        </DebugCrashBoundary>
       </NoSsr>
     </CacheProvider>
   );
