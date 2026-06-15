@@ -45,6 +45,10 @@ inputs:
     description: enables cypress
     required: false
     default: 'true'
+  NEXT_PUBLIC_FUNKIT_API_KEY:
+    description: funkit checkout API key (publishable, client-side). Without it the funkit checkout host stays unmounted.
+    required: false
+    default: ''
 
 runs:
   using: 'composite'
@@ -89,3 +93,4 @@ runs:
         NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: '${{ inputs.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID }}'
         NEXT_PUBLIC_NARVAL_CLIENT_ID: '${{ inputs.NEXT_PUBLIC_NARVAL_CLIENT_ID }}'
         NEXT_PUBLIC_IS_CYPRESS_ENABLED: '${{ inputs.NEXT_PUBLIC_IS_CYPRESS_ENABLED }}'
+        NEXT_PUBLIC_FUNKIT_API_KEY: '${{ inputs.NEXT_PUBLIC_FUNKIT_API_KEY }}'

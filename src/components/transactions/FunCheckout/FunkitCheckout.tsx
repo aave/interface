@@ -132,6 +132,18 @@ function InnerCheckout() {
 }
 
 export function FunkitCheckout() {
+  // funkit checkout is non-essential and non-functional without an API key
+  // (NEXT_PUBLIC_FUNKIT_API_KEY). FunkitProvider validates the config on render
+  // and throws "Invalid funkitConfig: Missing apiKey." on an empty key — and
+  // because this host is mounted globally in _app, that throw crashes the entire
+  // app on every page in any environment that doesn't inject the key (CI smoke
+  // builds, preview builds, local without .env). Render nothing instead: the
+  // Supply buttons fall back to the native modal because beginFunSupply() returns
+  // false when the island never registers on the bridge.
+  if (!funkitConfig.apiKey) {
+    return null;
+  }
+
   return (
     <FunkitProvider funkitConfig={funkitConfig} theme={aaveTheme} modalSize="medium">
       <InnerCheckout />
