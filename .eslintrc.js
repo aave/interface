@@ -1,4 +1,9 @@
 module.exports = {
+  // Stop config cascading at the repo root — without this, linting inside a
+  // nested checkout (e.g. a git worktree under .claude/worktrees/) merges the
+  // outer checkout's config and ESLint aborts on the twice-resolved prettier
+  // plugin.
+  root: true,
   extends: [
     'next/core-web-vitals',
     'prettier',

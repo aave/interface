@@ -21,6 +21,8 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
+import { FunSupplyButton } from 'src/components/transactions/FunCheckout/FunSupplyButton';
 import { WalletBalancesMap } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -50,6 +52,7 @@ export const SupplyAssetsListItem = (
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const { supplyCap } = useAssetCaps();
   const wrappedTokenReserves = useWrappedTokens();
+  const currentMarket = useRootStore((store) => store.currentMarket);
 
   const { isActive, isFreezed, walletBalance, underlyingAsset } = params;
 
@@ -61,10 +64,15 @@ export const SupplyAssetsListItem = (
     wrappedToken &&
     params.walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
 
+  // fun-routed assets can be supplied from any EVM asset / fiat via the funkit
+  // checkout, so an empty wallet doesn't block supplying them (protocol-level
+  // blocks — inactive/frozen/capped — still apply).
+  const isFunSupply = isFunSupplyAsset(currentMarket, underlyingAsset);
+
   const disableSupply =
     !isActive ||
     isFreezed ||
-    (Number(walletBalance) <= 0 && !canSupplyAsWrappedToken) ||
+    (Number(walletBalance) <= 0 && !canSupplyAsWrappedToken && !isFunSupply) ||
     supplyCap.isMaxed;
 
   const props: SupplyAssetsListItemProps = {
@@ -110,7 +118,7 @@ export const SupplyAssetsListItemDesktop = ({
   const currentMarket = useRootStore((store) => store.currentMarket);
   const wrappedTokenReserves = useWrappedTokens();
 
-  const { openSupply, openSwitch } = useModalContext();
+  const { openSwitch } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
@@ -239,15 +247,15 @@ export const SupplyAssetsListItemDesktop = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        <Button
+        <FunSupplyButton
           disabled={disableSupply}
-          variant="contained"
-          onClick={() => {
-            openSupply(underlyingAsset, currentMarket, name, 'dashboard');
-          }}
-        >
-          <Trans>Supply</Trans>
-        </Button>
+          underlyingAsset={underlyingAsset}
+          name={name}
+          symbol={symbol}
+          iconSymbol={iconSymbol}
+          supplyAPY={supplyAPY}
+          collateralEnabled={usageAsCollateralEnabledOnUser}
+        />
         <Button
           id="supply-extra-button"
           sx={{
@@ -328,7 +336,6 @@ export const SupplyAssetsListItemMobile = ({
   walletBalancesMap,
 }: SupplyAssetsListItemProps) => {
   const currentMarket = useRootStore((store) => store.currentMarket);
-  const { openSupply } = useModalContext();
   const wrappedTokenReserves = useWrappedTokens();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
@@ -338,7 +345,6 @@ export const SupplyAssetsListItemMobile = ({
   const wrappedToken = wrappedTokenReserves.find(
     (r) => r.tokenOut.underlyingAsset === underlyingAsset
   );
-
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -445,15 +451,17 @@ export const SupplyAssetsListItemMobile = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        <Button
+        <FunSupplyButton
           disabled={disableSupply}
-          variant="contained"
-          onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
+          underlyingAsset={underlyingAsset}
+          name={name}
+          symbol={symbol}
+          iconSymbol={iconSymbol}
+          supplyAPY={supplyAPY}
+          collateralEnabled={usageAsCollateralEnabledOnUser}
           sx={{ mr: 1.5 }}
           fullWidth
-        >
-          <Trans>Supply</Trans>
-        </Button>
+        />
         <Button
           variant="outlined"
           component={Link}

@@ -4,6 +4,7 @@ import { Button, Stack, SvgIcon, Typography } from '@mui/material';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
+import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -53,8 +54,16 @@ export const useReserveActionState = ({
 
   const isGho = displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket });
 
+  // fun-routed assets can be supplied from any EVM asset / fiat via the funkit
+  // checkout, so an empty wallet (balance / maxAmountToSupply === '0') shouldn't
+  // disable the button — only a maxed supply cap does (mirrors SupplyAssetsList).
+  // fun assets are never GHO, so that guard is moot for them.
+  const isFunSupply = isFunSupplyAsset(currentMarket, reserve.underlyingAsset);
+
   return {
-    disableSupplyButton: balance === '0' || maxAmountToSupply === '0' || isGho,
+    disableSupplyButton: isFunSupply
+      ? !!supplyCap?.isMaxed
+      : balance === '0' || maxAmountToSupply === '0' || isGho,
     disableBorrowButton:
       !assetCanBeBorrowedFromPool ||
       userHasNoCollateralSupplied ||
