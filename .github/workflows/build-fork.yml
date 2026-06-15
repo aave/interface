@@ -22,7 +22,6 @@ jobs:
         uses: ./.github/actions/build
         with:
           NEXT_PUBLIC_ENV: 'prod'
-          NEXT_PUBLIC_FUNKIT_API_KEY: ${{ secrets.FUNKIT_API_KEY }}
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
