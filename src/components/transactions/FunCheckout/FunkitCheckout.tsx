@@ -44,8 +44,7 @@ function InnerCheckout() {
   const { setOpen: setConnectModalOpen } = useModal();
   const queryClient = useQueryClient();
   const muiTheme = useTheme();
-  const mode = muiTheme.palette.mode;
-  const { themeColorScheme, toggleTheme } = useActiveTheme();
+  const { toggleTheme } = useActiveTheme();
 
   const onSuccess = useCallback(() => {
     // Same refresh the native supply flow performs on tx success
@@ -83,15 +82,12 @@ function InnerCheckout() {
     }
   }, [address]);
 
-  // Keep the funkit modal's active theme in sync with the app's color mode.
-  // `toggleTheme`'s identity changes on every FunkitThemeProvider render and its
-  // body always sets state, so the `themeColorScheme !== mode` guard is what makes
-  // this effect converge instead of update-looping.
+  const colorMode = muiTheme.palette.mode;
+
   useEffect(() => {
-    if (themeColorScheme !== mode) {
-      toggleTheme(mode);
-    }
-  }, [mode, themeColorScheme, toggleTheme]);
+    const persisted = (localStorage?.getItem('colorMode') as 'light' | 'dark') || colorMode;
+    toggleTheme(persisted);
+  }, [colorMode, toggleTheme]);
 
   const beginSupply = async (reserve: FunSupplyReserve) => {
     // funkit checkout needs a connected wallet (read-only/watch mode has none);
