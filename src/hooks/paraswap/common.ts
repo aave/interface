@@ -123,6 +123,10 @@ const MESSAGE_REGEX_MAP: Array<{ regex: RegExp; message: string }> = [
     regex: /^Amount \d+ is too small to proceed$/,
     message: 'Amount is too small. Please try larger amount.',
   },
+  {
+    regex: /rate limit|rate limited|Request is being rate limited/i,
+    message: 'Request is being rate limited. Please try again in a few seconds.',
+  },
 ];
 
 /**
@@ -137,6 +141,31 @@ export function convertParaswapErrorMessage(message: string): string | undefined
 
   const newMessage = MESSAGE_REGEX_MAP.find((mapping) => mapping.regex.test(message))?.message;
   return newMessage;
+}
+// Retry helper with exponential backoff for transient Paraswap errors (rate limits, timeouts)
+async function retryWithBackoff<T>(
+  fn: () => Promise<T>,
+  retries = 3,
+  baseDelay = 500
+): Promise<T> {
+  let attempt = 0;
+  while (true) {
+    try {
+      return await fn();
+    } catch (e: any) {
+      attempt += 1;
+      const msg = String(e?.message || e);
+      const isRateLimit = /rate limit|rate limited|Request is being rate limited/i.test(msg);
+      if (!isRateLimit || attempt > retries) {
+        throw e;
+      }
+
+      const delay = baseDelay * Math.pow(2, attempt - 1);
+      // small sleep
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((res) => setTimeout(res, delay));
+    }
+  }
 }
 
 /**
@@ -164,6 +193,32 @@ export async function fetchExactInTxParams(
     swapIn.decimals,
     swapOut.underlyingAsset,
     swapOut.decimals,
+// Retry helper with exponential backoff for transient Paraswap errors (rate limits, timeouts)
+async function retryWithBackoff<T>(
+  fn: () => Promise<T>,
+  retries = 3,
+  baseDelay = 500
+): Promise<T> {
+  let attempt = 0;
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    try {
+      return await fn();
+    } catch (e: any) {
+      attempt += 1;
+      const msg = String(e?.message || e);
+      const isRateLimit = /rate limit|rate limited|Request is being rate limited/i.test(msg);
+      if (!isRateLimit || attempt > retries) {
+        throw e;
+      }
+
+      const delay = baseDelay * Math.pow(2, attempt - 1);
+      // small sleep
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise((res) => setTimeout(res, delay));
+    }
+  }
+}
     userAddress,
     route,
     maxSlippage
@@ -320,16 +375,18 @@ export const ExactInSwapper = (chainId: ChainId) => {
     userAddress: string,
     options: RateOptions
   ) => {
-    const priceRoute = await paraswap.getRate({
-      amount,
-      srcToken,
-      srcDecimals,
-      destToken,
-      destDecimals,
-      userAddress,
-      side: SwapSide.SELL,
-      options,
-    });
+    const priceRoute = await retryWithBackoff(() =>
+      paraswap.getRate({
+        amount,
+        srcToken,
+        srcDecimals,
+        destToken,
+        destDecimals,
+        userAddress,
+        side: SwapSide.SELL,
+        options,
+      })
+    );
 
     return priceRoute;
   };
@@ -344,21 +401,23 @@ export const ExactInSwapper = (chainId: ChainId) => {
     maxSlippage: number
   ) => {
     try {
-      const params = await paraswap.buildTx(
-        {
-          srcToken,
-          srcDecimals,
-          srcAmount: route.srcAmount,
-          destToken,
-          destDecimals,
-          slippage: maxSlippage * 100,
-          priceRoute: route,
-          userAddress: user,
-          partnerAddress: feeTarget,
-          takeSurplus: true,
-          isDirectFeeTransfer: true,
-        },
-        { ignoreChecks: true }
+      const params = await retryWithBackoff(() =>
+        paraswap.buildTx(
+          {
+            srcToken,
+            srcDecimals,
+            srcAmount: route.srcAmount,
+            destToken,
+            destDecimals,
+            slippage: maxSlippage * 100,
+            priceRoute: route,
+            userAddress: user,
+            partnerAddress: feeTarget,
+            takeSurplus: true,
+            isDirectFeeTransfer: true,
+          },
+          { ignoreChecks: true }
+        )
       );
 
       return {
@@ -397,16 +456,18 @@ export const ExactOutSwapper = (chainId: ChainId) => {
     userAddress: string,
     options: RateOptions
   ) => {
-    const priceRoute = await paraswap.getRate({
-      amount,
-      srcToken,
-      srcDecimals,
-      destToken,
-      destDecimals,
-      userAddress,
-      side: SwapSide.BUY,
-      options,
-    });
+    const priceRoute = await retryWithBackoff(() =>
+      paraswap.getRate({
+        amount,
+        srcToken,
+        srcDecimals,
+        destToken,
+        destDecimals,
+        userAddress,
+        side: SwapSide.BUY,
+        options,
+      })
+    );
 
     return priceRoute;
   };
@@ -421,21 +482,23 @@ export const ExactOutSwapper = (chainId: ChainId) => {
     maxSlippage: number
   ) => {
     try {
-      const params = await paraswap.buildTx(
-        {
-          srcToken,
-          destToken,
-          destAmount: route.destAmount,
-          slippage: maxSlippage * 100,
-          priceRoute: route,
-          userAddress: user,
-          partnerAddress: feeTarget,
-          takeSurplus: true,
-          srcDecimals,
-          destDecimals,
-          isDirectFeeTransfer: true,
-        },
-        { ignoreChecks: true }
+      const params = await retryWithBackoff(() =>
+        paraswap.buildTx(
+          {
+            srcToken,
+            destToken,
+            destAmount: route.destAmount,
+            slippage: maxSlippage * 100,
+            priceRoute: route,
+            userAddress: user,
+            partnerAddress: feeTarget,
+            takeSurplus: true,
+            srcDecimals,
+            destDecimals,
+            isDirectFeeTransfer: true,
+          },
+          { ignoreChecks: true }
+        )
       );
 
       return {
