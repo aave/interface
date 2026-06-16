@@ -1,0 +1,20 @@
+src/modules/umbrella/UmbrellaMarketSwitcher.tsx
+  s_1b2a8a184d0cf9::t_b55afd6582d4a8 1-2
+  s_1b2a8a184d0cf9::t_6da47ee85ce3a7 92,94,97-113,116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "34e2a22611fbbf65789e5a80ef344f434923dd60",
+  "prompts": {},
+  "sessions": {
+    "s_1b2a8a184d0cf9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "82988613-e585-44d7-95db-7f8cd046d590",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
