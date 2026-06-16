@@ -80,7 +80,7 @@ const darkThemeObject = darkTheme({
   customFontFamily,
   customColors: {
     ...darkThemeColors,
-    modalBackdrop: 'rgba(0, 0, 0, 0.5)',
+    modalBackdrop: 'rgba(0, 0, 0, 0.6)',
     modalBackgroundCheckoutComplete: aaveCheckoutCompleteGradient,
     modalHeaderDivider: darkThemeColors.mediumStroke,
     modalFooterDivider: darkThemeColors.mediumStroke,
@@ -150,7 +150,7 @@ const lightThemeObject = lightTheme({
   customFontFamily,
   customColors: {
     ...lightThemeColors,
-    modalBackdrop: 'rgba(0, 0, 0, 0.5)',
+    modalBackdrop: 'rgba(0, 0, 0, 0.6)',
     modalBackgroundCheckoutComplete: aaveCheckoutCompleteGradient,
     modalHeaderDivider: lightThemeColors.mediumStroke,
     modalFooterDivider: lightThemeColors.mediumStroke,
