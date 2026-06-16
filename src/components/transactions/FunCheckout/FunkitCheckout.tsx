@@ -30,6 +30,8 @@ import { registerFunSupply } from './funSupplyBridge';
  * via funkit's supported `beginCheckout(configOverride)`.
  */
 
+const FUNKIT_POLL_INTERVAL = 5_000;
+
 // Placeholder config for the hook — never opened directly; every `beginCheckout`
 // call passes a full per-asset override built by `buildFunSupplyConfig`.
 const PLACEHOLDER_CONFIG: FunkitCheckoutConfig = {
@@ -46,13 +48,36 @@ function InnerCheckout() {
   const muiTheme = useTheme();
   const { toggleTheme } = useActiveTheme();
 
-  const onSuccess = useCallback(() => {
-    // Same refresh the native supply flow performs on tx success
-    // (SupplyActions.tsx / useTransactionHandler), so the dashboard shows the
-    // new aToken balance immediately after the funkit checkout completes.
+  const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const stopPolling = useCallback(() => {
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+      pollIntervalRef.current = null;
+    }
     queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
     queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
   }, [queryClient]);
+
+  const startPolling = useCallback(() => {
+    stopPolling();
+    pollIntervalRef.current = setInterval(() => {
+      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+    }, FUNKIT_POLL_INTERVAL);
+  }, [queryClient, stopPolling]);
+
+  useEffect(() => {
+    return () => {
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+        pollIntervalRef.current = null;
+      }
+    };
+  }, []);
+
+  const onSuccess = useCallback(() => {
+    stopPolling();
+  }, [stopPolling]);
 
   // Mid-checkout connection requests (e.g. switching the payment source to a
   // wallet) soft-hide the checkout modal and hand us a resume callback — the SDK
@@ -73,6 +98,7 @@ function InnerCheckout() {
     ),
     onError: useCallback((error: unknown) => console.error('[FunkitCheckout]', error), []),
     onSuccess,
+    onClose: stopPolling,
   });
 
   useEffect(() => {
@@ -100,10 +126,10 @@ function InnerCheckout() {
     if (!config) {
       return;
     }
+    startPolling();
     const { isActivated } = await beginCheckout(config);
     if (!isActivated) {
-      // Checkout can be remotely deactivated per API key; surface it instead
-      // of failing silently.
+      stopPolling();
       console.warn('[FunkitCheckout] checkout is not activated for this API key');
     }
   };
