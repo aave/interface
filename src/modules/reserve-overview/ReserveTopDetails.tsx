@@ -56,7 +56,11 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
       <TopInfoPanelItem title={<Trans>Available liquidity</Trans>} loading={loading} hideIcon>
         <FormattedNumber
-          value={Math.max(Number(poolReserve?.availableLiquidityUSD), 0)}
+          value={
+            poolReserve?.borrowingEnabled
+              ? Math.max(Number(poolReserve?.availableLiquidityUSD), 0)
+              : 0
+          }
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
