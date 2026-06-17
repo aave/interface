@@ -1,18 +1,6 @@
 import { DomainType, WalletDomain } from 'src/store/walletDomains';
-import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
+import { lookupEnsName } from 'src/utils/ensClient';
 import { tFetch } from 'src/utils/tFetch';
-
-const mainnetProvider = getENSProvider();
-
-const getEnsName = async (address: string): Promise<string | null> => {
-  try {
-    const name = await mainnetProvider.lookupAddress(address);
-    return name;
-  } catch (error) {
-    console.error('ENS name lookup error', error);
-  }
-  return null;
-};
 
 const getEnsAvatar = async (name: string): Promise<string | undefined> => {
   try {
@@ -25,7 +13,7 @@ const getEnsAvatar = async (name: string): Promise<string | undefined> => {
 };
 
 export const getEnsDomain = async (address: string): Promise<WalletDomain | null> => {
-  const name = await getEnsName(address);
+  const name = await lookupEnsName(address);
   if (!name) return null;
   const avatar = await getEnsAvatar(name);
   return { name, avatar, type: DomainType.ENS };

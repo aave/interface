@@ -8,15 +8,14 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { utils } from 'ethers';
 import { useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { resolveEnsAddress } from 'src/utils/ensClient';
 import { AUTH } from 'src/utils/events';
-import { getENSProvider } from 'src/utils/marketsAndNetworksConfig';
-import { normalize } from 'viem/ens';
+import { isAddress } from 'viem';
 import { useAccount, useDisconnect } from 'wagmi';
 
 import { BasicModal } from '../primitives/BasicModal';
@@ -31,24 +30,17 @@ export const ReadOnlyModal = () => {
   const { type, close } = useModalContext();
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const mainnetProvider = getENSProvider();
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleReadAddress = async (inputMockWalletAddress: string): Promise<void> => {
     if (validAddressError) setValidAddressError(false);
-    if (utils.isAddress(inputMockWalletAddress)) {
+    if (isAddress(inputMockWalletAddress)) {
       saveAndClose(inputMockWalletAddress);
     } else {
       // Check if address could be valid ENS before trying to resolve
-      if (inputMockWalletAddress.slice(-4) === '.eth') {
-        const normalizedENS = normalize(inputMockWalletAddress);
-        // Attempt to resolve ENS name and use resolved address if valid
-        const resolvedAddress = await mainnetProvider.resolveName(normalizedENS);
-        if (resolvedAddress && utils.isAddress(resolvedAddress)) {
-          saveAndClose(resolvedAddress);
-        } else {
-          setValidAddressError(true);
-        }
+      const resolvedAddress = await resolveEnsAddress(inputMockWalletAddress);
+      if (resolvedAddress && isAddress(resolvedAddress)) {
+        saveAndClose(resolvedAddress);
       } else {
         setValidAddressError(true);
       }
@@ -122,10 +114,6 @@ export const ReadOnlyModal = () => {
             size="large"
             fullWidth
             onClick={() => trackEvent(AUTH.MOCK_WALLET)}
-            disabled={
-              !utils.isAddress(inputMockWalletAddress) &&
-              inputMockWalletAddress.slice(-4) !== '.eth'
-            }
             aria-label="read-only mode address"
           >
             <Trans>Track wallet</Trans>
