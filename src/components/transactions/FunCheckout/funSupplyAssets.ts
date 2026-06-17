@@ -1,6 +1,7 @@
 import type { FunkitCheckoutConfig } from '@funkit/connect';
 import { createAaveSupplyCheckoutConfig } from '@funkit/connect/clients/aave';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { ENABLE_FUNKIT } from 'src/utils/marketsAndNetworksConfig';
 import { type Address, getAddress } from 'viem';
 
 /**
@@ -27,7 +28,11 @@ export const FUN_SUPPLY_UNDERLYINGS: ReadonlySet<string> = new Set([
 
 /** True when this market+asset's Supply button should open the funkit modal. */
 export function isFunSupplyAsset(market: CustomMarket, underlyingAsset: string): boolean {
-  return market === FUN_SUPPLY_MARKET && FUN_SUPPLY_UNDERLYINGS.has(underlyingAsset.toLowerCase());
+  return (
+    ENABLE_FUNKIT &&
+    market === FUN_SUPPLY_MARKET &&
+    FUN_SUPPLY_UNDERLYINGS.has(underlyingAsset.toLowerCase())
+  );
 }
 
 /**

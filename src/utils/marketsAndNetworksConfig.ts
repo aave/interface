@@ -25,6 +25,7 @@ export const STAGING_ENV = process.env.NEXT_PUBLIC_ENV === 'staging';
 export const PROD_ENV = !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === 'prod';
 export const ENABLE_TESTNET =
   PROD_ENV && global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
+export const ENABLE_FUNKIT = process.env.NEXT_PUBLIC_ENABLE_FUNKIT === 'true';
 
 // determines if forks should be shown
 export const FORK_ENABLED =

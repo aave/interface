@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { aaveTheme } from 'src/ui-config/funkit/aaveTheme';
 import { funkitConfig } from 'src/ui-config/funkit/funkitConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { ENABLE_FUNKIT } from 'src/utils/marketsAndNetworksConfig';
 import { getAddress } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -136,7 +137,7 @@ export function FunkitCheckout() {
   // builds, preview builds, local without .env). Render nothing instead: the
   // Supply buttons fall back to the native modal because beginFunSupply() returns
   // false when the island never registers on the bridge.
-  if (!funkitConfig.apiKey) {
+  if (!ENABLE_FUNKIT || !funkitConfig.apiKey) {
     return null;
   }
 
