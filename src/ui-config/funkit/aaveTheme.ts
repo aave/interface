@@ -126,6 +126,7 @@ const darkThemeObject = darkTheme({
   customBorderRadiuses,
   customDimensions: {
     modalBottomBarButtonHeight: '40px',
+    modalTopBarHeight: '76px',
   },
   customSpacings: {
     cryptoCashToggleTabPaddingY: '12px',
