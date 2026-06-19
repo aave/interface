@@ -275,6 +275,13 @@ export const ProposalLifecycleCache = ({
 
   // Add final state step
   const allPayloadsExecuted = !!payloads?.length && payloads.every((p) => p.state === 'executed');
+  // proposal.executedAt is the dispatch time; payloads finish later after their timelock, so the
+  // completed step should reflect the latest payload execution, matching the on-chain finish.
+  const payloadExecutedTimes = (payloads ?? [])
+    .map((p) => p.executedAt)
+    .filter((t): t is string => !!t)
+    .sort();
+  const lastPayloadExecutedAt = payloadExecutedTimes[payloadExecutedTimes.length - 1] ?? null;
 
   if (
     state === 'queued' ||
@@ -293,7 +300,9 @@ export const ProposalLifecycleCache = ({
         : 'Payload execution';
     steps.push({
       stepName: finalStepName,
-      timestamp: allPayloadsExecuted ? proposal.executedAt : proposal.queuedAt,
+      timestamp: allPayloadsExecuted
+        ? lastPayloadExecutedAt ?? proposal.executedAt
+        : proposal.queuedAt,
       completed: isTerminal || allPayloadsExecuted,
       active: !isTerminal && !allPayloadsExecuted,
       lastStep: true,
