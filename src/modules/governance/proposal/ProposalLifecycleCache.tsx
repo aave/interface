@@ -282,8 +282,7 @@ export const ProposalLifecycleCache = ({
     state === 'partially_executed' ||
     state === 'expired'
   ) {
-    const isTerminal =
-      state === 'executed' || state === 'partially_executed' || state === 'expired';
+    const isTerminal = state === 'partially_executed' || state === 'expired';
     const finalStepName =
       state === 'expired'
         ? 'Expired'
