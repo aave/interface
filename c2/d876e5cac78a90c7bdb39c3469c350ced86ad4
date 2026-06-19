@@ -1,0 +1,24 @@
+pages/reserve-overview.page.tsx
+  s_91d8ecfd503ff9::t_1324c5754f020e 50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "c2d876e5cac78a90c7bdb39c3469c350ced86ad4",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  },
+  "sessions": {
+    "s_91d8ecfd503ff9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "635f25c4-4df5-455a-8ced-590f558b05f3",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
