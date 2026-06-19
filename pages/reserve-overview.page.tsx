@@ -47,7 +47,7 @@ const UnStakeModal = dynamic(() =>
 export default function ReserveOverview() {
   const router = useRouter();
   const { supplyReserves, reserves } = useAppDataContext();
-  const underlyingAsset = router.query.underlyingAsset as string;
+  const underlyingAsset = (router.query.underlyingAsset as string)?.toLowerCase();
 
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('overview');
   const trackEvent = useRootStore((store) => store.trackEvent);
