@@ -29,6 +29,7 @@ const customFontSizings: ThemeOptions['customFontSizings'] = {
   '40': { fontSize: '41px', lineHeight: '49px' },
   '57': { fontSize: '58px', lineHeight: '69px' },
   modalTopbarTitle: { fontSize: '21px', lineHeight: '24px' },
+  modalTopbarSubtitle: { fontSize: '12px', lineHeight: '19px' },
   modalBottomBarButtonText: { fontSize: '13px', lineHeight: '16px' },
 };
 
@@ -128,6 +129,7 @@ const darkThemeObject = darkTheme({
   },
   customSpacings: {
     cryptoCashToggleTabPaddingY: '12px',
+    modalTopBarVerticalTextSpacing: '6px',
   },
   overlayBlur: 'none',
 });
@@ -200,6 +202,7 @@ const lightThemeObject = lightTheme({
   },
   customSpacings: {
     cryptoCashToggleTabPaddingY: '12px',
+    modalTopBarVerticalTextSpacing: '6px',
   },
   overlayBlur: 'none',
 });
