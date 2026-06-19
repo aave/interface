@@ -154,15 +154,15 @@ function InnerCheckout() {
 }
 
 export function FunkitCheckout() {
-  // funkit checkout is non-essential and non-functional without an API key
-  // (NEXT_PUBLIC_FUNKIT_API_KEY). FunkitProvider validates the config on render
-  // and throws "Invalid funkitConfig: Missing apiKey." on an empty key — and
-  // because this host is mounted globally in _app, that throw crashes the entire
-  // app on every page in any environment that doesn't inject the key (CI smoke
-  // builds, preview builds, local without .env). Render nothing instead: the
-  // Supply buttons fall back to the native modal because beginFunSupply() returns
-  // false when the island never registers on the bridge.
-  if (!funkitConfig.apiKey) {
+  // Wait for wagmi to finish reconnecting before mounting FunkitProvider.
+  // FunkitProviderInner calls useAccountEffect({ onDisconnect }) internally,
+  // which fires during the transient disconnected→reconnecting→connected cycle
+  // on page refresh and clears WALLETCONNECT_DEEPLINK_CHOICE from localStorage,
+  // corrupting the wallet connection state.
+  const { status } = useAccount();
+  const isReconnecting = status === 'reconnecting' || status === 'connecting';
+
+  if (!funkitConfig.apiKey || isReconnecting) {
     return null;
   }
 
