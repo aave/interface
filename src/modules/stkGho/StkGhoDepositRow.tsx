@@ -6,10 +6,11 @@ import { IncentivesIcon } from 'src/components/incentives/IncentivesButton';
 import { MeritIncentivesTooltipContent } from 'src/components/incentives/MeritIncentivesTooltipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
+import { type ExtendedReserveIncentiveResponse, MeritAction } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSavingsGhoIncentive } from 'src/hooks/useSavingsGhoIncentive';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { convertAprToApy } from 'src/utils/utils';
 
 interface StkGhoDepositRowProps {
   availableToStake: string;
@@ -28,10 +29,37 @@ export const StkGhoDepositRow = ({
   const { chainId: targetChainId } = useSavingsMarketData();
 
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  const { data: meritIncentives } = useMeritIncentives({
-    symbol: 'GHO',
-    market: CustomMarket.proto_mainnet_v3,
-  });
+  const { data: savingsGhoIncentive } = useSavingsGhoIncentive();
+  const meritIncentives: ExtendedReserveIncentiveResponse | null = savingsGhoIncentive
+    ? {
+        incentiveAPR: convertAprToApy(parseFloat(savingsGhoIncentive.aprDecimal)).toString(),
+        rewardTokenAddress: savingsGhoIncentive.rewardTokenAddress || '',
+        rewardTokenSymbol: savingsGhoIncentive.rewardTokenSymbol || 'sGHO',
+        activeActions: [savingsGhoIncentive.actionKey || MeritAction.ETHEREUM_SGHO],
+        actionMessages: {
+          [savingsGhoIncentive.actionKey || MeritAction.ETHEREUM_SGHO]: {
+            customMessage: savingsGhoIncentive.customMessage ?? undefined,
+            customForumLink: savingsGhoIncentive.customForumLink ?? undefined,
+          },
+        },
+        action: savingsGhoIncentive.actionKey || MeritAction.ETHEREUM_SGHO,
+        customMessage: savingsGhoIncentive.customMessage ?? undefined,
+        customForumLink: savingsGhoIncentive.customForumLink ?? undefined,
+        variants: { selfAPY: null },
+        breakdown: {
+          protocolAPY: 0,
+          protocolIncentivesAPR: 0,
+          meritIncentivesAPR: convertAprToApy(parseFloat(savingsGhoIncentive.aprDecimal)),
+          totalAPY: convertAprToApy(parseFloat(savingsGhoIncentive.aprDecimal)),
+          isBorrow: false,
+          breakdown: {
+            protocol: 0,
+            protocolIncentives: 0,
+            meritIncentives: convertAprToApy(parseFloat(savingsGhoIncentive.aprDecimal)),
+          },
+        },
+      }
+    : null;
   const apr = meritIncentives ? +meritIncentives.incentiveAPR : 0;
 
   const hasGho = +availableToStake > 0;

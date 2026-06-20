@@ -544,8 +544,6 @@ msgstr "Show less"
 msgid "Switch Network"
 msgstr "Switch Network"
 
-#: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoSavingsRate.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "APR"
@@ -3705,7 +3703,7 @@ msgstr "Selected supply assets"
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
-#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+#: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -3715,6 +3713,7 @@ msgstr "Selected supply assets"
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/stkGho/StkGhoSavingsRate.tsx
 #: src/modules/umbrella/helpers/ApyTooltip.tsx

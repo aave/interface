@@ -133,6 +133,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDm',
     aToken: true,
   },
+  aCelUSDT: {
+    tokenIconSymbol: 'USDT',
+    symbol: 'aUSDT',
+    aToken: true,
+  },
   aGnoEURe: {
     tokenIconSymbol: 'EURe',
     symbol: 'aEURe',
@@ -186,6 +191,16 @@ const IncentivesSymbolMap: {
   tydroInkPoints: {
     tokenIconSymbol: 'TydroInkPoints',
     symbol: 'TydroInkPoints',
+    aToken: false,
+  },
+  'Tydro Ink Points': {
+    tokenIconSymbol: 'TydroInkPoints',
+    symbol: 'Tydro Ink Points',
+    aToken: false,
+  },
+  'Ink Points': {
+    tokenIconSymbol: 'TydroInkPoints',
+    symbol: 'Ink Points',
     aToken: false,
   },
   aEthUSDG: {
