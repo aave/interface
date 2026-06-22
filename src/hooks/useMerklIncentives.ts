@@ -150,6 +150,7 @@ const EXTRA_WHITELIST_TOKENS = [
   '0xE3190143Eb552456F88464662f0c0C4aC67A77eB'.toLowerCase(),
   '0x78f2cB75D664d6f71433174056c25A5958B4016F'.toLowerCase(),
   '0xa1A67b55a88ab8Dcc86B765C1Cd85887e24ad7AA'.toLowerCase(),
+  '0x1eC1609039A9156367c885263fa6dC7ebb350922'.toLowerCase(),
 ]; // Extra tokens to whitelist
 const AAVE_NET_APR_DISTRIBUTION_TYPE = 'AAVE_NET_APR';
 const convertApyToApr = (apy: number) => 12 * ((1 + apy) ** (1 / 12) - 1);

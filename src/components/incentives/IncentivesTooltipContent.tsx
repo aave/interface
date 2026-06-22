@@ -243,6 +243,11 @@ const IncentivesSymbolMap: {
     symbol: 'acbETH',
     aToken: true,
   },
+  aMEGA: {
+    tokenIconSymbol: 'MEGA',
+    symbol: 'aMEGA',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
