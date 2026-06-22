@@ -6,11 +6,6 @@ export const HIDDEN_ASSETS: Partial<Record<CustomMarket, string[]>> = {
   ],
 };
 
-// Reserves can also be hidden at build/deploy time via the NEXT_PUBLIC_HIDDEN_RESERVES env var.
-// It's a comma-separated list of entries where each entry is either:
-//   - a bare underlying asset address: hidden in every market, e.g. `0xabc...`
-//   - a `market:address` pair: hidden only in that market, e.g. `proto_mainnet_v3:0xabc...`
-// Example: NEXT_PUBLIC_HIDDEN_RESERVES=0xabc...,proto_base_v3:0xdef...
 const parseHiddenReservesEnv = () => {
   const global = new Set<string>();
   const byMarket: Partial<Record<CustomMarket, Set<string>>> = {};

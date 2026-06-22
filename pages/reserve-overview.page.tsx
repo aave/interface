@@ -54,7 +54,6 @@ export default function ReserveOverview() {
   const trackEvent = useRootStore((store) => store.trackEvent);
   const currentMarket = useRootStore((store) => store.currentMarket);
 
-  // Hidden reserves shouldn't be reachable via deep link either.
   const reserveHidden = !!underlyingAsset && isAssetHidden(currentMarket, underlyingAsset);
 
   useEffect(() => {
