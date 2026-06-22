@@ -266,6 +266,11 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT USDG May 2026',
       iconSymbol: 'ptusdg',
     },
+    '0x59bc9fae5d62b19d4f8d07d758047acb9ee19d34': {
+      symbol: 'PT Strata Senior USDe October 22nd 2026',
+      name: 'PT Strata Senior USDe October 2026',
+      iconSymbol: 'ptsrusde',
+    },
     [AaveV3EthereumHorizon.ASSETS.USCC.UNDERLYING.toLowerCase()]: {
       symbol: 'USCC',
       name: 'Bitwise Crypto Carry Fund',
