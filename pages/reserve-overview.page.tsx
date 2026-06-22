@@ -13,6 +13,7 @@ import {
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { isAssetHidden } from 'src/modules/dashboard/lists/constants';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
 import { ReserveConfigurationWrapper } from 'src/modules/reserve-overview/ReserveConfigurationWrapper';
 import { ReserveTopDetailsWrapper } from 'src/modules/reserve-overview/ReserveTopDetailsWrapper';
@@ -51,6 +52,15 @@ export default function ReserveOverview() {
 
   const [mode, setMode] = useState<'overview' | 'actions' | ''>('overview');
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const currentMarket = useRootStore((store) => store.currentMarket);
+
+  const reserveHidden = !!underlyingAsset && isAssetHidden(currentMarket, underlyingAsset);
+
+  useEffect(() => {
+    if (router.isReady && reserveHidden) {
+      router.replace('/markets');
+    }
+  }, [router, reserveHidden]);
 
   //With SDK
   const reserve = supplyReserves.find((reserve) => {
@@ -75,6 +85,10 @@ export default function ReserveOverview() {
   }, [trackEvent, reserve, underlyingAsset, pageEventCalled]);
 
   const isOverview = mode === 'overview';
+
+  if (reserveHidden) {
+    return null;
+  }
 
   return (
     <AssetCapsProviderSDK asset={reserve}>
