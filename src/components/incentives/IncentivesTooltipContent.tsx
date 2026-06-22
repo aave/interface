@@ -243,7 +243,7 @@ const IncentivesSymbolMap: {
     symbol: 'acbETH',
     aToken: true,
   },
-  aMEGA: {
+  MEGA: {
     tokenIconSymbol: 'MEGA',
     symbol: 'MEGA',
     aToken: false,
