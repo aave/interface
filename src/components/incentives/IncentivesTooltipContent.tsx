@@ -245,8 +245,8 @@ const IncentivesSymbolMap: {
   },
   aMEGA: {
     tokenIconSymbol: 'MEGA',
-    symbol: 'aMEGA',
-    aToken: true,
+    symbol: 'MEGA',
+    aToken: false,
   },
 };
 
