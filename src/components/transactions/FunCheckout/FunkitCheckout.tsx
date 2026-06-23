@@ -91,10 +91,21 @@ function InnerCheckout() {
     // (no funkit wallet list), so route login through the app's ConnectKit modal.
     onLoginRequired: useCallback(
       ({ onLoginFinished }: { onLoginFinished?: () => void }) => {
+        // FunkitProvider shares the host wagmi (mounted without its own config),
+        // so when the host wallet is already connected there is nothing to log
+        // into — resume the checkout immediately. Opening ConnectKit here would
+        // run a redundant connect on the shared config that can stick at
+        // `status: 'connecting'`, where `address` stays set but `isConnected`
+        // becomes false. That leaves the wallet button looking connected while
+        // re-opening the *connect* modal instead of the wallet options.
+        if (address) {
+          onLoginFinished?.();
+          return;
+        }
         onLoginFinishedRef.current = onLoginFinished ?? null;
         setConnectModalOpen(true);
       },
-      [setConnectModalOpen]
+      [address, setConnectModalOpen]
     ),
     onError: useCallback((error: unknown) => console.error('[FunkitCheckout]', error), []),
     onSuccess,
