@@ -1,0 +1,14 @@
+src/ui-config/reservePatches.ts
+  h_873f745f99aed2 269-273
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "18d35d0d8fe77710f990321e72629a865cb4144c",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
