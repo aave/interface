@@ -14,6 +14,7 @@ import { StkGhoWithdrawRow } from './StkGhoWithdrawRow';
 export interface StkGhoDepositPanelProps {
   onStakeAction?: () => void;
   onWithdraw?: () => void;
+  onMigrate?: () => void;
   stakeData?: StakeTokenFormatted;
   stakeUserData?: GetUserStakeUIDataHumanized['stakeUserData'][0];
   description?: React.ReactNode;
@@ -28,6 +29,7 @@ export interface StkGhoDepositPanelProps {
 export const StkGhoDepositPanel: React.FC<StkGhoDepositPanelProps> = ({
   onStakeAction,
   onWithdraw,
+  onMigrate,
   stakedToken,
   stakeData,
   stakeUserData,
@@ -60,6 +62,10 @@ export const StkGhoDepositPanel: React.FC<StkGhoDepositPanelProps> = ({
     18 + 8
   );
 
+  // stkGHO is redeemable 1:1 to GHO; a non-zero redeemable balance means the
+  // user still holds a legacy position that can be migrated to sGHO.
+  const hasLegacyPosition = +stakedAmount > 0;
+
   return (
     <>
       {currentAccount && (
@@ -69,6 +75,8 @@ export const StkGhoDepositPanel: React.FC<StkGhoDepositPanelProps> = ({
               <StkGhoDepositRow
                 availableToStake={availableToStake}
                 onDeposit={onStakeAction}
+                onMigrate={onMigrate}
+                hasLegacyPosition={hasLegacyPosition}
                 stakedToken={stakedToken}
               />
 
