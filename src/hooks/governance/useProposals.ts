@@ -268,7 +268,8 @@ async function fetchSubgraphProposals(pageParam: number, proposalStateFilter?: P
 export async function fetchProposals(
   proposals: SubgraphProposal[],
   votingMachineSerivce: VotingMachineService,
-  governanceV3Service: GovernanceV3Service
+  governanceV3Service: GovernanceV3Service,
+  user?: string
 ) {
   const votingMachineParams =
     proposals.map((p) => ({
@@ -293,7 +294,7 @@ export async function fetchProposals(
 
   const [proposalsMetadata, votingMachineDataes, payloadsDataes] = await Promise.all([
     Promise.all(proposals.map(getSubgraphProposalMetadata)),
-    votingMachineSerivce.getProposalsData(votingMachineParams),
+    votingMachineSerivce.getProposalsData(votingMachineParams, user),
     governanceV3Service.getMultiChainPayloadsData(payloadParams),
   ]);
   const enhancedProposals = proposals.map<Proposal>((proposal, index) => {
