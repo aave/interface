@@ -1,0 +1,46 @@
+src/services/governance-cache-sdk/proposals.ts
+  s_cc023d19ae9515::t_868e06442d2db9 1-296
+src/services/governance-cache-sdk/index.ts
+  s_cc023d19ae9515::t_c0af9cf9b9ee28 1-11,13-17,19-27
+  s_cc023d19ae9515::t_b33bb3d8c6e0b5 12,18
+src/services/governance-cache-sdk/payloads.ts
+  s_cc023d19ae9515::t_a7e2febf1abef2 1-69
+src/services/governance-cache-sdk/types.ts
+  s_cc023d19ae9515::t_9132de45f3deba 102-103
+  s_cc023d19ae9515::t_058f93375b8b53 1-101,104-126
+src/services/governance-cache-sdk/client.ts
+  s_cc023d19ae9515::t_cadab002f812a8 1-109
+src/services/governance-cache-sdk/config.ts
+  s_cc023d19ae9515::t_37d5162734d4b2 1-24,27-32,36-41,43-68,70-71,73-124
+  s_cc023d19ae9515::t_08a4e8e7824176 25-26,33-35,42
+  s_cc023d19ae9515::t_6c61991786c73c 69,72
+src/services/GovernanceCacheService.ts
+  s_cc023d19ae9515::t_70cf1c65732fd8 2-9,11-13,16-19,23-24,26
+  s_cc023d19ae9515::t_b33bb3d8c6e0b5 14-15,20-22,25
+src/services/governance-cache-sdk/votes.ts
+  s_cc023d19ae9515::t_8a109168314a54 1-116
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "57774a095fd4c1ba9005171fe3ea26a9c12735ff",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_cc023d19ae9515": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5269601c-242e-4a8a-b254-516772db1a62",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
