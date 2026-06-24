@@ -2340,30 +2340,30 @@
     "@lifeomic/attempt" "^3.1.0"
     big.js "^6.2.1"
 
-"@funkit/chains@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@funkit/chains/-/chains-2.1.0.tgz#7e79179763e4ad843a73a7dcdc77f8d2627331ce"
-  integrity sha512-h7SXxlUIrYdNeHt4rbz6+Lfki39y0YU/8MPkzwoEbGvwwmuMVaGX0592jnS7s1TsSj7ZVVdDfmRMExwLmLftig==
+"@funkit/chains@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@funkit/chains/-/chains-2.1.1.tgz#df45d5d6777867070b7f86af8bf9407153ca72f0"
+  integrity sha512-6TT0ZTlNYcrjfKXBOhRg4BJztOFeEymrBC3aorGFqEM94OeDD2q9+O3MCY8iIQe5Rjl0swr+wNONpWN6Ak3N/A==
 
 "@funkit/chains@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@funkit/chains/-/chains-2.0.0.tgz#6b71a3a75966ffb126a87b11e47de1f659310990"
   integrity sha512-unsNoIQORXmykLvZaG6k0TUckKO5a3I8U+j0zDdfRCEJNdXyp/dz1isIpqev5QpCZD/gN/Wim7BlW1q0UETUEA==
 
-"@funkit/connect-core@0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@funkit/connect-core/-/connect-core-0.3.2.tgz#6589a559b78a88ca7ee501d03ca33100e02bb8e0"
-  integrity sha512-t1LvGDbH1f+tF/k5xC8TLUfiPvQc6kzdRv6XGuuNJtcwtp+Cvt4i9UV1GZln8PaWLR9PcZ0/vfBk06x7Vc7fdg==
+"@funkit/connect-core@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@funkit/connect-core/-/connect-core-1.2.0.tgz#0f0927c7d187c2e4c013811ecc20d765945fecbd"
+  integrity sha512-ailA1pChNYsFFUvDoWBNy8Gsbwn3yBPFbXOOK0d4qbo8R3PVnp5IE0KDCUWfZnZxjWhK3mT5h4iM7aBUDXQ1ng==
   dependencies:
     "@funkit/api-base" "4.5.1"
-    "@funkit/chains" "2.1.0"
+    "@funkit/chains" "2.1.1"
     "@funkit/utils" "3.1.0"
     "@solana/addresses" "^2.1.0"
 
-"@funkit/connect@^9.22.0":
-  version "9.22.0"
-  resolved "https://registry.yarnpkg.com/@funkit/connect/-/connect-9.22.0.tgz#3695268f14cf9dc9304ce86075367a7f7f50a7be"
-  integrity sha512-8Nz4CqJ5CFrJcWSGmgGKbYX49ygLDiw3SdsVObeXjmG4c7Rr9MMIBp5Kxmbb0emKNP5a5M43hxzdnAML4R+r4w==
+"@funkit/connect@^9.24.0":
+  version "9.24.0"
+  resolved "https://registry.yarnpkg.com/@funkit/connect/-/connect-9.24.0.tgz#5d235bcb16583a4f8d313a5ac284c6a7d4c867e7"
+  integrity sha512-shCHe6/LD5w6aSjadBLwbv9kfWTLxRphE1vU+IM99rEZgyO7oZVdNcg23J2x1saImFEcLyF+FRlU8A6Xtniyzg==
   dependencies:
     "@aave-dao/aave-address-book" "^4.49.9"
     "@aave/client" "^0.9.3"
@@ -2371,9 +2371,9 @@
     "@bluvo/sdk-ts" "3.0.0-beta.1"
     "@datadog/browser-logs" "5.22.0"
     "@funkit/api-base" "4.5.1"
-    "@funkit/chains" "2.1.0"
-    "@funkit/connect-core" "0.3.2"
-    "@funkit/fun-relay" "2.8.2"
+    "@funkit/chains" "2.1.1"
+    "@funkit/connect-core" "1.2.0"
+    "@funkit/fun-relay" "2.8.3"
     "@funkit/utils" "3.1.0"
     "@lifeomic/attempt" "3.1.0"
     "@number-flow/react" "^0.5.5"
@@ -2396,10 +2396,10 @@
     use-debounce "^10.0.5"
     uuid "^11.1.1"
 
-"@funkit/fun-relay@2.8.2":
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/@funkit/fun-relay/-/fun-relay-2.8.2.tgz#815dd6cedcead61e6c2b252dd9d65c669ac13d0a"
-  integrity sha512-es7fWYUw2vVvEudT8Sk9A3AUaej4ZANN4tNt1p42Gu1QWtNol9ZJN0ppnI49EpJt1K6o8TxLm6ChL9a7mFAtWA==
+"@funkit/fun-relay@2.8.3":
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/@funkit/fun-relay/-/fun-relay-2.8.3.tgz#5ee8490419c7a9d9c515d4216265e119d833196f"
+  integrity sha512-vnMGS+XB8MynkwtD/FMZ6/VXSyHp8IgCyaf/yH8WNGlyH0FIMn+id3n/+YAPUvaRmY8sNYhJXJzAhBfA/nld/w==
   dependencies:
     "@relayprotocol/relay-bitcoin-wallet-adapter" "^17.0.8"
     "@relayprotocol/relay-sdk" "^5.2.7"

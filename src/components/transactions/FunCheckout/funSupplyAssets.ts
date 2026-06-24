@@ -83,7 +83,15 @@ function toPercentString(apy: string | number): string {
  */
 export function buildFunSupplyConfig(
   reserve: FunSupplyReserve,
-  walletAddress: Address | undefined
+  walletAddress: Address | undefined,
+  /**
+   * Health-factor resolver the funkit confirmation screen calls with the live
+   * supply amount. We own the math (live app-data + `calculateHFAfterSupply`)
+   * so the number matches the dashboard; the SDK only renders it.
+   */
+  resolveHealthFactor?: (
+    underlyingHumanAmount: string
+  ) => { before: string | null; after: string | null } | null
 ): FunkitCheckoutConfig | undefined {
   return createAaveSupplyCheckoutConfig({
     underlyingAsset: getAddress(reserve.underlyingAsset),
@@ -102,5 +110,6 @@ export function buildFunSupplyConfig(
       decimals: reserve.aToken.decimals,
       iconSrc: reserve.aTokenBase64 ?? reserve.aToken.imageUrl,
     },
+    resolveHealthFactor,
   });
 }

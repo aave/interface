@@ -54,7 +54,7 @@
     "@emotion/server": "latest",
     "@emotion/styled": "11.10.4",
     "@funkit/chains": "^2.0.0",
-    "@funkit/connect": "^9.22.0",
+    "@funkit/connect": "^9.24.0",
     "@heroicons/react": "^1.0.6",
     "@lingui/core": "^4.14.0",
     "@lingui/react": "^4.14.1",
