@@ -4,9 +4,6 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { constants, Contract } from 'ethers';
 import { gql } from 'graphql-request';
 import {
-  adaptCacheProposalToDetail,
-  adaptCacheProposalToListItem,
-  adaptCacheVote,
   adaptGraphProposalToDetail,
   adaptGraphProposalToListItem,
 } from 'src/modules/governance/adapters';
@@ -16,19 +13,19 @@ import {
   getLifecycleState,
   getProposalVoteInfo,
 } from 'src/modules/governance/utils/formatProposal';
-import {
-  getProposalDetailFromCache,
-  getProposalsFromCache,
-  getProposalVotesFromCache,
-  getUserVoteFromCache,
-  searchProposalsFromCache,
-} from 'src/services/GovernanceCacheService';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { subgraphRequest } from 'src/utils/subgraphRequest';
 
+import {
+  ENS_REVERSE_REGISTRAR,
+  useCacheProposalDetail,
+  useCacheProposalsList,
+  useCacheProposalsSearch,
+  useCacheVotersSplit,
+} from './useGovernanceCache';
 import { getProposal } from './useProposal';
 import {
   fetchProposals,
@@ -40,9 +37,10 @@ import {
 const USE_GOVERNANCE_CACHE = process.env.NEXT_PUBLIC_USE_GOVERNANCE_CACHE === 'true';
 
 const PAGE_SIZE = 10;
-const VOTES_PAGE_SIZE = 50;
 const SEARCH_RESULTS_LIMIT = 10;
-export const ENS_REVERSE_REGISTRAR = '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C';
+
+// Re-exported for the graph-path voter ENS lookup in useProposalVotes.ts.
+export { ENS_REVERSE_REGISTRAR };
 
 // ============================================
 // Subgraph search query
@@ -110,30 +108,20 @@ async function fetchSubgraphVotes(proposalId: number, votingChainId: ChainId) {
 
 // ============================================
 // Unified hooks
+//
+// Both the cache and graph queries are always declared (React requires a
+// stable hook call order); the `enabled` flag ensures only one path fires.
+// The cache branch delegates to the SDK-backed hooks in useGovernanceCache.ts;
+// the graph branch fetches from the subgraph + on-chain contracts.
 // ============================================
 
 /**
- * Unified proposals list hook. Internally switches between graph and cache.
- * Both queries exist (React hook rules) but only one is enabled at runtime.
+ * Unified proposals list hook.
  */
 export const useGovernanceProposals = () => {
   const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
 
-  const cacheResult = useInfiniteQuery({
-    queryFn: async ({ pageParam = 0 }) => {
-      const proposals = await getProposalsFromCache(PAGE_SIZE, pageParam * PAGE_SIZE);
-      return { proposals: proposals.map(adaptCacheProposalToListItem) };
-    },
-    queryKey: ['governance-proposals-cache'],
-    enabled: USE_GOVERNANCE_CACHE,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.proposals.length < PAGE_SIZE) return undefined;
-      return allPages.length;
-    },
-    initialPageParam: 0,
-  });
+  const cacheResult = useCacheProposalsList({ enabled: USE_GOVERNANCE_CACHE });
 
   const graphResult = useInfiniteQuery({
     queryFn: async ({ pageParam = 0 }) => {
@@ -166,13 +154,8 @@ export const useGovernanceProposalsSearch = (query: string) => {
   const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
   const formattedQuery = query.trim().split(' ').join(' & ');
 
-  const { data: cacheData, isFetching: cacheFetching } = useQuery({
-    queryFn: async () => {
-      const results = await searchProposalsFromCache(query, SEARCH_RESULTS_LIMIT);
-      return results.map(adaptCacheProposalToListItem);
-    },
-    enabled: USE_GOVERNANCE_CACHE && query.trim() !== '',
-    queryKey: ['governance-search-cache', query],
+  const { data: cacheData, isFetching: cacheFetching } = useCacheProposalsSearch(query, {
+    enabled: USE_GOVERNANCE_CACHE,
   });
 
   const { data: graphIds, isFetching: graphIdsFetching } = useQuery({
@@ -212,20 +195,7 @@ export const useGovernanceProposalDetail = (proposalId: number) => {
   const { votingMachineSerivce, governanceV3Service } = useSharedDependencies();
   const user = useRootStore((store) => store.account);
 
-  const cacheResult = useQuery({
-    queryFn: async () => {
-      const detail = await getProposalDetailFromCache(String(proposalId));
-      if (!detail) return null;
-
-      const userVote = user ? await getUserVoteFromCache(String(proposalId), user) : null;
-
-      return adaptCacheProposalToDetail(detail, userVote);
-    },
-    queryKey: ['governance-detail-cache', proposalId, user],
-    enabled: USE_GOVERNANCE_CACHE && !isNaN(proposalId),
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-  });
+  const cacheResult = useCacheProposalDetail(proposalId, { enabled: USE_GOVERNANCE_CACHE });
 
   const graphResult = useQuery({
     queryFn: async () => {
@@ -286,51 +256,8 @@ export const useGovernanceVotersSplit = (
   proposalId: number,
   votingChainId?: number
 ): VotersSplitDisplay & { isFetching: boolean } => {
-  // Cache path - for votes
-  const { data: cacheForData, isFetching: cacheFetchingFor } = useInfiniteQuery({
-    queryFn: async ({ pageParam = 0 }) => {
-      const votes = await getProposalVotesFromCache(
-        String(proposalId),
-        true,
-        VOTES_PAGE_SIZE,
-        pageParam * VOTES_PAGE_SIZE
-      );
-      return { votes };
-    },
-    queryKey: ['governance-voters-cache-for', proposalId],
-    enabled: USE_GOVERNANCE_CACHE && !isNaN(proposalId),
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.votes.length < VOTES_PAGE_SIZE) return undefined;
-      return allPages.length;
-    },
-    initialPageParam: 0,
-  });
+  const cacheSplit = useCacheVotersSplit(proposalId, { enabled: USE_GOVERNANCE_CACHE });
 
-  // Cache path - against votes
-  const { data: cacheAgainstData, isFetching: cacheFetchingAgainst } = useInfiniteQuery({
-    queryFn: async ({ pageParam = 0 }) => {
-      const votes = await getProposalVotesFromCache(
-        String(proposalId),
-        false,
-        VOTES_PAGE_SIZE,
-        pageParam * VOTES_PAGE_SIZE
-      );
-      return { votes };
-    },
-    queryKey: ['governance-voters-cache-against', proposalId],
-    enabled: USE_GOVERNANCE_CACHE && !isNaN(proposalId),
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.votes.length < VOTES_PAGE_SIZE) return undefined;
-      return allPages.length;
-    },
-    initialPageParam: 0,
-  });
-
-  // Graph path
   const { data: graphVotes, isFetching: graphFetching } = useQuery({
     queryFn: async () => {
       const votes = await fetchSubgraphVotes(proposalId, votingChainId as ChainId);
@@ -354,53 +281,8 @@ export const useGovernanceVotersSplit = (
     refetchOnReconnect: false,
   });
 
-  // ENS resolution for cache path voters
-  const cacheVoterAddresses = USE_GOVERNANCE_CACHE
-    ? [
-        ...(cacheForData?.pages.flatMap((p) => p.votes.map((v) => v.voter)) || []),
-        ...(cacheAgainstData?.pages.flatMap((p) => p.votes.map((v) => v.voter)) || []),
-      ]
-    : [];
-
-  const { data: cacheEnsNames } = useQuery({
-    queryFn: async () => {
-      const provider = getProvider(governanceV3Config.coreChainId);
-      const contract = new Contract(ENS_REVERSE_REGISTRAR, ensAbi);
-      const connectedContract = contract.connect(provider);
-      const names: string[] = await connectedContract.getNames(cacheVoterAddresses);
-      const map: Record<string, string> = {};
-      cacheVoterAddresses.forEach((addr, i) => {
-        if (names[i]) map[addr.toLowerCase()] = names[i];
-      });
-      return map;
-    },
-    queryKey: ['governance-voters-ens', proposalId, cacheVoterAddresses],
-    enabled: USE_GOVERNANCE_CACHE && cacheVoterAddresses.length > 0,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
-  });
-
   if (USE_GOVERNANCE_CACHE) {
-    const withEns = (vote: VoteDisplay): VoteDisplay => ({
-      ...vote,
-      ensName: cacheEnsNames?.[vote.voter.toLowerCase()],
-    });
-    const yaeVotes = (cacheForData?.pages.flatMap((p) => p.votes.map(adaptCacheVote)) || []).map(
-      withEns
-    );
-    const nayVotes = (
-      cacheAgainstData?.pages.flatMap((p) => p.votes.map(adaptCacheVote)) || []
-    ).map(withEns);
-    const combinedVotes = [...yaeVotes, ...nayVotes].sort(
-      (a, b) => parseFloat(b.votingPower) - parseFloat(a.votingPower)
-    );
-    return {
-      yaeVotes,
-      nayVotes,
-      combinedVotes,
-      isFetching: cacheFetchingFor || cacheFetchingAgainst,
-    };
+    return cacheSplit;
   }
 
   const sortByPower = (a: { votingPower: string }, b: { votingPower: string }) =>

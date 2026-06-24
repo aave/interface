@@ -2,11 +2,11 @@ import { Grid } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
+import { useCacheProposalPayloads } from 'src/hooks/governance/useGovernanceCache';
 import {
   useGovernanceProposalDetail,
   useGovernanceVotersSplit,
 } from 'src/hooks/governance/useGovernanceProposals';
-import { useProposalPayloadsCache } from 'src/hooks/governance/useProposalDetailCache';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ProposalLifecycle } from 'src/modules/governance/proposal/ProposalLifecycle';
 import { ProposalLifecycleCache } from 'src/modules/governance/proposal/ProposalLifecycleCache';
@@ -36,7 +36,10 @@ export default function ProposalPage() {
   const votingChainId = proposal?.voteProposalData?.votingMachineChainId;
 
   const voters = useGovernanceVotersSplit(proposalId, votingChainId);
-  const { data: payloads, isLoading: payloadsLoading } = useProposalPayloadsCache(proposalId);
+  // Payloads are only rendered by ProposalLifecycleCache (cache data path).
+  const { data: payloads, isLoading: payloadsLoading } = useCacheProposalPayloads(proposalId, {
+    enabled: !!proposal?.rawCacheDetail,
+  });
 
   return (
     <>

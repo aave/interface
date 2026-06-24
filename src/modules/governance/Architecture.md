@@ -4,10 +4,10 @@
 
 The governance module displays Aave DAO proposals — listing, searching, detail views, voting results, and lifecycle tracking. It supports **two data sources** toggled by the env var `NEXT_PUBLIC_USE_GOVERNANCE_CACHE`:
 
-- **Graph path** (`false` / unset): Fetches from Aave's governance subgraph + on-chain contracts via `@aave/contract-helpers`. This is the original data source.
-- **Cache path** (`true`): Fetches from a local PostgreSQL-backed GraphQL server (`GovernanceCacheService.ts`). Faster, no subgraph dependency.
+- **Graph path** (`false` / unset): Fetches from Aave's governance subgraph + on-chain contracts via `@aave/contract-helpers`. The original data source.
+- **Cache path** (`true`): Fetches from a PostgreSQL-backed GraphQL server (the `governance-v3-cache` indexer) through the **governance cache SDK** (`src/services/governance-cache-sdk`). Faster, no subgraph dependency.
 
-Components never check the env var. The decision is pushed into **unified hooks** that internally run both react-query calls (to satisfy React hook ordering rules) but only `enabled` one at runtime.
+Components never check the env var. The decision is pushed into **unified hooks** (`useGovernanceProposals.ts`) that internally run both react-query calls (to satisfy React hook ordering rules) but only `enabled` one at runtime. The cache branch of each unified hook delegates to the cache hooks layer (`useGovernanceCache.ts`).
 
 ## Data Flow
 
@@ -17,17 +17,17 @@ Pages / Components
         v
   Unified Hooks (useGovernanceProposals.ts)
         |
-        +--> [env var check] --> Graph hooks (useProposals.ts, useProposal.ts)
-        |                              |
-        |                        Adapter functions (adapters.ts)
-        |                              |
-        |                        Canonical display types (types.ts)
+        +-- [env: cache] --> Cache Hooks (useGovernanceCache.ts)
+        |                          |
+        |                     Governance Cache SDK (services/governance-cache-sdk)
+        |                          |
+        |                     Cache GraphQL server
         |
-        +--> [env var check] --> Cache service (GovernanceCacheService.ts)
-                                       |
-                                 Adapter functions (adapters.ts)
-                                       |
-                                 Canonical display types (types.ts)
+        +-- [env: graph] --> Graph Hooks (useProposals.ts, useProposal.ts)
+                                   |
+                             subgraph + on-chain contracts
+
+  Both paths --> Adapter functions (adapters.ts) --> Canonical display types (types.ts)
 ```
 
 ## Key Files
@@ -41,12 +41,34 @@ All components consume these data-source-agnostic types:
 | `ProposalListItem` | List view: id, title, shortDescription, author, badgeState, voteInfo |
 | `ProposalDetailDisplay` | Detail view: extends list fields with description, discussions, ipfsHash, plus escape hatches |
 | `ProposalVoteDisplayInfo` | Vote stats: forVotes, againstVotes, forPercent (0-1), againstPercent (0-1), quorum, differential |
-| `VoteDisplay` | Single voter: voter address, support boolean, votingPower (normalized string, not wei) |
+| `VoteDisplay` | Single voter: voter address, support boolean, votingPower (normalized string, not wei), optional ensName |
 | `VotersSplitDisplay` | Voters grouped: yaeVotes[], nayVotes[], combinedVotes[] |
+| `VoteProposalData` | Everything the vote UI needs: proposalId, snapshotBlockHash, votingMachineChainId, votingAssets, votingState, votedInfo |
 
-**Important:** `ProposalDetailDisplay` has two optional escape-hatch fields:
-- `rawProposal?: Proposal` — present only on the graph path. Used by `VoteInfo` and `ProposalLifecycle` which need raw on-chain data.
-- `rawCacheDetail?: ProposalDetail` — present only on the cache path. Used by `ProposalLifecycleCache` which needs cache timestamps.
+**Important:** `ProposalDetailDisplay` has three optional fields the detail page discriminates on:
+- `rawProposal?: Proposal` — present only on the graph path. Used by `ProposalLifecycle`.
+- `rawCacheDetail?: ProposalDetail` — present only on the cache path. Used by `ProposalLifecycleCache`.
+- `voteProposalData?: VoteProposalData` — built by **both** paths (graph via `buildVoteProposalFromGraph`, cache via `buildVoteProposalFromCache`). Drives `VoteInfo`. On the cache path it is `undefined` when the voting chain / snapshot hash can't be resolved.
+
+### Governance Cache SDK — `src/services/governance-cache-sdk/`
+
+Typed GraphQL fetching layer over the cache server (curated endpoints + the auto-generated / derived fields needed to fully replace the subgraph). The public surface is the barrel `index.ts`:
+
+| File | Responsibility |
+|------|----------------|
+| `client.ts` | Transport: `request<T>()` raw-fetch wrapper, `GovernanceCacheError`, endpoint (`NEXT_PUBLIC_GOVERNANCE_CACHE_URL`), re-exports `gql` |
+| `types.ts` | Domain types: `SimplifiedProposal`, `ProposalDetail`, `ProposalVote`, `ProposalPayload`, `VoteCounts`, `ProposalVotingConfig`, `GovernanceConstants` |
+| `proposals.ts` | `getProposals`, `searchProposals`, `getProposalById`, `getProposalDetail` |
+| `votes.ts` | `getProposalVotes`, `getUserVote`, `getVoteCounts` |
+| `payloads.ts` | `getProposalPayloads` |
+| `config.ts` | Gap closers — see below |
+
+**Gap closers** (`config.ts`) — the data the curated views drop but is needed to retire the subgraph:
+- `getProposalVotingConfig(accessLevel)` — latest voting config from the auto-generated `allVotingConfigUpdateds` table; exposes `minPropositionPower` (which `proposals_view` omits).
+- `resolveVotingChainId(votingMachineAddress)` — derives the voting chain id from config; replaces the subgraph's `votingPortal.votingMachineChainId`. No fetch.
+- `GovernanceConstants` — type + documented on-chain seam for `precisionDivider` / `cooldownPeriod` / `expirationTime` (GovernanceCore immutables that are **not** indexed and must be read on-chain).
+
+`src/services/GovernanceCacheService.ts` is a **deprecated back-compat shim** that re-exports the SDK under the legacy `*FromCache` names. Prefer importing from `src/services/governance-cache-sdk`.
 
 ### Adapters — `adapters.ts`
 
@@ -55,51 +77,51 @@ Transform functions that convert raw data source types into canonical types:
 | Function | From → To |
 |----------|-----------|
 | `adaptGraphProposalToListItem` | `Proposal` → `ProposalListItem` |
-| `adaptGraphProposalToDetail` | `Proposal` → `ProposalDetailDisplay` (sets `rawProposal`) |
+| `adaptGraphProposalToDetail` | `Proposal` → `ProposalDetailDisplay` (sets `rawProposal`, `voteProposalData`) |
 | `adaptCacheProposalToListItem` | `SimplifiedProposal` → `ProposalListItem` |
-| `adaptCacheProposalToDetail` | `ProposalDetail` → `ProposalDetailDisplay` (sets `rawCacheDetail`) |
-| `adaptCacheVote` | `ProposalVote` → `VoteDisplay` (divides votingPower by 1e18) |
+| `adaptCacheProposalToDetail` | `ProposalDetail` → `ProposalDetailDisplay` (sets `rawCacheDetail`, `voteProposalData`) |
+| `adaptCacheVote` | `ProposalVote` → `VoteDisplay` (normalizes votingPower from wei) |
+| `buildVoteProposalFromGraph` / `buildVoteProposalFromCache` | build `VoteProposalData` for `VoteInfo` |
 | `cacheStateToBadge` | state string → `ProposalBadgeState` enum |
 | `calculateCacheVoteDisplayInfo` | raw vote strings → `ProposalVoteDisplayInfo` |
 
+### Cache Hooks — `src/hooks/governance/useGovernanceCache.ts`
+
+React Query layer over the SDK. Cache-only; each hook takes a `{ enabled }` option so unified hooks can gate it. Query keys come from `queryKeysFactory.governanceCache*` in `ui-config/queries.ts`. Shared internals: `CACHE_QUERY_OPTIONS`, `pagedNextParam`, `useEnsNames`.
+
+| Hook | Returns |
+|------|---------|
+| `useCacheProposalsList({ enabled })` | Infinite query of `{ proposals: ProposalListItem[] }` pages |
+| `useCacheProposalsSearch(query, { enabled })` | `ProposalListItem[]` |
+| `useCacheProposalDetail(proposalId, { enabled })` | `ProposalDetailDisplay \| null` (includes the connected user's vote) |
+| `useCacheVotersSplit(proposalId, { enabled })` | `VotersSplitDisplay & { isFetching }` (ENS-resolved) |
+| `useCacheProposalPayloads(proposalId, { enabled })` | `ProposalPayload[]` |
+| `useProposalVotingConfig(accessLevel, { enabled })` | `ProposalVotingConfig \| null` (gap closer; not yet wired into UI) |
+
 ### Unified Hooks — `src/hooks/governance/useGovernanceProposals.ts`
+
+The main entry point for components. Each declares both a cache and a graph query and returns the enabled one.
 
 | Hook | Returns | Notes |
 |------|---------|-------|
-| `useGovernanceProposals()` | Infinite query of `ProposalListItem[]` pages | Paginated, PAGE_SIZE=10 |
-| `useGovernanceProposalsSearch(query)` | `{ results: ProposalListItem[], loading }` | Graph uses subgraph full-text search; cache uses `searchProposalsFromCache` |
-| `useGovernanceProposalDetail(proposalId)` | `useQuery` result with `ProposalDetailDisplay \| null` | Cache can return `null` if proposal not found |
-| `useGovernanceVotersSplit(proposalId, votingChainId?)` | `VotersSplitDisplay & { isFetching }` | Graph path also resolves ENS names |
+| `useGovernanceProposals()` | Infinite query of `ProposalListItem[]` pages | Cache branch → `useCacheProposalsList`; graph branch inline. PAGE_SIZE=10 |
+| `useGovernanceProposalsSearch(query)` | `{ results: ProposalListItem[], loading }` | Cache branch → `useCacheProposalsSearch`; graph uses subgraph full-text search |
+| `useGovernanceProposalDetail(proposalId)` | `useQuery` result with `ProposalDetailDisplay \| null` | Cache branch → `useCacheProposalDetail` |
+| `useGovernanceVotersSplit(proposalId, votingChainId?)` | `VotersSplitDisplay & { isFetching }` | Cache branch → `useCacheVotersSplit`; graph path resolves ENS inline |
 
-### Cache Service — `src/services/GovernanceCacheService.ts`
-
-Raw GraphQL client for the governance cache server (endpoint: `NEXT_PUBLIC_GOVERNANCE_CACHE_URL`).
-
-Key types:
-- `SimplifiedProposal` — list-level proposal data
-- `ProposalDetail` — full detail including timestamps, quorum, requiredDifferential
-- `ProposalVote` — voter, support, votingPower (in wei/18 decimals), votingNetwork
-- `ProposalPayload` — payload execution data (used by `ProposalLifecycleCache`)
-
-Key functions:
-- `getProposalsFromCache(limit, offset, stateFilter?)` — paginated list
-- `searchProposalsFromCache(query, limit)` — full-text search
-- `getProposalDetailFromCache(id)` — single proposal with timestamps and thresholds
-- `getProposalVotesFromCache(id, support?, limit, offset)` — paginated votes
-- `getProposalPayloadsFromCache(id)` — payload data for lifecycle display
+Also re-exports `ENS_REVERSE_REGISTRAR` (consumed by the graph-path `useProposalVotes.ts`).
 
 ### Graph-Path Internal Hooks (still used by unified hooks)
 
 - `src/hooks/governance/useProposals.ts` — exports `getProposals`, `fetchProposals`, `fetchSubgraphProposalsByIds`, `getSubgraphProposalMetadata`. Fetches from governance subgraph + voting machine + payloads contracts.
-- `src/hooks/governance/useProposal.ts` — exports `getProposal`. Fetches single proposal from subgraph.
-- `src/hooks/governance/useProposalDetailCache.ts` — used internally by `ProposalLifecycleCache` for payload data. Not part of the unified hook layer.
+- `src/hooks/governance/useProposal.ts` — exports `getProposal`. Fetches a single proposal from the subgraph.
 
 ### Pages
 
 | Page | File | Description |
 |------|------|-------------|
 | Proposals list | `pages/governance/index.governance.tsx` | Renders `<ProposalsV3List />` |
-| Proposal detail | `pages/governance/v3/proposal/index.governance.tsx` | Uses unified hooks, conditionally renders VoteInfo (graph only) and Lifecycle (discriminated by rawProposal/rawCacheDetail) |
+| Proposal detail | `pages/governance/v3/proposal/index.governance.tsx` | Uses unified hooks; renders `VoteInfo` when `voteProposalData` exists; lifecycle discriminated by `rawProposal` / `rawCacheDetail`; payloads via `useCacheProposalPayloads` gated on `rawCacheDetail` |
 | IPFS preview | `pages/governance/ipfs-preview.governance.tsx` | Renders proposal from raw IPFS metadata |
 
 ### Components
@@ -111,17 +133,16 @@ Key functions:
 | `VotingResults` | `proposal/VotingResults.tsx` | Vote bars, quorum, differential display. Accepts `ProposalDetailDisplay` + `VotersSplitDisplay`. |
 | `VotersListContainer` | `proposal/VotersListContainer.tsx` | Top-10 voters + "View all" modal trigger. |
 | `VotersListModal` | `proposal/VotersListModal.tsx` | Full voters modal split by YAE/NAY. |
-| `VotersList` | `proposal/VotersList.tsx` | Scrollable voter list sorted by voting power. |
-| `VotersListItem` | `proposal/VotersListItem.tsx` | Single voter row with address, ENS name, voting power. |
-| `VoteInfo` | `proposal/VoteInfo.tsx` | User's voting power and vote submission. **Graph path only** (needs `rawProposal`). |
-| `ProposalLifecycle` | `proposal/ProposalLifecycle.tsx` | Timeline with explorer links, complex state machine. **Graph path only** (needs `rawProposal`). |
-| `ProposalLifecycleCache` | `proposal/ProposalLifecycleCache.tsx` | Simplified timeline from cache timestamps. **Cache path only** (needs `rawCacheDetail`). |
+| `VotersList` / `VotersListItem` | `proposal/VotersList*.tsx` | Voter list sorted by power; row with address, ENS name, voting power. |
+| `VoteInfo` | `proposal/VoteInfo.tsx` | User's voting power and vote submission. Driven by `voteProposalData` — works on **both** paths. |
+| `ProposalLifecycle` | `proposal/ProposalLifecycle.tsx` | Lifecycle timeline with explorer links. **Graph path only** (needs `rawProposal`). |
+| `ProposalLifecycleCache` | `proposal/ProposalLifecycleCache.tsx` | Lifecycle timeline from cache timestamps + payloads. **Cache path only** (needs `rawCacheDetail`). |
 | `VoteBar` | `VoteBar.tsx` | Percentage bar. `InnerBar` does `width: ${percent * 100}%`. **Expects 0-1 range.** |
 | `StateBadge` | `StateBadge.tsx` | Colored badge for proposal state. Exports `ProposalBadgeState` enum and `lifecycleToBadge`. |
 
 ### Utilities
 
-- `utils/formatProposal.ts` — `getLifecycleState()`, `getProposalVoteInfo()`, `ProposalLifecycleStep` enum. Used by graph path for lifecycle and vote calculations.
+- `utils/formatProposal.ts` — `getLifecycleState()`, `getProposalVoteInfo()`, `ProposalLifecycleStep` enum. Used by the graph path for lifecycle and vote calculations.
 - `utils/getProposalMetadata.ts` — IPFS metadata fetching.
 - `helpers.ts` — `isProposalStateImmutable()` helper.
 
@@ -139,7 +160,7 @@ The adapter functions in `adapters.ts` normalize both data sources to 0-1. If yo
 ### Vote Power Normalization
 
 - **Graph path**: Subgraph returns votingPower in wei (18 decimals). `normalizeBN(votingPower, 18)` converts to human-readable.
-- **Cache path**: Cache stores votingPower in wei. `adaptCacheVote` divides by `1e18`.
+- **Cache path**: Cache stores votingPower in wei. `adaptCacheVote` normalizes from 18 decimals.
 - The canonical `VoteDisplay.votingPower` is always a normalized string (human-readable, not wei).
 
 ### Cache State Mapping
@@ -154,41 +175,56 @@ Cache stores proposal state as lowercase strings. `cacheStateToBadge` in `adapte
 | `executed` | Executed |
 | `failed` | Failed |
 | `cancelled` | Cancelled |
+| `expired` | Expired |
+| `partially_executed` | Partially executed |
 
 ### Hook Pattern: Dual Queries, Single Enabled
 
-In `useGovernanceProposals.ts`, both graph and cache react-query calls are always declared (React requires stable hook call order). The `enabled` flag ensures only one actually fires:
+In `useGovernanceProposals.ts`, both the cache and graph react-query calls are always declared (React requires a stable hook call order). The cache call delegates to a `useGovernanceCache.ts` hook with `{ enabled: USE_GOVERNANCE_CACHE }`; the graph call is inline with `enabled: !USE_GOVERNANCE_CACHE`. Only one fires:
 
 ```ts
-const cacheResult = useInfiniteQuery({ ..., enabled: USE_GOVERNANCE_CACHE });
+const cacheResult = useCacheProposalsList({ enabled: USE_GOVERNANCE_CACHE });
 const graphResult = useInfiniteQuery({ ..., enabled: !USE_GOVERNANCE_CACHE });
 return USE_GOVERNANCE_CACHE ? cacheResult : graphResult;
 ```
 
 ### Escape Hatches for Path-Specific Components
 
-Some components are fundamentally different between data sources:
-
-- `VoteInfo` needs `Proposal` (on-chain voting machine data, user's voting power) — only available on graph path.
-- `ProposalLifecycle` needs `Proposal` (explorer links, complex state machine with payloads data).
-- `ProposalLifecycleCache` needs `ProposalDetail` (simple timestamps from cache).
-
-Rather than force-merging these, the detail page discriminates:
+Some components are fundamentally different between data sources, so the detail page discriminates rather than force-merging:
 
 ```tsx
-{proposal?.rawProposal && <VoteInfo proposal={proposal.rawProposal} />}
+{proposal?.voteProposalData && <VoteInfo voteData={proposal.voteProposalData} />}
 {proposal?.rawProposal ? (
   <ProposalLifecycle proposal={proposal.rawProposal} />
 ) : proposal?.rawCacheDetail ? (
-  <ProposalLifecycleCache proposal={proposal.rawCacheDetail} />
+  <ProposalLifecycleCache proposal={proposal.rawCacheDetail} payloads={payloads} />
 ) : null}
 ```
+
+## Replacing the Subgraph
+
+The cache covers the high-volume data (proposals, votes, payloads). The remaining gaps and how they're sourced:
+
+- `minPropositionPower` — `getProposalVotingConfig` (auto-generated cache table). ✅ available
+- `votingMachineChainId` — `resolveVotingChainId` (derived from config). ✅ available
+- `precisionDivider` / `cooldownPeriod` / `expirationTime` — GovernanceCore immutables, **not** in the cache; read on-chain via `GovernanceV3Service` and cache once (the `GovernanceConstants` seam in `config.ts`).
 
 ## File Tree
 
 ```
+src/services/governance-cache-sdk/
+  client.ts                          # transport (request, GovernanceCacheError, endpoint, gql)
+  types.ts                           # domain types
+  proposals.ts                       # list / search / byId / detail
+  votes.ts                           # votes / user vote / counts
+  payloads.ts                        # proposal payloads
+  config.ts                          # gap closers (voting config, chain id, constants seam)
+  index.ts                           # public surface
+src/services/
+  GovernanceCacheService.ts          # @deprecated back-compat shim → governance-cache-sdk
+
 src/modules/governance/
-  CLAUDE.md                          # This file
+  Architecture.md                    # This file
   types.ts                           # Canonical display types
   adapters.ts                        # Data source → canonical transforms
   ProposalsV3List.tsx                # Proposals list + search (unified)
@@ -209,21 +245,21 @@ src/modules/governance/
     VotersListModal.tsx              # Full voters modal (YAE/NAY)
     VotersList.tsx                   # Scrollable voter list
     VotersListItem.tsx               # Single voter row
-    VoteInfo.tsx                     # User vote UI (graph path only)
+    VoteInfo.tsx                     # User vote UI (both paths, via voteProposalData)
     ProposalLifecycle.tsx            # Lifecycle timeline (graph path only)
     ProposalLifecycleCache.tsx       # Lifecycle timeline (cache path only)
     ProposalTopPanel.tsx             # Detail page top panel
   utils/
-    formatProposal.ts               # Lifecycle state machine, vote info calculation
+    formatProposal.ts                # Lifecycle state machine, vote info calculation
     getProposalMetadata.ts           # IPFS metadata fetch
 
 src/hooks/governance/
   useGovernanceProposals.ts          # UNIFIED HOOKS (main entry point for data)
+  useGovernanceCache.ts              # Cache hooks layer (SDK-backed)
   useProposals.ts                    # Graph: subgraph proposal fetching
   useProposal.ts                     # Graph: single proposal fetch
-  useProposalVotes.ts                # Graph: vote fetching (legacy, unused by components)
-  useProposalsSearch.ts              # Graph: search (legacy, unused by components)
-  useProposalDetailCache.ts          # Cache: payload data for ProposalLifecycleCache
+  useProposalVotes.ts                # Graph: vote fetching (legacy)
+  useProposalsSearch.ts              # Graph: search (legacy)
   useDelegateeData.ts                # Delegation data
   useGovernanceTokens.ts             # Governance token balances
   useGovernanceTokensAndPowers.ts    # Token balances + voting power
@@ -232,9 +268,6 @@ src/hooks/governance/
   useRepresentatives.ts              # Representative addresses
   useTokensPower.ts                  # Token power calculations
   useVotingPowerAt.ts                # Historical voting power
-
-src/services/
-  GovernanceCacheService.ts          # GraphQL client for cache server
 
 pages/governance/
   index.governance.tsx               # Proposals list page
