@@ -158,7 +158,16 @@ export const ProposalLifecycleCache = ({
   }
 
   const state = proposal.state;
-  const stateOrder = ['created', 'active', 'queued', 'executed', 'failed', 'cancelled'];
+  const stateOrder = [
+    'created',
+    'active',
+    'queued',
+    'executed',
+    'partially_executed',
+    'expired',
+    'failed',
+    'cancelled',
+  ];
   const currentStateIndex = stateOrder.indexOf(state);
 
   // Build payload creation substeps
@@ -205,9 +214,12 @@ export const ProposalLifecycleCache = ({
       });
     }
     payloadExecutionSubsteps.push({
-      stepName: `Payload ${p.payloadId} executed on ${getNetworkName(p.chainId)}`,
+      stepName:
+        p.state === 'expired'
+          ? `Payload ${p.payloadId} expired on ${getNetworkName(p.chainId)}`
+          : `Payload ${p.payloadId} executed on ${getNetworkName(p.chainId)}`,
       timestamp: p.executedAt,
-      completed: p.state === 'executed',
+      completed: p.state === 'executed' || p.state === 'expired',
       active: false,
       networkLogo: getNetworkLogo(p.chainId),
     });
@@ -263,13 +275,36 @@ export const ProposalLifecycleCache = ({
 
   // Add final state step
   const allPayloadsExecuted = !!payloads?.length && payloads.every((p) => p.state === 'executed');
+  // proposal.executedAt is the dispatch time; payloads finish later after their timelock, so the
+  // completed step should reflect the latest payload execution, matching the on-chain finish.
+  const payloadExecutedTimes = (payloads ?? [])
+    .map((p) => p.executedAt)
+    .filter((t): t is string => !!t)
+    .sort();
+  const lastPayloadExecutedAt = payloadExecutedTimes[payloadExecutedTimes.length - 1] ?? null;
 
-  if (state === 'queued' || state === 'executed') {
+  if (
+    state === 'queued' ||
+    state === 'executed' ||
+    state === 'partially_executed' ||
+    state === 'expired'
+  ) {
+    const isTerminal = state === 'partially_executed' || state === 'expired';
+    const finalStepName =
+      state === 'expired'
+        ? 'Expired'
+        : state === 'partially_executed'
+        ? 'Partially executed'
+        : allPayloadsExecuted
+        ? 'Payloads executed'
+        : 'Payload execution';
     steps.push({
-      stepName: allPayloadsExecuted ? 'Payloads executed' : 'Payload execution',
-      timestamp: allPayloadsExecuted ? proposal.executedAt : proposal.queuedAt,
-      completed: allPayloadsExecuted,
-      active: !allPayloadsExecuted,
+      stepName: finalStepName,
+      timestamp: allPayloadsExecuted
+        ? lastPayloadExecutedAt ?? proposal.executedAt
+        : proposal.queuedAt,
+      completed: isTerminal || allPayloadsExecuted,
+      active: !isTerminal && !allPayloadsExecuted,
       lastStep: true,
       substeps: payloadExecutionSubsteps,
     });

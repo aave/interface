@@ -35,6 +35,10 @@ export function cacheStateToBadge(state: string): ProposalBadgeState {
       return ProposalBadgeState.Failed;
     case 'cancelled':
       return ProposalBadgeState.Cancelled;
+    case 'expired':
+      return ProposalBadgeState.Expired;
+    case 'partially_executed':
+      return ProposalBadgeState.PartiallyExecuted;
     default:
       return ProposalBadgeState.Created;
   }
