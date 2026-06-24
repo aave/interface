@@ -1,5 +1,7 @@
 import {
   type FunkitCheckoutConfig,
+  type FunkitCheckoutResult,
+  type FunkitCheckoutValidationResult,
   FunkitProvider,
   useActiveTheme,
   useFunkitCheckout,
@@ -8,9 +10,11 @@ import { useTheme } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useModal } from 'connectkit';
 import { useCallback, useEffect, useRef } from 'react';
+import { useRootStore } from 'src/store/root';
 import { aaveTheme } from 'src/ui-config/funkit/aaveTheme';
 import { funkitConfig } from 'src/ui-config/funkit/funkitConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { FUNKIT } from 'src/utils/events';
 import { getAddress } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -47,8 +51,13 @@ function InnerCheckout() {
   const queryClient = useQueryClient();
   const muiTheme = useTheme();
   const { toggleTheme } = useActiveTheme();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // The reserve of the in-flight checkout, so success/error events can carry
+  // asset context. Set when a checkout begins; the funkit callbacks read it.
+  const activeReserveRef = useRef<FunSupplyReserve | null>(null);
 
   const stopPolling = useCallback(() => {
     if (pollIntervalRef.current) {
@@ -75,9 +84,20 @@ function InnerCheckout() {
     };
   }, []);
 
-  const onSuccess = useCallback(() => {
-    stopPolling();
-  }, [stopPolling]);
+  const onSuccess = useCallback(
+    (result: FunkitCheckoutResult) => {
+      stopPolling();
+      const reserve = activeReserveRef.current;
+      trackEvent(FUNKIT.CHECKOUT_COMPLETED, {
+        asset: reserve?.underlyingAsset,
+        assetSymbol: reserve?.symbol,
+        chainId: reserve?.chainId,
+        message: result.message,
+      });
+      activeReserveRef.current = null;
+    },
+    [stopPolling, trackEvent]
+  );
 
   // Mid-checkout connection requests (e.g. switching the payment source to a
   // wallet) soft-hide the checkout modal and hand us a resume callback — the SDK
@@ -87,6 +107,21 @@ function InnerCheckout() {
 
   const { beginCheckout } = useFunkitCheckout({
     config: PLACEHOLDER_CONFIG,
+    // `activeReserveRef` is set in `beginSupply` before `beginCheckout`, so the
+    // in-flight reserve is available by the time the config finishes validating.
+    onValidation: useCallback(
+      (result: FunkitCheckoutValidationResult) => {
+        const reserve = activeReserveRef.current;
+        trackEvent(FUNKIT.CHECKOUT_STARTED, {
+          asset: reserve?.underlyingAsset,
+          assetSymbol: reserve?.symbol,
+          chainId: reserve?.chainId,
+          isValid: result.isValid,
+          message: result.message,
+        });
+      },
+      [trackEvent]
+    ),
     // funkit's own connect modal is unavailable when sharing the host wagmi
     // (no funkit wallet list), so route login through the app's ConnectKit modal.
     onLoginRequired: useCallback(
@@ -107,7 +142,20 @@ function InnerCheckout() {
       },
       [address, setConnectModalOpen]
     ),
-    onError: useCallback((error: unknown) => console.error('[FunkitCheckout]', error), []),
+    onError: useCallback(
+      (result: FunkitCheckoutResult) => {
+        console.error('[FunkitCheckout]', result);
+        const reserve = activeReserveRef.current;
+        trackEvent(FUNKIT.CHECKOUT_ERROR, {
+          asset: reserve?.underlyingAsset,
+          assetSymbol: reserve?.symbol,
+          chainId: reserve?.chainId,
+          message: result.message,
+        });
+        activeReserveRef.current = null;
+      },
+      [trackEvent]
+    ),
     onSuccess,
     onClose: stopPolling,
   });
@@ -137,10 +185,12 @@ function InnerCheckout() {
     if (!config) {
       return;
     }
+    activeReserveRef.current = reserve;
     startPolling();
     const { isActivated } = await beginCheckout(config);
     if (!isActivated) {
       stopPolling();
+      activeReserveRef.current = null;
       console.warn('[FunkitCheckout] checkout is not activated for this API key');
     }
   };
