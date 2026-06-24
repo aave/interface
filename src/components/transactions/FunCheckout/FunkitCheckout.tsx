@@ -8,13 +8,16 @@ import {
 } from '@funkit/connect';
 import { useTheme } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
+import { BigNumber } from 'bignumber.js';
 import { useModal } from 'connectkit';
 import { useCallback, useEffect, useRef } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { aaveTheme } from 'src/ui-config/funkit/aaveTheme';
 import { funkitConfig } from 'src/ui-config/funkit/funkitConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { FUNKIT } from 'src/utils/events';
+import { calculateHFAfterSupply } from 'src/utils/hfUtils';
 import { getAddress } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -52,6 +55,15 @@ function InnerCheckout() {
   const muiTheme = useTheme();
   const { toggleTheme } = useActiveTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
+
+  // Live position + reserves for the health-factor preview. Kept in a ref so the
+  // `resolveHealthFactor` closure handed to funkit reads the latest values when
+  // the confirmation screen calls it — not a snapshot from config-build time.
+  const { user, reserves } = useAppDataContext();
+  const appDataRef = useRef({ user, reserves });
+  useEffect(() => {
+    appDataRef.current = { user, reserves };
+  });
 
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -181,7 +193,30 @@ function InnerCheckout() {
       setConnectModalOpen(true);
       return;
     }
-    const config = buildFunSupplyConfig(reserve, address);
+    // Compute health factor (before → after) from live app-data, so the funkit
+    // confirmation screen shows the same number as the dashboard. Bound to this
+    // reserve's underlying; reads the latest position via `appDataRef`.
+    const resolveHealthFactor = (underlyingHumanAmount: string) => {
+      const { user, reserves } = appDataRef.current;
+      const poolReserve = reserves.find(
+        (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingAsset.toLowerCase()
+      );
+      if (!user || !poolReserve) {
+        return null;
+      }
+      const amountInEth = new BigNumber(underlyingHumanAmount).multipliedBy(
+        poolReserve.formattedPriceInMarketReferenceCurrency
+      );
+      if (!amountInEth.isFinite() || amountInEth.lte(0)) {
+        return null;
+      }
+      return {
+        before: user.healthFactor,
+        after: calculateHFAfterSupply(user, poolReserve, amountInEth).toString(),
+      };
+    };
+
+    const config = buildFunSupplyConfig(reserve, address, resolveHealthFactor);
     if (!config) {
       return;
     }
