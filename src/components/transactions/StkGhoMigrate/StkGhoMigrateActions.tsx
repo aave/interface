@@ -58,14 +58,16 @@ export const StkGhoMigrateActions = React.memo(
         user: evmAddress(currentAccount),
         chainId: sdkChainId,
       }).andThen((plan) => {
-        // The migrator holds the stkGHO claim-helper role and redeems on the
-        // user's behalf, so migration never requires an approval — the backend
-        // always returns a plain TransactionRequest. Guard the other
-        // ExecutionPlan union members defensively.
-        if (plan.__typename !== 'TransactionRequest') {
-          return errAsync(new Error('Unexpected migration plan; expected a transaction request.'));
+        switch (plan.__typename) {
+          case 'TransactionRequest':
+            return sendTransaction(plan);
+          case 'InsufficientBalanceError':
+            return errAsync(new Error('No stkGHO balance available to migrate.'));
+          case 'ApprovalRequired':
+            return errAsync(
+              new Error('Unexpected migration plan; expected a transaction request.')
+            );
         }
-        return sendTransaction(plan);
       });
 
       if (result.isErr()) {
