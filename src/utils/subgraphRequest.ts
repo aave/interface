@@ -8,10 +8,6 @@ export const SUBGRAPH_IDS = {
   'ccip-arb-sepolia': '8bpqvL6XBCVhN4heE9rdEwgTketeZ2U5vVGEh5fDoUEH',
   'ccip-base-sepolia': '8bpqvL6XBCVhN4heE9rdEwgTketeZ2U5vVGEh5fDoUEH',
   'ccip-ink': 'CZxebNCRkL9RHpFcQcDnRdQMB4yBM8PFgz5NKEHKtrw6',
-  'gov-core': 'A7QMszgomC9cnnfpAcqZVLr2DffvkGNfimD8iUSMiurK',
-  'gov-voting-mainnet': '2QPwuCfFtQ8WSCZoN3i9SmdoabMzbq2pmg4kRbrhymBV',
-  'gov-voting-polygon': '72ysXwyqW9CvfqD8keWo2fEfdKZQRWGYdgC6cnvTSFKy',
-  'gov-voting-avax': 'FngMWWGJV45McvV7GUBkrta9eoEi3sHZoH7MYnFQfZkr',
 } as const;
 
 export type SubgraphKey = keyof typeof SUBGRAPH_IDS;

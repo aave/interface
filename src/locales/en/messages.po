@@ -558,7 +558,6 @@ msgstr "APR"
 msgid "Total"
 msgstr "Total"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
 #: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "{stepName}"
 msgstr "{stepName}"
@@ -1884,7 +1883,6 @@ msgstr "State"
 msgid "There are no stake assets configured for this market"
 msgstr "There are no stake assets configured for this market"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
 #: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "Proposal details"
 msgstr "Proposal details"
@@ -2270,6 +2268,10 @@ msgstr "{0} {symbol} to continue"
 msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representative smart contract wallet (ie. Safe) addresses on other chains."
 
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "To submit a proposal for minor changes to the protocol, you'll need at least <0/> power. If you want to change the core code base, you'll need <1/> power.<2>Learn more.</2>"
+msgstr "To submit a proposal for minor changes to the protocol, you'll need at least <0/> power. If you want to change the core code base, you'll need <1/> power.<2>Learn more.</2>"
+
 #: src/components/transactions/Swap/errors/shared/UserDenied.tsx
 msgid "User denied the operation."
 msgstr "User denied the operation."
@@ -2638,7 +2640,6 @@ msgstr "Repaying {symbol}"
 msgid "Bridge {symbol}"
 msgstr "Bridge {symbol}"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
 #: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"

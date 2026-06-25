@@ -6,11 +6,22 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
+import { useProposalVotingConfig } from 'src/hooks/governance/useGovernanceCache';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { GENERAL } from 'src/utils/events';
 
 export function VotingPowerInfoPanel() {
   const { data: powers } = usePowers();
+  // Proposal-creation thresholds (minPropositionPower) per access level.
+  // Level 1 = minor, level 2 = core. Static fallback until the config loads.
+  const { data: minorConfig } = useProposalVotingConfig(1);
+  const { data: coreConfig } = useProposalVotingConfig(2);
+  const minorThreshold = minorConfig?.minPropositionPower
+    ? Number(minorConfig.minPropositionPower)
+    : undefined;
+  const coreThreshold = coreConfig?.minPropositionPower
+    ? Number(coreConfig.minPropositionPower)
+    : undefined;
   return (
     <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography
@@ -85,19 +96,48 @@ export function VotingPowerInfoPanel() {
                   </Trans>
                 </Typography>
                 <Typography variant="subheader2" mt={4}>
-                  <Trans>
-                    To submit a proposal for minor changes to the protocol, you&apos;ll need at
-                    least 80.00K power. If you want to change the core code base, you&apos;ll need
-                    320k power.
-                    <Link
-                      href="https://docs.aave.com/developers/v/2.0/protocol-governance/governance"
-                      target="_blank"
-                      variant="description"
-                      sx={{ textDecoration: 'underline', ml: 1 }}
-                    >
-                      <Trans>Learn more.</Trans>
-                    </Link>
-                  </Trans>
+                  {minorThreshold !== undefined && coreThreshold !== undefined ? (
+                    <Trans>
+                      To submit a proposal for minor changes to the protocol, you&apos;ll need at
+                      least{' '}
+                      <FormattedNumber
+                        value={minorThreshold}
+                        visibleDecimals={2}
+                        compact
+                        variant="subheader2"
+                      />{' '}
+                      power. If you want to change the core code base, you&apos;ll need{' '}
+                      <FormattedNumber
+                        value={coreThreshold}
+                        visibleDecimals={2}
+                        compact
+                        variant="subheader2"
+                      />{' '}
+                      power.
+                      <Link
+                        href="https://docs.aave.com/developers/v/2.0/protocol-governance/governance"
+                        target="_blank"
+                        variant="description"
+                        sx={{ textDecoration: 'underline', ml: 1 }}
+                      >
+                        <Trans>Learn more.</Trans>
+                      </Link>
+                    </Trans>
+                  ) : (
+                    <Trans>
+                      To submit a proposal for minor changes to the protocol, you&apos;ll need at
+                      least 80.00K power. If you want to change the core code base, you&apos;ll need
+                      320k power.
+                      <Link
+                        href="https://docs.aave.com/developers/v/2.0/protocol-governance/governance"
+                        target="_blank"
+                        variant="description"
+                        sx={{ textDecoration: 'underline', ml: 1 }}
+                      >
+                        <Trans>Learn more.</Trans>
+                      </Link>
+                    </Trans>
+                  )}
                 </Typography>
               </>
             </TextWithTooltip>

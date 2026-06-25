@@ -6,7 +6,7 @@ import { Link, ROUTES } from 'src/components/primitives/Link';
 import {
   useGovernanceProposals,
   useGovernanceProposalsSearch,
-} from 'src/hooks/governance/useGovernanceProposals';
+} from 'src/hooks/governance/useGovernanceCache';
 import { useRootStore } from 'src/store/root';
 import { GOVERNANCE_PAGE } from 'src/utils/events';
 
