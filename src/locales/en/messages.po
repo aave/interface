@@ -2020,6 +2020,10 @@ msgstr "Can't validate the wallet address. Try again."
 msgid "GHO balance"
 msgstr "GHO balance"
 
+#: src/components/transactions/StkGhoMigrate/StkGhoMigrateModalContent.tsx
+msgid "received"
+msgstr "received"
+
 #: pages/dashboard.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
@@ -2363,6 +2367,7 @@ msgstr "VIEW"
 
 #: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
 #: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+#: src/components/transactions/StkGhoMigrate/StkGhoMigrateModalContent.tsx
 msgid "You'll receive"
 msgstr "You'll receive"
 
@@ -3220,6 +3225,10 @@ msgstr "To repay on behalf of a user an explicit amount to repay is needed"
 msgid "Repayment amount to reach {0}% utilization"
 msgstr "Repayment amount to reach {0}% utilization"
 
+#: src/components/transactions/StkGhoMigrate/StkGhoMigrateActions.tsx
+msgid "Proceed with migration"
+msgstr "Proceed with migration"
+
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "You can not stake this amount because it will cause collateral call"
 msgstr "You can not stake this amount because it will cause collateral call"
@@ -3426,6 +3435,10 @@ msgstr "GHO yield with instant withdraws."
 #: src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
 msgid "Both"
 msgstr "Both"
+
+#: src/components/transactions/StkGhoMigrate/StkGhoMigrateModal.tsx
+msgid "Migrate stkGHO to sGHO"
+msgstr "Migrate stkGHO to sGHO"
 
 #: src/components/SecondsToString.tsx
 msgid "{h}h"
@@ -3938,6 +3951,8 @@ msgstr "Tip: Try improving your order parameters"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
+#: src/components/transactions/StkGhoMigrate/StkGhoMigrateActions.tsx
+#: src/components/transactions/StkGhoMigrate/StkGhoMigrateModalContent.tsx
 msgid "Migrating"
 msgstr "Migrating"
 
@@ -4185,6 +4200,7 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
+#: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "Migrate"
 msgstr "Migrate"
 

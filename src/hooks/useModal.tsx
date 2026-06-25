@@ -39,6 +39,7 @@ export enum ModalType {
   SavingsGhoWithdraw,
   SGhoVaultDeposit,
   SGhoVaultWithdraw,
+  StkGhoMigrate,
   CancelCowOrder,
 
   // Swaps
@@ -151,6 +152,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openSavingsGhoWithdraw: () => void;
   openSGhoVaultDeposit: () => void;
   openSGhoVaultWithdraw: () => void;
+  openStkGhoMigrate: () => void;
   openCancelCowOrder: (
     transaction: TransactionHistoryItem<SwapActionFields[ActionName.Swap]>
   ) => void;
@@ -437,6 +439,11 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
         openSGhoVaultWithdraw: () => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'sGHO Vault Withdraw' });
           setType(ModalType.SGhoVaultWithdraw);
+          setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
+        },
+        openStkGhoMigrate: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'stkGHO to sGHO Migration' });
+          setType(ModalType.StkGhoMigrate);
           setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
         },
         openCancelCowOrder: (transaction) => {
