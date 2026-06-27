@@ -16,6 +16,7 @@ import {
   mantle,
   megaeth,
   metis,
+  monad,
   optimism,
   optimismSepolia,
   plasma,
@@ -489,6 +490,16 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     explorerLink: 'https://mega.etherscan.io/',
     networkLogoPath: '/icons/networks/megaeth.svg',
     wagmiChain: megaeth,
+  },
+  [monad.id]: {
+    name: 'Monad',
+    publicJsonRPCUrl: ['https://rpc.monad.xyz', 'https://rpc1.monad.xyz'],
+    baseAssetSymbol: 'MON',
+    wrappedBaseAssetSymbol: 'WMON',
+    baseAssetDecimals: 18,
+    explorerLink: 'https://monadscan.com',
+    networkLogoPath: '/icons/networks/monad.svg',
+    wagmiChain: monad,
   },
 };
 
