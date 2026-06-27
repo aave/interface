@@ -39,6 +39,7 @@ jobs:
           NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
           NEXT_PUBLIC_NARVAL_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_NARVAL_CLIENT_ID }}
           NEXT_PUBLIC_IS_CYPRESS_ENABLED: ${{ matrix.build.cypress_enabled }}
+          NEXT_PUBLIC_FUNKIT_API_KEY: ${{ secrets.FUNKIT_API_KEY }}
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
@@ -58,6 +59,7 @@ jobs:
         uses: ./.github/actions/build
         with:
           NEXT_PUBLIC_ENV: 'staging'
+          NEXT_PUBLIC_FUNKIT_API_KEY: ${{ secrets.FUNKIT_API_KEY }}
 
       - name: Upload artifacts
         uses: ./.github/actions/upload-artifacts
