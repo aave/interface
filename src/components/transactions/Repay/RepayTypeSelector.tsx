@@ -1,15 +1,15 @@
-import { Box, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { Trans } from '@lingui/macro';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { Box, Typography } from '@mui/material';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+import { useRootStore } from 'src/store/root';
+import { REPAY_MODAL } from 'src/utils/events';
+import { useShallow } from 'zustand/shallow';
 
 export enum RepayType {
   BALANCE,
   COLLATERAL,
 }
-
-// set false to enable switch on ui
-const UNFINISHED = true;
-
 export function RepayTypeSelector({
   repayType,
   setRepayType,
@@ -17,33 +17,43 @@ export function RepayTypeSelector({
   repayType: RepayType;
   setRepayType: (type: RepayType) => void;
 }) {
-  const { currentMarketData } = useProtocolDataContext();
-  if (UNFINISHED || !currentMarketData.enabledFeatures?.collateralRepay) return null;
+  const [trackEvent, currentMarketData] = useRootStore(
+    useShallow((store) => [store.trackEvent, store.currentMarketData])
+  );
+
+  if (!currentMarketData.enabledFeatures?.collateralRepay) return null;
   return (
     <Box sx={{ mb: 6 }}>
       <Typography mb={1} color="text.secondary">
         <Trans>Repay with</Trans>
       </Typography>
 
-      <ToggleButtonGroup
+      <StyledTxModalToggleGroup
         color="primary"
         value={repayType}
         exclusive
         onChange={(_, value) => setRepayType(value)}
-        sx={{ width: '100%' }}
       >
-        <ToggleButton value={RepayType.BALANCE} disabled={repayType === RepayType.BALANCE}>
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
+        <StyledTxModalToggleButton
+          value={RepayType.BALANCE}
+          disabled={repayType === RepayType.BALANCE}
+          onClick={() => trackEvent(REPAY_MODAL.SWITCH_REPAY_TYPE, { repayType: 'Wallet Balance' })}
+        >
+          <Typography variant="buttonM">
             <Trans>Wallet balance</Trans>
           </Typography>
-        </ToggleButton>
+        </StyledTxModalToggleButton>
 
-        <ToggleButton value={RepayType.COLLATERAL} disabled={repayType === RepayType.COLLATERAL}>
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
+        <StyledTxModalToggleButton
+          value={RepayType.COLLATERAL}
+          disabled={repayType === RepayType.COLLATERAL}
+          onClick={() => trackEvent(REPAY_MODAL.SWITCH_REPAY_TYPE, { repayType: 'Collateral' })}
+        >
+          <Typography variant="buttonM">
             <Trans>Collateral</Trans>
           </Typography>
-        </ToggleButton>
-      </ToggleButtonGroup>
+        </StyledTxModalToggleButton>
+      </StyledTxModalToggleGroup>
     </Box>
   );
 }

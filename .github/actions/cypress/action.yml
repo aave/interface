@@ -14,9 +14,9 @@ inputs:
     description: yarn command to run test
     required: true
 runs:
-  using: "composite"
-  steps:  
-    - uses: actions/setup-node@9ced9a43a244f3ac94f13bfd896db8c8f30da67a # v3.0.0
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
       with:
         node-version-file: '.nvmrc'
         cache: 'yarn'
@@ -29,19 +29,19 @@ runs:
 
     - name: download build
       if: github.event_name != 'workflow_run'
-      uses: actions/download-artifact@fb598a63ae348fa914e94cd0ff38f362e927b741 # v3.0.0
+      uses: actions/download-artifact@v4
       with:
-        name: out
+        name: out_cypress
         path: out
-    
+
     - name: Download static build
       if: github.event_name == 'workflow_run'
-      uses: dawidd6/action-download-artifact@575b1e4167df67acf7e692af784566618b23c71e # v2.17.0
+      uses: dawidd6/action-download-artifact@v6
       with:
         workflow: build-fork.yml
         run_id: ${{ github.event.workflow_run.id }}
         workflow_conclusion: success
-        name: out
+        name: out_cypress
         path: out
 
     - name: test
@@ -52,7 +52,7 @@ runs:
         record: false
         start: yarn serve:static
         wait-on: 'http://localhost:3000'
-        command: yarn test:${{ inputs.YARN_TEST_COMMAND }}
+        command: ${{ inputs.YARN_TEST_COMMAND }}
       env:
         CYPRESS_URL: 'http://localhost:3000'
         CYPRESS_TENDERLY_ACCOUNT: ${{ inputs.CYPRESS_TENDERLY_ACCOUNT }}
@@ -60,8 +60,8 @@ runs:
         CYPRESS_TENDERLY_PROJECT: ${{ inputs.CYPRESS_TENDERLY_PROJECT }}
 
     - name: upload screenshots
-      uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 # v3.0.0
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: cypress-fail-screenshots-${{ inputs.YARN_TEST_COMMAND }}
+        name: cypress-fail-screenshots-${{ github.job }}-${{ matrix.market }}
         path: cypress/screenshots

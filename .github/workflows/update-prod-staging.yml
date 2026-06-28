@@ -1,0 +1,52 @@
+name: Reusable workflow for updating prod and staging
+
+on:
+  workflow_call:
+    inputs:
+      PINATA_HASH:
+        type: string
+        description: IPFS hash to pin and use in release description
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment:
+          [{ name: 'Production', domain: 'app.aave.com', artifact: 'out', build_path: 'out' }]
+    environment:
+      name: ${{ matrix.environment.name }}
+      url: https://${{ matrix.environment.domain }}
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: download build
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.environment.artifact }}
+          path: ${{ matrix.environment.build_path }}
+
+      - name: Upload to Infura IPFS
+        id: infura-upload
+        uses: aave/ipfs-action@master
+        with:
+          path: ${{ matrix.environment.build_path }}
+          service: infura
+          infuraProjectId: ${{ secrets.INFURA_PROJECT_ID }}
+          infuraProjectSecret: ${{ secrets.INFURA_PROJECT_SECRET }}
+
+      - name: prepare release
+        run: |
+          cp .github/release-template.md ./release-notes.md
+          sed -i 's|<ipfs-hash>|${{ inputs.PINATA_HASH }}|g' ./release-notes.md
+          echo "TAG=release-$(date '+%Y-%m-%d_%H-%M')" >> ${GITHUB_ENV}
+
+      - name: Create GH release
+        uses: ncipollo/release-action@b7eabc95ff50cbeeedec83973935c8f306dfcd0b # v1.20.0
+        with:
+          name: Production release
+          artifacts: app.tar.gz
+          bodyFile: release-notes.md
+          commit: '${{ github.sha }}'
+          tag: '${{ env.TAG }}'

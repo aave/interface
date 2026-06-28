@@ -1,14 +1,16 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useRootStore } from 'src/store/root';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
 
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Row } from '../../../../components/primitives/Row';
-import {
-  ComputedUserReserveData,
-  ExtendedFormattedUser,
-} from '../../../../hooks/app-data-provider/useAppDataProvider';
 import { useModalContext } from '../../../../hooks/useModal';
-import { useProtocolDataContext } from '../../../../hooks/useProtocolDataContext';
 import { isFeatureEnabled } from '../../../../utils/marketsAndNetworksConfig';
 import { ListItemUsedAsCollateral } from '../ListItemUsedAsCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
@@ -20,19 +22,44 @@ export const SuppliedPositionsListMobileItem = ({
   underlyingBalanceUSD,
   usageAsCollateralEnabledOnUser,
   underlyingAsset,
-  user,
-}: ComputedUserReserveData & { user: ExtendedFormattedUser }) => {
-  const { symbol, iconSymbol, name, supplyAPY, isIsolated, aIncentivesData, isFrozen, isActive } =
-    reserve;
-  const { currentMarketData, currentMarket } = useProtocolDataContext();
-  const { openSupply, openWithdraw, openCollateralChange } = useModalContext();
+}: DashboardReserve) => {
+  const { user } = useAppDataContext();
+  const [currentMarketData, currentMarket] = useRootStore(
+    useShallow((state) => [state.currentMarketData, state.currentMarket])
+  );
+  const { openSupply, openCollateralSwap, openWithdraw, openCollateralChange } = useModalContext();
+  const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+  const {
+    symbol,
+    iconSymbol,
+    name,
+    supplyAPY,
+    isIsolated,
+    aIncentivesData,
+    aTokenAddress,
+    isFrozen,
+    isActive,
+    isPaused,
+  } = reserve;
 
-  const canBeEnabledAsCollateral =
-    reserve.usageAsCollateralEnabled &&
-    ((!reserve.isIsolated && !user.isInIsolationMode) ||
-      user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
-      (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'));
+  // Check if asset has non-zero liquidation threshold (base or in user's e-mode)
+  const userEMode = reserve.eModes?.find((e) => e.id === user?.userEmodeCategoryId);
+  const hasLiquidationThreshold =
+    reserve.reserveLiquidationThreshold !== '0' ||
+    !!(user?.isInEmode && userEMode?.collateralEnabled);
+
+  const canBeEnabledAsCollateral = user
+    ? !debtCeiling.isMaxed &&
+      hasLiquidationThreshold &&
+      ((!reserve.isIsolated && !user.isInIsolationMode) ||
+        user.isolatedReserve?.underlyingAsset === reserve.underlyingAsset ||
+        (reserve.isIsolated && user.totalCollateralMarketReferenceCurrency === '0'))
+    : false;
+
+  const disableSwap = !isActive || isPaused || reserve.symbol == 'stETH';
+  const disableWithdraw = !isActive || isPaused;
+  const disableSupply = !isActive || isFrozen || isPaused;
 
   return (
     <ListMobileItemWrapper
@@ -41,6 +68,14 @@ export const SuppliedPositionsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
+      frozen={reserve.isFrozen}
+      showSupplyCapTooltips
+      showDebtCeilingTooltips
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        reserve.symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
@@ -58,8 +93,11 @@ export const SuppliedPositionsListMobileItem = ({
         <IncentivesCard
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
+          address={aTokenAddress}
           symbol={symbol}
           variant="secondary14"
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
         />
       </Row>
 
@@ -70,43 +108,51 @@ export const SuppliedPositionsListMobileItem = ({
         mb={2}
       >
         <ListItemUsedAsCollateral
+          disabled={reserve.isPaused}
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
           canBeEnabledAsCollateral={canBeEnabledAsCollateral}
-          onToggleSwitch={() => openCollateralChange(underlyingAsset)}
+          onToggleSwitch={() =>
+            openCollateralChange(
+              underlyingAsset,
+              currentMarket,
+              reserve.name,
+              'dashboard',
+              usageAsCollateralEnabledOnUser
+            )
+          }
         />
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        <Button
-          disabled={!isActive}
-          variant="contained"
-          onClick={() => openWithdraw(underlyingAsset)}
-          sx={{ mr: 1.5 }}
-          fullWidth
-        >
-          <Trans>Withdraw</Trans>
-        </Button>
-
         {isSwapButton ? (
           <Button
-            disabled={!isActive || isFrozen}
-            variant="outlined"
-            onClick={() => console.log('TODO: should be swap modal')}
+            disabled={disableSwap}
+            variant="contained"
+            onClick={() => openCollateralSwap(underlyingAsset)}
             fullWidth
           >
             <Trans>Swap</Trans>
           </Button>
         ) : (
           <Button
-            disabled={!isActive || isFrozen}
-            variant="outlined"
-            onClick={() => openSupply(underlyingAsset)}
+            disabled={disableSupply}
+            variant="contained"
+            onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
             fullWidth
           >
             <Trans>Supply</Trans>
           </Button>
         )}
+        <Button
+          disabled={disableWithdraw}
+          variant="outlined"
+          onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
+          sx={{ ml: 1.5 }}
+          fullWidth
+        >
+          <Trans>Withdraw</Trans>
+        </Button>
       </Box>
     </ListMobileItemWrapper>
   );

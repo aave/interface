@@ -1,48 +1,98 @@
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import StyledToggleButton from 'src/components/StyledToggleButton';
+import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
 import {
   ComputedReserveData,
+  ReserveWithId,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
+import { AssetCapsProviderSDK } from 'src/hooks/useAssetCapsSDK';
 import { MainLayout } from 'src/layouts/MainLayout';
+import { isAssetHidden } from 'src/modules/dashboard/lists/constants';
 import { ReserveActions } from 'src/modules/reserve-overview/ReserveActions';
-import { ReserveConfiguration } from 'src/modules/reserve-overview/ReserveConfiguration';
-import { ReserveTopDetails } from 'src/modules/reserve-overview/ReserveTopDetails';
+import { ReserveConfigurationWrapper } from 'src/modules/reserve-overview/ReserveConfigurationWrapper';
+import { ReserveTopDetailsWrapper } from 'src/modules/reserve-overview/ReserveTopDetailsWrapper';
+import { useRootStore } from 'src/store/root';
 
 import { ContentContainer } from '../src/components/ContentContainer';
 
+const SavingsGhoDepositModal = dynamic(() =>
+  import('../src/components/transactions/SavingsGho/SavingsGhoDepositModal').then(
+    (module) => module.SavingsGhoDepositModal
+  )
+);
+const SavingsGhoWithdrawModal = dynamic(() =>
+  import('../src/components/transactions/SavingsGho/SavingsGhoWithdrawModal').then(
+    (module) => module.SavingsGhoWithdrawModal
+  )
+);
+const StakeModal = dynamic(() =>
+  import('../src/components/transactions/Stake/StakeModal').then((module) => module.StakeModal)
+);
+const StakeCooldownModal = dynamic(() =>
+  import('../src/components/transactions/StakeCooldown/StakeCooldownModal').then(
+    (module) => module.StakeCooldownModal
+  )
+);
+const UnStakeModal = dynamic(() =>
+  import('../src/components/transactions/UnStake/UnStakeModal').then(
+    (module) => module.UnStakeModal
+  )
+);
+
 export default function ReserveOverview() {
   const router = useRouter();
-  const { reserves } = useAppDataContext();
-  const underlyingAsset = router.query.underlyingAsset as string;
-  const { breakpoints } = useTheme();
-  const lg = useMediaQuery(breakpoints.up('lg'));
+  const { supplyReserves, reserves } = useAppDataContext();
+  const underlyingAsset = (router.query.underlyingAsset as string)?.toLowerCase();
 
-  const [mode, setMode] = useState<'overview' | 'actions' | ''>('');
+  const [mode, setMode] = useState<'overview' | 'actions' | ''>('overview');
+  const trackEvent = useRootStore((store) => store.trackEvent);
+  const currentMarket = useRootStore((store) => store.currentMarket);
+
+  const reserveHidden = !!underlyingAsset && isAssetHidden(currentMarket, underlyingAsset);
 
   useEffect(() => {
-    if (!mode) setMode('overview');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lg]);
+    if (router.isReady && reserveHidden) {
+      router.replace('/markets');
+    }
+  }, [router, reserveHidden]);
 
-  const reserve = reserves.find(
-    (reserve) => reserve.underlyingAsset === underlyingAsset
-  ) as ComputedReserveData;
+  //With SDK
+  const reserve = supplyReserves.find((reserve) => {
+    return reserve.underlyingToken.address.toLowerCase() === underlyingAsset?.toLowerCase();
+  }) as ReserveWithId;
+
+  //With Reserves
+  const reserveLegacy = reserves.find((reserve) => {
+    return reserve.underlyingAsset.toLowerCase() === underlyingAsset?.toLowerCase();
+  }) as ComputedReserveData;
+  const [pageEventCalled, setPageEventCalled] = useState(false);
+
+  useEffect(() => {
+    if (!pageEventCalled && reserve && reserve.underlyingToken.symbol && underlyingAsset) {
+      trackEvent('Page Viewed', {
+        'Page Name': 'Reserve Overview',
+        Reserve: reserve.underlyingToken.symbol,
+        Asset: underlyingAsset,
+      });
+      setPageEventCalled(true);
+    }
+  }, [trackEvent, reserve, underlyingAsset, pageEventCalled]);
 
   const isOverview = mode === 'overview';
 
+  if (reserveHidden) {
+    return null;
+  }
+
   return (
-    <>
-      <ReserveTopDetails underlyingAsset={underlyingAsset} />
+    <AssetCapsProviderSDK asset={reserve}>
+      <ReserveTopDetailsWrapper underlyingAsset={underlyingAsset} />
 
       <ContentContainer>
         <Box
@@ -52,24 +102,24 @@ export default function ReserveOverview() {
             mb: { xs: 3, xsm: 4 },
           }}
         >
-          <ToggleButtonGroup
+          <StyledToggleButtonGroup
             color="primary"
             value={mode}
             exclusive
             onChange={(_, value) => setMode(value)}
             sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
           >
-            <ToggleButton value="overview" disabled={mode === 'overview'}>
+            <StyledToggleButton value="overview" disabled={mode === 'overview'}>
               <Typography variant="subheader1">
                 <Trans>Overview</Trans>
               </Typography>
-            </ToggleButton>
-            <ToggleButton value="actions" disabled={mode === 'actions'}>
+            </StyledToggleButton>
+            <StyledToggleButton value="actions" disabled={mode === 'actions'}>
               <Typography variant="subheader1">
                 <Trans>Your info</Trans>
               </Typography>
-            </ToggleButton>
-          </ToggleButtonGroup>
+            </StyledToggleButton>
+          </StyledToggleButtonGroup>
         </Box>
 
         <Box sx={{ display: 'flex' }}>
@@ -81,7 +131,7 @@ export default function ReserveOverview() {
               mr: { xs: 0, lg: 4 },
             }}
           >
-            {reserve && <ReserveConfiguration reserve={reserve} />}
+            <ReserveConfigurationWrapper reserve={reserve} />
           </Box>
 
           {/** Right panel with actions*/}
@@ -91,14 +141,26 @@ export default function ReserveOverview() {
               width: { xs: '100%', lg: '416px' },
             }}
           >
-            <ReserveActions underlyingAsset={underlyingAsset} />
+            {/* Wrapped in AssetCapsProvider to provide the data using legacy method to avoid braking actions */}
+            <AssetCapsProvider asset={reserveLegacy}>
+              <ReserveActions reserve={reserveLegacy} />
+            </AssetCapsProvider>
           </Box>
         </Box>
       </ContentContainer>
-    </>
+    </AssetCapsProviderSDK>
   );
 }
 
 ReserveOverview.getLayout = function getLayout(page: React.ReactElement) {
-  return <MainLayout>{page}</MainLayout>;
+  return (
+    <MainLayout>
+      {page}
+      <StakeModal />
+      <StakeCooldownModal />
+      <UnStakeModal />
+      <SavingsGhoDepositModal />
+      <SavingsGhoWithdrawModal />
+    </MainLayout>
+  );
 };

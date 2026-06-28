@@ -1,140 +1,159 @@
-import { ProposalState } from '@aave/contract-helpers';
-import { normalize } from '@aave/math-utils';
+import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Alert, Button, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { Box, Button, Paper, Typography } from '@mui/material';
+import { constants } from 'ethers';
+import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import { useGovernanceDataProvider } from 'src/hooks/governance-data-provider/GovernanceDataProvider';
+import { Warning } from 'src/components/primitives/Warning';
+import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { CustomProposalType } from 'src/static-build/proposal';
+import { VoteProposalData } from 'src/modules/governance/types';
+import { useRootStore } from 'src/store/root';
 
-export function VoteInfo({ id, state, strategy, startBlock }: CustomProposalType) {
+import { networkConfigs } from '../../../ui-config/networksConfig';
+
+interface VoteInfoProps {
+  voteData: VoteProposalData;
+}
+
+export function VoteInfo({ voteData }: VoteInfoProps) {
   const { openGovVote } = useModalContext();
-  const { currentAccount } = useWeb3Context();
+  const user = useRootStore((state) => state.account);
+  const voteOnProposal = voteData.votedInfo;
+  const votingChainId = voteData.votingMachineChainId;
+  const network = networkConfigs[votingChainId];
 
-  const [votedPower, setVotedPower] = useState<string>();
-  const [support, setSupport] = useState<boolean>();
-  const [didVote, setDidVote] = useState<boolean>();
-  const [power, setPower] = useState<string>('0');
+  const blockHash =
+    voteData.snapshotBlockHash === constants.HashZero ? 'latest' : voteData.snapshotBlockHash;
 
-  const { governanceService } = useGovernanceDataProvider();
-  const voteOngoing = state === ProposalState.Active;
+  const { data: powerAtProposalStart } = useVotingPowerAt(blockHash, voteData.votingAssets);
 
-  const fetchCurrentVote = async () => {
-    try {
-      const { support, votingPower } = await governanceService.getVoteOnProposal({
-        user: currentAccount,
-        proposalId: id,
-      });
+  const voteOngoing = voteData.votingState === VotingMachineProposalState.Active;
 
-      if (votingPower && votingPower.toString() !== '0') {
-        setSupport(support);
-        setVotedPower(normalize(votingPower.toString(), 18));
-        setDidVote(true);
-      } else {
-        setDidVote(false);
-      }
-    } catch (e) {
-      console.log('error fetching vote info', e);
-    }
-  };
+  const didVote = powerAtProposalStart && voteOnProposal && voteOnProposal.votingPower !== '0';
+  const showAlreadyVotedMsg = !!user && voteOnProposal && didVote;
 
-  const fetchVotingPower = async () => {
-    try {
-      const power = await governanceService.getVotingPowerAt({
-        user: currentAccount,
-        block: startBlock,
-        strategy,
-      });
-      setPower(power);
-    } catch (e) {
-      console.log('error fetching voting power for proposal', id);
-    }
-  };
-
-  useEffect(() => {
-    if (!currentAccount) {
-      setSupport(undefined);
-      setDidVote(undefined);
-      setVotedPower(undefined);
-      setPower('0');
-    } else {
-      fetchCurrentVote();
-      fetchVotingPower();
-    }
-  }, [voteOngoing, currentAccount, startBlock]);
+  const showCannotVoteMsg = !!user && voteOngoing && Number(powerAtProposalStart) === 0;
+  const showCanVoteMsg =
+    powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
 
   return (
-    <>
-      <Typography variant="h3" sx={{ mb: 8 }}>
-        <Trans>Your voting info</Trans>
-      </Typography>
-      {currentAccount && !didVote && !voteOngoing && (
-        <Typography sx={{ textAlign: 'center' }} color="text.muted">
-          <Trans>You did not participate in this proposal</Trans>
-        </Typography>
-      )}
-      {currentAccount && voteOngoing && (
-        <Row
-          caption={
-            <>
-              <Typography variant="description">
-                <Trans>Voting power</Trans>
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                (AAVE + stkAAVE)
-              </Typography>
-            </>
-          }
-        >
-          <FormattedNumber value={power || 0} variant="main16" visibleDecimals={2} />
-        </Row>
-      )}
-      {currentAccount && didVote && (
-        <Alert severity={support ? 'success' : 'error'} sx={{ my: 2 }}>
-          <Typography variant="subheader1">
-            <Trans>You voted {support ? 'YAE' : 'NAY'}</Trans>
-          </Typography>
-          <Typography variant="caption">
-            <Trans>
-              With a voting power of{' '}
-              <FormattedNumber value={votedPower || 0} variant="caption" visibleDecimals={2} />
-            </Trans>
-          </Typography>
-        </Alert>
-      )}
-      {currentAccount && voteOngoing && Number(power) === 0 && (
-        <Alert severity="warning" sx={{ my: 2 }}>
-          <Trans>Not enough voting power to participate in this proposal</Trans>
-        </Alert>
-      )}
-      {currentAccount && voteOngoing && Number(power) !== 0 && (
+    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+      <Row
+        sx={{ mb: 8 }}
+        caption={
+          <>
+            <Typography variant="h3">
+              <Trans>Your voting info</Trans>
+            </Typography>
+            {network && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: 'text.secondary',
+                }}
+              >
+                <Typography variant="caption">
+                  <Trans>Voting is on</Trans>
+                </Typography>
+                <Box
+                  sx={{
+                    height: 16,
+                    width: 16,
+                    ml: 1,
+                    mr: 1,
+                    mb: 1,
+                  }}
+                >
+                  <img
+                    src={network.networkLogoPath}
+                    alt="network logo"
+                    style={{ height: '100%', width: '100%' }}
+                  />
+                </Box>
+                <Typography variant="caption">{network?.displayName}</Typography>
+              </Box>
+            )}
+          </>
+        }
+      />
+      {user ? (
         <>
-          <Button
-            color="success"
-            variant="contained"
-            fullWidth
-            onClick={() => openGovVote(id, true, power)}
-            disabled={support === true}
-          >
-            <Trans>Vote YAE</Trans>
-          </Button>
-          <Button
-            color="error"
-            variant="contained"
-            fullWidth
-            onClick={() => openGovVote(id, false, power)}
-            disabled={support === false}
-            sx={{ mt: 2 }}
-          >
-            <Trans>Vote NAY</Trans>
-          </Button>
+          {user && !didVote && !voteOngoing && (
+            <Typography sx={{ textAlign: 'center' }} color="text.muted">
+              <Trans>You did not participate in this proposal</Trans>
+            </Typography>
+          )}
+          {user && voteOngoing && (
+            <Row
+              caption={
+                <>
+                  <Typography variant="description">
+                    <Trans>Voting power</Trans>
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    (AAVE + stkAAVE)
+                  </Typography>
+                </>
+              }
+            >
+              <FormattedNumber
+                value={powerAtProposalStart || 0}
+                variant="main16"
+                visibleDecimals={2}
+              />
+            </Row>
+          )}
+          {showAlreadyVotedMsg && voteOnProposal && (
+            <Warning severity={voteOnProposal.support ? 'success' : 'error'} sx={{ my: 2 }}>
+              <Typography variant="subheader1">
+                <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
+              </Typography>
+              <Typography variant="caption">
+                <Trans>
+                  With a voting power of{' '}
+                  <FormattedNumber
+                    value={formatUnits(voteOnProposal.votingPower, 18) || 0}
+                    variant="caption"
+                    visibleDecimals={2}
+                  />
+                </Trans>
+              </Typography>
+            </Warning>
+          )}
+          {showCannotVoteMsg && (
+            <Warning severity="warning" sx={{ my: 2 }}>
+              <Trans>Not enough voting power to participate in this proposal</Trans>
+            </Warning>
+          )}
+          {showCanVoteMsg && (
+            <>
+              <Button
+                color="success"
+                variant="contained"
+                fullWidth
+                onClick={() => openGovVote(voteData, true, powerAtProposalStart)}
+              >
+                <Trans>Vote YAE</Trans>
+              </Button>
+              <Button
+                color="error"
+                variant="contained"
+                fullWidth
+                onClick={() => openGovVote(voteData, false, powerAtProposalStart)}
+                sx={{ mt: 2 }}
+              >
+                <Trans>Vote NAY</Trans>
+              </Button>
+            </>
+          )}
         </>
+      ) : (
+        <ConnectWalletButton />
       )}
-      {!currentAccount && <ConnectWalletButton />}
-    </>
+    </Paper>
   );
 }

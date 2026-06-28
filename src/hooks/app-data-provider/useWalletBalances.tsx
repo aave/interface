@@ -1,86 +1,50 @@
-import { API_ETH_MOCK_ADDRESS, WalletBalanceProvider } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS, ReservesDataHumanized } from '@aave/contract-helpers';
 import { nativeToUSD, normalize, USD_DECIMALS } from '@aave/math-utils';
-import { useApolloClient, useQuery } from '@apollo/client';
 import { BigNumber } from 'bignumber.js';
-import { gql } from 'graphql-tag';
-import { useCallback } from 'react';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
+import { useRootStore } from 'src/store/root';
+import { MarketDataType, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 
-import { usePolling } from '../usePolling';
-import { useProtocolDataContext } from '../useProtocolDataContext';
-import { useC_ProtocolDataQuery } from './graphql/hooks';
+import { usePoolsReservesHumanized } from '../pool/usePoolReserves';
+import { usePoolsTokensBalance } from '../pool/usePoolTokensBalance';
 
 export interface WalletBalance {
-  id: string;
-  address: string;
   amount: string;
+  amountUSD: string;
 }
 
-const WalletBalancesQuery = gql`
-  query WalletBalances($currentAccount: String!, $chainId: Int!) {
-    walletBalances(currentAccount: $currentAccount, chainId: $chainId) {
-      id @client
-      address @client
-      amount @client
-    }
-  }
-`;
+export interface WalletBalancesMap {
+  [address: string]: WalletBalance;
+}
 
-// allow fetching single wallet balance
-// export const useWalletBalance = (chainId: number, address = '') => {
-//   const { cache } = useApolloClient();
-//   const balance = cache.readFragment<WalletBalance>({
-//     id: `WalletBalance:${chainId}_${address.toLowerCase()}`,
-//     fragment: gql`
-//       fragment Balance on WalletBalance {
-//         id @client
-//         address @client
-//         amount @client
-//       }
-//     `,
-//   });
-//   return balance;
-// };
+type FormatAggregatedBalanceParams = {
+  reservesHumanized?: ReservesDataHumanized;
+  balances?: UserPoolTokensBalances[];
+  marketData: MarketDataType;
+};
 
-export const useWalletBalances = () => {
-  const { currentAccount } = useWeb3Context();
-  const { currentMarketData, currentChainId, currentNetworkConfig } = useProtocolDataContext();
-
-  // fetch unformatted reserve data for prices
-  const { data: reservesData } = useC_ProtocolDataQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
-  // fetch unformatted wallet balances
-  const { data: balances } = useQuery<{
-    walletBalances: WalletBalance[];
-  }>(WalletBalancesQuery, {
-    variables: {
-      currentAccount,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
-
-  // process data
-  const walletBalances = balances?.walletBalances || [];
-  const reserves = reservesData?.protocolData.reserves || [];
-  const baseCurrencyData = reservesData?.protocolData.baseCurrencyData || {
+const formatAggregatedBalance = ({
+  reservesHumanized,
+  balances,
+  marketData,
+}: FormatAggregatedBalanceParams) => {
+  const reserves = reservesHumanized?.reservesData || [];
+  const baseCurrencyData = reservesHumanized?.baseCurrencyData || {
     marketReferenceCurrencyDecimals: 0,
     marketReferenceCurrencyPriceInUsd: '0',
     networkBaseTokenPriceInUsd: '0',
     networkBaseTokenPriceDecimals: 0,
   };
+
+  const walletBalances = balances ?? [];
+  // process data
   let hasEmptyWallet = true;
   const aggregatedBalance = walletBalances.reduce((acc, reserve) => {
     const poolReserve = reserves.find((poolReserve) => {
       if (reserve.address === API_ETH_MOCK_ADDRESS.toLowerCase()) {
         return (
           poolReserve.symbol.toLowerCase() ===
-          currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase()
+          networkConfigs[marketData.chainId].wrappedBaseAssetSymbol?.toLowerCase()
         );
       }
       return poolReserve.underlyingAsset.toLowerCase() === reserve.address;
@@ -102,53 +66,44 @@ export const useWalletBalances = () => {
       };
     }
     return acc;
-  }, {} as { [address: string]: { amount: string; amountUSD: string } });
+  }, {} as WalletBalancesMap);
   return {
     walletBalances: aggregatedBalance,
     hasEmptyWallet,
-    loading: !walletBalances.length || !reserves.length,
   };
 };
 
-export const useUpdateWalletBalances = () => {
-  const { currentAccount } = useWeb3Context();
-  const { cache } = useApolloClient();
-  const { currentMarketData, jsonRpcProvider, currentChainId } = useProtocolDataContext();
+export const usePoolsWalletBalances = (marketDatas: MarketDataType[]) => {
+  const user = useRootStore((store) => store.account);
+  const tokensBalanceQueries = usePoolsTokensBalance(marketDatas, user);
+  const poolsBalancesQueries = usePoolsReservesHumanized(marketDatas);
+  const isLoading =
+    tokensBalanceQueries.some((elem) => elem.isLoading) ||
+    poolsBalancesQueries.some((elem) => elem.isLoading);
+  const walletBalances = poolsBalancesQueries.map((query, index) =>
+    formatAggregatedBalance({
+      reservesHumanized: query.data,
+      balances: tokensBalanceQueries[index]?.data,
+      marketData: marketDatas[index],
+    })
+  );
+  return {
+    walletBalances,
+    isLoading,
+  };
+};
 
-  const fetchWalletData = useCallback(async () => {
-    if (!currentAccount) return;
-    const contract = new WalletBalanceProvider({
-      walletBalanceProviderAddress: currentMarketData.addresses.WALLET_BALANCE_PROVIDER,
-      provider: jsonRpcProvider,
-    });
-    const { 0: tokenAddresses, 1: balances } =
-      await contract.getUserWalletBalancesForLendingPoolProvider(
-        currentAccount,
-        currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER
-      );
-    cache.writeQuery({
-      query: WalletBalancesQuery,
-      data: {
-        __typename: 'WalletBalances',
-        walletBalances: tokenAddresses.map((address, ix) => ({
-          __typename: 'WalletBalance',
-          id: `${currentChainId}_${address.toLowerCase()}`,
-          address: address.toLowerCase(),
-          amount: balances[ix].toString(),
-        })) as WalletBalance[],
-      },
-      variables: {
-        currentAccount,
-        chainId: currentChainId,
-      },
-    });
-  }, [currentChainId, currentAccount, currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER]);
+export interface WalletBalances {
+  walletBalances: WalletBalancesMap;
+  hasEmptyWallet: boolean;
+  loading: boolean;
+}
 
-  usePolling(fetchWalletData, 30000, !currentAccount, [
-    currentAccount,
-    currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-    currentChainId,
-  ]);
-
-  return { refetch: fetchWalletData };
+export const useWalletBalances = (marketData: MarketDataType): WalletBalances => {
+  const { walletBalances, isLoading } = usePoolsWalletBalances([marketData]);
+  return {
+    walletBalances: walletBalances[0].walletBalances,
+    hasEmptyWallet: walletBalances[0].hasEmptyWallet,
+    loading: isLoading,
+  };
 };

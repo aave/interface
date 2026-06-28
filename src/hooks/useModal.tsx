@@ -1,7 +1,12 @@
-import { InterestRate } from '@aave/contract-helpers';
-import { createContext, useContext, useState } from 'react';
+import { ChainId, Stake } from '@aave/contract-helpers';
+import { AaveV3Ethereum } from '@aave-dao/aave-address-book';
+import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { VoteProposalData } from 'src/modules/governance/types';
+import { ActionName, SwapActionFields, TransactionHistoryItem } from 'src/modules/history/types';
+import { useRootStore } from 'src/store/root';
 import { TxErrorType } from 'src/ui-config/errorMapping';
+import { GENERAL } from 'src/utils/events';
 
 export enum ModalType {
   Supply,
@@ -9,7 +14,6 @@ export enum ModalType {
   Borrow,
   Repay,
   CollateralChange,
-  RateSwitch,
   Stake,
   Unstake,
   StakeCooldown,
@@ -17,19 +21,50 @@ export enum ModalType {
   ClaimRewards,
   Emode,
   Faucet,
-  Swap,
   GovDelegation,
   GovVote,
+  V3Migration,
+  RevokeGovDelegation,
+  StakeRewardsClaimRestake,
+  StakingMigrate,
+  GovRepresentatives,
+  Bridge,
+  ReadMode,
+  Umbrella,
+  UmbrellaStakeCooldown,
+  UmbrellaClaim,
+  UmbrellaClaimAll,
+  UmbrellaUnstake,
+  SavingsGhoDeposit,
+  SavingsGhoWithdraw,
+  SGhoVaultDeposit,
+  SGhoVaultWithdraw,
+  CancelCowOrder,
+
+  // Swaps
+  Swap,
+  CollateralSwap,
+  DebtSwap,
+  RepayWithCollateral,
+  WithdrawAndSwap,
 }
 
 export interface ModalArgsType {
   underlyingAsset?: string;
-  proposalId?: number;
+  proposal?: VoteProposalData;
   support?: boolean;
   power?: string;
   icon?: string;
-  stakeAssetName?: string;
-  currentRateMode?: InterestRate;
+  stakeAssetName?: Stake;
+  uStakeToken?: string;
+  underlyingTokenAddress?: string;
+  isFrozen?: boolean;
+  representatives?: Array<{ chainId: ChainId; representative: string }>;
+  chainId?: number;
+  umbrellaAssetName?: string;
+  stataTokenAToken?: string;
+  stataTokenAsset?: string;
+  cowOrder?: TransactionHistoryItem<SwapActionFields[ActionName.Swap]>;
 }
 
 export type TxStateType = {
@@ -39,24 +74,88 @@ export type TxStateType = {
   success?: boolean;
 };
 
+type CallbackFn = () => void;
+
 export interface ModalContextType<T extends ModalArgsType> {
-  openSupply: (underlyingAsset: string) => void;
-  openWithdraw: (underlyingAsset: string) => void;
-  openBorrow: (underlyingAsset: string) => void;
-  openRepay: (underlyingAsset: string, currentRateMode: InterestRate) => void;
-  openCollateralChange: (underlyingAsset: string) => void;
-  openRateSwitch: (underlyingAsset: string, currentRateMode: InterestRate) => void;
-  openStake: (stakeAssetName: string, icon: string) => void;
-  openUnstake: (stakeAssetName: string, icon: string) => void;
-  openStakeCooldown: (stakeAssetName: string) => void;
-  openStakeRewardsClaim: (stakeAssetName: string) => void;
+  openSupply: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string,
+    isReserve?: boolean
+  ) => void;
+  openWithdraw: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string
+  ) => void;
+  openBorrow: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string,
+    isReserve?: boolean
+  ) => void;
+  openRepay: (
+    underlyingAsset: string,
+    isFrozen: boolean,
+    currentMarket: string,
+    name: string,
+    funnel: string
+  ) => void;
+  openCollateralChange: (
+    underlyingAsset: string,
+    currentMarket: string,
+    name: string,
+    funnel: string,
+    usageAsCollateralEnabledOnUser: boolean
+  ) => void;
+  openStake: (stakeAssetName: Stake, icon: string) => void;
+  openUnstake: (stakeAssetName: Stake, icon: string) => void;
+  openStakeCooldown: (stakeAssetName: Stake, icon: string) => void;
+  openStakeRewardsClaim: (stakeAssetName: Stake, icon: string) => void;
+  openStakeRewardsRestakeClaim: (stakeAssetName: Stake, icon: string) => void;
+  openUmbrella: (
+    uStakeToken: string,
+    underlyingTokenAddress: string,
+    icon: string,
+    stataTokenAToken: string,
+    stataTokenAsset: string
+  ) => void;
+  openUmbrellaStakeCooldown: (uStakeToken: string, icon: string) => void;
+  openUmbrellaClaim: (uStakeToken: string) => void;
+  openUmbrellaClaimAll: () => void;
+  openUmbrellaUnstake: (
+    uStakeToken: string,
+    underlyingTokenAddress: string,
+    stataTokenAsset: string,
+    icon: string
+  ) => void;
   openClaimRewards: () => void;
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
-  openSwap: (underlyingAsset: string) => void;
+  openCollateralSwap: (underlyingAsset: string) => void;
+  openDebtSwitch: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
-  openGovVote: (proposalId: number, support: boolean, power: string) => void;
+  openRevokeGovDelegation: () => void;
+  openV3Migration: () => void;
+  openGovVote: (proposal: VoteProposalData, support: boolean, power: string) => void;
+  openSwitch: (underlyingAsset?: string, chainId?: number) => void;
+  openBridge: () => void;
+  openStakingMigrate: () => void;
+  openGovRepresentatives: (
+    representatives: Array<{ chainId: ChainId; representative: string }>
+  ) => void;
+  openSavingsGhoDeposit: () => void;
+  openSavingsGhoWithdraw: () => void;
+  openSGhoVaultDeposit: () => void;
+  openSGhoVaultWithdraw: () => void;
+  openCancelCowOrder: (
+    transaction: TransactionHistoryItem<SwapActionFields[ActionName.Swap]>
+  ) => void;
   close: () => void;
+  closeWithCb: (callback: CallbackFn) => void;
   type?: ModalType;
   args: T;
   mainTxState: TxStateType;
@@ -69,90 +168,284 @@ export interface ModalContextType<T extends ModalArgsType> {
   setLoadingTxns: (loading: boolean) => void;
   txError: TxErrorType | undefined;
   setTxError: (error: TxErrorType | undefined) => void;
-  retryWithApproval: boolean;
-  setRetryWithApproval: (permit: boolean) => void;
+  openReadMode: () => void;
 }
 
 export const ModalContext = createContext<ModalContextType<ModalArgsType>>(
   {} as ModalContextType<ModalArgsType>
 );
 
-export const ModalContextProvider: React.FC = ({ children }) => {
+export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { setSwitchNetworkError } = useWeb3Context();
   // contains the current modal open state if any
   const [type, setType] = useState<ModalType>();
   // contains arbitrary key-value pairs as a modal context
   const [args, setArgs] = useState<ModalArgsType>({});
   const [approvalTxState, setApprovalTxState] = useState<TxStateType>({});
-  const [retryWithApproval, setRetryWithApproval] = useState<boolean>(false);
   const [mainTxState, setMainTxState] = useState<TxStateType>({});
   const [gasLimit, setGasLimit] = useState<string>('');
   const [loadingTxns, setLoadingTxns] = useState(false);
   const [txError, setTxError] = useState<TxErrorType>();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <ModalContext.Provider
       value={{
-        openSupply: (underlyingAsset) => {
+        openReadMode: () => {
+          setType(ModalType.ReadMode);
+        },
+        openSupply: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
           setType(ModalType.Supply);
           setArgs({ underlyingAsset });
+
+          if (isReserve) {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'Supply',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          } else {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'Supply',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          }
         },
-        openWithdraw: (underlyingAsset) => {
+        openWithdraw: (underlyingAsset, currentMarket, name, funnel) => {
           setType(ModalType.Withdraw);
           setArgs({ underlyingAsset });
+
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Withdraw',
+            market: currentMarket,
+            assetName: name,
+            asset: underlyingAsset,
+            funnel: funnel,
+          });
         },
-        openBorrow: (underlyingAsset) => {
+        openBorrow: (underlyingAsset, currentMarket, name, funnel, isReserve) => {
           setType(ModalType.Borrow);
           setArgs({ underlyingAsset });
+          if (isReserve) {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'Borrow',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          } else {
+            trackEvent(GENERAL.OPEN_MODAL, {
+              modal: 'Borrow',
+              market: currentMarket,
+              assetName: name,
+              asset: underlyingAsset,
+              funnel,
+            });
+          }
         },
-        openRepay: (underlyingAsset, currentRateMode) => {
+        openRepay: (underlyingAsset, isFrozen, currentMarket, name, funnel) => {
           setType(ModalType.Repay);
-          setArgs({ underlyingAsset, currentRateMode });
+          setArgs({ underlyingAsset, isFrozen });
+
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Repay',
+            asset: underlyingAsset,
+            assetName: name,
+            market: currentMarket,
+            funnel,
+          });
         },
-        openCollateralChange: (underlyingAsset) => {
+        openCollateralChange: (
+          underlyingAsset,
+          currentMarket,
+          name,
+          funnel,
+          usageAsCollateralEnabledOnUser
+        ) => {
           setType(ModalType.CollateralChange);
           setArgs({ underlyingAsset });
-        },
-        openRateSwitch: (underlyingAsset, currentRateMode) => {
-          setType(ModalType.RateSwitch);
-          setArgs({ underlyingAsset, currentRateMode });
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Toggle Collateral',
+            market: currentMarket,
+            assetName: name,
+            asset: underlyingAsset,
+            usageAsCollateralEnabledOnUser: usageAsCollateralEnabledOnUser,
+            funnel,
+          });
         },
         openStake: (stakeAssetName, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Stake', assetName: stakeAssetName });
           setType(ModalType.Stake);
           setArgs({ stakeAssetName, icon });
         },
         openUnstake: (stakeAssetName, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Untake', assetName: stakeAssetName });
           setType(ModalType.Unstake);
           setArgs({ stakeAssetName, icon });
         },
-        openStakeCooldown: (stakeAssetName) => {
+        openStakeCooldown: (stakeAssetName, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Cooldown', assetName: stakeAssetName });
           setType(ModalType.StakeCooldown);
-          setArgs({ stakeAssetName });
+          setArgs({ stakeAssetName, icon });
         },
-        openStakeRewardsClaim: (stakeAssetName) => {
+        openStakeRewardsClaim: (stakeAssetName, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Stake Rewards', assetName: stakeAssetName });
           setType(ModalType.StakeRewardClaim);
-          setArgs({ stakeAssetName });
+          setArgs({ stakeAssetName, icon });
+        },
+        openStakeRewardsRestakeClaim: (stakeAssetName, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Restatke Stake Rewards',
+            assetName: stakeAssetName,
+          });
+          setType(ModalType.StakeRewardsClaimRestake);
+          setArgs({ stakeAssetName, icon });
+        },
+        openUmbrella: (
+          uStakeToken,
+          underlyingTokenAddress,
+          icon,
+          stataTokenAToken,
+          stataTokenAsset
+        ) => {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Umbrella',
+            uStakeToken: uStakeToken,
+            stataTokenAToken: stataTokenAToken,
+            stataTokenAsset: stataTokenAsset,
+          });
+
+          setType(ModalType.Umbrella);
+          setArgs({
+            uStakeToken,
+            underlyingTokenAddress,
+            icon,
+            stataTokenAToken: stataTokenAToken,
+            stataTokenAsset: stataTokenAsset,
+          });
+        },
+        openUmbrellaStakeCooldown: (uStakeToken, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Umbrella Stake Cooldown',
+            uStakeToken: uStakeToken,
+          });
+
+          setType(ModalType.UmbrellaStakeCooldown);
+          setArgs({ uStakeToken, icon });
+        },
+        openUmbrellaClaim: (uStakeToken) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella Claim', uStakeToken: uStakeToken });
+          setType(ModalType.UmbrellaClaim);
+          setArgs({ uStakeToken });
+        },
+        openUmbrellaClaimAll: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella Claim All' });
+          setType(ModalType.UmbrellaClaimAll);
+        },
+        openUmbrellaUnstake: (uStakeToken, underlyingTokenAddress, stataTokenAsset, icon) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Umbrella Redeem', uStakeToken: uStakeToken });
+
+          setType(ModalType.UmbrellaUnstake);
+          setArgs({ uStakeToken, underlyingTokenAddress, stataTokenAsset, icon });
         },
         openClaimRewards: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Claim' });
           setType(ModalType.ClaimRewards);
         },
         openEmode: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'eMode' });
           setType(ModalType.Emode);
         },
         openFaucet: (underlyingAsset) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Faucet' });
           setType(ModalType.Faucet);
           setArgs({ underlyingAsset });
         },
-        openSwap: (underlyingAsset) => {
-          setType(ModalType.Swap);
+        openCollateralSwap: (underlyingAsset) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Collateral Swap' });
+          setType(ModalType.CollateralSwap);
+          setArgs({ underlyingAsset });
+        },
+        openBridge: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Bridge' });
+          setType(ModalType.Bridge);
+        },
+        openDebtSwitch: (underlyingAsset) => {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Debt Switch',
+            asset: underlyingAsset,
+          });
+          setType(ModalType.DebtSwap);
           setArgs({ underlyingAsset });
         },
         openGovDelegation: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Governance Delegation' });
           setType(ModalType.GovDelegation);
         },
-        openGovVote: (proposalId, support, power) => {
+        openRevokeGovDelegation: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Revoke Governance Delegation' });
+          setType(ModalType.RevokeGovDelegation);
+        },
+        openGovVote: (proposal, support, power) => {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Vote',
+            proposalId: proposal.proposalId,
+            voteSide: support,
+          });
           setType(ModalType.GovVote);
-          setArgs({ proposalId, support, power });
+          setArgs({ proposal, support, power });
+        },
+        openGovRepresentatives: (representatives) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Representatives' });
+          setType(ModalType.GovRepresentatives);
+          setArgs({ representatives });
+        },
+        openV3Migration: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'V2->V3 Migration' });
+          setType(ModalType.V3Migration);
+        },
+        openSwitch: (underlyingAsset, chainId) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Swap' });
+          setType(ModalType.Swap);
+          setArgs({ underlyingAsset, chainId });
+        },
+        openStakingMigrate: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Staking V1->V2 Migration' });
+          setType(ModalType.StakingMigrate);
+        },
+        openSavingsGhoDeposit: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Savings GHO Deposit' });
+          setType(ModalType.SavingsGhoDeposit);
+          setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
+        },
+        openSavingsGhoWithdraw: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Savings GHO Withdraw' });
+          setType(ModalType.SavingsGhoWithdraw);
+          setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
+        },
+        openSGhoVaultDeposit: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'sGHO Vault Deposit' });
+          setType(ModalType.SGhoVaultDeposit);
+          setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
+        },
+        openSGhoVaultWithdraw: () => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'sGHO Vault Withdraw' });
+          setType(ModalType.SGhoVaultWithdraw);
+          setArgs({ underlyingAsset: AaveV3Ethereum.ASSETS.GHO.UNDERLYING.toLowerCase() });
+        },
+        openCancelCowOrder: (transaction) => {
+          trackEvent(GENERAL.OPEN_MODAL, {
+            modal: 'Cancel CoW Order',
+            orderId: transaction.id,
+          });
+          setType(ModalType.CancelCowOrder);
+          setArgs({ cowOrder: transaction });
         },
         close: () => {
           setType(undefined);
@@ -162,7 +455,10 @@ export const ModalContextProvider: React.FC = ({ children }) => {
           setGasLimit('');
           setTxError(undefined);
           setSwitchNetworkError(undefined);
-          setRetryWithApproval(false);
+        },
+        closeWithCb: (callback) => {
+          close();
+          callback();
         },
         type,
         args,
@@ -176,8 +472,6 @@ export const ModalContextProvider: React.FC = ({ children }) => {
         setLoadingTxns,
         txError,
         setTxError,
-        retryWithApproval,
-        setRetryWithApproval,
       }}
     >
       {children}

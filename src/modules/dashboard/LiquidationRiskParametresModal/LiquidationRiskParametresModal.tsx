@@ -1,5 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { AlertColor, Typography } from '@mui/material';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/events';
 
 import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -26,10 +28,29 @@ export const LiquidationRiskParametresInfoModal = ({
   currentLoanToValue,
   currentLiquidationThreshold,
 }: LiquidationRiskParametresInfoModalProps) => {
+  let healthFactorColor: AlertColor = 'success';
+  const hf = Number(healthFactor);
+  if (hf > 1.1 && hf <= 3) {
+    healthFactorColor = 'warning';
+  } else if (hf <= 1.1) {
+    healthFactorColor = 'error';
+  }
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  let ltvColor: AlertColor = 'success';
+  const ltvPercent = Number(loanToValue) * 100;
+  const currentLtvPercent = Number(currentLoanToValue) * 100;
+  const liquidationThresholdPercent = Number(currentLiquidationThreshold) * 100;
+  if (ltvPercent >= Math.min(currentLtvPercent, liquidationThresholdPercent)) {
+    ltvColor = 'error';
+  } else if (ltvPercent > currentLtvPercent / 2 && ltvPercent < currentLtvPercent) {
+    ltvColor = 'warning';
+  }
+
   return (
     <BasicModal open={open} setOpen={setOpen}>
       <Typography variant="h2" mb={6}>
-        <Trans>Liquidation risk parametres</Trans>
+        <Trans>Liquidation risk parameters</Trans>
       </Typography>
       <Typography mb={6}>
         <Trans>
@@ -37,6 +58,11 @@ export const LiquidationRiskParametresInfoModal = ({
           liquidations you can supply more collateral or repay borrow positions.
         </Trans>{' '}
         <Link
+          onClick={() => {
+            trackEvent(GENERAL.EXTERNAL_LINK, {
+              Link: 'HF Risk Link',
+            });
+          }}
           href="https://docs.aave.com/faq/"
           sx={{ textDecoration: 'underline' }}
           color="text.primary"
@@ -67,8 +93,7 @@ export const LiquidationRiskParametresInfoModal = ({
             triggered.
           </Trans>
         }
-        isWarning={+healthFactor <= 3 && +healthFactor > 1.1}
-        isError={+healthFactor <= 1.1}
+        color={healthFactorColor}
       >
         <HFContent healthFactor={healthFactor} />
       </InfoWrapper>
@@ -93,16 +118,13 @@ export const LiquidationRiskParametresInfoModal = ({
             be liquidated.
           </Trans>
         }
-        isWarning={
-          +loanToValue * 100 < +currentLoanToValue * 100 &&
-          +loanToValue * 100 > +currentLoanToValue * 100 - (+currentLoanToValue * 100) / 2
-        }
-        isError={+loanToValue * 100 > +currentLiquidationThreshold * 100}
+        color={ltvColor}
       >
         <LTVContent
           loanToValue={loanToValue}
           currentLoanToValue={currentLoanToValue}
           currentLiquidationThreshold={currentLiquidationThreshold}
+          color={ltvColor}
         />
       </InfoWrapper>
     </BasicModal>

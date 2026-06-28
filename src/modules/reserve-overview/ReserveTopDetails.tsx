@@ -6,6 +6,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 import { assetIsBorrowableOnMarket } from 'src/utils/getMaxAmountAvailableToBorrow';
+
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
@@ -58,7 +59,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
       <TopInfoPanelItem title={<Trans>Available liquidity</Trans>} loading={loading} hideIcon>
         <FormattedNumber
           value={
-            poolReserve && assetIsBorrowableOnMarket(poolReserve)
+            poolReserve?.borrowingEnabled && assetIsBorrowableOnMarket(poolReserve)
               ? Math.max(Number(poolReserve?.availableLiquidityUSD), 0)
               : 0
           }

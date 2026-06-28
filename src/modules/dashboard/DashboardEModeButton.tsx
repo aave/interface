@@ -1,9 +1,13 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/outline';
-import { LightningBoltIcon } from '@heroicons/react/solid';
+import { CogIcon, LightningBoltIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import React, { useState } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
+import { DASHBOARD, GENERAL } from 'src/utils/events';
+import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
 
@@ -14,18 +18,20 @@ import { getEmodeMessage } from '../../components/transactions/Emode/EmodeNaming
 
 interface DashboardEModeButtonProps {
   userEmodeCategoryId: number;
-  onClick: () => void;
 }
 
-export const DashboardEModeButton = ({
-  onClick,
-  userEmodeCategoryId,
-}: DashboardEModeButtonProps) => {
+export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButtonProps) => {
+  const { openEmode } = useModalContext();
+  const { eModes: _eModes } = useAppDataContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   const iconButtonSize = 12;
 
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    trackEvent(DASHBOARD.E_MODE_INFO_DASHBOARD, { userEmodeCategoryId });
+
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -34,7 +40,11 @@ export const DashboardEModeButton = ({
 
   const isEModeDisabled = userEmodeCategoryId === 0;
 
-  const EModeLabelMessage = () => <Trans>{getEmodeMessage(userEmodeCategoryId)}</Trans>;
+  const EModeLabelMessage = () => (
+    <Trans>
+      {replaceUnderscoresWithSpaces(getEmodeMessage(_eModes[userEmodeCategoryId].label))}
+    </Trans>
+  );
 
   return (
     <Box
@@ -43,7 +53,7 @@ export const DashboardEModeButton = ({
         e.stopPropagation();
       }}
     >
-      <Typography mr={1} color="text.secondary">
+      <Typography mr={1} variant="description" color="text.secondary">
         <Trans>E-Mode</Trans>
       </Typography>
 
@@ -52,12 +62,12 @@ export const DashboardEModeButton = ({
           e.stopPropagation();
           handleClick(e);
         }}
+        data-cy={`emode-open`}
         size="small"
         variant="outlined"
         sx={(theme) => ({
           ml: 1,
           borderRadius: '4px',
-          color: open ? 'text.secondary' : 'text.muted',
           p: 0,
           '&:after': {
             content: "''",
@@ -72,20 +82,24 @@ export const DashboardEModeButton = ({
         })}
       >
         <Box
-          sx={{
+          sx={(theme) => ({
             display: 'inline-flex',
             alignItems: 'center',
             position: 'relative',
             zIndex: 1,
-            bgcolor: 'background.paper',
-            px: 1.5,
+            bgcolor: isEModeDisabled
+              ? open
+                ? theme.palette.background.disabled
+                : theme.palette.background.surface
+              : theme.palette.background.paper,
+            px: '4px',
             borderRadius: '4px',
-          }}
+          })}
         >
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              mr: 1,
+              mr: '4px',
               color: isEModeDisabled ? 'text.muted' : 'text.primary',
             }}
           >
@@ -93,7 +107,9 @@ export const DashboardEModeButton = ({
           </SvgIcon>
 
           {isEModeDisabled ? (
-            <EModeLabelMessage />
+            <Typography variant="buttonS" color="text.secondary">
+              <EModeLabelMessage />
+            </Typography>
           ) : (
             <TypographyGradient variant="buttonS">
               <EModeLabelMessage />
@@ -103,11 +119,11 @@ export const DashboardEModeButton = ({
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              ml: 1,
-              color: open ? 'primary.main' : 'text.muted',
+              ml: '4px',
+              color: 'primary.light',
             }}
           >
-            {open ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            <CogIcon />
           </SvgIcon>
         </Box>
       </Button>
@@ -178,9 +194,9 @@ export const DashboardEModeButton = ({
 
           <Typography variant="caption" color="text.secondary" mb={4}>
             <Trans>
-              E-Mode increases your LTV for a selected category of assets up to 97%.{' '}
+              E-Mode increases your LTV for a selected category of assets.{' '}
               <Link
-                href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
+                href="https://aave.com/help/borrowing/e-mode"
                 sx={{ textDecoration: 'underline' }}
                 variant="caption"
                 color="text.secondary"
@@ -190,15 +206,44 @@ export const DashboardEModeButton = ({
             </Trans>
           </Typography>
 
-          <Button
-            variant={isEModeDisabled ? 'gradient' : 'outlined'}
-            onClick={() => {
-              onClick();
-              handleClose();
-            }}
-          >
-            {isEModeDisabled ? <Trans>Enable E-Mode</Trans> : <Trans>Disable E-Mode</Trans>}
-          </Button>
+          {isEModeDisabled ? (
+            <Button
+              fullWidth
+              variant={'gradient'}
+              onClick={() => {
+                trackEvent(GENERAL.OPEN_MODAL, {
+                  type: 'Enable E-Mode',
+                  data: userEmodeCategoryId,
+                });
+
+                openEmode();
+                handleClose();
+              }}
+              data-cy={'emode-enable'}
+            >
+              <Trans>Enable E-Mode</Trans>
+            </Button>
+          ) : (
+            <>
+              <Button
+                fullWidth
+                sx={{ mb: '6px' }}
+                variant={'outlined'}
+                onClick={() => {
+                  trackEvent(GENERAL.OPEN_MODAL, {
+                    modal: 'Switch E-Mode',
+                    data: userEmodeCategoryId,
+                  });
+
+                  openEmode();
+                  handleClose();
+                }}
+                data-cy={'emode-switch'}
+              >
+                <Trans>Manage E-Mode</Trans>
+              </Button>
+            </>
+          )}
         </Box>
       </Menu>
     </Box>

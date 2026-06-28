@@ -1,11 +1,15 @@
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
-import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
+import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { useRootStore } from 'src/store/root';
+import { stakeAssetNameFormatted, stakeConfig } from 'src/ui-config/stakeConfig';
+import { SAFETY_MODULE } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { CooldownWarning } from '../../Warnings/CooldownWarning';
@@ -19,7 +23,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeActions } from './StakeActions';
 
 export type StakeProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
   icon: string;
 };
 
@@ -27,24 +31,24 @@ export enum ErrorType {
   NOT_ENOUGH_BALANCE,
 }
 
-type StakingType = 'aave' | 'bpt';
-
 export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
-  const data = useStakeData();
-  const stakeData = data.stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
-  const { chainId: connectedChainId } = useWeb3Context();
-  const stakeConfig = getStakeConfig();
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
+
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
+
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // states
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
-  const walletBalance = normalize(
-    data.stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType]
-      .underlyingTokenUserBalance || '0',
-    18
-  );
+  const walletBalance = normalize(stakeUserData?.underlyingTokenUserBalance || '0', 18);
 
   const isMaxSelected = _amount === '-1';
   const amount = isMaxSelected ? walletBalance : _amount;
@@ -56,10 +60,7 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
   };
 
   // staking token usd value
-  const amountInUsd =
-    Number(amount) *
-    (Number(normalize(stakeData?.stakeTokenPriceEth || 1, 18)) /
-      Number(normalize(data.stakeGeneralResult?.stakeGeneralUIData.usdPriceEth || 1, 18)));
+  const amountInUsd = Number(amount) * Number(stakeData?.stakeTokenPriceUSDFormatted);
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
@@ -76,31 +77,50 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
     }
   };
 
+  const nameFormatted = stakeAssetNameFormatted(stakeAssetName);
+
   // is Network mismatched
-  const stakingChain = stakeConfig.chainId;
-  const networkConfig = getNetworkConfig(stakingChain);
+  const stakingChain =
+    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
+      ? currentChainId
+      : stakeConfig.chainId;
   const isWrongNetwork = connectedChainId !== stakingChain;
+
+  const networkConfig = getNetworkConfig(stakingChain);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
   if (txState.success)
-    return <TxSuccessView action="Staked" amount={amountRef.current} symbol={icon} />;
+    return (
+      <TxSuccessView
+        action={<Trans>Staked</Trans>}
+        amount={amountRef.current}
+        symbol={nameFormatted}
+      />
+    );
 
   return (
     <>
-      <TxModalTitle title="Stake" symbol={icon} />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
+      <TxModalTitle title="Stake" symbol={nameFormatted} />
+      {isWrongNetwork && !readOnlyModeAddress && (
+        <ChangeNetworkWarning
+          networkName={networkConfig.name}
+          chainId={stakingChain}
+          funnel={'Stake Modal'}
+          autoSwitchOnMount={true}
+        />
       )}
 
-      <CooldownWarning />
+      {nameFormatted !== 'GHO' && stakeData?.stakeCooldownSeconds && (
+        <CooldownWarning cooldownSeconds={stakeData.stakeCooldownSeconds} />
+      )}
 
       <AssetInput
         value={amount}
         onChange={handleChange}
         usdValue={amountInUsd.toString()}
-        symbol={icon}
+        symbol={nameFormatted}
         assets={[
           {
             balance: walletBalance.toString(),
@@ -109,13 +129,14 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         ]}
         isMaxSelected={isMaxSelected}
         maxValue={walletBalance.toString()}
+        balanceText={<Trans>Wallet balance</Trans>}
       />
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
         <DetailsNumberLine
           description={<Trans>Staking APR</Trans>}
           value={Number(stakeData?.stakeApy || '0') / 10000}
@@ -129,9 +150,10 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
         sx={{ mt: '48px' }}
         amountToStake={amount}
         isWrongNetwork={isWrongNetwork}
-        symbol={icon}
+        symbol={nameFormatted}
         blocked={blockingError !== undefined}
         selectedToken={stakeAssetName}
+        event={SAFETY_MODULE.STAKE_SAFETY_MODULE}
       />
     </>
   );

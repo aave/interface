@@ -1,4 +1,4 @@
-import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/outline';
+import { CheckIcon } from '@heroicons/react/outline';
 import { Box, SvgIcon } from '@mui/material';
 
 import { NoData } from '../../../components/primitives/NoData';
@@ -21,11 +21,8 @@ export const ListItemCanBeCollateral = ({
         </SvgIcon>
       );
     } else if (usageAsCollateralEnabled && isIsolated) {
-      return (
-        <SvgIcon sx={{ color: 'warning.main', fontSize: { xs: '20px', xsm: '24px' } }}>
-          <ExclamationCircleIcon />
-        </SvgIcon>
-      );
+      // NOTE: handled in ListItemIsolationBadge
+      return null;
     } else {
       return <NoData variant="main14" color="text.secondary" />;
     }

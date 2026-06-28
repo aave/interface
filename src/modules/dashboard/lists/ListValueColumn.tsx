@@ -1,7 +1,7 @@
 import { Box, Tooltip } from '@mui/material';
 import { ReactNode } from 'react';
 
-import { ListColumn } from '../../../components/lists/ListColumn';
+import { ListColumn, ListColumnProps } from '../../../components/lists/ListColumn';
 import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
 
 interface ListValueColumnProps {
@@ -11,6 +11,7 @@ interface ListValueColumnProps {
   withTooltip?: boolean;
   capsComponent?: ReactNode;
   disabled?: boolean;
+  listColumnProps?: ListColumnProps;
 }
 
 const Content = ({
@@ -52,9 +53,10 @@ export const ListValueColumn = ({
   withTooltip,
   capsComponent,
   disabled,
+  listColumnProps = {},
 }: ListValueColumnProps) => {
   return (
-    <ListColumn>
+    <ListColumn {...listColumnProps}>
       {withTooltip ? (
         <Tooltip
           title={

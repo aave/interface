@@ -1,19 +1,9 @@
+import { DelegationType } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { FormControl, MenuItem, OutlinedInput, Select } from '@mui/material';
-import React from 'react';
-import { DelegationType } from 'src/helpers/types';
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+import { Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 
 export type DelegationTypeSelectorProps = {
   delegationType: DelegationType;
@@ -24,29 +14,42 @@ export const DelegationTypeSelector = ({
   delegationType,
   setDelegationType,
 }: DelegationTypeSelectorProps) => {
+  useEffect(() => {
+    setDelegationType(DelegationType.ALL);
+  }, [setDelegationType]);
+
   return (
-    <FormControl variant="standard" fullWidth sx={{ mb: 6 }}>
-      <Select
-        fullWidth
-        input={<OutlinedInput />}
-        MenuProps={MenuProps}
-        value={delegationType}
-        sx={{
-          '& .MuiSvgIcon-root': {
-            right: '12px',
-          },
-        }}
-        onChange={(e) => {
-          setDelegationType(e.target.value as DelegationType);
-        }}
+    <StyledTxModalToggleGroup
+      value={delegationType}
+      exclusive
+      onChange={(_, value) => setDelegationType(value)}
+    >
+      <StyledTxModalToggleButton
+        value={DelegationType.ALL}
+        disabled={delegationType === DelegationType.ALL}
       >
-        <MenuItem value={DelegationType.VOTING}>
-          <Trans>Voting power</Trans>
-        </MenuItem>
-        <MenuItem value={DelegationType.PROPOSITION_POWER}>
-          <Trans>Proposition power</Trans>
-        </MenuItem>
-      </Select>
-    </FormControl>
+        <Typography variant="buttonM">
+          <Trans>Both</Trans>
+        </Typography>
+      </StyledTxModalToggleButton>
+
+      <StyledTxModalToggleButton
+        value={DelegationType.VOTING}
+        disabled={delegationType === DelegationType.VOTING}
+      >
+        <Typography variant="buttonM">
+          <Trans>Voting</Trans>
+        </Typography>
+      </StyledTxModalToggleButton>
+
+      <StyledTxModalToggleButton
+        value={DelegationType.PROPOSITION}
+        disabled={delegationType === DelegationType.PROPOSITION}
+      >
+        <Typography variant="buttonM">
+          <Trans>Proposition</Trans>
+        </Typography>
+      </StyledTxModalToggleButton>
+    </StyledTxModalToggleGroup>
   );
 };

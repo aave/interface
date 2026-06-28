@@ -1,23 +1,19 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
-
+import { API_ETH_MOCK_ADDRESS, ERC20Service, transactionType } from '@aave/contract-helpers';
+import { SignatureLike } from '@ethersproject/bytes';
+import { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers';
+import { getAccount, watchAccount } from '@wagmi/core';
+import { BigNumber, PopulatedTransaction, utils } from 'ethers';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
+import { useRootStore } from 'src/store/root';
+import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { hexToAscii } from 'src/utils/utils';
-import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+import { UserRejectedRequestError } from 'viem';
+import { useAccount, useConnect, useSwitchChain, useWatchAsset } from 'wagmi';
+import { useShallow } from 'zustand/shallow';
 
 import { Web3Context } from '../hooks/useWeb3Context';
-import { getWallet, WalletType } from './WalletOptions';
-import { AbstractConnector } from '@web3-react/abstract-connector';
-import {
-  JsonRpcProvider,
-  TransactionResponse,
-  // Web3Provider,
-} from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { BigNumber, providers } from 'ethers';
-import { SignatureLike } from '@ethersproject/bytes';
-import { API_ETH_MOCK_ADDRESS, transactionType } from '@aave/contract-helpers';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-import { WalletLinkConnector } from '@web3-react/walletlink-connector';
-import { TorusConnector } from '@web3-react/torus-connector';
+import { getEthersProvider } from './adapters/EthersAdapter';
 
 export type ERC20TokenType = {
   address: string;
@@ -28,195 +24,118 @@ export type ERC20TokenType = {
 };
 
 export type Web3Data = {
-  connectWallet: (wallet: WalletType) => Promise<void>;
-  disconnectWallet: () => void;
   currentAccount: string;
-  connected: boolean;
-  loading: boolean;
-  provider: JsonRpcProvider | undefined;
   chainId: number;
   switchNetwork: (chainId: number) => Promise<void>;
   getTxError: (txHash: string) => Promise<string>;
-  sendTx: (txData: transactionType) => Promise<TransactionResponse>;
+  sendTx: (txData: transactionType | PopulatedTransaction) => Promise<TransactionResponse>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   signTxData: (unsignedData: string) => Promise<SignatureLike>;
-  error: Error | undefined;
   switchNetworkError: Error | undefined;
   setSwitchNetworkError: (err: Error | undefined) => void;
+  readOnlyMode: boolean;
+  readOnlyModeAddress: string | undefined;
+  provider: JsonRpcProvider | undefined;
+  setReadOnlyModeAddress: (address: string | undefined) => void;
 };
 
+let didInit = false;
+let didAutoConnectForCypress = false;
+
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
-  const {
-    account,
-    chainId,
-    library: provider,
-    activate,
-    active,
-    error,
-    deactivate,
-    setError,
-  } = useWeb3React<providers.Web3Provider>();
+  const { switchChainAsync } = useSwitchChain();
+  const { watchAssetAsync } = useWatchAsset();
+  const { chainId, address } = useAccount();
+  const { connect, connectors } = useConnect();
 
-  // const [provider, setProvider] = useState<JsonRpcProvider>();
-  const [mockAddress, setMockAddress] = useState<string>();
-  const [connector, setConnector] = useState<AbstractConnector>();
-  const [loading, setLoading] = useState(false);
-  const [tried, setTried] = useState(false);
-  const [deactivated, setDeactivated] = useState(false);
-  const [triedSafe, setTriedSafe] = useState(false);
+  const [readOnlyModeAddress, setReadOnlyModeAddress] = useState<string | undefined>();
   const [switchNetworkError, setSwitchNetworkError] = useState<Error>();
-
-  // for now we use network changed as it returns the chain string instead of hex
-  // const handleChainChanged = (chainId: number) => {
-  //   console.log('chainChanged', chainId);
-  //   if (selectedWallet) {
-  //     connectWallet(selectedWallet);
-  //   }
-  // };
-
-  // Wallet connection and disconnection
-  // clean local storage
-  const cleanConnectorStorage = useCallback((): void => {
-    if (connector instanceof WalletConnectConnector) {
-      localStorage.removeItem('walletconnect');
-    } else if (connector instanceof WalletLinkConnector) {
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:version');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:session:id');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:session:secret');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:session:linked');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:AppVersion');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:Addresses');
-      localStorage.removeItem('-walletlink:https://www.walletlink.org:walletUsername');
-    } else if (connector instanceof TorusConnector) {
-      localStorage.removeItem('loglevel:torus.js');
-      localStorage.removeItem('loglevel:torus-embed');
-      localStorage.removeItem('loglevel:http-helpers');
-    }
-  }, [connector]);
-
-  const disconnectWallet = useCallback(async () => {
-    cleanConnectorStorage();
-    localStorage.removeItem('walletProvider');
-    deactivate();
-    // @ts-expect-error close can be returned by wallet
-    if (connector && connector.close) {
-      // @ts-expect-error close can be returned by wallet
-      // close will remove wallet from DOM if provided by wallet
-      await connector.close();
-    }
-
-    setLoading(false);
-    setDeactivated(true);
-    setSwitchNetworkError(undefined);
-    if (mockAddress) {
-      setMockAddress(undefined);
-      localStorage.removeItem('mockWalletAddress');
-    }
-  }, [provider, connector]);
-
-  // connect to the wallet specified by wallet type
-  const connectWallet = useCallback(
-    async (wallet: WalletType) => {
-      setLoading(true);
-      try {
-        const connector: AbstractConnector = getWallet(wallet, chainId);
-
-        if (connector instanceof WalletConnectConnector) {
-          connector.walletConnectProvider = undefined;
-        }
-
-        await activate(connector, undefined, true);
-        setConnector(connector);
-        setSwitchNetworkError(undefined);
-        localStorage.setItem('walletProvider', wallet.toString());
-        setDeactivated(false);
-        setLoading(false);
-      } catch (e) {
-        console.log('error on activation', e);
-        setError(e);
-        // disconnectWallet();
-        setLoading(false);
-      }
-    },
-    [disconnectWallet]
+  const [setAccount, setConnectedAccountIsContract, setWalletType] = useRootStore(
+    useShallow((store) => [
+      store.setAccount,
+      store.setConnectedAccountIsContract,
+      store.setWalletType,
+    ])
   );
 
-  // first, try connecting to a gnosis safe
+  const account = address;
+  const readOnlyMode = utils.isAddress(readOnlyModeAddress || '');
+  let currentAccount = account?.toLowerCase() || '';
+  if (readOnlyMode && readOnlyModeAddress) {
+    currentAccount = readOnlyModeAddress;
+  }
+
+  const { data: isContractAddress } = useIsContractAddress(account || '', chainId);
+
   useEffect(() => {
-    if (!triedSafe) {
-      const gnosisConnector = getWallet(WalletType.GNOSIS);
-      // @ts-expect-error isSafeApp not in abstract connector type
-      gnosisConnector.isSafeApp().then((loadedInSafe) => {
-        if (loadedInSafe) {
-          connectWallet(WalletType.GNOSIS)
-            .then(() => {
-              setTriedSafe(true);
-            })
-            .catch(() => {
-              setTriedSafe(true);
-            });
-        } else {
-          setTriedSafe(true);
-        }
-      });
+    if (didInit) {
+      return;
     }
-  }, [connectWallet, setTriedSafe, triedSafe]);
 
-  // handle logic to eagerly connect to the injected ethereum provider,
-  // if it exists and has granted access already
+    // If the app loads in readOnlyMode, then we disconnect the wallet if it auto connected
+    const storedReadOnlyAddress = localStorage.getItem('readOnlyModeAddress');
+    if (storedReadOnlyAddress && utils.isAddress(storedReadOnlyAddress)) {
+      setReadOnlyModeAddress(storedReadOnlyAddress);
+    }
+
+    didInit = true;
+  }, [readOnlyMode]);
+
   useEffect(() => {
-    const lastWalletProvider = localStorage.getItem('walletProvider');
-    if (!active && !deactivated && triedSafe) {
-      if (!!lastWalletProvider) {
-        connectWallet(lastWalletProvider as WalletType).catch(() => {
-          setTried(true);
-        });
-      } else {
-        setTried(true);
-        // For now we will not eagerly connect to injected provider
-        // const injected = getWallet(WalletType.INJECTED);
-        // // @ts-expect-error isAuthorized not in AbstractConnector type. But method is there for
-        // // injected provider
-        // injected.isAuthorized().then((isAuthorized: boolean) => {
-        //   if (isAuthorized) {
-        //     connectWallet(WalletType.INJECTED).catch(() => {
-        //       setTried(true);
-        //     });
-        //   } else {
-        //     setTried(true);
-        //   }
-        // });
-      }
+    // If running cypress tests, then we try to auto connect on app load
+    // so it doesn't have to be driven through the UI.
+    const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
+    if (!isCypressEnabled || didAutoConnectForCypress) {
+      return;
     }
-  }, [activate, setTried, active, connectWallet, deactivated, triedSafe]);
 
-  // if the connection worked, wait until we get confirmation of that to flip the flag
-  useEffect(() => {
-    if (!tried && active) {
-      setTried(true);
-    }
-  }, [tried, active]);
+    const injected = connectors[0];
+    connect({ connector: injected });
+    didAutoConnectForCypress = true;
+  }, [connect, connectors]);
 
-  // Tx methods
-
-  // TODO: we use from instead of currentAccount because of the mock wallet.
-  // If we used current account then the tx could get executed
-  const sendTx = async (txData: transactionType): Promise<TransactionResponse> => {
+  const sendTx = async (
+    txData: transactionType | PopulatedTransaction
+  ): Promise<TransactionResponse> => {
+    const provider = await getEthersProvider(wagmiConfig, { chainId });
     if (provider) {
       const { from, ...data } = txData;
       const signer = provider.getSigner(from);
-      const txResponse: TransactionResponse = await signer.sendTransaction({
-        ...data,
-        value: data.value ? BigNumber.from(data.value) : undefined,
-      });
+      const txResponse: TransactionResponse = await signer
+        .sendTransaction({
+          ...data,
+          value: data.value ? BigNumber.from(data.value) : undefined,
+        })
+        .catch(async (error) => {
+          // Some wallets (MetaMask Delegation Framework, Safe) return tx responses
+          // that ethers v5 can't parse (e.g. undefined nonce). The tx was already
+          // sent successfully — recover by waiting for the receipt by hash.
+          if (error.code === 'INVALID_ARGUMENT' && error.transactionHash) {
+            const receipt = await provider.waitForTransaction(error.transactionHash);
+            if (receipt.status === 0) {
+              throw new Error('transaction failed');
+            }
+            return {
+              hash: error.transactionHash,
+              wait: async (confirmations?: number) => {
+                if (confirmations && confirmations > 1) {
+                  const r = await provider.waitForTransaction(error.transactionHash, confirmations);
+                  if (r.status === 0) throw new Error('transaction failed');
+                  return r;
+                }
+                return receipt;
+              },
+            } as TransactionResponse;
+          }
+          throw error;
+        });
       return txResponse;
     }
     throw new Error('Error sending transaction. Provider not found');
   };
 
-  // TODO: recheck that it works on all wallets
   const signTxData = async (unsignedData: string): Promise<SignatureLike> => {
+    const provider = await getEthersProvider(wagmiConfig, { chainId });
     if (provider && account) {
       const signature: SignatureLike = await provider.send('eth_signTypedData_v4', [
         account,
@@ -229,48 +148,20 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   };
 
   const switchNetwork = async (newChainId: number) => {
-    if (provider) {
-      try {
-        await provider.send('wallet_switchEthereumChain', [
-          { chainId: `0x${newChainId.toString(16)}` },
-        ]);
+    try {
+      await switchChainAsync({ chainId: newChainId });
+      setSwitchNetworkError(undefined);
+    } catch (switchError) {
+      if (switchError.code === UserRejectedRequestError.code) {
+        setSwitchNetworkError(switchError);
+      } else {
         setSwitchNetworkError(undefined);
-      } catch (switchError) {
-        const networkInfo = getNetworkConfig(newChainId);
-        if (switchError.code === 4902) {
-          try {
-            try {
-              await provider.send('wallet_addEthereumChain', [
-                {
-                  chainId: `0x${newChainId.toString(16)}`,
-                  chainName: networkInfo.name,
-                  nativeCurrency: {
-                    symbol: networkInfo.baseAssetSymbol,
-                    decimals: networkInfo.baseAssetDecimals,
-                  },
-                  rpcUrls: [...networkInfo.publicJsonRPCUrl, networkInfo.publicJsonRPCWSUrl],
-                  blockExplorerUrls: [networkInfo.explorerLink],
-                },
-              ]);
-            } catch (error) {
-              if (error.code !== 4001) {
-                throw error;
-              }
-            }
-            setSwitchNetworkError(undefined);
-          } catch (addError) {
-            setSwitchNetworkError(addError);
-          }
-        } else if (switchError.code === 4001) {
-          setSwitchNetworkError(undefined);
-        } else {
-          setSwitchNetworkError(switchError);
-        }
       }
     }
   };
 
   const getTxError = async (txHash: string): Promise<string> => {
+    const provider = await getEthersProvider(wagmiConfig, { chainId });
     if (provider) {
       const tx = await provider.getTransaction(txHash);
       // @ts-expect-error TODO: need think about "tx" type
@@ -287,22 +178,23 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
     decimals,
     image,
   }: ERC20TokenType): Promise<boolean> => {
-    // using window.ethereum as looks like its only supported for metamask
-    // and didn't manage to make the call with ethersjs
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const injectedProvider = (window as any).ethereum;
-    if (provider && account && window && injectedProvider) {
+    const provider = await getEthersProvider(wagmiConfig, { chainId });
+    if (provider) {
       if (address.toLowerCase() !== API_ETH_MOCK_ADDRESS.toLowerCase()) {
-        await injectedProvider.request({
-          method: 'wallet_watchAsset',
-          params: {
-            type: 'ERC20',
-            options: {
-              address,
-              symbol,
-              decimals,
-              image,
-            },
+        let tokenSymbol = symbol;
+        if (!tokenSymbol) {
+          const { getTokenData } = new ERC20Service(provider);
+          const { symbol } = await getTokenData(address);
+          tokenSymbol = symbol;
+        }
+
+        await watchAssetAsync({
+          type: 'ERC20',
+          options: {
+            address,
+            symbol: tokenSymbol,
+            decimals,
+            image,
           },
         });
 
@@ -313,28 +205,65 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
   };
 
   useEffect(() => {
-    setMockAddress(localStorage.getItem('mockWalletAddress')?.toLowerCase());
-  }, []);
+    setAccount(account?.toLowerCase());
+  }, [account, setAccount]);
+
+  // Drive walletType from a direct wagmi store subscription. watchAccount fires for
+  // every state transition into `connected` (including the `connecting(address) ->
+  // connected` path that useAccountEffect.onConnect misses, see wagmi#4221), and
+  // it does not subscribe this component to React renders. Seed once on mount via
+  // getAccount in case the store is already `connected` before the effect installs.
+  useEffect(() => {
+    const { status, connector } = getAccount(wagmiConfig);
+    if (status === 'connected' && connector?.id) {
+      setWalletType(connector.id);
+    }
+
+    return watchAccount(wagmiConfig, {
+      onChange(data) {
+        if (data.status === 'connected' && data.connector?.id) {
+          setWalletType(data.connector.id);
+        } else if (data.status === 'disconnected') {
+          setWalletType(undefined);
+        }
+      },
+    });
+  }, [setWalletType]);
+
+  useEffect(() => {
+    if (readOnlyModeAddress) {
+      setAccount(readOnlyModeAddress.toLowerCase());
+    }
+  }, [readOnlyModeAddress, setAccount]);
+
+  useEffect(() => {
+    if (!account) {
+      setConnectedAccountIsContract(false);
+      return;
+    }
+
+    if (isContractAddress) {
+      setConnectedAccountIsContract(true);
+    }
+  }, [isContractAddress, setConnectedAccountIsContract, account]);
 
   return (
     <Web3Context.Provider
       value={{
         web3ProviderData: {
-          connectWallet,
-          disconnectWallet,
-          provider,
-          connected: active,
-          loading,
           chainId: chainId || 1,
           switchNetwork,
           getTxError,
           sendTx,
           signTxData,
-          currentAccount: mockAddress || account?.toLowerCase() || '',
+          currentAccount,
           addERC20Token,
-          error,
           switchNetworkError,
           setSwitchNetworkError,
+          readOnlyMode,
+          provider: undefined,
+          readOnlyModeAddress,
+          setReadOnlyModeAddress,
         },
       }}
     >

@@ -1,0 +1,171 @@
+name: Build and deploy to IPFS
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches: ['main']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'push' && github.event_name == 'pull_request') ||
+      (github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name &&
+      !contains(github.head_ref, 'dependabot'))
+    strategy:
+      matrix:
+        build:
+          - name: 'out'
+            cypress_enabled: 'false'
+          - name: 'out_cypress'
+            cypress_enabled: 'true'
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build App
+        uses: ./.github/actions/build
+        with:
+          NEXT_PUBLIC_ENV: 'prod'
+          NEXT_PUBLIC_FORK_BASE_CHAIN_ID: ${{ secrets[format('FORK_BASE_CHAIN_ID_{0}', github.event.pull_request.number)] }}
+          NEXT_PUBLIC_FORK_CHAIN_ID: ${{ secrets[format('FORK_CHAIN_ID_{0}', github.event.pull_request.number)]  }}
+          NEXT_PUBLIC_FORK_URL_RPC: ${{ secrets[format('FORK_URL_RPC_{0}', github.event.pull_request.number)]  }}
+          NEXT_PUBLIC_MIXPANEL: ${{ secrets.NEXT_PUBLIC_MIXPANEL }}
+          NEXT_PUBLIC_FIAT_ON_RAMP: 'false'
+          NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ${{ secrets.WALLET_CONNECT_PROJECT_ID }}
+          NEXT_PUBLIC_NARVAL_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_NARVAL_CLIENT_ID }}
+          NEXT_PUBLIC_IS_CYPRESS_ENABLED: ${{ matrix.build.cypress_enabled }}
+
+      - name: Upload artifacts
+        uses: ./.github/actions/upload-artifacts
+        with:
+          BUILD_ARTIFACT_NAME: ${{ matrix.build.name }}
+
+  cypress_smoke_v3:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        market:
+          - polygon
+          - avalanche
+          - optimism
+          - ethereum
+          - base
+          - gnosis
+          - bnb
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-smoke.config.ts
+
+  next_js_analyze:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: download build
+        uses: actions/download-artifact@v4
+        with:
+          name: nextjs_build
+          path: .next
+
+      - uses: ./.github/actions/analyze-comment
+        if: github.event_name == 'pull_request'
+        with:
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: download build
+        uses: actions/download-artifact@v4
+        with:
+          name: out
+          path: out
+
+      - name: pinata
+        id: pinata
+        uses: aave/pinata-action@35662944e92cf082457973f10aa42e48df179b47
+        with:
+          PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
+          PINATA_SECRET_KEY: ${{ secrets.PINATA_SECRET_KEY }}
+          PIN_ALIAS: 'app-aave-${{ github.head_ref || github.ref }}'
+          BUILD_LOCATION: './out'
+          CID_VERSION: 1
+
+      - name: Upload to Infura IPFS
+        id: infura-upload
+        uses: aave/ipfs-action@master
+        with:
+          path: './out'
+          service: infura
+          infuraProjectId: ${{ secrets.INFURA_PROJECT_ID }}
+          infuraProjectSecret: ${{ secrets.INFURA_PROJECT_SECRET }}
+
+  cypress_full_v3:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    needs:
+      - deploy
+      - cypress_smoke_v3
+    strategy:
+      fail-fast: false
+      matrix:
+        market:
+          - polygon
+          - optimism
+          - ethereum
+          - base
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/v3-markets/${{ matrix.market }}-v3-full.config.ts
+
+  cypress_app_functionality:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip cypress]')"
+    needs:
+      - deploy
+      - cypress_smoke_v3
+    strategy:
+      fail-fast: false
+      matrix:
+        scoupe:
+          - settings
+          - governance-stake
+          - widgets
+          - general
+    steps:
+      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+
+      - name: Run tests
+        uses: ./.github/actions/cypress
+        with:
+          CYPRESS_TENDERLY_ACCOUNT: ${{ secrets.TENDERLY_ACCOUNT }}
+          CYPRESS_TENDERLY_KEY: ${{ secrets.TENDERLY_KEY }}
+          CYPRESS_TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+          YARN_TEST_COMMAND: npx cypress-repeat run -n 2 --rerun-failed-only --config-file ./cypress/configs/${{ matrix.scoupe }}.config.ts

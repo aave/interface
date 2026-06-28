@@ -15,7 +15,7 @@ export class CustomizedBridge extends Eip1193Bridge {
   chainId: number;
 
   constructor(signer: Signer, provider?: providers.Provider, chainId?: number) {
-    super(signer, provider);
+    super(signer as any, provider);
     this.chainId = chainId || 3030;
   }
 
@@ -76,20 +76,37 @@ export class CustomizedBridge extends Eip1193Bridge {
       );
       return tx;
     }
-    if (method === 'eth_chainId') {
-      if (isCallbackForm) {
-        // @ts-ignore
-        callback(null, { result: this.chainId });
-      } else {
-        return Promise.resolve(this.chainId);
-      }
-    }
+    // if (method === 'eth_chainId') {
+    //   const result = await this.provider.getNetwork();
+    //   const chainId = utils.hexValue(result.chainId);
+
+    //   if (isCallbackForm) {
+    //     // @ts-ignore
+    //     callback(null, { result: chainId });
+    //   } else {
+    //     return Promise.resolve(chainId);
+    //   }
+    // }
     if (method === 'eth_sendTransaction') {
       if (!this.signer) {
         throw new Error('eth_sendTransaction requires an account');
       }
+      // This is a bit of a hack to get around out of gas errors during cypress tests.
+      // Hexlify expects the gasLimit property to be set, which it will copy the value
+      // and set the gas property to that value. But when the transaction is sent, the property
+      // needs to be gasLimit.
+      params[0].gasLimit = params[0].gas;
+      delete params[0].gas;
 
       const req = JsonRpcProvider.hexlifyTransaction(params[0], { from: true, gas: true });
+
+      req.gasLimit = req.gas;
+      // @ts-ignore
+      // Work around to force the chainId to be used for the fork environments
+      req.chainId = this.chainId;
+
+      delete req.gas;
+
       const tx = await this.signer.sendTransaction(req);
       return tx.hash;
     }

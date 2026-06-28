@@ -1,8 +1,8 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography, Box, Button, useTheme } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
-import BigNumber from 'bignumber.js';
+import { BigNumber } from 'bignumber.js';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 
@@ -31,6 +31,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
         alignItems: { xs: 'flex-start', xsm: 'center' },
         flexDirection: { xs: 'column', xsm: 'row' },
       }}
+      data-cy={'HealthFactorTopPannel'}
     >
       {value === '-1' ? (
         <Typography variant="secondary14" color={palette.success.main}>

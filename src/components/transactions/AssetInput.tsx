@@ -1,17 +1,24 @@
+import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
   Box,
+  BoxProps,
   Button,
+  CircularProgress,
   FormControl,
+  IconButton,
   InputBase,
   ListItemText,
   MenuItem,
   Select,
   SelectChangeEvent,
   Typography,
+  useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
+import { TrackEventProps } from 'src/store/analyticsSlice';
+import { useRootStore } from 'src/store/root';
 
 import { CapType } from '../caps/helper';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
@@ -24,7 +31,7 @@ interface CustomProps {
   value: string;
 }
 
-const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
+export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
   function NumberFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 
@@ -55,6 +62,8 @@ export interface Asset {
   iconSymbol?: string;
   address?: string;
   aToken?: boolean;
+  priceInUsd?: string;
+  decimals?: number;
 }
 
 export interface AssetInputProps<T extends Asset = Asset> {
@@ -69,6 +78,14 @@ export interface AssetInputProps<T extends Asset = Asset> {
   capType?: CapType;
   maxValue?: string;
   isMaxSelected?: boolean;
+  inputTitle?: ReactNode;
+  balanceText?: ReactNode;
+  loading?: boolean;
+  event?: TrackEventProps;
+  selectOptionHeader?: ReactNode;
+  selectOption?: (asset: T) => ReactNode;
+  sx?: BoxProps;
+  exchangeRateComponent?: ReactNode;
 }
 
 export const AssetInput = <T extends Asset = Asset>({
@@ -83,7 +100,17 @@ export const AssetInput = <T extends Asset = Asset>({
   capType,
   maxValue,
   isMaxSelected,
+  inputTitle,
+  balanceText,
+  loading = false,
+  event,
+  selectOptionHeader,
+  selectOption,
+  sx = {},
+  exchangeRateComponent,
 }: AssetInputProps<T>) => {
+  const theme = useTheme();
+  const trackEvent = useRootStore((store) => store.trackEvent);
   const handleSelect = (event: SelectChangeEvent) => {
     const newAsset = assets.find((asset) => asset.symbol === event.target.value) as T;
     onSelect && onSelect(newAsset);
@@ -96,50 +123,77 @@ export const AssetInput = <T extends Asset = Asset>({
       : assets && (assets.find((asset) => asset.symbol === symbol) as T);
 
   return (
-    <Box>
+    <Box {...sx}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         <Typography color="text.secondary">
-          <Trans>Amount</Trans>
+          {inputTitle ? inputTitle : <Trans>Amount</Trans>}
         </Typography>
         {capType && <AvailableTooltip capType={capType} />}
       </Box>
 
       <Box
         sx={(theme) => ({
-          p: '8px 12px',
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: '6px',
-          mb: 1,
+          overflow: 'hidden',
         })}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-          <InputBase
-            sx={{ flex: 1 }}
-            placeholder="0.00"
-            disabled={disabled || disableInput}
-            value={value}
-            autoFocus
-            onChange={(e) => {
-              if (!onChange) return;
-              if (Number(e.target.value) > Number(maxValue)) {
-                onChange('-1');
-              } else {
-                onChange(e.target.value);
-              }
-            }}
-            inputProps={{
-              'aria-label': 'amount input',
-              style: {
-                fontSize: '21px',
-                lineHeight: '28,01px',
-                padding: 0,
-                height: '28px',
-              },
-            }}
-            // eslint-disable-next-line
-            inputComponent={NumberFormatCustom as any}
-          />
-
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, px: 3, py: 2 }}>
+          {loading ? (
+            <Box sx={{ flex: 1 }}>
+              <CircularProgress color="inherit" size="16px" />
+            </Box>
+          ) : (
+            <InputBase
+              sx={{ flex: 1 }}
+              placeholder="0.00"
+              disabled={disabled || disableInput}
+              value={value}
+              autoFocus
+              onChange={(e) => {
+                if (!onChange) return;
+                if (Number(e.target.value) > Number(maxValue)) {
+                  onChange('-1');
+                } else {
+                  onChange(e.target.value);
+                }
+              }}
+              inputProps={{
+                'aria-label': 'amount input',
+                style: {
+                  fontSize: '21px',
+                  lineHeight: '28,01px',
+                  padding: 0,
+                  height: '28px',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                },
+              }}
+              // eslint-disable-next-line
+              inputComponent={NumberFormatCustom as any}
+            />
+          )}
+          {value !== '' && !disableInput && (
+            <IconButton
+              sx={{
+                minWidth: 0,
+                p: 0,
+                left: 8,
+                zIndex: 1,
+                color: 'text.muted',
+                '&:hover': {
+                  color: 'text.secondary',
+                },
+              }}
+              onClick={() => {
+                onChange && onChange('');
+              }}
+              disabled={disabled}
+            >
+              <XCircleIcon height={16} />
+            </IconButton>
+          )}
           {!onSelect || assets.length === 1 ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <TokenIcon
@@ -160,6 +214,15 @@ export const AssetInput = <T extends Asset = Asset>({
                 variant="outlined"
                 className="AssetInput__select"
                 data-cy={'assetSelect'}
+                MenuProps={{
+                  sx: {
+                    maxHeight: '240px',
+                    '.MuiPaper-root': {
+                      border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
+                      boxShadow: '0px 2px 10px 0px #0000001A',
+                    },
+                  },
+                }}
                 sx={{
                   p: 0,
                   '&.AssetInput__select .MuiOutlinedInput-input': {
@@ -170,6 +233,7 @@ export const AssetInput = <T extends Asset = Asset>({
                   '&.AssetInput__select .MuiOutlinedInput-notchedOutline': { display: 'none' },
                   '&.AssetInput__select .MuiSelect-icon': {
                     color: 'text.primary',
+                    right: '0%',
                   },
                 }}
                 renderValue={(symbol) => {
@@ -194,19 +258,26 @@ export const AssetInput = <T extends Asset = Asset>({
                   );
                 }}
               >
+                {selectOptionHeader ? selectOptionHeader : undefined}
                 {assets.map((asset) => (
                   <MenuItem
                     key={asset.symbol}
                     value={asset.symbol}
                     data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
                   >
-                    <TokenIcon
-                      aToken={asset.aToken}
-                      symbol={asset.iconSymbol || asset.symbol}
-                      sx={{ fontSize: '22px', mr: 1 }}
-                    />
-                    <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-                    {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                    {selectOption ? (
+                      selectOption(asset)
+                    ) : (
+                      <>
+                        <TokenIcon
+                          aToken={asset.aToken}
+                          symbol={asset.iconSymbol || asset.symbol}
+                          sx={{ fontSize: '22px', mr: 1 }}
+                        />
+                        <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
+                        {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                      </>
+                    )}
                   </MenuItem>
                 ))}
               </Select>
@@ -214,21 +285,25 @@ export const AssetInput = <T extends Asset = Asset>({
           )}
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', height: '16px' }}>
-          <FormattedNumber
-            value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
-            compact
-            symbol="USD"
-            variant="secondary12"
-            color="text.disabled"
-            symbolsColor="text.disabled"
-            flexGrow={1}
-          />
+        <Box sx={{ display: 'flex', alignItems: 'center', height: '16px', px: 3, py: 2, mb: 1 }}>
+          {loading ? (
+            <Box sx={{ flex: 1 }} />
+          ) : (
+            <FormattedNumber
+              value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
+              compact
+              symbol="USD"
+              variant="secondary12"
+              color="text.muted"
+              symbolsColor="text.muted"
+              flexGrow={1}
+            />
+          )}
 
           {asset.balance && onChange && (
             <>
               <Typography component="div" variant="secondary12" color="text.secondary">
-                <Trans>Balance</Trans>{' '}
+                {balanceText && balanceText !== '' ? balanceText : <Trans>Balance</Trans>}{' '}
                 <FormattedNumber
                   value={asset.balance}
                   compact
@@ -237,17 +312,37 @@ export const AssetInput = <T extends Asset = Asset>({
                   symbolsColor="text.disabled"
                 />
               </Typography>
-              <Button
-                size="small"
-                sx={{ minWidth: 0, ml: '7px', p: 0 }}
-                onClick={() => onChange('-1')}
-                disabled={disabled || isMaxSelected}
-              >
-                <Trans>Max</Trans>
-              </Button>
+              {!disableInput && (
+                <Button
+                  size="small"
+                  sx={{ minWidth: 0, ml: '7px', p: 0 }}
+                  onClick={() => {
+                    if (event) {
+                      trackEvent(event.eventName, { ...event.eventParams });
+                    }
+
+                    onChange('-1');
+                  }}
+                  disabled={disabled || isMaxSelected}
+                >
+                  <Trans>Max</Trans>
+                </Button>
+              )}
             </>
           )}
         </Box>
+        {exchangeRateComponent && (
+          <Box
+            sx={{
+              background: theme.palette.background.surface,
+              borderTop: `1px solid ${theme.palette.divider}`,
+              px: 3,
+              py: 2,
+            }}
+          >
+            {exchangeRateComponent}
+          </Box>
+        )}
       </Box>
     </Box>
   );

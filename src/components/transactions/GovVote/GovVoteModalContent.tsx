@@ -1,9 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { governanceConfig } from 'src/ui-config/governanceConfig';
+import { VoteProposalData } from 'src/modules/governance/types';
+import { useRootStore } from 'src/store/root';
+import { AIP } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
+
+import { LensIcon } from '../../../components/icons/LensIcon';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -13,7 +17,7 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovVoteActions } from './GovVoteActions';
 
 export type GovVoteModalContentProps = {
-  proposalId: number;
+  proposal: VoteProposalData;
   support: boolean;
   power: string;
 };
@@ -30,12 +34,14 @@ export enum ErrorType {
 }
 
 export const GovVoteModalContent = ({
-  proposalId,
+  proposal,
   support,
   power: votingPower,
 }: GovVoteModalContentProps) => {
-  const { chainId: connectedChainId } = useWeb3Context();
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
+  const { palette } = useTheme();
+  const trackEvent = useRootStore((store) => store.trackEvent);
 
   // handle delegate address errors
   let blockingError: ErrorType | undefined = undefined;
@@ -57,35 +63,66 @@ export const GovVoteModalContent = ({
     }
   };
 
-  // is Network mismatched
-  const govChain = governanceConfig.chainId;
-  const networkConfig = getNetworkConfig(govChain);
-  const isWrongNetwork = connectedChainId !== govChain;
+  const proposalVotingChain = proposal.votingMachineChainId;
+
+  const isWrongNetwork = connectedChainId !== proposalVotingChain;
+
+  const networkConfig = getNetworkConfig(proposalVotingChain);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (txState.success) return <TxSuccessView action="Vote" />;
+
+  if (txState.success)
+    return (
+      <TxSuccessView
+        customAction={
+          <Box mt={5}>
+            <Button
+              component="a"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent(AIP.SHARE_VOTE_ON_LENS)}
+              href={`https://hey.xyz/?url=${
+                window.location.href
+              }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Aave&preview=true`}
+              startIcon={
+                <LensIcon
+                  color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
+                />
+              }
+            >
+              <Trans>Share on Lens</Trans>
+            </Button>
+          </Box>
+        }
+        customText={<Trans>Thank you for voting</Trans>}
+      />
+    );
 
   return (
     <>
       <TxModalTitle title="Governance vote" />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={govChain} />
+      {isWrongNetwork && !readOnlyModeAddress && (
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={proposalVotingChain}
+        />
       )}
       {blockingError !== undefined && (
         <Typography variant="helperText" color="red">
           {handleBlocked()}
         </Typography>
       )}
-      <TxModalDetails gasLimit={gasLimit}>
+      <TxModalDetails gasLimit={gasLimit} chainId={proposalVotingChain}>
         <DetailsNumberLine description={<Trans>Voting power</Trans>} value={votingPower} />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
 
       <GovVoteActions
-        proposalId={proposalId}
+        proposal={proposal}
         support={support}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}

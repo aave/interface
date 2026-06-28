@@ -2,6 +2,10 @@ export const daysFromSeconds = (time: number) => time / 60 / 60 / 24;
 export const hoursFromSeconds = (time: number) => time / 60 / 60;
 export const minutesFromSeconds = (time: number) => time / 60;
 
+export const timeMessage = (time: number) => {
+  return `${formattedTime(time)} ${timeText(time)}`;
+};
+
 export const formattedTime = (time: number) =>
   daysFromSeconds(time) < 1
     ? hoursFromSeconds(time) < 1

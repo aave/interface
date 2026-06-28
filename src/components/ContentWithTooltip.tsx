@@ -1,18 +1,19 @@
-import { Box, ClickAwayListener, Popper, styled, Tooltip, experimental_sx } from '@mui/material';
+import { Box, ClickAwayListener, Popper, styled, Tooltip } from '@mui/material';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
 
 interface ContentWithTooltipProps {
   children: ReactNode;
   // eslint-disable-next-line
   tooltipContent: ReactElement<any, string | JSXElementConstructor<any>>;
-  placement?: 'top' | 'bottom';
+  placement?: 'right' | 'left' | 'bottom';
   withoutHover?: boolean;
   open?: boolean;
   setOpen?: (value: boolean) => void;
+  offset?: [number, number];
 }
 
-const PopperComponent = styled(Popper)(
-  experimental_sx({
+export const PopperComponent = styled(Popper)(({ theme }) =>
+  theme.unstable_sx({
     '.MuiTooltip-tooltip': {
       color: 'text.primary',
       backgroundColor: 'background.paper',
@@ -33,10 +34,11 @@ const PopperComponent = styled(Popper)(
 export const ContentWithTooltip = ({
   children,
   tooltipContent,
-  placement = 'top',
+  placement = 'right',
   withoutHover,
   open,
   setOpen,
+  offset,
 }: ContentWithTooltipProps) => {
   const [openTooltip, setOpenTooltip] = useState(false);
 
@@ -55,6 +57,27 @@ export const ContentWithTooltip = ({
       disableTouchListener
       placement={placement}
       PopperComponent={PopperComponent}
+      componentsProps={{
+        popper: {
+          modifiers: [
+            {
+              name: 'offset',
+              options: {
+                offset: offset ?? [],
+              },
+            },
+            {
+              name: 'flip',
+              options: {
+                fallbackPlacements: ['left', 'bottom'],
+              },
+            },
+          ],
+          onClick: (e) => {
+            e.stopPropagation();
+          },
+        },
+      }}
       title={
         <ClickAwayListener
           mouseEvent="onMouseDown"

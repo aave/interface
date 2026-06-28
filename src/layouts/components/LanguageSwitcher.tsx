@@ -18,6 +18,7 @@ const langMap = {
   en: t`English`,
   es: t`Spanish`,
   fr: t`French`,
+  el: t`Greek`,
 };
 
 interface LanguageListItemProps {
@@ -27,6 +28,7 @@ interface LanguageListItemProps {
 
 export const LanguageListItem = ({ component = ListItem, onClick }: LanguageListItemProps) => {
   const { i18n } = useLingui();
+
   return (
     <Box
       component={component}

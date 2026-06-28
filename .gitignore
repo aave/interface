@@ -30,6 +30,7 @@ yarn-error.log*
 .env.local
 .env.development.local
 .env.test.local
+.env.dev.development
 .env.production.local
 
 # vercel
@@ -41,4 +42,16 @@ yarn-error.log*
 package-lock.json
 
 .eslintcache
+.yarn-cache
+
+# TypeScript incremental build cache
+tsconfig.tsbuildinfo
+
+# IDE specific
 .idea
+.vscode
+.env.development
+
+# Sentry Config File
+.env.sentry-build-plugin
+.env*.local

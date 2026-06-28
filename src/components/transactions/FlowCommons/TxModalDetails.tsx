@@ -1,24 +1,53 @@
-import { CheckIcon } from '@heroicons/react/outline';
+import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, FormControlLabel, SvgIcon, Switch, Typography } from '@mui/material';
+import { Box, FormControlLabel, Skeleton, SvgIcon, Switch, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
+import {
+  CompactableTypography,
+  CompactableTypographyProps,
+} from 'src/components/CompactableTypography';
+import {
+  IsolatedDisabledBadge,
+  IsolatedEnabledBadge,
+  UnavailableDueToIsolationBadge,
+} from 'src/components/isolationMode/IsolatedBadge';
+import { Row } from 'src/components/primitives/Row';
+import { SecondsToString } from 'src/components/SecondsToString';
 import { CollateralType } from 'src/helpers/types';
-import { ReserveIncentiveResponse } from 'src/hooks/app-data-provider/useIncentiveData';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
 import { FormattedNumber, FormattedNumberProps } from '../../primitives/FormattedNumber';
-import { Row } from '../../primitives/Row';
 import { TokenIcon } from '../../primitives/TokenIcon';
 import { GasStation } from '../GasStation/GasStation';
 
 export interface TxModalDetailsProps {
   gasLimit?: string;
+  slippageSelector?: ReactNode;
+  skipLoad?: boolean;
+  disabled?: boolean;
+  chainId?: number;
+  children?: ReactNode;
+  showGasStation?: boolean;
 }
 
-export const TxModalDetails: React.FC<TxModalDetailsProps> = ({ gasLimit, children }) => {
+const ArrowRightIcon = (
+  <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+    <ArrowNarrowRightIcon />
+  </SvgIcon>
+);
+
+export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
+  gasLimit,
+  slippageSelector,
+  skipLoad,
+  disabled,
+  children,
+  chainId,
+  showGasStation = true,
+}) => {
   return (
     <Box sx={{ pt: 5 }}>
       <Typography sx={{ mb: 1 }} color="text.secondary">
@@ -37,8 +66,17 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({ gasLimit, childr
       >
         {children}
       </Box>
-
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      {showGasStation && (
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <GasStation
+            chainId={chainId}
+            gasLimit={parseUnits(gasLimit || '0', 'wei')}
+            skipLoad={skipLoad}
+            disabled={disabled}
+            rightComponent={slippageSelector}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
@@ -49,6 +87,7 @@ interface DetailsNumberLineProps extends FormattedNumberProps {
   futureValue?: FormattedNumberProps['value'];
   numberPrefix?: ReactNode;
   iconSymbol?: string;
+  loading?: boolean;
 }
 
 export const DetailsNumberLine = ({
@@ -57,20 +96,25 @@ export const DetailsNumberLine = ({
   futureValue,
   numberPrefix,
   iconSymbol,
+  loading = false,
   ...rest
 }: DetailsNumberLineProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
-        {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
-        <FormattedNumber value={value} variant="secondary14" {...rest} />
-        {futureValue && (
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
           <>
-            <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-              <ArrowNarrowRightIcon />
-            </SvgIcon>
-            <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
+            {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
+            {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
+            <FormattedNumber value={value} variant="secondary14" {...rest} />
+            {futureValue && (
+              <>
+                {ArrowRightIcon}
+                <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
+              </>
+            )}
           </>
         )}
       </Box>
@@ -80,13 +124,15 @@ export const DetailsNumberLine = ({
 
 interface DetailsNumberLineWithSubProps {
   description: ReactNode;
-  symbol: string;
+  symbol: ReactNode;
   value?: string;
   valueUSD?: string;
   futureValue: string;
   futureValueUSD: string;
   hideSymbolSuffix?: boolean;
   color?: string;
+  tokenIcon?: string;
+  loading?: boolean;
 }
 
 export const DetailsNumberLineWithSub = ({
@@ -98,42 +144,55 @@ export const DetailsNumberLineWithSub = ({
   futureValueUSD,
   hideSymbolSuffix,
   color,
+  tokenIcon,
+  loading = false,
 }: DetailsNumberLineWithSubProps) => {
   return (
     <Row caption={description} captionVariant="description" mb={4} align="flex-start">
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {value && (
-            <>
-              <FormattedNumber value={value} variant="secondary14" color={color} />
+        {loading ? (
+          <>
+            <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+            <Skeleton
+              variant="rectangular"
+              height={15}
+              width={80}
+              sx={{ borderRadius: '4px', marginTop: '4px' }}
+            />
+          </>
+        ) : (
+          <>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {value && (
+                <>
+                  <FormattedNumber value={value} variant="secondary14" color={color} />
+                  {!hideSymbolSuffix && (
+                    <Typography ml={1} variant="secondary14">
+                      {symbol}
+                    </Typography>
+                  )}
+                  {ArrowRightIcon}
+                </>
+              )}
+              {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
+              <FormattedNumber value={futureValue} variant="secondary14" color={color} />
               {!hideSymbolSuffix && (
                 <Typography ml={1} variant="secondary14">
                   {symbol}
                 </Typography>
               )}
-              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
-            </>
-          )}
-          <FormattedNumber value={futureValue} variant="secondary14" color={color} />
-          {!hideSymbolSuffix && (
-            <Typography ml={1} variant="secondary14">
-              {symbol}
-            </Typography>
-          )}
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {valueUSD && (
-            <>
-              <FormattedNumber value={valueUSD} variant="helperText" compact symbol="USD" />
-              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
-            </>
-          )}
-          <FormattedNumber value={futureValueUSD} variant="helperText" compact symbol="USD" />
-        </Box>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              {valueUSD && (
+                <>
+                  <FormattedNumber value={valueUSD} variant="helperText" compact symbol="USD" />
+                  {ArrowRightIcon}
+                </>
+              )}
+              <FormattedNumber value={futureValueUSD} variant="helperText" compact symbol="USD" />
+            </Box>
+          </>
+        )}
       </Box>
     </Row>
   );
@@ -146,39 +205,45 @@ export interface DetailsCollateralLine {
 export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine) => {
   return (
     <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
-      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        {collateralType === CollateralType.ENABLED && (
-          <>
-            <SvgIcon sx={{ color: 'success.main', fontSize: 16, mr: '2px' }}>
-              <CheckIcon />
-            </SvgIcon>
+      <CollateralState collateralType={collateralType} />
+    </Row>
+  );
+};
+
+interface CollateralStateProps {
+  collateralType: CollateralType;
+}
+
+export const CollateralState = ({ collateralType }: CollateralStateProps) => {
+  return (
+    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+      {
+        {
+          [CollateralType.ENABLED]: (
             <Typography variant="description" color="success.main">
               <Trans>Enabled</Trans>
             </Typography>
-          </>
-        )}
-        {collateralType === CollateralType.ISOLATED_ENABLED && (
-          <>
-            <SvgIcon sx={{ color: 'warning.main', fontSize: 16, mr: '2px' }}>
-              <CheckIcon />
-            </SvgIcon>
-            <Typography variant="description" color="warning.main">
-              <Trans>Enabled in isolation</Trans>
+          ),
+          [CollateralType.ISOLATED_ENABLED]: (
+            <IsolatedEnabledBadge
+              typographyProps={{ variant: 'description', color: 'warning.main' }}
+            />
+          ),
+          [CollateralType.DISABLED]: (
+            <Typography variant="description" color="error.main">
+              <Trans>Disabled</Trans>
             </Typography>
-          </>
-        )}
-        {collateralType === CollateralType.DISABLED && (
-          <Typography variant="description" color="grey">
-            <Trans>Disabled</Trans>
-          </Typography>
-        )}
-        {collateralType === CollateralType.ISOLATED_DISABLED && (
-          <Typography variant="description" color="grey">
-            <Trans>Disabled</Trans>
-          </Typography>
-        )}
-      </Box>
-    </Row>
+          ),
+          [CollateralType.UNAVAILABLE]: (
+            <Typography variant="description" color="error.main">
+              <Trans>Unavailable</Trans>
+            </Typography>
+          ),
+          [CollateralType.ISOLATED_DISABLED]: <IsolatedDisabledBadge />,
+          [CollateralType.UNAVAILABLE_DUE_TO_ISOLATION]: <UnavailableDueToIsolationBadge />,
+        }[collateralType]
+      }
+    </Box>
   );
 };
 
@@ -188,6 +253,7 @@ interface DetailsIncentivesLineProps {
   incentives?: ReserveIncentiveResponse[];
   // the token yielding the incentive, not the incentive itself
   symbol: string;
+  loading?: boolean;
 }
 
 export const DetailsIncentivesLine = ({
@@ -195,19 +261,31 @@ export const DetailsIncentivesLine = ({
   symbol,
   futureIncentives,
   futureSymbol,
+  loading = false,
 }: DetailsIncentivesLineProps) => {
   if (!incentives || incentives.filter((i) => i.incentiveAPR !== '0').length === 0) return null;
   return (
     <Row caption={<Trans>Rewards APR</Trans>} captionVariant="description" mb={4} minHeight={24}>
-      <IncentivesButton incentives={incentives} symbol={symbol} />
-      {futureSymbol && (
-        <>
-          <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-            <ArrowNarrowRightIcon />
-          </SvgIcon>
-          <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
-        </>
-      )}
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
+          <>
+            <IncentivesButton incentives={incentives} symbol={symbol} />
+            {futureSymbol && (
+              <>
+                {ArrowRightIcon}
+                <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
+                {futureIncentives && futureIncentives.length === 0 && (
+                  <Typography variant="secondary14">
+                    <Trans>None</Trans>
+                  </Typography>
+                )}
+              </>
+            )}
+          </>
+        )}
+      </Box>
     </Row>
   );
 };
@@ -216,12 +294,14 @@ export interface DetailsHFLineProps {
   healthFactor: string;
   futureHealthFactor: string;
   visibleHfChange: boolean;
+  loading?: boolean;
 }
 
 export const DetailsHFLine = ({
   healthFactor,
   futureHealthFactor,
   visibleHfChange,
+  loading = false,
 }: DetailsHFLineProps) => {
   if (healthFactor === '-1' && futureHealthFactor === '-1') return null;
   return (
@@ -233,18 +313,22 @@ export const DetailsHFLine = ({
     >
       <Box sx={{ textAlign: 'right' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <HealthFactorNumber value={healthFactor} variant="secondary14" />
-
-          {visibleHfChange && (
+          {loading ? (
+            <Skeleton variant="rectangular" height={20} width={80} sx={{ borderRadius: '4px' }} />
+          ) : (
             <>
-              <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
+              <HealthFactorNumber value={healthFactor} variant="secondary14" />
 
-              <HealthFactorNumber
-                value={Number(futureHealthFactor) ? futureHealthFactor : healthFactor}
-                variant="secondary14"
-              />
+              {visibleHfChange && (
+                <>
+                  {ArrowRightIcon}
+
+                  <HealthFactorNumber
+                    value={isNaN(Number(futureHealthFactor)) ? healthFactor : futureHealthFactor}
+                    variant="secondary14"
+                  />
+                </>
+              )}
             </>
           )}
         </Box>
@@ -261,27 +345,89 @@ export const DetailsHFLine = ({
 export interface DetailsUnwrapSwitchProps {
   unwrapped: boolean;
   setUnWrapped: (value: boolean) => void;
-  symbol: string;
-  unwrappedSymbol: string;
+  label: ReactNode;
 }
 
 export const DetailsUnwrapSwitch = ({
   unwrapped,
   setUnWrapped,
-  symbol,
-  unwrappedSymbol,
+  label,
 }: DetailsUnwrapSwitchProps) => {
   return (
-    <Row captionVariant="description" mb={4}>
+    <Row captionVariant="description" sx={{ mt: 5 }}>
       <FormControlLabel
-        value="darkmode"
+        sx={{ mx: 0 }}
         control={
-          <Switch disableRipple checked={unwrapped} onClick={() => setUnWrapped(!unwrapped)} data-cy={"wrappedSwitcher"}/>
+          <Switch
+            disableRipple
+            checked={unwrapped}
+            onClick={() => setUnWrapped(!unwrapped)}
+            data-cy={'wrappedSwitcher'}
+          />
         }
         labelPlacement="end"
-        label={''}
+        label={label}
       />
-      <Typography>{`Unwrap ${symbol} (to withdraw ${unwrappedSymbol})`}</Typography>
+    </Row>
+  );
+};
+
+interface DetailsCooldownLineProps {
+  cooldownSeconds: number;
+  loading?: boolean;
+}
+
+export const DetailsCooldownLine = ({
+  cooldownSeconds,
+  loading = false,
+}: DetailsCooldownLineProps) => {
+  return (
+    <Row caption={<Trans>Cooldown</Trans>} captionVariant="description" mb={4}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="secondary14">
+              <SecondsToString seconds={cooldownSeconds} />
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    </Row>
+  );
+};
+
+interface DetailsTextLineProps {
+  description: string;
+  text: string;
+  loading?: boolean;
+  compactedProps?: Omit<CompactableTypographyProps, 'children'>;
+}
+
+export const DetailsTextLine = ({
+  description,
+  text,
+  loading = false,
+  compactedProps,
+}: DetailsTextLineProps) => {
+  return (
+    <Row caption={description} captionVariant="description" mb={4}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        {loading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {compactedProps ? (
+              <CompactableTypography variant="secondary14" {...compactedProps}>
+                {text}
+              </CompactableTypography>
+            ) : (
+              <Typography variant="secondary14">{text}</Typography>
+            )}
+          </Box>
+        )}
+      </Box>
     </Row>
   );
 };

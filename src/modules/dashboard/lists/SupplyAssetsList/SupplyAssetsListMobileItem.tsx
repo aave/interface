@@ -1,6 +1,10 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useRootStore } from 'src/store/root';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -11,7 +15,6 @@ import { useModalContext } from '../../../../hooks/useModal';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
-import { SupplyAssetsItem } from './types';
 
 export const SupplyAssetsListMobileItem = ({
   symbol,
@@ -23,15 +26,24 @@ export const SupplyAssetsListMobileItem = ({
   totalLiquidity,
   supplyAPY,
   aIncentivesData,
+  aTokenAddress,
   isIsolated,
   usageAsCollateralEnabledOnUser,
   isActive,
   isFreezed,
   underlyingAsset,
   detailsAddress,
-}: SupplyAssetsItem) => {
-  const { currentMarket } = useProtocolDataContext();
+  isPaused,
+}: DashboardReserve) => {
+  const currentMarket = useRootStore((state) => state.currentMarket);
   const { openSupply } = useModalContext();
+
+  // Disable the asset to prevent it from being supplied if supply cap has been reached
+  const { supplyCap: supplyCapUsage } = useAssetCaps();
+  const isMaxCapReached = supplyCapUsage.isMaxed;
+
+  const disableSupply =
+    !isActive || isPaused || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
 
   return (
     <ListMobileItemWrapper
@@ -40,12 +52,18 @@ export const SupplyAssetsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
+      showDebtCeilingTooltips
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        symbol,
+        currentMarket,
+        ProtocolAction.supply
+      )}
     >
       <ListValueRow
         title={<Trans>Supply balance</Trans>}
         value={Number(walletBalance)}
         subValue={walletBalanceUSD}
-        disabled={Number(walletBalance) === 0}
+        disabled={Number(walletBalance) === 0 || isMaxCapReached}
         capsComponent={
           <CapsHint
             capType={CapType.supplyCap}
@@ -65,8 +83,11 @@ export const SupplyAssetsListMobileItem = ({
         <IncentivesCard
           value={Number(supplyAPY)}
           incentives={aIncentivesData}
+          address={aTokenAddress}
           symbol={symbol}
           variant="secondary14"
+          market={currentMarket}
+          protocolAction={ProtocolAction.supply}
         />
       </Row>
 
@@ -84,9 +105,9 @@ export const SupplyAssetsListMobileItem = ({
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
-          disabled={!isActive || isFreezed || Number(walletBalance) <= 0}
+          disabled={disableSupply}
           variant="contained"
-          onClick={() => openSupply(underlyingAsset)}
+          onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
           sx={{ mr: 1.5 }}
           fullWidth
         >

@@ -1,6 +1,4 @@
-import React from 'react';
-
-import useGetGasPrices, { GetGasPricesHook } from '../../../hooks/useGetGasPrices';
+import React, { PropsWithChildren } from 'react';
 
 export enum GasOption {
   Slow = 'slow',
@@ -18,7 +16,7 @@ type Dispatch = (action: Action) => void;
 type State = { gasOption: GasOption; customGas: string };
 
 export const GasStationContext = React.createContext<
-  { state: State; dispatch: Dispatch; gasPriceData: GetGasPricesHook } | undefined
+  { state: State; dispatch: Dispatch } | undefined
 >(undefined);
 
 function gasStationReducer(state: State, action: Action) {
@@ -32,13 +30,12 @@ function gasStationReducer(state: State, action: Action) {
   }
 }
 
-export const GasStationProvider: React.FC = ({ children }) => {
+export const GasStationProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = React.useReducer(gasStationReducer, {
     gasOption: GasOption.Normal,
     customGas: '100',
   });
-  const gasPriceData = useGetGasPrices();
 
-  const value = { state, dispatch, gasPriceData };
+  const value = { state, dispatch };
   return <GasStationContext.Provider value={value}>{children}</GasStationContext.Provider>;
 };

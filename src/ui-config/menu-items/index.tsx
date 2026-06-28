@@ -1,11 +1,13 @@
-import { BookOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
+import {
+  ArrowCircleRightIcon,
+  BookOpenIcon,
+  CreditCardIcon,
+  QuestionMarkCircleIcon,
+} from '@heroicons/react/outline';
 import { t } from '@lingui/macro';
 import { ReactNode } from 'react';
 import { ROUTES } from 'src/components/primitives/Link';
-
-import DiscordIcon from '/public/icons/discord.svg';
-import GithubIcon from '/public/icons/github.svg';
-import AaveClassic from '/public/icons/aave_classic.svg';
+import { ENABLE_TESTNET } from 'src/utils/marketsAndNetworksConfig';
 
 import { MarketDataType } from '../marketsConfig';
 
@@ -25,58 +27,56 @@ export const navigation: Navigation[] = [
   {
     link: ROUTES.markets,
     title: t`Markets`,
-  },
-  {
-    link: ROUTES.staking,
-    title: t`Stake`,
-    isVisible: () => process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true',
+    dataCy: 'menuMarkets',
   },
   {
     link: ROUTES.governance,
     title: t`Governance`,
-    isVisible: () => process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true',
+    dataCy: 'menuGovernance',
+    // isVisible: () =>
+    //   process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true' &&
+    //   process.env.NEXT_PUBLIC_ENV === 'prod' &&
+    //   !ENABLE_TESTNET,
+  },
+
+  {
+    link: ROUTES.faucet,
+    title: t`Faucet`,
+    isVisible: () => process.env.NEXT_PUBLIC_ENV === 'staging' || ENABLE_TESTNET,
   },
 ];
 
 interface MoreMenuItem extends Navigation {
   icon: ReactNode;
+  makeLink?: (walletAddress: string) => string;
 }
 
 const moreMenuItems: MoreMenuItem[] = [
   {
-    link: 'https://docs.aave.com/faq/',
+    link: 'https://aave.com/faq/',
     title: t`FAQ`,
     icon: <QuestionMarkCircleIcon />,
   },
   {
-    link: 'https://docs.aave.com/portal/',
+    link: 'https://aave.com/docs/',
     title: t`Developers`,
     icon: <BookOpenIcon />,
   },
   {
-    link: 'https://discord.gg/7kHKnkDEUf',
-    title: t`Discord`,
-    icon: <DiscordIcon />,
-  },
-  {
-    link: 'https://github.com/aave/interface',
-    title: t`Github`,
-    icon: <GithubIcon />,
-  },
-  {
-    link: 'https://classic.aave.com',
-    title: t`Switch to Aave Classic`,
-    icon: <AaveClassic />,
+    link: 'https://legacy-markets.aave.com/',
+    title: t`Legacy Markets`,
+    icon: <ArrowCircleRightIcon />,
   },
 ];
 
-export const moreMenuExtraItems: MoreMenuItem[] = [];
-export const moreMenuMobileOnlyItems: MoreMenuItem[] = [];
-
-export const moreNavigation: MoreMenuItem[] = [...moreMenuItems, ...moreMenuExtraItems];
-
-export const mobileNavigation: Navigation[] = [
-  ...navigation,
-  ...moreMenuItems,
-  ...moreMenuMobileOnlyItems,
-];
+const fiatEnabled = process.env.NEXT_PUBLIC_FIAT_ON_RAMP;
+if (fiatEnabled === 'true') {
+  moreMenuItems.push({
+    link: 'https://global.transak.com',
+    makeLink: (walletAddress) =>
+      `${process.env.NEXT_PUBLIC_TRANSAK_APP_URL}/?apiKey=${process.env.NEXT_PUBLIC_TRANSAK_API_KEY}&walletAddress=${walletAddress}&disableWalletAddressForm=true`,
+    title: t`Buy Crypto With Fiat`,
+    icon: <CreditCardIcon />,
+  });
+}
+export const moreNavigation: MoreMenuItem[] = [...moreMenuItems];

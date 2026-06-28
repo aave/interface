@@ -1,0 +1,15 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "target": "es2016",
+    "lib": ["dom", "es2016"],
+    "noEmit": true,
+    "types": ["cypress", "cypress-wait-until"],
+    "sourceMap": false,
+  },
+  "include": [
+    "../node_modules/cypress",
+    "./**/*.ts",
+    "./types/*.d.ts"
+  ]
+}

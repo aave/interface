@@ -1,5 +1,6 @@
-import { Trans } from '@lingui/macro';
-import { Box, Checkbox, FormControlLabel } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, SxProps } from '@mui/material';
+import { FaucetButton } from 'src/components/FaucetButton';
+import { useRootStore } from 'src/store/root';
 
 import { BridgeButton } from '../../components/BridgeButton';
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
@@ -9,6 +10,11 @@ interface DashboardListTopPanelProps extends Pick<NetworkConfig, 'bridge'> {
   value: boolean;
   onClick: (value: boolean) => void;
   localStorageName: string;
+  eventName: string;
+  label: React.ReactNode;
+  showFaucet: boolean;
+  showBridge: boolean;
+  sx?: SxProps;
 }
 
 export const DashboardListTopPanel = ({
@@ -16,7 +22,14 @@ export const DashboardListTopPanel = ({
   onClick,
   localStorageName,
   bridge,
+  eventName,
+  label,
+  showFaucet,
+  showBridge,
+  sx,
 }: DashboardListTopPanelProps) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
   return (
     <Box
       sx={{
@@ -27,17 +40,23 @@ export const DashboardListTopPanel = ({
         px: { xs: 4, xsm: 6 },
         py: 2,
         pl: { xs: '18px', xsm: '27px' },
+        ...sx,
       }}
     >
       <FormControlLabel
         sx={{ mt: { xs: bridge ? 2 : 0, xsm: 0 } }}
         control={<Checkbox sx={{ p: '6px' }} />}
         checked={value}
-        onChange={() => toggleLocalStorageClick(value, onClick, localStorageName)}
-        label={<Trans>Show assets with 0 balance</Trans>}
+        onChange={() => {
+          trackEvent(eventName, {});
+
+          toggleLocalStorageClick(value, onClick, localStorageName);
+        }}
+        label={label}
       />
 
-      <BridgeButton bridge={bridge} variant="outlined" />
+      {showFaucet && <FaucetButton />}
+      {showBridge && <BridgeButton bridge={bridge} />}
     </Box>
   );
 };

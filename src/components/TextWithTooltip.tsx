@@ -1,7 +1,9 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
-import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
+import { Box, BoxProps, IconButton, SvgIcon, Typography } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
+import { TrackEventProps } from 'src/store/analyticsSlice';
+import { useRootStore } from 'src/store/root';
 
 import { ContentWithTooltip } from './ContentWithTooltip';
 
@@ -9,24 +11,48 @@ export interface TextWithTooltipProps extends TypographyProps {
   text?: ReactNode;
   icon?: ReactNode;
   iconSize?: number;
+  iconColor?: string;
+  iconMargin?: number;
+  textColor?: string;
   // eslint-disable-next-line
   children?: ReactElement<any, string | JSXElementConstructor<any>>;
+  wrapperProps?: BoxProps;
+  event?: TrackEventProps;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
 }
 
 export const TextWithTooltip = ({
   text,
   icon,
   iconSize = 14,
+  iconColor,
+  iconMargin,
   children,
+  textColor,
+  wrapperProps: { sx: boxSx, ...boxRest } = {},
+  event,
+  open: openProp = false,
+  setOpen: setOpenProp,
   ...rest
 }: TextWithTooltipProps) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(openProp);
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const toggleOpen = () => {
+    if (setOpenProp) setOpenProp(!open);
+    setOpen(!open);
+  };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      {text && <Typography {...rest}>{text}</Typography>}
+    <Box sx={{ display: 'flex', alignItems: 'center', ...boxSx }} {...boxRest}>
+      {text && (
+        <Typography {...rest} color={textColor}>
+          {text}
+        </Typography>
+      )}
 
-      <ContentWithTooltip tooltipContent={<>{children}</>} open={open} setOpen={setOpen}>
+      <ContentWithTooltip tooltipContent={<>{children}</>} open={open} setOpen={toggleOpen}>
         <IconButton
           sx={{
             display: 'flex',
@@ -37,15 +63,20 @@ export const TextWithTooltip = ({
             borderRadius: '50%',
             p: 0,
             minWidth: 0,
-            ml: 0.5,
+            ml: iconMargin || 0.5,
+          }}
+          onClick={() => {
+            if (event) {
+              trackEvent(event.eventName, { ...event.eventParams });
+            }
           }}
         >
           <SvgIcon
             sx={{
               fontSize: iconSize,
-              color: open ? 'info.main' : 'text.muted',
+              color: iconColor ? iconColor : open ? 'info.main' : 'text.muted',
               borderRadius: '50%',
-              '&:hover': { color: 'info.main' },
+              '&:hover': { color: iconColor || 'info.main' },
             }}
           >
             {icon || <InformationCircleIcon />}

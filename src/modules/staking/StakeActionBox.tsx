@@ -11,7 +11,9 @@ interface StakeActionBoxProps {
   children: ReactNode;
   bottomLineTitle: ReactNode;
   bottomLineComponent: ReactNode;
+  cooldownAmount?: ReactNode;
   gradientBorder?: boolean;
+  dataCy: string;
 }
 
 export const StakeActionBox = ({
@@ -22,6 +24,8 @@ export const StakeActionBox = ({
   bottomLineTitle,
   bottomLineComponent,
   gradientBorder,
+  dataCy,
+  cooldownAmount,
 }: StakeActionBoxProps) => {
   return (
     <Box
@@ -55,6 +59,7 @@ export const StakeActionBox = ({
           position: 'relative',
           zIndex: 2,
         })}
+        data-cy={dataCy}
       >
         <Box sx={{ mb: 6, display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
           <Typography mb={1} color="text.secondary">
@@ -66,6 +71,7 @@ export const StakeActionBox = ({
             visibleDecimals={2}
             variant="secondary21"
             color={+value === 0 ? 'text.muted' : 'text.primary'}
+            data-cy={`amountNative`}
           />
           <FormattedNumber
             value={valueUSD}
@@ -74,6 +80,7 @@ export const StakeActionBox = ({
             variant="secondary12"
             color={+valueUSD === 0 ? 'text.muted' : 'text.secondary'}
             symbolsColor={+valueUSD === 0 ? 'text.muted' : 'text.secondary'}
+            data-cy={`amountUSD`}
           />
         </Box>
 
@@ -87,6 +94,7 @@ export const StakeActionBox = ({
         >
           {bottomLineComponent}
         </Row>
+        {cooldownAmount}
       </Box>
     </Box>
   );

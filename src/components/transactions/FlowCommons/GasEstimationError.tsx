@@ -1,33 +1,52 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Button, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { Warning } from 'src/components/primitives/Warning';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
 export const GasEstimationError = ({ txError }: { txError: TxErrorType }) => {
+  const isUserRejection = !txError.blocking && !txError.actionBlocked;
+
+  if (isUserRejection) {
+    return (
+      <Warning severity="info" sx={{ mt: 4, mb: 0 }}>
+        <Typography variant="description">{txError.error}</Typography>
+      </Warning>
+    );
+  }
+
+  const errorText =
+    txError.rawError instanceof Error
+      ? txError.rawError.message
+      : String(txError.rawError ?? 'Unknown error');
+
   return (
-    <Alert severity="error" sx={{ mt: 4 }}>
-      <Typography>
+    <Warning severity="error" sx={{ mt: 4, mb: 0 }}>
+      <Typography variant="description">
         {txError.error ? (
           <>
             {txError.error}{' '}
             <Button
+              sx={{ verticalAlign: 'top' }}
               variant="text"
-              onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
+              onClick={() => navigator.clipboard.writeText(errorText)}
             >
-              <Trans>Copy error</Trans>
+              <Typography variant="description">
+                <Trans>copy the error</Trans>
+              </Typography>
             </Button>
           </>
         ) : (
           <Trans>
-            There was some error. Please try changing the parameters or
+            There was some error. Please try changing the parameters or{' '}
             <Button
-              variant="text"
-              onClick={() => navigator.clipboard.writeText(txError.rawError.message.toString())}
+              sx={{ verticalAlign: 'top' }}
+              onClick={() => navigator.clipboard.writeText(errorText)}
             >
-              copy the error
+              <Typography variant="description">copy the error</Typography>
             </Button>
           </Trans>
         )}
       </Typography>
-    </Alert>
+    </Warning>
   );
 };

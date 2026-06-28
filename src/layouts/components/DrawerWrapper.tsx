@@ -11,6 +11,7 @@ interface DrawerWrapperProps {
 export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerWrapperProps) => {
   return (
     <Drawer
+      data-cy={`mobile-menu`}
       anchor="top"
       open={open}
       onClose={() => setOpen(false)}
@@ -18,7 +19,7 @@ export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerW
       sx={{ top: `${headerHeight}px` }}
       PaperProps={{
         sx: {
-          background: 'rgba(56, 61, 81, 0.88)',
+          background: 'rgba(27, 32, 48, 0.98)',
           backdropFilter: 'blur(20px)',
           boxShadow: 'none',
           borderRadius: 'unset',

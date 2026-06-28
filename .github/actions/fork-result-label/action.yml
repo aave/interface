@@ -1,0 +1,40 @@
+name: Add label to PR with CI results
+description: Add label to PR with CI results
+inputs:
+  SUCCESS:
+    description: Boolean to know if add a success label or a failure label.
+    required: true
+  TOKEN:
+    description: Github token
+    required: true
+  PULL_REQUEST_NUMBER:
+    description: Pull request id
+    required: false
+    default: '0'
+runs:
+  using: 'composite'
+  steps:
+    - name: delete success label
+      uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0
+      with:
+        labels: 'CI Passed'
+        number: ${{ inputs.PULL_REQUEST_NUMBER }}
+    - name: delete fail label
+      uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56e0a40bae0
+      with:
+        labels: 'CI Failed'
+        number: ${{ inputs.PULL_REQUEST_NUMBER }}
+    - name: adding success label
+      uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8
+      if: ${{ inputs.SUCCESS == 'true' }}
+      with:
+        labels: 'CI Passed'
+        number: ${{ inputs.PULL_REQUEST_NUMBER }}
+        github_token: ${{ inputs.TOKEN }}
+    - name: adding fail label
+      uses: actions-ecosystem/action-add-labels@bd52874380e3909a1ac983768df6976535ece7f8
+      if: ${{ inputs.SUCCESS == 'false' }}
+      with:
+        labels: 'CI Failed'
+        number: ${{ inputs.PULL_REQUEST_NUMBER }}
+        github_token: ${{ inputs.TOKEN }}

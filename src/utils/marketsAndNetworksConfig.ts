@@ -1,5 +1,6 @@
 import { ChainId, ChainIdToNetwork } from '@aave/contract-helpers';
-import { providers as ethersProviders } from 'ethers';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
+import { ProviderWithSend } from 'src/components/transactions/GovVote/temporary/VotingMachineService';
 
 import {
   CustomMarket,
@@ -13,25 +14,34 @@ import {
   NetworkConfig,
   networkConfigs as _networkConfigs,
 } from '../ui-config/networksConfig';
+import { RotationProvider } from './rotationProvider';
+import { ServerJsonRpcProvider } from './ServerJsonRpcProvider';
 
 export type Pool = {
   address: string;
 };
 
-export const NEXT_PUBLIC_ENABLE_TESTNET =
-  (!global?.window?.localStorage.getItem('testnetsEnabled') &&
-    process.env.NEXT_PUBLIC_ENABLE_TESTNET === 'true') ||
-  global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
+export const STAGING_ENV = process.env.NEXT_PUBLIC_ENV === 'staging';
+export const PROD_ENV = !process.env.NEXT_PUBLIC_ENV || process.env.NEXT_PUBLIC_ENV === 'prod';
+export const ENABLE_TESTNET =
+  PROD_ENV && global?.window?.localStorage.getItem('testnetsEnabled') === 'true';
 
 // determines if forks should be shown
-const FORK_ENABLED = global?.window?.localStorage.getItem('forkEnabled') === 'true';
+export const FORK_ENABLED =
+  !!process.env.NEXT_PUBLIC_FORK_URL_RPC ||
+  global?.window?.localStorage.getItem('forkEnabled') === 'true';
 // specifies which network was forked
-const FORK_BASE_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkBaseChainId') || 1);
+export const FORK_BASE_CHAIN_ID =
+  Number(process.env.NEXT_PUBLIC_FORK_BASE_CHAIN_ID) ||
+  Number(global?.window?.localStorage.getItem('forkBaseChainId') || 1);
 // specifies on which chainId the fork is running
-const FORK_CHAIN_ID = Number(global?.window?.localStorage.getItem('forkChainId') || 3030);
-const FORK_RPC_URL = global?.window?.localStorage.getItem('forkRPCUrl') || 'http://127.0.0.1:8545';
-const FORK_WS_RPC_URL =
-  global?.window?.localStorage.getItem('forkWsRPCUrl') || 'ws://127.0.0.1:8545';
+export const FORK_CHAIN_ID =
+  Number(process.env.NEXT_PUBLIC_FORK_CHAIN_ID) ||
+  Number(global?.window?.localStorage.getItem('forkNetworkId') || 3030);
+export const FORK_RPC_URL =
+  process.env.NEXT_PUBLIC_FORK_URL_RPC ||
+  global?.window?.localStorage.getItem('forkRPCUrl') ||
+  'http://127.0.0.1:8545';
 
 /**
  * Generates network configs based on networkConfigs & fork settings.
@@ -42,10 +52,9 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
     acc[FORK_CHAIN_ID] = {
       ..._networkConfigs[value],
-      // rpcOnly: true,
+      name: `${_networkConfigs[value].name} Fork`,
       isFork: true,
-      privateJsonRPCUrl: FORK_RPC_URL,
-      privateJsonRPCWSUrl: FORK_WS_RPC_URL,
+      publicJsonRPCUrl: [FORK_RPC_URL],
       underlyingChainId: FORK_BASE_CHAIN_ID,
     };
   }
@@ -56,6 +65,7 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
  * Generates network configs based on marketsData & fork settings.
  * Fork markets are generated for all markets on the underlying base chain.
  */
+
 export const marketsData = Object.keys(_marketsData).reduce((acc, value) => {
   acc[value] = _marketsData[value as keyof typeof CustomMarket];
   if (
@@ -65,7 +75,6 @@ export const marketsData = Object.keys(_marketsData).reduce((acc, value) => {
     acc[`fork_${value}`] = {
       ..._marketsData[value as keyof typeof CustomMarket],
       chainId: FORK_CHAIN_ID,
-      rpcOnly: true,
       isFork: true,
     };
   }
@@ -78,20 +87,29 @@ export function getDefaultChainId() {
 
 export function getSupportedChainIds(): number[] {
   return Array.from(
-    Object.keys(marketsData).reduce((acc, value) => {
-      if (
-        NEXT_PUBLIC_ENABLE_TESTNET ||
-        !networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet
+    Object.keys(marketsData)
+      .filter((value) => {
+        const isTestnet =
+          networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet;
+
+        // If this is a staging environment, or the testnet toggle is on, only show testnets
+        if (STAGING_ENV || ENABLE_TESTNET) {
+          return isTestnet;
+        }
+
+        return !isTestnet;
+      })
+      .reduce(
+        (acc, value) => acc.add(marketsData[value as keyof typeof CustomMarket].chainId),
+        new Set<number>()
       )
-        acc.add(marketsData[value as keyof typeof CustomMarket].chainId);
-      return acc;
-    }, new Set<number>())
   );
 }
 
 /**
  * selectable markets (markets in a available network + forks when enabled)
  */
+
 export const availableMarkets = Object.keys(marketsData).filter((key) =>
   getSupportedChainIds().includes(marketsData[key as keyof typeof CustomMarket].chainId)
 ) as CustomMarket[];
@@ -130,36 +148,102 @@ export const isFeatureEnabled = {
   liquiditySwap: (data: MarketDataType) => data.enabledFeatures?.liquiditySwap,
   collateralRepay: (data: MarketDataType) => data.enabledFeatures?.collateralRepay,
   permissions: (data: MarketDataType) => data.enabledFeatures?.permissions,
+  debtSwitch: (data: MarketDataType) => data.enabledFeatures?.debtSwitch,
+  withdrawAndSwitch: (data: MarketDataType) => data.enabledFeatures?.withdrawAndSwitch,
+  switch: (data: MarketDataType) => data.enabledFeatures?.switch,
 };
 
-const providers: { [network: string]: ethersProviders.Provider } = {};
+const providers: { [network: string]: ProviderWithSend } = {};
 
-export const getProvider = (chainId: ChainId): ethersProviders.Provider => {
+/**
+ * Created a fallback rpc provider in which providers are prioritized from private to public and in case there are multiple public ones, from top to bottom.
+ * @param chainId
+ * @returns provider or fallbackprovider in case multiple rpcs are configured
+ */
+export const getProvider = (chainId: ChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
-    const chainProviders: ethersProviders.StaticJsonRpcProvider[] = [];
-    if (config.privateJsonRPCUrl) {
-      providers[chainId] = new ethersProviders.StaticJsonRpcProvider(
-        config.privateJsonRPCUrl,
-        chainId
-      );
-      return providers[chainId];
-    }
-    if (config.publicJsonRPCUrl.length) {
-      config.publicJsonRPCUrl.map((rpc) =>
-        chainProviders.push(new ethersProviders.StaticJsonRpcProvider(rpc, chainId))
-      );
-    }
-    if (!chainProviders.length) {
-      throw new Error(`${chainId} has no jsonRPCUrl configured`);
-    }
-    if (chainProviders.length === 1) {
-      providers[chainId] = chainProviders[0];
+    if (
+      (FORK_ENABLED && FORK_BASE_CHAIN_ID === chainId) ||
+      process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED !== 'true'
+    ) {
+      // No private RPC or there is a fork configured, use public ones directly
+      const chainProviders: string[] = [];
+
+      if (config.publicJsonRPCUrl.length) {
+        config.publicJsonRPCUrl.map((rpc) => chainProviders.push(rpc));
+      }
+      if (!chainProviders.length) {
+        throw new Error(`${chainId} has no jsonRPCUrl configured`);
+      }
+      if (chainProviders.length === 1) {
+        providers[chainId] = new StaticJsonRpcProvider(chainProviders[0], chainId);
+      } else {
+        providers[chainId] = new RotationProvider(chainProviders, chainId);
+      }
     } else {
-      providers[chainId] = new ethersProviders.FallbackProvider(chainProviders);
+      providers[chainId] = new ServerJsonRpcProvider(chainId);
     }
   }
   return providers[chainId];
+};
+
+const ammDisableProposal = 'https://governance-v2.aave.com/governance/proposal/44';
+const ustDisableProposal = 'https://governance-v2.aave.com/governance/proposal/75';
+const kncDisableProposal = 'https://governance-v2.aave.com/governance/proposal/69';
+const v2MainnetDisableProposal = 'https://governance-v2.aave.com/governance/proposal/111';
+const v2MainnetDisableProposal2 = 'https://governance-v2.aave.com/governance/proposal/125';
+const v2PolygonDisableProposal = 'https://governance-v2.aave.com/governance/proposal/124';
+
+export const frozenProposalMap: Record<string, string> = {
+  ['UST' + CustomMarket.proto_mainnet]: ustDisableProposal,
+  ['KNC' + CustomMarket.proto_mainnet]: kncDisableProposal,
+  ['UNIDAIUSDC' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIWBTCUSDC' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIDAIWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIUSDCWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIAAVEWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIBATWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNICRVWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNILINKWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIMKRWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIRENWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNISNXWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIUNIWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIWBTCWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['UNIYFIWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['BPTWBTCWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['BPTBALWETH' + CustomMarket.proto_mainnet]: ammDisableProposal,
+  ['BAL' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal,
+  ['CVX' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal,
+  ['REN' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal,
+  ['YFI' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['CRV' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['ZRX' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['MANA' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['1INCH' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['BAT' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['SUSD' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['ENJ' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['GUSD' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['AMPL' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['RAI' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['USDP' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['LUSD' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['XSUSHI' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['DPI' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['RENFIL' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['MKR' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['ENS' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['LINK' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['UNI' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['SNX' + CustomMarket.proto_mainnet]: v2MainnetDisableProposal2,
+  ['BAL' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  ['CRV' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  ['DPI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  ['GHST' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  ['LINK' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
+  ['XSUSHI' + CustomMarket.proto_polygon]: v2PolygonDisableProposal,
 };
 
 // reexport so we can forbit config import

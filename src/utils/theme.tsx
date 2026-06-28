@@ -1,12 +1,11 @@
 import {
   CheckCircleIcon,
+  ChevronDownIcon,
   ExclamationCircleIcon,
   ExclamationIcon,
   InformationCircleIcon,
-  ChevronDownIcon,
 } from '@heroicons/react/outline';
 import { SvgIcon, Theme, ThemeOptions } from '@mui/material';
-
 import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -23,17 +22,26 @@ const FONT = 'Inter, Arial';
 declare module '@mui/material/styles/createPalette' {
   interface PaletteColor extends ColorPartial {}
 
+  interface TypeText {
+    muted: string;
+  }
+
   interface TypeBackground {
     default: string;
     paper: string;
     surface: string;
+    surface2: string;
     header: string;
+    disabled: string;
   }
 
   interface Palette {
     gradients: {
       aaveGradient: string;
       newGradient: string;
+    };
+    other: {
+      standardInputLine: string;
     };
   }
 
@@ -74,6 +82,7 @@ declare module '@mui/material/styles' {
   interface BreakpointOverrides {
     xsm: true;
     xxl: true;
+    mdlg: true;
   }
 }
 
@@ -122,7 +131,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
   return {
     breakpoints: {
       keys: ['xs', 'xsm', 'sm', 'md', 'lg', 'xl', 'xxl'],
-      values: { xs: 0, xsm: 640, sm: 760, md: 960, lg: 1280, xl: 1440, xxl: 1800 },
+      values: { xs: 0, xsm: 640, sm: 760, md: 960, mdlg: 1125, lg: 1280, xl: 1575, xxl: 1800 },
     },
     palette: {
       mode,
@@ -130,6 +139,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         main: getColor('#383D51', '#EAEBEF'),
         light: getColor('#62677B', '#F1F1F3'),
         dark: getColor('#292E41', '#D2D4DC'),
+        contrast: getColor('#FFFFFF', '#0F121D'),
       },
       secondary: {
         main: getColor('#FF607B', '#F48FB1'),
@@ -169,12 +179,15 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         secondary: getColor('#62677B', '#A5A8B6'),
         disabled: getColor('#D2D4DC', '#62677B'),
         muted: getColor('#A5A8B6', '#8E92A3'),
+        highlight: getColor('#383D51', '#C9B3F9'),
       },
       background: {
         default: getColor('#F1F1F3', '#1B2030'),
         paper: getColor('#FFFFFF', '#292E41'),
         surface: getColor('#F7F7F9', '#383D51'),
+        surface2: getColor('#F9F9FB', '#383D51'),
         header: getColor('#2B2D3C', '#1B2030'),
+        disabled: getColor('#EAEBEF', '#EBEBEF14'),
       },
       divider: getColor('#EAEBEF', '#EBEBEF14'),
       action: {
@@ -184,6 +197,9 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         disabled: getColor('#BBBECA', '#EBEBEF4D'),
         disabledBackground: getColor('#EAEBEF', '#EBEBEF1F'),
         focus: getColor('#F1F1F3', '#EBEBEF1F'),
+      },
+      other: {
+        standardInputLine: getColor('#383D511F', '#EBEBEF6B'),
       },
       gradients: {
         aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
@@ -377,6 +393,18 @@ export function getThemedComponents(theme: Theme) {
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
               borderColor: '#CBCDD8',
+            },
+          },
+        },
+      },
+      MuiSlider: {
+        styleOverrides: {
+          root: {
+            '& .MuiSlider-thumb': {
+              color: theme.palette.mode === 'light' ? '#62677B' : '#C9B3F9',
+            },
+            '& .MuiSlider-track': {
+              color: theme.palette.mode === 'light' ? '#383D51' : '#9C93B3',
             },
           },
         },
@@ -785,48 +813,6 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           colorPrimary: {
             color: theme.palette.primary.light,
-          },
-        },
-      },
-      MuiToggleButtonGroup: {
-        styleOverrides: {
-          root: {
-            backgroundColor: '#383D51',
-            border: '1px solid rgba(235, 235, 237, 0.12)',
-            padding: '4px',
-          },
-        },
-      },
-      MuiToggleButton: {
-        styleOverrides: {
-          root: {
-            border: '0px',
-            flex: 1,
-            backgroundColor: '#383D51',
-            borderRadius: '4px',
-
-            '&.Mui-selected, &.Mui-selected:hover': {
-              backgroundColor: '#FFFFFF',
-              borderRadius: '4px !important',
-            },
-
-            '&.Mui-selected, &.Mui-disabled': {
-              zIndex: 100,
-              height: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-
-              '.MuiTypography-subheader1': {
-                background: theme.palette.gradients.aaveGradient,
-                backgroundClip: 'text',
-                textFillColor: 'transparent',
-              },
-              '.MuiTypography-secondary14': {
-                background: theme.palette.gradients.aaveGradient,
-                backgroundClip: 'text',
-                textFillColor: 'transparent',
-              },
-            },
           },
         },
       },

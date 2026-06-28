@@ -1,24 +1,25 @@
-import { ReserveDataHumanized } from '@aave/contract-helpers';
-import {
-  ComputedUserReserve,
-  formatReservesAndIncentives,
-  formatUserSummaryAndIncentives,
-  FormatUserSummaryAndIncentivesResponse,
-  UserReserveData,
-} from '@aave/math-utils';
-import BigNumber from 'bignumber.js';
-import React, { useContext } from 'react';
+import type { EmodeMarketCategory, Market, MarketUserState, Reserve } from '@aave/graphql';
+import { UserReserveData } from '@aave/math-utils';
+import { client } from 'pages/_app.page';
+import React, { PropsWithChildren, useContext } from 'react';
+import { EmodeCategory } from 'src/helpers/types';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
+import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
-import { useCurrentTimestamp } from '../useCurrentTimestamp';
-import { useProtocolDataContext } from '../useProtocolDataContext';
+import { formatEmodes } from '../../store/poolSelectors';
 import {
-  useC_ProtocolDataQuery,
-  useC_ReservesIncentivesQuery,
-  useC_UserDataQuery,
-  useC_UserIncentivesQuery,
-} from './graphql/hooks';
+  ExtendedFormattedUser as _ExtendedFormattedUser,
+  useExtendedUserSummaryAndIncentives,
+} from '../pool/useExtendedUserSummaryAndIncentives';
+import {
+  FormattedReservesAndIncentives,
+  usePoolFormattedReserves,
+} from '../pool/usePoolFormattedReserves';
+import { usePoolReservesHumanized } from '../pool/usePoolReserves';
+import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
+import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
+import { useMarketsData } from './useMarketsData';
 
 /**
  * removes the marketPrefix from a symbol
@@ -29,32 +30,34 @@ export const unPrefixSymbol = (symbol: string, prefix: string) => {
   return symbol.toUpperCase().replace(RegExp(`^(${prefix[0]}?${prefix.slice(1)})`), '');
 };
 
-export type ComputedReserveData = ReturnType<typeof formatReservesAndIncentives>[0] &
-  ReserveDataHumanized & {
-    iconSymbol: string;
-    isEmodeEnabled: boolean;
-    isWrappedBaseAsset: boolean;
-  };
+/**
+ * @deprecated Use FormattedReservesAndIncentives type from usePoolFormattedReserves hook
+ */
+export type ComputedReserveData = FormattedReservesAndIncentives;
 
-export type ComputedUserReserveData = ComputedUserReserve<ComputedReserveData>;
+/**
+ * @deprecated Use FormattedUserReserves type from useUserSummaryAndIncentives hook
+ */
+export type ComputedUserReserveData = FormattedUserReserves;
 
-export type ExtendedFormattedUser = FormatUserSummaryAndIncentivesResponse<ComputedReserveData> & {
-  earnedAPY: number;
-  debtAPY: number;
-  netAPY: number;
-  isInEmode: boolean;
-  userEmodeCategoryId: number;
-};
-
+/**
+ * @deprecated Use ExtendedFormattedUser type from useExtendedUserSummaryAndIncentives hook
+ */
+export type ExtendedFormattedUser = _ExtendedFormattedUser;
+export type ReserveWithId = Reserve & { id: string };
 export interface AppDataContextType {
   loading: boolean;
+  /** SDK market snapshot */
+  market?: Market;
+  totalBorrows?: number;
+  supplyReserves: ReserveWithId[];
+  borrowReserves: ReserveWithId[];
+  eModeCategories: EmodeMarketCategory[];
+  userState?: MarketUserState;
+  /** Legacy fields (deprecated) kept temporarily for incremental migration */
   reserves: ComputedReserveData[];
-  // refreshPoolData?: () => Promise<void[]>;
-  isUserHasDeposits: boolean;
-  user: ExtendedFormattedUser;
-  // refreshIncentives?: () => Promise<void>;
-  // loading: boolean;
-
+  eModes: Record<number, EmodeCategory>;
+  user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
   userReserves: UserReserveData[];
@@ -66,171 +69,92 @@ const AppDataContext = React.createContext<AppDataContextType>({} as AppDataCont
  * This is the only provider you'll ever need.
  * It fetches reserves /incentives & walletbalances & keeps them updated.
  */
-export const AppDataProvider: React.FC = ({ children }) => {
-  const currentTimestamp = useCurrentTimestamp(1);
+export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { currentAccount } = useWeb3Context();
-  const { currentMarketData, currentChainId, currentNetworkConfig } = useProtocolDataContext();
 
-  const { data: reservesData } = useC_ProtocolDataQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+
+  const { data, isPending } = useMarketsData({
+    client,
+    marketData: currentMarketData,
+    account: currentAccount,
   });
 
-  const { data: userReservesData } = useC_UserDataQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      userAddress: currentAccount,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
+  const marketAddress = currentMarketData.addresses.LENDING_POOL.toLowerCase();
 
-  const reserves: ReserveDataHumanized[] = reservesData?.protocolData.reserves || [];
-  const baseCurrencyData = reservesData?.protocolData.baseCurrencyData || {
-    marketReferenceCurrencyDecimals: 0,
-    marketReferenceCurrencyPriceInUsd: '0',
-    networkBaseTokenPriceInUsd: '0',
-    networkBaseTokenPriceDecimals: 0,
+  const sdkMarket = data?.find((item) => item.address.toLowerCase() === marketAddress);
+
+  const totalBorrows = sdkMarket?.borrowReserves.reduce((acc, reserve) => {
+    const value = reserve.borrowInfo?.total?.usd ?? 0;
+    return acc + Number(value);
+  }, 0);
+
+  const patchUnderlyingToken = (reserve: Reserve) => {
+    const patch = fetchIconSymbolAndName({
+      underlyingAsset: reserve.underlyingToken.address,
+      symbol: reserve.underlyingToken.symbol,
+      name: reserve.underlyingToken.name,
+    });
+    return {
+      ...reserve.underlyingToken,
+      name: patch.name ?? reserve.underlyingToken.name,
+      symbol: patch.symbol ?? reserve.underlyingToken.symbol,
+    };
   };
-  const { data: reservesIncentivesData } = useC_ReservesIncentivesQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
-  const { data: userReservesIncentivesData } = useC_UserIncentivesQuery({
-    variables: {
-      lendingPoolAddressProvider: currentMarketData.addresses.LENDING_POOL_ADDRESS_PROVIDER,
-      userAddress: currentAccount,
-      chainId: currentChainId,
-    },
-    fetchPolicy: 'cache-only',
-  });
 
-  const formattedPoolReserves = formatReservesAndIncentives({
-    reserves,
-    currentTimestamp,
-    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
-  })
-    .map((r) => ({
-      ...r,
-      ...fetchIconSymbolAndName(r),
-      isEmodeEnabled: r.eModeCategoryId !== 0,
-      isWrappedBaseAsset:
-        r.symbol.toLowerCase() === currentNetworkConfig.wrappedBaseAssetSymbol?.toLowerCase(),
-    }))
-    .sort(reserveSortFn);
+  const supplyReserves = (sdkMarket?.supplyReserves ?? []).map((reserve) => ({
+    ...reserve,
+    underlyingToken: patchUnderlyingToken(reserve),
+    id: `${sdkMarket?.address}-${reserve.underlyingToken.address}`,
+  }));
 
-  const userReserves: UserReserveData[] = userReservesData?.userData.userReserves || [];
+  const borrowReserves = (sdkMarket?.borrowReserves ?? []).map((reserve) => ({
+    ...reserve,
+    underlyingToken: patchUnderlyingToken(reserve),
+    id: `${sdkMarket?.address}-${reserve.underlyingToken.address}`,
+  }));
 
-  const userEmodeCategoryId = userReservesData?.userData.userEmodeCategoryId || 0;
+  const eModeCategories = sdkMarket?.eModeCategories ?? [];
+  const marketUserState = sdkMarket?.userState ?? undefined;
 
-  const user = formatUserSummaryAndIncentives({
-    currentTimestamp,
-    marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-    marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
-    userReserves,
-    formattedReserves: formattedPoolReserves,
-    userEmodeCategoryId: userEmodeCategoryId,
-    reserveIncentives: reservesIncentivesData?.reservesIncentives || [],
-    userIncentives: userReservesIncentivesData?.userIncentives || [],
-  });
+  const { data: reservesData, isPending: reservesDataLoading } =
+    usePoolReservesHumanized(currentMarketData);
+  const { data: formattedPoolReserves, isPending: formattedPoolReservesLoading } =
+    usePoolFormattedReserves(currentMarketData);
+  const baseCurrencyData = reservesData?.baseCurrencyData;
+  // user hooks
 
-  const proportions = user.userReservesData.reduce(
-    (acc, value) => {
-      const reserve = formattedPoolReserves.find(
-        (r) => r.underlyingAsset === value.reserve.underlyingAsset
-      );
+  const eModes = formattedPoolReserves ? formatEmodes(formattedPoolReserves) : {};
 
-      if (reserve) {
-        if (value.underlyingBalanceUSD !== '0') {
-          acc.positiveProportion = acc.positiveProportion.plus(
-            new BigNumber(reserve.supplyAPY).multipliedBy(value.underlyingBalanceUSD)
-          );
-          if (reserve.aIncentivesData) {
-            reserve.aIncentivesData.forEach((incentive) => {
-              acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(incentive.incentiveAPR).multipliedBy(value.underlyingBalanceUSD)
-              );
-            });
-          }
-        }
-        if (value.variableBorrowsUSD !== '0') {
-          acc.negativeProportion = acc.negativeProportion.plus(
-            new BigNumber(reserve.variableBorrowAPY).multipliedBy(value.variableBorrowsUSD)
-          );
-          if (reserve.vIncentivesData) {
-            reserve.vIncentivesData.forEach((incentive) => {
-              acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(incentive.incentiveAPR).multipliedBy(value.variableBorrowsUSD)
-              );
-            });
-          }
-        }
-        if (value.stableBorrowsUSD !== '0') {
-          acc.negativeProportion = acc.negativeProportion.plus(
-            new BigNumber(value.stableBorrowAPY).multipliedBy(value.stableBorrowsUSD)
-          );
-          if (reserve.sIncentivesData) {
-            reserve.sIncentivesData.forEach((incentive) => {
-              acc.positiveProportion = acc.positiveProportion.plus(
-                new BigNumber(incentive.incentiveAPR).multipliedBy(value.stableBorrowsUSD)
-              );
-            });
-          }
-        }
-      } else {
-        throw new Error('no possible to calculate net apy');
-      }
+  const { data: userReservesData, isPending: userReservesDataLoading } =
+    useUserPoolReservesHumanized(currentMarketData);
+  const { data: userSummary, isPending: userSummaryLoading } =
+    useExtendedUserSummaryAndIncentives(currentMarketData);
+  const userReserves = userReservesData?.userReserves;
 
-      return acc;
-    },
-    {
-      positiveProportion: new BigNumber(0),
-      negativeProportion: new BigNumber(0),
-    }
-  );
+  // loading
+  const isReservesLoading = reservesDataLoading || formattedPoolReservesLoading;
+  const isUserDataLoading = userReservesDataLoading || userSummaryLoading;
 
-  const isUserHasDeposits = user.userReservesData.some(
-    (userReserve) => userReserve.scaledATokenBalance !== '0'
-  );
-
-  const earnedAPY = proportions.positiveProportion.dividedBy(user.totalLiquidityUSD).toNumber();
-  const debtAPY = proportions.negativeProportion.dividedBy(user.totalBorrowsUSD).toNumber();
-  const netAPY =
-    (earnedAPY || 0) *
-      (Number(user.totalLiquidityUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1')) -
-    (debtAPY || 0) *
-      (Number(user.totalBorrowsUSD) / Number(user.netWorthUSD !== '0' ? user.netWorthUSD : '1'));
+  const loading = isPending || isReservesLoading || (!!currentAccount && isUserDataLoading);
 
   return (
     <AppDataContext.Provider
       value={{
-        loading:
-          !reserves.length ||
-          (!!currentAccount && userReservesData?.userData.userReserves === undefined),
-        reserves: formattedPoolReserves,
-        user: {
-          ...user,
-          userEmodeCategoryId,
-          isInEmode: userEmodeCategoryId !== 0,
-          userReservesData: user.userReservesData.sort((a, b) =>
-            reserveSortFn(a.reserve, b.reserve)
-          ),
-          earnedAPY,
-          debtAPY,
-          netAPY,
-        },
-        userReserves,
-        isUserHasDeposits,
-        marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
-        marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
+        loading,
+        market: sdkMarket,
+        totalBorrows,
+        supplyReserves,
+        borrowReserves,
+        eModeCategories,
+        userState: marketUserState,
+        // Legacy fields (to be removed once consumers migrate)
+        reserves: formattedPoolReserves || [],
+        eModes,
+        user: userSummary,
+        userReserves: userReserves || [],
+        marketReferencePriceInUsd: baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0',
+        marketReferenceCurrencyDecimals: baseCurrencyData?.marketReferenceCurrencyDecimals || 0,
       }}
     >
       {children}
@@ -239,31 +163,3 @@ export const AppDataProvider: React.FC = ({ children }) => {
 };
 
 export const useAppDataContext = () => useContext(AppDataContext);
-
-// tokens flagged stable will be sorted on top when no other sorting is selected
-const stable = [
-  'DAI',
-  'TUSD',
-  'BUSD',
-  'GUSD',
-  'USDC',
-  'USDT',
-  'EUROS',
-  'FEI',
-  'FRAX',
-  'PAX',
-  'USDP',
-  'SUSD',
-  'UST',
-  'EURS',
-  'JEUR',
-  'AGEUR',
-];
-
-const reserveSortFn = (a: { iconSymbol: string }, b: { iconSymbol: string }) => {
-  const aIsStable = stable.includes(a.iconSymbol.toUpperCase());
-  const bIsStable = stable.includes(b.iconSymbol.toUpperCase());
-  if (aIsStable && !bIsStable) return -1;
-  if (!aIsStable && bIsStable) return 1;
-  return a.iconSymbol.toUpperCase() > b.iconSymbol.toUpperCase() ? 1 : -1;
-};

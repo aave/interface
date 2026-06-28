@@ -1,8 +1,10 @@
+import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
-import { StableAPYTooltip } from 'src/components/infoTooltips/StableAPYTooltip';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useRootStore } from 'src/store/root';
+import { DashboardReserve } from 'src/utils/dashboardSortUtils';
+import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
 import { CapsHint } from '../../../../components/caps/CapsHint';
 import { CapType } from '../../../../components/caps/helper';
@@ -12,7 +14,6 @@ import { Row } from '../../../../components/primitives/Row';
 import { useModalContext } from '../../../../hooks/useModal';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
-import { BorrowAssetsItem } from './types';
 
 export const BorrowAssetsListMobileItem = ({
   symbol,
@@ -23,15 +24,15 @@ export const BorrowAssetsListMobileItem = ({
   borrowCap,
   totalBorrows,
   variableBorrowRate,
-  stableBorrowRate,
-  sIncentivesData,
   vIncentivesData,
+  variableDebtTokenAddress,
   underlyingAsset,
   isFreezed,
-}: BorrowAssetsItem) => {
+}: DashboardReserve) => {
   const { openBorrow } = useModalContext();
-  const { currentMarket } = useProtocolDataContext();
-  const borrowButtonDisable = isFreezed || Number(availableBorrows) <= 0;
+  const currentMarket = useRootStore((state) => state.currentMarket);
+
+  const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
   return (
     <ListMobileItemWrapper
@@ -40,6 +41,11 @@ export const BorrowAssetsListMobileItem = ({
       name={name}
       underlyingAsset={underlyingAsset}
       currentMarket={currentMarket}
+      showExternalIncentivesTooltips={showExternalIncentivesTooltip(
+        symbol,
+        currentMarket,
+        ProtocolAction.borrow
+      )}
     >
       <ListValueRow
         title={<Trans>Available to borrow</Trans>}
@@ -55,7 +61,6 @@ export const BorrowAssetsListMobileItem = ({
           />
         }
       />
-
       <Row
         caption={
           <VariableAPYTooltip
@@ -71,36 +76,18 @@ export const BorrowAssetsListMobileItem = ({
         <IncentivesCard
           value={Number(variableBorrowRate)}
           incentives={vIncentivesData}
+          address={variableDebtTokenAddress}
           symbol={symbol}
           variant="secondary14"
+          market={currentMarket}
+          protocolAction={ProtocolAction.borrow}
         />
       </Row>
-
-      <Row
-        caption={
-          <StableAPYTooltip
-            text={<Trans>APY, stable</Trans>}
-            key="APY_dash_mob_stable_ type"
-            variant="description"
-          />
-        }
-        align="flex-start"
-        captionVariant="description"
-        mb={2}
-      >
-        <IncentivesCard
-          value={Number(stableBorrowRate)}
-          incentives={sIncentivesData}
-          symbol={symbol}
-          variant="secondary14"
-        />
-      </Row>
-
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
-          disabled={borrowButtonDisable}
+          disabled={disableBorrow}
           variant="contained"
-          onClick={() => openBorrow(underlyingAsset)}
+          onClick={() => openBorrow(underlyingAsset, currentMarket, name, 'dashboard')}
           sx={{ mr: 1.5 }}
           fullWidth
         >

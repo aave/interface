@@ -26,6 +26,7 @@ Enabling users to:
 Install it and run:
 
 ```sh
+cp .env.example .env.local
 yarn
 yarn dev
 ```
@@ -33,6 +34,10 @@ yarn dev
 ## Contribution
 
 For instructions on local development, deployment, configurations & feature proposals, see [Contributing](./CONTRIBUTING.md)
+
+Also, contributors with at least one pull request that has been merged into the main branch are eligible for a unique GitPOAP. Visit [gitpoap.io](https://www.gitpoap.io/gp/638) to claim it.
+
+<img src="https://www.gitpoap.io/_next/image?url=https%3A%2F%2Fassets.poap.xyz%2Fgitpoap3a-2022-aave-protocol-interface-contributor-2022-logo-1668012040505.png&w=2048&q=75" width="164">
 
 ## IPFS deployment
 
@@ -42,8 +47,13 @@ There's a github action commenting the appropriate IPFS hash embedded in the Clo
 
 For ease of use:
 
-- the DNS of [https://staging.aave.com](https://staging.aave.com) will always point to the latest main IPFS hash with all networks enabled
-- the DNS of [https://app.aave.com](https://app.aave.com) will always point to the latest main IPFS hash with disabled test networks
+- the DNS of [https://app.aave.com](https://app.aave.com) will always point to the latest main IPFS hash.
+
+### Testnet Networks Access
+The interface now includes a feature toggle for testnet networks. Users can enable test networks by:
+1. Opening the Settings menu
+2. Toggling the "Testnet mode" switch
+3. Once enabled, testnet networks (like Sepolia, Mumbai, etc.) will become available in the network selection menu
 
 ### Links known to work at some point:
 
@@ -52,7 +62,7 @@ For ease of use:
 
 ### Troubleshooting
 
-Issue: I cannot connect to `app.aave.com`
+Issue: Cannot connect to `app.aave.com`
 
 The aave-ui is hosted on IPFS in a decentralized manner. `app.aave.com` just holds a CNAME record to the Cloudflare IPFS gateway. You can use [any](https://ipfs.github.io/public-gateway-checker/) public or private IPFS gateway supporting origin isolation to access aave-ui if for some reason the Cloudflare gateway doesn't work for you
 
@@ -62,7 +72,7 @@ Just go to `<your favorite public ipfs gateway>/ipns/app.aave.com`
 
 ## License
 
-[BSD-3-Clause](./LICENSE.md)
+[All Rights Reserved © Aave Labs](./LICENSE.md)
 
 ## Credits
 

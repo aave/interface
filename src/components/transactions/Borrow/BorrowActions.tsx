@@ -1,83 +1,223 @@
-import { InterestRate } from '@aave/contract-helpers';
+import {
+  API_ETH_MOCK_ADDRESS,
+  ApproveDelegationType,
+  gasLimitRecommendations,
+  InterestRate,
+  MAX_UINT_AMOUNT,
+  ProtocolAction,
+} from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
+import { BoxProps } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
+import { parseUnits } from 'ethers/lib/utils';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { optimizedPath } from 'src/utils/utils';
-import { TxActionsWrapper } from '../TxActionsWrapper';
+import { useRootStore } from 'src/store/root';
+import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
+import { queryKeysFactory } from 'src/ui-config/queries';
+import { useShallow } from 'zustand/shallow';
 
-export type BorrowActionsProps = {
+import { TxActionsWrapper } from '../TxActionsWrapper';
+import { APPROVE_DELEGATION_GAS_LIMIT, checkRequiresApproval } from '../utils';
+
+export interface BorrowActionsProps extends BoxProps {
   poolReserve: ComputedReserveData;
   amountToBorrow: string;
   poolAddress: string;
-  interestRateMode: InterestRate;
   isWrongNetwork: boolean;
   symbol: string;
   blocked: boolean;
-};
+}
 
-export const BorrowActions = ({
-  symbol,
-  poolReserve,
-  amountToBorrow,
-  poolAddress,
-  interestRateMode,
-  isWrongNetwork,
-  blocked,
-}: BorrowActionsProps) => {
-  const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
+export const BorrowActions = React.memo(
+  ({
+    symbol,
+    poolReserve,
+    amountToBorrow,
+    poolAddress,
+    isWrongNetwork,
+    blocked,
+    sx,
+  }: BorrowActionsProps) => {
+    const [
+      borrow,
+      getCreditDelegationApprovedAmount,
+      currentMarketData,
+      generateApproveDelegation,
+      estimateGasLimit,
+      addTransaction,
+    ] = useRootStore(
+      useShallow((state) => [
+        state.borrow,
+        state.getCreditDelegationApprovedAmount,
+        state.currentMarketData,
+        state.generateApproveDelegation,
+        state.estimateGasLimit,
+        state.addTransaction,
+      ])
+    );
+    const {
+      approvalTxState,
+      mainTxState,
+      loadingTxns,
+      setMainTxState,
+      setTxError,
+      setGasLimit,
+      setLoadingTxns,
+      setApprovalTxState,
+    } = useModalContext();
+    const { sendTx } = useWeb3Context();
+    const queryClient = useQueryClient();
+    const [requiresApproval, setRequiresApproval] = useState<boolean>(false);
+    const [approvedAmount, setApprovedAmount] = useState<ApproveDelegationType | undefined>();
 
-  const { action, loadingTxns, mainTxState, approval, requiresApproval, approvalTxState } =
-    useTransactionHandler({
-      tryPermit: false,
-      handleGetTxns: async () => {
-        if (currentMarketData.v3) {
-          return lendingPool.borrow({
-            interestRateMode,
-            user: currentAccount,
-            amount: amountToBorrow,
-            reserve: poolAddress,
-            debtTokenAddress:
-              interestRateMode === InterestRate.Variable
-                ? poolReserve.variableDebtTokenAddress
-                : poolReserve.stableDebtTokenAddress,
-            useOptimizedPath: optimizedPath(chainId),
+    const approval = async () => {
+      try {
+        if (requiresApproval && approvedAmount) {
+          let approveDelegationTxData = generateApproveDelegation({
+            debtTokenAddress: poolReserve.variableDebtTokenAddress,
+            delegatee: currentMarketData.addresses.WETH_GATEWAY ?? '',
+            amount: MAX_UINT_AMOUNT,
           });
-        } else {
-          return lendingPool.borrow({
-            interestRateMode,
-            user: currentAccount,
-            amount: amountToBorrow,
-            reserve: poolAddress,
-            debtTokenAddress:
-              interestRateMode === InterestRate.Variable
-                ? poolReserve.variableDebtTokenAddress
-                : poolReserve.stableDebtTokenAddress,
+          setApprovalTxState({ ...approvalTxState, loading: true });
+          approveDelegationTxData = await estimateGasLimit(approveDelegationTxData);
+          const response = await sendTx(approveDelegationTxData);
+          await response.wait(1);
+          setApprovalTxState({
+            txHash: response.hash,
+            loading: false,
+            success: true,
           });
+          fetchApprovedAmount(true);
         }
-      },
-      skip: !amountToBorrow || amountToBorrow === '0' || blocked,
-      deps: [amountToBorrow, interestRateMode],
-    });
+      } catch (error) {
+        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        setTxError(parsedError);
+        setApprovalTxState({
+          txHash: undefined,
+          loading: false,
+        });
+      }
+    };
 
-  return (
-    <TxActionsWrapper
-      blocked={blocked}
-      mainTxState={mainTxState}
-      approvalTxState={approvalTxState}
-      requiresAmount={true}
-      amount={amountToBorrow}
-      isWrongNetwork={isWrongNetwork}
-      handleAction={action}
-      actionText={<Trans>Borrow {symbol}</Trans>}
-      actionInProgressText={<Trans>Borrowing {symbol}</Trans>}
-      handleApproval={() => approval(amountToBorrow, poolAddress)}
-      requiresApproval={requiresApproval}
-      preparingTransactions={loadingTxns}
-    />
-  );
-};
+    const action = async () => {
+      try {
+        setMainTxState({ ...mainTxState, loading: true });
+        let borrowTxData = borrow({
+          amount: parseUnits(amountToBorrow, poolReserve.decimals).toString(),
+          reserve: poolAddress,
+          interestRateMode: InterestRate.Variable,
+          debtTokenAddress: poolReserve.variableDebtTokenAddress,
+        });
+        borrowTxData = await estimateGasLimit(borrowTxData);
+        const response = await sendTx(borrowTxData);
+        await response.wait(1);
+        setMainTxState({
+          txHash: response.hash,
+          loading: false,
+          success: true,
+        });
+
+        addTransaction(response.hash, {
+          action: ProtocolAction.borrow,
+          txState: 'success',
+          asset: poolAddress,
+          amount: amountToBorrow,
+          assetName: poolReserve.name,
+          amountUsd: valueToBigNumber(amountToBorrow)
+            .multipliedBy(poolReserve.priceInUSD)
+            .toString(),
+        });
+
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.gho });
+      } catch (error) {
+        const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
+        setTxError(parsedError);
+        setMainTxState({
+          txHash: undefined,
+          loading: false,
+        });
+      }
+    };
+
+    // callback to fetch approved credit delegation amount and determine execution path on dependency updates
+    const fetchApprovedAmount = useCallback(
+      async (forceApprovalCheck?: boolean) => {
+        // Check approved amount on-chain on first load or if an action triggers a re-check such as an approveDelegation being confirmed
+        if (
+          poolAddress === API_ETH_MOCK_ADDRESS &&
+          (approvedAmount === undefined || forceApprovalCheck)
+        ) {
+          setLoadingTxns(true);
+          const approvedAmount = await getCreditDelegationApprovedAmount({
+            debtTokenAddress: poolReserve.variableDebtTokenAddress,
+            delegatee: currentMarketData.addresses.WETH_GATEWAY ?? '',
+          });
+          setApprovedAmount(approvedAmount);
+        } else {
+          setRequiresApproval(false);
+          setApprovalTxState({});
+        }
+
+        if (approvedAmount && poolAddress === API_ETH_MOCK_ADDRESS) {
+          const fetchedRequiresApproval = checkRequiresApproval({
+            approvedAmount: approvedAmount.amount,
+            amount: amountToBorrow,
+            signedAmount: '0',
+          });
+          setRequiresApproval(fetchedRequiresApproval);
+          if (fetchedRequiresApproval) setApprovalTxState({});
+        }
+
+        setLoadingTxns(false);
+      },
+      [
+        amountToBorrow,
+        approvedAmount,
+        currentMarketData.addresses.WETH_GATEWAY,
+        getCreditDelegationApprovedAmount,
+        poolAddress,
+        poolReserve.variableDebtTokenAddress,
+        setApprovalTxState,
+        setLoadingTxns,
+      ]
+    );
+
+    // Run on first load of reserve to determine execution path
+    useEffect(() => {
+      fetchApprovedAmount();
+    }, [fetchApprovedAmount, poolAddress]);
+
+    // Update gas estimation
+    useEffect(() => {
+      let borrowGasLimit = 0;
+      borrowGasLimit = Number(gasLimitRecommendations[ProtocolAction.borrow].recommended);
+      if (requiresApproval && !approvalTxState.success) {
+        borrowGasLimit += Number(APPROVE_DELEGATION_GAS_LIMIT);
+      }
+      setGasLimit(borrowGasLimit.toString());
+    }, [requiresApproval, approvalTxState, setGasLimit]);
+
+    return (
+      <TxActionsWrapper
+        blocked={blocked}
+        mainTxState={mainTxState}
+        approvalTxState={approvalTxState}
+        requiresAmount={true}
+        amount={amountToBorrow}
+        isWrongNetwork={isWrongNetwork}
+        handleAction={action}
+        actionText={<Trans>Borrow {symbol}</Trans>}
+        actionInProgressText={<Trans>Borrowing {symbol}</Trans>}
+        handleApproval={() => approval()}
+        requiresApproval={requiresApproval}
+        preparingTransactions={loadingTxns}
+        sx={sx}
+      />
+    );
+  }
+);

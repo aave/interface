@@ -1,16 +1,25 @@
+import { ChainId, Stake } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
-import { ArrowDownIcon } from '@heroicons/react/outline';
+import { ArrowDownIcon, CalendarIcon } from '@heroicons/react/outline';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
-import { parseUnits } from 'ethers/lib/utils';
+import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
+import dayjs from 'dayjs';
+import { formatEther, parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
-import { useStakeData } from 'src/hooks/stake-data-provider/StakeDataProvider';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { Warning } from 'src/components/primitives/Warning';
+import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
+import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { getStakeConfig } from 'src/ui-config/stakeConfig';
+import { useRootStore } from 'src/store/root';
+import { stakeConfig } from 'src/ui-config/stakeConfig';
+import { GENERAL } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { formattedTime, timeText } from '../../../helpers/timeHelper';
+import { timeMessage } from '../../../helpers/timeHelper';
 import { Link } from '../../primitives/Link';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -21,7 +30,8 @@ import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeCooldownActions } from './StakeCooldownActions';
 
 export type StakeCooldownProps = {
-  stakeAssetName: string;
+  stakeAssetName: Stake;
+  icon: string;
 };
 
 export enum ErrorType {
@@ -29,27 +39,33 @@ export enum ErrorType {
   ALREADY_ON_COOLDOWN,
 }
 
-type StakingType = 'aave' | 'bpt';
+type CalendarEvent = {
+  title: string;
+  start: string;
+  end: string;
+  description: string;
+};
 
-export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps) => {
-  const { stakeUserResult, stakeGeneralResult } = useStakeData();
-  const { chainId: connectedChainId } = useWeb3Context();
-  const stakeConfig = getStakeConfig();
+export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldownProps) => {
+  const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
+  const trackEvent = useRootStore((store) => store.trackEvent);
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const currentChainId = useRootStore((store) => store.currentChainId);
+
+  const { data: stakeUserResult } = useUserStakeUiData(currentMarketData, stakeAssetName);
+  const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData, stakeAssetName);
 
   // states
   const [cooldownCheck, setCooldownCheck] = useState(false);
 
-  const userStakeData = stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType];
-  const stakeData = stakeGeneralResult?.stakeGeneralUIData[stakeAssetName as StakingType];
+  const stakeData = stakeGeneralResult?.[0];
+  const stakeUserData = stakeUserResult?.[0];
 
   // Cooldown logic
-  const now = Date.now() / 1000;
   const stakeCooldownSeconds = stakeData?.stakeCooldownSeconds || 0;
-  const userCooldown = userStakeData?.userCooldown || 0;
   const stakeUnstakeWindow = stakeData?.stakeUnstakeWindow || 0;
-  const userCooldownDelta = now - userCooldown;
-  const isCooldownActive = userCooldownDelta < stakeCooldownSeconds + stakeUnstakeWindow;
 
   const cooldownPercent = valueToBigNumber(stakeCooldownSeconds)
     .dividedBy(stakeCooldownSeconds + stakeUnstakeWindow)
@@ -64,56 +80,100 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
   const unstakeWindowLineWidth =
     unstakeWindowPercent < 15 ? 15 : unstakeWindowPercent > 85 ? 85 : unstakeWindowPercent;
 
-  const stakedAmount =
-    stakeUserResult?.stakeUserUIData[stakeAssetName as StakingType].stakeTokenUserBalance;
+  const stakedAmount = stakeUserData?.stakeTokenRedeemableAmount;
 
   // error handler
   let blockingError: ErrorType | undefined = undefined;
   if (stakedAmount === '0') {
     blockingError = ErrorType.NOT_ENOUGH_BALANCE;
-  } else if (isCooldownActive) {
-    blockingError = ErrorType.ALREADY_ON_COOLDOWN;
   }
 
   const handleBlocked = () => {
     switch (blockingError) {
       case ErrorType.NOT_ENOUGH_BALANCE:
         return <Trans>Nothing staked</Trans>;
-      case ErrorType.ALREADY_ON_COOLDOWN:
-        return <Trans>Already on cooldown</Trans>;
       default:
         return null;
     }
   };
 
   // is Network mismatched
-  const stakingChain = stakeConfig.chainId;
-  const networkConfig = getNetworkConfig(stakingChain);
+  const stakingChain =
+    currentNetworkConfig.isFork && currentNetworkConfig.underlyingChainId === stakeConfig.chainId
+      ? currentChainId
+      : stakeConfig.chainId;
   const isWrongNetwork = connectedChainId !== stakingChain;
+
+  const networkConfig = getNetworkConfig(stakingChain);
 
   if (txError && txError.blocking) {
     return <TxErrorView txError={txError} />;
   }
-  if (txState.success) return <TxSuccessView action="Stake cooldown activated" />;
+  if (txState.success) return <TxSuccessView action={<Trans>Stake cooldown activated</Trans>} />;
 
-  const timeMessage = (time: number) => {
-    return `${formattedTime(time)} ${timeText(time)}`;
+  const handleOnCoolDownCheckBox = () => {
+    trackEvent(GENERAL.ACCEPT_RISK, {
+      asset: stakeAssetName,
+      modal: 'Cooldown',
+    });
+    setCooldownCheck(!cooldownCheck);
   };
+  const amountToCooldown = formatEther(stakeUserData?.stakeTokenRedeemableAmount || 0);
+
+  const dateMessage = (time: number) => {
+    const now = dayjs();
+
+    const futureDate = now.add(time, 'second');
+
+    return futureDate.format('DD.MM.YY');
+  };
+
+  const googleDate = (timeInSeconds: number) => {
+    const date = dayjs().add(timeInSeconds, 'second');
+    return date.format('YYYYMMDDTHHmmss') + 'Z'; // UTC time
+  };
+
+  const createGoogleCalendarUrl = (event: CalendarEvent) => {
+    const startTime = encodeURIComponent(event.start);
+    const endTime = encodeURIComponent(event.end);
+    const text = encodeURIComponent(event.title);
+    const details = encodeURIComponent(event.description);
+
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${startTime}/${endTime}&details=${details}`;
+  };
+
+  const event = {
+    title: 'Unstaking window for Aave',
+    start: googleDate(stakeCooldownSeconds),
+    end: googleDate(stakeCooldownSeconds + stakeUnstakeWindow),
+    description: 'Unstaking window for Aave staking activated',
+  };
+
+  const googleCalendarUrl = createGoogleCalendarUrl(event);
 
   return (
     <>
       <TxModalTitle title="Cooldown to unstake" />
-      {isWrongNetwork && (
-        <ChangeNetworkWarning networkName={networkConfig.name} chainId={stakingChain} />
+      {isWrongNetwork && !readOnlyModeAddress && (
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={networkConfig.name}
+          chainId={stakingChain}
+        />
       )}
       <Typography variant="description" sx={{ mb: 6 }}>
         <Trans>
-          The cooldown period is {timeMessage(stakeCooldownSeconds)}. After{' '}
-          {timeMessage(stakeCooldownSeconds)} of cooldown, you will enter unstake window of{' '}
-          {timeMessage(stakeUnstakeWindow)}. You will continue receiving rewards during cooldown and
-          unstake window.
+          You&apos;ll need to wait {timeMessage(stakeCooldownSeconds)} before you can unstake your
+          tokens. This cooldown starts when you request to unstake. Once it ends, you can withdraw
+          during the unstake window.
         </Trans>{' '}
         <Link
+          onClick={() =>
+            trackEvent(GENERAL.EXTERNAL_LINK, {
+              assetName: 'ABPT',
+              link: 'Cooldown Learn More',
+            })
+          }
           variant="description"
           href="https://docs.aave.com/faq/migration-and-staking"
           sx={{ textDecoration: 'underline' }}
@@ -122,6 +182,64 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         </Link>
         .
       </Typography>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'space-between',
+          pt: '6px',
+          pb: '30px',
+        }}
+      >
+        <Typography variant="description" color="text.primary">
+          <Trans>Amount to unstake</Trans>
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
+          <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'space-between',
+          pt: '6px',
+          pb: '30px',
+        }}
+      >
+        <Typography variant="description" color="text.primary">
+          <Trans>Unstake window</Trans>
+        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography variant="secondary14" component="span">
+              {dateMessage(stakeCooldownSeconds)}
+            </Typography>
+            <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
+              <ArrowNarrowRightIcon />
+            </SvgIcon>
+            <Typography variant="secondary14" component="span">
+              {dateMessage(stakeCooldownSeconds + stakeUnstakeWindow)}
+            </Typography>
+          </Box>
+          <Link
+            href={googleCalendarUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{ display: 'flex', alignItems: 'center', mt: 1 }}
+          >
+            <Trans>Remind me</Trans>
+            <SvgIcon sx={{ fontSize: '16px', ml: 1 }}>
+              <CalendarIcon />
+            </SvgIcon>
+          </Link>
+        </Box>
+      </Box>
 
       <Box mb={6}>
         <Box
@@ -188,7 +306,6 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
             }}
           />
         </Box>
-
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
             <Typography variant="helperText" mb={1}>
@@ -215,24 +332,25 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         </Typography>
       )}
 
-      <Alert severity="error" sx={{ mb: 6 }}>
+      <Warning severity="error">
         <Typography variant="caption">
           <Trans>
             If you DO NOT unstake within {timeMessage(stakeUnstakeWindow)} of unstake window, you
             will need to activate cooldown process again.
           </Trans>
         </Typography>
-      </Alert>
+      </Warning>
 
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      <GasStation chainId={ChainId.mainnet} gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 
       <FormControlLabel
         sx={{ mt: 12 }}
         control={
           <Checkbox
             checked={cooldownCheck}
-            onClick={() => setCooldownCheck(!cooldownCheck)}
+            onClick={handleOnCoolDownCheckBox}
             inputProps={{ 'aria-label': 'controlled' }}
+            data-cy={`cooldownAcceptCheckbox`}
           />
         }
         label={
@@ -250,6 +368,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName }: StakeCooldownProps
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !cooldownCheck}
         selectedToken={stakeAssetName}
+        amountToCooldown={amountToCooldown}
       />
     </>
   );

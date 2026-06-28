@@ -1,18 +1,27 @@
 import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
+import { clsx } from 'clsx';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
+import { AnchorHTMLAttributes, TouchEventHandler } from 'react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({});
 
 interface NextLinkComposedProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
-    Omit<NextLinkProps, 'href' | 'as'> {
+  extends Omit<
+      AnchorHTMLAttributes<HTMLAnchorElement>,
+      'href' | 'onClick' | 'onMouseEnter' | 'onTouchStart'
+    >,
+    Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter' | 'onTouchStart'> {
   to: NextLinkProps['href'];
   linkAs?: NextLinkProps['as'];
   href?: NextLinkProps['href'];
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  onMouseEnter?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  onTouchStart?: TouchEventHandler<HTMLAnchorElement>;
 }
 
 export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
@@ -29,6 +38,7 @@ export const NextLinkComposed = React.forwardRef<HTMLAnchorElement, NextLinkComp
         shallow={shallow}
         passHref
         locale={locale}
+        legacyBehavior
       >
         <Anchor ref={ref} {...other} />
       </NextLink>
@@ -49,7 +59,7 @@ export type LinkProps = {
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(props, ref) {
   const {
     as: linkAs,
-    className,
+    className: classNameProps,
     href,
     noLinkStyle,
     role, // Link don't have roles.
@@ -59,6 +69,11 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
   const isExternal =
     typeof href === 'string' && (href.indexOf('http') === 0 || href.indexOf('mailto:') === 0);
 
+  const router = useRouter();
+  const pathname = typeof href === 'string' ? href : href.pathname;
+  const className = clsx(classNameProps, {
+    active: router?.pathname === pathname,
+  });
   if (isExternal) {
     if (noLinkStyle) {
       return (
@@ -67,6 +82,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
           href={href}
           ref={ref}
           target="_blank"
+          rel="noopener"
           underline="none"
           {...other}
         />
@@ -79,6 +95,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
         href={href}
         ref={ref}
         target="_blank"
+        rel="noopener"
         underline="none"
         {...other}
       />
@@ -105,12 +122,19 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
 });
 
 export const ROUTES = {
-  dashboard: '/',
+  dashboard: '/dashboard',
   markets: '/markets',
   staking: '/staking',
   governance: '/governance',
-  prerenderedProposal: (proposalId: number) => `/governance/proposal/${proposalId}`,
-  dynamicRenderedProposal: (proposalId: number) => `/governance/proposal?proposalId=${proposalId}`,
+  faucet: '/faucet',
+  migrationTool: '/v3-migration',
+  marketMigrationTool: (marketName: CustomMarket) => `/v3-migration/?market=${marketName}`,
+  dynamicRenderedProposal: (proposalId: number) =>
+    `/governance/v3/proposal?proposalId=${proposalId}`,
   reserveOverview: (underlyingAsset: string, marketName: CustomMarket) =>
     `/reserve-overview/?underlyingAsset=${underlyingAsset}&marketName=${marketName}`,
+  history: '/history',
+  bridge: '/bridge',
+  safetyModule: '/safety-module',
+  sGHO: '/sgho',
 };

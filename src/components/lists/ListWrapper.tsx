@@ -1,12 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
+import { useRootStore } from 'src/store/root';
+import { DASHBOARD } from 'src/utils/events';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
-import { ListItem } from './ListItem';
 
 interface ListWrapperProps {
-  title: ReactNode;
+  titleComponent: ReactNode;
   localStorageName?: string;
   subTitleComponent?: ReactNode;
   subChildrenComponent?: ReactNode;
@@ -14,34 +15,91 @@ interface ListWrapperProps {
   children: ReactNode;
   withTopMargin?: boolean;
   noData?: boolean;
-  captionSize?: 'h2' | 'h3';
-  bottomComponent?: ReactNode;
+  wrapperSx?: BoxProps['sx'];
+  tooltipOpen?: boolean;
+  paperSx?: PaperProps['sx'];
+  topInfoSx?: BoxProps['sx'];
+  onCollapseChange?: (collapsed: boolean) => void;
 }
 
 export const ListWrapper = ({
   children,
   localStorageName,
-  title,
+  titleComponent,
   subTitleComponent,
   subChildrenComponent,
   topInfo,
   withTopMargin,
   noData,
-  captionSize = 'h3',
-  bottomComponent,
+  wrapperSx,
+  tooltipOpen,
+  paperSx,
+  topInfoSx,
+  onCollapseChange,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
   );
+  const trackEvent = useRootStore((store) => store.trackEvent);
+
+  const handleTrackingEvents = () => {
+    if (!isCollapse) {
+      switch (localStorageName as string | boolean) {
+        case 'borrowAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, {
+            visibility: 'Hidden',
+            type: 'Available Borrow Assets',
+          });
+          break;
+        case 'borrowedAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, { visibility: 'Hidden', type: 'Borrowed Assets' });
+          break;
+        case 'supplyAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, {
+            visibility: 'Hidden',
+            type: 'Available Supply Assets',
+          });
+          break;
+        case 'suppliedAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, { visibility: 'Hidden', type: 'Supplied Assets' });
+        default:
+          return null;
+      }
+    } else {
+      switch (localStorageName as string | boolean) {
+        case 'borrowAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, {
+            visibility: 'Show',
+            type: 'Available Borrow Assets',
+          });
+          break;
+        case 'borrowedAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, { visibility: 'Show', type: 'Borrowed Assets' });
+          break;
+        case 'supplyAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, {
+            visibility: 'Show',
+            type: 'Available Supply Assets',
+          });
+          break;
+        case 'suppliedAssetsDashboardTableCollapse':
+          trackEvent(DASHBOARD.TILE_VISBILITY, { visibility: 'Show', type: 'Supplied Assets' });
+        default:
+          return null;
+      }
+    }
+  };
 
   const collapsed = isCollapse && !noData;
 
   return (
     <Paper
-      sx={(theme) => ({
+      sx={{
         mt: withTopMargin ? 4 : 0,
-        border: `1px solid ${theme.palette.divider}`,
-      })}
+        border: 1,
+        borderColor: 'divider',
+        ...paperSx,
+      }}
     >
       <Box
         sx={{
@@ -50,20 +108,19 @@ export const ListWrapper = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          mb: noData || (collapsed && !topInfo) ? 0 : 4,
+          ...wrapperSx,
         }}
       >
         <Box
           sx={{
+            width: '100%',
             display: 'flex',
             alignItems: { xs: 'flex-start', xsm: 'center' },
             py: '3.6px',
             flexDirection: { xs: 'column', xsm: 'row' },
           }}
         >
-          <Typography component="div" variant={captionSize} sx={{ mr: 4 }}>
-            {title}
-          </Typography>
+          {titleComponent}
           {subTitleComponent}
         </Box>
 
@@ -93,11 +150,15 @@ export const ListWrapper = ({
                 },
               },
             }}
-            onClick={() =>
-              !!localStorageName && !noData
-                ? toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName)
-                : undefined
-            }
+            onClick={() => {
+              handleTrackingEvents();
+
+              if (localStorageName && !noData) {
+                const nextIsCollapse = !isCollapse;
+                toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName);
+                onCollapseChange?.(nextIsCollapse);
+              }
+            }}
           >
             <Typography variant="buttonM" color="text.secondary">
               {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
@@ -114,7 +175,8 @@ export const ListWrapper = ({
             alignItems: 'center',
             px: { xs: 4, xsm: 6 },
             pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
-            overflowX: 'auto',
+            overflowX: tooltipOpen ? 'hidden' : 'auto',
+            ...topInfoSx,
           }}
         >
           {topInfo}
@@ -124,8 +186,6 @@ export const ListWrapper = ({
         <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
       )}
       <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
-
-      {!!bottomComponent && !collapsed && <ListItem>{bottomComponent}</ListItem>}
     </Paper>
   );
 };

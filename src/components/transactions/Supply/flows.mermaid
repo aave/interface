@@ -1,0 +1,44 @@
+graph TD
+    A[User opens Supply modal] --> B{Asset has<br/>e-mode categories?}
+    B -->|No| C[Normal supply flow<br/>no collateral selector]
+    B -->|Yes| D[Show collateral options]
+
+    D --> E[User picks a tier]
+
+    E --> F{Same as current<br/>e-mode?}
+    F -->|Yes| G[Just supply<br/>nothing else changes]
+
+    F -->|No| H{Switching to<br/>Default / no e-mode?}
+
+    H -->|Yes| I{Does user have collateral<br/>on assets with 0% base LTV?}
+    I -->|Yes| J[BLOCKED<br/>Assets only work as collateral<br/>inside e-mode]
+    I -->|No| K[Check borrows]
+
+    H -->|No| K
+
+    K --> L{Does user have<br/>borrows?}
+    L -->|Yes| M{All borrows allowed<br/>in new tier?}
+    M -->|No| N[BLOCKED<br/>Incompatible borrows]
+    M -->|Yes| O[Continue]
+    L -->|No| O
+
+    O --> P{Does user have collateral<br/>on other assets?}
+    P -->|No| Q[Continue]
+    P -->|Yes| R{Would any asset get<br/>0% LTV in new tier?}
+    R -->|Yes| S[BLOCKED<br/>Collateral would lose LTV]
+    R -->|No| Q
+
+    Q --> T{Would health factor<br/>drop below 1.0?}
+    T -->|Yes| U[BLOCKED<br/>Liquidation risk]
+    T -->|No| V[Switch tier + supply<br/>bundled in one transaction]
+
+    G --> W[Supply succeeds]
+    V --> W
+
+    style J fill:#e76f51,color:#fff
+    style N fill:#e76f51,color:#fff
+    style S fill:#e76f51,color:#fff
+    style U fill:#e76f51,color:#fff
+    style W fill:#2a9d8f,color:#fff
+    style C fill:#2a9d8f,color:#fff
+    style G fill:#2a9d8f,color:#fff

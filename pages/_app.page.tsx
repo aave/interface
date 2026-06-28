@@ -1,38 +1,99 @@
 import '/public/fonts/inter/inter.css';
+import '/src/styles/variables.css';
 
-import { ApolloProvider } from '@apollo/client';
+import { AaveClient, AaveProvider } from '@aave/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import { NoSsr } from '@mui/material';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ConnectKitProvider } from 'connectkit';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import * as React from 'react';
+import { ReactNode, useEffect, useState } from 'react';
+import { AddressBlocked } from 'src/components/AddressBlocked';
 import { Meta } from 'src/components/Meta';
-import { BorrowModal } from 'src/components/transactions/Borrow/BorrowModal';
-import { ClaimRewardsModal } from 'src/components/transactions/ClaimRewards/ClaimRewardsModal';
-import { CollateralChangeModal } from 'src/components/transactions/CollateralChange/CollateralChangeModal';
-import { EmodeModal } from 'src/components/transactions/Emode/EmodeModal';
+import { TransactionEventHandler } from 'src/components/TransactionEventHandler';
 import { GasStationProvider } from 'src/components/transactions/GasStation/GasStationProvider';
-import { RateSwitchModal } from 'src/components/transactions/RateSwitch/RateSwitchModal';
-import { RepayModal } from 'src/components/transactions/Repay/RepayModal';
-import { SupplyModal } from 'src/components/transactions/Supply/SupplyModal';
-import { WithdrawModal } from 'src/components/transactions/Withdraw/WithdrawModal';
-import { BackgroundDataProvider } from 'src/hooks/app-data-provider/BackgroundDataProvider';
+import { CowOrderToast } from 'src/components/transactions/Swap/modals/result/CowOrderToast';
 import { AppDataProvider } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { ConnectionStatusProvider } from 'src/hooks/useConnectionStatusContext';
+import { ComplianceProvider } from 'src/hooks/compliance/compliance';
 import { ModalContextProvider } from 'src/hooks/useModal';
-// import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3ContextProvider';
-import { TxBuilderProvider } from 'src/providers/TxBuilderProvider';
-import { apolloClient } from 'src/utils/apolloClient';
+import { SwapOrdersTrackingProvider } from 'src/hooks/useSwapOrdersTracking';
+import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
+import { useRootStore } from 'src/store/root';
+import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
+import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { WagmiProvider } from 'wagmi';
 
 import createEmotionCache from '../src/createEmotionCache';
-import { ProtocolDataProvider } from '../src/hooks/useProtocolDataContext';
 import { AppGlobalStyles } from '../src/layouts/AppGlobalStyles';
 import { LanguageProvider } from '../src/libs/LanguageProvider';
-import { SwapModal } from 'src/components/transactions/Swap/SwapModal';
-import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
-import { Web3ReactProvider } from '@web3-react/core';
-import { providers } from 'ethers';
-import { WalletModalContextProvider } from 'src/hooks/useWalletModal';
+
+const SwapModal = dynamic(() =>
+  import('src/components/transactions/Swap/modals/SwapModal').then((module) => module.SwapModal)
+);
+
+const CollateralSwapModal = dynamic(() =>
+  import('src/components/transactions/Swap/modals/CollateralSwapModal').then(
+    (module) => module.CollateralSwapModal
+  )
+);
+
+const DebtSwapModal = dynamic(() =>
+  import('src/components/transactions/Swap/modals/DebtSwapModal').then(
+    (module) => module.DebtSwapModal
+  )
+);
+
+const BridgeModal = dynamic(() =>
+  import('src/components/transactions/Bridge/BridgeModal').then((module) => module.BridgeModal)
+);
+
+const BorrowModal = dynamic(() =>
+  import('src/components/transactions/Borrow/BorrowModal').then((module) => module.BorrowModal)
+);
+const ClaimRewardsModal = dynamic(() =>
+  import('src/components/transactions/ClaimRewards/ClaimRewardsModal').then(
+    (module) => module.ClaimRewardsModal
+  )
+);
+const EmodeModal = dynamic(() =>
+  import('src/components/transactions/Emode/EmodeModal').then((module) => module.EmodeModal)
+);
+const FaucetModal = dynamic(() =>
+  import('src/components/transactions/Faucet/FaucetModal').then((module) => module.FaucetModal)
+);
+const RepayModal = dynamic(() =>
+  import('src/components/transactions/Repay/RepayModal').then((module) => module.RepayModal)
+);
+const SupplyModal = dynamic(() =>
+  import('src/components/transactions/Supply/SupplyModal').then((module) => module.SupplyModal)
+);
+const WithdrawModal = dynamic(() =>
+  import('src/components/transactions/Withdraw/WithdrawModal').then(
+    (module) => module.WithdrawModal
+  )
+);
+const StakingMigrateModal = dynamic(() =>
+  import('src/components/transactions/StakingMigrate/StakingMigrateModal').then(
+    (module) => module.StakingMigrateModal
+  )
+);
+const CancelCowOrderModal = dynamic(() =>
+  import('src/components/transactions/CancelCowOrder/CancelCowOrderModal').then(
+    (module) => module.CancelCowOrderModal
+  )
+);
+const ReadOnlyModal = dynamic(() =>
+  import('src/components/WalletConnection/ReadOnlyModal').then((module) => module.ReadOnlyModal)
+);
+const CollateralChangeModal = dynamic(() =>
+  import('src/components/transactions/CollateralChange/CollateralChangeModal').then(
+    (module) => module.CollateralChangeModal
+  )
+);
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -41,21 +102,39 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getWeb3Library(provider: any): providers.Web3Provider {
-  const library = new providers.Web3Provider(provider);
-  library.pollingInterval = 12000;
-  return library;
-}
+export const client = AaveClient.create();
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
   Component: NextPageWithLayout;
 }
-
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const getLayout = Component.getLayout ?? ((page: React.ReactNode) => page);
+  const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
+  const initializeEventsTracking = useRootStore((store) => store.initializeEventsTracking);
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+  );
+
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY) {
+      initializeEventsTracking();
+    } else {
+      console.debug('no analytics tracking');
+    }
+  }, []);
+
+  const cleanLocalStorage = () => {
+    localStorage.removeItem('readOnlyModeAddress');
+  };
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -66,45 +145,59 @@ export default function MyApp(props: MyAppProps) {
         description={
           'Aave is an Open Source Protocol to create Non-Custodial Liquidity Markets to earn interest on supplying and borrowing assets with a variable or stable interest rate. The protocol is designed for easy integration into your products and services.'
         }
-        imageUrl={'https://aave.com/favicon64.png'} //NOTE: Will update with ghost after release
+        imageUrl="https://app.aave.com/aave-com-opengraph.png"
       />
-
-      <ApolloProvider client={apolloClient}>
-        <LanguageProvider>
-          <Web3ReactProvider getLibrary={getWeb3Library}>
-            <Web3ContextProvider>
-              <ProtocolDataProvider>
-                <ConnectionStatusProvider>
-                  <AppGlobalStyles>
-                    <BackgroundDataProvider>
-                      <AppDataProvider>
-                        <TxBuilderProvider>
-                          <WalletModalContextProvider>
+      <NoSsr>
+        <AaveProvider client={client}>
+          <LanguageProvider>
+            <WagmiProvider config={wagmiConfig}>
+              <QueryClientProvider client={queryClient}>
+                <ConnectKitProvider onDisconnect={cleanLocalStorage}>
+                  <Web3ContextProvider>
+                    <AppGlobalStyles>
+                      <ComplianceProvider>
+                        <AddressBlocked>
+                          <SwapOrdersTrackingProvider>
                             <ModalContextProvider>
-                              <GasStationProvider>
-                                {getLayout(<Component {...pageProps} />)}
-                                <SupplyModal />
-                                <WithdrawModal />
-                                <BorrowModal />
-                                <RepayModal />
-                                <CollateralChangeModal />
-                                <RateSwitchModal />
-                                <ClaimRewardsModal />
-                                <EmodeModal />
-                                <SwapModal />
-                              </GasStationProvider>
+                              <SharedDependenciesProvider>
+                                <AppDataProvider>
+                                  <GasStationProvider>
+                                    {getLayout(<Component {...pageProps} />)}
+                                    <SupplyModal />
+                                    <WithdrawModal />
+                                    <BorrowModal />
+                                    <RepayModal />
+                                    <CollateralChangeModal />
+                                    <ClaimRewardsModal />
+                                    <EmodeModal />
+                                    <FaucetModal />
+                                    <TransactionEventHandler />
+                                    <StakingMigrateModal />
+                                    <BridgeModal />
+                                    <ReadOnlyModal />
+
+                                    {/* Swap Modals */}
+                                    <SwapModal />
+                                    <CollateralSwapModal />
+                                    <DebtSwapModal />
+                                    <CancelCowOrderModal />
+                                    <CowOrderToast />
+                                  </GasStationProvider>
+                                </AppDataProvider>
+                              </SharedDependenciesProvider>
                             </ModalContextProvider>
-                          </WalletModalContextProvider>
-                        </TxBuilderProvider>
-                      </AppDataProvider>
-                    </BackgroundDataProvider>
-                  </AppGlobalStyles>
-                </ConnectionStatusProvider>
-              </ProtocolDataProvider>
-            </Web3ContextProvider>
-          </Web3ReactProvider>
-        </LanguageProvider>
-      </ApolloProvider>
+                          </SwapOrdersTrackingProvider>
+                        </AddressBlocked>
+                      </ComplianceProvider>
+                    </AppGlobalStyles>
+                  </Web3ContextProvider>
+                </ConnectKitProvider>
+                <ReactQueryDevtools initialIsOpen={false} />
+              </QueryClientProvider>
+            </WagmiProvider>
+          </LanguageProvider>
+        </AaveProvider>
+      </NoSsr>
     </CacheProvider>
   );
 }

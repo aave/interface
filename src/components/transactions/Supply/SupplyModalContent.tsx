@@ -1,22 +1,44 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import {
-  calculateHealthFactorFromBalancesBigUnits,
-  USD_DECIMALS,
-  valueToBigNumber,
-} from '@aave/math-utils';
-import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
-import BigNumber from 'bignumber.js';
-import React, { useRef, useState } from 'react';
+import { formatUserSummary, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
+import { t, Trans } from '@lingui/macro';
+import { Skeleton, Stack, Typography } from '@mui/material';
+import { BigNumber } from 'bignumber.js';
+import React, { useEffect, useState } from 'react';
+import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { Warning } from 'src/components/primitives/Warning';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { CollateralType } from 'src/helpers/types';
+import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
+import {
+  useTokenInForTokenOut,
+  useTokenOutForTokenIn,
+} from 'src/hooks/token-wrapper/useTokenWrapper';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
+import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
+import { useWrappedTokens, WrappedTokenConfig } from 'src/hooks/useWrappedTokens';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
-import { getMaxAmountAvailableToSupply } from 'src/utils/getMaxAmountAvailableToSupply';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/events';
+import {
+  getMaxAmountAvailableToSupply,
+  remainingCap,
+} from 'src/utils/getMaxAmountAvailableToSupply';
+import { calculateHFAfterSupply } from 'src/utils/hfUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { useAppDataContext } from '../../../hooks/app-data-provider/useAppDataProvider';
+import { replaceUnderscoresWithSpaces, roundToTokenDecimals } from 'src/utils/utils';
+import { useShallow } from 'zustand/shallow';
+
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from '../../../hooks/app-data-provider/useAppDataProvider';
 import { CapType } from '../../caps/helper';
-import { AssetInput } from '../AssetInput';
+import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -25,102 +47,45 @@ import {
   DetailsHFLine,
   DetailsIncentivesLine,
   DetailsNumberLine,
+  DetailsTextLine,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
+import { getAssetCollateralType } from '../utils';
 import { AAVEWarning } from '../Warnings/AAVEWarning';
-import { AMPLWarning } from '../Warnings/AMPLWarning';
 import { IsolationModeWarning } from '../Warnings/IsolationModeWarning';
 import { SNXWarning } from '../Warnings/SNXWarning';
-import { SupplyCapWarning } from '../Warnings/SupplyCapWarning';
+import { USDTResetWarning } from '../Warnings/USDTResetWarning';
+import { CollateralOptionsSelector } from './CollateralOptionsSelector';
 import { SupplyActions } from './SupplyActions';
+import { SupplyWrappedTokenActions } from './SupplyWrappedTokenActions';
 
 export enum ErrorType {
   CAP_REACHED,
 }
 
-export const SupplyModalContent = ({
-  underlyingAsset,
-  poolReserve,
-  userReserve,
-  isWrongNetwork,
-  nativeBalance,
-  tokenBalance,
-  symbol,
-}: ModalWrapperProps) => {
-  const { marketReferencePriceInUsd, user } = useAppDataContext();
-  const { currentMarketData, currentNetworkConfig } = useProtocolDataContext();
-  const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
+export const SupplyModalContentWrapper = (
+  params: ModalWrapperProps & { user: ExtendedFormattedUser }
+) => {
+  const user = params.user;
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+  const wrappedTokenReserves = useWrappedTokens();
+  const { walletBalances } = useWalletBalances(currentMarketData);
+  const { supplyCap: supplyCapUsage, debtCeiling: debtCeilingUsage } = useAssetCaps();
 
-  // states
-  const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
-  const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
+  const { poolReserve, userReserve } = params;
 
-  const walletBalance = supplyUnWrapped ? nativeBalance : tokenBalance;
-
-  const supplyApy = poolReserve.supplyAPY;
-
-  // Calculate max amount to supply
-  const maxAmountToSupply = getMaxAmountAvailableToSupply(
-    walletBalance,
-    poolReserve,
-    underlyingAsset
+  const wrappedToken = wrappedTokenReserves.find(
+    (r) => r.tokenOut.underlyingAsset === params.underlyingAsset
   );
-  const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToSupply.toString(10) : _amount;
 
-  const handleChange = (value: string) => {
-    const maxSelected = value === '-1';
-    amountRef.current = maxSelected ? maxAmountToSupply.toString(10) : value;
-    setAmount(value);
-  };
+  const canSupplyAsWrappedToken =
+    wrappedToken &&
+    walletBalances[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount !== '0';
 
-  // Calculation of future HF
-  const amountIntEth = new BigNumber(amount).multipliedBy(
-    poolReserve.formattedPriceInMarketReferenceCurrency
-  );
-  // TODO: is it correct to ut to -1 if user doesnt exist?
-  const amountInUsd = amountIntEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
-  const totalCollateralMarketReferenceCurrencyAfter = user
-    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(amountIntEth)
-    : '-1';
-
-  const liquidationThresholdAfter = user
-    ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
-        .multipliedBy(user.currentLiquidationThreshold)
-        .plus(amountIntEth.multipliedBy(poolReserve.formattedReserveLiquidationThreshold))
-        .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
-    : '-1';
-
-  let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
-
-  if (
-    user &&
-    ((!user.isInIsolationMode && !poolReserve.isIsolated) ||
-      (user.isInIsolationMode &&
-        user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset))
-  ) {
-    healthFactorAfterDeposit = calculateHealthFactorFromBalancesBigUnits({
-      collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
-      borrowBalanceMarketReferenceCurrency: valueToBigNumber(
-        user.totalBorrowsMarketReferenceCurrency
-      ),
-      currentLiquidationThreshold: liquidationThresholdAfter,
-    });
-  }
-
-  // ************** Warnings **********
-  // supply cap warning
-  const percentageOfCap = valueToBigNumber(poolReserve.totalLiquidity)
-    .dividedBy(poolReserve.supplyCap)
-    .toNumber();
-  const showSupplyCapWarning: boolean =
-    poolReserve.supplyCap !== '0' && percentageOfCap >= 0.99 && percentageOfCap < 1;
-
-  // isolation warning
   const hasDifferentCollateral = user.userReservesData.find(
     (reserve) => reserve.usageAsCollateralEnabledOnUser && reserve.reserve.id !== poolReserve.id
   );
+
   const showIsolationWarning: boolean =
     !user.isInIsolationMode &&
     poolReserve.isIsolated &&
@@ -129,147 +94,604 @@ export const SupplyModalContent = ({
       ? userReserve.usageAsCollateralEnabledOnUser
       : true);
 
-  // TODO: check if calc is correct to see if cap reached
-  const capReached =
-    poolReserve.supplyCap !== '0' &&
-    valueToBigNumber(amount).gt(
-      new BigNumber(poolReserve.supplyCap).minus(poolReserve.totalLiquidity)
+  const props: SupplyModalContentProps = {
+    ...params,
+    isolationModeWarning: showIsolationWarning ? (
+      <IsolationModeWarning asset={poolReserve.symbol} />
+    ) : null,
+    addTokenProps: {
+      address: poolReserve.aTokenAddress,
+      symbol: poolReserve.iconSymbol,
+      decimals: poolReserve.decimals,
+      aToken: true,
+    },
+    collateralType: getAssetCollateralType(
+      userReserve,
+      user.totalCollateralUSD,
+      user.isInIsolationMode,
+      debtCeilingUsage.isMaxed
+    ),
+    supplyCapWarning: supplyCapUsage.determineWarningDisplay({ supplyCap: supplyCapUsage }),
+    debtCeilingWarning: debtCeilingUsage.determineWarningDisplay({ debtCeiling: debtCeilingUsage }),
+    wrappedTokenConfig: wrappedTokenReserves.find(
+      (r) => r.tokenOut.underlyingAsset === params.underlyingAsset
+    ),
+  };
+
+  return canSupplyAsWrappedToken ? (
+    <SupplyWrappedTokenModalContent {...props} />
+  ) : (
+    <SupplyModalContent {...props} />
+  );
+};
+
+interface SupplyModalContentProps extends ModalWrapperProps {
+  addTokenProps: ERC20TokenType;
+  collateralType: CollateralType;
+  isolationModeWarning: React.ReactNode;
+  supplyCapWarning: React.ReactNode;
+  debtCeilingWarning: React.ReactNode;
+  wrappedTokenConfig?: WrappedTokenConfig;
+  user: ExtendedFormattedUser;
+}
+
+export const SupplyModalContent = React.memo(
+  ({
+    underlyingAsset,
+    poolReserve,
+    isWrongNetwork,
+    nativeBalance,
+    tokenBalance,
+    isolationModeWarning,
+    addTokenProps,
+    collateralType,
+    supplyCapWarning,
+    debtCeilingWarning,
+    user,
+  }: SupplyModalContentProps) => {
+    const {
+      marketReferencePriceInUsd,
+      marketReferenceCurrencyDecimals,
+      eModes,
+      reserves,
+      userReserves,
+    } = useAppDataContext();
+    const currentTimestamp = useCurrentTimestamp(1);
+    const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
+    const { chainId } = useWeb3Context();
+    const [minRemainingBaseTokenBalance, currentMarketData, currentNetworkConfig] = useRootStore(
+      useShallow((state) => [
+        state.poolComputed.minRemainingBaseTokenBalance,
+        state.currentMarketData,
+        state.currentNetworkConfig,
+      ])
     );
 
-  // error handler
-  let blockingError: ErrorType | undefined = undefined;
-  if (!supplyTxState.success) {
-    if (capReached) {
-      blockingError = ErrorType.CAP_REACHED;
-    }
-  }
+    // states
+    const [amount, setAmount] = useState('');
+    const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
+    const [selectedEmodeId, setSelectedEmodeId] = useState<number>(user.userEmodeCategoryId);
+    const hasEmodeOptions =
+      !poolReserve.isIsolated &&
+      !user.isInIsolationMode &&
+      poolReserve.eModes.filter((e) => e.id !== 0 && e.collateralEnabled).length > 0;
+    const supplyUnWrapped = underlyingAsset.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
-  const handleBlocked = () => {
-    switch (blockingError) {
-      case ErrorType.CAP_REACHED:
-        return <Trans>Cap reached. Lower supply amount</Trans>;
-      default:
-        return null;
-    }
-  };
+    const walletBalance = supplyUnWrapped ? nativeBalance : tokenBalance;
 
-  // token info to add to wallet
-  const addToken: ERC20TokenType = {
-    address: poolReserve.aTokenAddress,
-    symbol: poolReserve.iconSymbol,
-    decimals: poolReserve.decimals,
-    aToken: true,
-  };
+    const supplyApy = poolReserve.supplyAPY;
+    const { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt } =
+      poolReserve;
 
-  // collateralization state
-  let willBeUsedAsCollateral: CollateralType = poolReserve.usageAsCollateralEnabled
-    ? CollateralType.ENABLED
-    : CollateralType.DISABLED;
-  const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
-  const userHasCollateral = user.totalCollateralUSD !== '0';
+    // Calculate max amount to supply
+    const maxAmountToSupply = getMaxAmountAvailableToSupply(
+      walletBalance,
+      { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt },
+      underlyingAsset,
+      minRemainingBaseTokenBalance
+    );
 
-  if (poolReserve.isIsolated) {
-    if (user.isInIsolationMode) {
-      if (userHasSuppliedReserve) {
-        willBeUsedAsCollateral = userReserve.usageAsCollateralEnabledOnUser
-          ? CollateralType.ISOLATED_ENABLED
-          : CollateralType.ISOLATED_DISABLED;
+    const handleChange = (value: string) => {
+      if (value === '-1') {
+        setAmount(maxAmountToSupply);
       } else {
-        if (userHasCollateral) {
-          willBeUsedAsCollateral = CollateralType.ISOLATED_DISABLED;
+        const decimalTruncatedValue = roundToTokenDecimals(value, poolReserve.decimals);
+        setAmount(decimalTruncatedValue);
+      }
+    };
+
+    const amountInEth = new BigNumber(amount).multipliedBy(
+      poolReserve.formattedPriceInMarketReferenceCurrency
+    );
+
+    const amountInUsd = amountInEth
+      .multipliedBy(marketReferencePriceInUsd)
+      .shiftedBy(-USD_DECIMALS);
+
+    const isMaxSelected = amount === maxAmountToSupply;
+
+    const needsEmodeSwitch = hasEmodeOptions && selectedEmodeId !== user.userEmodeCategoryId;
+
+    // When switching e-modes, recalculate the entire user summary to account for
+    // LTV/liquidation threshold changes across ALL collateral positions
+    const healfthFactorAfterSupply = (() => {
+      if (needsEmodeSwitch) {
+        const newSummary = formatUserSummary({
+          currentTimestamp,
+          userReserves,
+          formattedReserves: reserves,
+          userEmodeCategoryId: selectedEmodeId,
+          marketReferenceCurrencyDecimals,
+          marketReferencePriceInUsd,
+        });
+
+        // Only count the new supply as collateral if isolation mode rules allow it
+        // (mirrors the guard in calculateHFAfterSupply)
+        const supplyCountsAsCollateral =
+          (!user.isInIsolationMode && !poolReserve.isIsolated) ||
+          (user.isInIsolationMode &&
+            user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset);
+
+        const additionalCollateral = supplyCountsAsCollateral ? amountInEth : valueToBigNumber(0);
+
+        const newTotalCollateral = valueToBigNumber(
+          newSummary.totalCollateralMarketReferenceCurrency
+        ).plus(additionalCollateral);
+
+        if (newTotalCollateral.lte(0) || newSummary.totalBorrowsMarketReferenceCurrency === '0') {
+          return valueToBigNumber('-1');
         }
+
+        // Find the liquidation threshold for this asset under the new e-mode
+        const selectedEmode = poolReserve.eModes.find((e) => e.id === selectedEmodeId);
+        const reserveLT =
+          selectedEmodeId !== 0 && selectedEmode
+            ? selectedEmode.eMode.formattedLiquidationThreshold
+            : poolReserve.formattedReserveLiquidationThreshold;
+
+        const newLTWeighted = valueToBigNumber(newSummary.totalCollateralMarketReferenceCurrency)
+          .multipliedBy(newSummary.currentLiquidationThreshold)
+          .plus(additionalCollateral.multipliedBy(reserveLT))
+          .dividedBy(newTotalCollateral);
+
+        return newTotalCollateral
+          .multipliedBy(newLTWeighted)
+          .dividedBy(newSummary.totalBorrowsMarketReferenceCurrency);
       }
-    } else {
-      if (userHasCollateral) {
-        willBeUsedAsCollateral = CollateralType.ISOLATED_DISABLED;
-      } else {
-        willBeUsedAsCollateral = CollateralType.ISOLATED_ENABLED;
-      }
-    }
-  } else {
-    if (user.isInIsolationMode) {
-      willBeUsedAsCollateral = CollateralType.DISABLED;
-    } else {
-      if (userHasSuppliedReserve) {
-        willBeUsedAsCollateral = userReserve.usageAsCollateralEnabledOnUser
+      return calculateHFAfterSupply(user, poolReserve, amountInEth);
+    })();
+
+    // Override collateral type based on the selected e-mode's collateral eligibility,
+    // since getAssetCollateralType only considers base config and doesn't account for e-mode
+    const effectiveCollateralType = (() => {
+      if (!hasEmodeOptions) return collateralType;
+      const targetEmode = poolReserve.eModes.find((e) => e.id === selectedEmodeId);
+      if (selectedEmodeId === 0) {
+        // Default / no e-mode — use base config
+        return Number(poolReserve.baseLTVasCollateral) > 0 && poolReserve.usageAsCollateralEnabled
           ? CollateralType.ENABLED
-          : CollateralType.DISABLED;
-      } else {
-        willBeUsedAsCollateral = CollateralType.ENABLED;
+          : CollateralType.UNAVAILABLE;
       }
-    }
+      if (targetEmode && targetEmode.collateralEnabled && !targetEmode.ltvzeroEnabled) {
+        return CollateralType.ENABLED;
+      }
+      if (targetEmode && targetEmode.collateralEnabled && targetEmode.ltvzeroEnabled) {
+        return CollateralType.DISABLED;
+      }
+      // Not in this category's collateral bitmap — fall back to base
+      return collateralType;
+    })();
+
+    const supplyActionsProps = {
+      amountToSupply: amount,
+      isWrongNetwork,
+      poolAddress: supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset,
+      symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
+      blocked: false,
+      decimals: poolReserve.decimals,
+      isWrappedBaseAsset: poolReserve.isWrappedBaseAsset,
+      setShowUSDTResetWarning,
+      chainId,
+      ...(needsEmodeSwitch ? { selectedEmodeId } : {}),
+    };
+
+    if (supplyTxState.success)
+      return (
+        <TxSuccessView
+          action={<Trans>Supplied</Trans>}
+          amount={amount}
+          symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
+          addToken={addTokenProps}
+        />
+      );
+
+    return (
+      <>
+        {isolationModeWarning}
+        {supplyCapWarning}
+        {debtCeilingWarning}
+        {poolReserve.symbol === 'AMPL' && (
+          <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
+            <AMPLWarning />
+          </Warning>
+        )}
+        {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
+          poolReserve.symbol === 'AAVE' &&
+          isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
+        {poolReserve.symbol === 'SNX' && maxAmountToSupply !== '0' && <SNXWarning />}
+
+        <AssetInput
+          value={amount}
+          onChange={handleChange}
+          usdValue={amountInUsd.toString(10)}
+          symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
+          assets={[
+            {
+              balance: maxAmountToSupply,
+              symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
+              iconSymbol: supplyUnWrapped
+                ? currentNetworkConfig.baseAssetSymbol
+                : poolReserve.iconSymbol,
+            },
+          ]}
+          capType={CapType.supplyCap}
+          isMaxSelected={isMaxSelected}
+          disabled={supplyTxState.loading}
+          maxValue={maxAmountToSupply}
+          balanceText={<Trans>Wallet balance</Trans>}
+          event={{
+            eventName: GENERAL.MAX_INPUT_SELECTION,
+            eventParams: {
+              asset: poolReserve.underlyingAsset,
+              assetName: poolReserve.name,
+            },
+          }}
+        />
+
+        {hasEmodeOptions && (
+          <CollateralOptionsSelector
+            poolReserve={poolReserve}
+            eModes={eModes}
+            user={user}
+            reserves={reserves}
+            selectedEmodeId={selectedEmodeId}
+            onSelect={setSelectedEmodeId}
+          />
+        )}
+
+        <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>
+          <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
+          <DetailsIncentivesLine
+            incentives={poolReserve.aIncentivesData}
+            symbol={poolReserve.symbol}
+          />
+          <DetailsCollateralLine collateralType={effectiveCollateralType} />
+          {needsEmodeSwitch && (
+            <DetailsTextLine
+              description={t`E-Mode`}
+              text={
+                selectedEmodeId === 0
+                  ? t`Disabled`
+                  : replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label) ||
+                    t`Category ${selectedEmodeId}`
+              }
+            />
+          )}
+          <DetailsHFLine
+            visibleHfChange={!!amount}
+            healthFactor={user ? user.healthFactor : '-1'}
+            futureHealthFactor={healfthFactorAfterSupply.toString()}
+          />
+        </TxModalDetails>
+
+        {needsEmodeSwitch && (
+          <Warning severity="info" sx={{ mt: 2 }}>
+            <Typography variant="subheader1">
+              <Trans>E-Mode change</Trans>
+            </Typography>
+            <Typography variant="caption">
+              {user.userEmodeCategoryId === 0 ? (
+                <Trans>
+                  This transaction will enable E-Mode (
+                  {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}). Borrowing will be
+                  restricted to assets within this category.
+                </Trans>
+              ) : selectedEmodeId === 0 ? (
+                <Trans>
+                  This transaction will disable E-Mode. All assets will revert to their base LTV and
+                  liquidation thresholds.
+                </Trans>
+              ) : (
+                <Trans>
+                  This transaction will switch E-Mode from{' '}
+                  {replaceUnderscoresWithSpaces(eModes[user.userEmodeCategoryId]?.label)} to{' '}
+                  {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}. Borrowing will be
+                  restricted to assets within the new category.
+                </Trans>
+              )}
+              {supplyUnWrapped && (
+                <>
+                  {' '}
+                  <Trans>
+                    This will require two separate transactions: one to change E-Mode and one to
+                    supply.
+                  </Trans>
+                </>
+              )}
+            </Typography>
+          </Warning>
+        )}
+
+        {txError && <GasEstimationError txError={txError} />}
+
+        {showUSDTResetWarning && <USDTResetWarning />}
+
+        <SupplyActions {...supplyActionsProps} />
+      </>
+    );
+  }
+);
+
+export const SupplyWrappedTokenModalContent = ({
+  poolReserve,
+  wrappedTokenConfig,
+  isolationModeWarning,
+  supplyCapWarning,
+  debtCeilingWarning,
+  addTokenProps,
+  collateralType,
+  isWrongNetwork,
+  user,
+}: SupplyModalContentProps) => {
+  const { marketReferencePriceInUsd } = useAppDataContext();
+  const currentMarketData = useRootStore((state) => state.currentMarketData);
+  const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
+  const { walletBalances } = useWalletBalances(currentMarketData);
+  const minRemainingBaseTokenBalance = useRootStore(
+    (state) => state.poolComputed.minRemainingBaseTokenBalance
+  );
+
+  if (!wrappedTokenConfig) {
+    throw new Error('Wrapped token config is not defined');
   }
 
-  if (supplyTxState.success)
+  const tokenInBalance = walletBalances[wrappedTokenConfig.tokenIn.underlyingAsset].amount;
+  const tokenOutBalance = walletBalances[wrappedTokenConfig.tokenOut.underlyingAsset].amount;
+
+  const assets = [
+    {
+      balance: tokenInBalance,
+      symbol: wrappedTokenConfig.tokenIn.symbol,
+      iconSymbol: wrappedTokenConfig.tokenIn.symbol,
+      address: wrappedTokenConfig.tokenIn.underlyingAsset,
+    },
+  ];
+
+  if (tokenOutBalance !== '0') {
+    assets.unshift({
+      balance: tokenOutBalance,
+      symbol: wrappedTokenConfig.tokenOut.symbol,
+      iconSymbol: wrappedTokenConfig.tokenOut.symbol,
+      address: wrappedTokenConfig.tokenOut.underlyingAsset,
+    });
+  }
+
+  const [tokenToSupply, setTokenToSupply] = useState<Asset>(assets[0]);
+  const [amount, setAmount] = useState('');
+  const [convertedTokenInAmount, setConvertedTokenInAmount] = useState<string>('0');
+  const { data: exchangeRate } = useTokenInForTokenOut(
+    '1',
+    poolReserve.decimals,
+    wrappedTokenConfig.tokenWrapperAddress
+  );
+
+  useEffect(() => {
+    if (!exchangeRate) return;
+    const convertedAmount = valueToBigNumber(tokenInBalance).multipliedBy(exchangeRate).toString();
+    setConvertedTokenInAmount(convertedAmount);
+  }, [exchangeRate, tokenInBalance]);
+
+  const { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt } =
+    poolReserve;
+
+  const maxAmountToSupply = getMaxAmountAvailableToSupply(
+    tokenOutBalance,
+    { supplyCap, totalLiquidity, isFrozen, decimals, debtCeiling, isolationModeTotalDebt },
+    poolReserve.underlyingAsset,
+    minRemainingBaseTokenBalance
+  );
+
+  const tokenOutRemainingSupplyCap = remainingCap(
+    poolReserve.supplyCap,
+    poolReserve.totalLiquidity
+  );
+
+  let maxAmountOfTokenInToSupply = tokenInBalance;
+  if (BigNumber(convertedTokenInAmount).isGreaterThan(tokenOutRemainingSupplyCap)) {
+    maxAmountOfTokenInToSupply = BigNumber(tokenOutRemainingSupplyCap)
+      .dividedBy(exchangeRate || '0')
+      .toString();
+
+    maxAmountOfTokenInToSupply = roundToTokenDecimals(
+      maxAmountOfTokenInToSupply,
+      poolReserve.decimals
+    );
+  }
+
+  let supplyingWrappedToken = false;
+  if (wrappedTokenConfig) {
+    supplyingWrappedToken = tokenToSupply.address === wrappedTokenConfig.tokenIn.underlyingAsset;
+  }
+
+  const handleChange = (value: string) => {
+    if (value === '-1') {
+      if (supplyingWrappedToken) {
+        setAmount(maxAmountOfTokenInToSupply);
+      } else {
+        setAmount(maxAmountToSupply);
+      }
+    } else {
+      const decimalTruncatedValue = roundToTokenDecimals(value, poolReserve.decimals);
+      setAmount(decimalTruncatedValue);
+    }
+  };
+
+  const amountInEth = new BigNumber(amount).multipliedBy(
+    supplyingWrappedToken
+      ? wrappedTokenConfig.tokenIn.formattedPriceInMarketReferenceCurrency
+      : poolReserve.formattedPriceInMarketReferenceCurrency
+  );
+
+  const amountInUsd = amountInEth.multipliedBy(marketReferencePriceInUsd).shiftedBy(-USD_DECIMALS);
+
+  const isMaxSelected = amount === maxAmountToSupply;
+
+  const healfthFactorAfterSupply = calculateHFAfterSupply(user, poolReserve, amountInEth);
+
+  if (supplyTxState.success) {
+    const successModalAmount = supplyingWrappedToken
+      ? BigNumber(amount)
+          .dividedBy(exchangeRate || '1')
+          .toString()
+      : amount;
+
     return (
       <TxSuccessView
-        action="Supplied"
-        amount={amountRef.current}
-        symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
-        addToken={addToken}
+        action={<Trans>Supplied</Trans>}
+        amount={successModalAmount}
+        symbol={poolReserve.symbol}
+        addToken={addTokenProps}
       />
     );
+  }
 
   return (
     <>
-      {showIsolationWarning && <IsolationModeWarning />}
-      {showSupplyCapWarning && <SupplyCapWarning />}
-      {poolReserve.symbol === 'AMPL' && <AMPLWarning />}
-      {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
-        poolReserve.symbol === 'AAVE' &&
-        isFeatureEnabled.staking(currentMarketData) && <AAVEWarning />}
-      {poolReserve.symbol === 'SNX' && !maxAmountToSupply.eq('0') && <SNXWarning />}
-
+      {isolationModeWarning}
+      {supplyCapWarning}
+      {debtCeilingWarning}
       <AssetInput
         value={amount}
         onChange={handleChange}
         usdValue={amountInUsd.toString(10)}
-        symbol={supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol}
-        assets={[
-          {
-            balance: maxAmountToSupply.toString(10),
-            symbol: supplyUnWrapped ? currentNetworkConfig.baseAssetSymbol : poolReserve.symbol,
-            iconSymbol: supplyUnWrapped
-              ? currentNetworkConfig.baseAssetSymbol
-              : poolReserve.iconSymbol,
-          },
-        ]}
+        symbol={tokenToSupply.symbol}
+        assets={assets}
+        onSelect={setTokenToSupply}
         capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
-        maxValue={maxAmountToSupply.toString(10)}
+        balanceText={<Trans>Wallet balance</Trans>}
+        event={{
+          eventName: GENERAL.MAX_INPUT_SELECTION,
+          eventParams: {
+            asset: poolReserve.underlyingAsset,
+            assetName: poolReserve.name,
+          },
+        }}
+        exchangeRateComponent={
+          supplyingWrappedToken && (
+            <ExchangeRate
+              supplyAmount={amount}
+              decimals={poolReserve.decimals}
+              tokenWrapperAddress={wrappedTokenConfig.tokenWrapperAddress}
+              tokenInSymbol={wrappedTokenConfig.tokenIn.symbol}
+              tokenOutSymbol={wrappedTokenConfig.tokenOut.symbol}
+            />
+          )
+        }
       />
 
-      {blockingError !== undefined && (
-        <Typography variant="helperText" color="error.main">
-          {handleBlocked()}
-        </Typography>
-      )}
-
-      <TxModalDetails gasLimit={gasLimit}>
-        <DetailsNumberLine description={<Trans>Supply APY</Trans>} value={supplyApy} percent />
+      <TxModalDetails gasLimit={gasLimit} skipLoad={true} disabled={Number(amount) === 0}>
+        <DetailsNumberLine
+          description={<Trans>Supply APY</Trans>}
+          value={poolReserve.supplyAPY}
+          percent
+        />
         <DetailsIncentivesLine
           incentives={poolReserve.aIncentivesData}
           symbol={poolReserve.symbol}
         />
-        <DetailsCollateralLine collateralType={willBeUsedAsCollateral} />
+        <DetailsCollateralLine collateralType={collateralType} />
         <DetailsHFLine
-          visibleHfChange={!!_amount}
+          visibleHfChange={!!amount}
           healthFactor={user ? user.healthFactor : '-1'}
-          futureHealthFactor={healthFactorAfterDeposit.toString(10)}
+          futureHealthFactor={healfthFactorAfterSupply.toString()}
         />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
 
-      <SupplyActions
-        poolReserve={poolReserve}
-        amountToSupply={amount}
-        isWrongNetwork={isWrongNetwork}
-        poolAddress={supplyUnWrapped ? API_ETH_MOCK_ADDRESS : poolReserve.underlyingAsset}
-        symbol={symbol}
-        blocked={blockingError !== undefined}
-      />
+      {supplyingWrappedToken ? (
+        <SupplyWrappedTokenActions
+          tokenWrapperAddress={wrappedTokenConfig.tokenWrapperAddress}
+          tokenIn={wrappedTokenConfig.tokenIn.underlyingAsset}
+          amountToSupply={amount}
+          decimals={18}
+          symbol={wrappedTokenConfig.tokenIn.symbol}
+          isWrongNetwork={isWrongNetwork}
+          reserve={poolReserve}
+        />
+      ) : (
+        <SupplyActions
+          isWrongNetwork={isWrongNetwork}
+          amountToSupply={amount}
+          poolAddress={poolReserve.underlyingAsset}
+          symbol={poolReserve.symbol}
+          blocked={false}
+          decimals={poolReserve.decimals}
+          isWrappedBaseAsset={false}
+        />
+      )}
     </>
+  );
+};
+
+const ExchangeRate = ({
+  supplyAmount,
+  decimals,
+  tokenInSymbol,
+  tokenOutSymbol,
+  tokenWrapperAddress,
+}: {
+  supplyAmount: string;
+  decimals: number;
+  tokenInSymbol: string;
+  tokenOutSymbol: string;
+  tokenWrapperAddress: string;
+}) => {
+  const { isFetching: loading, data: tokenOutAmount } = useTokenOutForTokenIn(
+    supplyAmount,
+    decimals,
+    tokenWrapperAddress
+  );
+
+  return (
+    <Stack direction="row" alignItems="center" gap={1}>
+      <Typography variant="caption">Supply amount</Typography>
+      <TokenIcon sx={{ fontSize: '16px' }} symbol="sdai" />
+      {loading ? (
+        <Skeleton variant="rectangular" width={80} height={14} />
+      ) : (
+        <>
+          <FormattedNumber
+            value={tokenOutAmount || ''}
+            variant="subheader2"
+            color="text.primary"
+            visibleDecimals={2}
+          />
+          <Typography variant="subheader2" color="text.secondary">
+            sDAI
+          </Typography>
+        </>
+      )}
+      <TextWithTooltip>
+        <WrappedTokenTooltipContent
+          decimals={decimals}
+          tokenWrapperAddress={tokenWrapperAddress}
+          tokenInSymbol={tokenInSymbol}
+          tokenOutSymbol={tokenOutSymbol}
+        />
+      </TextWithTooltip>
+    </Stack>
   );
 };

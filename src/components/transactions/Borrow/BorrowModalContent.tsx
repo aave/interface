@@ -1,20 +1,26 @@
-import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
+import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import {
   calculateHealthFactorFromBalancesBigUnits,
   USD_DECIMALS,
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { useRef, useState } from 'react';
-import { APYTypeTooltip } from 'src/components/infoTooltips/APYTypeTooltip';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Row } from 'src/components/primitives/Row';
-import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { Typography } from '@mui/material';
+import { useState } from 'react';
+import {
+  ExtendedFormattedUser,
+  useAppDataContext,
+} from 'src/hooks/app-data-provider/useAppDataProvider';
+import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
-import { getMaxAmountAvailableToBorrow } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/events';
+import {
+  assetCanBeBorrowedByUser,
+  getMaxAmountAvailableToBorrow,
+} from 'src/utils/getMaxAmountAvailableToBorrow';
+import { roundToTokenDecimals } from 'src/utils/utils';
 
 import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
@@ -28,6 +34,8 @@ import {
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
 import { BorrowActions } from './BorrowActions';
+import { BorrowAmountWarning } from './BorrowAmountWarning';
+import { ParameterChangewarning } from './ParameterChangewarning';
 
 export enum ErrorType {
   STABLE_RATE_NOT_ENABLED,
@@ -36,97 +44,41 @@ export enum ErrorType {
   NOT_ENOUGH_BORROWED,
 }
 
-interface BorrowModeSwitchProps {
-  interestRateMode: InterestRate;
-  setInterestRateMode: (value: InterestRate) => void;
-  variableRate: string;
-  stableRate: string;
-}
-
-const BorrowModeSwitch = ({
-  setInterestRateMode,
-  interestRateMode,
-  variableRate,
-  stableRate,
-}: BorrowModeSwitchProps) => {
-  return (
-    <Row
-      caption={
-        <APYTypeTooltip
-          text={<Trans>Borrow APY rate</Trans>}
-          key="APY type_modal"
-          variant="description"
-        />
-      }
-      captionVariant="description"
-      mb={1}
-      pt={5}
-      flexDirection="column"
-      align="flex-start"
-      captionColor="text.secondary"
-    >
-      <ToggleButtonGroup
-        color="primary"
-        value={interestRateMode}
-        exclusive
-        onChange={(_, value) => setInterestRateMode(value)}
-        sx={{ width: '100%', mt: 0.5 }}
-      >
-        <ToggleButton
-          value={InterestRate.Variable}
-          disabled={interestRateMode === InterestRate.Variable}
-        >
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
-            <Trans>Variable</Trans>
-          </Typography>
-          <FormattedNumber value={variableRate} percent variant="secondary14" />
-        </ToggleButton>
-        <ToggleButton
-          value={InterestRate.Stable}
-          disabled={interestRateMode === InterestRate.Stable}
-        >
-          <Typography variant="subheader1" sx={{ mr: 1 }}>
-            <Trans>Stable</Trans>
-          </Typography>
-          <FormattedNumber value={stableRate} percent variant="secondary14" />
-        </ToggleButton>
-      </ToggleButtonGroup>
-    </Row>
-  );
-};
-
 export const BorrowModalContent = ({
   underlyingAsset,
   isWrongNetwork,
   poolReserve,
-  userReserve,
   unwrap: borrowUnWrapped,
   setUnwrap: setBorrowUnWrapped,
   symbol,
-}: ModalWrapperProps & { unwrap: boolean; setUnwrap: (unwrap: boolean) => void }) => {
+  user,
+}: ModalWrapperProps & {
+  unwrap: boolean;
+  setUnwrap: (unwrap: boolean) => void;
+  user: ExtendedFormattedUser;
+}) => {
   const { mainTxState: borrowTxState, gasLimit, txError } = useModalContext();
-  const { user, marketReferencePriceInUsd } = useAppDataContext();
-  const { currentNetworkConfig } = useProtocolDataContext();
+  const { marketReferencePriceInUsd } = useAppDataContext();
+  const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const { borrowCap } = useAssetCaps();
 
-  const [interestRateMode, setInterestRateMode] = useState<InterestRate>(InterestRate.Variable);
-  const [_amount, setAmount] = useState('');
-  const amountRef = useRef<string>();
-
+  const [amount, setAmount] = useState('');
+  const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   // amount calculations
-  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user, interestRateMode);
-  const formattedMaxAmountToBorrow = maxAmountToBorrow.toString(10);
+  const maxAmountToBorrow = getMaxAmountAvailableToBorrow(poolReserve, user);
 
-  const isMaxSelected = _amount === '-1';
-  const amount = isMaxSelected ? maxAmountToBorrow.toString(10) : _amount;
-
-  // We set this in a useEffect, so it doesnt constantly change when
+  // We set this in a useEffect, so it doesn't constantly change when
   // max amount selected
   const handleChange = (_value: string) => {
-    const maxSelected = _value === '-1';
-    const value = maxSelected ? maxAmountToBorrow.toString() : _value;
-    amountRef.current = value;
-    setAmount(value);
+    if (_value === '-1') {
+      setAmount(maxAmountToBorrow);
+    } else {
+      const decimalTruncatedValue = roundToTokenDecimals(_value, poolReserve.decimals);
+      setAmount(decimalTruncatedValue);
+    }
   };
+
+  const isMaxSelected = amount === maxAmountToBorrow;
 
   // health factor calculations
   const amountToBorrowInUsd = valueToBigNumber(amount)
@@ -141,23 +93,17 @@ export const BorrowModalContent = ({
     ),
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
+  const displayRiskCheckbox =
+    newHealthFactor.toNumber() < 1.5 && newHealthFactor.toString() !== '-1';
 
   // calculating input usd value
   const usdValue = valueToBigNumber(amount).multipliedBy(poolReserve.priceInUSD);
 
   // error types handling
   let blockingError: ErrorType | undefined = undefined;
-  if (interestRateMode === InterestRate.Stable && !poolReserve.stableBorrowRateEnabled) {
-    blockingError = ErrorType.STABLE_RATE_NOT_ENABLED;
-  } else if (
-    interestRateMode === InterestRate.Stable &&
-    userReserve?.usageAsCollateralEnabledOnUser &&
-    valueToBigNumber(amount).lt(userReserve?.underlyingBalance || 0)
-  ) {
-    blockingError = ErrorType.NOT_ENOUGH_BORROWED;
-  } else if (valueToBigNumber(amount).gt(poolReserve.formattedAvailableLiquidity)) {
+  if (valueToBigNumber(amount).gt(poolReserve.formattedAvailableLiquidity)) {
     blockingError = ErrorType.NOT_ENOUGH_LIQUIDITY;
-  } else if (!poolReserve.borrowingEnabled) {
+  } else if (!assetCanBeBorrowedByUser(poolReserve, user)) {
     blockingError = ErrorType.BORROWING_NOT_AVAILABLE;
   }
 
@@ -166,13 +112,6 @@ export const BorrowModalContent = ({
     switch (blockingError) {
       case ErrorType.BORROWING_NOT_AVAILABLE:
         return <Trans>Borrowing is currently unavailable for {poolReserve.symbol}.</Trans>;
-      case ErrorType.NOT_ENOUGH_BORROWED:
-        return (
-          <Trans>
-            You can borrow this asset with a stable rate only if you borrow more than the amount you
-            are supplying as collateral.
-          </Trans>
-        );
       case ErrorType.NOT_ENOUGH_LIQUIDITY:
         return (
           <>
@@ -183,8 +122,6 @@ export const BorrowModalContent = ({
             </Trans>
           </>
         );
-      case ErrorType.STABLE_RATE_NOT_ENABLED:
-        return <Trans>The Stable Rate is not enabled for this currency</Trans>;
       default:
         return null;
     }
@@ -197,40 +134,48 @@ export const BorrowModalContent = ({
     decimals: poolReserve.decimals,
   };
 
+  const iconSymbol =
+    borrowUnWrapped && poolReserve.isWrappedBaseAsset
+      ? currentNetworkConfig.baseAssetSymbol
+      : poolReserve.iconSymbol;
+
   if (borrowTxState.success)
     return (
       <TxSuccessView
-        action="Borrowed"
-        amount={amountRef.current}
-        symbol={poolReserve.symbol}
-        addToken={addToken}
+        action={<Trans>Borrowed</Trans>}
+        amount={amount}
+        symbol={iconSymbol}
+        addToken={borrowUnWrapped && poolReserve.isWrappedBaseAsset ? undefined : addToken}
       />
     );
 
-  const incentive =
-    interestRateMode === InterestRate.Stable
-      ? poolReserve.sIncentivesData
-      : poolReserve.vIncentivesData;
   return (
     <>
+      {borrowCap.determineWarningDisplay({ borrowCap })}
+
       <AssetInput
         value={amount}
         onChange={handleChange}
         usdValue={usdValue.toString(10)}
         assets={[
           {
-            balance: formattedMaxAmountToBorrow,
-            symbol: symbol,
-            iconSymbol:
-              borrowUnWrapped && poolReserve.isWrappedBaseAsset
-                ? currentNetworkConfig.baseAssetSymbol
-                : poolReserve.iconSymbol,
+            balance: maxAmountToBorrow,
+            symbol,
+            iconSymbol,
           },
         ]}
         symbol={symbol}
         capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
-        maxValue={maxAmountToBorrow.toString(10)}
+        maxValue={maxAmountToBorrow}
+        balanceText={<Trans>Available</Trans>}
+        event={{
+          eventName: GENERAL.MAX_INPUT_SELECTION,
+          eventParams: {
+            asset: poolReserve.underlyingAsset,
+            assetName: poolReserve.name,
+          },
+        }}
       />
 
       {blockingError !== undefined && (
@@ -238,41 +183,41 @@ export const BorrowModalContent = ({
           {handleBlocked()}
         </Typography>
       )}
-      {blockingError === undefined &&
-        newHealthFactor.toNumber() < 1.5 &&
-        newHealthFactor.toNumber() >= 1 && (
-          <Typography variant="helperText" color="warning.main">
-            <Trans>Liquidation risk is high. Lower amounts recommended.</Trans>
-          </Typography>
-        )}
 
-      {poolReserve.stableBorrowRateEnabled && (
-        <BorrowModeSwitch
-          interestRateMode={interestRateMode}
-          setInterestRateMode={setInterestRateMode}
-          variableRate={poolReserve.variableBorrowAPY}
-          stableRate={poolReserve.stableBorrowAPY}
+      {poolReserve.isWrappedBaseAsset && (
+        <DetailsUnwrapSwitch
+          unwrapped={borrowUnWrapped}
+          setUnWrapped={setBorrowUnWrapped}
+          label={
+            <Typography>{`Unwrap ${poolReserve.symbol} (to borrow ${currentNetworkConfig.baseAssetSymbol})`}</Typography>
+          }
         />
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
-        {poolReserve.isWrappedBaseAsset && (
-          <DetailsUnwrapSwitch
-            unwrapped={borrowUnWrapped}
-            setUnWrapped={setBorrowUnWrapped}
-            symbol={poolReserve.symbol}
-            unwrappedSymbol={currentNetworkConfig.baseAssetSymbol}
-          />
-        )}
-        <DetailsIncentivesLine incentives={incentive} symbol={poolReserve.symbol} />
+        <DetailsIncentivesLine
+          incentives={poolReserve.vIncentivesData}
+          symbol={poolReserve.symbol}
+        />
         <DetailsHFLine
-          visibleHfChange={!!_amount}
+          visibleHfChange={!!amount}
           healthFactor={user.healthFactor}
           futureHealthFactor={newHealthFactor.toString(10)}
         />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
+
+      {displayRiskCheckbox && (
+        <BorrowAmountWarning
+          riskCheckboxAccepted={riskCheckboxAccepted}
+          onRiskCheckboxChange={() => {
+            setRiskCheckboxAccepted(!riskCheckboxAccepted);
+          }}
+        />
+      )}
+
+      <ParameterChangewarning underlyingAsset={underlyingAsset} />
 
       <BorrowActions
         poolReserve={poolReserve}
@@ -282,10 +227,10 @@ export const BorrowModalContent = ({
             ? API_ETH_MOCK_ADDRESS
             : poolReserve.underlyingAsset
         }
-        interestRateMode={interestRateMode}
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
-        blocked={blockingError !== undefined}
+        blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
+        sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>
   );

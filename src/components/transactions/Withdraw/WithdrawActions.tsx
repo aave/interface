@@ -1,20 +1,21 @@
+import { ProtocolAction } from '@aave/contract-helpers';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { BoxProps } from '@mui/material';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { useProtocolDataContext } from 'src/hooks/useProtocolDataContext';
-import { useTxBuilderContext } from 'src/hooks/useTxBuilder';
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
-import { optimizedPath } from 'src/utils/utils';
+import { useRootStore } from 'src/store/root';
+
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
-export type WithdrawActionsProps = {
+export interface WithdrawActionsProps extends BoxProps {
   poolReserve: ComputedReserveData;
   amountToWithdraw: string;
   poolAddress: string;
   isWrongNetwork: boolean;
   symbol: string;
   blocked: boolean;
-};
+}
 
 export const WithdrawActions = ({
   poolReserve,
@@ -23,34 +24,30 @@ export const WithdrawActions = ({
   isWrongNetwork,
   symbol,
   blocked,
+  sx,
 }: WithdrawActionsProps) => {
-  const { lendingPool } = useTxBuilderContext();
-  const { currentChainId: chainId, currentMarketData } = useProtocolDataContext();
-  const { currentAccount } = useWeb3Context();
+  const withdraw = useRootStore((state) => state.withdraw);
 
   const { action, loadingTxns, mainTxState, approvalTxState, approval, requiresApproval } =
     useTransactionHandler({
       tryPermit: false,
-      handleGetTxns: async () => {
-        if (currentMarketData.v3) {
-          return lendingPool.withdraw({
-            user: currentAccount,
-            reserve: poolAddress,
-            amount: amountToWithdraw,
-            aTokenAddress: poolReserve.aTokenAddress,
-            useOptimizedPath: optimizedPath(chainId),
-          });
-        } else {
-          return lendingPool.withdraw({
-            user: currentAccount,
-            reserve: poolAddress,
-            amount: amountToWithdraw,
-            aTokenAddress: poolReserve.aTokenAddress,
-          });
-        }
-      },
+      handleGetTxns: async () =>
+        withdraw({
+          reserve: poolAddress,
+          amount: amountToWithdraw,
+          aTokenAddress: poolReserve.aTokenAddress,
+        }),
       skip: !amountToWithdraw || parseFloat(amountToWithdraw) === 0 || blocked,
       deps: [amountToWithdraw, poolAddress],
+      eventTxInfo: {
+        amount: amountToWithdraw,
+        assetName: poolReserve.name,
+        asset: poolReserve.underlyingAsset,
+        amountUsd: valueToBigNumber(amountToWithdraw)
+          .multipliedBy(poolReserve.priceInUSD)
+          .toString(),
+      },
+      protocolAction: ProtocolAction.withdraw,
     });
 
   return (
@@ -65,8 +62,9 @@ export const WithdrawActions = ({
       actionInProgressText={<Trans>Withdrawing {symbol}</Trans>}
       actionText={<Trans>Withdraw {symbol}</Trans>}
       handleAction={action}
-      handleApproval={() => approval(amountToWithdraw, poolAddress)}
+      handleApproval={() => approval([{ amount: amountToWithdraw, underlyingAsset: poolAddress }])}
       requiresApproval={requiresApproval}
+      sx={sx}
     />
   );
 };

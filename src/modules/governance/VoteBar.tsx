@@ -1,9 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, experimental_sx, styled, Typography } from '@mui/material';
+import { Box, BoxProps, Skeleton, styled, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 
-const OuterBar = styled('div')(
-  experimental_sx({
+const OuterBar = styled('div')(({ theme }) =>
+  theme.unstable_sx({
     position: 'relative',
     width: '100%',
     height: '8px',
@@ -15,8 +15,8 @@ const OuterBar = styled('div')(
 
 const InnerBar = styled('span', {
   shouldForwardProp: (prop) => prop !== 'yae' && prop !== 'percent',
-})<{ percent: number; yae?: boolean }>(({ percent, yae }) =>
-  experimental_sx({
+})<{ percent: number; yae?: boolean }>(({ percent, yae, theme }) =>
+  theme.unstable_sx({
     position: 'absolute',
     top: 0,
     left: 0,
@@ -33,25 +33,53 @@ interface VoteBarProps extends BoxProps {
   votes: number;
   percent: number;
   yae?: boolean;
+  loading?: boolean;
+  compact?: boolean;
 }
-export function VoteBar({ percent, yae, votes, ...rest }: VoteBarProps) {
+
+export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: VoteBarProps) {
   return (
     <Box {...rest}>
       <Box sx={{ display: 'flex' }}>
         <Typography variant="description" sx={{ mr: 2 }}>
           {yae ? <Trans>YAE</Trans> : <Trans>NAY</Trans>}
         </Typography>
-        <FormattedNumber
-          value={votes}
-          sx={{ flexGrow: 1 }}
-          visibleDecimals={2}
-          variant="secondary14"
-        />
-        <FormattedNumber value={percent} percent variant="caption" color="text.secondary" />
+        {loading ? (
+          <Typography variant="secondary14" sx={{ flexGrow: 1, lineHeight: '1rem' }}>
+            <Skeleton width={40} />
+          </Typography>
+        ) : (
+          <Box component="span" sx={{ flexGrow: 1 }}>
+            <FormattedNumber
+              value={votes}
+              visibleDecimals={0}
+              sx={{ mr: 1 }}
+              variant="secondary14"
+              roundDown
+              compact={compact}
+            />
+            {!compact && (
+              <Typography variant="description" component="span" color="text.secondary">
+                AAVE
+              </Typography>
+            )}
+          </Box>
+        )}
+        {loading ? (
+          <Typography variant="caption">
+            <Skeleton width={40} />
+          </Typography>
+        ) : (
+          <FormattedNumber value={percent} percent variant="caption" color="text.secondary" />
+        )}
       </Box>
-      <OuterBar>
-        <InnerBar percent={percent} yae={yae} />
-      </OuterBar>
+      {loading ? (
+        <Skeleton variant="rectangular" height={8} sx={{ borderRadius: '6px' }} />
+      ) : (
+        <OuterBar>
+          <InnerBar percent={percent} yae={yae} />
+        </OuterBar>
+      )}
     </Box>
   );
 }
