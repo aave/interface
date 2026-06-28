@@ -20,6 +20,17 @@ interface PoolReserveBorrowSubset {
   borrowCapUSD: string;
 }
 
+type MarketBorrowabilityReserve = Pick<ComputedReserveData, 'borrowingEnabled' | 'eModes'>;
+
+/**
+ * Whether a reserve has any borrow path on the market.
+ * Mirrors on-chain ValidationLogic: outside e-mode uses borrowingEnabled;
+ * inside e-mode uses the category borrowableBitmap (exposed as eMode.borrowingEnabled).
+ */
+export function assetIsBorrowableOnMarket(reserve: MarketBorrowabilityReserve): boolean {
+  return reserve.borrowingEnabled || reserve.eModes.some((eMode) => eMode.borrowingEnabled);
+}
+
 /**
  * Calculates the maximum amount a user can borrow.
  * @param poolReserve
