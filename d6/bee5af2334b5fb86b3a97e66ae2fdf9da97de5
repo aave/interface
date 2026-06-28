@@ -1,0 +1,16 @@
+src/components/transactions/Bridge/BridgeConfig.ts
+  h_739c25e72c37fb 276-296
+src/ui-config/marketsConfig.tsx
+  h_739c25e72c37fb 23,113,660-676
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "d6bee5af2334b5fb86b3a97e66ae2fdf9da97de5",
+  "prompts": {},
+  "humans": {
+    "h_739c25e72c37fb": {
+      "author": "DhairyaSethi <55102840+DhairyaSethi@users.noreply.github.com>"
+    }
+  }
+}
