@@ -5,9 +5,8 @@ import { CircleIcon } from 'src/components/CircleIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
-import { assetIsBorrowableOnMarket } from 'src/utils/getMaxAmountAvailableToBorrow';
-
 import { GENERAL } from 'src/utils/events';
+import { assetIsBorrowableOnMarket } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { useShallow } from 'zustand/shallow';
 
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
@@ -59,7 +58,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
       <TopInfoPanelItem title={<Trans>Available liquidity</Trans>} loading={loading} hideIcon>
         <FormattedNumber
           value={
-            poolReserve?.borrowingEnabled && assetIsBorrowableOnMarket(poolReserve)
+            poolReserve && assetIsBorrowableOnMarket(poolReserve)
               ? Math.max(Number(poolReserve?.availableLiquidityUSD), 0)
               : 0
           }

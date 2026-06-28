@@ -1,4 +1,8 @@
 import {
+  ComputedReserveData,
+  ExtendedFormattedUser,
+} from '../../hooks/app-data-provider/useAppDataProvider';
+import {
   assetCanBeBorrowedByUser,
   assetIsBorrowableOnMarket,
 } from '../getMaxAmountAvailableToBorrow';
@@ -10,13 +14,11 @@ const baseReserve = {
   isFrozen: false,
   isPaused: false,
   eModes: [{ id: 1, borrowingEnabled: true }],
-};
+} as unknown as ComputedReserveData;
 
 describe('assetIsBorrowableOnMarket', () => {
   it('returns true when borrowingEnabled is true', () => {
-    expect(
-      assetIsBorrowableOnMarket({ borrowingEnabled: true, eModes: [] })
-    ).toBe(true);
+    expect(assetIsBorrowableOnMarket({ borrowingEnabled: true, eModes: [] })).toBe(true);
   });
 
   it('returns true when borrowable in any e-mode', () => {
@@ -41,10 +43,10 @@ describe('assetIsBorrowableOnMarket', () => {
 describe('assetCanBeBorrowedByUser', () => {
   it('allows e-mode users to borrow when their category permits it', () => {
     expect(
-      assetCanBeBorrowedByUser(baseReserve as any, {
+      assetCanBeBorrowedByUser(baseReserve, {
         isInEmode: true,
         userEmodeCategoryId: 1,
-      } as any)
+      } as unknown as ExtendedFormattedUser)
     ).toBe(true);
   });
 });
