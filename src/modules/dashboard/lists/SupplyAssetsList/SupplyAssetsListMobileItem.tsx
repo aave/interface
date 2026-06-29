@@ -1,6 +1,9 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
+import { useFunSupplyATokenIcon } from 'src/components/transactions/FunCheckout/useFunSupplyATokenIcon';
+import { useSupplyButtonAction } from 'src/components/transactions/FunCheckout/useSupplyButtonAction';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
@@ -11,7 +14,6 @@ import { CapType } from '../../../../components/caps/helper';
 import { IncentivesCard } from '../../../../components/incentives/IncentivesCard';
 import { Link, ROUTES } from '../../../../components/primitives/Link';
 import { Row } from '../../../../components/primitives/Row';
-import { useModalContext } from '../../../../hooks/useModal';
 import { ListItemCanBeCollateral } from '../ListItemCanBeCollateral';
 import { ListMobileItemWrapper } from '../ListMobileItemWrapper';
 import { ListValueRow } from '../ListValueRow';
@@ -36,14 +38,25 @@ export const SupplyAssetsListMobileItem = ({
   isPaused,
 }: DashboardReserve) => {
   const currentMarket = useRootStore((state) => state.currentMarket);
-  const { openSupply } = useModalContext();
+  const handleSupplyClick = useSupplyButtonAction();
+  // Ringed aToken icon for the fun checkout's add-to-wallet (fun-routed rows only)
+  const { aTokenBase64, generator: aTokenIconGenerator } = useFunSupplyATokenIcon(
+    underlyingAsset,
+    iconSymbol
+  );
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCaps();
   const isMaxCapReached = supplyCapUsage.isMaxed;
 
+  // fun-routed assets can be supplied from any EVM asset / fiat via the funkit
+  // checkout, so an empty wallet doesn't block supplying them.
   const disableSupply =
-    !isActive || isPaused || isFreezed || Number(walletBalance) <= 0 || isMaxCapReached;
+    !isActive ||
+    isPaused ||
+    isFreezed ||
+    (Number(walletBalance) <= 0 && !isFunSupplyAsset(currentMarket, underlyingAsset)) ||
+    isMaxCapReached;
 
   return (
     <ListMobileItemWrapper
@@ -104,10 +117,20 @@ export const SupplyAssetsListMobileItem = ({
       </Row>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+        {aTokenIconGenerator}
         <Button
           disabled={disableSupply}
           variant="contained"
-          onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
+          onClick={() =>
+            handleSupplyClick({
+              underlyingAsset,
+              name,
+              symbol,
+              aTokenBase64,
+              supplyAPY,
+              collateralEnabled: usageAsCollateralEnabledOnUser,
+            })
+          }
           sx={{ mr: 1.5 }}
           fullWidth
         >

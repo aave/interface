@@ -16,6 +16,9 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "baseUrl": ".",
+    "paths": {
+      "@funkit/connect/clients/*": ["node_modules/@funkit/connect/dist/clients/*"]
+    },
     "typeRoots": ["./node_modules/@types"],
     "lib": ["dom", "es2022"],
     "forceConsistentCasingInFileNames": true,

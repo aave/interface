@@ -1,0 +1,48 @@
+/**
+ * Form-control font inheritance for the funkit modal.
+ *
+ * @funkit/connect's components put font-family/font-weight classes on *wrapper*
+ * elements and expect raw <input>/<button>/etc. to inherit them. Form controls
+ * don't inherit font properties from ancestors (the UA stylesheet pins them to
+ * system defaults), so this only works in hosts whose global reset restores
+ * inheritance. Both reference integrations rely on Tailwind preflight for that
+ * (Polymarket, and funkit's own with-next playground via `tailwindcss/base`);
+ * funkit's internal reset (packages/connect/src/css/reset.css.ts) does not
+ * cover it. This app has no Tailwind, so without this rule the checkout
+ * modal's amount-input digits and button text render in the system font at
+ * weight 400 while sibling divs (e.g. the "$" affix) style correctly.
+ *
+ * This is the form-control slice of Tailwind preflight, scoped to funkit's
+ * portal roots ([data-rk]) so it can't leak into MUI or the rest of the app.
+ * `:where()` keeps specificity at zero, matching preflight's position at the
+ * bottom of the cascade — any funkit class still wins, exactly as it does in
+ * the Tailwind hosts it was developed against.
+ */
+:where([data-rk]) :where(button, input, optgroup, select, textarea) {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+}
+
+/*
+ * Media slice of preflight, same deal: funkit renders host-supplied icons as
+ * unsized <img> inside fixed-size Boxes (e.g. the 15px destination row in
+ * PaymentRouteSummary) and relies on preflight's `max-width: 100%` to keep
+ * them contained. Without it, an unsized <img> paints at intrinsic size.
+ */
+:where([data-rk]) :where(img, svg, video, canvas, audio, iframe, embed, object) {
+  display: block;
+  vertical-align: middle;
+}
+
+:where([data-rk]) :where(img, video) {
+  max-width: 100%;
+  height: auto;
+}

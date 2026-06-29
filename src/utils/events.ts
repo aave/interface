@@ -31,6 +31,12 @@ export const GENERAL = {
   LIMIT_ORDER: 'Limit Order',
 };
 
+export const FUNKIT = {
+  CHECKOUT_STARTED: 'Funkit Checkout Started',
+  CHECKOUT_COMPLETED: 'Funkit Checkout Completed',
+  CHECKOUT_ERROR: 'Funkit Checkout Error',
+} as const;
+
 export enum SWAP {
   /// The user has requested a quote
   QUOTE = 'SWAP_QUOTE',
