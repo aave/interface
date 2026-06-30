@@ -5,6 +5,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
+import { useModalContext } from 'src/hooks/useModal';
 import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { useRootStore } from 'src/store/root';
 
@@ -28,6 +29,7 @@ export const SavingsGhoBanner = () => {
   const downToMd = useMediaQuery('(min-width:870px)');
   const downToSm = useMediaQuery('(max-width:780px)');
 
+  const { openStkGhoMigrate } = useModalContext();
   const { vault, loading: vaultLoading } = useSGhoVaultContext();
   const totalDepositedUSD = vault?.totalAssets.usd ?? '0';
   const targetRate = vault?.targetRate ? +vault.targetRate.value : 0;
@@ -178,7 +180,15 @@ export const SavingsGhoBanner = () => {
           <Button variant="outlined" component={Link} size="medium" href={ROUTES.sGHO}>
             <Trans>View details</Trans>
           </Button>
-          <Button variant="contained" component={Link} size="medium" href={ROUTES.sGHO}>
+          <Button
+            variant="contained"
+            component={Link}
+            size="medium"
+            href={ROUTES.sGHO}
+            onClick={() => {
+              if (hasLegacyPosition) openStkGhoMigrate();
+            }}
+          >
             {hasLegacyPosition ? <Trans>Migrate</Trans> : <Trans>Start Earning</Trans>}
           </Button>
         </Stack>
@@ -188,6 +198,7 @@ export const SavingsGhoBanner = () => {
 };
 
 const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: boolean }) => {
+  const { openStkGhoMigrate } = useModalContext();
   const { vault, loading: vaultLoading } = useSGhoVaultContext();
   const totalDepositedUSD = vault?.totalAssets.usd ?? '0';
   const targetRate = vault?.targetRate ? +vault.targetRate.value : 0;
@@ -287,7 +298,16 @@ const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: bool
             <Button variant="outlined" fullWidth component={Link} size="medium" href={ROUTES.sGHO}>
               <Trans>View details</Trans>
             </Button>
-            <Button variant="contained" fullWidth component={Link} size="medium" href={ROUTES.sGHO}>
+            <Button
+              variant="contained"
+              fullWidth
+              component={Link}
+              size="medium"
+              href={ROUTES.sGHO}
+              onClick={() => {
+                if (hasLegacyPosition) openStkGhoMigrate();
+              }}
+            >
               {hasLegacyPosition ? <Trans>Migrate</Trans> : <Trans>Start Earning</Trans>}
             </Button>
           </Stack>

@@ -135,6 +135,7 @@ export const SAFETY_MODULE = {
   OPEN_COOLDOWN_MODAL: 'Open Safety Module Cooldown Modal',
   OPEN_WITHDRAW_MODAL: 'Open Safety Module Withdraw Modal',
   OPEN_CLAIM_MODAL: 'Open Safety Module Claim Modal',
+  OPEN_MIGRATE_MODAL: 'Open Safety Module Migrate Modal',
 };
 
 export const STAKE = {
