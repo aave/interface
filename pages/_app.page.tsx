@@ -1,5 +1,8 @@
 import '/public/fonts/inter/inter.css';
 import '/src/styles/variables.css';
+// Preflight must come before funkit's own styles so funkit rules win source-order ties.
+import '/src/ui-config/funkit/funkitPreflight.css';
+import '@funkit/connect/styles.css';
 
 import { AaveClient, AaveProvider } from '@aave/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
@@ -49,6 +52,16 @@ const DebtSwapModal = dynamic(() =>
 
 const BridgeModal = dynamic(() =>
   import('src/components/transactions/Bridge/BridgeModal').then((module) => module.BridgeModal)
+);
+
+// ssr: false (unlike the other modal hosts) because `@funkit/connect` is a
+// client-only, ESM/browser package.
+const FunkitCheckout = dynamic(
+  () =>
+    import('src/components/transactions/FunCheckout/FunkitCheckout').then(
+      (module) => module.FunkitCheckout
+    ),
+  { ssr: false }
 );
 
 const BorrowModal = dynamic(() =>
@@ -164,6 +177,7 @@ export default function MyApp(props: MyAppProps) {
                                   <GasStationProvider>
                                     {getLayout(<Component {...pageProps} />)}
                                     <SupplyModal />
+                                    <FunkitCheckout />
                                     <WithdrawModal />
                                     <BorrowModal />
                                     <RepayModal />
