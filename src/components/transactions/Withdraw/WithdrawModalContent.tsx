@@ -167,6 +167,15 @@ export const WithdrawModalContent = ({
               ? currentNetworkConfig.baseAssetSymbol
               : poolReserve.symbol
           }
+          sx={{
+            maxWidth: { xs: '140px', sm: '180px' },
+            '& > span:last-of-type': {
+              minWidth: 0,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            },
+          }}
         />
         <DetailsHFLine
           visibleHfChange={!!_amount}
