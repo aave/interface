@@ -273,6 +273,27 @@ const prodConfig: Config[] = [
       },
     ],
   },
+  {
+    sourceChainId: 143,
+    chainSelector: '8481857512324358265',
+    burnMintTokenPool: '0xA5AE05b71c3F170E12E7620Fdf7679721aec1EC8',
+    router: '0x33566fE5976AAa420F3d5C64996641Fc3858CaDB',
+    tokenOracle: '0x26cBccD96502D2EfDb612737bD6aECe19f65109c',
+    wrappedNativeOracle: '0x432AAcD32253B6683f6483fB0d3285bA0082EfDb',
+    feeTokens: [
+      {
+        name: 'Monad',
+        symbol: 'Mon',
+        decimals: 18,
+        address: constants.AddressZero, // Use zero address for network token ccip
+        chainId: 143,
+        extensions: {
+          isNative: true,
+        },
+        balance: '0',
+      },
+    ],
+  },
 ];
 
 const testnetConfig: Config[] = [
