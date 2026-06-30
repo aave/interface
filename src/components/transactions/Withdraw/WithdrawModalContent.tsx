@@ -168,7 +168,7 @@ export const WithdrawModalContent = ({
               : poolReserve.symbol
           }
           sx={{
-            maxWidth: { xs: '220px', sm: '300px' },
+            maxWidth: { xs: '140px', sm: '180px' },
             '& > span:last-of-type': {
               minWidth: 0,
               overflow: 'hidden',
