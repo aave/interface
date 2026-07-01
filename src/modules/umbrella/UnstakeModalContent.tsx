@@ -18,6 +18,7 @@ import {
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { GasStation } from 'src/components/transactions/GasStation/GasStation';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
@@ -46,6 +47,7 @@ export const UnStakeModalContent = ({
   user: ExtendedFormattedUser;
 }) => {
   const { chainId: connectedChainId } = useWeb3Context();
+  const { eModes } = useAppDataContext();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
   const [redeemType, setRedeemType] = useState(RedeemType.NORMAL);
   const [currentChainId, currentNetworkConfig] = useRootStore(
@@ -123,7 +125,7 @@ export const UnStakeModalContent = ({
       poolReserve.formattedPriceInMarketReferenceCurrency
     );
 
-    hfAfterRedeem = calculateHFAfterSupply(user, poolReserve, amountInEth).toString();
+    hfAfterRedeem = calculateHFAfterSupply(user, poolReserve, amountInEth, eModes).toString();
   }
 
   if (txError && txError.blocking) {

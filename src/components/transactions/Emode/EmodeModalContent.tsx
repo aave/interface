@@ -18,6 +18,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { EmodeCategory } from 'src/helpers/types';
 import {
   ComputedReserveData,
@@ -28,6 +29,7 @@ import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { getEmodeAdjustedReserves } from 'src/utils/hfUtils';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
@@ -96,7 +98,10 @@ function getEModeCategoryBlockReason(
     ) {
       zeroLtvCollateral.push(reserve.symbol);
     } else if (!reserveTargetEmode || !reserveTargetEmode.collateralEnabled) {
-      if (Number(reserve.baseLTVasCollateral) === 0) {
+      // v3.7 isolated eMode rule: assets outside the category's collateralBitmap are
+      // forced to 0 LTV regardless of their base LTV, so entry reverts on-chain
+      // (InvalidCollateralInEmode) unless this collateral is disabled first.
+      if (Number(reserve.baseLTVasCollateral) === 0 || eMode.isolated) {
         zeroLtvCollateral.push(reserve.symbol);
       }
     }
@@ -172,11 +177,12 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
   const networkConfig = getNetworkConfig(currentChainId);
 
   // calcs
+  const targetEmodeId = disableEmode ? 0 : selectedEmode.id;
   const newSummary = formatUserSummary({
     currentTimestamp,
     userReserves: userReserves,
-    formattedReserves: reserves,
-    userEmodeCategoryId: disableEmode ? 0 : selectedEmode.id,
+    formattedReserves: getEmodeAdjustedReserves(reserves, targetEmodeId, eModes),
+    userEmodeCategoryId: targetEmodeId,
     marketReferenceCurrencyDecimals,
     marketReferencePriceInUsd,
   });
@@ -393,9 +399,29 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
         <Collapse in={!disableEmode}>
           <Box>
             <Stack direction="column">
-              <Typography mb={1} variant="caption" color="text.secondary">
-                <Trans>Asset category</Trans>
-              </Typography>
+              <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+                <Typography variant="caption" color="text.secondary">
+                  <Trans>Asset category</Trans>
+                </Typography>
+                {selectedEmode.isolated && (
+                  <>
+                    <Typography variant="caption" color="text.secondary">
+                      -
+                    </Typography>
+                    <TextWithTooltip
+                      text={<Trans>Isolated</Trans>}
+                      variant="caption"
+                      textColor="warning.main"
+                      iconColor="warning.main"
+                    >
+                      <Trans>
+                        Only the listed collateral contributes borrowing power in this category —
+                        other collateral you hold will have 0% LTV while it&apos;s active.
+                      </Trans>
+                    </TextWithTooltip>
+                  </>
+                )}
+              </Stack>
               <Select
                 sx={{
                   mb: 3,
@@ -421,6 +447,42 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                 }}
                 value={selectedEmode.id}
                 onChange={(e) => selectEMode(Number(e.target.value))}
+                renderValue={(value) => {
+                  const emode = eModeCategories[value as number];
+                  return (
+                    <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
+                      <Typography
+                        sx={{ opacity: emode.available ? 1 : 0.5 }}
+                        fontStyle={emode.available ? 'normal' : 'italic'}
+                      >
+                        {replaceUnderscoresWithSpaces(emode.label)}
+                      </Typography>
+                      {emode.id === user.userEmodeCategoryId && (
+                        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                          <Box
+                            sx={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              bgcolor: 'success.main',
+                              boxShadow:
+                                '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
+                              mr: '5px',
+                            }}
+                          />
+                          <Typography variant="subheader2" color="success.main">
+                            <Trans>Enabled</Trans>
+                          </Typography>
+                        </Box>
+                      )}
+                      {!emode.available && (
+                        <Typography variant="caption" color="text.secondary" fontStyle="italic">
+                          <Trans>Unavailable</Trans>
+                        </Typography>
+                      )}
+                    </Stack>
+                  );
+                }}
               >
                 {Object.values(eModeCategories)
                   .filter((emode) => emode.id !== 0 && emode.label !== 'USYC GHO')
@@ -434,12 +496,19 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                   .map((emode) => (
                     <MenuItem key={emode.id} value={emode.id}>
                       <Stack sx={{ width: '100%' }} direction="row" justifyContent="space-between">
-                        <Typography
-                          sx={{ opacity: emode.available ? 1 : 0.5 }}
-                          fontStyle={emode.available ? 'normal' : 'italic'}
-                        >
-                          {replaceUnderscoresWithSpaces(emode.label)}
-                        </Typography>
+                        <Stack direction="row" alignItems="center" spacing={2}>
+                          <Typography
+                            sx={{ opacity: emode.available ? 1 : 0.5 }}
+                            fontStyle={emode.available ? 'normal' : 'italic'}
+                          >
+                            {replaceUnderscoresWithSpaces(emode.label)}
+                          </Typography>
+                          {emode.isolated && (
+                            <Typography variant="caption" color="warning.main" fontStyle="italic">
+                              <Trans>Isolated</Trans>
+                            </Typography>
+                          )}
+                        </Stack>
                         {emode.id === user.userEmodeCategoryId && (
                           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
                             <Box

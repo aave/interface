@@ -1431,6 +1431,9 @@ msgid "This represents the threshold at which a borrow position will be consider
 msgstr "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 
 #: src/components/isolationMode/IsolatedBadge.tsx
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Isolated"
 msgstr "Isolated"
 
@@ -1726,6 +1729,10 @@ msgstr "Deposit GHO"
 msgid "Website"
 msgstr "Website"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while it's active."
+msgstr "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while it's active."
+
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Protocol APY"
 msgstr "Protocol APY"
@@ -1930,6 +1937,7 @@ msgstr "Health factor is lesser than the liquidation threshold"
 msgid "stkGHO is now Savings GHO"
 msgstr "stkGHO is now Savings GHO"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -3182,6 +3190,7 @@ msgstr "here."
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Unavailable"
 msgstr "Unavailable"
@@ -3373,6 +3382,10 @@ msgstr "Asset cannot be used as collateral."
 #: src/ui-config/menu-items/index.tsx
 msgid "Developers"
 msgstr "Developers"
+
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while in it."
+msgstr "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while in it."
 
 #: src/components/transactions/Swap/modals/request/NoEligibleAssetsToSwap.tsx
 msgid "No eligible assets to swap."
