@@ -1,4 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
+import { AaveV3Monad } from '@aave-dao/aave-address-book';
 import { ExternalLinkIcon, SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
@@ -56,6 +57,18 @@ import { useTimeToDestination } from './useGetFinalityTime';
 const defaultNetwork = supportedNetworksWithBridge[0];
 
 function getUseBridgeTokensParams(chainId: number): UseBridgeTokensParams {
+  const tokenOracle = getConfigFor(chainId).tokenOracle;
+
+  if (chainId === 143) {
+    // no market config available yet for Monad, so values are set here
+    return {
+      chainId,
+      ghoTokenAddress: '0xfc421aD3C883Bf9E7C4f42dE845C4e4405799e73',
+      tokenOracle,
+      walletBalanceProviderAddress: AaveV3Monad.WALLET_BALANCE_PROVIDER,
+    };
+  }
+
   const market = Object.values(marketsData).filter(
     (md) => md.chainId === chainId && md.v3 === true && md.addresses.GHO_TOKEN_ADDRESS
   )[0];
@@ -66,7 +79,7 @@ function getUseBridgeTokensParams(chainId: number): UseBridgeTokensParams {
   return {
     chainId,
     ghoTokenAddress: market.addresses.GHO_TOKEN_ADDRESS,
-    tokenOracle: getConfigFor(chainId).tokenOracle,
+    tokenOracle,
     walletBalanceProviderAddress: market.addresses.WALLET_BALANCE_PROVIDER,
   };
 }

@@ -15,10 +15,10 @@
     "@gql.tada/internal" "^1.0.0"
     graphql "^15.5.0 || ^16.0.0 || ^17.0.0"
 
-"@aave-dao/aave-address-book@^4.55.6":
-  version "4.55.6"
-  resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.55.6.tgz#51588da8b744ee46c4ce1f8f6a28a4e2f58f3575"
-  integrity sha512-lBztyhRKKGSj1PGhV62WlchqtuOBm62CacCxCkfEsZ1pdb+nxK/JSTkl6Ger+A+slF4+zZl/uS2629B7inP3Yg==
+"@aave-dao/aave-address-book@^4.49.9", "@aave-dao/aave-address-book@^4.55.6":
+  version "4.56.1"
+  resolved "https://registry.yarnpkg.com/@aave-dao/aave-address-book/-/aave-address-book-4.56.1.tgz#7f86c2c2bb6dfb4dc1a5a4f5b2c754e36f29f582"
+  integrity sha512-M8fYOD0izAhr3WkELKcvn8wol7h0GMEW+qgDyvwuhz7ludWe/0a8mqzPpAF2Ka+lHzAMudytdN2hF4pj+rPYGQ==
 
 "@aave/account@^0.2.0":
   version "0.2.0"
