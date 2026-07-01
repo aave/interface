@@ -1,0 +1,14 @@
+src/hooks/useMerklIncentives.ts
+  h_dd1a1ee57491bb 154
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "cc30e316bde8fc7b1bf45b243c4a53dc70f807e4",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}
