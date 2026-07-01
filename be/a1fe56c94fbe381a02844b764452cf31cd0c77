@@ -1,0 +1,89 @@
+src/components/transactions/Emode/EmodeModalContent.tsx
+  s_fd43a54fa60112::t_7f06d42a79c4b6 500-506,508-511
+  s_fd43a54fa60112::t_55432e605706ec 180,184-185
+  s_fd43a54fa60112::t_8394232f6009f2 499
+  s_fd43a54fa60112::t_e949c169807525 21
+  s_fd43a54fa60112::t_b55cd3ce29a7f9 32
+  s_fd43a54fa60112::t_96dd90acf8f8dd 402-424
+  s_fd43a54fa60112::t_7313dabaf5926d 101-104
+  s_fd43a54fa60112::t_9148ac5c6652cc 507
+  s_fd43a54fa60112::t_febc90cb6088ae 450-485
+src/components/transactions/Supply/SupplyModalContent.tsx
+  s_fd43a54fa60112::t_61e3a03e924b41 222
+  s_fd43a54fa60112::t_3cc46e1968e580 31
+  s_fd43a54fa60112::t_dad619b620582f 281-286
+  s_fd43a54fa60112::t_62b379733b3375 451
+  s_fd43a54fa60112::t_7744fff950c82e 261
+  s_fd43a54fa60112::t_210740880e4d06 554
+src/modules/umbrella/UnstakeModalContent.tsx
+  s_fd43a54fa60112::t_b992b051963694 50
+  s_fd43a54fa60112::t_b59b1b47ca68ce 21
+  s_fd43a54fa60112::t_ea48507c786b55 128
+src/components/transactions/Swap/details/CollateralSwapDetails.tsx
+  s_fd43a54fa60112::t_2ea9ea6d1253cd 101
+  s_fd43a54fa60112::t_57aa95363e9a5a 32
+src/utils/hfUtils.ts
+  s_fd43a54fa60112::t_9baa19bb254a46 25
+  h_be8c3c572e9983 46,48-51
+  s_fd43a54fa60112::t_9c771bf8c5fc83 123-128
+  s_fd43a54fa60112::t_fd6ad4a1b13a6c 100
+  s_fd43a54fa60112::t_942aefca291517 9
+  s_fd43a54fa60112::t_343017b210fa20 68-90
+  s_fd43a54fa60112::t_8fba43af05e699 57
+  s_fd43a54fa60112::t_0212cc8e76f3b3 45,47,52-56,58-67
+  s_fd43a54fa60112::t_eae7e7ceb3db1b 343-344,355-362
+src/components/transactions/Swap/warnings/postInputs/ZeroLTVDestinationWarning.tsx
+  s_fd43a54fa60112::t_a1faa098c37b1c 5,11,28-33
+src/components/transactions/Supply/CollateralOptionsSelector.tsx
+  s_fd43a54fa60112::t_4128f30ef35131 359-362,365-383
+  s_fd43a54fa60112::t_af3d995d1c57da 124
+  s_fd43a54fa60112::t_95d61a413dd838 189,212,227
+  s_fd43a54fa60112::t_dfd9d1157e163a 33
+  s_fd43a54fa60112::t_8fba43af05e699 363-364
+  s_fd43a54fa60112::t_bbe3ddf3af821b 120-122
+  s_fd43a54fa60112::t_0756fb93da358e 199
+  s_fd43a54fa60112::t_fb8f07ad7c2cea 166-167,172
+src/hooks/pool/useUserSummaryAndIncentives.ts
+  s_fd43a54fa60112::t_1d3d0eae12c3fd 14,16
+  s_fd43a54fa60112::t_9ba488a28ed7ca 51,57-61
+src/hooks/useZeroLTVBlockingWithdraw.tsx
+  s_fd43a54fa60112::t_4f3ef5b67111f7 1,3,10,25-30,33
+src/components/transactions/Swap/hooks/useFlowSelector.ts
+  s_fd43a54fa60112::t_a617650f4fb566 40,54,68
+  s_fd43a54fa60112::t_835b765083f883 121-122
+  s_fd43a54fa60112::t_ff53cc7f691a72 80,87
+  s_fd43a54fa60112::t_8cedc596f694fe 183-184,198,210,222,234
+  s_fd43a54fa60112::t_8d4324167ec565 3
+src/store/poolSelectors.ts
+  s_fd43a54fa60112::t_b95a30134dfd37 70
+  s_fd43a54fa60112::t_b5f4afc46a98e6 104
+src/helpers/types.ts
+  s_fd43a54fa60112::t_2f1f8733bbb771 22
+src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+  s_fd43a54fa60112::t_eac29feeb11e80 13
+  s_fd43a54fa60112::t_0cc992e5348ff0 53-58
+src/components/transactions/FunCheckout/FunkitCheckout.tsx
+  s_fd43a54fa60112::t_26086625dee7a7 200,215
+  s_fd43a54fa60112::t_2427f00de736bc 62-63,65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "bea1fe56c94fbe381a02844b764452cf31cd0c77",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_fd43a54fa60112": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bdf8a6d1-56c8-4850-adb7-2c7951c1fa57",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
