@@ -59,10 +59,10 @@ function InnerCheckout() {
   // Live position + reserves for the health-factor preview. Kept in a ref so the
   // `resolveHealthFactor` closure handed to funkit reads the latest values when
   // the confirmation screen calls it — not a snapshot from config-build time.
-  const { user, reserves } = useAppDataContext();
-  const appDataRef = useRef({ user, reserves });
+  const { user, reserves, eModes } = useAppDataContext();
+  const appDataRef = useRef({ user, reserves, eModes });
   useEffect(() => {
-    appDataRef.current = { user, reserves };
+    appDataRef.current = { user, reserves, eModes };
   });
 
   const pollIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -197,7 +197,7 @@ function InnerCheckout() {
     // confirmation screen shows the same number as the dashboard. Bound to this
     // reserve's underlying; reads the latest position via `appDataRef`.
     const resolveHealthFactor = (underlyingHumanAmount: string) => {
-      const { user, reserves } = appDataRef.current;
+      const { user, reserves, eModes } = appDataRef.current;
       const poolReserve = reserves.find(
         (r) => r.underlyingAsset.toLowerCase() === reserve.underlyingAsset.toLowerCase()
       );
@@ -212,7 +212,7 @@ function InnerCheckout() {
       }
       return {
         before: user.healthFactor,
-        after: calculateHFAfterSupply(user, poolReserve, amountInEth).toString(),
+        after: calculateHFAfterSupply(user, poolReserve, amountInEth, eModes).toString(),
       };
     };
 

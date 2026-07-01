@@ -11,7 +11,9 @@ import {
 import dayjs from 'dayjs';
 import memoize from 'micro-memoize';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
+import { formatEmodes } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
+import { getEmodeAdjustedReserves } from 'src/utils/hfUtils';
 
 import {
   selectBaseCurrencyData,
@@ -46,12 +48,17 @@ const formatUserSummaryAndIncentivesss = memoize(
     const baseCurrencyData = selectBaseCurrencyData(poolReserves);
     const userReserves = selectUserReservesData(userPoolReserves);
     const userEmodeCategoryId = selectUserEModeCategory(userPoolReserves);
+    const eModes = formatEmodes(formattedPoolReserves);
     return _formatUserSummaryAndIncentives({
       currentTimestamp: dayjs().unix(),
       marketReferencePriceInUsd: baseCurrencyData.marketReferenceCurrencyPriceInUsd,
       marketReferenceCurrencyDecimals: baseCurrencyData.marketReferenceCurrencyDecimals,
       userReserves,
-      formattedReserves: formattedPoolReserves,
+      formattedReserves: getEmodeAdjustedReserves(
+        formattedPoolReserves,
+        userEmodeCategoryId,
+        eModes
+      ),
       userEmodeCategoryId: userEmodeCategoryId,
       reserveIncentives: reserveIncentiveData || [],
       userIncentives: userIncentiveData || [],

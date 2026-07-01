@@ -10,6 +10,7 @@ import {
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
+import { hasNonZeroEffectiveLtv } from 'src/utils/hfUtils';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -49,9 +50,12 @@ export const CollateralChangeModalContent = ({
 
   // Check if asset has non-zero LTV (base or in user's active e-mode)
   const userEMode = poolReserve.eModes?.find((e) => e.id === user?.userEmodeCategoryId);
-  const hasNonZeroLtv =
-    poolReserve.baseLTVasCollateral !== '0' ||
-    (user?.isInEmode && userEMode?.collateralEnabled && !userEMode?.ltvzeroEnabled);
+  const hasNonZeroLtv = hasNonZeroEffectiveLtv({
+    baseLTVasCollateral: poolReserve.baseLTVasCollateral,
+    isInEmode: !!user?.isInEmode,
+    emodeEntry: userEMode,
+    isEModeIsolated: !!eModes[user.userEmodeCategoryId]?.isolated,
+  });
 
   // Find e-mode categories where this asset can be used as collateral with non-zero LTV
   const collateralEmodeCategories =

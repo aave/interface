@@ -29,7 +29,7 @@ import { CowCostsDetails } from './CowCostsDetails';
 import { ParaswapCostsDetails } from './ParaswapCostsDetails';
 
 export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: SwapState }) => {
-  const { user, reserves } = useAppDataContext();
+  const { user, reserves, eModes } = useAppDataContext();
 
   if (!state.swapRate || !user) {
     return null;
@@ -98,6 +98,7 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
     toAssetData: targetReserve,
     fromAssetType: 'collateral',
     toAssetType: 'collateral',
+    eModes,
   });
 
   const sourceAmountAfterSwap = valueToBigNumber(userReserve.underlyingBalance).minus(
