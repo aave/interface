@@ -1333,7 +1333,6 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 #: src/modules/staking/SavingsGhoProgram.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
-#: src/modules/umbrella/UmbrellaMarketSwitcher.tsx
 msgid "{0}"
 msgstr "{0}"
 
