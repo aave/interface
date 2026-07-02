@@ -17,4 +17,5 @@ export const EXTRA_WHITELIST_TOKENS = [
   '0x1a96516e210fbc1026c76f0ce13d9f1d163aaddc'.toLowerCase(),
   '0x9502216a517eba55543d654c7ce3d6ee8cf3556a'.toLowerCase(),
   '0xc5f4AfC7da562F51684ae81535DA9716C98747df'.toLowerCase(),
+  '0x561Ad6156D0106E7a59EE788759dF7B7Ec679BD0'.toLowerCase(),
 ]; // Extra tokens to whitelist
