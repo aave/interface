@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import type { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { useQuery } from '@tanstack/react-query';
 import { useRootStore } from 'src/store/root';
+import { EXTRA_WHITELIST_TOKENS } from 'src/ui-config/merklConfig';
 import { convertAprToApy } from 'src/utils/utils';
 import { type Address, checksumAddress } from 'viem';
 
@@ -146,25 +147,6 @@ type WhitelistApiResponse = {
 const MERKL_ENDPOINT =
   'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave&items=100&status=LIVE'; // Merkl API
 const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
-const EXTRA_WHITELIST_TOKENS = [
-  '0xE3190143Eb552456F88464662f0c0C4aC67A77eB'.toLowerCase(),
-  '0x78f2cB75D664d6f71433174056c25A5958B4016F'.toLowerCase(),
-  '0xa1A67b55a88ab8Dcc86B765C1Cd85887e24ad7AA'.toLowerCase(),
-  '0x1eC1609039A9156367c885263fa6dC7ebb350922'.toLowerCase(),
-  // New TokenLogic wrapped token addresses
-  '0x569aE8d56CB5e36E9585AA625Fd64d9211609E54'.toLowerCase(),
-  '0x0750e0792898f611592e51aa00d043c14dd4e0d2'.toLowerCase(),
-  '0xd2740a43a357ef8b01f975b37efea760e554a9d1'.toLowerCase(),
-  '0x1cea01ce975546cc3c9ea83ce3e8395df7779b3f'.toLowerCase(),
-  '0x461b1d4ae26b4f4cb627c18ad85f223ef8a0dd18'.toLowerCase(),
-  '0x7cea16d8de7b5950905679e7590c7e2b75f6dd0c'.toLowerCase(),
-  '0x325fedd0db798eb6ecd1a87eae0bef6f24ec5a08'.toLowerCase(),
-  '0x639c16d78d6f8eebabe6afadacaf36f327539584'.toLowerCase(),
-  '0xfe2e11bd16f614d79a64d55c79595b76446d2ada'.toLowerCase(),
-  '0x046e292396e92ed9e3ca890431dde27e907ae294'.toLowerCase(),
-  '0x1a96516e210fbc1026c76f0ce13d9f1d163aaddc'.toLowerCase(),
-  '0x9502216a517eba55543d654c7ce3d6ee8cf3556a'.toLowerCase(),
-]; // Extra tokens to whitelist
 const AAVE_NET_APR_DISTRIBUTION_TYPE = 'AAVE_NET_APR';
 const convertApyToApr = (apy: number) => 12 * ((1 + apy) ** (1 / 12) - 1);
 
