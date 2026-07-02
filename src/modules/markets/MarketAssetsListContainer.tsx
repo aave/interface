@@ -61,7 +61,7 @@ export const MarketAssetsListContainer = () => {
 
   const [showLowLiquidityToggle, setShowLowLiquidityToggle] = useState(false);
 
-  const filteredData = supplyReserves
+  const baseFilteredData = supplyReserves
     // Filter out any hidden assets
     .filter((res) => !isAssetHidden(currentMarketData.market, res.underlyingToken.address))
     // filter out any that don't meet search term criteria
@@ -86,9 +86,18 @@ export const MarketAssetsListContainer = () => {
             data?.ethCorrelatedSymbols
           )
         )
-    )
+    );
+
+  // If every remaining asset is below the $100k supply threshold, showing the
+  // low-liquidity filter would leave the list empty, so show all assets instead.
+  const hasHighLiquidityAssets = baseFilteredData.some((res) => Number(res.size.usd) >= 100_000);
+
+  const filteredData = baseFilteredData
     // Filter out low-liquidity assets (<$100k supply) unless toggle is enabled
-    .filter((res) => showLowLiquidityToggle || Number(res.size.usd) >= 100_000)
+    // (or unless all assets would otherwise be filtered out)
+    .filter(
+      (res) => showLowLiquidityToggle || !hasHighLiquidityAssets || Number(res.size.usd) >= 100_000
+    )
     // Add initial sorting by total supplied in USD descending
     .sort((a, b) => {
       const aValue = Number(a.size.usd) || 0;
@@ -257,7 +266,7 @@ export const MarketAssetsListContainer = () => {
             <Trans>{'Show assets <$100k supply'}</Trans>
           </Typography>
           <Switch
-            checked={showLowLiquidityToggle}
+            checked={showLowLiquidityToggle || !hasHighLiquidityAssets}
             onChange={() => setShowLowLiquidityToggle((prev) => !prev)}
             inputProps={{ 'aria-label': 'show assets under 100k supply' }}
           />
