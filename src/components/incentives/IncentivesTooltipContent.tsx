@@ -248,6 +248,11 @@ const IncentivesSymbolMap: {
     symbol: 'MEGA',
     aToken: false,
   },
+  WMON: {
+    tokenIconSymbol: 'mon',
+    symbol: 'WMON',
+    aToken: false,
+  },
 };
 
 interface IncentivesTooltipContentProps {
