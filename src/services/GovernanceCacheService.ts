@@ -9,6 +9,7 @@
  * call sites keep working. Migrate imports, then delete this shim.
  */
 export type {
+  PayloadAction,
   ProposalDetail,
   ProposalPayload,
   ProposalVote,

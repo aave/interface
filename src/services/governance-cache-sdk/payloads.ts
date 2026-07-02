@@ -5,7 +5,16 @@
 import { networkConfigs } from 'src/ui-config/networksConfig';
 
 import { gql, request, RequestOptions } from './client';
-import { ProposalPayload } from './types';
+import { PayloadAction, ProposalPayload } from './types';
+
+interface PayloadActionNode {
+  target: string;
+  signature: string | null;
+  callData: string | null;
+  value: string | null;
+  withDelegateCall: boolean;
+  accessLevel: number | null;
+}
 
 interface PayloadNode {
   proposalId: string;
@@ -19,6 +28,7 @@ interface PayloadNode {
   queuedAt: string | null;
   executedAt: string | null;
   cancelledAt: string | null;
+  actions: PayloadActionNode[] | null;
 }
 
 const GET_PROPOSAL_PAYLOADS = gql`
@@ -36,6 +46,7 @@ const GET_PROPOSAL_PAYLOADS = gql`
         queuedAt
         executedAt
         cancelledAt
+        # actions  # re-enable once the cache backend exposes this field (migration 6)
       }
     }
   }
@@ -65,5 +76,15 @@ export async function getProposalPayloads(
     queuedAt: p.queuedAt,
     executedAt: p.executedAt,
     cancelledAt: p.cancelledAt,
+    actions: (p.actions ?? []).map(
+      (a): PayloadAction => ({
+        target: a.target,
+        signature: a.signature,
+        callData: a.callData,
+        value: a.value,
+        withDelegateCall: a.withDelegateCall,
+        accessLevel: a.accessLevel,
+      })
+    ),
   }));
 }

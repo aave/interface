@@ -75,6 +75,16 @@ export interface VoteCounts {
   totalCount: number;
 }
 
+/** A single executable action within a payload (target contract + calldata). */
+export interface PayloadAction {
+  target: string;
+  signature: string | null;
+  callData: string | null;
+  value: string | null;
+  withDelegateCall: boolean;
+  accessLevel: number | null;
+}
+
 /** A proposal payload across chains (from `getProposalPayloads`). */
 export interface ProposalPayload {
   proposalId: string;
@@ -89,6 +99,7 @@ export interface ProposalPayload {
   queuedAt: string | null;
   executedAt: string | null;
   cancelledAt: string | null;
+  actions: PayloadAction[];
 }
 
 /**

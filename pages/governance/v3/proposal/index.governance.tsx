@@ -10,6 +10,7 @@ import {
 import { MainLayout } from 'src/layouts/MainLayout';
 import { ProposalLifecycleCache } from 'src/modules/governance/proposal/ProposalLifecycleCache';
 import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOverview';
+import { ProposalPayloads } from 'src/modules/governance/proposal/ProposalPayloads';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 import { VotingResults } from 'src/modules/governance/proposal/VotingResults';
@@ -66,6 +67,7 @@ export default function ProposalPage() {
               loading={proposalLoading}
               votesLoading={voters.isFetching}
             />
+            <ProposalPayloads payloads={payloads} loading={payloadsLoading} />
             {proposal?.rawCacheDetail ? (
               <ProposalLifecycleCache
                 proposal={proposal.rawCacheDetail}

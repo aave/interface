@@ -335,7 +335,7 @@ export const ProposalLifecycleCache = ({
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
       <Typography variant="h3">
-        <Trans>Proposal details</Trans>
+        <Trans>Timeline</Trans>
       </Typography>
 
       {/* @ts-expect-error TODO: MUI lab Timeline type mismatch */}

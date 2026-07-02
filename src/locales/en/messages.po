@@ -1883,10 +1883,6 @@ msgstr "State"
 msgid "There are no stake assets configured for this market"
 msgstr "There are no stake assets configured for this market"
 
-#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
-msgid "Proposal details"
-msgstr "Proposal details"
-
 #: src/modules/stkGho/StkGhoCard.tsx
 msgid "Legacy Savings GHO (stkGHO)"
 msgstr "Legacy Savings GHO (stkGHO)"
@@ -2091,6 +2087,10 @@ msgstr "Asset is not borrowable in isolation mode"
 msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Creator"
+msgstr "Creator"
+
 #: src/components/transactions/CancelCowOrder/CancelCowOrderActions.tsx
 msgid "Send cancel"
 msgstr "Send cancel"
@@ -2252,6 +2252,10 @@ msgstr "To borrow you need to supply any asset to be used as collateral."
 msgid "Copy error text"
 msgstr "Copy error text"
 
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Controller"
+msgstr "Controller"
+
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
 msgstr "Used as collateral"
@@ -2296,9 +2300,17 @@ msgstr "Amount to Bridge"
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Seatbelt report"
+msgstr "Seatbelt report"
+
 #: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
 msgid "Staked Underlying"
 msgstr "Staked Underlying"
+
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Target {0}"
+msgstr "Target {0}"
 
 #: src/components/transactions/Swap/warnings/preInputs/NativeLimitOrderInfo.tsx
 msgid "For security reasons, limit orders are not supported for Native tokens. To place a limit order, use the wrapped version."
@@ -2362,6 +2374,10 @@ msgstr "If your loan to value goes above the liquidation threshold your collater
 #: src/modules/history/TransactionRowItem.tsx
 msgid "VIEW"
 msgstr "VIEW"
+
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Target"
+msgstr "Target"
 
 #: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
 #: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
@@ -2635,6 +2651,10 @@ msgstr "Vote YAE"
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repaying {symbol}"
 msgstr "Repaying {symbol}"
+
+#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
+msgid "Timeline"
+msgstr "Timeline"
 
 #: src/components/transactions/Bridge/BridgeActions.tsx
 msgid "Bridge {symbol}"
@@ -3578,6 +3598,10 @@ msgstr "please check that the amount you want to supply is not currently being u
 msgid "Minimum amount received"
 msgstr "Minimum amount received"
 
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Access level"
+msgstr "Access level"
+
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
 msgstr "Voting is on"
@@ -4073,6 +4097,10 @@ msgstr "The caller of the function is not an AToken"
 msgid "You do not have supplies in this currency"
 msgstr "You do not have supplies in this currency"
 
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Payload {0}"
+msgstr "Payload {0}"
+
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE YAE"
@@ -4240,6 +4268,10 @@ msgstr "The app is running in fork mode."
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
+
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Payloads"
+msgstr "Payloads"
 
 #: pages/404.page.tsx
 msgid "Back home"
