@@ -1,0 +1,30 @@
+src/ui-config/marketsConfig.tsx
+  h_be8c3c572e9983 23,113,660-676
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_443c60cbdc9e1a::t_791dff9ed70131 2
+  h_be8c3c572e9983 60-71
+  s_443c60cbdc9e1a::t_a7ec1397066926 82
+yarn.lock
+  s_443c60cbdc9e1a::t_0b1d520a5c3500 18-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "15843a9a6c240e12983befb582209d6c09fdad7e",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_443c60cbdc9e1a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6b9c332f-3afd-4103-863f-9ac907845060",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

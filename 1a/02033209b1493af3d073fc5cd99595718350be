@@ -1,0 +1,25 @@
+src/ui-config/networksConfig.ts
+  h_873f745f99aed2 19,494-495,499,503
+  s_77f16922f7fa10::t_e5a71cb52e2553 496-498,500-502
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "1a02033209b1493af3d073fc5cd99595718350be",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  },
+  "sessions": {
+    "s_77f16922f7fa10": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "96cff9e4-f827-493d-9746-748d40931b3b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
