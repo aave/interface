@@ -54,16 +54,6 @@ const BridgeModal = dynamic(() =>
   import('src/components/transactions/Bridge/BridgeModal').then((module) => module.BridgeModal)
 );
 
-// ssr: false (unlike the other modal hosts) because `@funkit/connect` is a
-// client-only, ESM/browser package.
-const FunkitCheckout = dynamic(
-  () =>
-    import('src/components/transactions/FunCheckout/FunkitCheckout').then(
-      (module) => module.FunkitCheckout
-    ),
-  { ssr: false }
-);
-
 const BorrowModal = dynamic(() =>
   import('src/components/transactions/Borrow/BorrowModal').then((module) => module.BorrowModal)
 );
@@ -177,7 +167,6 @@ export default function MyApp(props: MyAppProps) {
                                   <GasStationProvider>
                                     {getLayout(<Component {...pageProps} />)}
                                     <SupplyModal />
-                                    <FunkitCheckout />
                                     <WithdrawModal />
                                     <BorrowModal />
                                     <RepayModal />

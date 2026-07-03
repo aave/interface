@@ -44,6 +44,15 @@ const UnStakeModal = dynamic(() =>
     (module) => module.UnStakeModal
   )
 );
+// funkit checkout host, ssr:false (`@funkit/connect` is client-only). Scoped to
+// this page (see dashboard.page.tsx) so the SDK chunk stays off non-supply routes.
+const FunkitCheckout = dynamic(
+  () =>
+    import('src/components/transactions/FunCheckout/FunkitCheckout').then(
+      (module) => module.FunkitCheckout
+    ),
+  { ssr: false }
+);
 
 export default function ReserveOverview() {
   const router = useRouter();
@@ -92,6 +101,7 @@ export default function ReserveOverview() {
 
   return (
     <AssetCapsProviderSDK asset={reserve}>
+      <FunkitCheckout />
       <ReserveTopDetailsWrapper underlyingAsset={underlyingAsset} />
 
       <ContentContainer>
