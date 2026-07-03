@@ -289,9 +289,9 @@ export const UmbrellaActions = ({
       actionInProgressText={<Trans>Staking</Trans>}
       sx={sx}
       blocked={blocked}
-      requiresApprovalReset={requiresApprovalReset}
       // event={STAKE.STAKE_BUTTON_MODAL}
       {...props}
+      requiresApprovalReset={requiresApprovalReset}
     />
   );
 };
