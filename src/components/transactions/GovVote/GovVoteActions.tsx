@@ -2,14 +2,14 @@ import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { AbiCoder, keccak256, RLP } from 'ethers/lib/utils';
-import { useState } from 'react';
-import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useGovernanceTokensAndPowers } from 'src/hooks/governance/useGovernanceTokensAndPowers';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { VoteProposalData } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
+import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { queryKeysFactory } from 'src/ui-config/queries';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
@@ -180,20 +180,34 @@ const getVotingBalanceProofs = (
   );
 };
 
+const GELATO_TASK_STATUS_URL = 'https://api.gelato.digital/tasks/status';
+
+// Poll Gelato's public task status until the sponsored vote is mined. This endpoint
+// needs no key — only the relay call itself is authenticated (server-side).
+const waitForRelayedTx = async (taskId: string): Promise<string> => {
+  const maxAttempts = 40; // ~2 min at 3s intervals
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    const res = await fetch(`${GELATO_TASK_STATUS_URL}/${taskId}`);
+    if (!res.ok) continue;
+    const { task } = await res.json();
+    if (task?.taskState === 'ExecSuccess' && task.transactionHash) {
+      return task.transactionHash as string;
+    }
+    if (task?.taskState === 'ExecReverted' || task?.taskState === 'Cancelled') {
+      throw new Error(`Relayed vote ${task.taskState}`);
+    }
+  }
+  throw new Error('Timed out waiting for the relayed vote');
+};
+
 export const GovVoteActions = ({
   isWrongNetwork,
   blocked,
   proposal,
   support,
 }: GovVoteActionsProps) => {
-  const {
-    mainTxState,
-    loadingTxns,
-    setMainTxState,
-    setApprovalTxState,
-    approvalTxState,
-    setTxError,
-  } = useModalContext();
+  const { mainTxState, loadingTxns, setMainTxState, setTxError } = useModalContext();
   const user = useRootStore((store) => store.account);
 
   const estimateGasLimit = useRootStore((store) => store.estimateGasLimit);
@@ -201,14 +215,13 @@ export const GovVoteActions = ({
   const queryClient = useQueryClient();
 
   const tokenPowers = useGovernanceTokensAndPowers(proposal.snapshotBlockHash);
-  const [signature, setSignature] = useState<string | undefined>(undefined);
   const proposalId = +proposal.proposalId;
   const blockHash = proposal.snapshotBlockHash;
   const votingChainId = proposal.votingMachineChainId;
   const votingMachineAddress =
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
 
-  const withGelatoRelayer = false;
+  const withGelatoRelayer = process.env.NEXT_PUBLIC_ENABLE_GASLESS_VOTING === 'true';
 
   const assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }> = [];
 
@@ -240,46 +253,57 @@ export const GovVoteActions = ({
 
       const votingMachineService = new VotingMachineService(votingMachineAddress);
 
-      if (withGelatoRelayer && signature) {
-        // const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
-        //   user,
-        //   proposalId,
-        //   support,
-        //   proofs,
-        //   signature.toString()
-        // );
-        // const gelatoRelay = new GelatoRelay();
-        // const gelatoRequest = {
-        //   chainId: BigInt(votingChainId),
-        //   target: votingMachineAddress,
-        //   data: tx.data || '',
-        // };
-        // const response = await gelatoRelay.sponsoredCall(gelatoRequest, '');
-        // setTimeout(async function checkForStatus() {
-        //   const status = await gelatoRelay.getTaskStatus(response.taskId);
-        //   if (status?.blockNumber && status.transactionHash) {
-        //     setMainTxState({
-        //       txHash: status.transactionHash,
-        //       loading: false,
-        //       success: true,
-        //     });
-        //     queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
-        //     queryClient.invalidateQueries({
-        //       queryKey: ['governance-detail-cache', proposalId, user],
-        //     });
-        //     queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
-        //     queryClient.invalidateQueries({
-        //       queryKey: ['governance-voters-cache-for', proposalId],
-        //     });
-        //     queryClient.invalidateQueries({
-        //       queryKey: ['governance-voters-cache-against', proposalId],
-        //     });
-        //     return;
-        //   } else {
-        //     setTimeout(checkForStatus, 5000);
-        //     return;
-        //   }
-        // }, 5000);
+      if (withGelatoRelayer) {
+        const toSign = generateSubmitVoteSignature(
+          votingChainId,
+          votingMachineAddress,
+          proposalId,
+          user,
+          support,
+          assets.map((elem) => ({
+            underlyingAsset: elem.underlyingAsset,
+            slot: getVoteBalanceSlot(
+              elem.underlyingAsset,
+              elem.isWithDelegatedPower,
+              governanceV3Config.votingAssets.aAaveTokenAddress,
+              assetsBalanceSlots
+            ),
+          }))
+        );
+        const signature = await signTxData(toSign);
+
+        const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
+          user,
+          proposalId,
+          support,
+          proofs,
+          signature.toString()
+        );
+
+        const relayResponse = await fetch('/api/gelato/relay', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chainId: votingChainId,
+            target: votingMachineAddress,
+            data: tx.data,
+          }),
+        });
+
+        if (!relayResponse.ok) {
+          throw new Error('Relay request failed');
+        }
+
+        const { taskId } = await relayResponse.json();
+        const txHash = await waitForRelayedTx(taskId);
+
+        setMainTxState({
+          txHash,
+          loading: false,
+          success: true,
+        });
+
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.governanceCache });
       } else {
         const tx = await votingMachineService.generateSubmitVoteTxData(
           user,
@@ -298,53 +322,15 @@ export const GovVoteActions = ({
           success: true,
         });
 
-        queryClient.invalidateQueries({ queryKey: ['governance_proposal', proposalId, user] });
-        queryClient.invalidateQueries({ queryKey: ['governance-detail-cache', proposalId, user] });
-        queryClient.invalidateQueries({ queryKey: ['proposalVotes', proposalId] });
-        queryClient.invalidateQueries({
-          queryKey: ['governance-voters-cache-for', proposalId],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ['governance-voters-cache-against', proposalId],
-        });
+        queryClient.invalidateQueries({ queryKey: queryKeysFactory.governanceCache });
       }
     } catch (err) {
+      setTxError(getErrorTextFromError(err as Error, TxAction.MAIN_ACTION, false));
       setMainTxState({
         txHash: undefined,
         loading: false,
       });
     }
-  };
-
-  const approve = async () => {
-    try {
-      setApprovalTxState({ ...approvalTxState, loading: true });
-      const toSign = generateSubmitVoteSignature(
-        votingChainId,
-        votingMachineAddress,
-        proposalId,
-        user,
-        support,
-        assets.map((elem) => ({
-          underlyingAsset: elem.underlyingAsset,
-          slot: getVoteBalanceSlot(
-            elem.underlyingAsset,
-            elem.isWithDelegatedPower,
-
-            governanceV3Config.votingAssets.aAaveTokenAddress,
-            assetsBalanceSlots
-          ),
-        }))
-      );
-      const signature = await signTxData(toSign);
-      setSignature(signature.toString());
-      setTxError(undefined);
-      setApprovalTxState({
-        txHash: MOCK_SIGNED_HASH,
-        loading: false,
-        success: true,
-      });
-    } catch {}
   };
 
   return (
@@ -357,7 +343,6 @@ export const GovVoteActions = ({
       actionText={support ? <Trans>VOTE YAE</Trans> : <Trans>VOTE NAY</Trans>}
       actionInProgressText={support ? <Trans>VOTE YAE</Trans> : <Trans>VOTE NAY</Trans>}
       isWrongNetwork={isWrongNetwork}
-      handleApproval={approve}
     />
   );
 };
