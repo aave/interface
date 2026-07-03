@@ -46,7 +46,7 @@ const GET_PROPOSAL_PAYLOADS = gql`
         queuedAt
         executedAt
         cancelledAt
-        # actions  # re-enable once the cache backend exposes this field (migration 6)
+        actions
       }
     }
   }
