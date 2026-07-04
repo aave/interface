@@ -122,6 +122,11 @@ const connectors = narvalConnector ? [...(baseConnectors ?? []), narvalConnector
 const prodConfig = createConfig({
   ...prodCkConfig,
   connectors,
+  // Next.js SSR mode: run wagmi's reconnect once on mount (guarded) instead of
+  // on every render. Without this, WagmiProvider re-fires reconnect() on each
+  // render, ping-ponging account status and re-rendering the tree on navigation.
+  // Auto-reconnect for returning wallets is preserved.
+  ssr: true,
 });
 
 const isCypressEnabled = process.env.NEXT_PUBLIC_IS_CYPRESS_ENABLED === 'true';
