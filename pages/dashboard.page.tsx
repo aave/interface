@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
-import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import StyledToggleButton from 'src/components/StyledToggleButton';
 import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
@@ -13,17 +12,6 @@ import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardContentWrapper';
 import { DashboardTopPanel } from '../src/modules/dashboard/DashboardTopPanel';
-
-// funkit checkout host, ssr:false (`@funkit/connect` is client-only). Scoped to
-// this page — the only routes with Supply buttons are the dashboard lists and
-// reserve-overview — so the SDK chunk never loads on markets/history/etc.
-const FunkitCheckout = dynamic(
-  () =>
-    import('src/components/transactions/FunCheckout/FunkitCheckout').then(
-      (module) => module.FunkitCheckout
-    ),
-  { ssr: false }
-);
 
 export default function Dashboard() {
   const { currentAccount } = useWeb3Context();
@@ -80,7 +68,6 @@ export default function Dashboard() {
           <ConnectWalletPaper />
         )}
       </ContentContainer>
-      <FunkitCheckout />
     </>
   );
 }
