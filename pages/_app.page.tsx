@@ -54,6 +54,16 @@ const BridgeModal = dynamic(() =>
   import('src/components/transactions/Bridge/BridgeModal').then((module) => module.BridgeModal)
 );
 
+// ssr: false (unlike the other modal hosts) because `@funkit/connect` is a
+// client-only, ESM/browser package.
+const FunkitCheckout = dynamic(
+  () =>
+    import('src/components/transactions/FunCheckout/FunkitCheckout').then(
+      (module) => module.FunkitCheckout
+    ),
+  { ssr: false }
+);
+
 const BorrowModal = dynamic(() =>
   import('src/components/transactions/Borrow/BorrowModal').then((module) => module.BorrowModal)
 );
@@ -73,17 +83,6 @@ const RepayModal = dynamic(() =>
 );
 const SupplyModal = dynamic(() =>
   import('src/components/transactions/Supply/SupplyModal').then((module) => module.SupplyModal)
-);
-// funkit checkout host, mounted once globally alongside the other modal hosts as an
-// `ssr: false` island (`@funkit/connect` is client-only). Reuses the interface's
-// wagmi + react-query. With `ssr: true` on the wagmi config the guest reconnect no
-// longer churns, so a single global mount doesn't thrash — no page-scoping needed.
-const FunkitCheckout = dynamic(
-  () =>
-    import('src/components/transactions/FunCheckout/FunkitCheckout').then(
-      (module) => module.FunkitCheckout
-    ),
-  { ssr: false }
 );
 const WithdrawModal = dynamic(() =>
   import('src/components/transactions/Withdraw/WithdrawModal').then(
@@ -177,8 +176,8 @@ export default function MyApp(props: MyAppProps) {
                                 <AppDataProvider>
                                   <GasStationProvider>
                                     {getLayout(<Component {...pageProps} />)}
-                                    <FunkitCheckout />
                                     <SupplyModal />
+                                    <FunkitCheckout />
                                     <WithdrawModal />
                                     <BorrowModal />
                                     <RepayModal />
