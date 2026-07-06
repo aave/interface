@@ -187,52 +187,50 @@ export const MerklIncentivesTooltipContent = ({
               </Row>
             ) : merklIncentives.rewardsTokensMappedApys &&
               merklIncentives.rewardsTokensMappedApys.length > 1 ? (
-              <>
-                {merklIncentives.rewardsTokensMappedApys.map((reward, index) => {
-                  const { tokenIconSymbol, symbol, aToken } = getSymbolMap({
-                    rewardTokenSymbol: reward.token.symbol,
-                    rewardTokenAddress: reward.token.address,
-                    incentiveAPR: reward.apy.toString(),
-                  });
-                  return (
-                    <Row
-                      key={index}
-                      height={32}
-                      caption={
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            mb: 0,
-                          }}
-                        >
-                          <TokenIcon
-                            symbol={tokenIconSymbol}
-                            aToken={aToken}
-                            sx={{ fontSize: '20px', mr: 1 }}
-                          />
-                          <Typography variant={typographyVariant}>{symbol}</Typography>
-                          <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
-                            {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
-                          </Typography>
-                        </Box>
-                      }
-                      width="100%"
-                    >
-                      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                        <FormattedNumber
-                          value={merklIncentives.breakdown.isBorrow ? -reward.apy : reward.apy}
-                          percent
-                          variant={typographyVariant}
+              merklIncentives.rewardsTokensMappedApys.map((reward, index) => {
+                const { tokenIconSymbol, symbol, aToken } = getSymbolMap({
+                  rewardTokenSymbol: reward.token.symbol,
+                  rewardTokenAddress: reward.token.address,
+                  incentiveAPR: reward.apy.toString(),
+                });
+                return (
+                  <Row
+                    key={index}
+                    height={32}
+                    caption={
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          mb: 0,
+                        }}
+                      >
+                        <TokenIcon
+                          symbol={tokenIconSymbol}
+                          aToken={aToken}
+                          sx={{ fontSize: '20px', mr: 1 }}
                         />
-                        <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-                          <Trans>APY</Trans>
+                        <Typography variant={typographyVariant}>{symbol}</Typography>
+                        <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                          {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
                         </Typography>
                       </Box>
-                    </Row>
-                  );
-                })}
-              </>
+                    }
+                    width="100%"
+                  >
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <FormattedNumber
+                        value={merklIncentives.breakdown.isBorrow ? -reward.apy : reward.apy}
+                        percent
+                        variant={typographyVariant}
+                      />
+                      <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+                        <Trans>APY</Trans>
+                      </Typography>
+                    </Box>
+                  </Row>
+                );
+              })
             ) : (
               <Row
                 height={32}

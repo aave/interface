@@ -139,14 +139,9 @@ export type MerklIncentivesBreakdown = {
     pointsPerThousandUsd: number;
   };
 };
-type WhitelistApiResponse = {
-  whitelistedRewardTokens: string[];
-  additionalIncentiveInfo: Record<string, ReserveIncentiveAdditionalData>;
-};
 
 const MERKL_ENDPOINT =
   'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave&items=100&status=LIVE'; // Merkl API
-const WHITELIST_ENDPOINT = 'https://apps.aavechan.com/api/aave/merkl/whitelist-token-list'; // Endpoint to fetch whitelisted tokens
 const AAVE_NET_APR_DISTRIBUTION_TYPE = 'AAVE_NET_APR';
 const convertApyToApr = (apy: number) => 12 * ((1 + apy) ** (1 / 12) - 1);
 
@@ -194,19 +189,6 @@ const checkOpportunityAction = (
       return false;
   }
 };
-const useWhitelistedTokens = () => {
-  return useQuery({
-    queryFn: async (): Promise<WhitelistApiResponse> => {
-      const response = await fetch(WHITELIST_ENDPOINT);
-      if (!response.ok) {
-        throw new Error('Failed to fetch whitelisted tokens');
-      }
-      return await response.json();
-    },
-    queryKey: ['whitelistedTokens'],
-    staleTime: 1000 * 60 * 5, // 5 minutes
-  });
-};
 
 export const useMerklIncentives = ({
   market,
@@ -222,7 +204,6 @@ export const useMerklIncentives = ({
   protocolIncentives?: ReserveIncentiveResponse[];
 }) => {
   const currentChainId = useRootStore((state) => state.currentChainId);
-  const { data: whitelistData } = useWhitelistedTokens();
 
   return useQuery({
     queryFn: async () => {
@@ -252,14 +233,13 @@ export const useMerklIncentives = ({
         (opp) => opp.status === OpportunityStatus.LIVE && opp.apr > 0
       );
 
-      if (!whitelistData?.whitelistedRewardTokens) {
+      if (!EXTRA_WHITELIST_TOKENS?.whitelistedRewardTokens) {
         return null;
       }
 
       const whitelistedTokensSet = new Set(
         [
-          ...whitelistData.whitelistedRewardTokens.map((token) => token.toLowerCase()),
-          ...EXTRA_WHITELIST_TOKENS,
+          ...EXTRA_WHITELIST_TOKENS.whitelistedRewardTokens.map((token) => token.toLowerCase()),
         ].filter(Boolean)
       );
 
@@ -334,7 +314,8 @@ export const useMerklIncentives = ({
         : protocolAPY + protocolIncentivesAPY + merklIncentivesAPY;
 
       const incentiveKey = `${currentChainId}-${checksumAddress(rewardedAsset as Address)}`;
-      const incentiveAdditionalData = whitelistData?.additionalIncentiveInfo?.[incentiveKey];
+      const incentiveAdditionalData =
+        EXTRA_WHITELIST_TOKENS?.additionalIncentiveInfo?.[incentiveKey];
 
       return {
         incentiveAPR: merklIncentivesAPY.toString(),
