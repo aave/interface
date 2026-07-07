@@ -1,0 +1,42 @@
+src/hooks/useEnhancedUserYield.ts
+  s_2fabd3181c5236::t_dac53804f5eadd 7-8,14
+  s_2fabd3181c5236::t_8a8aaefec65259 16-18,21-23
+src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
+  s_2fabd3181c5236::t_5167e9751e1a2d 116
+src/components/incentives/IncentivesCard.tsx
+  h_dd1a1ee57491bb 114
+  s_2fabd3181c5236::t_547d0519471dd6 92-93
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_2fabd3181c5236::t_84f5a8862ba72f 91
+  s_2fabd3181c5236::t_8eabf7948da4fa 24
+src/components/incentives/IncentivesTooltipContent.tsx
+  s_2fabd3181c5236::t_5167e9751e1a2d 335-336
+  s_2fabd3181c5236::t_34dce5c69e7d2d 459-460
+src/modules/staking/GhoStakingPanel.tsx
+  s_2fabd3181c5236::t_b284f09f0e3e44 259
+src/modules/staking/StakingPanelNoWallet.tsx
+  s_2fabd3181c5236::t_4a6b901889deac 107
+src/hooks/pool/useUserYield.ts
+  s_2fabd3181c5236::t_f294abf3b4b155 22,84,94,101-102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "d8637ecff930e58b8dcb5fdbbab6383ed2926b4c",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2fabd3181c5236": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0e93ea01-e8a4-4141-b692-672cfa8c3a8f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}
