@@ -44,7 +44,7 @@ export const SGhoCard = () => {
     <Paper
       sx={{
         pt: 4,
-        pb: { xs: 6, md: 20 },
+        pb: 6,
         px: downToXsm ? 4 : 6,
         flex: 1,
         minWidth: 0,

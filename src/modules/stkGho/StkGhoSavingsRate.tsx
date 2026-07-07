@@ -1,12 +1,6 @@
-import { TimeWindow } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Divider, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { useSGhoApyHistory } from 'src/hooks/useSGhoApyHistory';
-
-import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
-import { TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
 
 interface StkGhoSavingsRateProps {
   totalDepositedUSD: string;
@@ -16,14 +10,6 @@ export const StkGhoSavingsRate = ({ totalDepositedUSD }: StkGhoSavingsRateProps)
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
 
-  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastWeek);
-
-  const {
-    data: meritApyHistory,
-    loading: loadingMeritApy,
-    error: errorMeritApyHistory,
-    refetch: refetchMeritApyHistory,
-  } = useSGhoApyHistory({ timeRange: selectedTimeRange });
   const stakeApyDecimal = 0;
 
   return (
@@ -57,25 +43,6 @@ export const StkGhoSavingsRate = ({ totalDepositedUSD }: StkGhoSavingsRateProps)
           <FormattedNumber value={stakeApyDecimal} percent variant="main16" />
         </Box>
       </Stack>
-
-      <MeritApyGraphContainer
-        data={meritApyHistory}
-        loading={loadingMeritApy}
-        error={errorMeritApyHistory}
-        onRetry={refetchMeritApyHistory}
-        showLegend={false}
-        lineColor="#2EBAC6"
-        showAverage={true}
-        height={155}
-        timeRangeSelector={
-          <TimeRangeSelector
-            disabled={loadingMeritApy || errorMeritApyHistory}
-            timeRanges={[TimeWindow.LastWeek, TimeWindow.LastMonth, TimeWindow.LastSixMonths]}
-            selectedTimeRange={selectedTimeRange}
-            onTimeRangeChanged={setSelectedTimeRange}
-          />
-        }
-      />
     </Box>
   );
 };
