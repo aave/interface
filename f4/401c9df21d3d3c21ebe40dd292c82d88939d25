@@ -1,0 +1,16 @@
+src/modules/stkGho/StkGhoCard.tsx
+  h_dd1a1ee57491bb 53
+src/components/AssetCategoryMultiselect.tsx
+  h_dd1a1ee57491bb 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "f4401c9df21d3d3c21ebe40dd292c82d88939d25",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}
