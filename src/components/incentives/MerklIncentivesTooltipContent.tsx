@@ -42,7 +42,11 @@ export const MerklIncentivesTooltipContent = ({
       />
 
       <Typography variant="caption" color="text.primary" mb={3}>
-        <Trans>Eligible for incentives through Merkl.</Trans>
+        {merklIncentives.isSelf ? (
+          <Trans>Eligible for incentives through Merkl and Boosted Yield via Self.</Trans>
+        ) : (
+          <Trans>Eligible for incentives through Merkl.</Trans>
+        )}
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
@@ -65,6 +69,43 @@ export const MerklIncentivesTooltipContent = ({
           </>
         ) : null}
       </Typography>
+
+      {merklIncentives.isSelf && (
+        <>
+          <Typography variant="caption" color="text.strong" mb={3}>
+            <Trans>
+              Double your yield by{' '}
+              <span>
+                <Link
+                  href="https://aave.self.xyz/"
+                  sx={{ textDecoration: 'underline' }}
+                  variant="caption"
+                  color="text.secondary"
+                >
+                  verifying your humanity through Self
+                </Link>
+              </span>
+              .
+            </Trans>
+          </Typography>
+          <Typography variant="caption" color="text.strong" mb={3}>
+            <Trans>
+              Visit{' '}
+              <span>
+                <Link
+                  href="https://aave.self.xyz/"
+                  sx={{ textDecoration: 'underline' }}
+                  variant="caption"
+                  color="text.secondary"
+                >
+                  https://aave.self.xyz/
+                </Link>
+              </span>{' '}
+              to get started with Self’s ZK-powered proof-of-humanity authentication.
+            </Trans>
+          </Typography>
+        </>
+      )}
 
       {merklIncentives.customMessage ? (
         <Typography variant="caption" color="text.strong" mb={3}>

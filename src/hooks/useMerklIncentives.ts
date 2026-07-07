@@ -96,6 +96,7 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
   ReserveIncentiveAdditionalData & {
     breakdown: MerklIncentivesBreakdown;
     description?: string;
+    isSelf?: boolean;
     rewardsTokensMappedApys?: {
       token: {
         id: string;
@@ -175,6 +176,8 @@ const getCampaignIncentiveApr = ({
 
   return convertApyToApr(Math.max(targetMinusBase, 0));
 };
+const isSelfOpportunity = (opp: MerklOpportunity) =>
+  opp.identifier?.toUpperCase().endsWith('SELF_VERIFICATION');
 
 const checkOpportunityAction = (
   opportunityAction: OpportunityAction,
@@ -300,6 +303,7 @@ export const useMerklIncentives = ({
         .filter((item): item is NonNullable<typeof item> => item !== null);
 
       const primaryOpportunity = whitelistedOpportunities[0];
+      const isSelf = whitelistedOpportunities.some(isSelfOpportunity);
       const rewardToken = primaryOpportunity.rewardsRecord.breakdowns[0].token;
       const description = primaryOpportunity.description;
       const protocolIncentivesAPR = protocolIncentives.reduce((sum, inc) => {
@@ -323,6 +327,7 @@ export const useMerklIncentives = ({
         rewardTokenSymbol: rewardToken.symbol,
         description: description,
         ...incentiveAdditionalData,
+        isSelf,
         rewardsTokensMappedApys,
         breakdown: {
           protocolAPY,
