@@ -1,28 +1,26 @@
-import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
 import { useAppDataContext } from './app-data-provider/useAppDataProvider';
 import { useUserYield } from './pool/useUserYield';
 
 /**
- * Enhanced user yield hook that includes merit incentives in Net APY calculation
- * This provides a more comprehensive view of user returns including merit rewards
+ * User yield hook that computes the aggregate Net APY across the user's positions,
+ * falling back to the summary's netAPY when the per-position calculation is unavailable.
  */
 export const useEnhancedUserYield = () => {
-  const { currentAccount } = useWeb3Context();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { user } = useAppDataContext();
 
-  const enhancedUserYield = useUserYield(currentMarketData, currentAccount);
+  const enhancedUserYield = useUserYield(currentMarketData);
 
-  const netAPYWithMerit = enhancedUserYield.data?.netAPY ?? user?.netAPY ?? 0;
-  const earnedAPYWithMerit = enhancedUserYield.data?.earnedAPY ?? 0;
-  const debtAPYWithMerit = enhancedUserYield.data?.debtAPY ?? 0;
+  const netAPY = enhancedUserYield.data?.netAPY ?? user?.netAPY ?? 0;
+  const earnedAPY = enhancedUserYield.data?.earnedAPY ?? 0;
+  const debtAPY = enhancedUserYield.data?.debtAPY ?? 0;
 
   return {
-    netAPY: netAPYWithMerit,
-    earnedAPY: earnedAPYWithMerit,
-    debtAPY: debtAPYWithMerit,
+    netAPY,
+    earnedAPY,
+    debtAPY,
     loading: enhancedUserYield.isPending,
     error: enhancedUserYield.error,
     hasEnhancedData: !!enhancedUserYield.data,

@@ -4,8 +4,6 @@ import { Box, Divider, Stack, Typography, useMediaQuery, useTheme } from '@mui/m
 import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useSGhoApyHistory } from 'src/hooks/useSGhoApyHistory';
-import { useStakeTokenAPR } from 'src/hooks/useStakeTokenAPR';
-import { convertAprToApy } from 'src/utils/utils';
 
 import { MeritApyGraphContainer } from '../reserve-overview/graphs/MeritApyGraphContainer';
 import { TimeRangeSelector } from '../reserve-overview/TimeRangeSelector';
@@ -26,8 +24,7 @@ export const StkGhoSavingsRate = ({ totalDepositedUSD }: StkGhoSavingsRateProps)
     error: errorMeritApyHistory,
     refetch: refetchMeritApyHistory,
   } = useSGhoApyHistory({ timeRange: selectedTimeRange });
-  const { data: stakeAPR } = useStakeTokenAPR();
-  const stakeApyDecimal = stakeAPR?.apr ? convertAprToApy(parseFloat(stakeAPR.apr)) : 0;
+  const stakeApyDecimal = 0;
 
   return (
     <Box sx={{ mb: 4 }}>

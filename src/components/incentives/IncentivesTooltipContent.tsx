@@ -2,7 +2,6 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 import { convertAprToApy } from 'src/utils/utils';
 
@@ -298,14 +297,6 @@ export const IncentivesTooltipContent = ({
 }: IncentivesTooltipContentProps) => {
   const typographyVariant = 'secondary12';
 
-  const { data: meritIncentives } = useMeritIncentives({
-    symbol,
-    market: market || '',
-    protocolAction,
-    protocolAPY,
-    protocolIncentives: incentives,
-  });
-
   const { data: merklIncentives } = useMerklIncentives({
     market: market || '',
     rewardedAsset: address,
@@ -336,20 +327,13 @@ export const IncentivesTooltipContent = ({
     );
   };
 
-  const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
   const merklIncentivesAPR = merklIncentives?.breakdown?.merklIncentivesAPR || 0;
 
   // For borrow, incentives are subtracted; for supply, they're added
   const isBorrow = protocolAction === ProtocolAction.borrow;
   const totalAPY = isBorrow
-    ? protocolAPY -
-      (incentivesNetAPR === 'Infinity' ? 0 : incentivesNetAPR) -
-      meritIncentivesAPR -
-      merklIncentivesAPR
-    : protocolAPY +
-      (incentivesNetAPR === 'Infinity' ? 0 : incentivesNetAPR) +
-      meritIncentivesAPR +
-      merklIncentivesAPR;
+    ? protocolAPY - (incentivesNetAPR === 'Infinity' ? 0 : incentivesNetAPR) - merklIncentivesAPR
+    : protocolAPY + (incentivesNetAPR === 'Infinity' ? 0 : incentivesNetAPR) + merklIncentivesAPR;
 
   return (
     <Box
@@ -419,41 +403,6 @@ export const IncentivesTooltipContent = ({
           );
         })}
 
-        {/* Show Merit Incentives if available */}
-        {meritIncentives && meritIncentives.breakdown && (
-          <Row
-            height={32}
-            caption={
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <img
-                  src={'/icons/other/aci-black.svg'}
-                  width="20px"
-                  height="20px"
-                  alt="Merit"
-                  style={{ marginRight: '8px' }}
-                />
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Typography variant={typographyVariant}>Merit Incentives</Typography>
-                  <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
-                    {isBorrow ? '(-)' : '(+)'}
-                  </Typography>
-                </Box>
-              </Box>
-            }
-            width="100%"
-          >
-            <FormattedNumber
-              value={
-                isBorrow
-                  ? -meritIncentives.breakdown.meritIncentivesAPR
-                  : meritIncentives.breakdown.meritIncentivesAPR
-              }
-              percent
-              variant={typographyVariant}
-            />
-          </Row>
-        )}
-
         {/* Show Merkl Incentives if available */}
         {merklIncentives && merklIncentives.breakdown && (
           <Row
@@ -507,8 +456,8 @@ export const IncentivesTooltipContent = ({
           </Box>
         )}
 
-        {/* Show Total APY if we have Merit incentives or protocol APY */}
-        {(meritIncentives?.breakdown || protocolAPY > 0) && (
+        {/* Show Total APY if we have Merkl incentives or protocol APY */}
+        {protocolAPY > 0 && (
           <Box sx={() => ({ pt: 1, mt: 1, borderTop: '1px solid rgba(255, 255, 255, 0.1)' })}>
             <Row
               caption={

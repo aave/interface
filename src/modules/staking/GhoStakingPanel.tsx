@@ -15,7 +15,6 @@ import {
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
-import { MeritIncentivesButton } from 'src/components/incentives/IncentivesButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { TokenContractTooltip } from 'src/components/infoTooltips/TokenContractTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -25,7 +24,6 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/events';
 
 import { StakeActionBox } from './StakeActionBox';
@@ -258,7 +256,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             </Typography>
           </Stack>
           <Stack direction="row" alignItems="center">
-            <MeritIncentivesButton symbol={stakedToken} market={CustomMarket.proto_mainnet_v3} />
+            <FormattedNumber value={0} percent variant="main16" />
           </Stack>
         </Box>
         <Box

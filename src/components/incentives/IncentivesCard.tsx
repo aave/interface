@@ -3,7 +3,6 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
-import { ENABLE_SELF_CAMPAIGN, useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useMerklIncentives } from 'src/hooks/useMerklIncentives';
 import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
 import { convertAprToApy } from 'src/utils/utils';
@@ -14,7 +13,6 @@ import {
   EthenaIncentivesButton,
   EtherfiIncentivesButton,
   IncentivesButton,
-  MeritIncentivesButton,
   MerklIncentivesButton,
   SonicIncentivesButton,
 } from './IncentivesButton';
@@ -62,13 +60,6 @@ export const IncentivesCard = ({
   const protocolIncentivesAPY = convertAprToApy(
     protocolIncentivesAPR === 'Infinity' ? 0 : protocolIncentivesAPR
   );
-  const { data: meritIncentives } = useMeritIncentives({
-    symbol,
-    market,
-    protocolAction,
-    protocolAPY,
-    protocolIncentives: incentives || [],
-  });
 
   const { data: merklIncentives } = useMerklIncentives({
     market,
@@ -86,13 +77,6 @@ export const IncentivesCard = ({
     protocolIncentives: incentives || [],
   });
 
-  const meritIncentivesAPR = meritIncentives?.breakdown?.meritIncentivesAPR || 0;
-
-  // TODO: This is a one-off for the Self campaign.
-  // Remove once the Self incentives are finished.
-  const selfAPY = ENABLE_SELF_CAMPAIGN ? meritIncentives?.variants?.selfAPY ?? 0 : 0;
-  const totalMeritAPY = meritIncentivesAPR + selfAPY;
-
   const merklIncentivesAPR = merklPointsIncentives?.breakdown?.points
     ? merklPointsIncentives.breakdown.merklIncentivesAPR || 0
     : merklIncentives?.breakdown?.merklIncentivesAPR || 0;
@@ -105,12 +89,9 @@ export const IncentivesCard = ({
   const displayAPY = hasInfiniteIncentives
     ? 'Infinity'
     : isBorrow
-    ? protocolAPY - (protocolIncentivesAPY as number) - totalMeritAPY - merklIncentivesAPR
-    : protocolAPY + (protocolIncentivesAPY as number) + totalMeritAPY + merklIncentivesAPR;
+    ? protocolAPY - (protocolIncentivesAPY as number) - merklIncentivesAPR
+    : protocolAPY + (protocolIncentivesAPY as number) + merklIncentivesAPR;
 
-  const isSghoPage =
-    typeof router?.asPath === 'string' && router.asPath.toLowerCase().startsWith('/sgho');
-  const hideMeritValue = symbol === 'GHO' && !isSghoPage;
   const isMarketsOrDashboardPage =
     typeof router?.pathname === 'string' &&
     (router.pathname.startsWith('/dashboard') || router.pathname.startsWith('/markets'));
@@ -130,14 +111,7 @@ export const IncentivesCard = ({
         protocolAPY={protocolAPY}
         address={address}
       />
-      <MeritIncentivesButton
-        symbol={symbol}
-        market={market}
-        protocolAction={protocolAction}
-        protocolAPY={protocolAPY}
-        protocolIncentives={incentives || []}
-        hideValue={hideMeritValue}
-      />
+
       <MerklIncentivesButton
         market={market}
         rewardedAsset={address}

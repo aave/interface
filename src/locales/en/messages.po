@@ -146,10 +146,6 @@ msgstr "Liquidation risk"
 msgid "Current v2 Balance"
 msgstr "Current v2 Balance"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Reward Token"
-msgstr "Reward Token"
-
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
@@ -364,11 +360,6 @@ msgstr "Terms"
 msgid "Maximum available to borrow"
 msgstr "Maximum available to borrow"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "or from the"
-msgstr "or from the"
-
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Sign to continue"
 msgstr "Sign to continue"
@@ -545,7 +536,6 @@ msgid "Switch Network"
 msgstr "Switch Network"
 
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoSavingsRate.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "APR"
@@ -710,7 +700,6 @@ msgstr "Show"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 msgid "Total deposited"
 msgstr "Total deposited"
 
@@ -967,7 +956,6 @@ msgstr "This action will reduce health factor of V3 below liquidation threshold.
 msgid "Gas estimation error"
 msgstr "Gas estimation error"
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -1217,8 +1205,6 @@ msgid "Reload"
 msgstr "Reload"
 
 #: src/layouts/components/NavItems.tsx
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -1271,7 +1257,6 @@ msgid "This asset is planned to be offboarded due to an Aave Protocol Governance
 msgstr "This asset is planned to be offboarded due to an Aave Protocol Governance decision. <0>More details</0>"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -1304,8 +1289,6 @@ msgstr "deposited"
 msgid "You have assets with zero LTV that are blocking this operation. Please withdraw them or disable them as collateral first."
 msgstr "You have assets with zero LTV that are blocking this operation. Please withdraw them or disable them as collateral first."
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
@@ -1652,10 +1635,6 @@ msgstr "Wallet Balance"
 msgid "Amount claimable"
 msgstr "Amount claimable"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "{remainingCustomMessage}"
-msgstr "{remainingCustomMessage}"
-
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Collector Contract"
 msgstr "Collector Contract"
@@ -1684,11 +1663,6 @@ msgstr "Maximum amount available to borrow against this asset is limited because
 #: src/layouts/SupportModal.tsx
 msgid "Email"
 msgstr "Email"
-
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "here"
-msgstr "here"
 
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UnstakeModal.tsx
@@ -1745,7 +1719,6 @@ msgstr "Protocol APY"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/sGho/SGhoWithdrawRow.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -1900,10 +1873,6 @@ msgstr "Proposal details"
 msgid "Legacy Savings GHO (stkGHO)"
 msgstr "Legacy Savings GHO (stkGHO)"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
-msgstr "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
-
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "See {0} more"
 msgstr "See {0} more"
@@ -1961,7 +1930,6 @@ msgstr "Funds in the Safety Module"
 msgid "If the error continues to happen,<0/> you may report it to this"
 msgstr "If the error continues to happen,<0/> you may report it to this"
 
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/AmountSharesItem.tsx
@@ -2315,10 +2283,6 @@ msgstr "For security reasons, limit orders are not supported for Native tokens. 
 msgid "Umbrella"
 msgstr "Umbrella"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Merit Program and Self rewards can be claimed"
-msgstr "Merit Program and Self rewards can be claimed"
-
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "The order could't be filled."
 msgstr "The order could't be filled."
@@ -2493,11 +2457,6 @@ msgstr "Array parameters that should be equal length are not"
 msgid "Repaying {0}"
 msgstr "Repaying {0}"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "from the"
-msgstr "from the"
-
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "An error has occurred fetching the proposal."
 msgstr "An error has occurred fetching the proposal."
@@ -2562,10 +2521,6 @@ msgstr "Network costs"
 #: src/ui-config/errorMapping.tsx
 msgid "The requested amount is greater than the max loan size in stable rate mode"
 msgstr "The requested amount is greater than the max loan size in stable rate mode"
-
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
-msgstr "This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs does not guarantee the program and accepts no liability."
 
 #: src/modules/umbrella/StakingApyItem.tsx
 msgid "supply"
@@ -3004,11 +2959,6 @@ msgstr "Claim"
 msgid "Liquidated collateral"
 msgstr "Liquidated collateral"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "dashboard"
-msgstr "dashboard"
-
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
@@ -3233,7 +3183,6 @@ msgstr "You can not stake this amount because it will cause collateral call"
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositActions.tsx
 #: src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoDepositRow.tsx
 #: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -3441,10 +3390,6 @@ msgstr "Both"
 #: src/components/SecondsToString.tsx
 msgid "{h}h"
 msgstr "{h}h"
-
-#: src/modules/reserve-overview/Gho/SavingsGho.tsx
-msgid "After the cooldown is initiated, you will be able to withdraw your assets immediatley."
-msgstr "After the cooldown is initiated, you will be able to withdraw your assets immediatley."
 
 #: src/components/transactions/CancelCowOrder/CancelAdapterOrderActions.tsx
 msgid "Cancelling order..."
@@ -3857,10 +3802,6 @@ msgstr "Remove"
 msgid "Auto Slippage"
 msgstr "Auto Slippage"
 
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Supply {0} and double your yield by <0><1>verifying your humanity through Self</1></0> for {1} per user."
-msgstr "Supply {0} and double your yield by <0><1>verifying your humanity through Self</1></0> for {1} per user."
-
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Oracle price"
 msgstr "Oracle price"
@@ -3894,10 +3835,6 @@ msgstr "Cancel order"
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
-
-#: src/components/incentives/MeritIncentivesTooltipContent.tsx
-msgid "Merit Program rewards can be claimed"
-msgstr "Merit Program rewards can be claimed"
 
 #: src/modules/sGho/SGhoSavingsRate.tsx
 msgid "APY, fixed rate"

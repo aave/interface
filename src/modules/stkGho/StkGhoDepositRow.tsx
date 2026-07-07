@@ -1,15 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useState } from 'react';
-import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { IncentivesIcon } from 'src/components/incentives/IncentivesButton';
-import { MeritIncentivesTooltipContent } from 'src/components/incentives/MeritIncentivesTooltipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
-import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 interface StkGhoDepositRowProps {
   availableToStake: string;
@@ -27,12 +21,7 @@ export const StkGhoDepositRow = ({
   const { openSwitch } = useModalContext();
   const { chainId: targetChainId } = useSavingsMarketData();
 
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-  const { data: meritIncentives } = useMeritIncentives({
-    symbol: 'GHO',
-    market: CustomMarket.proto_mainnet_v3,
-  });
-  const apr = meritIncentives ? +meritIncentives.incentiveAPR : 0;
+  const apr = 0;
 
   const hasGho = +availableToStake > 0;
 
@@ -44,7 +33,6 @@ export const StkGhoDepositRow = ({
     <Box
       sx={{
         textAlign: 'left',
-        cursor: meritIncentives ? 'pointer' : 'default',
       }}
     >
       <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
@@ -52,7 +40,6 @@ export const StkGhoDepositRow = ({
       </Typography>
       <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
         <FormattedNumber value={apr} percent variant="main16" visibleDecimals={2} />
-        {meritIncentives && <IncentivesIcon width="16" height="16" />}
       </Box>
     </Box>
   );
@@ -101,23 +88,7 @@ export const StkGhoDepositRow = ({
           flexShrink: 0,
         }}
       >
-        {meritIncentives ? (
-          <ContentWithTooltip
-            tooltipContent={
-              <MeritIncentivesTooltipContent
-                meritIncentives={meritIncentives}
-                onClose={() => setTooltipOpen(false)}
-              />
-            }
-            withoutHover
-            setOpen={setTooltipOpen}
-            open={tooltipOpen}
-          >
-            {aprDisplay}
-          </ContentWithTooltip>
-        ) : (
-          aprDisplay
-        )}
+        {aprDisplay}
 
         {hasGho ? (
           <Button

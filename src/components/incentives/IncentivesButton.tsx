@@ -5,7 +5,6 @@ import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useEthenaIncentives } from 'src/hooks/useEthenaIncentives';
 import { useEtherfiIncentives } from 'src/hooks/useEtherfiIncentives';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { ExtendedReserveIncentiveResponse, useMerklIncentives } from 'src/hooks/useMerklIncentives';
 import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
@@ -18,7 +17,6 @@ import { FormattedNumber } from '../primitives/FormattedNumber';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
 import { IncentivesTooltipContent } from './IncentivesTooltipContent';
-import { MeritIncentivesTooltipContent } from './MeritIncentivesTooltipContent';
 import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 
@@ -125,45 +123,6 @@ const BlankIncentives = () => {
         &nbsp;
       </Typography>
     </Box>
-  );
-};
-
-export const MeritIncentivesButton = (params: {
-  symbol: string;
-  market: string;
-  protocolAction?: ProtocolAction;
-  protocolAPY?: number;
-  protocolIncentives?: ReserveIncentiveResponse[];
-  hideValue?: boolean;
-}) => {
-  const [open, setOpen] = useState(false);
-  const { data: meritIncentives } = useMeritIncentives(params);
-
-  if (!meritIncentives) {
-    return null;
-  }
-
-  // Show only merit incentives APR
-  const displayValue = +meritIncentives.incentiveAPR;
-
-  return (
-    <ContentWithTooltip
-      tooltipContent={
-        <MeritIncentivesTooltipContent
-          meritIncentives={meritIncentives}
-          onClose={() => setOpen(false)}
-        />
-      }
-      withoutHover
-      setOpen={setOpen}
-      open={open}
-    >
-      <Content
-        incentives={[meritIncentives]}
-        incentivesNetAPR={displayValue}
-        hideValue={params.hideValue}
-      />
-    </ContentWithTooltip>
   );
 };
 
