@@ -616,6 +616,10 @@ msgstr "Data couldn't be fetched, please reload graph."
 msgid "Dashboard"
 msgstr "Dashboard"
 
+#: src/modules/stkGho/StkGhoCard.tsx
+msgid "Rewards for legacy Savings GHO have ended. Migrate to continue earning."
+msgstr "Rewards for legacy Savings GHO have ended. Migrate to continue earning."
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -1599,10 +1603,6 @@ msgstr "Please connect your wallet to swap debt."
 msgid "Ethereum"
 msgstr "Ethereum"
 
-#: src/modules/stkGho/StkGhoCard.tsx
-msgid "Rewards for legacy Savings GHO are ending. Migrate to continue earning."
-msgstr "Rewards for legacy Savings GHO are ending. Migrate to continue earning."
-
 #: src/components/AssetCategoryMultiselect.tsx
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "All"
@@ -2007,6 +2007,10 @@ msgstr "GHO balance"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Borrow"
+
+#: src/components/AssetCategoryMultiselect.tsx
+msgid "Principal Tokens"
+msgstr "Principal Tokens"
 
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
@@ -2617,10 +2621,6 @@ msgstr "You did not participate in this proposal"
 #: src/components/transactions/Swap/warnings/postInputs/LowHealthFactorWarning.tsx
 msgid "Low health factor after swap. Your position will carry a higher risk of liquidation."
 msgstr "Low health factor after swap. Your position will carry a higher risk of liquidation."
-
-#: src/components/AssetCategoryMultiselect.tsx
-msgid "Principle Tokens"
-msgstr "Principle Tokens"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
