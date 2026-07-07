@@ -1,0 +1,14 @@
+src/ui-config/merklConfig.ts
+  h_dd1a1ee57491bb 35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "7ca71d446417a26d5b723629b2bcc3063f2f5cb8",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}
