@@ -9,12 +9,14 @@ interface StkGhoDepositRowProps {
   availableToStake: string;
   onDeposit?: () => void;
   stakedToken: string;
+  totalDepositedUSD: string;
 }
 
 export const StkGhoDepositRow = ({
   availableToStake,
   onDeposit,
   stakedToken,
+  totalDepositedUSD,
 }: StkGhoDepositRowProps) => {
   const { breakpoints } = useTheme();
   const xsm = useMediaQuery(breakpoints.up('xsm'));
@@ -28,21 +30,6 @@ export const StkGhoDepositRow = ({
   const handleGetGho = () => {
     openSwitch('', targetChainId);
   };
-
-  const aprDisplay = (
-    <Box
-      sx={{
-        textAlign: 'left',
-      }}
-    >
-      <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-        <Trans>APR</Trans>
-      </Typography>
-      <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-        <FormattedNumber value={apr} percent variant="main16" visibleDecimals={2} />
-      </Box>
-    </Box>
-  );
 
   return (
     <Box
@@ -84,11 +71,30 @@ export const StkGhoDepositRow = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: { xs: 'space-between', xsm: 'flex-end' },
-          gap: { xs: 4, xsm: 3 },
+          gap: { xs: 4, xsm: 4 },
           flexShrink: 0,
         }}
       >
-        {aprDisplay}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 4, xsm: 4 } }}>
+          <Box sx={{ textAlign: 'left' }}>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+              <Trans>Total Deposited</Trans>
+            </Typography>
+            <FormattedNumber
+              value={totalDepositedUSD}
+              variant="main16"
+              symbol="USD"
+              visibleDecimals={2}
+            />
+          </Box>
+
+          <Box sx={{ textAlign: 'left' }}>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+              <Trans>APR</Trans>
+            </Typography>
+            <FormattedNumber value={apr} percent variant="main16" visibleDecimals={2} />
+          </Box>
+        </Box>
 
         {hasGho ? (
           <Button

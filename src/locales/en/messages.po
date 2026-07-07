@@ -259,6 +259,7 @@ msgstr "I acknowledge the risks involved."
 
 #: src/modules/sGho/SGhoHeader.tsx
 #: src/modules/sGho/SGhoSavingsRate.tsx
+#: src/modules/stkGho/StkGhoDepositRow.tsx
 #: src/modules/stkGho/StkGhoSavingsRate.tsx
 msgid "Total Deposited"
 msgstr "Total Deposited"
