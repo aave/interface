@@ -50,7 +50,7 @@ export const StkGhoCard = () => {
       </Box>
 
       <Warning severity="warning" sx={{ mb: 4 }}>
-        <Trans>Rewards for legacy Savings GHO are ending. Migrate to continue earning.</Trans>
+        <Trans>Rewards for legacy Savings GHO have ended. Migrate to continue earning.</Trans>
       </Warning>
 
       <StkGhoDepositPanel
