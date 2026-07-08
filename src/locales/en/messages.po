@@ -626,6 +626,10 @@ msgstr "Data couldn't be fetched, please reload graph."
 msgid "Dashboard"
 msgstr "Dashboard"
 
+#: src/modules/stkGho/StkGhoCard.tsx
+msgid "Rewards for legacy Savings GHO have ended. Migrate to continue earning."
+msgstr "Rewards for legacy Savings GHO have ended. Migrate to continue earning."
+
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -1431,6 +1435,9 @@ msgid "This represents the threshold at which a borrow position will be consider
 msgstr "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 
 #: src/components/isolationMode/IsolatedBadge.tsx
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Isolated"
 msgstr "Isolated"
 
@@ -1613,10 +1620,6 @@ msgstr "Please connect your wallet to swap debt."
 msgid "Ethereum"
 msgstr "Ethereum"
 
-#: src/modules/stkGho/StkGhoCard.tsx
-msgid "Rewards for legacy Savings GHO are ending. Migrate to continue earning."
-msgstr "Rewards for legacy Savings GHO are ending. Migrate to continue earning."
-
 #: src/components/AssetCategoryMultiselect.tsx
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "All"
@@ -1725,6 +1728,10 @@ msgstr "Deposit GHO"
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Website"
 msgstr "Website"
+
+#: src/components/transactions/Emode/EmodeModalContent.tsx
+msgid "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while it's active."
+msgstr "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while it's active."
 
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Protocol APY"
@@ -1894,6 +1901,7 @@ msgid "Legacy Savings GHO (stkGHO)"
 msgstr "Legacy Savings GHO (stkGHO)"
 
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
 msgstr "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
 
@@ -1930,6 +1938,7 @@ msgstr "Health factor is lesser than the liquidation threshold"
 msgid "stkGHO is now Savings GHO"
 msgstr "stkGHO is now Savings GHO"
 
+#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
@@ -2036,6 +2045,10 @@ msgstr "received"
 msgid "Borrow"
 msgstr "Borrow"
 
+#: src/components/AssetCategoryMultiselect.tsx
+msgid "Principal Tokens"
+msgstr "Principal Tokens"
+
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation penalty"
@@ -2068,6 +2081,10 @@ msgstr "User does not have outstanding stable rate debt on this reserve"
 #: src/modules/bridge/BridgeTopPanel.tsx
 msgid "Bridge history"
 msgstr "Bridge history"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Double your yield by <0><1>verifying your humanity through Self</1></0>."
+msgstr "Double your yield by <0><1>verifying your humanity through Self</1></0>."
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Show assets with small balance"
@@ -2569,15 +2586,13 @@ msgid "supply"
 msgstr "supply"
 
 #: pages/dashboard.page.tsx
+#: src/components/transactions/FunCheckout/FunSupplyButton.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
 msgstr "Supply"
 
@@ -2661,10 +2676,6 @@ msgstr "You did not participate in this proposal"
 #: src/components/transactions/Swap/warnings/postInputs/LowHealthFactorWarning.tsx
 msgid "Low health factor after swap. Your position will carry a higher risk of liquidation."
 msgstr "Low health factor after swap. Your position will carry a higher risk of liquidation."
-
-#: src/components/AssetCategoryMultiselect.tsx
-msgid "Principle Tokens"
-msgstr "Principle Tokens"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -3189,6 +3200,7 @@ msgstr "here."
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
+#: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Unavailable"
 msgstr "Unavailable"
@@ -3384,6 +3396,10 @@ msgstr "Asset cannot be used as collateral."
 #: src/ui-config/menu-items/index.tsx
 msgid "Developers"
 msgstr "Developers"
+
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+msgid "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while in it."
+msgstr "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while in it."
 
 #: src/components/transactions/Swap/modals/request/NoEligibleAssetsToSwap.tsx
 msgid "No eligible assets to swap."
@@ -4215,6 +4231,10 @@ msgstr "Dark mode"
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
 msgstr "Total market size"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Eligible for incentives through Merkl and Boosted Yield via Self."
+msgstr "Eligible for incentives through Merkl and Boosted Yield via Self."
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"

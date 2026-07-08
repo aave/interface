@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import { FormEvent, useEffect, useState } from 'react';
 import { BasicModal } from 'src/components/primitives/BasicModal';
-import { Link } from 'src/components/primitives/Link';
 import { BaseSuccessView } from 'src/components/transactions/FlowCommons/BaseSuccess';
 import { useRootStore } from 'src/store/root';
 import { COUNTRIES } from 'src/utils/countries';
@@ -220,16 +219,7 @@ export const SupportModal = () => {
             >
               <Trans>
                 Let us know how we can help you. You may also consider joining our community
-              </Trans>{' '}
-              <Link
-                target="_blank"
-                variant="subheader1"
-                color="text.primary"
-                href="https://discord.gg/aave"
-                underline="always"
-              >
-                Discord server
-              </Link>
+              </Trans>
             </Typography>
             <Box width={'100%'}>
               <form style={{ width: '100%' }} onSubmit={handleSupportSubmit}>

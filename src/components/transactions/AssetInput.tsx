@@ -195,13 +195,24 @@ export const AssetInput = <T extends Asset = Asset>({
             </IconButton>
           )}
           {!onSelect || assets.length === 1 ? (
-            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'inline-flex', alignItems: 'center', minWidth: 0 }}>
               <TokenIcon
                 aToken={asset.aToken}
                 symbol={asset.iconSymbol || asset.symbol}
                 sx={{ mr: 2, ml: 4 }}
               />
-              <Typography variant="h3" sx={{ lineHeight: '28px' }} data-cy={'inputAsset'}>
+              <Typography
+                variant="h3"
+                data-cy="inputAsset"
+                title={symbol}
+                sx={{
+                  lineHeight: '28px',
+                  maxWidth: '9ch',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
                 {symbol}
               </Typography>
             </Box>

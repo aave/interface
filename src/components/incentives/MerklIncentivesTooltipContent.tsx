@@ -42,7 +42,11 @@ export const MerklIncentivesTooltipContent = ({
       />
 
       <Typography variant="caption" color="text.primary" mb={3}>
-        <Trans>Eligible for incentives through Merkl.</Trans>
+        {merklIncentives.isSelf ? (
+          <Trans>Eligible for incentives through Merkl and Boosted Yield via Self.</Trans>
+        ) : (
+          <Trans>Eligible for incentives through Merkl.</Trans>
+        )}
       </Typography>
 
       <Typography variant="caption" color="text.secondary" mb={3}>
@@ -65,6 +69,43 @@ export const MerklIncentivesTooltipContent = ({
           </>
         ) : null}
       </Typography>
+
+      {merklIncentives.isSelf && (
+        <>
+          <Typography variant="caption" color="text.strong" mb={3}>
+            <Trans>
+              Double your yield by{' '}
+              <span>
+                <Link
+                  href="https://aave.self.xyz/"
+                  sx={{ textDecoration: 'underline' }}
+                  variant="caption"
+                  color="text.secondary"
+                >
+                  verifying your humanity through Self
+                </Link>
+              </span>
+              .
+            </Trans>
+          </Typography>
+          <Typography variant="caption" color="text.strong" mb={3}>
+            <Trans>
+              Visit{' '}
+              <span>
+                <Link
+                  href="https://aave.self.xyz/"
+                  sx={{ textDecoration: 'underline' }}
+                  variant="caption"
+                  color="text.secondary"
+                >
+                  https://aave.self.xyz/
+                </Link>
+              </span>{' '}
+              to get started with Self’s ZK-powered proof-of-humanity authentication.
+            </Trans>
+          </Typography>
+        </>
+      )}
 
       {merklIncentives.customMessage ? (
         <Typography variant="caption" color="text.strong" mb={3}>
@@ -187,52 +228,50 @@ export const MerklIncentivesTooltipContent = ({
               </Row>
             ) : merklIncentives.rewardsTokensMappedApys &&
               merklIncentives.rewardsTokensMappedApys.length > 1 ? (
-              <>
-                {merklIncentives.rewardsTokensMappedApys.map((reward, index) => {
-                  const { tokenIconSymbol, symbol, aToken } = getSymbolMap({
-                    rewardTokenSymbol: reward.token.symbol,
-                    rewardTokenAddress: reward.token.address,
-                    incentiveAPR: reward.apy.toString(),
-                  });
-                  return (
-                    <Row
-                      key={index}
-                      height={32}
-                      caption={
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            mb: 0,
-                          }}
-                        >
-                          <TokenIcon
-                            symbol={tokenIconSymbol}
-                            aToken={aToken}
-                            sx={{ fontSize: '20px', mr: 1 }}
-                          />
-                          <Typography variant={typographyVariant}>{symbol}</Typography>
-                          <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
-                            {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
-                          </Typography>
-                        </Box>
-                      }
-                      width="100%"
-                    >
-                      <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                        <FormattedNumber
-                          value={merklIncentives.breakdown.isBorrow ? -reward.apy : reward.apy}
-                          percent
-                          variant={typographyVariant}
+              merklIncentives.rewardsTokensMappedApys.map((reward, index) => {
+                const { tokenIconSymbol, symbol, aToken } = getSymbolMap({
+                  rewardTokenSymbol: reward.token.symbol,
+                  rewardTokenAddress: reward.token.address,
+                  incentiveAPR: reward.apy.toString(),
+                });
+                return (
+                  <Row
+                    key={index}
+                    height={32}
+                    caption={
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          mb: 0,
+                        }}
+                      >
+                        <TokenIcon
+                          symbol={tokenIconSymbol}
+                          aToken={aToken}
+                          sx={{ fontSize: '20px', mr: 1 }}
                         />
-                        <Typography variant={typographyVariant} sx={{ ml: 1 }}>
-                          <Trans>APY</Trans>
+                        <Typography variant={typographyVariant}>{symbol}</Typography>
+                        <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
+                          {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
                         </Typography>
                       </Box>
-                    </Row>
-                  );
-                })}
-              </>
+                    }
+                    width="100%"
+                  >
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <FormattedNumber
+                        value={merklIncentives.breakdown.isBorrow ? -reward.apy : reward.apy}
+                        percent
+                        variant={typographyVariant}
+                      />
+                      <Typography variant={typographyVariant} sx={{ ml: 1 }}>
+                        <Trans>APY</Trans>
+                      </Typography>
+                    </Box>
+                  </Row>
+                );
+              })
             ) : (
               <Row
                 height={32}

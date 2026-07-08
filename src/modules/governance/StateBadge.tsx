@@ -16,6 +16,7 @@ export enum ProposalBadgeState {
   Executed = 'Executed',
   Cancelled = 'Cancelled',
   Expired = 'Expired',
+  PartiallyExecuted = 'Partially executed',
 }
 
 type BadgeProps = {
@@ -52,6 +53,7 @@ const Badge = styled('span')<BadgeProps>(({ theme, state }) => {
     [ProposalBadgeState.Executed]: theme.palette.success.main,
     [ProposalBadgeState.Cancelled]: theme.palette.error.main,
     [ProposalBadgeState.Expired]: theme.palette.error.main,
+    [ProposalBadgeState.PartiallyExecuted]: theme.palette.warning.main,
     [ProposalBadgeState.Failed]: theme.palette.error.main,
   };
   const color = COLOR_MAP[state] || '#000';
@@ -91,6 +93,8 @@ export const stateToString = (stateToString: ProposalBadgeState) => {
       return 'Cancelled';
     case ProposalBadgeState.Expired:
       return 'Expired';
+    case ProposalBadgeState.PartiallyExecuted:
+      return 'Partially executed';
     case ProposalBadgeState.Failed:
       return 'Failed';
   }
@@ -110,6 +114,8 @@ export const stringToState = (state: string) => {
       return ProposalBadgeState.Cancelled;
     case 'Expired':
       return ProposalBadgeState.Expired;
+    case 'Partially executed':
+      return ProposalBadgeState.PartiallyExecuted;
     case 'Failed':
       return ProposalBadgeState.Failed;
   }
