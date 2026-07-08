@@ -2046,6 +2046,10 @@ msgstr "User does not have outstanding stable rate debt on this reserve"
 msgid "Bridge history"
 msgstr "Bridge history"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Double your yield by <0><1>verifying your humanity through Self</1></0>."
+msgstr "Double your yield by <0><1>verifying your humanity through Self</1></0>."
+
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 msgid "Show assets with small balance"
 msgstr "Show assets with small balance"
@@ -4148,6 +4152,10 @@ msgstr "Dark mode"
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"
 msgstr "Total market size"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Eligible for incentives through Merkl and Boosted Yield via Self."
+msgstr "Eligible for incentives through Merkl and Boosted Yield via Self."
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
