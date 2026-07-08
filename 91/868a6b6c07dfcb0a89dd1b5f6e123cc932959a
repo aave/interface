@@ -1,0 +1,24 @@
+src/components/transactions/StkGhoMigrate/StkGhoMigrateActions.tsx
+  s_cde846860f91bd::t_38fa5bc353891b 89,91,95-97,99-108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "91868a6b6c07dfcb0a89dd1b5f6e123cc932959a",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_cde846860f91bd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "653cfa27-5099-4941-8b6f-a9b2c5d35ee9",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}
