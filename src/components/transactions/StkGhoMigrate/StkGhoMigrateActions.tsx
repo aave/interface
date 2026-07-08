@@ -86,14 +86,26 @@ export const StkGhoMigrateActions = React.memo(
       const submittedTxHash = result.value;
       setMainTxState({ loading: true, txHash: submittedTxHash });
 
-      // Wait for the receipt on the connected chain (works on forks too).
+      // Confirm the migration actually mined successfully before showing success.
       try {
-        await waitForTransactionReceipt(wagmiConfig, {
+        const receipt = await waitForTransactionReceipt(wagmiConfig, {
           hash: submittedTxHash as `0x${string}`,
           chainId: targetChainId,
         });
+        if (receipt.status !== 'success') {
+          throw new Error('Migration transaction reverted on-chain.');
+        }
       } catch (e) {
-        console.warn('waitForTransactionReceipt failed', e);
+        setMainTxState({ loading: false, txHash: submittedTxHash });
+        setTxError({
+          blocking: true,
+          actionBlocked: true,
+          rawError: e as Error,
+          error: <span>{(e as Error).message}</span>,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          txAction: 0 as any,
+        });
+        return;
       }
 
       // Refresh the sGHO vault cache (new shares) and invalidate the stkGHO
