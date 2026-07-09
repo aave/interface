@@ -8,6 +8,8 @@ import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 interface StkGhoDepositRowProps {
   availableToStake: string;
   onDeposit?: () => void;
+  onMigrate?: () => void;
+  hasLegacyPosition?: boolean;
   stakedToken: string;
   totalDepositedUSD: string;
 }
@@ -15,6 +17,8 @@ interface StkGhoDepositRowProps {
 export const StkGhoDepositRow = ({
   availableToStake,
   onDeposit,
+  onMigrate,
+  hasLegacyPosition = false,
   stakedToken,
   totalDepositedUSD,
 }: StkGhoDepositRowProps) => {
@@ -26,6 +30,11 @@ export const StkGhoDepositRow = ({
   const apr = 0;
 
   const hasGho = +availableToStake > 0;
+
+  // When the user holds a legacy position, migration is the primary action:
+  // invert the emphasis so Migrate is contained and Deposit/Get GHO is outlined.
+  const depositVariant = hasLegacyPosition ? 'outlined' : 'contained';
+  const migrateVariant = hasLegacyPosition ? 'contained' : 'outlined';
 
   const handleGetGho = () => {
     openSwitch('', targetChainId);
@@ -98,7 +107,7 @@ export const StkGhoDepositRow = ({
 
         {hasGho ? (
           <Button
-            variant="contained"
+            variant={depositVariant}
             onClick={onDeposit}
             fullWidth={!xsm}
             sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
@@ -108,7 +117,7 @@ export const StkGhoDepositRow = ({
           </Button>
         ) : (
           <Button
-            variant="contained"
+            variant={depositVariant}
             onClick={handleGetGho}
             fullWidth={!xsm}
             sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
@@ -117,6 +126,17 @@ export const StkGhoDepositRow = ({
             <Trans>Get GHO</Trans>
           </Button>
         )}
+
+        <Button
+          variant={migrateVariant}
+          onClick={onMigrate}
+          disabled={!hasLegacyPosition}
+          fullWidth={!xsm}
+          sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
+          data-cy={`migrateBtn_${stakedToken.toUpperCase()}`}
+        >
+          <Trans>Migrate</Trans>
+        </Button>
       </Box>
     </Box>
   );

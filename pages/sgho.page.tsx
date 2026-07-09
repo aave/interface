@@ -37,6 +37,11 @@ const SGhoVaultWithdrawModal = dynamic(() =>
     (module) => module.SGhoVaultWithdrawModal
   )
 );
+const StkGhoMigrateModal = dynamic(() =>
+  import('../src/components/transactions/StkGhoMigrate/StkGhoMigrateModal').then(
+    (module) => module.StkGhoMigrateModal
+  )
+);
 
 export default function SavingsGho() {
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
@@ -91,6 +96,7 @@ SavingsGho.getLayout = function getLayout(page: React.ReactElement) {
       <StakeRewardClaimModal />
       <SGhoVaultDepositModal />
       <SGhoVaultWithdrawModal />
+      <StkGhoMigrateModal />
       {/** End of modals */}
     </MainLayout>
   );
