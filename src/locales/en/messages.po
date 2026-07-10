@@ -1874,6 +1874,10 @@ msgstr "Proposal details"
 msgid "Legacy Savings GHO (stkGHO)"
 msgstr "Legacy Savings GHO (stkGHO)"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
+msgstr "Visit <0><1>https://aave.self.xyz/</1></0> to get started with Self’s ZK-powered proof-of-humanity authentication."
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "See {0} more"
 msgstr "See {0} more"
