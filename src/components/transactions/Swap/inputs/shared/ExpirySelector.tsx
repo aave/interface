@@ -1,14 +1,5 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  FormControl,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 
 import { Expiry } from '../../types';
 
@@ -37,11 +28,6 @@ export const ExpirySelector = ({ selectedExpiry, setSelectedExpiry }: ExpirySele
           native={false}
           value={String(selectedExpiry)}
           onChange={handleChange}
-          IconComponent={(props) => (
-            <SvgIcon sx={{ fontSize: '14px' }} {...props}>
-              <ChevronDownIcon />
-            </SvgIcon>
-          )}
           sx={{
             '&.MuiInputBase-root': {
               border: 0,

@@ -1,11 +1,9 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
   ListItemText,
   MenuItem,
-  SvgIcon,
   TextField,
   Tooltip,
   Typography,
@@ -13,9 +11,11 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
+import { figmaDark } from 'src/utils/figmaColors';
 import {
   availableMarkets,
   CustomMarket,
@@ -83,7 +83,7 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
               width: '16px',
               height: '16px',
               borderRadius: '50%',
-              color: 'common.white',
+              color: figmaDark['fg-1'],
               fontSize: '12px',
               lineHeight: '16px',
               display: 'flex',
@@ -177,7 +177,7 @@ export const MarketSwitcher = () => {
                     variant={upToLG ? 'display1' : 'h1'}
                     sx={{
                       fontSize: downToXSM ? '1.55rem' : undefined,
-                      color: 'common.white',
+                      color: 'text.primary',
                       mr: 1,
                     }}
                   >
@@ -201,15 +201,9 @@ export const MarketSwitcher = () => {
                     >
                       <Typography variant="subheader2">V2</Typography>
                     </Box> */}
-                    <SvgIcon
-                      fontSize="medium"
-                      sx={{
-                        ml: 1,
-                        color: '#F1F1F3',
-                      }}
-                    >
-                      <ChevronDownIcon />
-                    </SvgIcon>
+                    <ChevronUpDownIcon
+                      sx={(theme) => ({ ml: 1, color: theme.palette.fig['fg-3'] })}
+                    />
                   </Box>
                 </Box>
               </Box>
@@ -239,7 +233,6 @@ export const MarketSwitcher = () => {
             py: 0,
             backgroundColor: 'transparent !important',
           },
-          '.MuiSelect-icon': { color: '#F1F1F3' },
         },
         MenuProps: {
           anchorOrigin: {

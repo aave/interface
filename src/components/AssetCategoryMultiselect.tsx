@@ -1,11 +1,9 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   Button,
   Checkbox,
   Popover,
-  SvgIcon,
   SxProps,
   Theme,
   Typography,
@@ -13,6 +11,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { AssetCategory } from 'src/modules/markets/utils/assetCategories';
 import { useRootStore } from 'src/store/root';
 
@@ -107,16 +106,14 @@ export const AssetCategoryMultiSelect = ({
           )}
         </Typography>
 
-        <SvgIcon
+        <ChevronUpDownIcon
           sx={{
             width: '14px',
             height: '14px',
             color: 'text.primary',
             flexShrink: 0,
           }}
-        >
-          <ChevronDownIcon />
-        </SvgIcon>
+        />
       </Button>
 
       <Popover

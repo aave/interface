@@ -1,4 +1,4 @@
-import { ChevronDownIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
+import { SearchIcon, XIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon, StarIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
 import {
@@ -18,9 +18,11 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useMemo, useRef, useState } from 'react';
+import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
+import { figmaDark } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -93,7 +95,7 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
               width: '16px',
               height: '16px',
               borderRadius: '50%',
-              color: 'common.white',
+              color: figmaDark['fg-1'],
               fontSize: '12px',
               lineHeight: '16px',
               display: 'flex',
@@ -553,7 +555,7 @@ export const MarketSwitcher = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start" sx={{ mr: '9px' }}>
-                <SvgIcon sx={{ fontSize: 16, color: '#A5A8B6' }}>
+                <SvgIcon sx={{ fontSize: 16, color: 'text.secondary' }}>
                   <SearchIcon />
                 </SvgIcon>
               </InputAdornment>
@@ -564,14 +566,14 @@ export const MarketSwitcher = () => {
               borderRadius: '6px',
               height: '36px',
               '& fieldset': {
-                borderColor: '#EAEBEF',
+                borderColor: 'divider',
               },
             },
             '& .MuiOutlinedInput-input': {
               fontSize: '14px',
               letterSpacing: '0.15px',
               '&::placeholder': {
-                color: '#A5A8B6',
+                color: 'text.secondary',
                 opacity: 1,
               },
             },
@@ -784,7 +786,7 @@ export const MarketSwitcher = () => {
               variant={upToLG ? 'display1' : 'h1'}
               sx={{
                 fontSize: downToXSM ? '1.55rem' : undefined,
-                color: 'common.white',
+                color: 'text.primary',
                 mr: 1,
               }}
             >
@@ -821,17 +823,7 @@ export const MarketSwitcher = () => {
                   <Typography variant="subheader2">V2</Typography>
                 </Box>
               )}
-              <SvgIcon
-                fontSize="medium"
-                sx={{
-                  ml: 1,
-                  color: '#F1F1F3',
-                  transform: open ? 'rotate(180deg)' : 'none',
-                  transition: 'transform 0.2s',
-                }}
-              >
-                <ChevronDownIcon />
-              </SvgIcon>
+              <ChevronUpDownIcon sx={(theme) => ({ ml: 1, color: theme.palette.fig['fg-3'] })} />
             </Box>
           </Box>
         </Box>
@@ -839,7 +831,7 @@ export const MarketSwitcher = () => {
         {marketBlurbs[currentMarket] && (
           <Typography
             sx={{
-              color: 'common.white',
+              color: 'text.secondary',
               mt: 0.5,
               fontSize: '0.85rem',
               wordWrap: 'break-word',

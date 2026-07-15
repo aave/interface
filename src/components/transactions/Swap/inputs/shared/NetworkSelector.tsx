@@ -1,13 +1,4 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
-import {
-  Box,
-  FormControl,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 
 import { SupportedNetworkWithChainId } from '../../helpers/shared/misc.helpers';
@@ -32,11 +23,6 @@ export const NetworkSelector = ({
         native={false}
         value={String(selectedNetwork)}
         onChange={handleChange}
-        IconComponent={(props) => (
-          <SvgIcon sx={{ fontSize: '14px' }} {...props}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        )}
         sx={{
           '&.MuiInputBase-root': {
             border: 0,
