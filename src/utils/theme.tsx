@@ -1,6 +1,5 @@
 import {
   CheckCircleIcon,
-  ChevronDownIcon,
   ExclamationCircleIcon,
   ExclamationIcon,
   InformationCircleIcon,
@@ -11,6 +10,29 @@ import { createTheme } from '@mui/material/styles';
 // @ts-ignore
 import { ColorPartial } from '@mui/material/styles/createPalette';
 import React from 'react';
+import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
+
+import { type FigmaColorName, figmaDark, figSurfaceShadow, pickFigma } from './figmaColors';
+
+/**
+ * Secondary "white pill" style shared by the `surface` and `outlined` button variants
+ * (and kept in sync between them). White fill, a hairline ring instead of a border, and
+ * a subtle fill shift on hover. The ring is re-asserted on hover because the global
+ * `disableElevation` default otherwise strips box-shadow in those states.
+ */
+const secondaryPillStyle = (fig: Record<FigmaColorName, string>) => ({
+  color: fig['fg-1'],
+  backgroundColor: fig['bg-1'],
+  border: 'none',
+  boxShadow: figSurfaceShadow(fig),
+  '& .MuiButton-startIcon': {
+    color: fig['fg-3'],
+  },
+  '&:hover, &.Mui-focusVisible': {
+    backgroundColor: fig['bg-3'],
+    boxShadow: figSurfaceShadow(fig),
+  },
+});
 
 const theme = createTheme();
 const {
@@ -43,6 +65,7 @@ declare module '@mui/material/styles/createPalette' {
     other: {
       standardInputLine: string;
     };
+    fig: Record<FigmaColorName, string>;
   }
 
   interface PaletteOptions {
@@ -50,6 +73,7 @@ declare module '@mui/material/styles/createPalette' {
       aaveGradient: string;
       newGradient: string;
     };
+    fig?: Record<FigmaColorName, string>;
   }
 }
 
@@ -128,6 +152,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
   const getColor = (lightColor: string, darkColor: string) =>
     mode === 'dark' ? darkColor : lightColor;
 
+  const t = pickFigma(mode); // ← the one line of setup
+
   return {
     breakpoints: {
       keys: ['xs', 'xsm', 'sm', 'md', 'lg', 'xl', 'xxl'],
@@ -135,11 +161,12 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     },
     palette: {
       mode,
+      fig: t,
       primary: {
-        main: getColor('#383D51', '#EAEBEF'),
-        light: getColor('#62677B', '#F1F1F3'),
-        dark: getColor('#292E41', '#D2D4DC'),
-        contrast: getColor('#FFFFFF', '#0F121D'),
+        main: t['fg-1'],
+        light: t['fg-2'],
+        dark: t['fg-max'],
+        contrastText: t['bg-1'],
       },
       secondary: {
         main: getColor('#FF607B', '#F48FB1'),
@@ -147,56 +174,56 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         dark: getColor('#B34356', '#AA647B'),
       },
       error: {
-        main: getColor('#BC0000B8', '#F44336'),
+        main: t['red-1'],
         light: getColor('#D26666', '#E57373'),
         dark: getColor('#BC0000', '#D32F2F'),
         '100': getColor('#4F1919', '#FBB4AF'), // for alert text
         '200': getColor('#F9EBEB', '#2E0C0A'), // for alert background
       },
       warning: {
-        main: getColor('#F89F1A', '#FFA726'),
+        main: t['yellow-1'],
         light: getColor('#FFCE00', '#FFB74D'),
         dark: getColor('#C67F15', '#F57C00'),
         '100': getColor('#63400A', '#FFDCA8'), // for alert text
         '200': getColor('#FEF5E8', '#301E04'), // for alert background
       },
       info: {
-        main: getColor('#0062D2', '#29B6F6'),
+        main: t['blue-1'],
         light: getColor('#0062D2', '#4FC3F7'),
         dark: getColor('#002754', '#0288D1'),
         '100': getColor('#002754', '#A9E2FB'), // for alert text
         '200': getColor('#E5EFFB', '#071F2E'), // for alert background
       },
       success: {
-        main: getColor('#4CAF50', '#66BB6A'),
+        main: t['green-1'],
         light: getColor('#90FF95', '#90FF95'),
         dark: getColor('#318435', '#388E3C'),
         '100': getColor('#1C4B1E', '#C2E4C3'), // for alert text
         '200': getColor('#ECF8ED', '#0A130B'), // for alert background
       },
       text: {
-        primary: getColor('#303549', '#F1F1F3'),
-        secondary: getColor('#62677B', '#A5A8B6'),
-        disabled: getColor('#D2D4DC', '#62677B'),
-        muted: getColor('#A5A8B6', '#8E92A3'),
+        primary: t['fg-1'],
+        secondary: t['fg-2'],
+        disabled: t['fg-4'],
+        muted: t['fg-3'],
         highlight: getColor('#383D51', '#C9B3F9'),
       },
       background: {
-        default: getColor('#F1F1F3', '#1B2030'),
-        paper: getColor('#FFFFFF', '#292E41'),
-        surface: getColor('#F7F7F9', '#383D51'),
-        surface2: getColor('#F9F9FB', '#383D51'),
-        header: getColor('#2B2D3C', '#1B2030'),
-        disabled: getColor('#EAEBEF', '#EBEBEF14'),
+        default: t['bg-5'],
+        paper: t['bg-1'],
+        surface: t['bg-2'],
+        surface2: t['bg-3'],
+        header: t['bg-1'],
+        disabled: t['bg-6'],
       },
-      divider: getColor('#EAEBEF', '#EBEBEF14'),
+      divider: t['border-2'],
       action: {
-        active: getColor('#8E92A3', '#EBEBEF8F'),
-        hover: getColor('#F1F1F3', '#EBEBEF14'),
-        selected: getColor('#EAEBEF', '#EBEBEF29'),
+        active: t['fg-3'],
+        hover: t['button-hover'],
+        selected: t['selected'],
         disabled: getColor('#BBBECA', '#EBEBEF4D'),
         disabledBackground: getColor('#EAEBEF', '#EBEBEF1F'),
-        focus: getColor('#F1F1F3', '#EBEBEF1F'),
+        focus: t['focus'],
       },
       other: {
         standardInputLine: getColor('#383D511F', '#EBEBEF6B'),
@@ -290,7 +317,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       buttonM: {
         fontFamily: FONT,
         fontWeight: 500,
-        lineHeight: pxToRem(24),
+        letterSpacing: '-0.00563rem',
+        lineHeight: '1.25rem',
         fontSize: pxToRem(14),
       },
       buttonS: {
@@ -386,7 +414,7 @@ export function getThemedComponents(theme: Theme) {
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            borderRadius: '6px',
+            borderRadius: '8px',
             borderColor: theme.palette.divider,
             '&:hover .MuiOutlinedInput-notchedOutline': {
               borderColor: '#CBCDD8',
@@ -415,7 +443,7 @@ export function getThemedComponents(theme: Theme) {
         },
         styleOverrides: {
           root: {
-            borderRadius: '4px',
+            borderRadius: '8px',
           },
           sizeLarge: {
             ...theme.typography.buttonL,
@@ -431,22 +459,16 @@ export function getThemedComponents(theme: Theme) {
           },
         },
         variants: [
+          // Secondary "white pill" — shared by `surface` (header Swap/Bridge/wallet)
+          // and `outlined` (All Categories / Details / Cooldown). Keep the two in sync.
           {
             props: { variant: 'surface' },
-            style: {
-              color: theme.palette.common.white,
-              border: '1px solid',
-              borderColor: '#EBEBED1F',
-              backgroundColor: '#383D51',
-              '&:hover, &.Mui-focusVisible': {
-                backgroundColor: theme.palette.background.header,
-              },
-            },
+            style: secondaryPillStyle(theme.palette.fig),
           },
           {
             props: { variant: 'gradient' },
             style: {
-              color: theme.palette.common.white,
+              color: figmaDark['fg-1'],
               background: theme.palette.gradients.aaveGradient,
               transition: 'all 0.2s ease',
               '&:hover, &.Mui-focusVisible': {
@@ -458,8 +480,21 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              background: theme.palette.background.surface,
-              borderColor: theme.palette.divider,
+              ...secondaryPillStyle(theme.palette.fig),
+              '&.Mui-disabled': {
+                color: theme.palette.fig['fg-3'],
+                border: 'none',
+                boxShadow: figSurfaceShadow(theme.palette.fig),
+              },
+            },
+          },
+          {
+            props: { variant: 'contained', color: 'primary' },
+            style: {
+              backgroundColor: theme.palette.fig['fg-max'],
+              '&:hover, &.Mui-focusVisible': {
+                backgroundColor: theme.palette.fig['fg-1'],
+              },
             },
           },
         ],
@@ -558,15 +593,15 @@ export function getThemedComponents(theme: Theme) {
       MuiPaper: {
         styleOverrides: {
           root: {
-            borderRadius: '4px',
+            borderRadius: '8px',
           },
         },
         variants: [
           {
             props: { variant: 'outlined' },
             style: {
-              border: `1px solid ${theme.palette.divider}`,
-              boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
+              border: 'none',
+              boxShadow: figSurfaceShadow(theme.palette.fig),
               background:
                 theme.palette.mode === 'light'
                   ? theme.palette.background.paper
@@ -643,7 +678,7 @@ export function getThemedComponents(theme: Theme) {
             },
           },
           thumb: {
-            color: theme.palette.common.white,
+            color: figmaDark['fg-1'],
             borderRadius: '6px',
             width: '16px',
             height: '16px',
@@ -801,6 +836,7 @@ export function getThemedComponents(theme: Theme) {
             fontWeight: 400,
             fontSize: pxToRem(14),
             minWidth: '375px',
+            backgroundColor: theme.palette.fig['bg-max'],
             '> div:first-of-type': {
               minHeight: '100vh',
               display: 'flex',
@@ -819,17 +855,18 @@ export function getThemedComponents(theme: Theme) {
       MuiSelect: {
         defaultProps: {
           IconComponent: (props) => (
-            <SvgIcon sx={{ fontSize: '16px' }} {...props}>
-              <ChevronDownIcon />
-            </SvgIcon>
+            <ChevronUpDownIcon
+              {...props}
+              sx={{ fontSize: '18px', color: theme.palette.fig['fg-3'] }}
+            />
           ),
         },
         styleOverrides: {
           outlined: {
-            backgroundColor: theme.palette.background.surface,
+            backgroundColor: theme.palette.fig['bg-1'],
             ...theme.typography.buttonM,
             padding: '6px 12px',
-            color: theme.palette.primary.light,
+            color: theme.palette.fig['fg-1'],
           },
         },
       },
