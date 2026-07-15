@@ -48,6 +48,7 @@ export const PageTitle = ({
         alignItems: { xs: 'flex-start', xsm: 'center' },
         mb: pageTitle ? 4 : 0,
         flexDirection: { xs: 'column', xsm: 'row' },
+        boxShadow: `inset 0px -1px 0px ${theme.palette.fig['border-0']}`,
       }}
     >
       {pageTitle && (downToXSM || !withMarketSwitcher) && (

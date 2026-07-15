@@ -71,7 +71,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
     return (
       <Box mr={3} sx={{ mr: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {loading ? (
-          <Skeleton variant="circular" width={40} height={40} sx={{ background: '#383D51' }} />
+          <Skeleton variant="circular" width={40} height={40} />
         ) : (
           <img
             src={`/icons/tokens/${displayIconSymbol.toLowerCase()}.svg`}
@@ -86,7 +86,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
 
   const ReserveName = () => {
     return loading ? (
-      <Skeleton width={60} height={28} sx={{ background: '#383D51' }} />
+      <Skeleton width={60} height={28} />
     ) : (
       <Typography variant={valueTypographyVariant}>{poolReserve.underlyingToken.name}</Typography>
     );
@@ -132,7 +132,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo size={20} logo={logo} />
-              <Typography variant="subheader1" sx={{ color: 'common.white' }}>
+              <Typography variant="subheader1" sx={{ color: 'text.primary' }}>
                 {market.marketTitle} <Trans>Market</Trans>
               </Typography>
               {market.v3 && (
@@ -156,7 +156,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
               <ReserveIcon />
               <Box>
                 {!loading && (
-                  <Typography sx={{ color: '#A5A8B6' }} variant="caption">
+                  <Typography sx={{ color: 'text.secondary' }} variant="caption">
                     {poolReserve.underlyingToken.symbol}
                   </Typography>
                 )}

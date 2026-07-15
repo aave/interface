@@ -55,7 +55,6 @@ export default function Markets() {
           flexDirection: 'column',
           alignItems: 'center',
           flex: 1,
-          mt: { xs: '-32px', lg: '-46px', xl: '-44px', xxl: '-48px' },
         }}
       >
         <MarketContainer>
