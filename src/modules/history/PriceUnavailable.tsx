@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { figmaDark } from 'src/utils/figmaColors';
 
 export const PriceUnavailable = ({ value }: { value: number }) => {
   if (value > 0) {
@@ -9,7 +10,7 @@ export const PriceUnavailable = ({ value }: { value: number }) => {
         compact
         compactThreshold={100000}
         symbol="USD"
-        symbolsColor="common.white"
+        symbolsColor={figmaDark['fg-1']}
         value={value}
       />
     );

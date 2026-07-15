@@ -1,5 +1,6 @@
 import { Box, Tooltip } from '@mui/material';
 import { ReactNode } from 'react';
+import { figmaDark } from 'src/utils/figmaColors';
 
 import { ListColumn, ListColumnProps } from '../../../components/lists/ListColumn';
 import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
@@ -73,14 +74,14 @@ export const ListValueColumn = ({
                 symbol="USD"
                 variant="secondary14"
                 sx={{ mb: '2px' }}
-                symbolsColor="common.white"
+                symbolsColor={figmaDark['fg-1']}
                 compact={false}
               />
               <FormattedNumber
                 value={value}
                 variant="secondary12"
                 symbol={symbol}
-                symbolsColor="common.white"
+                symbolsColor={figmaDark['fg-1']}
                 compact={false}
               />
             </Box>

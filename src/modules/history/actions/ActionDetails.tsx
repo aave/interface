@@ -146,19 +146,10 @@ export const ActionDetails = ({
           wrap
           title={
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Typography variant="secondary14" color="common.white">
-                ${amount.usd}
-              </Typography>
+              <Typography variant="secondary14">${amount.usd}</Typography>
               <Box sx={{ display: 'flex' }}>
-                <FormattedNumber
-                  value={amount.amount.value}
-                  variant="secondary14"
-                  color="common.white"
-                  sx={{ mr: 1 }}
-                />
-                <Typography variant="secondary14" color="common.white">
-                  {reserve.underlyingToken.symbol}
-                </Typography>
+                <FormattedNumber value={amount.amount.value} variant="secondary14" sx={{ mr: 1 }} />
+                <Typography variant="secondary14">{reserve.underlyingToken.symbol}</Typography>
               </Box>
             </Box>
           }
@@ -178,7 +169,7 @@ export const ActionDetails = ({
         </DarkTooltip>
         <DarkTooltip
           title={
-            <Typography variant="secondary14" color="common.white">
+            <Typography variant="secondary14">
               {reserve.underlyingToken.name} ({reserve.underlyingToken.symbol})
             </Typography>
           }
@@ -215,17 +206,14 @@ export const ActionDetails = ({
               wrap
               title={
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <Typography variant="secondary14" color="common.white">
-                    ${collateral.amount!.usd}
-                  </Typography>
+                  <Typography variant="secondary14">${collateral.amount!.usd}</Typography>
                   <Box sx={{ display: 'flex' }}>
                     <FormattedNumber
                       value={collateral.amount!.amount.value}
                       variant="secondary14"
-                      color="common.white"
                       sx={{ mr: 1 }}
                     />
-                    <Typography variant="secondary14" color="common.white">
+                    <Typography variant="secondary14">
                       {collateral.reserve.underlyingToken.symbol}
                     </Typography>
                   </Box>
@@ -271,17 +259,14 @@ export const ActionDetails = ({
               wrap
               title={
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <Typography variant="secondary14" color="common.white">
-                    ${debtRepaid.amount.usd}
-                  </Typography>
+                  <Typography variant="secondary14">${debtRepaid.amount.usd}</Typography>
                   <Box sx={{ display: 'flex' }}>
                     <FormattedNumber
                       value={debtRepaid.amount.amount.value}
                       variant="secondary14"
-                      color="common.white"
                       sx={{ mr: 1 }}
                     />
-                    <Typography variant="secondary14" color="common.white">
+                    <Typography variant="secondary14">
                       {debtRepaid.reserve.underlyingToken.symbol}
                     </Typography>
                   </Box>
@@ -337,7 +322,7 @@ export const ActionDetails = ({
         <TokenIcon symbol={reserve.underlyingToken.symbol} sx={{ fontSize: iconSize }} />
         <DarkTooltip
           title={
-            <Typography variant="secondary14" color="common.white">
+            <Typography variant="secondary14">
               {reserve.underlyingToken.name} ({reserve.underlyingToken.symbol})
             </Typography>
           }
@@ -382,7 +367,7 @@ export const ActionDetails = ({
           />
           <DarkTooltip
             title={
-              <Typography variant="secondary14" color="common.white">
+              <Typography variant="secondary14">
                 {formatUnits(swapTx.srcAmount, swapTx.underlyingSrcToken.decimals)}{' '}
                 {formattedCowSwapSrcToken.symbol}
               </Typography>
@@ -404,7 +389,7 @@ export const ActionDetails = ({
           </DarkTooltip>
           <DarkTooltip
             title={
-              <Typography variant="secondary14" color="common.white">
+              <Typography variant="secondary14">
                 {formattedCowSwapSrcToken.name} ({formattedCowSwapSrcToken.symbol})
               </Typography>
             }
@@ -427,7 +412,7 @@ export const ActionDetails = ({
           />
           <DarkTooltip
             title={
-              <Typography variant="secondary14" color="common.white">
+              <Typography variant="secondary14">
                 {formatUnits(swapTx.destAmount, swapTx.underlyingDestToken.decimals)}{' '}
                 {formattedCowSwapDestToken.symbol}
               </Typography>
@@ -449,7 +434,7 @@ export const ActionDetails = ({
           </DarkTooltip>
           <DarkTooltip
             title={
-              <Typography variant="secondary14" color="common.white">
+              <Typography variant="secondary14">
                 {formattedCowSwapDestToken.name} ({formattedCowSwapDestToken.symbol})
               </Typography>
             }

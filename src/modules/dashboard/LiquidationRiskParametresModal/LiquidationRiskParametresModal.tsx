@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { AlertColor, Typography } from '@mui/material';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
+import { figmaDark } from 'src/utils/figmaColors';
 
 import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -84,7 +85,7 @@ export const LiquidationRiskParametresInfoModal = ({
           <HealthFactorNumber
             value={healthFactor}
             variant="main12"
-            sx={{ color: 'common.white' }}
+            sx={{ color: figmaDark['fg-1'] }}
           />
         }
         bottomText={
@@ -108,8 +109,8 @@ export const LiquidationRiskParametresInfoModal = ({
             value={loanToValue}
             percent
             variant="main12"
-            color="common.white"
-            symbolsColor="common.white"
+            color={figmaDark['fg-1']}
+            symbolsColor={figmaDark['fg-1']}
           />
         }
         bottomText={

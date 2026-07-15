@@ -223,7 +223,7 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
                     />
                     <DarkTooltip
                       title={
-                        <Typography variant="secondary14" color="common.white">
+                        <Typography variant="secondary14">
                           {sourceAmountAfterSwap.toString()} {userReserve.reserve.symbol}
                         </Typography>
                       }
@@ -275,7 +275,7 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
                     />
                     <DarkTooltip
                       title={
-                        <Typography variant="secondary14" color="common.white">
+                        <Typography variant="secondary14">
                           {targetAmountAfterSwap.toString()} {userTargetReserve.reserve.symbol}
                         </Typography>
                       }

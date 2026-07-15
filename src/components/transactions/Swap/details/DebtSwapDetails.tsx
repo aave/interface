@@ -109,7 +109,7 @@ export const DebtSwapDetails = ({
                   />
                   <DarkTooltip
                     title={
-                      <Typography variant="secondary14" color="common.white">
+                      <Typography variant="secondary14">
                         {sourceAmountAfterSwap.toString()} {state.sourceReserve.reserve.symbol}
                       </Typography>
                     }
@@ -159,7 +159,7 @@ export const DebtSwapDetails = ({
                   />
                   <DarkTooltip
                     title={
-                      <Typography variant="secondary14" color="common.white">
+                      <Typography variant="secondary14">
                         {targetAmountAfterSwap.toString()} {state.destinationReserve.reserve.symbol}
                       </Typography>
                     }

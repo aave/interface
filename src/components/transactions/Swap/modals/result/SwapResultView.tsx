@@ -327,7 +327,7 @@ export const SwapTxSuccessView = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14" color="common.white">
+                <Typography variant="secondary14">
                   {inAmount} {symbol}
                 </Typography>
               }
@@ -367,7 +367,7 @@ export const SwapTxSuccessView = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14" color="common.white">
+                <Typography variant="secondary14">
                   {outFinalAmount} {outSymbol}
                 </Typography>
               }

@@ -429,11 +429,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
               {availableToReactivateCooldown && (
                 <DarkTooltip
                   title={
-                    <Typography
-                      variant="caption"
-                      color="common.white"
-                      sx={{ textAlign: 'center', width: '162px' }}
-                    >
+                    <Typography variant="caption" sx={{ textAlign: 'center', width: '162px' }}>
                       <Trans>
                         Reactivate cooldown period to unstake{' '}
                         {Number(
@@ -473,11 +469,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
               {availableToReactivateCooldown && (
                 <DarkTooltip
                   title={
-                    <Typography
-                      variant="caption"
-                      color="common.white"
-                      sx={{ textAlign: 'center', width: '162px' }}
-                    >
+                    <Typography variant="caption" sx={{ textAlign: 'center', width: '162px' }}>
                       <Trans>
                         Reactivate cooldown period to unstake{' '}
                         {Number(

@@ -30,6 +30,7 @@ import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
+import { figmaDark } from 'src/utils/figmaColors';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
@@ -192,7 +193,7 @@ export const SupplyAssetsListItemDesktop = ({
                 value={0}
                 variant="secondary14"
                 sx={{ mb: '2px' }}
-                symbolsColor="common.white"
+                symbolsColor={figmaDark['fg-1']}
               />
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
@@ -388,7 +389,7 @@ export const SupplyAssetsListItemMobile = ({
                 value={0}
                 variant="secondary14"
                 sx={{ mb: '2px' }}
-                symbolsColor="common.white"
+                symbolsColor={figmaDark['fg-1']}
               />
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />

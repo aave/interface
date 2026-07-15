@@ -174,7 +174,7 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
         {!allSelected && (
           <DarkTooltip
             title={
-              <Typography variant="caption" color="common.white">
+              <Typography variant="caption">
                 <Trans>Reset</Trans>
               </Typography>
             }
@@ -190,7 +190,9 @@ export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
               }}
               onClick={handleClearFilter}
             >
-              <XCircleIcon color="#A5A8B6" width={18} height={18} />
+              <SvgIcon sx={{ color: 'text.muted', fontSize: 18 }}>
+                <XCircleIcon />
+              </SvgIcon>
             </Box>
           </DarkTooltip>
         )}

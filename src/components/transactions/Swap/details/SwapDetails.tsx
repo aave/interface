@@ -138,7 +138,7 @@ export const IntentTxDetails = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14" color="common.white">
+                <Typography variant="secondary14">
                   {buyAmount} {buyToken.symbol}
                 </Typography>
               }
@@ -215,7 +215,7 @@ const MarketOrderTxDetails = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14" color="common.white">
+                <Typography variant="secondary14">
                   {buyAmount} {buyToken.symbol}
                 </Typography>
               }
