@@ -3,6 +3,7 @@ import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
+import { figSurfaceShadow } from 'src/utils/figmaColors';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
 
@@ -94,12 +95,15 @@ export const ListWrapper = ({
 
   return (
     <Paper
-      sx={{
-        mt: withTopMargin ? 4 : 0,
-        border: 1,
-        borderColor: 'divider',
-        ...paperSx,
-      }}
+      sx={[
+        (theme) => ({
+          mt: withTopMargin ? 4 : 0,
+          borderRadius: '10px',
+          backgroundColor: theme.palette.fig['bg-max'],
+          boxShadow: figSurfaceShadow(theme.palette.fig, 'shadow-stroke-1'),
+        }),
+        ...(paperSx ? (Array.isArray(paperSx) ? paperSx : [paperSx]) : []),
+      ]}
     >
       <Box
         sx={{
