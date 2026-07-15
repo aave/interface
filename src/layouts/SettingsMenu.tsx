@@ -1,7 +1,7 @@
-import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Button, ListItemText, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
+import { Button, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { SettingsIcon } from 'src/components/icons/SettingsIcon';
 import { useModalContext } from 'src/hooks/useModal';
 import { DEFAULT_LOCALE } from 'src/libs/LanguageProvider';
 import { useRootStore } from 'src/store/root';
@@ -71,11 +71,9 @@ export function SettingsMenu() {
         aria-expanded={settingsOpen ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleSettingsClick}
-        sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
+        sx={{ p: '0.5rem', minWidth: 'unset', ml: 2 }}
       >
-        <SvgIcon sx={{ color: '#F1F1F3' }} fontSize="small">
-          <CogIcon />
-        </SvgIcon>
+        <SettingsIcon sx={(theme) => ({ fontSize: '20px', color: theme.palette.fig['fg-2'] })} />
       </Button>
 
       <Menu

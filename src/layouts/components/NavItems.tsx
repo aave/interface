@@ -4,11 +4,12 @@ import { Button, List, ListItem, Typography, useMediaQuery, useTheme } from '@mu
 import * as React from 'react';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/events';
+import { figmaDark } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { navigation } from '../../ui-config/menu-items';
-import { MoreMenu } from '../MoreMenu';
+import { navLinkSx } from './navLinkSx';
 import { StakingMenu } from './StakingMenu';
 
 interface NavItemsProps {
@@ -56,7 +57,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 component={Link}
                 href={item.link}
                 variant="h2"
-                color="#F1F1F3"
+                color={figmaDark['fg-1']}
                 sx={{ width: '100%', p: 4 }}
                 onClick={() => handleClick(item.title, true)}
               >
@@ -67,27 +68,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 component={Link}
                 onClick={() => handleClick(item.title, false)}
                 href={item.link}
-                sx={(theme) => ({
-                  color: '#F1F1F3',
-                  p: '6px 8px',
-                  position: 'relative',
-                  '.active&:after, &:hover&:after': {
-                    transform: 'scaleX(1)',
-                    transformOrigin: 'bottom left',
-                  },
-                  '&:after': {
-                    content: "''",
-                    position: 'absolute',
-                    width: '100%',
-                    transform: 'scaleX(0)',
-                    height: '2px',
-                    bottom: '-6px',
-                    left: '0',
-                    background: theme.palette.gradients.aaveGradient,
-                    transformOrigin: 'bottom right',
-                    transition: 'transform 0.25s ease-out',
-                  },
-                })}
+                sx={(theme) => navLinkSx(theme, '1.625rem 0.88rem')}
               >
                 {i18n._(item.title)}
               </Button>
@@ -107,7 +88,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             component={Link}
             href={ROUTES.sGHO}
             variant="h2"
-            color="#F1F1F3"
+            color={figmaDark['fg-1']}
             sx={{ width: '100%', p: 4 }}
             onClick={() => handleClick('sGHO', true)}
           >
@@ -118,27 +99,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             component={Link}
             onClick={() => handleClick('sGHO', false)}
             href={ROUTES.sGHO}
-            sx={(theme) => ({
-              color: '#F1F1F3',
-              p: '6px 8px',
-              position: 'relative',
-              '.active&:after, &:hover&:after': {
-                transform: 'scaleX(1)',
-                transformOrigin: 'bottom left',
-              },
-              '&:after': {
-                content: "''",
-                position: 'absolute',
-                width: '100%',
-                transform: 'scaleX(0)',
-                height: '2px',
-                bottom: '-6px',
-                left: '0',
-                background: theme.palette.gradients.aaveGradient,
-                transformOrigin: 'bottom right',
-                transition: 'transform 0.25s ease-out',
-              },
-            })}
+            sx={(theme) => navLinkSx(theme, '1.5rem 0.5rem')}
           >
             <Trans>Savings</Trans>
           </Button>
@@ -158,7 +119,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
               component={Link}
               href={ROUTES.staking}
               variant="h2"
-              color="#F1F1F3"
+              color={figmaDark['fg-1']}
               sx={{ width: '100%', p: 4 }}
               onClick={() => handleClick('Staking', true)}
             >
@@ -182,7 +143,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             component={Link}
             href={ROUTES.safetyModule}
             variant="h2"
-            color="#F1F1F3"
+            color={figmaDark['fg-1']}
             sx={{ width: '100%', p: 4 }}
             onClick={() => handleClick('Safety Module', true)}
           >
@@ -190,10 +151,6 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
           </Typography>
         </ListItem>
       )}
-
-      <ListItem sx={{ display: { xs: 'none', md: 'flex' }, width: 'unset' }} disablePadding>
-        <MoreMenu />
-      </ListItem>
     </List>
   );
 };

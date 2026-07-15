@@ -6,8 +6,10 @@ import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/events';
+import { figmaDark } from 'src/utils/figmaColors';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
+import { navLinkSx } from './navLinkSx';
 
 interface StakingMenuProps {
   isMobile?: boolean;
@@ -42,7 +44,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           component={Link}
           href={ROUTES.staking}
           variant="h2"
-          color="#F1F1F3"
+          color={figmaDark['fg-1']}
           sx={{ width: '100%', p: 4 }}
           onClick={() => handleMenuItemClick('Staking')}
         >
@@ -52,7 +54,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           component={Link}
           href={ROUTES.safetyModule}
           variant="h2"
-          color="#F1F1F3"
+          color={figmaDark['fg-1']}
           sx={{ width: '100%', p: 4, pl: 6 }}
           onClick={() => handleMenuItemClick('Safety Module')}
         >
@@ -71,32 +73,12 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={(theme) => ({
-          color: '#F1F1F3',
-          p: '6px 8px',
-          position: 'relative',
-          '.active&:after, &:hover&:after': {
-            transform: 'scaleX(1)',
-            transformOrigin: 'bottom left',
-          },
-          '&:after': {
-            content: "''",
-            position: 'absolute',
-            width: '100%',
-            transform: 'scaleX(0)',
-            height: '2px',
-            bottom: '-6px',
-            left: '0',
-            background: theme.palette.gradients.aaveGradient,
-            transformOrigin: 'bottom right',
-            transition: 'transform 0.25s ease-out',
-          },
-        })}
+        sx={(theme) => navLinkSx(theme, '1.5rem 0.5rem')}
       >
         <Trans>Staking</Trans>
         <SvgIcon
           sx={{
-            ml: 0.5,
+            ml: '0.25rem',
             fontSize: '16px',
             transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
             transition: 'transform 0.2s ease-in-out',

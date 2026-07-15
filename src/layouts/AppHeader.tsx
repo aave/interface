@@ -1,13 +1,10 @@
-import {
-  InformationCircleIcon,
-  SparklesIcon,
-  SwitchHorizontalIcon,
-} from '@heroicons/react/outline';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Badge,
   Button,
   CircularProgress,
+  Container,
   NoSsr,
   Slide,
   styled,
@@ -22,6 +19,9 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { AaveLogo } from 'src/components/icons/AaveLogo';
+import { BridgeIcon } from 'src/components/icons/BridgeIcon';
+import { SwapIcon } from 'src/components/icons/SwapIcon';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useModalContext } from 'src/hooks/useModal';
@@ -32,7 +32,6 @@ import { ENABLE_TESTNET, FORK_ENABLED, isFeatureEnabled } from 'src/utils/market
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
-import { uiConfig } from '../uiConfig';
 import { NavItems } from './components/NavItems';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
@@ -88,6 +87,12 @@ function HideOnScroll({ children }: Props) {
 
 const SWITCH_VISITED_KEY = 'switchVisited';
 
+// Dev-only environment badges (testnet / fork) — intentionally off-brand magenta to stand out.
+const envBadgeSx = {
+  backgroundColor: '#B6509E',
+  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
+};
+
 export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
@@ -125,7 +130,7 @@ export function AppHeader() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [md]);
 
-  const headerHeight = 48;
+  const headerHeight = 72;
 
   const toggleMobileMenu = (state: boolean) => {
     if (md) setMobileDrawerOpen(state);
@@ -204,171 +209,158 @@ export function AppHeader() {
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          bgcolor: theme.palette.background.header,
-          padding: {
-            xs: mobileMenuOpen || walletWidgetOpen ? '8px 20px' : '8px 8px 8px 20px',
-            xsm: '8px 20px',
-          },
+          bgcolor: theme.palette.fig['bg-2'],
           display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'space-between',
-          boxShadow: 'inset 0px -1px 0px rgba(242, 243, 247, 0.16)',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          boxShadow: `inset 0px -1px 0px ${theme.palette.fig['border-0']}`,
         })}
       >
-        <Box
-          component={Link}
-          href="/"
-          aria-label="Go to homepage"
+        <Container
           sx={{
-            lineHeight: 0,
-            mr: 3,
-            transition: '0.3s ease all',
-            '&:hover': { opacity: 0.7 },
+            flexDirection: 'row',
+            alignItems: 'center',
+            pb: 0,
           }}
-          onClick={() => setMobileMenuOpen(false)}
         >
-          <img src={uiConfig.appLogo} alt="AAVE" width={72} height={20} />
-        </Box>
-        <Box sx={{ mr: sm ? 1 : 3 }}>
-          {ENABLE_TESTNET && (
-            <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
-              <Button
-                variant="surface"
-                size="small"
-                color="primary"
-                sx={{
-                  backgroundColor: '#B6509E',
-                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
-                }}
-              >
-                TESTNET
-                <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
-                  <InformationCircleIcon />
-                </SvgIcon>
-              </Button>
-            </ContentWithTooltip>
-          )}
-        </Box>
-        <Box sx={{ mr: sm ? 1 : 3 }}>
-          {FORK_ENABLED && currentMarketData?.isFork && (
-            <ContentWithTooltip tooltipContent={forkTooltip} offset={[0, -4]} withoutHover>
-              <Button
-                variant="surface"
-                size="small"
-                color="primary"
-                sx={{
-                  backgroundColor: '#B6509E',
-                  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
-                }}
-              >
-                FORK
-                <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
-                  <InformationCircleIcon />
-                </SvgIcon>
-              </Button>
-            </ContentWithTooltip>
-          )}
-        </Box>
-
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-          <NavItems />
-        </Box>
-
-        <Box sx={{ flexGrow: 1 }} />
-
-        <NoSsr>
-          <StyledBadge
-            invisible={true}
-            // variant="dot"
-            badgeContent=""
-            color="secondary"
-            sx={{ mr: 2 }}
-          >
-            <Button
-              onClick={handleBridgeClick}
-              variant="surface"
-              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
-            >
-              {!smd && (
-                <Typography component="span" typography="subheader1">
-                  Bridge GHO
-                </Typography>
-              )}
-              <SvgIcon fontSize="small">
-                <SparklesIcon />
-              </SvgIcon>
-            </Button>
-          </StyledBadge>
-        </NoSsr>
-
-        <NoSsr>
-          <StyledBadge
-            invisible={true}
-            variant="dot"
-            badgeContent=""
-            color="secondary"
-            sx={{ mr: 2 }}
-          >
-            <Button
-              onClick={handleSwitchClick}
-              variant="surface"
-              sx={{ p: '7px 8px', minWidth: 'unset', gap: 2, alignItems: 'center' }}
-              aria-label="Switch tool"
-              disabled={!showSwitchButton}
-            >
-              {!smd && (
-                <Typography component="span" typography="subheader1">
-                  Swap
-                </Typography>
-              )}
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                {hasActiveOrders ? (
-                  <CircularProgress
-                    size={20}
-                    sx={{
-                      color: (theme) => theme.palette.grey[200],
-                    }}
-                  />
-                ) : (
-                  <SvgIcon fontSize="small">
-                    <SwitchHorizontalIcon />
-                  </SvgIcon>
-                )}
-              </Box>
-            </Button>
-          </StyledBadge>
-        </NoSsr>
-
-        {readOnlyMode ? (
-          <Button
-            variant="surface"
-            onClick={() => {
-              openReadMode();
+          <Box
+            component={Link}
+            href="/"
+            aria-label="Go to homepage"
+            sx={{
+              lineHeight: 0,
+              mr: 3,
+              color: 'text.primary',
+              transition: '0.3s ease all',
+              '&:hover': { opacity: 0.7 },
             }}
+            onClick={() => setMobileMenuOpen(false)}
           >
-            <UserDisplay
-              avatarProps={{ size: AvatarSize.SM }}
-              oneLiner={true}
-              titleProps={{ variant: 'buttonM' }}
-            />
-          </Button>
-        ) : (
-          <ConnectWalletButton />
-        )}
-
-        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-          <SettingsMenu />
-        </Box>
-
-        {!walletWidgetOpen && (
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <MobileMenu
-              open={mobileMenuOpen}
-              setOpen={toggleMobileMenu}
-              headerHeight={headerHeight}
-            />
+            <AaveLogo />
           </Box>
-        )}
+          <Box sx={{ mr: sm ? 1 : 3 }}>
+            {ENABLE_TESTNET && (
+              <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
+                <Button variant="surface" size="small" color="primary" sx={envBadgeSx}>
+                  TESTNET
+                  <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
+                    <InformationCircleIcon />
+                  </SvgIcon>
+                </Button>
+              </ContentWithTooltip>
+            )}
+          </Box>
+          <Box sx={{ mr: sm ? 1 : 3 }}>
+            {FORK_ENABLED && currentMarketData?.isFork && (
+              <ContentWithTooltip tooltipContent={forkTooltip} offset={[0, -4]} withoutHover>
+                <Button variant="surface" size="small" color="primary" sx={envBadgeSx}>
+                  FORK
+                  <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
+                    <InformationCircleIcon />
+                  </SvgIcon>
+                </Button>
+              </ContentWithTooltip>
+            )}
+          </Box>
+
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <NavItems />
+          </Box>
+
+          <Box sx={{ flexGrow: 1 }} />
+
+          <NoSsr>
+            <StyledBadge
+              invisible={true}
+              // variant="dot"
+              badgeContent=""
+              color="secondary"
+              sx={{ mr: 2 }}
+            >
+              <Button
+                onClick={handleBridgeClick}
+                variant="surface"
+                startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
+                sx={{ p: '0.5rem 0.88rem', minWidth: 'unset', alignItems: 'center' }}
+              >
+                {!smd && (
+                  <Typography component="span" variant="buttonM">
+                    Bridge
+                  </Typography>
+                )}
+              </Button>
+            </StyledBadge>
+          </NoSsr>
+
+          <NoSsr>
+            <StyledBadge
+              invisible={true}
+              variant="dot"
+              badgeContent=""
+              color="secondary"
+              sx={{ mr: 2 }}
+            >
+              <Button
+                onClick={handleSwitchClick}
+                variant="surface"
+                startIcon={
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    {hasActiveOrders ? (
+                      <CircularProgress
+                        size={20}
+                        sx={{
+                          color: (theme) => theme.palette.grey[200],
+                        }}
+                      />
+                    ) : (
+                      <SwapIcon sx={{ fontSize: '18px' }} />
+                    )}
+                  </Box>
+                }
+                sx={{ p: '0.5rem 0.88rem', minWidth: 'unset', alignItems: 'center' }}
+                aria-label="Switch tool"
+                disabled={!showSwitchButton}
+              >
+                {!smd && (
+                  <Typography component="span" variant="buttonM">
+                    Swap
+                  </Typography>
+                )}
+              </Button>
+            </StyledBadge>
+          </NoSsr>
+
+          {readOnlyMode ? (
+            <Button
+              variant="surface"
+              onClick={() => {
+                openReadMode();
+              }}
+            >
+              <UserDisplay
+                avatarProps={{ size: AvatarSize.SM }}
+                oneLiner={true}
+                titleProps={{ variant: 'buttonM' }}
+              />
+            </Button>
+          ) : (
+            <ConnectWalletButton />
+          )}
+
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <SettingsMenu />
+          </Box>
+
+          {!walletWidgetOpen && (
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+              <MobileMenu
+                open={mobileMenuOpen}
+                setOpen={toggleMobileMenu}
+                headerHeight={headerHeight}
+              />
+            </Box>
+          )}
+        </Container>
       </Box>
     </HideOnScroll>
   );
