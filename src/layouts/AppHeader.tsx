@@ -281,7 +281,7 @@ export function AppHeader() {
                 onClick={handleBridgeClick}
                 variant="surface"
                 startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
-                sx={{ p: '0.5rem 0.88rem', minWidth: 'unset', alignItems: 'center' }}
+                sx={{ p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' }}
               >
                 {!smd && (
                   <Typography component="span" variant="buttonM">
@@ -317,7 +317,7 @@ export function AppHeader() {
                     )}
                   </Box>
                 }
-                sx={{ p: '0.5rem 0.88rem', minWidth: 'unset', alignItems: 'center' }}
+                sx={{ p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' }}
                 aria-label="Switch tool"
                 disabled={!showSwitchButton}
               >

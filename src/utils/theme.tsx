@@ -447,14 +447,17 @@ export function getThemedComponents(theme: Theme) {
           },
           sizeLarge: {
             ...theme.typography.buttonL,
-            padding: '10px 24px',
+            height: '44px',
+            padding: '0 24px',
           },
           sizeMedium: {
             ...theme.typography.buttonM,
-            padding: '6px 12px',
+            height: '36px',
+            padding: '0 12px',
           },
           sizeSmall: {
             ...theme.typography.buttonS,
+            height: '28px',
             padding: '0 6px',
           },
         },
@@ -865,7 +868,6 @@ export function getThemedComponents(theme: Theme) {
           outlined: {
             backgroundColor: theme.palette.fig['bg-1'],
             ...theme.typography.buttonM,
-            padding: '6px 12px',
             color: theme.palette.fig['fg-1'],
           },
         },

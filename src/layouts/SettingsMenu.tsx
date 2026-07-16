@@ -71,7 +71,7 @@ export function SettingsMenu() {
         aria-expanded={settingsOpen ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleSettingsClick}
-        sx={{ p: '0.5rem', minWidth: 'unset', ml: 2 }}
+        sx={{ p: '0 0.5rem', minWidth: 'unset', ml: 2 }}
       >
         <SettingsIcon sx={(theme) => ({ fontSize: '20px', color: theme.palette.fig['fg-2'] })} />
       </Button>
