@@ -29,7 +29,7 @@ const secondaryPillStyle = (fig: Record<FigmaColorName, string>) => ({
     color: fig['fg-3'],
   },
   '&:hover, &.Mui-focusVisible': {
-    backgroundColor: fig['bg-3'],
+    backgroundColor: fig['bg-4'],
     boxShadow: figSurfaceShadow(fig),
   },
 });
