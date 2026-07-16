@@ -28,7 +28,7 @@ import {
   getMaxAmountAvailableToSupply,
   remainingCap,
 } from 'src/utils/getMaxAmountAvailableToSupply';
-import { calculateHFAfterSupply } from 'src/utils/hfUtils';
+import { calculateHFAfterSupply, getEmodeAdjustedReserves } from 'src/utils/hfUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { replaceUnderscoresWithSpaces, roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
@@ -219,7 +219,7 @@ export const SupplyModalContent = React.memo(
         const newSummary = formatUserSummary({
           currentTimestamp,
           userReserves,
-          formattedReserves: reserves,
+          formattedReserves: getEmodeAdjustedReserves(reserves, selectedEmodeId, eModes),
           userEmodeCategoryId: selectedEmodeId,
           marketReferenceCurrencyDecimals,
           marketReferencePriceInUsd,
@@ -258,7 +258,7 @@ export const SupplyModalContent = React.memo(
           .multipliedBy(newLTWeighted)
           .dividedBy(newSummary.totalBorrowsMarketReferenceCurrency);
       }
-      return calculateHFAfterSupply(user, poolReserve, amountInEth);
+      return calculateHFAfterSupply(user, poolReserve, amountInEth, eModes);
     })();
 
     // Override collateral type based on the selected e-mode's collateral eligibility,
@@ -278,7 +278,12 @@ export const SupplyModalContent = React.memo(
       if (targetEmode && targetEmode.collateralEnabled && targetEmode.ltvzeroEnabled) {
         return CollateralType.DISABLED;
       }
-      // Not in this category's collateral bitmap — fall back to base
+      // Not in this category's collateral bitmap. If the category is isolated (v3.7),
+      // out-of-bitmap assets are forced to 0 LTV regardless of base LTV — otherwise fall
+      // back to base config.
+      if (eModes[selectedEmodeId]?.isolated) {
+        return CollateralType.DISABLED;
+      }
       return collateralType;
     })();
 
@@ -443,7 +448,7 @@ export const SupplyWrappedTokenModalContent = ({
   isWrongNetwork,
   user,
 }: SupplyModalContentProps) => {
-  const { marketReferencePriceInUsd } = useAppDataContext();
+  const { marketReferencePriceInUsd, eModes } = useAppDataContext();
   const currentMarketData = useRootStore((state) => state.currentMarketData);
   const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
   const { walletBalances } = useWalletBalances(currentMarketData);
@@ -546,7 +551,7 @@ export const SupplyWrappedTokenModalContent = ({
 
   const isMaxSelected = amount === maxAmountToSupply;
 
-  const healfthFactorAfterSupply = calculateHFAfterSupply(user, poolReserve, amountInEth);
+  const healfthFactorAfterSupply = calculateHFAfterSupply(user, poolReserve, amountInEth, eModes);
 
   if (supplyTxState.success) {
     const successModalAmount = supplyingWrappedToken

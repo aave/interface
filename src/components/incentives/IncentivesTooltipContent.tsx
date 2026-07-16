@@ -203,6 +203,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDT',
     aToken: true,
   },
+  aUSDT: {
+    tokenIconSymbol: 'usdt',
+    symbol: 'aUSDT',
+    aToken: true,
+  },
   aManUSDe: {
     tokenIconSymbol: 'USDe',
     symbol: 'aUSDe',
@@ -246,6 +251,11 @@ const IncentivesSymbolMap: {
   MEGA: {
     tokenIconSymbol: 'MEGA',
     symbol: 'MEGA',
+    aToken: false,
+  },
+  WMON: {
+    tokenIconSymbol: 'mon',
+    symbol: 'WMON',
     aToken: false,
   },
 };

@@ -12,7 +12,7 @@ import { useShallow } from 'zustand/shallow';
 import { StkGhoDepositPanel } from './StkGhoDepositPanel';
 
 export const StkGhoCard = () => {
-  const { openSavingsGhoDeposit, openSavingsGhoWithdraw } = useModalContext();
+  const { openSavingsGhoDeposit, openSavingsGhoWithdraw, openStkGhoMigrate } = useModalContext();
   const [trackEvent, currentMarketData] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarketData])
   );
@@ -50,7 +50,7 @@ export const StkGhoCard = () => {
       </Box>
 
       <Warning severity="warning" sx={{ mb: 4 }}>
-        <Trans>Rewards for legacy Savings GHO are ending. Migrate to continue earning.</Trans>
+        <Trans>Rewards for legacy Savings GHO have ended. Migrate to continue earning.</Trans>
       </Warning>
 
       <StkGhoDepositPanel
@@ -72,6 +72,14 @@ export const StkGhoCard = () => {
             stakeType: 'Safety Module',
           });
           openSavingsGhoWithdraw();
+        }}
+        onMigrate={() => {
+          trackEvent(SAFETY_MODULE.STAKE_SAFETY_MODULE, {
+            action: SAFETY_MODULE.OPEN_MIGRATE_MODAL,
+            asset: 'GHO',
+            stakeType: 'Safety Module',
+          });
+          openStkGhoMigrate();
         }}
       />
     </Paper>

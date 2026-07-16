@@ -9,6 +9,7 @@ import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { Warning } from 'src/components/primitives/Warning';
+import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
@@ -202,6 +203,12 @@ export const SupplyAssetsList = () => {
   );
 
   const filteredSupplyReserves = sortedSupplyReserves.filter((reserve) => {
+    // fun-routed assets can be supplied from any EVM asset / fiat via the funkit
+    // checkout, so an empty wallet must not hide them.
+    if (isFunSupplyAsset(currentMarket, reserve.underlyingAsset)) {
+      return true;
+    }
+
     // Filter out dust amounts < $0.01 USD
     if (reserve.availableToDepositUSD !== '0' && Number(reserve.availableToDepositUSD) >= 0.01) {
       return true;

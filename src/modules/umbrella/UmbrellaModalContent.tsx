@@ -17,6 +17,7 @@ import {
   DetailsNumberLine,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { USDTResetWarning } from 'src/components/transactions/Warnings/USDTResetWarning';
 import { CooldownWarning } from 'src/components/Warnings/CooldownWarning';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
@@ -88,6 +89,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
 
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
   const [_amount, setAmount] = useState('');
+  const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
 
   const [currentChainId] = useRootStore(
     useShallow((store) => [store.currentChainId, store.currentNetworkConfig])
@@ -271,6 +273,8 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
         </>
       )}
 
+      {showUSDTResetWarning && <USDTResetWarning />}
+
       <UmbrellaActions
         sx={{ mt: '48px' }}
         amountToStake={amount || '0'}
@@ -284,6 +288,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
         stakeData={stakeData}
         event={STAKE.STAKE_TOKEN}
         isMaxSelected={isMaxSelected}
+        setShowUSDTResetWarning={setShowUSDTResetWarning}
       />
     </>
   );

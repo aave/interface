@@ -11,7 +11,9 @@ export type ComplianceCheckResponse = {
 
 export const checkCompliance = async (address: string): Promise<ComplianceCheckResponse> => {
   try {
-    const res = await fetch(`/api/preflight-compliance?address=${encodeURIComponent(address)}`);
+    // NOTE: trailing slash is required because next.config.js sets `trailingSlash: true`.
+    // Without it Next issues a 308 redirect that loops -> ERR_TOO_MANY_REDIRECTS.
+    const res = await fetch(`/api/preflight-compliance/?address=${encodeURIComponent(address)}`);
     const data = await res.json();
 
     if (res.ok) {

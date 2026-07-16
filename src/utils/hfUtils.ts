@@ -6,6 +6,7 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { BigNumber } from 'bignumber.js';
+import { EmodeCategory } from 'src/helpers/types';
 import {
   ComputedReserveData,
   ComputedUserReserveData,
@@ -21,6 +22,7 @@ export interface CalculateHFAfterSwapProps {
   toAssetData: ComputedReserveData;
   user: ExtendedFormattedUser;
   toAssetType: 'collateral' | 'debt' | 'none';
+  eModes: Record<number, EmodeCategory>;
 }
 
 interface CalculateHFAfterSwapRepayProps {
@@ -40,6 +42,52 @@ interface CalculateHFAfterWithdrawProps {
   withdrawAmount: string;
 }
 
+/**
+ * v3.7 isolated eMode rule: assets outside the target category's collateralBitmap
+ * get their effective LTV forced to 0 (liquidation threshold is unaffected).
+ * The deprecated @aave/math-utils calculateUserReserveTotals doesn't know about `isolated`
+ * and falls back to `baseLTVasCollateral` for any asset without an in-bitmap eMode entry.
+ * This pre-shapes the reserves passed into formatUserSummary/formatUserSummaryAndIncentives
+ * so that existing, unmodified math-utils logic produces the correct effective LTV.
+ */
+export function getEmodeAdjustedReserves<
+  T extends {
+    eModes: { id: number; collateralEnabled: boolean }[];
+    baseLTVasCollateral: string;
+  }
+>(reserves: T[], targetEmodeId: number, eModes: Record<number, EmodeCategory>): T[] {
+  if (!targetEmodeId || !eModes[targetEmodeId]?.isolated) return reserves;
+  return reserves.map((reserve) => {
+    const inCollateralBitmap = reserve.eModes.find(
+      (e) => e.id === targetEmodeId
+    )?.collateralEnabled;
+    return inCollateralBitmap ? reserve : { ...reserve, baseLTVasCollateral: '0' };
+  });
+}
+
+/**
+ * Mirrors the on-chain ValidationLogic.getUserReserveLtv step order: in-bitmap collateral
+ * (minus ltvzero) first, then the v3.7 isolated rule (outside collateralBitmap -> LTV0),
+ * then the pre-3.7 base-LTV fallback. Liquidation threshold is never affected by `isolated`
+ * and is not part of this helper.
+ */
+export function hasNonZeroEffectiveLtv({
+  baseLTVasCollateral,
+  isInEmode,
+  emodeEntry,
+  isEModeIsolated,
+}: {
+  baseLTVasCollateral: string;
+  isInEmode: boolean;
+  emodeEntry?: { collateralEnabled: boolean; ltvzeroEnabled: boolean };
+  isEModeIsolated: boolean;
+}): boolean {
+  if (!isInEmode) return baseLTVasCollateral !== '0';
+  if (emodeEntry?.collateralEnabled) return !emodeEntry.ltvzeroEnabled;
+  if (isEModeIsolated) return false;
+  return baseLTVasCollateral !== '0';
+}
+
 export function calculateHFAfterSwap({
   fromAmount,
   fromAssetData,
@@ -49,6 +97,7 @@ export function calculateHFAfterSwap({
   toAssetData,
   user,
   toAssetType,
+  eModes,
 }: CalculateHFAfterSwapProps) {
   // Base balances
   const currentCollateral = valueToBigNumber(user.totalCollateralMarketReferenceCurrency);
@@ -71,9 +120,12 @@ export function calculateHFAfterSwap({
   // collateral on supply (validateAutomaticUseAsCollateral returns false), so it must
   // be excluded from the HF simulation to avoid inflating the projected HF.
   const toEmode = toAssetData.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
-  const hasToEffectiveLtv =
-    toAssetData.baseLTVasCollateral !== '0' ||
-    (user.isInEmode && toEmode?.collateralEnabled && !toEmode.ltvzeroEnabled);
+  const hasToEffectiveLtv = hasNonZeroEffectiveLtv({
+    baseLTVasCollateral: toAssetData.baseLTVasCollateral,
+    isInEmode: user.isInEmode,
+    emodeEntry: toEmode,
+    isEModeIsolated: !!eModes[user.userEmodeCategoryId]?.isolated,
+  });
   const canAddToCollateral =
     toAssetType === 'collateral' &&
     hasToEffectiveLtv &&
@@ -288,7 +340,8 @@ export const calculateHFAfterWithdraw = ({
 export const calculateHFAfterSupply = (
   user: ExtendedFormattedUser,
   poolReserve: ComputedReserveData,
-  supplyAmountInEth: BigNumber
+  supplyAmountInEth: BigNumber,
+  eModes: Record<number, EmodeCategory>
 ) => {
   let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
 
@@ -299,9 +352,14 @@ export const calculateHFAfterSupply = (
   // Mirrors validateUseAsCollateral on-chain: asset is only auto-enabled as collateral
   // when effective LTV > 0. Base LTV covers the non-emode path; emode collateral without
   // ltvzero covers the boosted path (ltvzero assets have 0 LTV and won't be enabled).
-  const hasEffectiveLtv =
-    poolReserve.baseLTVasCollateral !== '0' ||
-    (user?.isInEmode && userEmode?.collateralEnabled && !userEmode.ltvzeroEnabled);
+  const hasEffectiveLtv = user
+    ? hasNonZeroEffectiveLtv({
+        baseLTVasCollateral: poolReserve.baseLTVasCollateral,
+        isInEmode: user.isInEmode,
+        emodeEntry: userEmode,
+        isEModeIsolated: !!eModes[user.userEmodeCategoryId]?.isolated,
+      })
+    : false;
 
   const additionalCollateral = hasEffectiveLtv ? supplyAmountInEth : valueToBigNumber(0);
 

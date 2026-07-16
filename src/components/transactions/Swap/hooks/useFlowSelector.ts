@@ -1,5 +1,6 @@
 import { ComputedUserReserve, valueToBigNumber } from '@aave/math-utils';
 import { Dispatch, useEffect } from 'react';
+import { EmodeCategory } from 'src/helpers/types';
 import {
   ComputedReserveData,
   ExtendedFormattedUser,
@@ -36,7 +37,7 @@ export const useFlowSelector = ({
   state: SwapState;
   setState: Dispatch<Partial<SwapState>>;
 }) => {
-  const { user: extendedUser, reserves } = useAppDataContext();
+  const { user: extendedUser, reserves, eModes } = useAppDataContext();
   const requiresInvertedQuote = state.isInvertedSwap;
 
   useEffect(() => {
@@ -50,6 +51,7 @@ export const useFlowSelector = ({
         setState,
         extendedUser,
         reserves,
+        eModes,
         requiresInvertedQuote,
       });
     }
@@ -63,6 +65,7 @@ export const useFlowSelector = ({
     state.buyAmountFormatted,
     extendedUser,
     reserves,
+    eModes,
     state.swapRate,
   ]);
 };
@@ -74,12 +77,14 @@ export const healthFactorSensibleSwapFlowSelector = ({
   state,
   setState,
   extendedUser,
+  eModes,
 }: {
   params: SwapParams;
   state: SwapState;
   setState: Dispatch<Partial<SwapState>>;
   extendedUser: ExtendedFormattedUser | undefined;
   reserves: ComputedReserveData[];
+  eModes: Record<number, EmodeCategory>;
   requiresInvertedQuote: boolean;
 }) => {
   const fromAssetUserReserve = extendedUser?.userReservesData.find(
@@ -113,7 +118,8 @@ export const healthFactorSensibleSwapFlowSelector = ({
         state,
         fromAssetUserReserve,
         toAssetUserReserve,
-        extendedUser
+        extendedUser,
+        eModes
       );
 
       if (!params) return { hfEffectOfFromAmount: '0', hfAfterSwap: undefined };
@@ -174,7 +180,8 @@ const getHFAfterSwapParamsFromSwapType = (
   state: SwapState,
   fromAssetUserReserve: ComputedUserReserve,
   toAssetUserReserve: ComputedUserReserve,
-  user: ExtendedFormattedUser
+  user: ExtendedFormattedUser,
+  eModes: Record<number, EmodeCategory>
 ): CalculateHFAfterSwapProps | undefined => {
   if (!state.sellAmountFormatted || !state.buyAmountFormatted) return undefined;
   switch (state.swapType) {
@@ -188,6 +195,7 @@ const getHFAfterSwapParamsFromSwapType = (
         fromAssetType: 'collateral',
         toAssetType: 'collateral',
         user,
+        eModes,
       };
     case SwapType.DebtSwap:
       return {
@@ -199,6 +207,7 @@ const getHFAfterSwapParamsFromSwapType = (
         user,
         fromAssetType: 'debt',
         toAssetType: 'debt',
+        eModes,
       };
     case SwapType.RepayWithCollateral:
       return {
@@ -210,6 +219,7 @@ const getHFAfterSwapParamsFromSwapType = (
         user,
         fromAssetType: 'collateral',
         toAssetType: 'debt',
+        eModes,
       };
     case SwapType.WithdrawAndSwap:
       return {
@@ -221,6 +231,7 @@ const getHFAfterSwapParamsFromSwapType = (
         fromAssetType: 'collateral',
         toAssetType: 'none',
         user,
+        eModes,
       };
     default:
       return undefined;

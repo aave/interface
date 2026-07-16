@@ -30,6 +30,7 @@ export interface CollateralOption {
   isCurrentEmode: boolean;
   blocked: boolean;
   blockReason?: React.ReactNode;
+  isolated: boolean;
 }
 
 interface CollateralOptionsSelectorProps {
@@ -116,9 +117,11 @@ function getBlockReason(
           </Trans>
         );
       }
-      // If asset is NOT in the category at all, it falls back to base LTV — check that too
+      // If asset is NOT in the category at all, it falls back to base LTV — except when the
+      // target category is isolated (v3.7): assets outside the collateralBitmap are always
+      // forced to 0 LTV there, regardless of base LTV.
       if (!reserveTargetEmode || !reserveTargetEmode.collateralEnabled) {
-        if (Number(reserve.baseLTVasCollateral) === 0) {
+        if (Number(reserve.baseLTVasCollateral) === 0 || targetEmode?.isolated) {
           return (
             <Trans>
               {reserve.symbol} collateral would have 0% LTV in this category. Disable{' '}
@@ -160,12 +163,13 @@ export function buildCollateralOptions(
     // Mirrors getUserReserveLtv from the contract:
     // - collateralEnabled + ltvzeroEnabled → 0
     // - collateralEnabled + !ltvzeroEnabled → e-mode boosted LTV
-    // - !collateralEnabled → base reserve LTV
+    // - !collateralEnabled + isolated (v3.7) → 0, regardless of base LTV
+    // - !collateralEnabled + !isolated → base reserve LTV
     let ltv: number;
     if (reserveEmode.collateralEnabled) {
       ltv = reserveEmode.ltvzeroEnabled ? 0 : Number(reserveEmode.eMode.ltv) / 10000;
     } else {
-      ltv = Number(poolReserve.baseLTVasCollateral) / 10000;
+      ltv = globalEmode.isolated ? 0 : Number(poolReserve.baseLTVasCollateral) / 10000;
     }
 
     options.push({
@@ -182,6 +186,7 @@ export function buildCollateralOptions(
       isCurrentEmode: isUserCurrentEmode,
       blocked: !!blockReason,
       blockReason,
+      isolated: !!globalEmode.isolated,
     });
   });
 
@@ -191,7 +196,7 @@ export function buildCollateralOptions(
     const globalEmode = eModes[user.userEmodeCategoryId];
     options.push({
       emodeId: user.userEmodeCategoryId,
-      ltv: Number(poolReserve.baseLTVasCollateral) / 10000,
+      ltv: globalEmode?.isolated ? 0 : Number(poolReserve.baseLTVasCollateral) / 10000,
       collateralAssets: [],
       borrowableAssets: globalEmode
         ? globalEmode.assets
@@ -204,6 +209,7 @@ export function buildCollateralOptions(
       isCurrentEmode: true,
       blocked: false, // current e-mode is never blocked — no switch needed
       blockReason: undefined,
+      isolated: !!globalEmode?.isolated,
     });
   }
 
@@ -218,6 +224,7 @@ export function buildCollateralOptions(
     isCurrentEmode: user.userEmodeCategoryId === 0,
     blocked: !!blockReason,
     blockReason,
+    isolated: false, // category 0 ("no e-mode") is never isolated
   });
 
   // Sort: available first, then by LTV descending
@@ -348,6 +355,31 @@ export const CollateralOptionsSelector = React.memo(
                       >
                         <Trans>Default</Trans>
                       </Typography>
+                    )}
+                    {option.isolated && (
+                      <Tooltip
+                        title={
+                          <Trans>
+                            Only the listed collateral contributes borrowing power in this category
+                            — other collateral you hold will have 0% LTV while in it.
+                          </Trans>
+                        }
+                        arrow
+                      >
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            px: 1,
+                            py: 0.25,
+                            borderRadius: '4px',
+                            bgcolor: 'warning.main',
+                            color: '#fff',
+                            fontSize: '10px',
+                          }}
+                        >
+                          <Trans>Isolated</Trans>
+                        </Typography>
+                      </Tooltip>
                     )}
                   </Stack>
                 </Stack>

@@ -67,6 +67,7 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
           ltv: e.eMode.ltv,
           liquidationThreshold: e.eMode.liquidationThreshold,
           liquidationBonus: e.eMode.liquidationBonus,
+          isolated: e.eMode.isolated,
           assets: [
             {
               underlyingAsset: r.underlyingAsset,
@@ -100,6 +101,7 @@ export const formatEmodes = (reserves: FormattedReservesAndIncentives[]) => {
       liquidationBonus: '0',
       liquidationThreshold: '0',
       ltv: '0',
+      isolated: false,
       assets: [],
     };
   }

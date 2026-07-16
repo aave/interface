@@ -40,6 +40,7 @@ export interface StakeActionProps extends BoxProps {
   event: string;
   isMaxSelected: boolean;
   reserve: ComputedReserveData;
+  setShowUSDTResetWarning?: (showUSDTResetWarning: boolean) => void;
 }
 
 export const UmbrellaActions = ({
@@ -53,6 +54,7 @@ export const UmbrellaActions = ({
   stakeData,
   isMaxSelected,
   reserve,
+  setShowUSDTResetWarning,
   ...props
 }: StakeActionProps) => {
   const queryClient = useQueryClient();
@@ -139,7 +141,7 @@ export const UmbrellaActions = ({
     amount: approvedAmount?.toString() || '0',
   };
 
-  const { approval } = useApprovalTx({
+  const { approval, requiresApprovalReset } = useApprovalTx({
     usePermit,
     approvedAmount: tokenApproval,
     requiresApproval,
@@ -150,6 +152,8 @@ export const UmbrellaActions = ({
     onApprovalTxConfirmed: fetchApprovedAmount,
     signatureAmount: amount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
+    chainId: currentChainId,
+    setShowUSDTResetWarning,
   });
 
   const { currentAccount, sendTx } = useWeb3Context();
@@ -287,6 +291,7 @@ export const UmbrellaActions = ({
       blocked={blocked}
       // event={STAKE.STAKE_BUTTON_MODAL}
       {...props}
+      requiresApprovalReset={requiresApprovalReset}
     />
   );
 };
