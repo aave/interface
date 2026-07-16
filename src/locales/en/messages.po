@@ -3367,10 +3367,6 @@ msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</
 msgid "Checking approval"
 msgstr "Checking approval"
 
-#: src/components/TopInfoPanel/PageTitle.tsx
-msgid "Favourite"
-msgstr "Favourite"
-
 #: src/modules/staking/BuyWithFiat.tsx
 msgid "Buy {cryptoSymbol} with Fiat"
 msgstr "Buy {cryptoSymbol} with Fiat"
@@ -4275,6 +4271,10 @@ msgstr "The app is running in fork mode."
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
+
+#: src/components/TopInfoPanel/PageTitle.tsx
+msgid "Add to Favourites"
+msgstr "Add to Favourites"
 
 #: pages/404.page.tsx
 msgid "Back home"

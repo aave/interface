@@ -5,7 +5,7 @@ import { SvgIcon, SvgIconProps } from '@mui/material';
 export const ChevronUpDownIcon = ({ sx, ...rest }: SvgIconProps) => {
   return (
     <SvgIcon
-      sx={{ fill: 'none', stroke: 'currentColor', ...sx }}
+      sx={[{ fill: 'none', stroke: 'currentColor' }, ...(Array.isArray(sx) ? sx : [sx])]}
       viewBox="0 0 18 18"
       xmlns="http://www.w3.org/2000/svg"
       {...rest}

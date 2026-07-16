@@ -3,7 +3,11 @@ import { SvgIcon, SvgIconProps } from '@mui/material';
 // Swap / switch arrows. Strokes with `currentColor` so it inherits the consumer's color
 // (e.g. a button's start-icon color, or a palette token via `color`/sx).
 export const SwapIcon = ({ sx, ...rest }: SvgIconProps) => (
-  <SvgIcon sx={{ fill: 'none', stroke: 'currentColor', ...sx }} viewBox="0 0 18 18" {...rest}>
+  <SvgIcon
+    sx={[{ fill: 'none', stroke: 'currentColor' }, ...(Array.isArray(sx) ? sx : [sx])]}
+    viewBox="0 0 18 18"
+    {...rest}
+  >
     <path
       d="M1.66932 12.364L2.57397 8.98782L5.95018 9.89247"
       strokeWidth="1.35"
