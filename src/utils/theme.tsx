@@ -4,7 +4,7 @@ import {
   ExclamationIcon,
   InformationCircleIcon,
 } from '@heroicons/react/outline';
-import { SvgIcon, Theme, ThemeOptions } from '@mui/material';
+import { Box, SvgIcon, Theme, ThemeOptions } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -33,6 +33,9 @@ const secondaryPillStyle = (fig: Record<FigmaColorName, string>) => ({
     boxShadow: figSurfaceShadow(fig),
   },
 });
+
+// Shared box geometry for the custom checkbox icon (unchecked + checked).
+const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
 
 const theme = createTheme();
 const {
@@ -502,6 +505,53 @@ export function getThemedComponents(theme: Theme) {
           },
         ],
       },
+      MuiCheckbox: {
+        defaultProps: {
+          disableRipple: true,
+          icon: (
+            <Box
+              sx={{
+                ...checkboxIconBox,
+                border: `1px solid ${theme.palette.fig['border-0']}`,
+                backgroundColor: theme.palette.fig['bg-max'],
+                boxSizing: 'border-box',
+                '.MuiCheckbox-root:hover &': {
+                  backgroundColor: theme.palette.fig['bg-4'],
+                },
+              }}
+            />
+          ),
+          checkedIcon: (
+            <Box
+              sx={{
+                ...checkboxIconBox,
+                backgroundColor: theme.palette.fig['purple-1'],
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <SvgIcon sx={{ fontSize: 12, color: figmaDark['fg-1'] }} viewBox="0 0 12 12">
+                <path
+                  d="M2.5 6.5L5 9L9.5 3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </SvgIcon>
+            </Box>
+          ),
+        },
+        styleOverrides: {
+          root: {
+            '&:hover, &.Mui-focusVisible': {
+              backgroundColor: 'transparent',
+            },
+          },
+        },
+      },
       MuiTypography: {
         defaultProps: {
           variant: 'description',
@@ -572,7 +622,10 @@ export function getThemedComponents(theme: Theme) {
       MuiListItemText: {
         styleOverrides: {
           root: {
-            ...theme.typography.subheader1,
+            ...theme.typography.subheader2,
+            fontSize: pxToRem(14),
+            fontWeight: 400,
+            lineHeight: pxToRem(14),
           },
         },
       },
@@ -663,16 +716,18 @@ export function getThemedComponents(theme: Theme) {
       MuiSwitch: {
         styleOverrides: {
           root: {
-            height: 20 + 6 * 2,
-            width: 34 + 6 * 2,
-            padding: 6,
+            width: '1.75rem',
+            height: '1.125rem',
+            padding: 0,
+            flexShrink: 0,
           },
           switchBase: {
-            padding: 8,
+            padding: 0,
+            margin: '2px',
             '&.Mui-checked': {
-              transform: 'translateX(14px)',
+              transform: 'translateX(10px)',
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.success.main,
+                backgroundColor: theme.palette.fig['purple-1'],
                 opacity: 1,
               },
             },
@@ -682,15 +737,15 @@ export function getThemedComponents(theme: Theme) {
           },
           thumb: {
             color: figmaDark['fg-1'],
-            borderRadius: '6px',
-            width: '16px',
-            height: '16px',
+            borderRadius: '50%',
+            width: '14px',
+            height: '14px',
             boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.12)',
           },
           track: {
             opacity: 1,
             backgroundColor: theme.palette.action.active,
-            borderRadius: '8px',
+            borderRadius: '9px',
           },
         },
       },
