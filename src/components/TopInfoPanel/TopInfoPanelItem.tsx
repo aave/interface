@@ -38,7 +38,7 @@ export const TopInfoPanelItem = ({
       {withLine && (
         <Box
           sx={{
-            mr: 8,
+            mr: '0.62rem',
             my: 'auto',
             width: '1px',
             bgcolor: '#F2F3F729',
