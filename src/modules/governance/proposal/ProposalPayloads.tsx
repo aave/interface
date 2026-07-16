@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Avatar, Box, Paper, Skeleton, SvgIcon, Typography } from '@mui/material';
-import { ReactNode } from 'react';
+import { Avatar, Box, Button, Paper, Skeleton, SvgIcon, Typography } from '@mui/material';
+import { ReactNode, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
 import { textCenterEllipsis } from 'src/helpers/text-center-ellipsis';
 import { getSeatbeltReportUrl } from 'src/modules/governance/utils/seatbelt';
@@ -31,6 +31,8 @@ const STATE_COLOR: Record<string, string> = {
   cancelled: 'error.main',
   expired: 'error.main',
 };
+
+const COLLAPSED_COUNT = 2;
 
 const explorerAddressLink = (chainId: number, address: string): string | undefined => {
   try {
@@ -73,6 +75,8 @@ const AddressRow = ({
 };
 
 export const ProposalPayloads = ({ payloads, loading }: ProposalPayloadsProps) => {
+  const [expanded, setExpanded] = useState(false);
+
   if (loading) {
     return (
       <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
@@ -83,13 +87,16 @@ export const ProposalPayloads = ({ payloads, loading }: ProposalPayloadsProps) =
 
   if (!payloads || payloads.length === 0) return null;
 
+  const hasMore = payloads.length > COLLAPSED_COUNT;
+  const visiblePayloads = expanded ? payloads : payloads.slice(0, COLLAPSED_COUNT);
+
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
       <Typography variant="h3" sx={{ mb: 4 }}>
         <Trans>Payloads</Trans>
       </Typography>
 
-      {payloads.map((p) => {
+      {visiblePayloads.map((p) => {
         const reportUrl = getSeatbeltReportUrl(p);
         const logo = getNetworkLogo(p.chainId);
         return (
@@ -164,6 +171,18 @@ export const ProposalPayloads = ({ payloads, loading }: ProposalPayloadsProps) =
           </Box>
         );
       })}
+
+      {hasMore && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button variant="text" size="small" onClick={() => setExpanded((prev) => !prev)}>
+            {expanded ? (
+              <Trans>Show less</Trans>
+            ) : (
+              <Trans>Show {payloads.length - COLLAPSED_COUNT} more</Trans>
+            )}
+          </Button>
+        </Box>
+      )}
     </Paper>
   );
 };

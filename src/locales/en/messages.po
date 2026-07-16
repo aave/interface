@@ -537,6 +537,7 @@ msgid "Available to Stake"
 msgstr "Available to Stake"
 
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+#: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Show less"
 msgstr "Show less"
 
@@ -4304,6 +4305,10 @@ msgstr "The app is running in fork mode."
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
+
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Show {0} more"
+msgstr "Show {0} more"
 
 #: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Payloads"
