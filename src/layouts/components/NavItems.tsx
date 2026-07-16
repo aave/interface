@@ -68,7 +68,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 component={Link}
                 onClick={() => handleClick(item.title, false)}
                 href={item.link}
-                sx={(theme) => navLinkSx(theme, '1.625rem 0.88rem')}
+                sx={(theme) => navLinkSx(theme, '2.25rem 0.88rem')}
               >
                 {i18n._(item.title)}
               </Button>
