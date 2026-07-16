@@ -1,5 +1,5 @@
 import { SearchIcon, XIcon } from '@heroicons/react/outline';
-import { ExternalLinkIcon, StarIcon } from '@heroicons/react/solid';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
 import {
   Box,
@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import React, { useMemo, useRef, useState } from 'react';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
+import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
@@ -413,14 +414,12 @@ export const MarketSwitcher = () => {
           onClick={(e) => handleStarClick(e, marketId)}
           sx={{ padding: '1px', ml: 0.5, flexShrink: 0 }}
         >
-          <SvgIcon
+          <StarIcon
             sx={{
               fontSize: '16px',
-              color: isFavorite ? '#FBCC5F' : 'text.disabled',
+              color: isFavorite ? FAVOURITE_STAR_COLOR : 'text.disabled',
             }}
-          >
-            <StarIcon />
-          </SvgIcon>
+          />
         </IconButton>
       </Box>
     );

@@ -1,0 +1,12 @@
+import { SvgIcon, SvgIconProps } from '@mui/material';
+
+// Gold used for the favourited state of the star toggle.
+export const FAVOURITE_STAR_COLOR = '#FFB300';
+
+// Filled star for the "favourite" toggle. Fills with `currentColor` so the consumer
+// controls the color (e.g. gold when favourited, muted when not).
+export const StarIcon = ({ sx, ...rest }: SvgIconProps) => (
+  <SvgIcon sx={sx} viewBox="0 0 18 18" {...rest}>
+    <path d="M8.02055 2.88408C8.44337 2.10879 9.5566 2.10879 9.97942 2.88408L11.3944 5.47861C11.5549 5.77283 11.8391 5.97934 12.1685 6.04102L15.0733 6.58499C15.9413 6.74754 16.2853 7.80628 15.6786 8.44799L13.6483 10.5955C13.4181 10.839 13.3095 11.1731 13.3526 11.5055L13.7329 14.4362C13.8466 15.3119 12.9459 15.9663 12.1482 15.5876L9.4784 14.3203C9.17564 14.1766 8.82432 14.1766 8.52157 14.3203L5.8518 15.5876C5.05403 15.9663 4.1534 15.3119 4.26704 14.4362L4.64733 11.5055C4.69045 11.1731 4.58189 10.839 4.35165 10.5955L2.32136 8.44799C1.71467 7.80628 2.05868 6.74754 2.92668 6.58499L5.83148 6.04102C6.16089 5.97934 6.44511 5.77283 6.60557 5.47861L8.02055 2.88408Z" />
+  </SvgIcon>
+);
