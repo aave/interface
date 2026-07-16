@@ -50,7 +50,7 @@ export const figmaLight = {
   'navy-2': '#6188c0',
   'navy-3': '#b0d3ff',
   'shadow-low': 'rgba(0, 0, 0, 0.02)',
-  'shadow-medium': 'rgba(46, 15, 15, 0.05)',
+  'shadow-medium': 'rgba(0, 0, 0, 0.04)',
   'shadow-high': 'rgba(46, 15, 15, 0.07)',
   'shadow-strong': 'rgba(46, 15, 15, 0.12)',
   'shadow-stroke-1': 'rgba(46, 15, 15, 0.08)',

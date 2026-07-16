@@ -151,6 +151,12 @@ declare module '@mui/material/Button' {
   }
 }
 
+declare module '@mui/material/Paper' {
+  interface PaperPropsVariantOverrides {
+    modal: true;
+  }
+}
+
 export const getDesignTokens = (mode: 'light' | 'dark') => {
   const getColor = (lightColor: string, darkColor: string) =>
     mode === 'dark' ? darkColor : lightColor;
@@ -669,6 +675,14 @@ export function getThemedComponents(theme: Theme) {
             style: {
               boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
               ...(theme.palette.mode === 'dark' ? { backgroundImage: 'none' } : {}),
+            },
+          },
+          {
+            props: { variant: 'modal' },
+            style: {
+              borderRadius: '0.75rem',
+              backgroundColor: theme.palette.fig['bg-2'],
+              boxShadow: `0 0 0 1px ${theme.palette.fig['border-1']}, 0 4px 16px 0 ${theme.palette.fig['shadow-medium']}`,
             },
           },
         ],
