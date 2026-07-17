@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button, Menu, MenuItem, Select, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { BasicModal } from 'src/components/primitives/BasicModal';
@@ -27,10 +27,51 @@ const ModalDemo = () => {
   );
 };
 
+const SelectDemo = () => {
+  const [value, setValue] = useState('ethereum');
+  return (
+    <Select
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      size="small"
+      sx={{ minWidth: 180 }}
+    >
+      <MenuItem value="ethereum">Ethereum</MenuItem>
+      <MenuItem value="optimism">Optimism</MenuItem>
+      <MenuItem value="arbitrum">Arbitrum</MenuItem>
+    </Select>
+  );
+};
+
+const MenuDemo = () => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const close = () => setAnchorEl(null);
+  return (
+    <>
+      <Button variant="outlined" color="primary" onClick={(e) => setAnchorEl(e.currentTarget)}>
+        Open menu
+      </Button>
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={close}>
+        <MenuItem onClick={close}>First option</MenuItem>
+        <MenuItem onClick={close}>Second option</MenuItem>
+        <MenuItem onClick={close}>Third option</MenuItem>
+      </Menu>
+    </>
+  );
+};
+
 export const OverlaysSection = () => (
   <Section title="Overlays & modal">
     <Specimen label="BasicModal">
       <ModalDemo />
+    </Specimen>
+
+    <Specimen label="Select (menu pop)">
+      <SelectDemo />
+    </Specimen>
+
+    <Specimen label="Menu (dropdown pop)">
+      <MenuDemo />
     </Specimen>
 
     <Specimen label="ContentWithTooltip (click)">

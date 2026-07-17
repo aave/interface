@@ -12,8 +12,10 @@ import { ColorPartial } from '@mui/material/styles/createPalette';
 import { deepmerge } from '@mui/utils';
 import React from 'react';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
+import { ScaleFade } from 'src/components/primitives/transitions/ScaleFade';
 
 import { type FigmaColorName, figmaDark, figSurfaceShadow, pickFigma } from './figmaColors';
+import { motion } from './motion';
 
 /**
  * Secondary "white pill" style for the `outlined` button variant: a hairline ring instead
@@ -577,6 +579,12 @@ export function getThemedComponents(theme: Theme) {
       },
       MuiMenu: {
         defaultProps: {
+          // Menu hard-defaults transitionDuration='auto' and forwards it explicitly,
+          // shadowing the MuiPopover default below — so menus/selects need the duration
+          // set here too. TransitionComponent is set explicitly as well (rather than
+          // relying on the inner Popover's own default) to keep the theme authoritative.
+          TransitionComponent: ScaleFade,
+          transitionDuration: motion.duration.overlay,
           PaperProps: {
             elevation: 0,
             variant: 'outlined',
@@ -585,6 +593,13 @@ export function getThemedComponents(theme: Theme) {
               marginTop: '4px',
             },
           },
+        },
+      },
+      MuiPopover: {
+        // Covers raw Popover usages (MarketSwitcher desktop, multiselects, swap inputs).
+        defaultProps: {
+          TransitionComponent: ScaleFade,
+          transitionDuration: motion.duration.overlay,
         },
       },
       MuiList: {
@@ -896,6 +911,16 @@ export function getThemedComponents(theme: Theme) {
               minHeight: '100vh',
               display: 'flex',
               flexDirection: 'column',
+            },
+          },
+          // Respect the OS "reduce motion" preference app-wide (incl. the dev showcase,
+          // since CssBaseline is injected once at the app root).
+          '@media (prefers-reduced-motion: reduce)': {
+            '*, *::before, *::after': {
+              animationDuration: '0.01ms !important',
+              animationIterationCount: '1 !important',
+              transitionDuration: '0.01ms !important',
+              scrollBehavior: 'auto !important',
             },
           },
         },
