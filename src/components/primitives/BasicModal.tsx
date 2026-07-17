@@ -81,7 +81,7 @@ export const BasicModal = ({
                 p: 0,
                 minWidth: 0,
                 position: 'absolute',
-                bgcolor: 'background.paper',
+                '&:hover': { backgroundColor: 'transparent' },
               }}
               onClick={handleClose}
               data-cy={'close-button'}
