@@ -73,7 +73,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={(theme) => navLinkSx(theme, '1.5rem 0.5rem')}
+        sx={(theme) => navLinkSx(theme, '2.25rem 0.88rem')}
       >
         <Trans>Staking</Trans>
         <SvgIcon

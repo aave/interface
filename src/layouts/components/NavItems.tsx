@@ -99,7 +99,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             component={Link}
             onClick={() => handleClick('sGHO', false)}
             href={ROUTES.sGHO}
-            sx={(theme) => navLinkSx(theme, '1.5rem 0.5rem')}
+            sx={(theme) => navLinkSx(theme, '2.25rem 0.88rem')}
           >
             <Trans>Savings</Trans>
           </Button>
