@@ -464,7 +464,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             {isUnstakeWindowActive && (
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Button
-                  variant="gradient"
+                  variant="contained"
                   fullWidth
                   onClick={onUnstakeAction}
                   data-cy={`unstakeBtn_${stakedToken}`}

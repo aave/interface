@@ -20,7 +20,7 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
 
   return (
     <Button
-      variant="surface"
+      variant="outlined"
       size="small"
       sx={{ minWidth: 'unset' }}
       component={Link}

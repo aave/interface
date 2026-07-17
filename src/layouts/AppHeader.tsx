@@ -241,7 +241,7 @@ export function AppHeader() {
           <Box sx={{ mr: sm ? 1 : 3 }}>
             {ENABLE_TESTNET && (
               <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
-                <Button variant="surface" size="small" color="primary" sx={envBadgeSx}>
+                <Button variant="outlined" size="small" color="primary" sx={envBadgeSx}>
                   TESTNET
                   <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
                     <InformationCircleIcon />
@@ -253,7 +253,7 @@ export function AppHeader() {
           <Box sx={{ mr: sm ? 1 : 3 }}>
             {FORK_ENABLED && currentMarketData?.isFork && (
               <ContentWithTooltip tooltipContent={forkTooltip} offset={[0, -4]} withoutHover>
-                <Button variant="surface" size="small" color="primary" sx={envBadgeSx}>
+                <Button variant="outlined" size="small" color="primary" sx={envBadgeSx}>
                   FORK
                   <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
                     <InformationCircleIcon />
@@ -279,7 +279,7 @@ export function AppHeader() {
             >
               <Button
                 onClick={handleBridgeClick}
-                variant="surface"
+                variant="outlined"
                 startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
                 sx={{ p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' }}
               >
@@ -302,7 +302,7 @@ export function AppHeader() {
             >
               <Button
                 onClick={handleSwitchClick}
-                variant="surface"
+                variant="outlined"
                 startIcon={
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     {hasActiveOrders ? (
@@ -332,7 +332,7 @@ export function AppHeader() {
 
           {readOnlyMode ? (
             <Button
-              variant="surface"
+              variant="outlined"
               onClick={() => {
                 openReadMode();
               }}

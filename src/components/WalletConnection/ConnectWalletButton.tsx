@@ -100,7 +100,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onCl
 
           return (
             <Button
-              variant={isConnected ? 'surface' : 'gradient'}
+              variant={isConnected ? 'outlined' : 'contained'}
               onClick={() => {
                 // Track initial button click
                 trackEvent(AUTH.CONNECT_WALLET, {

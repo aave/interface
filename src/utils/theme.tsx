@@ -9,30 +9,36 @@ import { createTheme } from '@mui/material/styles';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { ColorPartial } from '@mui/material/styles/createPalette';
+import { deepmerge } from '@mui/utils';
 import React from 'react';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 
 import { type FigmaColorName, figmaDark, figSurfaceShadow, pickFigma } from './figmaColors';
 
 /**
- * Secondary "white pill" style shared by the `surface` and `outlined` button variants
- * (and kept in sync between them). White fill, a hairline ring instead of a border, and
- * a subtle fill shift on hover. The ring is re-asserted on hover because the global
- * `disableElevation` default otherwise strips box-shadow in those states.
+ * Secondary "white pill" style for the `outlined` button variant: a hairline ring instead
+ * of a border (bg-1 in light, bg-4 in dark) with a subtle fill shift on hover. The ring is
+ * re-asserted on hover because the global `disableElevation` default otherwise strips
+ * box-shadow in those states.
  */
-const secondaryPillStyle = (fig: Record<FigmaColorName, string>) => ({
-  color: fig['fg-1'],
-  backgroundColor: fig['bg-1'],
-  border: 'none',
-  boxShadow: figSurfaceShadow(fig),
-  '& .MuiButton-startIcon': {
-    color: fig['fg-3'],
-  },
-  '&:hover, &.Mui-focusVisible': {
-    backgroundColor: fig['bg-4'],
+const secondaryPillStyle = (theme: Theme) => {
+  const fig = theme.palette.fig;
+  const isDark = theme.palette.mode === 'dark';
+  return {
+    color: fig['fg-1'],
+    // Different token per mode: white pill in light, a bg-4 fill in dark.
+    backgroundColor: isDark ? fig['bg-4'] : fig['bg-1'],
+    border: 'none',
     boxShadow: figSurfaceShadow(fig),
-  },
-});
+    '& .MuiButton-startIcon': {
+      color: fig['fg-3'],
+    },
+    '&:hover, &.Mui-focusVisible': {
+      backgroundColor: isDark ? fig['bg-5'] : fig['bg-4'],
+      boxShadow: figSurfaceShadow(fig),
+    },
+  };
+};
 
 // Shared box geometry for the custom checkbox icon (unchecked + checked).
 const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
@@ -141,13 +147,6 @@ declare module '@mui/material/Typography' {
     body2: false;
     button: false;
     overline: false;
-  }
-}
-
-declare module '@mui/material/Button' {
-  interface ButtonPropsVariantOverrides {
-    surface: true;
-    gradient: true;
   }
 }
 
@@ -471,28 +470,12 @@ export function getThemedComponents(theme: Theme) {
           },
         },
         variants: [
-          // Secondary "white pill" — shared by `surface` (header Swap/Bridge/wallet)
-          // and `outlined` (All Categories / Details / Cooldown). Keep the two in sync.
-          {
-            props: { variant: 'surface' },
-            style: secondaryPillStyle(theme.palette.fig),
-          },
-          {
-            props: { variant: 'gradient' },
-            style: {
-              color: figmaDark['fg-1'],
-              background: theme.palette.gradients.aaveGradient,
-              transition: 'all 0.2s ease',
-              '&:hover, &.Mui-focusVisible': {
-                background: theme.palette.gradients.aaveGradient,
-                opacity: '0.9',
-              },
-            },
-          },
+          // Secondary "white pill": a hairline ring instead of a border, with a bg-4 fill
+          // in dark mode.
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              ...secondaryPillStyle(theme.palette.fig),
+              ...secondaryPillStyle(theme),
               '&.Mui-disabled': {
                 color: theme.palette.fig['fg-3'],
                 border: 'none',
@@ -908,7 +891,7 @@ export function getThemedComponents(theme: Theme) {
             fontWeight: 400,
             fontSize: pxToRem(14),
             minWidth: '375px',
-            backgroundColor: theme.palette.fig['bg-max'],
+            backgroundColor: theme.palette.fig['bg-2'],
             '> div:first-of-type': {
               minHeight: '100vh',
               display: 'flex',
@@ -954,3 +937,13 @@ export function getThemedComponents(theme: Theme) {
     },
   } as ThemeOptions;
 }
+
+/**
+ * Assemble the full app MUI theme for a mode: base design tokens merged with the
+ * component overrides. Single source of truth shared by the app root
+ * (`AppGlobalStyles`) and the dev component showcase, so they can't drift apart.
+ */
+export const createAppTheme = (mode: 'light' | 'dark') => {
+  const base = createTheme(getDesignTokens(mode));
+  return deepmerge(base, getThemedComponents(base));
+};

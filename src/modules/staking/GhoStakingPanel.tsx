@@ -419,7 +419,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           {isUnstakeWindowActive && (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Button
-                variant="gradient"
+                variant="contained"
                 fullWidth
                 onClick={onUnstakeAction}
                 data-cy={`unstakeBtn_${stakedToken}`}

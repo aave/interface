@@ -54,7 +54,7 @@ export function BridgeWrapper() {
         <Typography variant={'h3'}>
           <Trans>You don&apos;t have any bridge transactions</Trans>
         </Typography>{' '}
-        <Button sx={{ mt: 4 }} onClick={openBridge} variant="gradient">
+        <Button sx={{ mt: 4 }} onClick={openBridge} variant="contained">
           <Typography typography="subheader1">Bridge GHO</Typography>
         </Button>
       </Paper>

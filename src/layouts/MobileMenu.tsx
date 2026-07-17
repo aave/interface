@@ -65,7 +65,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
       ) : (
         <Button
           id="settings-button-mobile"
-          variant="surface"
+          variant="outlined"
           sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
           onClick={() => setOpen(true)}
         >

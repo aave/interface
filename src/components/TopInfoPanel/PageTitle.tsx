@@ -78,11 +78,11 @@ export const PageTitle = ({
       >
         <Box sx={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap' }}>
           {withMarketSwitcher && <MarketSwitcher />}
-          {/* <BridgeButton bridge={bridge} variant="surface" withoutIcon={!upToMD} /> */}
+          {/* <BridgeButton bridge={bridge} variant="outlined" withoutIcon={!upToMD} /> */}
           {/* NOTE:// Removing for now  */}
           {isMigrateToV3Available && withMigrateButton && (
             <Link href={ROUTES.migrationTool} sx={{ mt: { xs: 2, xsm: 0 } }}>
-              <Button variant="gradient" size="small">
+              <Button variant="contained" size="small">
                 <Trans>Migrate to V3</Trans>
               </Button>
             </Link>
@@ -92,7 +92,7 @@ export const PageTitle = ({
         {withFavoriteButton && (
           <Button
             onClick={handleFavoriteClick}
-            variant="surface"
+            variant="outlined"
             sx={{
               display: 'none',
               [theme.breakpoints.up(800)]: { display: 'flex' }, // Hide on mobile (xs) and for widths between 759px and 800px, show on small screens and up

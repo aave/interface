@@ -202,7 +202,7 @@ const UmbrellaHeaderUserDetails = ({
             </Box>
 
             <Button
-              variant="gradient"
+              variant="contained"
               size="small"
               onClick={() => openUmbrellaClaimAll()}
               sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}

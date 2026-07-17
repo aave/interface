@@ -209,7 +209,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           {isEModeDisabled ? (
             <Button
               fullWidth
-              variant={'gradient'}
+              variant="contained"
               onClick={() => {
                 trackEvent(GENERAL.OPEN_MODAL, {
                   type: 'Enable E-Mode',

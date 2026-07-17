@@ -112,7 +112,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
             }}
           >
             <Button
-              variant="surface"
+              variant="outlined"
               size="medium"
               color="primary"
               startIcon={

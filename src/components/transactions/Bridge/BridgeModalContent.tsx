@@ -352,7 +352,7 @@ export const BridgeModalContent = () => {
               target="_blank"
               rel="noopener"
               sx={{ mr: 8 }}
-              variant="surface"
+              variant="outlined"
               size="small"
               endIcon={
                 <SvgIcon sx={{ width: 14, height: 14 }}>

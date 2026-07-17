@@ -245,7 +245,7 @@ export const MigrationBottomPanel = ({
             onClick={openV3Migration}
             disabled={loading || !isChecked || blockingError !== null}
             sx={{ width: '100%', height: '44px' }}
-            variant={!isChecked || blockingError !== null ? 'contained' : 'gradient'}
+            variant="contained"
             size="medium"
             data-cy={`migration-button`}
           >

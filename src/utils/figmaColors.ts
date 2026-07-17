@@ -85,9 +85,9 @@ export const figmaLight = {
 export const figmaDark = {
   'bg-max': '#0a0a0a',
   'bg-1': '#100f0f',
-  'bg-2': '#1a1919',
+  'bg-2': '#18181B',
   'bg-3': '#1f1e1e',
-  'bg-4': '#2a2828',
+  'bg-4': '#1E1E20',
   'bg-5': '#393737',
   'bg-6': '#494646',
   'border-0': 'rgba(255, 255, 255, 0.06)',
