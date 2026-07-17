@@ -11,6 +11,7 @@ import { MainLayout } from 'src/layouts/MainLayout';
 import { ProposalLifecycleCache } from 'src/modules/governance/proposal/ProposalLifecycleCache';
 import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOverview';
 import { ProposalPayloads } from 'src/modules/governance/proposal/ProposalPayloads';
+import { ProposalTimeline } from 'src/modules/governance/proposal/ProposalTimeline';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 import { VotingResults } from 'src/modules/governance/proposal/VotingResults';
@@ -69,11 +70,18 @@ export default function ProposalPage() {
             />
             <ProposalPayloads payloads={payloads} loading={payloadsLoading} />
             {proposal?.rawCacheDetail ? (
-              <ProposalLifecycleCache
-                proposal={proposal.rawCacheDetail}
-                payloads={payloads}
-                payloadsLoading={payloadsLoading}
-              />
+              <>
+                <ProposalLifecycleCache
+                  proposal={proposal.rawCacheDetail}
+                  payloads={payloads}
+                  payloadsLoading={payloadsLoading}
+                />
+                <ProposalTimeline
+                  proposal={proposal.rawCacheDetail}
+                  payloads={payloads}
+                  payloadsLoading={payloadsLoading}
+                />
+              </>
             ) : null}
           </Grid>
         </Grid>
