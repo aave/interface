@@ -19,9 +19,9 @@ import { motion } from './motion';
 
 /**
  * Secondary "white pill" style for the `outlined` button variant: a hairline ring instead
- * of a border (bg-1 in light, bg-4 in dark) with a subtle fill shift on hover. The ring is
- * re-asserted on hover because the global `disableElevation` default otherwise strips
- * box-shadow in those states.
+ * of a border (bg-1 in light, bg-4 in dark) with a subtle fill shift on hover. On hover the
+ * ring is re-asserted (the global `disableElevation` default otherwise strips box-shadow),
+ * and `border` is forced to none to suppress MUI's default outlined hover border.
  */
 const secondaryPillStyle = (theme: Theme) => {
   const fig = theme.palette.fig;
@@ -37,6 +37,9 @@ const secondaryPillStyle = (theme: Theme) => {
     },
     '&:hover, &.Mui-focusVisible': {
       backgroundColor: isDark ? fig['bg-5'] : fig['bg-4'],
+      // Suppress MUI's default outlined hover border (its `:hover` rule would otherwise
+      // re-introduce a 1px border on top of the borderless pill).
+      border: 'none',
       boxShadow: figSurfaceShadow(fig),
     },
   };
