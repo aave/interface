@@ -7,7 +7,9 @@ packages:
 minimumReleaseAge: 10080
 
 # Exclude our own first-party packages so releases are usable immediately.
-# pnpm expands `*` to `.*`, so `@aave*` matches both the `@aave/*` and
-# `@aave-dao/*` scopes.
+# pnpm expands `*` to `.*`, so each pattern requires a literal `/` after the
+# scope name. This pins the exclusion to our exact scopes: a lookalike scope
+# like `@aave-evil/malware` will NOT match and stays quarantined.
 minimumReleaseAgeExclude:
-  - '@aave*'
+  - '@aave/*'
+  - '@aave-dao/*'
