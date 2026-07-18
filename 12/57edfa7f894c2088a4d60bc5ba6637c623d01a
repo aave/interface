@@ -1,0 +1,19 @@
+pnpm-workspace.yaml
+  s_f5d8fe7821b506::t_1b0315e85cb0cd 10-12,14-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "1257edfa7f894c2088a4d60bc5ba6637c623d01a",
+  "prompts": {},
+  "sessions": {
+    "s_f5d8fe7821b506": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab150f93-18ed-4cbb-869e-72ee419d7935",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
