@@ -169,12 +169,17 @@ export function buildVoteProposalFromCache(
 // ============================================
 
 export function adaptGraphProposalToListItem(p: Proposal): ProposalListItem {
+  const votedInfo = p.votingMachineData.votedInfo;
   return {
     id: p.subgraphProposal.id,
     title: p.subgraphProposal.proposalMetadata.title,
     shortDescription: p.subgraphProposal.proposalMetadata.shortDescription || '',
     author: p.subgraphProposal.proposalMetadata.author || '',
     badgeState: p.badgeState,
+    userVote:
+      votedInfo && votedInfo.votingPower !== '0'
+        ? { support: votedInfo.support, votingPower: votedInfo.votingPower }
+        : null,
     voteInfo: {
       forVotes: p.votingInfo.forVotes,
       againstVotes: p.votingInfo.againstVotes,
@@ -214,7 +219,10 @@ export function adaptGraphProposalToDetail(p: Proposal): ProposalDetailDisplay {
 // Cache -> canonical adapters
 // ============================================
 
-export function adaptCacheProposalToListItem(p: SimplifiedProposal): ProposalListItem {
+export function adaptCacheProposalToListItem(
+  p: SimplifiedProposal,
+  userVote?: ProposalVote | null
+): ProposalListItem {
   const voteInfo = calculateCacheVoteDisplayInfo(p.votesFor, p.votesAgainst, null, null);
   return {
     id: p.id,
@@ -223,6 +231,10 @@ export function adaptCacheProposalToListItem(p: SimplifiedProposal): ProposalLis
     author: p.author,
     badgeState: cacheStateToBadge(p.state),
     voteInfo,
+    userVote:
+      userVote && userVote.votingPower !== '0'
+        ? { support: userVote.support, votingPower: userVote.votingPower }
+        : null,
   };
 }
 

@@ -23,6 +23,14 @@ export type ProposalVoteDisplayInfo = {
 };
 
 /**
+ * The connected user's vote on a given proposal, if any.
+ */
+export type UserVoteInfo = {
+  support: boolean;
+  votingPower: string;
+};
+
+/**
  * Data-source-agnostic list item for proposals list view.
  */
 export type ProposalListItem = {
@@ -32,6 +40,7 @@ export type ProposalListItem = {
   author: string;
   badgeState: ProposalBadgeState;
   voteInfo: ProposalVoteDisplayInfo;
+  userVote?: UserVoteInfo | null;
 };
 
 /**
