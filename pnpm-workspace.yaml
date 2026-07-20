@@ -13,3 +13,19 @@ minimumReleaseAge: 10080
 minimumReleaseAgeExclude:
   - '@aave/*'
   - '@aave-dao/*'
+
+# Build-script allowlist. pnpm 10 blocks all dependency install/postinstall
+# scripts by default; only packages listed here may run them. This is the
+# committed equivalent of `pnpm approve-builds` (which is interactive and can't
+# run in CI) — with these listed, `pnpm install --frozen-lockfile` compiles /
+# downloads their native binaries automatically on CI. Keep this list minimal.
+onlyBuiltDependencies:
+  - '@sentry/cli' # downloads sentry-cli binary (source-map upload)
+  - bufferutil # ws native speedup (prebuilds + JS fallback)
+  - cypress # downloads the Cypress test-runner binary
+  - esbuild # verifies/installs platform binary
+  - keccak # web3 hashing native addon
+  - protobufjs # postinstall setup
+  - sharp # next/image optimization native binary
+  - unrs-resolver # native module resolver (napi)
+  - utf-8-validate # ws native speedup (prebuilds + JS fallback)
