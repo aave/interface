@@ -16,7 +16,8 @@
       "@types/react-dom": "^18.3.7",
       "bignumber.js": "^9.3.1",
       "axios": "^1.18.0",
-      "ethers>ws": "^8.21.0"
+      "ethers>ws": "^8.21.0",
+      "form-data": "2.5.4"
     }
   },
   "scripts": {
