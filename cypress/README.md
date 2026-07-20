@@ -2,6 +2,8 @@
 
 based on cypress(8.5.0) with `cypress-repeat` and tenderly
 
+> Requires [pnpm](https://pnpm.io/) **v10+** (the repo pins `pnpm@10.18.0`; run `corepack enable` to use it automatically). See [CONTRIBUTING.md](../CONTRIBUTING.md) for full setup.
+
 ---
 
 ## Development mode

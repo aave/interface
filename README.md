@@ -23,6 +23,8 @@ Enabling users to:
 
 ## How to use
 
+Requires [Node](https://nodejs.org) (see `.nvmrc`) and [pnpm](https://pnpm.io/) **v10+**. The repo pins `pnpm@10.18.0` via the `packageManager` field, so running `corepack enable` will select the correct version automatically.
+
 Install it and run:
 
 ```sh

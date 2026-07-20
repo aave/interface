@@ -56,7 +56,13 @@ nvm use
 
 ### Install Dependencies
 
-Download [pnpm](https://pnpm.io/) and install the dependencies.
+Install [pnpm](https://pnpm.io/) **v10 or later** (this repo pins `pnpm@10.18.0` via the `packageManager` field). The simplest way is to enable [corepack](https://nodejs.org/api/corepack.html), which reads that field and uses the correct version automatically:
+
+```bash
+corepack enable
+```
+
+Then install the dependencies:
 
 ```bash
 pnpm install
