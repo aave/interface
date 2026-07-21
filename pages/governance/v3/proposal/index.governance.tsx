@@ -8,7 +8,6 @@ import {
   useGovernanceVotersSplit,
 } from 'src/hooks/governance/useGovernanceCache';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { ProposalLifecycleCache } from 'src/modules/governance/proposal/ProposalLifecycleCache';
 import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOverview';
 import { ProposalPayloads } from 'src/modules/governance/proposal/ProposalPayloads';
 import { ProposalTimeline } from 'src/modules/governance/proposal/ProposalTimeline';
@@ -35,7 +34,6 @@ export default function ProposalPage() {
   } = useGovernanceProposalDetail(proposalId);
 
   const voters = useGovernanceVotersSplit(proposalId);
-  // Payloads are only rendered by ProposalLifecycleCache (cache data path).
   const { data: payloads, isLoading: payloadsLoading } = useGovernanceProposalPayloads(proposalId, {
     enabled: !!proposal?.rawCacheDetail,
   });
@@ -70,18 +68,11 @@ export default function ProposalPage() {
             />
             <ProposalPayloads payloads={payloads} loading={payloadsLoading} />
             {proposal?.rawCacheDetail ? (
-              <>
-                <ProposalLifecycleCache
-                  proposal={proposal.rawCacheDetail}
-                  payloads={payloads}
-                  payloadsLoading={payloadsLoading}
-                />
-                <ProposalTimeline
-                  proposal={proposal.rawCacheDetail}
-                  payloads={payloads}
-                  payloadsLoading={payloadsLoading}
-                />
-              </>
+              <ProposalTimeline
+                proposal={proposal.rawCacheDetail}
+                payloads={payloads}
+                payloadsLoading={payloadsLoading}
+              />
             ) : null}
           </Grid>
         </Grid>

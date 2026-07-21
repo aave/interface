@@ -21,8 +21,7 @@ import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-// NOTE: Parallel, experimental timeline shown alongside ProposalLifecycleCache so the single-spine
-// design can be compared. It weaves the three state machines (proposal core, voting machine,
+// Single-spine proposal timeline. It weaves the three state machines (proposal core, voting machine,
 // per-chain payloads) onto one line: each step is the milestone (date / live countdown / "ready"
 // action) and every underlying on-chain transaction is a substep written in plain language.
 //

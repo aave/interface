@@ -43,7 +43,7 @@ Data-source-agnostic types consumed by all components:
 | `VotersSplitDisplay` | Voters grouped: yaeVotes[], nayVotes[], combinedVotes[] |
 | `VoteProposalData` | Vote UI inputs: proposalId, snapshotBlockHash, votingMachineChainId, votingAssets, votingState, votedInfo |
 
-`ProposalDetailDisplay` carries `rawCacheDetail?` (raw cache `ProposalDetail`, used by `ProposalLifecycleCache`) and `voteProposalData?` (built by `buildVoteProposalFromCache`, drives `VoteInfo`; `undefined` when the voting chain / snapshot hash can't be resolved).
+`ProposalDetailDisplay` carries `rawCacheDetail?` (raw cache `ProposalDetail`, used by `ProposalTimeline`) and `voteProposalData?` (built by `buildVoteProposalFromCache`, drives `VoteInfo`; `undefined` when the voting chain / snapshot hash can't be resolved).
 
 ### Governance Cache SDK — `src/services/governance-cache-sdk/`
 
@@ -97,7 +97,7 @@ React Query layer over the SDK — the single hooks module components import fro
 | Page | File | Description |
 |------|------|-------------|
 | Proposals list | `pages/governance/index.governance.tsx` | Renders `<ProposalsV3List />` + `<UserGovernanceInfo />` |
-| Proposal detail | `pages/governance/v3/proposal/index.governance.tsx` | Uses the public hooks; renders `VoteInfo` when `voteProposalData` exists, `ProposalLifecycleCache` when `rawCacheDetail` exists, payloads via `useCacheProposalPayloads` gated on `rawCacheDetail` |
+| Proposal detail | `pages/governance/v3/proposal/index.governance.tsx` | Uses the public hooks; renders `VoteInfo` when `voteProposalData` exists, `ProposalTimeline` when `rawCacheDetail` exists, payloads via `useCacheProposalPayloads` gated on `rawCacheDetail` |
 | IPFS preview | `pages/governance/ipfs-preview.governance.tsx` | Renders proposal from raw IPFS metadata |
 
 ### Components
@@ -109,7 +109,7 @@ React Query layer over the SDK — the single hooks module components import fro
 | `VotingResults` | `proposal/VotingResults.tsx` | Vote bars, quorum, differential. Accepts `ProposalDetailDisplay` + `VotersSplitDisplay`. |
 | `VotersListContainer` / `VotersListModal` / `VotersList` / `VotersListItem` | `proposal/Voters*.tsx` | Voter lists sorted by power, with ENS. |
 | `VoteInfo` | `proposal/VoteInfo.tsx` | User's voting power + vote submission. Driven by `voteProposalData`. |
-| `ProposalLifecycleCache` | `proposal/ProposalLifecycleCache.tsx` | Lifecycle timeline from cache timestamps + payloads. |
+| `ProposalTimeline` | `proposal/ProposalTimeline.tsx` | Single-spine lifecycle timeline: dates, live countdowns, "ready to X" states, per-tx explorer links (cache + on-chain `cooldownPeriod`). |
 | `VoteBar` | `VoteBar.tsx` | Percentage bar. `InnerBar` does `width: ${percent * 100}%`. **Expects 0-1 range.** |
 | `StateBadge` | `StateBadge.tsx` | Colored badge + `ProposalBadgeState` enum and `stateToString`/`stringToState` helpers. |
 | `VotingPowerInfoPanel` | `VotingPowerInfoPanel.tsx` | Voting/proposition power; proposal-creation thresholds via `useProposalVotingConfig`. |
@@ -184,7 +184,7 @@ src/modules/governance/
     VotersList.tsx                   # Scrollable voter list
     VotersListItem.tsx               # Single voter row
     VoteInfo.tsx                     # User vote UI (via voteProposalData)
-    ProposalLifecycleCache.tsx       # Lifecycle timeline from cache
+    ProposalTimeline.tsx             # Single-spine lifecycle timeline
     ProposalTopPanel.tsx             # Detail page top panel
   utils/
     formatProposal.ts                # ZERO_ADDRESS constant (shared)

@@ -46,7 +46,7 @@ export type ProposalDetailDisplay = {
   ipfsHash: string;
   badgeState: ProposalBadgeState;
   voteInfo: ProposalVoteDisplayInfo;
-  /** Raw cache detail. Used by ProposalLifecycleCache. */
+  /** Raw cache detail. Used by ProposalTimeline. */
   rawCacheDetail?: ProposalDetail;
   /** Voting data derived from the cache detail. Used by VoteInfo and GovVoteModal. */
   voteProposalData?: VoteProposalData;

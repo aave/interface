@@ -563,10 +563,6 @@ msgstr "APR"
 msgid "Total"
 msgstr "Total"
 
-#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
-msgid "{stepName}"
-msgstr "{stepName}"
-
 #: src/modules/governance/proposal/ProposalTimeline.tsx
 msgid "Failed"
 msgstr "Failed"
@@ -2739,7 +2735,6 @@ msgstr "Vote YAE"
 msgid "Repaying {symbol}"
 msgstr "Repaying {symbol}"
 
-#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
 #: src/modules/governance/proposal/ProposalTimeline.tsx
 msgid "Timeline"
 msgstr "Timeline"
@@ -2748,7 +2743,7 @@ msgstr "Timeline"
 msgid "Bridge {symbol}"
 msgstr "Bridge {symbol}"
 
-#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
 
