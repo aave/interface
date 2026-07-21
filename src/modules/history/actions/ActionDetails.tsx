@@ -1,6 +1,6 @@
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, SvgIcon, Typography } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
@@ -14,6 +14,7 @@ import {
   isOrderLoading,
 } from 'src/components/transactions/Swap/helpers/cow';
 import { swapTypesThatRequiresInvertedQuote } from 'src/components/transactions/Swap/hooks/useSwapQuote';
+import { figVars } from 'src/utils/figmaColors';
 
 import {
   ActionName,
@@ -73,7 +74,6 @@ const StatusBadgeIconOnly = ({
   title: React.ReactNode;
   severity: 'info' | 'success' | 'error';
 }) => {
-  const theme = useTheme();
   return (
     <DarkTooltip title={title} arrow enterTouchDelay={100} leaveTouchDelay={500} placement="top">
       <Box>
@@ -87,7 +87,7 @@ const StatusBadgeIconOnly = ({
             pl: 1.5,
             background: 'none',
             border: 'none',
-            color: theme.palette.text.primary,
+            color: 'fg-1',
           }}
         />
       </Box>
@@ -102,7 +102,6 @@ const StatusBadgeText = ({
   children: React.ReactNode;
   severity: 'info' | 'success' | 'error';
 }) => {
-  const theme = useTheme();
   return (
     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
       <Warning
@@ -114,8 +113,8 @@ const StatusBadgeText = ({
           pr: 1.5,
           pl: 1.5,
           background: 'none',
-          border: `1px solid ${theme.palette.divider}`,
-          color: theme.palette.text.primary,
+          border: `1px solid ${figVars['border-2']}`,
+          color: 'fg-1',
         }}
       >
         {children}
@@ -139,7 +138,7 @@ export const ActionDetails = ({
     return (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <TokenIcon symbol={reserve.underlyingToken.symbol} sx={{ fontSize: iconSize }} />
-        <Typography variant="secondary14" color="text.primary" sx={{ ml: 1, mb: 0.5 }}>
+        <Typography variant="secondary14" color="fg-1" sx={{ ml: 1, mb: 0.5 }}>
           {symbol}
         </Typography>
         <DarkTooltip
@@ -160,7 +159,7 @@ export const ActionDetails = ({
             <FormattedNumber
               value={amount.amount.value}
               variant="secondary14"
-              color="text.primary"
+              color="fg-1"
               compact
               compactThreshold={100000}
               sx={{ mr: 1 }}
@@ -176,7 +175,7 @@ export const ActionDetails = ({
           arrow
           placement="top"
         >
-          <Typography variant="secondary14" color="text.primary">
+          <Typography variant="secondary14" color="fg-1">
             {reserve.underlyingToken.symbol}
           </Typography>
         </DarkTooltip>
@@ -191,7 +190,7 @@ export const ActionDetails = ({
     return (
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }} pr={4.5}>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>Liquidated collateral</Trans>
           </Typography>
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -199,7 +198,7 @@ export const ActionDetails = ({
               symbol={collateral.reserve.underlyingToken.symbol}
               sx={{ fontSize: iconSize, pr: 0.5 }}
             />
-            <Typography variant="secondary14" color="text.primary" sx={{ ml: 1, mb: 0.5 }}>
+            <Typography variant="secondary14" color="fg-1" sx={{ ml: 1, mb: 0.5 }}>
               −
             </Typography>
             <DarkTooltip
@@ -226,14 +225,14 @@ export const ActionDetails = ({
                 <FormattedNumber
                   value={collateral.amount!.amount.value}
                   variant="secondary14"
-                  color="text.primary"
+                  color="fg-1"
                   sx={{ mr: 1 }}
                   compact
                   compactThreshold={100000}
                 />
               </Box>
             </DarkTooltip>
-            <Typography variant="secondary14" color="text.primary">
+            <Typography variant="secondary14" color="fg-1">
               {collateral.reserve.underlyingToken.symbol}
             </Typography>
           </Box>
@@ -244,7 +243,7 @@ export const ActionDetails = ({
         </SvgIcon>
 
         <Box sx={{ display: 'flex', flexDirection: 'column' }} pl={4.5}>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>Covered debt</Trans>
           </Typography>
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -252,7 +251,7 @@ export const ActionDetails = ({
               symbol={debtRepaid.reserve.underlyingToken.symbol}
               sx={{ fontSize: iconSize, pr: 0.5 }}
             />
-            <Typography variant="secondary14" color="text.primary" sx={{ ml: 1, mb: 0.5 }}>
+            <Typography variant="secondary14" color="fg-1" sx={{ ml: 1, mb: 0.5 }}>
               +
             </Typography>
             <DarkTooltip
@@ -279,14 +278,14 @@ export const ActionDetails = ({
                 <FormattedNumber
                   value={debtRepaid.amount.amount.value}
                   variant="secondary14"
-                  color="text.primary"
+                  color="fg-1"
                   sx={{ mr: 1 }}
                   compact
                   compactThreshold={100000}
                 />
               </Box>
             </DarkTooltip>
-            <Typography variant="secondary14" color="text.primary">
+            <Typography variant="secondary14" color="fg-1">
               {debtRepaid.reserve.underlyingToken.symbol}
             </Typography>
           </Box>
@@ -304,7 +303,7 @@ export const ActionDetails = ({
 
     return (
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        <Typography variant="description" color="text.primary">
+        <Typography variant="description" color="fg-1">
           <Trans>Collateralization</Trans>
         </Typography>
         {enabled ? (
@@ -316,7 +315,7 @@ export const ActionDetails = ({
             <Trans>disabled</Trans>
           </Typography>
         )}
-        <Typography variant="description" color="text.primary" sx={{ mr: 0.5 }}>
+        <Typography variant="description" color="fg-1" sx={{ mr: 0.5 }}>
           <Trans>for</Trans>
         </Typography>
         <TokenIcon symbol={reserve.underlyingToken.symbol} sx={{ fontSize: iconSize }} />
@@ -329,7 +328,7 @@ export const ActionDetails = ({
           arrow
           placement="top"
         >
-          <Typography variant="secondary14" color="text.primary" sx={{ ml: 1 }}>
+          <Typography variant="secondary14" color="fg-1" sx={{ ml: 1 }}>
             {reserve.underlyingToken.symbol}
           </Typography>
         </DarkTooltip>
@@ -381,7 +380,7 @@ export const ActionDetails = ({
               <FormattedNumber
                 value={formatUnits(swapTx.srcAmount, swapTx.underlyingSrcToken.decimals)}
                 variant="secondary14"
-                color="text.primary"
+                color="fg-1"
                 sx={{ mr: 1, ml: 1 }}
                 visibleDecimals={2}
               />
@@ -396,7 +395,7 @@ export const ActionDetails = ({
             arrow
             placement="top"
           >
-            <Typography variant="secondary14" color="text.primary">
+            <Typography variant="secondary14" color="fg-1">
               {formattedCowSwapSrcToken.symbol}
             </Typography>
           </DarkTooltip>
@@ -426,7 +425,7 @@ export const ActionDetails = ({
               <FormattedNumber
                 value={formatUnits(swapTx.destAmount, swapTx.underlyingDestToken.decimals)}
                 variant="secondary14"
-                color="text.primary"
+                color="fg-1"
                 visibleDecimals={2}
                 sx={{ mr: 1, ml: 1 }}
               />
@@ -441,7 +440,7 @@ export const ActionDetails = ({
             arrow
             placement="top"
           >
-            <Typography variant="secondary14" color="text.primary">
+            <Typography variant="secondary14" color="fg-1">
               {formattedCowSwapDestToken.symbol}
             </Typography>
           </DarkTooltip>
@@ -526,7 +525,7 @@ export const ActionDetails = ({
   // FALLBACK
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <Typography variant="secondary14" color="text.secondary">
+      <Typography variant="secondary14" color="fg-2">
         <Trans>Transaction details not available</Trans>
       </Typography>
     </Box>

@@ -14,6 +14,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
+import { figVars } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import { MigrationListItemToggler } from './MigrationListItemToggler';
@@ -61,8 +62,8 @@ export const MigrationListItem = ({
   );
   const isMobile = useMediaQuery(theme.breakpoints.down(1125));
 
-  const baseColor = disabled === undefined ? 'text.primary' : 'text.muted';
-  const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
+  const baseColor = disabled === undefined ? 'fg-1' : 'fg-3';
+  const baseColorSecondary = disabled === undefined ? 'fg-2' : 'fg-3';
 
   const loadingRates = v3Rates?.ltv === undefined && v3Rates?.liquidationThreshold === undefined;
 
@@ -110,18 +111,16 @@ export const MigrationListItem = ({
       >
         <ListColumn align="center" maxWidth={64} minWidth={64}>
           <Box
-            sx={(theme) => ({
+            sx={{
               border: `2px solid ${
-                disabled !== undefined
-                  ? theme.palette.action.disabled
-                  : theme.palette.text.secondary
+                disabled !== undefined ? figVars['disabled-fg'] : figVars['fg-2']
               }`,
               background:
                 disabled !== undefined
-                  ? theme.palette.background.disabled
+                  ? figVars['bg-6']
                   : checked
-                  ? theme.palette.text.secondary
-                  : theme.palette.background.paper,
+                  ? figVars['fg-2']
+                  : figVars['surface-elevated'],
               width: 16,
               height: 16,
               borderRadius: '2px',
@@ -131,12 +130,12 @@ export const MigrationListItem = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-            })}
+            }}
             onClick={disabled !== undefined ? undefined : onCheckboxClick}
             data-cy={`migration-checkbox`}
           >
             {disabled === undefined && (
-              <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+              <SvgIcon sx={{ fontSize: '14px', color: 'surface-elevated' }}>
                 <CheckIcon />
               </SvgIcon>
             )}
@@ -239,7 +238,7 @@ export const MigrationListItem = ({
         {isSupplyList &&
           (loadingRates ? (
             <ListColumn>
-              <NoData variant="main14" color="text.secondary" />
+              <NoData variant="main14" color="fg-2" />
             </ListColumn>
           ) : (
             <ListColumn>
@@ -274,7 +273,7 @@ export const MigrationListItem = ({
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ width: '50px', background: theme.palette.background.paper }}
+                sx={{ width: '50px', background: figVars['surface-elevated'] }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColor}>
@@ -292,7 +291,7 @@ export const MigrationListItem = ({
               <Button
                 variant="outlined"
                 size="small"
-                sx={{ width: '50px', background: theme.palette.background.paper }}
+                sx={{ width: '50px', background: figVars['surface-elevated'] }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColor}>
@@ -306,7 +305,7 @@ export const MigrationListItem = ({
         {!isSupplyList &&
           (loadingRates ? (
             <ListColumn>
-              <NoData variant="main14" color="text.secondary" />
+              <NoData variant="main14" color="fg-2" />
             </ListColumn>
           ) : (
             <ListColumn>

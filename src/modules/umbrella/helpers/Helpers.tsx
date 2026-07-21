@@ -44,7 +44,7 @@ export const UmbrellaAssetBreakdown = ({
             flexDirection: 'column',
           }}
         >
-          <Typography variant="caption" color="text.secondary" mb={3}>
+          <Typography variant="caption" color="fg-2" mb={3}>
             <Trans>
               Participating in staking {symbol} gives annualized rewards. Your wallet balance is the
               sum of your aTokens and underlying assets. The breakdown to stake is below
@@ -120,7 +120,7 @@ export const UmbrellaAssetBreakdown = ({
               />
             </Row>
 
-            <Box sx={() => ({ pt: 1, mt: 1 })}>
+            <Box sx={{ pt: 1, mt: 1 }}>
               <Row caption={<Trans>Total</Trans>} height={32}>
                 <FormattedNumber
                   value={normalize(

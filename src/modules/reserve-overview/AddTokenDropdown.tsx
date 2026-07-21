@@ -133,7 +133,7 @@ export const AddTokenDropdown = ({
         data-cy="addToWaletSelector"
       >
         <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-          <Typography variant="secondary12" color="text.secondary">
+          <Typography variant="secondary12" color="fg-2">
             <Trans>Underlying token</Trans>
           </Typography>
         </Box>
@@ -177,7 +177,7 @@ export const AddTokenDropdown = ({
         {!hideAToken && (
           <Box>
             <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-              <Typography variant="secondary12" color="text.secondary">
+              <Typography variant="secondary12" color="fg-2">
                 <Trans>Aave aToken</Trans>
               </Typography>
             </Box>
@@ -219,7 +219,7 @@ export const AddTokenDropdown = ({
         {isSGHO && sGHOTokenAddress && (
           <Box>
             <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-              <Typography variant="secondary12" color="text.secondary">
+              <Typography variant="secondary12" color="fg-2">
                 <Trans>Savings GHO token</Trans>
               </Typography>
             </Box>

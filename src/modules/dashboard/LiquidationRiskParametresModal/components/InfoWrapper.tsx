@@ -1,5 +1,6 @@
 import { AlertColor, Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 interface InfoWrapperProps {
   topValue: ReactNode;
@@ -20,8 +21,8 @@ export const InfoWrapper = ({
 }: InfoWrapperProps) => {
   return (
     <Box
-      sx={(theme) => ({
-        border: `1px solid ${theme.palette.divider}`,
+      sx={{
+        border: `1px solid ${figVars['border-2']}`,
         mb: 6,
         borderRadius: '6px',
         px: 4,
@@ -30,14 +31,14 @@ export const InfoWrapper = ({
         '&:last-of-type': {
           mb: 0,
         },
-      })}
+      }}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ width: 'calc(100% - 72px)' }}>
           <Typography variant="subheader1" mb={1}>
             {topTitle}
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             {topDescription}
           </Typography>
         </Box>
@@ -59,7 +60,7 @@ export const InfoWrapper = ({
 
       <Box>{children}</Box>
 
-      <Typography variant="secondary12" color="text.secondary" textAlign="left">
+      <Typography variant="secondary12" color="fg-2" textAlign="left">
         {bottomText}
       </Typography>
     </Box>

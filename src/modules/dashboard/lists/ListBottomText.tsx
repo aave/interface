@@ -5,7 +5,7 @@ import { Link } from '../../../components/primitives/Link';
 
 export const ListBottomText = () => {
   return (
-    <Typography variant="secondary14" color="text.secondary">
+    <Typography variant="secondary14" color="fg-2">
       <Trans>
         Since this is a test network, you can get any of the assets if you have ETH on your wallet
       </Trans>

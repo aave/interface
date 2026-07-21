@@ -28,7 +28,7 @@ export const VotersListModal = ({
   const [voteView, setVoteView] = useState<'yaes' | 'nays'>('yaes');
   const borderBaseStyle = {
     border: '1px solid',
-    borderColor: 'divider',
+    borderColor: 'border-0',
     borderRadius: 1,
   };
 
@@ -52,13 +52,13 @@ export const VotersListModal = ({
             px: 4,
             py: 2,
             borderBottom: '1px solid',
-            borderColor: 'divider',
+            borderColor: 'border-0',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-2">
             <Trans>Addresses ({voters.yaeVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-2">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -91,13 +91,13 @@ export const VotersListModal = ({
             px: 4,
             py: 2,
             borderBottom: '1px solid',
-            borderColor: 'divider',
+            borderColor: 'border-0',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-2">
             <Trans>Addresses ({voters.nayVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-2">
             <Trans>Votes</Trans>
           </Typography>
         </Row>

@@ -117,7 +117,7 @@ export const SupplyInfo = ({
                 <FormattedNumber value={reserve.supplyInfo.total.value} variant="main16" compact />
                 <Typography
                   component="span"
-                  color="text.primary"
+                  color="fg-1"
                   variant="secondary16"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
@@ -132,7 +132,7 @@ export const SupplyInfo = ({
                 <ReserveSubheader value={reserve.size.usd} />
                 <Typography
                   component="span"
-                  color="text.secondary"
+                  color="fg-2"
                   variant="secondary12"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >

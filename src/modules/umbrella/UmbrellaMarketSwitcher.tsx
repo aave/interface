@@ -15,7 +15,7 @@ import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
-import { figmaDark } from 'src/utils/figmaColors';
+import { onAccent } from 'src/utils/figmaColors';
 import {
   availableMarkets,
   CustomMarket,
@@ -83,7 +83,7 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
               width: '16px',
               height: '16px',
               borderRadius: '50%',
-              color: figmaDark['fg-1'],
+              color: onAccent,
               fontSize: '12px',
               lineHeight: '16px',
               display: 'flex',
@@ -177,7 +177,7 @@ export const MarketSwitcher = () => {
                     variant={upToLG ? 'display1' : 'h1'}
                     sx={{
                       fontSize: downToXSM ? '1.55rem' : undefined,
-                      color: 'text.primary',
+                      color: 'fg-1',
                       mr: 1,
                     }}
                   >
@@ -201,9 +201,7 @@ export const MarketSwitcher = () => {
                     >
                       <Typography variant="subheader2">V2</Typography>
                     </Box> */}
-                    <ChevronUpDownIcon
-                      sx={(theme) => ({ ml: 1, color: theme.palette.fig['fg-3'] })}
-                    />
+                    <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3' }} />
                   </Box>
                 </Box>
               </Box>
@@ -254,7 +252,7 @@ export const MarketSwitcher = () => {
       }}
     >
       <Box>
-        <Typography variant="subheader2" color="text.secondary" sx={{ px: 4, pt: 2 }}>
+        <Typography variant="subheader2" color="fg-2" sx={{ px: 4, pt: 2 }}>
           <Trans>
             {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
           </Trans>
@@ -366,7 +364,7 @@ export const MarketSwitcher = () => {
               {marketNaming.name} {market.isFork ? 'Fork' : ''}
             </ListItemText>
             <ListItemText sx={{ textAlign: 'right' }}>
-              <Typography color="text.muted" variant="description">
+              <Typography color="fg-3" variant="description">
                 {marketNaming.testChainName}
               </Typography>
             </ListItemText>

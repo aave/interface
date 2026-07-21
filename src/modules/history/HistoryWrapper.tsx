@@ -137,7 +137,7 @@ export const HistoryWrapper = () => {
             <Typography component="div" variant="h2" sx={{ mr: 4 }}>
               <Trans>Transactions</Trans>
             </Typography>
-            <Typography variant="secondary12" color="text.secondary" sx={{ mt: 1 }}>
+            <Typography variant="secondary12" color="fg-2" sx={{ mt: 1 }}>
               <Trans>This list may not include all your swaps.</Trans>
             </Typography>
           </Box>
@@ -171,7 +171,7 @@ export const HistoryWrapper = () => {
             <SvgIcon>
               <DocumentDownloadIcon width={22} height={22} />
             </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
+            <Typography variant="buttonM" color="fg-1">
               <Trans>.CSV</Trans>
             </Typography>
           </Box>
@@ -189,7 +189,7 @@ export const HistoryWrapper = () => {
             <SvgIcon>
               <DocumentDownloadIcon width={22} height={22} />
             </SvgIcon>
-            <Typography variant="buttonM" color="text.primary">
+            <Typography variant="buttonM" color="fg-1">
               <Trans>.JSON</Trans>
             </Typography>
           </Box>
@@ -206,7 +206,7 @@ export const HistoryWrapper = () => {
           .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
           .map(([date, txns], groupIndex) => (
             <React.Fragment key={groupIndex}>
-              <Typography variant="h4" color="text.primary" sx={{ ml: 9, mt: 6, mb: 2 }}>
+              <Typography variant="h4" color="fg-1" sx={{ ml: 9, mt: 6, mb: 2 }}>
                 {date}
               </Typography>
               {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
@@ -234,10 +234,10 @@ export const HistoryWrapper = () => {
             my: 24,
           }}
         >
-          <Typography variant="h3" color="text.primary">
+          <Typography variant="h3" color="fg-1">
             <Trans>Nothing found</Trans>
           </Typography>
-          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">
+          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="fg-2">
             <Trans>
               We couldn&apos;t find any transactions related to your search. Try again with a
               different asset name, or reset filters.
@@ -266,7 +266,7 @@ export const HistoryWrapper = () => {
             flex: 1,
           }}
         >
-          <Typography sx={{ my: 24 }} variant="h3" color="text.primary">
+          <Typography sx={{ my: 24 }} variant="h3" color="fg-1">
             {currentMarket === 'proto_plasma_v3' ? (
               <Trans>Transaction history for Plasma not supported yet, coming soon.</Trans>
             ) : (

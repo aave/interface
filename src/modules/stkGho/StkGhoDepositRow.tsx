@@ -10,6 +10,7 @@ import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { figVars } from 'src/utils/figmaColors';
 
 interface StkGhoDepositRowProps {
   availableToStake: string;
@@ -56,7 +57,7 @@ export const StkGhoDepositRow = ({
         cursor: meritIncentives ? 'pointer' : 'default',
       }}
     >
-      <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+      <Typography variant="caption" color="fg-2" sx={{ display: 'block' }}>
         <Trans>APR</Trans>
       </Typography>
       <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
@@ -68,18 +69,18 @@ export const StkGhoDepositRow = ({
 
   return (
     <Box
-      sx={(theme) => ({
+      sx={{
         display: 'flex',
         alignItems: { xs: 'stretch', xsm: 'center' },
         justifyContent: 'space-between',
         flexDirection: { xs: 'column', xsm: 'row' },
         gap: { xs: 4, xsm: 4 },
         borderRadius: { xs: '8px', xsm: '6px' },
-        border: `1px solid ${theme.palette.divider}`,
+        border: `1px solid ${figVars['border-2']}`,
         p: 4,
         mb: 6,
-        background: theme.palette.background.paper,
-      })}
+        background: figVars['surface-elevated'],
+      }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, minWidth: 0 }}>
         <TokenIcon symbol="stkgho" sx={{ width: 36, height: 36 }} />
@@ -88,13 +89,13 @@ export const StkGhoDepositRow = ({
             stkGHO
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" color="fg-2">
               <Trans>Available to deposit:</Trans>
             </Typography>
             <FormattedNumber
               value={availableToStake}
               variant="caption"
-              color="text.secondary"
+              color="fg-2"
               visibleDecimals={2}
             />
           </Box>

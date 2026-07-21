@@ -9,6 +9,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
 
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 
@@ -29,7 +30,7 @@ export const SGHOHeader: React.FC = () => {
 
   const valueTypographyVariant = downToSM ? 'main16' : 'main21';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
-  const symbolsColor = theme.palette.text.muted;
+  const symbolsColor = figVars['fg-3'];
   const iconSize = valueTypographyVariant === 'main21' ? 20 : 16;
 
   const apr = vault?.targetRate ? +vault.targetRate.value : 0;

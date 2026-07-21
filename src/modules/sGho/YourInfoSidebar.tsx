@@ -21,7 +21,7 @@ export const YourInfoSidebar = () => {
       <Typography variant="h3" sx={{ mb: 4 }}>
         <Trans>Your info</Trans>
       </Typography>
-      <Typography sx={{ mb: 6 }} color="text.secondary">
+      <Typography sx={{ mb: 6 }} color="fg-2">
         <Trans>Please connect a wallet to view your personal information here.</Trans>
       </Typography>
       <ConnectWalletButton />

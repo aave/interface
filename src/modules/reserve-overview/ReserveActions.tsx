@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, Paper, Skeleton, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Button, Divider, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
@@ -21,6 +21,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { BuyWithFiat } from 'src/modules/staking/BuyWithFiat';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import {
   assetCanBeBorrowedByUser,
   getMaxAmountAvailableToBorrow,
@@ -260,7 +261,7 @@ const ConnectWallet = () => {
         <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
           <Trans>Your info</Trans>
         </Typography>
-        <Typography sx={{ mb: 6 }} color="text.secondary">
+        <Typography sx={{ mb: 6 }} color="fg-2">
           <Trans>Please connect a wallet to view your personal information here.</Trans>
         </Typography>
         <ConnectWalletButton />
@@ -316,8 +317,8 @@ const SupplyAction = ({
           <FormattedNumber
             value={usdValue}
             variant="subheader2"
-            color="text.muted"
-            symbolsColor="text.muted"
+            color="fg-3"
+            symbolsColor="fg-3"
             symbol="USD"
           />
         </Box>
@@ -375,8 +376,8 @@ const BorrowAction = ({
           <FormattedNumber
             value={usdValue}
             variant="subheader2"
-            color="text.muted"
-            symbolsColor="text.muted"
+            color="fg-3"
+            symbolsColor="fg-3"
             symbol="USD"
           />
         </Box>
@@ -434,8 +435,8 @@ interface ValueWithSymbolProps {
 const ValueWithSymbol = ({ value, symbol, children }: ValueWithSymbolProps) => {
   return (
     <Stack direction="row" alignItems="center" gap={1}>
-      <FormattedNumber value={value} variant="h4" color="text.primary" />
-      <Typography variant="buttonL" color="text.secondary">
+      <FormattedNumber value={value} variant="h4" color="fg-1" />
+      <Typography variant="buttonL" color="fg-2">
         {symbol}
       </Typography>
       {children}
@@ -449,26 +450,24 @@ interface WalletBalanceProps {
   marketTitle: string;
 }
 export const WalletBalance = ({ balance, symbol, marketTitle }: WalletBalanceProps) => {
-  const theme = useTheme();
-
   return (
     <Stack direction="row" gap={3}>
       <Box
-        sx={(theme) => ({
+        sx={{
           width: '42px',
           height: '42px',
-          background: theme.palette.background.surface,
-          border: `0.5px solid ${theme.palette.background.disabled}`,
+          background: figVars['bg-2'],
+          border: `0.5px solid ${figVars['bg-6']}`,
           borderRadius: '12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-        })}
+        }}
       >
-        <WalletIcon sx={{ stroke: `${theme.palette.text.secondary}` }} />
+        <WalletIcon sx={{ stroke: `${figVars['fg-2']}` }} />
       </Box>
       <Box>
-        <Typography variant="description" color="text.secondary">
+        <Typography variant="description" color="fg-2">
           Wallet balance
         </Typography>
         <ValueWithSymbol value={balance} symbol={symbol}>

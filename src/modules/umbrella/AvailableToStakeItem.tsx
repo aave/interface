@@ -57,7 +57,7 @@ export const AvailableToStakeItem = ({
         compact
         value={totalAvailableToStake}
         variant="secondary14"
-        color={totalAvailableToStake === 0 ? 'text.disabled' : 'text.main'}
+        color={totalAvailableToStake === 0 ? 'fg-4' : 'text.main'}
       />
       {stakeData.underlyingIsStataToken ? (
         <MultiIconWithTooltip
@@ -82,7 +82,7 @@ export const AvailableToStakeTooltipContent = ({ stakeData }: { stakeData: Merge
 
   return (
     <Stack direction="column" alignItems="center" justifyContent="center" minWidth={160}>
-      <Typography variant="caption" color="text.secondary" mb={3}>
+      <Typography variant="caption" color="fg-2" mb={3}>
         <Trans>Your balance of assets that are available to stake</Trans>
       </Typography>
       <Box sx={{ width: '100%' }}>

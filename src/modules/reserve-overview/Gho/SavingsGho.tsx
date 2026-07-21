@@ -150,7 +150,7 @@ export const SavingsGho = () => {
                     pt: 2,
                   }}
                 >
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="caption" color="fg-2">
                     <Trans>Amount in cooldown</Trans>
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -158,7 +158,7 @@ export const SavingsGho = () => {
                     <FormattedNumber
                       value={formatEther(stakeUserData.userCooldownAmount)}
                       variant="secondary14"
-                      color="text.primary"
+                      color="fg-1"
                     />
                   </Box>
                 </Box>

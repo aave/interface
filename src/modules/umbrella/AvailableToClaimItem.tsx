@@ -66,7 +66,7 @@ export const AvailableToClaimItem = ({
 export const AvailableToClaimTooltipContent = ({ stakeData }: { stakeData: MergedStakeData }) => {
   return (
     <Stack direction="column" alignItems="center" justifyContent="center" minWidth={160}>
-      <Typography variant="caption" color="text.secondary" mb={3}>
+      <Typography variant="caption" color="fg-2" mb={3}>
         <Trans>Rewards available to claim</Trans>
       </Typography>
       <Box sx={{ width: '100%' }}>

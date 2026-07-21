@@ -30,7 +30,7 @@ import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
-import { figmaDark } from 'src/utils/figmaColors';
+import { onAccent } from 'src/utils/figmaColors';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
@@ -193,7 +193,7 @@ export const SupplyAssetsListItemDesktop = ({
                 value={0}
                 variant="secondary14"
                 sx={{ mb: '2px' }}
-                symbolsColor={figmaDark['fg-1']}
+                symbolsColor={onAccent}
               />
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
@@ -203,7 +203,7 @@ export const SupplyAssetsListItemDesktop = ({
                   }
                   visibleDecimals={2}
                   variant="secondary12"
-                  color="text.secondary"
+                  color="fg-2"
                 />
               </Stack>
             </Box>
@@ -238,7 +238,7 @@ export const SupplyAssetsListItemDesktop = ({
 
       <ListColumn>
         {debtCeiling.isMaxed ? (
-          <NoData variant="main14" color="text.secondary" />
+          <NoData variant="main14" color="fg-2" />
         ) : (
           <ListItemCanBeCollateral
             isIsolated={isIsolated}
@@ -389,7 +389,7 @@ export const SupplyAssetsListItemMobile = ({
                 value={0}
                 variant="secondary14"
                 sx={{ mb: '2px' }}
-                symbolsColor={figmaDark['fg-1']}
+                symbolsColor={onAccent}
               />
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
@@ -399,7 +399,7 @@ export const SupplyAssetsListItemMobile = ({
                   }
                   visibleDecimals={2}
                   variant="secondary12"
-                  color="text.secondary"
+                  color="fg-2"
                 />
               </Stack>
             </Box>

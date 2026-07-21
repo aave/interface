@@ -22,12 +22,12 @@ export const HFChange = ({ caption, hfCurrent, hfAfter, loading }: HFChangeProps
       <Box sx={{ textAlign: 'right' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
           {!loading ? <HealthFactorNumber value={hfCurrent} /> : <Skeleton width={50} />}
-          <SvgIcon sx={{ fontSize: '16px', color: 'text.primary', mx: 1 }}>
+          <SvgIcon sx={{ fontSize: '16px', color: 'fg-1', mx: 1 }}>
             <ArrowNarrowRightIcon />
           </SvgIcon>
           {!loading ? <HealthFactorNumber value={hfAfter} /> : <Skeleton width={50} />}
         </Box>
-        <Typography variant="helperText" color="text.secondary">
+        <Typography variant="helperText" color="fg-2">
           <Trans>Liquidation at</Trans>
           {' <1.0'}
         </Typography>

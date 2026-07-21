@@ -16,6 +16,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
+import { figVars } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import { MigrationListItemToggler } from './MigrationListItemToggler';
@@ -70,8 +71,8 @@ export const MigrationListMobileItem = ({
     useShallow((store) => [store.currentMarket, store.currentMarketData])
   );
   const theme = useTheme();
-  const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
-  const baseColorPrimary = disabled === undefined ? 'text.primary' : 'text.muted';
+  const baseColorSecondary = disabled === undefined ? 'fg-2' : 'fg-3';
+  const baseColorPrimary = disabled === undefined ? 'fg-1' : 'fg-3';
 
   const loadingRates = v3Rates?.ltv === undefined && v3Rates?.liquidationThreshold === undefined;
 
@@ -88,18 +89,16 @@ export const MigrationListMobileItem = ({
       >
         <ListColumn align="center" maxWidth={48} minWidth={48}>
           <Box
-            sx={(theme) => ({
+            sx={{
               border: `2px solid ${
-                disabled !== undefined
-                  ? theme.palette.action.disabled
-                  : theme.palette.text.secondary
+                disabled !== undefined ? figVars['disabled-fg'] : figVars['fg-2']
               }`,
               background:
                 disabled !== undefined
-                  ? theme.palette.background.disabled
+                  ? figVars['bg-6']
                   : checked
-                  ? theme.palette.text.secondary
-                  : theme.palette.background.paper,
+                  ? figVars['fg-2']
+                  : figVars['surface-elevated'],
               width: 16,
               height: 16,
               borderRadius: '2px',
@@ -109,11 +108,11 @@ export const MigrationListMobileItem = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-            })}
+            }}
             onClick={disabled !== undefined ? undefined : onCheckboxClick}
           >
             {disabled === undefined && (
-              <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+              <SvgIcon sx={{ fontSize: '14px', color: 'surface-elevated' }}>
                 <CheckIcon />
               </SvgIcon>
             )}
@@ -314,7 +313,7 @@ export const MigrationListMobileItem = ({
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="main14" color="text.secondary" />
+                <NoData variant="main14" color="fg-2" />
               ) : (
                 <>
                   <FormattedNumber
@@ -359,7 +358,7 @@ export const MigrationListMobileItem = ({
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="main14" color="text.secondary" />
+                <NoData variant="main14" color="fg-2" />
               ) : (
                 <>
                   <FormattedNumber

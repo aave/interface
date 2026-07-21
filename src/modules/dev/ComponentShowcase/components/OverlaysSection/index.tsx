@@ -18,7 +18,7 @@ const ModalDemo = () => {
         <Typography variant="h2" sx={{ mb: 4 }}>
           Modal title
         </Typography>
-        <Typography variant="description" color="text.secondary">
+        <Typography variant="description" color="fg-2">
           BasicModal renders the Paper &quot;modal&quot; variant plus the themed backdrop and close
           icon.
         </Typography>

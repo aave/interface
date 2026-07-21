@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { AlertColor, Typography } from '@mui/material';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-import { figmaDark } from 'src/utils/figmaColors';
+import { onAccent } from 'src/utils/figmaColors';
 
 import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -66,7 +66,7 @@ export const LiquidationRiskParametresInfoModal = ({
           }}
           href="https://docs.aave.com/faq/"
           sx={{ textDecoration: 'underline' }}
-          color="text.primary"
+          color="fg-1"
           variant="description"
         >
           <Trans>Learn more</Trans>
@@ -82,11 +82,7 @@ export const LiquidationRiskParametresInfoModal = ({
           </Trans>
         }
         topValue={
-          <HealthFactorNumber
-            value={healthFactor}
-            variant="main12"
-            sx={{ color: figmaDark['fg-1'] }}
-          />
+          <HealthFactorNumber value={healthFactor} variant="main12" sx={{ color: onAccent }} />
         }
         bottomText={
           <Trans>
@@ -109,8 +105,8 @@ export const LiquidationRiskParametresInfoModal = ({
             value={loanToValue}
             percent
             variant="main12"
-            color={figmaDark['fg-1']}
-            symbolsColor={figmaDark['fg-1']}
+            color={onAccent}
+            symbolsColor={onAccent}
           />
         }
         bottomText={

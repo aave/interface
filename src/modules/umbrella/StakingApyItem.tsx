@@ -85,7 +85,7 @@ export const StakingApyItem = ({
         tooltipContent={
           <StakingApyTooltipcontent
             description={
-              <Typography variant="caption" color="text.secondary" mb={3}>
+              <Typography variant="caption" color="fg-2" mb={3}>
                 {stakeData.underlyingIsStataToken ? (
                   <Trans>
                     Staking this asset will earn the underlying asset supply yield in addition to
@@ -147,7 +147,7 @@ export const StakingApyTooltipcontent = ({
                   />
                   <Typography variant="secondary12">{reward.name}</Typography>
                   {reward.fromSupply && (
-                    <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                    <Typography variant="caption" color="fg-2" sx={{ ml: 1 }}>
                       (<Trans>supply</Trans>)
                     </Typography>
                   )}
@@ -172,7 +172,7 @@ export const StakingApyTooltipcontent = ({
               mt: 1,
               pt: 2,
               borderTop: '1px solid',
-              borderColor: 'divider',
+              borderColor: 'border-2',
             }}
             caption={
               <Typography variant="secondary12" fontWeight="medium">

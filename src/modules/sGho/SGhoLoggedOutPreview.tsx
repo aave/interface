@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { figVars } from 'src/utils/figmaColors';
 
 import { StakeActionBox } from '../staking/StakeActionBox';
 
@@ -24,25 +25,25 @@ export const SGhoLoggedOutPreview = ({ rate }: SGhoLoggedOutPreviewProps) => {
         <Typography variant={xsm ? 'h4' : 'subheader1'} sx={{ mb: 1 }}>
           <Trans>Deposit GHO</Trans>
         </Typography>
-        <Typography color="text.secondary">
+        <Typography color="fg-2">
           <Trans>Deposit GHO and earn up to {(rate * 100).toFixed(2)}% APR</Trans>
         </Typography>
       </Box>
 
       <Box
-        sx={(theme) => ({
+        sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           borderRadius: { xs: '8px', xsm: '6px' },
-          border: `1px solid ${theme.palette.divider}`,
+          border: `1px solid ${figVars['border-2']}`,
           p: 4,
           mb: 6,
-          background: theme.palette.background.paper,
-        })}
+          background: figVars['surface-elevated'],
+        }}
       >
         <Box>
-          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+          <Typography variant="caption" color="fg-2" sx={{ display: 'block' }}>
             <Trans>Staking APR</Trans>
           </Typography>
           <FormattedNumber value={rate} percent variant="main16" visibleDecimals={2} />
@@ -63,7 +64,7 @@ export const SGhoLoggedOutPreview = ({ rate }: SGhoLoggedOutPreviewProps) => {
         valueUSD="0"
         dataCy="sghoBalanceBox_loggedOut"
         bottomLineTitle={
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>Cooldown period</Trans>
           </Typography>
         }

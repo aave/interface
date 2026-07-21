@@ -123,7 +123,7 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
         },
         gap: 3,
         borderBottom: '1px solid',
-        borderColor: 'divider',
+        borderColor: 'border-0',
       }}
     >
       {!md ? (

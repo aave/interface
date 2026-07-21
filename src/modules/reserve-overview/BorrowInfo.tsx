@@ -125,7 +125,7 @@ export const BorrowInfo = ({
                 <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="main16" />
                 <Typography
                   component="span"
-                  color="text.primary"
+                  color="fg-1"
                   variant="secondary16"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
@@ -140,7 +140,7 @@ export const BorrowInfo = ({
                 <ReserveSubheader value={reserve.borrowInfo!.total.usd} />
                 <Typography
                   component="span"
-                  color="text.primary"
+                  color="fg-1"
                   variant="secondary16"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >

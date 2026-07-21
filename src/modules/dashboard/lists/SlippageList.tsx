@@ -54,7 +54,7 @@ export const ListSlippageButton = ({
             text={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Trans>
-                  <Typography color="text.secondary" variant="description">
+                  <Typography color="fg-2" variant="description">
                     Slippage tolerance{' '}
                   </Typography>
                   <Typography color="text.main" variant="secondary14" sx={{ px: '4px' }}>
@@ -84,7 +84,7 @@ export const ListSlippageButton = ({
         data-cy={`slippageMenu_${selectedSlippage}`}
       >
         <Box sx={{ px: '16px', py: '12px' }}>
-          <Typography variant="secondary12" color="text.secondary">
+          <Typography variant="secondary12" color="fg-2">
             <Trans>Select slippage tolerance</Trans>
           </Typography>
         </Box>
@@ -117,7 +117,7 @@ export const ListSlippageButton = ({
         <Box sx={{ px: '16px', py: '12px', display: 'inline-flex', alignItems: 'center' }}>
           <Typography
             variant="secondary12"
-            color="text.secondary"
+            color="fg-2"
             sx={{ display: 'flex', alignItems: 'center' }}
           >
             <Trans>Powered by</Trans>
@@ -133,7 +133,7 @@ export const ListSlippageButton = ({
               <VeloraIcon />
             </SvgIcon>
           </Typography>
-          <Typography variant="main12" color="text.secondary">
+          <Typography variant="main12" color="fg-2">
             Velora
           </Typography>
         </Box>

@@ -32,7 +32,7 @@ export const TYPOGRAPHY_VARIANTS: TypographyVariant[] = [
 ];
 
 // Figma color tokens grouped for the swatch grid. Names are keys of `figmaLight`
-// (the shared subset), so each resolves in both light and dark via theme.palette.fig.
+// (the shared subset), so each resolves in both light and dark via the flattened palette tokens.
 export const SWATCH_GROUPS: { title: string; names: FigmaColorName[] }[] = [
   { title: 'Backgrounds', names: ['bg-max', 'bg-1', 'bg-2', 'bg-3', 'bg-4', 'bg-5', 'bg-6'] },
   { title: 'Foreground / Text', names: ['fg-max', 'fg-1', 'fg-2', 'fg-3', 'fg-4', 'fg-5'] },

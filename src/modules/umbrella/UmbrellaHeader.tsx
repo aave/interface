@@ -8,6 +8,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../../components/primitives/Link';
@@ -102,7 +103,6 @@ const UmbrellaHeaderUserDetails = ({
   valueTypographyVariant: 'main16' | 'main21';
   symbolsTypographyVariant: 'secondary16' | 'secondary21';
 }) => {
-  const theme = useTheme();
   const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
     useUmbrellaSummary(currentMarketData);
   const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
@@ -139,7 +139,7 @@ const UmbrellaHeaderUserDetails = ({
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor={theme.palette.text.muted}
+          symbolsColor={figVars['fg-3']}
           symbolsVariant={symbolsTypographyVariant}
         />
       </TopInfoPanelItem>
@@ -157,7 +157,7 @@ const UmbrellaHeaderUserDetails = ({
           symbol="USD"
           variant={valueTypographyVariant}
           symbolsVariant={symbolsTypographyVariant}
-          symbolsColor={theme.palette.text.muted}
+          symbolsColor={figVars['fg-3']}
           visibleDecimals={2}
         />
       </TopInfoPanelItem>
@@ -170,7 +170,7 @@ const UmbrellaHeaderUserDetails = ({
         <FormattedNumber
           value={weightedAverageApy || 0}
           variant={valueTypographyVariant}
-          symbolsColor={theme.palette.text.muted}
+          symbolsColor={figVars['fg-3']}
           visibleDecimals={2}
           percent
           symbolsVariant={symbolsTypographyVariant}
@@ -196,7 +196,7 @@ const UmbrellaHeaderUserDetails = ({
                 visibleDecimals={2}
                 compact
                 symbol="USD"
-                symbolsColor={theme.palette.text.muted}
+                symbolsColor={figVars['fg-3']}
                 symbolsVariant={symbolsTypographyVariant}
               />
             </Box>
@@ -225,7 +225,6 @@ const UmbrellaHeaderDefault = ({
   valueTypographyVariant: 'main16' | 'main21';
   symbolsTypographyVariant: 'secondary16' | 'secondary21';
 }) => {
-  const theme = useTheme();
   const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
 
   return (
@@ -245,7 +244,7 @@ const UmbrellaHeaderDefault = ({
           variant={valueTypographyVariant}
           visibleDecimals={2}
           compact
-          symbolsColor={theme.palette.text.muted}
+          symbolsColor={figVars['fg-3']}
           symbolsVariant={symbolsTypographyVariant}
         />
       </TopInfoPanelItem>

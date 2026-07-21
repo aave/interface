@@ -27,7 +27,7 @@ export const SGhoSavingsRate = ({ totalDepositedUSD, rate }: SGhoSavingsRateProp
         sx={{ mb: 4 }}
       >
         <Box>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>Total Deposited</Trans>
           </Typography>
           <FormattedNumber
@@ -39,14 +39,14 @@ export const SGhoSavingsRate = ({ totalDepositedUSD, rate }: SGhoSavingsRateProp
         </Box>
 
         <Box>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>APR</Trans>
           </Typography>
           <FormattedNumber value={rate} percent variant="main16" visibleDecimals={2} />
         </Box>
 
         <Box>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>APY, fixed rate</Trans>
           </Typography>
           <FormattedNumber value={apy} percent variant="main16" visibleDecimals={2} />

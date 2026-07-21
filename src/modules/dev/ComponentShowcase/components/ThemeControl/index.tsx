@@ -9,7 +9,7 @@ interface ThemeControlProps {
 // Button variants so it reads natively in whichever mode is active.
 export const ThemeControl = ({ mode, onChange }: ThemeControlProps) => (
   <Box sx={{ mb: 3 }}>
-    <Typography variant="helperText" color="text.secondary" sx={{ mb: 1, display: 'block' }}>
+    <Typography variant="helperText" color="fg-2" sx={{ mb: 1, display: 'block' }}>
       Theme
     </Typography>
     <Box sx={{ display: 'flex', gap: 1 }}>

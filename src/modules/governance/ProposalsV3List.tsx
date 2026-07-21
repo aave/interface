@@ -9,6 +9,7 @@ import {
 } from 'src/hooks/governance/useGovernanceProposals';
 import { useRootStore } from 'src/store/root';
 import { GOVERNANCE_PAGE } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 
 import { ProposalListHeader } from './ProposalListHeader';
 import { StateBadge, stringToState } from './StateBadge';
@@ -25,7 +26,7 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+        borderBottom: `1px solid ${figVars['border-2']}`,
       }}
       component={Link}
       href={ROUTES.dynamicRenderedProposal(+proposal.id)}
@@ -52,14 +53,14 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
           {proposal.title}
         </Typography>
         {proposal.author && (
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             Author: {proposal.author.replace(/^@/, '')}
           </Typography>
         )}
         {proposal.shortDescription && (
           <Typography
             variant="description"
-            color="text.secondary"
+            color="fg-2"
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -106,7 +107,7 @@ const ProposalListSkeleton = () => {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+        borderBottom: `1px solid ${figVars['border-2']}`,
       }}
     >
       <Stack

@@ -122,7 +122,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
               <ReserveSubheader value={String(reserve.borrowInfo.total.usd)} rightAlign={true} />
             </>
           ) : (
-            <NoData variant={'secondary14'} color="text.secondary" />
+            <NoData variant={'secondary14'} color="fg-2" />
           )}
         </Box>
       </Row>

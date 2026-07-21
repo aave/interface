@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import { figVars } from 'src/utils/figmaColors';
 
 interface SwatchProps {
   name: string;
@@ -16,21 +17,21 @@ const CHECKERBOARD = {
 export const Swatch = ({ name, value }: SwatchProps) => (
   <Box sx={{ width: 132 }}>
     <Box
-      sx={(theme) => ({
+      sx={{
         height: 56,
         borderRadius: '8px',
-        border: `1px solid ${theme.palette.divider}`,
+        border: `1px solid ${figVars['border-2']}`,
         position: 'relative',
         overflow: 'hidden',
         ...CHECKERBOARD,
-      })}
+      }}
     >
       <Box sx={{ position: 'absolute', inset: 0, backgroundColor: value }} />
     </Box>
     <Typography variant="main12" noWrap sx={{ mt: 1, display: 'block' }}>
       {name}
     </Typography>
-    <Typography variant="secondary12" color="text.secondary" noWrap sx={{ display: 'block' }}>
+    <Typography variant="secondary12" color="fg-2" noWrap sx={{ display: 'block' }}>
       {value}
     </Typography>
   </Box>

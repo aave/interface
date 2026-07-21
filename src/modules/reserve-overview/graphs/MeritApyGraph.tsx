@@ -287,18 +287,14 @@ export const MeritApyGraph = withTooltip<MeritApyGraphProps, TooltipData>(
               left={tooltipLeft + 40}
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
-              <Typography
-                variant="secondary12"
-                color="text.secondary"
-                sx={{ mb: 2, mr: 2, fontWeight: 400 }}
-              >
+              <Typography variant="secondary12" color="fg-2" sx={{ mb: 2, mr: 2, fontWeight: 400 }}>
                 {formatDate(getDate(tooltipData))}
               </Typography>
               <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
+                <Typography variant="caption" color="fg-2" sx={{ mr: 2 }}>
                   Merit APY
                 </Typography>
-                <Typography variant="main12" color="text.primary">
+                <Typography variant="main12" color="fg-1">
                   {getMeritApy(tooltipData).toFixed(2)}%
                 </Typography>
               </Box>

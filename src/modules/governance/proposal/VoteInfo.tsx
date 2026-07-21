@@ -53,7 +53,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  color: 'text.secondary',
+                  color: 'fg-2',
                 }}
               >
                 <Typography variant="caption">
@@ -83,7 +83,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
       {user ? (
         <>
           {user && !didVote && !voteOngoing && (
-            <Typography sx={{ textAlign: 'center' }} color="text.muted">
+            <Typography sx={{ textAlign: 'center' }} color="fg-3">
               <Trans>You did not participate in this proposal</Trans>
             </Typography>
           )}
@@ -94,7 +94,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
                   <Typography variant="description">
                     <Trans>Voting power</Trans>
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="caption" color="fg-2">
                     (AAVE + stkAAVE)
                   </Typography>
                 </>

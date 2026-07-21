@@ -7,7 +7,7 @@ const OuterBar = styled('div')(({ theme }) =>
     position: 'relative',
     width: '100%',
     height: '8px',
-    bgcolor: 'divider',
+    bgcolor: 'border-2',
     display: 'block',
     borderRadius: '6px',
   })
@@ -59,7 +59,7 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
               compact={compact}
             />
             {!compact && (
-              <Typography variant="description" component="span" color="text.secondary">
+              <Typography variant="description" component="span" color="fg-2">
                 AAVE
               </Typography>
             )}
@@ -70,7 +70,7 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
             <Skeleton width={40} />
           </Typography>
         ) : (
-          <FormattedNumber value={percent} percent variant="caption" color="text.secondary" />
+          <FormattedNumber value={percent} percent variant="caption" color="fg-2" />
         )}
       </Box>
       {loading ? (

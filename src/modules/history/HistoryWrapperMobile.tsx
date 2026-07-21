@@ -172,7 +172,7 @@ export const HistoryWrapperMobile = () => {
                 open={Boolean(menuAnchorEl)}
                 onClose={handleDownloadMenuClose}
               >
-                <Typography variant="subheader2" color="text.secondary" sx={{ mx: 4, my: 3 }}>
+                <Typography variant="subheader2" color="fg-2" sx={{ mx: 4, my: 3 }}>
                   <Trans>Export data to</Trans>
                 </Typography>
                 <MenuItem
@@ -243,7 +243,7 @@ export const HistoryWrapperMobile = () => {
       ) : !isEmpty ? (
         Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
           <React.Fragment key={groupIndex}>
-            <Typography variant="h4" color="text.primary" sx={{ ml: 4, mt: 6, mb: 2 }}>
+            <Typography variant="h4" color="fg-1" sx={{ ml: 4, mt: 6, mb: 2 }}>
               {date}
             </Typography>
             {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
@@ -272,10 +272,10 @@ export const HistoryWrapperMobile = () => {
             my: 24,
           }}
         >
-          <Typography variant="h3" color="text.primary">
+          <Typography variant="h3" color="fg-1">
             <Trans>Nothing found</Trans>
           </Typography>
-          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">
+          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="fg-2">
             <Trans>
               We couldn&apos;t find any transactions related to your search. Try again with a
               different asset name, or reset filters.
@@ -304,7 +304,7 @@ export const HistoryWrapperMobile = () => {
             flex: 1,
           }}
         >
-          <Typography sx={{ my: 24 }} variant="h3" color="text.primary">
+          <Typography sx={{ my: 24 }} variant="h3" color="fg-1">
             <Trans>No transactions yet.</Trans>
           </Typography>
         </Box>

@@ -27,6 +27,7 @@ import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 
 import { StakeActionBox } from './StakeActionBox';
 import { StakingPanelSkeleton } from './StakingPanelSkeleton';
@@ -143,7 +144,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
               />
             </Stack>
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             Total deposited:{' '}
             <FormattedNumber
               variant="caption"
@@ -164,18 +165,18 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
       </Box>
 
       <Box
-        sx={(theme) => ({
+        sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: { xs: 'flex-start', xsm: 'center' },
           flexDirection: { xs: 'column', xsm: 'row' },
           gap: { xs: 0, xsm: 2 },
           borderRadius: { xs: 0, xsm: '6px' },
-          border: { xs: 'unset', xsm: `1px solid ${theme.palette.divider}` },
+          border: { xs: 'unset', xsm: `1px solid ${figVars['border-2']}` },
           p: { xs: 0, xsm: 4 },
           background: {
             xs: 'unset',
-            xsm: theme.palette.background.paper,
+            xsm: figVars['surface-elevated'],
           },
           position: 'relative',
           '&:after': {
@@ -185,9 +186,9 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             left: '-16px',
             width: 'calc(100% + 32px)',
             height: '1px',
-            bgcolor: { xs: 'divider', xsm: 'transparent' },
+            bgcolor: { xs: 'border-2', xsm: 'transparent' },
           },
-        })}
+        }}
       >
         <Box
           sx={{
@@ -209,11 +210,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
                   />
                 </Box>
               </Stack>
-              <Typography
-                sx={{ display: { xsm: 'none' } }}
-                variant="caption"
-                color="text.secondary"
-              >
+              <Typography sx={{ display: { xsm: 'none' } }} variant="caption" color="fg-2">
                 Total deposited{' '}
                 <FormattedNumber
                   variant="caption"
@@ -250,10 +247,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           }}
         >
           <Stack direction="row">
-            <Typography
-              variant={xsm ? 'subheader2' : 'description'}
-              color={xsm ? 'text.secondary' : 'text.primary'}
-            >
+            <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
               <Trans>Deposit APR </Trans>
             </Typography>
           </Stack>
@@ -270,10 +264,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'subheader2' : 'description'}
-            color={xsm ? 'text.secondary' : 'text.primary'}
-          >
+          <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
             <Trans>Max slashing</Trans>
           </Typography>
           <FormattedNumber value={maxSlash} percent variant="secondary14" />
@@ -287,10 +278,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'subheader2' : 'description'}
-            color={xsm ? 'text.secondary' : 'text.primary'}
-          >
+          <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
             <Trans>Wallet Balance</Trans>
           </Typography>
           <FormattedNumber value={availableToStake.toString()} />
@@ -398,7 +386,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
                   pt: 2,
                 }}
               >
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" color="fg-2">
                   <Trans>Amount in cooldown</Trans>
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -406,7 +394,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
                   <FormattedNumber
                     value={formatEther(stakeUserData?.userCooldownAmount || 0)}
                     variant="secondary14"
-                    color="text.primary"
+                    color="fg-1"
                   />
                 </Box>
               </Box>

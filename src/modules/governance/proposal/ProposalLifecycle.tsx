@@ -29,6 +29,7 @@ import { Proposal } from 'src/hooks/governance/useProposals';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import {
@@ -295,12 +296,11 @@ const ProposalStep = ({
         <TimelineDot
           sx={{
             background: completed
-              ? theme.palette.primary.main
+              ? theme.vars.palette.primary.main
               : active
               ? 'unset'
-              : theme.palette.text.disabled,
-            borderColor:
-              completed || active ? theme.palette.primary.main : theme.palette.text.disabled,
+              : figVars['fg-4'],
+            borderColor: completed || active ? theme.vars.palette.primary.main : figVars['fg-4'],
             my: 1,
           }}
           variant={active ? 'outlined' : 'filled'}
@@ -308,7 +308,7 @@ const ProposalStep = ({
         {!lastStep && (
           <TimelineConnector
             sx={{
-              background: completed ? theme.palette.primary.main : theme.palette.text.disabled,
+              background: completed ? theme.vars.palette.primary.main : figVars['fg-4'],
             }}
           />
         )}
@@ -323,7 +323,7 @@ const ProposalStep = ({
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Typography variant="tooltip" color="text.muted">
+              <Typography variant="tooltip" color="fg-3">
                 {formatTime(timestamp)}
               </Typography>
               {transactionHash && (

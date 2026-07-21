@@ -85,7 +85,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
               p: { xs: '0', xsm: '3.625px 0px' },
             }}
           >
-            <Typography variant="subheader2" color="text.muted" noWrap>
+            <Typography variant="subheader2" color="fg-3" noWrap>
               {reserve.underlyingToken.symbol}
               {reserve.isolationModeConfig?.canBeCollateral && (
                 <span style={{ marginLeft: '8px' }}>
@@ -136,7 +136,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
             <ReserveSubheader value={String(reserve.borrowInfo?.total.usd)} />
           </>
         ) : (
-          <NoData variant={'secondary14'} color="text.secondary" />
+          <NoData variant={'secondary14'} color="fg-2" />
         )}
       </ListColumn>
 

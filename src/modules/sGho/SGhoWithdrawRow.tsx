@@ -20,7 +20,7 @@ export const SGhoWithdrawRow = ({ balance, balanceUSD, onWithdraw }: SGhoWithdra
         valueUSD={balanceUSD}
         dataCy="sghoBalanceBox"
         bottomLineTitle={
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>Cooldown period</Trans>
           </Typography>
         }

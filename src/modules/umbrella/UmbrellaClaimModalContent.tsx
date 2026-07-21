@@ -140,7 +140,7 @@ export const UmbrellaClaimAllModalContent = ({ stakeData }: UmbrellaClaimAllModa
                   variant="helperText"
                   compact
                   symbol="USD"
-                  color="text.secondary"
+                  color="fg-2"
                 />
               </Box>
             ))}
@@ -241,7 +241,7 @@ export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalConte
                   variant="helperText"
                   compact
                   symbol="USD"
-                  color="text.secondary"
+                  color="fg-2"
                 />
               </Box>
             ))}

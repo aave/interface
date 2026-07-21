@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 interface SpecimenProps {
   label?: string;
@@ -22,27 +23,27 @@ export const Specimen = ({ label, fullWidth, children }: SpecimenProps) => (
     {label && (
       <Typography
         variant="helperText"
-        sx={(theme) => ({
-          color: theme.palette.text.muted,
+        sx={{
+          color: 'fg-3',
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
           fontWeight: 500,
-        })}
+        }}
       >
         {label}
       </Typography>
     )}
     <Box
-      sx={(theme) => ({
+      sx={{
         display: 'flex',
         alignItems: 'center',
         flexWrap: 'wrap',
         gap: 3,
         p: 6,
         minHeight: 56,
-        border: `1px solid ${theme.palette.divider}`,
+        border: `1px solid ${figVars['border-2']}`,
         borderRadius: '12px',
-      })}
+      }}
     >
       {children}
     </Box>

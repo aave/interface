@@ -153,7 +153,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                     alignItems="center"
                     justifyContent="space-between"
                   >
-                    <Typography color="text.primary">
+                    <Typography color="fg-1">
                       <Trans>Cooling down</Trans>
                     </Typography>
                     <Typography variant="helperText">
@@ -191,7 +191,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <Typography color="text.primary">
+                  <Typography color="fg-1">
                     <Trans>Withdraw</Trans>
                   </Typography>
                   <Typography variant="helperText">

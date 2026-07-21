@@ -180,8 +180,8 @@ export const MigrationBottomPanel = ({
           />
           <Box
             border={1}
-            borderColor="divider"
-            bgcolor="background.paper"
+            borderColor="border-2"
+            bgcolor="surface-elevated"
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -214,7 +214,7 @@ export const MigrationBottomPanel = ({
           <Box
             sx={{
               height: '44px',
-              backgroundColor: 'background.surface',
+              backgroundColor: 'bg-2',
               borderRadius: '4px',
               display: 'flex',
               justifyContent: 'center',

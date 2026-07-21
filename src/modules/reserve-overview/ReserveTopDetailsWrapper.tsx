@@ -132,7 +132,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <MarketLogo size={20} logo={logo} />
-              <Typography variant="subheader1" sx={{ color: 'text.primary' }}>
+              <Typography variant="subheader1" sx={{ color: 'fg-1' }}>
                 {market.marketTitle} <Trans>Market</Trans>
               </Typography>
               {market.v3 && (
@@ -142,7 +142,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                     px: 2,
                     mx: 2,
                     borderRadius: '12px',
-                    background: (theme) => theme.palette.gradients.aaveGradient,
+                    bgcolor: 'purple-1',
                   }}
                 >
                   <Typography variant="subheader2">Version 3</Typography>
@@ -156,7 +156,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
               <ReserveIcon />
               <Box>
                 {!loading && (
-                  <Typography sx={{ color: 'text.secondary' }} variant="caption">
+                  <Typography sx={{ color: 'fg-2' }} variant="caption">
                     {poolReserve.underlyingToken.symbol}
                   </Typography>
                 )}

@@ -103,7 +103,7 @@ export const SavingsGhoBanner = () => {
               [theme.breakpoints.up(1125)]: { typography: 'description' },
               typography: { xs: 'caption' },
             })}
-            color="text.secondary"
+            color="fg-2"
           >
             {hasLegacyPosition ? (
               <Trans>To continue claiming rewards, migrate now.</Trans>
@@ -138,7 +138,7 @@ export const SavingsGhoBanner = () => {
                 ['@media screen and (min-width: 1125px)']: { typography: 'description' },
                 typography: { xs: 'caption' },
               }}
-              color="text.secondary"
+              color="fg-2"
               noWrap
             >
               <Trans>Total deposited</Trans>
@@ -162,7 +162,7 @@ export const SavingsGhoBanner = () => {
               ['@media screen and (min-width: 1125px)']: { typography: 'description' },
               typography: { xs: 'caption' },
             }}
-            color="text.secondary"
+            color="fg-2"
             noWrap
           >
             <Trans>APY</Trans>
@@ -254,7 +254,7 @@ const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: bool
                 <Trans>Earn into sGHO</Trans>
               )}
             </Typography>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" color="fg-2">
               {hasLegacyPosition ? (
                 <Trans>To continue claiming rewards, migrate now.</Trans>
               ) : (
@@ -277,7 +277,7 @@ const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: bool
                   />
                 </Stack>
               )}
-              <Typography variant="caption" color="text.secondary" noWrap>
+              <Typography variant="caption" color="fg-2" noWrap>
                 <Trans>Total deposited</Trans>
               </Typography>
             </Stack>
@@ -289,7 +289,7 @@ const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: bool
                   <FormattedNumber percent variant="secondary14" value={targetRate} />
                 </Stack>
               )}
-              <Typography variant="caption" color="text.secondary" noWrap>
+              <Typography variant="caption" color="fg-2" noWrap>
                 <Trans>APY</Trans>
               </Typography>
             </Stack>

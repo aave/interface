@@ -121,7 +121,7 @@ export const BridgeTransactionListItem = ({
             value={amount}
             symbol="USD"
             variant="secondary12"
-            color="text.secondary"
+            color="fg-2"
           /> */}
         </Stack>
       </ListColumn>
@@ -140,7 +140,7 @@ export const BridgeTransactionListItem = ({
       </ListColumn>
       <ListColumn align="left">
         <Typography variant="main14">{age}</Typography>
-        <Typography variant="subheader2" color="text.muted">
+        <Typography variant="subheader2" color="fg-3">
           {dayjs.unix(blockTimestamp).format('MMMM D YYYY h:mm A')}
         </Typography>
       </ListColumn>
@@ -179,7 +179,7 @@ const BridgeTransactionMobileListItem = ({
         <Stack direction="column" gap={2}>
           <Stack>
             <Typography variant="main14">{age}</Typography>
-            <Typography variant="subheader2" color="text.muted">
+            <Typography variant="subheader2" color="fg-3">
               {dayjs.unix(blockTimestamp).format('MMMM D YYYY h:mm A')}
             </Typography>
           </Stack>
@@ -196,7 +196,7 @@ const BridgeTransactionMobileListItem = ({
                 value={amount}
                 symbol="USD"
                 variant="secondary12"
-                color="text.secondary"
+                color="fg-2"
               /> */}
             </Stack>
           </Stack>
@@ -257,15 +257,13 @@ const BridgeTransactionMobileListItem = ({
 };
 
 const TxStatus = ({ state }: { state: MessageExecutionState }) => {
-  const { palette } = useTheme();
-
   switch (state) {
     case MessageExecutionState.UNTOUCHED:
     case MessageExecutionState.IN_PROGRESS:
       return (
         <Stack direction="row" gap={2} alignItems="center">
           <CircularProgress size="12px" />
-          <Typography color={palette.text.muted} variant="main14">
+          <Typography color="fg-3" variant="main14">
             Processing
           </Typography>
         </Stack>
@@ -289,7 +287,7 @@ const TxStatus = ({ state }: { state: MessageExecutionState }) => {
               <CheckIcon />
             </SvgIcon>
           </Box>
-          <Typography color={palette.success.main} variant="main14">
+          <Typography color="success.main" variant="main14">
             Success
           </Typography>
         </Stack>
@@ -313,7 +311,7 @@ const TxStatus = ({ state }: { state: MessageExecutionState }) => {
               <XIcon />
             </SvgIcon>
           </Box>
-          <Typography color={palette.error.main} variant="main14">
+          <Typography color="error.main" variant="main14">
             Failed
           </Typography>
         </Stack>

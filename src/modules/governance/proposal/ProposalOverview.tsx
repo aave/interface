@@ -233,7 +233,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                       component="blockquote"
                       sx={{
                         borderLeft: '4px solid',
-                        borderColor: 'divider',
+                        borderColor: 'border-2',
                         pl: 4,
                         my: 3,
                         ml: 0,
@@ -251,7 +251,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     <Box
                       component="code"
                       sx={{
-                        bgcolor: 'background.default',
+                        bgcolor: 'bg-5',
                         px: 1,
                         py: 0.25,
                         borderRadius: 0.5,
@@ -263,7 +263,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     <Box
                       component="pre"
                       sx={{
-                        bgcolor: 'background.default',
+                        bgcolor: 'bg-5',
                         p: 3,
                         borderRadius: 1,
                         overflow: 'auto',
@@ -279,7 +279,12 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   return (
                     <Box
                       component="hr"
-                      sx={{ my: 4, border: 'none', borderTop: '1px solid', borderColor: 'divider' }}
+                      sx={{
+                        my: 4,
+                        border: 'none',
+                        borderTop: '1px solid',
+                        borderColor: 'border-2',
+                      }}
                     />
                   );
                 },

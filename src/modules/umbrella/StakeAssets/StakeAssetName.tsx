@@ -33,7 +33,7 @@ export const StakeAssetName = ({
         </Stack>
 
         <Stack direction="row">
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             Total staked:{' '}
             <FormattedNumber
               variant="caption"
