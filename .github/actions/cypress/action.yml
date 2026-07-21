@@ -28,6 +28,11 @@ runs:
       run: |
         pnpm install --frozen-lockfile --prefer-offline
         pnpm add serve
+        # pnpm doesn't reliably repopulate the Cypress binary cache
+        # (~/.cache/Cypress) on warm CI runs the way yarn did, and that dir
+        # isn't part of the pnpm store cache. Download it explicitly so the
+        # `install: false` step below finds the binary. Idempotent.
+        pnpm exec cypress install
 
     - name: download build
       if: github.event_name != 'workflow_run'
