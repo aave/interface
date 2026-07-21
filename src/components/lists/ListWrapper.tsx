@@ -96,12 +96,12 @@ export const ListWrapper = ({
   return (
     <Paper
       sx={[
-        (theme) => ({
+        {
           mt: withTopMargin ? 4 : 0,
           borderRadius: '10px',
-          backgroundColor: theme.palette.fig['bg-max'],
-          boxShadow: figSurfaceShadow(theme.palette.fig, 'shadow-stroke-1'),
-        }),
+          backgroundColor: 'surface-elevated',
+          boxShadow: figSurfaceShadow('shadow-stroke-1'),
+        },
         ...(paperSx ? (Array.isArray(paperSx) ? paperSx : [paperSx]) : []),
       ]}
     >
@@ -139,7 +139,7 @@ export const ListWrapper = ({
               span: {
                 width: '14px',
                 height: '2px',
-                bgcolor: 'text.secondary',
+                bgcolor: 'fg-2',
                 position: 'relative',
                 ml: 1,
                 '&:after': {
@@ -147,7 +147,7 @@ export const ListWrapper = ({
                   position: 'absolute',
                   width: '14px',
                   height: '2px',
-                  bgcolor: 'text.secondary',
+                  bgcolor: 'fg-2',
                   transition: 'all 0.2s ease',
                   transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
                   opacity: collapsed ? 1 : 0,
@@ -164,7 +164,7 @@ export const ListWrapper = ({
               }
             }}
           >
-            <Typography variant="buttonM" color="text.secondary">
+            <Typography variant="buttonM" color="fg-2">
               {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
             </Typography>
             <span />

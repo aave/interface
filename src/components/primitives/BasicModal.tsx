@@ -86,10 +86,7 @@ export const BasicModal = ({
               onClick={handleClose}
               data-cy={'close-button'}
             >
-              <CloseIcon
-                data-cy={'CloseModalIcon'}
-                sx={(theme) => ({ fontSize: '24px', color: theme.palette.fig['fg-3'] })}
-              />
+              <CloseIcon data-cy={'CloseModalIcon'} sx={{ fontSize: '24px', color: 'fg-3' }} />
             </IconButton>
           </Box>
         )}

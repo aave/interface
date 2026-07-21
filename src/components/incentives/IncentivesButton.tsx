@@ -11,6 +11,7 @@ import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import { convertAprToApy } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
@@ -121,7 +122,7 @@ const BlankIncentives = () => {
         justifyContent: 'center',
       }}
     >
-      <Typography variant="main12" color="text.secondary">
+      <Typography variant="main12" color="fg-2">
         &nbsp;
       </Typography>
     </Box>
@@ -380,12 +381,7 @@ const Content = ({
       if (incentivesNetAPR !== INFINITY && incentivesNetAPR < 10000) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <FormattedNumber
-              value={incentivesNetAPR}
-              percent
-              variant="secondary12"
-              color="text.secondary"
-            />
+            <FormattedNumber value={incentivesNetAPR} percent variant="secondary12" color="fg-2" />
             <IncentivesIcon width="16" height="16" />
           </Box>
         );
@@ -397,7 +393,7 @@ const Content = ({
               percent
               compact
               variant="secondary12"
-              color="text.secondary"
+              color="fg-2"
             />
             <IncentivesIcon width="16" height="16" />
           </Box>
@@ -405,7 +401,7 @@ const Content = ({
       } else if (incentivesNetAPR === INFINITY) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography variant="main12" color="text.secondary">
+            <Typography variant="main12" color="fg-2">
               ∞
             </Typography>
             <IncentivesIcon width="16" height="16" />
@@ -426,7 +422,7 @@ const Content = ({
 
   return (
     <Box
-      sx={() => ({
+      sx={{
         borderRadius: '4px',
         cursor: 'pointer',
         display: 'flex',
@@ -434,10 +430,10 @@ const Content = ({
         justifyContent: 'center',
         transition: 'opacity 0.2s ease',
         '&:hover': {
-          bgcolor: 'action.hover',
-          borderColor: 'action.disabled',
+          bgcolor: 'button-hover',
+          borderColor: 'disabled-fg',
         },
-      })}
+      }}
       onClick={() => {
         // TODO: How to handle this for event props?
         trackEvent(DASHBOARD.VIEW_LM_DETAILS_DASHBOARD, {});
@@ -500,28 +496,28 @@ const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) =
 
   return (
     <Box
-      sx={(theme) => ({
+      sx={{
         p: { xs: '0 4px', xsm: '2px 4px' },
-        border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
+        border: `1px solid ${open ? figVars['disabled-fg'] : figVars['border-2']}`,
         borderRadius: '4px',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         transition: 'opacity 0.2s ease',
-        bgcolor: open ? 'action.hover' : 'transparent',
+        bgcolor: open ? 'button-hover' : 'transparent',
         '&:hover': {
-          bgcolor: 'action.hover',
-          borderColor: 'action.disabled',
+          bgcolor: 'button-hover',
+          borderColor: 'disabled-fg',
         },
-      })}
+      }}
       onClick={() => {
         trackEvent(DASHBOARD.VIEW_LM_DETAILS_DASHBOARD, {});
         setOpen(!open);
       }}
     >
       <Box sx={{ mr: 2 }}>
-        <Typography component="span" variant="secondary12" color="text.secondary">
+        <Typography component="span" variant="secondary12" color="fg-2">
           {`${value}x`}
         </Typography>
       </Box>

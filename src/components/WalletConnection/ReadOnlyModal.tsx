@@ -15,6 +15,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { resolveEnsAddress } from 'src/utils/ensClient';
 import { AUTH } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import { isAddress } from 'viem';
 import { useAccount, useDisconnect } from 'wagmi';
 
@@ -78,22 +79,22 @@ export const ReadOnlyModal = () => {
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <TxModalTitle title="Watch Wallet" />
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
-          <Typography variant="subheader1" color="text.secondary">
+          <Typography variant="subheader1" color="fg-2">
             <Trans>Watch a wallet balance in read-only mode</Trans>
           </Typography>
           <ReadOnlyModeTooltip />
         </Box>
         <form onSubmit={handleSubmit}>
           <InputBase
-            sx={(theme) => ({
+            sx={{
               py: 1,
               px: 3,
-              border: `1px solid ${theme.palette.divider}`,
+              border: `1px solid ${figVars['border-2']}`,
               borderRadius: '6px',
               mb: 1,
               overflow: 'show',
               fontSize: sm ? '16px' : '14px',
-            })}
+            }}
             placeholder="Enter ethereum address or ENS name"
             fullWidth
             value={inputMockWalletAddress}

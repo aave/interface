@@ -1,5 +1,6 @@
 import { Box, Input, InputAdornment, Typography, useTheme } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 import { convertAprToApy } from 'src/utils/utils';
 
 import { FormattedNumber } from '../primitives/FormattedNumber';
@@ -89,7 +90,7 @@ export const PointsBasedCampaignTooltip = ({
             gap: 1.5,
             pb: 1,
             borderBottom: 1,
-            borderColor: theme.palette.divider,
+            borderColor: 'border-2',
           }}
         >
           <TokenIcon aToken={aToken} symbol={tokenIconSymbol} sx={{ fontSize: '18px' }} />
@@ -107,11 +108,7 @@ export const PointsBasedCampaignTooltip = ({
             pb: 1,
           }}
         >
-          <Typography
-            variant="caption"
-            color={theme.palette.text.secondary}
-            sx={{ lineHeight: 1.5 }}
-          >
+          <Typography variant="caption" color="fg-2" sx={{ lineHeight: 1.5 }}>
             The estimated amount of TydroInkPoints that you get per $1,000 net{' '}
             {isBorrow ? 'borrowed' : 'supplied'} per day.
           </Typography>
@@ -124,11 +121,11 @@ export const PointsBasedCampaignTooltip = ({
             alignItems: 'center',
             justifyContent: 'space-between',
             p: 1.5,
-            backgroundColor: theme.palette.action.hover,
+            backgroundColor: 'button-hover',
             borderRadius: 1,
           }}
         >
-          <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+          <Typography variant={typographyVariant} color="fg-2">
             Points per $1,000/day
           </Typography>
           <Typography variant={typographyVariant} sx={{ fontWeight: 600 }}>
@@ -148,18 +145,18 @@ export const PointsBasedCampaignTooltip = ({
             gap: 1.25,
             p: 1.5,
             borderRadius: 1,
-            border: `1px solid ${theme.palette.divider}`,
-            backgroundColor: theme.palette.background.paper,
+            border: `1px solid ${figVars['border-2']}`,
+            backgroundColor: 'surface-elevated',
           }}
         >
           {!hasInkPriceInput ? (
-            <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+            <Typography variant={typographyVariant} color="fg-2">
               Calculate APY from the assumed INK price.
               <br />
               (INK price not public yet)
             </Typography>
           ) : (
-            <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+            <Typography variant={typographyVariant} color="fg-2">
               The results are based on your estimated INK price.
             </Typography>
           )}
@@ -175,7 +172,7 @@ export const PointsBasedCampaignTooltip = ({
                 <InputAdornment
                   position="end"
                   sx={{
-                    color: theme.palette.text.secondary,
+                    color: 'fg-2',
                     pointerEvents: 'none',
                     pr: 1,
                   }}
@@ -189,10 +186,10 @@ export const PointsBasedCampaignTooltip = ({
               borderRadius: 1,
               pl: 1,
               height: 24,
-              border: `1px solid ${theme.palette.divider}`,
+              border: `1px solid ${figVars['border-2']}`,
               transition: theme.transitions.create(['border-color', 'box-shadow']),
-              backgroundColor: theme.palette.background.default,
-              '&:focus-within': { borderColor: theme.palette.primary.main },
+              backgroundColor: 'bg-5',
+              '&:focus-within': { borderColor: 'primary.main' },
             }}
           />
           {estimatedPointsValue !== null && (
@@ -205,10 +202,10 @@ export const PointsBasedCampaignTooltip = ({
                   px: 1,
                   py: 1,
                   borderRadius: 1,
-                  backgroundColor: theme.palette.action.hover,
+                  backgroundColor: 'button-hover',
                 }}
               >
-                <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+                <Typography variant={typographyVariant} color="fg-2">
                   APY
                 </Typography>
                 <Typography variant={typographyVariant} sx={{ fontWeight: 600 }}>
@@ -228,10 +225,10 @@ export const PointsBasedCampaignTooltip = ({
                   px: 1,
                   py: 1,
                   borderRadius: 1,
-                  backgroundColor: theme.palette.action.hover,
+                  backgroundColor: 'button-hover',
                 }}
               >
-                <Typography variant={typographyVariant} color={theme.palette.text.secondary}>
+                <Typography variant={typographyVariant} color="fg-2">
                   FDV
                 </Typography>
                 <Typography variant={typographyVariant} sx={{ fontWeight: 500 }}>

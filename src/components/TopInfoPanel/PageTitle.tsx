@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
+import { figVars } from 'src/utils/figmaColors';
 
 import { useRootStore } from '../../store/root';
 import { selectIsMigrationAvailable } from '../../store/v3MigrationSelectors';
@@ -48,7 +49,7 @@ export const PageTitle = ({
         alignItems: { xs: 'flex-start', xsm: 'center' },
         mb: pageTitle ? 4 : 0,
         flexDirection: { xs: 'column', xsm: 'row' },
-        boxShadow: `inset 0px -1px 0px ${theme.palette.fig['border-0']}`,
+        boxShadow: `inset 0px -1px 0px ${figVars['border-0']}`,
       }}
     >
       {pageTitle && (downToXSM || !withMarketSwitcher) && (
@@ -56,7 +57,7 @@ export const PageTitle = ({
           <Typography
             variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
             sx={{
-              color: withMarketSwitcher ? 'text.muted' : 'text.white',
+              color: withMarketSwitcher ? 'fg-3' : 'text.white',
               mr: { xs: 5, xsm: 3 },
               mb: { xs: 1, xsm: 0 },
             }}
@@ -96,7 +97,6 @@ export const PageTitle = ({
             sx={{
               display: 'none',
               [theme.breakpoints.up(800)]: { display: 'flex' }, // Hide on mobile (xs) and for widths between 759px and 800px, show on small screens and up
-              p: '0 8px',
               minWidth: 'unset',
               gap: 2,
               alignItems: 'center',
@@ -114,7 +114,7 @@ export const PageTitle = ({
             <StarIcon
               sx={{
                 fontSize: '18px',
-                color: isCurrentMarketFavorite ? FAVOURITE_STAR_COLOR : 'text.disabled',
+                color: isCurrentMarketFavorite ? FAVOURITE_STAR_COLOR : 'fg-4',
               }}
             />
           </Button>

@@ -3,6 +3,7 @@ import { XCircleIcon } from '@heroicons/react/solid';
 import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
@@ -36,15 +37,15 @@ export const SearchInput = ({
   }, [onSearchTermChange]);
   return (
     <Box
-      sx={(theme) => ({
+      sx={{
         display: 'flex',
         alignItems: 'center',
         gap: 2,
-        border: `1px solid ${theme.palette.divider}`,
+        border: `1px solid ${figVars['border-2']}`,
         borderRadius: '6px',
         height: '36px',
         ...wrapperSx,
-      })}
+      }}
     >
       <Box sx={{ ml: 2, mt: 1 }}>
         <SearchIcon height={16} />

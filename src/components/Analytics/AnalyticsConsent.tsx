@@ -5,6 +5,7 @@ import { CookieConsent as AnalyticsConsentBanner } from 'react-cookie-consent';
 import { Link } from 'src/components/primitives/Link';
 import { CONSENT_KEY } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
 import { useAccount } from 'wagmi';
 import { useShallow } from 'zustand/shallow';
 
@@ -63,7 +64,7 @@ export default function AnalyticsBanner() {
         visible={analyticsConfigOpen ? 'show' : 'hidden'}
         flipButtons
         style={{
-          background: theme.palette.background.paper,
+          background: figVars['surface-elevated'],
           bottom: isMobile ? '24px' : '24px',
           right: isMobile ? '50%' : '24px',
           left: isMobile ? '50%' : 'auto',
@@ -76,7 +77,7 @@ export default function AnalyticsBanner() {
           flexFlow: 'column',
           justifyContent: 'space-between',
           alignItems: 'center',
-          color: theme.palette.text.primary,
+          color: figVars['fg-1'],
           marginBottom: '16px',
           fontSize: '14px',
           lineHeight: '20.02px',
@@ -137,7 +138,7 @@ export default function AnalyticsBanner() {
           We may employ on-the-spot tracking techniques during your browsing session to collect data
           on your interactions, preferences, and behaviour. This data helps us personalise your
           experience and improve our services. See our
-          <Link sx={{ color: theme.palette.info.main }} href="https://aave.com/privacy-policy/">
+          <Link sx={{ color: 'info.main' }} href="https://aave.com/privacy-policy/">
             {' '}
             Privacy Policy.
           </Link>

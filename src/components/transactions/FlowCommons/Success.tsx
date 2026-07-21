@@ -7,6 +7,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { figVars } from 'src/utils/figmaColors';
 
 import { BaseSuccessView } from './BaseSuccess';
 
@@ -82,7 +83,7 @@ export const TxSuccessView = ({
         {addToken && symbol && (
           <Box
             sx={(theme) => ({
-              border: theme.palette.mode === 'dark' ? `1px solid ${theme.palette.divider}` : 'none',
+              border: theme.palette.mode === 'dark' ? `1px solid ${figVars['border-2']}` : 'none',
               background: theme.palette.mode === 'dark' ? 'none' : '#F7F7F9',
               borderRadius: '12px',
               display: 'flex',
@@ -97,7 +98,7 @@ export const TxSuccessView = ({
               aToken={addToken && addToken.aToken ? true : false}
               sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
             />
-            <Typography variant="description" color="text.primary" sx={{ mx: '24px' }}>
+            <Typography variant="description" color="fg-1" sx={{ mx: '24px' }}>
               <Trans>
                 Add {addToken && addToken.aToken ? 'aToken ' : 'token '} to wallet to track your
                 balance.

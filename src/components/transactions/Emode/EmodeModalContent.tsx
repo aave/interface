@@ -400,12 +400,12 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
           <Box>
             <Stack direction="column">
               <Stack direction="row" alignItems="center" spacing={1} mb={1}>
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" color="fg-2">
                   <Trans>Asset category</Trans>
                 </Typography>
                 {selectedEmode.isolated && (
                   <>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" color="fg-2">
                       -
                     </Typography>
                     <TextWithTooltip
@@ -428,22 +428,22 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                   width: '100%',
                   height: '44px',
                   borderRadius: '6px',
-                  borderColor: 'divider',
+                  borderColor: 'border-2',
                   outline: 'none !important',
-                  color: 'text.primary',
+                  color: 'fg-1',
                   '.MuiOutlinedInput-input': {
                     backgroundColor: 'transparent',
                   },
                   '&:hover .MuiOutlinedInput-notchedOutline, .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'divider',
+                    borderColor: 'border-2',
                     outline: 'none !important',
                     borderWidth: '1px',
                   },
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'divider',
+                    borderColor: 'border-2',
                     borderWidth: '1px',
                   },
-                  '.MuiSelect-icon': { color: 'text.primary' },
+                  '.MuiSelect-icon': { color: 'fg-1' },
                 }}
                 value={selectedEmode.id}
                 onChange={(e) => selectEMode(Number(e.target.value))}
@@ -476,7 +476,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                         </Box>
                       )}
                       {!emode.available && (
-                        <Typography variant="caption" color="text.secondary" fontStyle="italic">
+                        <Typography variant="caption" color="fg-2" fontStyle="italic">
                           <Trans>Unavailable</Trans>
                         </Typography>
                       )}
@@ -528,7 +528,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                           </Box>
                         )}
                         {!emode.available && (
-                          <Typography variant="caption" color="text.secondary" fontStyle="italic">
+                          <Typography variant="caption" color="fg-2" fontStyle="italic">
                             <Trans>Unavailable</Trans>
                           </Typography>
                         )}

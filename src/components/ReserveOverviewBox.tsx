@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React, { ReactNode } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 type ReserveOverviewBoxProps = {
   children: ReactNode;
@@ -14,13 +15,13 @@ export function ReserveOverviewBox({
 }: ReserveOverviewBoxProps) {
   return (
     <Box
-      sx={(theme) => ({
+      sx={{
         borderRadius: '6px',
-        border: `1px solid ${theme.palette.divider}`,
+        border: `1px solid ${figVars['border-2']}`,
         flex: fullWidth ? '0 100%' : '0 32%',
         marginBottom: '2%',
         maxWidth: fullWidth ? '100%' : '32%',
-      })}
+      }}
     >
       <Box
         sx={{
@@ -32,7 +33,7 @@ export function ReserveOverviewBox({
         }}
       >
         {title && (
-          <Typography variant="secondary14" color="text.secondary" component="span">
+          <Typography variant="secondary14" color="fg-2" component="span">
             {title}
           </Typography>
         )}

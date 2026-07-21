@@ -1,7 +1,8 @@
 import { styled, ToggleButton, ToggleButtonProps } from '@mui/material';
 import React from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
-const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) => ({
+const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>({
   border: '0px',
   flex: 1,
   backgroundColor: '#383D51',
@@ -19,30 +20,26 @@ const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) =
     justifyContent: 'center',
 
     '.MuiTypography-subheader1': {
-      background: theme.palette.gradients.aaveGradient,
-      backgroundClip: 'text',
-      textFillColor: 'transparent',
+      color: figVars['purple-1'],
     },
     '.MuiTypography-secondary14': {
-      background: theme.palette.gradients.aaveGradient,
-      backgroundClip: 'text',
-      textFillColor: 'transparent',
+      color: figVars['purple-1'],
     },
   },
-})) as typeof ToggleButton;
+}) as typeof ToggleButton;
 
-const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) => ({
+const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>({
   border: '0px',
   flex: 1,
-  color: theme.palette.text.muted,
+  color: figVars['fg-3'],
   borderRadius: '4px',
 
   // Selected (active) state
   '&.Mui-selected, &.Mui-selected:hover': {
-    border: `1px solid ${theme.palette.other.standardInputLine}`,
+    border: `1px solid ${figVars['input-line']}`,
     backgroundColor: '#FFFFFF',
     borderRadius: '4px !important',
-    color: theme.palette.background.header,
+    color: figVars['bg-1'],
     zIndex: 100,
     height: '100%',
     display: 'flex',
@@ -51,19 +48,19 @@ const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ the
 
   // Disabled but NOT selected: keep readable text with slight fade
   '&.Mui-disabled:not(.Mui-selected)': {
-    color: theme.palette.text.secondary,
+    color: figVars['fg-2'],
     opacity: 0.55,
   },
 
   // Disabled + selected: preserve the selected look
   '&.Mui-disabled.Mui-selected': {
-    border: `1px solid ${theme.palette.other.standardInputLine}`,
+    border: `1px solid ${figVars['input-line']}`,
     backgroundColor: '#FFFFFF',
     borderRadius: '4px !important',
-    color: theme.palette.background.header,
+    color: figVars['bg-1'],
     opacity: 1,
   },
-})) as typeof ToggleButton;
+}) as typeof ToggleButton;
 
 export function StyledTxModalToggleButton(props: ToggleButtonProps) {
   return <CustomTxModalToggleButton {...props} />;

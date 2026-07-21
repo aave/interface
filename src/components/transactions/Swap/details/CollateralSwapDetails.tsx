@@ -248,8 +248,8 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
                     variant="helperText"
                     compact
                     symbol="USD"
-                    symbolsColor="text.secondary"
-                    color="text.secondary"
+                    symbolsColor="fg-2"
+                    color="fg-2"
                   />
                 </>
               )}
@@ -300,8 +300,8 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
                     variant="helperText"
                     compact
                     symbol="USD"
-                    symbolsColor="text.secondary"
-                    color="text.secondary"
+                    symbolsColor="fg-2"
+                    color="fg-2"
                   />
                 </>
               )}

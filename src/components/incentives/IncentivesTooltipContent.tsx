@@ -360,7 +360,7 @@ export const IncentivesTooltipContent = ({
         flexDirection: 'column',
       }}
     >
-      <Typography variant="caption" color="text.secondary" mb={3}>
+      <Typography variant="caption" color="fg-2" mb={3}>
         <Trans>Participating in this {symbol} reserve gives annualized rewards.</Trans>
       </Typography>
 
@@ -484,7 +484,7 @@ export const IncentivesTooltipContent = ({
 
         {/* Show Net APR (protocol incentives only) if multiple incentives */}
         {incentives.length > 1 && (
-          <Box sx={() => ({ pt: 1, mt: 1 })}>
+          <Box sx={{ pt: 1, mt: 1 }}>
             <Row
               caption={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -509,14 +509,14 @@ export const IncentivesTooltipContent = ({
 
         {/* Show Total APY if we have Merit incentives or protocol APY */}
         {(meritIncentives?.breakdown || protocolAPY > 0) && (
-          <Box sx={() => ({ pt: 1, mt: 1, borderTop: '1px solid rgba(255, 255, 255, 0.1)' })}>
+          <Box sx={{ pt: 1, mt: 1, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
             <Row
               caption={
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography variant={typographyVariant} fontWeight="600">
                     <Trans>Total APY</Trans>
                   </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                  <Typography variant="caption" color="fg-2" sx={{ ml: 1 }}>
                     ({isBorrow ? 'Borrow Rate' : 'Supply Rate'})
                   </Typography>
                 </Box>

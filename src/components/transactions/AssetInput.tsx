@@ -19,6 +19,7 @@ import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
 
 import { CapType } from '../caps/helper';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
@@ -125,18 +126,16 @@ export const AssetInput = <T extends Asset = Asset>({
   return (
     <Box {...sx}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <Typography color="text.secondary">
-          {inputTitle ? inputTitle : <Trans>Amount</Trans>}
-        </Typography>
+        <Typography color="fg-2">{inputTitle ? inputTitle : <Trans>Amount</Trans>}</Typography>
         {capType && <AvailableTooltip capType={capType} />}
       </Box>
 
       <Box
-        sx={(theme) => ({
-          border: `1px solid ${theme.palette.divider}`,
+        sx={{
+          border: `1px solid ${figVars['border-2']}`,
           borderRadius: '6px',
           overflow: 'hidden',
-        })}
+        }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, px: 3, py: 2 }}>
           {loading ? (
@@ -181,9 +180,9 @@ export const AssetInput = <T extends Asset = Asset>({
                 p: 0,
                 left: 8,
                 zIndex: 1,
-                color: 'text.muted',
+                color: 'fg-3',
                 '&:hover': {
-                  color: 'text.secondary',
+                  color: 'fg-2',
                 },
               }}
               onClick={() => {
@@ -243,7 +242,7 @@ export const AssetInput = <T extends Asset = Asset>({
                   },
                   '&.AssetInput__select .MuiOutlinedInput-notchedOutline': { display: 'none' },
                   '&.AssetInput__select .MuiSelect-icon': {
-                    color: 'text.primary',
+                    color: 'fg-1',
                     right: '0%',
                   },
                 }}
@@ -262,7 +261,7 @@ export const AssetInput = <T extends Asset = Asset>({
                         aToken={asset.aToken}
                         sx={{ mr: 2, ml: 4 }}
                       />
-                      <Typography variant="main16" color="text.primary">
+                      <Typography variant="main16" color="fg-1">
                         {symbol}
                       </Typography>
                     </Box>
@@ -305,22 +304,22 @@ export const AssetInput = <T extends Asset = Asset>({
               compact
               symbol="USD"
               variant="secondary12"
-              color="text.muted"
-              symbolsColor="text.muted"
+              color="fg-3"
+              symbolsColor="fg-3"
               flexGrow={1}
             />
           )}
 
           {asset.balance && onChange && (
             <>
-              <Typography component="div" variant="secondary12" color="text.secondary">
+              <Typography component="div" variant="secondary12" color="fg-2">
                 {balanceText && balanceText !== '' ? balanceText : <Trans>Balance</Trans>}{' '}
                 <FormattedNumber
                   value={asset.balance}
                   compact
                   variant="secondary12"
-                  color="text.secondary"
-                  symbolsColor="text.disabled"
+                  color="fg-2"
+                  symbolsColor="fg-4"
                 />
               </Typography>
               {!disableInput && (
@@ -345,8 +344,8 @@ export const AssetInput = <T extends Asset = Asset>({
         {exchangeRateComponent && (
           <Box
             sx={{
-              background: theme.palette.background.surface,
-              borderTop: `1px solid ${theme.palette.divider}`,
+              background: figVars['bg-2'],
+              borderTop: `1px solid ${figVars['border-2']}`,
               px: 3,
               py: 2,
             }}

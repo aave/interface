@@ -681,10 +681,10 @@ const ExchangeRate = ({
           <FormattedNumber
             value={tokenOutAmount || ''}
             variant="subheader2"
-            color="text.primary"
+            color="fg-1"
             visibleDecimals={2}
           />
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-2">
             sDAI
           </Typography>
         </>

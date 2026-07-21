@@ -14,7 +14,7 @@ export type BaseWaitingTxViewProps = {
 };
 
 const ExtLinkIcon = () => (
-  <SvgIcon sx={{ ml: 2, fontWeight: 800, fontSize: '20px', color: 'text.primary' }}>
+  <SvgIcon sx={{ ml: 2, fontWeight: 800, fontSize: '20px', color: 'fg-1' }}>
     <ExternalLinkIcon />
   </SvgIcon>
 );
@@ -72,7 +72,7 @@ export const BaseWaitingView = ({
             disabled={!txHash}
             variant="outlined"
             size="large"
-            sx={{ borderRadius: 1, borderColor: 'divider', borderWidth: 1, mt: 6, mb: 2 }}
+            sx={{ borderRadius: 1, borderColor: 'border-2', borderWidth: 1, mt: 6, mb: 2 }}
             href={
               customExplorerLink
                 ? customExplorerLink

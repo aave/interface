@@ -48,7 +48,7 @@ export const BridgeFeeTokenSelector = ({
           href="https://docs.chain.link/ccip/billing"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           Learn more
         </Link>
@@ -119,7 +119,7 @@ export const BridgeFeeTokenSelector = ({
         </Select>
       </FormControl>
       {!bridgeFeeFormatted && !loading ? (
-        <NoData variant="secondary14" color="text.secondary" />
+        <NoData variant="secondary14" color="fg-2" />
       ) : loading ? (
         <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
       ) : (
@@ -137,7 +137,7 @@ export const BridgeFeeTokenSelector = ({
             variant="helperText"
             compact
             symbol="USD"
-            color="text.secondary"
+            color="fg-2"
             sx={{ position: 'absolute', top: '20px' }}
           />
         </Stack>

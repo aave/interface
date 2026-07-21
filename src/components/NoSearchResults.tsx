@@ -41,11 +41,7 @@ export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm, su
         </Typography>
       )}
       {subtitle && (
-        <Typography
-          sx={{ width: '280px', textAlign: 'center' }}
-          variant="description"
-          color="text.secondary"
-        >
+        <Typography sx={{ width: '280px', textAlign: 'center' }} variant="description" color="fg-2">
           {subtitle}
         </Typography>
       )}

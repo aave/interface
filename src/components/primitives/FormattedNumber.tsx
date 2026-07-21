@@ -123,7 +123,7 @@ export function FormattedNumber({
           component="span"
           sx={{ mr: 0.5 }}
           variant={symbolsVariant || rest.variant}
-          color={symbolsColor || 'text.secondary'}
+          color={symbolsColor || 'fg-2'}
         >
           {'<'}
         </Typography>
@@ -133,7 +133,7 @@ export function FormattedNumber({
           component="span"
           sx={{ mr: 0.5 }}
           variant={symbolsVariant || rest.variant}
-          color={symbolsColor || 'text.secondary'}
+          color={symbolsColor || 'fg-2'}
         >
           $
         </Typography>
@@ -158,7 +158,7 @@ export function FormattedNumber({
           component="span"
           sx={{ ml: 0.5 }}
           variant={symbolsVariant || rest.variant}
-          color={symbolsColor || 'text.secondary'}
+          color={symbolsColor || 'fg-2'}
         >
           %
         </Typography>
@@ -168,7 +168,7 @@ export function FormattedNumber({
           component="span"
           sx={{ ml: 0.5 }}
           variant={symbolsVariant || rest.variant}
-          color={symbolsColor || 'text.secondary'}
+          color={symbolsColor || 'fg-2'}
         >
           {symbol}
         </Typography>

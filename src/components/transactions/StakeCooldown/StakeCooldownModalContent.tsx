@@ -193,12 +193,12 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
           pb: '30px',
         }}
       >
-        <Typography variant="description" color="text.primary">
+        <Typography variant="description" color="fg-1">
           <Trans>Amount to unstake</Trans>
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
-          <FormattedNumber value={amountToCooldown} variant="secondary14" color="text.primary" />
+          <FormattedNumber value={amountToCooldown} variant="secondary14" color="fg-1" />
         </Box>
       </Box>
 
@@ -212,7 +212,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
           pb: '30px',
         }}
       >
-        <Typography variant="description" color="text.primary">
+        <Typography variant="description" color="fg-1">
           <Trans>Unstake window</Trans>
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>

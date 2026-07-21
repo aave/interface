@@ -39,7 +39,7 @@ export const ConnectWalletPaper = ({ description, sx, ...rest }: ConnectWalletPa
             <Typography variant="h2" sx={{ mb: 2 }}>
               <Trans>Please, connect your wallet</Trans>
             </Typography>
-            <Typography sx={{ mb: 6 }} color="text.secondary">
+            <Typography sx={{ mb: 6 }} color="fg-2">
               {description || (
                 <Trans>
                   Please connect your wallet to see your supplies, borrowings, and open positions.

@@ -158,15 +158,15 @@ export const IntentTxDetails = ({
               variant="helperText"
               compact
               symbol="USD"
-              symbolsColor="text.secondary"
-              color="text.secondary"
+              symbolsColor="fg-2"
+              color="fg-2"
               roundDown={true}
             />
             {priceImpact && priceImpact > 0 && priceImpact < 100 && (
               <Typography
                 variant="helperText"
                 style={{ marginLeft: 4 }}
-                color={priceImpact > 10 ? 'error' : priceImpact > 5 ? 'warning' : 'text.secondary'}
+                color={priceImpact > 10 ? 'error' : priceImpact > 5 ? 'warning' : 'fg-2'}
               >
                 (-{priceImpact.toFixed(priceImpact > 3 ? 0 : priceImpact > 1 ? 1 : 2)}%)
               </Typography>
@@ -239,8 +239,8 @@ const MarketOrderTxDetails = ({
             variant="helperText"
             compact
             symbol="USD"
-            symbolsColor="text.secondary"
-            color="text.secondary"
+            symbolsColor="fg-2"
+            color="fg-2"
             roundDown={true}
           />
         </Box>

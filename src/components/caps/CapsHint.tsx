@@ -42,7 +42,7 @@ export const CapsHint = ({
 
       {!withoutText && (
         <>
-          <Typography variant="tooltip" color="text.secondary">
+          <Typography variant="tooltip" color="fg-2">
             {title}
           </Typography>
           <FormattedNumber

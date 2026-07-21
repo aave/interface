@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
 
 import { MARKETS } from '../../utils/events';
 
@@ -40,7 +41,7 @@ export const ListHeaderTitle = ({
     <Typography
       component="div"
       variant="subheader2"
-      color="text.secondary"
+      color="fg-2"
       noWrap
       onClick={() => (!!onClick ? onClick() : !!sortKey && handleSorting(sortKey))}
       sx={{
@@ -55,32 +56,28 @@ export const ListHeaderTitle = ({
         <Box sx={{ display: 'inline-flex', flexDirection: 'column', ml: 1 }}>
           <Box
             component="span"
-            sx={(theme) => ({
+            sx={{
               width: 0,
               height: 0,
               borderStyle: 'solid',
               borderWidth: '0 4px 4px 4px',
               borderColor: `transparent transparent ${
-                sortName === sortKey && sortDesc
-                  ? theme.palette.text.secondary
-                  : theme.palette.divider
+                sortName === sortKey && sortDesc ? figVars['fg-2'] : figVars['border-2']
               } transparent`,
               mb: 0.5,
-            })}
+            }}
           />
           <Box
             component="span"
-            sx={(theme) => ({
+            sx={{
               width: 0,
               height: 0,
               borderStyle: 'solid',
               borderWidth: '4px 4px 0 4px',
               borderColor: `${
-                sortName === sortKey && !sortDesc
-                  ? theme.palette.text.secondary
-                  : theme.palette.divider
+                sortName === sortKey && !sortDesc ? figVars['fg-2'] : figVars['border-2']
               } transparent transparent transparent`,
-            })}
+            }}
           />
         </Box>
       )}

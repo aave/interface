@@ -22,7 +22,7 @@ const InfoIcon = ({ color }: InfoIconProps) => (
   <SvgIcon
     sx={{
       ml: '3px',
-      color: color ? color : 'text.muted',
+      color: color ? color : 'fg-3',
       fontSize: '14px',
     }}
   >
@@ -37,8 +37,8 @@ export const IsolatedEnabledBadge = ({
   const theme = useTheme();
 
   const sx = {
-    border: `1px solid ${theme.palette.warning.main}`,
-    color: theme.palette.warning.main,
+    border: `1px solid ${theme.vars.palette.warning.main}`,
+    color: theme.vars.palette.warning.main,
     ...contentSx,
   };
   return (
@@ -61,12 +61,12 @@ export const IsolatedEnabledBadge = ({
           sx={{
             lineHeight: '0.75rem',
           }}
-          color={theme.palette.warning.main}
+          color="warning.main"
           {...typographyProps}
         >
           <Trans>Isolated</Trans>
         </Typography>
-        <InfoIcon color={theme.palette.warning.main} />
+        <InfoIcon color={theme.vars.palette.warning.main} />
       </Box>
     </ContentWithTooltip>
   );
@@ -119,7 +119,7 @@ const IsolationModeTooltipTemplate = ({ content }: { content: ReactNode }) => {
   return (
     <Box>
       <Box sx={{ mb: 4 }}>{content}</Box>
-      <Typography variant="subheader2" color="text.secondary">
+      <Typography variant="subheader2" color="fg-2">
         <Trans>
           Learn more in our{' '}
           <Link href="https://docs.aave.com/faq/aave-v3-features#isolation-mode" fontWeight={500}>

@@ -16,7 +16,7 @@ export const ExpirySelector = ({ selectedExpiry, setSelectedExpiry }: ExpirySele
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Typography
-          color="text.secondary"
+          color="fg-2"
           variant="subheader2"
           sx={{ height: '100%', marginRight: -1, opacity: 0.75 }}
         >
@@ -52,7 +52,7 @@ export const ExpirySelector = ({ selectedExpiry, setSelectedExpiry }: ExpirySele
                   marginRight: -1.5,
                 }}
               >
-                <Typography variant="subheader2" color="text.secondary">
+                <Typography variant="subheader2" color="fg-2">
                   {value}
                 </Typography>
               </Box>

@@ -15,15 +15,15 @@ interface ContentWithTooltipProps {
 export const PopperComponent = styled(Popper)(({ theme }) =>
   theme.unstable_sx({
     '.MuiTooltip-tooltip': {
-      color: 'text.primary',
-      backgroundColor: 'background.paper',
+      color: 'fg-1',
+      backgroundColor: 'surface-elevated',
       p: 0,
       borderRadius: '6px',
       boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
       maxWidth: '280px',
     },
     '.MuiTooltip-arrow': {
-      color: 'background.paper',
+      color: 'surface-elevated',
       '&:before': {
         boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
       },

@@ -110,7 +110,7 @@ export const AssetCategoryMultiSelect = ({
           sx={{
             width: '14px',
             height: '14px',
-            color: 'text.primary',
+            color: 'fg-1',
             flexShrink: 0,
           }}
         />
@@ -131,7 +131,7 @@ export const AssetCategoryMultiSelect = ({
         PaperProps={{
           sx: {
             width: '240px',
-            backgroundColor: 'background.paper',
+            backgroundColor: 'surface-elevated',
             boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
             borderRadius: '4px',
             mt: 2,
@@ -161,7 +161,7 @@ export const AssetCategoryMultiSelect = ({
               variant="subheader2"
               sx={{
                 flexGrow: 1,
-                color: 'text.secondary',
+                color: 'fg-2',
                 fontWeight: 500,
                 fontSize: '12px',
                 lineHeight: '16px',
@@ -176,14 +176,14 @@ export const AssetCategoryMultiSelect = ({
               sx={{
                 minWidth: 'auto',
                 padding: 0,
-                color: selectedCount > 0 ? 'text.primary' : 'text.disabled',
+                color: selectedCount > 0 ? 'fg-1' : 'fg-4',
                 textDecoration: selectedCount > 0 ? 'underline' : 'none',
                 textUnderlineOffset: '3px',
                 textTransform: 'none',
 
                 '&:hover': {
                   backgroundColor: 'transparent',
-                  color: selectedCount > 0 ? 'text.primary' : 'text.disabled',
+                  color: selectedCount > 0 ? 'fg-1' : 'fg-4',
                   textDecoration: selectedCount > 0 ? 'underline' : 'none',
                 },
               }}
@@ -220,7 +220,7 @@ export const AssetCategoryMultiSelect = ({
                 <Typography
                   variant="subheader1"
                   sx={{
-                    color: 'text.primary',
+                    color: 'fg-1',
                     fontWeight: 600,
                     fontSize: '14px',
                     lineHeight: '20px',
@@ -237,7 +237,7 @@ export const AssetCategoryMultiSelect = ({
                   width: '20px',
                   height: '20px',
                   padding: 0,
-                  color: 'text.muted',
+                  color: 'fg-3',
                   cursor: 'pointer',
                   '&.Mui-checked': {
                     color: 'primary.main',

@@ -1,4 +1,5 @@
 import { styled, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
+import { figVars } from 'src/utils/figmaColors';
 
 const CustomToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>({
   backgroundColor: '#383D51',
@@ -6,12 +7,12 @@ const CustomToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>({
   padding: '4px',
 }) as typeof ToggleButtonGroup;
 
-const CustomTxModalToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>(({ theme }) => ({
-  backgroundColor: theme.palette.background.header,
+const CustomTxModalToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>({
+  backgroundColor: figVars['bg-1'],
   padding: '2px',
   height: '36px',
   width: '100%',
-})) as typeof ToggleButtonGroup;
+}) as typeof ToggleButtonGroup;
 
 export function StyledTxModalToggleGroup(props: ToggleButtonGroupProps) {
   return <CustomTxModalToggleGroup {...props} />;

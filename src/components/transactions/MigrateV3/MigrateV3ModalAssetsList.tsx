@@ -45,7 +45,7 @@ export const MigrateV3ModalAssetsList = ({ caption, assets }: MigrateV3ModalAsse
                   variant="helperText"
                   compact
                   symbol="USD"
-                  color="text.secondary"
+                  color="fg-2"
                 />
               </Box>
             ) : (

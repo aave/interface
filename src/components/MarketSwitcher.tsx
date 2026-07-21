@@ -23,7 +23,7 @@ import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
-import { figmaDark } from 'src/utils/figmaColors';
+import { onAccent } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -96,7 +96,7 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
               width: '16px',
               height: '16px',
               borderRadius: '50%',
-              color: figmaDark['fg-1'],
+              color: onAccent,
               fontSize: '12px',
               lineHeight: '16px',
               display: 'flex',
@@ -302,9 +302,9 @@ export const MarketSwitcher = () => {
           borderRadius: '48px',
           border: '1px solid',
           borderColor: isSelected ? 'primary.main' : 'rgba(0,0,0,0.1)',
-          bgcolor: isSelected ? 'action.selected' : 'transparent',
+          bgcolor: isSelected ? 'selected' : 'transparent',
           cursor: 'pointer',
-          '&:hover': { bgcolor: 'action.hover' },
+          '&:hover': { bgcolor: 'button-hover' },
           flexShrink: 0,
         }}
       >
@@ -333,7 +333,7 @@ export const MarketSwitcher = () => {
             flexShrink: 0,
           }}
         >
-          <SvgIcon sx={{ fontSize: '20px', color: 'text.secondary' }}>
+          <SvgIcon sx={{ fontSize: '20px', color: 'fg-2' }}>
             <XIcon />
           </SvgIcon>
         </IconButton>
@@ -369,8 +369,8 @@ export const MarketSwitcher = () => {
           borderRadius: '8px',
           cursor: 'pointer',
           position: 'relative',
-          bgcolor: isSelected ? 'action.selected' : 'transparent',
-          '&:hover': { bgcolor: isSelected ? 'action.selected' : 'action.hover' },
+          bgcolor: isSelected ? 'selected' : 'transparent',
+          '&:hover': { bgcolor: isSelected ? 'selected' : 'button-hover' },
           // Star: always visible on mobile, hover-reveal on desktop
           '& .grid-fav-btn': {
             opacity: isMobile || isFavorite ? 1 : 0,
@@ -404,7 +404,7 @@ export const MarketSwitcher = () => {
           {marketNaming.name} {market.isFork ? 'Fork' : ''}
         </Typography>
         {market.externalUrl && (
-          <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
+          <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
             <ExternalLinkIcon />
           </SvgIcon>
         )}
@@ -417,7 +417,7 @@ export const MarketSwitcher = () => {
           <StarIcon
             sx={{
               fontSize: '16px',
-              color: isFavorite ? FAVOURITE_STAR_COLOR : 'text.disabled',
+              color: isFavorite ? FAVOURITE_STAR_COLOR : 'fg-4',
             }}
           />
         </IconButton>
@@ -445,7 +445,7 @@ export const MarketSwitcher = () => {
         boxSizing: 'border-box',
         borderRadius: '8px',
         cursor: 'pointer',
-        '&:hover': { bgcolor: 'action.hover' },
+        '&:hover': { bgcolor: 'button-hover' },
       }}
     >
       <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
@@ -499,7 +499,7 @@ export const MarketSwitcher = () => {
           V4
         </Box>
       </Box>
-      <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
+      <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
         <ExternalLinkIcon />
       </SvgIcon>
     </Box>
@@ -508,7 +508,7 @@ export const MarketSwitcher = () => {
   const sectionHeader = (label: React.ReactNode) => (
     <Typography
       variant="secondary12"
-      color="text.secondary"
+      color="fg-2"
       sx={{
         letterSpacing: '0.1px',
         px: '24px',
@@ -528,7 +528,7 @@ export const MarketSwitcher = () => {
       {/* Fixed header with search */}
       <Box sx={{ px: 1.5, pt: 1.5, pb: '2px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {/* <Typography variant="subheader2" color="text.secondary">
+          {/* <Typography variant="subheader2" color="fg-2">
             <Trans>
               {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
             </Trans>
@@ -554,7 +554,7 @@ export const MarketSwitcher = () => {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start" sx={{ mr: '9px' }}>
-                <SvgIcon sx={{ fontSize: 16, color: 'text.secondary' }}>
+                <SvgIcon sx={{ fontSize: 16, color: 'fg-2' }}>
                   <SearchIcon />
                 </SvgIcon>
               </InputAdornment>
@@ -565,14 +565,14 @@ export const MarketSwitcher = () => {
               borderRadius: '6px',
               height: '36px',
               '& fieldset': {
-                borderColor: 'divider',
+                borderColor: 'border-2',
               },
             },
             '& .MuiOutlinedInput-input': {
               fontSize: '14px',
               letterSpacing: '0.15px',
               '&::placeholder': {
-                color: 'text.secondary',
+                color: 'fg-2',
                 opacity: 1,
               },
             },
@@ -592,7 +592,7 @@ export const MarketSwitcher = () => {
           <Box>
             <Typography
               variant="secondary12"
-              color="text.secondary"
+              color="fg-2"
               sx={{
                 letterSpacing: '0.1px',
                 px: '24px',
@@ -671,7 +671,7 @@ export const MarketSwitcher = () => {
                   boxSizing: 'border-box',
                   borderRadius: '8px',
                   cursor: 'pointer',
-                  '&:hover': { bgcolor: 'action.hover' },
+                  '&:hover': { bgcolor: 'button-hover' },
                 }}
               >
                 <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
@@ -696,7 +696,7 @@ export const MarketSwitcher = () => {
                 >
                   <Trans>V2 Markets</Trans>
                 </Typography>
-                <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
+                <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
                   <ExternalLinkIcon />
                 </SvgIcon>
               </Box>
@@ -707,7 +707,7 @@ export const MarketSwitcher = () => {
         {/* No results */}
         {noResults && (
           <Box sx={{ px: 4, py: 3, textAlign: 'center' }}>
-            <Typography variant="description" color="text.secondary">
+            <Typography variant="description" color="fg-2">
               <Trans>No markets found</Trans>
             </Typography>
           </Box>
@@ -718,7 +718,7 @@ export const MarketSwitcher = () => {
       <Box
         sx={{
           borderTop: '1px solid',
-          borderColor: 'divider',
+          borderColor: 'border-2',
           px: '24px',
           py: 1,
           display: 'flex',
@@ -731,7 +731,7 @@ export const MarketSwitcher = () => {
             fontSize: '14px',
             fontWeight: 500,
             letterSpacing: '0.15px',
-            color: 'text.secondary',
+            color: 'fg-2',
           }}
         >
           <Trans>Show legacy markets</Trans>
@@ -785,7 +785,7 @@ export const MarketSwitcher = () => {
               variant={upToLG ? 'display1' : 'h1'}
               sx={{
                 fontSize: downToXSM ? '1.55rem' : undefined,
-                color: 'text.primary',
+                color: 'fg-1',
                 mr: 1,
               }}
             >
@@ -801,7 +801,7 @@ export const MarketSwitcher = () => {
                     color: '#fff',
                     px: 2,
                     borderRadius: '12px',
-                    background: (theme) => theme.palette.gradients.aaveGradient,
+                    bgcolor: 'purple-1',
                     display: 'flex',
                     alignItems: 'center',
                   }}
@@ -822,7 +822,7 @@ export const MarketSwitcher = () => {
                   <Typography variant="subheader2">V2</Typography>
                 </Box>
               )}
-              <ChevronUpDownIcon sx={(theme) => ({ ml: 1, color: theme.palette.fig['fg-3'] })} />
+              <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3' }} />
             </Box>
           </Box>
         </Box>
@@ -830,7 +830,7 @@ export const MarketSwitcher = () => {
         {marketBlurbs[currentMarket] && (
           <Typography
             sx={{
-              color: 'text.secondary',
+              color: 'fg-2',
               mt: 0.5,
               fontSize: '0.85rem',
               wordWrap: 'break-word',
@@ -868,7 +868,7 @@ export const MarketSwitcher = () => {
                 width: 36,
                 height: 4,
                 borderRadius: '2px',
-                bgcolor: 'divider',
+                bgcolor: 'border-2',
               }}
             />
           </Box>

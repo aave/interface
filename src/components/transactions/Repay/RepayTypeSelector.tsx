@@ -24,7 +24,7 @@ export function RepayTypeSelector({
   if (!currentMarketData.enabledFeatures?.collateralRepay) return null;
   return (
     <Box sx={{ mb: 6 }}>
-      <Typography mb={1} color="text.secondary">
+      <Typography mb={1} color="fg-2">
         <Trans>Repay with</Trans>
       </Typography>
 

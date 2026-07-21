@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import * as React from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 import { SupportedNetworkWithChainId } from './Bridge/BridgeConfig';
 
@@ -39,14 +40,14 @@ export const NetworkSelect = ({
   return (
     <Box sx={{ width: '100%', ...sx }}>
       <Box
-        sx={(theme) => ({
+        sx={{
           p: '8px 0px',
-          border: `1px solid ${theme.palette.divider}`,
+          border: `1px solid ${figVars['border-2']}`,
           borderRadius: '6px',
           mb: 1,
-        })}
+        }}
       >
-        <Typography color="text.secondary" sx={{ p: '0px 12px' }}>
+        <Typography color="fg-2" sx={{ p: '0px 12px' }}>
           Network
         </Typography>
         <FormControl fullWidth>

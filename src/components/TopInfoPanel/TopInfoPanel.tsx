@@ -1,5 +1,6 @@
 import { Box, Container, ContainerProps } from '@mui/material';
 import { ReactNode } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 import { PageTitle, PageTitleProps } from './PageTitle';
 
@@ -22,10 +23,11 @@ export const TopInfoPanel = ({
   return (
     <Box
       sx={{
-        bgcolor: 'background.header',
         pt: { xs: 10, md: 12 },
-        pb: { xs: 18, md: 20, lg: '94px', xl: '92px', xxl: '96px' },
-        color: 'text.primary',
+        pb: { xs: 10, md: 12 },
+        color: 'fg-1',
+        boxShadow: `0px 1px 0px ${figVars['border-0']}`,
+        background: `linear-gradient(180deg, ${figVars['info-panel-color-one']} 0%, ${figVars['info-panel-color-two']}, ${figVars['info-panel-color-three']})`,
       }}
     >
       <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>

@@ -10,13 +10,13 @@ export const TxModalTitle = ({ title, symbol }: TxModalTitleProps) => {
   return (
     <Typography
       variant="h2"
-      sx={(theme) => ({
+      sx={{
         mb: 6,
-        color: theme.palette.fig['fg-1'],
+        color: 'fg-1',
         fontSize: '1rem',
         fontWeight: 500,
         lineHeight: '1.5rem',
-      })}
+      }}
     >
       {title} {symbol ?? ''}
     </Typography>

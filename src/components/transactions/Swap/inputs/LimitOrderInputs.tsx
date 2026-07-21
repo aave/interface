@@ -67,7 +67,7 @@ export const LimitOrderInputs = ({
         {(inputInputTitle || swapState.showNetworkSelector) && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             {inputInputTitle && (
-              <Typography variant="secondary14" color="text.secondary">
+              <Typography variant="secondary14" color="fg-2">
                 {inputInputTitle}
               </Typography>
             )}
@@ -146,14 +146,14 @@ export const LimitOrderInputs = ({
               disabled={!(customProps?.canSwitchTokens ?? false)}
               sx={{
                 border: '1px solid',
-                borderColor: 'divider',
+                borderColor: 'border-2',
                 transform: 'translateY(-130%)',
-                backgroundColor: 'background.paper',
-                '&:hover': { backgroundColor: 'background.surface' },
+                backgroundColor: 'surface-elevated',
+                '&:hover': { backgroundColor: 'bg-2' },
                 '&:disabled': {
-                  backgroundColor: 'background.surface',
+                  backgroundColor: 'bg-2',
                   opacity: '0.7',
-                  color: 'text.secondary',
+                  color: 'fg-2',
                 },
               }}
             >
@@ -187,13 +187,13 @@ export const LimitOrderInputs = ({
                 disableFocusRipple
                 sx={{
                   border: '1px solid',
-                  borderColor: 'divider',
+                  borderColor: 'border-2',
                   transform: 'translateY(-130%)',
-                  backgroundColor: 'background.paper',
+                  backgroundColor: 'surface-elevated',
                   '&:disabled': {
-                    backgroundColor: 'background.paper',
+                    backgroundColor: 'surface-elevated',
                   },
-                  '&:hover': { backgroundColor: 'background.paper' },
+                  '&:hover': { backgroundColor: 'surface-elevated' },
                 }}
               >
                 <SvgIcon

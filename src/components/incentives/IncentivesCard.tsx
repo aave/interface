@@ -166,7 +166,7 @@ export const IncentivesCard = ({
       {value.toString() !== '-1' ? (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {displayAPY === 'Infinity' ? (
-            <Typography variant={variant} color={color || 'text.secondary'}>
+            <Typography variant={variant} color={color || 'fg-2'}>
               ∞ %
             </Typography>
           ) : (
@@ -195,7 +195,7 @@ export const IncentivesCard = ({
           )}
         </Box>
       ) : (
-        <NoData variant={variant} color={color || 'text.secondary'} />
+        <NoData variant={variant} color={color || 'fg-2'} />
       )}
       {!inlineIncentives && (
         <Box

@@ -260,7 +260,7 @@ export const SwapTxSuccessView = ({
             size={20}
             sx={{
               mr: 1,
-              color: (theme) => theme.palette.grey[400],
+              color: (theme) => theme.vars.palette.grey[400],
             }}
           />
           Details will be available soon
@@ -276,7 +276,7 @@ export const SwapTxSuccessView = ({
       customExplorerLinkText={customExplorerLinkText}
     >
       <Box display="flex" flexDirection="column" alignItems="center" mt={2} mb={3}>
-        <Typography color="text.secondary">
+        <Typography color="fg-2">
           {provider === 'cowprotocol' ? (
             <>
               {orderStatus === 'open' ? (
@@ -301,17 +301,17 @@ export const SwapTxSuccessView = ({
 
       <Box
         sx={{
-          background: 'background.default',
+          background: 'bg-5',
           borderRadius: 2,
           border: '1px solid',
-          borderColor: 'divider',
+          borderColor: 'border-2',
           p: 3,
           mb: 4,
           width: '80%',
         }}
       >
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Typography color="text.secondary">
+          <Typography color="fg-2">
             {provider == 'cowprotocol' &&
             ((orderStatus == 'open' && !isNativeToken(symbol)) || orderStatus == 'failed')
               ? `${resultScreenTokensFromTitle ?? 'Send'}`
@@ -345,14 +345,14 @@ export const SwapTxSuccessView = ({
                 </Typography>
               </Box>
             </DarkTooltip>
-            <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
+            <Typography fontWeight={600} sx={{ color: 'fg-2' }}>
               {symbol}
             </Typography>
           </Box>
         </Box>
         <Divider sx={{ my: 1 }} />
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
-          <Typography color="text.secondary">
+          <Typography color="fg-2">
             {provider == 'cowprotocol' && (orderStatus == 'open' || orderStatus == 'failed')
               ? `${resultScreenTokensToTitle ?? 'Receive'}`
               : `${resultScreenTokensToTitle ?? 'Received'}`}
@@ -385,7 +385,7 @@ export const SwapTxSuccessView = ({
                 </Typography>
               </Box>
             </DarkTooltip>
-            <Typography fontWeight={600} sx={{ color: 'text.secondary' }}>
+            <Typography fontWeight={600} sx={{ color: 'fg-2' }}>
               {outSymbol}
             </Typography>
           </Box>
@@ -394,7 +394,7 @@ export const SwapTxSuccessView = ({
           <Typography
             variant="helperText"
             fontWeight={500}
-            sx={{ float: 'right', color: 'text.secondary' }}
+            sx={{ float: 'right', color: 'fg-2' }}
             mt={0.5}
           >
             {surplusDisplay}
@@ -403,15 +403,15 @@ export const SwapTxSuccessView = ({
       </Box>
 
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography color="text.secondary">
+        <Typography color="fg-2">
           <Trans>
             Swap saved in your{' '}
             <Link
               target="_blank"
               sx={{
-                color: 'text.primary',
+                color: 'fg-1',
                 '&:hover': {
-                  color: 'text.secondary',
+                  color: 'fg-2',
                   transition: 'color 0.2s ease',
                   cursor: 'pointer',
                 },

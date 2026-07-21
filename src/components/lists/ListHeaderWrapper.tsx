@@ -19,9 +19,9 @@ export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapp
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        bgcolor: 'background.paper',
+        bgcolor: 'surface-elevated',
         borderBottom: '1px solid',
-        borderColor: 'divider',
+        borderColor: 'border-0',
         ...rest.sx,
       }}
     >

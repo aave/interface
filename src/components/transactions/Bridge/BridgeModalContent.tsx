@@ -314,7 +314,7 @@ export const BridgeModalContent = () => {
           href="https://docs.chain.link/ccip/concepts#finality"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           Learn more
         </Link>
@@ -377,7 +377,7 @@ export const BridgeModalContent = () => {
       />
       {!user ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
-          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
+          <Typography sx={{ mb: 6, textAlign: 'center' }} color="fg-2">
             <Trans>Please connect your wallet to be able to bridge your tokens.</Trans>
           </Typography>
           <ConnectWalletButton />
@@ -402,11 +402,11 @@ export const BridgeModalContent = () => {
               onClick={handleSwapNetworks}
               sx={{
                 border: '1px solid',
-                borderColor: 'divider',
+                borderColor: 'border-2',
                 position: 'absolute',
-                backgroundColor: 'background.paper',
+                backgroundColor: 'surface-elevated',
                 mt: -1,
-                '&:hover': { backgroundColor: 'background.surface' },
+                '&:hover': { backgroundColor: 'bg-2' },
               }}
             >
               <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>

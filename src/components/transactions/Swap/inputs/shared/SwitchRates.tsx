@@ -53,7 +53,7 @@ export const SwitchRates = ({
         variant="main12"
         symbol={isSwitched ? destSymbol : srcSymbol}
         symbolsVariant="secondary12"
-        symbolsColor="text.secondary"
+        symbolsColor="fg-2"
         value={'1'}
       />
       <ButtonBase
@@ -69,7 +69,7 @@ export const SwitchRates = ({
         variant="main12"
         symbol={isSwitched ? srcSymbol : destSymbol}
         symbolsVariant="secondary12"
-        symbolsColor="text.secondary"
+        symbolsColor="fg-2"
         value={rate.toString()}
         visibleDecimals={3}
       />

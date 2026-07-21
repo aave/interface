@@ -16,6 +16,7 @@ import {
 import { Row } from 'src/components/primitives/Row';
 import { SecondsToString } from 'src/components/SecondsToString';
 import { CollateralType } from 'src/helpers/types';
+import { figVars } from 'src/utils/figmaColors';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
@@ -50,19 +51,19 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
 }) => {
   return (
     <Box sx={{ pt: 5 }}>
-      <Typography sx={{ mb: 1 }} color="text.secondary">
+      <Typography sx={{ mb: 1 }} color="fg-2">
         <Trans>Transaction overview</Trans>
       </Typography>
 
       <Box
-        sx={(theme) => ({
+        sx={{
           p: 3,
-          border: `1px solid ${theme.palette.divider}`,
+          border: `1px solid ${figVars['border-2']}`,
           borderRadius: '4px',
           '.MuiBox-root:last-of-type': {
             mb: 0,
           },
-        })}
+        }}
       >
         {children}
       </Box>
@@ -333,7 +334,7 @@ export const DetailsHFLine = ({
           )}
         </Box>
 
-        <Typography variant="helperText" color="text.secondary">
+        <Typography variant="helperText" color="fg-2">
           <Trans>Liquidation at</Trans>
           {' <1.0'}
         </Typography>

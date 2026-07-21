@@ -74,7 +74,7 @@ export const TextWithTooltip = ({
           <SvgIcon
             sx={{
               fontSize: iconSize,
-              color: iconColor ? iconColor : open ? 'info.main' : 'text.muted',
+              color: iconColor ? iconColor : open ? 'info.main' : 'fg-3',
               borderRadius: '50%',
               '&:hover': { color: iconColor || 'info.main' },
             }}

@@ -123,7 +123,7 @@ export const SwitchSlippageSelector = ({
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: '4px' }}>
-      <Typography variant="subheader2" color="text.secondary" sx={{ opacity: 0.75 }}>
+      <Typography variant="subheader2" color="fg-2" sx={{ opacity: 0.75 }}>
         {isCustomSlippage ? (
           <Trans>Custom slippage</Trans>
         ) : provider === 'paraswap' ? (
@@ -159,9 +159,9 @@ export const SwitchSlippageSelector = ({
           <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: '8px' }}>
             <ToggleButtonGroup
               sx={{
-                backgroundColor: 'background.surface',
+                backgroundColor: 'bg-2',
                 borderRadius: '6px',
-                borderColor: 'background.surface',
+                borderColor: 'bg-2',
               }}
               exclusive
               onChange={(_, value) => handlePresetSlippageChange(value)}
@@ -175,7 +175,7 @@ export const SwitchSlippageSelector = ({
                     borderWidth: 2,
                     backgroundColor:
                       (suggestedSlippage === slippage && option == 'Auto') || option === slippage
-                        ? 'background.paper'
+                        ? 'surface-elevated'
                         : 'transparent',
                   }}
                   value={option}
@@ -205,7 +205,7 @@ export const SwitchSlippageSelector = ({
               placeholder="Custom"
               endAdornment={
                 <InputAdornment position="end">
-                  <Typography variant="caption" color="text.muted">
+                  <Typography variant="caption" color="fg-3">
                     %
                   </Typography>
                 </InputAdornment>
@@ -216,10 +216,8 @@ export const SwitchSlippageSelector = ({
                 width: '120px',
                 border: 1,
                 borderWidth: '1px',
-                backgroundColor: 'background.surface',
-                borderColor: slippageValidation
-                  ? `${slippageValidation.severity}.main`
-                  : 'background.surface',
+                backgroundColor: 'bg-2',
+                borderColor: slippageValidation ? `${slippageValidation.severity}.main` : 'bg-2',
                 borderRadius: '4px',
               }}
             />
@@ -252,7 +250,7 @@ export const SwitchSlippageSelector = ({
       >
         <FormattedNumber
           variant="caption"
-          color={slippageValidation ? `${slippageValidation.severity}.main` : 'text.primary'}
+          color={slippageValidation ? `${slippageValidation.severity}.main` : 'fg-1'}
           value={slippage}
           visibleDecimals={2}
           symbol="%"
