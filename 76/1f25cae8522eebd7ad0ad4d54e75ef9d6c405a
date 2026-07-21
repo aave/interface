@@ -1,0 +1,19 @@
+patches/@funkit+connect+9.24.0.patch
+  s_515c502c8071e6::t_a0a38678c2059a 1-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "761f25cae8522eebd7ad0ad4d54e75ef9d6c405a",
+  "prompts": {},
+  "sessions": {
+    "s_515c502c8071e6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cb81f570-7871-4d16-a1b3-f07afb3b5d87",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
