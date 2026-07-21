@@ -6,7 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/events';
-import { figmaDark } from 'src/utils/figmaColors';
+import { onAccent } from 'src/utils/figmaColors';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { navLinkSx } from './navLinkSx';
@@ -44,7 +44,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           component={Link}
           href={ROUTES.staking}
           variant="h2"
-          color={figmaDark['fg-1']}
+          color={onAccent}
           sx={{ width: '100%', p: 4 }}
           onClick={() => handleMenuItemClick('Staking')}
         >
@@ -54,7 +54,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           component={Link}
           href={ROUTES.safetyModule}
           variant="h2"
-          color={figmaDark['fg-1']}
+          color={onAccent}
           sx={{ width: '100%', p: 4, pl: 6 }}
           onClick={() => handleMenuItemClick('Safety Module')}
         >
@@ -73,7 +73,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={(theme) => navLinkSx(theme, '2.25rem 0.88rem')}
+        sx={navLinkSx('2.25rem 0.88rem')}
       >
         <Trans>Staking</Trans>
         <SvgIcon
@@ -99,9 +99,9 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
         keepMounted={true}
         sx={{
           '& .MuiPaper-root': {
-            bgcolor: 'background.paper',
+            bgcolor: 'surface-elevated',
             border: '1px solid',
-            borderColor: 'divider',
+            borderColor: 'border-2',
           },
         }}
       >

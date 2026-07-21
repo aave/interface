@@ -4,7 +4,7 @@ import { Button, List, ListItem, Typography, useMediaQuery, useTheme } from '@mu
 import * as React from 'react';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/events';
-import { figmaDark } from 'src/utils/figmaColors';
+import { onAccent } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
@@ -57,7 +57,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 component={Link}
                 href={item.link}
                 variant="h2"
-                color={figmaDark['fg-1']}
+                color={onAccent}
                 sx={{ width: '100%', p: 4 }}
                 onClick={() => handleClick(item.title, true)}
               >
@@ -68,7 +68,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 component={Link}
                 onClick={() => handleClick(item.title, false)}
                 href={item.link}
-                sx={(theme) => navLinkSx(theme, '2.25rem 0.88rem')}
+                sx={navLinkSx('2.25rem 0.88rem')}
               >
                 {i18n._(item.title)}
               </Button>
@@ -88,7 +88,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             component={Link}
             href={ROUTES.sGHO}
             variant="h2"
-            color={figmaDark['fg-1']}
+            color={onAccent}
             sx={{ width: '100%', p: 4 }}
             onClick={() => handleClick('sGHO', true)}
           >
@@ -99,7 +99,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             component={Link}
             onClick={() => handleClick('sGHO', false)}
             href={ROUTES.sGHO}
-            sx={(theme) => navLinkSx(theme, '2.25rem 0.88rem')}
+            sx={navLinkSx('2.25rem 0.88rem')}
           >
             <Trans>Savings</Trans>
           </Button>
@@ -119,7 +119,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
               component={Link}
               href={ROUTES.staking}
               variant="h2"
-              color={figmaDark['fg-1']}
+              color={onAccent}
               sx={{ width: '100%', p: 4 }}
               onClick={() => handleClick('Staking', true)}
             >
@@ -143,7 +143,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             component={Link}
             href={ROUTES.safetyModule}
             variant="h2"
-            color={figmaDark['fg-1']}
+            color={onAccent}
             sx={{ width: '100%', p: 4 }}
             onClick={() => handleClick('Safety Module', true)}
           >

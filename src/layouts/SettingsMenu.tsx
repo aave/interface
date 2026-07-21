@@ -73,7 +73,7 @@ export function SettingsMenu() {
         onClick={handleSettingsClick}
         sx={{ p: '0 0.5rem', minWidth: 'unset', ml: 2 }}
       >
-        <SettingsIcon sx={(theme) => ({ fontSize: '20px', color: theme.palette.fig['fg-2'] })} />
+        <SettingsIcon sx={{ fontSize: '20px', color: 'fg-2' }} />
       </Button>
 
       <Menu
@@ -88,7 +88,7 @@ export function SettingsMenu() {
         keepMounted={true}
       >
         <MenuItem disabled sx={{ mb: '4px' }}>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-2">
             <Trans>Global settings</Trans>
           </Typography>
         </MenuItem>

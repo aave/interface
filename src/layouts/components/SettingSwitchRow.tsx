@@ -26,7 +26,7 @@ export const SettingSwitchRow = ({
     onClick={onClick}
     sx={{
       cursor: 'pointer',
-      color: { xs: '#F1F1F3', md: 'text.primary' },
+      color: { xs: '#F1F1F3', md: 'fg-1' },
       py: { xs: 1.5, md: 2 },
     }}
   >

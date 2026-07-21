@@ -4,6 +4,7 @@ import { Box, styled, SvgIcon, Typography } from '@mui/material';
 import { DuneIcon, TikTok } from 'public/icons/footer/icons';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import DiscordIcon from '/public/icons/discord.svg';
@@ -13,14 +14,14 @@ interface StyledLinkProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
-const StyledLink = styled(Link)<StyledLinkProps>(({ theme }) => ({
-  color: theme.palette.text.muted,
+const StyledLink = styled(Link)<StyledLinkProps>({
+  color: figVars['fg-3'],
   '&:hover': {
-    color: theme.palette.text.primary,
+    color: figVars['fg-1'],
   },
   display: 'flex',
   alignItems: 'center',
-}));
+});
 
 const FOOTER_ICONS = [
   {

@@ -1,57 +1,43 @@
-import { useMediaQuery } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import GlobalStyles from '@mui/material/GlobalStyles';
+import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
+import { ReactNode, useMemo } from 'react';
 
-import { createAppTheme } from '../utils/theme';
-
-export const ColorModeContext = React.createContext({
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  toggleColorMode: () => {},
-});
-
-type Mode = 'light' | 'dark';
+import { buildP3Overrides, createAppTheme } from '../utils/theme';
 
 /**
- * Main Layout component which wrapps around the whole app
- * @param param0
- * @returns
+ * Main layout wrapper around the whole app. Provides the MUI theme via the CSS-variables
+ * engine: both color schemes are baked into CSS custom properties once, and light/dark is
+ * switched by toggling the `data-mui-color-scheme` attribute on <html> (persisted by MUI,
+ * seeded from the OS preference). Components read/set the scheme via `useColorScheme()`.
  */
 export function AppGlobalStyles({ children }: { children: ReactNode }) {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [mode, setMode] = useState<Mode>(prefersDarkMode ? 'dark' : 'light');
-  const colorMode = useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => {
-          const newMode = prevMode === 'light' ? 'dark' : 'light';
-          localStorage.setItem('colorMode', newMode);
-          return newMode;
-        });
+  const theme = useMemo(() => createAppTheme(), []);
+
+  // Display-P3 layer: on wide-gamut displays that support the syntax, override the sRGB
+  // `--mui-palette-*` vars with their P3 equivalents. Everything else keeps the sRGB base.
+  const p3Styles = useMemo(() => {
+    const { light, dark } = buildP3Overrides(theme);
+    return {
+      '@supports (color: color(display-p3 1 1 1))': {
+        '@media (color-gamut: p3)': {
+          // Doubled selectors (specificity 0,2,0) beat MUI's own var sheets (0,1,0), so the
+          // P3 layer wins regardless of stylesheet source order — and still match both <html>
+          // and the showcase's local `data-mui-color-scheme` wrapper.
+          ':root:root, [data-mui-color-scheme="light"][data-mui-color-scheme="light"]': light,
+          '[data-mui-color-scheme="dark"][data-mui-color-scheme="dark"]': dark,
+        },
       },
-    }),
-    []
-  );
-
-  useEffect(() => {
-    const initialMode = localStorage?.getItem('colorMode') as Mode;
-    if (initialMode) {
-      setMode(initialMode);
-    } else if (prefersDarkMode) {
-      setMode('dark');
-    }
-  }, []);
-
-  const theme = useMemo(() => createAppTheme(mode), [mode]);
+    };
+  }, [theme]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
+    <CssVarsProvider theme={theme} defaultMode="system" disableTransitionOnChange>
+      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+      <CssBaseline enableColorScheme />
+      <GlobalStyles styles={p3Styles} />
 
-        {children}
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+      {children}
+    </CssVarsProvider>
   );
 }

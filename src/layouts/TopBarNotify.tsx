@@ -125,7 +125,7 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
         component="header"
         sx={{
           padding: `8px, 12px, 8px, 12px`,
-          background: (theme) => theme.palette.gradients.newGradient,
+          bgcolor: 'purple-1',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',

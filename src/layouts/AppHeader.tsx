@@ -28,6 +28,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
 import { ENABLE_TESTNET, FORK_ENABLED, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
@@ -47,8 +48,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     borderRadius: '20px',
     width: '10px',
     height: '10px',
-    backgroundColor: `${theme.palette.secondary.main}`,
-    color: `${theme.palette.secondary.main}`,
+    backgroundColor: `${theme.vars.palette.secondary.main}`,
+    color: `${theme.vars.palette.secondary.main}`,
     '&::after': {
       position: 'absolute',
       top: 0,
@@ -209,11 +210,11 @@ export function AppHeader() {
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          bgcolor: theme.palette.fig['bg-2'],
+          bgcolor: 'bg-2',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          boxShadow: `inset 0px -1px 0px ${theme.palette.fig['border-0']}`,
+          boxShadow: `inset 0px -1px 0px ${figVars['border-0']}`,
         })}
       >
         <Container
@@ -230,7 +231,7 @@ export function AppHeader() {
             sx={{
               lineHeight: 0,
               mr: 3,
-              color: 'text.primary',
+              color: 'fg-1',
               transition: '0.3s ease all',
               '&:hover': { opacity: 0.7 },
             }}
@@ -272,29 +273,6 @@ export function AppHeader() {
           <NoSsr>
             <StyledBadge
               invisible={true}
-              // variant="dot"
-              badgeContent=""
-              color="secondary"
-              sx={{ mr: 2 }}
-            >
-              <Button
-                onClick={handleBridgeClick}
-                variant="outlined"
-                startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
-                sx={{ p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' }}
-              >
-                {!smd && (
-                  <Typography component="span" variant="buttonM">
-                    Bridge
-                  </Typography>
-                )}
-              </Button>
-            </StyledBadge>
-          </NoSsr>
-
-          <NoSsr>
-            <StyledBadge
-              invisible={true}
               variant="dot"
               badgeContent=""
               color="secondary"
@@ -309,7 +287,7 @@ export function AppHeader() {
                       <CircularProgress
                         size={20}
                         sx={{
-                          color: (theme) => theme.palette.grey[200],
+                          color: (theme) => theme.vars.palette.grey[200],
                         }}
                       />
                     ) : (
@@ -324,6 +302,29 @@ export function AppHeader() {
                 {!smd && (
                   <Typography component="span" variant="buttonM">
                     Swap
+                  </Typography>
+                )}
+              </Button>
+            </StyledBadge>
+          </NoSsr>
+
+          <NoSsr>
+            <StyledBadge
+              invisible={true}
+              // variant="dot"
+              badgeContent=""
+              color="secondary"
+              sx={{ mr: 2 }}
+            >
+              <Button
+                onClick={handleBridgeClick}
+                variant="outlined"
+                startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
+                sx={{ p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' }}
+              >
+                {!smd && (
+                  <Typography component="span" variant="buttonM">
+                    Bridge GHO
                   </Typography>
                 )}
               </Button>
