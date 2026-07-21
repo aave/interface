@@ -15,6 +15,7 @@ overrides:
   ethers>ws: ^8.21.0
   form-data: 2.5.6
   d3-color: ^3.1.0
+  js-cookie: 3.0.7
 
 importers:
 
@@ -7430,8 +7431,9 @@ packages:
   jose@6.2.3:
     resolution: {integrity: sha512-YYVDInQKFJfR/xa3ojUTl8c2KoTwiL1R5Wg9YCydwH0x0B9grbzlg5HC7mMjCtUJjbQ/YnGEZIhI5tCgfTb4Hw==}
 
-  js-cookie@2.2.1:
-    resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
+  js-cookie@3.0.7:
+    resolution: {integrity: sha512-z/wZZgDrkNV1eA0ULjM/F9/50Ya8fbzgKneSpoPsXSGd0KnpdtHfOZWK+GcwLk+EZbS4F9RBhU+K2RgzuDaItw==}
+    engines: {node: '>=20'}
 
   js-sha256@0.10.1:
     resolution: {integrity: sha512-5obBtsz9301ULlsgggLg542s/jqtddfOpV5KJc4hajc9JV8GeY2gZHSVpYBn4nWqAUTJ9v+xwtbJ1mIBgIH5Vw==}
@@ -20222,7 +20224,7 @@ snapshots:
 
   jose@6.2.3: {}
 
-  js-cookie@2.2.1: {}
+  js-cookie@3.0.7: {}
 
   js-sha256@0.10.1: {}
 
@@ -21752,7 +21754,7 @@ snapshots:
 
   react-cookie-consent@8.0.1(react@18.3.1):
     dependencies:
-      js-cookie: 2.2.1
+      js-cookie: 3.0.7
       react: 18.3.1
 
   react-dom@18.3.1(react@18.3.1):
