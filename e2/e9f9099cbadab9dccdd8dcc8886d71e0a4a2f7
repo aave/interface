@@ -1,0 +1,21 @@
+src/layouts/components/NavItems.tsx
+  s_761dd4371f1a34::t_cd89faf2f735a9 102
+src/layouts/components/StakingMenu.tsx
+  s_761dd4371f1a34::t_12bb054a5cef9e 76
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "e2e9f9099cbadab9dccdd8dcc8886d71e0a4a2f7",
+  "prompts": {},
+  "sessions": {
+    "s_761dd4371f1a34": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ae7f60f-27bd-4669-95ee-d0ed816a8662",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
