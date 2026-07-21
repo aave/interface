@@ -1,10 +1,8 @@
-package.json
-  h_873f745f99aed2 9-10,9
 ---
 {
   "schema_version": "authorship/3.0.0",
-  "git_ai_version": "1.4.8",
-  "base_commit_sha": "3a8e51ba65c3ca8ca42adf82d4abd7bdcca098c9",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "a73830afe1e63c026fcdbbd8725226baf40f7e73",
   "prompts": {},
   "humans": {
     "h_873f745f99aed2": {
