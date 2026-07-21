@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { DotsHorizontalIcon } from 'src/components/icons/DotsHorizontalIcon';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -28,6 +29,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
+import { iconButtonSx } from 'src/utils/buttonStyles';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
 import { onAccent } from 'src/utils/figmaColors';
@@ -259,17 +261,15 @@ export const SupplyAssetsListItemDesktop = ({
         />
         <Button
           id="supply-extra-button"
-          sx={{
-            minWidth: 0,
-            px: 4,
-          }}
+          sx={iconButtonSx}
+          size="small"
           variant="outlined"
           onClick={handleClick}
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
         >
-          <Trans>...</Trans>
+          <DotsHorizontalIcon sx={{ fontSize: 20, color: 'fg-3' }} />
         </Button>
         <Menu
           id="supply-item-extra-menu"

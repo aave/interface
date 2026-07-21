@@ -95,6 +95,7 @@ export const BorrowAssetsListItem = ({
 
       <ListButtonsColumn>
         <Button
+          size="small"
           disabled={disableBorrow}
           variant="contained"
           onClick={() => {
@@ -104,6 +105,7 @@ export const BorrowAssetsListItem = ({
           <Trans>Borrow</Trans>
         </Button>
         <Button
+          size="small"
           variant="outlined"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
