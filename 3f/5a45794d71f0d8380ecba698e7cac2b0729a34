@@ -1,0 +1,85 @@
+src/modules/dev/ComponentShowcase/components/ColorsSection/index.tsx
+  s_761dd4371f1a34::t_91675ac3ad4fda 1-29
+src/modules/dev/ComponentShowcase/utils/catalog.ts
+  s_761dd4371f1a34::t_f731eb7f99af26 1-113
+src/modules/dev/ComponentShowcase/components/FormControlsSection/index.tsx
+  s_761dd4371f1a34::t_0dfe359d03a2a8 1-10
+  s_761dd4371f1a34::t_47dd22af692bc6 34
+  s_761dd4371f1a34::t_4b8576dd64517e 11-33,35-72
+src/modules/dev/ComponentShowcase/components/SurfacesSection/index.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 95
+  s_761dd4371f1a34::t_ca58dd2452fa88 16
+  s_761dd4371f1a34::t_0dfe359d03a2a8 50-56,59-65
+  s_761dd4371f1a34::t_d0ceb9f9b6a19b 1-15,17-49,57-58,66-94,96-102
+src/modules/dev/ComponentShowcase/components/TypographySection/index.tsx
+  s_761dd4371f1a34::t_b147cafea529e7 1-7,9-17
+  s_761dd4371f1a34::t_2ce2e79b6879c3 8
+src/modules/dev/ComponentShowcase/components/ShowcaseLayout/index.tsx
+  s_761dd4371f1a34::t_98661ec3a356b8 4,6,9-13,101,129
+  s_761dd4371f1a34::t_2d04f6193cacdb 1,3,8,14-20,22-24,37-39,41-47,49-50,52-54,59,61,67-68,100,103,126-128,130-132
+  s_761dd4371f1a34::t_8141cead49c7e4 7,36,40,57-58,60,64-65,69-80,82-87,91-99,102,104-125
+  s_761dd4371f1a34::t_d6cc11e5192d3a 48,51,55-56,62-63,66,81
+  s_761dd4371f1a34::t_50fc1cd7aafe9a 25-28,34-35
+  s_761dd4371f1a34::t_f12e3aaacbc536 88-90
+  s_761dd4371f1a34::t_2b88e91fb2c532 2,5,21
+  s_761dd4371f1a34::t_8bc90f199a79ba 33
+  s_761dd4371f1a34::t_94859a1912901a 29-32
+src/modules/dev/ComponentShowcase/utils/registry.tsx
+  s_761dd4371f1a34::t_35603ae08c5069 7,17,23,31,37,43-45,47,51-53,57-58,61,69,77,83-95
+  s_761dd4371f1a34::t_4bb8d3648b7734 1-6,8-16,18-22,24-30,32-36,38-42,49-50,59-60,65-68,73-76,78-82
+  s_761dd4371f1a34::t_b543f08db75f17 54-56,62-64,70-72
+  s_761dd4371f1a34::t_3442335220ef89 46,48
+src/modules/dev/ComponentShowcase/components/FeedbackSection/index.tsx
+  s_761dd4371f1a34::t_0982bc1d8775ae 12
+  s_761dd4371f1a34::t_47a44a0e9c07a7 1-11,13-49
+src/modules/dev/ComponentShowcase/components/ThemeControl/index.tsx
+  s_761dd4371f1a34::t_080f94c7dc29d2 1-18,20-30
+  s_761dd4371f1a34::t_5d70deeaa17867 19
+src/modules/dev/ComponentShowcase/components/DataPrimitivesSection/index.tsx
+  s_761dd4371f1a34::t_b9a6b4a43ab0ed 33
+  s_761dd4371f1a34::t_3243d93fad718e 1-26,30-32,34-98
+  s_761dd4371f1a34::t_0dfe359d03a2a8 27-29
+src/modules/dev/ComponentShowcase/components/OverlaysSection/index.tsx
+  s_761dd4371f1a34::t_20f536aa85d188 31
+  s_761dd4371f1a34::t_60307b2465ac2c 1-30,32-52
+src/modules/dev/ComponentShowcase/components/TogglesBadgesSection/index.tsx
+  s_761dd4371f1a34::t_315d306820f78a 41
+  s_761dd4371f1a34::t_0dfe359d03a2a8 3,5-7
+  s_761dd4371f1a34::t_aecba403b10d9d 1-2,4,8-40,42-59
+src/modules/dev/ComponentShowcase/components/Swatch/index.tsx
+  s_761dd4371f1a34::t_72c926f41b54c8 1-37
+src/modules/dev/ComponentShowcase/components/Section/index.tsx
+  s_761dd4371f1a34::t_f93889e99246e1 2-9,21,33-34
+  s_761dd4371f1a34::t_cd5115539f2eb7 1,11
+  s_761dd4371f1a34::t_5d467e6298d111 12-20,22-32
+  s_761dd4371f1a34::t_fe74a642823a93 10
+pages/dev/components/index.page.tsx
+  s_761dd4371f1a34::t_bb446e9f94ea17 1-16
+src/modules/dev/ComponentShowcase/components/ButtonsSection/index.tsx
+  s_761dd4371f1a34::t_daf10a4b69183f 2,17-19,21-35
+  s_761dd4371f1a34::t_3214c84789aca9 1,3-6,8-16,20,36-39
+  s_761dd4371f1a34::t_3daaf21bed39cd 7
+pages/dev/components/[section].page.tsx
+  s_761dd4371f1a34::t_5e07894b0689e3 1-30
+src/modules/dev/ComponentShowcase/components/Specimen/index.tsx
+  s_761dd4371f1a34::t_00b2dd223c4601 1-9,13,21,49-50
+  s_761dd4371f1a34::t_f5792e2db60e92 10-11,14-17,20,22-34,36,42-45
+  s_761dd4371f1a34::t_c827b7ab979b7d 18-19,35,37-41,46-48
+  s_761dd4371f1a34::t_0bfb54ab0ffc6f 12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "3f5a45794d71f0d8380ecba698e7cac2b0729a34",
+  "prompts": {},
+  "sessions": {
+    "s_761dd4371f1a34": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ae7f60f-27bd-4669-95ee-d0ed816a8662",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

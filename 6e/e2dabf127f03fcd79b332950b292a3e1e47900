@@ -1,0 +1,32 @@
+src/components/icons/StarIcon.tsx
+  s_b123436350916b::t_b03cd2d34ac3ba 3-5
+  s_b123436350916b::t_1b674d2cde3e32 1-2,6-12
+src/components/MarketSwitcher.tsx
+  s_b123436350916b::t_889539fd5db19f 420
+  s_b123436350916b::t_921fcd8b2a655f 417,422
+  s_b123436350916b::t_ac157ce0218eaa 2
+  s_b123436350916b::t_752ff0818c432a 22
+src/components/TopInfoPanel/PageTitle.tsx
+  s_b123436350916b::t_b9ac56519ab0a4 99
+  s_b123436350916b::t_d7cc851f7ddcec 107-111
+  s_b123436350916b::t_81ada490a1685e 2
+  s_b123436350916b::t_7c320ad5d9ce2f 113-116,118-119
+  s_b123436350916b::t_3186c35e586f04 117
+  s_b123436350916b::t_98ff2ca04661a9 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "6ee2dabf127f03fcd79b332950b292a3e1e47900",
+  "prompts": {},
+  "sessions": {
+    "s_b123436350916b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e05079-8b10-488f-b2c2-f8480447c4cf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

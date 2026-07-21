@@ -1,0 +1,14 @@
+src/components/TopInfoPanel/TopInfoPanelItem.tsx
+  h_407f16e676115d 41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "e014f909e53f103bcdbf83e9e65226b33aaac5e6",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

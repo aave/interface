@@ -1,0 +1,25 @@
+src/components/transactions/FlowCommons/TxModalTitle.tsx
+  s_761dd4371f1a34::t_3d93c061f5980f 11-17,19-20
+  h_407f16e676115d 18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "97dc2cd119e64cfa138a60df4d3fbec258f07da3",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_761dd4371f1a34": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ae7f60f-27bd-4669-95ee-d0ed816a8662",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
