@@ -425,6 +425,18 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
   } as ThemeOptions;
 };
 
+/**
+ * Subtle press feedback shared by buttons and dropdown triggers: the control scales down
+ * slightly while active (pointer/touch down), and never when disabled. Pair with a `transform`
+ * transition (at `motion.duration.hover`) so the release animates back. Reduced-motion users
+ * get the scale instantly via the global `prefers-reduced-motion` rule in MuiCssBaseline.
+ */
+const pressScaleActive = {
+  '&:active:not(.Mui-disabled)': {
+    transform: 'scale(0.99)',
+  },
+};
+
 export function getThemedComponents(theme: AppTheme) {
   return {
     components: {
@@ -472,10 +484,13 @@ export function getThemedComponents(theme: AppTheme) {
           root: {
             borderRadius: '8px',
             // Hover/focus state transition at 100ms (overrides MUI's 250ms default).
+            // `transform` is included so the active-press scale animates in and out.
             transition: theme.transitions.create(
-              ['background-color', 'box-shadow', 'border-color', 'color'],
+              ['background-color', 'box-shadow', 'border-color', 'color', 'transform'],
               { duration: motion.duration.hover }
             ),
+            // Subtle press feedback — scale down while active (not when disabled).
+            ...pressScaleActive,
             // Keyboard-focus ring in the variant's own text color; ButtonBase zeroes the
             // native outline, so we set our own (2px, offset 3px out).
             '&.Mui-focusVisible': {
@@ -525,6 +540,28 @@ export function getThemedComponents(theme: AppTheme) {
             },
           },
         ],
+      },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            transition: theme.transitions.create(['background-color', 'color', 'transform'], {
+              duration: motion.duration.hover,
+            }),
+            // Subtle press feedback — scale down while active (not when disabled).
+            ...pressScaleActive,
+          },
+        },
+      },
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            transition: theme.transitions.create(['background-color', 'color', 'transform'], {
+              duration: motion.duration.hover,
+            }),
+            // Subtle press feedback — scale down while active (not when disabled).
+            ...pressScaleActive,
+          },
+        },
       },
       MuiCheckbox: {
         defaultProps: {

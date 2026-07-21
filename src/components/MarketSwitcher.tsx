@@ -24,6 +24,7 @@ import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
 import { onAccent } from 'src/utils/figmaColors';
+import { motion } from 'src/utils/motion';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -772,6 +773,12 @@ export const MarketSwitcher = () => {
           cursor: 'pointer',
           display: 'flex',
           flexDirection: 'column',
+          // Press feedback to match buttons/dropdown triggers (this trigger is a custom Box,
+          // not a MUI Button, so it isn't covered by the theme-level rule).
+          transition: `transform ${motion.duration.hover}ms`,
+          '&:active': {
+            transform: 'scale(0.99)',
+          },
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>

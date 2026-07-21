@@ -197,10 +197,6 @@ msgstr "USDT on Ethereum requires approval reset before a new approval. This wil
 msgid "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 msgstr "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 
-#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
-msgid "..."
-msgstr "..."
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
 msgstr "Liquidation <0/> threshold"
