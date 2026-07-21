@@ -4,18 +4,36 @@ import {
   ExclamationIcon,
   InformationCircleIcon,
 } from '@heroicons/react/outline';
-import { Box, SvgIcon, Theme, ThemeOptions } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { Box, SvgIcon, ThemeOptions } from '@mui/material';
+import { createTheme, experimental_extendTheme } from '@mui/material/styles';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { ColorPartial } from '@mui/material/styles/createPalette';
-import { deepmerge } from '@mui/utils';
+// Augments MUI's base `Theme` (the one component `sx`/`styled` callbacks receive) with `.vars`,
+// so `theme.vars.palette.*` typechecks app-wide, not only against this file's `AppTheme` param.
+import type {} from '@mui/material/themeCssVarsAugmentation';
 import React from 'react';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { ScaleFade } from 'src/components/primitives/transitions/ScaleFade';
 
-import { type FigmaColorName, figmaDark, figSurfaceShadow, pickFigma } from './figmaColors';
+import { colorToP3 } from './colorToP3';
+import { type FigmaColorName, figSurfaceShadow, figVars, onAccent, pickFigma } from './figmaColors';
 import { motion } from './motion';
+
+// The app theme is built with MUI's CSS-variables engine (`experimental_extendTheme`), so it
+// carries `.vars` (CSS custom-property refs like `figVars['bg-1']`) and
+// `.applyStyles(scheme, …)` for per-color-scheme overrides.
+type AppTheme = ReturnType<typeof experimental_extendTheme>;
+
+// MUI's `theme.applyStyles('dark', …)` needs the provider theme's `getColorSchemeSelector`,
+// which the raw `extendTheme` result (used to build the component overrides statically)
+// doesn't carry — so calling it there hits the classic `palette.mode` branch and throws (the
+// raw theme has no top-level `palette`). This helper inlines the exact CSS-vars selector
+// `applyStyles` emits, matching any ancestor with `data-mui-color-scheme="dark"` — the <html>
+// element (app-wide) or a local wrapper (the dev showcase) — so both switch correctly.
+const darkScheme = (styles: object) => ({
+  '*:where([data-mui-color-scheme="dark"]) &': styles,
+});
 
 /**
  * Secondary "white pill" style for the `outlined` button variant: a hairline ring instead
@@ -23,26 +41,28 @@ import { motion } from './motion';
  * ring is re-asserted (the global `disableElevation` default otherwise strips box-shadow),
  * and `border` is forced to none to suppress MUI's default outlined hover border.
  */
-const secondaryPillStyle = (theme: Theme) => {
-  const fig = theme.palette.fig;
-  const isDark = theme.palette.mode === 'dark';
-  return {
-    color: fig['fg-1'],
-    // Different token per mode: white pill in light, a bg-4 fill in dark.
-    backgroundColor: isDark ? fig['bg-4'] : fig['bg-1'],
+const secondaryPillStyle = {
+  color: figVars['fg-1'],
+  // Different token per mode: white pill (bg-1) in light, a bg-4 fill in dark.
+  backgroundColor: figVars['bg-1'],
+  border: 'none',
+  boxShadow: figSurfaceShadow(),
+  '& .MuiButton-startIcon': {
+    color: figVars['fg-3'],
+  },
+  ...darkScheme({
+    backgroundColor: figVars['bg-4'],
+  }),
+  '&:hover, &.Mui-focusVisible': {
+    backgroundColor: figVars['bg-4'],
+    // Suppress MUI's default outlined hover border (its `:hover` rule would otherwise
+    // re-introduce a 1px border on top of the borderless pill).
     border: 'none',
-    boxShadow: figSurfaceShadow(fig),
-    '& .MuiButton-startIcon': {
-      color: fig['fg-3'],
-    },
-    '&:hover, &.Mui-focusVisible': {
-      backgroundColor: isDark ? fig['bg-5'] : fig['bg-4'],
-      // Suppress MUI's default outlined hover border (its `:hover` rule would otherwise
-      // re-introduce a 1px border on top of the borderless pill).
-      border: 'none',
-      boxShadow: figSurfaceShadow(fig),
-    },
-  };
+    boxShadow: figSurfaceShadow(),
+    ...darkScheme({
+      backgroundColor: figVars['bg-5'],
+    }),
+  },
 };
 
 // Shared box geometry for the custom checkbox icon (unchecked + checked).
@@ -71,23 +91,19 @@ declare module '@mui/material/styles/createPalette' {
     disabled: string;
   }
 
-  interface Palette {
-    gradients: {
-      aaveGradient: string;
-      newGradient: string;
-    };
+  // Design tokens are flattened onto the palette root (see `getDesignTokens`), so each token is
+  // a first-class palette member. This also turns a token name that collides with a built-in
+  // palette key (e.g. `error`, `background`) into a compile error rather than a silent overwrite.
+  interface Palette extends Record<FigmaColorName, string> {
     other: {
       standardInputLine: string;
     };
-    fig: Record<FigmaColorName, string>;
   }
 
-  interface PaletteOptions {
-    gradients: {
-      aaveGradient: string;
-      newGradient: string;
+  interface PaletteOptions extends Partial<Record<FigmaColorName, string>> {
+    other?: {
+      standardInputLine: string;
     };
-    fig?: Record<FigmaColorName, string>;
   }
 }
 
@@ -162,9 +178,6 @@ declare module '@mui/material/Paper' {
 }
 
 export const getDesignTokens = (mode: 'light' | 'dark') => {
-  const getColor = (lightColor: string, darkColor: string) =>
-    mode === 'dark' ? darkColor : lightColor;
-
   const t = pickFigma(mode); // ← the one line of setup
 
   return {
@@ -174,7 +187,9 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     },
     palette: {
       mode,
-      fig: t,
+      // Design tokens flattened onto the palette root → MUI generates a `--mui-palette-<name>`
+      // var per token, so `sx={{ bgcolor: 'bg-1' }}` and `figVars['bg-1']` both resolve to it.
+      ...t,
       primary: {
         main: t['fg-1'],
         light: t['fg-2'],
@@ -182,48 +197,48 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         contrastText: t['bg-1'],
       },
       secondary: {
-        main: getColor('#FF607B', '#F48FB1'),
-        light: getColor('#FF607B', '#F6A5C0'),
-        dark: getColor('#B34356', '#AA647B'),
+        main: t['secondary-main'],
+        light: t['secondary-light'],
+        dark: t['secondary-dark'],
       },
       error: {
         main: t['red-1'],
-        light: getColor('#D26666', '#E57373'),
-        dark: getColor('#BC0000', '#D32F2F'),
-        '100': getColor('#4F1919', '#FBB4AF'), // for alert text
-        '200': getColor('#F9EBEB', '#2E0C0A'), // for alert background
+        light: t['error-light'],
+        dark: t['error-dark'],
+        '100': t['error-text'], // alert text
+        '200': t['error-bg'], // alert background
       },
       warning: {
         main: t['yellow-1'],
-        light: getColor('#FFCE00', '#FFB74D'),
-        dark: getColor('#C67F15', '#F57C00'),
-        '100': getColor('#63400A', '#FFDCA8'), // for alert text
-        '200': getColor('#FEF5E8', '#301E04'), // for alert background
+        light: t['warning-light'],
+        dark: t['warning-dark'],
+        '100': t['warning-text'],
+        '200': t['warning-bg'],
       },
       info: {
         main: t['blue-1'],
-        light: getColor('#0062D2', '#4FC3F7'),
-        dark: getColor('#002754', '#0288D1'),
-        '100': getColor('#002754', '#A9E2FB'), // for alert text
-        '200': getColor('#E5EFFB', '#071F2E'), // for alert background
+        light: t['info-light'],
+        dark: t['info-dark'],
+        '100': t['info-text'],
+        '200': t['info-bg'],
       },
       success: {
         main: t['green-1'],
-        light: getColor('#90FF95', '#90FF95'),
-        dark: getColor('#318435', '#388E3C'),
-        '100': getColor('#1C4B1E', '#C2E4C3'), // for alert text
-        '200': getColor('#ECF8ED', '#0A130B'), // for alert background
+        light: t['success-light'],
+        dark: t['success-dark'],
+        '100': t['success-text'],
+        '200': t['success-bg'],
       },
       text: {
         primary: t['fg-1'],
         secondary: t['fg-2'],
         disabled: t['fg-4'],
         muted: t['fg-3'],
-        highlight: getColor('#383D51', '#C9B3F9'),
+        highlight: t['highlight'],
       },
       background: {
         default: t['bg-5'],
-        paper: t['bg-1'],
+        paper: t['surface-elevated'],
         surface: t['bg-2'],
         surface2: t['bg-3'],
         header: t['bg-1'],
@@ -234,16 +249,12 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         active: t['fg-3'],
         hover: t['button-hover'],
         selected: t['selected'],
-        disabled: getColor('#BBBECA', '#EBEBEF4D'),
-        disabledBackground: getColor('#EAEBEF', '#EBEBEF1F'),
+        disabled: t['disabled-fg'],
+        disabledBackground: t['disabled-bg'],
         focus: t['focus'],
       },
       other: {
-        standardInputLine: getColor('#383D511F', '#EBEBEF6B'),
-      },
-      gradients: {
-        aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
-        newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
+        standardInputLine: t['input-line'],
       },
     },
     spacing: 4,
@@ -414,7 +425,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
   } as ThemeOptions;
 };
 
-export function getThemedComponents(theme: Theme) {
+export function getThemedComponents(theme: AppTheme) {
   return {
     components: {
       MuiSkeleton: {
@@ -428,12 +439,12 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             borderRadius: '8px',
-            borderColor: theme.palette.divider,
+            borderColor: figVars['border-2'],
             '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#CBCDD8',
+              borderColor: figVars['input-border-hover'],
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#CBCDD8',
+              borderColor: figVars['input-border-hover'],
             },
           },
         },
@@ -442,10 +453,10 @@ export function getThemedComponents(theme: Theme) {
         styleOverrides: {
           root: {
             '& .MuiSlider-thumb': {
-              color: theme.palette.mode === 'light' ? '#62677B' : '#C9B3F9',
+              color: figVars['slider-thumb'],
             },
             '& .MuiSlider-track': {
-              color: theme.palette.mode === 'light' ? '#383D51' : '#9C93B3',
+              color: figVars['slider-track'],
             },
           },
         },
@@ -453,20 +464,36 @@ export function getThemedComponents(theme: Theme) {
       MuiButton: {
         defaultProps: {
           disableElevation: true,
+          // No ripple / pressed splash on mouse-down (hover + keyboard focus are the
+          // only interaction states).
+          disableRipple: true,
         },
         styleOverrides: {
           root: {
             borderRadius: '8px',
+            // Hover/focus state transition at 100ms (overrides MUI's 250ms default).
+            transition: theme.transitions.create(
+              ['background-color', 'box-shadow', 'border-color', 'color'],
+              { duration: motion.duration.hover }
+            ),
+            // Keyboard-focus ring in the variant's own text color; ButtonBase zeroes the
+            // native outline, so we set our own (2px, offset 3px out).
+            '&.Mui-focusVisible': {
+              outline: '2px solid currentColor',
+              outlineOffset: '3px',
+            },
           },
           sizeLarge: {
             ...theme.typography.buttonL,
-            height: '44px',
+            height: '48px',
             padding: '0 24px',
           },
           sizeMedium: {
             ...theme.typography.buttonM,
             height: '36px',
-            padding: '0 12px',
+            // Text-side padding; a start/end icon's -4px slot margin (MUI default) tightens
+            // the icon side to ~10px automatically.
+            padding: '0 0.88rem',
           },
           sizeSmall: {
             ...theme.typography.buttonS,
@@ -480,20 +507,20 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              ...secondaryPillStyle(theme),
+              ...secondaryPillStyle,
               '&.Mui-disabled': {
-                color: theme.palette.fig['fg-3'],
+                color: figVars['fg-3'],
                 border: 'none',
-                boxShadow: figSurfaceShadow(theme.palette.fig),
+                boxShadow: figSurfaceShadow(),
               },
             },
           },
           {
             props: { variant: 'contained', color: 'primary' },
             style: {
-              backgroundColor: theme.palette.fig['fg-max'],
+              backgroundColor: figVars['fg-max'],
               '&:hover, &.Mui-focusVisible': {
-                backgroundColor: theme.palette.fig['fg-1'],
+                backgroundColor: figVars['fg-1'],
               },
             },
           },
@@ -506,11 +533,11 @@ export function getThemedComponents(theme: Theme) {
             <Box
               sx={{
                 ...checkboxIconBox,
-                border: `1px solid ${theme.palette.fig['border-0']}`,
-                backgroundColor: theme.palette.fig['bg-max'],
+                border: `1px solid ${figVars['border-0']}`,
+                backgroundColor: figVars['bg-max'],
                 boxSizing: 'border-box',
                 '.MuiCheckbox-root:hover &': {
-                  backgroundColor: theme.palette.fig['bg-4'],
+                  backgroundColor: figVars['bg-4'],
                 },
               }}
             />
@@ -519,13 +546,13 @@ export function getThemedComponents(theme: Theme) {
             <Box
               sx={{
                 ...checkboxIconBox,
-                backgroundColor: theme.palette.fig['purple-1'],
+                backgroundColor: figVars['purple-1'],
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <SvgIcon sx={{ fontSize: 12, color: figmaDark['fg-1'] }} viewBox="0 0 12 12">
+              <SvgIcon sx={{ fontSize: 12, color: onAccent }} viewBox="0 0 12 12">
                 <path
                   d="M2.5 6.5L5 9L9.5 3.5"
                   fill="none"
@@ -639,7 +666,7 @@ export function getThemedComponents(theme: Theme) {
       MuiListItemIcon: {
         styleOverrides: {
           root: {
-            color: theme.palette.primary.light,
+            color: theme.vars.palette.primary.light,
             minWidth: 'unset !important',
             marginRight: '12px',
           },
@@ -664,26 +691,26 @@ export function getThemedComponents(theme: Theme) {
             props: { variant: 'outlined' },
             style: {
               border: 'none',
-              boxShadow: figSurfaceShadow(theme.palette.fig),
-              background:
-                theme.palette.mode === 'light'
-                  ? theme.palette.background.paper
-                  : theme.palette.background.surface,
+              boxShadow: figSurfaceShadow(),
+              background: figVars['surface-elevated'],
+              ...darkScheme({
+                background: figVars['bg-2'],
+              }),
             },
           },
           {
             props: { variant: 'elevation' },
             style: {
               boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-              ...(theme.palette.mode === 'dark' ? { backgroundImage: 'none' } : {}),
+              ...darkScheme({ backgroundImage: 'none' }),
             },
           },
           {
             props: { variant: 'modal' },
             style: {
               borderRadius: '0.75rem',
-              backgroundColor: theme.palette.fig['bg-2'],
-              boxShadow: `0 0 0 1px ${theme.palette.fig['border-1']}, 0 4px 16px 0 ${theme.palette.fig['shadow-medium']}`,
+              backgroundColor: figVars['bg-2'],
+              boxShadow: `0 0 0 1px ${figVars['border-1']}, 0 4px 16px 0 ${figVars['shadow-medium']}`,
             },
           },
         ],
@@ -714,9 +741,9 @@ export function getThemedComponents(theme: Theme) {
             [theme.breakpoints.up('lg')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
+              maxWidth: '1280px',
             },
             [theme.breakpoints.up('xl')]: {
-              maxWidth: 'unset',
               paddingLeft: '96px',
               paddingRight: '96px',
             },
@@ -742,16 +769,17 @@ export function getThemedComponents(theme: Theme) {
             '&.Mui-checked': {
               transform: 'translateX(10px)',
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.fig['purple-1'],
+                backgroundColor: figVars['purple-1'],
                 opacity: 1,
               },
             },
             '&.Mui-disabled': {
-              opacity: theme.palette.mode === 'dark' ? 0.3 : 0.7,
+              opacity: 0.7,
+              ...darkScheme({ opacity: 0.3 }),
             },
           },
           thumb: {
-            color: figmaDark['fg-1'],
+            color: onAccent,
             borderRadius: '50%',
             width: '14px',
             height: '14px',
@@ -759,7 +787,7 @@ export function getThemedComponents(theme: Theme) {
           },
           track: {
             opacity: 1,
-            backgroundColor: theme.palette.action.active,
+            backgroundColor: figVars['fg-3'],
             borderRadius: '9px',
           },
         },
@@ -777,7 +805,7 @@ export function getThemedComponents(theme: Theme) {
       MuiTableCell: {
         styleOverrides: {
           root: {
-            borderColor: theme.palette.divider,
+            borderColor: figVars['border-2'],
           },
         },
       },
@@ -851,52 +879,52 @@ export function getThemedComponents(theme: Theme) {
           {
             props: { severity: 'error' },
             style: {
-              color: theme.palette.error['100'],
-              background: theme.palette.error['200'],
+              color: theme.vars.palette.error['100'],
+              background: theme.vars.palette.error['200'],
               a: {
-                color: theme.palette.error['100'],
+                color: theme.vars.palette.error['100'],
               },
               '.MuiButton-text': {
-                color: theme.palette.error['100'],
+                color: theme.vars.palette.error['100'],
               },
             },
           },
           {
             props: { severity: 'info' },
             style: {
-              color: theme.palette.info['100'],
-              background: theme.palette.info['200'],
+              color: theme.vars.palette.info['100'],
+              background: theme.vars.palette.info['200'],
               a: {
-                color: theme.palette.info['100'],
+                color: theme.vars.palette.info['100'],
               },
               '.MuiButton-text': {
-                color: theme.palette.info['100'],
+                color: theme.vars.palette.info['100'],
               },
             },
           },
           {
             props: { severity: 'success' },
             style: {
-              color: theme.palette.success['100'],
-              background: theme.palette.success['200'],
+              color: theme.vars.palette.success['100'],
+              background: theme.vars.palette.success['200'],
               a: {
-                color: theme.palette.success['100'],
+                color: theme.vars.palette.success['100'],
               },
               '.MuiButton-text': {
-                color: theme.palette.success['100'],
+                color: theme.vars.palette.success['100'],
               },
             },
           },
           {
             props: { severity: 'warning' },
             style: {
-              color: theme.palette.warning['100'],
-              background: theme.palette.warning['200'],
+              color: theme.vars.palette.warning['100'],
+              background: theme.vars.palette.warning['200'],
               a: {
-                color: theme.palette.warning['100'],
+                color: theme.vars.palette.warning['100'],
               },
               '.MuiButton-text': {
-                color: theme.palette.warning['100'],
+                color: theme.vars.palette.warning['100'],
               },
             },
           },
@@ -909,7 +937,7 @@ export function getThemedComponents(theme: Theme) {
             fontWeight: 400,
             fontSize: pxToRem(14),
             minWidth: '375px',
-            backgroundColor: theme.palette.fig['bg-2'],
+            backgroundColor: figVars['bg-2'],
             '> div:first-of-type': {
               minHeight: '100vh',
               display: 'flex',
@@ -931,34 +959,31 @@ export function getThemedComponents(theme: Theme) {
       MuiSvgIcon: {
         styleOverrides: {
           colorPrimary: {
-            color: theme.palette.primary.light,
+            color: theme.vars.palette.primary.light,
           },
         },
       },
       MuiSelect: {
         defaultProps: {
           IconComponent: (props) => (
-            <ChevronUpDownIcon
-              {...props}
-              sx={{ fontSize: '18px', color: theme.palette.fig['fg-3'] }}
-            />
+            <ChevronUpDownIcon {...props} sx={{ fontSize: '18px', color: figVars['fg-3'] }} />
           ),
         },
         styleOverrides: {
           outlined: {
-            backgroundColor: theme.palette.fig['bg-1'],
+            backgroundColor: figVars['bg-1'],
             ...theme.typography.buttonM,
-            color: theme.palette.fig['fg-1'],
+            color: figVars['fg-1'],
           },
         },
       },
       MuiLinearProgress: {
         styleOverrides: {
           bar1Indeterminate: {
-            background: theme.palette.gradients.aaveGradient,
+            background: figVars['purple-1'],
           },
           bar2Indeterminate: {
-            background: theme.palette.gradients.aaveGradient,
+            background: figVars['purple-1'],
           },
         },
       },
@@ -967,11 +992,68 @@ export function getThemedComponents(theme: Theme) {
 }
 
 /**
- * Assemble the full app MUI theme for a mode: base design tokens merged with the
- * component overrides. Single source of truth shared by the app root
- * (`AppGlobalStyles`) and the dev component showcase, so they can't drift apart.
+ * Assemble the full app MUI theme (CSS-variables mode): both color schemes' design tokens
+ * plus the component overrides. Single source of truth shared by the app root
+ * (`AppGlobalStyles`) and the dev component showcase, so they can't drift apart. Color
+ * scheme is switched via the `data-mui-color-scheme` attribute, not by rebuilding the theme.
  */
-export const createAppTheme = (mode: 'light' | 'dark') => {
-  const base = createTheme(getDesignTokens(mode));
-  return deepmerge(base, getThemedComponents(base));
+export const createAppTheme = () => {
+  const light = getDesignTokens('light');
+  const dark = getDesignTokens('dark');
+  const shared = {
+    breakpoints: light.breakpoints,
+    spacing: light.spacing,
+    typography: light.typography,
+    colorSchemes: {
+      light: { palette: light.palette },
+      dark: { palette: dark.palette },
+    },
+  };
+  // Build a base theme first so `getThemedComponents` can read its `.vars` (CSS-var refs),
+  // then rebuild with those overrides attached. (A build-once `theme.components = …` mutation
+  // trips MUI's `Components<Theme>` typing, so the two-pass is the type-clean form.)
+  const base = experimental_extendTheme(shared);
+  return experimental_extendTheme({
+    ...shared,
+    components: getThemedComponents(base).components,
+  });
+};
+
+// --- Display-P3 override layer -------------------------------------------------------------
+
+const isColorValue = (v: string) => v.startsWith('#') || v.startsWith('rgb');
+
+// Walk a color scheme's palette and, for every solid color leaf, emit a P3 override keyed to
+// the CSS variable MUI generates for it (`--mui-palette-<path joined by '-'>`). Non-color
+// leaves (numbers, `mode`, channel strings like "32 29 29", gradients) are skipped.
+const collectP3Vars = (
+  node: Record<string, unknown>,
+  path: string[],
+  out: Record<string, string>
+) => {
+  Object.entries(node).forEach(([key, value]) => {
+    if (typeof value === 'string' && isColorValue(value)) {
+      out[`--mui-palette-${[...path, key].join('-')}`] = colorToP3(value);
+    } else if (value && typeof value === 'object') {
+      collectP3Vars(value as Record<string, unknown>, [...path, key], out);
+    }
+  });
+};
+
+/**
+ * Build Display-P3 overrides for the generated `--mui-palette-*` CSS variables — one entry
+ * per solid color token, per color scheme. Injected under `@supports (color-gamut: p3)` so
+ * wide-gamut displays get the richer color while everything else keeps the sRGB base var.
+ * (Alpha-composited tints via MUI's `rgba(<channel> / a)` stay sRGB — see migration notes.)
+ */
+export const buildP3Overrides = (theme: AppTheme) => {
+  const forScheme = (scheme?: { palette?: unknown }) => {
+    const out: Record<string, string> = {};
+    collectP3Vars((scheme?.palette ?? {}) as Record<string, unknown>, [], out);
+    return out;
+  };
+  return {
+    light: forScheme(theme.colorSchemes.light),
+    dark: forScheme(theme.colorSchemes.dark),
+  };
 };

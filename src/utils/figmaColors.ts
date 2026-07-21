@@ -1,14 +1,8 @@
 /**
- * Figma color tokens — same names as the old figma.scss `$colors-light` / `$colors-dark` maps.
- *
- * Import into src/utils/theme.tsx and reference when building the palette, e.g.:
- *   import { figmaColor } from './figmaColors';
- *   // ...inside getDesignTokens(mode):
- *   text: { primary: figmaColor(mode, 'fg-1') }
- *
- * Or use the maps directly with the theme's getColor helper:
- *   import { figmaLight, figmaDark } from './figmaColors';
- *   primary: { main: getColor(figmaLight['fg-1'], figmaDark['fg-1']) }
+ * Figma color tokens — the SINGLE SOURCE OF TRUTH for every color value in the app (light +
+ * dark). The theme flattens these onto the MUI palette root, so each becomes a `--mui-palette-*`
+ * CSS var (Display-P3 + sRGB fallback). Consume them as bare token strings in `sx`
+ * (`sx={{ bgcolor: 'bg-1' }}`) or via `figVars` outside `sx` — never hand-write hex in components.
  */
 export const figmaLight = {
   'bg-max': '#ffffff',
@@ -80,6 +74,37 @@ export const figmaLight = {
   'chain-scroll': '#f8cf6e',
   'chain-worldchain': '#ff9d00',
   'chain-zksync': '#8c8dfe',
+  'info-panel-color-one': '#fafafa',
+  'info-panel-color-two': '#fafafa',
+  'info-panel-color-three': '#fafafa',
+  // --- semantic tokens promoted from theme-file literals (SoT) ---
+  'secondary-main': '#FF607B',
+  'secondary-light': '#FF607B',
+  'secondary-dark': '#B34356',
+  'error-light': '#D26666',
+  'error-dark': '#BC0000',
+  'error-text': '#4F1919',
+  'error-bg': '#F9EBEB',
+  'warning-light': '#FFCE00',
+  'warning-dark': '#C67F15',
+  'warning-text': '#63400A',
+  'warning-bg': '#FEF5E8',
+  'info-light': '#0062D2',
+  'info-dark': '#002754',
+  'info-text': '#002754',
+  'info-bg': '#E5EFFB',
+  'success-light': '#90FF95',
+  'success-dark': '#318435',
+  'success-text': '#1C4B1E',
+  'success-bg': '#ECF8ED',
+  highlight: '#383D51',
+  'disabled-fg': '#BBBECA',
+  'disabled-bg': '#EAEBEF',
+  'input-line': '#383D511F',
+  'input-border-hover': '#CBCDD8',
+  'slider-thumb': '#62677B',
+  'slider-track': '#383D51',
+  'surface-elevated': '#ffffff',
 } as const;
 
 export const figmaDark = {
@@ -87,8 +112,8 @@ export const figmaDark = {
   'bg-1': '#100f0f',
   'bg-2': '#18181B',
   'bg-3': '#1f1e1e',
-  'bg-4': '#1E1E20',
-  'bg-5': '#393737',
+  'bg-4': '#1F1E1E',
+  'bg-5': '#2A2828',
   'bg-6': '#494646',
   'border-0': 'rgba(255, 255, 255, 0.06)',
   'border-1': 'rgba(255, 255, 255, 0.08)',
@@ -155,6 +180,37 @@ export const figmaDark = {
   'chain-scroll': '#f8cf6e',
   'chain-worldchain': '#ff9d00',
   'chain-zksync': '#8c8dfe',
+  'info-panel-color-one': 'rgba(29, 29, 33, 0.20)',
+  'info-panel-color-two': 'rgba(41, 41, 46, 0.20)',
+  'info-panel-color-three': 'rgba(255, 255, 255, 0.01)',
+  // --- semantic tokens promoted from theme-file literals (SoT) ---
+  'secondary-main': '#F48FB1',
+  'secondary-light': '#F6A5C0',
+  'secondary-dark': '#AA647B',
+  'error-light': '#E57373',
+  'error-dark': '#D32F2F',
+  'error-text': '#FBB4AF',
+  'error-bg': '#2E0C0A',
+  'warning-light': '#FFB74D',
+  'warning-dark': '#F57C00',
+  'warning-text': '#FFDCA8',
+  'warning-bg': '#301E04',
+  'info-light': '#4FC3F7',
+  'info-dark': '#0288D1',
+  'info-text': '#A9E2FB',
+  'info-bg': '#071F2E',
+  'success-light': '#90FF95',
+  'success-dark': '#388E3C',
+  'success-text': '#C2E4C3',
+  'success-bg': '#0A130B',
+  highlight: '#C9B3F9',
+  'disabled-fg': '#EBEBEF4D',
+  'disabled-bg': '#EBEBEF1F',
+  'input-line': '#EBEBEF6B',
+  'input-border-hover': '#CBCDD8',
+  'slider-thumb': '#C9B3F9',
+  'slider-track': '#9C93B3',
+  'surface-elevated': '#1E1E20',
 } as const;
 
 // Token names shared by both modes (light is the common subset; dark adds a few extras).
@@ -169,14 +225,41 @@ export const figmaColor = (mode: 'light' | 'dark', name: FigmaColorName) =>
  *   const t = pickFigma(mode);
  *   text: { primary: t['fg-1'], secondary: t['fg-2'] }
  */
-export const pickFigma = (mode: 'light' | 'dark') => (mode === 'dark' ? figmaDark : figmaLight);
+export const pickFigma = (mode: 'light' | 'dark'): Record<FigmaColorName, string> =>
+  mode === 'dark' ? figmaDark : figmaLight;
+
+/**
+ * Terse, P3-safe accessor for the design tokens as CSS variables.
+ *
+ * The tokens are flattened onto the MUI palette root (see `theme.tsx`), so MUI generates a
+ * `--mui-palette-<name>` custom property per token and the Display-P3 layer overrides those on
+ * wide-gamut displays. `figVars['bg-1']` therefore emits `var(--mui-palette-bg-1)`, which gets
+ * P3 + the structural sRGB fallback — unlike a raw `theme.palette['bg-1']` hex read, which does
+ * not. Use it in `styled()`, plain JS, and interpolated strings; inside `sx` the bare string
+ * form (`sx={{ bgcolor: 'bg-1' }}`) already resolves to the same var with no import.
+ *
+ * Gotcha: never pass a var-based color (this, a bare `sx` token, or `theme.vars.palette.*`) to a
+ * raw SVG/icon presentation attribute (`<Icon color=/fill=/stroke={…}>`) — `var()` doesn't
+ * resolve there. Use a concrete hex, or apply the color via `sx`/`style` (CSS) instead.
+ *
+ * The `--mui-palette-<name>` naming is coupled to MUI's var generation and to the tokens living
+ * at the palette root — the same coupling `collectP3Vars` (theme.tsx) relies on.
+ */
+export const figVars = Object.fromEntries(
+  Object.keys(figmaLight).map((name) => [name, `var(--mui-palette-${name})`])
+) as Record<FigmaColorName, string>;
+
+/**
+ * Always-white, mode-independent. For text/icons that sit on a fixed colored surface (brand
+ * gradients, always-dark chips). A concrete hex — NOT a CSS var — so it also resolves in raw
+ * SVG/icon presentation attributes (`color=`/`fill=`), where `var()` does not.
+ */
+export const onAccent = '#ffffff';
 
 /**
  * The shared "surface" box-shadow: a soft drop shadow plus a 1px ring that stands in
  * for a border. Used by the secondary buttons, menus/paper, and the dashboard cards.
  * `stroke` selects the ring token (cards use `shadow-stroke-1` for a slightly stronger hairline).
  */
-export const figSurfaceShadow = (
-  fig: Record<FigmaColorName, string>,
-  stroke: FigmaColorName = 'shadow-stroke-2'
-): string => `0px 2px 4px 0px ${fig['shadow-low']}, 0px 0px 0px 1px ${fig[stroke]}`;
+export const figSurfaceShadow = (stroke: FigmaColorName = 'shadow-stroke-2'): string =>
+  `0px 2px 4px 0px ${figVars['shadow-low']}, 0px 0px 0px 1px ${figVars[stroke]}`;
