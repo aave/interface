@@ -29,6 +29,13 @@ interface PayloadNode {
   executedAt: string | null;
   cancelledAt: string | null;
   actions: PayloadActionNode[] | null;
+  delaySeconds: string | number | null;
+  gracePeriodSeconds: string | number | null;
+  expirationTime: string | null;
+  createdTxHash: string | null;
+  queuedTxHash: string | null;
+  executedTxHash: string | null;
+  cancelledTxHash: string | null;
 }
 
 const GET_PROPOSAL_PAYLOADS = gql`
@@ -47,6 +54,13 @@ const GET_PROPOSAL_PAYLOADS = gql`
         executedAt
         cancelledAt
         actions
+        delaySeconds
+        gracePeriodSeconds
+        expirationTime
+        createdTxHash
+        queuedTxHash
+        executedTxHash
+        cancelledTxHash
       }
     }
   }
@@ -86,5 +100,12 @@ export async function getProposalPayloads(
         accessLevel: a.accessLevel,
       })
     ),
+    delaySeconds: p.delaySeconds != null ? Number(p.delaySeconds) : null,
+    gracePeriodSeconds: p.gracePeriodSeconds != null ? Number(p.gracePeriodSeconds) : null,
+    expirationTime: p.expirationTime,
+    createdTxHash: p.createdTxHash,
+    queuedTxHash: p.queuedTxHash,
+    executedTxHash: p.executedTxHash,
+    cancelledTxHash: p.cancelledTxHash,
   }));
 }

@@ -13,6 +13,7 @@ import { ProposalDetail, ProposalPayload } from 'src/services/GovernanceCacheSer
 const ETH = 1;
 const ARB = 42161;
 const BASE = 8453;
+const FAKE_TX = '0x' + 'ab'.repeat(32); // 66-char placeholder so the preview renders explorer links
 
 const baseProposal = (over: Partial<ProposalDetail>): ProposalDetail => ({
   id: '137',
@@ -44,6 +45,14 @@ const baseProposal = (over: Partial<ProposalDetail>): ProposalDetail => ({
   quorum: null,
   requiredDifferential: null,
   cooldownBeforeVotingStart: 86400, // 1d
+  votingClosedAndSentAt: null,
+  createdTxHash: FAKE_TX,
+  votingActivatedTxHash: FAKE_TX,
+  queuedTxHash: FAKE_TX,
+  executedTxHash: FAKE_TX,
+  failedTxHash: FAKE_TX,
+  cancelledTxHash: FAKE_TX,
+  votingClosedTxHash: FAKE_TX,
   ...over,
 });
 
@@ -65,6 +74,13 @@ const payload = (
   executedAt: null,
   cancelledAt: null,
   actions: [],
+  delaySeconds: 86400, // 1d
+  gracePeriodSeconds: 604800, // 7d
+  expirationTime: null,
+  createdTxHash: FAKE_TX,
+  queuedTxHash: FAKE_TX,
+  executedTxHash: FAKE_TX,
+  cancelledTxHash: FAKE_TX,
   ...over,
 });
 

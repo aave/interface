@@ -58,6 +58,16 @@ export interface ProposalDetail {
   requiredDifferential: string | null;
   // Voting config
   cooldownBeforeVotingStart: number | null;
+  // Accurate vote-close time (closeAndSendVote lands after votingEndTime); ISO 8601
+  votingClosedAndSentAt: string | null;
+  // Lifecycle transaction hashes (for explorer links)
+  createdTxHash: string | null;
+  votingActivatedTxHash: string | null;
+  queuedTxHash: string | null;
+  executedTxHash: string | null;
+  failedTxHash: string | null;
+  cancelledTxHash: string | null;
+  votingClosedTxHash: string | null;
 }
 
 /** A single vote (from `getProposalVotes` / `getUserVote`). votingPower is wei. */
@@ -100,6 +110,15 @@ export interface ProposalPayload {
   executedAt: string | null;
   cancelledAt: string | null;
   actions: PayloadAction[];
+  // Executor timelock config (seconds) + expiry (ISO 8601)
+  delaySeconds: number | null;
+  gracePeriodSeconds: number | null;
+  expirationTime: string | null;
+  // Per-lifecycle transaction hashes (for explorer links)
+  createdTxHash: string | null;
+  queuedTxHash: string | null;
+  executedTxHash: string | null;
+  cancelledTxHash: string | null;
 }
 
 /**

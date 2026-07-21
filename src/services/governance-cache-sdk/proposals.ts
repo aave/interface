@@ -161,6 +161,14 @@ const GET_PROPOSAL_DETAIL = gql`
         quorum
         requiredDifferential
         coolDownBeforeVotingStart
+        votingClosedAndSentAt
+        createdTxHash
+        votingActivatedTxHash
+        queuedTxHash
+        executedTxHash
+        failedTxHash
+        cancelledTxHash
+        votingClosedTxHash
       }
     }
   }
@@ -246,6 +254,14 @@ interface ProposalDetailNode extends CacheProposalNode {
   quorum: string | null;
   requiredDifferential: string | null;
   coolDownBeforeVotingStart: number | null;
+  votingClosedAndSentAt: string | null;
+  createdTxHash: string | null;
+  votingActivatedTxHash: string | null;
+  queuedTxHash: string | null;
+  executedTxHash: string | null;
+  failedTxHash: string | null;
+  cancelledTxHash: string | null;
+  votingClosedTxHash: string | null;
 }
 
 /** Full proposal detail including timestamps and thresholds. */
@@ -292,5 +308,13 @@ export async function getProposalDetail(
     quorum: p.quorum,
     requiredDifferential: p.requiredDifferential,
     cooldownBeforeVotingStart: p.coolDownBeforeVotingStart ?? null,
+    votingClosedAndSentAt: p.votingClosedAndSentAt,
+    createdTxHash: p.createdTxHash,
+    votingActivatedTxHash: p.votingActivatedTxHash,
+    queuedTxHash: p.queuedTxHash,
+    executedTxHash: p.executedTxHash,
+    failedTxHash: p.failedTxHash,
+    cancelledTxHash: p.cancelledTxHash,
+    votingClosedTxHash: p.votingClosedTxHash,
   };
 }

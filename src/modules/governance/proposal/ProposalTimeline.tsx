@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { useGovernanceCoreConstants } from 'src/hooks/governance/useGovernanceCoreConstants';
 import { ProposalDetail, ProposalPayload } from 'src/services/GovernanceCacheService';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { networkConfigs } from 'src/ui-config/networksConfig';
@@ -25,19 +26,14 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 // per-chain payloads) onto one line: each step is the milestone (date / live countdown / "ready"
 // action) and every underlying on-chain transaction is a substep written in plain language.
 //
-// Countdowns fully derivable today: the creation cooldown and the voting window. The proposal
-// execution timelock (needs GovernanceCore.cooldownPeriod) and the payload timelock/grace (needs
-// payload delay/gracePeriod, not yet exposed by getProposalPayloads) degrade to a plain
-// "ready/awaiting" label. Transaction links wait on the cache exposing tx hashes — see TODOs.
+// Payload timelocks/grace and per-lifecycle tx hashes come from the cache. The proposal execution
+// timelock (GovernanceCore.cooldownPeriod) is still an on-chain immutable — placeholdered until read.
 
 const getNetworkLogo = (chainId?: number) =>
   chainId != null
     ? networkConfigs[chainId as keyof typeof networkConfigs]?.networkLogoPath
     : undefined;
 
-// Block-explorer link for a transaction. TODO: real hash comes from the cache once
-// getProposalDetail/getProposalPayloads expose tx_hash; until then we link to the chain's
-// explorer (or Etherscan) as a placeholder.
 const explorerBase = (chainId?: number): string => {
   if (chainId != null) {
     try {
@@ -48,15 +44,27 @@ const explorerBase = (chainId?: number): string => {
   }
   return 'https://etherscan.io';
 };
-const txExplorerLink = (chainId?: number, txHash?: string): string => {
-  const base = explorerBase(chainId);
-  return txHash ? `${base}/tx/${txHash}` : base;
-};
+// Block-explorer link for a transaction — only when we have a real hash.
+const txExplorerLink = (
+  chainId: number | undefined,
+  txHash: string | null | undefined
+): string | undefined => (txHash ? `${explorerBase(chainId)}/tx/${txHash}` : undefined);
 
-// Placeholders for timelocks the cache doesn't expose yet, used only to render the countdown shape.
-// TODO: proposal → GovernanceCore.cooldownPeriod; payload → executor delay (payload_snapshots).
-const PLACEHOLDER_EXECUTION_TIMELOCK_SECONDS = 86400; // proposal Queued → Executed
-const PLACEHOLDER_PAYLOAD_TIMELOCK_SECONDS = 86400; // payload Queued → Executed
+// Proposal Queued -> Executed timelock (GovernanceCore.cooldownPeriod). On-chain immutable, not in
+// the cache; placeholder until read on-chain. TODO: replace with the fetched constant.
+const PLACEHOLDER_EXECUTION_TIMELOCK_SECONDS = 86400;
+// Fallback payload timelock, only used when the cache hasn't snapshotted delay_seconds yet.
+const FALLBACK_PAYLOAD_TIMELOCK_SECONDS = 86400;
+
+// The closeAndSendVote tx is on the voting chain — resolve it from the voting machine address.
+const votingChainIdFromMachine = (addr: string | null): number | undefined => {
+  if (!addr) return undefined;
+  const lower = addr.toLowerCase();
+  for (const [chainId, cfg] of Object.entries(governanceV3Config.votingChainConfig)) {
+    if (cfg.votingMachineAddress.toLowerCase() === lower) return Number(chainId);
+  }
+  return undefined;
+};
 
 type StepStatus = 'done' | 'now' | 'pending' | 'ok' | 'settled' | 'terminal';
 
@@ -87,7 +95,7 @@ interface SubRow {
   label: ReactNode; // human-readable description of the transaction / payload
   value: ReactNode; // date, "Ready to execute", "pending", etc.
   tone?: 'ready' | 'done' | 'wait' | 'countdown' | 'estimate';
-  txHash?: string; // when present, the row links to the block explorer
+  txHash?: string | null; // when present, the row links to the block explorer
 }
 
 interface Step {
@@ -128,6 +136,11 @@ export const ProposalTimeline = ({
 }: ProposalTimelineProps) => {
   const theme = useTheme();
   const coreChainId = governanceV3Config.coreChainId;
+  // Proposal execution timelock (Queued -> Executed) is a GovernanceCore immutable read on-chain.
+  const { data: coreConstants } = useGovernanceCoreConstants();
+  const execTimelock = coreConstants?.cooldownPeriod
+    ? Number(coreConstants.cooldownPeriod)
+    : PLACEHOLDER_EXECUTION_TIMELOCK_SECONDS;
   const [now, setNow] = useState(() => Math.floor(Date.now() / 1000));
   const [open, setOpen] = useState<Record<string, boolean>>({});
 
@@ -145,6 +158,8 @@ export const ProposalTimeline = ({
     // Expired is terminal: any step that never happened won't happen, so don't project a future
     // date for it (that would contradict the expired outcome) — show a neutral dash instead.
     const isExpired = state === 'expired';
+    // The closeAndSendVote tx lives on the voting chain, not mainnet.
+    const votingChainId = votingChainIdFromMachine(p.votingMachineAddress);
 
     // Forward-projected anchors: use the real timestamp when we have it, otherwise estimate the
     // earliest each milestone could happen by chaining the known durations. Bridge/tx latency is
@@ -169,13 +184,7 @@ export const ProposalTimeline = ({
       : null;
     const projQueued = isoToUnix(p.queuedAt) ?? clampFuture(votingEnd);
     const projExecuted =
-      isoToUnix(p.executedAt) ??
-      clampFuture(projQueued != null ? projQueued + PLACEHOLDER_EXECUTION_TIMELOCK_SECONDS : null);
-    // Payloads are received ~when the proposal executes, then run after their own timelock.
-    const projPayloadExec = clampFuture(
-      projExecuted != null ? projExecuted + PLACEHOLDER_PAYLOAD_TIMELOCK_SECONDS : null
-    );
-
+      isoToUnix(p.executedAt) ?? clampFuture(projQueued != null ? projQueued + execTimelock : null);
     const out: Step[] = [];
 
     // 1 — Created (transactions: each payload created + the proposal itself)
@@ -192,6 +201,7 @@ export const ProposalTimeline = ({
           label: <Trans>Payload {pl.payloadId} created</Trans>,
           value: fmtIso(pl.createdAt) ?? '—',
           tone: 'done' as const,
+          txHash: pl.createdTxHash,
         })),
         {
           key: 'c-proposal',
@@ -199,6 +209,7 @@ export const ProposalTimeline = ({
           label: <Trans>Proposal created</Trans>,
           value: fmtIso(p.createdAt) ?? '—',
           tone: 'done' as const,
+          txHash: p.createdTxHash,
         },
       ],
     });
@@ -218,6 +229,7 @@ export const ProposalTimeline = ({
             label: <Trans>Voting activated</Trans>,
             value: fmtIso(p.votingActivatedAt) ?? fmtUnix(p.votingStartTime) ?? '—',
             tone: 'done',
+            txHash: p.votingActivatedTxHash,
           },
         ],
       });
@@ -245,18 +257,22 @@ export const ProposalTimeline = ({
       state
     );
     if (votingDone) {
+      // The accurate close time is votingClosedAndSentAt; fall back to voting_end_time.
+      const closedAt = fmtIso(p.votingClosedAndSentAt) ?? fmtUnix(p.votingEndTime) ?? '—';
       out.push({
         key: 'voting-closed',
         name: <Trans>Voting closed</Trans>,
         status: 'done',
-        value: fmtUnix(p.votingEndTime) ?? '—',
+        value: closedAt,
         valueKind: 'date',
         subRows: [
           {
             key: 'tx-close',
+            chainId: votingChainId,
             label: <Trans>Votes tallied and sent to governance</Trans>,
-            value: fmtUnix(p.votingEndTime) ?? '—',
+            value: closedAt,
             tone: 'done',
+            txHash: p.votingClosedTxHash,
           },
         ],
       });
@@ -294,6 +310,7 @@ export const ProposalTimeline = ({
             label: <Trans>Proposal cancelled</Trans>,
             value: fmtIso(p.cancelledAt) ?? '—',
             tone: 'done',
+            txHash: p.cancelledTxHash,
           },
         ],
       });
@@ -329,6 +346,7 @@ export const ProposalTimeline = ({
               label: <Trans>Queued for execution</Trans>,
               value: fmtIso(p.queuedAt) ?? '—',
               tone: 'done',
+              txHash: p.queuedTxHash,
             },
           ]
         : undefined,
@@ -349,16 +367,14 @@ export const ProposalTimeline = ({
             label: <Trans>Payloads dispatched to execution chains</Trans>,
             value: fmtIso(p.executedAt) ?? '—',
             tone: 'done',
+            txHash: p.executedTxHash,
           },
         ],
       });
     } else if (state === 'queued') {
-      // Execution timelock: executable at queuedAt + COOLDOWN_PERIOD.
-      // TODO: real value is GovernanceCore.cooldownPeriod (on-chain immutable, not in cache) —
-      // using a placeholder until it's exposed.
+      // Execution timelock: executable at queuedAt + cooldownPeriod (read on-chain).
       const queuedUnix = isoToUnix(p.queuedAt);
-      const executableAt =
-        queuedUnix != null ? queuedUnix + PLACEHOLDER_EXECUTION_TIMELOCK_SECONDS : null;
+      const executableAt = queuedUnix != null ? queuedUnix + execTimelock : null;
       const remaining = executableAt != null ? fmtRemaining(executableAt - now) : null;
       out.push({
         key: 'executed',
@@ -405,6 +421,7 @@ export const ProposalTimeline = ({
             ? '—'
             : fmtEstimate(projExecuted) ?? 'pending',
           tone: pl.queuedAt ? ('done' as const) : ('estimate' as const),
+          txHash: pl.queuedTxHash,
         })),
       });
 
@@ -447,22 +464,27 @@ export const ProposalTimeline = ({
         value: executedValue,
         valueKind: 'count',
         subRows: list.map((pl) => {
-          let value: ReactNode = fmtEstimate(projPayloadExec) ?? 'pending';
+          const plDelay = pl.delaySeconds ?? FALLBACK_PAYLOAD_TIMELOCK_SECONDS;
+          let value: ReactNode =
+            fmtEstimate(clampFuture(projExecuted != null ? projExecuted + plDelay : null)) ??
+            'pending';
           let tone: SubRow['tone'] = 'estimate';
+          let txHash: string | null | undefined;
           if (pl.state === 'executed') {
             value = fmtIso(pl.executedAt) ?? 'executed';
             tone = 'done';
+            txHash = pl.executedTxHash;
           } else if (pl.state === 'cancelled') {
             value = 'cancelled';
             tone = 'wait';
+            txHash = pl.cancelledTxHash;
           } else if (pl.state === 'expired') {
             value = 'expired';
             tone = 'wait';
           } else if (pl.state === 'queued') {
-            // Payload timelock: executable at queuedAt + delay. TODO: real delay/gracePeriod come
-            // from payload_snapshots (not yet exposed) — placeholder renders the countdown shape.
+            // Payload execution timelock: executable at queuedAt + delay (real, from the snapshot).
             const qUnix = isoToUnix(pl.queuedAt);
-            const execAt = qUnix != null ? qUnix + PLACEHOLDER_PAYLOAD_TIMELOCK_SECONDS : null;
+            const execAt = qUnix != null ? qUnix + plDelay : null;
             const remaining = execAt != null ? fmtRemaining(execAt - now) : null;
             value = remaining ? `in ${remaining}` : 'Ready to execute';
             tone = remaining ? 'countdown' : 'ready';
@@ -473,13 +495,14 @@ export const ProposalTimeline = ({
             label: <Trans>Payload {pl.payloadId} executed</Trans>,
             value,
             tone,
+            txHash,
           };
         }),
       });
     }
 
     return out;
-  }, [proposal, payloads, now, coreChainId]);
+  }, [proposal, payloads, now, coreChainId, execTimelock]);
 
   if (!proposal || payloadsLoading) {
     return (
@@ -490,9 +513,8 @@ export const ProposalTimeline = ({
   }
 
   const renderSubRow = (sub: SubRow) => {
-    // Only completed transactions get a link (pending / ready rows haven't happened on-chain).
-    const showLink = sub.tone === 'done' || !!sub.txHash;
-    const href = showLink ? txExplorerLink(sub.chainId, sub.txHash) : undefined;
+    // Link only when we have a real tx hash (i.e. the transaction actually happened on-chain).
+    const href = txExplorerLink(sub.chainId, sub.txHash);
     const logo = getNetworkLogo(sub.chainId);
     return (
       <Box
