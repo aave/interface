@@ -19,6 +19,7 @@ import { useGovernanceCoreConstants } from 'src/hooks/governance/useGovernanceCo
 import { ProposalDetail, ProposalPayload } from 'src/services/GovernanceCacheService';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { networkConfigs } from 'src/ui-config/networksConfig';
+import { figVars } from 'src/utils/figmaColors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 // Single-spine proposal timeline. It weaves the three state machines (proposal core, voting machine,
@@ -109,16 +110,16 @@ interface Step {
 const statusColor = (status: StepStatus, theme: Theme) => {
   switch (status) {
     case 'done':
-      return theme.palette.primary.main;
+      return theme.vars.palette.primary.main;
     case 'ok':
-      return theme.palette.success.main;
+      return theme.vars.palette.success.main;
     case 'now':
     case 'settled':
-      return theme.palette.warning.main;
+      return theme.vars.palette.warning.main;
     case 'terminal':
-      return theme.palette.error.main;
+      return theme.vars.palette.error.main;
     default:
-      return theme.palette.text.disabled;
+      return figVars['fg-4'];
   }
 };
 
@@ -525,7 +526,7 @@ export const ProposalTimeline = ({
         }}
       >
         {logo && <Avatar src={logo} sx={{ width: 16, height: 16 }} />}
-        <Typography variant="caption" sx={{ color: 'text.primary' }}>
+        <Typography variant="caption" sx={{ color: 'fg-1' }}>
           {sub.label}
         </Typography>
         <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -538,10 +539,10 @@ export const ProposalTimeline = ({
                 sub.tone === 'ready' || sub.tone === 'countdown'
                   ? 'warning.main'
                   : sub.tone === 'done'
-                  ? 'text.muted'
+                  ? 'fg-3'
                   : sub.tone === 'estimate'
-                  ? 'text.muted'
-                  : 'text.secondary',
+                  ? 'fg-3'
+                  : 'fg-2',
               whiteSpace: 'nowrap',
             }}
           >
@@ -608,10 +609,10 @@ export const ProposalTimeline = ({
                     step.status === 'settled' ||
                     step.status === 'terminal'
                       ? color
-                      : theme.palette.background.paper,
+                      : theme.vars.palette.background.paper,
                   boxShadow:
                     step.status === 'now'
-                      ? `0 0 0 4px ${theme.palette.background.paper}, 0 0 0 6px ${theme.palette.warning.main}33`
+                      ? `0 0 0 4px ${theme.vars.palette.background.paper}, 0 0 0 6px ${theme.vars.palette.warning.main}33`
                       : undefined,
                 }}
               />
@@ -627,7 +628,7 @@ export const ProposalTimeline = ({
                   gap: 2,
                   cursor: hasSubs ? 'pointer' : 'default',
                   '&:focus-visible': {
-                    outline: `2px solid ${theme.palette.primary.main}`,
+                    outline: `2px solid ${theme.vars.palette.primary.main}`,
                     outlineOffset: 2,
                     borderRadius: 1,
                   },
@@ -648,13 +649,13 @@ export const ProposalTimeline = ({
               >
                 <Typography
                   variant="main14"
-                  sx={{ color: step.status === 'pending' ? 'text.secondary' : 'text.primary' }}
+                  sx={{ color: step.status === 'pending' ? 'fg-2' : 'fg-1' }}
                 >
                   {step.name}
                 </Typography>
 
                 {hasSubs && (
-                  <Box sx={{ color: 'text.muted', display: 'flex' }}>
+                  <Box sx={{ color: 'fg-3', display: 'flex' }}>
                     {isOpen ? (
                       <KeyboardArrowUp sx={{ fontSize: 16 }} />
                     ) : (
@@ -688,7 +689,7 @@ export const ProposalTimeline = ({
                           step.status === 'ok'
                             ? 'success.main'
                             : step.status === 'pending'
-                            ? 'text.muted'
+                            ? 'fg-3'
                             : 'warning.main',
                       }}
                     >
@@ -702,8 +703,8 @@ export const ProposalTimeline = ({
                           step.valueKind === 'countdown'
                             ? 'warning.main'
                             : step.valueKind === 'pending'
-                            ? 'text.disabled'
-                            : 'text.muted',
+                            ? 'fg-4'
+                            : 'fg-3',
                         fontWeight: step.valueKind === 'countdown' ? 600 : 400,
                         fontStyle:
                           step.valueKind === 'pending' || step.valueKind === 'estimate'
