@@ -97,7 +97,7 @@ export const BorrowAssetsListItem = ({
         <Button
           size="small"
           disabled={disableBorrow}
-          variant="contained"
+          variant="outlined"
           onClick={() => {
             openBorrow(underlyingAsset, currentMarket, name, 'dashboard');
           }}

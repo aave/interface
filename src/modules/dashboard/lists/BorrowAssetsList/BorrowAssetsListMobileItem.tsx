@@ -86,7 +86,7 @@ export const BorrowAssetsListMobileItem = ({
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
           disabled={disableBorrow}
-          variant="contained"
+          variant="outlined"
           onClick={() => openBorrow(underlyingAsset, currentMarket, name, 'dashboard')}
           sx={{ mr: 1.5 }}
           fullWidth
