@@ -5,7 +5,7 @@ import {
   InformationCircleIcon,
 } from '@heroicons/react/outline';
 import { Box, SvgIcon, ThemeOptions } from '@mui/material';
-import { createTheme, experimental_extendTheme } from '@mui/material/styles';
+import { type CSSObject, createTheme, experimental_extendTheme } from '@mui/material/styles';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { ColorPartial } from '@mui/material/styles/createPalette';
@@ -419,6 +419,33 @@ const pressScaleActive = {
   },
 };
 
+/**
+ * Disabled button treatment: the label/icon stay crisp while the button's own background (+ box
+ * shadow) render at 50% on an `opacity: 0.5` `::before` layer. Opacity is used (not color-mix /
+ * channel alpha) so the faded fill keeps its Display-P3 color; a box-shadow also has no opacity of
+ * its own, so fading a layer is the only clean way to halve it. `isolation: isolate` makes the root
+ * a stacking context so the `z-index: -1` layer sits behind the label, not behind the parent bg.
+ */
+const disabledFade = (opts: { color: string; before: CSSObject }): CSSObject => ({
+  color: opts.color,
+  backgroundColor: 'transparent',
+  border: 'none',
+  boxShadow: 'none',
+  isolation: 'isolate',
+  '&::before': {
+    content: "''",
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    borderRadius: 'inherit',
+    opacity: 0.5,
+    zIndex: -1,
+    ...opts.before,
+  },
+});
+
 export function getThemedComponents(theme: AppTheme) {
   return {
     components: {
@@ -506,11 +533,15 @@ export function getThemedComponents(theme: AppTheme) {
             props: { color: 'primary', variant: 'outlined' },
             style: {
               ...secondaryPillStyle,
-              '&.Mui-disabled': {
-                color: figVars['fg-3'],
-                border: 'none',
-                boxShadow: figSurfaceShadow(),
-              },
+              // Disabled: crisp label, pill bg + surface shadow at 50% (per scheme via darkScheme).
+              '&.Mui-disabled': disabledFade({
+                color: figVars['fg-1'],
+                before: {
+                  backgroundColor: figVars['bg-1'],
+                  ...darkScheme({ backgroundColor: figVars['bg-4'] }),
+                  boxShadow: figSurfaceShadow(),
+                },
+              }),
             },
           },
           {
@@ -524,6 +555,11 @@ export function getThemedComponents(theme: AppTheme) {
                   backgroundColor: figVars['bone'],
                 }),
               },
+              // Disabled: crisp label, fg-max fill at 50% (no box-shadow on contained).
+              '&.Mui-disabled': disabledFade({
+                color: figVars['bg-1'],
+                before: { backgroundColor: figVars['fg-max'] },
+              }),
             },
           },
         ],
