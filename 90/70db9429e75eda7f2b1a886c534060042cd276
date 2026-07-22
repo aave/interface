@@ -1,0 +1,62 @@
+src/services/governance-cache-sdk/payloads.ts
+  s_cc023d19ae9515::t_b6f52a4ce258ea 57-63
+  s_cc023d19ae9515::t_25f301919bd4ec 32-38
+  s_cc023d19ae9515::t_2cac16ef538634 103-109
+src/modules/governance/proposal/ProposalTimeline.tsx
+  s_cc023d19ae9515::t_c0f68ba13e91fa 260-261,266,271,273,275
+  s_cc023d19ae9515::t_b68d83cbfdf9f1 59-67
+  s_cc023d19ae9515::t_714d2646393b76 467-470,472,476,480,485,487,498
+  s_cc023d19ae9515::t_1f6bd15ad2fa4a 139-143
+  s_cc023d19ae9515::t_9d0d4e7f5d4bbf 424
+  s_cc023d19ae9515::t_74b97e9f55c9f5 161
+  s_cc023d19ae9515::t_6983d20977b987 370
+  s_cc023d19ae9515::t_2f075432efbe0d 29-30,47-57
+  s_cc023d19ae9515::t_02a8ac68545ae6 204,212
+  s_cc023d19ae9515::t_3e94630ea388f8 232
+  s_cc023d19ae9515::t_1cba9c1169ef87 187
+  s_cc023d19ae9515::t_df304ab88ee79a 18
+  s_cc023d19ae9515::t_f67434ace71de6 349
+  s_cc023d19ae9515::t_4c6288bca2160f 505
+  s_cc023d19ae9515::t_882247de17a31f 516-517
+  s_cc023d19ae9515::t_825f832d8efd61 98
+  s_cc023d19ae9515::t_21b5ddedf02257 162
+  s_cc023d19ae9515::t_bbcf8611b98175 313
+  s_cc023d19ae9515::t_d7bd9e999167b1 375,377
+src/services/governance-cache-sdk/proposals.ts
+  s_cc023d19ae9515::t_b1b3d73966e10c 257-264
+  s_cc023d19ae9515::t_d6e9e30c100fa4 311-318
+  s_cc023d19ae9515::t_ff93eed6f5d37f 164-171
+src/services/governance-cache-sdk/types.ts
+  s_cc023d19ae9515::t_07f6c308bdec0b 61-70
+  s_cc023d19ae9515::t_afd57826055da7 113-121
+pages/governance/timeline-preview.governance.tsx
+  s_cc023d19ae9515::t_4e0258e17fdf85 77-83
+  s_cc023d19ae9515::t_d8082c20a63242 48-55
+  s_cc023d19ae9515::t_8f2b66add53a5b 16
+src/hooks/governance/useGovernanceCoreConstants.ts
+  s_cc023d19ae9515::t_f7186607a1bc56 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "9070db9429e75eda7f2b1a886c534060042cd276",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_cc023d19ae9515": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5269601c-242e-4a8a-b254-516772db1a62",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+cypress/support/e2e.ts
+  s_aa60d158a9fc9a::t_1280b3572d5232 12,20-23
+  h_be8c3c572e9983 9-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "48d403bd8e0949497293caa29bca48ed77b2841f",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_aa60d158a9fc9a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9d166cff-40c6-4615-9a1d-97a026bc5e61",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
