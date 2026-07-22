@@ -1,5 +1,5 @@
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
-import { Box, Divider, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
@@ -8,7 +8,6 @@ import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { StkGhoDepositRow } from './StkGhoDepositRow';
-import { StkGhoSavingsRate } from './StkGhoSavingsRate';
 import { StkGhoWithdrawRow } from './StkGhoWithdrawRow';
 
 export interface StkGhoDepositPanelProps {
@@ -73,6 +72,7 @@ export const StkGhoDepositPanel: React.FC<StkGhoDepositPanelProps> = ({
           <Grid container spacing={{ xs: 1, md: 2 }} sx={{ mb: 4 }}>
             <Grid item xs={12}>
               <StkGhoDepositRow
+                totalDepositedUSD={stakeData.totalSupplyUSDFormatted}
                 availableToStake={availableToStake}
                 onDeposit={onStakeAction}
                 onMigrate={onMigrate}
@@ -91,14 +91,8 @@ export const StkGhoDepositPanel: React.FC<StkGhoDepositPanelProps> = ({
               />
             </Grid>
           </Grid>
-
-          <Divider />
         </>
       )}
-
-      <Box sx={{ mt: currentAccount && stakeUserData ? 8 : 0 }}>
-        <StkGhoSavingsRate totalDepositedUSD={stakeData.totalSupplyUSDFormatted} />
-      </Box>
     </>
   );
 };

@@ -5,7 +5,6 @@ import { Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
-import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -35,10 +34,6 @@ export const SavingsGhoModalDepositContent = () => {
       store.currentChainId,
     ])
   );
-  const { data: meritIncentives } = useMeritIncentives({
-    symbol: 'GHO',
-    market: currentMarketData.market,
-  });
   const [_amount, setAmount] = useState('');
   const amountRef = useRef<string>();
 
@@ -118,11 +113,7 @@ export const SavingsGhoModalDepositContent = () => {
         </Typography>
       )}
       <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet}>
-        <DetailsNumberLine
-          description={<Trans>APR</Trans>}
-          value={meritIncentives?.incentiveAPR || '0'}
-          percent
-        />
+        <DetailsNumberLine description={<Trans>APR</Trans>} value={'0'} percent />
       </TxModalDetails>
 
       {txError && <GasEstimationError txError={txError} />}
