@@ -1,8 +1,8 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
@@ -41,24 +41,24 @@ export default function Dashboard() {
               mb: { xs: 3, xsm: 4 },
             }}
           >
-            <StyledToggleButtonGroup
+            <StyledTxModalToggleGroup
               color="primary"
               value={mode}
               exclusive
               onChange={(_, value) => setMode(value)}
-              sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
+              sx={{ width: { xs: '100%', xsm: '359px' } }}
             >
-              <StyledToggleButton value="supply" disabled={mode === 'supply'}>
+              <StyledTxModalToggleButton value="supply" disabled={mode === 'supply'}>
                 <Typography variant="subheader1">
                   <Trans>Supply</Trans>
                 </Typography>
-              </StyledToggleButton>
-              <StyledToggleButton value="borrow" disabled={mode === 'borrow'}>
+              </StyledTxModalToggleButton>
+              <StyledTxModalToggleButton value="borrow" disabled={mode === 'borrow'}>
                 <Typography variant="subheader1">
                   <Trans>Borrow</Trans>
                 </Typography>
-              </StyledToggleButton>
-            </StyledToggleButtonGroup>
+              </StyledTxModalToggleButton>
+            </StyledTxModalToggleGroup>
           </Box>
         )}
 

@@ -22,6 +22,10 @@ const SelectDemo = () => {
       onChange={(e: SelectChangeEvent) => setValue(e.target.value)}
       size="small"
       sx={{ minWidth: 160 }}
+      // Showcase-only: render the menu inline so it inherits the showcase's LOCAL color scheme.
+      // A portaled menu escapes to <body>, outside the showcase's `data-mui-color-scheme` box,
+      // and would otherwise follow the app's global scheme instead of the toggle here.
+      MenuProps={{ disablePortal: true }}
     >
       <MenuItem value="ethereum">Ethereum</MenuItem>
       <MenuItem value="base">Base</MenuItem>

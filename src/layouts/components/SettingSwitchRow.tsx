@@ -27,12 +27,13 @@ export const SettingSwitchRow = ({
     sx={{
       cursor: 'pointer',
       color: { xs: '#F1F1F3', md: 'fg-1' },
-      py: { xs: 1.5, md: 2 },
+      // Desktop rows take their height from the shared MenuItem min-height (2rem);
+      // mobile keeps its own vertical padding.
+      py: { xs: 1.5 },
     }}
   >
     <ListItemText>{label}</ListItemText>
     <Switch
-      disableRipple
       checked={checked}
       onClick={onSwitchClick}
       sx={{ '.MuiSwitch-track': { bgcolor: { xs: figmaDark['border-2'], md: 'primary.light' } } }}

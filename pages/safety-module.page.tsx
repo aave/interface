@@ -11,8 +11,8 @@ import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStak
 import { ContentContainer } from 'src/components/ContentContainer';
 import { Link } from 'src/components/primitives/Link';
 import { Warning } from 'src/components/primitives/Warning';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -147,24 +147,24 @@ export default function Staking() {
                 mb: { xs: 3, xsm: 4 },
               }}
             >
-              <StyledToggleButtonGroup
+              <StyledTxModalToggleGroup
                 color="primary"
                 value={mode}
                 exclusive
                 onChange={(_, value) => setMode(value)}
                 sx={{ width: { xs: '100%', xsm: '359px' } }}
               >
-                <StyledToggleButton value="aave" disabled={mode === 'aave'}>
+                <StyledTxModalToggleButton value="aave" disabled={mode === 'aave'}>
                   <Typography variant="subheader1">
                     <Trans>Stake AAVE</Trans>
                   </Typography>
-                </StyledToggleButton>
-                <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
+                </StyledTxModalToggleButton>
+                <StyledTxModalToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
                     <Trans>Stake ABPT</Trans>
                   </Typography>
-                </StyledToggleButton>
-              </StyledToggleButtonGroup>
+                </StyledTxModalToggleButton>
+              </StyledTxModalToggleGroup>
             </Box>
 
             <Grid container spacing={4}>

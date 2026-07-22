@@ -56,6 +56,10 @@ msgstr "Borrow cap"
 msgid "Estimated time"
 msgstr "Estimated time"
 
+#: src/layouts/components/TestNetModeSwitcher.tsx
+msgid "Test Mode"
+msgstr "Test Mode"
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Remind me"
@@ -334,6 +338,11 @@ msgstr "The weighted average of APY for all supplied assets, including incentive
 #: src/modules/staking/StakingPanel.tsx
 msgid "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."
 msgstr "You can only withdraw your assets from the Security Module after the cooldown period ends and the unstake window is active."
+
+#: src/layouts/MobileMenu.tsx
+#: src/layouts/SettingsMenu.tsx
+msgid "Watch Wallet"
+msgstr "Watch Wallet"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Migrate to {0} v3 Market"
@@ -953,11 +962,6 @@ msgstr "{networkName} Faucet"
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Protocol Incentives"
 msgstr "Protocol Incentives"
-
-#: src/layouts/MobileMenu.tsx
-#: src/layouts/SettingsMenu.tsx
-msgid "Watch wallet"
-msgstr "Watch wallet"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
@@ -2886,10 +2890,6 @@ msgstr "Voted NAY"
 msgid "about SuperFest."
 msgstr "about SuperFest."
 
-#: src/layouts/components/TestNetModeSwitcher.tsx
-msgid "Testnet mode"
-msgstr "Testnet mode"
-
 #: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -3501,6 +3501,10 @@ msgstr "Cooldown to unstake"
 msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "User does not have outstanding variable rate debt on this reserve"
 
+#: src/layouts/components/DarkModeSwitcher.tsx
+msgid "Dark Mode"
+msgstr "Dark Mode"
+
 #: src/modules/sGho/SGhoSavingsRate.tsx
 msgid "Savings Rate"
 msgstr "Savings Rate"
@@ -3645,7 +3649,6 @@ msgid "Supply APY"
 msgstr "Supply APY"
 
 #: src/layouts/MobileMenu.tsx
-#: src/layouts/SettingsMenu.tsx
 msgid "Global settings"
 msgstr "Global settings"
 
@@ -4215,10 +4218,6 @@ msgstr "Migrate"
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
 msgstr "Enable {symbol} as collateral"
-
-#: src/layouts/components/DarkModeSwitcher.tsx
-msgid "Dark mode"
-msgstr "Dark mode"
 
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total market size"

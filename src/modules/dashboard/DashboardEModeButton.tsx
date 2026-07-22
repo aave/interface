@@ -91,10 +91,11 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
             bgcolor: isEModeDisabled
               ? open
                 ? figVars['bg-6']
-                : figVars['bg-2']
+                : 'transparent'
               : figVars['surface-elevated'],
             px: '4px',
             borderRadius: '4px',
+            height: '100%',
           }}
         >
           <SvgIcon

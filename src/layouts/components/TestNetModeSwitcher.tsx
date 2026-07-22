@@ -27,7 +27,7 @@ export const TestNetModeSwitcher = ({ component = ListItem }: TestNetModeSwitche
   return (
     <SettingSwitchRow
       component={component}
-      label={<Trans>Testnet mode</Trans>}
+      label={<Trans>Test Mode</Trans>}
       checked={testnetsEnabled}
       onClick={toggleTestnetsEnabled}
       onSwitchClick={() => trackEvent(SETTINGS.TESTNET_MODE)}

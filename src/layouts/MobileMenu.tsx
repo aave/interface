@@ -93,7 +93,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
               <List>
                 <ListItem sx={{ cursor: 'pointer', color: '#F1F1F3' }} onClick={handleOpenReadMode}>
                   <ListItemText>
-                    <Trans>Watch wallet</Trans>
+                    <Trans>Watch Wallet</Trans>
                   </ListItemText>
                 </ListItem>
 

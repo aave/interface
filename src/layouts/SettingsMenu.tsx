@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
+import { Button, Divider, ListItemText, Menu, MenuItem } from '@mui/material';
 import React, { useState } from 'react';
 import { SettingsIcon } from 'src/components/icons/SettingsIcon';
 import { useModalContext } from 'src/hooks/useModal';
@@ -84,22 +84,21 @@ export function SettingsMenu() {
         anchorEl={anchorEl}
         open={settingsOpen}
         onClose={handleClose}
-        sx={{ '.MuiMenuItem-root.Mui-disabled': { opacity: 1 } }}
         keepMounted={true}
       >
-        <MenuItem disabled sx={{ mb: '4px' }}>
-          <Typography variant="subheader2" color="fg-2">
-            <Trans>Global settings</Trans>
-          </Typography>
-        </MenuItem>
-
         <DarkModeSwitcher component={MenuItem} />
         <ShieldSwitcher component={MenuItem} />
-        {PROD_ENV && <TestNetModeSwitcher />}
+        {PROD_ENV && <TestNetModeSwitcher component={MenuItem} />}
+
+        <Divider sx={{ borderColor: 'border-0', m: '0.25rem' }} />
+
         <LanguageListItem onClick={handleLanguageClick} component={MenuItem} />
+
+        <Divider sx={{ borderColor: 'border-0', m: '0.25rem' }} />
+
         <MenuItem onClick={handleOpenReadMode}>
           <ListItemText>
-            <Trans>Watch wallet</Trans>
+            <Trans>Watch Wallet</Trans>
           </ListItemText>
         </MenuItem>
       </Menu>

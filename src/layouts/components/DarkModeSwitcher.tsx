@@ -21,7 +21,7 @@ export const DarkModeSwitcher = ({ component = ListItem }: DarkModeSwitcherProps
   return (
     <SettingSwitchRow
       component={component}
-      label={<Trans>Dark mode</Trans>}
+      label={<Trans>Dark Mode</Trans>}
       checked={isDark}
       onClick={() => setMode(isDark ? 'light' : 'dark')}
       onSwitchClick={() => trackEvent(SETTINGS.DARK_MODE, { mode: resolvedMode })}

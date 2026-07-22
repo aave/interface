@@ -79,24 +79,15 @@ export const AssetCategoryMultiSelect = ({
         onClick={handleClick}
         disabled={disabled}
         variant="outlined"
-        disableRipple
         sx={{
-          height: '38px',
-          minWidth: 'auto',
           width: sm ? '100%' : 'unset',
-          display: 'flex',
           justifyContent: sm ? 'space-between' : 'center',
-          alignItems: 'center',
-          gap: 3,
-          p: '6px 12px',
+          gap: 2,
           textTransform: 'none',
           ...sx,
         }}
       >
-        <Typography
-          variant="buttonM"
-          sx={{ fontSize: '0.875rem', whiteSpace: 'nowrap', flexShrink: 0 }}
-        >
+        <Typography variant="buttonM" sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
           {selectedCount === 0 ? (
             <Trans>All Categories</Trans>
           ) : selectedCount === 1 ? (
@@ -106,14 +97,7 @@ export const AssetCategoryMultiSelect = ({
           )}
         </Typography>
 
-        <ChevronUpDownIcon
-          sx={{
-            width: '14px',
-            height: '14px',
-            color: 'fg-1',
-            flexShrink: 0,
-          }}
-        />
+        <ChevronUpDownIcon sx={{ fontSize: 18, color: 'fg-3', flexShrink: 0 }} />
       </Button>
 
       <Popover
@@ -172,7 +156,6 @@ export const AssetCategoryMultiSelect = ({
             </Typography>
             <Button
               onClick={handleReset}
-              disableRipple
               sx={{
                 minWidth: 'auto',
                 padding: 0,

@@ -1,4 +1,4 @@
-import { CheckIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import { CheckIcon, ChevronLeftIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
+import { ChevronRightIcon } from 'src/components/icons/ChevronRightIcon';
 
 import { dynamicActivateLanguage } from '../../libs/LanguageProvider';
 
@@ -34,11 +35,11 @@ export const LanguageListItem = ({ component = ListItem, onClick }: LanguageList
       <ListItemText>
         <Trans>Language</Trans>
       </ListItemText>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {i18n._(langMap[i18n.locale as keyof typeof langMap])}{' '}
-        <SvgIcon fontSize="small" sx={{ color: { xs: '#F1F1F3', md: 'fg-1' }, ml: 1 }}>
-          <ChevronRightIcon />
-        </SvgIcon>
+      <Box
+        sx={{ display: 'flex', alignItems: 'center', gap: 1, color: { xs: '#F1F1F3', md: 'fg-3' } }}
+      >
+        <ListItemText>{i18n._(langMap[i18n.locale as keyof typeof langMap])}</ListItemText>
+        <ChevronRightIcon sx={{ fontSize: 20 }} />
       </Box>
     </Box>
   );

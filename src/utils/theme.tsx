@@ -35,6 +35,12 @@ const darkScheme = (styles: object) => ({
   '*:where([data-mui-color-scheme="dark"]) &': styles,
 });
 
+// Dropdown geometry: the menu paper's corner radius and the list's inset. The option-row
+// highlight radius is derived from these (paper radius − inset) to stay concentric, so keep
+// them together here — otherwise that relationship silently drifts.
+const MENU_PAPER_RADIUS = '0.75rem';
+const MENU_LIST_INSET = '0.38rem';
+
 /**
  * Secondary "white pill" style for the `outlined` button variant: a hairline ring instead
  * of a border (bg-1 in light, bg-4 in dark) with a subtle fill shift on hover. On hover the
@@ -465,6 +471,26 @@ export function getThemedComponents(theme: AppTheme) {
             },
             '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
               borderColor: figVars['input-border-hover'],
+              // Keep the hairline — MUI thickens the focused outline to 2px by default, which
+              // reads as a heavy border that lingers while the field/Select stays focused.
+              borderWidth: '1px',
+            },
+            // Select trigger = the outlined-button surface (secondaryPillStyle): a bg-1/bg-4 fill
+            // wrapped by the shared ring (figSurfaceShadow), same 0.5rem radius (from `root`).
+            // The notched border is dropped — the ring IS the outline — so there's no blueish or
+            // animated border; hover & open step the fill (same as the button) while the ring
+            // stays put.
+            '&:has(.MuiSelect-select)': {
+              backgroundColor: figVars['bg-1'],
+              boxShadow: figSurfaceShadow(),
+              ...darkScheme({ backgroundColor: figVars['bg-4'] }),
+              '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+              '&:hover, &.Mui-focused': {
+                backgroundColor: figVars['bg-4'],
+                boxShadow: figSurfaceShadow(),
+                ...darkScheme({ backgroundColor: figVars['bg-5'] }),
+                '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+              },
             },
           },
         },
@@ -481,12 +507,18 @@ export function getThemedComponents(theme: AppTheme) {
           },
         },
       },
+      MuiButtonBase: {
+        defaultProps: {
+          // No ripple / pressed "splash" on any control (menu items, buttons, icon
+          // buttons, toggles, checkboxes, tabs, …). Interaction is conveyed by hover,
+          // keyboard focus, and the press-scale — not MUI's ripple. Set on ButtonBase so
+          // it covers every ButtonBase-derived component in one place.
+          disableRipple: true,
+        },
+      },
       MuiButton: {
         defaultProps: {
           disableElevation: true,
-          // No ripple / pressed splash on mouse-down (hover + keyboard focus are the
-          // only interaction states).
-          disableRipple: true,
         },
         styleOverrides: {
           root: {
@@ -544,12 +576,24 @@ export function getThemedComponents(theme: AppTheme) {
             props: { variant: 'contained', color: 'primary' },
             style: {
               backgroundColor: figVars['fg-max'],
+              // Same lift as the outlined pill, but ringed in the button's own fill (not
+              // shadow-stroke-2) — the opaque bg already reads as a boundary, so the ring just
+              // needs to disappear into it while the drop-shadow layer still adds the lift.
+              boxShadow: figSurfaceShadow('fg-max'),
               '&:hover, &.Mui-focusVisible': {
                 backgroundColor: figVars['fg-1'],
+                boxShadow: figSurfaceShadow('fg-1'),
                 // Dark: fg-1 equals fg-max (#fff) so the swap is invisible — use bone instead.
                 ...darkScheme({
                   backgroundColor: figVars['bone'],
+                  boxShadow: figSurfaceShadow('bone'),
                 }),
+              },
+              // The root focus ring uses `currentColor`, which here is contrastText (bg-1) —
+              // nearly the same shade as the page background, so it's invisible. Re-point it at
+              // fg-1 (same ink the outlined variant's ring uses) so it reads against the page.
+              '&.Mui-focusVisible': {
+                outlineColor: figVars['fg-1'],
               },
               // Disabled: crisp label, fg-max fill at 50% (no box-shadow on contained).
               '&.Mui-disabled': disabledFade({
@@ -584,7 +628,6 @@ export function getThemedComponents(theme: AppTheme) {
       },
       MuiCheckbox: {
         defaultProps: {
-          disableRipple: true,
           icon: (
             <Box
               sx={{
@@ -675,8 +718,31 @@ export function getThemedComponents(theme: AppTheme) {
             variant: 'outlined',
             style: {
               minWidth: 240,
-              marginTop: '8px',
             },
+          },
+        },
+        styleOverrides: {
+          // Own the dropdown paper's look HERE (not only via PaperProps) so it survives
+          // components that inject their own paper slotProps and drop the theme's PaperProps —
+          // most notably Select, whose menu would otherwise lose the 8px offset + outlined
+          // surface and look nothing like our other dropdowns. `&&` outweighs the MuiPaper
+          // variant styles. With the 0.38rem list inset + 2rem rows (MuiMenuItem), every
+          // dropdown (Selects included) matches the settings menu.
+          paper: {
+            '&&': {
+              marginTop: '8px',
+              borderRadius: MENU_PAPER_RADIUS,
+              border: 'none',
+              boxShadow: figSurfaceShadow(),
+              backgroundColor: figVars['surface-elevated'],
+            },
+            // Dark surface at the SAME doubled specificity as the light fill above, so it wins
+            // in dark mode. (The darkScheme helper's single `&` lost to `&&`, which left the
+            // light paper — and light-looking options — showing in dark mode.)
+            '*:where([data-mui-color-scheme="dark"]) &&': {
+              backgroundColor: figVars['bg-2'],
+            },
+            '.MuiList-root': { padding: MENU_LIST_INSET },
           },
         },
       },
@@ -704,7 +770,40 @@ export function getThemedComponents(theme: AppTheme) {
       MuiMenuItem: {
         styleOverrides: {
           root: {
-            padding: '12px 16px',
+            minHeight: '2rem',
+            // MUI relaxes MenuItem min-height to `auto` at ≥sm; re-assert 2rem there so
+            // every option row is a firm 2rem tall on desktop too.
+            [theme.breakpoints.up('sm')]: { minHeight: '2rem' },
+            padding: '0.31rem 0.38rem',
+            position: 'relative',
+            isolation: 'isolate',
+            // The hover/selected highlight is a pseudo-element inset 1px top & bottom, so
+            // adjacent highlights keep a small gap while the row itself stays full-height — the
+            // hover target is continuous, so moving between rows never interrupts the highlight.
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: '1px',
+              bottom: '1px',
+              left: 0,
+              right: 0,
+              zIndex: -1,
+              // Concentric with the menu paper (paper radius − list inset).
+              borderRadius: `calc(${MENU_PAPER_RADIUS} - ${MENU_LIST_INSET})`,
+            },
+            '&:hover::before': {
+              backgroundColor: figVars['button-hover'],
+            },
+            // Selected option (e.g. a Select's current value): a proper subtle fill (bg-4, same
+            // token as the toggle's active pill) — never MUI's primary tint or a border token.
+            '&.Mui-selected::before, &.Mui-selected:hover::before, &.Mui-selected.Mui-focusVisible::before':
+              {
+                backgroundColor: figVars['bg-4'],
+              },
+            // Highlight lives on the pseudo above — keep the row's own background clear.
+            '&:hover, &.Mui-selected, &.Mui-selected:hover, &.Mui-selected.Mui-focusVisible': {
+              backgroundColor: 'transparent',
+            },
           },
         },
       },
@@ -1024,7 +1123,8 @@ export function getThemedComponents(theme: AppTheme) {
         },
         styleOverrides: {
           outlined: {
-            backgroundColor: figVars['bg-1'],
+            // The trigger's fill + ring live on the OutlinedInput root (see MuiOutlinedInput)
+            // so they're rounded and wrapped like the outlined button; here just the text.
             ...theme.typography.buttonM,
             color: figVars['fg-1'],
           },

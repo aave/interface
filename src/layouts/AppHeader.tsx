@@ -28,6 +28,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
+import { iconButtonSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 import { ENABLE_TESTNET, FORK_ENABLED, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
@@ -99,6 +100,10 @@ export function AppHeader() {
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
   const smd = useMediaQuery('(max-width:1120px)');
+  // Shared by the Swap + Bridge triggers: icon-only square when collapsed (smd), text otherwise.
+  const collapsingTriggerSx = smd
+    ? [iconButtonSx, { alignItems: 'center', '& .MuiButton-startIcon': { mx: 0 } }]
+    : { p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' };
 
   const [, setVisitedSwitch] = useState(() => {
     if (typeof window === 'undefined') return true;
@@ -295,7 +300,7 @@ export function AppHeader() {
                     )}
                   </Box>
                 }
-                sx={{ p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' }}
+                sx={collapsingTriggerSx}
                 aria-label="Switch tool"
                 disabled={!showSwitchButton}
               >
@@ -320,7 +325,7 @@ export function AppHeader() {
                 onClick={handleBridgeClick}
                 variant="outlined"
                 startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
-                sx={{ p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' }}
+                sx={collapsingTriggerSx}
               >
                 {!smd && (
                   <Typography component="span" variant="buttonM">
