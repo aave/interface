@@ -533,15 +533,11 @@ export function getThemedComponents(theme: AppTheme) {
             props: { color: 'primary', variant: 'outlined' },
             style: {
               ...secondaryPillStyle,
-              // Disabled: crisp label, pill bg + surface shadow at 50% (per scheme via darkScheme).
-              '&.Mui-disabled': disabledFade({
-                color: figVars['fg-1'],
-                before: {
-                  backgroundColor: figVars['bg-1'],
-                  ...darkScheme({ backgroundColor: figVars['bg-4'] }),
-                  boxShadow: figSurfaceShadow(),
-                },
-              }),
+              '&.Mui-disabled': {
+                color: figVars['fg-3'],
+                border: 'none',
+                boxShadow: figSurfaceShadow(),
+              },
             },
           },
           {
@@ -679,7 +675,7 @@ export function getThemedComponents(theme: AppTheme) {
             variant: 'outlined',
             style: {
               minWidth: 240,
-              marginTop: '4px',
+              marginTop: '8px',
             },
           },
         },
@@ -695,7 +691,7 @@ export function getThemedComponents(theme: AppTheme) {
         styleOverrides: {
           root: {
             '.MuiDivider-root': {
-              marginTop: '4px',
+              marginTop: '8px',
               marginBottom: '4px',
             },
           },
