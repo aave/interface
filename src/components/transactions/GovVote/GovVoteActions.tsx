@@ -13,6 +13,7 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
+import { pollVoteStatus, RelayError, submitRelayVote } from './temporary/voteRelayClient';
 import { VotingMachineService } from './temporary/VotingMachineService';
 
 export const baseSlots = {
@@ -180,27 +181,6 @@ const getVotingBalanceProofs = (
   );
 };
 
-const GELATO_TASK_STATUS_URL = 'https://api.gelato.digital/tasks/status';
-
-// Poll Gelato's public task status until the sponsored vote is mined. This endpoint
-// needs no key — only the relay call itself is authenticated (server-side).
-const waitForRelayedTx = async (taskId: string): Promise<string> => {
-  const maxAttempts = 40; // ~2 min at 3s intervals
-  for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    const res = await fetch(`${GELATO_TASK_STATUS_URL}/${taskId}`);
-    if (!res.ok) continue;
-    const { task } = await res.json();
-    if (task?.taskState === 'ExecSuccess' && task.transactionHash) {
-      return task.transactionHash as string;
-    }
-    if (task?.taskState === 'ExecReverted' || task?.taskState === 'Cancelled') {
-      throw new Error(`Relayed vote ${task.taskState}`);
-    }
-  }
-  throw new Error('Timed out waiting for the relayed vote');
-};
-
 export const GovVoteActions = ({
   isWrongNetwork,
   blocked,
@@ -221,7 +201,7 @@ export const GovVoteActions = ({
   const votingMachineAddress =
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
 
-  const withGelatoRelayer = process.env.NEXT_PUBLIC_ENABLE_GASLESS_VOTING === 'true';
+  const withGaslessVoting = process.env.NEXT_PUBLIC_ENABLE_GASLESS_VOTING === 'true';
 
   const assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }> = [];
 
@@ -246,84 +226,87 @@ export const GovVoteActions = ({
     });
   }
 
+  // Self-paid vote: the connected wallet sends `submitVote` and pays gas. Also the
+  // fallback when the sponsored relay is unavailable.
+  const submitSelfPaidVote = async (proofs: Awaited<ReturnType<typeof getVotingBalanceProofs>>) => {
+    const votingMachineService = new VotingMachineService(votingMachineAddress);
+    const tx = await votingMachineService.generateSubmitVoteTxData(
+      user,
+      proposalId,
+      support,
+      proofs
+    );
+
+    const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
+
+    const response = await sendTx(txWithEstimatedGas);
+    await response.wait(1);
+    setMainTxState({
+      txHash: response.hash,
+      loading: false,
+      success: true,
+    });
+
+    queryClient.invalidateQueries({ queryKey: queryKeysFactory.governanceCache });
+  };
+
   const action = async () => {
     setMainTxState({ ...mainTxState, loading: true });
     try {
       const proofs = await getVotingBalanceProofs(user, assets, ChainId.mainnet, blockHash);
 
-      const votingMachineService = new VotingMachineService(votingMachineAddress);
+      if (withGaslessVoting) {
+        try {
+          // Sign over the assets + slots only; the proof bytes are sent but not signed.
+          const toSign = generateSubmitVoteSignature(
+            votingChainId,
+            votingMachineAddress,
+            proposalId,
+            user,
+            support,
+            assets.map((elem) => ({
+              underlyingAsset: elem.underlyingAsset,
+              slot: getVoteBalanceSlot(
+                elem.underlyingAsset,
+                elem.isWithDelegatedPower,
+                governanceV3Config.votingAssets.aAaveTokenAddress,
+                assetsBalanceSlots
+              ),
+            }))
+          );
+          const signature = await signTxData(toSign);
 
-      if (withGelatoRelayer) {
-        const toSign = generateSubmitVoteSignature(
-          votingChainId,
-          votingMachineAddress,
-          proposalId,
-          user,
-          support,
-          assets.map((elem) => ({
-            underlyingAsset: elem.underlyingAsset,
-            slot: getVoteBalanceSlot(
-              elem.underlyingAsset,
-              elem.isWithDelegatedPower,
-              governanceV3Config.votingAssets.aAaveTokenAddress,
-              assetsBalanceSlots
-            ),
-          }))
-        );
-        const signature = await signTxData(toSign);
-
-        const tx = await votingMachineService.generateSubmitVoteBySignatureTxData(
-          user,
-          proposalId,
-          support,
-          proofs,
-          signature.toString()
-        );
-
-        const relayResponse = await fetch('/api/gelato/relay', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+          // The relay encodes `submitVoteBySignature` itself — send raw proofs + signature.
+          const accepted = await submitRelayVote({
             chainId: votingChainId,
-            target: votingMachineAddress,
-            data: tx.data,
-          }),
-        });
+            proposalId,
+            voter: user,
+            support,
+            votingBalanceProofs: proofs,
+            signature: signature.toString(),
+          });
 
-        if (!relayResponse.ok) {
-          throw new Error('Relay request failed');
+          const txHash = await pollVoteStatus(accepted.transactionId, accepted.transactionHash);
+
+          setMainTxState({
+            txHash,
+            loading: false,
+            success: true,
+          });
+
+          queryClient.invalidateQueries({ queryKey: queryKeysFactory.governanceCache });
+          return;
+        } catch (err) {
+          // Relayer temporarily down — fall back to a self-paid vote. Any other relay
+          // error (bad signature, already voted, simulation reverted, vote in flight)
+          // is surfaced to the user rather than silently retried.
+          if (!(err instanceof RelayError && err.code === 'RELAYER_UNAVAILABLE')) {
+            throw err;
+          }
         }
-
-        const { taskId } = await relayResponse.json();
-        const txHash = await waitForRelayedTx(taskId);
-
-        setMainTxState({
-          txHash,
-          loading: false,
-          success: true,
-        });
-
-        queryClient.invalidateQueries({ queryKey: queryKeysFactory.governanceCache });
-      } else {
-        const tx = await votingMachineService.generateSubmitVoteTxData(
-          user,
-          proposalId,
-          support,
-          proofs
-        );
-
-        const txWithEstimatedGas = await estimateGasLimit(tx, votingChainId);
-
-        const response = await sendTx(txWithEstimatedGas);
-        await response.wait(1);
-        setMainTxState({
-          txHash: response.hash,
-          loading: false,
-          success: true,
-        });
-
-        queryClient.invalidateQueries({ queryKey: queryKeysFactory.governanceCache });
       }
+
+      await submitSelfPaidVote(proofs);
     } catch (err) {
       setTxError(getErrorTextFromError(err as Error, TxAction.MAIN_ACTION, false));
       setMainTxState({
