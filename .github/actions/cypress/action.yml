@@ -16,9 +16,9 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+    - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
 
-    - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6.1.0
+    - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
       with:
         node-version-file: '.nvmrc'
         cache: 'pnpm'
