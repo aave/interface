@@ -66,7 +66,8 @@ export function FunSupplyButton({
         </Box>
       )}
       <Button
-        variant="contained"
+        variant="outlined"
+        size="small"
         {...buttonProps}
         onClick={() =>
           handleSupplyClick({

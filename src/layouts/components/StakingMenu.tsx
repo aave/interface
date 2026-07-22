@@ -1,9 +1,9 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Button, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
+import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/events';
 import { onAccent } from 'src/utils/figmaColors';

@@ -18,7 +18,7 @@ export const figmaLight = {
   'fg-max': '#000000',
   'fg-1': '#201d1d',
   'fg-2': '#666666',
-  'fg-3': '#858585',
+  'fg-3': '#8f8e8e',
   'fg-4': '#bcbbbb',
   'fg-5': '#cfcece',
   selected: 'rgba(46, 15, 15, 0.04)',
@@ -56,7 +56,7 @@ export const figmaLight = {
   'data-orange': '#e2a48d',
   'data-yellow': '#e3da8d',
   'data-lime': '#c1e38d',
-  'data-green': '#6dbc98',
+  'data-green': '#66C399',
   'data-teal': '#8de3cc',
   'data-blue': '#8dcfe3',
   'data-purple': '#bcbbff',
@@ -97,7 +97,6 @@ export const figmaLight = {
   'success-dark': '#318435',
   'success-text': '#1C4B1E',
   'success-bg': '#ECF8ED',
-  highlight: '#383D51',
   'disabled-fg': '#BBBECA',
   'disabled-bg': '#EAEBEF',
   'input-line': '#383D511F',
@@ -105,6 +104,7 @@ export const figmaLight = {
   'slider-thumb': '#62677B',
   'slider-track': '#383D51',
   'surface-elevated': '#ffffff',
+  bone: '#f6f7f4',
 } as const;
 
 export const figmaDark = {
@@ -150,7 +150,7 @@ export const figmaDark = {
   'data-orange': '#e68662',
   'data-yellow': '#fdc75a',
   'data-lime': '#c1e38d',
-  'data-green': '#66c399',
+  'data-green': '#66C399',
   'data-teal': '#8de3cc',
   'data-blue': '#88d5ed',
   'data-purple': '#a5a3ff',
@@ -203,7 +203,6 @@ export const figmaDark = {
   'success-dark': '#388E3C',
   'success-text': '#C2E4C3',
   'success-bg': '#0A130B',
-  highlight: '#C9B3F9',
   'disabled-fg': '#EBEBEF4D',
   'disabled-bg': '#EBEBEF1F',
   'input-line': '#EBEBEF6B',
@@ -211,6 +210,7 @@ export const figmaDark = {
   'slider-thumb': '#C9B3F9',
   'slider-track': '#9C93B3',
   'surface-elevated': '#1E1E20',
+  bone: '#f6f7f4',
 } as const;
 
 // Token names shared by both modes (light is the common subset; dark adds a few extras).

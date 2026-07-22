@@ -86,25 +86,14 @@ declare module '@mui/material/styles/createPalette' {
     default: string;
     paper: string;
     surface: string;
-    surface2: string;
-    header: string;
-    disabled: string;
   }
 
   // Design tokens are flattened onto the palette root (see `getDesignTokens`), so each token is
   // a first-class palette member. This also turns a token name that collides with a built-in
   // palette key (e.g. `error`, `background`) into a compile error rather than a silent overwrite.
-  interface Palette extends Record<FigmaColorName, string> {
-    other: {
-      standardInputLine: string;
-    };
-  }
+  interface Palette extends Record<FigmaColorName, string> {}
 
-  interface PaletteOptions extends Partial<Record<FigmaColorName, string>> {
-    other?: {
-      standardInputLine: string;
-    };
-  }
+  interface PaletteOptions extends Partial<Record<FigmaColorName, string>> {}
 }
 
 interface TypographyCustomVariants {
@@ -223,7 +212,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         '200': t['info-bg'],
       },
       success: {
-        main: t['green-1'],
+        main: t['data-green'],
         light: t['success-light'],
         dark: t['success-dark'],
         '100': t['success-text'],
@@ -234,15 +223,11 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         secondary: t['fg-2'],
         disabled: t['fg-4'],
         muted: t['fg-3'],
-        highlight: t['highlight'],
       },
       background: {
         default: t['bg-5'],
         paper: t['surface-elevated'],
         surface: t['bg-2'],
-        surface2: t['bg-3'],
-        header: t['bg-1'],
-        disabled: t['bg-6'],
       },
       divider: t['border-2'],
       action: {
@@ -252,9 +237,6 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         disabled: t['disabled-fg'],
         disabledBackground: t['disabled-bg'],
         focus: t['focus'],
-      },
-      other: {
-        standardInputLine: t['input-line'],
       },
     },
     spacing: 4,
@@ -451,7 +433,6 @@ export function getThemedComponents(theme: AppTheme) {
         styleOverrides: {
           root: {
             borderRadius: '8px',
-            borderColor: figVars['border-2'],
             '&:hover .MuiOutlinedInput-notchedOutline': {
               borderColor: figVars['input-border-hover'],
             },
@@ -482,7 +463,6 @@ export function getThemedComponents(theme: AppTheme) {
         },
         styleOverrides: {
           root: {
-            borderRadius: '8px',
             // Hover/focus state transition at 100ms (overrides MUI's 250ms default).
             // `transform` is included so the active-press scale animates in and out.
             transition: theme.transitions.create(
@@ -502,6 +482,7 @@ export function getThemedComponents(theme: AppTheme) {
             ...theme.typography.buttonL,
             height: '48px',
             padding: '0 24px',
+            borderRadius: '0.625rem',
           },
           sizeMedium: {
             ...theme.typography.buttonM,
@@ -509,11 +490,13 @@ export function getThemedComponents(theme: AppTheme) {
             // Text-side padding; a start/end icon's -4px slot margin (MUI default) tightens
             // the icon side to ~10px automatically.
             padding: '0 0.88rem',
+            borderRadius: '0.5rem',
           },
           sizeSmall: {
             ...theme.typography.buttonS,
             height: '28px',
             padding: '0 6px',
+            borderRadius: '0.375rem',
           },
         },
         variants: [
@@ -536,6 +519,10 @@ export function getThemedComponents(theme: AppTheme) {
               backgroundColor: figVars['fg-max'],
               '&:hover, &.Mui-focusVisible': {
                 backgroundColor: figVars['fg-1'],
+                // Dark: fg-1 equals fg-max (#fff) so the swap is invisible — use bone instead.
+                ...darkScheme({
+                  backgroundColor: figVars['bone'],
+                }),
               },
             },
           },
@@ -653,7 +640,6 @@ export function getThemedComponents(theme: AppTheme) {
           TransitionComponent: ScaleFade,
           transitionDuration: motion.duration.overlay,
           PaperProps: {
-            elevation: 0,
             variant: 'outlined',
             style: {
               minWidth: 240,
@@ -672,7 +658,7 @@ export function getThemedComponents(theme: AppTheme) {
       MuiList: {
         styleOverrides: {
           root: {
-            '.MuiMenuItem-root+.MuiDivider-root, .MuiDivider-root': {
+            '.MuiDivider-root': {
               marginTop: '4px',
               marginBottom: '4px',
             },
@@ -759,10 +745,8 @@ export function getThemedComponents(theme: AppTheme) {
             flexDirection: 'column',
             flex: 1,
             paddingBottom: '39px',
-            [theme.breakpoints.up('xs')]: {
-              paddingLeft: '8px',
-              paddingRight: '8px',
-            },
+            paddingLeft: '8px',
+            paddingRight: '8px',
             [theme.breakpoints.up('xsm')]: {
               paddingLeft: '20px',
               paddingRight: '20px',

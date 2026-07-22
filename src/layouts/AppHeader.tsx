@@ -276,7 +276,7 @@ export function AppHeader() {
               variant="dot"
               badgeContent=""
               color="secondary"
-              sx={{ mr: 2 }}
+              sx={{ mr: '0.62rem' }}
             >
               <Button
                 onClick={handleSwitchClick}
@@ -314,7 +314,7 @@ export function AppHeader() {
               // variant="dot"
               badgeContent=""
               color="secondary"
-              sx={{ mr: 2 }}
+              sx={{ mr: '0.62rem' }}
             >
               <Button
                 onClick={handleBridgeClick}

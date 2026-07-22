@@ -27,7 +27,9 @@ export const TopInfoPanel = ({
         pb: { xs: 10, md: 12 },
         color: 'fg-1',
         boxShadow: `0px 1px 0px ${figVars['border-0']}`,
-        background: `linear-gradient(180deg, ${figVars['info-panel-color-one']} 0%, ${figVars['info-panel-color-two']}, ${figVars['info-panel-color-three']})`,
+        // gradient (one→two) over solid color-three (a separate bg layer, not a 3rd stop).
+        // Light tokens are all #fafafa → renders solid; dark gets the tint (P3 via the token vars).
+        background: `linear-gradient(180deg, ${figVars['info-panel-color-one']} 0%, ${figVars['info-panel-color-two']} 100%), ${figVars['info-panel-color-three']}`,
       }}
     >
       <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>
