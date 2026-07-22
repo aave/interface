@@ -1,0 +1,13 @@
+diff --git a/build/index.es.js b/build/index.es.js
+index 5108586ac4d353e0a35ded139a65d464ceef29c8..d0cd8737204d897209507ed7c7f30eca41af183c 100644
+--- a/build/index.es.js
++++ b/build/index.es.js
+@@ -8558,7 +8558,7 @@ const Avatar = ({ address, name, size = 96, radius = 96 }) => {
+     });
+     const { data: ensAvatar } = useEnsAvatar({
+         chainId: 1,
+-        name: normalize(ensName !== null && ensName !== void 0 ? ensName : ''),
++        name: (() => { try { return normalize(ensName !== null && ensName !== void 0 ? ensName : ''); } catch (e) { return ''; } })(),
+         config: ensFallbackConfig,
+     });
+     const ens = {

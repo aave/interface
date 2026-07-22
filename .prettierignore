@@ -27,4 +27,5 @@ src/locales/
 *.mermaid
 *.log
 *.lock
+*.patch
 pnpm-lock.yaml

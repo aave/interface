@@ -20,6 +20,10 @@
       "form-data": "2.5.6",
       "d3-color": "^3.1.0",
       "js-cookie": "3.0.7"
+    },
+    "patchedDependencies": {
+      "connectkit@1.9.2": "patches/connectkit@1.9.2.patch",
+      "@funkit/connect@9.28.1": "patches/@funkit__connect@9.28.1.patch"
     }
   },
   "scripts": {
