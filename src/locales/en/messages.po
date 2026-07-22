@@ -389,6 +389,10 @@ msgstr "Total amount staked"
 msgid "Transactions"
 msgstr "Transactions"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "after execution"
+msgstr "after execution"
+
 #: src/components/transactions/Swap/warnings/postInputs/SafetyModuleSwapWarning.tsx
 msgid "For swapping safety module assets please unstake your position <0>here</0>."
 msgstr "For swapping safety module assets please unstake your position <0>here</0>."
@@ -542,6 +546,7 @@ msgid "Available to Stake"
 msgstr "Available to Stake"
 
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+#: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Show less"
 msgstr "Show less"
 
@@ -563,10 +568,9 @@ msgstr "APR"
 msgid "Total"
 msgstr "Total"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
-msgid "{stepName}"
-msgstr "{stepName}"
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Failed"
+msgstr "Failed"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
@@ -590,6 +594,10 @@ msgstr "Fork mode is ON"
 #: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode visit your <0>Dashboard</0>."
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payload {0} received"
+msgstr "Payload {0} received"
 
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/ProposalOverview.tsx
@@ -716,6 +724,10 @@ msgstr "Swap {0} collateral"
 #: src/components/lists/ListWrapper.tsx
 msgid "Show"
 msgstr "Show"
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Queued"
+msgstr "Queued"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
@@ -933,6 +945,10 @@ msgstr "You've successfully submitted an order."
 msgid "Max"
 msgstr "Max"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Votes tallied and sent to governance"
+msgstr "Votes tallied and sent to governance"
+
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Points"
 msgstr "Points"
@@ -1072,6 +1088,10 @@ msgstr "We couldn't detect a wallet. Connect a wallet to stake and view your bal
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Destination"
 msgstr "Destination"
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Queued for execution"
+msgstr "Queued for execution"
 
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -1410,6 +1430,11 @@ msgstr "Get GHO"
 msgid "Wallet balance"
 msgstr "Wallet balance"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Voting closed"
+msgstr "Voting closed"
+
 #: src/components/transactions/Swap/details/RepayWithCollateralDetails.tsx
 msgid "Borrow balance after repay"
 msgstr "Borrow balance after repay"
@@ -1500,6 +1525,12 @@ msgstr "Learn more about Ethena Rewards program"
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "{popularSectionTitle}"
 msgstr "{popularSectionTitle}"
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Executed"
+msgstr "Executed"
 
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Rewards to claim"
@@ -1612,9 +1643,17 @@ msgstr "Invalid return value of the flashloan executor function"
 msgid "Learn more about the Kernel points distribution"
 msgstr "Learn more about the Kernel points distribution"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Voting closes"
+msgstr "Voting closes"
+
 #: src/components/transactions/Swap/modals/DebtSwapModal.tsx
 msgid "Please connect your wallet to swap debt."
 msgstr "Please connect your wallet to swap debt."
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Proposal cancelled"
+msgstr "Proposal cancelled"
 
 #: src/components/MarketSwitcher.tsx
 msgid "Ethereum"
@@ -1690,6 +1729,10 @@ msgstr "Email"
 msgid "here"
 msgstr "here"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payload {0} executed"
+msgstr "Payload {0} executed"
+
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UnstakeModal.tsx
 msgid "Unstake"
@@ -1719,6 +1762,10 @@ msgstr "Reset"
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "disabled"
 msgstr "disabled"
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payloads executed"
+msgstr "Payloads executed"
 
 #: src/components/transactions/SavingsGho/SavingsGhoDepositModal.tsx
 #: src/modules/sGho/SGhoLoggedOutPreview.tsx
@@ -1891,11 +1938,6 @@ msgstr "State"
 msgid "There are no stake assets configured for this market"
 msgstr "There are no stake assets configured for this market"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
-msgid "Proposal details"
-msgstr "Proposal details"
-
 #: src/modules/stkGho/StkGhoCard.tsx
 msgid "Legacy Savings GHO (stkGHO)"
 msgstr "Legacy Savings GHO (stkGHO)"
@@ -2049,6 +2091,10 @@ msgstr "Borrow"
 msgid "Principal Tokens"
 msgstr "Principal Tokens"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payload {0} created"
+msgstr "Payload {0} created"
+
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation penalty"
@@ -2114,6 +2160,10 @@ msgstr "Asset is not borrowable in isolation mode"
 msgid "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 msgstr "Price impact is the spread between the total value of the entry tokens switched and the destination tokens obtained (in USD), which results from the limited liquidity of the trading pair."
 
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Creator"
+msgstr "Creator"
+
 #: src/components/transactions/CancelCowOrder/CancelCowOrderActions.tsx
 msgid "Send cancel"
 msgstr "Send cancel"
@@ -2138,6 +2188,13 @@ msgstr "These funds have been borrowed and are not available for withdrawal at t
 #: src/components/infoTooltips/SpkAirdropTooltip.tsx
 msgid "Learn more about the SPK rewards"
 msgstr "Learn more about the SPK rewards"
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Pending"
+msgstr "Pending"
 
 #: src/components/infoTooltips/MaxLTVTooltip.tsx
 msgid "The Maximum LTV ratio represents the maximum borrowing power of a specific collateral. For example, if a collateral has an LTV of 75%, the user can borrow up to 0.75 worth of ETH in the principal currency for every 1 ETH worth of collateral."
@@ -2275,6 +2332,10 @@ msgstr "To borrow you need to supply any asset to be used as collateral."
 msgid "Copy error text"
 msgstr "Copy error text"
 
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Controller"
+msgstr "Controller"
+
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Used as collateral"
 msgstr "Used as collateral"
@@ -2290,6 +2351,10 @@ msgstr "{0} {symbol} to continue"
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Representative smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representative smart contract wallet (ie. Safe) addresses on other chains."
+
+#: src/modules/governance/VotingPowerInfoPanel.tsx
+msgid "To submit a proposal for minor changes to the protocol, you'll need at least <0/> power. If you want to change the core code base, you'll need <1/> power.<2>Learn more.</2>"
+msgstr "To submit a proposal for minor changes to the protocol, you'll need at least <0/> power. If you want to change the core code base, you'll need <1/> power.<2>Learn more.</2>"
 
 #: src/components/transactions/Swap/errors/shared/UserDenied.tsx
 msgid "User denied the operation."
@@ -2315,9 +2380,17 @@ msgstr "Amount to Bridge"
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 msgstr "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
 
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Seatbelt report"
+msgstr "Seatbelt report"
+
 #: src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
 msgid "Staked Underlying"
 msgstr "Staked Underlying"
+
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Target {0}"
+msgstr "Target {0}"
 
 #: src/components/transactions/Swap/warnings/preInputs/NativeLimitOrderInfo.tsx
 msgid "For security reasons, limit orders are not supported for Native tokens. To place a limit order, use the wrapped version."
@@ -2381,6 +2454,10 @@ msgstr "If your loan to value goes above the liquidation threshold your collater
 #: src/modules/history/TransactionRowItem.tsx
 msgid "VIEW"
 msgstr "VIEW"
+
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Target"
+msgstr "Target"
 
 #: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
 #: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
@@ -2565,6 +2642,10 @@ msgstr "Share on twitter"
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 msgstr "Isolated assets have limited borrowing power and other assets cannot be used as collateral."
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payloads finalized"
+msgstr "Payloads finalized"
+
 #: src/modules/governance/proposal/VotersListContainer.tsx
 msgid "Addresses"
 msgstr "Addresses"
@@ -2654,12 +2735,15 @@ msgstr "Vote YAE"
 msgid "Repaying {symbol}"
 msgstr "Repaying {symbol}"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Timeline"
+msgstr "Timeline"
+
 #: src/components/transactions/Bridge/BridgeActions.tsx
 msgid "Bridge {symbol}"
 msgstr "Bridge {symbol}"
 
-#: src/modules/governance/proposal/ProposalLifecycle.tsx
-#: src/modules/governance/proposal/ProposalLifecycleCache.tsx
+#: src/modules/governance/proposal/VotingResults.tsx
 msgid "Forum discussion"
 msgstr "Forum discussion"
 
@@ -2676,6 +2760,14 @@ msgstr "You did not participate in this proposal"
 #: src/components/transactions/Swap/warnings/postInputs/LowHealthFactorWarning.tsx
 msgid "Low health factor after swap. Your position will carry a higher risk of liquidation."
 msgstr "Low health factor after swap. Your position will carry a higher risk of liquidation."
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Created"
+msgstr "Created"
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "after voting"
+msgstr "after voting"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Governance"
@@ -2996,6 +3088,10 @@ msgstr "Amount"
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Proposal created"
+msgstr "Proposal created"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
@@ -3543,6 +3639,10 @@ msgstr "Available to supply"
 msgid "Claiming all protocol rewards and merit rewards together"
 msgstr "Claiming all protocol rewards and merit rewards together"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Voting activated"
+msgstr "Voting activated"
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 #: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Default"
@@ -3601,6 +3701,10 @@ msgstr "please check that the amount you want to supply is not currently being u
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Minimum amount received"
 msgstr "Minimum amount received"
+
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Access level"
+msgstr "Access level"
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting is on"
@@ -4004,6 +4108,10 @@ msgstr "This asset is eligible for Kernel points incentive program. Aave Labs do
 msgid "You have no rewards to claim at this time."
 msgstr "You have no rewards to claim at this time."
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payloads queued"
+msgstr "Payloads queued"
+
 #: src/components/transactions/Swap/errors/shared/InsufficientBorrowPowerBlockingError.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
@@ -4052,6 +4160,7 @@ msgstr "Language"
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -4098,6 +4207,10 @@ msgstr "The caller of the function is not an AToken"
 msgid "You do not have supplies in this currency"
 msgstr "You do not have supplies in this currency"
 
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Payload {0}"
+msgstr "Payload {0}"
+
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 #: src/components/transactions/GovVote/GovVoteActions.tsx
 msgid "VOTE YAE"
@@ -4139,6 +4252,10 @@ msgstr "With testnet Faucet you can get free assets to test the Aave Protocol. M
 msgid "Get ABP v2 Token"
 msgstr "Get ABP v2 Token"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payloads dispatched to execution chains"
+msgstr "Payloads dispatched to execution chains"
+
 #: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "This asset is eligible for {0} Sonic Rewards."
 msgstr "This asset is eligible for {0} Sonic Rewards."
@@ -4154,6 +4271,12 @@ msgstr "Category {selectedEmodeId}"
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Repay your {0} {1, plural, one {borrow} other {borrows}} to use this category."
 msgstr "Repay your {0} {1, plural, one {borrow} other {borrows}} to use this category."
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Open for voting"
+msgstr "Open for voting"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
@@ -4227,6 +4350,10 @@ msgstr "Total market size"
 msgid "Eligible for incentives through Merkl and Boosted Yield via Self."
 msgstr "Eligible for incentives through Merkl and Boosted Yield via Self."
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Executes"
+msgstr "Executes"
+
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
 msgstr "Transaction overview"
@@ -4266,6 +4393,14 @@ msgstr "The app is running in fork mode."
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "There are not enough funds in the{0}reserve to borrow"
 msgstr "There are not enough funds in the{0}reserve to borrow"
+
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Show {0} more"
+msgstr "Show {0} more"
+
+#: src/modules/governance/proposal/ProposalPayloads.tsx
+msgid "Payloads"
+msgstr "Payloads"
 
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Add to Favourites"

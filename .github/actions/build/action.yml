@@ -1,8 +1,8 @@
 name: Build app and static
 description: Build nextjs app and export static files
 inputs:
-  YARN_COMMAND:
-    description: yarn command to run
+  COMMAND:
+    description: command to run
     required: false
     default: 'build:static'
   NEXT_PUBLIC_ENV:
@@ -53,14 +53,16 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+
     - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
       with:
         node-version-file: '.nvmrc'
-        cache: 'yarn'
+        cache: 'pnpm'
 
     - name: install
       shell: sh
-      run: yarn --frozen-lockfile --prefer-offline
+      run: pnpm install --frozen-lockfile --prefer-offline
 
     - name: Restore next cache
       uses: actions/cache@v4
@@ -76,7 +78,7 @@ runs:
 
     - name: build
       shell: sh
-      run: yarn ${{ inputs.YARN_COMMAND }}
+      run: pnpm run ${{ inputs.COMMAND }}
       env:
         NEXT_PUBLIC_ENV: '${{ inputs.NEXT_PUBLIC_ENV }}'
         NEXT_PUBLIC_ENABLE_GOVERNANCE: 'true'

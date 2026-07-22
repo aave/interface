@@ -19,7 +19,7 @@ jobs:
       - name: i18n compile
         uses: ./.github/actions/build
         with:
-          YARN_COMMAND: i18n
+          COMMAND: i18n
           USE_NEXT_CACHE: 'false'
 
       - name: check diff
@@ -28,7 +28,7 @@ jobs:
           then
             echo "i18n up to date"
           else
-          	echo "please run yarn i18n"
+          	echo "please run pnpm i18n"
             exit 1
           exit
           fi

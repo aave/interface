@@ -23,7 +23,6 @@ import {
   GovernanceV3XLayer,
   GovernanceV3ZkSync,
 } from '@aave-dao/aave-address-book';
-import { SubgraphKey } from 'src/utils/subgraphRequest';
 
 export const ipfsGateway = 'https://cloudflare-ipfs.com/ipfs';
 export const fallbackIpfsGateway = 'https://ipfs.io/ipfs';
@@ -32,13 +31,11 @@ export interface VotingMachineConfig {
   portalToMachineMap: { [votingPoralAddress: string]: string };
   votingPortalDataHelperAddress: string;
   votingMachineAddress: string;
-  subgraphKey: SubgraphKey;
 }
 
 export interface GovernanceV3Config {
   coreChainId: ChainId;
   votingChainIds: ChainId[];
-  governanceCoreSubgraphId: SubgraphKey;
   votingChainConfig: { [chainId: number]: VotingMachineConfig };
   payloadsControllerDataHelpers: { [chainId: number]: string };
   addresses: {
@@ -104,7 +101,6 @@ export const governanceChainConfig: GovernanceChainConfig = {
   [ChainId.mainnet]: {
     coreChainId: ChainId.mainnet,
     votingChainIds: [ChainId.polygon, ChainId.avalanche],
-    governanceCoreSubgraphId: 'gov-core',
     votingChainConfig: {
       [ChainId.mainnet]: {
         portalToMachineMap: {
@@ -112,7 +108,6 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Ethereum.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Ethereum.VOTING_MACHINE,
-        subgraphKey: 'gov-voting-mainnet',
       },
       [ChainId.polygon]: {
         portalToMachineMap: {
@@ -120,7 +115,6 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Polygon.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Polygon.VOTING_MACHINE,
-        subgraphKey: 'gov-voting-polygon',
       },
       [ChainId.avalanche]: {
         portalToMachineMap: {
@@ -128,7 +122,6 @@ export const governanceChainConfig: GovernanceChainConfig = {
         },
         votingPortalDataHelperAddress: GovernanceV3Avalanche.VM_DATA_HELPER,
         votingMachineAddress: GovernanceV3Avalanche.VOTING_MACHINE,
-        subgraphKey: 'gov-voting-avax',
       },
     },
     payloadsControllerDataHelpers: {

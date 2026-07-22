@@ -21,10 +21,12 @@ jobs:
         with:
           token: ${{ secrets.BOT_TOKEN }}
 
+      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+
       - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version-file: '.nvmrc'
-          cache: 'yarn'
+          cache: 'pnpm'
 
       - name: crowdin action
         uses: crowdin/github-action@60debf382ee245b21794321190ad0501db89d8c1 # v2.13.0
@@ -46,8 +48,8 @@ jobs:
           then
             echo "tree is clean"
           else
-            yarn --frozen-lockfile
-            yarn i18n:compile
+            pnpm install --frozen-lockfile
+            pnpm i18n:compile
             git add .
             git config --global user.name 'Crowdin bot'
             git config --global user.email 'crowdin-bot@aave.com'

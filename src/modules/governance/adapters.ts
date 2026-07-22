@@ -1,6 +1,5 @@
 import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { normalizeBN } from '@aave/math-utils';
-import { Proposal } from 'src/hooks/governance/useProposals';
 import {
   ProposalDetail,
   ProposalVote,
@@ -116,22 +115,6 @@ function votingMachineAddressToChainId(address: string): number | undefined {
   return undefined;
 }
 
-/** Build VoteProposalData from a graph Proposal. */
-export function buildVoteProposalFromGraph(proposal: Proposal): VoteProposalData {
-  const votedInfo = proposal.votingMachineData.votedInfo;
-  return {
-    proposalId: proposal.subgraphProposal.id,
-    snapshotBlockHash: proposal.subgraphProposal.snapshotBlockHash,
-    votingMachineChainId: +proposal.subgraphProposal.votingPortal.votingMachineChainId,
-    votingAssets: proposal.votingMachineData.votingAssets,
-    votingState: proposal.votingMachineData.state,
-    votedInfo:
-      votedInfo && votedInfo.votingPower !== '0'
-        ? { support: votedInfo.support, votingPower: votedInfo.votingPower }
-        : undefined,
-  };
-}
-
 /** Build VoteProposalData from a cache ProposalDetail. Returns undefined if voting chain can't be determined. */
 export function buildVoteProposalFromCache(
   detail: ProposalDetail,
@@ -161,52 +144,6 @@ export function buildVoteProposalFromCache(
       userVote && userVote.votingPower !== '0'
         ? { support: userVote.support, votingPower: userVote.votingPower }
         : undefined,
-  };
-}
-
-// ============================================
-// Graph -> canonical adapters
-// ============================================
-
-export function adaptGraphProposalToListItem(p: Proposal): ProposalListItem {
-  return {
-    id: p.subgraphProposal.id,
-    title: p.subgraphProposal.proposalMetadata.title,
-    shortDescription: p.subgraphProposal.proposalMetadata.shortDescription || '',
-    author: p.subgraphProposal.proposalMetadata.author || '',
-    badgeState: p.badgeState,
-    voteInfo: {
-      forVotes: p.votingInfo.forVotes,
-      againstVotes: p.votingInfo.againstVotes,
-      forPercent: p.votingInfo.forPercent,
-      againstPercent: p.votingInfo.againstPercent,
-      quorum:
-        typeof p.votingInfo.quorum === 'string'
-          ? parseFloat(p.votingInfo.quorum)
-          : p.votingInfo.quorum,
-      quorumReached: p.votingInfo.quorumReached,
-      currentDifferential:
-        typeof p.votingInfo.currentDifferential === 'string'
-          ? parseFloat(p.votingInfo.currentDifferential)
-          : p.votingInfo.currentDifferential,
-      requiredDifferential:
-        typeof p.votingInfo.requiredDifferential === 'string'
-          ? parseFloat(p.votingInfo.requiredDifferential)
-          : p.votingInfo.requiredDifferential,
-      differentialReached: p.votingInfo.differentialReached,
-    },
-  };
-}
-
-export function adaptGraphProposalToDetail(p: Proposal): ProposalDetailDisplay {
-  const listItem = adaptGraphProposalToListItem(p);
-  return {
-    ...listItem,
-    description: p.subgraphProposal.proposalMetadata.description,
-    discussions: p.subgraphProposal.proposalMetadata.discussions || null,
-    ipfsHash: p.subgraphProposal.proposalMetadata.ipfsHash,
-    rawProposal: p,
-    voteProposalData: buildVoteProposalFromGraph(p),
   };
 }
 

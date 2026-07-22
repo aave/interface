@@ -4,13 +4,13 @@ import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
 import {
   useGovernanceProposalDetail,
+  useGovernanceProposalPayloads,
   useGovernanceVotersSplit,
-} from 'src/hooks/governance/useGovernanceProposals';
-import { useProposalPayloadsCache } from 'src/hooks/governance/useProposalDetailCache';
+} from 'src/hooks/governance/useGovernanceCache';
 import { MainLayout } from 'src/layouts/MainLayout';
-import { ProposalLifecycle } from 'src/modules/governance/proposal/ProposalLifecycle';
-import { ProposalLifecycleCache } from 'src/modules/governance/proposal/ProposalLifecycleCache';
 import { ProposalOverview } from 'src/modules/governance/proposal/ProposalOverview';
+import { ProposalPayloads } from 'src/modules/governance/proposal/ProposalPayloads';
+import { ProposalTimeline } from 'src/modules/governance/proposal/ProposalTimeline';
 import { ProposalTopPanel } from 'src/modules/governance/proposal/ProposalTopPanel';
 import { VoteInfo } from 'src/modules/governance/proposal/VoteInfo';
 import { VotingResults } from 'src/modules/governance/proposal/VotingResults';
@@ -33,10 +33,10 @@ export default function ProposalPage() {
     error: proposalError,
   } = useGovernanceProposalDetail(proposalId);
 
-  const votingChainId = proposal?.voteProposalData?.votingMachineChainId;
-
-  const voters = useGovernanceVotersSplit(proposalId, votingChainId);
-  const { data: payloads, isLoading: payloadsLoading } = useProposalPayloadsCache(proposalId);
+  const voters = useGovernanceVotersSplit(proposalId);
+  const { data: payloads, isLoading: payloadsLoading } = useGovernanceProposalPayloads(proposalId, {
+    enabled: !!proposal?.rawCacheDetail,
+  });
 
   return (
     <>
@@ -66,10 +66,9 @@ export default function ProposalPage() {
               loading={proposalLoading}
               votesLoading={voters.isFetching}
             />
-            {proposal?.rawProposal ? (
-              <ProposalLifecycle proposal={proposal.rawProposal} />
-            ) : proposal?.rawCacheDetail ? (
-              <ProposalLifecycleCache
+            <ProposalPayloads payloads={payloads} loading={payloadsLoading} />
+            {proposal?.rawCacheDetail ? (
+              <ProposalTimeline
                 proposal={proposal.rawCacheDetail}
                 payloads={payloads}
                 payloadsLoading={payloadsLoading}

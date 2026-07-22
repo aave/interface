@@ -49,6 +49,41 @@ export const queryKeysFactory = {
     ...queryKeysFactory.market(marketData),
     'governanceTokens',
   ],
+  governanceCache: ['governance', 'cache'] as const,
+  governanceCacheProposals: (stateFilter?: string) => [
+    ...queryKeysFactory.governanceCache,
+    'proposals',
+    stateFilter ?? 'all',
+  ],
+  governanceCacheSearch: (query: string) => [...queryKeysFactory.governanceCache, 'search', query],
+  governanceCacheProposalDetail: (proposalId: number, user?: string) => [
+    ...queryKeysFactory.governanceCache,
+    'detail',
+    proposalId,
+    user ?? 'anonymous',
+  ],
+  governanceCacheVotes: (proposalId: number, support?: boolean) => [
+    ...queryKeysFactory.governanceCache,
+    'votes',
+    proposalId,
+    support ?? 'all',
+  ],
+  governanceCachePayloads: (proposalId: number) => [
+    ...queryKeysFactory.governanceCache,
+    'payloads',
+    proposalId,
+  ],
+  governanceCacheVotingConfig: (accessLevel: number) => [
+    ...queryKeysFactory.governanceCache,
+    'voting-config',
+    accessLevel,
+  ],
+  governanceCacheVotersEns: (proposalId: number, addresses: string[]) => [
+    ...queryKeysFactory.governanceCache,
+    'voters-ens',
+    proposalId,
+    ...addresses,
+  ],
   transactionHistory: (user: string, marketData: MarketDataType) => [
     ...queryKeysFactory.user(user),
     ...queryKeysFactory.market(marketData),

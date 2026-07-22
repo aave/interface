@@ -1,9 +1,13 @@
+import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Skeleton, Typography } from '@mui/material';
+import { Box, Button, Paper, Skeleton, SvgIcon, Typography } from '@mui/material';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { ProposalDetailDisplay, VotersSplitDisplay } from 'src/modules/governance/types';
+import { useRootStore } from 'src/store/root';
+import { GENERAL } from 'src/utils/events';
 
 import { StateBadge } from '../StateBadge';
 import { VoteBar } from '../VoteBar';
@@ -17,6 +21,8 @@ interface VotingResultsProps {
 }
 
 export const VotingResults = ({ proposal, loading, voters, votesLoading }: VotingResultsProps) => {
+  const trackEvent = useRootStore((store) => store.trackEvent);
+  const discussionUrl = proposal?.discussions?.match(/https?:\/\/[^\s"]+/)?.[0];
   return (
     <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
       <Typography variant="h3">
@@ -141,6 +147,30 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
               />
             </Box>
           </Row>
+          {discussionUrl && (
+            <Button
+              component={Link}
+              target="_blank"
+              rel="noopener"
+              onClick={() =>
+                trackEvent(GENERAL.EXTERNAL_LINK, {
+                  AIP: proposal.id,
+                  Link: 'Forum Discussion',
+                })
+              }
+              href={discussionUrl}
+              variant="outlined"
+              fullWidth
+              endIcon={
+                <SvgIcon>
+                  <ExternalLinkIcon />
+                </SvgIcon>
+              }
+              sx={{ mt: 4 }}
+            >
+              <Trans>Forum discussion</Trans>
+            </Button>
+          )}
         </>
       ) : (
         <>

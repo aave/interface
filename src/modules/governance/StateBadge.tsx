@@ -1,7 +1,4 @@
 import { alpha, Skeleton, styled } from '@mui/material';
-import invariant from 'tiny-invariant';
-
-import { ProposalLifecycleStep, ProposalVoteInfo } from './utils/formatProposal';
 
 interface StateBadgeProps {
   state?: ProposalBadgeState;
@@ -21,28 +18,6 @@ export enum ProposalBadgeState {
 
 type BadgeProps = {
   state: ProposalBadgeState;
-};
-
-export const lifecycleToBadge = (
-  step: ProposalLifecycleStep,
-  votingInfo: ProposalVoteInfo
-): ProposalBadgeState => {
-  switch (step) {
-    case ProposalLifecycleStep.Null:
-      invariant(false, 'Proposal state is null');
-    case ProposalLifecycleStep.Created:
-      return ProposalBadgeState.Created;
-    case ProposalLifecycleStep.OpenForVoting:
-      return ProposalBadgeState.OpenForVoting;
-    case ProposalLifecycleStep.VotingClosed:
-      return votingInfo.isPassing ? ProposalBadgeState.Passed : ProposalBadgeState.Failed;
-    case ProposalLifecycleStep.Executed:
-      return ProposalBadgeState.Executed;
-    case ProposalLifecycleStep.Cancelled:
-      return ProposalBadgeState.Cancelled;
-    case ProposalLifecycleStep.Expired:
-      return ProposalBadgeState.Expired;
-  }
 };
 
 const Badge = styled('span')<BadgeProps>(({ theme, state }) => {

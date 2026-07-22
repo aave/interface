@@ -3,21 +3,30 @@
   "version": "3.0.1",
   "private": true,
   "license": "BSD-3-Clause",
-  "resolutions": {
-    "postcss": "^8.5.10",
-    "protobufjs": "^7.5.5",
-    "qs": "^6.14.1",
-    "@types/react": "^18.3.30",
-    "@types/react-dom": "^18.3.7",
-    "bignumber.js": "^9.3.1",
-    "axios": "^1.18.0",
-    "tronweb/ethers/ws": "^8.21.0"
+  "packageManager": "pnpm@10.18.0",
+  "engines": {
+    "node": "24.x"
+  },
+  "pnpm": {
+    "overrides": {
+      "caniuse-lite": "1.0.30001805",
+      "protobufjs": "^7.5.5",
+      "qs": "^6.14.1",
+      "@types/react": "^18.3.30",
+      "@types/react-dom": "^18.3.7",
+      "bignumber.js": "^9.3.1",
+      "axios": "^1.18.0",
+      "ethers>ws": "^8.21.0",
+      "form-data": "2.5.6",
+      "d3-color": "^3.1.0",
+      "js-cookie": "3.0.7"
+    }
   },
   "scripts": {
     "dev": "next dev",
     "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
     "build": "next build",
-    "build:analyze": "ANALYZE=true yarn build",
+    "build:analyze": "ANALYZE=true pnpm build",
     "build:static": "STATIC_EXPORT=true next build",
     "build:optimize-svgs": "find public -type f -name '*.svg' -print0 | xargs -0 -n 1 -P 6 npx svgo --final-newline",
     "serve:static": "npx serve out",
@@ -26,12 +35,12 @@
     "lint:code:fix": "next lint --dir src --dir pages --fix",
     "lint:formatting": "prettier src pages cypress . --check",
     "lint:formatting:fix": "prettier src pages cypress . --write",
-    "lint": "yarn lint:code && yarn lint:formatting",
-    "lint:fix": "yarn lint:code:fix && yarn lint:formatting:fix",
-    "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest",
+    "lint": "pnpm lint:code && pnpm lint:formatting",
+    "lint:fix": "pnpm lint:code:fix && pnpm lint:formatting:fix",
+    "post-update": "echo \"codesandbox preview only, need an update\" && pnpm update --latest",
     "i18n:extract": "NODE_ENV=development lingui extract --clean --overwrite --locale en",
     "i18n:compile": "lingui compile",
-    "i18n": "yarn i18n:extract && yarn i18n:compile",
+    "i18n": "pnpm i18n:extract && pnpm i18n:compile",
     "prepare": "husky install",
     "test:open": "DOTENV_CONFIG_PATH='.env.local' cypress open",
     "test:headless": "export DOTENV_CONFIG_PATH='../../../.env.local' && cypress run --config-file './cypress/configs/local/full.config.ts'",
@@ -164,7 +173,7 @@
     "Vladimir Konstantinovich Yumatov <vladimir@aave.com>"
   ],
   "lint-staged": {
-    "!(.prettierignore)*.*": "yarn lint:fix",
+    "!(.prettierignore)*.*": "pnpm lint:fix",
     "*.svg": "npx svgo --final-newline"
   },
   "nextBundleAnalysis": {
