@@ -1,5 +1,6 @@
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import {
   Avatar,
   Badge,

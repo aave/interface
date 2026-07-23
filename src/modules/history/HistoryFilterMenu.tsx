@@ -1,6 +1,7 @@
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Check as CheckIcon, Sort as SortIcon } from '@mui/icons-material';
+import CheckIcon from '@mui/icons-material/Check';
+import SortIcon from '@mui/icons-material/Sort';
 import {
   Box,
   Button,

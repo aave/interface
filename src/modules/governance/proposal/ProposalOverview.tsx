@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Twitter } from '@mui/icons-material';
+import Twitter from '@mui/icons-material/Twitter';
 import {
   Box,
   Button,

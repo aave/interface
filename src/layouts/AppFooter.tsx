@@ -1,5 +1,8 @@
 import { Trans } from '@lingui/macro';
-import { GitHub, Instagram, LinkedIn, X } from '@mui/icons-material';
+import GitHub from '@mui/icons-material/GitHub';
+import Instagram from '@mui/icons-material/Instagram';
+import LinkedIn from '@mui/icons-material/LinkedIn';
+import X from '@mui/icons-material/X';
 import { Box, styled, SvgIcon, Typography } from '@mui/material';
 import { DuneIcon, TikTok } from 'public/icons/footer/icons';
 import { Link } from 'src/components/primitives/Link';

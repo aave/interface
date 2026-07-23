@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { ContentCopy } from '@mui/icons-material';
+import ContentCopy from '@mui/icons-material/ContentCopy';
 import { IconButton, SxProps, Tooltip, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Warning } from 'src/components/primitives/Warning';
