@@ -1,0 +1,19 @@
+src/components/incentives/IncentivesTooltipContent.tsx
+  s_35a8c384bd9dd6::t_fddf53a4f7537a 186-190
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "0cdbe4b23235f14312998849553d32700f9cd6ea",
+  "prompts": {},
+  "sessions": {
+    "s_35a8c384bd9dd6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ab88acf-9fd5-47d1-9f0e-44d47696cf68",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
