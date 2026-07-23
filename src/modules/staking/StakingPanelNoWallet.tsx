@@ -97,7 +97,7 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
           <FormattedNumber
             value={parseFloat(stakingAPY || '0') / 10000}
             percent
-            variant="secondary14"
+            variant="h5"
             color="fg-1"
           />
         )}

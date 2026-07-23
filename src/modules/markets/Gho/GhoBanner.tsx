@@ -128,7 +128,7 @@ export const SavingsGhoBanner = () => {
                 <FormattedNumber
                   symbol="USD"
                   compact
-                  variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                  variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'h5'}
                   value={totalDepositedUSD}
                 />
               </Stack>
@@ -152,7 +152,7 @@ export const SavingsGhoBanner = () => {
             <Stack direction="row" gap={1} alignItems="center">
               <FormattedNumber
                 percent
-                variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
+                variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'h5'}
                 value={targetRate}
               />
             </Stack>
@@ -269,12 +269,7 @@ const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: bool
                 <Skeleton width={70} height={25} />
               ) : (
                 <Stack direction="row" gap={1} alignItems="center">
-                  <FormattedNumber
-                    symbol="USD"
-                    compact
-                    variant="secondary14"
-                    value={totalDepositedUSD}
-                  />
+                  <FormattedNumber symbol="USD" compact variant="h5" value={totalDepositedUSD} />
                 </Stack>
               )}
               <Typography variant="caption" color="fg-2" noWrap>
@@ -286,7 +281,7 @@ const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: bool
                 <Skeleton width={70} height={25} />
               ) : (
                 <Stack direction="row" gap={1} alignItems="center">
-                  <FormattedNumber percent variant="secondary14" value={targetRate} />
+                  <FormattedNumber percent variant="h5" value={targetRate} />
                 </Stack>
               )}
               <Typography variant="caption" color="fg-2" noWrap>

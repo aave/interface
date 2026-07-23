@@ -28,10 +28,10 @@ export const SGHOHeader: React.FC = () => {
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
   const symbolsColor = figVars['fg-3'];
-  const iconSize = valueTypographyVariant === 'main21' ? 20 : 16;
+  const iconSize = valueTypographyVariant === 'h2' ? 20 : 16;
 
   const apr = vault?.targetRate ? +vault.targetRate.value : 0;
   const totalDepositedUSD = vault?.totalAssets?.usd ?? '0';

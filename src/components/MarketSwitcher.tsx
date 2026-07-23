@@ -507,7 +507,7 @@ export const MarketSwitcher = () => {
 
   const sectionHeader = (label: React.ReactNode) => (
     <Typography
-      variant="secondary12"
+      variant="subheader2"
       color="fg-2"
       sx={{
         letterSpacing: '0.1px',
@@ -591,7 +591,7 @@ export const MarketSwitcher = () => {
         {pinned.length > 0 && (
           <Box>
             <Typography
-              variant="secondary12"
+              variant="subheader2"
               color="fg-2"
               sx={{
                 letterSpacing: '0.1px',

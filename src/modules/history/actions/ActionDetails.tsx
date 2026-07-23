@@ -138,17 +138,17 @@ export const ActionDetails = ({
     return (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <TokenIcon symbol={reserve.underlyingToken.symbol} sx={{ fontSize: iconSize }} />
-        <Typography variant="secondary14" color="fg-1" sx={{ ml: 1, mb: 0.5 }}>
+        <Typography variant="h5" color="fg-1" sx={{ ml: 1, mb: 0.5 }}>
           {symbol}
         </Typography>
         <DarkTooltip
           wrap
           title={
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Typography variant="secondary14">${amount.usd}</Typography>
+              <Typography variant="h5">${amount.usd}</Typography>
               <Box sx={{ display: 'flex' }}>
-                <FormattedNumber value={amount.amount.value} variant="secondary14" sx={{ mr: 1 }} />
-                <Typography variant="secondary14">{reserve.underlyingToken.symbol}</Typography>
+                <FormattedNumber value={amount.amount.value} variant="h5" sx={{ mr: 1 }} />
+                <Typography variant="h5">{reserve.underlyingToken.symbol}</Typography>
               </Box>
             </Box>
           }
@@ -158,7 +158,7 @@ export const ActionDetails = ({
           <Box>
             <FormattedNumber
               value={amount.amount.value}
-              variant="secondary14"
+              variant="h5"
               color="fg-1"
               compact
               compactThreshold={100000}
@@ -168,14 +168,14 @@ export const ActionDetails = ({
         </DarkTooltip>
         <DarkTooltip
           title={
-            <Typography variant="secondary14">
+            <Typography variant="h5">
               {reserve.underlyingToken.name} ({reserve.underlyingToken.symbol})
             </Typography>
           }
           arrow
           placement="top"
         >
-          <Typography variant="secondary14" color="fg-1">
+          <Typography variant="h5" color="fg-1">
             {reserve.underlyingToken.symbol}
           </Typography>
         </DarkTooltip>
@@ -198,21 +198,21 @@ export const ActionDetails = ({
               symbol={collateral.reserve.underlyingToken.symbol}
               sx={{ fontSize: iconSize, pr: 0.5 }}
             />
-            <Typography variant="secondary14" color="fg-1" sx={{ ml: 1, mb: 0.5 }}>
+            <Typography variant="h5" color="fg-1" sx={{ ml: 1, mb: 0.5 }}>
               −
             </Typography>
             <DarkTooltip
               wrap
               title={
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <Typography variant="secondary14">${collateral.amount!.usd}</Typography>
+                  <Typography variant="h5">${collateral.amount!.usd}</Typography>
                   <Box sx={{ display: 'flex' }}>
                     <FormattedNumber
                       value={collateral.amount!.amount.value}
-                      variant="secondary14"
+                      variant="h5"
                       sx={{ mr: 1 }}
                     />
-                    <Typography variant="secondary14">
+                    <Typography variant="h5">
                       {collateral.reserve.underlyingToken.symbol}
                     </Typography>
                   </Box>
@@ -224,7 +224,7 @@ export const ActionDetails = ({
               <Box>
                 <FormattedNumber
                   value={collateral.amount!.amount.value}
-                  variant="secondary14"
+                  variant="h5"
                   color="fg-1"
                   sx={{ mr: 1 }}
                   compact
@@ -232,7 +232,7 @@ export const ActionDetails = ({
                 />
               </Box>
             </DarkTooltip>
-            <Typography variant="secondary14" color="fg-1">
+            <Typography variant="h5" color="fg-1">
               {collateral.reserve.underlyingToken.symbol}
             </Typography>
           </Box>
@@ -251,21 +251,21 @@ export const ActionDetails = ({
               symbol={debtRepaid.reserve.underlyingToken.symbol}
               sx={{ fontSize: iconSize, pr: 0.5 }}
             />
-            <Typography variant="secondary14" color="fg-1" sx={{ ml: 1, mb: 0.5 }}>
+            <Typography variant="h5" color="fg-1" sx={{ ml: 1, mb: 0.5 }}>
               +
             </Typography>
             <DarkTooltip
               wrap
               title={
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <Typography variant="secondary14">${debtRepaid.amount.usd}</Typography>
+                  <Typography variant="h5">${debtRepaid.amount.usd}</Typography>
                   <Box sx={{ display: 'flex' }}>
                     <FormattedNumber
                       value={debtRepaid.amount.amount.value}
-                      variant="secondary14"
+                      variant="h5"
                       sx={{ mr: 1 }}
                     />
-                    <Typography variant="secondary14">
+                    <Typography variant="h5">
                       {debtRepaid.reserve.underlyingToken.symbol}
                     </Typography>
                   </Box>
@@ -277,7 +277,7 @@ export const ActionDetails = ({
               <Box>
                 <FormattedNumber
                   value={debtRepaid.amount.amount.value}
-                  variant="secondary14"
+                  variant="h5"
                   color="fg-1"
                   sx={{ mr: 1 }}
                   compact
@@ -285,7 +285,7 @@ export const ActionDetails = ({
                 />
               </Box>
             </DarkTooltip>
-            <Typography variant="secondary14" color="fg-1">
+            <Typography variant="h5" color="fg-1">
               {debtRepaid.reserve.underlyingToken.symbol}
             </Typography>
           </Box>
@@ -321,14 +321,14 @@ export const ActionDetails = ({
         <TokenIcon symbol={reserve.underlyingToken.symbol} sx={{ fontSize: iconSize }} />
         <DarkTooltip
           title={
-            <Typography variant="secondary14">
+            <Typography variant="h5">
               {reserve.underlyingToken.name} ({reserve.underlyingToken.symbol})
             </Typography>
           }
           arrow
           placement="top"
         >
-          <Typography variant="secondary14" color="fg-1" sx={{ ml: 1 }}>
+          <Typography variant="h5" color="fg-1" sx={{ ml: 1 }}>
             {reserve.underlyingToken.symbol}
           </Typography>
         </DarkTooltip>
@@ -366,7 +366,7 @@ export const ActionDetails = ({
           />
           <DarkTooltip
             title={
-              <Typography variant="secondary14">
+              <Typography variant="h5">
                 {formatUnits(swapTx.srcAmount, swapTx.underlyingSrcToken.decimals)}{' '}
                 {formattedCowSwapSrcToken.symbol}
               </Typography>
@@ -379,7 +379,7 @@ export const ActionDetails = ({
             <Box>
               <FormattedNumber
                 value={formatUnits(swapTx.srcAmount, swapTx.underlyingSrcToken.decimals)}
-                variant="secondary14"
+                variant="h5"
                 color="fg-1"
                 sx={{ mr: 1, ml: 1 }}
                 visibleDecimals={2}
@@ -388,14 +388,14 @@ export const ActionDetails = ({
           </DarkTooltip>
           <DarkTooltip
             title={
-              <Typography variant="secondary14">
+              <Typography variant="h5">
                 {formattedCowSwapSrcToken.name} ({formattedCowSwapSrcToken.symbol})
               </Typography>
             }
             arrow
             placement="top"
           >
-            <Typography variant="secondary14" color="fg-1">
+            <Typography variant="h5" color="fg-1">
               {formattedCowSwapSrcToken.symbol}
             </Typography>
           </DarkTooltip>
@@ -411,7 +411,7 @@ export const ActionDetails = ({
           />
           <DarkTooltip
             title={
-              <Typography variant="secondary14">
+              <Typography variant="h5">
                 {formatUnits(swapTx.destAmount, swapTx.underlyingDestToken.decimals)}{' '}
                 {formattedCowSwapDestToken.symbol}
               </Typography>
@@ -424,7 +424,7 @@ export const ActionDetails = ({
             <Box>
               <FormattedNumber
                 value={formatUnits(swapTx.destAmount, swapTx.underlyingDestToken.decimals)}
-                variant="secondary14"
+                variant="h5"
                 color="fg-1"
                 visibleDecimals={2}
                 sx={{ mr: 1, ml: 1 }}
@@ -433,14 +433,14 @@ export const ActionDetails = ({
           </DarkTooltip>
           <DarkTooltip
             title={
-              <Typography variant="secondary14">
+              <Typography variant="h5">
                 {formattedCowSwapDestToken.name} ({formattedCowSwapDestToken.symbol})
               </Typography>
             }
             arrow
             placement="top"
           >
-            <Typography variant="secondary14" color="fg-1">
+            <Typography variant="h5" color="fg-1">
               {formattedCowSwapDestToken.symbol}
             </Typography>
           </DarkTooltip>
@@ -525,7 +525,7 @@ export const ActionDetails = ({
   // FALLBACK
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      <Typography variant="secondary14" color="fg-2">
+      <Typography variant="h5" color="fg-2">
         <Trans>Transaction details not available</Trans>
       </Typography>
     </Box>

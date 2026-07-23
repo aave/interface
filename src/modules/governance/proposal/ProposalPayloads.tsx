@@ -112,7 +112,7 @@ export const ProposalPayloads = ({ payloads, loading }: ProposalPayloadsProps) =
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 {logo && <Avatar src={logo} sx={{ width: 20, height: 20, mr: 2 }} />}
-                <Typography variant="main14">
+                <Typography variant="subheader1">
                   <Trans>Payload {p.payloadId}</Trans>
                 </Typography>
                 <Typography variant="caption" color="text.muted" sx={{ ml: 2 }}>

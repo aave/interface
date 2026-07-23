@@ -5,11 +5,11 @@ import { Link } from '../../../components/primitives/Link';
 
 export const ListBottomText = () => {
   return (
-    <Typography variant="secondary14" color="fg-2">
+    <Typography variant="h5" color="fg-2">
       <Trans>
         Since this is a test network, you can get any of the assets if you have ETH on your wallet
       </Trans>
-      <Link href="/faucet" variant="main14" sx={{ ml: 1 }}>
+      <Link href="/faucet" variant="subheader1" sx={{ ml: 1 }}>
         <Trans>Faucet</Trans>
       </Link>
       .

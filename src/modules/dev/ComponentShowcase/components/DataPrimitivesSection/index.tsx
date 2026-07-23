@@ -33,12 +33,12 @@ export const DataPrimitivesSection = () => (
   <Section title="Data primitives">
     <Specimen label="FormattedNumber (plain / USD / percent / compact / sub-min / token)" fullWidth>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <FormattedNumber value={1234.5678} variant="main16" />
-        <FormattedNumber value={1234.56} symbol="USD" variant="main16" />
-        <FormattedNumber value={0.0725} percent variant="main16" />
-        <FormattedNumber value={1234567} compact variant="main16" />
-        <FormattedNumber value={0.0000001} variant="main16" />
-        <FormattedNumber value={12.5} symbol="AAVE" variant="main16" />
+        <FormattedNumber value={1234.5678} variant="h4" />
+        <FormattedNumber value={1234.56} symbol="USD" variant="h4" />
+        <FormattedNumber value={0.0725} percent variant="h4" />
+        <FormattedNumber value={1234567} compact variant="h4" />
+        <FormattedNumber value={0.0000001} variant="h4" />
+        <FormattedNumber value={12.5} symbol="AAVE" variant="h4" />
       </Box>
     </Specimen>
 
@@ -54,13 +54,13 @@ export const DataPrimitivesSection = () => (
     <Specimen label="Row" fullWidth>
       <Box sx={{ width: '100%' }}>
         <Row caption="Wallet balance">
-          <FormattedNumber value={12.5} symbol="AAVE" variant="secondary14" />
+          <FormattedNumber value={12.5} symbol="AAVE" variant="h5" />
         </Row>
       </Box>
     </Specimen>
 
     <Specimen label="TypographyGradient">
-      <TypographyGradient variant="main21">Gradient text</TypographyGradient>
+      <TypographyGradient variant="h2">Gradient text</TypographyGradient>
     </Specimen>
 
     <Specimen label="Link">

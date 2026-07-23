@@ -58,7 +58,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 <FormattedNumber
                   value={e.hasLtvZero ? 0 : e.maxLTV.value}
                   percent
-                  variant="secondary14"
+                  variant="h5"
                   visibleDecimals={2}
                 />
               </ReserveOverviewBox>
@@ -73,7 +73,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 <FormattedNumber
                   value={e.liquidationThreshold.value}
                   percent
-                  variant="secondary14"
+                  variant="h5"
                   visibleDecimals={2}
                 />
               </ReserveOverviewBox>
@@ -88,7 +88,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 <FormattedNumber
                   value={e.liquidationPenalty.value}
                   percent
-                  variant="secondary14"
+                  variant="h5"
                   visibleDecimals={2}
                 />
               </ReserveOverviewBox>

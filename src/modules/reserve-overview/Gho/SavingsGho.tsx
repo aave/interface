@@ -86,11 +86,7 @@ export const SavingsGho = () => {
           {stakeDataLoading && <Skeleton variant="text" width={145} height={24} />}
           {!stakeDataLoading && stakeData && (
             <Stack direction="row" alignItems="center" gap={1}>
-              <FormattedNumber
-                value={stakeData.totalSupplyFormatted || 0}
-                variant="main16"
-                compact
-              />
+              <FormattedNumber value={stakeData.totalSupplyFormatted || 0} variant="h4" compact />
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {' ('}
                 <FormattedNumber
@@ -135,7 +131,7 @@ export const SavingsGho = () => {
               </TextWithTooltip>
             }
             bottomLineComponent={
-              <Typography variant="secondary12">
+              <Typography variant="subheader2">
                 <Trans>Instant</Trans>
               </Typography>
             }
@@ -157,7 +153,7 @@ export const SavingsGho = () => {
                     <TokenIcon symbol="GHO" sx={{ mr: 1, width: 14, height: 14 }} />
                     <FormattedNumber
                       value={formatEther(stakeUserData.userCooldownAmount)}
-                      variant="secondary14"
+                      variant="h5"
                       color="fg-1"
                     />
                   </Box>

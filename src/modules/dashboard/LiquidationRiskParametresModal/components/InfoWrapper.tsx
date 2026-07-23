@@ -60,7 +60,7 @@ export const InfoWrapper = ({
 
       <Box>{children}</Box>
 
-      <Typography variant="secondary12" color="fg-2" textAlign="left">
+      <Typography variant="subheader2" color="fg-2" textAlign="left">
         {bottomText}
       </Typography>
     </Box>

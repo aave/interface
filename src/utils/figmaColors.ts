@@ -21,6 +21,8 @@ export const figmaLight = {
   'fg-3': '#8f8e8e',
   'fg-4': '#bcbbbb',
   'fg-5': '#cfcece',
+  // Muted icon grey (search, sortable-column chevrons, …). Mode-agnostic like fg-3.
+  'fg-icon': '#A8A8A8',
   selected: 'rgba(46, 15, 15, 0.04)',
   'blue-1': '#1a88f8',
   'blue-2': '#48abff',
@@ -56,7 +58,7 @@ export const figmaLight = {
   'data-orange': '#e2a48d',
   'data-yellow': '#e3da8d',
   'data-lime': '#c1e38d',
-  'data-green': '#66C399',
+  'data-green': '#32C958',
   'data-teal': '#8de3cc',
   'data-blue': '#8dcfe3',
   'data-purple': '#bcbbff',
@@ -77,6 +79,11 @@ export const figmaLight = {
   'info-panel-color-one': '#fafafa',
   'info-panel-color-two': '#fafafa',
   'info-panel-color-three': '#fafafa',
+  bone: '#f6f7f4',
+  // Contained-button hover fill. A single token (not an fg-1↔bone swap via the dark selector) so
+  // it resolves to the NEAREST color scheme — the dev showcase's local toggle works even when the
+  // app's global scheme differs. Light = fg-1 ink; dark = bone off-white.
+  'fg-max-hover': '#201d1d',
   // --- semantic tokens promoted from theme-file literals (SoT) ---
   'secondary-main': '#FF607B',
   'secondary-light': '#FF607B',
@@ -104,7 +111,6 @@ export const figmaLight = {
   'slider-thumb': '#62677B',
   'slider-track': '#383D51',
   'surface-elevated': '#ffffff',
-  bone: '#f6f7f4',
 } as const;
 
 export const figmaDark = {
@@ -124,6 +130,8 @@ export const figmaDark = {
   'fg-3': '#8f8e8e',
   'fg-4': '#636161',
   'fg-5': '#383838',
+  // Muted icon grey (search, sortable-column chevrons, …). Mode-agnostic like fg-3.
+  'fg-icon': '#A8A8A8',
   selected: 'rgba(255, 255, 255, 0.06)',
   'blue-1': '#1a88f8',
   'blue-2': '#48abff',
@@ -183,6 +191,8 @@ export const figmaDark = {
   'info-panel-color-one': 'rgba(29, 29, 33, 0.20)',
   'info-panel-color-two': 'rgba(41, 41, 46, 0.20)',
   'info-panel-color-three': 'rgba(255, 255, 255, 0.01)',
+  bone: '#f6f7f4',
+  'fg-max-hover': '#f6f7f4',
   // --- semantic tokens promoted from theme-file literals (SoT) ---
   'secondary-main': '#F48FB1',
   'secondary-light': '#F6A5C0',
@@ -210,7 +220,6 @@ export const figmaDark = {
   'slider-thumb': '#C9B3F9',
   'slider-track': '#9C93B3',
   'surface-elevated': '#1E1E20',
-  bone: '#f6f7f4',
 } as const;
 
 // Token names shared by both modes (light is the common subset; dark adds a few extras).

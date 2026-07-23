@@ -296,7 +296,7 @@ export const IncentivesTooltipContent = ({
   protocolAPY = 0,
   address,
 }: IncentivesTooltipContentProps) => {
-  const typographyVariant = 'secondary12';
+  const typographyVariant = 'subheader2';
 
   const { data: meritIncentives } = useMeritIncentives({
     symbol,

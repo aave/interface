@@ -237,7 +237,7 @@ const BorrowedPositionsListItemMobile = ({
           incentives={incentives}
           address={variableDebtTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />

@@ -182,7 +182,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <FormattedNumber
                     value={reserve.borrowInfo!.utilizationRate.value}
                     percent
-                    variant="main16"
+                    variant="h4"
                     compact
                   />
                 </PanelItem>

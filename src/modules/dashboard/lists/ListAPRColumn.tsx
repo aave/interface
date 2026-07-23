@@ -33,6 +33,7 @@ export const ListAPRColumn = ({
     <ListColumn>
       <Box sx={{ display: 'flex column' }}>
         <IncentivesCard
+          variant="h5"
           value={value}
           incentives={incentives}
           address={address}
@@ -60,6 +61,7 @@ export const ListGhoAPRColumn = ({
     <ListColumn>
       <Stack direction="row" alignItems="center" gap={1}>
         <IncentivesCard
+          variant="h5"
           value={value}
           incentives={incentives}
           address={address}

@@ -27,12 +27,12 @@ export const AmountAvailableItem = ({
             aToken={aToken}
             waToken={waToken}
           />
-          <Typography variant="secondary12">{name}</Typography>
+          <Typography variant="subheader2">{name}</Typography>
         </Stack>
       }
       width="100%"
     >
-      <FormattedNumber value={value} compact variant="secondary12" />
+      <FormattedNumber value={value} compact variant="subheader2" />
     </Row>
   );
 };

@@ -46,7 +46,7 @@ export const StakeAssetName = ({
             <Stack direction="column" gap={2} sx={{ width: '100%', minWidth: '160px' }}>
               <Row
                 caption={
-                  <Typography variant="secondary12" sx={{ ml: 1 }}>
+                  <Typography variant="subheader2" sx={{ ml: 1 }}>
                     <Trans>Target liquidity</Trans>
                   </Typography>
                 }
@@ -61,7 +61,7 @@ export const StakeAssetName = ({
               <Row
                 caption={
                   <Stack direction="column">
-                    <Typography variant="secondary12" sx={{ ml: 1 }}>
+                    <Typography variant="subheader2" sx={{ ml: 1 }}>
                       <Trans>Reward APY at target liquidity</Trans>
                     </Typography>
                     <Typography variant="helperText" sx={{ ml: 1, fontStyle: 'italic' }}>

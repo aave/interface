@@ -130,8 +130,8 @@ export const UmbrellaClaimAllModalContent = ({ stakeData }: UmbrellaClaimAllModa
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <TokenIcon symbol={reward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                  <FormattedNumber value={Number(reward.balance)} variant="secondary14" />
-                  <Typography ml={1} variant="secondary14">
+                  <FormattedNumber value={Number(reward.balance)} variant="h5" />
+                  <Typography ml={1} variant="h5">
                     {reward.symbol}
                   </Typography>
                 </Box>
@@ -231,8 +231,8 @@ export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalConte
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <TokenIcon symbol={reward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                  <FormattedNumber value={Number(reward.balance)} variant="secondary14" />
-                  <Typography ml={1} variant="secondary14">
+                  <FormattedNumber value={Number(reward.balance)} variant="h5" />
+                  <Typography ml={1} variant="h5">
                     {reward.symbol}
                   </Typography>
                 </Box>

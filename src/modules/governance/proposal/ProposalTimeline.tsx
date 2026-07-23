@@ -649,7 +649,7 @@ export const ProposalTimeline = ({
                 }
               >
                 <Typography
-                  variant="main14"
+                  variant="subheader1"
                   sx={{ color: step.status === 'pending' ? 'fg-2' : 'fg-1' }}
                 >
                   {step.name}

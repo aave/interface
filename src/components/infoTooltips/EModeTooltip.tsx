@@ -15,7 +15,7 @@ export const EModeTooltip = ({
         <FormattedNumber
           value={Number(eModeLtv) / 10000}
           percent
-          variant="secondary12"
+          variant="subheader2"
           color="fg-2"
         />
         .{' '}

@@ -78,7 +78,7 @@ export const BorrowAssetsListMobileItem = ({
           incentives={vIncentivesData}
           address={variableDebtTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />

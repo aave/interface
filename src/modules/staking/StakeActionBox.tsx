@@ -78,7 +78,7 @@ export const StakeActionBox = ({
             value={valueUSD}
             symbol="USD"
             visibleDecimals={2}
-            variant="secondary12"
+            variant="subheader2"
             color={+valueUSD === 0 ? 'fg-3' : 'fg-2'}
             symbolsColor={+valueUSD === 0 ? 'fg-3' : 'fg-2'}
             data-cy={`amountUSD`}

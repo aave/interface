@@ -111,16 +111,11 @@ export const BridgeTransactionListItem = ({
       <ListColumn isRow>
         <TokenIcon symbol="GHO" fontSize="large" />
         <Stack sx={{ ml: 2 }} direction="column" alignItems="center">
-          <FormattedNumber
-            sx={{ mb: 1 }}
-            variant="secondary14"
-            visibleDecimals={2}
-            value={amount}
-          />
+          <FormattedNumber sx={{ mb: 1 }} variant="h5" visibleDecimals={2} value={amount} />
           {/* <FormattedNumber
             value={amount}
             symbol="USD"
-            variant="secondary12"
+            variant="subheader2"
             color="fg-2"
           /> */}
         </Stack>
@@ -139,7 +134,7 @@ export const BridgeTransactionListItem = ({
         </Stack>
       </ListColumn>
       <ListColumn align="left">
-        <Typography variant="main14">{age}</Typography>
+        <Typography variant="subheader1">{age}</Typography>
         <Typography variant="subheader2" color="fg-3">
           {dayjs.unix(blockTimestamp).format('MMMM D YYYY h:mm A')}
         </Typography>
@@ -178,7 +173,7 @@ const BridgeTransactionMobileListItem = ({
       <Stack direction="row" my={4} justifyContent="space-between" sx={{ width: '100%' }}>
         <Stack direction="column" gap={2}>
           <Stack>
-            <Typography variant="main14">{age}</Typography>
+            <Typography variant="subheader1">{age}</Typography>
             <Typography variant="subheader2" color="fg-3">
               {dayjs.unix(blockTimestamp).format('MMMM D YYYY h:mm A')}
             </Typography>
@@ -186,16 +181,11 @@ const BridgeTransactionMobileListItem = ({
           <Stack direction="row">
             <TokenIcon symbol="GHO" sx={{ fontSize: '40px' }} />
             <Stack sx={{ ml: 2 }} direction="column" alignItems="center" justifyContent="center">
-              <FormattedNumber
-                sx={{ mb: 1 }}
-                variant="secondary14"
-                visibleDecimals={2}
-                value={amount}
-              />
+              <FormattedNumber sx={{ mb: 1 }} variant="h5" visibleDecimals={2} value={amount} />
               {/* <FormattedNumber
                 value={amount}
                 symbol="USD"
-                variant="secondary12"
+                variant="subheader2"
                 color="fg-2"
               /> */}
             </Stack>
@@ -263,7 +253,7 @@ const TxStatus = ({ state }: { state: MessageExecutionState }) => {
       return (
         <Stack direction="row" gap={2} alignItems="center">
           <CircularProgress size="12px" />
-          <Typography color="fg-3" variant="main14">
+          <Typography color="fg-3" variant="subheader1">
             Processing
           </Typography>
         </Stack>
@@ -287,7 +277,7 @@ const TxStatus = ({ state }: { state: MessageExecutionState }) => {
               <CheckIcon />
             </SvgIcon>
           </Box>
-          <Typography color="success.main" variant="main14">
+          <Typography color="success.main" variant="subheader1">
             Success
           </Typography>
         </Stack>
@@ -311,7 +301,7 @@ const TxStatus = ({ state }: { state: MessageExecutionState }) => {
               <XIcon />
             </SvgIcon>
           </Box>
-          <Typography color="error.main" variant="main14">
+          <Typography color="error.main" variant="subheader1">
             Failed
           </Typography>
         </Stack>

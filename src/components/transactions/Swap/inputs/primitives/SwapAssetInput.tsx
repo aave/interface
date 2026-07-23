@@ -268,7 +268,7 @@ export const SwitchAssetInput = ({
       }}
     >
       {title && (
-        <Typography variant="secondary14" color="fg-2" sx={{ mb: 1 }}>
+        <Typography variant="h5" color="fg-2" sx={{ mb: 1 }}>
           {title}
         </Typography>
       )}
@@ -373,7 +373,7 @@ export const SwitchAssetInput = ({
             />
             <Typography
               data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
-              variant="main16"
+              variant="h4"
               color="fg-1"
               sx={{ fontWeight: 500 }}
             >
@@ -400,7 +400,7 @@ export const SwitchAssetInput = ({
             )}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
+              <Typography variant="h4" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
                 <Box
                   sx={{
                     display: 'flex',
@@ -410,7 +410,7 @@ export const SwitchAssetInput = ({
                   }}
                 >
                   <Typography
-                    variant="main16"
+                    variant="h4"
                     sx={{
                       fontWeight: 600,
                       // mr: 1,
@@ -524,7 +524,7 @@ export const SwitchAssetInput = ({
                           symbol={asset.symbol}
                           sx={{ fontSize: '24px', mr: 1 }}
                         />
-                        <Typography variant="main14" color="fg-1" sx={{ mr: 1 }}>
+                        <Typography variant="subheader1" color="fg-1" sx={{ mr: 1 }}>
                           {asset.symbol}
                         </Typography>
                       </Box>
@@ -591,7 +591,7 @@ export const SwitchAssetInput = ({
                         sx={{ mr: 2 }}
                       />
                       <Box sx={{ display: 'flex', flexDirection: 'column', mr: 2, minWidth: 0 }}>
-                        <Typography variant="main16" fontWeight={500} color="fg-1" noWrap>
+                        <Typography variant="h4" fontWeight={500} color="fg-1" noWrap>
                           {asset.name || asset.symbol}
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -680,7 +680,7 @@ export const SwitchAssetInput = ({
                           <FormattedNumber
                             value={asset.balance}
                             compact
-                            variant="secondary14"
+                            variant="h5"
                             color="fg-1"
                             sx={{ textAlign: 'right' }}
                           />
@@ -713,7 +713,7 @@ export const SwitchAssetInput = ({
                   ))
                 ) : (
                   <Typography
-                    variant="main14"
+                    variant="subheader1"
                     color="fg-1"
                     sx={{ width: 'auto', textAlign: 'center', m: 4 }}
                   >
@@ -739,7 +739,7 @@ export const SwitchAssetInput = ({
               value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
               compact
               symbol="USD"
-              variant="secondary12"
+              variant="subheader2"
               color="fg-3"
               symbolsColor="fg-3"
               flexGrow={1}
@@ -748,12 +748,12 @@ export const SwitchAssetInput = ({
 
           {showBalance && selectedAsset.balance && (
             <>
-              <Typography component="div" variant="secondary12" color="fg-2">
+              <Typography component="div" variant="subheader2" color="fg-2">
                 <Trans>{balanceTitle || 'Balance'}</Trans>
                 <FormattedNumber
                   value={selectedAsset.balance}
                   compact
-                  variant="secondary12"
+                  variant="subheader2"
                   color="fg-2"
                   symbolsColor="fg-4"
                   sx={{ ml: 1 }}

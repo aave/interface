@@ -101,7 +101,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber compact value={reserve.size.amount.value} variant="main16" />
+        <FormattedNumber compact value={reserve.size.amount.value} variant="h4" />
         <ReserveSubheader value={reserve.size.usd} />
       </ListColumn>
 
@@ -111,7 +111,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           incentives={reserve.supplyProtocolIncentives}
           address={reserve.aToken.address}
           symbol={reserve.underlyingToken.symbol}
-          variant="main16"
+          variant="h4"
           symbolsVariant="secondary16"
           tooltip={
             <>
@@ -131,12 +131,12 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
             <FormattedNumber
               compact
               value={Number(reserve.borrowInfo?.total.amount.value)}
-              variant="main16"
+              variant="h4"
             />{' '}
             <ReserveSubheader value={String(reserve.borrowInfo?.total.usd)} />
           </>
         ) : (
-          <NoData variant={'secondary14'} color="fg-2" />
+          <NoData variant={'h5'} color="fg-2" />
         )}
       </ListColumn>
 
@@ -150,7 +150,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           incentives={reserve.borrowProtocolIncentives}
           address={reserve.vToken.address}
           symbol={reserve.underlyingToken.symbol}
-          variant="main16"
+          variant="h4"
           symbolsVariant="secondary16"
           tooltip={
             <>

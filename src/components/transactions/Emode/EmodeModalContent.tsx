@@ -376,7 +376,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                     percent
                     visibleDecimals={2}
                     value={user.currentLoanToValue}
-                    variant="secondary12"
+                    variant="subheader2"
                   />
                   <ArrowRight />
                 </>
@@ -385,7 +385,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                 percent
                 visibleDecimals={2}
                 value={newSummary.currentLoanToValue}
-                variant="secondary12"
+                variant="subheader2"
               />
             </Stack>
           </Row>
@@ -550,7 +550,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                       percent
                       visibleDecimals={2}
                       value={user.currentLoanToValue}
-                      variant="secondary12"
+                      variant="subheader2"
                     />
                     <ArrowRight />
                   </>
@@ -559,7 +559,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                   percent
                   visibleDecimals={2}
                   value={Number(selectedEmode.ltv) / 10000}
-                  variant="secondary12"
+                  variant="subheader2"
                 />
               </Stack>
             </Row>

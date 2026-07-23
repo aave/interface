@@ -1,8 +1,8 @@
-import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
+import { SearchIcon } from 'src/components/icons/SearchIcon';
 import { figVars } from 'src/utils/figmaColors';
 
 interface SearchInputProps {
@@ -42,14 +42,12 @@ export const SearchInput = ({
         alignItems: 'center',
         gap: 2,
         border: `1px solid ${figVars['border-2']}`,
-        borderRadius: '6px',
+        borderRadius: '0.5rem',
         height: '36px',
         ...wrapperSx,
       }}
     >
-      <Box sx={{ ml: 2, mt: 1 }}>
-        <SearchIcon height={16} />
-      </Box>
+      <SearchIcon sx={{ fontSize: 18, color: 'fg-icon', ml: 2, flexShrink: 0 }} />
       <InputBase
         autoFocus={sm}
         inputRef={inputEl}

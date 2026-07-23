@@ -198,7 +198,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
-          <FormattedNumber value={amountToCooldown} variant="secondary14" color="fg-1" />
+          <FormattedNumber value={amountToCooldown} variant="h5" color="fg-1" />
         </Box>
       </Box>
 
@@ -217,13 +217,13 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="secondary14" component="span">
+            <Typography variant="h5" component="span">
               {dateMessage(stakeCooldownSeconds)}
             </Typography>
             <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
               <ArrowNarrowRightIcon />
             </SvgIcon>
-            <Typography variant="secondary14" component="span">
+            <Typography variant="h5" component="span">
               {dateMessage(stakeCooldownSeconds + stakeUnstakeWindow)}
             </Typography>
           </Box>

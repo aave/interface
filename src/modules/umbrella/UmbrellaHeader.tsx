@@ -29,7 +29,7 @@ export const UmbrellaHeader: React.FC = () => {
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
   return (
@@ -100,7 +100,7 @@ const UmbrellaHeaderUserDetails = ({
   symbolsTypographyVariant,
 }: {
   currentMarketData: MarketDataType;
-  valueTypographyVariant: 'main16' | 'main21';
+  valueTypographyVariant: 'h4' | 'h2';
   symbolsTypographyVariant: 'secondary16' | 'secondary21';
 }) => {
   const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
@@ -222,7 +222,7 @@ const UmbrellaHeaderDefault = ({
   symbolsTypographyVariant,
 }: {
   currentMarketData: MarketDataType;
-  valueTypographyVariant: 'main16' | 'main21';
+  valueTypographyVariant: 'h4' | 'h2';
   symbolsTypographyVariant: 'secondary16' | 'secondary21';
 }) => {
   const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);

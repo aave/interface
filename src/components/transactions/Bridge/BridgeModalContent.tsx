@@ -493,7 +493,7 @@ export const BridgeModalContent = () => {
                     sx={{ borderRadius: '4px' }}
                   />
                 ) : (
-                  <Typography variant="secondary14">{estimatedTimeToDestination}</Typography>
+                  <Typography variant="h5">{estimatedTimeToDestination}</Typography>
                 )}
               </Box>
             </Row>
@@ -507,7 +507,7 @@ export const BridgeModalContent = () => {
                     sx={{ borderRadius: '4px' }}
                   />
                 ) : (
-                  <Typography variant="secondary14">{estimatedTimeToDestination}</Typography>
+                  <Typography variant="h5">{estimatedTimeToDestination}</Typography>
                 )}
               </Box> */}
             <Row /> {/* Spacer */}

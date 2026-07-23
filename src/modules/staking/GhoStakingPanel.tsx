@@ -267,7 +267,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
             <Trans>Max slashing</Trans>
           </Typography>
-          <FormattedNumber value={maxSlash} percent variant="secondary14" />
+          <FormattedNumber value={maxSlash} percent variant="h5" />
         </Box>
         <Box
           sx={{
@@ -359,17 +359,17 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           bottomLineComponent={
             <>
               {isCooldownActive && !isUnstakeWindowActive ? (
-                <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                <Typography variant="h5" sx={{ display: 'inline-flex', gap: 1 }}>
                   <SecondsToString seconds={stakeCooldownSeconds - userCooldownDelta} />
                 </Typography>
               ) : isUnstakeWindowActive ? (
-                <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                <Typography variant="h5" sx={{ display: 'inline-flex', gap: 1 }}>
                   <SecondsToString
                     seconds={stakeUnstakeWindow + stakeCooldownSeconds - userCooldownDelta}
                   />
                 </Typography>
               ) : (
-                <Typography variant="secondary12">
+                <Typography variant="subheader2">
                   <Trans>Instant</Trans>
                 </Typography>
               )}
@@ -393,7 +393,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
                   <TokenIcon symbol="GHO" sx={{ mr: 1, width: 14, height: 14 }} />
                   <FormattedNumber
                     value={formatEther(stakeUserData?.userCooldownAmount || 0)}
-                    variant="secondary14"
+                    variant="h5"
                     color="fg-1"
                   />
                 </Box>

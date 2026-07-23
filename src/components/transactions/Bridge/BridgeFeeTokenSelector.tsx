@@ -119,7 +119,7 @@ export const BridgeFeeTokenSelector = ({
         </Select>
       </FormControl>
       {!bridgeFeeFormatted && !loading ? (
-        <NoData variant="secondary14" color="fg-2" />
+        <NoData variant="h5" color="fg-2" />
       ) : loading ? (
         <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
       ) : (
@@ -129,7 +129,7 @@ export const BridgeFeeTokenSelector = ({
             <FormattedNumber
               value={bridgeFeeFormatted}
               symbol={selectedFeeToken?.symbol}
-              variant="secondary14"
+              variant="h5"
             />
           </Stack>
           <FormattedNumber

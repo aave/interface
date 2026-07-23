@@ -61,7 +61,7 @@ export const StkGhoDepositRow = ({
         <Trans>APR</Trans>
       </Typography>
       <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-        <FormattedNumber value={apr} percent variant="main16" visibleDecimals={2} />
+        <FormattedNumber value={apr} percent variant="h4" visibleDecimals={2} />
         {meritIncentives && <IncentivesIcon width="16" height="16" />}
       </Box>
     </Box>

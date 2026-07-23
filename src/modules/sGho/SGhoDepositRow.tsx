@@ -70,7 +70,7 @@ export const SGhoDepositRow = ({
           <Typography variant="caption" color="fg-2" sx={{ display: 'block' }}>
             <Trans>Staking APR</Trans>
           </Typography>
-          <FormattedNumber value={rate} percent variant="main16" visibleDecimals={2} />
+          <FormattedNumber value={rate} percent variant="h4" visibleDecimals={2} />
         </Box>
 
         {hasGho ? (

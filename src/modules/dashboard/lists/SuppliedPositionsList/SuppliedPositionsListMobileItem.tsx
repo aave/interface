@@ -95,7 +95,7 @@ export const SuppliedPositionsListMobileItem = ({
           incentives={aIncentivesData}
           address={aTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />

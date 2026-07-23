@@ -26,7 +26,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
   const trackEvent = useRootStore((store) => store.trackEvent);
 

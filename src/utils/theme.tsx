@@ -43,14 +43,14 @@ const MENU_LIST_INSET = '0.38rem';
 
 /**
  * Secondary "white pill" style for the `outlined` button variant: a hairline ring instead
- * of a border (bg-1 in light, bg-4 in dark) with a subtle fill shift on hover. On hover the
+ * of a border (bg-max in light, bg-4 in dark) with a subtle fill shift on hover. On hover the
  * ring is re-asserted (the global `disableElevation` default otherwise strips box-shadow),
  * and `border` is forced to none to suppress MUI's default outlined hover border.
  */
 const secondaryPillStyle = {
   color: figVars['fg-1'],
-  // Different token per mode: white pill (bg-1) in light, a bg-4 fill in dark.
-  backgroundColor: figVars['bg-1'],
+  // Different token per mode: bg-max (white) in light, a bg-4 fill in dark.
+  backgroundColor: figVars['bg-max'],
   border: 'none',
   boxShadow: figSurfaceShadow(),
   '& .MuiButton-startIcon': {
@@ -59,8 +59,9 @@ const secondaryPillStyle = {
   ...darkScheme({
     backgroundColor: figVars['bg-4'],
   }),
-  '&:hover, &.Mui-focusVisible': {
-    backgroundColor: figVars['bg-4'],
+  // Open state (a menu/popover trigger with `aria-expanded="true"`) keeps the hover fill.
+  '&:hover, &.Mui-focusVisible, &[aria-expanded="true"]': {
+    backgroundColor: figVars['bg-1'],
     // Suppress MUI's default outlined hover border (its `:hover` rule would otherwise
     // re-introduce a 1px border on top of the borderless pill).
     border: 'none',
@@ -71,8 +72,39 @@ const secondaryPillStyle = {
   },
 };
 
-// Shared box geometry for the custom checkbox icon (unchecked + checked).
+// Shared box geometry for the custom selection-control icons (checkbox + radio).
 const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
+
+// Selection-control (checkbox + radio) icon recipes — shared so the two never drift. The unchecked
+// box is a bg-2 fill with an inset fg-5 hairline that darkens to fg-4 on hover (keyed to the shared
+// .MuiButtonBase-root both controls carry, so one selector covers both); the checked box is a
+// purple-1 fill centered on its glyph. Radio spreads these and overrides borderRadius to a circle.
+const selectionControlResting = {
+  ...checkboxIconBox,
+  backgroundColor: figVars['bg-2'],
+  boxShadow: `inset 0 0 0 1px ${figVars['fg-5']}`,
+  boxSizing: 'border-box' as const,
+  '.MuiButtonBase-root:hover &': {
+    boxShadow: `inset 0 0 0 1px ${figVars['fg-4']}`,
+  },
+};
+const selectionControlChecked = {
+  ...checkboxIconBox,
+  backgroundColor: figVars['purple-1'],
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+const selectionControlRootReset = {
+  root: {
+    '&:hover, &.Mui-focusVisible': {
+      backgroundColor: 'transparent',
+    },
+  },
+};
+
+// Shared thumb shadow for the Slider and Switch (kept matched — see MuiSlider / MuiSwitch).
+const controlThumbShadow = '0px 1px 1px rgba(0, 0, 0, 0.12)';
 
 const theme = createTheme();
 const {
@@ -111,15 +143,9 @@ interface TypographyCustomVariants {
   buttonM: React.CSSProperties;
   buttonS: React.CSSProperties;
   helperText: React.CSSProperties;
-  tooltip: React.CSSProperties;
-  main21: React.CSSProperties;
   secondary21: React.CSSProperties;
-  main16: React.CSSProperties;
   secondary16: React.CSSProperties;
-  main14: React.CSSProperties;
-  secondary14: React.CSSProperties;
   main12: React.CSSProperties;
-  secondary12: React.CSSProperties;
 }
 
 declare module '@mui/material/styles' {
@@ -146,16 +172,10 @@ declare module '@mui/material/Typography' {
     buttonM: true;
     buttonS: true;
     helperText: true;
-    tooltip: true;
-    main21: true;
     secondary21: true;
-    main16: true;
     secondary16: true;
-    main14: true;
-    secondary14: true;
     main12: true;
-    secondary12: true;
-    h5: false;
+    h5: true;
     h6: false;
     subtitle1: false;
     subtitle2: false;
@@ -248,7 +268,6 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
     spacing: 4,
     typography: {
       fontFamily: FONT,
-      h5: undefined,
       h6: undefined,
       subtitle1: undefined,
       subtitle2: undefined,
@@ -272,16 +291,14 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       h2: {
         fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: 'unset',
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
+        fontWeight: 500,
+        lineHeight: '120%',
+        fontSize: pxToRem(24),
       },
       h3: {
         fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: '160%',
+        fontWeight: 500,
+        lineHeight: '120%',
         fontSize: pxToRem(18),
       },
       h4: {
@@ -290,6 +307,12 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(24),
         fontSize: pxToRem(16),
+      },
+      h5: {
+        fontFamily: FONT,
+        fontWeight: 500,
+        lineHeight: pxToRem(18),
+        fontSize: pxToRem(14),
       },
       subheader1: {
         fontFamily: FONT,
@@ -348,31 +371,11 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         lineHeight: pxToRem(12),
         fontSize: pxToRem(10),
       },
-      tooltip: {
-        fontFamily: FONT,
-        fontWeight: 400,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
-      },
-      main21: {
-        fontFamily: FONT,
-        fontWeight: 800,
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
-      },
       secondary21: {
         fontFamily: FONT,
         fontWeight: 500,
         lineHeight: '133.4%',
         fontSize: pxToRem(21),
-      },
-      main16: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(16),
       },
       secondary16: {
         fontFamily: FONT,
@@ -381,30 +384,9 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         lineHeight: pxToRem(24),
         fontSize: pxToRem(16),
       },
-      main14: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
-      secondary14: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
       main12: {
         fontFamily: FONT,
         fontWeight: 600,
-        letterSpacing: pxToRem(0.1),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
-      },
-      secondary12: {
-        fontFamily: FONT,
-        fontWeight: 500,
         letterSpacing: pxToRem(0.1),
         lineHeight: pxToRem(16),
         fontSize: pxToRem(12),
@@ -465,15 +447,14 @@ export function getThemedComponents(theme: AppTheme) {
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            borderRadius: '8px',
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: figVars['input-border-hover'],
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: figVars['input-border-hover'],
-              // Keep the hairline — MUI thickens the focused outline to 2px by default, which
-              // reads as a heavy border that lingers while the field/Select stays focused.
-              borderWidth: '1px',
+            borderRadius: '0.5rem',
+            // Text inputs (everything that isn't a Select): a bg-max surface with the shared
+            // surface shadow (shadow-low drop + shadow-stroke-2 1px ring) instead of a border.
+            // Selects keep their own fill via the `:has(.MuiSelect-select)` block below.
+            '&:not(:has(.MuiSelect-select))': {
+              backgroundColor: figVars['bg-max'],
+              boxShadow: figSurfaceShadow(),
+              '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
             },
             // Select trigger = the outlined-button surface (secondaryPillStyle): a bg-1/bg-4 fill
             // wrapped by the shared ring (figSurfaceShadow), same 0.5rem radius (from `root`).
@@ -483,13 +464,26 @@ export function getThemedComponents(theme: AppTheme) {
             '&:has(.MuiSelect-select)': {
               backgroundColor: figVars['bg-1'],
               boxShadow: figSurfaceShadow(),
+              // Animate the hover/open fill+ring step (was instant — the root had no transition).
+              transition: theme.transitions.create(['background-color', 'box-shadow'], {
+                duration: motion.duration.hover,
+              }),
               ...darkScheme({ backgroundColor: figVars['bg-4'] }),
               '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
-              '&:hover, &.Mui-focused': {
+              // Open fill is keyed to the Select's actual open state (`aria-expanded` on the
+              // select), NOT `.Mui-focused`: a Select keeps focus after its menu closes, so a
+              // focus-based fill would linger after closing and while other fields are focused.
+              '&:hover, &:has(.MuiSelect-select[aria-expanded="true"])': {
                 backgroundColor: figVars['bg-4'],
                 boxShadow: figSurfaceShadow(),
                 ...darkScheme({ backgroundColor: figVars['bg-5'] }),
                 '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+              },
+              // Keyboard-focus ring only (browser deems focus visible → keyboard nav, not the
+              // focus MUI restores to the trigger on close). Matches the outlined-button ring.
+              '&:has(.MuiSelect-select:focus-visible)': {
+                outline: `2px solid ${figVars['fg-1']}`,
+                outlineOffset: '3px',
               },
             },
           },
@@ -498,11 +492,19 @@ export function getThemedComponents(theme: AppTheme) {
       MuiSlider: {
         styleOverrides: {
           root: {
+            // Match the Switch's palette: white thumb (with the switch's soft shadow), purple-1
+            // filled track, fg-3 unfilled rail.
             '& .MuiSlider-thumb': {
-              color: figVars['slider-thumb'],
+              color: onAccent,
+              boxShadow: controlThumbShadow,
             },
             '& .MuiSlider-track': {
-              color: figVars['slider-track'],
+              color: figVars['purple-1'],
+              border: 'none',
+            },
+            '& .MuiSlider-rail': {
+              color: figVars['fg-3'],
+              opacity: 1,
             },
           },
         },
@@ -581,13 +583,11 @@ export function getThemedComponents(theme: AppTheme) {
               // needs to disappear into it while the drop-shadow layer still adds the lift.
               boxShadow: figSurfaceShadow('fg-max'),
               '&:hover, &.Mui-focusVisible': {
-                backgroundColor: figVars['fg-1'],
-                boxShadow: figSurfaceShadow('fg-1'),
-                // Dark: fg-1 equals fg-max (#fff) so the swap is invisible — use bone instead.
-                ...darkScheme({
-                  backgroundColor: figVars['bone'],
-                  boxShadow: figSurfaceShadow('bone'),
-                }),
+                // One per-scheme token (fg-max-hover: fg-1 ink in light, bone off-white in dark)
+                // instead of an fg-1↔bone swap via the dark selector — the hover follows the
+                // NEAREST color scheme (the dev showcase's local toggle), not the global <html>.
+                backgroundColor: figVars['fg-max-hover'],
+                boxShadow: figSurfaceShadow('fg-max-hover'),
               },
               // The root focus ring uses `currentColor`, which here is contrastText (bg-1) —
               // nearly the same shade as the page background, so it's invisible. Re-point it at
@@ -612,6 +612,11 @@ export function getThemedComponents(theme: AppTheme) {
             }),
             // Subtle press feedback — scale down while active (not when disabled).
             ...pressScaleActive,
+            // Keep the hover fill while the menu this button opens is expanded (open === hover).
+            // MUI's IconButton hover is `action.hover` (= button-hover), so match it.
+            '&[aria-expanded="true"]': {
+              backgroundColor: figVars['button-hover'],
+            },
           },
         },
       },
@@ -628,29 +633,9 @@ export function getThemedComponents(theme: AppTheme) {
       },
       MuiCheckbox: {
         defaultProps: {
-          icon: (
-            <Box
-              sx={{
-                ...checkboxIconBox,
-                border: `1px solid ${figVars['border-0']}`,
-                backgroundColor: figVars['bg-max'],
-                boxSizing: 'border-box',
-                '.MuiCheckbox-root:hover &': {
-                  backgroundColor: figVars['bg-4'],
-                },
-              }}
-            />
-          ),
+          icon: <Box sx={selectionControlResting} />,
           checkedIcon: (
-            <Box
-              sx={{
-                ...checkboxIconBox,
-                backgroundColor: figVars['purple-1'],
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
+            <Box sx={selectionControlChecked}>
               <SvgIcon sx={{ fontSize: 12, color: onAccent }} viewBox="0 0 12 12">
                 <path
                   d="M2.5 6.5L5 9L9.5 3.5"
@@ -664,13 +649,19 @@ export function getThemedComponents(theme: AppTheme) {
             </Box>
           ),
         },
-        styleOverrides: {
-          root: {
-            '&:hover, &.Mui-focusVisible': {
-              backgroundColor: 'transparent',
-            },
-          },
+        styleOverrides: selectionControlRootReset,
+      },
+      MuiRadio: {
+        defaultProps: {
+          // Circular twin of the custom checkbox — shares its recipe, overriding the shape.
+          icon: <Box sx={{ ...selectionControlResting, borderRadius: '50%' }} />,
+          checkedIcon: (
+            <Box sx={{ ...selectionControlChecked, borderRadius: '50%' }}>
+              <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: onAccent }} />
+            </Box>
+          ),
         },
+        styleOverrides: selectionControlRootReset,
       },
       MuiTypography: {
         defaultProps: {
@@ -681,6 +672,7 @@ export function getThemedComponents(theme: AppTheme) {
             h2: 'h2',
             h3: 'h3',
             h4: 'h4',
+            h5: 'p',
             subheader1: 'p',
             subheader2: 'p',
             caption: 'p',
@@ -689,15 +681,9 @@ export function getThemedComponents(theme: AppTheme) {
             buttonM: 'p',
             buttonS: 'p',
             main12: 'p',
-            main14: 'p',
-            main16: 'p',
-            main21: 'p',
-            secondary12: 'p',
-            secondary14: 'p',
             secondary16: 'p',
             secondary21: 'p',
             helperText: 'span',
-            tooltip: 'span',
           },
         },
       },
@@ -790,18 +776,21 @@ export function getThemedComponents(theme: AppTheme) {
               zIndex: -1,
               // Concentric with the menu paper (paper radius − list inset).
               borderRadius: `calc(${MENU_PAPER_RADIUS} - ${MENU_LIST_INSET})`,
+              // Highlight scales in on hover (0.96 → 1) and back out (1 → 0.96) on leave,
+              // animating alongside the background fade.
+              transform: 'scale(0.96)',
+              transition: theme.transitions.create(['transform', 'background-color'], {
+                duration: motion.duration.hover,
+              }),
             },
-            '&:hover::before': {
+            // Hover, keyboard focus (arrow-key nav sets .Mui-focusVisible), and the selected row
+            // all share one subtle highlight — the button-hover fill, never MUI's primary tint.
+            '&:hover::before, &.Mui-focusVisible::before, &.Mui-selected::before': {
               backgroundColor: figVars['button-hover'],
+              transform: 'scale(1)',
             },
-            // Selected option (e.g. a Select's current value): a proper subtle fill (bg-4, same
-            // token as the toggle's active pill) — never MUI's primary tint or a border token.
-            '&.Mui-selected::before, &.Mui-selected:hover::before, &.Mui-selected.Mui-focusVisible::before':
-              {
-                backgroundColor: figVars['bg-4'],
-              },
             // Highlight lives on the pseudo above — keep the row's own background clear.
-            '&:hover, &.Mui-selected, &.Mui-selected:hover, &.Mui-selected.Mui-focusVisible': {
+            '&:hover, &.Mui-focusVisible, &.Mui-selected': {
               backgroundColor: 'transparent',
             },
           },
@@ -935,7 +924,7 @@ export function getThemedComponents(theme: AppTheme) {
             borderRadius: '50%',
             width: '14px',
             height: '14px',
-            boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.12)',
+            boxShadow: controlThumbShadow,
           },
           track: {
             opacity: 1,

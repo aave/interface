@@ -7,25 +7,61 @@ import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup
 import { Section } from '../Section';
 import { Specimen } from '../Specimen';
 
-const TxToggleDemo = () => {
-  const [value, setValue] = useState('market');
+interface ToggleOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
+const ToggleDemo = ({ options, initial }: { options: ToggleOption[]; initial: string }) => {
+  const [value, setValue] = useState(initial);
   return (
     <StyledTxModalToggleGroup value={value} exclusive onChange={(_, v) => v && setValue(v)}>
-      <StyledTxModalToggleButton value="market">
-        <Typography variant="buttonM">Market</Typography>
-      </StyledTxModalToggleButton>
-      <StyledTxModalToggleButton value="limit">
-        <Typography variant="buttonM">Limit</Typography>
-      </StyledTxModalToggleButton>
+      {options.map((o) => (
+        <StyledTxModalToggleButton key={o.value} value={o.value} disabled={o.disabled}>
+          <Typography variant="buttonM">{o.label}</Typography>
+        </StyledTxModalToggleButton>
+      ))}
     </StyledTxModalToggleGroup>
   );
 };
 
 export const TogglesBadgesSection = () => (
   <Section title="Toggles & badges">
-    <Specimen label="StyledTxModalToggleGroup">
+    <Specimen label="Toggle group — 2 options">
       <Box sx={{ width: 240 }}>
-        <TxToggleDemo />
+        <ToggleDemo
+          initial="market"
+          options={[
+            { value: 'market', label: 'Market' },
+            { value: 'limit', label: 'Limit' },
+          ]}
+        />
+      </Box>
+    </Specimen>
+
+    <Specimen label="Toggle group — 3 options">
+      <Box sx={{ width: 240 }}>
+        <ToggleDemo
+          initial="1"
+          options={[
+            { value: '1', label: '1x' },
+            { value: '2', label: '2x' },
+            { value: '3', label: '3x' },
+          ]}
+        />
+      </Box>
+    </Specimen>
+
+    <Specimen label="Toggle group — disabled segment">
+      <Box sx={{ width: 240 }}>
+        <ToggleDemo
+          initial="supply"
+          options={[
+            { value: 'supply', label: 'Supply' },
+            { value: 'borrow', label: 'Borrow', disabled: true },
+          ]}
+        />
       </Box>
     </Specimen>
 

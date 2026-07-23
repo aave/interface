@@ -123,11 +123,7 @@ export default function FaucetAssetsList() {
 
             {!downToXSM && (
               <ListColumn>
-                <FormattedNumber
-                  compact
-                  value={reserve.walletBalance.toString()}
-                  variant="main16"
-                />
+                <FormattedNumber compact value={reserve.walletBalance.toString()} variant="h4" />
               </ListColumn>
             )}
 

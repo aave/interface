@@ -45,7 +45,7 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
           {yae ? <Trans>YAE</Trans> : <Trans>NAY</Trans>}
         </Typography>
         {loading ? (
-          <Typography variant="secondary14" sx={{ flexGrow: 1, lineHeight: '1rem' }}>
+          <Typography variant="h5" sx={{ flexGrow: 1, lineHeight: '1rem' }}>
             <Skeleton width={40} />
           </Typography>
         ) : (
@@ -54,7 +54,7 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
               value={votes}
               visibleDecimals={0}
               sx={{ mr: 1 }}
-              variant="secondary14"
+              variant="h5"
               roundDown
               compact={compact}
             />

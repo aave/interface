@@ -137,7 +137,7 @@ export const HistoryWrapper = () => {
             <Typography component="div" variant="h2" sx={{ mr: 4 }}>
               <Trans>Transactions</Trans>
             </Typography>
-            <Typography variant="secondary12" color="fg-2" sx={{ mt: 1 }}>
+            <Typography variant="subheader2" color="fg-2" sx={{ mt: 1 }}>
               <Trans>This list may not include all your swaps.</Trans>
             </Typography>
           </Box>

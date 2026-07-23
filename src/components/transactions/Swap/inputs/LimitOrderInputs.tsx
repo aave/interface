@@ -67,7 +67,7 @@ export const LimitOrderInputs = ({
         {(inputInputTitle || swapState.showNetworkSelector) && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             {inputInputTitle && (
-              <Typography variant="secondary14" color="fg-2">
+              <Typography variant="h5" color="fg-2">
                 {inputInputTitle}
               </Typography>
             )}

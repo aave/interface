@@ -1,4 +1,4 @@
-import { Button, Menu, MenuItem, Select, Typography } from '@mui/material';
+import { Button, Menu, MenuItem, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { BasicModal } from 'src/components/primitives/BasicModal';
@@ -27,31 +27,24 @@ const ModalDemo = () => {
   );
 };
 
-const SelectDemo = () => {
-  const [value, setValue] = useState('ethereum');
-  return (
-    <Select
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      size="small"
-      sx={{ minWidth: 180 }}
-    >
-      <MenuItem value="ethereum">Ethereum</MenuItem>
-      <MenuItem value="optimism">Optimism</MenuItem>
-      <MenuItem value="arbitrum">Arbitrum</MenuItem>
-    </Select>
-  );
-};
-
 const MenuDemo = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const close = () => setAnchorEl(null);
   return (
     <>
-      <Button variant="outlined" color="primary" onClick={(e) => setAnchorEl(e.currentTarget)}>
+      {/* aria-expanded lets the outlined trigger keep the open/active fill (secondaryPillStyle
+          keys off it) — MUI does not set it automatically for Menu triggers. */}
+      <Button
+        variant="outlined"
+        color="primary"
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+      >
         Open menu
       </Button>
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={close}>
+      <Menu anchorEl={anchorEl} open={open} onClose={close} disablePortal>
         <MenuItem onClick={close}>First option</MenuItem>
         <MenuItem onClick={close}>Second option</MenuItem>
         <MenuItem onClick={close}>Third option</MenuItem>
@@ -66,19 +59,15 @@ export const OverlaysSection = () => (
       <ModalDemo />
     </Specimen>
 
-    <Specimen label="Select (menu pop)">
-      <SelectDemo />
-    </Specimen>
-
     <Specimen label="Menu (dropdown pop)">
       <MenuDemo />
     </Specimen>
 
     <Specimen label="ContentWithTooltip (click)">
       <ContentWithTooltip
-        tooltipContent={<Typography variant="tooltip">Tooltip body content.</Typography>}
+        tooltipContent={<Typography variant="caption">Tooltip body content.</Typography>}
       >
-        <Typography variant="main14" sx={{ borderBottom: '1px dashed', cursor: 'pointer' }}>
+        <Typography variant="subheader1" sx={{ borderBottom: '1px dashed', cursor: 'pointer' }}>
           Click me
         </Typography>
       </ContentWithTooltip>
@@ -86,7 +75,7 @@ export const OverlaysSection = () => (
 
     <Specimen label="TextWithTooltip">
       <TextWithTooltip text="Supply APY">
-        <Typography variant="tooltip">Explanation of the metric goes here.</Typography>
+        <Typography variant="caption">Explanation of the metric goes here.</Typography>
       </TextWithTooltip>
     </Specimen>
   </Section>

@@ -270,7 +270,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               sx={{ mr: 2 }}
               value={stakeData.stakeApyFormatted}
               percent
-              variant="secondary14"
+              variant="h5"
             />
           </Stack>
         </Box>
@@ -286,7 +286,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
             <Trans>Max slashing</Trans>
           </Typography>
-          <FormattedNumber value={maxSlash} percent variant="secondary14" />
+          <FormattedNumber value={maxSlash} percent variant="h5" />
         </Box>
         <Box
           sx={{
@@ -404,17 +404,17 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             bottomLineComponent={
               <>
                 {isCooldownActive && !isUnstakeWindowActive ? (
-                  <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                  <Typography variant="h5" sx={{ display: 'inline-flex', gap: 1 }}>
                     <SecondsToString seconds={stakeCooldownSeconds - userCooldownDelta} />
                   </Typography>
                 ) : isUnstakeWindowActive ? (
-                  <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                  <Typography variant="h5" sx={{ display: 'inline-flex', gap: 1 }}>
                     <SecondsToString
                       seconds={stakeUnstakeWindow + stakeCooldownSeconds - userCooldownDelta}
                     />
                   </Typography>
                 ) : (
-                  <Typography variant="secondary14">
+                  <Typography variant="h5">
                     <SecondsToString seconds={stakeCooldownSeconds} />
                   </Typography>
                 )}
@@ -438,7 +438,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                     <TokenIcon symbol={icon} sx={{ mr: 1, width: 14, height: 14 }} />
                     <FormattedNumber
                       value={formatEther(stakeUserData?.userCooldownAmount || 0)}
-                      variant="secondary14"
+                      variant="h5"
                       color="fg-1"
                     />
                   </Box>
@@ -552,7 +552,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <FormattedNumber
               value={aavePerMonth}
               visibleDecimals={2}
-              variant="secondary14"
+              variant="h5"
               color={+aavePerMonth === 0 ? 'fg-4' : 'fg-1'}
             />
           }

@@ -272,7 +272,7 @@ export const PriceInput = ({
         },
       }}
     >
-      <Typography variant="secondary12" color="fg-3">
+      <Typography variant="subheader2" color="fg-3">
         When 1 {fromAsset.symbol} is worth:
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -331,7 +331,7 @@ export const PriceInput = ({
           />
           <Typography
             data-cy={`assetsSelectedOption_${toAsset.symbol.toUpperCase()}`}
-            variant="main16"
+            variant="h4"
             color="fg-1"
             sx={{ fontWeight: 500 }}
           >
@@ -383,18 +383,18 @@ export const PriceInput = ({
             value={rate.usd ? rate.usd.toString() : 0}
             compact
             symbol="USD"
-            variant="secondary12"
+            variant="subheader2"
             color="fg-3"
             symbolsColor="fg-3"
             flexGrow={1}
           />
         )}
 
-        <Typography component="div" variant="secondary12" color="fg-2">
+        <Typography component="div" variant="subheader2" color="fg-2">
           <FormattedNumber
             value={lastMarketRate.nominal ? lastMarketRate.nominal.toNumber() : 0}
             compact
-            variant="secondary12"
+            variant="subheader2"
             color="fg-2"
             symbolsColor="fg-4"
             sx={{ ml: 1 }}

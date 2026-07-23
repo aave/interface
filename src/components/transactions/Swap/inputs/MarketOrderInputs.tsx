@@ -41,7 +41,7 @@ export const MarketOrderInputs = ({
         {(params.inputInputTitle || swapState.showNetworkSelector) && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             {params.inputInputTitle && (
-              <Typography variant="secondary14" color="fg-2">
+              <Typography variant="h5" color="fg-2">
                 {params.inputInputTitle}
               </Typography>
             )}

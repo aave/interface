@@ -12,7 +12,7 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) =>
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
   const totalBorrowed = BigNumber.min(

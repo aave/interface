@@ -67,7 +67,7 @@ export const SupplyInfo = ({
                         valueToBigNumber(reserve.supplyInfo.supplyCap.amount.value).toNumber() -
                         valueToBigNumber(reserve.supplyInfo.total.value).toNumber()
                       }
-                      variant="secondary12"
+                      variant="subheader2"
                     />{' '}
                     {reserve.underlyingToken.symbol} (
                     <FormattedNumber
@@ -75,7 +75,7 @@ export const SupplyInfo = ({
                         valueToBigNumber(reserve.supplyInfo.supplyCap.usd).toNumber() -
                         valueToBigNumber(reserve.size.usd).toNumber()
                       }
-                      variant="secondary12"
+                      variant="subheader2"
                       symbol="USD"
                     />
                     ).
@@ -114,7 +114,7 @@ export const SupplyInfo = ({
               }
             >
               <Box>
-                <FormattedNumber value={reserve.supplyInfo.total.value} variant="main16" compact />
+                <FormattedNumber value={reserve.supplyInfo.total.value} variant="h4" compact />
                 <Typography
                   component="span"
                   color="fg-1"
@@ -123,17 +123,14 @@ export const SupplyInfo = ({
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber
-                  value={reserve.supplyInfo.supplyCap.amount.value}
-                  variant="main16"
-                />
+                <FormattedNumber value={reserve.supplyInfo.supplyCap.amount.value} variant="h4" />
               </Box>
               <Box>
                 <ReserveSubheader value={reserve.size.usd} />
                 <Typography
                   component="span"
                   color="fg-2"
-                  variant="secondary12"
+                  variant="subheader2"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>
@@ -151,7 +148,7 @@ export const SupplyInfo = ({
               </Box>
             }
           >
-            <FormattedNumber value={reserve.supplyInfo.total.value} variant="main16" compact />
+            <FormattedNumber value={reserve.supplyInfo.total.value} variant="h4" compact />
             <ReserveSubheader value={reserve.size.usd} />
           </PanelItem>
         )}
@@ -161,7 +158,7 @@ export const SupplyInfo = ({
             incentives={supplyProtocolIncentives}
             address={reserve.aToken.address}
             symbol={reserve.underlyingToken.symbol}
-            variant="main16"
+            variant="h4"
             market={currentMarketData.market}
             protocolAction={ProtocolAction.supply}
             inlineIncentives={true}
@@ -265,7 +262,7 @@ export const SupplyInfo = ({
             <FormattedNumber
               value={reserve.supplyInfo.maxLTV.value}
               percent
-              variant="secondary14"
+              variant="h5"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>
@@ -289,7 +286,7 @@ export const SupplyInfo = ({
             <FormattedNumber
               value={reserve.supplyInfo.liquidationThreshold.value}
               percent
-              variant="secondary14"
+              variant="h5"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>
@@ -313,7 +310,7 @@ export const SupplyInfo = ({
             <FormattedNumber
               value={reserve.supplyInfo.liquidationBonus.value}
               percent
-              variant="secondary14"
+              variant="h5"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>

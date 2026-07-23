@@ -131,7 +131,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
                         >
                           <Avatar src="/aave.svg" sx={{ width: 24, height: 24 }} />
                         </Badge>
-                        <Typography variant="secondary14" sx={{ ml: 3 }}>
+                        <Typography variant="h5" sx={{ ml: 3 }}>
                           {`${market.marketTitle}${market.isFork ? ' Fork' : ''}`}
                         </Typography>
                       </MenuItem>

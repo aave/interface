@@ -69,7 +69,7 @@ export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
         </Box>
       }
     >
-      <FormattedNumber variant="secondary14" color="fg-2" value={amount} />
+      <FormattedNumber variant="h5" color="fg-2" value={amount} />
     </Row>
   );
 };

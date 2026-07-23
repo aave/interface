@@ -24,7 +24,7 @@ export const PointsBasedCampaignTooltip = ({
   ...rest
 }: PointBasedCampaignTooltipProps) => {
   const theme = useTheme();
-  const typographyVariant = 'secondary12';
+  const typographyVariant = 'subheader2';
   const [inkPriceInput, setInkPriceInput] = useState('');
   const [estimatedPointsValue, setEstimatedPointsValue] = useState<number | null>(null);
   const [estimatedAPY, setEstimatedAPY] = useState<number | null>(null);

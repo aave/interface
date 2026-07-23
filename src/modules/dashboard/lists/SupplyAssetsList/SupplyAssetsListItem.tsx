@@ -191,12 +191,7 @@ export const SupplyAssetsListItemDesktop = ({
                 justifyContent: 'center',
               }}
             >
-              <FormattedNumber
-                value={0}
-                variant="secondary14"
-                sx={{ mb: '2px' }}
-                symbolsColor={onAccent}
-              />
+              <FormattedNumber value={0} variant="h5" sx={{ mb: '2px' }} symbolsColor={onAccent} />
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
                 <FormattedNumber
@@ -204,7 +199,7 @@ export const SupplyAssetsListItemDesktop = ({
                     walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
                   }
                   visibleDecimals={2}
-                  variant="secondary12"
+                  variant="subheader2"
                   color="fg-2"
                 />
               </Stack>
@@ -240,7 +235,7 @@ export const SupplyAssetsListItemDesktop = ({
 
       <ListColumn>
         {debtCeiling.isMaxed ? (
-          <NoData variant="main14" color="fg-2" />
+          <NoData variant="subheader1" color="fg-2" />
         ) : (
           <ListItemCanBeCollateral
             isIsolated={isIsolated}
@@ -385,12 +380,7 @@ export const SupplyAssetsListItemMobile = ({
                 justifyContent: 'center',
               }}
             >
-              <FormattedNumber
-                value={0}
-                variant="secondary14"
-                sx={{ mb: '2px' }}
-                symbolsColor={onAccent}
-              />
+              <FormattedNumber value={0} variant="h5" sx={{ mb: '2px' }} symbolsColor={onAccent} />
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
                 <FormattedNumber
@@ -398,7 +388,7 @@ export const SupplyAssetsListItemMobile = ({
                     walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
                   }
                   visibleDecimals={2}
-                  variant="secondary12"
+                  variant="subheader2"
                   color="fg-2"
                 />
               </Stack>
@@ -433,7 +423,7 @@ export const SupplyAssetsListItemMobile = ({
           incentives={aIncentivesData}
           address={aTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />

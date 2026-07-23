@@ -100,11 +100,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
                 </>
               }
             >
-              <FormattedNumber
-                value={powerAtProposalStart || 0}
-                variant="main16"
-                visibleDecimals={2}
-              />
+              <FormattedNumber value={powerAtProposalStart || 0} variant="h4" visibleDecimals={2} />
             </Row>
           )}
           {showAlreadyVotedMsg && voteOnProposal && (

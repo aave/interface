@@ -4,7 +4,7 @@ import { FigmaColorName } from 'src/utils/figmaColors';
 type TypographyVariant = TypographyProps['variant'];
 
 // The typography variants enabled in the theme. The default MUI variants
-// (body1/body2/button/subtitle*/h5/h6/overline) are disabled in theme.tsx, so
+// (body1/body2/button/subtitle*/h6/overline) are disabled in theme.tsx, so
 // they are intentionally omitted here.
 export const TYPOGRAPHY_VARIANTS: TypographyVariant[] = [
   'display1',
@@ -12,23 +12,18 @@ export const TYPOGRAPHY_VARIANTS: TypographyVariant[] = [
   'h2',
   'h3',
   'h4',
+  'h5',
   'subheader1',
   'subheader2',
   'description',
   'caption',
-  'main21',
   'secondary21',
-  'main16',
   'secondary16',
-  'main14',
-  'secondary14',
   'main12',
-  'secondary12',
   'buttonL',
   'buttonM',
   'buttonS',
   'helperText',
-  'tooltip',
 ];
 
 // Figma color tokens grouped for the swatch grid. Names are keys of `figmaLight`

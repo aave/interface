@@ -31,7 +31,7 @@ export const Swatch = ({ name, value }: SwatchProps) => (
     <Typography variant="main12" noWrap sx={{ mt: 1, display: 'block' }}>
       {name}
     </Typography>
-    <Typography variant="secondary12" color="fg-2" noWrap sx={{ display: 'block' }}>
+    <Typography variant="subheader2" color="fg-2" noWrap sx={{ display: 'block' }}>
       {value}
     </Typography>
   </Box>

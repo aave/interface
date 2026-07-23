@@ -61,13 +61,13 @@ export const DebtSwapDetails = ({
             <>
               <FormattedNumber
                 value={state.sourceReserve.reserve.variableBorrowAPY}
-                variant="secondary14"
+                variant="h5"
                 percent
               />
               {ArrowRightIcon}
               <FormattedNumber
                 value={state.destinationReserve.reserve.variableBorrowAPY}
-                variant="secondary14"
+                variant="h5"
                 percent
               />
             </>
@@ -109,7 +109,7 @@ export const DebtSwapDetails = ({
                   />
                   <DarkTooltip
                     title={
-                      <Typography variant="secondary14">
+                      <Typography variant="h5">
                         {sourceAmountAfterSwap.toString()} {state.sourceReserve.reserve.symbol}
                       </Typography>
                     }
@@ -121,7 +121,7 @@ export const DebtSwapDetails = ({
                     <Box>
                       <FormattedNumber
                         value={sourceAmountAfterSwap.toString()}
-                        variant="secondary14"
+                        variant="h5"
                         compact
                       />
                     </Box>
@@ -159,7 +159,7 @@ export const DebtSwapDetails = ({
                   />
                   <DarkTooltip
                     title={
-                      <Typography variant="secondary14">
+                      <Typography variant="h5">
                         {targetAmountAfterSwap.toString()} {state.destinationReserve.reserve.symbol}
                       </Typography>
                     }
@@ -171,7 +171,7 @@ export const DebtSwapDetails = ({
                     <Box>
                       <FormattedNumber
                         value={targetAmountAfterSwap.toString()}
-                        variant="secondary14"
+                        variant="h5"
                         compact
                       />
                     </Box>

@@ -25,7 +25,7 @@ export const SGhoWithdrawRow = ({ balance, balanceUSD, onWithdraw }: SGhoWithdra
           </Typography>
         }
         bottomLineComponent={
-          <Typography variant="secondary12">
+          <Typography variant="subheader2">
             <Trans>Instant</Trans>
           </Typography>
         }

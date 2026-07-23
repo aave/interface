@@ -27,7 +27,7 @@ const Content = ({
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <FormattedNumber
           value={value}
-          variant="secondary14"
+          variant="h5"
           sx={{ mb: !withTooltip && !!subValue ? '2px' : 0 }}
           color={disabled ? 'fg-4' : 'text.main'}
           data-cy={`nativeAmount`}
@@ -36,7 +36,7 @@ const Content = ({
       </Box>
 
       {!withTooltip && !!subValue && !disabled && (
-        <FormattedNumber value={subValue} symbol="USD" variant="secondary12" color="fg-2" />
+        <FormattedNumber value={subValue} symbol="USD" variant="description" color="fg-2" />
       )}
     </>
   );
@@ -67,14 +67,14 @@ export const ListValueColumn = ({
               <FormattedNumber
                 value={subValue || 0}
                 symbol="USD"
-                variant="secondary14"
+                variant="h5"
                 sx={{ mb: '2px' }}
                 symbolsColor={onAccent}
                 compact={false}
               />
               <FormattedNumber
                 value={value}
-                variant="secondary12"
+                variant="subheader2"
                 symbol={symbol}
                 symbolsColor={onAccent}
                 compact={false}

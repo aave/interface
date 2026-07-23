@@ -79,11 +79,11 @@ export const BorrowInfo = ({
                 <>
                   <Trans>
                     Maximum amount available to borrow is{' '}
-                    <FormattedNumber value={maxAvailableToBorrow} variant="secondary12" />{' '}
+                    <FormattedNumber value={maxAvailableToBorrow} variant="subheader2" />{' '}
                     {reserve.underlyingToken.symbol} (
                     <FormattedNumber
                       value={maxAvailableToBorrowUSD}
-                      variant="secondary12"
+                      variant="subheader2"
                       symbol="USD"
                     />
                     ).
@@ -122,7 +122,7 @@ export const BorrowInfo = ({
               }
             >
               <Box>
-                <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="main16" />
+                <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="h4" />
                 <Typography
                   component="span"
                   color="fg-1"
@@ -131,10 +131,7 @@ export const BorrowInfo = ({
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber
-                  value={reserve.borrowInfo!.borrowCap.amount.value}
-                  variant="main16"
-                />
+                <FormattedNumber value={reserve.borrowInfo!.borrowCap.amount.value} variant="h4" />
               </Box>
               <Box>
                 <ReserveSubheader value={reserve.borrowInfo!.total.usd} />
@@ -159,7 +156,7 @@ export const BorrowInfo = ({
               </Box>
             }
           >
-            <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="main16" />
+            <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="h4" />
             <ReserveSubheader value={reserve.borrowInfo!.total.usd} />
           </PanelItem>
         )}
@@ -189,7 +186,7 @@ export const BorrowInfo = ({
             incentives={borrowProtocolIncentives}
             address={reserve.vToken.address}
             symbol={reserve.underlyingToken.symbol}
-            variant="main16"
+            variant="h4"
             market={currentMarketData.market}
             protocolAction={ProtocolAction.borrow}
             inlineIncentives={true}
@@ -198,7 +195,7 @@ export const BorrowInfo = ({
 
         {reserve.borrowInfo?.borrowCap.usd && reserve.borrowInfo?.borrowCap.usd !== '0' && (
           <PanelItem title={<Trans>Borrow cap</Trans>}>
-            <FormattedNumber value={reserve.borrowInfo!.borrowCap.amount.value} variant="main16" />
+            <FormattedNumber value={reserve.borrowInfo!.borrowCap.amount.value} variant="h4" />
             <ReserveSubheader value={reserve.borrowInfo!.borrowCap.usd} />
           </PanelItem>
         )}

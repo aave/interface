@@ -224,7 +224,7 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
                 />
               ) : (
                 <>
-                  <FormattedNumber value={stakeShares || '0'} variant="secondary14" compact />
+                  <FormattedNumber value={stakeShares || '0'} variant="h5" compact />
                   <FormattedNumber
                     value={stakeSharesUsd}
                     color="fg-2"

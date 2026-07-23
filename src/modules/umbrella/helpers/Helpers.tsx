@@ -70,7 +70,7 @@ export const UmbrellaAssetBreakdown = ({
               <FormattedNumber
                 value={normalize(Number(underlyingTokenBalance), underlyingTokenDecimals)}
                 compact
-                variant="main16"
+                variant="h4"
                 values={underlyingTokenBalance}
               />
             </Row>
@@ -92,7 +92,7 @@ export const UmbrellaAssetBreakdown = ({
               <FormattedNumber
                 value={normalize(Number(underlyingWaTokenBalance), underlyingTokenDecimals)}
                 compact
-                variant="main16"
+                variant="h4"
                 values={underlyingWaTokenBalance}
               />
             </Row>
@@ -115,7 +115,7 @@ export const UmbrellaAssetBreakdown = ({
               <FormattedNumber
                 value={normalize(Number(underlyingWaTokenATokenBalance), underlyingTokenDecimals)}
                 compact
-                variant="main16"
+                variant="h4"
                 values={underlyingWaTokenATokenBalance}
               />
             </Row>
@@ -130,7 +130,7 @@ export const UmbrellaAssetBreakdown = ({
                     underlyingTokenDecimals
                   )}
                   compact
-                  variant="main16"
+                  variant="h4"
                 />
               </Row>
             </Box>

@@ -39,7 +39,7 @@ export const AmountStakedUnderlyingItem = ({
       justifyContent="center"
       gap={2}
     >
-      <FormattedNumber compact value={assetUnderlyingAmount} variant="secondary14" />
+      <FormattedNumber compact value={assetUnderlyingAmount} variant="h5" />
     </Stack>
   );
 };

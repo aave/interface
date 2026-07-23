@@ -65,7 +65,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
       ? iconSymbol
       : poolReserve!.underlyingToken.symbol;
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
 
   const ReserveIcon = () => {
     return (

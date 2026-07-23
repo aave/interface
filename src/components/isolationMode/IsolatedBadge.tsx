@@ -57,7 +57,7 @@ export const IsolatedEnabledBadge = ({
     >
       <Box sx={sx}>
         <Typography
-          variant="secondary12"
+          variant="subheader2"
           sx={{
             lineHeight: '0.75rem',
           }}

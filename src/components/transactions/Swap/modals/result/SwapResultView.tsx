@@ -59,17 +59,17 @@ export const SwapWithSurplusTooltip = ({
     <TextWithTooltip {...rest}>
       <>
         <Typography>
-          Base: <FormattedNumber value={baseAmount} compact variant="main14" />
+          Base: <FormattedNumber value={baseAmount} compact variant="subheader1" />
         </Typography>
         <Typography>
-          Surplus: <FormattedNumber value={surplus} visibleDecimals={2} compact variant="main14" />{' '}
-          (
+          Surplus:{' '}
+          <FormattedNumber value={surplus} visibleDecimals={2} compact variant="subheader1" /> (
           <FormattedNumber
             value={surplusPercent}
             percent={true}
             visibleDecimals={2}
             compact
-            variant="main14"
+            variant="subheader1"
           />
           )
         </Typography>
@@ -327,7 +327,7 @@ export const SwapTxSuccessView = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14">
+                <Typography variant="h5">
                   {inAmount} {symbol}
                 </Typography>
               }
@@ -367,7 +367,7 @@ export const SwapTxSuccessView = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14">
+                <Typography variant="h5">
                   {outFinalAmount} {outSymbol}
                 </Typography>
               }

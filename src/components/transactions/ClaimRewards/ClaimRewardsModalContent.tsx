@@ -415,8 +415,8 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                       >
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                           <TokenIcon symbol={reward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                          <FormattedNumber value={Number(reward.balance)} variant="secondary14" />
-                          <Typography ml={1} variant="secondary14">
+                          <FormattedNumber value={Number(reward.balance)} variant="h5" />
+                          <Typography ml={1} variant="h5">
                             {reward.symbol}
                           </Typography>
                         </Box>
@@ -458,9 +458,9 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                           />
                           <FormattedNumber
                             value={Number(meritReward.amount.amount.value)}
-                            variant="secondary14"
+                            variant="h5"
                           />
-                          <Typography ml={1} variant="secondary14">
+                          <Typography ml={1} variant="h5">
                             {meritReward.currency.symbol}
                           </Typography>
                           <Typography
@@ -510,11 +510,8 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                     >
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <TokenIcon symbol={meritReward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                        <FormattedNumber
-                          value={Number(meritReward.balance)}
-                          variant="secondary14"
-                        />
-                        <Typography ml={1} variant="secondary14">
+                        <FormattedNumber value={Number(meritReward.balance)} variant="h5" />
+                        <Typography ml={1} variant="h5">
                           {meritReward.symbol}
                         </Typography>
                         <Typography
@@ -565,8 +562,8 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
                     >
                       <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <TokenIcon symbol={reward.symbol} sx={{ mr: 1, fontSize: '16px' }} />
-                        <FormattedNumber value={Number(reward.balance)} variant="secondary14" />
-                        <Typography ml={1} variant="secondary14">
+                        <FormattedNumber value={Number(reward.balance)} variant="h5" />
+                        <Typography ml={1} variant="h5">
                           {reward.symbol}
                         </Typography>
                       </Box>

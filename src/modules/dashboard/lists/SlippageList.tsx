@@ -57,7 +57,7 @@ export const ListSlippageButton = ({
                   <Typography color="fg-2" variant="description">
                     Slippage tolerance{' '}
                   </Typography>
-                  <Typography color="text.main" variant="secondary14" sx={{ px: '4px' }}>
+                  <Typography color="text.main" variant="h5" sx={{ px: '4px' }}>
                     {selectedSlippage}%{' '}
                   </Typography>
                   <SvgIcon sx={{ fontSize: '14px !important', mr: '4px' }}>
@@ -66,7 +66,7 @@ export const ListSlippageButton = ({
                 </Trans>
               </Box>
             }
-            variant="secondary14"
+            variant="h5"
           />
         }
         disabled={false}
@@ -84,7 +84,7 @@ export const ListSlippageButton = ({
         data-cy={`slippageMenu_${selectedSlippage}`}
       >
         <Box sx={{ px: '16px', py: '12px' }}>
-          <Typography variant="secondary12" color="fg-2">
+          <Typography variant="subheader2" color="fg-2">
             <Trans>Select slippage tolerance</Trans>
           </Typography>
         </Box>
@@ -116,7 +116,7 @@ export const ListSlippageButton = ({
         <Divider />
         <Box sx={{ px: '16px', py: '12px', display: 'inline-flex', alignItems: 'center' }}>
           <Typography
-            variant="secondary12"
+            variant="subheader2"
             color="fg-2"
             sx={{ display: 'flex', alignItems: 'center' }}
           >

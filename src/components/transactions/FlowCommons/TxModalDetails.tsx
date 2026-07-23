@@ -109,11 +109,11 @@ export const DetailsNumberLine = ({
           <>
             {iconSymbol && <TokenIcon symbol={iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />}
             {numberPrefix && <Typography sx={{ mr: 1 }}>{numberPrefix}</Typography>}
-            <FormattedNumber value={value} variant="secondary14" {...rest} />
+            <FormattedNumber value={value} variant="h5" {...rest} />
             {futureValue && (
               <>
                 {ArrowRightIcon}
-                <FormattedNumber value={futureValue} variant="secondary14" {...rest} />
+                <FormattedNumber value={futureValue} variant="h5" {...rest} />
               </>
             )}
           </>
@@ -166,9 +166,9 @@ export const DetailsNumberLineWithSub = ({
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {value && (
                 <>
-                  <FormattedNumber value={value} variant="secondary14" color={color} />
+                  <FormattedNumber value={value} variant="h5" color={color} />
                   {!hideSymbolSuffix && (
-                    <Typography ml={1} variant="secondary14">
+                    <Typography ml={1} variant="h5">
                       {symbol}
                     </Typography>
                   )}
@@ -176,9 +176,9 @@ export const DetailsNumberLineWithSub = ({
                 </>
               )}
               {tokenIcon && <TokenIcon symbol={tokenIcon} sx={{ mr: 1, fontSize: '14px' }} />}
-              <FormattedNumber value={futureValue} variant="secondary14" color={color} />
+              <FormattedNumber value={futureValue} variant="h5" color={color} />
               {!hideSymbolSuffix && (
-                <Typography ml={1} variant="secondary14">
+                <Typography ml={1} variant="h5">
                   {symbol}
                 </Typography>
               )}
@@ -278,7 +278,7 @@ export const DetailsIncentivesLine = ({
                 {ArrowRightIcon}
                 <IncentivesButton incentives={futureIncentives} symbol={futureSymbol} />
                 {futureIncentives && futureIncentives.length === 0 && (
-                  <Typography variant="secondary14">
+                  <Typography variant="h5">
                     <Trans>None</Trans>
                   </Typography>
                 )}
@@ -318,7 +318,7 @@ export const DetailsHFLine = ({
             <Skeleton variant="rectangular" height={20} width={80} sx={{ borderRadius: '4px' }} />
           ) : (
             <>
-              <HealthFactorNumber value={healthFactor} variant="secondary14" />
+              <HealthFactorNumber value={healthFactor} variant="h5" />
 
               {visibleHfChange && (
                 <>
@@ -326,7 +326,7 @@ export const DetailsHFLine = ({
 
                   <HealthFactorNumber
                     value={isNaN(Number(futureHealthFactor)) ? healthFactor : futureHealthFactor}
-                    variant="secondary14"
+                    variant="h5"
                   />
                 </>
               )}
@@ -389,7 +389,7 @@ export const DetailsCooldownLine = ({
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
         ) : (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="secondary14">
+            <Typography variant="h5">
               <SecondsToString seconds={cooldownSeconds} />
             </Typography>
           </Box>
@@ -420,11 +420,11 @@ export const DetailsTextLine = ({
         ) : (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {compactedProps ? (
-              <CompactableTypography variant="secondary14" {...compactedProps}>
+              <CompactableTypography variant="h5" {...compactedProps}>
                 {text}
               </CompactableTypography>
             ) : (
-              <Typography variant="secondary14">{text}</Typography>
+              <Typography variant="h5">{text}</Typography>
             )}
           </Box>
         )}

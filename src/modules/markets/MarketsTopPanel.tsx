@@ -12,7 +12,7 @@ export const MarketsTopPanel = () => {
   const { market, totalBorrows, loading } = useAppDataContext();
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
+  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
   const symbolsVariant = downToSM ? 'secondary16' : 'secondary21';
 
   return (

@@ -70,7 +70,7 @@ export const EmodeAssetTable = ({ assets, maxHeight = '270px' }: EmodeAssetTable
               <TableCell align="center" sx={{ py: 1 }}>
                 <Stack direction="row" gap={1} alignItems="center">
                   <TokenIcon symbol={asset.iconSymbol} sx={{ fontSize: '16px' }} />
-                  <Typography variant="secondary12">{asset.symbol}</Typography>
+                  <Typography variant="subheader2">{asset.symbol}</Typography>
                 </Stack>
               </TableCell>
               <TableCell align="center">

@@ -138,7 +138,7 @@ export const IntentTxDetails = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14">
+                <Typography variant="h5">
                   {buyAmount} {buyToken.symbol}
                 </Typography>
               }
@@ -148,7 +148,7 @@ export const IntentTxDetails = ({
               leaveTouchDelay={500}
             >
               <Box>
-                <FormattedNumber value={buyAmount} variant="secondary14" compact roundDown={true} />
+                <FormattedNumber value={buyAmount} variant="h5" compact roundDown={true} />
               </Box>
             </DarkTooltip>
           </Box>
@@ -215,7 +215,7 @@ const MarketOrderTxDetails = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14">
+                <Typography variant="h5">
                   {buyAmount} {buyToken.symbol}
                 </Typography>
               }
@@ -225,12 +225,7 @@ const MarketOrderTxDetails = ({
               leaveTouchDelay={500}
             >
               <Box>
-                <FormattedNumber
-                  value={Number(buyAmount)}
-                  variant="secondary14"
-                  compact
-                  roundDown={true}
-                />
+                <FormattedNumber value={Number(buyAmount)} variant="h5" compact roundDown={true} />
               </Box>
             </DarkTooltip>
           </Box>

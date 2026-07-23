@@ -381,7 +381,7 @@ const Content = ({
       if (incentivesNetAPR !== INFINITY && incentivesNetAPR < 10000) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <FormattedNumber value={incentivesNetAPR} percent variant="secondary12" color="fg-2" />
+            <FormattedNumber value={incentivesNetAPR} percent variant="subheader2" color="fg-2" />
             <IncentivesIcon width="16" height="16" />
           </Box>
         );
@@ -392,7 +392,7 @@ const Content = ({
               value={incentivesNetAPR}
               percent
               compact
-              variant="secondary12"
+              variant="subheader2"
               color="fg-2"
             />
             <IncentivesIcon width="16" height="16" />
@@ -517,7 +517,7 @@ const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) =
       }}
     >
       <Box sx={{ mr: 2 }}>
-        <Typography component="span" variant="secondary12" color="fg-2">
+        <Typography component="span" variant="subheader2" color="fg-2">
           {`${value}x`}
         </Typography>
       </Box>

@@ -79,10 +79,12 @@ export const AssetCategoryMultiSelect = ({
         onClick={handleClick}
         disabled={disabled}
         variant="outlined"
+        aria-haspopup="true"
+        aria-expanded={open}
+        endIcon={<ChevronUpDownIcon sx={{ fontSize: 18, color: 'fg-3' }} />}
         sx={{
           width: sm ? '100%' : 'unset',
           justifyContent: sm ? 'space-between' : 'center',
-          gap: 2,
           textTransform: 'none',
           ...sx,
         }}
@@ -96,8 +98,6 @@ export const AssetCategoryMultiSelect = ({
             <Trans>{selectedCount} Categories</Trans>
           )}
         </Typography>
-
-        <ChevronUpDownIcon sx={{ fontSize: 18, color: 'fg-3', flexShrink: 0 }} />
       </Button>
 
       <Popover

@@ -261,7 +261,7 @@ export const AssetInput = <T extends Asset = Asset>({
                         aToken={asset.aToken}
                         sx={{ mr: 2, ml: 4 }}
                       />
-                      <Typography variant="main16" color="fg-1">
+                      <Typography variant="h4" color="fg-1">
                         {symbol}
                       </Typography>
                     </Box>
@@ -303,7 +303,7 @@ export const AssetInput = <T extends Asset = Asset>({
               value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
               compact
               symbol="USD"
-              variant="secondary12"
+              variant="subheader2"
               color="fg-3"
               symbolsColor="fg-3"
               flexGrow={1}
@@ -312,12 +312,12 @@ export const AssetInput = <T extends Asset = Asset>({
 
           {asset.balance && onChange && (
             <>
-              <Typography component="div" variant="secondary12" color="fg-2">
+              <Typography component="div" variant="subheader2" color="fg-2">
                 {balanceText && balanceText !== '' ? balanceText : <Trans>Balance</Trans>}{' '}
                 <FormattedNumber
                   value={asset.balance}
                   compact
-                  variant="secondary12"
+                  variant="subheader2"
                   color="fg-2"
                   symbolsColor="fg-4"
                 />

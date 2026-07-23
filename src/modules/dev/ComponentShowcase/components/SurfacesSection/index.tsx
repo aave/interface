@@ -17,7 +17,7 @@ export const SurfacesSection = () => (
     {PAPER_VARIANTS.map((variant) => (
       <Specimen key={variant} label={`Paper "${variant}"`}>
         <Paper variant={variant} sx={{ p: 4, minWidth: 160 }}>
-          <Typography variant="main14">Paper {variant}</Typography>
+          <Typography variant="subheader1">Paper {variant}</Typography>
         </Paper>
       </Specimen>
     ))}
@@ -27,10 +27,10 @@ export const SurfacesSection = () => (
         <ListWrapper titleComponent={<Typography variant="h3">Card title</Typography>}>
           <Box sx={{ px: 6, pb: 4 }}>
             <Row caption="Supply balance">
-              <FormattedNumber value={1234.56} symbol="USD" variant="secondary14" />
+              <FormattedNumber value={1234.56} symbol="USD" variant="h5" />
             </Row>
             <Row caption="APY">
-              <FormattedNumber value={0.0425} percent variant="secondary14" />
+              <FormattedNumber value={0.0425} percent variant="h5" />
             </Row>
           </Box>
         </ListWrapper>
@@ -51,7 +51,7 @@ export const SurfacesSection = () => (
               value={1234567}
               symbol="USD"
               compact
-              variant="main16"
+              variant="h4"
               color="common.white"
             />
           </TopInfoPanelItem>
@@ -60,7 +60,7 @@ export const SurfacesSection = () => (
               value={456789}
               symbol="USD"
               compact
-              variant="main16"
+              variant="h4"
               color="common.white"
             />
           </TopInfoPanelItem>
@@ -71,13 +71,13 @@ export const SurfacesSection = () => (
     <Specimen label="ReserveOverviewBox" fullWidth>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '2%', width: '100%' }}>
         <ReserveOverviewBox title="Max LTV">
-          <FormattedNumber value={0.8} percent variant="secondary14" />
+          <FormattedNumber value={0.8} percent variant="h5" />
         </ReserveOverviewBox>
         <ReserveOverviewBox title="Liquidation threshold">
-          <FormattedNumber value={0.825} percent variant="secondary14" />
+          <FormattedNumber value={0.825} percent variant="h5" />
         </ReserveOverviewBox>
         <ReserveOverviewBox title="Liquidation penalty">
-          <FormattedNumber value={0.05} percent variant="secondary14" />
+          <FormattedNumber value={0.05} percent variant="h5" />
         </ReserveOverviewBox>
       </Box>
     </Specimen>
@@ -89,7 +89,7 @@ export const SurfacesSection = () => (
           value="120.5"
           valueUSD="10450"
           bottomLineTitle="Cooldown"
-          bottomLineComponent={<Typography variant="secondary14">—</Typography>}
+          bottomLineComponent={<Typography variant="h5">—</Typography>}
           dataCy="showcaseStake"
         >
           <Button variant="contained" fullWidth>

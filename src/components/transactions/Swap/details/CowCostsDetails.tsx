@@ -173,7 +173,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
                 width="16px"
                 sx={{ mr: 2, ml: 4, fontSize: '16px' }}
               />
-              <FormattedNumber value={networkFeeFormatted} variant="secondary12" compact />
+              <FormattedNumber value={networkFeeFormatted} variant="subheader2" compact />
             </Box>
             <FormattedNumber
               value={networkFeeUsd}
@@ -210,7 +210,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
                   width="16px"
                   sx={{ mr: 2, ml: 4, fontSize: '16px' }}
                 />
-                <FormattedNumber value={flashloanFeeFormatted} variant="secondary12" compact />
+                <FormattedNumber value={flashloanFeeFormatted} variant="subheader2" compact />
               </Box>
               <FormattedNumber
                 value={flashloanFeeUsd}
@@ -240,7 +240,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
                 width="16px"
                 sx={{ mr: 2, ml: 4, fontSize: '16px' }}
               />
-              <FormattedNumber value={partnerFeeFormatted} variant="secondary12" compact />
+              <FormattedNumber value={partnerFeeFormatted} variant="subheader2" compact />
             </Box>
             <FormattedNumber
               value={partnerFeeUsd}

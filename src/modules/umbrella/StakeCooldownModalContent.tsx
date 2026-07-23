@@ -180,13 +180,13 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
           <Stack direction="column" alignItems="flex-end">
             <Stack direction="row" alignItems="center">
               <TokenIcon symbol={stakeData.iconSymbol} sx={{ mr: 1, width: 14, height: 14 }} />
-              <FormattedNumber value={amountToCooldown} variant="secondary14" color="fg-1" />
+              <FormattedNumber value={amountToCooldown} variant="h5" color="fg-1" />
             </Stack>
             <FormattedNumber
               value={amountToCooldownUsd.toString()}
               compact
               symbol="USD"
-              variant="secondary12"
+              variant="subheader2"
               color="fg-3"
               symbolsColor="fg-3"
             />
@@ -209,13 +209,13 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="secondary14" component="span">
+            <Typography variant="h5" component="span">
               {dateMessage(stakeCooldownSeconds)}
             </Typography>
             <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
               <ArrowNarrowRightIcon />
             </SvgIcon>
-            <Typography variant="secondary14" component="span">
+            <Typography variant="h5" component="span">
               {dateMessage(stakeCooldownSeconds + stakeUnstakeWindow)}
             </Typography>
           </Box>

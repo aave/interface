@@ -46,7 +46,7 @@ export const SGhoLoggedOutPreview = ({ rate }: SGhoLoggedOutPreviewProps) => {
           <Typography variant="caption" color="fg-2" sx={{ display: 'block' }}>
             <Trans>Staking APR</Trans>
           </Typography>
-          <FormattedNumber value={rate} percent variant="main16" visibleDecimals={2} />
+          <FormattedNumber value={rate} percent variant="h4" visibleDecimals={2} />
         </Box>
         <Button
           variant="contained"
@@ -69,7 +69,7 @@ export const SGhoLoggedOutPreview = ({ rate }: SGhoLoggedOutPreviewProps) => {
           </Typography>
         }
         bottomLineComponent={
-          <Typography variant="secondary12">
+          <Typography variant="subheader2">
             <Trans>Instant</Trans>
           </Typography>
         }

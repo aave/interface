@@ -16,7 +16,7 @@ export const MerklIncentivesTooltipContent = ({
 }) => {
   const theme = useTheme();
 
-  const typographyVariant = 'secondary12';
+  const typographyVariant = 'subheader2';
 
   const merklIncentivesFormatted = getSymbolMap(merklIncentives);
 

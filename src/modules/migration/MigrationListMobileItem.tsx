@@ -147,11 +147,11 @@ export const MigrationListMobileItem = ({
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
             <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 0.5 }}>
-              <FormattedNumber value={amount} variant="secondary14" color={baseColorPrimary} />
+              <FormattedNumber value={amount} variant="h5" color={baseColorPrimary} />
             </Box>
             <FormattedNumber
               value={amountInUSD}
-              variant="secondary12"
+              variant="subheader2"
               color={baseColorSecondary}
               symbolsColor={baseColorSecondary}
               symbol="USD"
@@ -175,7 +175,7 @@ export const MigrationListMobileItem = ({
               value={v2APY}
               symbol={userReserve.reserve.symbol}
               incentives={v2Incentives}
-              variant="main14"
+              variant="subheader1"
               color={baseColorPrimary}
               market={currentMarket}
             />
@@ -191,7 +191,7 @@ export const MigrationListMobileItem = ({
               value={v3APY}
               symbol={userReserve.reserve.symbol}
               incentives={v3Incentives}
-              variant="main14"
+              variant="subheader1"
               color={baseColorPrimary}
               market={currentMarket}
             />
@@ -215,7 +215,7 @@ export const MigrationListMobileItem = ({
               userReserve.reserve.reserveLiquidationThreshold !== '0' ? (
                 <CheckRoundedIcon fontSize="small" color="success" />
               ) : (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="subheader1" color={baseColorSecondary} />
               )}
 
               <SvgIcon sx={{ px: 1.5 }}>
@@ -233,7 +233,7 @@ export const MigrationListMobileItem = ({
                   enabledAsCollateral={enabledAsCollateral}
                 />
               ) : !enabledAsCollateral ? (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="subheader1" color={baseColorSecondary} />
               ) : isIsolated ? (
                 <Box
                   sx={{
@@ -313,13 +313,13 @@ export const MigrationListMobileItem = ({
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="main14" color="fg-2" />
+                <NoData variant="subheader1" color="fg-2" />
               ) : (
                 <>
                   <FormattedNumber
                     value={userReserve.reserve.formattedBaseLTVasCollateral}
                     percent
-                    variant="main14"
+                    variant="subheader1"
                     color={baseColorPrimary}
                   />
                   <SvgIcon sx={{ px: 1.5 }}>
@@ -335,7 +335,7 @@ export const MigrationListMobileItem = ({
                   <FormattedNumber
                     value={v3Rates?.ltv || 0}
                     percent
-                    variant="main14"
+                    variant="subheader1"
                     color={baseColorPrimary}
                   />
                 </>
@@ -358,13 +358,13 @@ export const MigrationListMobileItem = ({
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="main14" color="fg-2" />
+                <NoData variant="subheader1" color="fg-2" />
               ) : (
                 <>
                   <FormattedNumber
                     value={userReserve.reserve.formattedReserveLiquidationThreshold}
                     percent
-                    variant="main14"
+                    variant="subheader1"
                     color={baseColorPrimary}
                   />
                   <SvgIcon sx={{ px: 1.5 }}>
@@ -380,7 +380,7 @@ export const MigrationListMobileItem = ({
                   <FormattedNumber
                     value={v3Rates?.liquidationThreshold || 0}
                     percent
-                    variant="main14"
+                    variant="subheader1"
                     color={baseColorPrimary}
                   />
                 </>

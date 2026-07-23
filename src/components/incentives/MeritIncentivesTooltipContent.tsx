@@ -114,7 +114,7 @@ export const MeritIncentivesTooltipContent = ({
   const theme = useTheme();
   const { openClaimRewards } = useModalContext();
   const account = useRootStore((store) => store.account);
-  const typographyVariant = 'secondary12';
+  const typographyVariant = 'subheader2';
 
   const handleClaimClick = () => {
     openClaimRewards();

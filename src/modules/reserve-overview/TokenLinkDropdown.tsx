@@ -88,7 +88,7 @@ export const TokenLinkDropdown = ({
         data-cy="addToWaletSelector"
       >
         <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-          <Typography variant="secondary12" color="fg-2">
+          <Typography variant="subheader2" color="fg-2">
             <Trans>Underlying token</Trans>
           </Typography>
         </Box>
@@ -123,7 +123,7 @@ export const TokenLinkDropdown = ({
         {!hideAToken && (
           <Box>
             <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-              <Typography variant="secondary12" color="fg-2">
+              <Typography variant="subheader2" color="fg-2">
                 <Trans>Aave aToken</Trans>
               </Typography>
             </Box>
@@ -160,7 +160,7 @@ export const TokenLinkDropdown = ({
 
         {showVariableDebtToken && (
           <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-            <Typography variant="secondary12" color="fg-2">
+            <Typography variant="subheader2" color="fg-2">
               <Trans>Aave debt token</Trans>
             </Typography>
           </Box>

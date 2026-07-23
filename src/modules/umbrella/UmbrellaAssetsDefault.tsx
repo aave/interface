@@ -102,7 +102,7 @@ const AssetListItem = ({ stakeData }: { stakeData: FormattedStakeData }) => {
         <FormattedNumber
           value={stakeData.totalRewardApy}
           percent
-          variant="main16"
+          variant="h4"
           visibleDecimals={2}
         />
       </ListColumn>
@@ -137,7 +137,7 @@ const AssetListItemMobile = ({ stakeData }: { stakeData: FormattedStakeData }) =
           <FormattedNumber
             value={stakeData.totalRewardApy}
             percent
-            variant="secondary14"
+            variant="h5"
             visibleDecimals={2}
           />
         </Box>

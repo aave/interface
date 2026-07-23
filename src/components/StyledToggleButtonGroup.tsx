@@ -1,13 +1,13 @@
 import { styled, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
-import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
+import { figVars } from 'src/utils/figmaColors';
 
-// Segmented control framed like a medium outlined button: a `bg-1` fill wrapped by the shared
-// surface ring (figSurfaceShadow) — that ring is the ONLY frame. 36px tall / 0.5rem radius to
-// match the medium button; the active pill stays concentric (0.375rem) inside the 2px inset.
+// Segmented control framed like a medium outlined button: a `bg-5` fill with an inset 1px hairline
+// (shadow-stroke-2) as the ONLY frame — no border. 36px tall / 0.5rem radius to match the medium
+// button; the active pill stays concentric (0.375rem) inside the 2px inset.
 const CustomTxModalToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>({
-  backgroundColor: figVars['bg-1'],
+  backgroundColor: figVars['bg-5'],
   borderRadius: '0.5rem',
-  boxShadow: figSurfaceShadow(),
+  boxShadow: `inset 0 0 0 1px ${figVars['shadow-stroke-2']}`,
   padding: '2px',
   height: '36px',
   width: '100%',

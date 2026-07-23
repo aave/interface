@@ -74,12 +74,7 @@ export const StakingApyItem = ({
       justifyContent="center"
       gap={2}
     >
-      <FormattedNumber
-        value={stakeData.totalRewardApy}
-        percent
-        variant="secondary14"
-        visibleDecimals={2}
-      />
+      <FormattedNumber value={stakeData.totalRewardApy} percent variant="h5" visibleDecimals={2} />
       <MultiIconWithTooltip
         icons={icons}
         tooltipContent={
@@ -145,7 +140,7 @@ export const StakingApyTooltipcontent = ({
                     symbol={reward.symbol}
                     sx={{ fontSize: '20px', mr: 1 }}
                   />
-                  <Typography variant="secondary12">{reward.name}</Typography>
+                  <Typography variant="subheader2">{reward.name}</Typography>
                   {reward.fromSupply && (
                     <Typography variant="caption" color="fg-2" sx={{ ml: 1 }}>
                       (<Trans>supply</Trans>)
@@ -157,8 +152,8 @@ export const StakingApyTooltipcontent = ({
               width="100%"
             >
               <Stack direction="row">
-                <FormattedNumber value={+reward.apy} percent variant="secondary12" />
-                <Typography variant="secondary12" sx={{ ml: 1 }}>
+                <FormattedNumber value={+reward.apy} percent variant="subheader2" />
+                <Typography variant="subheader2" sx={{ ml: 1 }}>
                   <Trans>APY</Trans>
                 </Typography>
               </Stack>
@@ -175,15 +170,15 @@ export const StakingApyTooltipcontent = ({
               borderColor: 'border-2',
             }}
             caption={
-              <Typography variant="secondary12" fontWeight="medium">
+              <Typography variant="subheader2" fontWeight="medium">
                 <Trans>Total</Trans>
               </Typography>
             }
             width="100%"
           >
             <Stack direction="row">
-              <FormattedNumber value={totalApy} percent variant="secondary12" fontWeight="medium" />
-              <Typography variant="secondary12" fontWeight="medium" sx={{ ml: 1 }}>
+              <FormattedNumber value={totalApy} percent variant="subheader2" fontWeight="medium" />
+              <Typography variant="subheader2" fontWeight="medium" sx={{ ml: 1 }}>
                 <Trans>APY</Trans>
               </Typography>
             </Stack>

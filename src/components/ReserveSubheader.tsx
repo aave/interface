@@ -21,16 +21,16 @@ export function ReserveSubheader({ value, rightAlign }: ReserveSubheaderProps) {
       }}
     >
       {value === 'Disabled' ? (
-        <Typography component="span" sx={{ mr: 0.5 }} variant="secondary12" color="fg-3">
+        <Typography component="span" sx={{ mr: 0.5 }} variant="subheader2" color="fg-3">
           (<Trans>Disabled</Trans>)
         </Typography>
       ) : (
         <FormattedNumber
           compact
           value={value}
-          variant="secondary12"
+          variant="subheader2"
           color="fg-2"
-          symbolsVariant="secondary12"
+          symbolsVariant="subheader2"
           symbolsColor="fg-2"
           symbol="USD"
         />

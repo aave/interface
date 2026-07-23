@@ -166,7 +166,7 @@ export const MigrationListItem = ({
               value={v2APY}
               symbol={userReserve.reserve.symbol}
               incentives={v2Incentives}
-              variant="main14"
+              variant="subheader1"
               color={baseColor}
               market={currentMarket}
             />
@@ -182,7 +182,7 @@ export const MigrationListItem = ({
               value={v3APY}
               symbol={userReserve.reserve.symbol}
               incentives={v3Incentives}
-              variant="main14"
+              variant="subheader1"
               color={baseColor}
               market={currentMarket}
             />
@@ -196,7 +196,7 @@ export const MigrationListItem = ({
               userReserve.reserve.reserveLiquidationThreshold !== '0' ? (
                 <CheckRoundedIcon fontSize="small" color="success" />
               ) : (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="subheader1" color={baseColorSecondary} />
               )}
 
               <SvgIcon sx={{ px: 1.5 }}>
@@ -214,7 +214,7 @@ export const MigrationListItem = ({
                   enabledAsCollateral={enabledAsCollateral}
                 />
               ) : !enabledAsCollateral ? (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="subheader1" color={baseColorSecondary} />
               ) : isIsolated ? (
                 <Box
                   sx={{
@@ -238,7 +238,7 @@ export const MigrationListItem = ({
         {isSupplyList &&
           (loadingRates ? (
             <ListColumn>
-              <NoData variant="main14" color="fg-2" />
+              <NoData variant="subheader1" color="fg-2" />
             </ListColumn>
           ) : (
             <ListColumn>
@@ -246,7 +246,7 @@ export const MigrationListItem = ({
                 <FormattedNumber
                   value={userReserve.reserve.formattedBaseLTVasCollateral}
                   percent
-                  variant="secondary14"
+                  variant="h5"
                   color={baseColor}
                 />
                 <SvgIcon sx={{ px: 1.5 }}>
@@ -257,12 +257,7 @@ export const MigrationListItem = ({
                     }
                   />
                 </SvgIcon>
-                <FormattedNumber
-                  value={v3Rates?.ltv || 0}
-                  percent
-                  variant="secondary14"
-                  color={baseColor}
-                />
+                <FormattedNumber value={v3Rates?.ltv || 0} percent variant="h5" color={baseColor} />
               </Box>
             </ListColumn>
           ))}
@@ -305,7 +300,7 @@ export const MigrationListItem = ({
         {!isSupplyList &&
           (loadingRates ? (
             <ListColumn>
-              <NoData variant="main14" color="fg-2" />
+              <NoData variant="subheader1" color="fg-2" />
             </ListColumn>
           ) : (
             <ListColumn>
@@ -313,7 +308,7 @@ export const MigrationListItem = ({
                 <FormattedNumber
                   value={userReserve.reserve.formattedReserveLiquidationThreshold}
                   percent
-                  variant="secondary14"
+                  variant="h5"
                   color={baseColor}
                 />
                 <SvgIcon sx={{ px: 1.5 }}>
@@ -327,7 +322,7 @@ export const MigrationListItem = ({
                 <FormattedNumber
                   value={v3Rates?.liquidationThreshold ?? -1}
                   percent
-                  variant="secondary14"
+                  variant="h5"
                   color={baseColor}
                 />
               </Box>
@@ -335,10 +330,10 @@ export const MigrationListItem = ({
           ))}
 
         <ListColumn>
-          <FormattedNumber value={amount} variant="secondary14" color={baseColor} />
+          <FormattedNumber value={amount} variant="h5" color={baseColor} />
           <FormattedNumber
             value={amountInUSD}
-            variant="secondary12"
+            variant="subheader2"
             color={baseColor}
             symbol="USD"
             symbolsColor={baseColor}

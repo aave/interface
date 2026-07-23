@@ -180,7 +180,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
                   borderRadius: '99px',
                 }}
               >
-                <Typography sx={{ m: 1 }} noWrap variant="secondary12">
+                <Typography sx={{ m: 1 }} noWrap variant="subheader2">
                   Avg {avgFormatted}%
                 </Typography>
               </Stack>
@@ -303,7 +303,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
               left={tooltipLeft + 40}
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
-              <Typography variant="secondary12" color="fg-2" sx={{ mb: 2, mr: 2, fontWeight: 400 }}>
+              <Typography variant="subheader2" color="fg-2" sx={{ mb: 2, mr: 2, fontWeight: 400 }}>
                 {formatDate(getDate(tooltipData), selectedTimeRange)}
               </Typography>
               <Box
