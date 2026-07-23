@@ -125,6 +125,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build
+    permissions:
+      contents: write # pinata-action leaves a commit comment on push events
     outputs:
       pinata_hash: '${{ steps.pinata.outputs.hash }}'
     steps:

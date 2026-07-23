@@ -104,7 +104,7 @@ jobs:
       - prepare_jobs
       - cypress_smoke_v3
     permissions:
-      contents: read
+      contents: write # pinata-action leaves a commit comment on non-PR events
       actions: read # download the static build from the triggering run
       pull-requests: write # comment the IPFS preview link on the PR
     env:
