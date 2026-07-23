@@ -183,6 +183,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDe',
     aToken: true,
   },
+  aPlaUSDT0: {
+    tokenIconSymbol: 'usdt0',
+    symbol: 'aUSDT0',
+    aToken: true,
+  },
   tydroInkPoints: {
     tokenIconSymbol: 'TydroInkPoints',
     symbol: 'TydroInkPoints',
