@@ -4,14 +4,13 @@ import { t, Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
-  Divider,
   Drawer,
+  FormControlLabel,
   IconButton,
-  InputAdornment,
+  InputBase,
   Popover,
   SvgIcon,
   Switch,
-  TextField,
   Tooltip,
   Typography,
   useMediaQuery,
@@ -23,7 +22,7 @@ import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
-import { onAccent } from 'src/utils/figmaColors';
+import { figVars, onAccent } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -291,71 +290,17 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
 
   // --- Render helpers ---
 
-  const renderPinnedChip = (marketId: CustomMarket) => {
-    const { market, logo } = getMarketInfoById(marketId);
-    const marketNaming = getMarketHelpData(market.marketTitle);
-    const isSelected = marketId === currentMarket;
-    return (
-      <Box
-        key={marketId}
-        role="button"
-        tabIndex={0}
-        onClick={() => handleSelectMarket(marketId)}
-        onKeyDown={(e: React.KeyboardEvent) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleSelectMarket(marketId);
-          }
-        }}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '7px',
-          height: 36,
-          pl: '6px',
-          pr: '10px',
-          py: 1,
-          borderRadius: '48px',
-          border: '1px solid',
-          borderColor: isSelected ? 'primary.main' : 'rgba(0,0,0,0.1)',
-          bgcolor: isSelected ? 'selected' : 'transparent',
-          cursor: 'pointer',
-          '&:hover': { bgcolor: 'button-hover' },
-          flexShrink: 0,
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box sx={{ width: 20, height: 20, flexShrink: 0 }}>
-            <img
-              src={logo}
-              alt=""
-              width="100%"
-              height="100%"
-              style={{ display: 'block', objectFit: 'contain' }}
-            />
-          </Box>
-          <Typography
-            noWrap
-            sx={{ fontSize: '14px', fontWeight: 600, letterSpacing: '0.15px', lineHeight: '20px' }}
-          >
-            {marketNaming.name} {market.isFork ? 'Fork' : ''}
-          </Typography>
-        </Box>
-        <IconButton
-          size="small"
-          onClick={(e) => handleStarClick(e, marketId)}
-          sx={{
-            padding: 0,
-            flexShrink: 0,
-          }}
-        >
-          <SvgIcon sx={{ fontSize: '20px', color: 'fg-2' }}>
-            <XIcon />
-          </SvgIcon>
-        </IconButton>
-      </Box>
-    );
-  };
+  const renderRowLogo = (src: string) => (
+    <Box sx={{ width: '1.5rem', height: '1.5rem', mr: '0.75rem', flexShrink: 0 }}>
+      <img
+        src={src}
+        alt=""
+        width="100%"
+        height="100%"
+        style={{ display: 'block', objectFit: 'contain' }}
+      />
+    </Box>
+  );
 
   const renderGridItem = (marketId: CustomMarket, isMobile?: boolean, width = '33.33%') => {
     const { market, logo } = getMarketInfoById(marketId);
@@ -378,8 +323,9 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
         sx={{
           display: 'flex',
           alignItems: 'center',
-          py: '10px',
-          px: '12px',
+          height: '2.5rem',
+          py: '0.5rem',
+          px: '0.75rem',
           width: isMobile ? '50%' : width,
           boxSizing: 'border-box',
           borderRadius: '8px',
@@ -397,24 +343,14 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           },
         }}
       >
-        <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
-          <img
-            src={logo}
-            alt=""
-            width="100%"
-            height="100%"
-            style={{ display: 'block', objectFit: 'contain' }}
-          />
-        </Box>
+        {renderRowLogo(logo)}
         <Typography
           noWrap
+          variant="h5"
+          color="fg-1"
           sx={{
             flex: '1 1 0',
             minWidth: 0,
-            fontSize: '14px',
-            fontWeight: 600,
-            letterSpacing: '0.15px',
-            lineHeight: '20px',
           }}
         >
           {marketNaming.name} {market.isFork ? 'Fork' : ''}
@@ -441,22 +377,32 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
     );
   };
 
-  const renderAaveProLink = (isMobile?: boolean, width = '33.33%') => (
+  const renderLinkRow = (
+    {
+      logo,
+      label,
+      href,
+      badge,
+    }: { logo: string; label: React.ReactNode; href: string; badge?: React.ReactNode },
+    isMobile?: boolean,
+    width = '33.33%'
+  ) => (
     <Box
       role="button"
       tabIndex={0}
-      onClick={() => window.open(AAVE_PRO_URL, '_blank')}
+      onClick={() => window.open(href, '_blank')}
       onKeyDown={(e: React.KeyboardEvent) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          window.open(AAVE_PRO_URL, '_blank');
+          window.open(href, '_blank');
         }
       }}
       sx={{
         display: 'flex',
         alignItems: 'center',
-        py: '10px',
-        px: '12px',
+        height: '2.5rem',
+        py: '0.5rem',
+        px: '0.75rem',
         width: isMobile ? '50%' : width,
         boxSizing: 'border-box',
         borderRadius: '8px',
@@ -464,57 +410,19 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
         '&:hover': { bgcolor: 'button-hover' },
       }}
     >
-      <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
-        <img
-          src={AAVE_PRO_LOGO}
-          alt=""
-          width="100%"
-          height="100%"
-          style={{ display: 'block', objectFit: 'contain' }}
-        />
-      </Box>
-      <Box
-        sx={{
-          flex: '1 1 0',
-          minWidth: 0,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-        }}
-      >
-        <Typography
-          noWrap
-          sx={{
-            minWidth: 0,
-            fontSize: '14px',
-            fontWeight: 600,
-            letterSpacing: '0.15px',
-            lineHeight: '20px',
-          }}
-        >
-          <Trans>Aave Pro</Trans>
-        </Typography>
-        <Box
-          component="span"
-          sx={{
-            width: 26,
-            height: 16,
-            borderRadius: '50px',
-            bgcolor: 'rgba(151, 142, 255, 0.1)',
-            color: '#978eff',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            fontSize: '10px',
-            fontWeight: 700,
-            lineHeight: 1,
-            letterSpacing: 0,
-          }}
-        >
-          V4
+      {renderRowLogo(logo)}
+      {badge ? (
+        <Box sx={{ flex: '1 1 0', minWidth: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Typography noWrap variant="h5" color="fg-1" sx={{ minWidth: 0 }}>
+            {label}
+          </Typography>
+          {badge}
         </Box>
-      </Box>
+      ) : (
+        <Typography noWrap variant="h5" color="fg-1" sx={{ flex: '1 1 0', minWidth: 0 }}>
+          {label}
+        </Typography>
+      )}
       <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
         <ExternalLinkIcon />
       </SvgIcon>
@@ -523,17 +431,25 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
 
   const sectionHeader = (label: React.ReactNode) => (
     <Typography
-      variant="subheader2"
-      color="fg-2"
       sx={{
-        letterSpacing: '0.1px',
-        px: '24px',
-        py: 1,
-        lineHeight: '16px',
+        color: 'fg-3',
+        fontSize: '0.6875rem',
+        fontWeight: 600,
+        lineHeight: '120%',
+        letterSpacing: '0.00063rem',
+        textTransform: 'uppercase',
+        fontFeatureSettings: "'cv11' on",
       }}
     >
       {label}
     </Typography>
+  );
+
+  const renderSection = (title: React.ReactNode, children: React.ReactNode) => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      {sectionHeader(title)}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>{children}</Box>
+    </Box>
   );
 
   const noResults =
@@ -541,184 +457,140 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
 
   const renderSelectorContent = (mobile: boolean) => (
     <>
-      {/* Fixed header with search */}
-      <Box sx={{ px: 1.5, pt: 1.5, pb: '2px' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {/* <Typography variant="subheader2" color="fg-2">
-            <Trans>
-              {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
-            </Trans>
-          </Typography> */}
-          {mobile && (
-            <IconButton size="small" onClick={handleClose} sx={{ p: 0.5 }}>
-              <SvgIcon sx={{ fontSize: '18px' }}>
-                <XIcon />
-              </SvgIcon>
-            </IconButton>
-          )}
+      {/* Mobile-only close button */}
+      {mobile && (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', px: 2, pt: 1 }}>
+          <IconButton size="small" onClick={handleClose} sx={{ p: 0.5 }}>
+            <SvgIcon sx={{ fontSize: '18px' }}>
+              <XIcon />
+            </SvgIcon>
+          </IconButton>
         </Box>
-      </Box>
-      <Box sx={{ px: 1.5, pb: '10px' }}>
-        <TextField
+      )}
+
+      {/* Search — flush to the top edge; keeps the 1px ring border, no soft shadow */}
+      <Box
+        sx={{
+          height: '3.23rem',
+          px: '1rem',
+          bgcolor: 'bgp-2',
+          boxShadow: `0 0 0 1px ${figVars['border-1']}`,
+          display: 'flex',
+          alignItems: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <InputBase
           inputRef={searchRef}
-          size="small"
           placeholder={t`Search markets...`}
           inputProps={{ 'aria-label': t`Search markets` }}
-          fullWidth
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" sx={{ mr: '9px' }}>
-                <SvgIcon sx={{ fontSize: 16, color: 'fg-2' }}>
-                  <SearchIcon />
-                </SvgIcon>
-              </InputAdornment>
-            ),
-          }}
+          startAdornment={
+            <SvgIcon sx={{ fontSize: 18, color: 'fg-4', mr: '0.5rem' }}>
+              <SearchIcon />
+            </SvgIcon>
+          }
           sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '6px',
-              height: '36px',
-              '& fieldset': {
-                borderColor: 'border-2',
-              },
-            },
-            '& .MuiOutlinedInput-input': {
-              fontSize: '14px',
-              letterSpacing: '0.15px',
-              '&::placeholder': {
-                color: 'fg-2',
-                opacity: 1,
-              },
+            flex: 1,
+            color: 'fg-1',
+            fontSize: '0.875rem',
+            fontWeight: 400,
+            lineHeight: 1,
+            '& input::placeholder': {
+              color: 'fg-4',
+              opacity: 1,
             },
           }}
         />
       </Box>
 
-      {/* Content (scrolls on mobile, extends on desktop) */}
+      {/* Contents box — 1rem padding all sides, 1.5rem between sections */}
       <Box
         sx={{
-          pb: 1,
+          p: '1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.5rem',
           ...(mobile && { overflowY: 'auto', flex: 1 }),
         }}
       >
         {/* Favourites */}
-        {pinned.length > 0 && (
-          <Box>
-            <Typography
-              variant="subheader2"
-              color="fg-2"
-              sx={{
-                letterSpacing: '0.1px',
-                px: '24px',
-                py: 1,
-                lineHeight: '16px',
-              }}
-            >
-              <Trans>Favourites</Trans>
-            </Typography>
-            <Box sx={{ display: 'flex', gap: '4px', flexWrap: 'wrap', px: 1.5, pb: '4px' }}>
-              {pinned.map(renderPinnedChip)}
-            </Box>
-            <Divider sx={{ mt: 1 }} />
-          </Box>
-        )}
+        {pinned.length > 0 &&
+          renderSection(
+            <Trans>Favourites</Trans>,
+            pinned.map((id) => renderGridItem(id, mobile))
+          )}
 
-        {/* Ethereum */}
-        {ethereum.length > 0 && (
-          <Box>
-            {sectionHeader(<Trans>Ethereum</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
-              {ethereum.map((id) => renderGridItem(id, mobile, '33%'))}
-              {renderAaveProLink(mobile, '33%')}
-            </Box>
-            {(other.length > 0 || l2.length > 0 || (showLegacy && legacy.length > 0)) && (
-              <Divider sx={{ my: 1 }} />
-            )}
-          </Box>
-        )}
+        {/* Ethereum + Aave Pro link */}
+        {ethereum.length > 0 &&
+          renderSection(
+            <Trans>Ethereum</Trans>,
+            <>
+              {ethereum.map((id) => renderGridItem(id, mobile))}
+              {renderLinkRow(
+                {
+                  logo: AAVE_PRO_LOGO,
+                  href: AAVE_PRO_URL,
+                  label: <Trans>Aave Pro</Trans>,
+                  badge: (
+                    <Box
+                      component="span"
+                      sx={{
+                        width: 26,
+                        height: 16,
+                        borderRadius: '50px',
+                        bgcolor: 'rgba(151, 142, 255, 0.1)',
+                        color: '#978eff',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        lineHeight: 1,
+                        letterSpacing: 0,
+                      }}
+                    >
+                      V4
+                    </Box>
+                  ),
+                },
+                mobile
+              )}
+            </>
+          )}
 
         {/* L1 Networks */}
-        {other.length > 0 && (
-          <Box>
-            {sectionHeader(<Trans>L1 Networks</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
-              {other.map((id) => renderGridItem(id, mobile))}
-            </Box>
-            {(l2.length > 0 || showLegacy) && <Divider sx={{ my: 1 }} />}
-          </Box>
-        )}
+        {other.length > 0 &&
+          renderSection(
+            <Trans>L1 Networks</Trans>,
+            other.map((id) => renderGridItem(id, mobile))
+          )}
 
         {/* L2 Networks */}
-        {l2.length > 0 && (
-          <Box>
-            {sectionHeader(<Trans>L2 Networks</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
-              {l2.map((id) => renderGridItem(id, mobile))}
-            </Box>
-            {showLegacy && <Divider sx={{ my: 1 }} />}
-          </Box>
-        )}
+        {l2.length > 0 &&
+          renderSection(
+            <Trans>L2 Networks</Trans>,
+            l2.map((id) => renderGridItem(id, mobile))
+          )}
 
-        {/* Legacy */}
-        {showLegacy && (
-          <Box>
-            {sectionHeader(<Trans>Legacy</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+        {/* Legacy + V2 markets link */}
+        {showLegacy &&
+          renderSection(
+            <Trans>Legacy</Trans>,
+            <>
               {legacy.map((id) => renderGridItem(id, mobile))}
-              {/* V2 markets external link */}
-              <Box
-                role="button"
-                tabIndex={0}
-                onClick={() => window.open('https://v2-market.aave.com/', '_blank')}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    window.open('https://v2-market.aave.com/', '_blank');
-                  }
-                }}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  py: '10px',
-                  px: '12px',
-                  width: mobile ? '50%' : '33.33%',
-                  boxSizing: 'border-box',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  '&:hover': { bgcolor: 'button-hover' },
-                }}
-              >
-                <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
-                  <img
-                    src="/favicon.ico"
-                    alt=""
-                    width="100%"
-                    height="100%"
-                    style={{ display: 'block', objectFit: 'contain' }}
-                  />
-                </Box>
-                <Typography
-                  noWrap
-                  sx={{
-                    flex: '1 1 0',
-                    minWidth: 0,
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    letterSpacing: '0.15px',
-                    lineHeight: '20px',
-                  }}
-                >
-                  <Trans>V2 Markets</Trans>
-                </Typography>
-                <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Box>
-            </Box>
-          </Box>
-        )}
+              {renderLinkRow(
+                {
+                  logo: '/favicon.ico',
+                  href: 'https://v2-market.aave.com/',
+                  label: <Trans>V2 Markets</Trans>,
+                },
+                mobile
+              )}
+            </>
+          )}
 
         {/* No results */}
         {noResults && (
@@ -728,34 +600,29 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
             </Typography>
           </Box>
         )}
-      </Box>
 
-      {/* Legacy markets toggle */}
-      <Box
-        sx={{
-          borderTop: '1px solid',
-          borderColor: 'border-2',
-          px: '24px',
-          py: 1,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
-        }}
-      >
-        <Typography
+        {/* Show legacy markets — label + switch as a single control */}
+        <FormControlLabel
+          labelPlacement="start"
+          control={
+            <Switch
+              checked={showLegacy}
+              onChange={(e) => setShowLegacy(e.target.checked)}
+              inputProps={{ 'aria-label': t`Show legacy markets` }}
+            />
+          }
+          label={<Trans>Show legacy markets</Trans>}
           sx={{
-            fontSize: '14px',
-            fontWeight: 500,
-            letterSpacing: '0.15px',
-            color: 'fg-2',
+            m: 0,
+            alignSelf: 'flex-start',
+            gap: '1rem',
+            '& .MuiFormControlLabel-label': {
+              color: 'fg-2',
+              fontSize: '0.875rem',
+              fontWeight: 400,
+              lineHeight: '100%',
+            },
           }}
-        >
-          <Trans>Show legacy markets</Trans>
-        </Typography>
-        <Switch
-          checked={showLegacy}
-          onChange={(e) => setShowLegacy(e.target.checked)}
-          inputProps={{ 'aria-label': t`Show legacy markets` }}
         />
       </Box>
     </>
@@ -912,16 +779,15 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           }}
           slotProps={{
             paper: {
+              variant: 'modal',
               elevation: 0,
               sx: {
-                width: 535,
+                width: '32.5rem',
+                bgcolor: 'bgp-2',
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
                 mt: 1,
-                borderRadius: '8px',
-                border: '1px solid rgba(0,0,0,0.04)',
-                boxShadow: '0px 0px 3px 0px rgba(0,0,0,0.1), 0px 4px 20px 0px rgba(0,0,0,0.15)',
               },
             },
           }}
