@@ -2,7 +2,6 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
-import { figVars } from 'src/utils/figmaColors';
 
 import { useRootStore } from '../../store/root';
 import { selectIsMigrationAvailable } from '../../store/v3MigrationSelectors';
@@ -49,7 +48,6 @@ export const PageTitle = ({
         alignItems: { xs: 'flex-start', xsm: 'center' },
         mb: pageTitle ? 4 : 0,
         flexDirection: { xs: 'column', xsm: 'row' },
-        boxShadow: `inset 0px -1px 0px ${figVars['border-0']}`,
       }}
     >
       {pageTitle && (downToXSM || !withMarketSwitcher) && (
