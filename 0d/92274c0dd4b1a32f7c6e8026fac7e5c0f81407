@@ -1,0 +1,41 @@
+src/components/MarketSwitcher.tsx
+  s_957bf1f05f389b::t_c9b29aba26e2ac 519,525-562,565,572,578-582,584-593
+  s_957bf1f05f389b::t_4e7c49268216dc 473-475,478-483,489,491-493,495-502
+  s_957bf1f05f389b::t_5cd182e2fc6900 472
+  s_957bf1f05f389b::t_daa9ec75294020 25
+  s_957bf1f05f389b::t_c7a36afc608026 8
+  s_957bf1f05f389b::t_3d3702fe7f1106 10
+  s_957bf1f05f389b::t_f4a5ba8efed497 520-523,566-569,573-576
+  s_957bf1f05f389b::t_0b142ecac12f7a 490
+  s_957bf1f05f389b::t_29d47c89cf8a41 476
+  s_957bf1f05f389b::t_ae3fc92a65b289 471,477
+  s_957bf1f05f389b::t_d81a43c883a3c1 293-303,346,380-389,393,397,413-419,421-425,448-453
+  s_957bf1f05f389b::t_18c291c82b5a4a 326-328,349-350,403-405,435-441
+  s_957bf1f05f389b::t_f1f5c1b112feaf 782,785
+  s_957bf1f05f389b::t_e066cb2fb39265 460-467,469-470,512-513,620-623
+  s_957bf1f05f389b::t_33623eb4d41bbe 508,511,514
+  s_957bf1f05f389b::t_553d07ff68649f 604-614,616-619,624
+  s_957bf1f05f389b::t_d6a55135f33859 786
+  s_957bf1f05f389b::t_6de708525a5b38 454
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "0d92274c0dd4b1a32f7c6e8026fac7e5c0f81407",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_957bf1f05f389b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b6669b58-6a7e-4e7d-9474-bfe705cd4d68",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
