@@ -460,6 +460,10 @@ msgstr "Available rewards"
 msgid "Claiming individual protocol reward only. Merit rewards excluded - select \"claim all\" to include merit rewards."
 msgstr "Claiming individual protocol reward only. Merit rewards excluded - select \"claim all\" to include merit rewards."
 
+#: src/layouts/TopBarNotify.tsx
+msgid "{ctaLabel}"
+msgstr "{ctaLabel}"
+
 #: src/components/infoTooltips/ApprovalTooltip.tsx
 msgid "To continue, you need to grant smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
 msgstr "To continue, you need to grant smart contracts permission to move your funds from your wallet. Depending on the asset and wallet you use, it is done by signing the permission message (gas free), or by submitting an approval transaction (requires gas). <0>Learn more</0>"
@@ -1347,10 +1351,6 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
-#: src/layouts/TopBarNotify.tsx
-#: src/layouts/TopBarNotify.tsx
-#: src/layouts/TopBarNotify.tsx
-#: src/layouts/TopBarNotify.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
