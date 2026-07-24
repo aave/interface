@@ -126,7 +126,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
   // const distributionEnded = Date.now() / 1000 > Number(stakeData.distributionEnd);
 
   return (
-    <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
+    <Paper variant="card" sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
       <Box
         sx={{
           display: { xs: 'none', xsm: 'flex' },

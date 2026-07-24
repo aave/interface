@@ -189,6 +189,7 @@ declare module '@mui/material/Typography' {
 declare module '@mui/material/Paper' {
   interface PaperPropsVariantOverrides {
     modal: true;
+    card: true;
   }
 }
 
@@ -524,6 +525,10 @@ export function getThemedComponents(theme: AppTheme) {
         },
         styleOverrides: {
           root: {
+            // Size to content + padding, not MUI's default 64px floor (which let buttons in tight
+            // flex rows squish below their content). Row action buttons re-add an even floor
+            // locally (ListButtonsColumn); deliberate collapses keep their own minWidth: 0.
+            minWidth: 'unset',
             // Hover/focus state transition at 100ms (overrides MUI's 250ms default).
             // `transform` is included so the active-press scale animates in and out.
             transition: theme.transitions.create(
@@ -854,6 +859,17 @@ export function getThemedComponents(theme: AppTheme) {
               borderRadius: '0.75rem',
               backgroundColor: figVars['bg-2'],
               boxShadow: `0 0 0 1px ${figVars['border-1']}, 0 4px 16px 0 ${figVars['shadow-medium']}`,
+            },
+          },
+          {
+            // Canonical list/content card surface — the single source of truth for ListWrapper and
+            // the module cards (reserve-overview, staking, sGho, …). surface-elevated fill, 10px
+            // radius, the shared surface ring (shadow-stroke-1 hairline + soft drop).
+            props: { variant: 'card' },
+            style: {
+              backgroundColor: figVars['surface-elevated'],
+              borderRadius: '10px',
+              boxShadow: figSurfaceShadow('shadow-stroke-1'),
             },
           },
         ],

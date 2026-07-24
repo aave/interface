@@ -34,6 +34,10 @@ export const MigrationMobileList = ({
   return (
     <Box sx={{ width: '100%' }}>
       <ListWrapper
+        // Nested inside MigrationLists' outer card — strip this inner surface (matches the desktop
+        // MigrationList) so there's no card-in-card. The card variant has no border, so only the
+        // shadow needs cancelling.
+        paperSx={{ boxShadow: 'none' }}
         titleComponent={
           <Typography component="div" variant="h3" sx={{ mr: 4 }}>
             {titleComponent}

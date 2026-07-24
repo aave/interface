@@ -86,7 +86,7 @@ export const MigrationList = ({
   return (
     <Box sx={{ width: '100%' }}>
       <ListWrapper
-        paperSx={{ border: 0, boxShadow: 'none' }}
+        paperSx={{ boxShadow: 'none' }}
         titleComponent={
           <Box display="block">
             <Typography component="div" variant="subheader2" sx={{ mr: 4 }}>

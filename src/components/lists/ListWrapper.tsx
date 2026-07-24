@@ -3,7 +3,6 @@ import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
-import { figSurfaceShadow } from 'src/utils/figmaColors';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
 
@@ -95,13 +94,9 @@ export const ListWrapper = ({
 
   return (
     <Paper
+      variant="card"
       sx={[
-        {
-          mt: withTopMargin ? 4 : 0,
-          borderRadius: '10px',
-          backgroundColor: 'surface-elevated',
-          boxShadow: figSurfaceShadow('shadow-stroke-1'),
-        },
+        { mt: withTopMargin ? 4 : 0 },
         ...(paperSx ? (Array.isArray(paperSx) ? paperSx : [paperSx]) : []),
       ]}
     >

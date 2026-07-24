@@ -16,6 +16,7 @@ export const ConnectWalletPaper = ({ description, sx, ...rest }: ConnectWalletPa
 
   return (
     <Paper
+      variant="card"
       {...rest}
       sx={{
         display: 'flex',

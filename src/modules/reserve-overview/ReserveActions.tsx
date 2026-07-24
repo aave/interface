@@ -244,7 +244,7 @@ const ActionsSkeleton = () => {
 
 const PaperWrapper = ({ children }: { children: ReactNode }) => {
   return (
-    <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
+    <Paper variant="card" sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
       <Typography variant="h3" sx={{ mb: 6 }}>
         <Trans>Your info</Trans>
       </Typography>
@@ -256,7 +256,7 @@ const PaperWrapper = ({ children }: { children: ReactNode }) => {
 
 const ConnectWallet = () => {
   return (
-    <Paper sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
+    <Paper variant="card" sx={{ pt: 4, pb: { xs: 4, xsm: 6 }, px: { xs: 4, xsm: 6 } }}>
       <>
         <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
           <Trans>Your info</Trans>

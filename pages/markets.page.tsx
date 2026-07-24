@@ -1,20 +1,16 @@
-import { Box, Container } from '@mui/material';
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
+import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { MarketAssetsListContainer } from 'src/modules/markets/MarketAssetsListContainer';
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 import { useRootStore } from 'src/store/root';
 
-interface MarketContainerProps {
-  children: ReactNode;
-}
-
+// Markets-specific Container overrides, shared with MarketsTopPanel (`containerProps=`) so the
+// top-panel stats align with the asset table at Markets' wider max-width. The theme's MuiContainer
+// override already supplies display/flexDirection/flex + the 39px bottom padding, so only the wider
+// px/maxWidth are set here.
 export const marketContainerProps = {
   sx: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    pb: '39px',
     px: {
       xs: 2,
       xsm: 5,
@@ -33,10 +29,6 @@ export const marketContainerProps = {
   },
 };
 
-export const MarketContainer = ({ children }: MarketContainerProps) => {
-  return <Container {...marketContainerProps}>{children}</Container>;
-};
-
 export default function Markets() {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
@@ -49,18 +41,9 @@ export default function Markets() {
   return (
     <>
       <MarketsTopPanel />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          flex: 1,
-        }}
-      >
-        <MarketContainer>
-          <MarketAssetsListContainer />
-        </MarketContainer>
-      </Box>
+      <ContentContainer containerProps={marketContainerProps}>
+        <MarketAssetsListContainer />
+      </ContentContainer>
     </>
   );
 }

@@ -18,6 +18,7 @@ export const ConnectWalletPaperStaking = ({
 }: ConnectWalletPaperStakingProps) => {
   return (
     <Paper
+      variant="card"
       {...rest}
       sx={{
         display: 'flex',

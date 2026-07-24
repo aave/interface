@@ -9,6 +9,7 @@ import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWall
 export const YourInfoSidebar = () => {
   return (
     <Paper
+      variant="card"
       sx={{
         pt: 4,
         pb: { xs: 4, xsm: 6 },

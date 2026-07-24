@@ -42,6 +42,7 @@ export const SGhoCard = () => {
 
   return (
     <Paper
+      variant="card"
       sx={{
         pt: 4,
         pb: { xs: 6, md: 20 },

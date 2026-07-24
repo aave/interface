@@ -134,7 +134,6 @@ export const MarketAssetsListContainer = () => {
 
   return (
     <ListWrapper
-      wrapperSx={{ pt: { xs: '6px', xsm: '6px', sm: 3.5 } }}
       titleComponent={
         sm ? (
           <Box

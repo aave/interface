@@ -27,7 +27,7 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
   });
 
   return (
-    <Paper sx={{ pt: 4, pb: 20, px: downToXsm ? 4 : 6 }}>
+    <Paper variant="card" sx={{ pt: 4, pb: 20, px: downToXsm ? 4 : 6 }}>
       <Box
         sx={{
           display: 'flex',

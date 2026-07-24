@@ -10,7 +10,7 @@ import { StakeActionBox } from 'src/modules/staking/StakeActionBox';
 import { Section } from '../Section';
 import { Specimen } from '../Specimen';
 
-const PAPER_VARIANTS = ['elevation', 'outlined', 'modal'] as const;
+const PAPER_VARIANTS = ['elevation', 'outlined', 'modal', 'card'] as const;
 
 export const SurfacesSection = () => (
   <Section title="Surfaces & cards">
