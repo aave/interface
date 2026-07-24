@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { MarketSwitcher } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useStakeDataSummary, useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
@@ -13,7 +14,6 @@ import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../../components/primitives/Link';
 import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
-import { MarketSwitcher } from './UmbrellaMarketSwitcher';
 
 export const UmbrellaHeader: React.FC = () => {
   const theme = useTheme();
@@ -21,13 +21,8 @@ export const UmbrellaHeader: React.FC = () => {
   const [currentMarketData, trackEvent] = useRootStore(
     useShallow((store) => [store.currentMarketData, store.trackEvent])
   );
-  // const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
-  //   useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
-  // );
 
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const valueTypographyVariant = downToSM ? 'h4' : 'h2';
   const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
@@ -38,22 +33,15 @@ export const UmbrellaHeader: React.FC = () => {
         <Box mb={4}>
           {/* <ChainAvailabilityText wrapperSx={{ mb: 4 }} chainId={ChainId.mainnet} /> */}
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-            {/* <img src={`/aave-logo-purple.svg`} width="64px" height="64px" alt="" /> */}
-            <Typography
-              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
-              sx={{ ml: 2, mr: 3 }}
-            >
-              <Trans>Staking</Trans>
-            </Typography>
-            <MarketSwitcher />
+            <MarketSwitcher hideTitleChrome titlePrefix={<Trans>Staking</Trans>} />
           </Box>
 
-          <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
+          <Typography sx={{ color: 'fg-3', maxWidth: '824px' }}>
             <Trans>
               Umbrella is the upgraded version of the Safety Module. Manage your previously staked
               assets
             </Trans>{' '}
-            <Link href="/safety-module" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
+            <Link href="/safety-module" sx={{ textDecoration: 'underline', color: 'fg-3' }}>
               <Trans>here.</Trans>
             </Link>
             <br />
@@ -64,7 +52,7 @@ export const UmbrellaHeader: React.FC = () => {
             </Trans>{' '}
             <Link
               href="https://aave.com/docs/aave-v3/umbrella"
-              sx={{ textDecoration: 'underline', color: '#8E92A3' }}
+              sx={{ textDecoration: 'underline', color: 'fg-3' }}
               onClick={() =>
                 trackEvent(GENERAL.EXTERNAL_LINK, {
                   Link: 'Staking Risks',

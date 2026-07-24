@@ -18,7 +18,7 @@ export const figmaLight = {
   'fg-max': '#000000',
   'fg-1': '#201d1d',
   'fg-2': '#666666',
-  'fg-3': '#8f8e8e',
+  'fg-3': '#858585',
   'fg-4': '#bcbbbb',
   'fg-5': '#cfcece',
   // Muted icon grey (search, sortable-column chevrons, …). Mode-agnostic like fg-3.

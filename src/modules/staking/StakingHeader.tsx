@@ -54,19 +54,15 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         <Box mb={4}>
           <ChainAvailabilityText wrapperSx={{ mb: 4 }} chainId={ChainId.mainnet} />
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-            {/* <img src={`/aave-logo-purple.svg`} width="64px" height="64px" alt="" /> */}
-            <Typography
-              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
-              sx={{ ml: 2, mr: 3 }}
-            >
+            <Typography variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}>
               <Trans>Safety Module</Trans>
             </Typography>
           </Box>
 
-          <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
+          <Typography sx={{ color: 'fg-3', maxWidth: '824px' }}>
             <Trans>
               The Safety Module has been upgraded to{' '}
-              <Link href="/staking" sx={{ textDecoration: 'underline', color: '#8E92A3' }}>
+              <Link href="/staking" sx={{ textDecoration: 'underline', color: 'fg-3' }}>
                 Umbrella
               </Link>
               , a new system that introduces automated slashing, aToken staking, and improved
@@ -82,7 +78,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
             </Trans>{' '}
             <Link
               href="https://aave.com/docs/aave-v3/umbrella#transition-from-the-legacy-safety-module"
-              sx={{ textDecoration: 'underline', color: '#8E92A3' }}
+              sx={{ textDecoration: 'underline', color: 'fg-3' }}
               onClick={() =>
                 trackEvent(GENERAL.EXTERNAL_LINK, {
                   Link: 'Staking Risks',

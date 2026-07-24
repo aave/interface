@@ -15,11 +15,12 @@ export const navLinkSx = (padding: string): SystemStyleObject<Theme> => ({
   '.active&': {
     color: figVars['fg-1'],
   },
-  '&:hover': {
+  // An open dropdown trigger ([aria-expanded="true"], e.g. the Staking menu) keeps the hovered look.
+  '&:hover, &[aria-expanded="true"]': {
     backgroundColor: 'transparent',
     color: figVars['fg-1'],
   },
-  '.active&:after, &:hover&:after': {
+  '.active&:after, &:hover&:after, &[aria-expanded="true"]&:after': {
     transform: 'scaleX(1)',
     transformOrigin: 'bottom left',
   },

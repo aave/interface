@@ -68,7 +68,7 @@ export const SGHOHeader: React.FC = () => {
             </Typography>
           </Box>
 
-          <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
+          <Typography sx={{ color: 'fg-3', maxWidth: '824px' }}>
             <Trans>
               Deposit GHO into Savings GHO (sGHO) and earn{' '}
               <Box component="span" sx={{ color: '#338E3C', fontWeight: 'bold' }}>

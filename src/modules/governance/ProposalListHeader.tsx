@@ -40,7 +40,13 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
       <Typography>
         <Trans>Filter</Trans>
       </Typography>
-      <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
+      <Select
+        id="filter"
+        value={proposalFilter}
+        sx={{ minWidth: 140 }}
+        onChange={handleChange}
+        size="small"
+      >
         <MenuItem value="all">
           <Trans>All proposals</Trans>
         </MenuItem>
@@ -78,7 +84,13 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
         <Typography>
           <Trans>Filter</Trans>
         </Typography>
-        <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
+        <Select
+          id="filter"
+          value={proposalFilter}
+          sx={{ minWidth: 140 }}
+          onChange={handleChange}
+          size="small"
+        >
           <MenuItem value="all">
             <Trans>All proposals</Trans>
           </MenuItem>

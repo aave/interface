@@ -795,9 +795,14 @@ export function getThemedComponents(theme: AppTheme) {
               transform: 'scale(1)',
             },
             // Highlight lives on the pseudo above — keep the row's own background clear.
-            '&:hover, &.Mui-focusVisible, &.Mui-selected': {
-              backgroundColor: 'transparent',
-            },
+            // The compound selected states are listed explicitly: MUI's base MenuItem paints
+            // `&.Mui-selected:hover` / `&.Mui-selected.Mui-focusVisible` with a primary tint at
+            // higher specificity than a lone `&.Mui-selected`, so without these the selected row
+            // would show a stronger fill than other rows on hover/keyboard-focus.
+            '&:hover, &.Mui-focusVisible, &.Mui-selected, &.Mui-selected:hover, &.Mui-selected.Mui-focusVisible':
+              {
+                backgroundColor: 'transparent',
+              },
           },
         },
       },

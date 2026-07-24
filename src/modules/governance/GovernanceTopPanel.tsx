@@ -51,16 +51,12 @@ export const GovernanceTopPanel = () => {
         <Box mb={4}>
           <ChainAvailabilityText wrapperSx={{ mb: 4 }} chainId={ChainId.mainnet} />
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-            {/* <img src={`/aave.svg`} width="32px" height="32px" alt="" /> */}
-            <Typography
-              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
-              sx={{ ml: 2, mr: 3 }}
-            >
+            <Typography variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}>
               <Trans>Aave Governance</Trans>
             </Typography>
           </Box>
 
-          <Typography sx={{ color: '#8E92A3', maxWidth: '824px' }}>
+          <Typography sx={{ color: 'fg-3', maxWidth: '824px' }}>
             <Trans>
               Aave is a fully decentralized, community governed protocol by the AAVE token-holders.
               AAVE token-holders collectively discuss, propose, and vote on upgrades to the
@@ -70,7 +66,7 @@ export const GovernanceTopPanel = () => {
             <Link
               onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'FAQ Docs Governance' })}
               href="https://aave.com/docs/ecosystem/governance"
-              sx={{ textDecoration: 'underline', color: '#8E92A3' }}
+              sx={{ textDecoration: 'underline', color: 'fg-3' }}
             >
               <Trans>documentation</Trans>
             </Link>

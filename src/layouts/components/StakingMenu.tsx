@@ -2,6 +2,8 @@ import { Trans } from '@lingui/macro';
 import { Button, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { clsx } from 'clsx';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 import { useRootStore } from 'src/store/root';
@@ -18,6 +20,10 @@ interface StakingMenuProps {
 
 export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const router = useRouter();
+  // The trigger isn't a Link, so it never gets the route-aware `active` class on its own.
+  // Mark it active when the current route is one of the menu's destinations.
+  const isActive = router.pathname === ROUTES.staking || router.pathname === ROUTES.safetyModule;
 
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const open = Boolean(anchorEl);
@@ -69,6 +75,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
       <Button
         aria-label="staking menu"
         id="staking-button"
+        className={clsx({ active: isActive })}
         aria-controls={open ? 'staking-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
@@ -97,13 +104,6 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
         open={open}
         onClose={handleClose}
         keepMounted={true}
-        sx={{
-          '& .MuiPaper-root': {
-            bgcolor: 'surface-elevated',
-            border: '1px solid',
-            borderColor: 'border-2',
-          },
-        }}
       >
         <MenuItem
           component={Link}

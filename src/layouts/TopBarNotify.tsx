@@ -79,6 +79,8 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
     }
   }, [currentCampaign, currentChainId]);
 
+  console.log('currentCampaign', currentCampaign);
+
   // If no campaign is configured for the current network, don't show anything
   if (!currentCampaign) {
     return null;

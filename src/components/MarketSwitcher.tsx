@@ -189,7 +189,23 @@ const getMarketOrder = (marketId: CustomMarket): number => {
 const AAVE_PRO_URL = 'https://pro.aave.com/';
 const AAVE_PRO_LOGO = '/icons/markets/aave-pro.png';
 
-export const MarketSwitcher = () => {
+interface MarketSwitcherProps {
+  /**
+   * Hide the page-title-only chrome (the "Instance"/"Market" suffix and the market
+   * description blurb) when the switcher sits next to an existing page title, e.g. the
+   * Staking header. Default false = full title treatment (homepage).
+   */
+  hideTitleChrome?: boolean;
+  /**
+   * Optional label rendered inside the trigger, before the market logo and at the same
+   * size as the market name, so it reads and clicks as one unit (e.g. "Staking" on the
+   * Staking header). Prefer this over a sibling <Typography> next to <MarketSwitcher />,
+   * which would leave the label outside the clickable/hoverable trigger.
+   */
+  titlePrefix?: React.ReactNode;
+}
+
+export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketSwitcherProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showLegacy, setShowLegacy] = useState(false);
@@ -775,6 +791,14 @@ export const MarketSwitcher = () => {
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          {titlePrefix && (
+            <Typography
+              variant={upToLG ? 'display1' : 'h1'}
+              sx={{ fontSize: downToXSM ? '1.55rem' : undefined, color: 'fg-1', mr: 3 }}
+            >
+              {titlePrefix}
+            </Typography>
+          )}
           <MarketLogo
             size={upToLG ? 32 : 28}
             logo={currentLogo}
@@ -790,9 +814,11 @@ export const MarketSwitcher = () => {
               }}
             >
               {currentMarketNaming.name} {currentMarketData.isFork ? 'Fork' : ''}
-              {upToLG && (currentMarket === 'proto_mainnet_v3' || currentMarket === 'proto_lido_v3')
-                ? 'Instance'
-                : ' Market'}
+              {!hideTitleChrome &&
+                (upToLG &&
+                (currentMarket === 'proto_mainnet_v3' || currentMarket === 'proto_lido_v3')
+                  ? 'Instance'
+                  : ' Market')}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {currentMarketData.v3 ? (
@@ -827,7 +853,7 @@ export const MarketSwitcher = () => {
           </Box>
         </Box>
 
-        {marketBlurbs[currentMarket] && (
+        {!hideTitleChrome && marketBlurbs[currentMarket] && (
           <Typography
             sx={{
               color: 'fg-2',
