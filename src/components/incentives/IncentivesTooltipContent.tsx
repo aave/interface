@@ -218,6 +218,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDe',
     aToken: true,
   },
+  aManUSDT0: {
+    tokenIconSymbol: 'usdt0',
+    symbol: 'aUSDT0',
+    aToken: true,
+  },
   aManWMNT: {
     tokenIconSymbol: 'WMNT',
     symbol: 'aWMNT',
