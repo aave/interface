@@ -1,24 +1,23 @@
 import { Box, Typography } from '@mui/material';
-import { figVars } from 'src/utils/figmaColors';
 
-import { SWATCH_GROUPS } from '../../utils/catalog';
+import { COLOR_GROUPS } from '../../utils/catalog';
+import { ColorSpecimen } from '../ColorSpecimen';
 import { Section } from '../Section';
-import { Swatch } from '../Swatch';
 
 export const ColorsSection = () => {
   return (
     <Section
       title="Color tokens"
-      description="Flattened palette design tokens, as CSS vars. Flip the theme toggle to see both."
+      description="Palette tokens shown the way they're used — text as text, backgrounds as surfaces, borders as dividers, shadows as shadows. Flip the theme toggle to see both."
     >
-      {SWATCH_GROUPS.map((group) => (
-        <Box key={group.title} sx={{ flex: '1 1 100%' }}>
-          <Typography variant="subheader1" sx={{ mb: 3, display: 'block' }}>
+      {COLOR_GROUPS.map((group) => (
+        <Box key={group.title} sx={{ flex: '1 1 100%', mb: 8 }}>
+          <Typography variant="subheader1" sx={{ mb: 4, display: 'block' }}>
             {group.title}
           </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             {group.names.map((name) => (
-              <Swatch key={name} name={name} value={figVars[name]} />
+              <ColorSpecimen key={name} role={group.role} name={name} />
             ))}
           </Box>
         </Box>
