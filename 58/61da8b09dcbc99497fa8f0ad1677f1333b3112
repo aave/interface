@@ -1,0 +1,105 @@
+src/layouts/components/LanguageSwitcher.tsx
+  s_ffffbd4e4914c5::t_cb10a7962ed32a 38,51
+  s_ffffbd4e4914c5::t_8f6b291eadeb62 1
+  s_ffffbd4e4914c5::t_a92f3754653edc 52-53,56
+  s_ffffbd4e4914c5::t_d9d63ab30fcb27 34,68,81
+src/components/EmptyStatePaper.tsx
+  s_ffffbd4e4914c5::t_ebe739f8250d5f 1-3,5-61
+  s_ffffbd4e4914c5::t_f7e13c5186ab11 4
+src/modules/dev/ComponentShowcase/utils/registry.tsx
+  s_ffffbd4e4914c5::t_bd2d28aaa2414c 69-75
+  s_ffffbd4e4914c5::t_0f6f7e4f053ee4 68
+src/layouts/components/SettingSwitchRow.tsx
+  s_ffffbd4e4914c5::t_d9562c84cb41d6 35
+  s_ffffbd4e4914c5::t_2799cabfdf8c8a 27
+  s_ffffbd4e4914c5::t_a90714b00a5b91 14
+src/components/WalletConnection/ConnectWalletButton.tsx
+  s_ffffbd4e4914c5::t_184221dd7283da 103
+  s_ffffbd4e4914c5::t_b9354eda87f3ec 123
+src/layouts/AppHeader.tsx
+  s_ffffbd4e4914c5::t_f62eb27d39ccbe 322
+  s_ffffbd4e4914c5::t_0568a462163446 284
+src/components/lists/ListWrapper.tsx
+  s_ffffbd4e4914c5::t_1759aa7f60be4c 145
+  s_ffffbd4e4914c5::t_57c992f8915c2f 144
+src/modules/dev/ComponentShowcase/components/EmptyStatesSection/index.tsx
+  s_ffffbd4e4914c5::t_441d22001c2c58 27
+  s_ffffbd4e4914c5::t_99421ebefa5968 1-3,5-24,28-34,36-44,46-57,64-69
+  s_ffffbd4e4914c5::t_2b681ac7143921 4
+  s_ffffbd4e4914c5::t_fd7a55e2fb8ff6 25-26
+  s_ffffbd4e4914c5::t_42817456da9f80 58
+  s_ffffbd4e4914c5::t_a51704ff126817 35
+  s_ffffbd4e4914c5::t_f24a0646f7877c 45
+  s_ffffbd4e4914c5::t_fe3d74bae943f7 59-63
+src/utils/theme.tsx
+  s_ffffbd4e4914c5::t_c26142c4220641 912
+  s_ffffbd4e4914c5::t_ce20c7eff43d69 95-97
+  s_ffffbd4e4914c5::t_a72c424f7d9467 105-106
+  s_ffffbd4e4914c5::t_8b442c12bfa93c 913-915
+  s_ffffbd4e4914c5::t_c0d82030a40475 79-82
+src/layouts/components/DrawerWrapper.tsx
+  s_ffffbd4e4914c5::t_bc15b1fdf77afc 19
+  s_ffffbd4e4914c5::t_88db2235c5daa1 29-30
+  s_ffffbd4e4914c5::t_36d69a13c69145 33
+  s_ffffbd4e4914c5::t_2037302917c8cc 23,31-32
+  s_ffffbd4e4914c5::t_31b17c74e8ccf7 15,28
+src/layouts/components/NavItems.tsx
+  s_ffffbd4e4914c5::t_b00d2dbd1a4e49 134
+  s_ffffbd4e4914c5::t_d6a053b507ecdd 116
+  s_ffffbd4e4914c5::t_e5989e03121c7f 93
+  s_ffffbd4e4914c5::t_956517a226e623 48
+  s_ffffbd4e4914c5::t_cca65328c88bc7 3-13,16
+  s_ffffbd4e4914c5::t_35d0be9f667907 58-66,68-87,107-108,123,125,127-128,130,145,147,149-150,152,168,202,204-206,208-209,211-213,215
+  s_ffffbd4e4914c5::t_89abff976fb0cd 14,31,40-45,92,178-184
+  s_ffffbd4e4914c5::t_76ad45372add1c 33,46-47,49-55
+  s_ffffbd4e4914c5::t_56803529b4aa89 94-95,97-102,104-105
+  s_ffffbd4e4914c5::t_8c7ce734a512cc 169-170
+  s_ffffbd4e4914c5::t_63c80fe2ac6cca 67
+  s_ffffbd4e4914c5::t_f68f3559324d55 30,32,34-39,56-57
+  s_ffffbd4e4914c5::t_9bb2438c865c1d 156
+  s_ffffbd4e4914c5::t_7fe5e93aa66f0a 176-177,186-201,203,207,210,214,216-217
+  s_ffffbd4e4914c5::t_082d5a0f0214f7 106
+src/layouts/MobileMenu.tsx
+  s_ffffbd4e4914c5::t_32978a46024cc1 122
+  s_ffffbd4e4914c5::t_ec0feffb9b699b 3
+  s_ffffbd4e4914c5::t_f65a60b7fc992f 109
+  s_ffffbd4e4914c5::t_659b6feabf5ad5 4-5,7,9,62,82-84,93-102,105-108,110-114,151-156,158-169
+  s_ffffbd4e4914c5::t_10aaf471689e43 50,120,172
+  s_ffffbd4e4914c5::t_4fb8417d697565 38-40,48-49,119,173-174,176-179
+  s_ffffbd4e4914c5::t_ea2c272775515f 53-61,64-76
+  s_ffffbd4e4914c5::t_8e85e893081ddf 2,8,24-32,34-37,41-47,51-52,123-129,137-150,175
+  s_ffffbd4e4914c5::t_aeb1e6d095d969 135
+src/components/ConnectWalletPaper.tsx
+  s_ffffbd4e4914c5::t_1bec5fce210280 2,6,13,17-24,27-28
+src/locales/el/messages.js
+  s_ffffbd4e4914c5::t_941095a6cdcc39 1
+src/locales/en/messages.js
+  s_ffffbd4e4914c5::t_196575fd02e344 1
+src/locales/en/messages.po
+  s_ffffbd4e4914c5::t_92d509742da789 258-261,984-987,2409,2879,3833-3836,4148
+src/locales/es/messages.js
+  s_ffffbd4e4914c5::t_f6ac915a393859 1
+src/locales/fr/messages.js
+  s_ffffbd4e4914c5::t_ca26f53d1e8e9f 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "5861da8b09dcbc99497fa8f0ad1677f1333b3112",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_ffffbd4e4914c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "414ca497-782c-4459-86d8-ba6c97b044b1",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
