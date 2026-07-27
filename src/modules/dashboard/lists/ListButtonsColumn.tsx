@@ -19,10 +19,6 @@ export const ListButtonsColumn = ({ children, isColumnHeader = false }: ListButt
         flex: isColumnHeader ? 1 : 1,
         '.MuiButton-root': {
           ml: '6px',
-          // Restore a min-width floor for the row action buttons (the theme no longer floors
-          // button min-width globally) so they keep their prior size instead of shrinking to bare
-          // label width.
-          minWidth: 64,
         },
       }}
     >

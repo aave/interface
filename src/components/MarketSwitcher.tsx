@@ -23,6 +23,7 @@ import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
 import { figVars, onAccent } from 'src/utils/figmaColors';
+import { insetHighlightActive, insetHighlightBase } from 'src/utils/insetHighlight';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -330,9 +331,18 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           boxSizing: 'border-box',
           borderRadius: '8px',
           cursor: 'pointer',
-          position: 'relative',
-          bgcolor: isSelected ? 'selected' : 'transparent',
-          '&:hover': { bgcolor: isSelected ? 'selected' : 'button-hover' },
+          // Hover/selected highlight on an inset pseudo-element so adjacent options keep a gap
+          // (shared recipe with the dropdown menu items — see insetHighlight.ts). The current
+          // market gets a persistent fill via restFill; others fill in on hover.
+          ...insetHighlightBase({
+            theme,
+            radius: '8px',
+            inset: '1px',
+            restFill: isSelected ? figVars['selected'] : undefined,
+          }),
+          ...(isSelected
+            ? {}
+            : { '&:hover::before': insetHighlightActive(figVars['button-hover']) }),
           // Star: always visible on mobile, hover-reveal on desktop
           '& .grid-fav-btn': {
             opacity: isMobile || isFavorite ? 1 : 0,
@@ -407,7 +417,9 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
         boxSizing: 'border-box',
         borderRadius: '8px',
         cursor: 'pointer',
-        '&:hover': { bgcolor: 'button-hover' },
+        // Hover highlight on an inset pseudo-element, matching the market rows (insetHighlight.ts).
+        ...insetHighlightBase({ theme, radius: '8px', inset: '1px' }),
+        '&:hover::before': insetHighlightActive(figVars['button-hover']),
       }}
     >
       {renderRowLogo(logo)}
@@ -788,6 +800,8 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
                 display: 'flex',
                 flexDirection: 'column',
                 mt: 1,
+                // Offset the panel 1rem to the left of the trigger's left edge.
+                ml: '-1rem',
               },
             },
           }}

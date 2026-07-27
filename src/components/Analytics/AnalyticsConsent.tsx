@@ -8,7 +8,12 @@ import { figVars } from 'src/utils/figmaColors';
 import { useAccount } from 'wagmi';
 import { useShallow } from 'zustand/shallow';
 
-export default function AnalyticsBanner() {
+/**
+ * `preview` (showcase/dev only, e.g. /dev/components): render inline (non-fixed) and always
+ * visible, with the consent buttons inert — so the banner can be displayed without reading or
+ * mutating real analytics consent state. Never set in production.
+ */
+export default function AnalyticsBanner({ preview = false }: { preview?: boolean } = {}) {
   const [optInAnalytics, optOutAnalytics, analyticsConfigOpen, isTrackingEnabled] = useRootStore(
     useShallow((store) => [
       store.acceptAnalytics,
@@ -21,13 +26,14 @@ export default function AnalyticsBanner() {
   const [bannerVisible, setBannerVisible] = useState(false);
 
   useEffect(() => {
+    if (preview) return;
     // Adds a delay before showing the banner.
     const timerId = setTimeout(() => {
       setBannerVisible(true);
     }, 1000); // Start sliding in after 1 second.
 
     return () => clearTimeout(timerId);
-  }, []);
+  }, [preview]);
 
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
@@ -35,6 +41,7 @@ export default function AnalyticsBanner() {
   // Bind Sentry user to wallet if analytics consent is accepted
   const { isConnected, address, connector } = useAccount();
   useEffect(() => {
+    if (preview) return;
     const hasConsent = isTrackingEnabled;
     if (hasConsent && isConnected && address) {
       Sentry.setUser({
@@ -44,22 +51,26 @@ export default function AnalyticsBanner() {
     } else {
       Sentry.setUser(null);
     }
-  }, [isTrackingEnabled, isConnected, address, connector]);
+  }, [isTrackingEnabled, isConnected, address, connector, preview]);
 
   const hasUserMadeChoice =
     typeof window !== 'undefined' && localStorage.getItem(CONSENT_KEY) !== null;
 
   // Hide once the user has made a choice. Reopening from the footer clears the stored choice and
   // reopens analyticsConfigOpen, which brings the banner back.
-  if (hasUserMadeChoice || !analyticsConfigOpen) return null;
+  if (!preview && (hasUserMadeChoice || !analyticsConfigOpen)) return null;
 
   return (
     <Box
       sx={{
-        position: 'fixed',
-        zIndex: 100,
-        bottom: '24px',
-        ...(isMobile ? { left: '50%' } : { right: '24px' }),
+        position: preview ? 'relative' : 'fixed',
+        ...(preview
+          ? {}
+          : {
+              zIndex: 100,
+              bottom: '24px',
+              ...(isMobile ? { left: '50%' } : { right: '24px' }),
+            }),
         width: '400px',
         maxWidth: 'calc(100vw - 48px)',
         p: '1.25rem',
@@ -70,7 +81,9 @@ export default function AnalyticsBanner() {
         backgroundColor: figVars['bg-2'],
         boxShadow: `0 0 0 1px ${figVars['shadow-stroke-2']}, 0 6px 32px 0 ${figVars['shadow-high']}`,
         transition: 'transform 0.5s ease-out',
-        transform: bannerVisible
+        transform: preview
+          ? 'none'
+          : bannerVisible
           ? isMobile
             ? 'translateX(-50%)'
             : 'none'
@@ -98,10 +111,18 @@ export default function AnalyticsBanner() {
       </Box>
 
       <Box sx={{ display: 'flex', gap: '1rem' }}>
-        <Button variant="outlined" onClick={() => optOutAnalytics()} sx={{ flex: 1 }}>
+        <Button
+          variant="outlined"
+          onClick={preview ? undefined : () => optOutAnalytics()}
+          sx={{ flex: 1 }}
+        >
           Opt-out
         </Button>
-        <Button variant="contained" onClick={() => optInAnalytics()} sx={{ flex: 1 }}>
+        <Button
+          variant="contained"
+          onClick={preview ? undefined : () => optInAnalytics()}
+          sx={{ flex: 1 }}
+        >
           Allow analytics
         </Button>
       </Box>

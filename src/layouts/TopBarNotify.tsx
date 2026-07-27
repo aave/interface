@@ -39,9 +39,19 @@ interface RouteCampaigns {
 interface TopBarNotifyProps {
   campaigns: NetworkCampaigns;
   routeCampaigns?: RouteCampaigns;
+  /**
+   * Showcase/preview mode (e.g. /dev/components): force the banner visible regardless of the
+   * per-chain localStorage dismissal state, skip persisting any dismissal, and fall back to the
+   * first configured campaign when none matches the current chain. Never set in production.
+   */
+  preview?: boolean;
 }
 
-export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotifyProps) {
+export default function TopBarNotify({
+  campaigns,
+  routeCampaigns,
+  preview = false,
+}: TopBarNotifyProps) {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
   const router = useRouter();
@@ -53,10 +63,14 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
     return campaigns[currentChainId] || null;
   };
 
-  const currentCampaign = routeCampaigns?.[router.pathname] ?? getCurrentCampaign() ?? null;
+  const currentCampaign =
+    routeCampaigns?.[router.pathname] ??
+    getCurrentCampaign() ??
+    (preview ? Object.values(campaigns)[0] ?? null : null);
 
   const [showWarning, setShowWarning] = useState(() => {
     if (!currentCampaign) return false;
+    if (preview) return true;
 
     const storedBannerVersion = localStorage.getItem(`bannerVersion_${currentChainId}`);
     const warningBarOpen = localStorage.getItem(`warningBarOpen_${currentChainId}`);
@@ -69,7 +83,7 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
   });
 
   useEffect(() => {
-    if (!currentCampaign) return;
+    if (!currentCampaign || preview) return;
 
     const storedBannerVersion = localStorage.getItem(`bannerVersion_${currentChainId}`);
 
@@ -78,7 +92,7 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
       localStorage.setItem(`warningBarOpen_${currentChainId}`, 'true');
       setShowWarning(true);
     }
-  }, [currentCampaign, currentChainId]);
+  }, [currentCampaign, currentChainId, preview]);
 
   // If no campaign is configured for the current network, don't show anything
   if (!currentCampaign) {
@@ -86,7 +100,9 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
   }
 
   const handleClose = () => {
-    localStorage.setItem(`warningBarOpen_${currentChainId}`, 'false');
+    if (!preview) {
+      localStorage.setItem(`warningBarOpen_${currentChainId}`, 'false');
+    }
     setShowWarning(false);
   };
 
@@ -118,7 +134,7 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
   };
 
   // Note: hide warnings when mobile menu is open
-  if (mobileDrawerOpen) return null;
+  if (mobileDrawerOpen && !preview) return null;
 
   // Resolve the single call-to-action. A URL action becomes a real external <Link> (proper anchor
   // semantics; the primitive adds target=_blank + rel=noopener); any other action type — or a

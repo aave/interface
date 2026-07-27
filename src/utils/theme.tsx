@@ -18,6 +18,7 @@ import { ScaleFade } from 'src/components/primitives/transitions/ScaleFade';
 
 import { colorToP3 } from './colorToP3';
 import { type FigmaColorName, figSurfaceShadow, figVars, onAccent, pickFigma } from './figmaColors';
+import { insetHighlightActive, insetHighlightBase } from './insetHighlight';
 import { motion } from './motion';
 
 // The app theme is built with MUI's CSS-variables engine (`experimental_extendTheme`), so it
@@ -529,6 +530,9 @@ export function getThemedComponents(theme: AppTheme) {
             // flex rows squish below their content). Row action buttons re-add an even floor
             // locally (ListButtonsColumn); deliberate collapses keep their own minWidth: 0.
             minWidth: 'unset',
+            // Never wrap the label to a second line — buttons size to their text and stay one line
+            // even in tight flex rows (e.g. the sGHO markets banner's action row).
+            whiteSpace: 'nowrap',
             // Hover/focus state transition at 100ms (overrides MUI's 250ms default).
             // `transform` is included so the active-press scale animates in and out.
             transition: theme.transitions.create(
@@ -766,34 +770,21 @@ export function getThemedComponents(theme: AppTheme) {
             // every option row is a firm 2rem tall on desktop too.
             [theme.breakpoints.up('sm')]: { minHeight: '2rem' },
             padding: '0.31rem 0.38rem',
-            position: 'relative',
-            isolation: 'isolate',
             // The hover/selected highlight is a pseudo-element inset 1px top & bottom, so
             // adjacent highlights keep a small gap while the row itself stays full-height — the
             // hover target is continuous, so moving between rows never interrupts the highlight.
-            '&::before': {
-              content: '""',
-              position: 'absolute',
+            // Shared recipe (geometry + motion) lives in insetHighlight.ts; the radius is kept
+            // concentric with the menu paper (paper radius − list inset).
+            ...insetHighlightBase({
+              theme,
+              radius: `calc(${MENU_PAPER_RADIUS} - ${MENU_LIST_INSET})`,
               top: '1px',
               bottom: '1px',
-              left: 0,
-              right: 0,
-              zIndex: -1,
-              // Concentric with the menu paper (paper radius − list inset).
-              borderRadius: `calc(${MENU_PAPER_RADIUS} - ${MENU_LIST_INSET})`,
-              // Highlight scales in on hover (0.96 → 1) and back out (1 → 0.96) on leave,
-              // animating alongside the background fade.
-              transform: 'scale(0.96)',
-              transition: theme.transitions.create(['transform', 'background-color'], {
-                duration: motion.duration.hover,
-              }),
-            },
+            }),
             // Hover, keyboard focus (arrow-key nav sets .Mui-focusVisible), and the selected row
             // all share one subtle highlight — the button-hover fill, never MUI's primary tint.
-            '&:hover::before, &.Mui-focusVisible::before, &.Mui-selected::before': {
-              backgroundColor: figVars['button-hover'],
-              transform: 'scale(1)',
-            },
+            '&:hover::before, &.Mui-focusVisible::before, &.Mui-selected::before':
+              insetHighlightActive(figVars['button-hover']),
             // Highlight lives on the pseudo above — keep the row's own background clear.
             // The compound selected states are listed explicitly: MUI's base MenuItem paints
             // `&.Mui-selected:hover` / `&.Mui-selected.Mui-focusVisible` with a primary tint at

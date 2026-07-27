@@ -1315,7 +1315,6 @@ msgid "Liquidation at"
 msgstr "Liquidation at"
 
 #: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
 msgid "Migrate your sGHO position"
 msgstr "Migrate your sGHO position"
 
@@ -3009,7 +3008,6 @@ msgid "This swap has a price impact of {0}%, which exceeds the 25% safety thresh
 msgstr "This swap has a price impact of {0}%, which exceeds the 25% safety threshold. To proceed, disable Aave Shield in the settings menu."
 
 #: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
 msgid "Earn into sGHO"
 msgstr "Earn into sGHO"
 
@@ -3531,7 +3529,6 @@ msgid "This asset has 0% LTV, meaning it does not contribute to borrowing power.
 msgstr "This asset has 0% LTV, meaning it does not contribute to borrowing power. Existing positions with this asset as collateral still count toward the liquidation threshold and protect your health factor. New positions cannot enable this asset as collateral."
 
 #: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
 msgid "GHO yield with instant withdraws."
 msgstr "GHO yield with instant withdraws."
 
@@ -3893,7 +3890,6 @@ msgstr "These assets are temporarily frozen or paused by Aave community decision
 msgid "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
 msgstr "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
 
-#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 msgid "To continue claiming rewards, migrate now."
 msgstr "To continue claiming rewards, migrate now."

@@ -79,6 +79,12 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
       import('../components/DataPrimitivesSection').then((m) => m.DataPrimitivesSection)
     ),
   },
+  {
+    slug: 'banners',
+    label: 'Banners',
+    group: 'Data & surfaces',
+    Component: dynamic(() => import('../components/BannersSection').then((m) => m.BannersSection)),
+  },
 ];
 
 // Sections grouped for the sidebar, preserving declaration order.
