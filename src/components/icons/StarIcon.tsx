@@ -1,7 +1,9 @@
 import { SvgIcon, SvgIconProps } from '@mui/material';
 
-// Gold used for the favourited state of the star toggle.
-export const FAVOURITE_STAR_COLOR = '#FFB300';
+// Theme token key for the favourited star's gold — resolves to Display-P3 + sRGB via the palette
+// (Figma: color(display-p3 1 0.7 0)). Consumers pass it as an sx `color`; the star fills it
+// through `currentColor`.
+export const FAVOURITE_STAR_COLOR = 'favourite-star';
 
 // Filled star for the "favourite" toggle. Fills with `currentColor` so the consumer
 // controls the color (e.g. gold when favourited, muted when not).

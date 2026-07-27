@@ -342,15 +342,39 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           }),
           ...(isSelected
             ? {}
-            : { '&:hover::before': insetHighlightActive(figVars['button-hover']) }),
-          // Star: always visible on mobile, hover-reveal on desktop
+            : {
+                // Row highlight on hover AND on keyboard focus — of the row itself or its star
+                // button (`:focus-within`) — so tabbing through always shows where you are.
+                '&:hover::before, &:focus-within::before': insetHighlightActive(
+                  figVars['button-hover']
+                ),
+              }),
+          // Star: always visible on mobile, hover-reveal on desktop; also reveal it whenever the
+          // row or the star button is focused, so keyboard users can see the favourite toggle.
           '& .grid-fav-btn': {
             opacity: isMobile || isFavorite ? 1 : 0,
             transition: 'opacity 0.15s',
           },
-          '&:hover .grid-fav-btn': {
+          '&:hover .grid-fav-btn, &:focus-within .grid-fav-btn': {
             opacity: 1,
           },
+          // Keyboard focus lands on the star itself: ring it with an outline so it reads as focused
+          // (global ripple is disabled — add our own affordance).
+          '& .grid-fav-btn:focus-visible': {
+            opacity: 1,
+            // Same focus ring the buttons use (MuiButton root in theme.tsx).
+            outline: `2px solid ${figVars['fg-1']}`,
+            outlineOffset: '2px',
+          },
+          // The empty (non-favourited) star fills a step stronger (fg-4 → fg-3) on hover / focus.
+          ...(isFavorite
+            ? {}
+            : {
+                '&:hover .grid-fav-btn .MuiSvgIcon-root, & .grid-fav-btn:focus-visible .MuiSvgIcon-root':
+                  {
+                    color: figVars['fg-3'],
+                  },
+              }),
         }}
       >
         {renderRowLogo(logo)}

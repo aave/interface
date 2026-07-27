@@ -6,6 +6,8 @@ export interface ShowcaseSection {
   label: string;
   group: string;
   Component: ComponentType;
+  /** Opt out of the layout's max-width content container (e.g. full-width page banners). */
+  fullBleed?: boolean;
 }
 
 // One entry per route (`/dev/components/<slug>`). Each section is lazily loaded so a
@@ -83,6 +85,7 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     slug: 'banners',
     label: 'Banners',
     group: 'Data & surfaces',
+    fullBleed: true,
     Component: dynamic(() => import('../components/BannersSection').then((m) => m.BannersSection)),
   },
 ];

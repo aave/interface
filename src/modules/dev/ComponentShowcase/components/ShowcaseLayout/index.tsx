@@ -12,7 +12,7 @@ import { useColorScheme } from '@mui/material/styles';
 import { ReactNode, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
 
-import { SHOWCASE_GROUPS } from '../../utils/registry';
+import { SHOWCASE_GROUPS, SHOWCASE_SECTIONS } from '../../utils/registry';
 import { ThemeControl } from '../ThemeControl';
 
 interface ShowcaseLayoutProps {
@@ -33,6 +33,9 @@ export const ShowcaseLayout = ({ activeSlug, children }: ShowcaseLayoutProps) =>
     () => (appMode === 'system' ? systemMode : appMode) ?? 'light'
   );
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Some sections (page-wide banners) opt out of the max-width content container.
+  const fullBleed = SHOWCASE_SECTIONS.find((s) => s.slug === activeSlug)?.fullBleed ?? false;
 
   // One nav block, reused by the desktop sidebar and the mobile drawer.
   const nav = (
@@ -174,7 +177,7 @@ export const ShowcaseLayout = ({ activeSlug, children }: ShowcaseLayoutProps) =>
           <ThemeControl mode={scheme} onChange={setScheme} />
         </Box>
 
-        <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
+        <Container maxWidth={fullBleed ? false : 'lg'} sx={{ py: { xs: 6, md: 10 } }}>
           {children}
         </Container>
       </Box>

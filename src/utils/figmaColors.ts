@@ -67,6 +67,8 @@ export const figmaLight = {
   'data-pink': '#e1a4d9',
   'button-hover': 'rgba(0, 0, 0, 0.025)',
   'data-green-gho': '#5dff93',
+  // Gold for the favourited market star (mode-agnostic; Figma color(display-p3 1 0.7 0)).
+  'favourite-star': '#FFB300',
   // sGHO markets-banner gradient tints — data-green / neutral washes at 6%.
   'sgho-banner-green': 'rgba(50, 201, 88, 0.06)',
   'sgho-banner-fade': 'rgba(255, 255, 255, 0.06)',
@@ -183,6 +185,8 @@ export const figmaDark = {
   'table-item-hover-1': '#1e1d1d',
   'table-item-hover-2': '#282727',
   'data-green-gho': '#5dff93',
+  // Gold for the favourited market star (mode-agnostic; Figma color(display-p3 1 0.7 0)).
+  'favourite-star': '#FFB300',
   // sGHO markets-banner gradient tints — dark data-green / neutral washes at 6%.
   'sgho-banner-green': 'rgba(102, 195, 153, 0.06)',
   'sgho-banner-fade': 'rgba(255, 255, 255, 0.06)',
