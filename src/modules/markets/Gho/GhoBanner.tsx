@@ -137,11 +137,11 @@ export const SavingsGhoBanner = ({
           overflow: 'hidden',
         }}
       >
-        <Stack direction="row" alignItems="center" gap={4}>
+        <Stack direction="row" alignItems="center" gap="1.5rem">
           <Box
             component="img"
-            src="/sgho-banner.svg"
-            alt="ghost and coin"
+            src="/gho-coins.png"
+            alt="GHO coins"
             sx={{ height: '3.5rem', flexShrink: 0 }}
           />
           <SavingsGhoBannerHeading hasLegacyPosition={hasLegacyPosition} />
@@ -212,8 +212,8 @@ const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: bool
       >
         <Box
           component="img"
-          src="/sgho-banner.svg"
-          alt="ghost and coin"
+          src="/gho-coins.png"
+          alt="GHO coins"
           sx={{ position: 'absolute', height: '100px', top: -8, right: 8 }}
         />
         <Stack
