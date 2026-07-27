@@ -104,7 +104,7 @@ const selectionControlRootReset = {
   },
 };
 
-// Shared thumb shadow for the Slider and Switch (kept matched — see MuiSlider / MuiSwitch).
+// Soft shadow under the Switch's thumb.
 const controlThumbShadow = '0px 1px 1px rgba(0, 0, 0, 0.12)';
 
 const theme = createTheme();
@@ -487,26 +487,11 @@ export function getThemedComponents(theme: AppTheme) {
                 outline: `2px solid ${figVars['fg-1']}`,
                 outlineOffset: '3px',
               },
-            },
-          },
-        },
-      },
-      MuiSlider: {
-        styleOverrides: {
-          root: {
-            // Match the Switch's palette: white thumb (with the switch's soft shadow), purple-1
-            // filled track, fg-3 unfilled rail.
-            '& .MuiSlider-thumb': {
-              color: onAccent,
-              boxShadow: controlThumbShadow,
-            },
-            '& .MuiSlider-track': {
-              color: figVars['purple-1'],
-              border: 'none',
-            },
-            '& .MuiSlider-rail': {
-              color: figVars['fg-3'],
-              opacity: 1,
+              // Disabled dropdown: inert to hover / pointer / touch (no hover fill step, no
+              // pointer cursor). The faded look still comes from MUI's `.Mui-disabled` text.
+              '&.Mui-disabled': {
+                pointerEvents: 'none',
+              },
             },
           },
         },
@@ -942,6 +927,22 @@ export function getThemedComponents(theme: AppTheme) {
             opacity: 1,
             backgroundColor: figVars['fg-3'],
             borderRadius: '9px',
+          },
+        },
+      },
+      MuiFormControlLabel: {
+        styleOverrides: {
+          root: {
+            // A Switch has no internal padding, so MUI's default -11px label offset (meant for
+            // padded checkboxes/radios) crams the switch against whatever precedes it in a row.
+            // Zero it for switch-labeled controls, and give the switch↔label text a 0.5rem gap.
+            // Checkbox/radio labels keep MUI's defaults.
+            '&:has(.MuiSwitch-root)': {
+              marginLeft: 0,
+              '& .MuiFormControlLabel-label': {
+                marginLeft: '0.5rem',
+              },
+            },
           },
         },
       },

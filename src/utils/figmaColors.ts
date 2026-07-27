@@ -115,8 +115,6 @@ export const figmaLight = {
   'disabled-bg': '#EAEBEF',
   'input-line': '#383D511F',
   'input-border-hover': '#CBCDD8',
-  'slider-thumb': '#62677B',
-  'slider-track': '#383D51',
   'surface-elevated': '#ffffff',
 } as const;
 
@@ -231,8 +229,6 @@ export const figmaDark = {
   'disabled-bg': '#EBEBEF1F',
   'input-line': '#EBEBEF6B',
   'input-border-hover': '#CBCDD8',
-  'slider-thumb': '#C9B3F9',
-  'slider-track': '#9C93B3',
   'surface-elevated': '#1E1E20',
 } as const;
 

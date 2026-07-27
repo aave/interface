@@ -30,6 +30,8 @@ export const Section = ({ title, description, children }: SectionProps) => (
         </Typography>
       )}
     </Box>
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>{children}</Box>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 6 }}>
+      {children}
+    </Box>
   </Box>
 );
