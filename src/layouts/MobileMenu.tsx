@@ -1,27 +1,16 @@
-import { MenuIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import {
-  Box,
-  Button,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
-import React, { ReactNode, useEffect, useState } from 'react';
+import { Box, Button, Divider, List, ListItem, ListItemText } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { BridgeIcon } from 'src/components/icons/BridgeIcon';
+import { SwapIcon } from 'src/components/icons/SwapIcon';
 import { useModalContext } from 'src/hooks/useModal';
-import { PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
+import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
+import { isFeatureEnabled, PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
-import { Link } from '../components/primitives/Link';
-import { moreNavigation } from '../ui-config/menu-items';
 import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
-import { MobileCloseButton } from './components/MobileCloseButton';
 import { NavItems } from './components/NavItems';
 import { ShieldSwitcher } from './components/ShieldSwitcher';
 import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
@@ -32,24 +21,67 @@ interface MobileMenuProps {
   headerHeight: number;
 }
 
-const MenuItemsWrapper = ({ children, title }: { children: ReactNode; title: ReactNode }) => (
-  <Box sx={{ mb: 6, '&:last-of-type': { mb: 0, '.MuiDivider-root': { display: 'none' } } }}>
-    <Box sx={{ px: 2 }}>
-      <Typography variant="subheader2" sx={{ color: '#A5A8B6', px: 4, py: 2 }}>
-        {title}
-      </Typography>
+// The options scroll area: full-width so its scrollbar sits on the right edge, with 0.75rem inner
+// padding for the content.
+const scrollAreaSx = {
+  flex: 1,
+  minHeight: 0,
+  overflowY: 'auto',
+  px: '0.75rem',
+  pb: '3rem',
+} as const;
 
-      {children}
-    </Box>
+// Rows inside the drawer lists: 3rem tall, H3 label text, gutters zeroed so they align with the
+// scroll area's 0.75rem inset. Applied via sx so the shared row components (SettingSwitchRow,
+// LanguagesList) don't need to know about it.
+const menuListSx = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.5rem',
+  '& .MuiListItem-root': {
+    minHeight: '3rem',
+    borderRadius: '0.5rem',
+    px: 0,
+    cursor: 'pointer',
+    '&:hover': { bgcolor: 'bg-4' },
+  },
+  '& .MuiListItemText-primary': { fontSize: '1.125rem', fontWeight: 500, lineHeight: '120%' },
+};
 
-    <Divider sx={{ borderColor: '#F2F3F729', mt: 6 }} />
+// The hamburger (three rounded lines, per the design SVG) that morphs into an X. Rendered inside
+// one fixed-size button (below), so toggling never resizes the button and shifts the header.
+// One bar of the hamburger; the three uses below add position + the open-state transform.
+const toggleBar = {
+  position: 'absolute' as const,
+  left: '4px',
+  width: '16px',
+  height: '2px',
+  borderRadius: '1px',
+  backgroundColor: 'currentColor',
+  transition: 'transform 0.2s ease, opacity 0.2s ease',
+};
+
+const MenuToggleIcon = ({ open }: { open: boolean }) => (
+  <Box sx={{ position: 'relative', width: 24, height: 24, color: 'fg-2' }}>
+    <Box
+      sx={{ ...toggleBar, top: '5px', transform: open ? 'translateY(6px) rotate(45deg)' : 'none' }}
+    />
+    <Box sx={{ ...toggleBar, top: '11px', opacity: open ? 0 : 1 }} />
+    <Box
+      sx={{
+        ...toggleBar,
+        top: '17px',
+        transform: open ? 'translateY(-6px) rotate(-45deg)' : 'none',
+      }}
+    />
   </Box>
 );
 
 export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => {
-  const { i18n } = useLingui();
   const [isLanguagesListOpen, setIsLanguagesListOpen] = useState(false);
-  const { openReadMode } = useModalContext();
+  const { openReadMode, openSwitch, openBridge } = useModalContext();
+  const currentMarketData = useRootStore((store) => store.currentMarketData);
+  const showSwitchButton = isFeatureEnabled.switch(currentMarketData);
 
   useEffect(() => setIsLanguagesListOpen(false), [open]);
 
@@ -58,71 +90,93 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
     openReadMode();
   };
 
+  const handleSwap = () => {
+    setOpen(false);
+    openSwitch();
+  };
+
+  const handleBridge = () => {
+    setOpen(false);
+    openBridge();
+  };
+
   return (
     <>
-      {open ? (
-        <MobileCloseButton setOpen={setOpen} />
-      ) : (
-        <Button
-          id="settings-button-mobile"
-          variant="outlined"
-          sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
-          onClick={() => setOpen(true)}
-        >
-          <SvgIcon sx={{ color: '#F1F1F3' }} fontSize="small">
-            <MenuIcon />
-          </SvgIcon>
-        </Button>
-      )}
+      <Button
+        id="settings-button-mobile"
+        variant="outlined"
+        aria-label="menu"
+        aria-pressed={open}
+        sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
+        onClick={() => setOpen(!open)}
+      >
+        <MenuToggleIcon open={open} />
+      </Button>
 
       <DrawerWrapper open={open} setOpen={setOpen} headerHeight={headerHeight}>
         {!isLanguagesListOpen ? (
           <>
-            <MenuItemsWrapper title={<Trans>Menu</Trans>}>
+            {/* Only the options scroll — the action buttons below stay pinned. */}
+            <Box sx={scrollAreaSx}>
               <NavItems setOpen={setOpen} />
-            </MenuItemsWrapper>
-            <MenuItemsWrapper title={<Trans>Global settings</Trans>}>
-              <List>
+              <Divider sx={{ borderColor: 'border-0', my: 2 }} />
+              {/* Watch Wallet sits above the global-settings rows, no divider between them. */}
+              <List disablePadding sx={menuListSx}>
+                <ListItem sx={{ color: 'fg-1' }} onClick={handleOpenReadMode}>
+                  <ListItemText>
+                    <Trans>Watch Wallet</Trans>
+                  </ListItemText>
+                </ListItem>
                 <DarkModeSwitcher />
                 <ShieldSwitcher />
                 {PROD_ENV && <TestNetModeSwitcher />}
                 <LanguageListItem onClick={() => setIsLanguagesListOpen(true)} />
               </List>
-            </MenuItemsWrapper>
-            <MenuItemsWrapper title={<Trans>Links</Trans>}>
-              <List>
-                <ListItem sx={{ cursor: 'pointer', color: '#F1F1F3' }} onClick={handleOpenReadMode}>
-                  <ListItemText>
-                    <Trans>Watch Wallet</Trans>
-                  </ListItemText>
-                </ListItem>
+            </Box>
 
-                <ListItem
-                  sx={{ color: '#F1F1F3' }}
-                  component={Link}
-                  href={'/v3-migration'}
-                  onClick={() => setOpen(false)}
+            <Box sx={{ flexShrink: 0, position: 'relative' }}>
+              {/* Fade scrim over the bottom of the scroll area, in place of a divider. */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: '100%',
+                  left: 0,
+                  right: 0,
+                  height: '2rem',
+                  pointerEvents: 'none',
+                  background: `linear-gradient(to top, ${figVars['bgp-2']}, transparent)`,
+                }}
+              />
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', px: '0.75rem' }}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  startIcon={<SwapIcon sx={{ fontSize: '18px' }} />}
+                  onClick={handleSwap}
+                  disabled={!showSwitchButton}
                 >
-                  <ListItemText>
-                    <Trans>Migrate to Aave V3</Trans>
-                  </ListItemText>
-                </ListItem>
-                {moreNavigation.map((item, index) => (
-                  <ListItem component={Link} href={item.link} sx={{ color: '#F1F1F3' }} key={index}>
-                    <ListItemIcon sx={{ minWidth: 'unset', mr: 3 }}>
-                      <SvgIcon sx={{ fontSize: '20px', color: '#F1F1F3' }}>{item.icon}</SvgIcon>
-                    </ListItemIcon>
-
-                    <ListItemText>{i18n._(item.title)}</ListItemText>
-                  </ListItem>
-                ))}
-              </List>
-            </MenuItemsWrapper>
+                  <Trans>Swap</Trans>
+                </Button>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
+                  onClick={handleBridge}
+                >
+                  <Trans>Bridge GHO</Trans>
+                </Button>
+              </Box>
+            </Box>
           </>
         ) : (
-          <List sx={{ px: 2 }}>
-            <LanguagesList onClick={() => setIsLanguagesListOpen(false)} />
-          </List>
+          <Box sx={scrollAreaSx}>
+            <List
+              disablePadding
+              sx={{ ...menuListSx, '& .MuiListItemIcon-root': { width: 28, height: 20 } }}
+            >
+              <LanguagesList onClick={() => setIsLanguagesListOpen(false)} />
+            </List>
+          </Box>
         )}
       </DrawerWrapper>
     </>

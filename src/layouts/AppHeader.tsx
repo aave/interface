@@ -281,7 +281,7 @@ export function AppHeader() {
               variant="dot"
               badgeContent=""
               color="secondary"
-              sx={{ mr: '0.62rem' }}
+              sx={{ mr: '0.62rem', display: { xs: 'none', md: 'inline-flex' } }}
             >
               <Button
                 onClick={handleSwitchClick}
@@ -319,7 +319,7 @@ export function AppHeader() {
               // variant="dot"
               badgeContent=""
               color="secondary"
-              sx={{ mr: '0.62rem' }}
+              sx={{ mr: '0.62rem', display: { xs: 'none', md: 'inline-flex' } }}
             >
               <Button
                 onClick={handleBridgeClick}

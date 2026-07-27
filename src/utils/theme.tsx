@@ -76,6 +76,10 @@ const secondaryPillStyle = {
 // Shared box geometry for the custom selection-control icons (checkbox + radio).
 const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
 
+// Keyboard-focus ring shared by the buttons and the selection controls / switch: a 2px ring in the
+// element's own colour, offset 3px out.
+const focusRing = { outline: '2px solid currentColor', outlineOffset: '3px' } as const;
+
 // Selection-control (checkbox + radio) icon recipes — shared so the two never drift. The unchecked
 // box is a bg-2 fill with an inset fg-5 hairline that darkens to fg-4 on hover (keyed to the shared
 // .MuiButtonBase-root both controls carry, so one selector covers both); the checked box is a
@@ -88,6 +92,9 @@ const selectionControlResting = {
   '.MuiButtonBase-root:hover &': {
     boxShadow: `inset 0 0 0 1px ${figVars['fg-4']}`,
   },
+  // Keyboard-focus ring (see `focusRing`), hugging the icon box. The focus class lands on the
+  // shared ButtonBase root, so key it off that.
+  '.MuiButtonBase-root.Mui-focusVisible &': focusRing,
 };
 const selectionControlChecked = {
   ...checkboxIconBox,
@@ -95,6 +102,8 @@ const selectionControlChecked = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  // Keyboard-focus ring (see `focusRing`).
+  '.MuiButtonBase-root.Mui-focusVisible &': focusRing,
 };
 const selectionControlRootReset = {
   root: {
@@ -900,6 +909,10 @@ export function getThemedComponents(theme: AppTheme) {
             height: '1.125rem',
             padding: 0,
             flexShrink: 0,
+            borderRadius: '9px',
+            // Keyboard-focus ring (see `focusRing`). The focus class lands on the inner
+            // switchBase, so key the root's ring off it.
+            '&:has(.Mui-focusVisible)': focusRing,
           },
           switchBase: {
             padding: 0,

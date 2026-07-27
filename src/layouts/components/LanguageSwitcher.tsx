@@ -1,4 +1,4 @@
-import { CheckIcon, ChevronLeftIcon } from '@heroicons/react/solid';
+import { CheckIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import {
@@ -31,13 +31,11 @@ export const LanguageListItem = ({ component = ListItem, onClick }: LanguageList
   const { i18n } = useLingui();
 
   return (
-    <Box component={component} onClick={onClick} sx={{ color: { xs: '#F1F1F3', md: 'fg-1' } }}>
+    <Box component={component} onClick={onClick} sx={{ color: 'fg-1' }}>
       <ListItemText>
         <Trans>Language</Trans>
       </ListItemText>
-      <Box
-        sx={{ display: 'flex', alignItems: 'center', gap: 1, color: { xs: '#F1F1F3', md: 'fg-3' } }}
-      >
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'fg-3' }}>
         <ListItemText>{i18n._(langMap[i18n.locale as keyof typeof langMap])}</ListItemText>
         <ChevronRightIcon sx={{ fontSize: 20 }} />
       </Box>
@@ -50,24 +48,12 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
 
   return (
     <>
-      <Box
-        component={component}
-        sx={{ color: { xs: '#F1F1F3', md: 'fg-1' }, mb: '4px' }}
-        onClick={onClick}
-      >
-        <ListItemIcon
-          sx={{
-            minWidth: 'unset !important',
-            mr: 2,
-            color: { xs: '#F1F1F3', md: 'primary.light' },
-          }}
-        >
-          <SvgIcon fontSize="small">
-            <ChevronLeftIcon />
-          </SvgIcon>
+      <Box component={component} sx={{ color: 'fg-1', mb: '4px' }} onClick={onClick}>
+        <ListItemIcon sx={{ minWidth: 'unset !important', mr: 2, color: 'fg-1' }}>
+          <ChevronRightIcon sx={{ fontSize: 24, transform: 'rotate(180deg)' }} />
         </ListItemIcon>
         <ListItemText disableTypography>
-          <Typography variant="subheader2">
+          <Typography variant="h3">
             <Trans>Select language</Trans>
           </Typography>
         </ListItemText>
@@ -79,7 +65,7 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
           key={lang}
           onClick={() => dynamicActivateLanguage(lang)}
           sx={{
-            color: { xs: '#F1F1F3', md: 'fg-1' },
+            color: 'fg-1',
             '.MuiListItemIcon-root': { minWidth: 'unset' },
             '.MuiMenuItemIcon-root': { minWidth: 'unset' },
           }}
@@ -92,7 +78,7 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
           <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
           {lang === i18n.locale && (
             <ListItemIcon sx={{ m: 0 }}>
-              <SvgIcon fontSize="small" sx={{ color: { xs: '#F1F1F3', md: 'fg-1' } }}>
+              <SvgIcon fontSize="small" sx={{ color: 'fg-1' }}>
                 <CheckIcon />
               </SvgIcon>
             </ListItemIcon>

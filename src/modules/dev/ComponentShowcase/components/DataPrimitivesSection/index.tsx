@@ -1,10 +1,8 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { TypographyGradient } from 'src/components/primitives/TypographyGradient';
 import {
   DetailsCollateralLine,
   DetailsCooldownLine,
@@ -57,15 +55,6 @@ export const DataPrimitivesSection = () => (
           <FormattedNumber value={12.5} symbol="AAVE" variant="h5" />
         </Row>
       </Box>
-    </Specimen>
-
-    <Specimen label="TypographyGradient">
-      <TypographyGradient variant="h2">Gradient text</TypographyGradient>
-    </Specimen>
-
-    <Specimen label="Link">
-      <Link href="/markets">Internal link</Link>
-      <Link href="https://aave.com">External link</Link>
     </Specimen>
 
     <Specimen label="Details*Line family (transaction overview rows)" fullWidth>

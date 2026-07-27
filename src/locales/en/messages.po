@@ -255,6 +255,10 @@ msgstr "Aave is a fully decentralized, community governed protocol by the AAVE t
 msgid "Please enter a valid wallet address."
 msgstr "Please enter a valid wallet address."
 
+#: src/components/ConnectWalletPaper.tsx
+msgid "Connect your wallet to see your supplies, borrowings, and open positions."
+msgstr "Connect your wallet to see your supplies, borrowings, and open positions."
+
 #: src/components/transactions/Borrow/BorrowAmountWarning.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
@@ -976,6 +980,10 @@ msgstr "Position swaps are disabled for this asset due to security reasons."
 #: pages/v3-migration.page.tsx
 msgid "Please connect your wallet to see migration tool."
 msgstr "Please connect your wallet to see migration tool."
+
+#: src/components/WalletConnection/ConnectWalletButton.tsx
+msgid "Connect Wallet"
+msgstr "Connect Wallet"
 
 #: src/hooks/useReserveActionState.tsx
 #: src/hooks/useReserveActionState.tsx
@@ -1965,10 +1973,6 @@ msgstr "Cannot switch to this category"
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
 
-#: src/layouts/MobileMenu.tsx
-msgid "Links"
-msgstr "Links"
-
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 #: src/modules/sGho/SGhoDepositRow.tsx
@@ -2240,10 +2244,6 @@ msgstr "I confirm the swap knowing that I could lose up to <0>{0}%</0> on this s
 msgid "Covered debt"
 msgstr "Covered debt"
 
-#: src/components/WalletConnection/ConnectWalletButton.tsx
-msgid "Connect wallet"
-msgstr "Connect wallet"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Safety of your deposited collateral against the borrowed assets and its underlying value."
 msgstr "Safety of your deposited collateral against the borrowed assets and its underlying value."
@@ -2406,6 +2406,7 @@ msgstr "Target {0}"
 msgid "For security reasons, limit orders are not supported for Native tokens. To place a limit order, use the wrapped version."
 msgstr "For security reasons, limit orders are not supported for Native tokens. To place a limit order, use the wrapped version."
 
+#: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/layouts/components/StakingMenu.tsx
 msgid "Umbrella"
@@ -2875,6 +2876,7 @@ msgid "Staking Rewards"
 msgstr "Staking Rewards"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
+#: src/layouts/MobileMenu.tsx
 msgid "Bridge GHO"
 msgstr "Bridge GHO"
 
@@ -3772,10 +3774,6 @@ msgstr "Staked"
 msgid "Supply APY"
 msgstr "Supply APY"
 
-#: src/layouts/MobileMenu.tsx
-msgid "Global settings"
-msgstr "Global settings"
-
 #: src/components/transactions/Swap/details/RepayWithCollateralDetails.tsx
 msgid "Collateral balance after repay"
 msgstr "Collateral balance after repay"
@@ -3792,7 +3790,6 @@ msgstr "copy the error"
 msgid "Deposit GHO into Savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow."
 msgstr "Deposit GHO into Savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow."
 
-#: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Please connect your wallet to see your supplies, borrowings, and open positions."
@@ -3833,7 +3830,10 @@ msgstr "Repaying {0} with {1}"
 msgid "All Categories"
 msgstr "All Categories"
 
-#: src/layouts/MobileMenu.tsx
+#: src/components/ConnectWalletPaper.tsx
+msgid "No Wallet Connected"
+msgstr "No Wallet Connected"
+
 #: src/layouts/MoreMenu.tsx
 msgid "Migrate to Aave V3"
 msgstr "Migrate to Aave V3"
@@ -4026,7 +4026,6 @@ msgstr "Current APR"
 msgid "Cancel order"
 msgstr "Cancel order"
 
-#: src/components/ConnectWalletPaper.tsx
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
@@ -4146,6 +4145,7 @@ msgstr "Restaked"
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
+#: src/layouts/MobileMenu.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
@@ -4506,10 +4506,6 @@ msgstr "Unable to Connect"
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Umbrella is the upgraded version of the Safety Module. Manage your previously staked assets"
 msgstr "Umbrella is the upgraded version of the Safety Module. Manage your previously staked assets"
-
-#: src/layouts/MobileMenu.tsx
-msgid "Menu"
-msgstr "Menu"
 
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Active {0} borrow is not compatible with this category. Repay your {1} borrow to use this option."

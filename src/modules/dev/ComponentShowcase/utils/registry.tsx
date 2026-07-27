@@ -66,6 +66,14 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     ),
   },
   {
+    slug: 'empty-states',
+    label: 'Empty states',
+    group: 'Feedback & overlays',
+    Component: dynamic(() =>
+      import('../components/EmptyStatesSection').then((m) => m.EmptyStatesSection)
+    ),
+  },
+  {
     slug: 'surfaces',
     label: 'Surfaces & cards',
     group: 'Data & surfaces',

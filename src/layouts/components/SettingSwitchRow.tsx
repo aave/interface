@@ -1,6 +1,5 @@
 import { Box, ListItem, ListItemText, MenuItem, Switch } from '@mui/material';
 import { ReactNode } from 'react';
-import { figmaDark } from 'src/utils/figmaColors';
 
 interface SettingSwitchRowProps {
   component?: typeof MenuItem | typeof ListItem;
@@ -12,8 +11,7 @@ interface SettingSwitchRowProps {
 }
 
 // A settings-menu row: label on the left, toggle on the right. Shared by the dark-mode /
-// shield / testnet switchers, which render in both the desktop settings menu and the
-// (always-dark) mobile drawer — hence the responsive text/track colors.
+// shield / testnet switchers, rendered in both the desktop settings menu and the mobile drawer.
 export const SettingSwitchRow = ({
   component = ListItem,
   label,
@@ -26,9 +24,7 @@ export const SettingSwitchRow = ({
     onClick={onClick}
     sx={{
       cursor: 'pointer',
-      color: { xs: '#F1F1F3', md: 'fg-1' },
-      // Desktop rows take their height from the shared MenuItem min-height (2rem);
-      // mobile keeps its own vertical padding.
+      color: 'fg-1',
       py: { xs: 1.5 },
     }}
   >
@@ -36,7 +32,7 @@ export const SettingSwitchRow = ({
     <Switch
       checked={checked}
       onClick={onSwitchClick}
-      sx={{ '.MuiSwitch-track': { bgcolor: { xs: figmaDark['border-2'], md: 'primary.light' } } }}
+      sx={{ '.MuiSwitch-track': { bgcolor: { md: 'primary.light' } } }}
     />
   </Box>
 );

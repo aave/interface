@@ -141,8 +141,8 @@ export const ListWrapper = ({
 
         {!!localStorageName && !noData && (
           <Button
-            variant="text"
-            size="small"
+            variant="outlined"
+            size="medium"
             onClick={() => {
               handleTrackingEvents();
 
