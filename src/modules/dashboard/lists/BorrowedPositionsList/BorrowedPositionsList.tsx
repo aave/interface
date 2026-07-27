@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -150,6 +150,7 @@ export const BorrowedPositionsList = () => {
         </Typography>
       }
       localStorageName="borrowedAssetsDashboardTableCollapse"
+      collapseLabel={t`your borrows`}
       subTitleComponent={
         showEModeButton ? (
           <DashboardEModeButton userEmodeCategoryId={user ? user.userEmodeCategoryId : 0} />

@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
+import { Box, BoxProps, Button, Paper, PaperProps } from '@mui/material';
 import { ReactNode, useState } from 'react';
+import { MinusIcon } from 'src/components/icons/MinusIcon';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
 
@@ -20,6 +21,8 @@ interface ListWrapperProps {
   paperSx?: PaperProps['sx'];
   topInfoSx?: BoxProps['sx'];
   onCollapseChange?: (collapsed: boolean) => void;
+  /** What the card hides — renders the toggle as "Hide {collapseLabel}" / "Show {collapseLabel}". */
+  collapseLabel?: string;
 }
 
 export const ListWrapper = ({
@@ -36,6 +39,7 @@ export const ListWrapper = ({
   paperSx,
   topInfoSx,
   onCollapseChange,
+  collapseLabel,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -92,6 +96,18 @@ export const ListWrapper = ({
 
   const collapsed = isCollapse && !noData;
 
+  const collapseText = collapsed ? (
+    collapseLabel ? (
+      <Trans>Show {collapseLabel}</Trans>
+    ) : (
+      <Trans>Show</Trans>
+    )
+  ) : collapseLabel ? (
+    <Trans>Hide {collapseLabel}</Trans>
+  ) : (
+    <Trans>Hide</Trans>
+  );
+
   return (
     <Paper
       variant="card"
@@ -124,31 +140,9 @@ export const ListWrapper = ({
         </Box>
 
         {!!localStorageName && !noData && (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              cursor: 'pointer',
-              minHeight: '28px',
-              pl: 3,
-              span: {
-                width: '14px',
-                height: '2px',
-                bgcolor: 'fg-2',
-                position: 'relative',
-                ml: 1,
-                '&:after': {
-                  content: "''",
-                  position: 'absolute',
-                  width: '14px',
-                  height: '2px',
-                  bgcolor: 'fg-2',
-                  transition: 'all 0.2s ease',
-                  transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
-                  opacity: collapsed ? 1 : 0,
-                },
-              },
-            }}
+          <Button
+            variant="text"
+            size="small"
             onClick={() => {
               handleTrackingEvents();
 
@@ -158,12 +152,27 @@ export const ListWrapper = ({
                 onCollapseChange?.(nextIsCollapse);
               }
             }}
+            endIcon={
+              // − when expanded; a rotated copy fades in to form a + when collapsed.
+              <Box sx={{ position: 'relative', display: 'inline-flex', color: 'fg-3' }}>
+                <MinusIcon sx={{ fontSize: 18 }} />
+                <MinusIcon
+                  sx={{
+                    fontSize: 18,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    transform: 'rotate(90deg)',
+                    opacity: collapsed ? 1 : 0,
+                    transition: 'opacity 0.2s ease',
+                  }}
+                />
+              </Box>
+            }
+            sx={{ flexShrink: 0, ml: 3, color: 'fg-2' }}
           >
-            <Typography variant="buttonM" color="fg-2">
-              {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
-            </Typography>
-            <span />
-          </Box>
+            {collapseText}
+          </Button>
         )}
       </Box>
 

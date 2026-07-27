@@ -1,5 +1,5 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useMemo, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -175,6 +175,7 @@ export const SuppliedPositionsList = () => {
         </Typography>
       }
       localStorageName="suppliedAssetsDashboardTableCollapse"
+      collapseLabel={t`your supplies`}
       noData={!sortedReserves.length}
       subChildrenComponent={
         !!userHasSmallBalanceAssets && (

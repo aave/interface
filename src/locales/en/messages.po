@@ -965,6 +965,10 @@ msgstr "Greek"
 msgid "Claim {symbol}"
 msgstr "Claim {symbol}"
 
+#: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+msgid "assets to borrow"
+msgstr "assets to borrow"
+
 #: src/components/transactions/Swap/errors/shared/FlashLoanDisabledBlockingError.tsx
 msgid "Position swaps are disabled for this asset due to security reasons."
 msgstr "Position swaps are disabled for this asset due to security reasons."
@@ -1440,6 +1444,10 @@ msgstr "Borrow balance after repay"
 #: src/modules/migration/MigrationLists.tsx
 msgid "Supplied assets"
 msgstr "Supplied assets"
+
+#: src/components/lists/ListWrapper.tsx
+msgid "Hide {collapseLabel}"
+msgstr "Hide {collapseLabel}"
 
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
@@ -2178,6 +2186,10 @@ msgstr "Details"
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Stake cooldown activated"
 msgstr "Stake cooldown activated"
+
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+msgid "assets to supply"
+msgstr "assets to supply"
 
 #: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "These funds have been borrowed and are not available for withdrawal at this time."
@@ -3302,6 +3314,10 @@ msgstr "Select language"
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+msgid "your supplies"
+msgstr "your supplies"
+
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim {0}"
 msgstr "Claim {0}"
@@ -3494,6 +3510,14 @@ msgstr "No eligible assets to swap."
 #: src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
 msgid "Depositing"
 msgstr "Depositing"
+
+#: src/components/lists/ListWrapper.tsx
+msgid "Show {collapseLabel}"
+msgstr "Show {collapseLabel}"
+
+#: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+msgid "your borrows"
+msgstr "your borrows"
 
 #: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
 msgid "Supply apy"

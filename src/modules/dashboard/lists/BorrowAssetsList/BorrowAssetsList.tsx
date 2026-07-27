@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
@@ -235,6 +235,7 @@ export const BorrowAssetsList = () => {
       }
       onCollapseChange={setIsListCollapsed}
       localStorageName="borrowAssetsDashboardTableCollapse"
+      collapseLabel={t`assets to borrow`}
       withTopMargin
       noData={borrowDisabled}
       subChildrenComponent={

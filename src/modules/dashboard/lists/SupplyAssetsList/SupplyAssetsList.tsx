@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { Fragment, useState } from 'react';
@@ -310,6 +310,7 @@ export const SupplyAssetsList = () => {
       }
       onCollapseChange={setIsListCollapsed}
       localStorageName="supplyAssetsDashboardTableCollapse"
+      collapseLabel={t`assets to supply`}
       withTopMargin
       noData={supplyDisabled}
       subChildrenComponent={
