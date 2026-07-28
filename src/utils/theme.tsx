@@ -557,9 +557,12 @@ export function getThemedComponents(theme: AppTheme) {
             borderRadius: '0.5rem',
           },
           sizeSmall: {
-            ...theme.typography.buttonS,
+            // v3: small buttons use buttonM (14px / 500 / no uppercase) + 0.62rem side padding —
+            // the same label style as sizeMedium, at a compact height. (Was the legacy buttonS:
+            // uppercase 10px / 6px padding, which the button rework never migrated.)
+            ...theme.typography.buttonM,
             height: '28px',
-            padding: '0 6px',
+            padding: '0 0.62rem',
             borderRadius: '0.375rem',
           },
         },

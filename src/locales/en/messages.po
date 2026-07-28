@@ -52,6 +52,10 @@ msgstr "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and pro
 msgid "Borrow cap"
 msgstr "Borrow cap"
 
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Stake your Aave aTokens or underlying assets to earn rewards."
+msgstr "Stake your Aave aTokens or underlying assets to earn rewards."
+
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Estimated time"
 msgstr "Estimated time"
@@ -180,10 +184,6 @@ msgstr "Price data is not currently available for this reserve on the protocol s
 #: src/modules/history/HistoryTopPanel.tsx
 msgid "Transaction history"
 msgstr "Transaction history"
-
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Learn more about the risks."
-msgstr "Learn more about the risks."
 
 #: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
@@ -382,11 +382,6 @@ msgstr "or from the"
 msgid "Sign to continue"
 msgstr "Sign to continue"
 
-#: src/modules/umbrella/UmbrellaHeader.tsx
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Total amount staked"
-msgstr "Total amount staked"
-
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 #: src/modules/history/HistoryWrapper.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
@@ -456,7 +451,6 @@ msgid "Allowance required action"
 msgstr "Allowance required action"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
-#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Available rewards"
 msgstr "Available rewards"
 
@@ -879,10 +873,6 @@ msgstr "Swap saved in your <0>history</0> section."
 msgid "Migrate your assets"
 msgstr "Migrate your assets"
 
-#: src/modules/staking/StakingHeader.tsx
-msgid "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-msgstr "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
-
 #: src/layouts/components/NavItems.tsx
 msgid "Savings"
 msgstr "Savings"
@@ -1039,10 +1029,6 @@ msgstr "The underlying asset cannot be rescued"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
 msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
-
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Stake your Aave aTokens or underlying assets to earn rewards. In case of a shortfall event, your stake may be slashed to cover the deficit."
-msgstr "Stake your Aave aTokens or underlying assets to earn rewards. In case of a shortfall event, your stake may be slashed to cover the deficit."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -1298,10 +1284,6 @@ msgstr "Claiming {symbol}"
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
-#: src/modules/staking/StakingHeader.tsx
-msgid "The Safety Module has been upgraded to <0>Umbrella</0>, a new system that introduces automated slashing, aToken staking, and improved incentives design."
-msgstr "The Safety Module has been upgraded to <0>Umbrella</0>, a new system that introduces automated slashing, aToken staking, and improved incentives design."
-
 #: src/components/transactions/FlowCommons/BaseSuccess.tsx
 msgid "All done"
 msgstr "All done"
@@ -1473,6 +1455,10 @@ msgstr "Use connected account"
 msgid "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 msgstr "This represents the threshold at which a borrow position will be considered undercollateralized and subject to liquidation for each collateral. For example, if a collateral has a liquidation threshold of 80%, it means that the position will be liquidated when the debt value is worth 80% of the collateral value."
 
+#: src/modules/umbrella/UmbrellaHeader.tsx
+msgid "Total Staked"
+msgstr "Total Staked"
+
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -1509,7 +1495,6 @@ msgstr "Merkl rewards are claimed through the"
 #: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
-#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Staking"
 msgstr "Staking"
 
@@ -2096,6 +2081,10 @@ msgstr "received"
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Borrow"
 msgstr "Borrow"
+
+#: src/modules/staking/StakingHeader.tsx
+msgid "The Safety Module has been upgraded to Umbrella, a new system that introduces automated slashing, aToken staking, and improved incentives design."
+msgstr "The Safety Module has been upgraded to Umbrella, a new system that introduces automated slashing, aToken staking, and improved incentives design."
 
 #: src/components/AssetCategoryMultiselect.tsx
 msgid "Principal Tokens"
@@ -3109,7 +3098,6 @@ msgstr "Proposal created"
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/stkGho/StkGhoWithdrawRow.tsx
 #: src/modules/umbrella/UmbrellaClaimActions.tsx
-#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Claim"
 msgstr "Claim"
 
@@ -3165,7 +3153,6 @@ msgstr "Borrowable"
 #: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/layouts/components/StakingMenu.tsx
-#: src/modules/staking/StakingHeader.tsx
 msgid "Safety Module"
 msgstr "Safety Module"
 
@@ -3295,10 +3282,6 @@ msgstr "Migrated"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
-
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "here."
-msgstr "here."
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
@@ -4317,10 +4300,6 @@ msgstr "tokens, please go to the"
 msgid "Repay with"
 msgstr "Repay with"
 
-#: src/modules/staking/StakingHeader.tsx
-msgid "Learn more about risks involved"
-msgstr "Learn more about risks involved"
-
 #: src/components/FaucetButton.tsx
 #: src/modules/faucet/FaucetTopPanel.tsx
 msgid "{0} Faucet"
@@ -4502,10 +4481,6 @@ msgstr "Liquidation risk parameters"
 #: src/components/AddressBlockedModal.tsx
 msgid "Unable to Connect"
 msgstr "Unable to Connect"
-
-#: src/modules/umbrella/UmbrellaHeader.tsx
-msgid "Umbrella is the upgraded version of the Safety Module. Manage your previously staked assets"
-msgstr "Umbrella is the upgraded version of the Safety Module. Manage your previously staked assets"
 
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Active {0} borrow is not compatible with this category. Repay your {1} borrow to use this option."

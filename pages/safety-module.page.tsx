@@ -16,12 +16,14 @@ import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
+import { usePinnedMarket } from 'src/hooks/usePinnedMarket';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 // import { GhoStakingPanel } from 'src/modules/staking/GhoStakingPanel';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { SAFETY_MODULE } from 'src/utils/events';
 import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
@@ -106,6 +108,9 @@ export default function Staking() {
       'Page Name': 'Safety Module',
     });
   }, [trackEvent]);
+
+  // Safety Module runs on the Core (mainnet) instance (pinned for the page, restored on unmount).
+  usePinnedMarket(CustomMarket.proto_mainnet_v3);
 
   const tvl = {
     'Staked Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
