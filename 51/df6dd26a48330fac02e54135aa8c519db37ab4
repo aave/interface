@@ -1,0 +1,25 @@
+src/layouts/MobileMenu.tsx
+  s_1687209f58efc9::t_f886bfbc7c2904 141,193
+  s_1687209f58efc9::t_1f2e3c4422ae86 121-123,133-134
+  s_1687209f58efc9::t_90514ae1b06508 127,129
+  s_1687209f58efc9::t_da6aab7c6cb70e 124-126,128,130-132,135-137
+  s_1687209f58efc9::t_c550a295554cce 81-83,89-90
+src/layouts/AppHeader.tsx
+  s_1687209f58efc9::t_d2860327e0b53e 81,83,85
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "51df6dd26a48330fac02e54135aa8c519db37ab4",
+  "prompts": {},
+  "sessions": {
+    "s_1687209f58efc9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62abfae3-a2f8-4c76-84f6-87f6ee70d009",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
