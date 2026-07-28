@@ -1,14 +1,8 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, useMediaQuery, useTheme } from '@mui/material';
-import { CircleIcon } from 'src/components/CircleIcon';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Link } from 'src/components/primitives/Link';
-import { useRootStore } from 'src/store/root';
-import { GENERAL } from 'src/utils/events';
 import { assetIsBorrowableOnMarket } from 'src/utils/getMaxAmountAvailableToBorrow';
-import { useShallow } from 'zustand/shallow';
 
 import {
   ComputedReserveData,
@@ -21,9 +15,6 @@ interface ReserveTopDetailsProps {
 
 export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const { reserves, loading } = useAppDataContext();
-  const [trackEvent, currentNetworkConfig] = useRootStore(
-    useShallow((store) => [store.trackEvent, store.currentNetworkConfig])
-  );
 
   const theme = useTheme();
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
@@ -33,14 +24,6 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
   ) as ComputedReserveData;
 
   const valueTypographyVariant = downToSM ? 'h4' : 'h2';
-
-  const iconStyling = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    color: 'fg-3',
-    '&:hover': { color: 'fg-1' },
-    cursor: 'pointer',
-  };
 
   return (
     <>
@@ -73,33 +56,11 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
       </PageHeaderStat>
 
       <PageHeaderStat label={<Trans>Oracle price</Trans>} loading={loading}>
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <FormattedNumber
-            value={poolReserve?.priceInUSD}
-            symbol="USD"
-            variant={valueTypographyVariant}
-          />
-          <CircleIcon tooltipText="View oracle contract" downToSM={downToSM}>
-            <Link
-              onClick={() =>
-                trackEvent(GENERAL.EXTERNAL_LINK, {
-                  Link: 'Oracle Price',
-                  oracle: poolReserve?.priceOracle,
-                  assetName: poolReserve.name,
-                  asset: poolReserve.underlyingAsset,
-                })
-              }
-              href={currentNetworkConfig.explorerLinkBuilder({
-                address: poolReserve?.priceOracle,
-              })}
-              sx={iconStyling}
-            >
-              <SvgIcon sx={{ fontSize: downToSM ? '12px' : '14px' }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Link>
-          </CircleIcon>
-        </Box>
+        <FormattedNumber
+          value={poolReserve?.priceInUSD}
+          symbol="USD"
+          variant={valueTypographyVariant}
+        />
       </PageHeaderStat>
     </>
   );

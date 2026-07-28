@@ -151,7 +151,7 @@ export const figmaDark = {
   'red-1': '#f24900',
   'red-2': '#ff8947',
   'red-3': '#ffc693',
-  'purple-1': '#9391f7',
+  'purple-1': '#9391ff',
   'purple-2': '#bcbbff',
   'purple-3': '#e2e0ff',
   'green-1': '#1f807b',

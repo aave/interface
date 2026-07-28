@@ -724,33 +724,30 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
                   : ' Market')}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {currentMarketData.v3 ? (
-                <Box
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: '1.5rem',
+                  px: '0.625rem',
+                  borderRadius: '1.5rem',
+                  background: 'rgba(147, 145, 254, 0.24)',
+                  '@supports (color: color(display-p3 0 0 0))': {
+                    background: 'color(display-p3 0.5765 0.5686 0.9686 / 0.24)',
+                  },
+                }}
+              >
+                <Typography
                   sx={{
-                    color: '#fff',
-                    px: 2,
-                    borderRadius: '12px',
-                    bgcolor: 'purple-1',
-                    display: 'flex',
-                    alignItems: 'center',
+                    color: 'purple-1',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    lineHeight: '1.125rem',
                   }}
                 >
-                  <Typography variant="subheader2">V3</Typography>
-                </Box>
-              ) : (
-                <Box
-                  sx={{
-                    color: '#A5A8B6',
-                    px: 2,
-                    borderRadius: '12px',
-                    backgroundColor: '#383D51',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Typography variant="subheader2">V2</Typography>
-                </Box>
-              )}
+                  {currentMarketData.v3 ? 'v3' : 'v2'}
+                </Typography>
+              </Box>
               <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3' }} />
             </Box>
           </Box>
