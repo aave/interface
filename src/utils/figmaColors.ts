@@ -11,7 +11,7 @@ export const figmaLight = {
   'bg-3': '#fcfbfb',
   'bg-4': '#f6f7f4',
   'bg-5': '#f6f5f5',
-  'bg-6': '#f2efef',
+  'bg-6': '#f1f1f1',
   'bgp-1': '#f7f7f7',
   'bgp-2': '#fcfcfc',
   'border-0': 'rgba(0, 0, 0, 0.06)',
@@ -23,6 +23,7 @@ export const figmaLight = {
   'fg-3': '#858585',
   'fg-4': '#bcbbbb',
   'fg-5': '#cfcece',
+  'fgp-3': '#8b8b8d',
   // Muted icon grey (search, sortable-column chevrons, …). Mode-agnostic like fg-3.
   'fg-icon': '#A8A8A8',
   selected: 'rgba(46, 15, 15, 0.04)',
@@ -125,7 +126,7 @@ export const figmaDark = {
   'bg-3': '#1f1e1e',
   'bg-4': '#1F1E1E',
   'bg-5': '#2A2828',
-  'bg-6': '#494646',
+  'bg-6': '#393737',
   'bgp-1': '#0f0f10',
   'bgp-2': '#18181B',
   'border-0': 'rgba(255, 255, 255, 0.06)',
@@ -137,6 +138,7 @@ export const figmaDark = {
   'fg-3': '#8f8e8e',
   'fg-4': '#636161',
   'fg-5': '#383838',
+  'fgp-3': '#8f8e8e',
   // Muted icon grey (search, sortable-column chevrons, …). Mode-agnostic like fg-3.
   'fg-icon': '#A8A8A8',
   selected: 'rgba(255, 255, 255, 0.06)',

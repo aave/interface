@@ -81,7 +81,8 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
         <Button
           disabled={totalAvailableToStake === '0'}
           fullWidth={isMobile}
-          variant="contained"
+          variant="outlined"
+          size="small"
           onClick={() => {
             trackEvent(STAKE.STAKE_TOKEN, {
               action: STAKE.OPEN_STAKE_MODAL,
@@ -113,7 +114,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
-            size="medium"
+            size="small"
           >
             <MoreHorizIcon />
           </IconButton>

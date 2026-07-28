@@ -131,7 +131,6 @@ export const ListWrapper = ({
             width: '100%',
             display: 'flex',
             alignItems: { xs: 'flex-start', xsm: 'center' },
-            py: '3.6px',
             flexDirection: { xs: 'column', xsm: 'row' },
           }}
         >
@@ -169,7 +168,6 @@ export const ListWrapper = ({
                 />
               </Box>
             }
-            sx={{ flexShrink: 0, ml: 3, color: 'fg-2' }}
           >
             {collapseText}
           </Button>

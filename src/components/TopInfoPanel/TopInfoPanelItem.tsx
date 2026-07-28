@@ -1,5 +1,6 @@
 import { Box, Skeleton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 interface TopInfoPanelItemProps {
   icon?: ReactNode;
@@ -9,7 +10,6 @@ interface TopInfoPanelItemProps {
   hideIcon?: boolean;
   withoutIconWrapper?: boolean;
   variant?: 'light' | 'dark' | undefined; // default dark
-  withLine?: boolean;
   loading?: boolean;
 }
 
@@ -19,8 +19,6 @@ export const TopInfoPanelItem = ({
   titleIcon,
   children,
   hideIcon,
-  variant = 'dark',
-  withLine,
   loading,
   withoutIconWrapper,
 }: TopInfoPanelItemProps) => {
@@ -35,18 +33,6 @@ export const TopInfoPanelItem = ({
         width: { xs: 'calc(50% - 12px)', xsm: 'unset' },
       }}
     >
-      {withLine && (
-        <Box
-          sx={{
-            mr: '0.62rem',
-            my: 'auto',
-            width: '1px',
-            bgcolor: '#F2F3F729',
-            height: '37px',
-          }}
-        />
-      )}
-
       {!hideIcon &&
         (withoutIconWrapper ? (
           icon && icon
@@ -72,7 +58,7 @@ export const TopInfoPanelItem = ({
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <Typography
-            sx={{ color: variant === 'dark' ? '#A5A8B6' : '#62677B' }}
+            sx={{ color: figVars['fgp-3'] }}
             variant={upToSM ? 'description' : 'caption'}
             component="div"
           >

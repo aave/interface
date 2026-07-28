@@ -217,7 +217,7 @@ export const BorrowAssetsList = () => {
             width: '100%',
             alignItems: 'center',
             justifyContent: 'space-between',
-            mr: 2,
+            mr: '0.62rem',
           }}
         >
           <Typography component="div" variant="h3" sx={{ flex: '0 0 auto', mr: 2 }}>
