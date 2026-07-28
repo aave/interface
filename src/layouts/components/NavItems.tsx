@@ -36,7 +36,6 @@ const mobileNavItemSx = {
   width: '100%',
   height: '3rem',
   borderRadius: '0.5rem',
-  '&:hover': { bgcolor: 'bg-4' },
 };
 
 // Active-route indicator: a purple bar flush to the drawer's left (screen) edge, vertically

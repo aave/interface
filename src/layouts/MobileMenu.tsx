@@ -43,7 +43,6 @@ const menuListSx = {
     borderRadius: '0.5rem',
     px: 0,
     cursor: 'pointer',
-    '&:hover': { bgcolor: 'bg-4' },
   },
   '& .MuiListItemText-primary': { fontSize: '1.125rem', fontWeight: 500, lineHeight: '120%' },
 };
@@ -79,11 +78,16 @@ const MenuToggleIcon = ({ open }: { open: boolean }) => (
 
 export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => {
   const [isLanguagesListOpen, setIsLanguagesListOpen] = useState(false);
+  // Drives the top scrim: it only shows once the options actually scroll, so it never dims the
+  // first row at rest.
+  const [scrolled, setScrolled] = useState(false);
   const { openReadMode, openSwitch, openBridge } = useModalContext();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const showSwitchButton = isFeatureEnabled.switch(currentMarketData);
 
   useEffect(() => setIsLanguagesListOpen(false), [open]);
+  // A fresh scroll area always starts at the top, so reset on open / view switch.
+  useEffect(() => setScrolled(false), [open, isLanguagesListOpen]);
 
   const handleOpenReadMode = () => {
     setOpen(false);
@@ -114,10 +118,27 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
       </Button>
 
       <DrawerWrapper open={open} setOpen={setOpen} headerHeight={headerHeight}>
+        {/* Fade scrim over the top of the scroll area (mirrors the bottom scrim). Only shown once
+            scrolled, so it never dims the first row at rest. Inset from the top by the drawer's
+            padding (clean band under the header) and from the right so it never touches the scrollbar. */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '0.75rem',
+            left: 0,
+            right: '0.75rem',
+            height: '2rem',
+            pointerEvents: 'none',
+            zIndex: 1,
+            opacity: scrolled ? 1 : 0,
+            transition: 'opacity 0.2s ease',
+            background: `linear-gradient(to bottom, ${figVars['bgp-2']}, transparent)`,
+          }}
+        />
         {!isLanguagesListOpen ? (
           <>
             {/* Only the options scroll — the action buttons below stay pinned. */}
-            <Box sx={scrollAreaSx}>
+            <Box sx={scrollAreaSx} onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 0)}>
               <NavItems setOpen={setOpen} />
               <Divider sx={{ borderColor: 'border-0', my: 2 }} />
               {/* Watch Wallet sits above the global-settings rows, no divider between them. */}
@@ -169,7 +190,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             </Box>
           </>
         ) : (
-          <Box sx={scrollAreaSx}>
+          <Box sx={scrollAreaSx} onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 0)}>
             <List
               disablePadding
               sx={{ ...menuListSx, '& .MuiListItemIcon-root': { width: 28, height: 20 } }}

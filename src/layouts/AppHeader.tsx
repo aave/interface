@@ -78,10 +78,11 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 function HideOnScroll({ children }: Props) {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
-  const trigger = useScrollTrigger({ threshold: md ? 160 : 80 });
+  const trigger = useScrollTrigger({ threshold: 80 });
 
+  // Mobile keeps the header pinned (never hides on scroll); desktop still hides past the threshold.
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
+    <Slide appear={false} direction="down" in={md || !trigger}>
       {children}
     </Slide>
   );
