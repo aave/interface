@@ -1,0 +1,65 @@
+src/components/PageHeader/PageHeader.tsx
+  s_8c9ee8a91677d6::t_49ffc669e141b3 66-74
+  s_8c9ee8a91677d6::t_4c90ecf07d142c 1-8,11-18,26-43,45-59,61-65,75-79
+  s_8c9ee8a91677d6::t_6a7d774a54b862 19-22,24-25
+  h_407f16e676115d 44,60
+  s_8c9ee8a91677d6::t_8cb262af30391e 9-10
+  s_8c9ee8a91677d6::t_e4aee99a1923e1 23
+src/utils/theme.tsx
+  s_8c9ee8a91677d6::t_e013867f8a0343 560-563,565
+src/modules/staking/StakingHeader.tsx
+  s_8c9ee8a91677d6::t_23d3f7a974ce47 2-4,18,23-29,31,33,37,39,41,43,47,50-51
+src/modules/umbrella/UmbrellaHeader.tsx
+  s_8c9ee8a91677d6::t_5420e67ecceeea 11-14,31,33-34,39-58
+  s_8c9ee8a91677d6::t_040264554dbebd 2-4,19-20,23,26-28,35,67-68,74,77,79,82,86
+  s_8c9ee8a91677d6::t_bdf22f95dca273 29
+src/modules/dashboard/lists/ListButtonsColumn.tsx
+  s_8c9ee8a91677d6::t_730e42c8c09ec8 20-21
+  h_407f16e676115d 23
+src/hooks/usePinnedMarket.ts
+  s_8c9ee8a91677d6::t_5292169653cf83 1-20
+pages/safety-module.page.tsx
+  s_8c9ee8a91677d6::t_2334c266793285 19
+  s_8c9ee8a91677d6::t_761aae91615c55 26
+  s_8c9ee8a91677d6::t_557c91fd80504d 112-113
+  s_8c9ee8a91677d6::t_c340693308f24c 114
+src/components/PageHeader/PageHeaderStat.tsx
+  h_407f16e676115d 13,20-21
+  s_8c9ee8a91677d6::t_f50137cf77c8d4 1-12,14-19,22-29
+pages/staking.page.tsx
+  s_8c9ee8a91677d6::t_c484a4b82ba7a1 49
+  s_8c9ee8a91677d6::t_de1f3922bb21ae 4
+  s_8c9ee8a91677d6::t_c9891e6141b327 10
+  s_8c9ee8a91677d6::t_b00fdca859b57f 47-48
+src/locales/el/messages.js
+  s_8c9ee8a91677d6::t_5c269af334ea11 1
+src/locales/en/messages.js
+  s_8c9ee8a91677d6::t_94d116d0f956de 1
+src/locales/es/messages.js
+  s_8c9ee8a91677d6::t_b9f24ccdc0011e 1
+src/locales/fr/messages.js
+  s_8c9ee8a91677d6::t_34bda99c022204 1
+src/locales/en/messages.po
+  s_8c9ee8a91677d6::t_68cafb2fa71268 55-58,1458-1461,2085-2088
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "5d8d621bac91d801c267b4bb148b9a548389402b",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_8c9ee8a91677d6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "265ba946-70a9-49b7-a7cf-4cb39b8c04f3",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
