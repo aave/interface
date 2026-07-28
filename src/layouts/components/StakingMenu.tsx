@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, SvgIcon, Typography } from '@mui/material';
+import { Button, ListItemText, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { clsx } from 'clsx';
@@ -111,9 +111,9 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           onClick={() => handleMenuItemClick('Staking')}
           sx={{ minWidth: '140px' }}
         >
-          <Typography variant="subheader1">
+          <ListItemText>
             <Trans>Umbrella</Trans>
-          </Typography>
+          </ListItemText>
         </MenuItem>
         <MenuItem
           component={Link}
@@ -121,9 +121,9 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           onClick={() => handleMenuItemClick('Safety Module')}
           sx={{ minWidth: '140px' }}
         >
-          <Typography variant="subheader1">
+          <ListItemText>
             <Trans>Safety Module</Trans>
-          </Typography>
+          </ListItemText>
         </MenuItem>
       </Menu>
     </>

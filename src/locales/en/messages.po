@@ -700,7 +700,6 @@ msgstr "Balance to revoke"
 
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 #: src/modules/reserve-overview/ReserveConfiguration.tsx
-#: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
 
@@ -744,10 +743,6 @@ msgstr "You are entering Isolation mode"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
-
-#: src/modules/reserve-overview/ReserveTopDetails.tsx
-msgid "Reserve Size"
-msgstr "Reserve Size"
 
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "%"
@@ -1152,6 +1147,7 @@ msgid "Linked addresses"
 msgstr "Linked addresses"
 
 #: src/modules/governance/FormattedProposalTime.tsx
+#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "on"
 msgstr "on"
 
@@ -1184,6 +1180,10 @@ msgstr "This asset is frozen due to an Aave Protocol Governance decision. On the
 #: src/modules/migration/MigrationList.tsx
 msgid "Assets"
 msgstr "Assets"
+
+#: src/modules/reserve-overview/ReserveTopDetails.tsx
+msgid "Utilization rate"
+msgstr "Utilization rate"
 
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
@@ -1346,7 +1346,6 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 #: src/layouts/TopBarNotify.tsx
 #: src/modules/dashboard/DashboardEModeButton.tsx
-#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 #: src/modules/staking/SavingsGhoProgram.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
@@ -1513,7 +1512,6 @@ msgid "Current LTV"
 msgstr "Current LTV"
 
 #: src/components/transactions/Swap/shared/OrderTypeSelector.tsx
-#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Market"
 msgstr "Market"
 
@@ -2287,6 +2285,10 @@ msgstr "Estimated Costs & Fees"
 #: src/components/infoTooltips/EModeTooltip.tsx
 msgid "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
 msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <1>Learn more</1>"
+
+#: src/modules/reserve-overview/ReserveTopDetails.tsx
+msgid "Reserve size"
+msgstr "Reserve size"
 
 #: src/modules/reserve-overview/ReserveConfigurationWrapper.tsx
 msgid "Reserve status & configuration"
@@ -3156,6 +3158,10 @@ msgstr "Borrowable"
 msgid "Safety Module"
 msgstr "Safety Module"
 
+#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+msgid "Back"
+msgstr "Back"
+
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
 msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
@@ -3951,7 +3957,6 @@ msgstr "Health factor is not below the threshold"
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 #: src/modules/migration/MigrationTopPanel.tsx
-#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Go Back"
 msgstr "Go Back"
 

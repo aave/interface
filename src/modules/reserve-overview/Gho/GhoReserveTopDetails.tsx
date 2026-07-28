@@ -1,10 +1,10 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
+import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { TopInfoPanelItem } from 'src/components/TopInfoPanel/TopInfoPanelItem';
 import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) => {
@@ -13,7 +13,6 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) =>
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const valueTypographyVariant = downToSM ? 'h4' : 'h2';
-  const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
   const totalBorrowed = BigNumber.min(
     valueToBigNumber(reserve.borrowInfo?.total.amount.value ?? '0'),
@@ -22,33 +21,24 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) =>
 
   return (
     <>
-      <TopInfoPanelItem title={<Trans>Total borrowed</Trans>} loading={loading} hideIcon>
-        <FormattedNumber
-          value={totalBorrowed}
-          symbol="USD"
-          variant={valueTypographyVariant}
-          symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
-        />
-      </TopInfoPanelItem>
+      <PageHeaderStat label={<Trans>Total borrowed</Trans>} loading={loading}>
+        <FormattedNumber value={totalBorrowed} symbol="USD" variant={valueTypographyVariant} />
+      </PageHeaderStat>
 
-      <TopInfoPanelItem
-        title={<Trans>Maximum available to borrow</Trans>}
-        loading={loading}
-        hideIcon
-      >
+      <PageHeaderStat label={<Trans>Maximum available to borrow</Trans>} loading={loading}>
         <FormattedNumber
           value={reserve.borrowInfo?.borrowCap.amount.value ?? '0'}
           symbol="USD"
           variant={valueTypographyVariant}
-          symbolsVariant={symbolsTypographyVariant}
-          symbolsColor="#A5A8B6"
         />
-      </TopInfoPanelItem>
+      </PageHeaderStat>
 
-      <TopInfoPanelItem
-        title={
-          <TextWithTooltip text={<Trans>Price</Trans>}>
+      <PageHeaderStat
+        label={
+          <TextWithTooltip
+            text={<Trans>Price</Trans>}
+            sx={{ lineHeight: '0.875rem', letterSpacing: 0 }}
+          >
             <Trans>
               The Aave Protocol is programmed to always use the price of 1 GHO = $1. This is
               different from using market pricing via oracles for other crypto assets. This creates
@@ -57,18 +47,9 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) =>
           </TextWithTooltip>
         }
         loading={loading}
-        hideIcon
       >
-        <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-          <FormattedNumber
-            value={1}
-            symbol="USD"
-            variant={valueTypographyVariant}
-            symbolsVariant={symbolsTypographyVariant}
-            symbolsColor="#A5A8B6"
-          />
-        </Box>
-      </TopInfoPanelItem>
+        <FormattedNumber value={1} symbol="USD" variant={valueTypographyVariant} />
+      </PageHeaderStat>
     </>
   );
 };

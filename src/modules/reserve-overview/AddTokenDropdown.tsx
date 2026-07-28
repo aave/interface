@@ -1,14 +1,17 @@
 import { Trans } from '@lingui/macro';
-import { Box, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Divider, Menu, MenuItem } from '@mui/material';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { CircleIcon } from 'src/components/CircleIcon';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
-import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
+import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { RESERVE_DETAILS } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
+
+import { MenuSectionLabel, TokenMenuItemContent } from './TokenMenuItems';
 
 interface AddTokenDropdownProps {
   poolReserve: ReserveWithId;
@@ -118,7 +121,14 @@ export const AddTokenDropdown = ({
               cursor: 'pointer',
             }}
           >
-            <WalletIcon sx={{ width: '14px', height: '14px', '&:hover': { stroke: '#F1F1F3' } }} />
+            <WalletIcon
+              sx={{
+                width: '14px',
+                height: '14px',
+                stroke: figVars['fg-3'],
+                '&:hover': { stroke: figVars['fg-1'] },
+              }}
+            />
           </Box>
         </CircleIcon>
       </Box>
@@ -132,16 +142,13 @@ export const AddTokenDropdown = ({
         keepMounted={true}
         data-cy="addToWaletSelector"
       >
-        <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-          <Typography variant="subheader2" color="fg-2">
-            <Trans>Underlying token</Trans>
-          </Typography>
-        </Box>
+        <MenuSectionLabel>
+          <Trans>Underlying token</Trans>
+        </MenuSectionLabel>
 
         <MenuItem
           key="underlying"
           value="underlying"
-          divider
           onClick={() => {
             if (currentChainId !== connectedChainId) {
               switchNetwork(currentChainId).then(() => {
@@ -166,21 +173,17 @@ export const AddTokenDropdown = ({
             handleClose();
           }}
         >
-          <TokenIcon
+          <TokenMenuItemContent
             symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
-            sx={{ fontSize: '20px' }}
+            label={poolReserve.underlyingToken.symbol}
           />
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-            {poolReserve.underlyingToken.symbol}
-          </Typography>
         </MenuItem>
         {!hideAToken && (
-          <Box>
-            <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-              <Typography variant="subheader2" color="fg-2">
-                <Trans>Aave aToken</Trans>
-              </Typography>
-            </Box>
+          <>
+            <Divider />
+            <MenuSectionLabel>
+              <Trans>Aave aToken</Trans>
+            </MenuSectionLabel>
             <MenuItem
               key="atoken"
               value="atoken"
@@ -205,24 +208,20 @@ export const AddTokenDropdown = ({
                 handleClose();
               }}
             >
-              <TokenIcon
+              <TokenMenuItemContent
                 symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
-                sx={{ fontSize: '20px' }}
                 aToken={true}
+                label={poolReserve.aToken.symbol}
               />
-              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-                {poolReserve.aToken.symbol}
-              </Typography>
             </MenuItem>
-          </Box>
+          </>
         )}
         {isSGHO && sGHOTokenAddress && (
-          <Box>
-            <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-              <Typography variant="subheader2" color="fg-2">
-                <Trans>Savings GHO token</Trans>
-              </Typography>
-            </Box>
+          <>
+            <Divider />
+            <MenuSectionLabel>
+              <Trans>Savings GHO token</Trans>
+            </MenuSectionLabel>
             <MenuItem
               key="sgho"
               value="sgho"
@@ -248,12 +247,9 @@ export const AddTokenDropdown = ({
                 handleClose();
               }}
             >
-              <TokenIcon symbol="sgho" sx={{ fontSize: '20px' }} />
-              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-                sGHO
-              </Typography>
+              <TokenMenuItemContent symbol="sgho" label="sGHO" />
             </MenuItem>
-          </Box>
+          </>
         )}
       </Menu>
     </>
