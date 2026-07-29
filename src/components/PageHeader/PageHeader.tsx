@@ -7,6 +7,8 @@ interface PageHeaderProps {
   description?: ReactNode;
   children: ReactNode;
   containerProps?: ContainerProps;
+  /** Optional icon rendered before the heading-wrapped title. Ignored when `disableTitleTypography` is set. */
+  titleIcon?: ReactNode;
   /**
    * Render `title` as-is instead of wrapping it in the heading Typography. Use when the title is
    * itself a styled/interactive node (e.g. the dashboard's MarketSwitcher, which brings its own
@@ -22,6 +24,7 @@ interface PageHeaderProps {
  */
 export const PageHeader = ({
   title,
+  titleIcon,
   description,
   children,
   containerProps = {},
@@ -60,9 +63,12 @@ export const PageHeader = ({
             {disableTitleTypography ? (
               title
             ) : (
-              <Typography variant="h2" sx={{ fontSize: '1.875rem', color: 'fg-1' }}>
-                {title}
-              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                {titleIcon}
+                <Typography variant="h2" sx={{ fontSize: '1.875rem', color: 'fg-1' }}>
+                  {title}
+                </Typography>
+              </Box>
             )}
             {description && (
               <Typography variant="h5" sx={{ color: 'fg-3', textWrap: 'balance' }}>

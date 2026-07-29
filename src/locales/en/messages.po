@@ -514,7 +514,6 @@ msgstr "Cooling down..."
 msgid "Voting power"
 msgstr "Voting power"
 
-#: src/modules/markets/MarketsTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Markets"
 msgstr "Markets"
@@ -1836,6 +1835,10 @@ msgstr "Borrow apy"
 #: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
 msgid "Fee"
 msgstr "Fee"
+
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Deposit GHO into Savings GHO (sGHO) and earn {apyPercent}% APY on your GHO holdings."
+msgstr "Deposit GHO into Savings GHO (sGHO) and earn {apyPercent}% APY on your GHO holdings."
 
 #: src/modules/umbrella/helpers/Helpers.tsx
 msgid "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
@@ -3767,10 +3770,6 @@ msgstr "Staked tokens are wrapped and use an exchange rate. You may see fewer to
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
-
-#: src/modules/sGho/SGhoHeader.tsx
-msgid "Deposit GHO into Savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow."
-msgstr "Deposit GHO into Savings GHO (sGHO) and earn <0>{0}%</0> APR on your GHO holdings. There are no lockups, no rehypothecation, and you can withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance, and watch your savings grow."
 
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."

@@ -1,17 +1,16 @@
 import { Trans } from '@lingui/macro';
-import { Box, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import NumberFlow from '@number-flow/react';
 import { BigNumber } from 'bignumber.js';
 import { useEffect, useState } from 'react';
+import { PageHeader } from 'src/components/PageHeader/PageHeader';
+import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
-import { TopInfoPanel } from 'src/components/TopInfoPanel/TopInfoPanel';
 import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { useRootStore } from 'src/store/root';
-import { figVars } from 'src/utils/figmaColors';
-
-import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
+import { convertAprToApy } from 'src/utils/utils';
 
 export const SGHOHeader: React.FC = () => {
   const theme = useTheme();
@@ -24,16 +23,13 @@ export const SGHOHeader: React.FC = () => {
     });
   }, [trackEvent]);
 
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
   const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const valueTypographyVariant = downToSM ? 'h4' : 'h2';
-  const symbolsTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
-  const symbolsColor = figVars['fg-3'];
   const iconSize = valueTypographyVariant === 'h2' ? 20 : 16;
 
   const apr = vault?.targetRate ? +vault.targetRate.value : 0;
+  const apyPercent = (convertAprToApy(apr) * 100).toFixed(2);
   const totalDepositedUSD = vault?.totalAssets?.usd ?? '0';
 
   const totalAssetsValue = vault?.totalAssets ? +vault.totalAssets.amount.value : 0;
@@ -55,77 +51,45 @@ export const SGHOHeader: React.FC = () => {
   }, [weeklyRewardsEstimate]);
 
   return (
-    <TopInfoPanel
-      titleComponent={
-        <Box mb={4}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-            <TokenIcon symbol="sgho" sx={{ width: 32, height: 32 }} />
-            <Typography
-              variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
-              sx={{ ml: 2, mr: 3 }}
-            >
-              <Trans>Savings GHO</Trans>
-            </Typography>
-          </Box>
-
-          <Typography sx={{ color: 'fg-3', maxWidth: '824px' }}>
-            <Trans>
-              Deposit GHO into Savings GHO (sGHO) and earn{' '}
-              <Box component="span" sx={{ color: '#338E3C', fontWeight: 'bold' }}>
-                {(apr * 100).toFixed(2)}%
-              </Box>{' '}
-              APR on your GHO holdings. There are no lockups, no rehypothecation, and you can
-              withdraw anytime. Simply deposit GHO, receive sGHO tokens representing your balance,
-              and watch your savings grow.
-            </Trans>
-          </Typography>
-        </Box>
+    <PageHeader
+      title={<Trans>Savings GHO</Trans>}
+      titleIcon={<TokenIcon symbol="sgho" sx={{ width: 32, height: 32 }} />}
+      description={
+        <Trans>
+          Deposit GHO into Savings GHO (sGHO) and earn {apyPercent}% APY on your GHO holdings.
+        </Trans>
       }
     >
-      <TopInfoPanelItem hideIcon title={<Trans>Current APR</Trans>} loading={loading}>
-        <FormattedNumber
-          value={apr}
-          variant={valueTypographyVariant}
-          symbolsColor={symbolsColor}
-          visibleDecimals={2}
-          percent
-          symbolsVariant={symbolsTypographyVariant}
-        />
-      </TopInfoPanelItem>
+      <PageHeaderStat label={<Trans>Current APR</Trans>} loading={loading}>
+        <FormattedNumber value={apr} variant={valueTypographyVariant} visibleDecimals={2} percent />
+      </PageHeaderStat>
 
-      <TopInfoPanelItem hideIcon title={<Trans>Total Deposited</Trans>} loading={loading}>
+      <PageHeaderStat label={<Trans>Total Deposited</Trans>} loading={loading}>
         <FormattedNumber
           value={totalDepositedUSD}
           symbol="USD"
           variant={valueTypographyVariant}
-          symbolsVariant={symbolsTypographyVariant}
-          symbolsColor={symbolsColor}
           visibleDecimals={2}
         />
-      </TopInfoPanelItem>
+      </PageHeaderStat>
 
-      <TopInfoPanelItem hideIcon title={<Trans>Price</Trans>} loading={loading}>
+      <PageHeaderStat label={<Trans>Price</Trans>} loading={loading}>
         <FormattedNumber
           value={sharePrice}
           symbol="USD"
           variant={valueTypographyVariant}
-          symbolsVariant={symbolsTypographyVariant}
-          symbolsColor={symbolsColor}
           visibleDecimals={2}
         />
-      </TopInfoPanelItem>
+      </PageHeaderStat>
 
-      <TopInfoPanelItem
-        hideIcon
-        title={
-          <Stack direction="row" alignItems="center">
-            <TextWithTooltip text={<Trans>Weekly Rewards</Trans>} variant="inherit">
-              <Trans>
-                Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards
-                may vary depending on market conditions.
-              </Trans>
-            </TextWithTooltip>
-          </Stack>
+      <PageHeaderStat
+        label={
+          <TextWithTooltip text={<Trans>Weekly Rewards</Trans>} variant="inherit">
+            <Trans>
+              Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards
+              may vary depending on market conditions.
+            </Trans>
+          </TextWithTooltip>
         }
         loading={loading}
       >
@@ -168,11 +132,11 @@ export const SGHOHeader: React.FC = () => {
             <TokenIcon symbol="sgho" sx={{ ml: 0.5, width: iconSize, height: iconSize }} />
           </Typography>
         ) : (
-          <Typography variant={valueTypographyVariant} color={symbolsColor}>
+          <Typography variant={valueTypographyVariant} color="fg-3">
             —
           </Typography>
         )}
-      </TopInfoPanelItem>
-    </TopInfoPanel>
+      </PageHeaderStat>
+    </PageHeader>
   );
 };
