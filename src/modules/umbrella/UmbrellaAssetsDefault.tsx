@@ -1,37 +1,101 @@
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Paper, Skeleton, Stack, useMediaQuery, useTheme } from '@mui/material';
+import { useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListItem } from 'src/components/lists/ListItem';
-import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { NoSearchResults } from 'src/components/NoSearchResults';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedStakeData, useStakeDataSummary } from 'src/hooks/stake/useUmbrellaSummary';
+import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
+import {
+  AssetCategory,
+  matchesSelectedCategories,
+} from 'src/modules/markets/utils/assetCategories';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 import { NoStakeAssets } from './NoStakeAssets';
 import { StakeAssetName } from './StakeAssets/StakeAssetName';
+import { StakeAssetsFilters } from './StakeAssets/StakeAssetsFilters';
 
 export const UmrellaAssetsDefaultListContainer = () => {
-  return (
-    <ListWrapper
-      titleComponent={
-        <Typography variant="h2">
-          <Trans>Assets to stake</Trans>
-        </Typography>
-      }
-    >
-      <UmbrellaAssetsDefault />
-    </ListWrapper>
-  );
-};
-export const UmbrellaAssetsDefault = () => {
   const [currentMarketData] = useRootStore(useShallow((store) => [store.currentMarketData]));
   const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
+  const {
+    data: categoryData,
+    isLoading: isLoadingCategories,
+    error: categoriesError,
+  } = useCoingeckoCategories();
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<AssetCategory[]>([]);
+  const { breakpoints } = useTheme();
+  const sm = useMediaQuery(breakpoints.down('sm'));
+
+  const filteredAssets = stakeData?.stakeAssets
+    // Search by asset symbol
+    .filter((res) => {
+      if (!searchTerm) return true;
+      const term = searchTerm.toLowerCase().trim();
+      return res.symbol.toLowerCase().includes(term);
+    })
+    // Category filter (shares the markets page's dynamic CoinGecko categorization)
+    .filter((res) =>
+      matchesSelectedCategories(
+        res.symbol,
+        selectedCategories,
+        categoryData?.stablecoinSymbols,
+        categoryData?.ethCorrelatedSymbols
+      )
+    );
+
+  const noStakeAssetsConfigured = !loading && (!stakeData || stakeData.stakeAssets.length === 0);
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+      <StakeAssetsFilters
+        searchPlaceholder={sm ? 'Search asset' : 'Search asset name or symbol'}
+        onSearchTermChange={setSearchTerm}
+        selectedCategories={selectedCategories}
+        onCategoriesChange={setSelectedCategories}
+        categoriesDisabled={isLoadingCategories || !!categoriesError}
+      />
+
+      <Paper variant="card">
+        <UmbrellaAssetsDefault stakeAssets={filteredAssets ?? []} loading={loading} />
+
+        {noStakeAssetsConfigured ? (
+          <NoStakeAssets />
+        ) : (
+          !loading &&
+          filteredAssets?.length === 0 && (
+            <NoSearchResults
+              searchTerm={searchTerm}
+              subtitle={
+                <Trans>
+                  We couldn&apos;t find any assets related to your search. Try again with a
+                  different asset name, symbol, or address.
+                </Trans>
+              }
+            />
+          )
+        )}
+      </Paper>
+    </Box>
+  );
+};
+
+export const UmbrellaAssetsDefault = ({
+  stakeAssets,
+  loading,
+}: {
+  stakeAssets: FormattedStakeData[];
+  loading: boolean;
+}) => {
   const theme = useTheme();
   const isTableChangedToCards = useMediaQuery(theme.breakpoints.down('mdlg'));
 
@@ -53,8 +117,9 @@ export const UmbrellaAssetsDefault = () => {
     );
   }
 
-  if (!loading && (!stakeData || stakeData.stakeAssets.length === 0)) {
-    return <NoStakeAssets />;
+  // Empty states (no assets configured / no search results) are handled by the container.
+  if (stakeAssets.length === 0) {
+    return null;
   }
 
   return (
@@ -73,14 +138,13 @@ export const UmbrellaAssetsDefault = () => {
           </ListColumn>
         </ListHeaderWrapper>
       )}
-      {stakeData &&
-        stakeData.stakeAssets.map((data, index) =>
-          !isTableChangedToCards ? (
-            <AssetListItem key={index} stakeData={data} />
-          ) : (
-            <AssetListItemMobile key={index} stakeData={data} />
-          )
-        )}
+      {stakeAssets.map((data, index) =>
+        !isTableChangedToCards ? (
+          <AssetListItem key={index} stakeData={data} />
+        ) : (
+          <AssetListItemMobile key={index} stakeData={data} />
+        )
+      )}
     </>
   );
 };

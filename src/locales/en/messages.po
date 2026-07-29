@@ -761,10 +761,6 @@ msgstr "This asset has almost reached its borrow cap. There is only {messageValu
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 
-#: src/components/AssetCategoryMultiselect.tsx
-msgid "Select Categories"
-msgstr "Select Categories"
-
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
@@ -1739,7 +1735,6 @@ msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing agains
 msgid "Favourites"
 msgstr "Favourites"
 
-#: src/components/AssetCategoryMultiselect.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Reset"
 msgstr "Reset"
@@ -2517,17 +2512,13 @@ msgstr "Max slashing"
 msgid "Before supplying"
 msgstr "Before supplying"
 
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
-#: src/modules/umbrella/UmbrellaAssetsDefault.tsx
-msgid "Assets to stake"
-msgstr "Assets to stake"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/HFContent.tsx
 msgid "Liquidation value"
 msgstr "Liquidation value"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
+#: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 msgstr "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
 
@@ -4386,6 +4377,10 @@ msgstr "There are not enough funds in the{0}reserve to borrow"
 #: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Show {0} more"
 msgstr "Show {0} more"
+
+#: src/modules/umbrella/StakeAssets/StakeAssetsFilters.tsx
+msgid "In Wallet"
+msgstr "In Wallet"
 
 #: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Payloads"

@@ -1,9 +1,10 @@
 import { Trans } from '@lingui/macro';
 import {
-  Box,
   Button,
   Checkbox,
-  Popover,
+  ListItemText,
+  Menu,
+  MenuItem,
   SxProps,
   Theme,
   Typography,
@@ -66,10 +67,6 @@ export const AssetCategoryMultiSelect = ({
     onCategoriesChange(newCategories);
   };
 
-  const handleReset = () => {
-    onCategoriesChange([]);
-  };
-
   const open = Boolean(anchorEl);
   const selectedCount = selectedCategories.length;
 
@@ -100,137 +97,33 @@ export const AssetCategoryMultiSelect = ({
         </Typography>
       </Button>
 
-      <Popover
-        open={open}
+      <Menu
         anchorEl={anchorEl}
+        open={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        PaperProps={{
-          sx: {
-            width: '240px',
-            backgroundColor: 'surface-elevated',
-            boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-            borderRadius: '4px',
-            mt: 2,
-          },
-        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '4px 0px',
-            gap: '4px',
-          }}
-        >
-          {/* Header */}
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: '8px 16px',
-              gap: '20px',
-              height: '32px',
-            }}
-          >
-            <Typography
-              variant="subheader2"
-              sx={{
-                flexGrow: 1,
-                color: 'fg-2',
-                fontWeight: 500,
-                fontSize: '12px',
-                lineHeight: '16px',
-                letterSpacing: '0.1px',
-              }}
-            >
-              <Trans>Select Categories</Trans>
-            </Typography>
-            <Button
-              onClick={handleReset}
-              sx={{
-                minWidth: 'auto',
-                padding: 0,
-                color: selectedCount > 0 ? 'fg-1' : 'fg-4',
-                textDecoration: selectedCount > 0 ? 'underline' : 'none',
-                textUnderlineOffset: '3px',
-                textTransform: 'none',
-
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                  color: selectedCount > 0 ? 'fg-1' : 'fg-4',
-                  textDecoration: selectedCount > 0 ? 'underline' : 'none',
-                },
-              }}
-              disabled={selectedCount === 0}
-            >
-              <Typography
-                variant="subheader2"
-                sx={{
-                  fontWeight: 500,
-                  fontSize: '12px',
-                  lineHeight: '16px',
-                  letterSpacing: '0.1px',
-                }}
-              >
-                <Trans>Reset</Trans>
-              </Typography>
-            </Button>
-          </Box>
-
-          {/* Category Options */}
-          {categories.map((category) => (
-            <Box
+        {categories.map((category) => {
+          const checked = selectedCategories.includes(category);
+          return (
+            <MenuItem
               key={category}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                padding: '10px 16px',
-                gap: '12px',
-                height: '40px',
-              }}
+              onClick={() => handleCategoryToggle(category)}
+              role="menuitemcheckbox"
+              aria-checked={checked}
+              sx={{ gap: '0.5rem' }}
             >
-              <Box sx={{ flexGrow: 1 }}>
-                <Typography
-                  variant="subheader1"
-                  sx={{
-                    color: 'fg-1',
-                    fontWeight: 600,
-                    fontSize: '14px',
-                    lineHeight: '20px',
-                    letterSpacing: '0.15px',
-                  }}
-                >
-                  {categoryLabels[category]}
-                </Typography>
-              </Box>
               <Checkbox
-                checked={selectedCategories.includes(category)}
-                onChange={() => handleCategoryToggle(category)}
-                sx={{
-                  width: '20px',
-                  height: '20px',
-                  padding: 0,
-                  color: 'fg-3',
-                  cursor: 'pointer',
-                  '&.Mui-checked': {
-                    color: 'primary.main',
-                  },
-                }}
+                checked={checked}
+                inputProps={{ readOnly: true, tabIndex: -1, 'aria-hidden': true }}
+                sx={{ p: 0, pointerEvents: 'none' }}
               />
-            </Box>
-          ))}
-        </Box>
-      </Popover>
+              <ListItemText>{categoryLabels[category]}</ListItemText>
+            </MenuItem>
+          );
+        })}
+      </Menu>
     </>
   );
 };
