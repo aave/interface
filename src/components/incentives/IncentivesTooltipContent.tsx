@@ -268,6 +268,11 @@ const IncentivesSymbolMap: {
     symbol: 'WMON',
     aToken: false,
   },
+  aMonUSDe: {
+    tokenIconSymbol: 'USDe',
+    symbol: 'aUSDe',
+    aToken: true,
+  },
 };
 
 interface IncentivesTooltipContentProps {
