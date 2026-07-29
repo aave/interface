@@ -1,6 +1,6 @@
 import { Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Skeleton, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
@@ -96,7 +96,8 @@ export const SavingsGhoBanner = ({
    */
   hasLegacyPositionOverride?: boolean;
 } = {}) => {
-  const downToSm = useMediaQuery('(max-width:780px)');
+  const theme = useTheme();
+  const downToSm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { vault, loading: vaultLoading } = useSGhoVaultContext();
   const totalDepositedUSD = vault?.totalAssets.usd ?? '0';

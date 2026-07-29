@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -55,7 +55,8 @@ export default function UmbrellaAssetsList({
   stakedDataWithTokenBalances,
   isLoadingStakedDataWithTokenBalances,
 }: UmbrelaAssetsListProps) {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const theme = useTheme();
+  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down('mdlg'));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -32,7 +32,8 @@ export const UmbrellaAssetsDefault = () => {
   const [currentMarketData] = useRootStore(useShallow((store) => [store.currentMarketData]));
   const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
 
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const theme = useTheme();
+  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down('mdlg'));
 
   if (loading) {
     return isTableChangedToCards ? (

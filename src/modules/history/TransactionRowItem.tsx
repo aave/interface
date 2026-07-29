@@ -46,7 +46,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
 
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-  const hideStatusBadgeForCancel = useMediaQuery('(min-width: 960px) and (max-width: 1050px)');
+  const hideStatusBadgeForCancel = useMediaQuery(theme.breakpoints.between('md', 'mdlg'));
 
   useEffect(() => {
     if (copyStatus) {

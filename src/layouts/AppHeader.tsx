@@ -101,7 +101,7 @@ export function AppHeader() {
   const { breakpoints } = useTheme();
   const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const smd = useMediaQuery('(max-width:1120px)');
+  const smd = useMediaQuery(breakpoints.down('mdlg'));
   // Shared by the Swap + Bridge triggers: icon-only square when collapsed (smd), text otherwise.
   const collapsingTriggerSx = smd
     ? [iconButtonSx, { alignItems: 'center', '& .MuiButton-startIcon': { mx: 0 } }]
