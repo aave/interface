@@ -941,7 +941,7 @@ export function getThemedComponents(theme: AppTheme) {
           },
           track: {
             opacity: 1,
-            backgroundColor: figVars['fg-3'],
+            backgroundColor: figVars['bg-7'],
             borderRadius: '9px',
           },
         },
