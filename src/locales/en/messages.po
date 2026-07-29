@@ -2763,7 +2763,7 @@ msgstr "Created"
 msgid "after voting"
 msgstr "after voting"
 
-#: src/layouts/components/NavItems.tsx
+#: src/ui-config/menu-items/index.tsx
 msgid "Governance"
 msgstr "Governance"
 
