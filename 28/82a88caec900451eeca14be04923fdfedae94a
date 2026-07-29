@@ -1,0 +1,26 @@
+src/components/MarketSwitcher.tsx
+  s_1687209f58efc9::t_6d8fd56e4659bd 727-740,742-745,748-750
+src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+  s_1687209f58efc9::t_0dc999671a9c4d 2
+  s_1687209f58efc9::t_00dc7453078c20 128-130
+  s_1687209f58efc9::t_5bd092912e43f3 21
+src/modules/reserve-overview/ReserveTopDetails.tsx
+  s_1687209f58efc9::t_ee4b3c54da6c31 59-63
+  s_1687209f58efc9::t_9ab3ec8a22d57f 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "2882a88caec900451eeca14be04923fdfedae94a",
+  "prompts": {},
+  "sessions": {
+    "s_1687209f58efc9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62abfae3-a2f8-4c76-84f6-87f6ee70d009",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

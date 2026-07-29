@@ -1,0 +1,38 @@
+src/components/PageHeader/PageHeader.tsx
+  s_e8edff4d0716d1::t_1f304418b93489 10-11
+  s_e8edff4d0716d1::t_51fc4e466ab03d 27
+  s_e8edff4d0716d1::t_193db6298e9d3c 66-71
+src/modules/markets/MarketsTopPanel.tsx
+  s_e8edff4d0716d1::t_5de6d05e5aefd8 5-7,18-20,23,31-32,40-41,49-50
+src/modules/sGho/SGhoHeader.tsx
+  s_e8edff4d0716d1::t_f8e967bcb117af 55-56
+  s_e8edff4d0716d1::t_9a7c771b471e73 89-90
+  s_e8edff4d0716d1::t_e423de91a2761b 6-7,13,32,54,57-60,63-65,67,74,76,83,85-88,91-92,135,139-140
+  s_e8edff4d0716d1::t_acac3ff828512d 2
+src/locales/el/messages.js
+  s_e8edff4d0716d1::t_6bac699e0c52cc 1
+src/locales/en/messages.js
+  s_e8edff4d0716d1::t_de42aebc5073f0 1
+src/locales/en/messages.po
+  s_e8edff4d0716d1::t_16d86d7c0c795c 1839-1842
+src/locales/es/messages.js
+  s_e8edff4d0716d1::t_50e9ac81bc9b34 1
+src/locales/fr/messages.js
+  s_e8edff4d0716d1::t_cbcb50a89b304e 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "f7e2c4a5caf24499eb14b513b7bbbca51c76de9f",
+  "prompts": {},
+  "sessions": {
+    "s_e8edff4d0716d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2dfb1aca-df0c-4f9e-b0f7-19dc6135f592",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
