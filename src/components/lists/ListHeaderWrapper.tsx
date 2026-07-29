@@ -22,6 +22,8 @@ export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapp
         bgcolor: 'surface-elevated',
         borderBottom: '1px solid',
         borderColor: 'border-0',
+        borderTopLeftRadius: 'inherit',
+        borderTopRightRadius: 'inherit',
         ...rest.sx,
       }}
     >

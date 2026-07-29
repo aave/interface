@@ -20,15 +20,15 @@ const listHeaders = [
     sortKey: 'symbol',
   },
   {
-    title: <ApyTooltip />,
+    title: <ApyTooltip variant="subheader2" />,
     sortKey: 'totalAPY',
   },
   {
-    title: <StakedUnderlyingTooltip />,
+    title: <StakedUnderlyingTooltip variant="subheader2" />,
     sortKey: 'stakeTokenUnderlyingBalance',
   },
   {
-    title: <SharesTooltip />,
+    title: <SharesTooltip variant="subheader2" />,
     sortKey: 'stakeSharesTokens',
   },
   {
