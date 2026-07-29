@@ -356,11 +356,6 @@ msgstr "Migrate to {0} v3 Market"
 msgid "Voting results"
 msgstr "Voting results"
 
-#: src/modules/dashboard/DashboardContentWrapper.tsx
-#: src/modules/dashboard/DashboardContentWrapper.tsx
-msgid "View Transactions"
-msgstr "View Transactions"
-
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "MAX"
 msgstr "MAX"
@@ -497,11 +492,6 @@ msgstr "Spanish"
 msgid "Withdrawing GHO"
 msgstr "Withdrawing GHO"
 
-#: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
-msgid "Start Earning"
-msgstr "Start Earning"
-
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signing"
 msgstr "Signing"
@@ -636,7 +626,6 @@ msgstr "Aave Pro"
 msgid "Data couldn't be fetched, please reload graph."
 msgstr "Data couldn't be fetched, please reload graph."
 
-#: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Dashboard"
 msgstr "Dashboard"
@@ -980,6 +969,10 @@ msgstr "{networkName} Faucet"
 msgid "Protocol Incentives"
 msgstr "Protocol Incentives"
 
+#: src/components/WalletConnection/ReadOnlyModal.tsx
+msgid "Watch wallet"
+msgstr "Watch wallet"
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
 msgstr "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
@@ -1038,10 +1031,6 @@ msgstr "Claiming all protocol rewards only. Merit rewards excluded - select \"cl
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Collateralization"
 msgstr "Collateralization"
-
-#: src/components/MarketSwitcher.tsx
-msgid "Main Ethereum market with the largest selection of assets and yield options"
-msgstr "Main Ethereum market with the largest selection of assets and yield options"
 
 #: src/components/ReserveSubheader.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
@@ -2771,7 +2760,7 @@ msgstr "Created"
 msgid "after voting"
 msgstr "after voting"
 
-#: src/ui-config/menu-items/index.tsx
+#: src/layouts/components/NavItems.tsx
 msgid "Governance"
 msgstr "Governance"
 
@@ -3688,6 +3677,10 @@ msgstr "This asset has reached its borrow cap. Nothing is available to be borrow
 msgid "Set up delegation"
 msgstr "Set up delegation"
 
+#: src/components/MarketSwitcher.tsx
+msgid "Main market with the largest selection of assets and yield options."
+msgstr "Main market with the largest selection of assets and yield options."
+
 #: src/modules/governance/DelegatedInfoPanel.tsx
 msgid "{title}"
 msgstr "{title}"
@@ -4335,8 +4328,6 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
-#: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "Migrate"
 msgstr "Migrate"
@@ -4376,10 +4367,6 @@ msgstr "Not a valid address"
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Transaction details not available"
 msgstr "Transaction details not available"
-
-#: src/components/WalletConnection/ReadOnlyModal.tsx
-msgid "Track wallet"
-msgstr "Track wallet"
 
 #: src/components/infoTooltips/PriceImpactTooltip.tsx
 msgid "Price impact {0}%"

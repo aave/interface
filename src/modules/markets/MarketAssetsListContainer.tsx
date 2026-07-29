@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Divider, Switch, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Divider, FormControlLabel, Switch, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
@@ -243,16 +243,18 @@ export const MarketAssetsListContainer = () => {
       >
         {frozenOrPausedReserves.length > 0 && (
           <>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Typography variant="subheader1">
-                <Trans>Show frozen/paused assets</Trans>
-              </Typography>
-              <Switch
-                checked={showFrozenMarketsToggle}
-                onChange={handleChange}
-                inputProps={{ 'aria-label': 'show frozen or paused assets' }}
-              />
-            </Box>
+            <FormControlLabel
+              sx={{ m: 0 }}
+              control={
+                <Switch
+                  checked={showFrozenMarketsToggle}
+                  onChange={handleChange}
+                  inputProps={{ 'aria-label': 'show frozen or paused assets' }}
+                />
+              }
+              label={<Trans>Show frozen/paused assets</Trans>}
+              componentsProps={{ typography: { variant: 'subheader1' } }}
+            />
             <Divider
               orientation={sm ? 'horizontal' : 'vertical'}
               flexItem
@@ -260,16 +262,18 @@ export const MarketAssetsListContainer = () => {
             />
           </>
         )}
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant="subheader1">
-            <Trans>{'Show assets <$100k supply'}</Trans>
-          </Typography>
-          <Switch
-            checked={showLowLiquidityToggle || !hasHighLiquidityAssets}
-            onChange={() => setShowLowLiquidityToggle((prev) => !prev)}
-            inputProps={{ 'aria-label': 'show assets under 100k supply' }}
-          />
-        </Box>
+        <FormControlLabel
+          sx={{ m: 0 }}
+          control={
+            <Switch
+              checked={showLowLiquidityToggle || !hasHighLiquidityAssets}
+              onChange={() => setShowLowLiquidityToggle((prev) => !prev)}
+              inputProps={{ 'aria-label': 'show assets under 100k supply' }}
+            />
+          }
+          label={<Trans>{'Show assets <$100k supply'}</Trans>}
+          componentsProps={{ typography: { variant: 'subheader1' } }}
+        />
       </Box>
     </ListWrapper>
   );

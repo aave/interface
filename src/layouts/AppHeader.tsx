@@ -24,6 +24,7 @@ import { BridgeIcon } from 'src/components/icons/BridgeIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { useConnectGate } from 'src/hooks/useConnectGate';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -123,6 +124,7 @@ export function AppHeader() {
 
   const { openSwitch, openBridge, openReadMode } = useModalContext();
   const { readOnlyMode } = useWeb3Context();
+  const openOrConnect = useConnectGate();
   const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { hasActiveOrders } = useSwapOrdersTracking();
@@ -163,11 +165,11 @@ export function AppHeader() {
   const handleSwitchClick = () => {
     localStorage.setItem(SWITCH_VISITED_KEY, 'true');
     setVisitedSwitch(true);
-    openSwitch();
+    openOrConnect(openSwitch);
   };
 
   const handleBridgeClick = () => {
-    openBridge();
+    openOrConnect(openBridge);
   };
 
   const testnetTooltip = (

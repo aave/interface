@@ -28,7 +28,6 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
           slashing, aToken staking, and improved incentives design.
         </Trans>
       }
-      columns={2}
     >
       <PageHeaderStat label={<Trans>Funds in the Safety Module</Trans>} loading={loading}>
         <FormattedNumber

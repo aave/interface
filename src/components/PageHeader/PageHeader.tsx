@@ -6,9 +6,13 @@ interface PageHeaderProps {
   title: ReactNode;
   description?: ReactNode;
   children: ReactNode;
-  /** Number of stat columns — laid out as `grid-template-columns: repeat(columns, 1fr)`. */
-  columns: number;
   containerProps?: ContainerProps;
+  /**
+   * Render `title` as-is instead of wrapping it in the heading Typography. Use when the title is
+   * itself a styled/interactive node (e.g. the dashboard's MarketSwitcher, which brings its own
+   * title text + description).
+   */
+  disableTitleTypography?: boolean;
 }
 
 /**
@@ -20,8 +24,8 @@ export const PageHeader = ({
   title,
   description,
   children,
-  columns,
   containerProps = {},
+  disableTitleTypography = false,
 }: PageHeaderProps) => {
   return (
     <Box
@@ -53,9 +57,13 @@ export const PageHeader = ({
               gap: '1rem',
             }}
           >
-            <Typography variant="h2" sx={{ fontSize: '1.875rem', color: 'fg-1' }}>
-              {title}
-            </Typography>
+            {disableTitleTypography ? (
+              title
+            ) : (
+              <Typography variant="h2" sx={{ fontSize: '1.875rem', color: 'fg-1' }}>
+                {title}
+              </Typography>
+            )}
             {description && (
               <Typography variant="h5" sx={{ color: 'fg-3', textWrap: 'balance' }}>
                 {description}
@@ -65,8 +73,7 @@ export const PageHeader = ({
 
           <Box
             sx={{
-              display: 'grid',
-              gridTemplateColumns: `repeat(${columns}, 1fr)`,
+              display: 'flex',
               gap: '2.5rem',
             }}
           >

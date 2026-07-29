@@ -14,6 +14,7 @@ import {
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
+import { ExternalLinkIcon } from 'src/components/icons/ExternalLinkIcon';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
@@ -22,6 +23,8 @@ import { Link, ROUTES } from '../../components/primitives/Link';
 import { navigation } from '../../ui-config/menu-items';
 import { navLinkSx } from './navLinkSx';
 import { StakingMenu } from './StakingMenu';
+
+const GOVERNANCE_URL = 'https://governance.aave.com';
 
 interface NavItemsProps {
   setOpen?: (value: boolean) => void;
@@ -106,6 +109,12 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
     trackEvent(NAV_BAR.MAIN_MENU, { nav_link: title });
     if (isMd && setOpen) setOpen(false);
   };
+  const governanceLabel = (
+    <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+      <Trans>Governance</Trans>
+      <ExternalLinkIcon sx={{ fontSize: '1rem' }} />
+    </Box>
+  );
   return (
     <List
       sx={{
@@ -217,6 +226,26 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
           </>
         ) : (
           <StakingMenu />
+        )}
+      </ListItem>
+
+      <ListItem sx={navListItemSx} data-cy="menuGovernance" disablePadding>
+        {md ? (
+          <MobileNavLink
+            href={GOVERNANCE_URL}
+            label={governanceLabel}
+            active={false}
+            onClick={() => handleClick('Governance', true)}
+          />
+        ) : (
+          <Button
+            component={Link}
+            href={GOVERNANCE_URL}
+            onClick={() => handleClick('Governance', false)}
+            sx={navLinkSx('2.25rem 0.88rem')}
+          >
+            {governanceLabel}
+          </Button>
         )}
       </ListItem>
     </List>

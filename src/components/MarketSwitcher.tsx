@@ -258,7 +258,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
       </Trans>
     ),
     proto_mainnet_v3: (
-      <Trans>Main Ethereum market with the largest selection of assets and yield options</Trans>
+      <Trans>Main market with the largest selection of assets and yield options.</Trans>
     ),
     proto_lido_v3: (
       <Trans>Optimized for efficiency and risk by supporting blue-chip collateral assets</Trans>
@@ -703,65 +703,58 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
             </Typography>
           )}
           <MarketLogo
-            size={upToLG ? 32 : 28}
+            size={28}
             logo={currentLogo}
             testChainName={currentMarketNaming.testChainName}
+            sx={{ width: '1.75rem', height: '1.75rem', mr: '0.75rem' }}
           />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography
+            variant="h2"
+            sx={{
+              color: 'fg-1',
+              fontSize: '1.875rem',
+              mr: '0.5rem',
+            }}
+          >
+            {currentMarketNaming.name}
+            {currentMarketData.isFork ? ' Fork' : ''}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              height: '1.5rem',
+              px: '0.625rem',
+              borderRadius: '1.5rem',
+              mt: '0.3125rem',
+              background: 'rgba(147, 145, 254, 0.24)',
+              '@supports (color: color(display-p3 0 0 0))': {
+                background: 'color(display-p3 0.5765 0.5686 0.9686 / 0.24)',
+              },
+            }}
+          >
             <Typography
-              variant={upToLG ? 'display1' : 'h1'}
               sx={{
-                fontSize: downToXSM ? '1.55rem' : undefined,
-                color: 'fg-1',
-                mr: 1,
+                color: 'purple-1',
+                fontSize: '1rem',
+                fontWeight: 500,
+                lineHeight: '1.125rem',
               }}
             >
-              {currentMarketNaming.name} {currentMarketData.isFork ? 'Fork' : ''}
-              {!hideTitleChrome &&
-                (upToLG &&
-                (currentMarket === 'proto_mainnet_v3' || currentMarket === 'proto_lido_v3')
-                  ? 'Instance'
-                  : ' Market')}
+              {currentMarketData.v3 ? 'v3' : 'v2'}
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  height: '1.5rem',
-                  px: '0.625rem',
-                  borderRadius: '1.5rem',
-                  background: 'rgba(147, 145, 254, 0.24)',
-                  '@supports (color: color(display-p3 0 0 0))': {
-                    background: 'color(display-p3 0.5765 0.5686 0.9686 / 0.24)',
-                  },
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: 'purple-1',
-                    fontSize: '1rem',
-                    fontWeight: 500,
-                    lineHeight: '1.125rem',
-                  }}
-                >
-                  {currentMarketData.v3 ? 'v3' : 'v2'}
-                </Typography>
-              </Box>
-              <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3' }} />
-            </Box>
           </Box>
+          <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }} />
         </Box>
 
         {!hideTitleChrome && marketBlurbs[currentMarket] && (
           <Typography
+            variant="h5"
             sx={{
-              color: 'fg-2',
-              mt: 0.5,
-              fontSize: '0.85rem',
+              color: 'fg-3',
+              mt: '1rem',
               wordWrap: 'break-word',
               whiteSpace: 'normal',
-              lineHeight: 1.3,
               maxWidth: '100%',
             }}
           >
@@ -820,7 +813,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
-                mt: 1,
+                mt: '-1rem',
                 // Offset the panel 1rem to the left of the trigger's left edge.
                 ml: '-1rem',
               },

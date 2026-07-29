@@ -26,7 +26,6 @@ export const UmbrellaHeader: React.FC = () => {
     <PageHeader
       title="Staking"
       description={<Trans>Stake your Aave aTokens or underlying assets to earn rewards.</Trans>}
-      columns={currentAccount ? 3 : 1}
     >
       <TotalStakedStat currentMarketData={currentMarketData} valueVariant={valueVariant} />
       {currentAccount ? (

@@ -104,6 +104,9 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
         open={open}
         onClose={handleClose}
         keepMounted={true}
+        sx={{
+          mt: '-1.125rem',
+        }}
       >
         <MenuItem
           component={Link}

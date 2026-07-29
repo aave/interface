@@ -135,7 +135,7 @@ export const figmaDark = {
   'fg-max': '#ffffff',
   'fg-1': '#ffffff',
   'fg-2': '#bcbbbb',
-  'fg-3': '#8f8e8e',
+  'fg-3': '#727274',
   'fg-4': '#636161',
   'fg-5': '#383838',
   'fgp-3': '#8f8e8e',

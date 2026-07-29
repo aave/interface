@@ -3,6 +3,7 @@ import { Box, Button, Divider, List, ListItem, ListItemText } from '@mui/materia
 import { useEffect, useState } from 'react';
 import { BridgeIcon } from 'src/components/icons/BridgeIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
+import { useConnectGate } from 'src/hooks/useConnectGate';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { figVars } from 'src/utils/figmaColors';
@@ -82,6 +83,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
   // first row at rest.
   const [scrolled, setScrolled] = useState(false);
   const { openReadMode, openSwitch, openBridge } = useModalContext();
+  const openOrConnect = useConnectGate();
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const showSwitchButton = isFeatureEnabled.switch(currentMarketData);
 
@@ -96,12 +98,12 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
 
   const handleSwap = () => {
     setOpen(false);
-    openSwitch();
+    openOrConnect(openSwitch);
   };
 
   const handleBridge = () => {
     setOpen(false);
-    openBridge();
+    openOrConnect(openBridge);
   };
 
   return (

@@ -7,10 +7,11 @@ import Link from 'next/link';
 import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
-import { getMarketInfoById } from 'src/components/MarketSwitcher';
+import { getMarketInfoById, MarketSwitcher } from 'src/components/MarketSwitcher';
+import { PageHeader } from 'src/components/PageHeader/PageHeader';
+import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
-import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
@@ -21,8 +22,6 @@ import { useShallow } from 'zustand/shallow';
 
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { NoData } from '../../components/primitives/NoData';
-import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
-import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { useEnhancedUserYield } from '../../hooks/useEnhancedUserYield';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
@@ -144,6 +143,8 @@ export const DashboardTopPanel = () => {
   const valueTypographyVariant = downToSM ? 'h4' : 'h2';
   const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
 
+  const showHealthFactor = Boolean(currentAccount) && user?.healthFactor !== '-1';
+
   return (
     <>
       {showMigrateButton && downToSM && (
@@ -163,16 +164,13 @@ export const DashboardTopPanel = () => {
           </Link>
         </Box>
       )}
-      <TopInfoPanel
-        titleComponent={
+      <PageHeader
+        disableTitleTypography
+        title={
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <PageTitle
-              pageTitle={<Trans>Dashboard</Trans>}
-              withMarketSwitcher={true}
-              bridge={currentNetworkConfig.bridge}
-            />
+            <MarketSwitcher />
             {showMigrateButton && !downToSM && (
-              <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
+              <Box sx={{ ml: 2 }}>
                 <Link href={ROUTES.marketMigrationTool(currentMarket)}>
                   <Button variant="contained" sx={{ height: '20px' }}>
                     <Typography variant="buttonS" data-cy={`migration-button`}>
@@ -185,7 +183,7 @@ export const DashboardTopPanel = () => {
           </Box>
         }
       >
-        <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading} hideIcon>
+        <PageHeaderStat label={<Trans>Net worth</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
@@ -193,17 +191,15 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               compact
-              symbolsColor="#A5A8B6"
-              symbolsVariant={noDataTypographyVariant}
             />
           ) : (
             <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
           )}
-        </TopInfoPanelItem>
+        </PageHeaderStat>
 
-        <TopInfoPanelItem
-          title={
-            <div style={{ display: 'flex' }}>
+        <PageHeaderStat
+          label={
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <Trans>Net APY</Trans>
               <NetAPYTooltip
                 event={{
@@ -211,10 +207,9 @@ export const DashboardTopPanel = () => {
                   eventParams: { tooltip: 'NET APY: Dashboard Banner' },
                 }}
               />
-            </div>
+            </Box>
           }
           loading={loading}
-          hideIcon
         >
           {currentAccount && user && Number(user.netWorthUSD) > 0 ? (
             <FormattedNumber
@@ -222,24 +217,14 @@ export const DashboardTopPanel = () => {
               variant={valueTypographyVariant}
               visibleDecimals={2}
               percent
-              symbolsColor="#A5A8B6"
-              symbolsVariant={noDataTypographyVariant}
             />
           ) : (
             <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
           )}
-        </TopInfoPanelItem>
+        </PageHeaderStat>
 
-        {currentAccount && user?.healthFactor !== '-1' && (
-          <TopInfoPanelItem
-            title={
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <Trans>Health factor</Trans>
-              </Box>
-            }
-            loading={loading}
-            hideIcon
-          >
+        {showHealthFactor && (
+          <PageHeaderStat label={<Trans>Health factor</Trans>} loading={loading}>
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
               variant={valueTypographyVariant}
@@ -248,11 +233,11 @@ export const DashboardTopPanel = () => {
                 setOpen(true);
               }}
             />
-          </TopInfoPanelItem>
+          </PageHeaderStat>
         )}
 
         {currentAccount && (
-          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} loading={loading} hideIcon>
+          <PageHeaderStat label={<Trans>Available rewards</Trans>} loading={loading}>
             <Box
               sx={{
                 display: 'flex',
@@ -267,8 +252,6 @@ export const DashboardTopPanel = () => {
                   visibleDecimals={2}
                   compact
                   symbol="USD"
-                  symbolsColor="#A5A8B6"
-                  symbolsVariant={noDataTypographyVariant}
                   data-cy={'Claim_Value'}
                 />
               </Box>
@@ -283,9 +266,9 @@ export const DashboardTopPanel = () => {
                 <Trans>Claim</Trans>
               </Button>
             </Box>
-          </TopInfoPanelItem>
+          </PageHeaderStat>
         )}
-      </TopInfoPanel>
+      </PageHeader>
       <LiquidationRiskParametresInfoModal
         open={open}
         setOpen={setOpen}
