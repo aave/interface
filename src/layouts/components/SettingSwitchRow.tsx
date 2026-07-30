@@ -32,7 +32,7 @@ export const SettingSwitchRow = ({
     <Switch
       checked={checked}
       onClick={onSwitchClick}
-      sx={{ '.MuiSwitch-track': { bgcolor: { md: 'primary.light' } } }}
+      sx={{ '.MuiSwitch-track': { bgcolor: { mdlg: 'primary.light' } } }}
     />
   </Box>
 );

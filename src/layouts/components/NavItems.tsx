@@ -55,7 +55,7 @@ const activeBarSx = {
 };
 
 // Wrapper for each nav ListItem: full-width in the mobile drawer, inline with a gap on desktop.
-const navListItemSx = { width: { xs: '100%', md: 'unset' }, mr: { xs: 0, md: 2 } };
+const navListItemSx = { width: { xs: '100%', mdlg: 'unset' }, mr: { xs: 0, mdlg: 2 } };
 
 // A single mobile drawer nav link — top-level items and the Staking accordion's children all render
 // through here (children pass `indent`).
@@ -87,7 +87,7 @@ const MobileNavLink = ({
 export const NavItems = ({ setOpen }: NavItemsProps) => {
   const { i18n } = useLingui();
   const { breakpoints } = useTheme();
-  const md = useMediaQuery(breakpoints.down('md'));
+  const mdlg = useMediaQuery(breakpoints.down('mdlg'));
   const router = useRouter();
   const [stakingOpen, setStakingOpen] = React.useState(false);
   const [trackEvent, currentMarketData, account] = useRootStore(
@@ -110,9 +110,9 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
     <List
       sx={{
         display: 'flex',
-        alignItems: { xs: 'flex-start', md: 'center' },
-        flexDirection: { xs: 'column', md: 'row' },
-        gap: { xs: '0.5rem', md: 0 },
+        alignItems: { xs: 'flex-start', mdlg: 'center' },
+        flexDirection: { xs: 'column', mdlg: 'row' },
+        gap: { xs: '0.5rem', mdlg: 0 },
       }}
       disablePadding
     >
@@ -120,7 +120,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
         .filter((item) => !item.isVisible || item.isVisible(currentMarketData))
         .map((item, index) => (
           <ListItem sx={navListItemSx} data-cy={item.dataCy} disablePadding key={index}>
-            {md ? (
+            {mdlg ? (
               <MobileNavLink
                 href={item.link}
                 label={i18n._(item.title)}
@@ -142,7 +142,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
         ))}
 
       <ListItem sx={navListItemSx} disablePadding>
-        {md ? (
+        {mdlg ? (
           <MobileNavLink
             href={ROUTES.sGHO}
             label={<Trans>sGHO</Trans>}
@@ -165,12 +165,12 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
       <ListItem
         sx={{
           ...navListItemSx,
-          flexDirection: { xs: 'column', md: 'row' },
-          alignItems: { xs: 'stretch', md: 'center' },
+          flexDirection: { xs: 'column', mdlg: 'row' },
+          alignItems: { xs: 'stretch', mdlg: 'center' },
         }}
         disablePadding
       >
-        {md ? (
+        {mdlg ? (
           <>
             <Box
               onClick={() => setStakingOpen((v) => !v)}

@@ -78,12 +78,12 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 function HideOnScroll({ children }: Props) {
   const { breakpoints } = useTheme();
-  const md = useMediaQuery(breakpoints.down('md'));
+  const mdlg = useMediaQuery(breakpoints.down('mdlg'));
   const trigger = useScrollTrigger({ threshold: 80 });
 
   // Mobile keeps the header pinned (never hides on scroll); desktop still hides past the threshold.
   return (
-    <Slide appear={false} direction="down" in={md || !trigger}>
+    <Slide appear={false} direction="down" in={mdlg || !trigger}>
       {children}
     </Slide>
   );
@@ -99,11 +99,11 @@ const envBadgeSx = {
 
 export function AppHeader() {
   const { breakpoints } = useTheme();
-  const md = useMediaQuery(breakpoints.down('md'));
+  const mdlg = useMediaQuery(breakpoints.down('mdlg'));
   const sm = useMediaQuery(breakpoints.down('sm'));
-  const smd = useMediaQuery(breakpoints.down('mdlg'));
-  // Shared by the Swap + Bridge triggers: icon-only square when collapsed (smd), text otherwise.
-  const collapsingTriggerSx = smd
+  const lg = useMediaQuery(breakpoints.down('lg'));
+  // Shared by the Swap + Bridge triggers: icon-only square when collapsed (below lg), text otherwise.
+  const collapsingTriggerSx = lg
     ? [iconButtonSx, { alignItems: 'center', '& .MuiButton-startIcon': { mx: 0 } }]
     : { p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' };
 
@@ -130,19 +130,19 @@ export function AppHeader() {
   const { hasActiveOrders } = useSwapOrdersTracking();
 
   useEffect(() => {
-    if (mobileDrawerOpen && !md) {
+    if (mobileDrawerOpen && !mdlg) {
       setMobileDrawerOpen(false);
     }
     if (walletWidgetOpen) {
       setWalletWidgetOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [md]);
+  }, [mdlg]);
 
   const headerHeight = 72;
 
   const toggleMobileMenu = (state: boolean) => {
-    if (md) setMobileDrawerOpen(state);
+    if (mdlg) setMobileDrawerOpen(state);
     setMobileMenuOpen(state);
   };
 
@@ -272,7 +272,7 @@ export function AppHeader() {
             )}
           </Box>
 
-          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+          <Box sx={{ display: { xs: 'none', mdlg: 'block' } }}>
             <NavItems />
           </Box>
 
@@ -284,7 +284,7 @@ export function AppHeader() {
               variant="dot"
               badgeContent=""
               color="secondary"
-              sx={{ mr: '0.62rem', display: { xs: 'none', md: 'inline-flex' } }}
+              sx={{ mr: '0.62rem', display: { xs: 'none', mdlg: 'inline-flex' } }}
             >
               <Button
                 onClick={handleSwitchClick}
@@ -307,7 +307,7 @@ export function AppHeader() {
                 aria-label="Switch tool"
                 disabled={!showSwitchButton}
               >
-                {!smd && (
+                {!lg && (
                   <Typography component="span" variant="buttonM">
                     Swap
                   </Typography>
@@ -322,7 +322,7 @@ export function AppHeader() {
               // variant="dot"
               badgeContent=""
               color="secondary"
-              sx={{ mr: '0.62rem', display: { xs: 'none', md: 'inline-flex' } }}
+              sx={{ mr: '0.62rem', display: { xs: 'none', mdlg: 'inline-flex' } }}
             >
               <Button
                 onClick={handleBridgeClick}
@@ -330,7 +330,7 @@ export function AppHeader() {
                 startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
                 sx={collapsingTriggerSx}
               >
-                {!smd && (
+                {!lg && (
                   <Typography component="span" variant="buttonM">
                     Bridge GHO
                   </Typography>
@@ -356,12 +356,12 @@ export function AppHeader() {
             <ConnectWalletButton />
           )}
 
-          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+          <Box sx={{ display: { xs: 'none', mdlg: 'block' } }}>
             <SettingsMenu />
           </Box>
 
           {!walletWidgetOpen && (
-            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+            <Box sx={{ display: { xs: 'flex', mdlg: 'none' } }}>
               <MobileMenu
                 open={mobileMenuOpen}
                 setOpen={toggleMobileMenu}
