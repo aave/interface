@@ -1,0 +1,51 @@
+src/modules/reserve-overview/AddTokenDropdown.tsx
+  s_9510c0e86310c4::t_dd6e326418480a 114
+  s_9510c0e86310c4::t_af433af1cb135e 5
+  s_9510c0e86310c4::t_e21cede7f543de 84-86,88,102
+  s_9510c0e86310c4::t_32257ee9d0855c 12
+  s_9510c0e86310c4::t_e29fb926da417b 104-113,115
+src/modules/reserve-overview/TokenLinkDropdown.tsx
+  s_9510c0e86310c4::t_9febadc99b3d7b 2,5,11
+  s_9510c0e86310c4::t_ec8448c0483ff7 62-64
+src/modules/reserve-overview/ReserveTopDetails.tsx
+  s_9510c0e86310c4::t_2fa7c13b711a1e 24-26
+  s_9510c0e86310c4::t_9c9436e07ff1a3 2-3,16
+  s_9510c0e86310c4::t_efa4e961108b01 6-8,10
+  s_9510c0e86310c4::t_9b902d593bb9ee 68
+  s_9510c0e86310c4::t_f54de24f6a202d 69-73,75-89,94-95,97,99
+  s_9510c0e86310c4::t_70a69f89683d93 74,90-93,96,98
+src/components/icons/WalletOutlineIcon.tsx
+  s_9510c0e86310c4::t_cea522e9370b44 1-29
+src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+  s_9510c0e86310c4::t_ed01d18055df38 147
+  s_9510c0e86310c4::t_d8d6af93acfd09 137-145
+  s_9510c0e86310c4::t_72b5084c874b90 148-164
+  s_9510c0e86310c4::t_dedd4aca46e5b0 28-33
+  s_9510c0e86310c4::t_3dbb807e87fc13 5,9,13,16
+  s_9510c0e86310c4::t_c9e3c49a2faab2 25-27
+src/modules/reserve-overview/ReserveHeaderIconButton.tsx
+  s_9510c0e86310c4::t_f1dc6e73ec9872 1-51
+src/locales/en/messages.po
+  s_9510c0e86310c4::t_9aecb405c4da22 1193
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "4d8505fa2b55f00b6c2c347b86bbcf4db10665c4",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9510c0e86310c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b31ce7a4-0a0d-4ab2-a65e-4b2c8ab8c63d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
