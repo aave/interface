@@ -28,6 +28,12 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     ),
   },
   {
+    slug: 'icons',
+    label: 'Icons',
+    group: 'Foundations',
+    Component: dynamic(() => import('../components/IconsSection').then((m) => m.IconsSection)),
+  },
+  {
     slug: 'buttons',
     label: 'Buttons',
     group: 'Inputs & actions',
