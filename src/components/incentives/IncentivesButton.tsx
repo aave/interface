@@ -11,7 +11,6 @@ import { useMerklPointsIncentives } from 'src/hooks/useMerklPointsIncentives';
 import { useSonicIncentives } from 'src/hooks/useSonicIncentives';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
-import { figVars } from 'src/utils/figmaColors';
 import { convertAprToApy } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
@@ -491,39 +490,19 @@ const Content = ({
 };
 
 const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) => {
-  const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <Box
-      sx={{
-        p: { xs: '0 4px', xsm: '2px 4px' },
-        border: `1px solid ${open ? figVars['disabled-fg'] : figVars['border-2']}`,
-        borderRadius: '4px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'opacity 0.2s ease',
-        bgcolor: open ? 'button-hover' : 'transparent',
-        '&:hover': {
-          bgcolor: 'button-hover',
-          borderColor: 'disabled-fg',
-        },
-      }}
+      sx={{ display: 'flex', alignItems: 'center', gap: '0.38rem', cursor: 'pointer' }}
       onClick={() => {
         trackEvent(DASHBOARD.VIEW_LM_DETAILS_DASHBOARD, {});
-        setOpen(!open);
       }}
     >
-      <Box sx={{ mr: 2 }}>
-        <Typography component="span" variant="subheader2" color="fg-2">
-          {`${value}x`}
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'inline-flex' }}>
-        <img src={iconSrc} width={12} height={12} alt="icon" />
-      </Box>
+      <img src={iconSrc} alt="icon" style={{ width: '0.875rem', height: '0.875rem' }} />
+      <Typography component="span" variant="subheader2" color="fg-3" sx={{ fontSize: '0.875rem' }}>
+        {`${value}x`}
+      </Typography>
     </Box>
   );
 };
