@@ -1,20 +1,19 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Divider, Menu, MenuItem, SvgIcon } from '@mui/material';
+import { Box, Divider, Menu, MenuItem } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
-import { CircleIcon } from 'src/components/CircleIcon';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
 import { RESERVE_DETAILS } from '../../utils/events';
+import { ReserveHeaderIconButton } from './ReserveHeaderIconButton';
 import { MenuSectionLabel, TokenMenuItemContent } from './TokenMenuItems';
 
 interface TokenLinkDropdownProps {
   poolReserve: ReserveWithId;
   iconSymbol?: string;
-  downToSM: boolean;
   hideAToken?: boolean;
   hideVariableDebtToken?: boolean;
 }
@@ -22,7 +21,6 @@ interface TokenLinkDropdownProps {
 export const TokenLinkDropdown = ({
   poolReserve,
   iconSymbol,
-  downToSM,
   hideAToken,
   hideVariableDebtToken,
 }: TokenLinkDropdownProps) => {
@@ -61,21 +59,9 @@ export const TokenLinkDropdown = ({
   return (
     <>
       <Box onClick={handleClick}>
-        <CircleIcon tooltipText={'View token contracts'} downToSM={downToSM}>
-          <Box
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              color: 'fg-3',
-              '&:hover': { color: 'fg-1' },
-              cursor: 'pointer',
-            }}
-          >
-            <SvgIcon sx={{ fontSize: '14px' }}>
-              <ExternalLinkIcon />
-            </SvgIcon>
-          </Box>
-        </CircleIcon>
+        <ReserveHeaderIconButton tooltipText="View token contracts">
+          <ArrowUpRightIcon sx={{ fontSize: '18px' }} />
+        </ReserveHeaderIconButton>
       </Box>
       <Menu
         anchorEl={anchorEl}

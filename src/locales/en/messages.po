@@ -1190,7 +1190,7 @@ msgstr "Your health factor after this swap will be critically low and may result
 msgid "{selectedCount} Categories"
 msgstr "{selectedCount} Categories"
 
-#: src/components/CircleIcon.tsx
+#: src/modules/reserve-overview/ReserveHeaderIconButton.tsx
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
 

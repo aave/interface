@@ -2,21 +2,19 @@ import { Trans } from '@lingui/macro';
 import { Box, Divider, Menu, MenuItem } from '@mui/material';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { CircleIcon } from 'src/components/CircleIcon';
-import { WalletIcon } from 'src/components/icons/WalletIcon';
+import { WalletOutlineIcon } from 'src/components/icons/WalletOutlineIcon';
 import { Base64Token } from 'src/components/primitives/TokenIcon';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { RESERVE_DETAILS } from 'src/utils/events';
-import { figVars } from 'src/utils/figmaColors';
 
+import { ReserveHeaderIconButton } from './ReserveHeaderIconButton';
 import { MenuSectionLabel, TokenMenuItemContent } from './TokenMenuItems';
 
 interface AddTokenDropdownProps {
   poolReserve: ReserveWithId;
   iconSymbol?: string;
-  downToSM: boolean;
   switchNetwork: (chainId: number) => Promise<void>;
   addERC20Token: (args: ERC20TokenType) => Promise<boolean>;
   currentChainId: number;
@@ -29,7 +27,6 @@ interface AddTokenDropdownProps {
 export const AddTokenDropdown = ({
   poolReserve,
   iconSymbol,
-  downToSM,
   switchNetwork,
   addERC20Token,
   currentChainId,
@@ -84,9 +81,11 @@ export const AddTokenDropdown = ({
 
   return (
     <>
-      {/* Load base64 token symbol for adding underlying and aTokens to wallet */}
+      {/* Hidden base64 image-generators for the add-to-wallet menu (they serialize the token SVG
+          for MetaMask). Absolutely positioned so these 0×0 nodes don't sit in the flex row as
+          gap-consuming siblings between the two header icon buttons. */}
       {poolReserve?.underlyingToken.symbol && !/_/.test(poolReserve.underlyingToken.symbol) && (
-        <>
+        <Box sx={{ position: 'absolute' }}>
           <Base64Token
             symbol={poolReserve.underlyingToken.symbol.toUpperCase()}
             onImageGenerated={setUnderlyingBase64}
@@ -100,37 +99,20 @@ export const AddTokenDropdown = ({
             />
           )}
           {isSGHO && <Base64Token symbol="sgho" onImageGenerated={setSGHOBase64} aToken={false} />}
-        </>
+        </Box>
       )}
-      <Box onClick={handleClick}>
-        <CircleIcon tooltipText="Add token to wallet" downToSM={downToSM}>
-          <Box
-            onClick={() => {
-              trackEvent(RESERVE_DETAILS.ADD_TOKEN_TO_WALLET_DROPDOWN, {
-                asset: poolReserve.underlyingToken.address,
-                assetName: poolReserve.underlyingToken.name,
-              });
-            }}
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              '&:hover': {
-                '.Wallet__icon': { opacity: '0 !important' },
-                '.Wallet__iconHover': { opacity: '1 !important' },
-              },
-              cursor: 'pointer',
-            }}
-          >
-            <WalletIcon
-              sx={{
-                width: '14px',
-                height: '14px',
-                stroke: figVars['fg-3'],
-                '&:hover': { stroke: figVars['fg-1'] },
-              }}
-            />
-          </Box>
-        </CircleIcon>
+      <Box
+        onClick={(event: React.MouseEvent<HTMLDivElement>) => {
+          trackEvent(RESERVE_DETAILS.ADD_TOKEN_TO_WALLET_DROPDOWN, {
+            asset: poolReserve.underlyingToken.address,
+            assetName: poolReserve.underlyingToken.name,
+          });
+          handleClick(event);
+        }}
+      >
+        <ReserveHeaderIconButton tooltipText="Add token to wallet">
+          <WalletOutlineIcon sx={{ fontSize: '16px' }} />
+        </ReserveHeaderIconButton>
       </Box>
       <Menu
         anchorEl={anchorEl}

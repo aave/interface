@@ -2,14 +2,18 @@ import { Trans } from '@lingui/macro';
 import { Box, Skeleton, SvgIcon, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
+import { useShallow } from 'zustand/shallow';
 
 import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
+import { AddTokenDropdown } from './AddTokenDropdown';
 import { GhoReserveTopDetails } from './Gho/GhoReserveTopDetails';
 import { ReserveTopDetails } from './ReserveTopDetails';
+import { TokenLinkDropdown } from './TokenLinkDropdown';
 
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
@@ -18,7 +22,15 @@ interface ReserveTopDetailsProps {
 export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsProps) => {
   const router = useRouter();
   const { supplyReserves, loading } = useAppDataContext();
-  const currentMarket = useRootStore((state) => state.currentMarket);
+  const [currentMarket, currentChainId] = useRootStore(
+    useShallow((state) => [state.currentMarket, state.currentChainId])
+  );
+  const {
+    addERC20Token,
+    switchNetwork,
+    chainId: connectedChainId,
+    currentAccount,
+  } = useWeb3Context();
 
   const { market, logo } = getMarketInfoById(currentMarket);
 
@@ -122,12 +134,34 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <ReserveIcon />
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <ReserveName />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <ReserveName />
+                {!loading && (
+                  <Typography variant="h2" sx={{ fontSize: '1.875rem', color: 'fg-3' }}>
+                    {poolReserve.underlyingToken.symbol}
+                  </Typography>
+                )}
+              </Box>
               {!loading && (
-                <Typography variant="h2" sx={{ fontSize: '1.875rem', color: 'fg-3' }}>
-                  {poolReserve.underlyingToken.symbol}
-                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <TokenLinkDropdown
+                    poolReserve={poolReserve}
+                    iconSymbol={displayIconSymbol}
+                    hideAToken={isGho}
+                  />
+                  {currentAccount && (
+                    <AddTokenDropdown
+                      poolReserve={poolReserve}
+                      iconSymbol={displayIconSymbol}
+                      switchNetwork={switchNetwork}
+                      addERC20Token={addERC20Token}
+                      currentChainId={currentChainId}
+                      connectedChainId={connectedChainId}
+                      hideAToken={isGho}
+                    />
+                  )}
+                </Box>
               )}
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
