@@ -212,24 +212,30 @@ export const IncentivesCard = ({
         gap: '0.38rem',
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.38rem' }}>
-        {apyIncentives}
-        {apyValue}
-        {tooltip}
-      </Box>
-      {/* Points programs on their own row; collapses (via :empty) when every points button
-          self-nulls, so the column gap leaves no phantom space beneath the rate. */}
+      {/* Inner column left-aligns the two rows to EACH OTHER (not to the cell), so the top-row
+          incentives icon and the bottom-row points icon sit parallel on the same left edge. */}
       <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '0.38rem',
-          alignItems: 'center',
-          justifyContent: 'center',
-          '&:empty': { display: 'none' },
-        }}
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.38rem' }}
       >
-        {pointsIncentives}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.38rem' }}>
+          {apyIncentives}
+          {apyValue}
+          {tooltip}
+        </Box>
+        {/* Points programs on their own row; collapses (via :empty) when every points button
+            self-nulls, so the column gap leaves no phantom space beneath the rate. */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '0.38rem',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            '&:empty': { display: 'none' },
+          }}
+        >
+          {pointsIncentives}
+        </Box>
       </Box>
     </Box>
   );

@@ -372,7 +372,7 @@ const Content = ({
     if (hideValue && hasGhoIncentives) {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <IncentivesIcon width="16" height="16" />
+          <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
         </Box>
       );
     }
@@ -381,7 +381,7 @@ const Content = ({
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <FormattedNumber value={incentivesNetAPR} percent variant="subheader2" color="fg-2" />
-            <IncentivesIcon width="16" height="16" />
+            <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
           </Box>
         );
       } else if (incentivesNetAPR !== INFINITY && incentivesNetAPR > 9999) {
@@ -394,7 +394,7 @@ const Content = ({
               variant="subheader2"
               color="fg-2"
             />
-            <IncentivesIcon width="16" height="16" />
+            <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
           </Box>
         );
       } else if (incentivesNetAPR === INFINITY) {
@@ -403,7 +403,7 @@ const Content = ({
             <Typography variant="main12" color="fg-2">
               ∞
             </Typography>
-            <IncentivesIcon width="16" height="16" />
+            <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
           </Box>
         );
       }
@@ -412,7 +412,7 @@ const Content = ({
     // Default behavior: show icon for non-GHO incentives
     return (
       <>
-        <IncentivesIcon width="16" height="16" />
+        <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
       </>
     );
   };
