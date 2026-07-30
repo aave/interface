@@ -1,0 +1,28 @@
+src/components/incentives/IncentivesCard.tsx
+  s_9510c0e86310c4::t_40f5315e7eb1a9 123-125,151-157,164-203,208-212,215-219,222-233
+  s_9510c0e86310c4::t_fef5e40b8597fd 220-221
+src/components/incentives/IncentivesButton.tsx
+  s_9510c0e86310c4::t_70244faf53606d 503
+  s_9510c0e86310c4::t_e8013ce46df111 497,502,504-505
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.18",
+  "base_commit_sha": "31c02224f01de14d2217d31c4cc1ace7295a5eb2",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9510c0e86310c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b31ce7a4-0a0d-4ab2-a65e-4b2c8ab8c63d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
