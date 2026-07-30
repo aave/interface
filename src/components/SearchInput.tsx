@@ -44,6 +44,11 @@ export const SearchInput = ({
         border: `1px solid ${figVars['border-2']}`,
         borderRadius: '0.5rem',
         height: '36px',
+        // Focus ring: a 3px fg-3 outline held 2px off the border (replaces the prior no-op focus).
+        '&:focus-within': {
+          outline: `3px solid ${figVars['fg-3']}`,
+          outlineOffset: '2px',
+        },
         ...wrapperSx,
       }}
     >

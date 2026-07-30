@@ -257,7 +257,7 @@ export const DashboardTopPanel = () => {
               </Box>
 
               <Button
-                variant="contained"
+                variant="outlined"
                 size="small"
                 onClick={() => openClaimRewards()}
                 sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}

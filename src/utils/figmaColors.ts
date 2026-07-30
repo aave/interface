@@ -15,6 +15,9 @@ export const figmaLight = {
   'bg-7': '#ebebeb',
   'bgp-1': '#f7f7f7',
   'bgp-2': '#fcfcfc',
+  // bgp-4 = tooltip surface, bgp-5 = reserve icon-button hover (no bgp-3; checkbox reuses bgp-2).
+  'bgp-4': '#f2f2f2',
+  'bgp-5': '#f6f7f4',
   'border-0': 'rgba(0, 0, 0, 0.06)',
   'border-1': 'rgba(0, 0, 0, 0.08)',
   'border-2': 'rgba(0, 0, 0, 0.12)',
@@ -131,6 +134,8 @@ export const figmaDark = {
   'bg-7': '#3f3e3e',
   'bgp-1': '#0f0f10',
   'bgp-2': '#18181B',
+  'bgp-4': '#1E1E20',
+  'bgp-5': '#28282A',
   'border-0': 'rgba(255, 255, 255, 0.06)',
   'border-1': 'rgba(255, 255, 255, 0.08)',
   'border-2': 'rgba(255, 255, 255, 0.12)',

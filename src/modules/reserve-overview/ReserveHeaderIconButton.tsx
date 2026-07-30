@@ -12,8 +12,9 @@ interface ReserveHeaderIconButtonProps {
 }
 
 // Surface icon button for the reserve header affordances (token contracts / add-to-wallet /
-// oracle link): a bg-max circle with the shared shadow-low-border-2 ring. The icon color comes
-// from `fg-2` (→ fg-1 on hover) via `currentColor`, so icon children only need `stroke="currentColor"`.
+// oracle link): a bg-max circle with the shared shadow-low-border-2 ring. The icon color is a
+// constant `fg-2` via `currentColor` (icon children only need `stroke="currentColor"`); hover
+// tints the circle background instead — bgp-5 (bone in light, #28282A in dark).
 export const ReserveHeaderIconButton = ({
   tooltipText,
   size = '1.75rem',
@@ -40,8 +41,9 @@ export const ReserveHeaderIconButton = ({
           boxShadow: figSurfaceShadow(),
           color: 'fg-2',
           cursor: 'pointer',
-          transition: 'color 100ms ease',
-          '&:hover': { color: 'fg-1' },
+          transition: 'background-color 100ms ease',
+          // Hover tints the circle, not the icon: bgp-5 = bone (#f6f7f4) in light, #28282A in dark.
+          '&:hover': { backgroundColor: 'bgp-5' },
         }}
       >
         {children}

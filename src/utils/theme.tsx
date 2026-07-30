@@ -81,7 +81,7 @@ const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
 const focusRing = { outline: '2px solid currentColor', outlineOffset: '3px' } as const;
 
 // Selection-control (checkbox + radio) icon recipes — shared so the two never drift. The unchecked
-// box is a bg-max fill with an inset border-0 hairline that darkens to fg-4 on hover (keyed to the shared
+// box is a bg-max fill (bgp-2 in dark) with an inset border-0 hairline that darkens to fg-4 on hover (keyed to the shared
 // .MuiButtonBase-root both controls carry, so one selector covers both); the checked box is a
 // purple-1 fill centered on its glyph. Radio spreads these and overrides borderRadius to a circle.
 const selectionControlResting = {
@@ -89,6 +89,11 @@ const selectionControlResting = {
   backgroundColor: figVars['bg-max'],
   boxShadow: `inset 0 0 0 1px ${figVars['border-0']}`,
   boxSizing: 'border-box' as const,
+  // Dark: bg-max (#0a0a0a) vanishes against the near-black canvas, so lift the unchecked fill to
+  // bgp-2 (#18181B) for contrast. Light stays bg-max (white).
+  ...darkScheme({
+    backgroundColor: figVars['bgp-2'],
+  }),
   '.MuiButtonBase-root:hover &': {
     boxShadow: `inset 0 0 0 1px ${figVars['fg-4']}`,
   },

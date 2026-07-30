@@ -15,15 +15,14 @@ interface ContentWithTooltipProps {
 
 export const PopperComponent = styled(Popper)(({ theme }) =>
   theme.unstable_sx({
-    // Frosted-glass tooltip: a translucent border-1 surface over an 80px backdrop blur, framed by
-    // an inset border-0 hairline + a soft shadow-medium drop. Padding lives here (not the inner Box).
+    // Solid bgp-4 tooltip surface (bgp-4 = #f2f2f2 light / #1E1E20 dark), framed by an inset
+    // border-0 hairline + a soft shadow-medium drop. Padding lives here (not the inner Box).
     '.MuiTooltip-tooltip': {
       color: 'fg-1',
-      backgroundColor: 'border-1',
+      backgroundColor: 'bgp-4',
       borderRadius: '0.5rem',
       boxShadow: `0 1px 12px 0 ${figVars['shadow-medium']}, inset 0 0 0 1px ${figVars['border-0']}`,
-      backdropFilter: 'blur(80px)',
-      padding: '0.5rem 0.75rem',
+      padding: '0.88rem',
       maxWidth: '250px',
       textAlign: 'center',
       whiteSpace: 'pre-wrap',
@@ -33,7 +32,7 @@ export const PopperComponent = styled(Popper)(({ theme }) =>
       lineHeight: '135%',
     },
     '.MuiTooltip-arrow': {
-      color: 'border-1',
+      color: 'bgp-4',
     },
   })
 );
