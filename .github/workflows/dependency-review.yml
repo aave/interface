@@ -17,3 +17,5 @@ jobs:
           comment-summary-in-pr: on-failure
           fail-on-severity: moderate
           license-check: false
+          show-openssf-scorecard: false
+          show-patched-versions: true
