@@ -37,9 +37,6 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
       <Typography variant="h3" sx={{ flexGrow: 1 }}>
         <Trans>Proposals</Trans>
       </Typography>
-      <Typography>
-        <Trans>Filter</Trans>
-      </Typography>
       <Select
         id="filter"
         value={proposalFilter}
@@ -81,9 +78,6 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
         searchPlaceholder="Search proposals"
       />
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <Typography>
-          <Trans>Filter</Trans>
-        </Typography>
         <Select
           id="filter"
           value={proposalFilter}

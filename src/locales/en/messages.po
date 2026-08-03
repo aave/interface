@@ -3577,11 +3577,6 @@ msgstr "AToken supply is not zero"
 msgid "Debt"
 msgstr "Debt"
 
-#: src/modules/governance/ProposalListHeader.tsx
-#: src/modules/governance/ProposalListHeader.tsx
-msgid "Filter"
-msgstr "Filter"
-
 #: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 msgid "Learn more about the Ether.fi program"
 msgstr "Learn more about the Ether.fi program"

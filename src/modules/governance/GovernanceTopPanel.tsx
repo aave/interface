@@ -1,9 +1,9 @@
 import { ChainId } from '@aave/contract-helpers';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as React from 'react';
 import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
@@ -22,19 +22,15 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
     <Button
       variant="outlined"
       size="small"
-      sx={{ minWidth: 'unset' }}
       component={Link}
       href={href}
       target="_blank"
       rel="noopener"
       onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: text })}
+      endIcon={<ArrowUpRightIcon sx={{ color: 'fgp-3' }} />}
+      sx={{ minWidth: 'unset' }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {text}
-        <SvgIcon sx={{ ml: 1, fontSize: 14 }}>
-          <ExternalLinkIcon />
-        </SvgIcon>
-      </Box>
+      {text}
     </Button>
   );
 }
@@ -79,15 +75,15 @@ export const GovernanceTopPanel = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          gap: '16px',
+          gap: '0.5rem',
           flexWrap: 'wrap',
           maxWidth: 'sm',
         }}
       >
-        <ExternalLink text="SNAPSHOTS" href="https://snapshot.org/#/aave.eth" />
-        <ExternalLink text="FORUM" href="https://governance.aave.com/" />
+        <ExternalLink text="Snapshots" href="https://snapshot.org/#/aave.eth" />
+        <ExternalLink text="Forum" href="https://governance.aave.com/" />
         <ExternalLink text="FAQ" href="https://aave.com/docs/ecosystem/governance" />
-        <ExternalLink text="GOVERNANCE V2" href="https://governance-v2.aave.com/" />
+        <ExternalLink text="Governance V2" href="https://governance-v2.aave.com/" />
       </Box>
     </TopInfoPanel>
   );

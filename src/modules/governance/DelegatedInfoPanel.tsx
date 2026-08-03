@@ -214,7 +214,6 @@ export const DelegatedInfoPanel = () => {
       <Box sx={{ p: 6, display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Button
           size="large"
-          sx={{ width: '100%' }}
           variant="contained"
           disabled={disableButton}
           onClick={() => openGovDelegation()}
