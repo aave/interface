@@ -58,31 +58,19 @@ export const NetworkSelect = ({
             onChange={handleChange}
             variant="outlined"
             sx={{
-              '.MuiSelect-select': {
+              // Flatten the trigger: strip the theme's Select-pill (bg fill + surface-shadow ring)
+              // in all states so only the outer container remains. `&&` matches the theme's specificity.
+              '&&, &&:hover, &&:has(.MuiSelect-select[aria-expanded="true"])': {
                 backgroundColor: 'transparent',
+                boxShadow: 'none',
               },
-              '& .MuiOutlinedInput-root': {
-                background: 'transparent',
-                '&:hover': {
-                  '.MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'currentColor',
-                  },
-                },
-                '&.Mui-focused': {
-                  '.MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'primary.main',
-                  },
-                },
-              },
-              '& .MuiOutlinedInput-notchedOutline': {
-                border: 'none',
+              '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+              '& .MuiSelect-select': {
+                backgroundColor: 'transparent',
               },
               '& .MuiSelect-icon': {
                 marginRight: '12px',
                 display: disabled ? 'none' : 'inline-block',
-              },
-              '& input.Mui-disabled': {
-                color: 'red',
               },
               '& .MuiOutlinedInput-input.Mui-disabled': {
                 backgroundColor: 'transparent',

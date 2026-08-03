@@ -23,17 +23,24 @@ export const NetworkSelector = ({
         native={false}
         value={String(selectedNetwork)}
         onChange={handleChange}
+        MenuProps={{
+          anchorOrigin: { vertical: 'bottom', horizontal: 'left' },
+          transformOrigin: { vertical: 'top', horizontal: 'left' },
+          sx: { '& .MuiPaper-root': { marginLeft: '-4px' } },
+        }}
         sx={{
-          '&.MuiInputBase-root': {
-            border: 0,
-            '.MuiSelect-select': {
-              display: 'flex',
-              backgroundColor: 'transparent',
-              border: 0,
-            },
+          // Flatten the trigger to a plain text button: override the theme's Select-pill
+          // (bg fill + surface-shadow ring) in all states. `&&` matches the theme's specificity.
+          '&&, &&:hover, &&:has(.MuiSelect-select[aria-expanded="true"])': {
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
           },
-          '& .MuiOutlinedInput-notchedOutline': {
-            border: 'none',
+          '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+          '& .MuiSelect-select': {
+            display: 'flex',
+            alignItems: 'center',
+            backgroundColor: 'transparent',
+            paddingLeft: 0,
           },
         }}
       >
@@ -41,13 +48,13 @@ export const NetworkSelector = ({
           <MenuItem value={network.chainId} key={`${network.name}`}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <MarketLogo
-                size={16}
+                size={24}
                 logo={network.networkLogoPath}
                 sx={{
                   mr: 1,
                 }}
               />
-              <Typography variant="subheader2" color="fg-2">
+              <Typography variant="h5" color="fg-1">
                 {network.displayName || network.name}
               </Typography>
             </Box>
