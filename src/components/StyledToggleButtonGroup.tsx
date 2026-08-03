@@ -1,30 +1,38 @@
 import { styled, ToggleButtonGroup, ToggleButtonGroupProps } from '@mui/material';
-import { figVars } from 'src/utils/figmaColors';
+import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
+import { darkScheme } from 'src/utils/theme';
 
-// Segmented control framed like a medium outlined button: a `bg-5` fill with an inset 1px hairline
-// (shadow-stroke-2) as the ONLY frame — no border. 36px tall / 0.5rem radius to match the medium
-// button; the active pill stays concentric (0.375rem) inside the 2px inset.
+// Segmented-control shell: a bg-5 (light) / bg-2 (dark) fill. Light is frameless with a tight
+// 0.06rem inset; dark adds the shared surface shadow (shadow-low drop + 1px ring) and a 0.13rem
+// inset. 0.5625rem radius; the pill radius tracks the inset so the corners stay concentric.
 const CustomTxModalToggleGroup = styled(ToggleButtonGroup)<ToggleButtonGroupProps>({
   backgroundColor: figVars['bg-5'],
-  borderRadius: '0.5rem',
-  boxShadow: `inset 0 0 0 1px ${figVars['shadow-stroke-2']}`,
-  padding: '2px',
+  boxShadow: 'none',
+  padding: '0.06rem',
+  ...darkScheme({
+    backgroundColor: figVars['bg-2'],
+    boxShadow: figSurfaceShadow(),
+    padding: '0.13rem',
+  }),
+  borderRadius: '0.5625rem',
   height: '36px',
   width: '100%',
-  // Strip MUI's per-segment border (its ToggleButton root has a 1px divider border — the stray
-  // outline on the active pill), negative margins, and merged first/last corner radii so each
-  // segment is an independent borderless pill and the group carries the only ring.
+  // Strip MUI's per-segment border + overlap margins so each segment is an independent borderless
+  // pill (the group carries the only frame). Pill radius = shell radius − inset gap, per mode:
+  // 0.5025rem (0.5625 − 0.06) in light, 0.4325rem (0.5625 − 0.13) in dark.
   '& .MuiToggleButtonGroup-grouped': {
+    '--toggle-pill-radius': '0.5025rem',
+    ...darkScheme({ '--toggle-pill-radius': '0.4325rem' }),
     margin: 0,
     border: 0,
-    borderRadius: '0.375rem',
+    borderRadius: 'var(--toggle-pill-radius)',
     '&:not(:first-of-type)': {
       marginLeft: 0,
       borderLeft: 0,
-      borderRadius: '0.375rem',
+      borderRadius: 'var(--toggle-pill-radius)',
     },
     '&:not(:last-of-type)': {
-      borderRadius: '0.375rem',
+      borderRadius: 'var(--toggle-pill-radius)',
     },
   },
 }) as typeof ToggleButtonGroup;

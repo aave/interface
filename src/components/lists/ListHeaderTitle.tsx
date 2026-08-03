@@ -1,7 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useRootStore } from 'src/store/root';
-import { figVars } from 'src/utils/figmaColors';
 
 import { MARKETS } from '../../utils/events';
 
@@ -54,32 +53,24 @@ export const ListHeaderTitle = ({
       {children}
 
       {!!sortKey && (
-        <Box sx={{ display: 'inline-flex', flexDirection: 'column', ml: 1 }}>
-          <Box
-            component="span"
-            sx={{
-              width: 0,
-              height: 0,
-              borderStyle: 'solid',
-              borderWidth: '0 4px 4px 4px',
-              borderColor: `transparent transparent ${
-                sortName === sortKey && sortDesc ? figVars['fg-2'] : figVars['border-2']
-              } transparent`,
-              mb: 0.5,
-            }}
-          />
-          <Box
-            component="span"
-            sx={{
-              width: 0,
-              height: 0,
-              borderStyle: 'solid',
-              borderWidth: '4px 4px 0 4px',
-              borderColor: `${
-                sortName === sortKey && !sortDesc ? figVars['fg-2'] : figVars['border-2']
-              } transparent transparent transparent`,
-            }}
-          />
+        <Box sx={{ display: 'inline-flex', flexShrink: 0, ml: 1, color: 'fg-icon' }}>
+          {/* Static sortable indicator: an up/down chevron. Color comes from the fg-icon token via
+              currentColor on the Box — the P3-safe way to tint an SVG, since var() doesn't resolve
+              in SVG presentation attributes. stroke/width/caps are inherited by both paths. */}
+          <svg
+            width="8"
+            height="10"
+            viewBox="0 0 8 10"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M1.59961 3L3.99961 1L6.39961 3" />
+            <path d="M1.59961 7L3.99961 9L6.39961 7" />
+          </svg>
         </Box>
       )}
     </Typography>

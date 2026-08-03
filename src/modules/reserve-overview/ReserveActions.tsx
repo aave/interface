@@ -416,11 +416,11 @@ const WrappedBaseAssetSelector = ({
       sx={{ mb: 4 }}
     >
       <StyledTxModalToggleButton value={assetSymbol}>
-        <Typography variant="buttonM">{assetSymbol}</Typography>
+        <Typography variant="h5">{assetSymbol}</Typography>
       </StyledTxModalToggleButton>
 
       <StyledTxModalToggleButton value={baseAssetSymbol}>
-        <Typography variant="buttonM">{baseAssetSymbol}</Typography>
+        <Typography variant="h5">{baseAssetSymbol}</Typography>
       </StyledTxModalToggleButton>
     </StyledTxModalToggleGroup>
   );

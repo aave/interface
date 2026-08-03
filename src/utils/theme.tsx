@@ -32,7 +32,7 @@ type AppTheme = ReturnType<typeof experimental_extendTheme>;
 // raw theme has no top-level `palette`). This helper inlines the exact CSS-vars selector
 // `applyStyles` emits, matching any ancestor with `data-mui-color-scheme="dark"` — the <html>
 // element (app-wide) or a local wrapper (the dev showcase) — so both switch correctly.
-const darkScheme = (styles: object) => ({
+export const darkScheme = (styles: CSSObject): CSSObject => ({
   '*:where([data-mui-color-scheme="dark"]) &': styles,
 });
 
@@ -69,6 +69,33 @@ const secondaryPillStyle = {
     boxShadow: figSurfaceShadow(),
     ...darkScheme({
       backgroundColor: figVars['bg-5'],
+    }),
+  },
+};
+
+/**
+ * Tertiary button (`variant="tertiary"`): the secondary pill with the ring/drop-shadow removed —
+ * a flat fill, no border. Base bg-6 (light) / bg-5 (dark), stepping to bg-7 / bg-6 on hover.
+ * fg-1 text + fg-3 start-icon otherwise match `secondaryPillStyle`. For low-emphasis header
+ * actions (e.g. the dashboard Claim / share buttons).
+ */
+const tertiaryPillStyle = {
+  color: figVars['fg-1'],
+  backgroundColor: figVars['bg-6'],
+  ...darkScheme({
+    backgroundColor: figVars['bg-5'],
+  }),
+  border: 'none',
+  boxShadow: 'none',
+  '& .MuiButton-startIcon': {
+    color: figVars['fg-3'],
+  },
+  '&:hover, &.Mui-focusVisible, &[aria-expanded="true"]': {
+    backgroundColor: figVars['bg-7'],
+    border: 'none',
+    boxShadow: 'none',
+    ...darkScheme({
+      backgroundColor: figVars['bg-6'],
     }),
   },
 };
@@ -198,6 +225,13 @@ declare module '@mui/material/Typography' {
     body2: false;
     button: false;
     overline: false;
+  }
+}
+
+// Add a `tertiary` button variant (the secondary pill minus its ring/shadow).
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    tertiary: true;
   }
 }
 
@@ -613,6 +647,18 @@ export function getThemedComponents(theme: AppTheme) {
               }),
             },
           },
+          // Tertiary: the secondary pill with no ring/shadow (flat fill).
+          {
+            props: { variant: 'tertiary', color: 'primary' },
+            style: {
+              ...tertiaryPillStyle,
+              '&.Mui-disabled': {
+                color: figVars['fg-3'],
+                border: 'none',
+                boxShadow: 'none',
+              },
+            },
+          },
         ],
       },
       MuiIconButton: {
@@ -634,9 +680,12 @@ export function getThemedComponents(theme: AppTheme) {
       MuiToggleButton: {
         styleOverrides: {
           root: {
-            transition: theme.transitions.create(['background-color', 'color', 'transform'], {
-              duration: motion.duration.hover,
-            }),
+            transition: theme.transitions.create(
+              ['background-color', 'color', 'transform', 'opacity'],
+              {
+                duration: motion.duration.hover,
+              }
+            ),
             // Subtle press feedback — scale down while active (not when disabled).
             ...pressScaleActive,
           },

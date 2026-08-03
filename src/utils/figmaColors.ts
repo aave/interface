@@ -10,7 +10,7 @@ export const figmaLight = {
   'bg-2': '#fcfcfc',
   'bg-3': '#fcfbfb',
   'bg-4': '#f6f7f4',
-  'bg-5': '#f6f5f5',
+  'bg-5': '#f2f2f2',
   'bg-6': '#f1f1f1',
   'bg-7': '#ebebeb',
   'bgp-1': '#f7f7f7',

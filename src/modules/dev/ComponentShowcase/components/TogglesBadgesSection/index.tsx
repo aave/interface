@@ -19,7 +19,7 @@ const ToggleDemo = ({ options, initial }: { options: ToggleOption[]; initial: st
     <StyledTxModalToggleGroup value={value} exclusive onChange={(_, v) => v && setValue(v)}>
       {options.map((o) => (
         <StyledTxModalToggleButton key={o.value} value={o.value} disabled={o.disabled}>
-          <Typography variant="buttonM">{o.label}</Typography>
+          <Typography variant="h5">{o.label}</Typography>
         </StyledTxModalToggleButton>
       ))}
     </StyledTxModalToggleGroup>

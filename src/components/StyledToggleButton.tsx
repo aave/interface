@@ -1,38 +1,53 @@
 import { styled, ToggleButton, ToggleButtonProps } from '@mui/material';
-import React from 'react';
 import { figVars } from 'src/utils/figmaColors';
+import { darkScheme } from 'src/utils/theme';
+
+// Dimmed inactive label: fg-max at 0.3 opacity in light, full opacity in dark. Shared by the
+// resting state and the disabled-not-selected state (which must re-assert it over MUI's default).
+const dimmedInactive = {
+  color: figVars['fg-max'],
+  opacity: 0.3,
+  ...darkScheme({ opacity: 1 }),
+};
+
+// Active pill: a bg-max fill with a border-1 ring in light; a bg-5 fill and no ring in dark, fg-max
+// label at full opacity. Shared by Mui-selected/focus and disabled-selected (some consumers disable
+// the active tab).
+const activeFill = {
+  opacity: 1,
+  color: figVars['fg-max'],
+  backgroundColor: figVars['bg-max'],
+  boxShadow: `inset 0 0 0 1px ${figVars['border-1']}`,
+  ...darkScheme({
+    backgroundColor: figVars['bg-5'],
+    boxShadow: 'none',
+  }),
+};
 
 const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>({
   border: 0,
   flex: 1,
   height: '100%',
-  color: figVars['fg-3'],
+  // Label typography (H5) is owned by each consumer's <Typography variant="h5">.
+  ...dimmedInactive,
 
-  // Inactive hover: brighten the label only (fg-3 → fg-2), never a background.
+  // Inactive hover: nudge the opacity up in light; unchanged in dark. Never a background.
   '&:hover': {
     backgroundColor: 'transparent',
-    color: figVars['fg-2'],
-  },
-
-  // Active — and keyboard focus (Mui-focusVisible): a solid fill one step darker than the
-  // `bg-1` track (no shadow; the group carries the only ring) with primary text.
-  '&.Mui-selected, &.Mui-selected:hover, &.Mui-focusVisible': {
-    backgroundColor: figVars['bg-4'],
-    color: figVars['fg-1'],
-  },
-
-  // Disabled but NOT selected: muted, still readable.
-  '&.Mui-disabled:not(.Mui-selected)': {
-    color: figVars['fg-3'],
     opacity: 0.5,
+    ...darkScheme({ opacity: 1 }),
   },
 
-  // Disabled + selected: preserve the selected look (some consumers disable the active tab).
-  '&.Mui-disabled.Mui-selected': {
-    backgroundColor: figVars['bg-4'],
-    color: figVars['fg-1'],
-    opacity: 1,
+  '&.Mui-selected, &.Mui-focusVisible': activeFill,
+
+  // Active hover: step the fill one shade (bg-max → bg-1 light, bg-5 → bg-6 dark); the ring persists.
+  '&.Mui-selected:hover': {
+    backgroundColor: figVars['bg-1'],
+    ...darkScheme({ backgroundColor: figVars['bg-6'] }),
   },
+
+  '&.Mui-disabled:not(.Mui-selected)': dimmedInactive,
+  '&.Mui-disabled.Mui-selected': activeFill,
 }) as typeof ToggleButton;
 
 export function StyledTxModalToggleButton(props: ToggleButtonProps) {
