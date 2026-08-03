@@ -1,9 +1,3 @@
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-  ExclamationIcon,
-  InformationCircleIcon,
-} from '@heroicons/react/outline';
 import { Box, SvgIcon, ThemeOptions } from '@mui/material';
 import { type CSSObject, createTheme, experimental_extendTheme } from '@mui/material/styles';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -13,6 +7,12 @@ import { ColorPartial } from '@mui/material/styles/createPalette';
 // so `theme.vars.palette.*` typechecks app-wide, not only against this file's `AppTheme` param.
 import type {} from '@mui/material/themeCssVarsAugmentation';
 import React from 'react';
+import {
+  AlertErrorIcon,
+  AlertInfoIcon,
+  AlertSuccessIcon,
+  AlertWarningIcon,
+} from 'src/components/icons/AlertIcons';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { ScaleFade } from 'src/components/primitives/transitions/ScaleFade';
 
@@ -99,6 +99,16 @@ const tertiaryPillStyle = {
     }),
   },
 };
+
+// Alert severity surface: a gradient from the severity colour at 3% (left) fading to bg-2 (right)
+// over a bg-2 base, plus the full colour + a 20% tint behind/inside the icon box.
+const alertSeverityStyle = (color: string): CSSObject => ({
+  background: `linear-gradient(90deg, color-mix(in srgb, ${color} 3%, transparent) 0%, ${figVars['bg-2']} 100%), ${figVars['bg-2']}`,
+  '.MuiAlert-icon': {
+    color,
+    backgroundColor: `color-mix(in srgb, ${color} 20%, transparent)`,
+  },
+});
 
 // Shared box geometry for the custom selection-control icons (checkbox + radio).
 const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
@@ -1036,25 +1046,44 @@ export function getThemedComponents(theme: AppTheme) {
       MuiAlert: {
         styleOverrides: {
           root: {
-            boxShadow: 'none',
-            borderRadius: '4px',
-            padding: '8px 12px',
-            ...theme.typography.caption,
+            display: 'flex',
             alignItems: 'flex-start',
-            '.MuiAlert-message': {
-              padding: 0,
-              paddingTop: '2px',
-              paddingBottom: '2px',
-            },
+            gap: '0.88rem',
+            padding: '1rem 1.25rem',
+            borderRadius: '0.75rem',
+            boxShadow: figSurfaceShadow(),
+            // Icon box: a 2.5rem rounded square with a border-0 hairline. Its per-severity tint
+            // fill + icon color are set in the severity variants below.
             '.MuiAlert-icon': {
-              padding: 0,
+              margin: 0,
+              padding: '0.625rem',
+              width: '2.5rem',
+              height: '2.5rem',
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '0.5rem',
+              boxShadow: `inset 0 0 0 1px ${figVars['border-0']}`,
               opacity: 1,
               '.MuiSvgIcon-root': {
-                fontSize: pxToRem(20),
+                fontSize: '1.25rem',
+                flexShrink: 0,
               },
             },
+            // Message: Paragraph text in fg-max, centered against the icon box on a single line;
+            // multi-line grows and top-aligns via the container's flex-start.
+            '.MuiAlert-message': {
+              padding: 0,
+              alignSelf: 'center',
+              color: figVars['fg-max'],
+              fontFamily: FONT,
+              fontWeight: 400,
+              fontSize: pxToRem(14),
+              lineHeight: pxToRem(19),
+            },
             a: {
-              ...theme.typography.caption,
+              color: 'inherit',
               fontWeight: 500,
               textDecoration: 'underline',
               '&:hover': {
@@ -1062,7 +1091,7 @@ export function getThemedComponents(theme: AppTheme) {
               },
             },
             '.MuiButton-text': {
-              ...theme.typography.caption,
+              color: 'inherit',
               fontWeight: 500,
               textDecoration: 'underline',
               padding: 0,
@@ -1077,81 +1106,17 @@ export function getThemedComponents(theme: AppTheme) {
         },
         defaultProps: {
           iconMapping: {
-            error: (
-              <SvgIcon color="error">
-                <ExclamationIcon />
-              </SvgIcon>
-            ),
-            info: (
-              <SvgIcon color="info">
-                <InformationCircleIcon />
-              </SvgIcon>
-            ),
-            success: (
-              <SvgIcon color="success">
-                <CheckCircleIcon />
-              </SvgIcon>
-            ),
-            warning: (
-              <SvgIcon color="warning">
-                <ExclamationCircleIcon />
-              </SvgIcon>
-            ),
+            error: <AlertErrorIcon />,
+            info: <AlertInfoIcon />,
+            success: <AlertSuccessIcon />,
+            warning: <AlertWarningIcon />,
           },
         },
         variants: [
-          {
-            props: { severity: 'error' },
-            style: {
-              color: theme.vars.palette.error['100'],
-              background: theme.vars.palette.error['200'],
-              a: {
-                color: theme.vars.palette.error['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.vars.palette.error['100'],
-              },
-            },
-          },
-          {
-            props: { severity: 'info' },
-            style: {
-              color: theme.vars.palette.info['100'],
-              background: theme.vars.palette.info['200'],
-              a: {
-                color: theme.vars.palette.info['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.vars.palette.info['100'],
-              },
-            },
-          },
-          {
-            props: { severity: 'success' },
-            style: {
-              color: theme.vars.palette.success['100'],
-              background: theme.vars.palette.success['200'],
-              a: {
-                color: theme.vars.palette.success['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.vars.palette.success['100'],
-              },
-            },
-          },
-          {
-            props: { severity: 'warning' },
-            style: {
-              color: theme.vars.palette.warning['100'],
-              background: theme.vars.palette.warning['200'],
-              a: {
-                color: theme.vars.palette.warning['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.vars.palette.warning['100'],
-              },
-            },
-          },
+          { props: { severity: 'error' }, style: alertSeverityStyle(figVars['danger']) },
+          { props: { severity: 'info' }, style: alertSeverityStyle(figVars['purple-1']) },
+          { props: { severity: 'success' }, style: alertSeverityStyle(figVars['data-green']) },
+          { props: { severity: 'warning' }, style: alertSeverityStyle(figVars['favourite-star']) },
         ],
       },
       MuiCssBaseline: {

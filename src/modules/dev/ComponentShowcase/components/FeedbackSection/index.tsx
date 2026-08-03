@@ -14,7 +14,9 @@ export const FeedbackSection = () => (
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
         {SEVERITIES.map((severity) => (
           <Alert key={severity} severity={severity}>
-            This is a {severity} alert.
+            This is a {severity} alert. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+            do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
           </Alert>
         ))}
       </Box>
