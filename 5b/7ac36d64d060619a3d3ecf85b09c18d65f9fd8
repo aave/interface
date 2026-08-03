@@ -1,0 +1,304 @@
+src/components/transactions/Swap/errors/shared/UserDenied.tsx
+  s_f968cef01691c6::t_0125aeb7e5d86a 2
+  s_f968cef01691c6::t_0352e820270c2c 73,76
+  s_f968cef01691c6::t_286ddc4fcf43f9 92
+src/components/transactions/Warnings/SNXWarning.tsx
+  s_f968cef01691c6::t_10026004211677 2
+  s_f968cef01691c6::t_1e4c372f171515 15
+  s_f968cef01691c6::t_20fc3d7d14635d 6
+src/components/transactions/Warnings/DebtCeilingWarning.tsx
+  s_f968cef01691c6::t_2d380fc29b8b9c 2
+  s_f968cef01691c6::t_0dd0c9f3a7c8b7 45
+  s_f968cef01691c6::t_6f3fe880bf715d 37
+src/components/transactions/Swap/errors/shared/SupplyCapBlockingError.tsx
+  s_f968cef01691c6::t_894597e25dcb3f 2
+  s_f968cef01691c6::t_d61cae152e5bbd 12
+  s_f968cef01691c6::t_a89a71b51804f0 6
+src/components/transactions/Swap/warnings/postInputs/USDTResetWarning.tsx
+  s_f968cef01691c6::t_b9be4781d80d5b 17
+  s_f968cef01691c6::t_07d90708f6049b 2
+  s_f968cef01691c6::t_c19dcd3e81e74b 10
+src/modules/migration/StETHMigrationWarning.tsx
+  s_f968cef01691c6::t_7f0a07463154d8 3
+  s_f968cef01691c6::t_d4897108854f56 35,38
+  s_f968cef01691c6::t_bb9fb4d18413cc 64
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_f968cef01691c6::t_d5917a4b198976 2-10
+  s_f968cef01691c6::t_90a7477ff5a1de 200
+  s_f968cef01691c6::t_216032539d1a9b 219
+src/components/transactions/Supply/SupplyModalContent.tsx
+  s_f968cef01691c6::t_8ae7c0cfbd05cd 320,426
+  s_f968cef01691c6::t_8bf069ed1346ec 318
+  s_f968cef01691c6::t_998a3ef3285342 392
+  s_f968cef01691c6::t_2739140390b4cc 4
+src/components/transactions/Warnings/IsolationModeWarning.tsx
+  s_f968cef01691c6::t_7273f0edfc34f9 25
+  s_f968cef01691c6::t_9bb8f7e2c4ae39 13
+  s_f968cef01691c6::t_0db423a5ff3e3a 2
+src/components/transactions/Warnings/ChangeNetworkWarning.tsx
+  s_f968cef01691c6::t_58ec725968c37c 112
+  s_f968cef01691c6::t_d98fe86d5776b3 71,74
+  s_f968cef01691c6::t_e22c06c2f505dd 3
+src/components/transactions/Warnings/USDTResetWarning.tsx
+  s_f968cef01691c6::t_e76f68ec4ee600 6
+  s_f968cef01691c6::t_a1d16943dc8e70 13
+  s_f968cef01691c6::t_aed26d760ec19e 2
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_f968cef01691c6::t_997a8fb586913b 516
+  s_f968cef01691c6::t_8951f2bff70a24 510,520
+  s_f968cef01691c6::t_fe80286293ea73 506
+  s_f968cef01691c6::t_39f5a39f39b049 5
+src/components/transactions/Warnings/AAVEWarning.tsx
+  s_f968cef01691c6::t_8997cb2d2d185c 2
+  s_f968cef01691c6::t_6585cd43d34cd3 8
+  s_f968cef01691c6::t_afe77ef82d3d86 17
+src/components/transactions/Borrow/ParameterChangewarning.tsx
+  s_f968cef01691c6::t_18a8a11f7e6c67 27
+  s_f968cef01691c6::t_91c8fbb60798d7 10
+  s_f968cef01691c6::t_3dd689d7cf4ed4 2
+src/components/transactions/Swap/errors/shared/ProviderError.tsx
+  s_f968cef01691c6::t_ff1057339c5c24 1
+  s_f968cef01691c6::t_4a8b99640e1f87 42
+  s_f968cef01691c6::t_3377261f178aad 44
+src/components/transactions/FlowCommons/GasEstimationError.tsx
+  s_f968cef01691c6::t_b9a95be025c2c6 10
+  s_f968cef01691c6::t_da856bcc849cbc 22
+  s_f968cef01691c6::t_299836bb5d05a0 12,49
+  s_f968cef01691c6::t_754f51aaf0611f 2
+src/hooks/useReserveActionState.tsx
+  s_f968cef01691c6::t_9f8750a86a6c43 110,126,132,142,155,164
+  s_f968cef01691c6::t_cff9f8c5bda148 3
+  s_f968cef01691c6::t_b549c1e0843ef8 77,124,136,146,159
+  s_f968cef01691c6::t_e523c958163c8a 130
+src/components/transactions/Swap/errors/shared/ZeroLTVBlockingError.tsx
+  s_f968cef01691c6::t_3004ac421969b6 13
+  s_f968cef01691c6::t_d21d4bd32b61e5 6
+  s_f968cef01691c6::t_6c81d402a81f83 2
+src/components/transactions/Swap/warnings/postInputs/LimitOrderAmountWarning.tsx
+  s_f968cef01691c6::t_8d97d64cb3522a 87
+  s_f968cef01691c6::t_607f90f42a8728 68,72
+  s_f968cef01691c6::t_3da42e01527dd7 3
+pages/safety-module.page.tsx
+  s_f968cef01691c6::t_2443c55d328c7f 427
+  s_f968cef01691c6::t_9d7daefeb482cf 5
+  s_f968cef01691c6::t_c552d4935d3f06 433
+src/components/transactions/Swap/warnings/postInputs/CowAdapterApprovalInfo.tsx
+  s_f968cef01691c6::t_ef82cef5c492f9 2
+  s_f968cef01691c6::t_80c025d23376d6 21
+  s_f968cef01691c6::t_04a12b21962b8b 28
+src/components/transactions/Swap/warnings/postInputs/SlippageWarning.tsx
+  s_f968cef01691c6::t_e7fa987e0d30a7 14
+  s_f968cef01691c6::t_f2337f3e97ca41 10
+  s_f968cef01691c6::t_284e6be35e5019 1
+src/components/transactions/Swap/warnings/postInputs/HighCostsLimitOrderWarning.tsx
+  s_f968cef01691c6::t_92138203bf54a1 3
+  s_f968cef01691c6::t_9dbddaa22131b9 101
+  s_f968cef01691c6::t_eca72139c7a932 94
+src/components/transactions/Swap/warnings/postInputs/SafetyModuleSwapWarning.tsx
+  s_f968cef01691c6::t_4324f91fe24332 2
+  s_f968cef01691c6::t_872077c83ffe50 25
+  s_f968cef01691c6::t_ba93df89c81bb7 15
+src/components/transactions/Withdraw/WithdrawModalContent.tsx
+  s_f968cef01691c6::t_b84de90beaeba5 190
+  s_f968cef01691c6::t_a56199cf0f9840 195
+  s_f968cef01691c6::t_9043bf6187be9d 4
+src/modules/reserve-overview/ReserveActions.tsx
+  s_f968cef01691c6::t_ffe473919d25ad 190,201
+  s_f968cef01691c6::t_e59b146dbb4e2f 4
+  s_f968cef01691c6::t_dd9926a2ae2c62 188,196
+src/components/transactions/Swap/errors/shared/GenericError.tsx
+  s_f968cef01691c6::t_6d153c8f0da543 45
+  s_f968cef01691c6::t_8668ae4a08b154 3
+  s_f968cef01691c6::t_5375773b7eb47f 29
+src/components/transactions/Warnings/BorrowCapWarning.tsx
+  s_f968cef01691c6::t_8cd4a03b694a82 34
+  s_f968cef01691c6::t_7c9eb3975ac307 2
+  s_f968cef01691c6::t_447084a08e0dcc 29
+src/modules/reserve-overview/SupplyInfo.tsx
+  s_f968cef01691c6::t_e36f7642f7e8c8 231
+  s_f968cef01691c6::t_de3a467b72c3b6 330
+  s_f968cef01691c6::t_fc808ec2424746 216
+  s_f968cef01691c6::t_ee31dc325ab6cb 195,224,233,344
+  s_f968cef01691c6::t_b2d3a3bc532d00 183
+  s_f968cef01691c6::t_ad16b3f54281ae 4
+src/components/transactions/Swap/errors/shared/GasEstimationError.tsx
+  s_f968cef01691c6::t_a65e1fd2c7f062 2
+  s_f968cef01691c6::t_97ba79771caffd 29
+  s_f968cef01691c6::t_3731ceb37a6440 38
+src/components/transactions/Swap/warnings/preInputs/NativeLimitOrderInfo.tsx
+  s_f968cef01691c6::t_f3bde9b7e3b671 22
+  s_f968cef01691c6::t_862953c084d316 2
+  h_407f16e676115d 15
+src/components/transactions/Warnings/CowLowerThanMarketWarning.tsx
+  s_f968cef01691c6::t_d77f9f83a3fb5f 2
+  s_f968cef01691c6::t_c3f0069734b297 6
+  s_f968cef01691c6::t_eaba965c9de529 12
+src/modules/history/actions/ActionDetails.tsx
+  s_f968cef01691c6::t_f431ee29c65435 3
+  s_f968cef01691c6::t_c8458aaee2b571 79,82
+  s_f968cef01691c6::t_4524ead6446ce5 107,110,122
+src/components/transactions/Repay/RepayModalContent.tsx
+  s_f968cef01691c6::t_523ae014da2853 285
+  s_f968cef01691c6::t_a564f6ce781a60 9
+  s_f968cef01691c6::t_f1b4fd9a72865d 292
+src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+  s_f968cef01691c6::t_7d860142d35be0 6
+  s_f968cef01691c6::t_208b111889b8a5 341
+  s_f968cef01691c6::t_2fb0c730bb9c64 334
+src/components/transactions/Swap/warnings/postInputs/CustomTokenWarning.tsx
+  s_f968cef01691c6::t_9f2edfe7567f3d 16
+  s_f968cef01691c6::t_988db1e5357893 1
+  s_f968cef01691c6::t_c344ba6e049855 20
+src/components/transactions/Swap/warnings/postInputs/LowHealthFactorWarning.tsx
+  s_f968cef01691c6::t_8dcbad66ed6596 81
+  s_f968cef01691c6::t_5d84f8a5eac8aa 2
+  s_f968cef01691c6::t_483458bea38d34 42,46
+src/modules/umbrella/StakeCooldownModalContent.tsx
+  s_f968cef01691c6::t_072055c0eee08c 333
+  s_f968cef01691c6::t_bd90193e7d40ed 5
+  s_f968cef01691c6::t_f728d417b31a2c 326
+src/modules/migration/MigrationList.tsx
+  s_f968cef01691c6::t_3a10339e747c77 2
+  s_f968cef01691c6::t_545b79a97c29c6 105
+  s_f968cef01691c6::t_4c3a781e35b805 96
+src/components/transactions/Swap/warnings/postInputs/ZeroLTVDestinationWarning.tsx
+  s_f968cef01691c6::t_c1166de1e31538 39
+  s_f968cef01691c6::t_4d0aa8362efe4d 46
+  s_f968cef01691c6::t_9219abdfa41e22 2
+src/modules/migration/MigrationBottomPanel.tsx
+  s_f968cef01691c6::t_ba7451993ffadc 6
+  s_f968cef01691c6::t_20066786f4b7ce 206,208
+src/modules/governance/proposal/ProposalOverview.tsx
+  s_f968cef01691c6::t_73dcc6138e00e7 60,62
+  s_f968cef01691c6::t_db2419b58ef395 5
+src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+  s_f968cef01691c6::t_633b53ddc556fa 259
+  s_f968cef01691c6::t_8e4bbd609eb630 270,278
+  s_f968cef01691c6::t_800df2a3769c18 286,293
+  s_f968cef01691c6::t_464ce4085ce4de 264,275,283,288,298
+  s_f968cef01691c6::t_2386f858bbe55f 4
+src/modules/umbrella/UmbrellaModalContent.tsx
+  s_f968cef01691c6::t_d6e0988ae888ad 3
+  s_f968cef01691c6::t_1a4b9259b26344 246
+  s_f968cef01691c6::t_1f2d021622ee5c 250
+src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
+  s_f968cef01691c6::t_5dad1fa7c51e71 42
+  s_f968cef01691c6::t_c29c1414ac4f5a 3
+  s_f968cef01691c6::t_748c7762fc421d 23
+src/components/transactions/Borrow/BorrowAmountWarning.tsx
+  s_f968cef01691c6::t_b2aa30ec11d39b 2
+  s_f968cef01691c6::t_c42bdd9829bbcc 19
+  s_f968cef01691c6::t_b260166decc4ca 23
+src/components/transactions/Swap/warnings/postInputs/LiquidationCriticalWarning.tsx
+  s_f968cef01691c6::t_545c85fd522208 34
+  s_f968cef01691c6::t_cb10e18cc4bd53 16,20
+  s_f968cef01691c6::t_a343111e262a52 2
+src/modules/stkGho/StkGhoCard.tsx
+  s_f968cef01691c6::t_c8762b08d55443 3
+  s_f968cef01691c6::t_5e00481654998d 52,54
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+  s_f968cef01691c6::t_ae751bf700b47f 332
+  s_f968cef01691c6::t_edab7305ed2262 339,349,360
+  s_f968cef01691c6::t_7713fecdd71645 4
+  s_f968cef01691c6::t_2153f932eee9ea 344,355
+src/components/transactions/Warnings/MarketWarning.tsx
+  s_f968cef01691c6::t_fa0c8101e3a548 35
+  s_f968cef01691c6::t_495faaf102e696 2
+  s_f968cef01691c6::t_3a31e207105923 28
+src/modules/governance/proposal/VoteInfo.tsx
+  s_f968cef01691c6::t_d5917a4b198976 106-109
+  s_f968cef01691c6::t_2ad76d179bf131 123
+  s_f968cef01691c6::t_d5603814125144 126
+  s_f968cef01691c6::t_7e57c1610c5400 3
+  s_f968cef01691c6::t_6c83ce000ad1c3 128
+src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
+  s_f968cef01691c6::t_c54ff1233c2487 226
+  s_f968cef01691c6::t_604f99987d7be3 4
+  s_f968cef01691c6::t_99238a90340643 228
+src/components/transactions/Emode/EmodeModalContent.tsx
+  s_f968cef01691c6::t_c3da8f331a1c3c 218,247
+  s_f968cef01691c6::t_e04e8821c750d3 228,242,268,353
+  s_f968cef01691c6::t_ff69c40fc36d13 232,343
+  s_f968cef01691c6::t_79de4d60cb0992 5
+src/components/transactions/Swap/warnings/postInputs/ShieldSwapWarning.tsx
+  s_f968cef01691c6::t_bc3cc1b18bac98 44,48
+  s_f968cef01691c6::t_40f1a994a7f317 3
+  s_f968cef01691c6::t_a4be7ed2b0e8f8 70
+src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+  s_f968cef01691c6::t_9b080e723c72a0 169
+  s_f968cef01691c6::t_c41d8fa0d12af3 150,159
+  s_f968cef01691c6::t_69885edec297d2 192
+  s_f968cef01691c6::t_4e2f7015d11805 3
+  s_f968cef01691c6::t_5a5280ac5c180b 155,163,171,202
+src/components/transactions/GasStation/GasStation.tsx
+  s_f968cef01691c6::t_53fdd40cf63ec5 111
+  s_f968cef01691c6::t_2585bebc82a72a 114
+  s_f968cef01691c6::t_7b7c241d772947 4
+src/components/Warnings/CooldownWarning.tsx
+  s_f968cef01691c6::t_27b2b036393412 2
+  s_f968cef01691c6::t_d6ba61d15bbd6a 14
+  s_f968cef01691c6::t_497a3b69c77bfd 37
+src/components/transactions/Swap/errors/shared/FlashLoanDisabledBlockingError.tsx
+  s_f968cef01691c6::t_fb541e58d40119 10
+  s_f968cef01691c6::t_6e8b053b1072ac 6
+  s_f968cef01691c6::t_f2c5548dfeea2b 2
+src/components/transactions/Swap/errors/shared/BalanceLowerThanInput.tsx
+  s_f968cef01691c6::t_420da9ad89e46a 15
+  s_f968cef01691c6::t_aedd199919a6f7 2
+  s_f968cef01691c6::t_5759e0de1a60b4 8
+src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
+  s_f968cef01691c6::t_61f51a07d82ae0 56,60
+  s_f968cef01691c6::t_223c6750d5fb12 109
+  s_f968cef01691c6::t_34a8d45d306482 2
+src/modules/reserve-overview/ReserveConfiguration.tsx
+  s_f968cef01691c6::t_e6c0b8d0c8e833 77,81,86,105,109,141
+  s_f968cef01691c6::t_9a0b7311dd87ed 136
+  s_f968cef01691c6::t_a7c4c48c4abb00 4
+  s_f968cef01691c6::t_f4ac05912c954a 64,79,92,107
+  s_f968cef01691c6::t_71a4bec78b492f 84
+src/components/transactions/Swap/warnings/postInputs/GasEstimationWarning.tsx
+  s_f968cef01691c6::t_a8f1f823870ba7 2
+  s_f968cef01691c6::t_3a4d39ede4aeaf 22
+  s_f968cef01691c6::t_ff20d5ffce3be6 16
+src/components/transactions/Warnings/SupplyCapWarning.tsx
+  s_f968cef01691c6::t_6112c55bf67287 35
+  s_f968cef01691c6::t_3519057f4313c8 2
+  s_f968cef01691c6::t_0ddec521bfe90e 30
+src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
+  s_f968cef01691c6::t_1034356b763656 2
+  s_f968cef01691c6::t_177106bc1c32ea 20
+  s_f968cef01691c6::t_f8091f1c378903 25
+src/components/transactions/Swap/errors/shared/InsufficientLiquidityBlockingError.tsx
+  s_f968cef01691c6::t_0b429c94acbab1 12
+  s_f968cef01691c6::t_e059dd0cac3131 2
+  s_f968cef01691c6::t_e0a7b811267f21 18
+src/components/transactions/Swap/warnings/preInputs/CowOpenOrdersWarning.tsx
+  s_f968cef01691c6::t_a0b62f27110591 79
+  s_f968cef01691c6::t_c9ada4ca31e076 65
+  s_f968cef01691c6::t_28c328942436ad 3
+src/components/transactions/Swap/errors/shared/InsufficientBorrowPowerBlockingError.tsx
+  s_f968cef01691c6::t_bb980d6d51b9da 13
+  s_f968cef01691c6::t_7cd525d1a367b9 2
+  s_f968cef01691c6::t_de0dc5de5d56a2 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "5b7ac36d64d060619a3d3ecf85b09c18d65f9fd8",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_f968cef01691c6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "466d64ad-e620-4152-a024-22f60443d223",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
