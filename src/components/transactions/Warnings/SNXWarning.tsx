@@ -1,11 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
-
-import { Warning } from '../../primitives/Warning';
+import { Alert, Typography } from '@mui/material';
 
 export const SNXWarning = () => {
   return (
-    <Warning severity="warning">
+    <Alert severity="warning" sx={{ mb: 6, width: '100%' }}>
       <Typography>
         <Trans>Before supplying</Trans> SNX{' '}
         <Trans>
@@ -14,6 +12,6 @@ export const SNXWarning = () => {
           If it is being used for staking, your transaction might fail.
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 };

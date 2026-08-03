@@ -1,8 +1,7 @@
 import { normalize } from '@aave/math-utils';
 import { OrderStatus } from '@cowprotocol/cow-sdk';
-import { Link, Typography } from '@mui/material';
+import { Alert, Link, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useRootStore } from 'src/store/root';
 import { findByChainId } from 'src/ui-config/marketsConfig';
@@ -63,7 +62,7 @@ export function CowOpenOrdersWarning({ state }: { state: SwapState }) {
   if (!cowOpenOrdersTotalAmountFormatted && !hasActiveForToken) return null;
 
   return (
-    <Warning severity="info" icon={false} sx={{ mt: 2, mb: 2 }}>
+    <Alert severity="info" icon={false} sx={{ width: '100%', mt: 2, mb: 2 }}>
       <Typography variant="caption">
         {cowOpenOrdersTotalAmountFormatted ? (
           <>
@@ -77,6 +76,6 @@ export function CowOpenOrdersWarning({ state }: { state: SwapState }) {
           transaction history
         </Link>
       </Typography>
-    </Warning>
+    </Alert>
   );
 }

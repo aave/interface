@@ -1,10 +1,9 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Alert, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
-import { Warning } from 'src/components/primitives/Warning';
 
 const calculateValues = (v2Amount: string, v2Price: string, v3Price?: string) => {
   if (!v3Price) return { v3Amount: undefined, v3TotalPrice: undefined };
@@ -33,9 +32,10 @@ export const StETHMigrationWarning: React.FC<StETHMigrationWarningProps> = ({
   );
 
   return (
-    <Warning
+    <Alert
       icon={false}
       sx={{
+        width: '100%',
         mb: 4,
       }}
       severity="error"
@@ -61,6 +61,6 @@ export const StETHMigrationWarning: React.FC<StETHMigrationWarningProps> = ({
           )}
         </Trans>{' '}
       </Typography>
-    </Warning>
+    </Alert>
   );
 };

@@ -1,16 +1,15 @@
 import { Trans } from '@lingui/macro';
-import { SxProps, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, SxProps, Typography } from '@mui/material';
 
 export const ZeroLTVBlockingError = ({ sx }: { sx?: SxProps }) => {
   return (
-    <Warning severity="error" sx={{ mt: 4, ...sx }} icon={false}>
+    <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 4, ...sx }} icon={false}>
       <Typography variant="caption">
         <Trans>
           You have assets with zero LTV that are blocking this operation. Please withdraw them or
           disable them as collateral first.
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 };

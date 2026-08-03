@@ -3,13 +3,12 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ArrowDownIcon, CalendarIcon } from '@heroicons/react/outline';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { formatEther, parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { Warning } from 'src/components/primitives/Warning';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -332,14 +331,14 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         </Typography>
       )}
 
-      <Warning severity="error">
+      <Alert severity="error" sx={{ mb: 6, width: '100%' }}>
         <Typography variant="caption">
           <Trans>
             If you DO NOT unstake within {timeMessage(stakeUnstakeWindow)} of unstake window, you
             will need to activate cooldown process again.
           </Trans>
         </Typography>
-      </Warning>
+      </Alert>
 
       <GasStation chainId={ChainId.mainnet} gasLimit={parseUnits(gasLimit || '0', 'wei')} />
 

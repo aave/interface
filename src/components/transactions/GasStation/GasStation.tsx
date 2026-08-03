@@ -1,12 +1,11 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
-import { Box, CircularProgress, Stack } from '@mui/material';
+import { Alert, Box, CircularProgress, Stack } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import React, { ReactNode } from 'react';
 import { GasTooltip } from 'src/components/infoTooltips/GasTooltip';
-import { Warning } from 'src/components/primitives/Warning';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { usePoolReservesHumanized } from 'src/hooks/pool/usePoolReserves';
 import { useGasStation } from 'src/hooks/useGasStation';
@@ -109,10 +108,10 @@ export const GasStation: React.FC<GasStationProps> = ({
       </Box>
       {!disabled && !isContractAddress && Number(nativeBalanceUSD) < Number(totalGasCostsUsd) && (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Warning severity="warning" sx={{ mb: 0, mx: 'auto' }}>
+          <Alert severity="warning" sx={{ width: '100%', mb: 0, mx: 'auto' }}>
             You do not have enough {baseAssetSymbol} in your account to pay for transaction fees on{' '}
             {name} network. Please deposit {baseAssetSymbol} from another account.
-          </Warning>
+          </Alert>
         </Box>
       )}
     </Stack>

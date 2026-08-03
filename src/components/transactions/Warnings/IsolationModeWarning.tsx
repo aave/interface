@@ -1,8 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { AlertColor, Typography } from '@mui/material';
+import { Alert, AlertColor, Typography } from '@mui/material';
 
 import { Link } from '../../primitives/Link';
-import { Warning } from '../../primitives/Warning';
 
 interface IsolationModeWarningProps {
   asset?: string;
@@ -11,7 +10,7 @@ interface IsolationModeWarningProps {
 
 export const IsolationModeWarning = ({ asset, severity }: IsolationModeWarningProps) => {
   return (
-    <Warning severity={severity || 'info'} sx={{ mb: 3 }}>
+    <Alert severity={severity || 'info'} sx={{ width: '100%', mb: 3 }}>
       <Typography variant="subheader1" mb={0.5}>
         <Trans>You are entering Isolation mode</Trans>
       </Typography>
@@ -23,6 +22,6 @@ export const IsolationModeWarning = ({ asset, severity }: IsolationModeWarningPr
           <Link href="https://docs.aave.com/faq/aave-v3-features#isolation-mode">FAQ</Link>
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 };

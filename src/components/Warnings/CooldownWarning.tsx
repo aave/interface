@@ -1,10 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Alert, Typography } from '@mui/material';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 
 import { Link } from '../primitives/Link';
-import { Warning } from '../primitives/Warning';
 import { SecondsToString } from '../SecondsToString';
 
 export const CooldownWarning = ({ cooldownSeconds }: { cooldownSeconds: number }) => {
@@ -12,7 +11,7 @@ export const CooldownWarning = ({ cooldownSeconds }: { cooldownSeconds: number }
 
   const trackEvent = useRootStore((store) => store.trackEvent);
   return (
-    <Warning severity="warning" sx={{ '.MuiAlert-message': { p: 0 }, mb: 6 }}>
+    <Alert severity="warning" sx={{ width: '100%', '.MuiAlert-message': { p: 0 }, mb: 6 }}>
       <Typography variant="subheader1">
         <Trans>Cooldown period warning</Trans>
       </Typography>
@@ -35,6 +34,6 @@ export const CooldownWarning = ({ cooldownSeconds }: { cooldownSeconds: number }
           </Link>
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 };

@@ -1,8 +1,7 @@
 import { ShieldExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, SvgIcon, Typography } from '@mui/material';
 import { Dispatch, useEffect, useMemo } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
 
 import { ActionsBlockedReason, SwapState } from '../../types';
@@ -42,10 +41,11 @@ export function ShieldSwapWarning({
   if (!shouldBlock) return null;
 
   return (
-    <Warning
+    <Alert
       severity="error"
       icon={false}
       sx={{
+        width: '100%',
         mt: 2,
         mb: 2,
         display: 'flex',
@@ -67,6 +67,6 @@ export function ShieldSwapWarning({
           safety threshold. To proceed, disable Aave Shield in the settings menu.
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 }

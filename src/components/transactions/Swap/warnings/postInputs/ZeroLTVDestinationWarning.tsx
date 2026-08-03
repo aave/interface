@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, Typography } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { hasNonZeroEffectiveLtv } from 'src/utils/hfUtils';
 
@@ -37,13 +36,13 @@ export function ZeroLTVDestinationWarning({ state }: { state: SwapState }) {
   }
 
   return (
-    <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
+    <Alert severity="warning" icon={false} sx={{ width: '100%', mt: 2, mb: 2 }}>
       <Typography variant="caption">
         <Trans>
           {destinationReserve.symbol} has a Loan-to-Value of 0, so it will not be enabled as
           collateral automatically after the swap.
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 }

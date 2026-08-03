@@ -1,12 +1,11 @@
 import { Trans } from '@lingui/macro';
-import { Link, Typography } from '@mui/material';
+import { Alert, Link, Typography } from '@mui/material';
 
 import { ROUTES } from '../../primitives/Link';
-import { Warning } from '../../primitives/Warning';
 
 export const AAVEWarning = () => {
   return (
-    <Warning severity="info">
+    <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
       <Typography>
         <Trans>Supplying your </Trans> AAVE{' '}
         <Trans>tokens is not the same as staking them. If you wish to stake your </Trans> AAVE{' '}
@@ -15,6 +14,6 @@ export const AAVEWarning = () => {
           <Trans>staking view</Trans>
         </Link>
       </Typography>
-    </Warning>
+    </Alert>
   );
 };

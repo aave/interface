@@ -1,11 +1,18 @@
 import { Trans } from '@lingui/macro';
-import { Box, Divider, FormControlLabel, Switch, useMediaQuery, useTheme } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Divider,
+  FormControlLabel,
+  Switch,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useState } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
 import { TitleWithFiltersAndSearchBar } from 'src/components/TitleWithFiltersAndSearchBar';
 import { TitleWithSearchBar } from 'src/components/TitleWithSearchBar';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -190,7 +197,7 @@ export const MarketAssetsListContainer = () => {
 
       {showFrozenMarketsToggle && frozenOrPausedReserves.length > 0 && (
         <Box sx={{ mt: 10, px: { xs: 4, xsm: 6 } }}>
-          <Warning severity="info">
+          <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
             <Trans>
               These assets are temporarily frozen or paused by Aave community decisions, meaning
               that further supply / borrow, or rate swap of these assets are unavailable.
@@ -209,7 +216,7 @@ export const MarketAssetsListContainer = () => {
               </Link>{' '}
               for further updates.
             </Trans>
-          </Warning>
+          </Alert>
         </Box>
       )}
 

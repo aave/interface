@@ -1,12 +1,11 @@
 import { AaveV2Ethereum } from '@aave-dao/aave-address-book';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, SvgIcon } from '@mui/material';
+import { Alert, Box, Button, Divider, SvgIcon } from '@mui/material';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
 import {
@@ -62,7 +61,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
     <>
       <Box>
         {reserve.isFrozen && !offboardingDiscussion ? (
-          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
+          <Alert sx={{ width: '100%', mt: '16px', mb: '40px' }} severity="error">
             <Trans>
               This asset is frozen due to an Aave community decision.{' '}
               <Link
@@ -75,22 +74,22 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 <Trans>More details</Trans>
               </Link>
             </Trans>
-          </Warning>
+          </Alert>
         ) : offboardingDiscussion ? (
-          <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
+          <Alert sx={{ width: '100%', mt: '16px', mb: '40px' }} severity="error">
             <OffboardingWarning discussionLink={offboardingDiscussion} />
-          </Warning>
+          </Alert>
         ) : (
           reserve.underlyingToken.symbol == 'AMPL' && (
-            <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
+            <Alert sx={{ width: '100%', mt: '16px', mb: '40px' }} severity="warning">
               <AMPLWarning />
-            </Warning>
+            </Alert>
           )
         )}
 
         {reserve.isPaused ? (
           reserve.underlyingToken.symbol === 'MAI' ? (
-            <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
+            <Alert sx={{ width: '100%', mt: '16px', mb: '40px' }} severity="error">
               <Trans>
                 MAI has been paused due to a community decision. Supply, borrows and repays are
                 impacted.{' '}
@@ -103,11 +102,11 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <Trans>More details</Trans>
                 </Link>
               </Trans>
-            </Warning>
+            </Alert>
           ) : (
-            <Warning sx={{ mt: '16px', mb: '40px' }} severity="error">
+            <Alert sx={{ width: '100%', mt: '16px', mb: '40px' }} severity="error">
               <PausedTooltipText />
-            </Warning>
+            </Alert>
           )
         ) : null}
       </Box>
@@ -134,12 +133,12 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
               {reserve.borrowInfo?.borrowingState !== 'ENABLED' &&
                 !reserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed) && (
-                  <Warning sx={{ mb: '40px' }} severity="error">
+                  <Alert sx={{ width: '100%', mb: '40px' }} severity="error">
                     <BorrowDisabledWarning
                       symbol={reserve.underlyingToken.symbol}
                       currentMarket={currentMarket}
                     />
-                  </Warning>
+                  </Alert>
                 )}
               <BorrowInfo
                 reserve={reserve}

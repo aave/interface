@@ -1,13 +1,12 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { formatUserSummary, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { t, Trans } from '@lingui/macro';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Alert, Skeleton, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { CollateralType } from 'src/helpers/types';
@@ -316,9 +315,9 @@ export const SupplyModalContent = React.memo(
         {supplyCapWarning}
         {debtCeilingWarning}
         {poolReserve.symbol === 'AMPL' && (
-          <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
+          <Alert sx={{ width: '100%', mt: '16px', mb: '40px' }} severity="warning">
             <AMPLWarning />
-          </Warning>
+          </Alert>
         )}
         {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
           poolReserve.symbol === 'AAVE' &&
@@ -390,7 +389,7 @@ export const SupplyModalContent = React.memo(
         </TxModalDetails>
 
         {needsEmodeSwitch && (
-          <Warning severity="info" sx={{ mt: 2 }}>
+          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 2 }}>
             <Typography variant="subheader1">
               <Trans>E-Mode change</Trans>
             </Typography>
@@ -424,7 +423,7 @@ export const SupplyModalContent = React.memo(
                 </>
               )}
             </Typography>
-          </Warning>
+          </Alert>
         )}
 
         {txError && <GasEstimationError txError={txError} />}

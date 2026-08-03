@@ -1,7 +1,6 @@
 import { Alert, Box, LinearProgress, Skeleton } from '@mui/material';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { NoData } from 'src/components/primitives/NoData';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { Section } from '../Section';
 import { Specimen } from '../Specimen';
@@ -20,10 +19,6 @@ export const FeedbackSection = () => (
           </Alert>
         ))}
       </Box>
-    </Specimen>
-
-    <Specimen label="Warning (primitive — Alert wrapper)" fullWidth>
-      <Warning severity="info">Warning wraps MUI Alert with default spacing.</Warning>
     </Specimen>
 
     <Specimen label="Skeleton">

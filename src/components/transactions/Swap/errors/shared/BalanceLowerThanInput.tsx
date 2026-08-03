@@ -1,18 +1,17 @@
 import { Trans } from '@lingui/macro';
-import { SxProps, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, SxProps, Typography } from '@mui/material';
 
 import { SwapType } from '../../types/shared.types';
 
 export const BalanceLowerThanInput = ({ sx, swapType }: { sx?: SxProps; swapType: SwapType }) => {
   return (
-    <Warning severity="error" sx={{ mt: 4, ...sx }} icon={false}>
+    <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 4, ...sx }} icon={false}>
       <Typography variant="caption">
         <Trans>
           Your {swapType === SwapType.RepayWithCollateral ? 'collateral' : ''} balance is lower than
           the selected amount.
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 };

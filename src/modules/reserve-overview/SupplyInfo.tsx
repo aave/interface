@@ -1,7 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { AlertTitle, Box, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Typography } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
@@ -11,7 +11,6 @@ import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/Liquida
 import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
@@ -181,7 +180,7 @@ export const SupplyInfo = ({
             <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
               <Trans>Collateral usage</Trans>
             </Typography>
-            <Warning severity="warning">
+            <Alert severity="warning" sx={{ mb: 6, width: '100%' }}>
               <Typography variant="subheader1">
                 <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
               </Typography>
@@ -193,7 +192,7 @@ export const SupplyInfo = ({
                   Learn more
                 </Link>
               </Typography>
-            </Warning>
+            </Alert>
           </Box>
         ) : reserve.supplyInfo.liquidationThreshold.value !== '0' ? (
           <Box
@@ -214,7 +213,7 @@ export const SupplyInfo = ({
             <Typography variant="subheader1" color="text.main">
               <Trans>Collateral usage</Trans>
             </Typography>
-            <Warning sx={{ my: '12px' }} severity="info">
+            <Alert sx={{ width: '100%', my: '12px' }} severity="info">
               <Trans>
                 This asset can only be used as collateral in E-Mode:{' '}
                 {reserve.eModeInfo
@@ -222,16 +221,16 @@ export const SupplyInfo = ({
                   .map((eMode) => replaceUnderscoresWithSpaces(eMode.label))
                   .join(', ')}
               </Trans>
-            </Warning>
+            </Alert>
           </Box>
         ) : (
           <Box sx={{ pt: '42px', pb: '12px' }}>
             <Typography variant="subheader1" color="text.main">
               <Trans>Collateral usage</Trans>
             </Typography>
-            <Warning sx={{ my: '12px' }} severity="warning">
+            <Alert sx={{ width: '100%', my: '12px' }} severity="warning">
               <Trans>Asset cannot be used as collateral.</Trans>
-            </Warning>
+            </Alert>
           </Box>
         )}
       </div>
@@ -328,7 +327,7 @@ export const SupplyInfo = ({
       )}
       {reserve.underlyingToken.symbol == 'stETH' && (
         <Box>
-          <Warning severity="info">
+          <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
             <AlertTitle>
               <Trans>Staking Rewards</Trans>
             </AlertTitle>
@@ -342,7 +341,7 @@ export const SupplyInfo = ({
             >
               <Trans>Learn more</Trans>
             </Link>
-          </Warning>
+          </Alert>
         </Box>
       )}
     </Box>

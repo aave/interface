@@ -1,8 +1,7 @@
 import { Trans } from '@lingui/macro';
 import ContentCopy from '@mui/icons-material/ContentCopy';
-import { IconButton, SxProps, Tooltip, Typography } from '@mui/material';
+import { Alert, IconButton, SxProps, Tooltip, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 
 interface GenericErrorProps {
   sx?: SxProps;
@@ -27,7 +26,7 @@ export const GenericError = ({ sx, message, copyText }: GenericErrorProps) => {
   };
 
   return (
-    <Warning severity="error" sx={{ mt: 4, ...sx }} icon={false}>
+    <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 4, ...sx }} icon={false}>
       <Typography variant="caption" sx={{ display: 'flex', alignItems: 'center' }}>
         <Trans>{message}</Trans>
         {copyText ? (
@@ -43,6 +42,6 @@ export const GenericError = ({ sx, message, copyText }: GenericErrorProps) => {
           </Tooltip>
         ) : null}
       </Typography>
-    </Warning>
+    </Alert>
   );
 };

@@ -1,8 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Alert, Typography } from '@mui/material';
 import { useEffect, useMemo } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { ActionsBlockedReason, OrderType, SwapState } from '../../types';
 
@@ -92,13 +91,13 @@ export function HighCostsLimitOrderWarning({
     return null;
 
   return (
-    <Warning severity="warning" icon={false} sx={{ mt: 2 }}>
+    <Alert severity="warning" icon={false} sx={{ mb: 6, width: '100%', mt: 2 }}>
       <Typography variant="caption">
         <Trans>
           Estimated costs are {costsPercentOfSell.toFixed(2)}% of the sell amount. This order is
           unlikely to be filled.
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 }

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert } from '@mui/material';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 
@@ -7,7 +7,7 @@ export const ParameterChangewarning = ({ underlyingAsset }: { underlyingAsset: s
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Warning severity="info" sx={{ my: 6 }}>
+    <Alert severity="info" sx={{ width: '100%', my: 6 }}>
       <Trans>
         <b>Attention:</b> Parameter changes via governance can alter your account health factor and
         risk of liquidation. Follow the{' '}
@@ -24,6 +24,6 @@ export const ParameterChangewarning = ({ underlyingAsset }: { underlyingAsset: s
         </a>{' '}
         for updates.
       </Trans>
-    </Warning>
+    </Alert>
   );
 };

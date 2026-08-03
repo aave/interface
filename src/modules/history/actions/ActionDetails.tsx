@@ -1,12 +1,11 @@
 import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, SvgIcon, Typography } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
 import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { Warning } from 'src/components/primitives/Warning';
 import {
   isOrderCancelled,
   isOrderExpired,
@@ -77,9 +76,10 @@ const StatusBadgeIconOnly = ({
   return (
     <DarkTooltip title={title} arrow enterTouchDelay={100} leaveTouchDelay={500} placement="top">
       <Box>
-        <Warning
+        <Alert
           severity={severity}
           sx={{
+            width: '100%',
             my: 0,
             pt: 0.6,
             pb: 0.6,
@@ -104,9 +104,10 @@ const StatusBadgeText = ({
 }) => {
   return (
     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-      <Warning
+      <Alert
         severity={severity}
         sx={{
+          width: '100%',
           my: 0,
           pt: 0.6,
           pb: 0.6,
@@ -118,7 +119,7 @@ const StatusBadgeText = ({
         }}
       >
         {children}
-      </Warning>
+      </Alert>
     </Box>
   );
 };

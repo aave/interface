@@ -3,6 +3,7 @@ import { ExclamationIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -15,7 +16,6 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { IsolationModeWarning } from 'src/components/transactions/Warnings/IsolationModeWarning';
 import { UserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
 import { UserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
@@ -203,9 +203,9 @@ export const MigrationBottomPanel = ({
         </Box>
 
         {blockingError !== null && (
-          <Warning severity="warning">
+          <Alert severity="warning" sx={{ mb: 6, width: '100%' }}>
             <BlockErrorText blockingError={blockingError} />
-          </Warning>
+          </Alert>
         )}
 
         {enteringIsolationMode && <IsolationModeWarning severity="warning" />}

@@ -1,12 +1,11 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { Link, ROUTES } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
 import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 import { useShallow } from 'zustand/shallow';
@@ -94,7 +93,7 @@ export const MigrationList = ({
             </Typography>
             {isolatedReserveV3 && !isolatedReserveV3.enteringIsolationMode && (
               <Box sx={{ pt: '16px' }}>
-                <Warning severity="warning" icon={false} sx={{ mb: 0 }}>
+                <Alert severity="warning" icon={false} sx={{ width: '100%', mb: 0 }}>
                   <Typography variant="caption" color="warning.100">
                     <Trans>
                       Some migrated assets will not be used as collateral due to enabled isolation
@@ -103,7 +102,7 @@ export const MigrationList = ({
                       mode.
                     </Trans>
                   </Typography>
-                </Warning>
+                </Alert>
               </Box>
             )}
           </Box>

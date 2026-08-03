@@ -1,11 +1,10 @@
 import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Alert, Box, Button, Paper, Typography } from '@mui/material';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
@@ -104,7 +103,10 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
             </Row>
           )}
           {showAlreadyVotedMsg && voteOnProposal && (
-            <Warning severity={voteOnProposal.support ? 'success' : 'error'} sx={{ my: 2 }}>
+            <Alert
+              severity={voteOnProposal.support ? 'success' : 'error'}
+              sx={{ width: '100%', my: 2 }}
+            >
               <Typography variant="subheader1">
                 <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
               </Typography>
@@ -118,12 +120,12 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
                   />
                 </Trans>
               </Typography>
-            </Warning>
+            </Alert>
           )}
           {showCannotVoteMsg && (
-            <Warning severity="warning" sx={{ my: 2 }}>
+            <Alert severity="warning" sx={{ width: '100%', my: 2 }}>
               <Trans>Not enough voting power to participate in this proposal</Trans>
-            </Warning>
+            </Alert>
           )}
           {showCanVoteMsg && (
             <>

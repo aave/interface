@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Alert, Box, Checkbox, Typography } from '@mui/material';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { SwapInputChanges } from '../../analytics/constants';
 import { useHandleAnalytics } from '../../analytics/useTrackAnalytics';
@@ -54,10 +53,11 @@ export function HighPriceImpactWarning({
   if (actionsBlockedReasonsAmount(state) > 1) return null;
 
   return (
-    <Warning
+    <Alert
       severity={lostValue > 0.3 ? 'error' : 'warning'}
       icon={false}
       sx={{
+        width: '100%',
         mt: 2,
         mb: 2,
         display: 'flex',
@@ -106,6 +106,6 @@ export function HighPriceImpactWarning({
           />
         </Box>
       )}
-    </Warning>
+    </Alert>
   );
 }

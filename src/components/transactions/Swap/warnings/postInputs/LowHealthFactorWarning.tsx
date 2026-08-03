@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Alert, Box, Checkbox, Typography } from '@mui/material';
 import { Dispatch, useEffect, useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { ActionsBlockedReason, SwapParams, SwapState } from '../../types';
 import { shouldRequireConfirmationHFlow } from '../helpers';
@@ -40,10 +39,11 @@ export function LowHealthFactorWarning({
   }
 
   return (
-    <Warning
+    <Alert
       severity="warning"
       icon={false}
       sx={{
+        width: '100%',
         mt: 2,
         mb: 2,
         display: 'flex',
@@ -78,6 +78,6 @@ export function LowHealthFactorWarning({
           />
         </Box>
       )}
-    </Warning>
+    </Alert>
   );
 }

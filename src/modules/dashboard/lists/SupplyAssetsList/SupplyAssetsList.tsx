@@ -1,14 +1,13 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { t, Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { Fragment, useState } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { Warning } from 'src/components/primitives/Warning';
 import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
@@ -330,35 +329,35 @@ export const SupplyAssetsList = () => {
           )}
           <Box sx={{ px: 6 }}>
             {user?.isInIsolationMode ? (
-              <Warning severity="warning">
+              <Alert severity="warning" sx={{ mb: 6, width: '100%' }}>
                 <Trans>
                   Collateral usage is limited because of isolation mode.{' '}
                   <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
                     Learn More
                   </Link>
                 </Trans>
-              </Warning>
+              </Alert>
             ) : (
               filteredSupplyReserves.length === 0 &&
               !supplyDisabled &&
               (isTestnet ? (
-                <Warning severity="info">
+                <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
                   <Trans>Your {networkName} wallet is empty. Get free test assets at </Trans>{' '}
                   <Link href={ROUTES.faucet} style={{ fontWeight: 400 }}>
                     <Trans>{networkName} Faucet</Trans>
                   </Link>
-                </Warning>
+                </Alert>
               ) : (
                 <WalletEmptyInfo name={networkName} bridge={bridge} chainId={currentChainId} />
               ))
             )}
             {supplyDisabled && (
-              <Warning severity="info">
+              <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
                 <Trans>
                   We couldn&apos;t find any assets related to your search. Try again with a
                   different category.
                 </Trans>
-              </Warning>
+              </Alert>
             )}
           </Box>
 

@@ -2,6 +2,7 @@ import { formatUserSummary, valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Plural, Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   Collapse,
   Divider,
@@ -17,7 +18,6 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { EmodeCategory } from 'src/helpers/types';
 import {
@@ -215,7 +215,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     switch (blockingError) {
       case ErrorType.ZERO_LTV_COLLATERAL_BLOCKING:
         return (
-          <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
+          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 6, alignItems: 'center' }}>
             <Typography variant="subheader1">
               <Trans>Cannot disable E-Mode</Trans>
             </Typography>
@@ -225,11 +225,11 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                 E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral.
               </Trans>
             </Typography>
-          </Warning>
+          </Alert>
         );
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
-          <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
+          <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 6, alignItems: 'center' }}>
             <Typography variant="subheader1" color="#4F1919">
               <Trans>Cannot disable E-Mode</Trans>
             </Typography>
@@ -239,12 +239,12 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                 supply or repay borrowed positions.
               </Trans>
             </Typography>
-          </Warning>
+          </Alert>
         );
       case ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING: {
         const { incompatibleBorrows, zeroLtvCollateral } = selectedEmode.blockReason;
         return (
-          <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
+          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 6, alignItems: 'center' }}>
             <Typography variant="subheader1">
               <Trans>Cannot switch to this category</Trans>
             </Typography>
@@ -265,7 +265,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                 </Trans>
               </Typography>
             )}
-          </Warning>
+          </Alert>
         );
       }
       default:
@@ -340,7 +340,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
 
       {blockingError !== undefined && <Blocked />}
       {showLiquidationRiskWarning && (
-        <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
+        <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 6, alignItems: 'center' }}>
           <Typography variant="subheader1" color="#4F1919">
             <Trans>Liquidation risk</Trans>
           </Typography>
@@ -350,7 +350,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
               collateral liquidation.{' '}
             </Trans>
           </Typography>
-        </Warning>
+        </Alert>
       )}
 
       <TxModalDetails gasLimit={gasLimit}>

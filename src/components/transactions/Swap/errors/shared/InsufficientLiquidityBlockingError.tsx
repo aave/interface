@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { SxProps, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, SxProps, Typography } from '@mui/material';
 
 export const InsufficientLiquidityBlockingError = ({
   symbol,
@@ -10,12 +9,12 @@ export const InsufficientLiquidityBlockingError = ({
   sx?: SxProps;
 }) => {
   return (
-    <Warning severity="error" sx={{ mt: 4, ...sx }} icon={false}>
+    <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 4, ...sx }} icon={false}>
       <Typography variant="caption">
         <Trans>
           There is not enough liquidity in {symbol} to complete this swap. Try lowering the amount.
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 };

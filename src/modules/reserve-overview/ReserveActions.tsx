@@ -1,12 +1,11 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { BigNumberValue, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import { Alert, Box, Button, Divider, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import React, { ReactNode, useState } from 'react';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { getMarketInfoById } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Warning } from 'src/components/primitives/Warning';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { FunSupplyButton } from 'src/components/transactions/FunCheckout/FunSupplyButton';
@@ -186,20 +185,20 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
 const PauseWarning = () => {
   return (
-    <Warning sx={{ mb: 0 }} severity="error" icon={true}>
+    <Alert sx={{ width: '100%', mb: 0 }} severity="error" icon={true}>
       <Trans>Because this asset is paused, no actions can be taken until further notice</Trans>
-    </Warning>
+    </Alert>
   );
 };
 
 const FrozenWarning = () => {
   return (
-    <Warning sx={{ mb: 0 }} severity="error" icon={true}>
+    <Alert sx={{ width: '100%', mb: 0 }} severity="error" icon={true}>
       <Trans>
         Since this asset is frozen, the only available actions are withdraw and repay which can be
         accessed from the <Link href={ROUTES.dashboard}>Dashboard</Link>
       </Trans>
-    </Warning>
+    </Alert>
   );
 };
 

@@ -2,7 +2,7 @@ import { Stake } from '@aave/contract-helpers';
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
@@ -10,7 +10,6 @@ import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
@@ -425,13 +424,13 @@ export default function Staking() {
                           mt: 4,
                         }}
                       >
-                        <Warning severity="warning" sx={{ mb: 0 }}>
+                        <Alert severity="warning" sx={{ width: '100%', mb: 0 }}>
                           <Trans>
                             As a result of governance decisions, this ABPT staking pool is now
                             deprecated. You have the flexibility to either migrate all of your
                             tokens to v2 or unstake them without any cooldown period.
                           </Trans>
-                        </Warning>
+                        </Alert>
                       </Box>
                     )}
                   </StakingPanel>

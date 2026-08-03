@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Alert, Typography } from '@mui/material';
 import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { SwapState } from '../../types';
 import { SAFETY_MODULE_TOKENS } from '../constants';
@@ -13,7 +12,7 @@ export function SafetyModuleSwapWarning({ state }: { state: SwapState }) {
   if (!isSwappingSafetyModuleToken) return null;
 
   return (
-    <Warning severity="error" icon={false} sx={{ mt: 2, mb: 2 }}>
+    <Alert severity="error" icon={false} sx={{ width: '100%', mt: 2, mb: 2 }}>
       <Typography variant="caption">
         <Trans>
           For swapping safety module assets please unstake your position{' '}
@@ -23,6 +22,6 @@ export function SafetyModuleSwapWarning({ state }: { state: SwapState }) {
           .
         </Trans>
       </Typography>
-    </Warning>
+    </Alert>
   );
 }

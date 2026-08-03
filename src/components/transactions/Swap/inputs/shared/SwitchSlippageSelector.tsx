@@ -1,6 +1,7 @@
 import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   Button,
   InputAdornment,
@@ -13,7 +14,6 @@ import {
 } from '@mui/material';
 import { MouseEvent, useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { ValidationData } from '../../helpers/shared/slippage.helpers';
 
@@ -223,9 +223,9 @@ export const SwitchSlippageSelector = ({
             />
           </Box>
           {slippageValidation && (
-            <Warning sx={{ mb: 0, mt: 2 }} severity={slippageValidation.severity}>
+            <Alert sx={{ width: '100%', mb: 0, mt: 2 }} severity={slippageValidation.severity}>
               {slippageValidation.message}
-            </Warning>
+            </Alert>
           )}
         </Menu>
       </Typography>

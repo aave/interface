@@ -1,13 +1,11 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { AlertProps, Button, CircularProgress, Typography } from '@mui/material';
+import { Alert, AlertProps, Button, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
-
-import { Warning } from '../../primitives/Warning';
 
 export type ChangeNetworkWarningProps = AlertProps & {
   funnel?: string;
@@ -70,9 +68,10 @@ export const ChangeNetworkWarning = ({
     switchNetwork(chainId);
   };
   return (
-    <Warning
+    <Alert
       severity={isAutoSwitching ? 'info' : switchNetworkError ? 'error' : 'info'}
       icon={false}
+      sx={{ mb: 6, width: '100%' }}
       {...rest}
     >
       {isAutoSwitching ? (
@@ -110,6 +109,6 @@ export const ChangeNetworkWarning = ({
           )}
         </Typography>
       )}
-    </Warning>
+    </Alert>
   );
 };

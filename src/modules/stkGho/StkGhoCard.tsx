@@ -1,7 +1,6 @@
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -50,9 +49,9 @@ export const StkGhoCard = () => {
         </Typography>
       </Box>
 
-      <Warning severity="warning" sx={{ mb: 4 }}>
+      <Alert severity="warning" sx={{ width: '100%', mb: 4 }}>
         <Trans>Rewards for legacy Savings GHO have ended. Migrate to continue earning.</Trans>
-      </Warning>
+      </Alert>
 
       <StkGhoDepositPanel
         stakedToken="GHO"

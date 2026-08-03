@@ -2,6 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   Button,
   IconButton,
@@ -18,7 +19,6 @@ import React, { useEffect, useState } from 'react';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
   DetailsNumberLine,
@@ -503,21 +503,21 @@ export const BridgeModalContent = () => {
               </Box> */}
             <Row /> {/* Spacer */}
             {feesExceedWalletBalance && (
-              <Warning severity="warning" sx={{ my: 0 }}>
+              <Alert severity="warning" sx={{ width: '100%', my: 0 }}>
                 <Typography variant="caption">
                   <Trans>Fees exceed wallet balance</Trans>
                 </Typography>
-              </Warning>
+              </Alert>
             )}
           </TxModalDetails>
           {txError && <GasEstimationError txError={txError} />}
 
           {txErrorBridgeMessage && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
+            <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 4 }} icon={false}>
               <Typography variant="caption">
                 <Trans>Something went wrong fetching bridge message, please try again later.</Trans>
               </Typography>
-            </Warning>
+            </Alert>
           )}
 
           <BridgeActions {...bridgeActionsProps} />

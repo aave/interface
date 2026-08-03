@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, Box, Typography } from '@mui/material';
 import { TxAction, TxErrorType } from 'src/ui-config/errorMapping';
 
 import { GasEstimationError as GasEstimationErrorComponent } from '../../../FlowCommons/GasEstimationError';
@@ -27,7 +26,7 @@ export const GasEstimationError: React.FC<ErrorProps> = ({ error, isLimitOrder }
     <Box>
       <GasEstimationErrorComponent txError={txErrorType} />
       <Box sx={{ pt: 4 }}>
-        <Warning severity="info">
+        <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
           <Typography variant="description">
             {' '}
             {isLimitOrder ? (
@@ -36,7 +35,7 @@ export const GasEstimationError: React.FC<ErrorProps> = ({ error, isLimitOrder }
               <Trans> Tip: Try improving your order parameters</Trans>
             )}
           </Typography>
-        </Warning>
+        </Alert>
       </Box>
     </Box>
   );
