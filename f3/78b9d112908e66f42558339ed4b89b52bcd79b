@@ -1,0 +1,61 @@
+src/components/lists/ListHeaderTitle.tsx
+  s_b2a2c398b81259::t_377defce33c227 60-64,69-70,73
+  s_b2a2c398b81259::t_8a490120f8cf02 56-59,65-68,71-72
+src/modules/dashboard/DashboardTopPanel.tsx
+  s_b2a2c398b81259::t_ae749906a74250 260
+src/components/StyledToggleButtonGroup.tsx
+  s_b2a2c398b81259::t_b1ecddd3f4b0da 17
+  s_b2a2c398b81259::t_38037c898d875c 3,12,16,25
+  s_b2a2c398b81259::t_851d52f3641dd8 13
+  s_b2a2c398b81259::t_b3d27f9335a3db 5-7,10-11,14-15,20-22,24,28,32,35
+  s_b2a2c398b81259::t_d94cdfa99a7da7 2
+src/components/transactions/Repay/RepayTypeSelector.tsx
+  s_b2a2c398b81259::t_38655f6f545faa 42,52
+src/utils/figmaColors.ts
+  h_407f16e676115d 13
+src/modules/dev/ComponentShowcase/components/TogglesBadgesSection/index.tsx
+  s_b2a2c398b81259::t_e9068828733391 22
+src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
+  s_b2a2c398b81259::t_4814243abbf49e 40,52
+src/modules/reserve-overview/ReserveActions.tsx
+  s_b2a2c398b81259::t_eace3071ebbe47 419,423
+src/components/ContentWithTooltip.tsx
+  s_b2a2c398b81259::t_9b4a7ca83e1491 35
+  s_b2a2c398b81259::t_64ec958836162d 18-19,22
+src/components/transactions/Swap/shared/OrderTypeSelector.tsx
+  s_b2a2c398b81259::t_9149a012108907 29,38
+src/components/transactions/GovDelegation/DelegationTypeSelector.tsx
+  s_b2a2c398b81259::t_0bb8340a041346 31,40,49
+src/utils/theme.tsx
+  s_b2a2c398b81259::t_22a8acb67f93fd 650-661
+  s_b2a2c398b81259::t_b2051bec46a65c 78-80
+  s_b2a2c398b81259::t_dd665282980aeb 231-237
+  s_b2a2c398b81259::t_e834d06bb34033 683-688
+  s_b2a2c398b81259::t_2d9b99c9a982be 35
+  s_b2a2c398b81259::t_1bdf1b434a261c 76-77,81-83,88-93,95-96,100-102
+  h_407f16e676115d 84-87,94,97-99
+src/components/StyledToggleButton.tsx
+  s_b2a2c398b81259::t_96527f9198cf90 34,37,44-45
+  s_b2a2c398b81259::t_f09360b46b6f3c 3-25,31-32,38,41,43,46,49-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "f378b9d112908e66f42558339ed4b89b52bcd79b",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b2a2c398b81259": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "be1ad64a-c2c3-4c5f-b1a6-26af6e2cfe13",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
