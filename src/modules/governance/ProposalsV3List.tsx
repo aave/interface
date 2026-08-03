@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -202,7 +203,10 @@ export const ProposalsV3List = () => {
       ) : ((!loadingSearchResults && searchTerm) ||
           (!loadingProposals && proposalFilter !== 'all')) &&
         listItems.length === 0 ? (
-        <NoSearchResults searchTerm={searchTerm} />
+        <NoSearchResults
+          searchTerm={searchTerm}
+          subtitle={<Trans>We couldn&apos;t find any proposals related to your search.</Trans>}
+        />
       ) : (
         Array.from({ length: 4 }).map((_, i) => <ProposalListSkeleton key={i} />)
       )}

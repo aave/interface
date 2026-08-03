@@ -3,7 +3,7 @@ import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@
 import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
 import { SearchIcon } from 'src/components/icons/SearchIcon';
-import { figVars } from 'src/utils/figmaColors';
+import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
 
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
@@ -37,14 +37,18 @@ export const SearchInput = ({
   }, [onSearchTermChange]);
   return (
     <Box
+      component="label"
       sx={{
         display: 'flex',
         alignItems: 'center',
         gap: 2,
-        border: `1px solid ${figVars['border-2']}`,
+        boxShadow: figSurfaceShadow(),
         borderRadius: '0.5rem',
         height: '36px',
-        // Focus ring: a 3px fg-3 outline held 2px off the border (replaces the prior no-op focus).
+        // Wrapping <label> so clicking anywhere in the field (the search icon, the padding) focuses
+        // the input, not just the input box itself.
+        cursor: 'text',
+        // Focus ring: a 3px fg-3 outline held 2px out (replaces the prior no-op focus).
         '&:focus-within': {
           outline: `3px solid ${figVars['fg-3']}`,
           outlineOffset: '2px',

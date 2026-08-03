@@ -968,6 +968,12 @@ msgstr "Protocol Incentives"
 msgid "Watch wallet"
 msgstr "Watch wallet"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
+#: src/modules/umbrella/UmbrellaAssetsDefault.tsx
+msgid "We couldn't find any assets related to your search."
+msgstr "We couldn't find any assets related to your search."
+
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
 msgstr "This action will reduce health factor of V3 below liquidation threshold. Increase migrated collateral or reduce migrated borrow to continue."
@@ -2516,12 +2522,6 @@ msgstr "Before supplying"
 msgid "Liquidation value"
 msgstr "Liquidation value"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
-#: src/modules/umbrella/UmbrellaAssetsDefault.tsx
-msgid "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-msgstr "We couldn't find any assets related to your search. Try again with a different asset name, symbol, or address."
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "enabled"
 msgstr "enabled"
@@ -2773,6 +2773,10 @@ msgstr "Ltv validation failed"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
+
+#: src/components/NoSearchResults.tsx
+msgid "No search results for"
+msgstr "No search results for"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
 msgid "You don’t have enough funds in your wallet to repay the full amount. If you proceed to repay with your current amount of funds, you will still have a small borrowing position in your dashboard."
@@ -3964,6 +3968,10 @@ msgstr "Remove"
 msgid "Auto Slippage"
 msgstr "Auto Slippage"
 
+#: src/components/NoSearchResults.tsx
+msgid "No search results"
+msgstr "No search results"
+
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Supply {0} and double your yield by <0><1>verifying your humanity through Self</1></0> for {1} per user."
 msgstr "Supply {0} and double your yield by <0><1>verifying your humanity through Self</1></0> for {1} per user."
@@ -4025,11 +4033,6 @@ msgstr "Transaction failed"
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid flashloan premium"
 msgstr "Invalid flashloan premium"
-
-#: src/components/NoSearchResults.tsx
-#: src/components/NoSearchResults.tsx
-msgid "No search results{0}"
-msgstr "No search results{0}"
 
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "Status"
@@ -4149,6 +4152,10 @@ msgstr "Language"
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
+
+#: src/modules/governance/ProposalsV3List.tsx
+msgid "We couldn't find any proposals related to your search."
+msgstr "We couldn't find any proposals related to your search."
 
 #: src/modules/governance/proposal/ProposalTimeline.tsx
 #: src/modules/history/actions/ActionDetails.tsx

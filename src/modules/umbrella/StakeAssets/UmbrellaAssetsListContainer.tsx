@@ -83,12 +83,7 @@ export const UmbrellaAssetsListContainer = () => {
           filteredData?.length === 0 && (
             <NoSearchResults
               searchTerm={searchTerm}
-              subtitle={
-                <Trans>
-                  We couldn&apos;t find any assets related to your search. Try again with a
-                  different asset name, symbol, or address.
-                </Trans>
-              }
+              subtitle={<Trans>We couldn&apos;t find any assets related to your search.</Trans>}
             />
           )
         )}
