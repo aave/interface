@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { ExternalLinkIcon, SwitchVerticalIcon } from '@heroicons/react/outline';
+import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -15,6 +15,7 @@ import { BigNumber } from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { Warning } from 'src/components/primitives/Warning';
@@ -341,28 +342,18 @@ export const BridgeModalContent = () => {
           <Trans>Bridge GHO</Trans>
         </Typography>
         {user && (
-          <Box
-            sx={{
-              right: '0px',
-            }}
+          <Button
+            component={Link}
+            href={`https://ccip.chain.link/address/${user}`}
+            target="_blank"
+            rel="noopener"
+            variant="outlined"
+            size="small"
+            endIcon={<ArrowUpRightIcon sx={{ color: 'fgp-3' }} />}
+            sx={{ minWidth: 'unset', mr: 9 }}
           >
-            <Button
-              component={Link}
-              href={`https://ccip.chain.link/address/${user}`}
-              target="_blank"
-              rel="noopener"
-              sx={{ mr: 8 }}
-              variant="outlined"
-              size="small"
-              endIcon={
-                <SvgIcon sx={{ width: 14, height: 14 }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              }
-            >
-              <Trans>Transactions</Trans>
-            </Button>
-          </Box>
+            <Trans>Transactions</Trans>
+          </Button>
         )}
       </Box>
 
