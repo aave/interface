@@ -1,0 +1,15 @@
+src/components/transactions/Emode/EmodeAssetTable.tsx
+  h_407f16e676115d 15,45-47,56-59,67-70
+  h_407f16e676115d 41-44,48-49,54-55,60,65-66,71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "8b7ce96d16ee13b5aff64fe04e0cc47a71c1a1bb",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
