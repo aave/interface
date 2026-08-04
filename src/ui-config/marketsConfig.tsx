@@ -494,7 +494,7 @@ export const marketsData: {
     v3: true,
     enabledFeatures: {
       liquiditySwap: true,
-      incentives: true,
+      // incentives: true, // disabled since UI_INCENTIVE_DATA_PROVIDER reverts on a reward token oracle
       collateralRepay: true,
       debtSwitch: true,
       withdrawAndSwitch: true,
@@ -508,7 +508,7 @@ export const marketsData: {
       SWAP_COLLATERAL_ADAPTER: AaveV3Polygon.SWAP_COLLATERAL_ADAPTER,
       WALLET_BALANCE_PROVIDER: AaveV3Polygon.WALLET_BALANCE_PROVIDER,
       UI_POOL_DATA_PROVIDER: '0x66E1aBdb06e7363a618D65a910c540dfED23754f', // AaveV3Polygon.UI_POOL_DATA_PROVIDER,
-      UI_INCENTIVE_DATA_PROVIDER: AaveV3Polygon.UI_INCENTIVE_DATA_PROVIDER,
+      // UI_INCENTIVE_DATA_PROVIDER: AaveV3Polygon.UI_INCENTIVE_DATA_PROVIDER,
       COLLECTOR: AaveV3Polygon.COLLECTOR,
       DEBT_SWITCH_ADAPTER: AaveV3Polygon.DEBT_SWAP_ADAPTER,
       WITHDRAW_SWITCH_ADAPTER: AaveV3Polygon.WITHDRAW_SWAP_ADAPTER,

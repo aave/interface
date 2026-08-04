@@ -1,0 +1,31 @@
+packages:
+  - '.'
+
+# Supply-chain safety: refuse to install package versions published less than
+# 10080 minutes (7 days) ago. Newly published versions are quarantined until
+# they have been out long enough to surface as compromised.
+minimumReleaseAge: 10080
+
+# Exclude our own first-party packages so releases are usable immediately.
+# pnpm expands `*` to `.*`, so each pattern requires a literal `/` after the
+# scope name. This pins the exclusion to our exact scopes: a lookalike scope
+# like `@aave-evil/malware` will NOT match and stays quarantined.
+minimumReleaseAgeExclude:
+  - '@aave/*'
+  - '@aave-dao/*'
+
+# Build-script allowlist. pnpm 10 blocks all dependency install/postinstall
+# scripts by default; only packages listed here may run them. This is the
+# committed equivalent of `pnpm approve-builds` (which is interactive and can't
+# run in CI) — with these listed, `pnpm install --frozen-lockfile` compiles /
+# downloads their native binaries automatically on CI. Keep this list minimal.
+onlyBuiltDependencies:
+  - '@sentry/cli' # downloads sentry-cli binary (source-map upload)
+  - bufferutil # ws native speedup (prebuilds + JS fallback)
+  - cypress # downloads the Cypress test-runner binary
+  - esbuild # verifies/installs platform binary
+  - keccak # web3 hashing native addon
+  - protobufjs # postinstall setup
+  - sharp # next/image optimization native binary
+  - unrs-resolver # native module resolver (napi)
+  - utf-8-validate # ws native speedup (prebuilds + JS fallback)

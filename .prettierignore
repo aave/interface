@@ -6,6 +6,7 @@
 node_modules/
 public/
 .nvmrc
+.npmrc
 
 # Artifacts
 .next/
@@ -26,3 +27,5 @@ src/locales/
 *.mermaid
 *.log
 *.lock
+*.patch
+pnpm-lock.yaml

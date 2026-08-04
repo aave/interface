@@ -10,22 +10,29 @@ inputs:
   CYPRESS_TENDERLY_PROJECT:
     description: tenderly porject name
     required: true
-  YARN_TEST_COMMAND:
-    description: yarn command to run test
+  TEST_COMMAND:
+    description: command to run for tests
     required: true
 runs:
   using: 'composite'
   steps:
+    - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+
     - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
       with:
         node-version-file: '.nvmrc'
-        cache: 'yarn'
+        cache: 'pnpm'
 
     - name: install
       shell: sh
       run: |
-        yarn --frozen-lockfile --prefer-offline
-        yarn add serve
+        pnpm install --frozen-lockfile --prefer-offline
+        pnpm add serve
+        # pnpm doesn't reliably repopulate the Cypress binary cache
+        # (~/.cache/Cypress) on warm CI runs the way yarn did, and that dir
+        # isn't part of the pnpm store cache. Download it explicitly so the
+        # `install: false` step below finds the binary. Idempotent.
+        pnpm exec cypress install
 
     - name: download build
       if: github.event_name != 'workflow_run'
@@ -50,9 +57,9 @@ runs:
         headless: true
         install: false
         record: false
-        start: yarn serve:static
+        start: pnpm serve:static
         wait-on: 'http://localhost:3000'
-        command: ${{ inputs.YARN_TEST_COMMAND }}
+        command: ${{ inputs.TEST_COMMAND }}
       env:
         CYPRESS_URL: 'http://localhost:3000'
         CYPRESS_TENDERLY_ACCOUNT: ${{ inputs.CYPRESS_TENDERLY_ACCOUNT }}

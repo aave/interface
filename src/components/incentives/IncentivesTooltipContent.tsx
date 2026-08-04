@@ -183,6 +183,11 @@ const IncentivesSymbolMap: {
     symbol: 'aUSDe',
     aToken: true,
   },
+  aPlaUSDT0: {
+    tokenIconSymbol: 'usdt0',
+    symbol: 'aUSDT0',
+    aToken: true,
+  },
   tydroInkPoints: {
     tokenIconSymbol: 'TydroInkPoints',
     symbol: 'TydroInkPoints',
@@ -211,6 +216,11 @@ const IncentivesSymbolMap: {
   aManUSDe: {
     tokenIconSymbol: 'USDe',
     symbol: 'aUSDe',
+    aToken: true,
+  },
+  aManUSDT0: {
+    tokenIconSymbol: 'usdt0',
+    symbol: 'aUSDT0',
     aToken: true,
   },
   aManWMNT: {
@@ -257,6 +267,11 @@ const IncentivesSymbolMap: {
     tokenIconSymbol: 'mon',
     symbol: 'WMON',
     aToken: false,
+  },
+  aMonUSDe: {
+    tokenIconSymbol: 'USDe',
+    symbol: 'aUSDe',
+    aToken: true,
   },
 };
 

@@ -56,10 +56,16 @@ nvm use
 
 ### Install Dependencies
 
-Download [Yarn Package Manager](https://yarnpkg.com/) and install the dependencies.
+Install [pnpm](https://pnpm.io/) **v10 or later** (this repo pins `pnpm@10.18.0` via the `packageManager` field). The simplest way is to enable [corepack](https://nodejs.org/api/corepack.html), which reads that field and uses the correct version automatically:
 
 ```bash
-yarn install
+corepack enable
+```
+
+Then install the dependencies:
+
+```bash
+pnpm install
 ```
 
 ### Setup Environment Variables
@@ -79,7 +85,7 @@ Once you’ve completed the prerequisites above, you should be able to start run
 Development builds are run with a watcher and an open server listening on `localhost:3000`.
 
 ```bash
-yarn dev
+pnpm dev
 ```
 
 ### Production Mode
@@ -87,25 +93,25 @@ yarn dev
 Production-based builds are great for usage on serverless & container-based hosting platforms like [Vercel](https://vercel.com) or [Heroku](https://heroku.com). To compile the source files into minified, production-ready asset bundles, run the build command.
 
 ```bash
-yarn build
+pnpm build
 ```
 
 There is also the option to build the application for usages as a static site on platforms like IPFS, AWS, Vercel, etc. This essentially builds the application as above and additionally uses the `next export` command. More information around Next’s export command can be found [here](https://nextjs.org/docs/advanced-features/static-html-export).
 
 ```bash
-yarn build:static
+pnpm build:static
 ```
 
 To start the server in production mode and use these bundled, minified assets, run the following command. This will start the web server listening on `localhost:3000`.
 
 ```bash
-yarn start
+pnpm start
 ```
 
 You can also serve up the static site assets with the following command, which can be viewable on `localhost:3000`.
 
 ```bash
-yarn serve:static
+pnpm serve:static
 ```
 
 ### Test Mode
@@ -122,14 +128,14 @@ NEXT_PUBLIC_FORK_CHAIN_ID=1
 NEXT_PUBLIC_FORK_URL_RPC=<your rpc url>
 ```
 
-For running the integration test suite, you’ll need to have the application running locally in a separate terminal. You may choose to either run it in development mode via `yarn dev` or against a static production build via `yarn build:static` & `yarn serve:static`. The caveat to running in development mode is that it will be more resource-intensive, since the application will be built on the fly.
+For running the integration test suite, you’ll need to have the application running locally in a separate terminal. You may choose to either run it in development mode via `pnpm dev` or against a static production build via `pnpm build:static` & `pnpm serve:static`. The caveat to running in development mode is that it will be more resource-intensive, since the application will be built on the fly.
 
 ```bash
 # open interactive cypress test suite
-yarn test:open
+pnpm test:open
 
 # run all tests in headless mode
-yarn test:headless
+pnpm test:headless
 ```
 
 ## Environment Variables

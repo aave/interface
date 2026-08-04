@@ -2,17 +2,19 @@
 
 based on cypress(8.5.0) with `cypress-repeat` and tenderly
 
+> Requires [pnpm](https://pnpm.io/) **v10+** (the repo pins `pnpm@10.18.0`; run `corepack enable` to use it automatically). See [CONTRIBUTING.md](../CONTRIBUTING.md) for full setup.
+
 ---
 
 ## Development mode
 
 there is command for development/debuging/local executing tests:
 
-- `yarn run test:open` - it's open visual window with all test and manual executing
+- `pnpm test:open` - it's open visual window with all test and manual executing
 
 _steps:_
 
-1. install dependencies `yarn`
+1. install dependencies `pnpm install`
 2. add .env.local file to the root folder with:
 
 
@@ -24,7 +26,7 @@ TENDERLY_PROJECT=QA
 
 `cp .env.example .env` - execute before spining up environment if you want to check Stake / Governance pages.
 
-3. run `yarn run test:open`
+3. run `pnpm test:open`
 
 ---
 
@@ -32,12 +34,12 @@ TENDERLY_PROJECT=QA
 
 there are 2 types of suites:
 
-- `yarn run test:${marketName}-${marketVersion}-smoke` - executing only main specs, using for brunch pr
-- `yarn run test:${marketName}-${marketVersion}-full` - executing all specs, using for before live deployment
+- `pnpm test:${marketName}-${marketVersion}-smoke` - executing only main specs, using for brunch pr
+- `pnpm test:${marketName}-${marketVersion}-full` - executing all specs, using for before live deployment
 
 P.C. for execute those commands locally need to:
 
-1. install dependencies `yarn`
+1. install dependencies `pnpm install`
 2. add .env.local file to the root folder with:
 
 ```sh
@@ -52,7 +54,7 @@ TENDERLY_PROJECT=QA
 ---
 ## Local execution
 
-1. install dependencies `yarn`
+1. install dependencies `pnpm install`
 2. add .env.local file to the root folder with:
 
 ```sh
@@ -63,7 +65,7 @@ TENDERLY_PROJECT=
 
 then possible to run all tests by:
 ```sh
-yarn run test:headless
+pnpm test:headless
 ```
 or for separate markets:
 - ethereum v2 `DOTENV_CONFIG_PATH='.env.local' cypress run --spec 'cypress/e2e/0-v2-markets/0-main-v2-market/**/*'`

@@ -87,7 +87,7 @@ const baseConnectors = prodCkConfig.connectors
     const c = connector(connectorConfig);
     if (c.id === 'safe') {
       return safe({
-        allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/, /dhedge.org$/],
+        allowedDomains: [/gnosis-safe.io$/, /app.safe.global$/, /chamberfi.com$/],
       });
     } else {
       return connector;
