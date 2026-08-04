@@ -19,7 +19,11 @@
       "ethers>ws": "^8.21.0",
       "form-data": "2.5.6",
       "d3-color": "^3.1.0",
-      "js-cookie": "3.0.7"
+      "js-cookie": "3.0.7",
+      "js-yaml@>=4.0.0 <4.3.0": "^4.3.0",
+      "rollup": "^2.80.0",
+      "sharp": "^0.35.0",
+      "tmp": "^0.2.6"
     },
     "patchedDependencies": {
       "connectkit@1.9.2": "patches/connectkit@1.9.2.patch",
