@@ -102,6 +102,16 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     fullBleed: true,
     Component: dynamic(() => import('../components/BannersSection').then((m) => m.BannersSection)),
   },
+  // TEMPORARY: audit gallery of every in-app <Alert> usage (mock data) for the alert cleanup.
+  // Remove this entry and the AlertsAuditSection component once the cleanup lands.
+  {
+    slug: 'alerts',
+    label: 'Alerts (temp audit)',
+    group: 'Temporary',
+    Component: dynamic(() =>
+      import('../components/AlertsAuditSection').then((m) => m.AlertsAuditSection)
+    ),
+  },
 ];
 
 // Sections grouped for the sidebar, preserving declaration order.
