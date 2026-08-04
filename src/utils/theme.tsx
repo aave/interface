@@ -858,6 +858,13 @@ export function getThemedComponents(theme: AppTheme) {
               {
                 backgroundColor: 'transparent',
               },
+            // A row's leading icon sits one step back from its label, exactly like a button's
+            // start-icon (fg-3 icon against fg-1 text — see `secondaryPillStyle`). Scoped to a
+            // DIRECT SvgIcon child so it only catches currentColor UI icons; brand artwork
+            // (TokenIcon, MarketLogo) is `<img>`-based and unaffected.
+            '& > .MuiSvgIcon-root': {
+              color: figVars['fg-3'],
+            },
           },
         },
       },

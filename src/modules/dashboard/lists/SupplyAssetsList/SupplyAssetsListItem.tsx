@@ -1,6 +1,5 @@
 import { ProtocolAction } from '@aave/contract-helpers';
-import { SwitchHorizontalIcon } from '@heroicons/react/outline';
-import { EyeIcon } from '@heroicons/react/solid';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -16,6 +15,7 @@ import {
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { DotsHorizontalIcon } from 'src/components/icons/DotsHorizontalIcon';
+import { SwapIcon } from 'src/components/icons/SwapIcon';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -290,9 +290,7 @@ export const SupplyAssetsListItemDesktop = ({
             onClick={handleSwitchClick}
             disabled={!isFeatureEnabled.switch(currentMarketData)}
           >
-            <SvgIcon fontSize="small">
-              <SwitchHorizontalIcon />
-            </SvgIcon>
+            <SwapIcon fontSize="small" />
             <ListItemText>Swap</ListItemText>
           </MenuItem>
           <MenuItem
@@ -302,7 +300,7 @@ export const SupplyAssetsListItemDesktop = ({
             onClick={onDetailsClick}
           >
             <SvgIcon fontSize="small">
-              <EyeIcon />
+              <InformationCircleIcon />
             </SvgIcon>
             <ListItemText>Details</ListItemText>
           </MenuItem>
