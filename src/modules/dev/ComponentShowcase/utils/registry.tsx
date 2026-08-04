@@ -102,26 +102,6 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     fullBleed: true,
     Component: dynamic(() => import('../components/BannersSection').then((m) => m.BannersSection)),
   },
-  // TEMPORARY: audit gallery of every in-app <Alert> usage (mock data) for the alert cleanup.
-  // Remove this entry and the AlertsAuditSection component once the cleanup lands.
-  {
-    slug: 'alerts',
-    label: 'Alerts (temp audit)',
-    group: 'Temporary',
-    Component: dynamic(() =>
-      import('../components/AlertsAuditSection').then((m) => m.AlertsAuditSection)
-    ),
-  },
-  // TEMPORARY: every visual change expected from the v3 neutral-ramp token update, so each can be
-  // signed off. Remove this entry and the ColorRegressionSection folder once the ramp is approved.
-  {
-    slug: 'color-regressions',
-    label: 'Color regressions (temp)',
-    group: 'Temporary',
-    Component: dynamic(() =>
-      import('../components/ColorRegressionSection').then((m) => m.ColorRegressionSection)
-    ),
-  },
 ];
 
 // Sections grouped for the sidebar, preserving declaration order.
