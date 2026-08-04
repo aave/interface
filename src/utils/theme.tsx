@@ -100,14 +100,18 @@ const tertiaryPillStyle = {
   },
 };
 
-// Alert severity surface: a gradient from the severity colour at 3% (left) fading to bg-2 (right)
-// over a bg-2 base, plus the full colour + a 20% tint behind/inside the icon box.
+// Alert severity surface: a gradient from the severity colour (left) fading to the base (right),
+// plus the full colour + a 20% tint behind/inside the icon box. Light: 3% over bg-2. Dark: the
+// tint is lifted to 5% over bgp-2 (#18181B) so it stays visible against the darker canvas.
 const alertSeverityStyle = (color: string): CSSObject => ({
   background: `linear-gradient(90deg, color-mix(in srgb, ${color} 3%, transparent) 0%, ${figVars['bg-2']} 100%), ${figVars['bg-2']}`,
   '.MuiAlert-icon': {
     color,
     backgroundColor: `color-mix(in srgb, ${color} 20%, transparent)`,
   },
+  ...darkScheme({
+    background: `linear-gradient(90deg, color-mix(in srgb, ${color} 5%, transparent) 0%, ${figVars['bgp-2']} 100%), ${figVars['bgp-2']}`,
+  }),
 });
 
 // Shared box geometry for the custom selection-control icons (checkbox + radio).
@@ -1063,7 +1067,7 @@ export function getThemedComponents(theme: AppTheme) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              borderRadius: '0.5rem',
+              borderRadius: '0.75rem',
               boxShadow: `inset 0 0 0 1px ${figVars['border-0']}`,
               opacity: 1,
               '.MuiSvgIcon-root': {
@@ -1100,6 +1104,23 @@ export function getThemedComponents(theme: AppTheme) {
               '&:hover': {
                 textDecoration: 'none',
                 background: 'transparent',
+              },
+            },
+            // Small size (`data-size="small"`): a tighter 2rem icon box with a 0.8rem icon, and
+            // 0.75rem / 135% message text. Everything else (radius, gradient, colours) is inherited.
+            '&[data-size="small"]': {
+              '.MuiAlert-icon': {
+                width: '2rem',
+                height: '2rem',
+                padding: '0.53125rem 0.5rem 0.46875rem 0.5rem',
+                borderRadius: '0.625rem',
+                '.MuiSvgIcon-root': {
+                  fontSize: '0.8rem',
+                },
+              },
+              '.MuiAlert-message': {
+                fontSize: '0.75rem',
+                lineHeight: '1.0125rem',
               },
             },
           },

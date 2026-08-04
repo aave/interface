@@ -21,6 +21,18 @@ export const FeedbackSection = () => (
       </Box>
     </Specimen>
 
+    <Specimen label="Alert — small (data-size)" fullWidth>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+        {SEVERITIES.map((severity) => (
+          <Alert key={severity} severity={severity} data-size="small">
+            This is a {severity} alert. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+            do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+          </Alert>
+        ))}
+      </Box>
+    </Specimen>
+
     <Specimen label="Skeleton">
       <Skeleton variant="rectangular" width={120} height={20} />
       <Skeleton variant="text" width={120} />
