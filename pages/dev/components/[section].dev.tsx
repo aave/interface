@@ -5,14 +5,11 @@ import { SHOWCASE_SECTIONS } from 'src/modules/dev/ComponentShowcase/utils/regis
 
 /**
  * One route per showcase section: `/dev/components/<slug>`. Renders only the active
- * section (lazily loaded via the registry) inside the shared sidebar layout. Dev-only.
+ * section (lazily loaded via the registry) inside the shared sidebar layout. Only built when
+ * dev pages are enabled (see `pageExtensions` in next.config.js).
  */
 export default function ComponentShowcaseSectionPage() {
   const router = useRouter();
-
-  if (process.env.NODE_ENV !== 'development') {
-    return null;
-  }
 
   const slug = typeof router.query.section === 'string' ? router.query.section : '';
   const section = SHOWCASE_SECTIONS.find((s) => s.slug === slug);
