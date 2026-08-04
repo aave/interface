@@ -30,14 +30,14 @@ export const VotersListContainer = ({ voteInfo, voters }: VotersListProps): JSX.
   return (
     <Box sx={{ my: 8 }}>
       <Row sx={{ mb: 3 }}>
-        <Typography variant="subheader2" color="fg-2">
+        <Typography variant="subheader2" color="fg-3">
           {voters.combinedVotes.length > 10 ? (
             <Trans>Top 10 addresses</Trans>
           ) : (
             <Trans>Addresses</Trans>
           )}
         </Typography>
-        <Typography variant="subheader2" color="fg-2">
+        <Typography variant="subheader2" color="fg-3">
           <Trans>Votes</Trans>
         </Typography>
       </Row>

@@ -43,33 +43,35 @@ const MENU_PAPER_RADIUS = '0.75rem';
 const MENU_LIST_INSET = '0.38rem';
 
 /**
+ * The shared fill recipe for the two opaque "white pill" surfaces — the `outlined` button variant
+ * and the Select trigger. They must stay in lockstep (the Select IS the outlined-button surface),
+ * so the tokens live here once instead of being restated ~470 lines apart. Both tokens are per-mode
+ * (bg-4 = #ffffff/#1e1e20, bg-4-hover = #f6f7f4/#28282a), so neither needs a `darkScheme` override
+ * — which also means they honour a nested scheme boundary like the dev showcase's local toggle.
+ * Selectors, transitions and focus rings stay with each consumer; only the fill is shared.
+ */
+const surfaceFill = { backgroundColor: figVars['bg-4'], boxShadow: figSurfaceShadow() };
+const surfaceFillHover = { backgroundColor: figVars['bg-4-hover'], boxShadow: figSurfaceShadow() };
+
+/**
  * Secondary "white pill" style for the `outlined` button variant: a hairline ring instead
- * of a border (bg-max in light, bg-4 in dark) with a subtle fill shift on hover. On hover the
- * ring is re-asserted (the global `disableElevation` default otherwise strips box-shadow),
- * and `border` is forced to none to suppress MUI's default outlined hover border.
+ * of a border, on the shared surface fill. On hover the ring is re-asserted (the global
+ * `disableElevation` default otherwise strips box-shadow), and `border` is forced to none to
+ * suppress MUI's default outlined hover border.
  */
 const secondaryPillStyle = {
+  ...surfaceFill,
   color: figVars['fg-1'],
-  // Different token per mode: bg-max (white) in light, a bg-4 fill in dark.
-  backgroundColor: figVars['bg-max'],
   border: 'none',
-  boxShadow: figSurfaceShadow(),
   '& .MuiButton-startIcon': {
     color: figVars['fg-3'],
   },
-  ...darkScheme({
-    backgroundColor: figVars['bg-4'],
-  }),
   // Open state (a menu/popover trigger with `aria-expanded="true"`) keeps the hover fill.
   '&:hover, &.Mui-focusVisible, &[aria-expanded="true"]': {
-    backgroundColor: figVars['bg-1'],
+    ...surfaceFillHover,
     // Suppress MUI's default outlined hover border (its `:hover` rule would otherwise
     // re-introduce a 1px border on top of the borderless pill).
     border: 'none',
-    boxShadow: figSurfaceShadow(),
-    ...darkScheme({
-      backgroundColor: figVars['bg-5'],
-    }),
   },
 };
 
@@ -100,18 +102,20 @@ const tertiaryPillStyle = {
   },
 };
 
-// Alert severity surface: a gradient from the severity colour (left) fading to the base (right),
-// plus the full colour + a 20% tint behind/inside the icon box. Light: 3% over bg-2. Dark: the
-// tint is lifted to 5% over bgp-2 (#18181B) so it stays visible against the darker canvas.
+// Alert severity surface: a gradient from the severity colour (left) fading to bg-2 (right), plus
+// the full colour + a 20% tint behind/inside the icon box. The two modes differ only in `tint` —
+// dark lifts it so the wash stays visible against the darker canvas — so the gradient itself is
+// written once here rather than duplicated into the dark override.
+const severityGradient = (color: string, tint: string) =>
+  `linear-gradient(90deg, color-mix(in srgb, ${color} ${tint}, transparent) 0%, ${figVars['bg-2']} 100%), ${figVars['bg-2']}`;
+
 const alertSeverityStyle = (color: string): CSSObject => ({
-  background: `linear-gradient(90deg, color-mix(in srgb, ${color} 3%, transparent) 0%, ${figVars['bg-2']} 100%), ${figVars['bg-2']}`,
+  background: severityGradient(color, '3%'),
   '.MuiAlert-icon': {
     color,
     backgroundColor: `color-mix(in srgb, ${color} 20%, transparent)`,
   },
-  ...darkScheme({
-    background: `linear-gradient(90deg, color-mix(in srgb, ${color} 5%, transparent) 0%, ${figVars['bgp-2']} 100%), ${figVars['bgp-2']}`,
-  }),
+  ...darkScheme({ background: severityGradient(color, '5%') }),
 });
 
 // Shared box geometry for the custom selection-control icons (checkbox + radio).
@@ -122,19 +126,16 @@ const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
 const focusRing = { outline: '2px solid currentColor', outlineOffset: '3px' } as const;
 
 // Selection-control (checkbox + radio) icon recipes — shared so the two never drift. The unchecked
-// box is a bg-max fill (bgp-2 in dark) with an inset border-0 hairline that darkens to fg-4 on hover (keyed to the shared
-// .MuiButtonBase-root both controls carry, so one selector covers both); the checked box is a
+// box is a bg-3 fill with an inset border-0 hairline that darkens to fg-4 on hover (keyed to the
+// shared .MuiButtonBase-root both controls carry, so one selector covers both); the checked box is a
 // purple-1 fill centered on its glyph. Radio spreads these and overrides borderRadius to a circle.
 const selectionControlResting = {
   ...checkboxIconBox,
-  backgroundColor: figVars['bg-max'],
+  // bg-3 is white in light and #18181b in dark — the same value the dark override used to force,
+  // so one token now covers both modes.
+  backgroundColor: figVars['bg-3'],
   boxShadow: `inset 0 0 0 1px ${figVars['border-0']}`,
   boxSizing: 'border-box' as const,
-  // Dark: bg-max (#0a0a0a) vanishes against the near-black canvas, so lift the unchecked fill to
-  // bgp-2 (#18181B) for contrast. Light stays bg-max (white).
-  ...darkScheme({
-    backgroundColor: figVars['bgp-2'],
-  }),
   '.MuiButtonBase-root:hover &': {
     boxShadow: `inset 0 0 0 1px ${figVars['fg-4']}`,
   },
@@ -512,35 +513,33 @@ export function getThemedComponents(theme: AppTheme) {
         styleOverrides: {
           root: {
             borderRadius: '0.5rem',
-            // Text inputs (everything that isn't a Select): a bg-max surface with the shared
+            // Text inputs (everything that isn't a Select): a bg-3 surface with the shared
             // surface shadow (shadow-low drop + shadow-stroke-2 1px ring) instead of a border.
             // Selects keep their own fill via the `:has(.MuiSelect-select)` block below.
             '&:not(:has(.MuiSelect-select))': {
-              backgroundColor: figVars['bg-max'],
+              backgroundColor: figVars['bg-3'],
               boxShadow: figSurfaceShadow(),
               '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
             },
-            // Select trigger = the outlined-button surface (secondaryPillStyle): a bg-1/bg-4 fill
-            // wrapped by the shared ring (figSurfaceShadow), same 0.5rem radius (from `root`).
-            // The notched border is dropped — the ring IS the outline — so there's no blueish or
-            // animated border; hover & open step the fill (same as the button) while the ring
-            // stays put.
+            // Select trigger = the outlined-button surface: the same `surfaceFill` recipe the
+            // pill uses, same 0.5rem radius (from `root`). The tokens are shared rather than
+            // restated so the two can't drift. The notched border is dropped — the ring IS the
+            // outline — so there's no blueish or animated border; hover & open step the fill while
+            // the ring stays put. `secondaryPillStyle` itself isn't spread here: its fg-1 color,
+            // start-icon selector and `[aria-expanded]` selector are all wrong for an input (the
+            // attribute lands on the inner `.MuiSelect-select`, hence the `:has()` below).
             '&:has(.MuiSelect-select)': {
-              backgroundColor: figVars['bg-1'],
-              boxShadow: figSurfaceShadow(),
+              ...surfaceFill,
               // Animate the hover/open fill+ring step (was instant — the root had no transition).
               transition: theme.transitions.create(['background-color', 'box-shadow'], {
                 duration: motion.duration.hover,
               }),
-              ...darkScheme({ backgroundColor: figVars['bg-4'] }),
               '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
               // Open fill is keyed to the Select's actual open state (`aria-expanded` on the
               // select), NOT `.Mui-focused`: a Select keeps focus after its menu closes, so a
               // focus-based fill would linger after closing and while other fields are focused.
               '&:hover, &:has(.MuiSelect-select[aria-expanded="true"])': {
-                backgroundColor: figVars['bg-4'],
-                boxShadow: figSurfaceShadow(),
-                ...darkScheme({ backgroundColor: figVars['bg-5'] }),
+                ...surfaceFillHover,
                 '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
               },
               // Keyboard-focus ring only (browser deems focus visible → keyboard nav, not the
@@ -620,8 +619,8 @@ export function getThemedComponents(theme: AppTheme) {
           },
         },
         variants: [
-          // Secondary "white pill": a hairline ring instead of a border, with a bg-4 fill
-          // in dark mode.
+          // Secondary "white pill": a hairline ring instead of a border, on the shared
+          // `surfaceFill` recipe (bg-4 → bg-4-hover, both per-mode).
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
@@ -642,8 +641,8 @@ export function getThemedComponents(theme: AppTheme) {
               // needs to disappear into it while the drop-shadow layer still adds the lift.
               boxShadow: figSurfaceShadow('fg-max'),
               '&:hover, &.Mui-focusVisible': {
-                // One per-scheme token (fg-max-hover: fg-1 ink in light, bone off-white in dark)
-                // instead of an fg-1↔bone swap via the dark selector — the hover follows the
+                // One per-scheme token (fg-max-hover: a warm near-black in light, bone off-white in
+                // dark) instead of a two-token swap via the dark selector — the hover follows the
                 // NEAREST color scheme (the dev showcase's local toggle), not the global <html>.
                 backgroundColor: figVars['fg-max-hover'],
                 boxShadow: figSurfaceShadow('fg-max-hover'),
@@ -1044,6 +1043,12 @@ export function getThemedComponents(theme: AppTheme) {
         styleOverrides: {
           root: {
             borderColor: figVars['border-2'],
+          },
+          // Column labels are fg-3 app-wide. MUI defaults the `head` variant to text.primary
+          // (fg-1), which reads as body ink — this pins every <TableHead> cell to the muted
+          // header token, matching the `ListHeaderTitle` primitive the list-based tables use.
+          head: {
+            color: figVars['fg-3'],
           },
         },
       },

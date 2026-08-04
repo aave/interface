@@ -5,30 +5,25 @@
  * (`sx={{ bgcolor: 'bg-1' }}`) or via `figVars` outside `sx` — never hand-write hex in components.
  */
 export const figmaLight = {
-  'bg-max': '#ffffff',
+  'bg-max': '#f0f0f0',
   'bg-1': '#fafafa',
   'bg-2': '#fcfcfc',
-  'bg-3': '#fcfbfb',
-  'bg-4': '#f6f7f4',
+  'bg-3': '#ffffff',
+  'bg-4': '#ffffff',
   'bg-5': '#f2f2f2',
   'bg-6': '#f1f1f1',
   'bg-7': '#ebebeb',
-  'bgp-1': '#f7f7f7',
-  'bgp-2': '#fcfcfc',
-  // bgp-4 = tooltip surface, bgp-5 = reserve icon-button hover (no bgp-3; checkbox reuses bgp-2).
-  'bgp-4': '#f2f2f2',
-  'bgp-5': '#f6f7f4',
   'border-0': 'rgba(0, 0, 0, 0.06)',
   'border-1': 'rgba(0, 0, 0, 0.08)',
   'border-2': 'rgba(0, 0, 0, 0.12)',
   'fg-max': '#000000',
-  'fg-1': '#201d1d',
+  'fg-1': '#000000',
   'fg-2': '#666666',
   'fg-3': '#858585',
-  'fg-4': '#bcbbbb',
-  'fg-5': '#cfcece',
-  'fgp-3': '#8b8b8d',
-  // Muted icon grey (search, sortable-column chevrons, …). Mode-agnostic like fg-3.
+  'fg-4': '#a8a8a8',
+  'fg-5': '#b3b3b3',
+  // Muted icon grey (search, sortable-column chevrons, …). Deliberately mode-agnostic — the same
+  // value in both maps — unlike the fg-* ramp steps.
   'fg-icon': '#A8A8A8',
   selected: 'rgba(46, 15, 15, 0.04)',
   'blue-1': '#1a88f8',
@@ -103,10 +98,14 @@ export const figmaLight = {
   'info-panel-color-two': '#fafafa',
   'info-panel-color-three': '#fafafa',
   bone: '#f6f7f4',
-  // Contained-button hover fill. A single token (not an fg-1↔bone swap via the dark selector) so
-  // it resolves to the NEAREST color scheme — the dev showcase's local toggle works even when the
-  // app's global scheme differs. Light = fg-1 ink; dark = bone off-white.
+  // Hover fills for the two opaque button surfaces. Each is a SINGLE per-mode token rather than a
+  // base + `darkScheme()` override, so it resolves to the NEAREST color scheme — the dev showcase's
+  // local toggle works even when the app's global scheme differs (the dark selector matches any
+  // ancestor, including <html>, so a two-token swap leaks across a nested scheme boundary).
+  // fg-max-hover: light = a warm near-black (a step off the pure-#000 fg-max base); dark = bone.
+  // bg-4-hover: one step down the ramp from the bg-4 control surface, per mode.
   'fg-max-hover': '#201d1d',
+  'bg-4-hover': '#f6f7f4',
   // --- semantic tokens promoted from theme-file literals (SoT) ---
   'secondary-main': '#FF607B',
   'secondary-light': '#FF607B',
@@ -135,29 +134,25 @@ export const figmaLight = {
 } as const;
 
 export const figmaDark = {
-  'bg-max': '#0a0a0a',
-  'bg-1': '#100f0f',
-  'bg-2': '#18181B',
-  'bg-3': '#1f1e1e',
-  'bg-4': '#1F1E1E',
-  'bg-5': '#2A2828',
-  'bg-6': '#393737',
-  'bg-7': '#3f3e3e',
-  'bgp-1': '#0f0f10',
-  'bgp-2': '#18181B',
-  'bgp-4': '#1E1E20',
-  'bgp-5': '#28282A',
+  'bg-max': '#0a0a0b',
+  'bg-1': '#0f0f10',
+  'bg-2': '#18181b',
+  'bg-3': '#18181b',
+  'bg-4': '#1e1e20',
+  'bg-5': '#28282a',
+  'bg-6': '#36363a',
+  'bg-7': '#45454a',
   'border-0': 'rgba(255, 255, 255, 0.06)',
   'border-1': 'rgba(255, 255, 255, 0.08)',
   'border-2': 'rgba(255, 255, 255, 0.12)',
   'fg-max': '#ffffff',
   'fg-1': '#ffffff',
   'fg-2': '#bcbbbb',
-  'fg-3': '#727274',
+  'fg-3': '#8f8e8e',
   'fg-4': '#636161',
-  'fg-5': '#383838',
-  'fgp-3': '#8f8e8e',
-  // Muted icon grey (search, sortable-column chevrons, …). Mode-agnostic like fg-3.
+  'fg-5': '#ffffff',
+  // Muted icon grey (search, sortable-column chevrons, …). Deliberately mode-agnostic — the same
+  // value in both maps — unlike the fg-* ramp steps.
   'fg-icon': '#A8A8A8',
   selected: 'rgba(255, 255, 255, 0.06)',
   'blue-1': '#1a88f8',
@@ -235,6 +230,7 @@ export const figmaDark = {
   'info-panel-color-three': 'rgba(255, 255, 255, 0.01)',
   bone: '#f6f7f4',
   'fg-max-hover': '#f6f7f4',
+  'bg-4-hover': '#28282a',
   // --- semantic tokens promoted from theme-file literals (SoT) ---
   'secondary-main': '#F48FB1',
   'secondary-light': '#F6A5C0',

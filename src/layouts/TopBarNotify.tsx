@@ -188,7 +188,7 @@ export default function TopBarNotify({
         component="header"
         position="static"
         sx={{
-          bgcolor: 'bgp-1',
+          bgcolor: 'bg-1',
           color: 'fg-1',
           borderRadius: 0,
           borderBottom: '1px solid',

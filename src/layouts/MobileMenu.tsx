@@ -134,7 +134,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             zIndex: 1,
             opacity: scrolled ? 1 : 0,
             transition: 'opacity 0.2s ease',
-            background: `linear-gradient(to bottom, ${figVars['bgp-2']}, transparent)`,
+            background: `linear-gradient(to bottom, ${figVars['bg-2']}, transparent)`,
           }}
         />
         {!isLanguagesListOpen ? (
@@ -167,7 +167,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
                   right: 0,
                   height: '2rem',
                   pointerEvents: 'none',
-                  background: `linear-gradient(to top, ${figVars['bgp-2']}, transparent)`,
+                  background: `linear-gradient(to top, ${figVars['bg-2']}, transparent)`,
                 }}
               />
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', px: '0.75rem' }}>

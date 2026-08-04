@@ -1,8 +1,10 @@
-import { Box, Typography } from '@mui/material';
-import { figVars } from 'src/utils/figmaColors';
+import { Box } from '@mui/material';
+import { FigmaColorName, figVars } from 'src/utils/figmaColors';
+
+import { TokenHexLabel } from '../TokenHexLabel';
 
 interface SwatchProps {
-  name: string;
+  name: FigmaColorName;
   value: string;
 }
 
@@ -28,11 +30,6 @@ export const Swatch = ({ name, value }: SwatchProps) => (
     >
       <Box sx={{ position: 'absolute', inset: 0, backgroundColor: value }} />
     </Box>
-    <Typography variant="main12" noWrap sx={{ mt: 1, display: 'block' }}>
-      {name}
-    </Typography>
-    <Typography variant="subheader2" color="fg-2" noWrap sx={{ display: 'block' }}>
-      {value}
-    </Typography>
+    <TokenHexLabel name={name} />
   </Box>
 );

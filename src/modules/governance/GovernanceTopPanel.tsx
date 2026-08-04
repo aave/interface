@@ -27,7 +27,7 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
       target="_blank"
       rel="noopener"
       onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: text })}
-      endIcon={<ArrowUpRightIcon sx={{ color: 'fgp-3' }} />}
+      endIcon={<ArrowUpRightIcon sx={{ color: 'fg-3' }} />}
       sx={{ minWidth: 'unset' }}
     >
       {text}

@@ -349,7 +349,7 @@ export const BridgeModalContent = () => {
             rel="noopener"
             variant="outlined"
             size="small"
-            endIcon={<ArrowUpRightIcon sx={{ color: 'fgp-3' }} />}
+            endIcon={<ArrowUpRightIcon sx={{ color: 'fg-3' }} />}
             sx={{ minWidth: 'unset', mr: 9 }}
           >
             <Trans>Transactions</Trans>

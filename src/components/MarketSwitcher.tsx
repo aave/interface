@@ -509,7 +509,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
         sx={{
           height: '3.23rem',
           px: '1rem',
-          bgcolor: 'bgp-2',
+          bgcolor: 'bg-2',
           boxShadow: `0 0 0 1px ${figVars['border-1']}`,
           display: 'flex',
           alignItems: 'center',
@@ -809,7 +809,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
               elevation: 0,
               sx: {
                 width: '32.5rem',
-                bgcolor: 'bgp-2',
+                bgcolor: 'bg-2',
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',

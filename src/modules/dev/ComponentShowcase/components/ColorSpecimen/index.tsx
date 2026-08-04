@@ -3,20 +3,9 @@ import { FigmaColorName, figVars } from 'src/utils/figmaColors';
 
 import { ColorRole } from '../../utils/catalog';
 import { Swatch } from '../Swatch';
+import { TokenHexLabel } from '../TokenHexLabel';
 
 const SPECIMEN_WIDTH = 220;
-
-// Token name + resolved CSS-var value, shown under every specimen.
-const Label = ({ name, value }: { name: string; value: string }) => (
-  <>
-    <Typography variant="main12" noWrap sx={{ mt: 3, display: 'block' }}>
-      {name}
-    </Typography>
-    <Typography variant="subheader2" color="fg-2" noWrap sx={{ mt: 0.5, display: 'block' }}>
-      {value}
-    </Typography>
-  </>
-);
 
 /**
  * Renders a color token the way it's meant to be used: `text` colors as text, `bg` as a surface,
@@ -44,7 +33,7 @@ export const ColorSpecimen = ({ role, name }: { role: ColorRole; name: FigmaColo
             The quick brown fox
           </Typography>
         </Box>
-        <Label name={name} value={value} />
+        <TokenHexLabel name={name} />
       </Box>
     );
   }
@@ -60,7 +49,7 @@ export const ColorSpecimen = ({ role, name }: { role: ColorRole; name: FigmaColo
             border: `1px solid ${figVars['border-2']}`,
           }}
         />
-        <Label name={name} value={value} />
+        <TokenHexLabel name={name} />
       </Box>
     );
   }
@@ -80,7 +69,7 @@ export const ColorSpecimen = ({ role, name }: { role: ColorRole; name: FigmaColo
           <Box sx={{ borderTop: `1px solid ${value}` }} />
           <Box sx={{ height: 44 }} />
         </Box>
-        <Label name={name} value={value} />
+        <TokenHexLabel name={name} />
       </Box>
     );
   }
@@ -97,7 +86,7 @@ export const ColorSpecimen = ({ role, name }: { role: ColorRole; name: FigmaColo
             boxShadow: `0px 8px 24px 0px ${value}`,
           }}
         />
-        <Label name={name} value={value} />
+        <TokenHexLabel name={name} />
       </Box>
     );
   }

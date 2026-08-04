@@ -10,13 +10,13 @@ const dimmedInactive = {
   ...darkScheme({ opacity: 1 }),
 };
 
-// Active pill: a bg-max fill with a border-1 ring in light; a bg-5 fill and no ring in dark, fg-max
-// label at full opacity. Shared by Mui-selected/focus and disabled-selected (some consumers disable
-// the active tab).
+// Active pill: a bg-3 (white) fill with a border-1 ring in light; a bg-5 fill and no ring in dark,
+// fg-max label at full opacity. Shared by Mui-selected/focus and disabled-selected (some consumers
+// disable the active tab).
 const activeFill = {
   opacity: 1,
   color: figVars['fg-max'],
-  backgroundColor: figVars['bg-max'],
+  backgroundColor: figVars['bg-3'],
   boxShadow: `inset 0 0 0 1px ${figVars['border-1']}`,
   ...darkScheme({
     backgroundColor: figVars['bg-5'],
@@ -40,7 +40,7 @@ const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>({
 
   '&.Mui-selected, &.Mui-focusVisible': activeFill,
 
-  // Active hover: step the fill one shade (bg-max → bg-1 light, bg-5 → bg-6 dark); the ring persists.
+  // Active hover: step the fill one shade darker (bg-3 → bg-1 light, bg-5 → bg-6 dark); ring persists.
   '&.Mui-selected:hover': {
     backgroundColor: figVars['bg-1'],
     ...darkScheme({ backgroundColor: figVars['bg-6'] }),

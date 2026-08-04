@@ -55,10 +55,10 @@ export const VotersListModal = ({
             borderColor: 'border-0',
           }}
         >
-          <Typography variant="subheader2" color="fg-2">
+          <Typography variant="subheader2" color="fg-3">
             <Trans>Addresses ({voters.yaeVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="fg-2">
+          <Typography variant="subheader2" color="fg-3">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -94,10 +94,10 @@ export const VotersListModal = ({
             borderColor: 'border-0',
           }}
         >
-          <Typography variant="subheader2" color="fg-2">
+          <Typography variant="subheader2" color="fg-3">
             <Trans>Addresses ({voters.nayVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="fg-2">
+          <Typography variant="subheader2" color="fg-3">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
