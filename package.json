@@ -24,6 +24,10 @@
       "rollup": "^2.80.0",
       "sharp": "^0.35.0",
       "tmp": "^0.2.6"
+    },
+    "patchedDependencies": {
+      "connectkit@1.9.2": "patches/connectkit@1.9.2.patch",
+      "@funkit/connect@9.28.1": "patches/@funkit__connect@9.28.1.patch"
     }
   },
   "scripts": {

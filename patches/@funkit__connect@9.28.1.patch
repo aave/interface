@@ -1,0 +1,13 @@
+diff --git a/dist/index.js b/dist/index.js
+index 06a803f781f4a101d2bdefd2f398f4387a3d9bfa..2cc34b47f37878b1e04d83e545248d35208290e5 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -943,7 +943,7 @@ function useMainnetEnsAvatar(name) {
+   const mainnetConfigured = useIsMainnetConfigured();
+   const { data: ensAvatar } = useEnsAvatar({
+     chainId: mainnet.id,
+-    name: name ? normalize(name) : void 0,
++    name: (() => { if (!name) return void 0; try { return normalize(name); } catch (e) { return void 0; } })(),
+     query: {
+       enabled: mainnetConfigured
+     }
