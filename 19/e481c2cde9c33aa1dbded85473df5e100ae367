@@ -1,0 +1,26 @@
+src/modules/governance/VoteBar.tsx
+  h_407f16e676115d 43
+src/modules/governance/ProposalsV3List.tsx
+  s_f968cef01691c6::t_3a63867a354d25 50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "19e481c2cde9c33aa1dbded85473df5e100ae367",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_f968cef01691c6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "466d64ad-e620-4152-a024-22f60443d223",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
