@@ -962,14 +962,16 @@ export function getThemedComponents(theme: AppTheme) {
               paddingLeft: '96px',
               paddingRight: '96px',
             },
+            // From here up the box is capped and centred, so `margin: auto` already widens the
+            // visual gutter as the viewport grows (167px each side at 1575, 280px at 1799).
+            // Deliberately NO `xl` step: raising the padding inside a capped box takes width from
+            // the content instead of adding outer gutter, which made the content *narrower* at
+            // 1575 (1240px → 1088px) than it was at 1279px. Content must never shrink as the
+            // viewport grows — add gutter by raising `maxWidth`, never by padding a capped box.
             [theme.breakpoints.up('lg')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
               maxWidth: '1280px',
-            },
-            [theme.breakpoints.up('xl')]: {
-              paddingLeft: '96px',
-              paddingRight: '96px',
             },
             [theme.breakpoints.up('xxl')]: {
               paddingLeft: 0,

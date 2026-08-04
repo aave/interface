@@ -9,6 +9,11 @@ import { useRootStore } from 'src/store/root';
 // top-panel stats align with the asset table at Markets' wider max-width. The theme's MuiContainer
 // override already supplies display/flexDirection/flex + the 39px bottom padding, so only the wider
 // px/maxWidth are set here.
+//
+// The ladder is monotonic — content never narrows as the viewport widens. `xl` keeps its 96px
+// gutter, so its cap is the 1440px content ceiling plus that gutter (1440 + 2×96 = 1632); it grows
+// 1383px → 1440px across 1575–1632 and then holds, meeting `xxl`'s 1440px exactly. Leaving `xl`
+// uncapped instead let content reach 1607px at 1799px, which then *dropped* to 1440px at 1800px.
 export const marketContainerProps = {
   sx: {
     px: {
@@ -23,7 +28,7 @@ export const marketContainerProps = {
     maxWidth: {
       xs: 'unset',
       lg: '1240px',
-      xl: 'unset',
+      xl: '1632px',
       xxl: '1440px',
     },
   },
