@@ -1,0 +1,68 @@
+src/utils/insetHighlight.ts
+  s_92729942bbd324::t_85392a73786e22 1-77
+src/components/Analytics/AnalyticsConsent.tsx
+  s_db0e85e62af974::t_390e0ce0a65c85 61,66-73,84-86
+  s_db0e85e62af974::t_b457f516b9d1f5 29,36
+  s_db0e85e62af974::t_6440711d42fdf3 11-16
+  s_db0e85e62af974::t_16ad4521e43433 54
+  s_db0e85e62af974::t_724228ec3310b2 114-118,121-125
+  s_db0e85e62af974::t_ee823acb99e904 44
+src/modules/dev/ComponentShowcase/components/BannersSection/index.tsx
+  s_db0e85e62af974::t_5c1359941d9be6 34-38
+  s_db0e85e62af974::t_91cb03c94de25e 1-14,20-33,39-47
+  s_db0e85e62af974::t_18f0ad2a701039 15-19
+src/modules/dev/ComponentShowcase/utils/registry.tsx
+  s_db0e85e62af974::t_459710e5532a77 82-87
+src/components/MarketSwitcher.tsx
+  s_92729942bbd324::t_e950e16825d7ea 420,422
+  s_92729942bbd324::t_f672b589cd02df 340,421
+  s_92729942bbd324::t_48744b3d238a9a 803-804
+  s_92729942bbd324::t_53b84a6d26915a 334-339,341-345
+  s_92729942bbd324::t_d5f29e36b4d465 26
+src/utils/figmaColors.ts
+  s_db0e85e62af974::t_64aaac978905c7 186-188
+  s_db0e85e62af974::t_bd3e073d31413e 70-72
+src/modules/markets/Gho/GhoBanner.tsx
+  s_db0e85e62af974::t_74416c2ab665e0 203,211
+  s_db0e85e62af974::t_994c36ef092491 11
+  s_db0e85e62af974::t_9c58f5451c50b4 128,131-132,134-138,140-145
+  s_db0e85e62af974::t_a77fbd5d5fd0aa 239
+  s_db0e85e62af974::t_5daf3d5768d2c4 91-99,106-107
+  s_db0e85e62af974::t_c534e0b0d6f38e 4,25-90,129,147,149-160,204-205,209,224,226-237
+  s_db0e85e62af974::t_727b2370928314 3
+  s_db0e85e62af974::t_5d3d14682a4d2e 161
+src/layouts/TopBarNotify.tsx
+  s_db0e85e62af974::t_c9d00b496e1feb 86,95
+  s_db0e85e62af974::t_4756a852c045db 66-69,73
+  s_db0e85e62af974::t_6248c202ab68b4 42-47,50-54
+  s_db0e85e62af974::t_1d09da97507f0e 103-105
+  s_db0e85e62af974::t_97acb0450c746f 137
+src/utils/theme.tsx
+  s_db0e85e62af974::t_e09f857391a242 533-535
+  s_92729942bbd324::t_bb222607c78361 776-780,783,786-787
+  s_92729942bbd324::t_b2403fc0501346 21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "2786f51a091e2db1a12d8a853c10da72e0964a66",
+  "prompts": {},
+  "sessions": {
+    "s_92729942bbd324": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eb476971-f12e-44b4-9cc0-154074ce2493",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_db0e85e62af974": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa54de49-2594-4269-bf45-ee6841275814",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

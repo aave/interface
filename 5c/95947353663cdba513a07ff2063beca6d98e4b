@@ -1,0 +1,32 @@
+src/components/transactions/NetworkSelect.tsx
+  s_f968cef01691c6::t_299ff23c5de175 63,65,67-69
+  s_f968cef01691c6::t_e10e88ee0f26f3 61-62
+src/components/transactions/Swap/inputs/shared/NetworkSelector.tsx
+  s_f968cef01691c6::t_ffe49232ccde27 32-36,38-42
+  h_407f16e676115d 43
+  s_f968cef01691c6::t_462165deb434fa 57
+  s_f968cef01691c6::t_eaa03c7cba81cc 26-28,30
+  s_f968cef01691c6::t_94d14da07c1f57 29
+  s_f968cef01691c6::t_2cd39c2dcfcc39 51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "5c95947353663cdba513a07ff2063beca6d98e4b",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_f968cef01691c6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "466d64ad-e620-4152-a024-22f60443d223",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

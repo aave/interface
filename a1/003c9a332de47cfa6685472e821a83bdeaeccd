@@ -1,0 +1,14 @@
+src/utils/figmaColors.ts
+  h_407f16e676115d 15-16,127
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "a1003c9a332de47cfa6685472e821a83bdeaeccd",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

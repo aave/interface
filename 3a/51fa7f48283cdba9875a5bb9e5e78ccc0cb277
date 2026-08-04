@@ -1,0 +1,73 @@
+src/modules/reserve-overview/TokenMenuItems.tsx
+  s_1687209f58efc9::t_6ce9bdd3c4c6da 1-36
+src/components/CircleIcon.tsx
+  s_1687209f58efc9::t_46623ed70cbdb1 32,39-40
+src/locales/el/messages.js
+  s_1687209f58efc9::t_6b255a6d6b52a2 1
+src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+  s_1687209f58efc9::t_c268a50bf6d53e 143-144,147-148,154-155,159-162,165-167
+  s_1687209f58efc9::t_423da1338502e9 192
+  s_1687209f58efc9::t_3b703bf8a28535 2
+  s_1687209f58efc9::t_e54e6ce72d3290 59,61,65,75,77-79
+  s_1687209f58efc9::t_a0101836c4c4f9 91-120,122-138,140-142,149-153,168,170-185,188-191,193-202
+  h_407f16e676115d 139
+src/locales/en/messages.js
+  s_1687209f58efc9::t_6b255a6d6b52a2 1
+src/locales/fr/messages.js
+  s_1687209f58efc9::t_6b255a6d6b52a2 1
+src/modules/reserve-overview/AddTokenDropdown.tsx
+  s_1687209f58efc9::t_56f4e90270e335 12
+  s_1687209f58efc9::t_290644ce573f77 124-131
+  s_1687209f58efc9::t_3006caf345a3fa 145-147,176,178,184-186,211,214,222-224,250
+  s_1687209f58efc9::t_66a005f2297909 182-183
+  s_1687209f58efc9::t_10c1c54884e21f 252
+  s_1687209f58efc9::t_7bf7cc58ea8623 217,220-221
+  s_1687209f58efc9::t_3d83b23855125c 2,7,13-14
+src/modules/reserve-overview/ReserveTopDetails.tsx
+  s_1687209f58efc9::t_bcc790ff8bb81d 67
+  s_1687209f58efc9::t_0202d78d183885 75,82-101
+  s_1687209f58efc9::t_c4a62fa8f943fa 40-41
+  s_1687209f58efc9::t_489b901ce3ab48 3,5
+  s_1687209f58efc9::t_fc59f7da0640a2 47
+  s_1687209f58efc9::t_d4ae74ef7687ff 53,55,65,73,103
+src/locales/en/messages.po
+  s_1687209f58efc9::t_6b255a6d6b52a2 1150,1184-1187,2289-2292,3161-3163
+  s_1687209f58efc9::t_da1d21f2ffa077 3164
+src/modules/reserve-overview/TokenLinkDropdown.tsx
+  s_1687209f58efc9::t_992e96bc9e3bbc 69-70
+  s_1687209f58efc9::t_5294a54b8be48e 90-92,111,113,120-122,141,144,153,155,173-177
+  s_1687209f58efc9::t_e5be8ecbc51d0b 118-119,147,151-152,156-172,178-179
+  s_1687209f58efc9::t_c93b0087880f1b 3,12
+src/locales/es/messages.js
+  s_1687209f58efc9::t_6b255a6d6b52a2 1
+src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+  s_1687209f58efc9::t_42be6d6296ff89 3,5
+  s_1687209f58efc9::t_dcbe621906fd7b 25
+  s_1687209f58efc9::t_70d8769719159a 38-41
+  s_1687209f58efc9::t_ee4203d161a744 24,26,28,34,36-37,51-52
+src/layouts/components/StakingMenu.tsx
+  s_1687209f58efc9::t_098b677b700263 124,126
+  s_1687209f58efc9::t_d34dd99324b671 114,116
+  s_1687209f58efc9::t_6df7a3abbc0918 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "3a51fa7f48283cdba9875a5bb9e5e78ccc0cb277",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_1687209f58efc9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "62abfae3-a2f8-4c76-84f6-87f6ee70d009",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

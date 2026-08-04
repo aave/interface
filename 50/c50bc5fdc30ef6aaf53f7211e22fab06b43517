@@ -1,0 +1,39 @@
+src/utils/figmaColors.ts
+  s_b2a2c398b81259::t_6f83312e5bd858 64-81
+  s_b2a2c398b81259::t_c768e802e1e68d 216-217
+  s_b2a2c398b81259::t_3991a39475b2ee 86-87
+  s_b2a2c398b81259::t_1f8d51b869c6ef 184-190,192-200
+src/components/icons/AlertIcons.tsx
+  s_b2a2c398b81259::t_2f24d132909cd2 1-59
+src/utils/theme.tsx
+  s_b2a2c398b81259::t_506aa73ad41809 105,107-112
+  s_b2a2c398b81259::t_b0678134be7893 1067
+  s_b2a2c398b81259::t_844ff7ef435c2a 1049,1051-1056,1058-1066,1070-1071,1074-1084,1086,1094
+  s_b2a2c398b81259::t_60cc5d4ef16474 1109-1112
+  s_b2a2c398b81259::t_d1259509f7bce6 1116-1119
+  s_b2a2c398b81259::t_e4eb98d8d560ca 10-15
+  s_b2a2c398b81259::t_04c96e3671db9c 103-104,106
+src/modules/dev/ComponentShowcase/components/FeedbackSection/index.tsx
+  s_b2a2c398b81259::t_4051cfa7a82286 17-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "50c50bc5fdc30ef6aaf53f7211e22fab06b43517",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b2a2c398b81259": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "be1ad64a-c2c3-4c5f-b1a6-26af6e2cfe13",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

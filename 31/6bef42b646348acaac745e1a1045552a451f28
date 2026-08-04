@@ -1,0 +1,36 @@
+src/modules/governance/GovernanceTopPanel.tsx
+  s_b2a2c398b81259::t_ad21b257b733b8 83-84,86
+  s_b2a2c398b81259::t_50e5e34b3eb305 31,33
+  s_b2a2c398b81259::t_1b4643f065b7f7 30
+  s_b2a2c398b81259::t_2bad5f71b18fac 3,6
+  s_b2a2c398b81259::t_1cf66c2c5dae81 78
+src/locales/el/messages.js
+  s_b2a2c398b81259::t_06407b7acd19c8 1
+src/locales/en/messages.js
+  s_b2a2c398b81259::t_51782f736e6fe7 1
+src/locales/es/messages.js
+  s_b2a2c398b81259::t_f3603912159449 1
+src/locales/fr/messages.js
+  s_b2a2c398b81259::t_4a4f11e274c837 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "316bef42b646348acaac745e1a1045552a451f28",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b2a2c398b81259": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "be1ad64a-c2c3-4c5f-b1a6-26af6e2cfe13",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

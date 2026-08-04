@@ -1,0 +1,65 @@
+pages/markets.page.tsx
+  s_89dfc36179084a::t_cf27d42e64b4d1 8-11
+  s_89dfc36179084a::t_296a52c0773cd7 1-2,44-46
+src/modules/staking/StakingPanel.tsx
+  s_89dfc36179084a::t_97166624700731 126
+src/components/ConnectWalletPaperStaking.tsx
+  s_89dfc36179084a::t_d461319bbb963a 21
+src/modules/reserve-overview/ReserveActions.tsx
+  s_89dfc36179084a::t_437ee57e3652e4 247,259
+src/modules/migration/MigrationLists.tsx
+  s_89dfc36179084a::t_455e5af8aab775 60
+src/modules/sGho/SGhoCard.tsx
+  s_89dfc36179084a::t_f2eacf0fa2003c 45
+src/modules/stkGho/StkGhoCard.tsx
+  s_89dfc36179084a::t_7d48c16a057def 37
+src/components/ConnectWalletPaper.tsx
+  s_89dfc36179084a::t_1849caecf7deae 19
+src/modules/staking/StakingPanelSkeleton.tsx
+  s_89dfc36179084a::t_f7647773542c4a 5
+src/modules/migration/MigrationList.tsx
+  s_89dfc36179084a::t_965f28e398fc72 89
+src/modules/migration/MigrationMobileList.tsx
+  s_89dfc36179084a::t_0b5ea1aaea5ba3 37
+  s_89dfc36179084a::t_706e0114b49650 38-40
+src/modules/reserve-overview/ReserveConfigurationWrapper.tsx
+  s_89dfc36179084a::t_4cf5dfcd3eb060 30
+src/utils/theme.tsx
+  s_89dfc36179084a::t_cce16fb725fa37 528-531
+  s_89dfc36179084a::t_3948d6e6ec3311 864-874
+  s_89dfc36179084a::t_87adef7bbe3748 192
+src/components/ContentContainer.tsx
+  s_89dfc36179084a::t_ac8d517adbe5cf 1,6-8,11,21
+src/modules/sGho/YourInfoSidebar.tsx
+  s_89dfc36179084a::t_9dabd50833469a 12
+src/modules/dev/ComponentShowcase/components/SurfacesSection/index.tsx
+  s_89dfc36179084a::t_5b00609d8d82f3 13
+src/modules/staking/GhoStakingPanel.tsx
+  s_89dfc36179084a::t_6623c4b8ac01d3 129
+src/components/lists/ListWrapper.tsx
+  s_89dfc36179084a::t_6ebd50a8e1e099 97,99
+src/modules/dashboard/lists/ListButtonsColumn.tsx
+  s_89dfc36179084a::t_6070d7bf7c9d2b 25
+  s_89dfc36179084a::t_cce932f329c538 22-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "e3fffc6d0391501352d73dc247fd583a8052f192",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_89dfc36179084a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ce413fc7-4c91-4cab-804f-abbfe02a3911",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
