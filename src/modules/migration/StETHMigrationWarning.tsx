@@ -1,6 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Alert, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 import { useMemo } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
@@ -33,34 +33,32 @@ export const StETHMigrationWarning: React.FC<StETHMigrationWarningProps> = ({
 
   return (
     <Alert
-      icon={false}
+      data-size="small"
       sx={{
         width: '100%',
         mb: 4,
       }}
       severity="error"
     >
-      <Typography variant="caption" component="span">
-        <Trans>
-          stETH tokens will be migrated to Wrapped stETH using Lido Protocol wrapper which leads to
-          supply balance change after migration:{' '}
-          {v3Amount ? (
-            <>
-              <FormattedNumber variant="caption" value={v3Amount} />
-              {' ('}
-              <FormattedNumber
-                variant="caption"
-                value={v3TotalPrice}
-                symbol="USD"
-                symbolsColor="error.100"
-              />
-              {').'}
-            </>
-          ) : (
-            <NoData variant="caption" component="span" />
-          )}
-        </Trans>{' '}
-      </Typography>
+      <Trans>
+        stETH tokens will be migrated to Wrapped stETH using Lido Protocol wrapper which leads to
+        supply balance change after migration:{' '}
+        {v3Amount ? (
+          <>
+            <FormattedNumber variant="caption" value={v3Amount} />
+            {' ('}
+            <FormattedNumber
+              variant="caption"
+              value={v3TotalPrice}
+              symbol="USD"
+              symbolsColor="error.100"
+            />
+            {').'}
+          </>
+        ) : (
+          <NoData variant="caption" component="span" />
+        )}
+      </Trans>{' '}
     </Alert>
   );
 };

@@ -10,17 +10,16 @@ import { Link } from '../../../../components/primitives/Link';
 
 type WalletEmptyInfoProps = Pick<NetworkConfig, 'bridge' | 'name'> & {
   chainId: number;
-  icon?: boolean;
   sx?: SxProps<Theme>;
 };
 
-export function WalletEmptyInfo({ bridge, name, chainId, icon, sx }: WalletEmptyInfoProps) {
+export function WalletEmptyInfo({ bridge, name, chainId, sx }: WalletEmptyInfoProps) {
   const network = [ChainId.avalanche].includes(chainId) ? 'Ethereum & Bitcoin' : 'Ethereum';
 
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Alert severity="info" icon={icon} sx={{ mb: 6, width: '100%', ...sx }}>
+    <Alert severity="info" sx={{ mb: 6, width: '100%', ...sx }}>
       {bridge ? (
         <Trans>
           Your {name} wallet is empty. Purchase or transfer assets or use{' '}

@@ -504,19 +504,15 @@ export const BridgeModalContent = () => {
             <Row /> {/* Spacer */}
             {feesExceedWalletBalance && (
               <Alert severity="warning" sx={{ width: '100%', my: 0 }}>
-                <Typography variant="caption">
-                  <Trans>Fees exceed wallet balance</Trans>
-                </Typography>
+                <Trans>Fees exceed wallet balance</Trans>
               </Alert>
             )}
           </TxModalDetails>
           {txError && <GasEstimationError txError={txError} />}
 
           {txErrorBridgeMessage && (
-            <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 4 }} icon={false}>
-              <Typography variant="caption">
-                <Trans>Something went wrong fetching bridge message, please try again later.</Trans>
-              </Typography>
+            <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%', mt: 4 }}>
+              <Trans>Something went wrong fetching bridge message, please try again later.</Trans>
             </Alert>
           )}
 

@@ -1086,17 +1086,35 @@ export function getThemedComponents(theme: AppTheme) {
               fontSize: pxToRem(14),
               lineHeight: pxToRem(19),
             },
+            // Title (AlertTitle): identical to the message text, one weight step up (500). No
+            // bespoke per-alert heading styling — overrides MUI's larger/heavier default + margins.
+            '.MuiAlertTitle-root': {
+              margin: 0,
+              marginBottom: '0.13rem',
+              color: figVars['fg-max'],
+              fontFamily: FONT,
+              fontWeight: 500,
+              fontSize: pxToRem(14),
+              lineHeight: pxToRem(19),
+            },
             a: {
               color: 'inherit',
-              fontWeight: 500,
+              fontWeight: 'inherit',
               textDecoration: 'underline',
               '&:hover': {
                 textDecoration: 'none',
               },
             },
             '.MuiButton-text': {
+              // Inline buttons (copy / switch-network / …) fully match the alert text — same font
+              // size/family/line-height, no uppercase — plus an underline. Otherwise they keep MUI's
+              // button typography and render a size off (most visibly in the small variant).
               color: 'inherit',
-              fontWeight: 500,
+              // `font` shorthand inherits family/size/weight/line-height in one go; letter-spacing
+              // isn't part of it, so inherit that separately.
+              font: 'inherit',
+              letterSpacing: 'inherit',
+              textTransform: 'none',
               textDecoration: 'underline',
               padding: 0,
               margin: 0,
@@ -1106,9 +1124,12 @@ export function getThemedComponents(theme: AppTheme) {
                 background: 'transparent',
               },
             },
-            // Small size (`data-size="small"`): a tighter 2rem icon box with a 0.8rem icon, and
-            // 0.75rem / 135% message text. Everything else (radius, gradient, colours) is inherited.
-            '&[data-size="small"]': {
+            // Compact sizing: tighter padding + a 2rem icon box with a 0.8rem icon. Shared by both
+            // `small` and `small-icon`. `small` additionally shrinks the text to 0.75rem; `small-icon`
+            // keeps the default-size text (for dense inline chips, e.g. history status badges).
+            '&[data-size="small"], &[data-size="small-icon"]': {
+              padding: '0.75rem',
+              gap: '0.75rem',
               '.MuiAlert-icon': {
                 width: '2rem',
                 height: '2rem',
@@ -1118,7 +1139,13 @@ export function getThemedComponents(theme: AppTheme) {
                   fontSize: '0.8rem',
                 },
               },
+            },
+            '&[data-size="small"]': {
               '.MuiAlert-message': {
+                fontSize: '0.75rem',
+                lineHeight: '1.0125rem',
+              },
+              '.MuiAlertTitle-root': {
                 fontSize: '0.75rem',
                 lineHeight: '1.0125rem',
               },

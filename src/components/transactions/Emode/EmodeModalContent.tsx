@@ -3,6 +3,7 @@ import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Plural, Trans } from '@lingui/macro';
 import {
   Alert,
+  AlertTitle,
   Box,
   Collapse,
   Divider,
@@ -215,55 +216,51 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     switch (blockingError) {
       case ErrorType.ZERO_LTV_COLLATERAL_BLOCKING:
         return (
-          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 6, alignItems: 'center' }}>
-            <Typography variant="subheader1">
+          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 6 }}>
+            <AlertTitle>
               <Trans>Cannot disable E-Mode</Trans>
-            </Typography>
-            <Typography variant="caption">
-              <Trans>
-                You must disable {zeroLtvCollateralSymbols.join(', ')} as collateral before exiting
-                E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral.
-              </Trans>
-            </Typography>
+            </AlertTitle>
+            <Trans>
+              You must disable {zeroLtvCollateralSymbols.join(', ')} as collateral before exiting
+              E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral.
+            </Trans>
           </Alert>
         );
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
-          <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 6, alignItems: 'center' }}>
-            <Typography variant="subheader1" color="#4F1919">
+          <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 6 }}>
+            <AlertTitle>
               <Trans>Cannot disable E-Mode</Trans>
-            </Typography>
-            <Typography variant="caption">
-              <Trans>
-                You can not disable E-Mode because that could cause liquidation. To exit E-Mode
-                supply or repay borrowed positions.
-              </Trans>
-            </Typography>
+            </AlertTitle>
+            <Trans>
+              You can not disable E-Mode because that could cause liquidation. To exit E-Mode supply
+              or repay borrowed positions.
+            </Trans>
           </Alert>
         );
       case ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING: {
         const { incompatibleBorrows, zeroLtvCollateral } = selectedEmode.blockReason;
         return (
-          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 6, alignItems: 'center' }}>
-            <Typography variant="subheader1">
+          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 6 }}>
+            <AlertTitle>
               <Trans>Cannot switch to this category</Trans>
-            </Typography>
+            </AlertTitle>
             {incompatibleBorrows.length > 0 && (
-              <Typography variant="caption">
+              <Box>
                 <Trans>
                   Repay your {incompatibleBorrows.join(', ')}{' '}
                   <Plural value={incompatibleBorrows.length} one="borrow" other="borrows" /> to use
                   this category.
                 </Trans>
-              </Typography>
+              </Box>
             )}
             {zeroLtvCollateral.length > 0 && (
-              <Typography variant="caption">
+              <Box>
                 <Trans>
                   Disable {zeroLtvCollateral.join(', ')} as collateral to use this category. These
                   assets would have 0% LTV.
                 </Trans>
-              </Typography>
+              </Box>
             )}
           </Alert>
         );
@@ -340,16 +337,14 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
 
       {blockingError !== undefined && <Blocked />}
       {showLiquidationRiskWarning && (
-        <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 6, alignItems: 'center' }}>
-          <Typography variant="subheader1" color="#4F1919">
+        <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 6 }}>
+          <AlertTitle>
             <Trans>Liquidation risk</Trans>
-          </Typography>
-          <Typography variant="caption">
-            <Trans>
-              This action will reduce your health factor. Please be mindful of the increased risk of
-              collateral liquidation.{' '}
-            </Trans>
-          </Typography>
+          </AlertTitle>
+          <Trans>
+            This action will reduce your health factor. Please be mindful of the increased risk of
+            collateral liquidation.{' '}
+          </Trans>
         </Alert>
       )}
 

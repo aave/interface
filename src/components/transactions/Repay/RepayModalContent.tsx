@@ -283,12 +283,10 @@ export const RepayModalContent = ({
 
       {showUSDTResetWarning && (
         <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 5 }}>
-          <Typography variant="caption">
-            <Trans>
-              USDT on Ethereum requires approval reset before a new approval. This will require an
-              additional transaction.
-            </Trans>
-          </Typography>
+          <Trans>
+            USDT on Ethereum requires approval reset before a new approval. This will require an
+            additional transaction.
+          </Trans>
         </Alert>
       )}
 

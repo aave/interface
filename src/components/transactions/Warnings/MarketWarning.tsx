@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Link, Typography } from '@mui/material';
+import { Alert, Link } from '@mui/material';
 
 const WarningMessage = ({ market }: { market: string }) => {
   if (market) {
@@ -26,12 +26,10 @@ interface MarketWarningProps {
 export const MarketWarning = ({ marketName, forum }: MarketWarningProps) => {
   return (
     <Alert severity="error" sx={{ mb: 6, width: '100%' }}>
-      <Typography variant="caption">
-        <WarningMessage market={marketName} />{' '}
-        <Link href={getLink(marketName)} target="_blank">
-          {forum ? <Trans>Join the community discussion</Trans> : <Trans>Learn more</Trans>}
-        </Link>
-      </Typography>
+      <WarningMessage market={marketName} />{' '}
+      <Link href={getLink(marketName)} target="_blank">
+        {forum ? <Trans>Join the community discussion</Trans> : <Trans>Learn more</Trans>}
+      </Link>
     </Alert>
   );
 };

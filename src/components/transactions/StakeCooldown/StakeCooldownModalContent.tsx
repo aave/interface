@@ -332,12 +332,10 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
       )}
 
       <Alert severity="error" sx={{ mb: 6, width: '100%' }}>
-        <Typography variant="caption">
-          <Trans>
-            If you DO NOT unstake within {timeMessage(stakeUnstakeWindow)} of unstake window, you
-            will need to activate cooldown process again.
-          </Trans>
-        </Typography>
+        <Trans>
+          If you DO NOT unstake within {timeMessage(stakeUnstakeWindow)} of unstake window, you will
+          need to activate cooldown process again.
+        </Trans>
       </Alert>
 
       <GasStation chainId={ChainId.mainnet} gasLimit={parseUnits(gasLimit || '0', 'wei')} />

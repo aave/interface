@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Box, CircularProgress, Typography } from '@mui/material';
+import { Alert, Box, CircularProgress } from '@mui/material';
 import React, { Dispatch, useEffect, useState } from 'react';
 
 import { SwapError, SwapState } from '../../types';
@@ -86,9 +86,7 @@ export const UserDenied = ({
           />
         }
       >
-        <Typography variant="description">
-          <Trans> User denied the operation.</Trans>
-        </Typography>
+        <Trans> User denied the operation.</Trans>
       </Alert>
     </Box>
   );

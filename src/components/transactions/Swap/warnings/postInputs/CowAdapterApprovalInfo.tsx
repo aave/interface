@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 
 import { SwapState } from '../../types';
@@ -18,13 +18,11 @@ export function CowAdapterApprovalInfo({ state }: { state: SwapState }) {
   if (!isCow || !isAdapterFlow || approvalTxState?.success || !isFlashloan) return null;
 
   return (
-    <Alert severity="info" icon={false} sx={{ width: '100%', mt: 2, mb: 2 }}>
-      <Typography variant="caption">
-        <Trans>
-          A temporary contract will be used to execute the trade. Your wallet may show a warning for
-          approving a new or empty address.
-        </Trans>
-      </Typography>
+    <Alert severity="info" data-size="small" sx={{ width: '100%', mt: 2, mb: 2 }}>
+      <Trans>
+        A temporary contract will be used to execute the trade. Your wallet may show a warning for
+        approving a new or empty address.
+      </Trans>
     </Alert>
   );
 }

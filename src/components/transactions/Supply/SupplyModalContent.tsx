@@ -1,7 +1,7 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { formatUserSummary, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { t, Trans } from '@lingui/macro';
-import { Alert, Skeleton, Stack, Typography } from '@mui/material';
+import { Alert, AlertTitle, Skeleton, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
@@ -390,39 +390,37 @@ export const SupplyModalContent = React.memo(
 
         {needsEmodeSwitch && (
           <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 2 }}>
-            <Typography variant="subheader1">
+            <AlertTitle>
               <Trans>E-Mode change</Trans>
-            </Typography>
-            <Typography variant="caption">
-              {user.userEmodeCategoryId === 0 ? (
+            </AlertTitle>
+            {user.userEmodeCategoryId === 0 ? (
+              <Trans>
+                This transaction will enable E-Mode (
+                {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}). Borrowing will be
+                restricted to assets within this category.
+              </Trans>
+            ) : selectedEmodeId === 0 ? (
+              <Trans>
+                This transaction will disable E-Mode. All assets will revert to their base LTV and
+                liquidation thresholds.
+              </Trans>
+            ) : (
+              <Trans>
+                This transaction will switch E-Mode from{' '}
+                {replaceUnderscoresWithSpaces(eModes[user.userEmodeCategoryId]?.label)} to{' '}
+                {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}. Borrowing will be
+                restricted to assets within the new category.
+              </Trans>
+            )}
+            {supplyUnWrapped && (
+              <>
+                {' '}
                 <Trans>
-                  This transaction will enable E-Mode (
-                  {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}). Borrowing will be
-                  restricted to assets within this category.
+                  This will require two separate transactions: one to change E-Mode and one to
+                  supply.
                 </Trans>
-              ) : selectedEmodeId === 0 ? (
-                <Trans>
-                  This transaction will disable E-Mode. All assets will revert to their base LTV and
-                  liquidation thresholds.
-                </Trans>
-              ) : (
-                <Trans>
-                  This transaction will switch E-Mode from{' '}
-                  {replaceUnderscoresWithSpaces(eModes[user.userEmodeCategoryId]?.label)} to{' '}
-                  {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}. Borrowing will be
-                  restricted to assets within the new category.
-                </Trans>
-              )}
-              {supplyUnWrapped && (
-                <>
-                  {' '}
-                  <Trans>
-                    This will require two separate transactions: one to change E-Mode and one to
-                    supply.
-                  </Trans>
-                </>
-              )}
-            </Typography>
+              </>
+            )}
           </Alert>
         )}
 

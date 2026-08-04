@@ -9,11 +9,8 @@ type DebtCeilingWarningProps = AlertProps & {
   icon?: boolean;
 };
 
-export const DebtCeilingWarning = ({
-  debtCeiling,
-  icon = true,
-  ...rest
-}: DebtCeilingWarningProps) => {
+// `icon` is destructured only to keep it out of `...rest` (the alert always shows its severity icon).
+export const DebtCeilingWarning = ({ debtCeiling, icon, ...rest }: DebtCeilingWarningProps) => {
   // Don't show a warning when less than 98% utilized
   if (!debtCeiling.percentUsed || debtCeiling.percentUsed < 98) return null;
 
@@ -34,7 +31,7 @@ export const DebtCeilingWarning = ({
   };
 
   return (
-    <Alert severity={severity} icon={icon} sx={{ mb: 6, width: '100%' }} {...rest}>
+    <Alert severity={severity} sx={{ mb: 6, width: '100%' }} {...rest}>
       {renderText()}{' '}
       <Link
         href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"

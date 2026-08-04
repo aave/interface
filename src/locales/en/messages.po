@@ -3045,6 +3045,10 @@ msgstr "Available to Claim"
 msgid "Net APY"
 msgstr "Net APY"
 
+#: src/components/transactions/FlowCommons/GasEstimationError.tsx
+msgid "There was some error. Please try changing the parameters or <0>copy the error</0>"
+msgstr "There was some error. Please try changing the parameters or <0>copy the error</0>"
+
 #: src/layouts/SupportModal.tsx
 msgid "Submit"
 msgstr "Submit"
@@ -3073,10 +3077,6 @@ msgstr "The % of your total borrowing power used. This is based on the amount of
 #: src/modules/umbrella/UmbrellaClaimModalContent.tsx
 msgid "Amount"
 msgstr "Amount"
-
-#: src/components/transactions/FlowCommons/GasEstimationError.tsx
-msgid "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
-msgstr "There was some error. Please try changing the parameters or <0><1>copy the error</1></0>"
 
 #: src/modules/governance/proposal/ProposalTimeline.tsx
 msgid "Proposal created"

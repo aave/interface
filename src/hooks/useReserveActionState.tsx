@@ -74,7 +74,7 @@ export const useReserveActionState = ({
         {balance === '0' && !isGho && (
           <>
             {currentNetworkConfig.isTestnet ? (
-              <Alert sx={{ width: '100%', mb: 0 }} severity="info" icon={false}>
+              <Alert sx={{ width: '100%', mb: 0 }} severity="info" data-size="small">
                 <Trans>
                   Your {networkName} wallet is empty. Get free test {reserve.name} at
                 </Trans>{' '}
@@ -113,7 +113,6 @@ export const useReserveActionState = ({
                 sx={{ mb: 0 }}
                 name={networkName}
                 bridge={bridge}
-                icon={false}
                 chainId={currentChainId}
               />
             )}
@@ -121,19 +120,19 @@ export const useReserveActionState = ({
         )}
 
         {(balance !== '0' || isGho) && user?.totalCollateralMarketReferenceCurrency === '0' && (
-          <Alert sx={{ width: '100%', mb: 0 }} severity="info" icon={false}>
+          <Alert sx={{ width: '100%', mb: 0 }} severity="info" data-size="small">
             <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
           </Alert>
         )}
 
         {isolationModeBorrowDisabled && (
-          <Alert sx={{ width: '100%', mb: 0 }} severity="warning" icon={false}>
+          <Alert sx={{ width: '100%', mb: 0 }} severity="warning" data-size="small">
             <Trans>Collateral usage is limited because of Isolation mode.</Trans>
           </Alert>
         )}
 
         {eModeBorrowDisabled && isolationModeBorrowDisabled && (
-          <Alert sx={{ width: '100%', mb: 0 }} severity="info" icon={false}>
+          <Alert sx={{ width: '100%', mb: 0 }} severity="info" data-size="small">
             <Trans>
               Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) and Isolation
               mode. To manage E-Mode and Isolation mode visit your{' '}
@@ -143,7 +142,7 @@ export const useReserveActionState = ({
         )}
 
         {eModeBorrowDisabled && !isolationModeBorrowDisabled && (
-          <Alert sx={{ width: '100%', mb: 0 }} severity="info" icon={false}>
+          <Alert sx={{ width: '100%', mb: 0 }} severity="info" data-size="small">
             <Trans>
               Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for{' '}
               {replaceUnderscoresWithSpaces(
@@ -156,7 +155,7 @@ export const useReserveActionState = ({
         )}
 
         {!eModeBorrowDisabled && isolationModeBorrowDisabled && (
-          <Alert sx={{ width: '100%', mb: 0 }} severity="info" icon={false}>
+          <Alert sx={{ width: '100%', mb: 0 }} severity="info" data-size="small">
             <Trans>
               Borrowing is unavailable because you’re using Isolation mode. To manage Isolation mode
               visit your <Link href={ROUTES.dashboard}>Dashboard</Link>.

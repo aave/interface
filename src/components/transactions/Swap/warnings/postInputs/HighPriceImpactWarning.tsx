@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Checkbox, Typography } from '@mui/material';
+import { Alert, Box, Checkbox } from '@mui/material';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 
 import { SwapInputChanges } from '../../analytics/constants';
@@ -55,42 +55,30 @@ export function HighPriceImpactWarning({
   return (
     <Alert
       severity={lostValue > 0.3 ? 'error' : 'warning'}
-      icon={false}
+      data-size="small"
       sx={{
         width: '100%',
         mt: 2,
         mb: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
       }}
     >
-      <Typography variant="caption">
-        <Trans>
-          High price impact (<strong>{(lostValue * 100).toFixed(1)}%</strong>)! This route will
-          return {state.isInvertedSwap ? 'more' : 'less'} due to low liquidity or small order size.
-        </Trans>
-      </Typography>
-
-      <Typography variant="caption" sx={{ mt: 1 }}>
-        <Trans>Please review the swap values before confirming.</Trans>
-      </Typography>
-
+      <Trans>
+        High price impact (<strong>{(lostValue * 100).toFixed(1)}%</strong>)! This route will return{' '}
+        {state.isInvertedSwap ? 'more' : 'less'} due to low liquidity or small order size.
+      </Trans>{' '}
+      <Trans>Please review the swap values before confirming.</Trans>
       {requireConfirmation && (
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
             alignItems: 'center',
-            mt: 2,
+            mt: '0.13rem',
           }}
         >
-          <Typography variant="caption">
-            <Trans>
-              I confirm the swap knowing that I could lose up to{' '}
-              <strong>{(lostValue * 100).toFixed(0)}%</strong> on this swap.
-            </Trans>
-          </Typography>
+          <Trans>
+            I confirm the swap knowing that I could lose up to{' '}
+            <strong>{(lostValue * 100).toFixed(0)}%</strong> on this swap.
+          </Trans>
           <Checkbox
             checked={highPriceImpactConfirmed}
             onChange={() => {
@@ -102,6 +90,7 @@ export function HighPriceImpactWarning({
               );
             }}
             size="small"
+            sx={{ p: 0, ml: 2 }}
             data-cy={'high-price-impact-checkbox'}
           />
         </Box>

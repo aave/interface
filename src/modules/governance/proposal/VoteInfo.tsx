@@ -1,6 +1,6 @@
 import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Button, Paper, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Paper, Typography } from '@mui/material';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -107,19 +107,17 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
               severity={voteOnProposal.support ? 'success' : 'error'}
               sx={{ width: '100%', my: 2 }}
             >
-              <Typography variant="subheader1">
+              <AlertTitle>
                 <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
-              </Typography>
-              <Typography variant="caption">
-                <Trans>
-                  With a voting power of{' '}
-                  <FormattedNumber
-                    value={formatUnits(voteOnProposal.votingPower, 18) || 0}
-                    variant="caption"
-                    visibleDecimals={2}
-                  />
-                </Trans>
-              </Typography>
+              </AlertTitle>
+              <Trans>
+                With a voting power of{' '}
+                <FormattedNumber
+                  value={formatUnits(voteOnProposal.votingPower, 18) || 0}
+                  variant="caption"
+                  visibleDecimals={2}
+                />
+              </Trans>
             </Alert>
           )}
           {showCannotVoteMsg && (

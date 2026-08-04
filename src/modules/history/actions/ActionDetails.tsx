@@ -13,7 +13,6 @@ import {
   isOrderLoading,
 } from 'src/components/transactions/Swap/helpers/cow';
 import { swapTypesThatRequiresInvertedQuote } from 'src/components/transactions/Swap/hooks/useSwapQuote';
-import { figVars } from 'src/utils/figmaColors';
 
 import {
   ActionName,
@@ -78,16 +77,10 @@ const StatusBadgeIconOnly = ({
       <Box>
         <Alert
           severity={severity}
+          data-size="small-icon"
           sx={{
             width: '100%',
             my: 0,
-            pt: 0.6,
-            pb: 0.6,
-            pr: 1.5,
-            pl: 1.5,
-            background: 'none',
-            border: 'none',
-            color: 'fg-1',
           }}
         />
       </Box>
@@ -106,16 +99,10 @@ const StatusBadgeText = ({
     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
       <Alert
         severity={severity}
+        data-size="small-icon"
         sx={{
           width: '100%',
           my: 0,
-          pt: 0.6,
-          pb: 0.6,
-          pr: 1.5,
-          pl: 1.5,
-          background: 'none',
-          border: `1px solid ${figVars['border-2']}`,
-          color: 'fg-1',
         }}
       >
         {children}

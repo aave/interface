@@ -93,15 +93,13 @@ export const MigrationList = ({
             </Typography>
             {isolatedReserveV3 && !isolatedReserveV3.enteringIsolationMode && (
               <Box sx={{ pt: '16px' }}>
-                <Alert severity="warning" icon={false} sx={{ width: '100%', mb: 0 }}>
-                  <Typography variant="caption" color="warning.100">
-                    <Trans>
-                      Some migrated assets will not be used as collateral due to enabled isolation
-                      mode in {marketName} V3 Market. Visit{' '}
-                      <Link href={marketLink}>{marketName} V3 Dashboard</Link> to manage isolation
-                      mode.
-                    </Trans>
-                  </Typography>
+                <Alert severity="warning" data-size="small" sx={{ width: '100%', mb: 0 }}>
+                  <Trans>
+                    Some migrated assets will not be used as collateral due to enabled isolation
+                    mode in {marketName} V3 Market. Visit{' '}
+                    <Link href={marketLink}>{marketName} V3 Dashboard</Link> to manage isolation
+                    mode.
+                  </Trans>
                 </Alert>
               </Box>
             )}

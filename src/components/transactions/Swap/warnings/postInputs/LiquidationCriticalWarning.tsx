@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 import { Dispatch } from 'react';
 
 import { SwapParams, SwapState } from '../../types';
@@ -15,22 +15,18 @@ export function LiquidationCriticalWarning({
   return (
     <Alert
       severity="error"
-      icon={false}
+      data-size="small"
       sx={{
         width: '100%',
         display: state.isLiquidatable ? 'flex' : 'none',
         mt: 2,
         mb: 2,
-        flexDirection: 'column',
-        alignItems: 'center',
       }}
     >
-      <Typography variant="caption">
-        <Trans>
-          Your health factor after this swap will be critically low and may result in liquidation.
-          Please choose a different asset or reduce the swap amount to stay safe.
-        </Trans>
-      </Typography>
+      <Trans>
+        Your health factor after this swap will be critically low and may result in liquidation.
+        Please choose a different asset or reduce the swap amount to stay safe.
+      </Trans>
     </Alert>
   );
 }

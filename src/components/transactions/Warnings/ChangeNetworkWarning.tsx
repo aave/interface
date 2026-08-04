@@ -1,6 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Alert, AlertProps, Button, CircularProgress, Typography } from '@mui/material';
+import { Alert, AlertProps, Button, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { TrackEventProps } from 'src/store/analyticsSlice';
@@ -70,44 +70,35 @@ export const ChangeNetworkWarning = ({
   return (
     <Alert
       severity={isAutoSwitching ? 'info' : switchNetworkError ? 'error' : 'info'}
-      icon={false}
+      data-size="small"
       sx={{ mb: 6, width: '100%' }}
       {...rest}
     >
       {isAutoSwitching ? (
-        <Typography variant="description" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <>
           <CircularProgress size={16} />
           <Trans>Switching to {networkName}...</Trans>
-        </Typography>
+        </>
       ) : switchNetworkError ? (
-        <Typography>
-          <Trans>
-            {hasAttemptedAutoSwitch
-              ? "We couldn't switch the network automatically. Please check if you can change it from the wallet."
-              : "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."}
-          </Trans>
-        </Typography>
+        <Trans>
+          {hasAttemptedAutoSwitch
+            ? "We couldn't switch the network automatically. Please check if you can change it from the wallet."
+            : "Seems like we can't switch the network automatically. Please check if you can change it from the wallet."}
+        </Trans>
       ) : (
         // Show manual switch option
-        <Typography variant="description">
+        <>
           <Trans>
             {hasAttemptedAutoSwitch
               ? `Auto-switch failed. Please manually switch to ${networkName}.`
               : `Please switch to ${networkName}.`}
           </Trans>{' '}
           {!askManualSwitch && (
-            <Button
-              variant="text"
-              sx={{ ml: '2px', verticalAlign: 'top' }}
-              onClick={handleManualSwitchNetwork}
-              disableRipple
-            >
-              <Typography variant="description">
-                <Trans>Switch Network</Trans>
-              </Typography>
+            <Button variant="text" onClick={handleManualSwitchNetwork} disableRipple>
+              <Trans>Switch Network</Trans>
             </Button>
           )}
-        </Typography>
+        </>
       )}
     </Alert>
   );

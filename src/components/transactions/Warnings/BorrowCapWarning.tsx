@@ -9,7 +9,8 @@ type BorrowCapWarningProps = AlertProps & {
   icon?: boolean;
 };
 
-export const BorrowCapWarning = ({ borrowCap, icon = true, ...rest }: BorrowCapWarningProps) => {
+// `icon` is destructured only to keep it out of `...rest` (the alert always shows its severity icon).
+export const BorrowCapWarning = ({ borrowCap, icon, ...rest }: BorrowCapWarningProps) => {
   // Don't show a warning when less than 98% utilized
   if (!borrowCap.percentUsed || borrowCap.percentUsed < 98) return null;
 
@@ -26,7 +27,7 @@ export const BorrowCapWarning = ({ borrowCap, icon = true, ...rest }: BorrowCapW
   };
 
   return (
-    <Alert severity={severity} icon={icon} sx={{ mb: 6, width: '100%' }} {...rest}>
+    <Alert severity={severity} sx={{ mb: 6, width: '100%' }} {...rest}>
       {renderText()}{' '}
       <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps" underline="always">
         <Trans>Learn more</Trans>

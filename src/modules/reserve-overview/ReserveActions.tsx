@@ -185,7 +185,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
 
 const PauseWarning = () => {
   return (
-    <Alert sx={{ width: '100%', mb: 0 }} severity="error" icon={true}>
+    <Alert sx={{ width: '100%', mb: 0 }} severity="error">
       <Trans>Because this asset is paused, no actions can be taken until further notice</Trans>
     </Alert>
   );
@@ -193,7 +193,7 @@ const PauseWarning = () => {
 
 const FrozenWarning = () => {
   return (
-    <Alert sx={{ width: '100%', mb: 0 }} severity="error" icon={true}>
+    <Alert sx={{ width: '100%', mb: 0 }} severity="error">
       <Trans>
         Since this asset is frozen, the only available actions are withdraw and repay which can be
         accessed from the <Link href={ROUTES.dashboard}>Dashboard</Link>

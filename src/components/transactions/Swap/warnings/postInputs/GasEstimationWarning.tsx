@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 
 import { SwapState } from '../../types';
 
@@ -13,12 +13,10 @@ export function GasEstimationWarning({ state }: { state: SwapState }) {
   if (!hasGasEstimationWarning) return null;
 
   return (
-    <Alert severity="warning" icon={false} sx={{ mb: 6, width: '100%', mt: 5 }}>
-      <Typography variant="caption">
-        <Trans>
-          The swap could not be completed. Try increasing slippage or changing the amount.
-        </Trans>
-      </Typography>
+    <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%', mt: 5 }}>
+      <Trans>
+        The swap could not be completed. Try increasing slippage or changing the amount.
+      </Trans>
     </Alert>
   );
 }

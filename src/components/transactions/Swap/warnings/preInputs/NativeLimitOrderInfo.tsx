@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Alert, Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 
 import { SwapParams, SwapProvider, SwapState, SwapType, TokenType } from '../../types';
 
@@ -12,13 +12,11 @@ export function NativeLimitOrderInfo({ state, params }: { state: SwapState; para
   if (!isClassicSwap || !isNativeInput || !isCoWProtocol) return null;
 
   return (
-    <Alert severity="info" icon={false} sx={{ width: '100%', mt: 2, mb: 2 }}>
-      <Typography variant="caption">
-        <Trans>
-          For security reasons, limit orders are not supported for Native tokens. To place a limit
-          order, use the wrapped version.
-        </Trans>
-      </Typography>
+    <Alert severity="info" data-size="small" sx={{ width: '100%', mt: 2, mb: 2 }}>
+      <Trans>
+        For security reasons, limit orders are not supported for Native tokens. To place a limit
+        order, use the wrapped version.
+      </Trans>
     </Alert>
   );
 }
