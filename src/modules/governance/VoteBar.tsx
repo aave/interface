@@ -40,7 +40,7 @@ interface VoteBarProps extends BoxProps {
 export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: VoteBarProps) {
   return (
     <Box {...rest}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', mb: { xs: '1rem', lg: '0.25rem' } }}>
         <Typography variant="description" sx={{ mr: 2 }}>
           {yae ? <Trans>YAE</Trans> : <Trans>NAY</Trans>}
         </Typography>
