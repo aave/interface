@@ -112,6 +112,16 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
       import('../components/AlertsAuditSection').then((m) => m.AlertsAuditSection)
     ),
   },
+  // TEMPORARY: every visual change expected from the v3 neutral-ramp token update, so each can be
+  // signed off. Remove this entry and the ColorRegressionSection folder once the ramp is approved.
+  {
+    slug: 'color-regressions',
+    label: 'Color regressions (temp)',
+    group: 'Temporary',
+    Component: dynamic(() =>
+      import('../components/ColorRegressionSection').then((m) => m.ColorRegressionSection)
+    ),
+  },
 ];
 
 // Sections grouped for the sidebar, preserving declaration order.
