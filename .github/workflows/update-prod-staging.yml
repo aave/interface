@@ -8,6 +8,10 @@ on:
         description: IPFS hash to pin and use in release description
         required: true
 
+# Creates a GitHub release (ncipollo/release-action).
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

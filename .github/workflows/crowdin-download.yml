@@ -9,6 +9,10 @@ on:
     - cron: '0 */6 * * *'
   workflow_dispatch:
 
+# Checkout + git push both authenticate with BOT_TOKEN, so GITHUB_TOKEN only needs read.
+permissions:
+  contents: read
+
 jobs:
   download-from-crowdin:
     name: Download sources from Crowdin
