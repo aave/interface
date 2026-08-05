@@ -958,20 +958,29 @@ export function getThemedComponents(theme: AppTheme) {
               paddingLeft: '48px',
               paddingRight: '48px',
             },
+            // 20px, not the 96px this used to carry. The box is still uncapped here, so padding IS
+            // the gutter: 96px made the content *narrower* at 960 (863px → 768px) than it was at
+            // 959, and left it 152px behind the page content all the way to 1279 — the header and
+            // footer visibly disagreed with the page they framed. This ladder must stay identical
+            // to whatever a page's own Container resolves to, or the two drift apart again.
             [theme.breakpoints.up('md')]: {
-              paddingLeft: '96px',
-              paddingRight: '96px',
+              paddingLeft: '20px',
+              paddingRight: '20px',
             },
-            // From here up the box is capped and centred, so `margin: auto` already widens the
-            // visual gutter as the viewport grows (167px each side at 1575, 280px at 1799).
-            // Deliberately NO `xl` step: raising the padding inside a capped box takes width from
-            // the content instead of adding outer gutter, which made the content *narrower* at
-            // 1575 (1240px → 1088px) than it was at 1279px. Content must never shrink as the
-            // viewport grows — add gutter by raising `maxWidth`, never by padding a capped box.
             [theme.breakpoints.up('lg')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
               maxWidth: '1280px',
+            },
+            // The `xl` gutter is only safe because `maxWidth` rises with it: 96px of padding inside
+            // a box capped at 1632px still yields 1440px of content (1632 − 2×96), so content grows
+            // 1383px → 1440px across 1575–1632 and then holds, meeting `xxl` exactly. Raising this
+            // padding *without* lifting the cap is the old bug — it takes width from the content
+            // instead of adding outer gutter. Never pad a capped box without widening the cap.
+            [theme.breakpoints.up('xl')]: {
+              paddingLeft: '96px',
+              paddingRight: '96px',
+              maxWidth: '1632px',
             },
             [theme.breakpoints.up('xxl')]: {
               paddingLeft: 0,
