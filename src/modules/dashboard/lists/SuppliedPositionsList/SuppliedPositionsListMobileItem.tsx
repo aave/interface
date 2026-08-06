@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { isHorizonMarket } from 'src/components/transactions/Swap/constants/shared.constants';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
@@ -29,7 +30,12 @@ export const SuppliedPositionsListMobileItem = ({
   );
   const { openSupply, openCollateralSwap, openWithdraw, openCollateralChange } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
+
+  const isHorizon = isHorizonMarket(currentMarket);
+  const collateralSwapEnabledForReserve = !isHorizon || reserve.borrowingEnabled;
+  const isSwapButton =
+    isFeatureEnabled.liquiditySwap(currentMarketData) && collateralSwapEnabledForReserve;
+
   const {
     symbol,
     iconSymbol,
