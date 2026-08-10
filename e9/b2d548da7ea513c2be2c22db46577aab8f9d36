@@ -1,0 +1,19 @@
+CONTRIBUTING.md
+  s_7894ac579fc182::t_133a50011ebf2b 191,193,196,199,201
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "e9b2d548da7ea513c2be2c22db46577aab8f9d36",
+  "prompts": {},
+  "sessions": {
+    "s_7894ac579fc182": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e80ef6ae-530b-4b3b-bd24-2188f3ead9e7",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
