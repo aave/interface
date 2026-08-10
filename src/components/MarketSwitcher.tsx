@@ -184,7 +184,32 @@ const getMarketOrder = (marketId: CustomMarket): number => {
 };
 
 const AAVE_PRO_URL = 'https://pro.aave.com/';
-const AAVE_PRO_LOGO = '/icons/markets/aave-pro.png';
+
+type V4Link = {
+  id: string;
+  label: string;
+  logo: string;
+  url: string;
+  section: Extract<MarketCategory, 'ethereum' | 'other'>;
+};
+
+// External links to V4 instances, rendered alongside the V3 markets of the same section.
+const V4_LINKS: V4Link[] = [
+  {
+    id: 'aave_pro_v4',
+    label: 'Aave Pro',
+    logo: '/icons/markets/aave-pro.png',
+    url: AAVE_PRO_URL,
+    section: 'ethereum',
+  },
+  {
+    id: 'aave_pro_avalanche_v4',
+    label: 'Avalanche',
+    logo: '/icons/networks/avalanche.svg',
+    url: AAVE_PRO_URL,
+    section: 'other',
+  },
+];
 
 export const MarketSwitcher = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -249,7 +274,7 @@ export const MarketSwitcher = () => {
   // Filter to V3 markets only
   const v3Markets = useMemo(() => availableMarkets.filter((id) => marketsData[id].v3), []);
 
-  const { pinned, ethereum, l2, other, legacy } = useMemo(() => {
+  const { pinned, ethereum, l2, other, legacy, v4Ethereum, v4Other } = useMemo(() => {
     const query = searchQuery.toLowerCase();
     const filtered = v3Markets.filter((id) => {
       const { market } = getMarketInfoById(id);
@@ -261,12 +286,16 @@ export const MarketSwitcher = () => {
     const pinnedSet = new Set(pinned);
     const unpinned = sorted.filter((id) => !pinnedSet.has(id));
 
+    const v4Links = V4_LINKS.filter((link) => link.label.toLowerCase().includes(query));
+
     return {
       pinned,
       ethereum: unpinned.filter((id) => getMarketCategory(id) === 'ethereum'),
       l2: unpinned.filter((id) => getMarketCategory(id) === 'l2'),
       other: unpinned.filter((id) => getMarketCategory(id) === 'other'),
       legacy: unpinned.filter((id) => getMarketCategory(id) === 'legacy'),
+      v4Ethereum: v4Links.filter((link) => link.section === 'ethereum'),
+      v4Other: v4Links.filter((link) => link.section === 'other'),
     };
   }, [v3Markets, searchQuery, favoriteMarkets, isFavoriteMarket]);
 
@@ -424,15 +453,22 @@ export const MarketSwitcher = () => {
     );
   };
 
-  const renderAaveProLink = (isMobile?: boolean, width = '33.33%') => (
+  const handleSelectV4Link = (link: V4Link) => {
+    trackEvent(DASHBOARD.CHANGE_MARKET, { market: link.id });
+    window.open(link.url, '_blank');
+  };
+
+  const renderV4Link = (link: V4Link, isMobile?: boolean, width = '33.33%') => (
     <Box
+      key={link.id}
       role="button"
       tabIndex={0}
-      onClick={() => window.open(AAVE_PRO_URL, '_blank')}
+      data-cy={`marketSelector_${link.id}`}
+      onClick={() => handleSelectV4Link(link)}
       onKeyDown={(e: React.KeyboardEvent) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          window.open(AAVE_PRO_URL, '_blank');
+          handleSelectV4Link(link);
         }
       }}
       sx={{
@@ -449,7 +485,7 @@ export const MarketSwitcher = () => {
     >
       <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
         <img
-          src={AAVE_PRO_LOGO}
+          src={link.logo}
           alt=""
           width="100%"
           height="100%"
@@ -475,7 +511,7 @@ export const MarketSwitcher = () => {
             lineHeight: '20px',
           }}
         >
-          <Trans>Aave Pro</Trans>
+          {link.label}
         </Typography>
         <Box
           component="span"
@@ -520,7 +556,12 @@ export const MarketSwitcher = () => {
   );
 
   const noResults =
-    pinned.length === 0 && ethereum.length === 0 && l2.length === 0 && other.length === 0;
+    pinned.length === 0 &&
+    ethereum.length === 0 &&
+    l2.length === 0 &&
+    other.length === 0 &&
+    v4Ethereum.length === 0 &&
+    v4Other.length === 0;
 
   const renderSelectorContent = (mobile: boolean) => (
     <>
@@ -609,25 +650,27 @@ export const MarketSwitcher = () => {
         )}
 
         {/* Ethereum */}
-        {ethereum.length > 0 && (
+        {(ethereum.length > 0 || v4Ethereum.length > 0) && (
           <Box>
             {sectionHeader(<Trans>Ethereum</Trans>)}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {ethereum.map((id) => renderGridItem(id, mobile, '33%'))}
-              {renderAaveProLink(mobile, '33%')}
+              {v4Ethereum.map((link) => renderV4Link(link, mobile, '33%'))}
             </Box>
-            {(other.length > 0 || l2.length > 0 || (showLegacy && legacy.length > 0)) && (
-              <Divider sx={{ my: 1 }} />
-            )}
+            {(other.length > 0 ||
+              v4Other.length > 0 ||
+              l2.length > 0 ||
+              (showLegacy && legacy.length > 0)) && <Divider sx={{ my: 1 }} />}
           </Box>
         )}
 
         {/* L1 Networks */}
-        {other.length > 0 && (
+        {(other.length > 0 || v4Other.length > 0) && (
           <Box>
             {sectionHeader(<Trans>L1 Networks</Trans>)}
             <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
               {other.map((id) => renderGridItem(id, mobile))}
+              {v4Other.map((link) => renderV4Link(link, mobile))}
             </Box>
             {(l2.length > 0 || showLegacy) && <Divider sx={{ my: 1 }} />}
           </Box>
