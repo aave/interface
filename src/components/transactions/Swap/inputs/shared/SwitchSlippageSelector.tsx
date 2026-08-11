@@ -8,12 +8,12 @@ import {
   InputBase,
   Menu,
   SvgIcon,
-  ToggleButton,
-  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import { MouseEvent, useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 
 import { ValidationData } from '../../helpers/shared/slippage.helpers';
 
@@ -157,32 +157,18 @@ export const SwitchSlippageSelector = ({
             <Trans>Max slippage</Trans>
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: '8px' }}>
-            <ToggleButtonGroup
-              sx={{
-                backgroundColor: 'bg-2',
-                borderRadius: '6px',
-                borderColor: 'bg-2',
-              }}
+            <StyledTxModalToggleGroup
+              value={suggestedSlippage === slippage ? 'Auto' : slippage}
               exclusive
-              onChange={(_, value) => handlePresetSlippageChange(value)}
+              onChange={(_, value) => value && handlePresetSlippageChange(value)}
+              // Compact menu footprint, sized to the custom-slippage input beside it; the
+              // shell/pill treatment comes from the shared control.
+              sx={{ width: 'auto', height: '28px' }}
             >
               {slippageOptions.map((option) => (
-                <ToggleButton
-                  sx={{
-                    borderRadius: 1,
-                    py: 1,
-                    px: 2,
-                    borderWidth: 2,
-                    backgroundColor:
-                      (suggestedSlippage === slippage && option == 'Auto') || option === slippage
-                        ? 'surface-elevated'
-                        : 'transparent',
-                  }}
-                  value={option}
-                  key={option}
-                >
+                <StyledTxModalToggleButton value={option} key={option}>
                   {isNaN(Number(option)) ? (
-                    <Typography variant="subheader2" color="primary.main">
+                    <Typography variant="subheader2">
                       {provider === 'paraswap' ? <Trans>Default</Trans> : <Trans>Auto</Trans>}
                     </Typography>
                   ) : (
@@ -191,13 +177,11 @@ export const SwitchSlippageSelector = ({
                       visibleDecimals={2}
                       symbol="%"
                       variant="subheader2"
-                      color="primary.main"
-                      symbolsColor="primary.main"
                     />
                   )}
-                </ToggleButton>
+                </StyledTxModalToggleButton>
               ))}
-            </ToggleButtonGroup>
+            </StyledTxModalToggleGroup>
             <InputBase
               type="percent"
               value={isCustomSlippage ? slippage : ''}

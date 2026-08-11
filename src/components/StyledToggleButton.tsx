@@ -46,8 +46,12 @@ const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>({
     ...darkScheme({ backgroundColor: figVars['bg-6'] }),
   },
 
-  '&.Mui-disabled:not(.Mui-selected)': dimmedInactive,
-  '&.Mui-disabled.Mui-selected': activeFill,
+  // MUI's ToggleButton hard-codes `border: 1px solid action.disabledBackground` on .Mui-disabled,
+  // which outlines the pill and defeats the group's borderless frame. Consumers that disable the
+  // active segment (e.g. the dashboard's Supply/Borrow switch) would otherwise always show it, so
+  // re-assert border: 0 here — these selectors outrank MUI's on specificity.
+  '&.Mui-disabled:not(.Mui-selected)': { ...dimmedInactive, border: 0 },
+  '&.Mui-disabled.Mui-selected': { ...activeFill, border: 0 },
 }) as typeof ToggleButton;
 
 export function StyledTxModalToggleButton(props: ToggleButtonProps) {

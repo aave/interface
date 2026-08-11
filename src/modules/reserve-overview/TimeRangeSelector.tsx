@@ -1,6 +1,7 @@
 import { TimeWindow } from '@aave/react';
-import { SxProps, Theme, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { figVars } from 'src/utils/figmaColors';
+import { SxProps, Theme, Typography } from '@mui/material';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 
 export const supportedTimeRangeOptions = ['1m', '3m', '6m', '1y'] as const;
 
@@ -53,47 +54,20 @@ export const TimeRangeSelector = ({
   };
 
   return (
-    <ToggleButtonGroup
+    <StyledTxModalToggleGroup
       disabled={disabled}
       value={selectedTimeRange}
       exclusive
       onChange={handleChange}
       aria-label="Date range"
-      sx={{
-        height: '24px',
-        '&.MuiToggleButtonGroup-grouped': {
-          borderRadius: 'unset',
-        },
-        ...props.sx?.buttonGroup,
-      }}
+      // Compact chart-header footprint; the shell/pill treatment comes from the shared control.
+      sx={{ height: '24px', width: 'auto', ...props.sx?.buttonGroup }}
     >
-      {timeRanges.map((interval) => {
-        return (
-          <ToggleButton
-            key={interval}
-            value={interval}
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            sx={(): SxProps<Theme> | undefined => ({
-              '&.MuiToggleButtonGroup-grouped:not(.Mui-selected), &.MuiToggleButtonGroup-grouped&.Mui-disabled':
-                {
-                  border: '0.5px solid transparent',
-                  backgroundColor: 'bg-2',
-                  color: 'disabled-fg',
-                },
-              '&.MuiToggleButtonGroup-grouped&.Mui-selected': {
-                borderRadius: '4px',
-                border: `0.5px solid ${figVars['border-2']}`,
-                boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-                backgroundColor: 'surface-elevated',
-              },
-              ...props.sx?.button,
-            })}
-          >
-            <Typography variant="buttonM">{formattedInterval(interval)}</Typography>
-          </ToggleButton>
-        );
-      })}
-    </ToggleButtonGroup>
+      {timeRanges.map((interval) => (
+        <StyledTxModalToggleButton key={interval} value={interval} sx={props.sx?.button}>
+          <Typography variant="buttonM">{formattedInterval(interval)}</Typography>
+        </StyledTxModalToggleButton>
+      ))}
+    </StyledTxModalToggleGroup>
   );
 };

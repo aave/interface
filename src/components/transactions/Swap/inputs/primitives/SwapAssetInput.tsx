@@ -859,7 +859,7 @@ const PercentSelector = ({
                   borderRadius: 1,
                   py: 0.5,
                   px: 1,
-                  borderWidth: 2,
+                  border: 0,
                   '&.Mui-selected': {
                     backgroundColor: 'surface-elevated',
                   },
