@@ -125,26 +125,16 @@ export function AppHeader() {
   const { openSwitch, openBridge, openReadMode } = useModalContext();
   const { readOnlyMode } = useWeb3Context();
   const openOrConnect = useConnectGate();
-  const [walletWidgetOpen, setWalletWidgetOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { hasActiveOrders } = useSwapOrdersTracking();
 
   useEffect(() => {
-    if (mobileDrawerOpen && !mdlg) {
+    if (!mdlg) {
       setMobileDrawerOpen(false);
-    }
-    if (walletWidgetOpen) {
-      setWalletWidgetOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mdlg]);
 
   const headerHeight = 72;
-
-  const toggleMobileMenu = (state: boolean) => {
-    if (mdlg) setMobileDrawerOpen(state);
-    setMobileMenuOpen(state);
-  };
 
   const disableTestnet = () => {
     localStorage.setItem('testnetsEnabled', 'false');
@@ -243,7 +233,7 @@ export function AppHeader() {
               transition: '0.3s ease all',
               '&:hover': { opacity: 0.7 },
             }}
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => setMobileDrawerOpen(false)}
           >
             <AaveLogo width="5.26144rem" height="0.875rem" />
           </Box>
@@ -356,19 +346,15 @@ export function AppHeader() {
             <ConnectWalletButton />
           )}
 
-          <Box sx={{ display: { xs: 'none', mdlg: 'block' } }}>
-            <SettingsMenu />
-          </Box>
+          <Box sx={{ display: { xs: 'none', mdlg: 'block' } }}>{!mdlg && <SettingsMenu />}</Box>
 
-          {!walletWidgetOpen && (
-            <Box sx={{ display: { xs: 'flex', mdlg: 'none' } }}>
-              <MobileMenu
-                open={mobileMenuOpen}
-                setOpen={toggleMobileMenu}
-                headerHeight={headerHeight}
-              />
-            </Box>
-          )}
+          <Box sx={{ display: { xs: 'flex', mdlg: 'none' } }}>
+            <MobileMenu
+              open={mobileDrawerOpen && mdlg}
+              setOpen={setMobileDrawerOpen}
+              headerHeight={headerHeight}
+            />
+          </Box>
         </Container>
       </Box>
     </HideOnScroll>
