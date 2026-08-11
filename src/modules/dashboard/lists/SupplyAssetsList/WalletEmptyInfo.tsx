@@ -19,7 +19,7 @@ export function WalletEmptyInfo({ bridge, name, chainId, sx }: WalletEmptyInfoPr
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Alert severity="info" sx={{ mb: 6, width: '100%', ...sx }}>
+    <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%', ...sx }}>
       {bridge ? (
         <Trans>
           Your {name} wallet is empty. Purchase or transfer assets or use{' '}

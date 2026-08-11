@@ -245,7 +245,7 @@ export function AppHeader() {
             }}
             onClick={() => setMobileMenuOpen(false)}
           >
-            <AaveLogo />
+            <AaveLogo width="5.26144rem" height="0.875rem" />
           </Box>
           <Box sx={{ mr: sm ? 1 : 3 }}>
             {ENABLE_TESTNET && (

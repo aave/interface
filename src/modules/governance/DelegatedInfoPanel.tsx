@@ -212,17 +212,11 @@ export const DelegatedInfoPanel = () => {
       </Box>
       <Divider />
       <Box sx={{ p: 6, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Button
-          size="large"
-          variant="contained"
-          disabled={disableButton}
-          onClick={() => openGovDelegation()}
-        >
+        <Button variant="contained" disabled={disableButton} onClick={() => openGovDelegation()}>
           <Trans>Set up delegation</Trans>
         </Button>
         {showRevokeButton && (
           <Button
-            size="large"
             sx={{ width: '100%' }}
             variant="outlined"
             disabled={disableButton}

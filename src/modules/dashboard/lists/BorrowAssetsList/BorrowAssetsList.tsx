@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
-import { t, Trans } from '@lingui/macro';
+import { Trans } from '@lingui/macro';
 import { Alert, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
@@ -234,7 +234,6 @@ export const BorrowAssetsList = () => {
       }
       onCollapseChange={setIsListCollapsed}
       localStorageName="borrowAssetsDashboardTableCollapse"
-      collapseLabel={t`assets to borrow`}
       withTopMargin
       noData={borrowDisabled}
       subChildrenComponent={
@@ -256,7 +255,7 @@ export const BorrowAssetsList = () => {
           )}
           <Box sx={{ px: 6 }}>
             {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
-              <Alert severity="error" sx={{ mb: 6, width: '100%' }}>
+              <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%' }}>
                 <Trans>
                   Be careful - You are very close to liquidation. Consider depositing more
                   collateral or paying down some of your borrowed positions
@@ -267,7 +266,7 @@ export const BorrowAssetsList = () => {
             {!borrowDisabled && (
               <>
                 {user?.isInIsolationMode && (
-                  <Alert severity="warning" sx={{ mb: 6, width: '100%' }}>
+                  <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
                     <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
                     <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
                       Learn More
@@ -275,7 +274,7 @@ export const BorrowAssetsList = () => {
                   </Alert>
                 )}
                 {user?.isInEmode && (
-                  <Alert severity="warning" sx={{ mb: 6, width: '100%' }}>
+                  <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
                     <Trans>
                       In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
                       assets
@@ -283,14 +282,14 @@ export const BorrowAssetsList = () => {
                   </Alert>
                 )}
                 {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                  <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
+                  <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
                     <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
                   </Alert>
                 )}
               </>
             )}
             {borrowDisabled && (
-              <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
+              <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
                 <Trans>
                   We couldn&apos;t find any assets related to your search. Try again with a
                   different category.

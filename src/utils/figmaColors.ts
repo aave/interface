@@ -36,7 +36,7 @@ export const figmaLight = {
   'red-2': '#ff8947',
   'red-3': '#ffc693',
   'purple-1': '#9391f7',
-  'purple-2': 'hsl(241, 76%, 67%)',
+  'purple-2': '#6d6beb',
   'purple-3': '#e2e0ff',
   'green-1': '#1f807b',
   'green-2': '#63bbb6',

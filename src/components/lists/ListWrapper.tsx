@@ -21,8 +21,6 @@ interface ListWrapperProps {
   paperSx?: PaperProps['sx'];
   topInfoSx?: BoxProps['sx'];
   onCollapseChange?: (collapsed: boolean) => void;
-  /** What the card hides — renders the toggle as "Hide {collapseLabel}" / "Show {collapseLabel}". */
-  collapseLabel?: string;
 }
 
 export const ListWrapper = ({
@@ -39,7 +37,6 @@ export const ListWrapper = ({
   paperSx,
   topInfoSx,
   onCollapseChange,
-  collapseLabel,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
     localStorageName ? localStorage.getItem(localStorageName) === 'true' : false
@@ -96,23 +93,13 @@ export const ListWrapper = ({
 
   const collapsed = isCollapse && !noData;
 
-  const collapseText = collapsed ? (
-    collapseLabel ? (
-      <Trans>Show {collapseLabel}</Trans>
-    ) : (
-      <Trans>Show</Trans>
-    )
-  ) : collapseLabel ? (
-    <Trans>Hide {collapseLabel}</Trans>
-  ) : (
-    <Trans>Hide</Trans>
-  );
+  const collapseText = collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>;
 
   return (
     <Paper
       variant="card"
       sx={[
-        { mt: withTopMargin ? 4 : 0 },
+        { mt: withTopMargin ? { xs: 8, lg: 4 } : 0 },
         ...(paperSx ? (Array.isArray(paperSx) ? paperSx : [paperSx]) : []),
       ]}
     >

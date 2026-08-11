@@ -15,7 +15,7 @@ export const ContentContainer = ({ children, containerProps }: ContentContainerP
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        pt: '2.5rem',
+        pt: '2rem',
       }}
     >
       <Container {...containerProps}>{children}</Container>

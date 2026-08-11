@@ -126,14 +126,13 @@ const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
 const focusRing = { outline: '2px solid currentColor', outlineOffset: '3px' } as const;
 
 // Selection-control (checkbox + radio) icon recipes — shared so the two never drift. The unchecked
-// box is a bg-3 fill with an inset border-0 hairline that darkens to fg-4 on hover (keyed to the
-// shared .MuiButtonBase-root both controls carry, so one selector covers both); the checked box is a
-// purple-1 fill centered on its glyph. Radio spreads these and overrides borderRadius to a circle.
+// box is transparent (it picks up whatever surface it sits on) with an inset border-0 hairline that
+// darkens to fg-4 on hover (keyed to the shared .MuiButtonBase-root both controls carry, so one
+// selector covers both); the checked box is a purple-1 fill centered on its glyph. Radio spreads
+// these and overrides borderRadius to a circle.
 const selectionControlResting = {
   ...checkboxIconBox,
-  // bg-3 is white in light and #18181b in dark — the same value the dark override used to force,
-  // so one token now covers both modes.
-  backgroundColor: figVars['bg-3'],
+  backgroundColor: 'transparent',
   boxShadow: `inset 0 0 0 1px ${figVars['border-0']}`,
   boxSizing: 'border-box' as const,
   '.MuiButtonBase-root:hover &': {
@@ -1077,7 +1076,7 @@ export function getThemedComponents(theme: AppTheme) {
             alignItems: 'flex-start',
             gap: '0.88rem',
             padding: '1rem 1.25rem',
-            borderRadius: '0.75rem',
+            borderRadius: '0.375rem',
             boxShadow: figSurfaceShadow(),
             // Icon box: a 2.5rem rounded square with a border-0 hairline. Its per-severity tint
             // fill + icon color are set in the severity variants below.
@@ -1090,11 +1089,11 @@ export function getThemedComponents(theme: AppTheme) {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              borderRadius: '0.75rem',
+              borderRadius: '0.375rem',
               boxShadow: `inset 0 0 0 1px ${figVars['border-0']}`,
               opacity: 1,
               '.MuiSvgIcon-root': {
-                fontSize: '1.25rem',
+                fontSize: '1rem',
                 flexShrink: 0,
               },
             },
@@ -1147,9 +1146,10 @@ export function getThemedComponents(theme: AppTheme) {
                 background: 'transparent',
               },
             },
-            // Compact sizing: tighter padding + a 2rem icon box with a 0.8rem icon. Shared by both
-            // `small` and `small-icon`. `small` additionally shrinks the text to 0.75rem; `small-icon`
-            // keeps the default-size text (for dense inline chips, e.g. history status badges).
+            // Compact sizing: tighter padding + a 2rem icon box (the glyph inside keeps the default
+            // 1rem size). Shared by both `small` and `small-icon`. `small` additionally shrinks the
+            // text to 0.75rem; `small-icon` keeps the default-size text (for dense inline chips,
+            // e.g. history status badges).
             '&[data-size="small"], &[data-size="small-icon"]': {
               padding: '0.75rem',
               gap: '0.75rem',
@@ -1157,10 +1157,6 @@ export function getThemedComponents(theme: AppTheme) {
                 width: '2rem',
                 height: '2rem',
                 padding: '0.53125rem 0.5rem 0.46875rem 0.5rem',
-                borderRadius: '0.625rem',
-                '.MuiSvgIcon-root': {
-                  fontSize: '0.8rem',
-                },
               },
             },
             '&[data-size="small"]': {

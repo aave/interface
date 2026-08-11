@@ -727,18 +727,21 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
               px: '0.625rem',
               borderRadius: '1.5rem',
               mt: '0.3125rem',
-              background: 'rgba(147, 145, 254, 0.24)',
+              background: 'rgba(147, 145, 254, 0.16)',
               '@supports (color: color(display-p3 0 0 0))': {
-                background: 'color(display-p3 0.5765 0.5686 0.9686 / 0.24)',
+                background: 'color(display-p3 0.5765 0.5686 0.9686 / 0.16)',
               },
             }}
           >
             <Typography
               sx={{
-                color: 'purple-1',
+                color: '#8374FF',
                 fontSize: '1rem',
-                fontWeight: 500,
+                fontWeight: 600,
                 lineHeight: '1.125rem',
+                '@supports (color: color(display-p3 0 0 0))': {
+                  color: 'color(display-p3 0.5033 0.4581 1)',
+                },
               }}
             >
               {currentMarketData.v3 ? 'v3' : 'v2'}
