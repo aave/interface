@@ -22,6 +22,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { AAVE_PRO_URL } from 'src/components/MarketSwitcher';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useModalContext } from 'src/hooks/useModal';
@@ -275,6 +276,25 @@ export function AppHeader() {
         </Box>
 
         <Box sx={{ flexGrow: 1 }} />
+
+        <NoSsr>
+          <Button
+            component={Link}
+            href={AAVE_PRO_URL}
+            variant="surface"
+            sx={{
+              p: '7px 8px',
+              minWidth: 'unset',
+              alignItems: 'center',
+              mr: 2,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <Typography component="span" typography="subheader1">
+              {smd ? 'V4' : 'Aave V4'}
+            </Typography>
+          </Button>
+        </NoSsr>
 
         <NoSsr>
           <StyledBadge

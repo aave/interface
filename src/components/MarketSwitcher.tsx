@@ -183,7 +183,7 @@ const getMarketOrder = (marketId: CustomMarket): number => {
   return MARKET_ORDER_BY_TITLE[market.marketTitle] ?? 999;
 };
 
-const AAVE_PRO_URL = 'https://pro.aave.com/';
+export const AAVE_PRO_URL = 'https://pro.aave.com/';
 
 type V4Link = {
   id: string;
