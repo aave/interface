@@ -1,0 +1,28 @@
+src/layouts/AppHeader.tsx
+  s_4a5a35cb33f785::t_389bc67416bc58 351-352,355-357
+  s_4a5a35cb33f785::t_7a49b838de4f2f 349
+  s_4a5a35cb33f785::t_219242f2806a46 353-354
+  s_4a5a35cb33f785::t_07361363a40a1a 236
+  s_4a5a35cb33f785::t_89d9b3c0f0cffb 131
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "ddef8d9ce3b8e3718fc8d01d0296459eb8d94dbd",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_4a5a35cb33f785": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "302409f1-a0b1-4062-8ac3-119d23cf22dc",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
