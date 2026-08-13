@@ -294,7 +294,13 @@ export const GovVoteActions = ({
             success: true,
           });
 
+          // The relay indexes the VoteEmitted event asynchronously, so this immediate
+          // refetch usually races ahead of the indexer. Refetch again after a short
+          // delay to pick up the freshly-cast vote.
           queryClient.invalidateQueries({ queryKey: queryKeysFactory.governanceCache });
+          setTimeout(() => {
+            queryClient.invalidateQueries({ queryKey: queryKeysFactory.governanceCache });
+          }, 8000);
           return;
         } catch (err) {
           // Relayer temporarily down — fall back to a self-paid vote. Any other relay
