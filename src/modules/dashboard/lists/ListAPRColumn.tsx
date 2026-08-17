@@ -1,6 +1,6 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/incentive/calculate-reserve-incentives';
-import { Box, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { ReactNode } from 'react';
 import { GhoRateTooltip } from 'src/components/infoTooltips/GhoRateTooltip';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -31,7 +31,7 @@ export const ListAPRColumn = ({
 }: ListAPRColumnProps) => {
   return (
     <ListColumn>
-      <Box sx={{ display: 'flex column' }}>
+      <Stack direction="row" alignItems="center" gap={1}>
         <IncentivesCard
           variant="h5"
           value={value}
@@ -42,7 +42,7 @@ export const ListAPRColumn = ({
           protocolAction={protocolAction}
         />
         {tooltip}
-      </Box>
+      </Stack>
       {children}
     </ListColumn>
   );

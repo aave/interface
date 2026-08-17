@@ -151,8 +151,8 @@ export const IncentivesCard = ({
     </>
   );
 
-  // Points / airdrop programs — not part of the APY %; shown as [brand icon] [multiplier] on a
-  // second row beneath the rate.
+  // Points / airdrop programs — not part of the APY %; shown as [brand icon] [multiplier]
+  // alongside the rate.
   const pointsIncentives = (
     <>
       <EthenaIncentivesButton rewardedAsset={address} />
@@ -180,63 +180,24 @@ export const IncentivesCard = ({
       />
     );
 
-  if (inlineIncentives) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          textAlign: 'left',
-          flexWrap: 'wrap',
-          gap: '0.38rem',
-        }}
-      >
-        {apyIncentives}
-        {apyValue}
-        {tooltip}
-        {pointsIncentives}
-      </Box>
-    );
-  }
-
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: align || { xs: 'flex-end', xsm: 'center' },
-        justifyContent: 'center',
-        textAlign: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexWrap: 'wrap',
         gap: '0.38rem',
+        justifyContent: inlineIncentives
+          ? 'flex-start'
+          : align || { xs: 'flex-end', xsm: 'center' },
+        textAlign: inlineIncentives ? 'left' : 'center',
       }}
     >
-      {/* Inner column left-aligns the two rows to EACH OTHER (not to the cell), so the top-row
-          incentives icon and the bottom-row points icon sit parallel on the same left edge. */}
-      <Box
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.38rem' }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.38rem' }}>
-          {apyIncentives}
-          {apyValue}
-          {tooltip}
-        </Box>
-        {/* Points programs on their own row; collapses (via :empty) when every points button
-            self-nulls, so the column gap leaves no phantom space beneath the rate. */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '0.38rem',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            '&:empty': { display: 'none' },
-          }}
-        >
-          {pointsIncentives}
-        </Box>
-      </Box>
+      {apyIncentives}
+      {apyValue}
+      {tooltip}
+      {pointsIncentives}
     </Box>
   );
 };

@@ -10,13 +10,7 @@ import invariant from 'tiny-invariant';
 
 import { IconData, MultiIconWithTooltip } from './helpers/MultiIcon';
 
-export const StakingApyItem = ({
-  stakeData,
-  isMobile,
-}: {
-  stakeData: MergedStakeData;
-  isMobile?: boolean;
-}) => {
+export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { reserves } = useAppDataContext();
 
   const icons: IconData[] = [];
@@ -68,12 +62,7 @@ export const StakingApyItem = ({
   }
 
   return (
-    <Stack
-      direction={isMobile ? 'row' : 'column'}
-      alignItems="center"
-      justifyContent="center"
-      gap={2}
-    >
+    <Stack direction="row" alignItems="center" justifyContent="center" gap={2}>
       <FormattedNumber value={stakeData.totalRewardApy} percent variant="h5" visibleDecimals={2} />
       <MultiIconWithTooltip
         icons={icons}
