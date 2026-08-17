@@ -120,7 +120,7 @@ export const BridgeTransactionListItem = ({
           /> */}
         </Stack>
       </ListColumn>
-      <ListColumn align="left">
+      <ListColumn>
         <Stack direction="row" gap={3} alignItems="center">
           <MarketLogo
             sx={{ mr: 0 }}
@@ -133,20 +133,20 @@ export const BridgeTransactionListItem = ({
           <MarketLogo size={28} logo={networkConfigs[destinationChainId].networkLogoPath} />
         </Stack>
       </ListColumn>
-      <ListColumn align="left">
+      <ListColumn>
         <Typography variant="subheader1">{age}</Typography>
         <Typography variant="subheader2" color="fg-3">
           {dayjs.unix(blockTimestamp).format('MMMM D YYYY h:mm A')}
         </Typography>
       </ListColumn>
-      <ListColumn align="left">
+      <ListColumn>
         {executionState === undefined ? (
           <Skeleton width={90} height={35} />
         ) : (
           <TxStatus state={executionState} />
         )}
       </ListColumn>
-      <ListColumn maxWidth={95} minWidth={95} align="left">
+      <ListColumn maxWidth={95} minWidth={95}>
         <DarkTooltip title="View in explorer" sx={{ display: { xsm: 'none' } }}>
           <IconButton LinkComponent={Link} href={`https://ccip.chain.link/tx/${txHash}`}>
             <SvgIcon sx={{ fontSize: '16px' }}>

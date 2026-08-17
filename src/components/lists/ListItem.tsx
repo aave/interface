@@ -15,6 +15,7 @@ export const ListItem = ({ children, minHeight = 71, px = 4, button, ...rest }: 
       sx={{
         display: 'flex',
         alignItems: 'center',
+        gap: '1rem',
         minHeight,
         px,
         '&:not(:last-child)': {

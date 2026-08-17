@@ -13,7 +13,7 @@ const HistoryRowItem = () => {
         </Box>
       </ListColumn>
 
-      <ListColumn isRow align="center">
+      <ListColumn isRow>
         <Skeleton width={40} height={12} />
         <Box sx={{ pl: 5, display: 'flex', gap: 1, alignItems: 'center' }}>
           <Skeleton variant="circular" width={20} height={20} />
@@ -22,7 +22,7 @@ const HistoryRowItem = () => {
         </Box>
       </ListColumn>
 
-      <ListColumn align="right">
+      <ListColumn>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Skeleton width={48} height={12} />
           <Skeleton width={120} height={12} />
@@ -36,7 +36,7 @@ export const HistoryItemLoader = () => {
   return (
     <>
       <ListItem px={6} minHeight={68}>
-        <ListColumn align="left">
+        <ListColumn>
           <Skeleton width={140} height={16} sx={{ transform: 'translateY(8px)' }} />
         </ListColumn>
       </ListItem>

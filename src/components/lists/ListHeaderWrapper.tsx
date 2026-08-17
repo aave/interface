@@ -13,6 +13,7 @@ export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapp
       sx={{
         display: 'flex',
         alignItems: 'flex-end',
+        gap: '1rem',
         px,
         pt: 4,
         pb: 1,

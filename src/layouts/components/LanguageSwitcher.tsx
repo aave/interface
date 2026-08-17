@@ -50,10 +50,10 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
     <>
       <Box component={component} sx={{ color: 'fg-1', mb: '4px' }} onClick={onClick}>
         <ListItemIcon sx={{ minWidth: 'unset !important', mr: 2, color: 'fg-1' }}>
-          <ChevronRightIcon sx={{ fontSize: 24, transform: 'rotate(180deg)' }} />
+          <ChevronRightIcon sx={{ fontSize: 20, transform: 'rotate(180deg)' }} />
         </ListItemIcon>
         <ListItemText disableTypography>
-          <Typography variant="h3">
+          <Typography sx={{ color: 'fg-1', fontSize: '0.875rem', fontWeight: 400, lineHeight: 1 }}>
             <Trans>Select language</Trans>
           </Typography>
         </ListItemText>

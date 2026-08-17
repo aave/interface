@@ -87,7 +87,7 @@ export const MigrationListMobileItem = ({
           pt: 2.5,
         }}
       >
-        <ListColumn align="center" maxWidth={48} minWidth={48}>
+        <ListColumn maxWidth={48} minWidth={48}>
           <Box
             sx={{
               border: `2px solid ${
@@ -119,7 +119,7 @@ export const MigrationListMobileItem = ({
           </Box>
         </ListColumn>
 
-        <ListColumn align="left">
+        <ListColumn>
           <Row>
             <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
 

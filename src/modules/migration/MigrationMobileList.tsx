@@ -46,7 +46,7 @@ export const MigrationMobileList = ({
       >
         {(isAvailable || loading) && (
           <ListHeaderWrapper sx={{ pl: 0 }}>
-            <ListColumn align="center" maxWidth={48} minWidth={48}>
+            <ListColumn maxWidth={48} minWidth={48}>
               <MigrationSelectionBox
                 allSelected={allSelected}
                 numSelected={numSelected}

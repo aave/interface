@@ -39,18 +39,34 @@ export const ListHeaderTitle = ({
   return (
     <Typography
       component="div"
-      variant="subheader2"
       color="fg-3"
-      noWrap
       onClick={() => (!!onClick ? onClick() : !!sortKey && handleSorting(sortKey))}
       sx={{
         cursor: !!onClick || !!sortKey ? 'pointer' : 'default',
         display: 'inline-flex',
         alignItems: 'center',
+        maxWidth: '100%',
+        minWidth: 0,
+        fontFamily: 'Inter',
+        fontSize: '0.6875rem',
+        fontWeight: 500,
+        lineHeight: '120%',
+        letterSpacing: '0.00313rem',
         textTransform: 'uppercase',
+        fontFeatureSettings: "'cv11' on",
+        // Header titles are often a tooltip component that renders its own Typography with a
+        // `variant`; force those to take the header type instead of their own.
+        '& .MuiTypography-root': { font: 'inherit', letterSpacing: 'inherit' },
       }}
     >
-      {children}
+      {/* Truncation has to live on an inner block — `text-overflow` is ignored on the flex
+          container itself, so the label would otherwise overrun into the next column. */}
+      <Box
+        component="span"
+        sx={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+      >
+        {children}
+      </Box>
 
       {!!sortKey && (
         <Box sx={{ display: 'inline-flex', flexShrink: 0, ml: 1, color: 'fg-icon' }}>

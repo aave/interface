@@ -98,7 +98,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
             }
           />
         </Box>
-        <ListColumn align="right">
+        <ListColumn>
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
             {isSwapTransaction(transaction) &&
               isCowSwapSubset(transaction) &&

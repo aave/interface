@@ -109,7 +109,7 @@ export const MigrationListItem = ({
       <Box
         sx={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center', my: 4 }}
       >
-        <ListColumn align="center" maxWidth={64} minWidth={64}>
+        <ListColumn maxWidth={64} minWidth={64}>
           <Box
             sx={{
               border: `2px solid ${

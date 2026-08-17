@@ -108,7 +108,7 @@ export const MigrationList = ({
       >
         {(isAvailable || loading) && (
           <ListHeaderWrapper sx={{ pl: 0 }}>
-            <ListColumn align="center" maxWidth={64} minWidth={64}>
+            <ListColumn maxWidth={64} minWidth={64}>
               <MigrationSelectionBox
                 allSelected={allSelected}
                 numSelected={numSelected}

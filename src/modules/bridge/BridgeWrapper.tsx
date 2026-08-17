@@ -88,13 +88,13 @@ export function BridgeWrapper() {
     >
       {!downToSm && (
         <ListHeaderWrapper>
-          <ListColumn align="left">
+          <ListColumn>
             <ListHeaderTitle>
               <Trans>Asset</Trans>
             </ListHeaderTitle>
           </ListColumn>
 
-          <ListColumn align="left">
+          <ListColumn>
             <ListHeaderTitle>
               <Trans>Source</Trans>
               <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
@@ -104,13 +104,13 @@ export function BridgeWrapper() {
             </ListHeaderTitle>
           </ListColumn>
 
-          <ListColumn align="left">
+          <ListColumn>
             <ListHeaderTitle>
               <Trans>Age</Trans>
             </ListHeaderTitle>
           </ListColumn>
 
-          <ListColumn align="left">
+          <ListColumn>
             <ListHeaderTitle>
               <Trans>Status</Trans>
             </ListHeaderTitle>
