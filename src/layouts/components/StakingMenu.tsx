@@ -11,7 +11,10 @@ import { NAV_BAR } from 'src/utils/events';
 import { onAccent } from 'src/utils/figmaColors';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
-import { navLinkSx } from './navLinkSx';
+import { NAV_LINK_PADDING_X, NAV_LINK_PADDING_Y, navLinkSx } from './navLinkSx';
+
+const CHEVRON_GAP = '0.25rem';
+const CHEVRON_SIZE = '16px';
 
 interface StakingMenuProps {
   isMobile?: boolean;
@@ -80,13 +83,18 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={navLinkSx('2.25rem 0.88rem')}
+        sx={[
+          navLinkSx(NAV_LINK_PADDING_Y, NAV_LINK_PADDING_X),
+          {
+            '&:after': { right: `calc(${NAV_LINK_PADDING_X} + ${CHEVRON_GAP} + ${CHEVRON_SIZE})` },
+          },
+        ]}
       >
         <Trans>Staking</Trans>
         <SvgIcon
           sx={{
-            ml: '0.25rem',
-            fontSize: '16px',
+            ml: CHEVRON_GAP,
+            fontSize: CHEVRON_SIZE,
             transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
             transition: 'transform 0.2s ease-in-out',
           }}

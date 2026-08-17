@@ -1,14 +1,7 @@
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  FormControl,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Skeleton,
-  Stack,
-  useTheme,
-} from '@mui/material';
+import { Button, Menu, MenuItem, Skeleton, Stack, SvgIcon } from '@mui/material';
+import { useState } from 'react';
+import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { NoData } from 'src/components/primitives/NoData';
@@ -31,12 +24,13 @@ export const BridgeFeeTokenSelector = ({
 }: {
   feeTokens: FeeToken[];
   selectedFeeToken: FeeToken;
-  onFeeTokenChanged: (event: SelectChangeEvent) => void;
+  onFeeTokenChanged: (symbol: string) => void;
   bridgeFeeFormatted: string;
   bridgeFeeUSD: string;
   loading: boolean;
 }) => {
-  const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
 
   const feeTooltip = (
     <TextWithTooltip text={<Trans>Fee</Trans>}>
@@ -58,66 +52,43 @@ export const BridgeFeeTokenSelector = ({
 
   return (
     <Row caption={feeTooltip} captionVariant="description" mb={4}>
-      <FormControl sx={{ mr: 'auto' }}>
-        <Select
-          labelId="token-select-label"
-          value={selectedFeeToken.symbol}
-          onChange={onFeeTokenChanged}
-          sx={{
-            fontSize: '1.0em',
-            width: 'auto',
-            height: '24px',
-            minWidth: '70px',
-            borderRadius: '4px',
-            mb: 0.5,
-            maxWidth: '80px',
-            '.MuiSelect-select': {
-              backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-
-              paddingLeft: '2px',
-            },
-            '& .MuiOutlinedInput-notchedOutline': {
-              border: 'none',
-            },
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              border: 'none',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              border: 'none',
-            },
-          }}
-          MenuProps={{
-            PaperProps: {
-              sx: {
-                backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                fontSize: '1.0em',
-              },
-            },
-          }}
-        >
-          {feeTokens.map((token) => (
-            <MenuItem
-              key={token.symbol}
-              value={token.symbol}
-              sx={{
-                backgroundColor: theme.palette.mode === 'dark' ? '#383D51' : '#FFFFFF',
-                '&:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#EAEBEF',
-                },
-                '&.Mui-selected, &.Mui-selected:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' ? '#292E41' : '#FFFFFF',
-                  boxShadow: '0px 1px 0px rgba(0, 0, 0, 0.05)',
-                },
-              }}
-            >
-              <Box display="flex" alignItems={'center'}>
-                <TokenIcon sx={{ fontSize: '1em', mr: 1 }} symbol={token.symbol} />
-                {token.symbol}
-              </Box>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      <Button
+        variant="text"
+        size="small"
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        startIcon={<TokenIcon symbol={selectedFeeToken.symbol} sx={{ fontSize: '16px' }} />}
+        endIcon={
+          <SvgIcon
+            sx={{
+              fontSize: '16px',
+              transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 0.2s ease-in-out',
+            }}
+          >
+            <ChevronDownIcon />
+          </SvgIcon>
+        }
+        sx={{ mr: 'auto', px: 0, '&:hover': { backgroundColor: 'transparent' } }}
+      >
+        {selectedFeeToken.symbol}
+      </Button>
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
+        {feeTokens.map((token) => (
+          <MenuItem
+            key={token.symbol}
+            selected={token.symbol === selectedFeeToken.symbol}
+            onClick={() => {
+              onFeeTokenChanged(token.symbol);
+              setAnchorEl(null);
+            }}
+          >
+            <TokenIcon symbol={token.symbol} sx={{ fontSize: '16px', mr: 2 }} />
+            {token.symbol}
+          </MenuItem>
+        ))}
+      </Menu>
       {!bridgeFeeFormatted && !loading ? (
         <NoData variant="h5" color="fg-2" />
       ) : loading ? (

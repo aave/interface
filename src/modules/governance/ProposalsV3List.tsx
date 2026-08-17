@@ -47,7 +47,7 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
           justifyContent: 'space-between',
         }}
       >
-        <Stack direction="row" gap={3} alignItems="center" sx={{ mb: '1rem' }}>
+        <Stack direction="row" gap={3} alignItems="center" sx={{ mb: '0.75rem' }}>
           <StateBadge state={proposal.badgeState} loading={false} />
         </Stack>
         <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>

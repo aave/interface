@@ -1,4 +1,6 @@
-import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
+import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
+import { useState } from 'react';
+import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 
 import { SupportedNetworkWithChainId } from '../../helpers/shared/misc.helpers';
@@ -14,53 +16,57 @@ export const NetworkSelector = ({
   selectedNetwork,
   setSelectedNetwork,
 }: NetworkSelectorProps) => {
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    setSelectedNetwork(Number(event.target.value));
-  };
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const selected = networks.find((network) => network.chainId === selectedNetwork);
+
   return (
-    <FormControl sx={{ minWidth: 'unset', width: 'unset' }}>
-      <Select
-        native={false}
-        value={String(selectedNetwork)}
-        onChange={handleChange}
-        MenuProps={{
-          anchorOrigin: { vertical: 'bottom', horizontal: 'left' },
-          transformOrigin: { vertical: 'top', horizontal: 'left' },
-          sx: { '& .MuiPaper-root': { marginLeft: '-4px' } },
-        }}
-        sx={{
-          // Flatten the trigger to a plain text button: override the theme's Select-pill
-          // (bg fill + surface-shadow ring) in all states. `&&` matches the theme's specificity.
-          '&&, &&:hover, &&:has(.MuiSelect-select[aria-expanded="true"])': {
-            backgroundColor: 'transparent',
-            boxShadow: 'none',
-          },
-          '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
-          '& .MuiSelect-select': {
-            display: 'flex',
-            alignItems: 'center',
-            backgroundColor: 'transparent',
-            paddingLeft: 0,
-          },
-        }}
+    <>
+      <Button
+        variant="text"
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        sx={{ px: 0, '&:hover': { backgroundColor: 'transparent' } }}
       >
+        {selected && (
+          <MarketLogo size={18} logo={selected.networkLogoPath} sx={{ mr: '0.38rem' }} />
+        )}
+        <Typography
+          sx={{ color: 'fg-1', fontSize: '0.75rem', fontWeight: 500, lineHeight: '120%' }}
+        >
+          {selected?.displayName || selected?.name}
+        </Typography>
+        <ChevronDownIcon
+          sx={{
+            ml: '0.25rem',
+            fontSize: '0.75rem',
+            color: 'fg-3',
+            transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 0.2s ease-in-out',
+          }}
+        />
+      </Button>
+
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         {networks.map((network) => (
-          <MenuItem value={network.chainId} key={`${network.name}`}>
+          <MenuItem
+            key={network.name}
+            selected={network.chainId === selectedNetwork}
+            onClick={() => {
+              setSelectedNetwork(network.chainId);
+              setAnchorEl(null);
+            }}
+          >
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <MarketLogo
-                size={24}
-                logo={network.networkLogoPath}
-                sx={{
-                  mr: 1,
-                }}
-              />
+              <MarketLogo size={24} logo={network.networkLogoPath} sx={{ mr: 1 }} />
               <Typography variant="h5" color="fg-1">
                 {network.displayName || network.name}
               </Typography>
             </Box>
           </MenuItem>
         ))}
-      </Select>
-    </FormControl>
+      </Menu>
+    </>
   );
 };

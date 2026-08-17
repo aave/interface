@@ -1039,9 +1039,7 @@ export function getThemedComponents(theme: AppTheme) {
             // Checkbox/radio labels keep MUI's defaults.
             '&:has(.MuiSwitch-root)': {
               marginLeft: 0,
-              '& .MuiFormControlLabel-label': {
-                marginLeft: '0.5rem',
-              },
+              gap: '0.5rem',
             },
           },
         },
@@ -1141,6 +1139,8 @@ export function getThemedComponents(theme: AppTheme) {
               padding: 0,
               margin: 0,
               minWidth: 'unset',
+              height: 'auto',
+              verticalAlign: 'baseline',
               '&:hover': {
                 textDecoration: 'none',
                 background: 'transparent',

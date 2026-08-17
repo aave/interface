@@ -16,8 +16,7 @@ export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm, su
         alignItems: 'center',
         gap: '0.5rem',
         width: '100%',
-        pt: 15,
-        pb: 32,
+        py: 15,
         px: 4,
       }}
     >

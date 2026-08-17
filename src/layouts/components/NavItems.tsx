@@ -20,7 +20,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { navigation } from '../../ui-config/menu-items';
-import { navLinkSx } from './navLinkSx';
+import { NAV_LINK_PADDING_X, NAV_LINK_PADDING_Y, navLinkSx } from './navLinkSx';
 import { StakingMenu } from './StakingMenu';
 
 interface NavItemsProps {
@@ -133,7 +133,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 className={isActive(item.link) ? 'active' : undefined}
                 onClick={() => handleClick(item.title, false)}
                 href={item.link}
-                sx={navLinkSx('2.25rem 0.88rem')}
+                sx={navLinkSx(NAV_LINK_PADDING_Y, NAV_LINK_PADDING_X)}
               >
                 {i18n._(item.title)}
               </Button>
@@ -155,7 +155,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             className={isActive(ROUTES.sGHO) ? 'active' : undefined}
             onClick={() => handleClick('sGHO', false)}
             href={ROUTES.sGHO}
-            sx={navLinkSx('2.25rem 0.88rem')}
+            sx={navLinkSx(NAV_LINK_PADDING_Y, NAV_LINK_PADDING_X)}
           >
             <Trans>Savings</Trans>
           </Button>

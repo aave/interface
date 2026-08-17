@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   IconButton,
-  SelectChangeEvent,
   Skeleton,
   Stack,
   SvgIcon,
@@ -132,8 +131,8 @@ export const BridgeModalContent = () => {
     getGHOToken(feeTokenListWithBalance || filteredFeeTokensByChainId)
   );
 
-  const handleTokenChange = (event: SelectChangeEvent) => {
-    const token = feeTokenListWithBalance?.find((token) => token.symbol === event.target.value);
+  const handleTokenChange = (symbol: string) => {
+    const token = feeTokenListWithBalance?.find((token) => token.symbol === symbol);
 
     if (token) {
       setSelectedFeeToken(token);
@@ -337,7 +336,7 @@ export const BridgeModalContent = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 6 }}>
         <Typography variant="h2">
           <Trans>Bridge GHO</Trans>
         </Typography>
@@ -357,15 +356,16 @@ export const BridgeModalContent = () => {
         )}
       </Box>
 
-      <ChangeNetworkWarning
-        autoSwitchOnMount={true}
-        networkName={getNetworkConfig(sourceNetworkObj.chainId).name}
-        chainId={sourceNetworkObj.chainId}
-        event={{
-          eventName: GENERAL.SWITCH_NETWORK,
-        }}
-        sx={{ my: 1, visibility: isWrongNetwork && !readOnlyModeAddress ? 'visible' : 'hidden' }}
-      />
+      {isWrongNetwork && !readOnlyModeAddress && (
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={getNetworkConfig(sourceNetworkObj.chainId).name}
+          chainId={sourceNetworkObj.chainId}
+          event={{
+            eventName: GENERAL.SWITCH_NETWORK,
+          }}
+        />
+      )}
       {!user ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
           <Typography sx={{ mb: 6, textAlign: 'center' }} color="fg-2">

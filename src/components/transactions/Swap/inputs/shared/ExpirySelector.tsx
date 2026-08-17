@@ -1,5 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Box, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
+import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
+import { useState } from 'react';
+import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 
 import { Expiry } from '../../types';
 
@@ -9,57 +11,54 @@ interface ExpirySelectorProps {
 }
 
 export const ExpirySelector = ({ selectedExpiry, setSelectedExpiry }: ExpirySelectorProps) => {
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    setSelectedExpiry(event.target.value as unknown as Expiry);
-  };
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+      <Typography color="fg-2" variant="subheader2" sx={{ opacity: 0.75 }}>
+        <Trans>Expires in</Trans>
+      </Typography>
+
+      <Button
+        variant="text"
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        sx={{ px: 0, '&:hover': { backgroundColor: 'transparent' } }}
+      >
         <Typography
-          color="fg-2"
-          variant="subheader2"
-          sx={{ height: '100%', marginRight: -1, opacity: 0.75 }}
+          sx={{ color: 'fg-1', fontSize: '0.75rem', fontWeight: 500, lineHeight: '120%' }}
         >
-          <Trans>Expires in</Trans>
+          {selectedExpiry}
         </Typography>
-      </Box>
-      <FormControl sx={{ minWidth: 'unset', width: 'unset' }}>
-        <Select
-          native={false}
-          value={String(selectedExpiry)}
-          onChange={handleChange}
+        <ChevronDownIcon
           sx={{
-            '&.MuiInputBase-root': {
-              border: 0,
-              '.MuiSelect-select': {
-                display: 'flex',
-                backgroundColor: 'transparent',
-                border: 0,
-              },
-            },
-            '& .MuiOutlinedInput-notchedOutline': {
-              border: 'none',
-            },
+            ml: '0.25rem',
+            fontSize: '0.75rem',
+            color: 'fg-3',
+            transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 0.2s ease-in-out',
           }}
-        >
-          {Object.entries(Expiry).map(([key, value]) => (
-            <MenuItem value={value} key={`${key}`}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: -1.5,
-                }}
-              >
-                <Typography variant="subheader2" color="fg-2">
-                  {value}
-                </Typography>
-              </Box>
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+        />
+      </Button>
+
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
+        {Object.values(Expiry).map((value) => (
+          <MenuItem
+            key={value}
+            selected={value === selectedExpiry}
+            onClick={() => {
+              setSelectedExpiry(value);
+              setAnchorEl(null);
+            }}
+          >
+            <Typography variant="subheader2" color="fg-2">
+              {value}
+            </Typography>
+          </MenuItem>
+        ))}
+      </Menu>
     </Box>
   );
 };

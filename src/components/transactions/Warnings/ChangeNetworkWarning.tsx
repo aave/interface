@@ -23,6 +23,7 @@ export const ChangeNetworkWarning = ({
   funnel,
   askManualSwitch = false,
   autoSwitchOnMount = true,
+  sx,
   ...rest
 }: ChangeNetworkWarningProps) => {
   const { switchNetwork, switchNetworkError } = useWeb3Context();
@@ -69,10 +70,10 @@ export const ChangeNetworkWarning = ({
   };
   return (
     <Alert
-      severity={isAutoSwitching ? 'info' : switchNetworkError ? 'error' : 'info'}
+      severity={!isAutoSwitching && switchNetworkError ? 'error' : 'info'}
       data-size="small"
-      sx={{ mb: 6, width: '100%' }}
       {...rest}
+      sx={[{ mb: 6, width: '100%' }, ...(Array.isArray(sx) ? sx : [sx])]}
     >
       {isAutoSwitching ? (
         <>

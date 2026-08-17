@@ -651,7 +651,6 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           sx={{
             m: 0,
             alignSelf: 'flex-start',
-            gap: '1rem',
             '& .MuiFormControlLabel-label': {
               color: 'fg-2',
               fontSize: '0.875rem',
