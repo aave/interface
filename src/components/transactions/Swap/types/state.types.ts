@@ -27,6 +27,7 @@ export enum ActionsBlockedReason {
   IS_LIQUIDATABLE = 'IS_LIQUIDATABLE',
   INSUFFICIENT_BORROW_POWER = 'INSUFFICIENT_BORROW_POWER',
   SHIELD_BLOCKED = 'SHIELD_BLOCKED',
+  BUY_TOKEN_NOT_COLLATERAL = 'BUY_TOKEN_NOT_COLLATERAL',
 }
 
 /**
@@ -202,7 +203,8 @@ export type ProtocolSwapState = Omit<TokensSwapState, 'swapType'> & {
     | SwapType.DebtSwap
     | SwapType.CollateralSwap
     | SwapType.RepayWithCollateral
-    | SwapType.WithdrawAndSwap;
+    | SwapType.WithdrawAndSwap
+    | SwapType.Leverage;
 
   sourceReserve: FormattedUserReserves;
   destinationReserve: FormattedUserReserves;
@@ -215,7 +217,8 @@ export const isProtocolSwapState = (state: SwapState): state is ProtocolSwapStat
     ('swapType' in state && state.swapType === SwapType.DebtSwap) ||
     state.swapType === SwapType.CollateralSwap ||
     state.swapType === SwapType.RepayWithCollateral ||
-    state.swapType === SwapType.WithdrawAndSwap
+    state.swapType === SwapType.WithdrawAndSwap ||
+    state.swapType === SwapType.Leverage
   );
 };
 
