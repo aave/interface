@@ -21,6 +21,8 @@ const marketOrderKindPerSwapType: Record<SwapType, OrderKind> = {
   [SwapType.DebtSwap]: OrderKind.BUY,
   [SwapType.RepayWithCollateral]: OrderKind.BUY,
   [SwapType.WithdrawAndSwap]: OrderKind.SELL,
+  // Leverage targets a collateral amount to acquire, financed by selling the flash-loaned debt.
+  [SwapType.Leverage]: OrderKind.BUY,
 };
 
 const isPositionSwap = (swapType: SwapType, usingFlashloan: boolean) => {
