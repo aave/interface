@@ -24,4 +24,6 @@ export const PARASWAP_GAS_LIMITS: Record<SwapType, number> = {
   [SwapType.DebtSwap]: 400000,
   [SwapType.RepayWithCollateral]: 700000,
   [SwapType.WithdrawAndSwap]: 1000000,
+  // Leverage exists only on the CoW adapters; Paraswap cannot route it.
+  [SwapType.Leverage]: 0,
 };

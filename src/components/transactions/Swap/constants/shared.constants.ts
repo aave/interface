@@ -20,6 +20,7 @@ export const APP_CODE_PER_SWAP_TYPE: Record<SwapType, string> = {
   [SwapType.DebtSwap]: 'aave-v3-interface-debt-swap',
   [SwapType.RepayWithCollateral]: 'aave-v3-interface-repay-with-collateral',
   [SwapType.WithdrawAndSwap]: 'aave-v3-interface-withdraw-and-swap',
+  [SwapType.Leverage]: 'aave-v3-interface-leverage',
 };
 
 export const APP_CODE_VALUES = Object.values(APP_CODE_PER_SWAP_TYPE);

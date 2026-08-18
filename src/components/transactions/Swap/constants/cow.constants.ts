@@ -1,13 +1,12 @@
 import { CowEnv, OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
-import { AaveFlashLoanType } from '@cowprotocol/sdk-flash-loans';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { getAssetGroup } from '../helpers/shared/assetCorrelation.helpers';
-import { OrderType, SwapType } from '../types';
+import { FlashLoanFlow, OrderType, SwapType } from '../types';
 
-export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedChainId, string>> = {
-  [AaveFlashLoanType.CollateralSwap]: {
+export const HOOK_ADAPTER_PER_TYPE: Record<FlashLoanFlow, Record<SupportedChainId, string>> = {
+  [FlashLoanFlow.CollateralSwap]: {
     [SupportedChainId.MAINNET]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.GNOSIS_CHAIN]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
     [SupportedChainId.ARBITRUM_ONE]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
@@ -21,7 +20,7 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.LENS]: '',
     [SupportedChainId.INK]: '',
   },
-  [AaveFlashLoanType.DebtSwap]: {
+  [FlashLoanFlow.DebtSwap]: {
     [SupportedChainId.MAINNET]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.GNOSIS_CHAIN]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
     [SupportedChainId.ARBITRUM_ONE]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
@@ -35,7 +34,7 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.LENS]: '',
     [SupportedChainId.INK]: '',
   },
-  [AaveFlashLoanType.RepayCollateral]: {
+  [FlashLoanFlow.RepayCollateral]: {
     [SupportedChainId.MAINNET]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.GNOSIS_CHAIN]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.ARBITRUM_ONE]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
@@ -45,6 +44,22 @@ export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedCh
     [SupportedChainId.BASE]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.LINEA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
     [SupportedChainId.PLASMA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
+    [SupportedChainId.SEPOLIA]: '',
+    [SupportedChainId.LENS]: '',
+    [SupportedChainId.INK]: '',
+  },
+  // TODO: fill in once LeverageAaveV3Adapter is deployed per chain. Empty resolves to no
+  // adapter, so `getHookAdapter` rejects the flow rather than encoding against address zero.
+  [FlashLoanFlow.Leverage]: {
+    [SupportedChainId.MAINNET]: '',
+    [SupportedChainId.GNOSIS_CHAIN]: '',
+    [SupportedChainId.ARBITRUM_ONE]: '',
+    [SupportedChainId.AVALANCHE]: '',
+    [SupportedChainId.BNB]: '',
+    [SupportedChainId.POLYGON]: '',
+    [SupportedChainId.BASE]: '',
+    [SupportedChainId.LINEA]: '',
+    [SupportedChainId.PLASMA]: '',
     [SupportedChainId.SEPOLIA]: '',
     [SupportedChainId.LENS]: '',
     [SupportedChainId.INK]: '',
@@ -217,4 +232,6 @@ export const COW_PROTOCOL_GAS_LIMITS: Record<SwapType, number> = {
   [SwapType.DebtSwap]: 0,
   [SwapType.RepayWithCollateral]: 0,
   [SwapType.WithdrawAndSwap]: 0,
+  // Flash-loan flow: gas comes from the hook limits, not from here.
+  [SwapType.Leverage]: 0,
 };
