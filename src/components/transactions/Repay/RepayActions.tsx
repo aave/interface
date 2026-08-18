@@ -12,13 +12,13 @@ import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { ApprovalMethod } from 'src/store/walletSlice';
+import { ApprovalAmount, ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
-import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { APPROVAL_GAS_LIMIT, checkRequiresApproval, getRepayAmountToApprove } from '../utils';
 
 export interface RepayActionProps extends BoxProps {
   amountToRepay: string;
@@ -57,6 +57,7 @@ export const RepayActions = ({
     encodeRepayWithPermit,
     tryPermit,
     walletApprovalMethodPreference,
+    walletApprovalAmountPreference,
     estimateGasLimit,
     addTransaction,
     optimizedPath,
@@ -69,6 +70,7 @@ export const RepayActions = ({
       store.encodeRepayWithPermitParams,
       store.tryPermit,
       store.walletApprovalMethodPreference,
+      store.walletApprovalAmountPreference,
       store.estimateGasLimit,
       store.addTransaction,
       store.useOptimizedPath,
@@ -104,14 +106,21 @@ export const RepayActions = ({
 
   setLoadingTxns(fetchingApprovedAmount);
 
+  // Single source for what the approval has to cover: the gate below and the approval we
+  // build must never disagree, or a successful approval gets rejected on the next render.
+  const amountRequiringApproval = Number(amountToRepay) === -1 ? maxApproveNeeded : amountToRepay;
+
   const requiresApproval =
     !repayWithATokens &&
     Number(amountToRepay) !== 0 &&
     checkRequiresApproval({
       approvedAmount: approvedAmount?.amount || '0',
-      amount: Number(amountToRepay) === -1 ? maxApproveNeeded : amountToRepay,
+      amount: amountRequiringApproval,
       signedAmount: signatureParams ? signatureParams.amount : '0',
     });
+
+  // Permit already signs for an exact amount, so this only applies to the approve() path.
+  const approveExactAmount = !usePermit && walletApprovalAmountPreference === ApprovalAmount.EXACT;
 
   if (requiresApproval && approvalTxState?.success) {
     // There was a successful approval tx, but the approval amount is not enough.
@@ -127,6 +136,17 @@ export const RepayActions = ({
     symbol,
     decimals: poolReserve.decimals,
     signatureAmount: amountToRepay,
+    amountToApprove:
+      approveExactAmount && Number(amountToRepay) !== 0
+        ? parseUnits(
+            getRepayAmountToApprove({
+              amountRequiringApproval,
+              isMaxRepay: Number(amountToRepay) === -1,
+              decimals: poolReserve.decimals,
+            }),
+            poolReserve.decimals
+          ).toString()
+        : undefined,
     onApprovalTxConfirmed: fetchApprovedAmount,
     onSignTxCompleted: (signedParams) => setSignatureParams(signedParams),
     chainId,
@@ -256,6 +276,7 @@ export const RepayActions = ({
       actionText={<Trans>Repay {symbol}</Trans>}
       actionInProgressText={<Trans>Repaying {symbol}</Trans>}
       tryPermit={permitAvailable}
+      showApprovalAmountToggle={!repayWithATokens}
       requiresApprovalReset={requiresApprovalReset}
     />
   );

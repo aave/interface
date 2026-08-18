@@ -35,6 +35,7 @@ interface TxActionsWrapperProps extends BoxProps {
   };
   tryPermit?: boolean;
   permitInUse?: boolean;
+  showApprovalAmountToggle?: boolean;
   event?: TrackEventProps;
 }
 
@@ -59,6 +60,7 @@ export const TxActionsWrapper = ({
   errorParams,
   tryPermit,
   permitInUse = false,
+  showApprovalAmountToggle = false,
   event,
   ...rest
 }: TxActionsWrapperProps) => {
@@ -151,6 +153,7 @@ export const TxActionsWrapper = ({
             approvalHash={approvalTxState?.txHash}
             tryPermit={tryPermit}
             permitInUse={permitInUse}
+            showApprovalAmountToggle={showApprovalAmountToggle}
           />
         </Box>
       )}

@@ -207,7 +207,7 @@ export const useApprovalTx = ({
             action: ProtocolAction.approval,
             txState: 'success',
             asset: assetAddress,
-            amount: MAX_UINT_AMOUNT,
+            amount: amountToApprove ?? MAX_UINT_AMOUNT,
             assetName: symbol,
           });
           if (onApprovalTxConfirmed) {

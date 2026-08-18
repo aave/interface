@@ -512,6 +512,11 @@ msgstr "Disable {0} as collateral to use this category. These assets would have 
 msgid "Cooling down..."
 msgstr "Cooling down..."
 
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+msgid "Transaction · unlimited"
+msgstr "Transaction · unlimited"
+
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
@@ -837,6 +842,10 @@ msgstr "Borrowing power and assets are limited due to Isolation mode."
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
+
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+msgid "Transaction · exact amount"
+msgstr "Transaction · exact amount"
 
 #: src/modules/umbrella/helpers/SharesTooltip.tsx
 msgid "Shares"
@@ -1334,8 +1343,6 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
@@ -1874,10 +1881,6 @@ msgstr "Enabling this asset as collateral increases your borrowing power and Hea
 msgid "This action will reduce V2 health factor below liquidation threshold. retain collateral or migrate borrow position to continue."
 msgstr "This action will reduce V2 health factor below liquidation threshold. retain collateral or migrate borrow position to continue."
 
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-msgid "{currentMethod}"
-msgstr "{currentMethod}"
-
 #: src/modules/bridge/BridgeTransactionListItem.tsx
 msgid "View TX"
 msgstr "View TX"
@@ -2070,6 +2073,11 @@ msgstr "GHO balance"
 #: src/components/transactions/StkGhoMigrate/StkGhoMigrateModalContent.tsx
 msgid "received"
 msgstr "received"
+
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+msgid "Signed message"
+msgstr "Signed message"
 
 #: pages/dashboard.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
@@ -2546,6 +2554,10 @@ msgstr "Enter a valid address"
 msgid "Time left to unstake"
 msgstr "Time left to unstake"
 
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+msgid "Transaction · exact"
+msgstr "Transaction · exact"
+
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
 msgstr "Disabling this asset as collateral affects your borrowing power and Health Factor."
@@ -2601,6 +2613,11 @@ msgstr "Borrow APY, variable"
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
+
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+msgid "Transaction"
+msgstr "Transaction"
 
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "Cooldown period warning"
