@@ -6,6 +6,11 @@ import { useModalContext } from '../../../../hooks/useModal';
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
 import { SwapError, SwapParams, SwapState, SwapType } from '../types';
 import { ActionsBlockedReason, isProtocolSwapState } from '../types/state.types';
+import {
+  BuyTokenCollateralBlockingGuard,
+  hasBuyTokenNotUsedAsCollateral,
+  useCollateralEnabledByAddress,
+} from './shared/BuyTokenCollateralBlockingGuard';
 import { errorToConsole } from './shared/console.helpers';
 import {
   FlashLoanDisabledBlockingGuard,
@@ -26,11 +31,6 @@ import {
   InsufficientLiquidityBlockingGuard,
 } from './shared/InsufficientLiquidityBlockingGuard';
 import { ProviderError } from './shared/ProviderError';
-import {
-  BuyTokenCollateralBlockingGuard,
-  hasBuyTokenNotUsedAsCollateral,
-  useCollateralEnabledByAddress,
-} from './shared/BuyTokenCollateralBlockingGuard';
 import { hasSupplyCapBlocking, SupplyCapBlockingGuard } from './shared/SupplyCapBlockingGuard';
 import { hasUserDenied, UserDenied } from './shared/UserDenied';
 import { hasZeroLTVBlocking, ZeroLTVBlockingGuard } from './shared/ZeroLTVBlockingGuard';

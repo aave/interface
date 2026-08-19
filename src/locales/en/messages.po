@@ -48,6 +48,10 @@ msgstr "E-Mode increases your LTV for a selected category of assets, meaning tha
 msgid "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 msgstr "Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers. You will not be sending any tokens, only the rights to vote and propose changes to the protocol. You can re-delegate or revoke power to self at any time."
 
+#: src/components/transactions/Swap/actions/Leverage/LeverageActionsViaCoW.tsx
+msgid "Leveraging {0}"
+msgstr "Leveraging {0}"
+
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Borrow cap"
 msgstr "Borrow cap"
@@ -212,6 +216,10 @@ msgstr "Asset supply is limited to a certain amount to reduce protocol exposure 
 #: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
 msgid "Cancellation submited"
 msgstr "Cancellation submited"
+
+#: src/components/transactions/Swap/errors/shared/BuyTokenCollateralBlockingError.tsx
+msgid "The asset you are swapping into is not enabled as collateral on your position. Enable it as collateral first, otherwise this order cannot settle."
+msgstr "The asset you are swapping into is not enabled as collateral on your position. Enable it as collateral first, otherwise this order cannot settle."
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "This transaction will switch E-Mode from {0} to {1}. Borrowing will be restricted to assets within the new category."
@@ -923,6 +931,10 @@ msgstr "Repay {0} with {1}"
 msgid "Country (optional)"
 msgstr "Country (optional)"
 
+#: src/components/transactions/Swap/details/LeverageDetails.tsx
+msgid "Net apy"
+msgstr "Net apy"
+
 #: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
 msgid "Techpaper"
 msgstr "Techpaper"
@@ -1178,6 +1190,11 @@ msgstr "This asset is frozen due to an Aave Protocol Governance decision. On the
 #: src/modules/migration/MigrationList.tsx
 msgid "Assets"
 msgstr "Assets"
+
+#: src/components/transactions/Swap/actions/Leverage/LeverageActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/Leverage/LeverageActionsViaCoW.tsx
+msgid "Leverage {0}"
+msgstr "Leverage {0}"
 
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/TxActionsWrapper.tsx
@@ -1461,6 +1478,11 @@ msgstr "This represents the threshold at which a borrow position will be conside
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Isolated"
 msgstr "Isolated"
+
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+#: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+msgid "Leverage"
+msgstr "Leverage"
 
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Borrow:"
@@ -2135,6 +2157,10 @@ msgstr "Show assets with small balance"
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
 msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
+
+#: src/components/transactions/Swap/details/LeverageDetails.tsx
+msgid "Borrow balance after"
+msgstr "Borrow balance after"
 
 #: pages/500.page.tsx
 msgid "Reload the page"
@@ -3056,6 +3082,10 @@ msgstr "Available to Claim"
 msgid "Net APY"
 msgstr "Net APY"
 
+#: src/components/transactions/Swap/details/LeverageDetails.tsx
+msgid "Collateral after"
+msgstr "Collateral after"
+
 #: src/layouts/SupportModal.tsx
 msgid "Submit"
 msgstr "Submit"
@@ -3414,10 +3444,15 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 msgid "The selected rate is lower than the market price. You might incur a loss if you proceed."
 msgstr "The selected rate is lower than the market price. You might incur a loss if you proceed."
 
+#: src/components/transactions/Swap/modals/LeverageModal.tsx
+msgid "Please connect your wallet to leverage your position."
+msgstr "Please connect your wallet to leverage your position."
+
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/Leverage/LeverageActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
@@ -3453,6 +3488,9 @@ msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/Leverage/LeverageActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/Leverage/LeverageActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/Leverage/LeverageActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx

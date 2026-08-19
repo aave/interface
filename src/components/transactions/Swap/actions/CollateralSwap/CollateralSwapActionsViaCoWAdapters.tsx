@@ -1,8 +1,6 @@
 import { normalize } from '@aave/math-utils';
 import { getOrderToSign, LimitTradeParameters, OrderKind, OrderStatus } from '@cowprotocol/cow-sdk';
-import {
-  HASH_ZERO,
-} from '@cowprotocol/sdk-flash-loans';
+import { HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
@@ -18,19 +16,19 @@ import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { COW_PARTNER_FEE } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
-  toSdkFlashLoanType,
   addOrderTypeToAppData,
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
   overrideSmartSlippageOnAppData,
+  toSdkFlashLoanType,
 } from '../../helpers/cow';
 import { calculateInstanceAddress, getHooksGasLimit } from '../../helpers/cow/adapters.helpers';
 import { useCollateralsAmount } from '../../hooks/useCollateralsAmount';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
-  FlashLoanFlow,
   areActionsBlocked,
   ExpiryToSecondsMap,
+  FlashLoanFlow,
   isCowProtocolRates,
   isShieldBlocked,
   OrderType,

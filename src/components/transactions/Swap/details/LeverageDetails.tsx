@@ -1,0 +1,124 @@
+import { valueToBigNumber } from '@aave/math-utils';
+import { Trans } from '@lingui/macro';
+import { Box, Skeleton } from '@mui/material';
+import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { Row } from 'src/components/primitives/Row';
+import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import {
+  DetailsHFLine,
+  DetailsIncentivesLine,
+  TxModalDetails,
+} from 'src/components/transactions/FlowCommons/TxModalDetails';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+
+import { ProtocolSwapParams, ProtocolSwapState } from '../types';
+import { CowCostsDetails } from './CowCostsDetails';
+
+/**
+ * Source is the collateral the swap buys and supplies, destination is the debt it draws, so both
+ * balances grow. The health factor is the number that decides whether the position is sane, which
+ * is why it leads.
+ */
+export const LeverageDetails = ({
+  state,
+}: {
+  params: ProtocolSwapParams;
+  state: ProtocolSwapState;
+}) => {
+  const { user } = useAppDataContext();
+
+  const collateralAfter = valueToBigNumber(state.sourceReserve.underlyingBalance).plus(
+    valueToBigNumber(state.buyAmountFormatted ?? '0')
+  );
+  const debtAfter = valueToBigNumber(state.destinationReserve.variableBorrows).plus(
+    valueToBigNumber(state.sellAmountFormatted ?? '0')
+  );
+
+  const collateralAfterUSD = collateralAfter.multipliedBy(
+    valueToBigNumber(state.sourceReserve.reserve.priceInUSD)
+  );
+  const debtAfterUSD = debtAfter.multipliedBy(
+    valueToBigNumber(state.destinationReserve.reserve.priceInUSD)
+  );
+
+  const netApy = valueToBigNumber(state.sourceReserve.reserve.supplyAPY).minus(
+    valueToBigNumber(state.destinationReserve.reserve.variableBorrowAPY)
+  );
+
+  const balanceAfter = (symbol: string, iconSymbol: string, amount: string, amountUSD: string) => (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+      }}
+    >
+      {state.ratesLoading ? (
+        <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+      ) : (
+        <>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <TokenIcon symbol={iconSymbol} sx={{ mr: 2, ml: 4, fontSize: '16px' }} />
+            <FormattedNumber value={amount} variant="secondary14" compact symbol={symbol} />
+          </Box>
+          <FormattedNumber
+            value={amountUSD}
+            variant="helperText"
+            compact
+            symbol="USD"
+            symbolsColor="text.secondary"
+            color="text.secondary"
+          />
+        </>
+      )}
+    </Box>
+  );
+
+  return (
+    <TxModalDetails gasLimit={state.gasLimit} showGasStation={state.showGasStation}>
+      <CowCostsDetails state={state} />
+
+      {user && (
+        <DetailsHFLine
+          healthFactor={user.healthFactor}
+          futureHealthFactor={state.hfAfterSwap?.toString() ?? user.healthFactor}
+          visibleHfChange={!!state.buyAmountFormatted}
+          loading={state.ratesLoading}
+        />
+      )}
+
+      <Row caption={<Trans>Net apy</Trans>} captionVariant="description" mb={4}>
+        {state.ratesLoading ? (
+          <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
+        ) : (
+          <FormattedNumber value={netApy.toString()} variant="secondary14" percent />
+        )}
+      </Row>
+
+      <DetailsIncentivesLine
+        incentives={state.sourceReserve.reserve.aIncentivesData}
+        symbol={state.sourceReserve.reserve.symbol}
+        loading={state.ratesLoading}
+      />
+
+      <Row caption={<Trans>Collateral after</Trans>} captionVariant="description" mb={4}>
+        {balanceAfter(
+          state.sourceReserve.reserve.symbol,
+          state.sourceReserve.reserve.iconSymbol,
+          collateralAfter.toString(),
+          collateralAfterUSD.toString()
+        )}
+      </Row>
+
+      <Row caption={<Trans>Borrow balance after</Trans>} captionVariant="description" mb={4}>
+        {balanceAfter(
+          state.destinationReserve.reserve.symbol,
+          state.destinationReserve.reserve.iconSymbol,
+          debtAfter.toString(),
+          debtAfterUSD.toString()
+        )}
+      </Row>
+    </TxModalDetails>
+  );
+};

@@ -88,7 +88,8 @@ export const isProtocolSwapParams = (params: SwapParams): params is ProtocolSwap
     (params.swapType === SwapType.DebtSwap ||
       params.swapType === SwapType.CollateralSwap ||
       params.swapType === SwapType.RepayWithCollateral ||
-      params.swapType === SwapType.WithdrawAndSwap)
+      params.swapType === SwapType.WithdrawAndSwap ||
+      params.swapType === SwapType.Leverage)
   );
 };
 
@@ -106,7 +107,8 @@ export type ProtocolSwapParams = Omit<TokensSwapParams, 'swapType'> & {
     | SwapType.DebtSwap
     | SwapType.CollateralSwap
     | SwapType.RepayWithCollateral
-    | SwapType.WithdrawAndSwap;
+    | SwapType.WithdrawAndSwap
+    | SwapType.Leverage;
 
   sourceReserve: FormattedUserReserves;
   destinationReserve: FormattedUserReserves;

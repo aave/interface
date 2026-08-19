@@ -27,7 +27,8 @@ export const SuppliedPositionsListItem = ({
 }: DashboardReserve) => {
   const { user } = useAppDataContext();
   const { isIsolated, aIncentivesData, aTokenAddress, isFrozen, isActive, isPaused } = reserve;
-  const { openSupply, openWithdraw, openCollateralChange, openCollateralSwap } = useModalContext();
+  const { openSupply, openWithdraw, openCollateralChange, openCollateralSwap, openLeverage } =
+    useModalContext();
   const { debtCeiling } = useAssetCaps();
   const [trackEvent, currentMarketData, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarketData, store.currentMarket])
@@ -50,6 +51,9 @@ export const SuppliedPositionsListItem = ({
     : false;
 
   const disableSwap = !isActive || isPaused || reserve.symbol == 'stETH';
+  // Leverage rides the same adapters as the collateral swap, and only makes sense on a position
+  // already counting as collateral.
+  const showLeverageButton = showSwitchButton && usageAsCollateralEnabledOnUser;
   const disableWithdraw = !isActive || isPaused;
   const disableSupply = !isActive || isFrozen || isPaused;
 
@@ -135,6 +139,24 @@ export const SuppliedPositionsListItem = ({
             onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
           >
             <Trans>Supply</Trans>
+          </Button>
+        )}
+        {showLeverageButton && (
+          <Button
+            disabled={disableSwap}
+            variant="outlined"
+            onClick={() => {
+              trackEvent(GENERAL.OPEN_MODAL, {
+                modal: 'Leverage',
+                market: currentMarket,
+                assetName: reserve.name,
+                asset: underlyingAsset,
+              });
+              openLeverage(underlyingAsset);
+            }}
+            data-cy={`leverageButton`}
+          >
+            <Trans>Leverage</Trans>
           </Button>
         )}
         <Button

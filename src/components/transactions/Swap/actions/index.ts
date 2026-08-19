@@ -14,6 +14,7 @@ import { ActionsBlocked } from './ActionsBlocked';
 import { ActionsLoading } from './ActionsSkeleton';
 import { CollateralSwapActions } from './CollateralSwap/CollateralSwapActions';
 import { DebtSwapActions } from './DebtSwap/DebtSwapActions';
+import { LeverageActions } from './Leverage/LeverageActions';
 import { RepayWithCollateralActions } from './RepayWithCollateral/RepayWithCollateralActions';
 import { SwapActions } from './SwapActions';
 import { WithdrawAndSwapActions } from './WithdrawAndSwap/WithdrawAndSwapActions';
@@ -57,6 +58,13 @@ export const BaseSwapActions = ({
         return React.createElement(DebtSwapActions, { params, state, setState, trackingHandlers });
       case SwapType.RepayWithCollateral:
         return React.createElement(RepayWithCollateralActions, {
+          params,
+          state,
+          setState,
+          trackingHandlers,
+        });
+      case SwapType.Leverage:
+        return React.createElement(LeverageActions, {
           params,
           state,
           setState,
