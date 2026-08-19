@@ -1,5 +1,5 @@
 import { ProtocolAction } from '@aave/contract-helpers';
-import { TrendingUpIcon } from '@heroicons/react/outline';
+import { ArrowCircleDownIcon, TrendingUpIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Button, ListItemText, Menu, MenuItem, SvgIcon } from '@mui/material';
 import { useState } from 'react';
@@ -147,65 +147,70 @@ export const SuppliedPositionsListItem = ({
           </Button>
         )}
         <Button
-          disabled={disableWithdraw}
+          id="supplied-extra-button"
+          sx={{ minWidth: 0, px: 4 }}
           variant="outlined"
-          onClick={() => {
-            openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
-          }}
+          onClick={(event) => setAnchorEl(event.currentTarget)}
+          aria-controls={extraActionsOpen ? 'supplied-item-extra-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={extraActionsOpen ? 'true' : undefined}
+          data-cy={`suppliedExtraActionsButton`}
         >
-          <Trans>Withdraw</Trans>
+          <Trans>...</Trans>
         </Button>
-        {showLeverageButton && (
-          <>
-            <Button
-              id="supplied-extra-button"
-              sx={{ minWidth: 0, px: 4 }}
-              variant="outlined"
-              onClick={(event) => setAnchorEl(event.currentTarget)}
-              aria-controls={extraActionsOpen ? 'supplied-item-extra-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={extraActionsOpen ? 'true' : undefined}
-              data-cy={`suppliedExtraActionsButton`}
-            >
-              <Trans>...</Trans>
-            </Button>
-            <Menu
-              id="supplied-item-extra-menu"
-              anchorEl={anchorEl}
-              open={extraActionsOpen}
-              MenuListProps={{
-                'aria-labelledby': 'supplied-extra-button',
-                sx: { py: 0 },
+        <Menu
+          id="supplied-item-extra-menu"
+          anchorEl={anchorEl}
+          open={extraActionsOpen}
+          MenuListProps={{
+            'aria-labelledby': 'supplied-extra-button',
+            sx: { py: 0 },
+          }}
+          onClose={() => setAnchorEl(null)}
+          keepMounted={true}
+          PaperProps={{ sx: { minWidth: '120px', py: 0 } }}
+        >
+          <MenuItem
+            sx={{ gap: 2 }}
+            disabled={disableWithdraw}
+            onClick={() => {
+              setAnchorEl(null);
+              openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
+            }}
+            data-cy={`withdrawButton`}
+          >
+            <SvgIcon fontSize="small">
+              <ArrowCircleDownIcon />
+            </SvgIcon>
+            <ListItemText>
+              <Trans>Withdraw</Trans>
+            </ListItemText>
+          </MenuItem>
+          {showLeverageButton && (
+            <MenuItem
+              sx={{ gap: 2 }}
+              disabled={disableSwap}
+              onClick={() => {
+                setAnchorEl(null);
+                trackEvent(GENERAL.OPEN_MODAL, {
+                  modal: 'Leverage',
+                  market: currentMarket,
+                  assetName: reserve.name,
+                  asset: underlyingAsset,
+                });
+                openLeverage(underlyingAsset);
               }}
-              onClose={() => setAnchorEl(null)}
-              keepMounted={true}
-              PaperProps={{ sx: { minWidth: '120px', py: 0 } }}
+              data-cy={`leverageButton`}
             >
-              <MenuItem
-                sx={{ gap: 2 }}
-                disabled={disableSwap}
-                onClick={() => {
-                  setAnchorEl(null);
-                  trackEvent(GENERAL.OPEN_MODAL, {
-                    modal: 'Leverage',
-                    market: currentMarket,
-                    assetName: reserve.name,
-                    asset: underlyingAsset,
-                  });
-                  openLeverage(underlyingAsset);
-                }}
-                data-cy={`leverageButton`}
-              >
-                <SvgIcon fontSize="small">
-                  <TrendingUpIcon />
-                </SvgIcon>
-                <ListItemText>
-                  <Trans>Leverage</Trans>
-                </ListItemText>
-              </MenuItem>
-            </Menu>
-          </>
-        )}
+              <SvgIcon fontSize="small">
+                <TrendingUpIcon />
+              </SvgIcon>
+              <ListItemText>
+                <Trans>Leverage</Trans>
+              </ListItemText>
+            </MenuItem>
+          )}
+        </Menu>
       </ListButtonsColumn>
     </ListItemWrapper>
   );
