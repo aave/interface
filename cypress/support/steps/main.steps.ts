@@ -308,8 +308,9 @@ export const withdraw = (
     it(`Open ${_shortName} Withdraw popup view`, () => {
       cy.doSwitchToDashboardSupplyView();
       cy.getDashBoardSuppliedRow(_shortName, isCollateral)
-        .find(`button:contains("Withdraw")`)
+        .find(`[data-cy=suppliedExtraActionsButton]`)
         .click();
+      cy.get(`[data-cy=withdrawButton]`).click();
       cy.get(`[data-cy=Modal] h2:contains("Withdraw ${_shortName}")`).should('be.visible');
     });
     it(`Choose ${forWrapped ? 'usual token' : 'wrapped token'}`, () => {
@@ -390,8 +391,9 @@ export const withdrawAndSwitch = (
     it(`Open Withdraw and Switch modal for ${_shortNameFrom}`, () => {
       cy.doSwitchToDashboardSupplyView();
       cy.getDashBoardSuppliedRow(_shortNameFrom, isCollateralFromAsset)
-        .find(`button:contains("Withdraw")`)
+        .find(`[data-cy=suppliedExtraActionsButton]`)
         .click();
+      cy.get(`[data-cy=withdrawButton]`).click();
 
       cy.get(`[data-cy=Modal] h2:contains("Withdraw ${_shortNameFrom}")`).should('be.visible');
 
