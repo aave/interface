@@ -164,6 +164,10 @@ msgstr "This is the total amount that you are able to supply to in this reserve.
 msgid "This asset is eligible for {0} Ethena Rewards."
 msgstr "This asset is eligible for {0} Ethena Rewards."
 
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "Exact amount"
+msgstr "Exact amount"
+
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
 msgid "Repay {0}"
@@ -512,11 +516,6 @@ msgstr "Disable {0} as collateral to use this category. These assets would have 
 msgid "Cooling down..."
 msgstr "Cooling down..."
 
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-msgid "Transaction · unlimited"
-msgstr "Transaction · unlimited"
-
 #: src/components/transactions/GovVote/GovVoteModalContent.tsx
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
@@ -842,10 +841,6 @@ msgstr "Borrowing power and assets are limited due to Isolation mode."
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
 msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
-
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-msgid "Transaction · exact amount"
-msgstr "Transaction · exact amount"
 
 #: src/modules/umbrella/helpers/SharesTooltip.tsx
 msgid "Shares"
@@ -1343,6 +1338,8 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
 #: src/components/transactions/DelegationTxsWrapper.tsx
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
@@ -1684,6 +1681,11 @@ msgstr "Weekly Rewards"
 msgid "Pending..."
 msgstr "Pending..."
 
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "Unlimited"
+msgstr "Unlimited"
+
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Wallet Balance"
@@ -1881,6 +1883,10 @@ msgstr "Enabling this asset as collateral increases your borrowing power and Hea
 msgid "This action will reduce V2 health factor below liquidation threshold. retain collateral or migrate borrow position to continue."
 msgstr "This action will reduce V2 health factor below liquidation threshold. retain collateral or migrate borrow position to continue."
 
+#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+msgid "{currentMethod}"
+msgstr "{currentMethod}"
+
 #: src/modules/bridge/BridgeTransactionListItem.tsx
 msgid "View TX"
 msgstr "View TX"
@@ -1990,6 +1996,10 @@ msgstr "Enabled"
 msgid "sGHO balance"
 msgstr "sGHO balance"
 
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "{exactAmount} {symbol} — covers interest accruing before the transaction lands"
+msgstr "{exactAmount} {symbol} — covers interest accruing before the transaction lands"
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "{0} collateral would have 0% LTV in this category. Disable {1} as collateral to use this option."
@@ -2073,11 +2083,6 @@ msgstr "GHO balance"
 #: src/components/transactions/StkGhoMigrate/StkGhoMigrateModalContent.tsx
 msgid "received"
 msgstr "received"
-
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-msgid "Signed message"
-msgstr "Signed message"
 
 #: pages/dashboard.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
@@ -2554,10 +2559,6 @@ msgstr "Enter a valid address"
 msgid "Time left to unstake"
 msgstr "Time left to unstake"
 
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-msgid "Transaction · exact"
-msgstr "Transaction · exact"
-
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 msgid "Disabling this asset as collateral affects your borrowing power and Health Factor."
 msgstr "Disabling this asset as collateral affects your borrowing power and Health Factor."
@@ -2613,11 +2614,6 @@ msgstr "Borrow APY, variable"
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This asset is eligible for rewards through SuperFest. Aave Labs does not guarantee the program and accepts no liability."
-
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-#: src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
-msgid "Transaction"
-msgstr "Transaction"
 
 #: src/components/Warnings/CooldownWarning.tsx
 msgid "Cooldown period warning"
@@ -3350,6 +3346,10 @@ msgstr "Repayment amount to reach {0}% utilization"
 msgid "Proceed with migration"
 msgstr "Proceed with migration"
 
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "Allowance"
+msgstr "Allowance"
+
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "You can not stake this amount because it will cause collateral call"
 msgstr "You can not stake this amount because it will cause collateral call"
@@ -3830,6 +3830,10 @@ msgstr "Repaying {0} with {1}"
 #: src/components/AssetCategoryMultiselect.tsx
 msgid "All Categories"
 msgstr "All Categories"
+
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "No further approvals needed for future repays"
+msgstr "No further approvals needed for future repays"
 
 #: src/layouts/MobileMenu.tsx
 #: src/layouts/MoreMenu.tsx
