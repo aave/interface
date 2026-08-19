@@ -471,7 +471,6 @@ export const SwitchAssetInput = ({
                   zIndex: 2,
                   mb: 3,
                   pb: 3,
-                  backgroundColor: 'surface-elevated',
                   boxShadow: '0px 4px 6px -6px rgba(0, 0, 0, 0.1)',
                   marginTop: -3,
                   paddingTop: 3,

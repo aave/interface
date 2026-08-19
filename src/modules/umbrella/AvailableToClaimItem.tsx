@@ -7,13 +7,7 @@ import { ListValueColumn } from '../dashboard/lists/ListValueColumn';
 import { AmountAvailableItem } from './helpers/AmountAvailableItem';
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 
-export const AvailableToClaimItem = ({
-  stakeData,
-  isMobile,
-}: {
-  stakeData: MergedStakeData;
-  isMobile?: boolean;
-}) => {
+export const AvailableToClaimItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const icons = stakeData.formattedRewards.map((reward) => ({
     src: reward.rewardTokenSymbol,
     aToken: reward.aToken,
@@ -30,13 +24,7 @@ export const AvailableToClaimItem = ({
   );
 
   return (
-    <Stack
-      direction={isMobile ? 'row' : 'column'}
-      alignItems="center"
-      justifyContent="center"
-      gap={2}
-      width="100%"
-    >
+    <Stack direction="row" alignItems="center" justifyContent="center" gap={2} width="100%">
       <ListValueColumn
         listColumnProps={{
           p: 0,

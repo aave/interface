@@ -108,7 +108,7 @@ export const GasStation: React.FC<GasStationProps> = ({
       </Box>
       {!disabled && !isContractAddress && Number(nativeBalanceUSD) < Number(totalGasCostsUsd) && (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Alert severity="warning" sx={{ width: '100%', mb: 0, mx: 'auto' }}>
+          <Alert severity="warning" data-size="small" sx={{ width: '100%', mb: 0, mx: 'auto' }}>
             You do not have enough {baseAssetSymbol} in your account to pay for transaction fees on{' '}
             {name} network. Please deposit {baseAssetSymbol} from another account.
           </Alert>

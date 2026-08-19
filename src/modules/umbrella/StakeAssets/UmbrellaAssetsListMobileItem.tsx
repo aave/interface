@@ -52,7 +52,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         mb={3}
         align="flex-start"
       >
-        <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} isMobile />
+        <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} />
       </Row>
       <Row caption={<SharesTooltip />} captionVariant="description" mb={3} align="flex-start">
         <AmountSharesItem stakeData={umbrellaStakeAsset} />
@@ -64,7 +64,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         mb={3}
         align="flex-start"
       >
-        <AvailableToStakeItem stakeData={umbrellaStakeAsset} isMobile />
+        <AvailableToStakeItem stakeData={umbrellaStakeAsset} />
       </Row>
 
       <Row caption={<Trans>Available to claim</Trans>} captionVariant="description" mb={3}>
@@ -77,7 +77,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
             textAlign: 'center',
           }}
         >
-          <AvailableToClaimItem stakeData={umbrellaStakeAsset} isMobile />
+          <AvailableToClaimItem stakeData={umbrellaStakeAsset} />
         </Box>
       </Row>
 

@@ -68,7 +68,7 @@ export const UmbrellaAssetsListContainer = () => {
         categoriesDisabled={isLoadingCategories || !!categoriesError}
       />
 
-      <Paper variant="card">
+      <Paper variant="card" sx={{ '& > div:first-of-type > hr': { display: 'none' } }}>
         <UmbrellaAssetsList
           loading={loading}
           isLoadingStakedDataWithTokenBalances={isLoadingStakedDataWithTokenBalances}

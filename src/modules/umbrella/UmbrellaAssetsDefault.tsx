@@ -65,7 +65,7 @@ export const UmrellaAssetsDefaultListContainer = () => {
         categoriesDisabled={isLoadingCategories || !!categoriesError}
       />
 
-      <Paper variant="card">
+      <Paper variant="card" sx={{ '& > div:first-of-type > hr': { display: 'none' } }}>
         <UmbrellaAssetsDefault stakeAssets={filteredAssets ?? []} loading={loading} />
 
         {noStakeAssetsConfigured ? (

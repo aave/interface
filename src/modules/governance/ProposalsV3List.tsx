@@ -27,7 +27,7 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        borderBottom: `1px solid ${figVars['border-2']}`,
+        borderBottom: `1px solid ${figVars['border-0']}`,
       }}
       component={Link}
       href={ROUTES.dynamicRenderedProposal(+proposal.id)}
@@ -108,7 +108,7 @@ const ProposalListSkeleton = () => {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        borderBottom: `1px solid ${figVars['border-2']}`,
+        borderBottom: `1px solid ${figVars['border-0']}`,
       }}
     >
       <Stack

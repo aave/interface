@@ -7,13 +7,7 @@ import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { AmountAvailableItem } from './helpers/AmountAvailableItem';
 import { MultiIconWithTooltip } from './helpers/MultiIcon';
 
-export const AvailableToStakeItem = ({
-  stakeData,
-  isMobile,
-}: {
-  stakeData: MergedStakeData;
-  isMobile?: boolean;
-}) => {
+export const AvailableToStakeItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const {
     stataTokenAssetBalance: underlyingWaTokenBalance,
     aTokenBalanceAvailableToStake,
@@ -47,12 +41,7 @@ export const AvailableToStakeItem = ({
     Number(aTokenBalanceAvailableToStake);
 
   return (
-    <Stack
-      direction={isMobile ? 'row' : 'column'}
-      alignItems="center"
-      justifyContent="center"
-      gap={2}
-    >
+    <Stack direction="row" alignItems="center" justifyContent="center" gap={2}>
       <FormattedNumber
         compact
         value={totalAvailableToStake}

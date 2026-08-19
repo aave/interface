@@ -212,6 +212,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
             <Button
               fullWidth
               variant="contained"
+              size="small"
               onClick={() => {
                 trackEvent(GENERAL.OPEN_MODAL, {
                   type: 'Enable E-Mode',
@@ -230,7 +231,8 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
               <Button
                 fullWidth
                 sx={{ mb: '6px' }}
-                variant={'outlined'}
+                variant="outlined"
+                size="small"
                 onClick={() => {
                   trackEvent(GENERAL.OPEN_MODAL, {
                     modal: 'Switch E-Mode',

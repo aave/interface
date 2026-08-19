@@ -319,7 +319,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         paper: t['surface-elevated'],
         surface: t['bg-2'],
       },
-      divider: t['border-2'],
+      divider: t['border-0'],
       action: {
         active: t['fg-3'],
         hover: t['button-hover'],

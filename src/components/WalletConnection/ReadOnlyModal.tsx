@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
@@ -100,12 +100,9 @@ export const ReadOnlyModal = () => {
           </Typography>
         )}
         {readOnlyMode && (
-          <>
-            <Divider />
-            <Button sx={{ mt: 2 }} variant="outlined" onClick={handleRemoveWatchedAddress}>
-              Remove watched address
-            </Button>
-          </>
+          <Button sx={{ mt: 2 }} variant="outlined" onClick={handleRemoveWatchedAddress}>
+            Remove watched address
+          </Button>
         )}
       </Box>
     </BasicModal>
