@@ -946,6 +946,7 @@ msgstr "You've successfully submitted an order."
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+#: src/components/transactions/Swap/inputs/shared/LeverageMultiplierSelector.tsx
 msgid "Max"
 msgstr "Max"
 
@@ -1480,6 +1481,8 @@ msgstr "This represents the threshold at which a borrow position will be conside
 msgid "Isolated"
 msgstr "Isolated"
 
+#: src/components/transactions/Swap/details/LeverageDetails.tsx
+#: src/components/transactions/Swap/inputs/shared/LeverageMultiplierSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 msgid "Leverage"
