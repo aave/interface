@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Tooltip, Typography, useTheme } from '@mui/material';
 import { ExtendedReserveIncentiveResponse } from 'src/hooks/useMerklIncentives';
 
 import { PointsBasedCampaignTooltip } from '../infoTooltips/PointsBasedCampaignTooltip';
@@ -21,6 +21,15 @@ export const MerklIncentivesTooltipContent = ({
   const merklIncentivesFormatted = getSymbolMap(merklIncentives);
 
   const isPointsBased = Boolean(merklIncentives?.breakdown?.points);
+  const balanceCampaignAPY = merklIncentives.breakdown.balanceCampaignAPY || 0;
+  // A reserve can be covered by a balance campaign alone, so the per-campaign rows must
+  // also be used when there is a single reward: the aggregated row cannot express that
+  // part of the APY is gated behind a minimum position size.
+  const hasBalanceCampaign = Boolean(merklIncentives.hasBalanceCampaign);
+  const perCampaignRewards = merklIncentives.rewardsTokensMappedApys ?? [];
+  const showPerCampaignRows =
+    perCampaignRewards.length > 1 || (hasBalanceCampaign && perCampaignRewards.length > 0);
+  const balanceCampaignMessage = merklIncentives.balanceCampaignMessage;
   return (
     <Box
       sx={{
@@ -226,9 +235,8 @@ export const MerklIncentivesTooltipContent = ({
                   </Typography>
                 </Box>
               </Row>
-            ) : merklIncentives.rewardsTokensMappedApys &&
-              merklIncentives.rewardsTokensMappedApys.length > 1 ? (
-              merklIncentives.rewardsTokensMappedApys.map((reward, index) => {
+            ) : showPerCampaignRows ? (
+              perCampaignRewards.map((reward, index) => {
                 const { tokenIconSymbol, symbol, aToken } = getSymbolMap({
                   rewardTokenSymbol: reward.token.symbol,
                   rewardTokenAddress: reward.token.address,
@@ -255,6 +263,24 @@ export const MerklIncentivesTooltipContent = ({
                         <Typography variant={typographyVariant} sx={{ ml: 0.5 }}>
                           {merklIncentives.breakdown.isBorrow ? '(-)' : '(+)'}
                         </Typography>
+                        {reward.isBalanceCampaign && (
+                          <Tooltip
+                            title={
+                              balanceCampaignMessage ||
+                              'This reward is only earned by positions above a minimum size.'
+                            }
+                            arrow
+                            placement="top"
+                          >
+                            <Typography
+                              variant={typographyVariant}
+                              color="warning.main"
+                              sx={{ ml: 0.75, cursor: 'help', textDecoration: 'underline dotted' }}
+                            >
+                              <Trans>conditional</Trans>
+                            </Typography>
+                          </Tooltip>
+                        )}
                       </Box>
                     }
                     width="100%"
@@ -338,6 +364,47 @@ export const MerklIncentivesTooltipContent = ({
                   </Typography>
                 </Box>
               </Row>
+
+              {hasBalanceCampaign && balanceCampaignAPY > 0 && (
+                <>
+                  <Row
+                    height={32}
+                    caption={
+                      <Typography variant={typographyVariant} fontWeight={600}>
+                        <Trans>With balance bonus</Trans>
+                      </Typography>
+                    }
+                    width="100%"
+                  >
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                      <FormattedNumber
+                        value={
+                          merklIncentives.breakdown.isBorrow
+                            ? merklIncentives.breakdown.totalAPY - balanceCampaignAPY
+                            : merklIncentives.breakdown.totalAPY + balanceCampaignAPY
+                        }
+                        percent
+                        variant={typographyVariant}
+                        color="text.primary"
+                      />
+                      <Typography variant={typographyVariant} sx={{ ml: 1 }} color="text.primary">
+                        <Trans>APY</Trans>
+                      </Typography>
+                    </Box>
+                  </Row>
+
+                  <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
+                    {balanceCampaignMessage ? (
+                      <Trans>{balanceCampaignMessage}</Trans>
+                    ) : (
+                      <Trans>
+                        Part of these rewards is only earned by positions above a minimum size, so
+                        the total APY shown in the markets and dashboard tables excludes it.
+                      </Trans>
+                    )}
+                  </Typography>
+                </>
+              )}
             </Box>
           </>
         ) : (

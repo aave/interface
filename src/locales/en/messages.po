@@ -1357,6 +1357,10 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 msgid "{0}"
 msgstr "{0}"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "Part of these rewards is only earned by positions above a minimum size, so the total APY shown in the markets and dashboard tables excludes it."
+msgstr "Part of these rewards is only earned by positions above a minimum size, so the total APY shown in the markets and dashboard tables excludes it."
+
 #: src/components/transactions/Swap/warnings/postInputs/ZeroLTVDestinationWarning.tsx
 msgid "{0} has a Loan-to-Value of 0, so it will not be enabled as collateral automatically after the swap."
 msgstr "{0} has a Loan-to-Value of 0, so it will not be enabled as collateral automatically after the swap."
@@ -1707,6 +1711,10 @@ msgstr "{m}m"
 #: src/layouts/SupportModal.tsx
 msgid "Inquiry"
 msgstr "Inquiry"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "With balance bonus"
+msgstr "With balance bonus"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Unbacked mint cap is exceeded"
@@ -2629,6 +2637,10 @@ msgstr "Withdraw sGHO"
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "Asset"
 msgstr "Asset"
+
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "conditional"
+msgstr "conditional"
 
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Share on twitter"
@@ -3639,6 +3651,10 @@ msgstr "Available to supply"
 msgid "Claiming all protocol rewards and merit rewards together"
 msgstr "Claiming all protocol rewards and merit rewards together"
 
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
+msgid "{balanceCampaignMessage}"
+msgstr "{balanceCampaignMessage}"
+
 #: src/modules/governance/proposal/ProposalTimeline.tsx
 msgid "Voting activated"
 msgstr "Voting activated"
@@ -3829,6 +3845,7 @@ msgstr "Selected supply assets"
 
 #: src/components/incentives/IncentivesTooltipContent.tsx
 #: src/components/incentives/IncentivesTooltipContent.tsx
+#: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx

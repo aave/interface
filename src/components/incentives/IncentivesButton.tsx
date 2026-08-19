@@ -355,8 +355,13 @@ const Content = ({
   const hasPointsBreakdown = incentives.some(
     (incentive) => (incentive as ExtendedReserveIncentiveResponse)?.breakdown?.points !== undefined
   );
+  // A reserve whose only Merkl campaign is balance-based has a zero unconditional APY, but
+  // the badge still has to be there for the user to reach the tooltip.
+  const hasBalanceCampaign = incentives.some(
+    (incentive) => (incentive as ExtendedReserveIncentiveResponse)?.hasBalanceCampaign
+  );
 
-  if (incentivesNetAPR === 0 && !hasPointsBreakdown) {
+  if (incentivesNetAPR === 0 && !hasPointsBreakdown && !hasBalanceCampaign) {
     return displayBlank ? <BlankIncentives /> : null;
   }
 
