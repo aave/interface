@@ -28,7 +28,8 @@ export const SuppliedPositionsListMobileItem = ({
   const [currentMarketData, currentMarket] = useRootStore(
     useShallow((state) => [state.currentMarketData, state.currentMarket])
   );
-  const { openSupply, openCollateralSwap, openWithdraw, openCollateralChange } = useModalContext();
+  const { openSupply, openCollateralSwap, openWithdraw, openCollateralChange, openLeverage } =
+    useModalContext();
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
   const {
@@ -149,6 +150,17 @@ export const SuppliedPositionsListMobileItem = ({
             fullWidth
           >
             <Trans>Supply</Trans>
+          </Button>
+        )}
+        {isSwapButton && usageAsCollateralEnabledOnUser && (
+          <Button
+            disabled={disableSwap}
+            variant="outlined"
+            onClick={() => openLeverage(underlyingAsset)}
+            sx={{ ml: 1.5 }}
+            fullWidth
+          >
+            <Trans>Leverage</Trans>
           </Button>
         )}
         <Button

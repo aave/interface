@@ -9,20 +9,12 @@ import {
 } from '@cowprotocol/cow-sdk';
 import {
   AaveCollateralSwapSdk,
+  AaveFlashLoanType,
   EncodedOrder,
   FlashLoanHookAmounts,
   HASH_ZERO,
 } from '@cowprotocol/sdk-flash-loans';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-
-/**
- * `FlashLoanFlow` mirrors the value set of the SDK's `AaveFlashLoanType`, but TypeScript enums
- * are nominal, so calls into `@cowprotocol/sdk-flash-loans` will not accept ours directly. This
- * is the single place that widening happens; it stays sound while the string values agree, and
- * `Leverage` is only accepted once the SDK gains that variant and an adapter address exists.
- */
-export const toSdkFlashLoanType = (flow: FlashLoanFlow) =>
-  flow as unknown as import('@cowprotocol/sdk-flash-loans').AaveFlashLoanType;
 
 import { COW_PARTNER_FEE, DUST_PROTECTION_MULTIPLIER } from '../../constants/cow.constants';
 import {
@@ -33,7 +25,14 @@ import {
   SwapState,
   SwapType,
 } from '../../types';
-import { getCowFlashLoanSdk } from './env.helpers';
+import { getCowFlashLoanSdkForFlow } from './env.helpers';
+
+/**
+ * `FlashLoanFlow` mirrors the value set of the SDK's `AaveFlashLoanType`, but TypeScript enums are
+ * nominal, so the SDK will not accept ours directly. This is the single place that widening
+ * happens, and it stays sound while the string values agree.
+ */
+export const toSdkFlashLoanType = (flow: FlashLoanFlow) => flow as unknown as AaveFlashLoanType;
 
 export const accountForDustProtection = (
   amount: string,
@@ -69,7 +68,7 @@ export const calculateInstanceAddress = async ({
   )
     return;
 
-  const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
+  const flashLoanSdk = await getCowFlashLoanSdkForFlow(state.chainId, type);
   const {
     sellAmountWithMarginForDustProtection,
     buyAmountWithMarginForDustProtection,

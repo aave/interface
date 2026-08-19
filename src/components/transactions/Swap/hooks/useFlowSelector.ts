@@ -6,7 +6,11 @@ import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { calculateHFAfterSwap, CalculateHFAfterSwapProps } from 'src/utils/hfUtils';
+import {
+  calculateHFAfterLeverage,
+  calculateHFAfterSwap,
+  CalculateHFAfterSwapProps,
+} from 'src/utils/hfUtils';
 
 import {
   LIQUIDATION_DANGER_THRESHOLD,
@@ -114,6 +118,11 @@ export const healthFactorSensibleSwapFlowSelector = ({
     try {
       if (!state.swapRate) return { hfEffectOfFromAmount: '0', hfAfterSwap: undefined };
 
+      const leverageHfAfterSwap = getLeverageHfProjection(state, extendedUser, eModes);
+      if (leverageHfAfterSwap) {
+        return { hfEffectOfFromAmount: '0', hfAfterSwap: leverageHfAfterSwap };
+      }
+
       const params = getHFAfterSwapParamsFromSwapType(
         state,
         fromAssetUserReserve,
@@ -154,7 +163,9 @@ export const healthFactorSensibleSwapFlowSelector = ({
 
   const forceFlashloanFlow =
     state.provider === SwapProvider.COW_PROTOCOL &&
-    (state.swapType === SwapType.RepayWithCollateral || state.swapType === SwapType.DebtSwap);
+    (state.swapType === SwapType.RepayWithCollateral ||
+      state.swapType === SwapType.DebtSwap ||
+      state.swapType === SwapType.Leverage);
   const useFlashloan =
     forceFlashloanFlow ||
     (extendedUser?.healthFactor !== '-1' &&
@@ -174,6 +185,30 @@ export const healthFactorSensibleSwapFlowSelector = ({
       },
     });
   }
+};
+
+/**
+ * Leverage supplies the bought collateral and draws the sold debt, so it cannot be expressed as
+ * `CalculateHFAfterSwapProps`. Returns undefined for every other flow.
+ */
+const getLeverageHfProjection = (
+  state: SwapState,
+  user: ExtendedFormattedUser,
+  eModes: Record<number, EmodeCategory>
+): string | undefined => {
+  if (state.swapType !== SwapType.Leverage) return undefined;
+  if (!state.sellAmountFormatted || !state.buyAmountFormatted) return undefined;
+
+  const { hfAfterLeverage } = calculateHFAfterLeverage({
+    collateralAmount: state.buyAmountFormatted.toString(),
+    collateralAssetData: state.sourceReserve.reserve,
+    debtAmount: state.sellAmountFormatted.toString(),
+    debtAssetData: state.destinationReserve.reserve,
+    user,
+    eModes,
+  });
+
+  return hfAfterLeverage.toString();
 };
 
 const getHFAfterSwapParamsFromSwapType = (
