@@ -85,9 +85,7 @@ export const LeverageModalContent = ({ underlyingAsset }: { underlyingAsset: str
 
   const params: Partial<SwapParams> = {
     swapType: SwapType.Leverage,
-    // Market orders only for now: a resting leverage order would draw debt at an unknown future
-    // health factor.
-    allowLimitOrders: false,
+    allowLimitOrders: true,
     forcedInputToken: defaultCollateralToken,
     suggestedDefaultOutputToken: defaultDebtToken,
     invalidateAppState,

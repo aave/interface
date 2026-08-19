@@ -1,6 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
+import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton } from '@mui/material';
+import { Box, Skeleton, SvgIcon, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -11,6 +12,11 @@ import {
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
+import {
+  leverageAfterAdding,
+  netApyOfAddedExposure,
+  positionLeverage,
+} from '../helpers/shared/leverage.helpers';
 import { ProtocolSwapParams, ProtocolSwapState } from '../types';
 import { CowCostsDetails } from './CowCostsDetails';
 
@@ -41,9 +47,23 @@ export const LeverageDetails = ({
     valueToBigNumber(state.destinationReserve.reserve.priceInUSD)
   );
 
-  const netApy = valueToBigNumber(state.sourceReserve.reserve.supplyAPY).minus(
-    valueToBigNumber(state.destinationReserve.reserve.variableBorrowAPY)
-  );
+  // Weighted by the amounts actually supplied and borrowed, not a bare difference of rates.
+  const netApy = netApyOfAddedExposure({
+    collateralUSD: state.buyAmountUSD ?? '0',
+    supplyApy: state.sourceReserve.reserve.supplyAPY,
+    debtUSD: state.sellAmountUSD ?? '0',
+    borrowApy: state.destinationReserve.reserve.variableBorrowAPY,
+  });
+
+  const collateralUSD = user?.totalCollateralUSD ?? '0';
+  const debtUSD = user?.totalBorrowsUSD ?? '0';
+  const leverageBefore = positionLeverage(collateralUSD, debtUSD);
+  const leverageAfter = leverageAfterAdding({
+    collateralUSD,
+    debtUSD,
+    addedCollateralUSD: state.buyAmountUSD ?? '0',
+    addedDebtUSD: state.sellAmountUSD ?? '0',
+  });
 
   const balanceAfter = (symbol: string, iconSymbol: string, amount: string, amountUSD: string) => (
     <Box
@@ -88,8 +108,35 @@ export const LeverageDetails = ({
         />
       )}
 
+      {leverageBefore && (
+        <Row caption={<Trans>Leverage</Trans>} captionVariant="description" mb={4}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {state.ratesLoading ? (
+              <Skeleton
+                variant="rectangular"
+                height={20}
+                width={100}
+                sx={{ borderRadius: '4px' }}
+              />
+            ) : (
+              <>
+                <Typography variant="secondary14">{`${leverageBefore.toFixed(2)}×`}</Typography>
+                {leverageAfter && (
+                  <>
+                    <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
+                      <ArrowNarrowRightIcon />
+                    </SvgIcon>
+                    <Typography variant="secondary14">{`${leverageAfter.toFixed(2)}×`}</Typography>
+                  </>
+                )}
+              </>
+            )}
+          </Box>
+        </Row>
+      )}
+
       <Row caption={<Trans>Net apy</Trans>} captionVariant="description" mb={4}>
-        {state.ratesLoading ? (
+        {state.ratesLoading || !netApy ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
         ) : (
           <FormattedNumber value={netApy.toString()} variant="secondary14" percent />
