@@ -97,6 +97,11 @@ export const IncentivesCard = ({
     ? merklPointsIncentives.breakdown.merklIncentivesAPR || 0
     : merklIncentives?.breakdown?.merklIncentivesAPR || 0;
 
+  // Balance-based Merkl campaigns are excluded from `merklIncentivesAPR` by the hook: only
+  // positions above a minimum size earn them. Flag the value with an asterisk so the user
+  // knows there is extra APY to be found in the tooltip.
+  const hasBalanceCampaign = Boolean(merklIncentives?.hasBalanceCampaign);
+
   const isBorrow = protocolAction === ProtocolAction.borrow;
 
   // If any incentive is infinite, the total should be infinite
@@ -170,15 +175,22 @@ export const IncentivesCard = ({
               ∞ %
             </Typography>
           ) : (
-            <FormattedNumber
-              data-cy={`apy`}
-              value={displayAPY}
-              percent
-              variant={variant}
-              symbolsVariant={symbolsVariant}
-              color={color}
-              symbolsColor={color}
-            />
+            <Box sx={{ display: 'inline-flex', alignItems: 'flex-start' }}>
+              <FormattedNumber
+                data-cy={`apy`}
+                value={displayAPY}
+                percent
+                variant={variant}
+                symbolsVariant={symbolsVariant}
+                color={color}
+                symbolsColor={color}
+              />
+              {hasBalanceCampaign && (
+                <Typography component="span" variant={variant} color={color || 'text.secondary'}>
+                  *
+                </Typography>
+              )}
+            </Box>
           )}
           {tooltip}
           {inlineIncentives && (

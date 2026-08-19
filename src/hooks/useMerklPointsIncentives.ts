@@ -151,6 +151,7 @@ export const useMerklPointsIncentives = ({
         protocolAPY,
         protocolIncentivesAPR: protocolIncentivesAPY,
         merklIncentivesAPR: merklIncentivesAPY,
+        balanceCampaignAPY: 0,
         totalAPY,
         isBorrow,
         breakdown: {

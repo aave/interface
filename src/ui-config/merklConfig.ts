@@ -2,10 +2,15 @@ type AdditionalIncentiveInfo = {
   customMessage?: string;
   customClaimMessage?: string;
   customForumLink?: string;
+  // Copy explaining the minimum position size required to earn the extra bps of a
+  // balance-based Merkl campaign. Written manually per reserve, since the threshold
+  // is not exposed by the Merkl API.
+  balanceCampaignMessage?: string;
 };
 
 type MerklWhitelistConfig = {
   whitelistedRewardTokens: string[];
+  balanceCampaignRewardTokens: string[];
   additionalIncentiveInfo: Record<string, AdditionalIncentiveInfo>;
 };
 
@@ -561,6 +566,18 @@ export const EXTRA_WHITELIST_TOKENS: MerklWhitelistConfig = {
     '0x58a6d21fd258166FF058bb4488a77B7308DDd514',
     '0x09E4C43B7Ce78AC58fF6A920f1fD5D84a7975f78',
   ],
+  // Wrapper reward tokens deployed exclusively as the payout of balance-based Merkl
+  // campaigns (extra bps on top of the regular campaign, gated by a minimum position
+  // size). Their presence in a campaign's rewards is what flags the reserve as having
+  // a balance campaign.
+  //
+  // These are whitelisted implicitly, so an address goes in here *instead of* in
+  // `whitelistedRewardTokens` above, never in both. When adding one:
+  //   1. add an entry to `IncentivesSymbolMap` in IncentivesTooltipContent.tsx so the
+  //      row renders the economic token's icon instead of the wrapper symbol;
+  //   2. add `balanceCampaignMessage` in `additionalIncentiveInfo` for every reserve
+  //      the campaign targets, with the actual threshold.
+  balanceCampaignRewardTokens: [],
   additionalIncentiveInfo: {
     '1-0x4F5923Fc5FD4a93352581b38B7cD26943012DECF': {
       customMessage:

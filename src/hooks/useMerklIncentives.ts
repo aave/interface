@@ -90,6 +90,7 @@ type ReserveIncentiveAdditionalData = {
   customClaimMessage?: string;
   customMessage?: string;
   customForumLink?: string;
+  balanceCampaignMessage?: string;
 };
 
 export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
@@ -120,14 +121,22 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
       campaignId: string;
       dailyRewardsRecordId: string;
       onChainCampaignId: string;
+      apr: number;
       apy: number;
+      isBalanceCampaign: boolean;
     }[];
+    hasBalanceCampaign?: boolean;
+    balanceCampaignAPY?: number;
   };
 
 export type MerklIncentivesBreakdown = {
   protocolAPY: number;
   protocolIncentivesAPR: number;
   merklIncentivesAPR: number; // Now represents APY (converted from APR)
+  // Extra APY from balance-based campaigns. Deliberately excluded from
+  // `merklIncentivesAPR` and `totalAPY`: only positions above the campaign's minimum
+  // size earn it, so it must not inflate the headline APY.
+  balanceCampaignAPY: number;
   totalAPY: number;
   isBorrow: boolean;
   breakdown: {
@@ -240,9 +249,19 @@ export const useMerklIncentives = ({
         return null;
       }
 
+      const balanceCampaignTokensSet = new Set(
+        (EXTRA_WHITELIST_TOKENS.balanceCampaignRewardTokens ?? [])
+          .filter(Boolean)
+          .map((token) => token.toLowerCase())
+      );
+
+      // Balance campaign payout tokens are whitelisted implicitly: listing them once in
+      // `balanceCampaignRewardTokens` is enough. Keeping them out of the whitelist would
+      // count their APR in the total with no row to explain it.
       const whitelistedTokensSet = new Set(
         [
           ...EXTRA_WHITELIST_TOKENS.whitelistedRewardTokens.map((token) => token.toLowerCase()),
+          ...balanceCampaignTokensSet,
         ].filter(Boolean)
       );
 
@@ -273,7 +292,6 @@ export const useMerklIncentives = ({
         return sum + oppApr;
       }, 0);
 
-      const merklIncentivesAPY = convertAprToApy(totalMerklAPR);
       const aprsBreakdowns = whitelistedOpportunities.flatMap((opp) => opp.aprRecord.breakdowns);
       const breakdownTokens = whitelistedOpportunities.flatMap((opp) => {
         return opp.rewardsRecord.breakdowns;
@@ -286,21 +304,42 @@ export const useMerklIncentives = ({
             return isWhitelisted && reward.onChainCampaignId === aprBreakdown.identifier;
           });
           if (matchingReward) {
+            const apr = getCampaignIncentiveApr({
+              targetAprPercent: aprBreakdown.value,
+              distributionType: aprBreakdown.distributionType,
+              protocolAction,
+              baseProtocolApy: protocolAPY,
+            });
+
             return {
               ...matchingReward,
-              apy: convertAprToApy(
-                getCampaignIncentiveApr({
-                  targetAprPercent: aprBreakdown.value,
-                  distributionType: aprBreakdown.distributionType,
-                  protocolAction,
-                  baseProtocolApy: protocolAPY,
-                })
+              apr,
+              apy: convertAprToApy(apr),
+              isBalanceCampaign: balanceCampaignTokensSet.has(
+                matchingReward.token.address.toLowerCase()
               ),
             };
           }
           return null;
         })
         .filter((item): item is NonNullable<typeof item> => item !== null);
+
+      // Balance-based campaigns pay out through a dedicated wrapper token, so their
+      // tranche is carved out of the total and surfaced separately: the headline APY must
+      // only include what every position earns.
+      const balanceCampaignRewards = rewardsTokensMappedApys.filter(
+        (reward) => reward.isBalanceCampaign
+      );
+      const balanceCampaignAPR = balanceCampaignRewards.reduce(
+        (sum, reward) => sum + reward.apr,
+        0
+      );
+      const balanceCampaignAPY = balanceCampaignRewards.reduce(
+        (sum, reward) => sum + reward.apy,
+        0
+      );
+      const hasBalanceCampaign = balanceCampaignRewards.length > 0;
+      const merklIncentivesAPY = convertAprToApy(Math.max(totalMerklAPR - balanceCampaignAPR, 0));
 
       const primaryOpportunity = whitelistedOpportunities[0];
       const isSelf = whitelistedOpportunities.some(isSelfOpportunity);
@@ -329,10 +368,13 @@ export const useMerklIncentives = ({
         ...incentiveAdditionalData,
         isSelf,
         rewardsTokensMappedApys,
+        hasBalanceCampaign,
+        balanceCampaignAPY,
         breakdown: {
           protocolAPY,
           protocolIncentivesAPR: protocolIncentivesAPY,
           merklIncentivesAPR: merklIncentivesAPY,
+          balanceCampaignAPY,
           totalAPY,
           isBorrow,
           breakdown: {
