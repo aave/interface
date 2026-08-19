@@ -38,6 +38,10 @@ export const invalidateAppStateForSwap = ({
       invalidateUserPoolBalances({ account, queryClient, marketDataType });
       invalidateTransactionHistory({ account, queryClient, marketDataType });
       break;
+    case SwapType.Leverage:
+      invalidateUserPoolBalances({ account, queryClient, marketDataType });
+      invalidateTransactionHistory({ account, queryClient, marketDataType });
+      break;
     case SwapType.WithdrawAndSwap:
       invalidateUserBalances({ account, queryClient, marketDataType });
       invalidateUserPoolBalances({ account, queryClient, marketDataType });
