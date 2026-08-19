@@ -1,0 +1,14 @@
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  h_be8c3c572e9983 69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "8b494783ac95bdb8414b8d2ad4cb5f3131792b63",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

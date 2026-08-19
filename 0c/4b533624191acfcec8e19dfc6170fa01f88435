@@ -1,0 +1,32 @@
+src/utils/motion.ts
+  s_2a638d6da031a9::t_af56e767fc8bd8 1-24
+src/modules/dev/ComponentShowcase/components/OverlaysSection/index.tsx
+  s_2a638d6da031a9::t_73e3a7024b0262 30-62
+  s_2a638d6da031a9::t_03b1a1b4b035ee 69-76
+  s_2a638d6da031a9::t_c7356a60a88b8f 1
+src/components/primitives/transitions/ScaleFade/index.tsx
+  s_2a638d6da031a9::t_149deb8ec7c73c 1-90,92-114
+  s_2a638d6da031a9::t_c9619e828142bb 91
+src/utils/theme.tsx
+  s_2a638d6da031a9::t_fde00a64934f39 916-925
+  s_2a638d6da031a9::t_5777841d4586d4 15,18
+  s_2a638d6da031a9::t_a4da4c17cbdf70 582-585
+  s_2a638d6da031a9::t_072d8b8a0e73a5 586-587,598-602
+  s_2a638d6da031a9::t_beeafe50f43ecb 603-604
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "0c4b533624191acfcec8e19dfc6170fa01f88435",
+  "prompts": {},
+  "sessions": {
+    "s_2a638d6da031a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f9e089d0-1f76-4134-bf98-6714f19a62a8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

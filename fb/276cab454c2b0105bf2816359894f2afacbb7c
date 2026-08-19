@@ -1,0 +1,28 @@
+src/components/icons/ChevronUpDownIcon.tsx
+  s_b123436350916b::t_e411d5fef862c4 8
+src/components/icons/SwapIcon.tsx
+  s_b123436350916b::t_9afbfbd57d9166 6-10
+src/components/icons/SettingsIcon.tsx
+  s_b123436350916b::t_9afbfbd57d9166 6-10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "fb276cab454c2b0105bf2816359894f2afacbb7c",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b123436350916b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e05079-8b10-488f-b2c2-f8480447c4cf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

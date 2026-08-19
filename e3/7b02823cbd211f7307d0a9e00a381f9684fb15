@@ -1,0 +1,27 @@
+src/modules/stkGho/StkGhoDepositPanel.tsx
+  h_dd1a1ee57491bb 69
+src/modules/stkGho/StkGhoDepositRow.tsx
+  h_dd1a1ee57491bb 12,19,74,78
+  s_2fabd3181c5236::t_26ddd6f9a76785 79-97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "e37b02823cbd211f7307d0a9e00a381f9684fb15",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2fabd3181c5236": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0e93ea01-e8a4-4141-b692-672cfa8c3a8f",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

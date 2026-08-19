@@ -1,0 +1,33 @@
+src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+  s_4a5a35cb33f785::t_dbc49e13434781 862
+src/modules/reserve-overview/TimeRangeSelector.tsx
+  s_4a5a35cb33f785::t_7aa7a57137f599 57,63-64,66-71
+  s_4a5a35cb33f785::t_cad97e5f56bf70 2-4
+src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
+  s_4a5a35cb33f785::t_0ce4fa410e1ed4 164-166
+  s_4a5a35cb33f785::t_2ef1624d5b6d10 15-16
+  s_4a5a35cb33f785::t_f5d29881d6af81 160-161,163,169,171,182,184
+src/components/StyledToggleButton.tsx
+  s_4a5a35cb33f785::t_01220c4e76276b 49-54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "744fb01107f160d2530b0e66698d7814436d7e64",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_4a5a35cb33f785": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "302409f1-a0b1-4062-8ac3-119d23cf22dc",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

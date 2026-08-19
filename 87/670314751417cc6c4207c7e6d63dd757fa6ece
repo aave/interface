@@ -1,0 +1,27 @@
+public/icons/tokens/mglobal.svg
+  s_4331ce9bb28087::t_f3e6c200e5a62b 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "87670314751417cc6c4207c7e6d63dd757fa6ece",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_4331ce9bb28087": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "737c6112-f0df-4e78-9ea4-fa566b599d15",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

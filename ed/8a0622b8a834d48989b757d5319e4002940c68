@@ -1,0 +1,14 @@
+src/modules/governance/GovernanceTopPanel.tsx
+  h_873f745f99aed2 72,93
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "ed8a0622b8a834d48989b757d5319e4002940c68",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

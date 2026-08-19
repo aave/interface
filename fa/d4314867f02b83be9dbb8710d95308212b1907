@@ -1,0 +1,27 @@
+src/hooks/useApprovalTx.tsx
+  h_dd1a1ee57491bb 84
+  s_0f8086e6c0e4ae::t_f2da766fd0d294 87
+src/modules/umbrella/UmbrellaActions.tsx
+  h_dd1a1ee57491bb 294
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "fad4314867f02b83be9dbb8710d95308212b1907",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_0f8086e6c0e4ae": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9435913f-6d23-41ec-8e0c-1874d98388a2",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

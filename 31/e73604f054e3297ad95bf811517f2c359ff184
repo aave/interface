@@ -1,0 +1,25 @@
+src/utils/theme.tsx
+  s_2a638d6da031a9::t_68fc2905ad98c5 22-24
+  s_2a638d6da031a9::t_58056f15e1925e 40-42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "31e73604f054e3297ad95bf811517f2c359ff184",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2a638d6da031a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f9e089d0-1f76-4134-bf98-6714f19a62a8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

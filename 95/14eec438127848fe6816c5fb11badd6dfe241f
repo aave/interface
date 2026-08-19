@@ -1,0 +1,89 @@
+src/utils/colorToP3.ts
+  s_2a638d6da031a9::t_4ca5be02f96c66 3-12,18
+  s_2a638d6da031a9::t_741b287557d70b 1-2,13-17
+src/utils/theme.tsx
+  s_7edf19a7347db7::t_2a73cd047fd7f8 12-14
+  s_7edf19a7347db7::t_40e5c08f7c5fcd 44-48,50-59,63,65
+  s_2a638d6da031a9::t_f523f131aad9f0 34-37
+  s_7edf19a7347db7::t_5c753ef524cf76 49,61,514,694
+  s_2a638d6da031a9::t_4f7191357ccb44 698
+  s_2a638d6da031a9::t_eb2a2264ae6d33 7
+  s_7edf19a7347db7::t_6844460ce7ecd0 20
+  s_7edf19a7347db7::t_77d2372df39aba 190-192
+  s_7edf19a7347db7::t_ee3904e38f4c6f 442,695,697,790,808
+  s_2a638d6da031a9::t_89cfcab35804b6 23,25-27,64
+  s_2a638d6da031a9::t_b98d6a5e088081 777
+  s_2dcd2bf87cccfc::t_df436a9d19d8b8 983,986
+  s_2a638d6da031a9::t_ea71ee61bcb31c 669,882-883,885,888,895-896,898,901,908-909,911,914,921-922,924,927,962
+  s_2a638d6da031a9::t_91ac10cece126b 1050-1058
+  s_2a638d6da031a9::t_534c8dd1275232 1035-1036
+  s_7edf19a7347db7::t_d194ccbf236756 24,512,521,523,536-537,540,549,712-713,772,940,974,976
+  s_2a638d6da031a9::t_6289e4ea4732ec 474-484
+  s_7edf19a7347db7::t_8b75c4dc6ae025 94-97,103
+  s_2a638d6da031a9::t_8d3d8055604914 995-998,1000-1011
+  s_2a638d6da031a9::t_c09e97b84d3251 467-469
+  s_2a638d6da031a9::t_fcc050782330d5 488,494-496
+  s_2a638d6da031a9::t_57fe8d40ec2368 1012-1019
+  s_2a638d6da031a9::t_fa256531a9de6c 1020-1034,1037-1049
+  s_7edf19a7347db7::t_ec005f8aff981f 444,447
+  s_7edf19a7347db7::t_fbac017f9a0235 969
+  s_2a638d6da031a9::t_4989a84fc1f9ee 62,696,705,778
+  s_7edf19a7347db7::t_23249e3344b2e9 200-202,206-209,213-216,220-223,227-230,237,241,252-253,257
+  s_7edf19a7347db7::t_47fcc23e69759e 104-105
+  s_7edf19a7347db7::t_90087a7244d71c 555,782
+  h_407f16e676115d 744
+  s_7edf19a7347db7::t_1f160439c2a8cf 456,459
+  s_2a638d6da031a9::t_2f5747ac093ad4 19
+  s_2a638d6da031a9::t_ed086982eac4b6 428
+  s_2a638d6da031a9::t_7cbf2dbac9bf64 8
+  s_7edf19a7347db7::t_8cc1f35ed3893d 510
+  s_2a638d6da031a9::t_766db24763ff61 28-33
+src/utils/figmaColors.ts
+  s_7edf19a7347db7::t_673d1ec1dbd64f 186-213
+  s_7edf19a7347db7::t_63ff4219a98aac 241-244
+  s_7edf19a7347db7::t_70ca95e3e5fd4a 2-5
+  s_7edf19a7347db7::t_ae8ce5aa8b4349 253-257
+  h_407f16e676115d 77-79,116,183-185
+  s_7edf19a7347db7::t_1256491a23e3ab 80-107
+  s_7edf19a7347db7::t_209550c92ad2f3 228-229
+  s_7edf19a7347db7::t_bb305fba610ea6 231-240,245-252
+  s_7edf19a7347db7::t_c30d3ab1758903 264-265
+  s_2dcd2bf87cccfc::t_42b08e0ff30338 115,230
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "9514eec438127848fe6816c5fb11badd6dfe241f",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2a638d6da031a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f9e089d0-1f76-4134-bf98-6714f19a62a8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_2dcd2bf87cccfc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8fd233eb-6c83-496c-9e84-129410fc4845",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_7edf19a7347db7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1a737811-bbb1-4377-978b-befdf741d8c0",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

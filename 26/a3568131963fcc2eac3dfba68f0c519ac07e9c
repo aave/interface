@@ -1,0 +1,28 @@
+src/ui-config/merklConfig.ts
+  s_6af4ae886d9a6d::t_30f1ee7b19a86b 36
+  h_873f745f99aed2 37
+src/components/incentives/IncentivesTooltipContent.tsx
+  s_6af4ae886d9a6d::t_a05fc8bc433c51 221-225
+  h_873f745f99aed2 271-275
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "26a3568131963fcc2eac3dfba68f0c519ac07e9c",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  },
+  "sessions": {
+    "s_6af4ae886d9a6d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fbd2a590-ebcb-408e-aa7a-0a33f7de3c54",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

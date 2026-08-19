@@ -1,0 +1,29 @@
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+  s_49cd428a5a1d14::t_538d4990182564 303
+  s_49cd428a5a1d14::t_50b0a19218cb46 293
+  s_49cd428a5a1d14::t_10790158a43f8a 2
+  s_49cd428a5a1d14::t_8758b30d1aceca 18
+src/utils/theme.tsx
+  s_49cd428a5a1d14::t_f8963dbd436a91 861-867
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "8fd32978438b7347ac7d52d2813639f0adfde683",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_49cd428a5a1d14": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3931130f-c0c8-4652-be11-79dd9fbf0f6b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

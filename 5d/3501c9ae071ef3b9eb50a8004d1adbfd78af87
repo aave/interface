@@ -1,0 +1,29 @@
+src/utils/theme.tsx
+  s_ffffbd4e4914c5::t_808007aaf5a008 933-948
+  s_ffffbd4e4914c5::t_1d717f9a407505 107
+  s_ffffbd4e4914c5::t_5a8f0f84c46071 490-494
+src/modules/dev/ComponentShowcase/components/Section/index.tsx
+  s_ffffbd4e4914c5::t_f497657cc76955 33-35
+src/modules/dev/ComponentShowcase/components/FormControlsSection/index.tsx
+  s_ffffbd4e4914c5::t_c4c9c7ddde8037 24-36,47,53,57,66-74,76,101,110,115-118,127,134,142,150-155
+  s_ffffbd4e4914c5::t_07b3d0c0e760ec 86
+src/modules/dev/ComponentShowcase/components/Specimen/index.tsx
+  s_ffffbd4e4914c5::t_a37fe44725309c 43
+  s_ffffbd4e4914c5::t_ce8c24bb017965 8-11,17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "5d3501c9ae071ef3b9eb50a8004d1adbfd78af87",
+  "prompts": {},
+  "sessions": {
+    "s_ffffbd4e4914c5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "414ca497-782c-4459-86d8-ba6c97b044b1",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

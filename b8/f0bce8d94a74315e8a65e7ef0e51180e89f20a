@@ -1,0 +1,60 @@
+.github/actions/build/action.yml
+  s_da736c3f90ff8e::t_55173ded1b0365 56-57,61,65
+  s_da736c3f90ff8e::t_92b88c620d9a37 4-5,81
+package.json
+  s_da736c3f90ff8e::t_b814c245219a79 35-37,40
+  s_da736c3f90ff8e::t_07f68467ff6914 26
+  s_da736c3f90ff8e::t_74f2412ad12e00 173
+  s_da736c3f90ff8e::t_f1fe004d9fb6bd 6-18,20
+  s_da736c3f90ff8e::t_c1ce3e15f045a3 19
+CONTRIBUTING.md
+  s_da736c3f90ff8e::t_9b8dd7b7d6d380 59,62
+  s_da736c3f90ff8e::t_9040d3d38ab3ce 82,90,96,102,108,125,129,132
+.npmrc
+  s_da736c3f90ff8e::t_4b8dc66e2b3693 1-4
+.nvmrc
+  s_da736c3f90ff8e::t_844e4232f00a38 1
+.husky/pre-commit
+  s_da736c3f90ff8e::t_450ee114ac4a4a 5
+.github/workflows/i18n-check.yml
+  s_da736c3f90ff8e::t_92b88c620d9a37 22
+  s_da736c3f90ff8e::t_c0b8b4a402c3af 31
+cypress/README.md
+  s_da736c3f90ff8e::t_a5d77acf0d7388 11,15,27,35-36,40,55,66
+.github/workflows/build-test-deploy.yml
+  s_da736c3f90ff8e::t_92b88c620d9a37 95,165,190
+.github/workflows/crowdin-upload.yml
+  s_da736c3f90ff8e::t_3a72b7d7d11a4a 18-19,23
+.prettierignore
+  s_da736c3f90ff8e::t_359843868c9c35 30
+  s_da736c3f90ff8e::t_eee2494ca03711 9
+.github/actions/cypress/action.yml
+  s_da736c3f90ff8e::t_48b47491f73107 19-20,24,29-30
+  s_da736c3f90ff8e::t_92b88c620d9a37 13-14,57
+  s_da736c3f90ff8e::t_d3c2a4168d711a 55
+.github/workflows/crowdin-download.yml
+  s_da736c3f90ff8e::t_73651e1fa196f9 24-25,29
+  s_da736c3f90ff8e::t_5a3a52ae35b7cd 51-52
+.github/workflows/test-deploy-fork.yml
+  s_da736c3f90ff8e::t_92b88c620d9a37 86,159,180
+README.md
+  s_da736c3f90ff8e::t_b900b5c2ef7ccc 30-31
+.github/workflows/build-test-deploy-dev.yml
+  s_da736c3f90ff8e::t_92b88c620d9a37 73,147,172
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "b8f0bce8d94a74315e8a65e7ef0e51180e89f20a",
+  "prompts": {},
+  "sessions": {
+    "s_da736c3f90ff8e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "138f0f43-5f15-4362-97eb-8032dfa52b89",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

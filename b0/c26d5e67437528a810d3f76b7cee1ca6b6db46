@@ -1,0 +1,23 @@
+src/utils/theme.tsx
+  s_b123436350916b::t_5a214bf6dfc877 450-451,455-456,460
+src/layouts/SettingsMenu.tsx
+  s_b123436350916b::t_7a0a9ff86fa68a 74
+src/layouts/AppHeader.tsx
+  s_b123436350916b::t_5588d9f1ec9c00 284,320
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "b0c26d5e67437528a810d3f76b7cee1ca6b6db46",
+  "prompts": {},
+  "sessions": {
+    "s_b123436350916b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e05079-8b10-488f-b2c2-f8480447c4cf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

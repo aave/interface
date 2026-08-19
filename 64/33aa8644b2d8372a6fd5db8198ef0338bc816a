@@ -1,0 +1,37 @@
+src/utils/buttonStyles.ts
+  s_2dcd2bf87cccfc::t_28429b22cf2c30 1-14
+src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
+  s_2dcd2bf87cccfc::t_2e0ebd29820c0c 180
+  s_2dcd2bf87cccfc::t_8c1d3cbda80030 171
+  s_2dcd2bf87cccfc::t_90e0cf2e847825 184
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+  s_2dcd2bf87cccfc::t_84e12a2fac2811 264-265
+  s_2dcd2bf87cccfc::t_54c458ca4c44ec 18
+  s_2dcd2bf87cccfc::t_a0fb6d3ed86afc 272
+  s_2dcd2bf87cccfc::t_0d8387fb56a9db 32
+src/components/icons/DotsHorizontalIcon.tsx
+  s_2dcd2bf87cccfc::t_7913d1c8e2baec 1-17
+src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+  s_2dcd2bf87cccfc::t_8171b913776ba2 98
+  s_2dcd2bf87cccfc::t_c03a8a1305030c 108
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+  s_2dcd2bf87cccfc::t_cf9d52c213c181 134
+  s_2dcd2bf87cccfc::t_55b8fb0e1c39ec 143
+  s_2dcd2bf87cccfc::t_ffcf8479c06c58 114
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "6433aa8644b2d8372a6fd5db8198ef0338bc816a",
+  "prompts": {},
+  "sessions": {
+    "s_2dcd2bf87cccfc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8fd233eb-6c83-496c-9e84-129410fc4845",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

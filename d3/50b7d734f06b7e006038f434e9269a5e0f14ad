@@ -1,0 +1,28 @@
+src/modules/governance/proposal/ProposalTimeline.tsx
+  s_e6bb362df14a8a::t_840f1e647d112d 113,115,118,120,122
+  s_e6bb362df14a8a::t_dec5d8b601cad1 542,544-545
+  s_e6bb362df14a8a::t_4bc7b3b72dc060 22
+  s_e6bb362df14a8a::t_76b8fd40ce45ce 612,615
+  s_e6bb362df14a8a::t_4da096db1da1a8 706-707
+  s_e6bb362df14a8a::t_74ac135a839dbc 652
+  s_e6bb362df14a8a::t_84c5e781f16c86 631
+  s_e6bb362df14a8a::t_8b4ed57642ebe5 529
+  s_e6bb362df14a8a::t_a21021425d1e80 658
+  s_e6bb362df14a8a::t_4604fe5f7f406e 692
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "d350b7d734f06b7e006038f434e9269a5e0f14ad",
+  "prompts": {},
+  "sessions": {
+    "s_e6bb362df14a8a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b4c84b9d-026b-4028-9f36-71e6275fe11a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

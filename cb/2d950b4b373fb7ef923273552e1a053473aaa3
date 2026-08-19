@@ -1,0 +1,26 @@
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_fb7541a5b2bbf7::t_d693c30cf707ce 9
+  h_dd1a1ee57491bb 11
+  s_fb7541a5b2bbf7::t_56406528ff869e 13,32-62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "cb2d950b4b373fb7ef923273552e1a053473aaa3",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_fb7541a5b2bbf7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ecfd5-8045-7e02-8496-3b81cd9ac8fd",
+        "model": "gpt-5.4"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

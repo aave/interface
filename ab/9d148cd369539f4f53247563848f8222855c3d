@@ -1,0 +1,48 @@
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_b2a2c398b81259::t_e9755d4cf9ecc5 224
+src/components/SearchInput.tsx
+  s_b2a2c398b81259::t_ac6a31cb65cf1b 40,48-50
+  s_b2a2c398b81259::t_ad690efdd64ef1 6
+  s_b2a2c398b81259::t_95e36984e69e8e 45,51
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
+  s_b2a2c398b81259::t_e9755d4cf9ecc5 86
+src/modules/umbrella/UmbrellaAssetsDefault.tsx
+  s_b2a2c398b81259::t_e9755d4cf9ecc5 78
+src/modules/governance/ProposalsV3List.tsx
+  s_b2a2c398b81259::t_12827387e9f493 206-209
+  s_b2a2c398b81259::t_635ca6815803cc 1
+src/components/NoSearchResults.tsx
+  s_b2a2c398b81259::t_61b31007498026 2,17-18,24-25,27-29,31-38
+  s_b2a2c398b81259::t_a2eb0b53bdebdc 26
+src/locales/el/messages.js
+  s_b2a2c398b81259::t_a20e7ac732ec0f 1
+src/locales/en/messages.js
+  s_b2a2c398b81259::t_d0131870dcf602 1
+src/locales/en/messages.po
+  s_b2a2c398b81259::t_c11b1fc8016489 971-976,2777-2780,3971-3974,4156-4159
+src/locales/es/messages.js
+  s_b2a2c398b81259::t_c7867d9dc57fe6 1
+src/locales/fr/messages.js
+  s_b2a2c398b81259::t_697259728df387 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "ab9d148cd369539f4f53247563848f8222855c3d",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b2a2c398b81259": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "be1ad64a-c2c3-4c5f-b1a6-26af6e2cfe13",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

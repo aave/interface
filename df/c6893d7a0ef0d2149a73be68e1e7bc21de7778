@@ -1,0 +1,33 @@
+pages/reserve-overview.page.tsx
+  s_4331ce9bb28087::t_f6ad588ca1895a 16
+  s_4331ce9bb28087::t_42adc3ffe3de4c 55-64
+  s_4331ce9bb28087::t_76cc238c5a564e 90-93
+.env.example
+  s_4331ce9bb28087::t_bff2e1f5522184 24-27
+src/modules/dashboard/lists/constants.ts
+  s_4331ce9bb28087::t_51b74001536422 9-43,45-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "dfc6893d7a0ef0d2149a73be68e1e7bc21de7778",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_4331ce9bb28087": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "737c6112-f0df-4e78-9ea4-fa566b599d15",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

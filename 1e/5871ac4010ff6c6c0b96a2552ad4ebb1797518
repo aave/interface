@@ -1,0 +1,25 @@
+src/layouts/AppFooter.tsx
+  s_a404519f3c1f8d::t_1b51b487bc34e3 6
+  s_a404519f3c1f8d::t_95cb84dd25c45d 128-160
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "1e5871ac4010ff6c6c0b96a2552ad4ebb1797518",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_a404519f3c1f8d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "357cbbf1-a2ce-4cb5-ad05-708e20d9e27b",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

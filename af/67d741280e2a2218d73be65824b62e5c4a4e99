@@ -1,0 +1,317 @@
+src/components/SearchInput.tsx
+  s_7edf19a7347db7::t_200c997e7c84f9 6
+  s_7edf19a7347db7::t_17ebefcc629246 40,48
+  s_7edf19a7347db7::t_ee3904e38f4c6f 44
+src/components/transactions/Swap/modals/result/CowOrderToast.tsx
+  s_7edf19a7347db7::t_200c997e7c84f9 2
+  s_7edf19a7347db7::t_ee3904e38f4c6f 11-13
+src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+  s_7edf19a7347db7::t_17ebefcc629246 277,292
+  s_7edf19a7347db7::t_edbefa4d53fe01 271,288,338,340,377,445,474,498,513,517,527,594,628,639,649,658,684,705-706,717,743-744,751,757-758,838,840,848,850,864
+  s_7edf19a7347db7::t_c3bd26085653e6 615,621
+  s_7edf19a7347db7::t_ee3904e38f4c6f 278,467,547,551
+  s_7edf19a7347db7::t_e4310752559ecf 614,620
+  s_7edf19a7347db7::t_200c997e7c84f9 31
+src/components/incentives/EtherfiIncentivesTooltipContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 20
+src/components/AssetCategoryMultiselect.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 113,134,164,179,186,223,240
+src/components/transactions/Swap/inputs/shared/QuoteProgressRing.tsx
+  s_7edf19a7347db7::t_0b24fc29115d08 42-43
+src/components/WalletConnection/ReadOnlyModal.tsx
+  s_7edf19a7347db7::t_200c997e7c84f9 18
+  s_7edf19a7347db7::t_ee3904e38f4c6f 92
+  s_7edf19a7347db7::t_edbefa4d53fe01 82
+  s_7edf19a7347db7::t_17ebefcc629246 89,97
+src/components/incentives/SonicIncentivesTooltipContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 16
+src/components/incentives/IncentivesButton.tsx
+  s_7edf19a7347db7::t_17ebefcc629246 425,436,499,513
+  s_7edf19a7347db7::t_edbefa4d53fe01 125,396,404,433-434,508,510-511,520
+  s_7edf19a7347db7::t_d03f9144cf4397 384
+  s_7edf19a7347db7::t_200c997e7c84f9 14,501
+src/components/StyledToggleButton.tsx
+  s_7edf19a7347db7::t_200c997e7c84f9 3
+  s_2dcd2bf87cccfc::t_056efd001e8423 5,23,26,29
+  s_7edf19a7347db7::t_f8b7f3d798f5a4 31,63
+  s_7edf19a7347db7::t_ee3904e38f4c6f 34,39,42,51,57,60
+src/components/lists/ListMobileItem.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 68
+src/components/transactions/Bridge/BridgeDestinationInput.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 79,104
+  s_7edf19a7347db7::t_17ebefcc629246 117,123
+  s_7edf19a7347db7::t_200c997e7c84f9 13
+  s_7edf19a7347db7::t_ee3904e38f4c6f 120
+src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 122-123
+src/components/lists/ListHeaderTitle.tsx
+  s_7edf19a7347db7::t_17ebefcc629246 59,68,72,80
+  s_7edf19a7347db7::t_edbefa4d53fe01 44
+  s_7edf19a7347db7::t_200c997e7c84f9 4,65,78
+src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
+  s_7edf19a7347db7::t_17ebefcc629246 110,114
+  s_7edf19a7347db7::t_200c997e7c84f9 12,111
+  s_7edf19a7347db7::t_ee3904e38f4c6f 113
+  s_7edf19a7347db7::t_edbefa4d53fe01 125
+src/components/incentives/EthenaIncentivesTooltipContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 16
+src/components/ReserveOverviewBox.tsx
+  s_7edf19a7347db7::t_ee3904e38f4c6f 20
+  s_7edf19a7347db7::t_200c997e7c84f9 3
+  s_7edf19a7347db7::t_17ebefcc629246 18,24
+  s_7edf19a7347db7::t_edbefa4d53fe01 36
+src/components/transactions/MigrateV3/MigrateV3ModalAssetsList.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 48
+src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 60
+src/components/transactions/Swap/details/SwapDetails.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 161-162,169,242-243
+src/components/incentives/IncentivesCard.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 169,198
+src/components/transactions/Emode/EmodeModalContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 403,408,431,433,438,443,446,479,531
+src/components/transactions/Swap/modals/result/SwapResultView.tsx
+  s_7edf19a7347db7::t_3b91df75450288 263
+  s_7edf19a7347db7::t_edbefa4d53fe01 279,304,307,314,348,355,388,397,406,412,414
+src/components/transactions/Swap/details/ParaswapCostsDetails.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 58-59
+src/components/ContentWithTooltip.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 18-19,26
+src/components/Analytics/AnalyticsConsent.tsx
+  s_7edf19a7347db7::t_ee3904e38f4c6f 67,80
+  s_7edf19a7347db7::t_200c997e7c84f9 8
+  s_7edf19a7347db7::t_330e2ca52ae09a 141
+src/components/TopInfoPanel/TopInfoPanel.tsx
+  s_7edf19a7347db7::t_386e3a4c9013de 3
+  s_7edf19a7347db7::t_edbefa4d53fe01 28
+  s_7edf19a7347db7::t_8be10882b843de 29-30
+  h_407f16e676115d 27
+src/components/TextWithTooltip.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 77
+src/components/transactions/Supply/CollateralOptionsSelector.tsx
+  s_7edf19a7347db7::t_424e3b35b4532c 289
+  s_7edf19a7347db7::t_edbefa4d53fe01 260,325,327,352,393,443,467,473,479
+  s_7edf19a7347db7::t_200c997e7c84f9 24,302
+  s_7edf19a7347db7::t_ee3904e38f4c6f 280,288
+src/components/transactions/GovDelegation/DelegationTokenSelector.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 72
+src/components/infoTooltips/MigrationDisabledTooltip.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 76
+src/components/infoTooltips/EModeTooltip.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 19,26
+src/components/incentives/IncentivesTooltipContent.tsx
+  s_7edf19a7347db7::t_17ebefcc629246 487,512
+  s_7edf19a7347db7::t_edbefa4d53fe01 363,519
+src/components/SavingsCardSkeleton.tsx
+  s_7edf19a7347db7::t_ee3904e38f4c6f 16,19
+  s_7edf19a7347db7::t_17ebefcc629246 14,20
+  s_7edf19a7347db7::t_200c997e7c84f9 2
+src/components/transactions/Swap/inputs/shared/NetworkSelector.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 50
+src/components/transactions/Swap/modals/CollateralSwapModal.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 28
+src/components/transactions/Swap/details/DebtSwapDetails.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 135-136,185-186
+src/components/transactions/Swap/details/CowCostsDetails.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 183-184,220-221,250-251
+src/components/MarketSwitcher.tsx
+  s_2dcd2bf87cccfc::t_060b0164e31580 804
+  s_7edf19a7347db7::t_90087a7244d71c 26,99
+  s_7edf19a7347db7::t_2f3ab8b6ef4d6f 825
+  s_7edf19a7347db7::t_edbefa4d53fe01 305,307,336,372-373,407,420,448,502,511,531,557,568,575,595,674,699,710,721,734,788,833,871
+src/components/infoTooltips/KernelAirdropTooltip.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 26
+src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 169,180,187,216
+src/components/transactions/FlowCommons/BaseSuccess.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 19,78
+src/components/infoTooltips/WrappedTokenToolTipContent.tsx
+  s_7edf19a7347db7::t_d03f9144cf4397 43
+  s_7edf19a7347db7::t_edbefa4d53fe01 52
+src/components/transactions/Swap/inputs/LimitOrderInputs.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 70,149,151-152,154,156,190,192,194,196
+src/components/incentives/MeritIncentivesTooltipContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 156,160,169,177,185,193,201,212,217,224,318,512
+src/components/lists/ListWrapper.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 102,142,150,167
+  h_407f16e676115d 103
+  s_7edf19a7347db7::t_fdfd63d0b76305 99,104
+src/components/transactions/Swap/inputs/shared/SwitchRates.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 56,72
+src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 126,162,164,178,208,219,253
+  s_7edf19a7347db7::t_d03f9144cf4397 220
+src/components/transactions/NetworkSelect.tsx
+  s_7edf19a7347db7::t_ee3904e38f4c6f 45
+  s_7edf19a7347db7::t_edbefa4d53fe01 50
+  s_7edf19a7347db7::t_200c997e7c84f9 11
+  s_7edf19a7347db7::t_17ebefcc629246 43,48
+src/components/transactions/FunCheckout/FunkitCheckout.tsx
+  s_2a638d6da031a9::t_abd552906a5921 185-188
+src/components/lists/ListItem.tsx
+  h_407f16e676115d 22
+  s_7edf19a7347db7::t_edbefa4d53fe01 24
+src/components/ConnectWalletPaper.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 42
+src/components/transactions/Repay/RepayTypeSelector.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 27
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 317,380,405,407,409
+src/components/transactions/FlowCommons/TxModalDetails.tsx
+  s_7edf19a7347db7::t_ee3904e38f4c6f 61
+  s_7edf19a7347db7::t_edbefa4d53fe01 54,337
+  s_7edf19a7347db7::t_17ebefcc629246 59,66
+  s_7edf19a7347db7::t_200c997e7c84f9 19
+src/components/infoTooltips/DarkTooltip.tsx
+  s_7edf19a7347db7::t_90087a7244d71c 2,40
+src/components/transactions/Swap/inputs/shared/ExpirySelector.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 19,55
+src/components/NoSearchResults.tsx
+  s_7edf19a7347db7::t_d03f9144cf4397 44
+src/components/infoTooltips/PointsBasedCampaignTooltip.tsx
+  s_7edf19a7347db7::t_ee3904e38f4c6f 148,189
+  s_7edf19a7347db7::t_edbefa4d53fe01 93,111,124,128,149,153,159,175,191,205,208,228,231
+  s_7edf19a7347db7::t_200c997e7c84f9 3
+  s_7edf19a7347db7::t_f9369e9e1f8107 192
+src/components/HealthFactorNumber.tsx
+  s_7edf19a7347db7::t_c5d746cef870ec 15,20,22,24
+  s_7edf19a7347db7::t_dae7b979747175 37
+src/components/transactions/FlowCommons/PermitNonceInfo.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 17
+src/components/MarketAssetCategoryFilter.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 68-69,75
+  s_7edf19a7347db7::t_ee3904e38f4c6f 73
+  s_7edf19a7347db7::t_084048f9890eb6 63
+  s_7edf19a7347db7::t_200c997e7c84f9 4
+src/components/transactions/Swap/modals/DebtSwapModal.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 28
+src/components/transactions/Supply/SupplyModalContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 684,687
+src/components/transactions/Swap/inputs/shared/PriceInput.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 271,275,335,354,358,387-388,393,398-399
+  s_7edf19a7347db7::t_17ebefcc629246 262,273
+  s_7edf19a7347db7::t_ee3904e38f4c6f 263
+  s_7edf19a7347db7::t_200c997e7c84f9 8
+src/components/transactions/Swap/modals/request/NoEligibleAssetsToSwap.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 6
+src/components/ConnectWalletPaperStaking.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 41
+src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 196,201,215
+src/components/primitives/FormattedNumber.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 126,136,161,171
+src/components/incentives/MerklIncentivesTooltipContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 44,52,83,99,319,334,336
+src/components/ContentContainer.tsx
+  h_407f16e676115d 15
+src/components/caps/CapsHint.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 45
+src/components/isolationMode/IsolatedBadge.tsx
+  s_7edf19a7347db7::t_23d42103d37320 64
+  s_7edf19a7347db7::t_edbefa4d53fe01 25,122
+  s_7edf19a7347db7::t_c7a94e40fecc59 69
+  s_7edf19a7347db7::t_c231403d2fc6ba 40
+  s_7edf19a7347db7::t_c57c4eb73b5e98 41
+src/components/caps/CapsCircularStatus.tsx
+  s_7edf19a7347db7::t_45e8705f7a80c4 55
+src/components/transactions/FlowCommons/RightHelperText.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 62
+src/components/lists/ListHeaderWrapper.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 22
+  h_407f16e676115d 24
+src/components/infoTooltips/PriceImpactTooltip.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 35,58
+src/components/transactions/Swap/details/CollateralSwapDetails.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 251-252,303-304
+src/components/infoTooltips/SpkAirdropTooltip.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 26,35
+src/components/StyledToggleButtonGroup.tsx
+  s_7edf19a7347db7::t_f8b7f3d798f5a4 10,15
+  s_7edf19a7347db7::t_ee3904e38f4c6f 11
+  s_7edf19a7347db7::t_200c997e7c84f9 2
+src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 360,428,480,534,578
+src/components/transactions/Swap/modals/SwapModal.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 26
+src/components/primitives/BasicModal.tsx
+  s_7edf19a7347db7::t_fbac017f9a0235 89
+src/components/transactions/Swap/inputs/MarketOrderInputs.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 44,117-119,121,123,154-155,157,159
+src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 51,122,140
+src/components/transactions/ClaimRewards/RewardsSelect.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 32,43,45,50,55,58,64,71,78,97,105,123,162,171-172,185,194,211,220-221
+src/components/ReserveSubheader.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 24,32,34
+src/components/TopInfoPanel/PageTitle.tsx
+  s_7edf19a7347db7::t_a9b7bd9da9bc81 5
+  s_7edf19a7347db7::t_edbefa4d53fe01 60,117
+  s_7edf19a7347db7::t_414efdc33dd7dc 52
+src/components/transactions/FlowCommons/BaseWaiting.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 17,75
+src/components/transactions/FlowCommons/BaseCancelled.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 17,74
+src/components/transactions/GasStation/GasStation.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 99
+src/components/primitives/TypographyGradient.tsx
+  s_2dcd2bf87cccfc::t_5052ecb0809f33 5
+src/components/transactions/FlowCommons/TxModalTitle.tsx
+  s_7edf19a7347db7::t_3287a399beb5a6 13,15,19
+src/components/caps/DebtCeilingStatus.tsx
+  s_7edf19a7347db7::t_63d1850a676356 29
+  s_7edf19a7347db7::t_8f75897ed66f4e 31
+  s_7edf19a7347db7::t_3f737753a11f27 27
+  s_7edf19a7347db7::t_edbefa4d53fe01 53,81
+  s_7edf19a7347db7::t_e79cec06cb51c3 41
+src/components/transactions/FlowCommons/Success.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 101
+  s_7edf19a7347db7::t_200c997e7c84f9 10,86
+src/components/transactions/AssetInput.tsx
+  s_7edf19a7347db7::t_d03f9144cf4397 129
+  s_7edf19a7347db7::t_17ebefcc629246 134,138
+  s_7edf19a7347db7::t_ee3904e38f4c6f 135,347-348
+  s_7edf19a7347db7::t_edbefa4d53fe01 183,185,245,264,307-308,315,321-322
+  s_7edf19a7347db7::t_200c997e7c84f9 22
+src/components/transactions/Bridge/BridgeAmount.tsx
+  s_7edf19a7347db7::t_70a1c0236e6f23 53
+  s_7edf19a7347db7::t_9b593ad996c37b 2
+src/components/infoTooltips/SuperFestTooltip.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 23,35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "af67d741280e2a2218d73be65824b62e5c4a4e99",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2a638d6da031a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f9e089d0-1f76-4134-bf98-6714f19a62a8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_2dcd2bf87cccfc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8fd233eb-6c83-496c-9e84-129410fc4845",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_7edf19a7347db7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1a737811-bbb1-4377-978b-befdf741d8c0",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

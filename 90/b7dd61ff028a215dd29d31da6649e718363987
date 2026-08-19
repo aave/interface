@@ -1,0 +1,35 @@
+src/layouts/AppHeader.tsx
+  s_e8edff4d0716d1::t_a7a671e9ec4729 104
+src/modules/umbrella/UmbrellaAssetsDefault.tsx
+  s_e8edff4d0716d1::t_1d8c35cd54b42e 35-36
+  s_e8edff4d0716d1::t_da100a851e049f 2
+src/modules/markets/MarketAssetsList.tsx
+  s_e8edff4d0716d1::t_c2a04b86a95d14 2
+  s_e8edff4d0716d1::t_f0e4507a3dd333 55-56
+src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+  s_e8edff4d0716d1::t_c2c3bfa6bda449 58-59
+  s_e8edff4d0716d1::t_48d56750d7fcb1 2
+src/modules/history/TransactionRowItem.tsx
+  s_e8edff4d0716d1::t_2bb117bf452700 49
+src/utils/theme.tsx
+  s_e8edff4d0716d1::t_76eda58238211a 211
+src/modules/markets/Gho/GhoBanner.tsx
+  s_e8edff4d0716d1::t_a48997e0f02e77 99-100
+  s_e8edff4d0716d1::t_dd467c10ef547a 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "90b7dd61ff028a215dd29d31da6649e718363987",
+  "prompts": {},
+  "sessions": {
+    "s_e8edff4d0716d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2dfb1aca-df0c-4f9e-b0f7-19dc6135f592",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

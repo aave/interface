@@ -1,0 +1,54 @@
+src/components/transactions/Swap/inputs/shared/NetworkSelector.tsx
+  s_b123436350916b::t_ff413538839a15 1
+src/components/AssetCategoryMultiselect.tsx
+  s_d9475e91105919::t_053ae38f62b5fa 109,116
+  s_d9475e91105919::t_290266c2125874 14
+src/components/transactions/Swap/inputs/shared/ExpirySelector.tsx
+  s_d9475e91105919::t_45973708362e4b 2
+src/modules/umbrella/UmbrellaMarketSwitcher.tsx
+  s_d9475e91105919::t_f63da12e3c9b0e 180
+  s_b123436350916b::t_d5f396c2c6e426 204-206
+  s_d9475e91105919::t_ff408280c95833 18
+  s_d9475e91105919::t_1b69bf057d3658 86
+  s_d9475e91105919::t_abf6be5bc898cd 14
+src/components/MarketSwitcher.tsx
+  s_b123436350916b::t_300504e7ffe33e 826
+  s_d9475e91105919::t_4e1309241d98ee 1
+  s_d9475e91105919::t_0206933e323975 21
+  s_b123436350916b::t_65c22407ad9be8 558
+  s_d9475e91105919::t_79414dfaef93c8 98
+  s_d9475e91105919::t_f78eef3c461b5d 25
+  s_d9475e91105919::t_96d52933ba9a41 834
+  s_d9475e91105919::t_54826d2a0908b0 789
+  s_b123436350916b::t_e964feeedca063 569
+  s_b123436350916b::t_4a9df06756e572 576
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "b75df4ad5fc3efa88046ba0a454ffaab1846d8d8",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b123436350916b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e05079-8b10-488f-b2c2-f8480447c4cf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_d9475e91105919": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f1f4f7a8-ec6d-4d9e-9952-79ee1f11c1e0",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

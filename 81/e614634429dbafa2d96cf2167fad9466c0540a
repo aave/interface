@@ -1,0 +1,35 @@
+src/components/transactions/FunCheckout/FunkitCheckout.tsx
+  s_de4e3509f44676::t_693d9e00d0258b 188,193
+  s_de4e3509f44676::t_133a565c68a4b4 13,17
+  s_de4e3509f44676::t_ccdb863431059a 4
+  s_de4e3509f44676::t_015a85c25167c8 3
+  s_de4e3509f44676::t_a6846b90d17c02 145-158
+  s_de4e3509f44676::t_19845cc3555709 110
+  s_de4e3509f44676::t_e71690861a4cea 111-124
+  s_de4e3509f44676::t_80f11e1645b811 54,58-60
+  s_de4e3509f44676::t_237cf1d30dea30 87-100
+src/utils/events.ts
+  s_de4e3509f44676::t_8dd290a89130b8 35
+  s_de4e3509f44676::t_02dafe449d3f4f 34,36-39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.13",
+  "base_commit_sha": "81e614634429dbafa2d96cf2167fad9466c0540a",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  },
+  "sessions": {
+    "s_de4e3509f44676": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cc4e289d-b193-4c65-a5eb-b48f8c357f99",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

@@ -1,0 +1,125 @@
+src/components/StyledToggleButtonGroup.tsx
+  s_9211908f660651::t_bd2f647d6e922a 6,20
+  s_9211908f660651::t_b59586aa3a3c0d 5
+  s_9211908f660651::t_f2709f811a592a 4,9
+  s_9211908f660651::t_340cee6ed8df53 24,27
+  s_9211908f660651::t_2ed39ab3f1bf59 2,10
+  s_9211908f660651::t_df1d49449152ad 14-19,21-23,25-26,28-29
+src/modules/dev/ComponentShowcase/components/FormControlsSection/index.tsx
+  s_9211908f660651::t_8597c5991532b0 25-28
+src/modules/governance/proposal/VotersListModal.tsx
+  s_9211908f660651::t_be9ad3007092b2 5-6
+  s_9211908f660651::t_f0230f527edbe3 137
+  s_9211908f660651::t_59dec742fc048c 132,139,143-144,148-149
+src/layouts/components/SettingSwitchRow.tsx
+  s_9211908f660651::t_85fee98185e174 30-32
+pages/governance/index.governance.tsx
+  s_9211908f660651::t_2492a5ce595074 5-6
+  s_9211908f660651::t_1cc676bf5adec9 47,58,62-63,67-68
+src/modules/dashboard/DashboardEModeButton.tsx
+  h_407f16e676115d 94,98
+pages/safety-module.page.tsx
+  s_9211908f660651::t_4f27671009a1c4 150,157,161-162,166-167
+  s_9211908f660651::t_bf01c71195c788 14-15
+src/layouts/components/LanguageSwitcher.tsx
+  s_9211908f660651::t_cf1a453799233d 14
+  s_9211908f660651::t_003e222f64b4b9 38-42
+  s_9211908f660651::t_080e9f1f8bed14 1
+src/components/icons/ChevronRightIcon.tsx
+  s_9211908f660651::t_c25d605521f24e 1-21
+src/utils/buttonStyles.ts
+  s_9211908f660651::t_e145eb3015e0c1 15-18
+  s_9211908f660651::t_941a140e9e94bd 12,22-24
+pages/dashboard.page.tsx
+  s_9211908f660651::t_a3bfbee7526949 4-5
+  s_9211908f660651::t_2698f218abe287 44,51,55-56,60-61
+  s_9211908f660651::t_f96d95b125ad3a 49
+src/layouts/SettingsMenu.tsx
+  s_9211908f660651::t_f4020dd85ba223 93,97
+  s_9211908f660651::t_68a2ae6a8d6dae 91
+  s_9211908f660651::t_25bb2e43a4978f 2
+  s_9211908f660651::t_0005c22f358d76 92,94,96,98,101
+pages/reserve-overview.page.tsx
+  s_9211908f660651::t_5f6017c1ed2a26 105,112,116-117,121-122
+  s_9211908f660651::t_23f81cafdc6af4 6-7
+  s_9211908f660651::t_0565b1a92a7fc4 110
+src/utils/theme.tsx
+  s_9211908f660651::t_eb74478c81f243 38-43
+  s_9211908f660651::t_a1ce361eec2e21 734
+  s_d7bf42b754bd2a::t_3cecfaf7df6d98 579-582,585,589
+  s_9211908f660651::t_88bdc8112c628e 478-492
+  s_9211908f660651::t_224709db5bbb97 493
+  s_d7bf42b754bd2a::t_b133efcc942ab6 592-597
+  s_9211908f660651::t_6270d5d85ceedd 773,777
+  s_9211908f660651::t_30c61af939e905 774-776
+  s_9211908f660651::t_b9431c85d88db4 1126-1127
+  s_9211908f660651::t_9477ede6d24078 477,721,806
+  s_9211908f660651::t_827cfe2d05dd6a 738-743
+  s_9211908f660651::t_293e298087dadd 745
+  s_9211908f660651::t_e964c3aa3f5b78 510-518,723
+  s_9211908f660651::t_87f286acd82b71 778-790,793-805
+  s_9211908f660651::t_6ee463f7ea9525 725-730,732,735-737
+  s_9211908f660651::t_37d11e65ca85c6 791-792
+  s_9211908f660651::t_442338ecdda412 474-476
+  s_9211908f660651::t_43655ff1962ef7 724
+  s_9211908f660651::t_fafe6bb901a9e3 731
+  s_9211908f660651::t_3132a23e4e1c59 722
+src/layouts/AppHeader.tsx
+  s_9211908f660651::t_53a4a50ceccbe2 31
+  s_9211908f660651::t_5c22b6f2558e1c 303,328
+  s_9211908f660651::t_32a816417b82f4 103-106
+src/components/StyledToggleButton.tsx
+  s_9211908f660651::t_722b83069acfa1 8,11,19
+  s_9211908f660651::t_62195d0e41aba0 17-18,20,32
+  s_9211908f660651::t_4e39ba1ba4e292 6,21,26-27,30,33
+  s_9211908f660651::t_5281544c9070c2 12-16,24
+src/layouts/components/TestNetModeSwitcher.tsx
+  s_9211908f660651::t_6d491d0e3c6b1f 30
+src/modules/dev/ComponentShowcase/components/TogglesBadgesSection/index.tsx
+  s_9211908f660651::t_839d021109c53b 4-5,26
+src/layouts/MobileMenu.tsx
+  s_9211908f660651::t_5c88bdeea6b50c 96
+src/layouts/components/DarkModeSwitcher.tsx
+  s_9211908f660651::t_409b218d5aad47 24
+src/components/AssetCategoryMultiselect.tsx
+  s_9211908f660651::t_e7690d705fdeb3 85,90,100
+src/locales/el/messages.js
+  s_9211908f660651::t_14ed7c23c99369 1
+src/locales/en/messages.js
+  s_9211908f660651::t_7500c4cdee3425 1
+src/locales/en/messages.po
+  s_9211908f660651::t_e38010c3f89050 59-62,342-346,3504-3507
+src/locales/es/messages.js
+  s_9211908f660651::t_7744b5234b9b62 1
+src/locales/fr/messages.js
+  s_9211908f660651::t_a5181c2eced7ed 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "8eb4cc214f8d992de2b8fc27168afc901e4ce039",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9211908f660651": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4f26ceed-ee72-4763-b80e-e4ad18aefd9d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_d7bf42b754bd2a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0cf74d85-33c6-4f4d-b15a-8afd2f61f454",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

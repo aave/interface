@@ -1,0 +1,21 @@
+src/modules/markets/Gho/GhoBanner.tsx
+  s_db0e85e62af974::t_1fe4cf212da3ba 143,215
+  s_db0e85e62af974::t_b5f682428a6321 140
+  s_db0e85e62af974::t_4a6138abec3503 144,216
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "ee6b98b567c8a07c865c844cedcca9d85cd23786",
+  "prompts": {},
+  "sessions": {
+    "s_db0e85e62af974": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa54de49-2594-4269-bf45-ee6841275814",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

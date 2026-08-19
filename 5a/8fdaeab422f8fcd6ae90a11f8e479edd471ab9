@@ -1,0 +1,19 @@
+src/components/primitives/BasicModal.tsx
+  s_761dd4371f1a34::t_14560dbe4d1a0f 84
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "5a8fdaeab422f8fcd6ae90a11f8e479edd471ab9",
+  "prompts": {},
+  "sessions": {
+    "s_761dd4371f1a34": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ae7f60f-27bd-4669-95ee-d0ed816a8662",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
