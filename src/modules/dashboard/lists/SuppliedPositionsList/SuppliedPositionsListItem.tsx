@@ -1,6 +1,8 @@
 import { ProtocolAction } from '@aave/contract-helpers';
+import { TrendingUpIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Button } from '@mui/material';
+import { Button, ListItemText, Menu, MenuItem, SvgIcon } from '@mui/material';
+import { useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -54,6 +56,9 @@ export const SuppliedPositionsListItem = ({
   // Leverage rides the same adapters as the collateral swap, and only makes sense on a position
   // already counting as collateral.
   const showLeverageButton = showSwitchButton && usageAsCollateralEnabledOnUser;
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const extraActionsOpen = Boolean(anchorEl);
   const disableWithdraw = !isActive || isPaused;
   const disableSupply = !isActive || isFrozen || isPaused;
 
@@ -141,24 +146,6 @@ export const SuppliedPositionsListItem = ({
             <Trans>Supply</Trans>
           </Button>
         )}
-        {showLeverageButton && (
-          <Button
-            disabled={disableSwap}
-            variant="outlined"
-            onClick={() => {
-              trackEvent(GENERAL.OPEN_MODAL, {
-                modal: 'Leverage',
-                market: currentMarket,
-                assetName: reserve.name,
-                asset: underlyingAsset,
-              });
-              openLeverage(underlyingAsset);
-            }}
-            data-cy={`leverageButton`}
-          >
-            <Trans>Leverage</Trans>
-          </Button>
-        )}
         <Button
           disabled={disableWithdraw}
           variant="outlined"
@@ -168,6 +155,57 @@ export const SuppliedPositionsListItem = ({
         >
           <Trans>Withdraw</Trans>
         </Button>
+        {showLeverageButton && (
+          <>
+            <Button
+              id="supplied-extra-button"
+              sx={{ minWidth: 0, px: 4 }}
+              variant="outlined"
+              onClick={(event) => setAnchorEl(event.currentTarget)}
+              aria-controls={extraActionsOpen ? 'supplied-item-extra-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={extraActionsOpen ? 'true' : undefined}
+              data-cy={`suppliedExtraActionsButton`}
+            >
+              <Trans>...</Trans>
+            </Button>
+            <Menu
+              id="supplied-item-extra-menu"
+              anchorEl={anchorEl}
+              open={extraActionsOpen}
+              MenuListProps={{
+                'aria-labelledby': 'supplied-extra-button',
+                sx: { py: 0 },
+              }}
+              onClose={() => setAnchorEl(null)}
+              keepMounted={true}
+              PaperProps={{ sx: { minWidth: '120px', py: 0 } }}
+            >
+              <MenuItem
+                sx={{ gap: 2 }}
+                disabled={disableSwap}
+                onClick={() => {
+                  setAnchorEl(null);
+                  trackEvent(GENERAL.OPEN_MODAL, {
+                    modal: 'Leverage',
+                    market: currentMarket,
+                    assetName: reserve.name,
+                    asset: underlyingAsset,
+                  });
+                  openLeverage(underlyingAsset);
+                }}
+                data-cy={`leverageButton`}
+              >
+                <SvgIcon fontSize="small">
+                  <TrendingUpIcon />
+                </SvgIcon>
+                <ListItemText>
+                  <Trans>Leverage</Trans>
+                </ListItemText>
+              </MenuItem>
+            </Menu>
+          </>
+        )}
       </ListButtonsColumn>
     </ListItemWrapper>
   );

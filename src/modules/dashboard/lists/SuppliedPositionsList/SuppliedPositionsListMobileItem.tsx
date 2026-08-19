@@ -145,17 +145,6 @@ export const SuppliedPositionsListMobileItem = ({
             <Trans>Supply</Trans>
           </Button>
         )}
-        {isSwapButton && usageAsCollateralEnabledOnUser && (
-          <Button
-            disabled={disableSwap}
-            variant="outlined"
-            onClick={() => openLeverage(underlyingAsset)}
-            sx={{ ml: 1.5 }}
-            fullWidth
-          >
-            <Trans>Leverage</Trans>
-          </Button>
-        )}
         <Button
           disabled={disableWithdraw}
           variant="outlined"
@@ -166,6 +155,18 @@ export const SuppliedPositionsListMobileItem = ({
           <Trans>Withdraw</Trans>
         </Button>
       </Box>
+
+      {isSwapButton && usageAsCollateralEnabledOnUser && (
+        <Button
+          disabled={disableSwap}
+          variant="outlined"
+          onClick={() => openLeverage(underlyingAsset)}
+          sx={{ mt: 1.5 }}
+          fullWidth
+        >
+          <Trans>Leverage</Trans>
+        </Button>
+      )}
     </ListMobileItemWrapper>
   );
 };
