@@ -88,7 +88,7 @@ export const MigrationList = ({
         paperSx={{ boxShadow: 'none' }}
         titleComponent={
           <Box display="block">
-            <Typography component="div" variant="subheader2" sx={{ mr: 4 }}>
+            <Typography component="div" variant="h3" sx={{ mr: 4 }}>
               {titleComponent}
             </Typography>
             {isolatedReserveV3 && !isolatedReserveV3.enteringIsolationMode && (

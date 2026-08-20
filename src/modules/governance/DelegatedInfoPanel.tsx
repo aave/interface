@@ -161,7 +161,7 @@ export const DelegatedInfoPanel = () => {
     powers.aAavePropositionDelegatee !== constants.AddressZero;
 
   return (
-    <Paper sx={{ mt: 2 }}>
+    <Paper>
       <Box sx={{ px: 6, pb: 6, pt: 4 }}>
         <Typography typography="h3">
           <Trans>Delegated power</Trans>

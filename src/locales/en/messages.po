@@ -532,10 +532,6 @@ msgstr "Copy error message"
 msgid "repaid"
 msgstr "repaid"
 
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
-msgid "Available to Stake"
-msgstr "Available to Stake"
-
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 #: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Show less"
@@ -993,6 +989,10 @@ msgstr "Stake balance"
 #: src/components/infoTooltips/PausedTooltip.tsx
 msgid "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
 msgstr "This asset has been paused due to a community decision. Supply, withdraw, borrows and repays are impacted."
+
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+msgid "Av. to Claim"
+msgstr "Av. to Claim"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Collateral is (mostly) the same currency that is being borrowed"
@@ -2754,6 +2754,10 @@ msgstr "Governance"
 msgid "Cancel"
 msgstr "Cancel"
 
+#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+msgid "Av. to Stake"
+msgstr "Av. to Stake"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
 msgstr "Ltv validation failed"
@@ -3023,10 +3027,6 @@ msgstr "This is the cost of settling your order on-chain, including gas and any 
 #: src/modules/umbrella/StakeCooldownActions.tsx
 msgid "Activate Cooldown"
 msgstr "Activate Cooldown"
-
-#: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
-msgid "Available to Claim"
-msgstr "Available to Claim"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/umbrella/UmbrellaHeader.tsx

@@ -32,11 +32,11 @@ const listHeaders = [
     sortKey: 'stakeSharesTokens',
   },
   {
-    title: <Trans>Available to Stake</Trans>,
+    title: <Trans>Av. to Stake</Trans>,
     sortKey: 'totalAvailableToStake',
   },
   {
-    title: <Trans>Available to Claim</Trans>,
+    title: <Trans>Av. to Claim</Trans>,
     sortKey: 'totalAvailableToClaim',
   },
   {

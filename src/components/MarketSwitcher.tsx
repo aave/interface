@@ -509,7 +509,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
         sx={{
           height: '3.23rem',
           px: '1rem',
-          bgcolor: 'bg-2',
+          bgcolor: 'bg-3',
           boxShadow: `0 0 0 1px ${figVars['border-1']}`,
           display: 'flex',
           alignItems: 'center',
@@ -751,7 +751,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
 
         {!hideTitleChrome && marketBlurbs[currentMarket] && (
           <Typography
-            variant="h5"
+            variant="base"
             sx={{
               color: 'fg-3',
               mt: '1rem',
@@ -811,7 +811,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
               elevation: 0,
               sx: {
                 width: '34rem',
-                bgcolor: 'bg-2',
+                bgcolor: 'bg-3',
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',

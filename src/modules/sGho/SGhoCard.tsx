@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
@@ -10,8 +10,6 @@ import { SGhoDepositPanel } from './SGhoDepositPanel';
 
 export const SGhoCard = () => {
   const { chainId, marketKey } = useSavingsMarketData();
-  const { breakpoints } = useTheme();
-  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
   const { openSwitch, openSGhoVaultDeposit, openSGhoVaultWithdraw } = useModalContext();
   const { vault, loading: vaultLoading } = useSGhoVaultContext();
 
@@ -44,9 +42,7 @@ export const SGhoCard = () => {
     <Paper
       variant="card"
       sx={{
-        pt: 4,
-        pb: { xs: 6, md: 20 },
-        px: downToXsm ? 4 : 6,
+        p: 6,
         flex: 1,
         minWidth: 0,
         width: { xs: '100%', mdlg: 'auto' },

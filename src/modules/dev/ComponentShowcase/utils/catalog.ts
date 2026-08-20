@@ -35,7 +35,7 @@ export const COLOR_GROUPS: { title: string; role: ColorRole; names: FigmaColorNa
   {
     title: 'Backgrounds',
     role: 'bg',
-    names: ['bg-max', 'bg-1', 'bg-2', 'bg-3', 'bg-4', 'bg-5', 'bg-6', 'bg-7'],
+    names: ['bg-max', 'bg-1', 'bg-2', 'bg-3', 'bg-4', 'bg-5', 'bg-6'],
   },
   {
     title: 'Foreground / Text',

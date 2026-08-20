@@ -39,7 +39,7 @@ export const RepresentativesInfoPanel = () => {
   // }
 
   return (
-    <Paper sx={{ mt: 2 }}>
+    <Paper>
       <Box sx={{ px: 6, pb: 6, pt: 4 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography typography="h3">

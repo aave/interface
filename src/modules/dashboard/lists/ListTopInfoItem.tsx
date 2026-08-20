@@ -1,5 +1,6 @@
-import { Paper, Typography } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
+import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 
 import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
 
@@ -11,24 +12,28 @@ interface ListTopInfoItemProps {
 }
 
 export const ListTopInfoItem = ({ title, value, percent, tooltip }: ListTopInfoItemProps) => {
-  return (
-    <Paper
-      variant="outlined"
-      sx={{
-        mr: 2,
-        p: '2px 4px',
-        display: 'flex',
-        alignItems: 'center',
-        boxShadow: 'none',
-        bgcolor: 'transparent',
-      }}
-    >
-      <Typography color="fg-2" sx={{ mr: 1 }} noWrap>
-        {title}
-      </Typography>
-      <FormattedNumber value={value} percent={percent} variant="h5" symbol="USD" />
+  const theme = useTheme();
+  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
 
-      {tooltip}
-    </Paper>
+  return (
+    <PageHeaderStat
+      label={
+        tooltip ? (
+          <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+            {title}
+            {tooltip}
+          </Box>
+        ) : (
+          title
+        )
+      }
+    >
+      <FormattedNumber
+        value={value}
+        percent={percent}
+        variant={downToSM ? 'h4' : 'h2'}
+        symbol="USD"
+      />
+    </PageHeaderStat>
   );
 };

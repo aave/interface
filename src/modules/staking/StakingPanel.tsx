@@ -562,6 +562,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               display: 'flex',
               flexDirection: { sm: 'row', xs: 'column' },
               justifyContent: 'space-between',
+              gap: '0.75rem',
             }}
           >
             <Button

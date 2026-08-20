@@ -45,12 +45,18 @@ const MENU_LIST_INSET = '0.38rem';
 /**
  * The shared fill recipe for the two opaque "white pill" surfaces — the `outlined` button variant
  * and the Select trigger. They must stay in lockstep (the Select IS the outlined-button surface),
- * so the tokens live here once instead of being restated ~470 lines apart. Both tokens are per-mode
- * (bg-4 = #ffffff/#1e1e20, bg-4-hover = #f6f7f4/#28282a), so neither needs a `darkScheme` override
- * — which also means they honour a nested scheme boundary like the dev showcase's local toggle.
+ * so the tokens live here once instead of being restated ~470 lines apart.
+ *
+ * The resting fill is bg-3 in light (a clean white pill against the page) and bg-4 in dark, so it
+ * needs a `darkScheme` override rather than a single per-mode token. Written scheme-scoped rather
+ * than mode-scoped so it still honours a nested boundary like the dev showcase's local toggle.
  * Selectors, transitions and focus rings stay with each consumer; only the fill is shared.
  */
-const surfaceFill = { backgroundColor: figVars['bg-4'], boxShadow: figSurfaceShadow() };
+const surfaceFill = {
+  backgroundColor: figVars['bg-3'],
+  ...darkScheme({ backgroundColor: figVars['bg-4'] }),
+  boxShadow: figSurfaceShadow(),
+};
 const surfaceFillHover = { backgroundColor: figVars['bg-4-hover'], boxShadow: figSurfaceShadow() };
 
 /**
@@ -77,7 +83,7 @@ const secondaryPillStyle = {
 
 /**
  * Tertiary button (`variant="tertiary"`): the secondary pill with the ring/drop-shadow removed —
- * a flat fill, no border. Base bg-6 (light) / bg-5 (dark), stepping to bg-7 / bg-6 on hover.
+ * a flat fill, no border. Base bg-6 (light) / bg-5 (dark), stepping to bg-6 on hover.
  * fg-1 text + fg-3 start-icon otherwise match `secondaryPillStyle`. For low-emphasis header
  * actions (e.g. the dashboard Claim / share buttons).
  */
@@ -93,7 +99,7 @@ const tertiaryPillStyle = {
     color: figVars['fg-3'],
   },
   '&:hover, &.Mui-focusVisible, &[aria-expanded="true"]': {
-    backgroundColor: figVars['bg-7'],
+    backgroundColor: figVars['bg-6'],
     border: 'none',
     boxShadow: 'none',
     ...darkScheme({
@@ -1025,7 +1031,7 @@ export function getThemedComponents(theme: AppTheme) {
           },
           track: {
             opacity: 1,
-            backgroundColor: figVars['bg-7'],
+            backgroundColor: figVars['bg-6'],
             borderRadius: '9px',
           },
         },

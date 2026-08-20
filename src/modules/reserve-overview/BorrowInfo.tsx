@@ -14,6 +14,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCapsSDK';
 import { GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -75,6 +76,7 @@ export const BorrowInfo = ({
           <>
             <CapsCircularStatus
               value={borrowCap.percentUsed}
+              color={figVars['data-orange']}
               tooltipContent={
                 <>
                   <Trans>
