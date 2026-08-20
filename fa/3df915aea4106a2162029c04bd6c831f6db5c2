@@ -1,0 +1,97 @@
+src/modules/dev/ComponentShowcase/utils/catalog.ts
+  h_407f16e676115d 38
+src/modules/migration/MigrationList.tsx
+  s_4a5a35cb33f785::t_aa6cbdece0e520 91
+src/components/MarketSwitcher.tsx
+  h_407f16e676115d 512,754,814
+src/modules/reserve-overview/BorrowInfo.tsx
+  s_4a5a35cb33f785::t_474892d706b8f6 17
+  s_4a5a35cb33f785::t_4f2580b091544f 79
+src/modules/dashboard/DashboardContentWrapper.tsx
+  s_4a5a35cb33f785::t_50c48c2f2f66b9 19
+src/modules/stkGho/StkGhoCard.tsx
+  h_407f16e676115d 3,36
+src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+  s_4a5a35cb33f785::t_5bd943a80a35ba 35,39
+src/modules/governance/UserGovernanceInfo.tsx
+  s_4a5a35cb33f785::t_4fc55ec0a8679d 2
+  s_4a5a35cb33f785::t_c914dfdd1c5486 14-16,20
+src/components/caps/CapsCircularStatus.tsx
+  s_4a5a35cb33f785::t_74adaf47226b57 76,78
+  s_4a5a35cb33f785::t_2d2b7f444cffb3 12-16,19-24
+src/modules/governance/RepresentativesInfoPanel.tsx
+  s_4a5a35cb33f785::t_aec20a084788ed 42
+src/components/lists/ListWrapper.tsx
+  s_4a5a35cb33f785::t_82050a76a7d61e 103-109
+  s_4a5a35cb33f785::t_04c4543713c050 125-141
+  s_4a5a35cb33f785::t_68e5c2ed8de7d2 7
+  s_4a5a35cb33f785::t_42b3e67767e440 144-145,147,150-151,154
+  s_4a5a35cb33f785::t_60629bc54764d8 192-197,199-213
+  s_4a5a35cb33f785::t_4303c67acd9346 115
+  s_4a5a35cb33f785::t_ef11332cf57503 16-20
+  s_4a5a35cb33f785::t_03a7c36a0f2366 218-220,222
+  s_4a5a35cb33f785::t_50c48c2f2f66b9 114,116-122,146,148-149,152-153,156-191,198,214,221
+  s_4a5a35cb33f785::t_a4d4d58b834d57 217
+  s_4a5a35cb33f785::t_b9da68f48a314c 216
+src/modules/sGho/SGhoCard.tsx
+  h_407f16e676115d 45
+  h_407f16e676115d 2
+src/utils/figmaColors.ts
+  h_407f16e676115d 12-14,139-142
+  s_4a5a35cb33f785::t_d5d734ce1b065f 61,66,179,184
+src/components/transactions/TxActionsWrapper.tsx
+  h_407f16e676115d 186
+src/components/lists/ListHeaderWrapper.tsx
+  s_4a5a35cb33f785::t_743c1a2c391b72 18
+src/modules/staking/StakingPanel.tsx
+  h_407f16e676115d 565
+src/utils/theme.tsx
+  h_407f16e676115d 102,1034
+  s_4a5a35cb33f785::t_08552f2ee9130d 48-52,55-59
+  s_4a5a35cb33f785::t_1ccc86f5bce7c7 86
+src/modules/dashboard/lists/ListTopInfoItem.tsx
+  s_4a5a35cb33f785::t_a0b1a8b1998a05 1,15-17,31-36
+  s_4a5a35cb33f785::t_d36eaf172559d1 3,19-29,37
+src/modules/dashboard/DashboardListTopPanel.tsx
+  h_407f16e676115d 42
+src/modules/governance/DelegatedInfoPanel.tsx
+  s_4a5a35cb33f785::t_aec20a084788ed 164
+src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+  s_4a5a35cb33f785::t_60b4fdb0f2a7a2 10,13,46,58,70,82
+src/components/transactions/DelegationTxsWrapper.tsx
+  h_407f16e676115d 128
+src/components/transactions/Borrow/ParameterChangewarning.tsx
+  s_4a5a35cb33f785::t_e1534a5111f584 2,12-17,25-26,29
+  s_4a5a35cb33f785::t_6c120e26ad6a25 10
+src/locales/el/messages.js
+  s_4a5a35cb33f785::t_0618fbf0e0de04 1
+src/locales/en/messages.js
+  s_4a5a35cb33f785::t_02569d60a4a13e 1
+src/locales/en/messages.po
+  s_4a5a35cb33f785::t_f60174bc6e239f 993-996,2757-2760
+src/locales/es/messages.js
+  s_4a5a35cb33f785::t_b31eb4bf514fb0 1
+src/locales/fr/messages.js
+  s_4a5a35cb33f785::t_66f96d93945b06 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "fa3df915aea4106a2162029c04bd6c831f6db5c2",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_4a5a35cb33f785": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "302409f1-a0b1-4062-8ac3-119d23cf22dc",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
