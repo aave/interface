@@ -810,7 +810,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
               variant: 'modal',
               elevation: 0,
               sx: {
-                width: '32.5rem',
+                width: '34rem',
                 bgcolor: 'bg-2',
                 overflow: 'hidden',
                 display: 'flex',
