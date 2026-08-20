@@ -35,6 +35,8 @@ interface TxActionsWrapperProps extends BoxProps {
   };
   tryPermit?: boolean;
   permitInUse?: boolean;
+  /** Extra approval controls for a specific flow, shown alongside the method toggle. */
+  approvalOptions?: ReactNode;
   event?: TrackEventProps;
 }
 
@@ -59,6 +61,7 @@ export const TxActionsWrapper = ({
   errorParams,
   tryPermit,
   permitInUse = false,
+  approvalOptions,
   event,
   ...rest
 }: TxActionsWrapperProps) => {
@@ -146,12 +149,13 @@ export const TxActionsWrapper = ({
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
       {approvalParams && !readOnlyModeAddress && (
-        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: 4 }}>
           <RightHelperText
             approvalHash={approvalTxState?.txHash}
             tryPermit={tryPermit}
             permitInUse={permitInUse}
           />
+          {!approvalTxState?.txHash && approvalOptions}
         </Box>
       )}
 
