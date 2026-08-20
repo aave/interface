@@ -186,8 +186,33 @@ const getMarketOrder = (marketId: CustomMarket): number => {
   return MARKET_ORDER_BY_TITLE[market.marketTitle] ?? 999;
 };
 
-const AAVE_PRO_URL = 'https://pro.aave.com/';
-const AAVE_PRO_LOGO = '/icons/markets/aave-pro.png';
+export const AAVE_PRO_URL = 'https://pro.aave.com/';
+
+type V4Link = {
+  id: string;
+  label: string;
+  logo: string;
+  url: string;
+  section: Extract<MarketCategory, 'ethereum' | 'other'>;
+};
+
+// External links to V4 instances, rendered alongside the V3 markets of the same section.
+const V4_LINKS: V4Link[] = [
+  {
+    id: 'aave_pro_v4',
+    label: 'Aave Pro',
+    logo: '/icons/markets/aave-pro.png',
+    url: AAVE_PRO_URL,
+    section: 'ethereum',
+  },
+  {
+    id: 'aave_pro_avalanche_v4',
+    label: 'Avalanche',
+    logo: '/icons/networks/avalanche.svg',
+    url: AAVE_PRO_URL,
+    section: 'other',
+  },
+];
 
 interface MarketSwitcherProps {
   /**
@@ -268,7 +293,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
   // Filter to V3 markets only
   const v3Markets = useMemo(() => availableMarkets.filter((id) => marketsData[id].v3), []);
 
-  const { pinned, ethereum, l2, other, legacy } = useMemo(() => {
+  const { pinned, ethereum, l2, other, legacy, v4Ethereum, v4Other } = useMemo(() => {
     const query = searchQuery.toLowerCase();
     const filtered = v3Markets.filter((id) => {
       const { market } = getMarketInfoById(id);
@@ -280,12 +305,16 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
     const pinnedSet = new Set(pinned);
     const unpinned = sorted.filter((id) => !pinnedSet.has(id));
 
+    const v4Links = V4_LINKS.filter((link) => link.label.toLowerCase().includes(query));
+
     return {
       pinned,
       ethereum: unpinned.filter((id) => getMarketCategory(id) === 'ethereum'),
       l2: unpinned.filter((id) => getMarketCategory(id) === 'l2'),
       other: unpinned.filter((id) => getMarketCategory(id) === 'other'),
       legacy: unpinned.filter((id) => getMarketCategory(id) === 'legacy'),
+      v4Ethereum: v4Links.filter((link) => link.section === 'ethereum'),
+      v4Other: v4Links.filter((link) => link.section === 'other'),
     };
   }, [v3Markets, searchQuery, favoriteMarkets, isFavoriteMarket]);
 
@@ -411,59 +440,115 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
     );
   };
 
+  const handleSelectV4Link = (link: V4Link) => {
+    trackEvent(DASHBOARD.CHANGE_MARKET, { market: link.id });
+    window.open(link.url, '_blank');
+  };
+
   const renderLinkRow = (
     {
+      id,
       logo,
       label,
       href,
       badge,
-    }: { logo: string; label: React.ReactNode; href: string; badge?: React.ReactNode },
+      onSelect,
+    }: {
+      id?: string;
+      logo: string;
+      label: React.ReactNode;
+      href: string;
+      badge?: React.ReactNode;
+      onSelect?: () => void;
+    },
     isMobile?: boolean,
     width = '33.33%'
-  ) => (
-    <Box
-      role="button"
-      tabIndex={0}
-      onClick={() => window.open(href, '_blank')}
-      onKeyDown={(e: React.KeyboardEvent) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          window.open(href, '_blank');
-        }
-      }}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        height: '2.5rem',
-        py: '0.5rem',
-        px: '0.75rem',
-        width: isMobile ? '50%' : width,
-        boxSizing: 'border-box',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        // Hover highlight on an inset pseudo-element, matching the market rows (insetHighlight.ts).
-        ...insetHighlightBase({ theme, radius: '8px', inset: '1px' }),
-        '&:hover::before': insetHighlightActive(figVars['button-hover']),
-      }}
-    >
-      {renderRowLogo(logo)}
-      {badge ? (
-        <Box sx={{ flex: '1 1 0', minWidth: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Typography noWrap variant="h5" color="fg-1" sx={{ minWidth: 0 }}>
+  ) => {
+    const select = onSelect ?? (() => window.open(href, '_blank'));
+    return (
+      <Box
+        key={id ?? href}
+        role="button"
+        tabIndex={0}
+        data-cy={id ? `marketSelector_${id}` : undefined}
+        onClick={select}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            select();
+          }
+        }}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          height: '2.5rem',
+          py: '0.5rem',
+          px: '0.75rem',
+          width: isMobile ? '50%' : width,
+          boxSizing: 'border-box',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          // Hover highlight on an inset pseudo-element, matching the market rows (insetHighlight.ts).
+          ...insetHighlightBase({ theme, radius: '8px', inset: '1px' }),
+          '&:hover::before': insetHighlightActive(figVars['button-hover']),
+        }}
+      >
+        {renderRowLogo(logo)}
+        {badge ? (
+          <Box
+            sx={{ flex: '1 1 0', minWidth: 0, display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            <Typography noWrap variant="h5" color="fg-1" sx={{ minWidth: 0 }}>
+              {label}
+            </Typography>
+            {badge}
+          </Box>
+        ) : (
+          <Typography noWrap variant="h5" color="fg-1" sx={{ flex: '1 1 0', minWidth: 0 }}>
             {label}
           </Typography>
-          {badge}
-        </Box>
-      ) : (
-        <Typography noWrap variant="h5" color="fg-1" sx={{ flex: '1 1 0', minWidth: 0 }}>
-          {label}
-        </Typography>
-      )}
-      <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
-        <ExternalLinkIcon />
-      </SvgIcon>
-    </Box>
-  );
+        )}
+        <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
+          <ExternalLinkIcon />
+        </SvgIcon>
+      </Box>
+    );
+  };
+
+  const renderV4Link = (link: V4Link, isMobile?: boolean, width = '33.33%') =>
+    renderLinkRow(
+      {
+        id: link.id,
+        logo: link.logo,
+        label: link.label,
+        href: link.url,
+        badge: (
+          <Box
+            component="span"
+            sx={{
+              width: 26,
+              height: 16,
+              borderRadius: '50px',
+              bgcolor: 'rgba(151, 142, 255, 0.1)',
+              color: '#978eff',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              fontSize: '10px',
+              fontWeight: 700,
+              lineHeight: 1,
+              letterSpacing: 0,
+            }}
+          >
+            V4
+          </Box>
+        ),
+        onSelect: () => handleSelectV4Link(link),
+      },
+      isMobile,
+      width
+    );
 
   const sectionHeader = (label: React.ReactNode) => (
     <Typography
@@ -489,7 +574,12 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
   );
 
   const noResults =
-    pinned.length === 0 && ethereum.length === 0 && l2.length === 0 && other.length === 0;
+    pinned.length === 0 &&
+    ethereum.length === 0 &&
+    l2.length === 0 &&
+    other.length === 0 &&
+    v4Ethereum.length === 0 &&
+    v4Other.length === 0;
 
   const renderSelectorContent = (mobile: boolean) => (
     <>
@@ -558,50 +648,24 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
             pinned.map((id) => renderGridItem(id, mobile))
           )}
 
-        {/* Ethereum + Aave Pro link */}
-        {ethereum.length > 0 &&
+        {/* Ethereum + V4 links */}
+        {(ethereum.length > 0 || v4Ethereum.length > 0) &&
           renderSection(
             <Trans>Ethereum</Trans>,
             <>
               {ethereum.map((id) => renderGridItem(id, mobile))}
-              {renderLinkRow(
-                {
-                  logo: AAVE_PRO_LOGO,
-                  href: AAVE_PRO_URL,
-                  label: <Trans>Aave Pro</Trans>,
-                  badge: (
-                    <Box
-                      component="span"
-                      sx={{
-                        width: 26,
-                        height: 16,
-                        borderRadius: '50px',
-                        bgcolor: 'rgba(151, 142, 255, 0.1)',
-                        color: '#978eff',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexShrink: 0,
-                        fontSize: '10px',
-                        fontWeight: 700,
-                        lineHeight: 1,
-                        letterSpacing: 0,
-                      }}
-                    >
-                      V4
-                    </Box>
-                  ),
-                },
-                mobile
-              )}
+              {v4Ethereum.map((link) => renderV4Link(link, mobile))}
             </>
           )}
 
         {/* L1 Networks */}
-        {other.length > 0 &&
+        {(other.length > 0 || v4Other.length > 0) &&
           renderSection(
             <Trans>L1 Networks</Trans>,
-            other.map((id) => renderGridItem(id, mobile))
+            <>
+              {other.map((id) => renderGridItem(id, mobile))}
+              {v4Other.map((link) => renderV4Link(link, mobile))}
+            </>
           )}
 
         {/* L2 Networks */}

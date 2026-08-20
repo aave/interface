@@ -22,6 +22,7 @@ import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { AaveLogo } from 'src/components/icons/AaveLogo';
 import { BridgeIcon } from 'src/components/icons/BridgeIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
+import { AAVE_PRO_URL } from 'src/components/MarketSwitcher';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useConnectGate } from 'src/hooks/useConnectGate';
@@ -267,6 +268,25 @@ export function AppHeader() {
           </Box>
 
           <Box sx={{ flexGrow: 1 }} />
+
+          <NoSsr>
+            <Button
+              component={Link}
+              href={AAVE_PRO_URL}
+              variant="outlined"
+              sx={{
+                p: '0 0.88rem',
+                minWidth: 'unset',
+                alignItems: 'center',
+                mr: '0.62rem',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <Typography component="span" variant="buttonM">
+                {lg ? 'V4' : 'Aave V4'}
+              </Typography>
+            </Button>
+          </NoSsr>
 
           <NoSsr>
             <StyledBadge

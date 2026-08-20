@@ -6,6 +6,10 @@ on:
     branches:
       - main
 
+# Crowdin sync authenticates with BOT_TOKEN, so GITHUB_TOKEN only needs read.
+permissions:
+  contents: read
+
 jobs:
   upload-to-crowdin:
     name: Upload sources to Crowdin
