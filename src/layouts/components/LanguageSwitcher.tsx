@@ -53,7 +53,7 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
           <ChevronRightIcon sx={{ fontSize: 20, transform: 'rotate(180deg)' }} />
         </ListItemIcon>
         <ListItemText disableTypography>
-          <Typography sx={{ color: 'fg-1', fontSize: '0.875rem', fontWeight: 400, lineHeight: 1 }}>
+          <Typography variant="base" color="fg-1">
             <Trans>Select language</Trans>
           </Typography>
         </ListItemText>

@@ -197,6 +197,7 @@ declare module '@mui/material/styles/createPalette' {
 }
 
 interface TypographyCustomVariants {
+  base: React.CSSProperties;
   display1: React.CSSProperties;
   subheader1: React.CSSProperties;
   subheader2: React.CSSProperties;
@@ -226,6 +227,7 @@ declare module '@mui/material/styles' {
 // Update the Typography's variant prop options
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    base: true;
     display1: true;
     subheader1: true;
     subheader2: true;
@@ -397,6 +399,12 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.1),
         lineHeight: pxToRem(16),
         fontSize: pxToRem(12),
+      },
+      base: {
+        fontFamily: FONT,
+        fontWeight: 400,
+        lineHeight: '100%',
+        fontSize: pxToRem(14),
       },
       description: {
         fontFamily: FONT,
@@ -754,6 +762,7 @@ export function getThemedComponents(theme: AppTheme) {
             subheader1: 'p',
             subheader2: 'p',
             caption: 'p',
+            base: 'p',
             description: 'p',
             buttonL: 'p',
             buttonM: 'p',
