@@ -55,15 +55,18 @@ export const getRepayAmountToApprove = ({
   amountRequiringApproval: string;
   isMaxRepay: boolean;
   decimals: number;
-}): string =>
+}): string => {
   // A typed amount is fixed, so the gate's target cannot drift away from it. A full repay
   // is derived from live debt and does drift, hence the margin.
-  isMaxRepay
-    ? valueToBigNumber(amountRequiringApproval)
-        .multipliedBy(REPAY_ALL_APPROVAL_MARGIN)
-        .decimalPlaces(decimals, BigNumber.ROUND_UP)
-        .toString(10)
-    : amountRequiringApproval;
+  const amount = isMaxRepay
+    ? valueToBigNumber(amountRequiringApproval).multipliedBy(REPAY_ALL_APPROVAL_MARGIN)
+    : valueToBigNumber(amountRequiringApproval);
+
+  // The repay input accepts more decimals than the token has, and this result is handed to
+  // `parseUnits` during render, which throws on the excess. Rounding up rather than down
+  // keeps the approval at or above what the gate asked for.
+  return amount.decimalPlaces(decimals, BigNumber.ROUND_UP).toString(10);
+};
 
 export const checkRequiresApproval = ({
   approvedAmount,

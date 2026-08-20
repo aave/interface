@@ -1,4 +1,5 @@
 import { BigNumber } from 'bignumber.js';
+import { parseUnits } from 'ethers/lib/utils';
 
 import { checkRequiresApproval, getRepayAmountToApprove, getSafeAmountToRepayAll } from '../utils';
 
@@ -43,6 +44,32 @@ describe('getRepayAmountToApprove', () => {
         decimals: DECIMALS,
       })
     ).toBe('10.5');
+  });
+
+  it('trims a typed amount to the token decimals so parseUnits cannot throw', () => {
+    // The repay input has no decimalScale, so 7dp on a 6dp token is reachable by typing.
+    const approved = getRepayAmountToApprove({
+      amountRequiringApproval: '1.1234567',
+      isMaxRepay: false,
+      decimals: 6,
+    });
+
+    expect(approved).toBe('1.123457');
+    expect(() => parseUnits(approved, 6)).not.toThrow();
+  });
+
+  it('rounds a typed amount up, so the trimmed approval still clears the gate', () => {
+    const typed = '1.1234567';
+    const approved = getRepayAmountToApprove({
+      amountRequiringApproval: typed,
+      isMaxRepay: false,
+      decimals: 6,
+    });
+
+    expect(new BigNumber(approved).isGreaterThanOrEqualTo(typed)).toBe(true);
+    expect(
+      checkRequiresApproval({ approvedAmount: approved, amount: typed, signedAmount: '0' })
+    ).toBe(false);
   });
 
   it('reproduces the reported bug: a hand-set approval above the debt still fails the gate', () => {
