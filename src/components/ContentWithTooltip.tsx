@@ -27,7 +27,7 @@ export const PopperComponent = styled(Popper)(({ theme }) =>
       textAlign: 'center',
       whiteSpace: 'pre-wrap',
       textWrap: 'pretty',
-      fontSize: '0.75rem',
+      fontSize: '0.625rem',
       fontWeight: 400,
       lineHeight: '135%',
     },

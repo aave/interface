@@ -76,7 +76,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
       <ListColumn isRow maxWidth={280}>
         <TokenIcon symbol={displayIconSymbol} fontSize="large" />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-          <Typography variant="h4" noWrap>
+          <Typography variant="subheader1" noWrap>
             {name || reserve.underlyingToken.name}
           </Typography>
 
@@ -101,7 +101,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber compact value={reserve.size.amount.value} variant="h4" />
+        <FormattedNumber compact value={reserve.size.amount.value} variant="h5" />
         <ReserveSubheader value={reserve.size.usd} />
       </ListColumn>
 
@@ -111,8 +111,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           incentives={reserve.supplyProtocolIncentives}
           address={reserve.aToken.address}
           symbol={reserve.underlyingToken.symbol}
-          variant="h4"
-          symbolsVariant="secondary16"
+          variant="h5"
           tooltip={
             <>
               {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
@@ -131,7 +130,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
             <FormattedNumber
               compact
               value={Number(reserve.borrowInfo?.total.amount.value)}
-              variant="h4"
+              variant="h5"
             />{' '}
             <ReserveSubheader value={String(reserve.borrowInfo?.total.usd)} />
           </>
@@ -150,8 +149,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           incentives={reserve.borrowProtocolIncentives}
           address={reserve.vToken.address}
           symbol={reserve.underlyingToken.symbol}
-          variant="h4"
-          symbolsVariant="secondary16"
+          variant="h5"
           tooltip={
             <>
               {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}

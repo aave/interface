@@ -925,6 +925,7 @@ export function getThemedComponents(theme: AppTheme) {
             style: {
               borderRadius: '0.75rem',
               backgroundColor: figVars['bg-1'],
+              ...darkScheme({ backgroundColor: figVars['bg-2'] }),
               boxShadow: `0 0 0 1px ${figVars['border-1']}, 0 4px 16px 0 ${figVars['shadow-medium']}`,
             },
           },
