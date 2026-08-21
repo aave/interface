@@ -18,7 +18,7 @@ export const FaucetItemLoader = () => {
         <Skeleton width={70} height={24} />
       </ListColumn>
 
-      <ListColumn maxWidth={280} align="right">
+      <ListColumn maxWidth={280}>
         <Button variant="contained">
           <Trans>Faucet</Trans>
         </Button>

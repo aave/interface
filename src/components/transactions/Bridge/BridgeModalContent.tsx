@@ -1,11 +1,11 @@
 import { ChainId } from '@aave/contract-helpers';
-import { ExternalLinkIcon, SwitchVerticalIcon } from '@heroicons/react/outline';
+import { SwitchVerticalIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   Button,
   IconButton,
-  SelectChangeEvent,
   Skeleton,
   Stack,
   SvgIcon,
@@ -15,9 +15,9 @@ import { BigNumber } from 'bignumber.js';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import {
   DetailsNumberLine,
@@ -131,8 +131,8 @@ export const BridgeModalContent = () => {
     getGHOToken(feeTokenListWithBalance || filteredFeeTokensByChainId)
   );
 
-  const handleTokenChange = (event: SelectChangeEvent) => {
-    const token = feeTokenListWithBalance?.find((token) => token.symbol === event.target.value);
+  const handleTokenChange = (symbol: string) => {
+    const token = feeTokenListWithBalance?.find((token) => token.symbol === symbol);
 
     if (token) {
       setSelectedFeeToken(token);
@@ -314,7 +314,7 @@ export const BridgeModalContent = () => {
           href="https://docs.chain.link/ccip/concepts#finality"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           Learn more
         </Link>
@@ -336,48 +336,39 @@ export const BridgeModalContent = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 6 }}>
         <Typography variant="h2">
           <Trans>Bridge GHO</Trans>
         </Typography>
         {user && (
-          <Box
-            sx={{
-              right: '0px',
-            }}
+          <Button
+            component={Link}
+            href={`https://ccip.chain.link/address/${user}`}
+            target="_blank"
+            rel="noopener"
+            variant="tertiary"
+            size="small"
+            endIcon={<ArrowUpRightIcon sx={{ color: 'fg-3' }} />}
+            sx={{ minWidth: 'unset', mr: 9 }}
           >
-            <Button
-              component={Link}
-              href={`https://ccip.chain.link/address/${user}`}
-              target="_blank"
-              rel="noopener"
-              sx={{ mr: 8 }}
-              variant="surface"
-              size="small"
-              endIcon={
-                <SvgIcon sx={{ width: 14, height: 14 }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              }
-            >
-              <Trans>Transactions</Trans>
-            </Button>
-          </Box>
+            <Trans>Transactions</Trans>
+          </Button>
         )}
       </Box>
 
-      <ChangeNetworkWarning
-        autoSwitchOnMount={true}
-        networkName={getNetworkConfig(sourceNetworkObj.chainId).name}
-        chainId={sourceNetworkObj.chainId}
-        event={{
-          eventName: GENERAL.SWITCH_NETWORK,
-        }}
-        sx={{ my: 1, visibility: isWrongNetwork && !readOnlyModeAddress ? 'visible' : 'hidden' }}
-      />
+      {isWrongNetwork && !readOnlyModeAddress && (
+        <ChangeNetworkWarning
+          autoSwitchOnMount={true}
+          networkName={getNetworkConfig(sourceNetworkObj.chainId).name}
+          chainId={sourceNetworkObj.chainId}
+          event={{
+            eventName: GENERAL.SWITCH_NETWORK,
+          }}
+        />
+      )}
       {!user ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
-          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
+          <Typography sx={{ mb: 6, textAlign: 'center' }} color="fg-2">
             <Trans>Please connect your wallet to be able to bridge your tokens.</Trans>
           </Typography>
           <ConnectWalletButton />
@@ -402,11 +393,11 @@ export const BridgeModalContent = () => {
               onClick={handleSwapNetworks}
               sx={{
                 border: '1px solid',
-                borderColor: 'divider',
+                borderColor: 'border-2',
                 position: 'absolute',
-                backgroundColor: 'background.paper',
+                backgroundColor: 'surface-elevated',
                 mt: -1,
-                '&:hover': { backgroundColor: 'background.surface' },
+                '&:hover': { backgroundColor: 'bg-2' },
               }}
             >
               <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
@@ -493,7 +484,7 @@ export const BridgeModalContent = () => {
                     sx={{ borderRadius: '4px' }}
                   />
                 ) : (
-                  <Typography variant="secondary14">{estimatedTimeToDestination}</Typography>
+                  <Typography variant="h5">{estimatedTimeToDestination}</Typography>
                 )}
               </Box>
             </Row>
@@ -507,26 +498,22 @@ export const BridgeModalContent = () => {
                     sx={{ borderRadius: '4px' }}
                   />
                 ) : (
-                  <Typography variant="secondary14">{estimatedTimeToDestination}</Typography>
+                  <Typography variant="h5">{estimatedTimeToDestination}</Typography>
                 )}
               </Box> */}
             <Row /> {/* Spacer */}
             {feesExceedWalletBalance && (
-              <Warning severity="warning" sx={{ my: 0 }}>
-                <Typography variant="caption">
-                  <Trans>Fees exceed wallet balance</Trans>
-                </Typography>
-              </Warning>
+              <Alert severity="warning" sx={{ width: '100%', my: 0 }}>
+                <Trans>Fees exceed wallet balance</Trans>
+              </Alert>
             )}
           </TxModalDetails>
           {txError && <GasEstimationError txError={txError} />}
 
           {txErrorBridgeMessage && (
-            <Warning severity="error" sx={{ mt: 4 }} icon={false}>
-              <Typography variant="caption">
-                <Trans>Something went wrong fetching bridge message, please try again later.</Trans>
-              </Typography>
-            </Warning>
+            <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%', mt: 4 }}>
+              <Trans>Something went wrong fetching bridge message, please try again later.</Trans>
+            </Alert>
           )}
 
           <BridgeActions {...bridgeActionsProps} />

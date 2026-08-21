@@ -76,7 +76,7 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
             caption={
               <>
                 <Trans>Current votes</Trans>
-                <Typography variant="caption" color="text.muted">
+                <Typography variant="caption" color="fg-3">
                   Required
                 </Typography>
               </>
@@ -96,7 +96,7 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
                 value={proposal.voteInfo.quorum}
                 visibleDecimals={2}
                 roundDown
-                color="text.muted"
+                color="fg-3"
               />
             </Box>
           </Row>
@@ -123,7 +123,7 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
             caption={
               <>
                 <Trans>Current differential</Trans>
-                <Typography variant="caption" color="text.muted">
+                <Typography variant="caption" color="fg-3">
                   Required
                 </Typography>
               </>
@@ -143,7 +143,7 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
                 value={proposal.voteInfo.requiredDifferential}
                 visibleDecimals={2}
                 roundDown
-                color="text.muted"
+                color="fg-3"
               />
             </Box>
           </Row>
@@ -159,7 +159,7 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
                 })
               }
               href={discussionUrl}
-              variant="outlined"
+              variant="tertiary"
               fullWidth
               endIcon={
                 <SvgIcon>

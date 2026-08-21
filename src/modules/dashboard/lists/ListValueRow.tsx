@@ -23,19 +23,15 @@ export const ListValueRow = ({
     <Row caption={title} captionVariant="description" align="flex-start" mb={2}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-          <FormattedNumber
-            value={value}
-            variant="secondary14"
-            color={disabled ? 'text.disabled' : 'text.primary'}
-          />
+          <FormattedNumber value={value} variant="h5" color={disabled ? 'fg-4' : 'fg-1'} />
           {capsComponent}
         </Box>
 
         {!disabled && (
           <FormattedNumber
             value={subValue}
-            variant="secondary12"
-            color="text.secondary"
+            variant="subheader2"
+            color="fg-2"
             symbol="USD"
             mb={0.5}
           />

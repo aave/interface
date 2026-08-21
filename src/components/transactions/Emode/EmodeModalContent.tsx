@@ -2,6 +2,8 @@ import { formatUserSummary, valueToBigNumber } from '@aave/math-utils';
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Plural, Trans } from '@lingui/macro';
 import {
+  Alert,
+  AlertTitle,
   Box,
   Collapse,
   Divider,
@@ -17,7 +19,6 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { EmodeCategory } from 'src/helpers/types';
 import {
@@ -215,57 +216,53 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
     switch (blockingError) {
       case ErrorType.ZERO_LTV_COLLATERAL_BLOCKING:
         return (
-          <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
-            <Typography variant="subheader1">
+          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 6 }}>
+            <AlertTitle>
               <Trans>Cannot disable E-Mode</Trans>
-            </Typography>
-            <Typography variant="caption">
-              <Trans>
-                You must disable {zeroLtvCollateralSymbols.join(', ')} as collateral before exiting
-                E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral.
-              </Trans>
-            </Typography>
-          </Warning>
+            </AlertTitle>
+            <Trans>
+              You must disable {zeroLtvCollateralSymbols.join(', ')} as collateral before exiting
+              E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral.
+            </Trans>
+          </Alert>
         );
       case ErrorType.EMODE_DISABLED_LIQUIDATION:
         return (
-          <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
-            <Typography variant="subheader1" color="#4F1919">
+          <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 6 }}>
+            <AlertTitle>
               <Trans>Cannot disable E-Mode</Trans>
-            </Typography>
-            <Typography variant="caption">
-              <Trans>
-                You can not disable E-Mode because that could cause liquidation. To exit E-Mode
-                supply or repay borrowed positions.
-              </Trans>
-            </Typography>
-          </Warning>
+            </AlertTitle>
+            <Trans>
+              You can not disable E-Mode because that could cause liquidation. To exit E-Mode supply
+              or repay borrowed positions.
+            </Trans>
+          </Alert>
         );
       case ErrorType.CLOSE_POSITIONS_BEFORE_SWITCHING: {
         const { incompatibleBorrows, zeroLtvCollateral } = selectedEmode.blockReason;
         return (
-          <Warning severity="info" sx={{ mt: 6, alignItems: 'center' }}>
-            <Typography variant="subheader1">
+          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 6 }}>
+            <AlertTitle>
               <Trans>Cannot switch to this category</Trans>
-            </Typography>
+            </AlertTitle>
             {incompatibleBorrows.length > 0 && (
-              <Typography variant="caption">
+              <Box>
                 <Trans>
                   Repay your {incompatibleBorrows.join(', ')}{' '}
                   <Plural value={incompatibleBorrows.length} one="borrow" other="borrows" /> to use
                   this category.
                 </Trans>
-              </Typography>
+              </Box>
             )}
             {zeroLtvCollateral.length > 0 && (
-              <Typography variant="caption">
+              <Box>
                 <Trans>
                   Disable {zeroLtvCollateral.join(', ')} as collateral to use this category. These
                   assets would have 0% LTV.
                 </Trans>
-              </Typography>
+              </Box>
             )}
-          </Warning>
+          </Alert>
         );
       }
       default:
@@ -340,17 +337,15 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
 
       {blockingError !== undefined && <Blocked />}
       {showLiquidationRiskWarning && (
-        <Warning severity="error" sx={{ mt: 6, alignItems: 'center' }}>
-          <Typography variant="subheader1" color="#4F1919">
+        <Alert severity="error" sx={{ mb: 6, width: '100%', mt: 6 }}>
+          <AlertTitle>
             <Trans>Liquidation risk</Trans>
-          </Typography>
-          <Typography variant="caption">
-            <Trans>
-              This action will reduce your health factor. Please be mindful of the increased risk of
-              collateral liquidation.{' '}
-            </Trans>
-          </Typography>
-        </Warning>
+          </AlertTitle>
+          <Trans>
+            This action will reduce your health factor. Please be mindful of the increased risk of
+            collateral liquidation.{' '}
+          </Trans>
+        </Alert>
       )}
 
       <TxModalDetails gasLimit={gasLimit}>
@@ -376,7 +371,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                     percent
                     visibleDecimals={2}
                     value={user.currentLoanToValue}
-                    variant="secondary12"
+                    variant="subheader2"
                   />
                   <ArrowRight />
                 </>
@@ -385,7 +380,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                 percent
                 visibleDecimals={2}
                 value={newSummary.currentLoanToValue}
-                variant="secondary12"
+                variant="subheader2"
               />
             </Stack>
           </Row>
@@ -400,12 +395,12 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
           <Box>
             <Stack direction="column">
               <Stack direction="row" alignItems="center" spacing={1} mb={1}>
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" color="fg-2">
                   <Trans>Asset category</Trans>
                 </Typography>
                 {selectedEmode.isolated && (
                   <>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" color="fg-2">
                       -
                     </Typography>
                     <TextWithTooltip
@@ -428,22 +423,22 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                   width: '100%',
                   height: '44px',
                   borderRadius: '6px',
-                  borderColor: 'divider',
+                  borderColor: 'border-2',
                   outline: 'none !important',
-                  color: 'text.primary',
+                  color: 'fg-1',
                   '.MuiOutlinedInput-input': {
                     backgroundColor: 'transparent',
                   },
                   '&:hover .MuiOutlinedInput-notchedOutline, .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'divider',
+                    borderColor: 'border-2',
                     outline: 'none !important',
                     borderWidth: '1px',
                   },
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'divider',
+                    borderColor: 'border-2',
                     borderWidth: '1px',
                   },
-                  '.MuiSelect-icon': { color: 'text.primary' },
+                  '.MuiSelect-icon': { color: 'fg-1' },
                 }}
                 value={selectedEmode.id}
                 onChange={(e) => selectEMode(Number(e.target.value))}
@@ -476,7 +471,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                         </Box>
                       )}
                       {!emode.available && (
-                        <Typography variant="caption" color="text.secondary" fontStyle="italic">
+                        <Typography variant="caption" color="fg-2" fontStyle="italic">
                           <Trans>Unavailable</Trans>
                         </Typography>
                       )}
@@ -528,7 +523,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                           </Box>
                         )}
                         {!emode.available && (
-                          <Typography variant="caption" color="text.secondary" fontStyle="italic">
+                          <Typography variant="caption" color="fg-2" fontStyle="italic">
                             <Trans>Unavailable</Trans>
                           </Typography>
                         )}
@@ -550,7 +545,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                       percent
                       visibleDecimals={2}
                       value={user.currentLoanToValue}
-                      variant="secondary12"
+                      variant="subheader2"
                     />
                     <ArrowRight />
                   </>
@@ -559,7 +554,7 @@ export const EmodeModalContent = ({ user }: { user: ExtendedFormattedUser }) => 
                   percent
                   visibleDecimals={2}
                   value={Number(selectedEmode.ltv) / 10000}
-                  variant="secondary12"
+                  variant="subheader2"
                 />
               </Stack>
             </Row>

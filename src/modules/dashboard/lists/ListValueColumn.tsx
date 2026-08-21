@@ -1,5 +1,6 @@
 import { Box, Tooltip } from '@mui/material';
 import { ReactNode } from 'react';
+import { onAccent } from 'src/utils/figmaColors';
 
 import { ListColumn, ListColumnProps } from '../../../components/lists/ListColumn';
 import { FormattedNumber } from '../../../components/primitives/FormattedNumber';
@@ -26,21 +27,16 @@ const Content = ({
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <FormattedNumber
           value={value}
-          variant="secondary14"
+          variant="h5"
           sx={{ mb: !withTooltip && !!subValue ? '2px' : 0 }}
-          color={disabled ? 'text.disabled' : 'text.main'}
+          color={disabled ? 'fg-4' : 'text.main'}
           data-cy={`nativeAmount`}
         />
         {capsComponent}
       </Box>
 
       {!withTooltip && !!subValue && !disabled && (
-        <FormattedNumber
-          value={subValue}
-          symbol="USD"
-          variant="secondary12"
-          color="text.secondary"
-        />
+        <FormattedNumber value={subValue} symbol="USD" variant="description" color="fg-2" />
       )}
     </>
   );
@@ -71,16 +67,16 @@ export const ListValueColumn = ({
               <FormattedNumber
                 value={subValue || 0}
                 symbol="USD"
-                variant="secondary14"
+                variant="h5"
                 sx={{ mb: '2px' }}
-                symbolsColor="common.white"
+                symbolsColor={onAccent}
                 compact={false}
               />
               <FormattedNumber
                 value={value}
-                variant="secondary12"
+                variant="subheader2"
                 symbol={symbol}
-                symbolsColor="common.white"
+                symbolsColor={onAccent}
                 compact={false}
               />
             </Box>

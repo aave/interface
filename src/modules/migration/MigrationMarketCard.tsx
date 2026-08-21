@@ -1,5 +1,6 @@
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import {
   Avatar,
   Badge,
@@ -65,12 +66,12 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
       sx={{
         padding: '12px 16px 16px 16px',
         border: 1,
-        borderColor: 'divider',
+        borderColor: 'border-2',
         borderRadius: 3,
         width: '100%',
       }}
     >
-      <Typography variant="subheader2" color="text.primary" sx={{ mb: 2 }}>
+      <Typography variant="subheader2" color="fg-1" sx={{ mb: 2 }}>
         From
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 6 }}>
@@ -107,7 +108,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
               {selectableMarkets.map((selectableMarket) => (
                 <Box key={selectableMarket.title}>
                   <Box sx={{ py: 2, px: 4 }}>
-                    <Typography color="text.secondary" variant="subheader2">
+                    <Typography color="fg-2" variant="subheader2">
                       {selectableMarket.title}
                     </Typography>
                   </Box>
@@ -130,7 +131,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
                         >
                           <Avatar src="/aave.svg" sx={{ width: 24, height: 24 }} />
                         </Badge>
-                        <Typography variant="secondary14" sx={{ ml: 3 }}>
+                        <Typography variant="h5" sx={{ ml: 3 }}>
                           {`${market.marketTitle}${market.isFork ? ' Fork' : ''}`}
                         </Typography>
                       </MenuItem>
@@ -152,7 +153,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
             ) : (
               <Skeleton width={50} />
             )}
-            <SvgIcon sx={{ fontSize: '16px', color: 'text.primary', mx: 1 }}>
+            <SvgIcon sx={{ fontSize: '16px', color: 'fg-1', mx: 1 }}>
               <ArrowNarrowRightIcon />
             </SvgIcon>
             {!loading && userSummaryAfterMigration ? (

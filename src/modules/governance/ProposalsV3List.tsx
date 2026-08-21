@@ -1,3 +1,4 @@
+import { Trans } from '@lingui/macro';
 import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -9,6 +10,7 @@ import {
 } from 'src/hooks/governance/useGovernanceCache';
 import { useRootStore } from 'src/store/root';
 import { GOVERNANCE_PAGE } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 
 import { ProposalListHeader } from './ProposalListHeader';
 import { StateBadge, stringToState } from './StateBadge';
@@ -25,7 +27,7 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+        borderBottom: `1px solid ${figVars['border-0']}`,
       }}
       component={Link}
       href={ROUTES.dynamicRenderedProposal(+proposal.id)}
@@ -45,21 +47,21 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
           justifyContent: 'space-between',
         }}
       >
-        <Stack direction="row" gap={3} alignItems="center">
+        <Stack direction="row" gap={3} alignItems="center" sx={{ mb: '0.75rem' }}>
           <StateBadge state={proposal.badgeState} loading={false} />
         </Stack>
         <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {proposal.title}
         </Typography>
         {proposal.author && (
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             Author: {proposal.author.replace(/^@/, '')}
           </Typography>
         )}
         {proposal.shortDescription && (
           <Typography
             variant="description"
-            color="text.secondary"
+            color="fg-2"
             sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -106,7 +108,7 @@ const ProposalListSkeleton = () => {
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+        borderBottom: `1px solid ${figVars['border-0']}`,
       }}
     >
       <Stack
@@ -184,7 +186,7 @@ export const ProposalsV3List = () => {
   }
 
   return (
-    <Paper>
+    <Paper variant="table">
       <ProposalListHeader
         proposalFilter={proposalFilter}
         handleProposalFilterChange={setProposalFilter}
@@ -201,7 +203,10 @@ export const ProposalsV3List = () => {
       ) : ((!loadingSearchResults && searchTerm) ||
           (!loadingProposals && proposalFilter !== 'all')) &&
         listItems.length === 0 ? (
-        <NoSearchResults searchTerm={searchTerm} />
+        <NoSearchResults
+          searchTerm={searchTerm}
+          subtitle={<Trans>We couldn&apos;t find any proposals related to your search.</Trans>}
+        />
       ) : (
         Array.from({ length: 4 }).map((_, i) => <ProposalListSkeleton key={i} />)
       )}

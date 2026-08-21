@@ -16,6 +16,7 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { MigrationDisabled, V3Rates } from 'src/store/v3MigrationSelectors';
+import { figVars } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import { MigrationListItemToggler } from './MigrationListItemToggler';
@@ -70,8 +71,8 @@ export const MigrationListMobileItem = ({
     useShallow((store) => [store.currentMarket, store.currentMarketData])
   );
   const theme = useTheme();
-  const baseColorSecondary = disabled === undefined ? 'text.secondary' : 'text.muted';
-  const baseColorPrimary = disabled === undefined ? 'text.primary' : 'text.muted';
+  const baseColorSecondary = disabled === undefined ? 'fg-2' : 'fg-3';
+  const baseColorPrimary = disabled === undefined ? 'fg-1' : 'fg-3';
 
   const loadingRates = v3Rates?.ltv === undefined && v3Rates?.liquidationThreshold === undefined;
 
@@ -86,20 +87,18 @@ export const MigrationListMobileItem = ({
           pt: 2.5,
         }}
       >
-        <ListColumn align="center" maxWidth={48} minWidth={48}>
+        <ListColumn maxWidth={48} minWidth={48}>
           <Box
-            sx={(theme) => ({
+            sx={{
               border: `2px solid ${
-                disabled !== undefined
-                  ? theme.palette.action.disabled
-                  : theme.palette.text.secondary
+                disabled !== undefined ? figVars['disabled-fg'] : figVars['fg-2']
               }`,
               background:
                 disabled !== undefined
-                  ? theme.palette.background.disabled
+                  ? figVars['bg-6']
                   : checked
-                  ? theme.palette.text.secondary
-                  : theme.palette.background.paper,
+                  ? figVars['fg-2']
+                  : figVars['surface-elevated'],
               width: 16,
               height: 16,
               borderRadius: '2px',
@@ -109,18 +108,18 @@ export const MigrationListMobileItem = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-            })}
+            }}
             onClick={disabled !== undefined ? undefined : onCheckboxClick}
           >
             {disabled === undefined && (
-              <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+              <SvgIcon sx={{ fontSize: '14px', color: 'surface-elevated' }}>
                 <CheckIcon />
               </SvgIcon>
             )}
           </Box>
         </ListColumn>
 
-        <ListColumn align="left">
+        <ListColumn>
           <Row>
             <TokenIcon symbol={userReserve.reserve.iconSymbol} fontSize="large" />
 
@@ -148,11 +147,11 @@ export const MigrationListMobileItem = ({
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
             <Box sx={{ display: 'flex', alignItems: 'flex-end', mb: 0.5 }}>
-              <FormattedNumber value={amount} variant="secondary14" color={baseColorPrimary} />
+              <FormattedNumber value={amount} variant="h5" color={baseColorPrimary} />
             </Box>
             <FormattedNumber
               value={amountInUSD}
-              variant="secondary12"
+              variant="subheader2"
               color={baseColorSecondary}
               symbolsColor={baseColorSecondary}
               symbol="USD"
@@ -176,7 +175,7 @@ export const MigrationListMobileItem = ({
               value={v2APY}
               symbol={userReserve.reserve.symbol}
               incentives={v2Incentives}
-              variant="main14"
+              variant="subheader1"
               color={baseColorPrimary}
               market={currentMarket}
             />
@@ -192,7 +191,7 @@ export const MigrationListMobileItem = ({
               value={v3APY}
               symbol={userReserve.reserve.symbol}
               incentives={v3Incentives}
-              variant="main14"
+              variant="subheader1"
               color={baseColorPrimary}
               market={currentMarket}
             />
@@ -216,7 +215,7 @@ export const MigrationListMobileItem = ({
               userReserve.reserve.reserveLiquidationThreshold !== '0' ? (
                 <CheckRoundedIcon fontSize="small" color="success" />
               ) : (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="subheader1" color={baseColorSecondary} />
               )}
 
               <SvgIcon sx={{ px: 1.5 }}>
@@ -234,7 +233,7 @@ export const MigrationListMobileItem = ({
                   enabledAsCollateral={enabledAsCollateral}
                 />
               ) : !enabledAsCollateral ? (
-                <NoData variant="main14" color={baseColorSecondary} />
+                <NoData variant="subheader1" color={baseColorSecondary} />
               ) : isIsolated ? (
                 <Box
                   sx={{
@@ -269,7 +268,7 @@ export const MigrationListMobileItem = ({
             </Typography>
             <Box sx={{ display: 'flex' }}>
               <Button
-                variant="outlined"
+                variant="tertiary"
                 size="small"
                 sx={{ width: '50px', background: 'white' }}
                 disabled
@@ -287,7 +286,7 @@ export const MigrationListMobileItem = ({
                 />
               </SvgIcon>
               <Button
-                variant="outlined"
+                variant="tertiary"
                 size="small"
                 sx={{ width: '50px', background: 'white' }}
                 disabled
@@ -314,13 +313,13 @@ export const MigrationListMobileItem = ({
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="main14" color="text.secondary" />
+                <NoData variant="subheader1" color="fg-2" />
               ) : (
                 <>
                   <FormattedNumber
                     value={userReserve.reserve.formattedBaseLTVasCollateral}
                     percent
-                    variant="main14"
+                    variant="subheader1"
                     color={baseColorPrimary}
                   />
                   <SvgIcon sx={{ px: 1.5 }}>
@@ -336,7 +335,7 @@ export const MigrationListMobileItem = ({
                   <FormattedNumber
                     value={v3Rates?.ltv || 0}
                     percent
-                    variant="main14"
+                    variant="subheader1"
                     color={baseColorPrimary}
                   />
                 </>
@@ -359,13 +358,13 @@ export const MigrationListMobileItem = ({
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="main14" color="text.secondary" />
+                <NoData variant="subheader1" color="fg-2" />
               ) : (
                 <>
                   <FormattedNumber
                     value={userReserve.reserve.formattedReserveLiquidationThreshold}
                     percent
-                    variant="main14"
+                    variant="subheader1"
                     color={baseColorPrimary}
                   />
                   <SvgIcon sx={{ px: 1.5 }}>
@@ -381,7 +380,7 @@ export const MigrationListMobileItem = ({
                   <FormattedNumber
                     value={v3Rates?.liquidationThreshold || 0}
                     percent
-                    variant="main14"
+                    variant="subheader1"
                     color={baseColorPrimary}
                   />
                 </>

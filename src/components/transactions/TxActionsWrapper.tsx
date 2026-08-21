@@ -183,7 +183,7 @@ export const TxActionsWrapper = ({
         {content}
       </Button>
       {readOnlyModeAddress && (
-        <Typography variant="helperText" color="warning.main" sx={{ textAlign: 'center', mt: 2 }}>
+        <Typography variant="helperText" color="fg-3" sx={{ textAlign: 'center', mt: 2 }}>
           <Trans>Read-only mode. Connect to a wallet to perform transactions.</Trans>
         </Typography>
       )}

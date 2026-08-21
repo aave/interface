@@ -1,11 +1,10 @@
 import { VotingMachineProposalState } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, Paper, Typography } from '@mui/material';
 import { constants } from 'ethers';
 import { formatUnits } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
@@ -53,7 +52,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  color: 'text.secondary',
+                  color: 'fg-2',
                 }}
               >
                 <Typography variant="caption">
@@ -83,7 +82,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
       {user ? (
         <>
           {user && !didVote && !voteOngoing && (
-            <Typography sx={{ textAlign: 'center' }} color="text.muted">
+            <Typography sx={{ textAlign: 'center' }} color="fg-3">
               <Trans>You did not participate in this proposal</Trans>
             </Typography>
           )}
@@ -94,40 +93,37 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
                   <Typography variant="description">
                     <Trans>Voting power</Trans>
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="caption" color="fg-2">
                     (AAVE + stkAAVE)
                   </Typography>
                 </>
               }
             >
-              <FormattedNumber
-                value={powerAtProposalStart || 0}
-                variant="main16"
-                visibleDecimals={2}
-              />
+              <FormattedNumber value={powerAtProposalStart || 0} variant="h4" visibleDecimals={2} />
             </Row>
           )}
           {showAlreadyVotedMsg && voteOnProposal && (
-            <Warning severity={voteOnProposal.support ? 'success' : 'error'} sx={{ my: 2 }}>
-              <Typography variant="subheader1">
+            <Alert
+              severity={voteOnProposal.support ? 'success' : 'error'}
+              sx={{ width: '100%', my: 2 }}
+            >
+              <AlertTitle>
                 <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
-              </Typography>
-              <Typography variant="caption">
-                <Trans>
-                  With a voting power of{' '}
-                  <FormattedNumber
-                    value={formatUnits(voteOnProposal.votingPower, 18) || 0}
-                    variant="caption"
-                    visibleDecimals={2}
-                  />
-                </Trans>
-              </Typography>
-            </Warning>
+              </AlertTitle>
+              <Trans>
+                With a voting power of{' '}
+                <FormattedNumber
+                  value={formatUnits(voteOnProposal.votingPower, 18) || 0}
+                  variant="caption"
+                  visibleDecimals={2}
+                />
+              </Trans>
+            </Alert>
           )}
           {showCannotVoteMsg && (
-            <Warning severity="warning" sx={{ my: 2 }}>
+            <Alert severity="warning" sx={{ width: '100%', my: 2 }}>
               <Trans>Not enough voting power to participate in this proposal</Trans>
-            </Warning>
+            </Alert>
           )}
           {showCanVoteMsg && (
             <>

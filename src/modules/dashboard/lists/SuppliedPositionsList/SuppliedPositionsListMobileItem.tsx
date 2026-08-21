@@ -95,7 +95,7 @@ export const SuppliedPositionsListMobileItem = ({
           incentives={aIncentivesData}
           address={aTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -146,7 +146,7 @@ export const SuppliedPositionsListMobileItem = ({
         )}
         <Button
           disabled={disableWithdraw}
-          variant="outlined"
+          variant="tertiary"
           onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
           sx={{ ml: 1.5 }}
           fullWidth

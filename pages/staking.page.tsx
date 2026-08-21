@@ -1,11 +1,13 @@
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { usePinnedMarket } from 'src/hooks/usePinnedMarket';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer';
 import { UmrellaAssetsDefaultListContainer } from 'src/modules/umbrella/UmbrellaAssetsDefault';
 import { UmbrellaHeader } from 'src/modules/umbrella/UmbrellaHeader';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 
@@ -41,6 +43,9 @@ export default function UmbrellaStaking() {
       'Page Name': 'Staking',
     });
   }, [trackEvent]);
+
+  // Staking always runs on the Core instance (pinned for the page, restored on unmount).
+  usePinnedMarket(CustomMarket.proto_mainnet_v3);
 
   return (
     <>

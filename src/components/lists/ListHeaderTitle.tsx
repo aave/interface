@@ -39,49 +39,54 @@ export const ListHeaderTitle = ({
   return (
     <Typography
       component="div"
-      variant="subheader2"
-      color="text.secondary"
-      noWrap
+      color="fg-3"
       onClick={() => (!!onClick ? onClick() : !!sortKey && handleSorting(sortKey))}
       sx={{
         cursor: !!onClick || !!sortKey ? 'pointer' : 'default',
         display: 'inline-flex',
         alignItems: 'center',
+        maxWidth: '100%',
+        minWidth: 0,
+        fontFamily: 'Inter',
+        fontSize: '0.6875rem',
+        fontWeight: 500,
+        lineHeight: '120%',
+        letterSpacing: '0.00313rem',
+        textTransform: 'uppercase',
+        fontFeatureSettings: "'cv11' on",
+        // Header titles are often a tooltip component that renders its own Typography with a
+        // `variant`; force those to take the header type instead of their own.
+        '& .MuiTypography-root': { font: 'inherit', letterSpacing: 'inherit' },
       }}
     >
-      {children}
+      {/* Truncation has to live on an inner block — `text-overflow` is ignored on the flex
+          container itself, so the label would otherwise overrun into the next column. */}
+      <Box
+        component="span"
+        sx={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+      >
+        {children}
+      </Box>
 
       {!!sortKey && (
-        <Box sx={{ display: 'inline-flex', flexDirection: 'column', ml: 1 }}>
-          <Box
-            component="span"
-            sx={(theme) => ({
-              width: 0,
-              height: 0,
-              borderStyle: 'solid',
-              borderWidth: '0 4px 4px 4px',
-              borderColor: `transparent transparent ${
-                sortName === sortKey && sortDesc
-                  ? theme.palette.text.secondary
-                  : theme.palette.divider
-              } transparent`,
-              mb: 0.5,
-            })}
-          />
-          <Box
-            component="span"
-            sx={(theme) => ({
-              width: 0,
-              height: 0,
-              borderStyle: 'solid',
-              borderWidth: '4px 4px 0 4px',
-              borderColor: `${
-                sortName === sortKey && !sortDesc
-                  ? theme.palette.text.secondary
-                  : theme.palette.divider
-              } transparent transparent transparent`,
-            })}
-          />
+        <Box sx={{ display: 'inline-flex', flexShrink: 0, ml: 1, color: 'fg-icon' }}>
+          {/* Static sortable indicator: an up/down chevron. Color comes from the fg-icon token via
+              currentColor on the Box — the P3-safe way to tint an SVG, since var() doesn't resolve
+              in SVG presentation attributes. stroke/width/caps are inherited by both paths. */}
+          <svg
+            width="8"
+            height="10"
+            viewBox="0 0 8 10"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M1.59961 3L3.99961 1L6.39961 3" />
+            <path d="M1.59961 7L3.99961 9L6.39961 7" />
+          </svg>
         </Box>
       )}
     </Typography>

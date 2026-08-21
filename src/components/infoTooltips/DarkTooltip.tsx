@@ -1,4 +1,5 @@
 import { Box, Tooltip, TooltipProps } from '@mui/material';
+import { onAccent } from 'src/utils/figmaColors';
 
 export const DarkTooltip = ({
   title,
@@ -36,6 +37,7 @@ export const DarkTooltip = ({
         title={
           <Box
             sx={{
+              color: onAccent,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',

@@ -112,15 +112,15 @@ const TxDetailsRow = ({ caption, value, valueUSD }: TxDetailsRowProps) => {
     <Row caption={caption} captionVariant="description" mb={4}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <FormattedNumber value={value} variant="secondary14" compact />
+          <FormattedNumber value={value} variant="h5" compact />
         </Box>
         <FormattedNumber
           value={valueUSD}
           variant="helperText"
           compact
           symbol="USD"
-          symbolsColor="text.secondary"
-          color="text.secondary"
+          symbolsColor="fg-2"
+          color="fg-2"
         />
       </Box>
     </Row>

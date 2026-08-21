@@ -78,7 +78,7 @@ export const BorrowAssetsListMobileItem = ({
           incentives={vIncentivesData}
           address={variableDebtTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />
@@ -86,7 +86,7 @@ export const BorrowAssetsListMobileItem = ({
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
         <Button
           disabled={disableBorrow}
-          variant="contained"
+          variant="tertiary"
           onClick={() => openBorrow(underlyingAsset, currentMarket, name, 'dashboard')}
           sx={{ mr: 1.5 }}
           fullWidth
@@ -94,7 +94,7 @@ export const BorrowAssetsListMobileItem = ({
           <Trans>Borrow</Trans>
         </Button>
         <Button
-          variant="outlined"
+          variant="tertiary"
           component={Link}
           href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
           fullWidth

@@ -1,5 +1,6 @@
 import { Box, BoxProps, Typography, TypographyProps, useMediaQuery, useTheme } from '@mui/material';
 import type { ReactNode } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 export const PanelRow: React.FC<BoxProps> = (props) => (
   <Box
@@ -46,14 +47,14 @@ export const PanelItem: React.FC<PanelItemProps> = ({ title, children, className
                 position: 'absolute',
                 right: 4,
                 top: 'calc(50% - 17px)',
-                borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+                borderRight: `1px solid ${figVars['border-2']}`,
               },
             }
           : {}),
       }}
       className={className}
     >
-      <Typography color="text.secondary" component="span">
+      <Typography color="fg-2" component="span">
         {title}
       </Typography>
       <Box

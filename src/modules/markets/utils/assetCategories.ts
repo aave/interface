@@ -65,3 +65,21 @@ export const isAssetInCategoryDynamic = (
     ethCorrelatedCoinGeckoSymbols
   ).includes(category);
 };
+
+// Category-filter predicate shared by the market / dashboard / staking asset lists: an asset matches
+// when nothing is selected (show all) or it falls into at least one selected category.
+export const matchesSelectedCategories = (
+  symbol: string,
+  selectedCategories: AssetCategory[],
+  stablecoinCoinGeckoSymbols: string[] = [],
+  ethCorrelatedCoinGeckoSymbols: string[] = []
+): boolean =>
+  selectedCategories.length === 0 ||
+  selectedCategories.some((category) =>
+    isAssetInCategoryDynamic(
+      symbol,
+      category,
+      stablecoinCoinGeckoSymbols,
+      ethCorrelatedCoinGeckoSymbols
+    )
+  );

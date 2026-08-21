@@ -17,8 +17,10 @@ export const ListButtonsColumn = ({ children, isColumnHeader = false }: ListButt
         maxWidth: DASHBOARD_LIST_COLUMN_WIDTHS.BUTTONS,
         minWidth: DASHBOARD_LIST_COLUMN_WIDTHS.BUTTONS,
         flex: isColumnHeader ? 1 : 1,
+        // Inter-button gap for row-action buttons. Label + padding now come from the theme's
+        // size="small" slot (buttonM + 0.62rem), so no per-button override is needed here.
         '.MuiButton-root': {
-          ml: '6px',
+          ml: '0.62rem',
         },
       }}
     >

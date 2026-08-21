@@ -1,13 +1,12 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { formatUserSummary, USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { t, Trans } from '@lingui/macro';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Alert, AlertTitle, Skeleton, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useState } from 'react';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
-import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { CollateralType } from 'src/helpers/types';
@@ -316,9 +315,9 @@ export const SupplyModalContent = React.memo(
         {supplyCapWarning}
         {debtCeilingWarning}
         {poolReserve.symbol === 'AMPL' && (
-          <Warning sx={{ mt: '16px', mb: '40px' }} severity="warning">
+          <Alert sx={{ width: '100%', mt: '16px', mb: '40px' }} severity="warning">
             <AMPLWarning />
-          </Warning>
+          </Alert>
         )}
         {process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true' &&
           poolReserve.symbol === 'AAVE' &&
@@ -390,41 +389,39 @@ export const SupplyModalContent = React.memo(
         </TxModalDetails>
 
         {needsEmodeSwitch && (
-          <Warning severity="info" sx={{ mt: 2 }}>
-            <Typography variant="subheader1">
+          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 2 }}>
+            <AlertTitle>
               <Trans>E-Mode change</Trans>
-            </Typography>
-            <Typography variant="caption">
-              {user.userEmodeCategoryId === 0 ? (
+            </AlertTitle>
+            {user.userEmodeCategoryId === 0 ? (
+              <Trans>
+                This transaction will enable E-Mode (
+                {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}). Borrowing will be
+                restricted to assets within this category.
+              </Trans>
+            ) : selectedEmodeId === 0 ? (
+              <Trans>
+                This transaction will disable E-Mode. All assets will revert to their base LTV and
+                liquidation thresholds.
+              </Trans>
+            ) : (
+              <Trans>
+                This transaction will switch E-Mode from{' '}
+                {replaceUnderscoresWithSpaces(eModes[user.userEmodeCategoryId]?.label)} to{' '}
+                {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}. Borrowing will be
+                restricted to assets within the new category.
+              </Trans>
+            )}
+            {supplyUnWrapped && (
+              <>
+                {' '}
                 <Trans>
-                  This transaction will enable E-Mode (
-                  {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}). Borrowing will be
-                  restricted to assets within this category.
+                  This will require two separate transactions: one to change E-Mode and one to
+                  supply.
                 </Trans>
-              ) : selectedEmodeId === 0 ? (
-                <Trans>
-                  This transaction will disable E-Mode. All assets will revert to their base LTV and
-                  liquidation thresholds.
-                </Trans>
-              ) : (
-                <Trans>
-                  This transaction will switch E-Mode from{' '}
-                  {replaceUnderscoresWithSpaces(eModes[user.userEmodeCategoryId]?.label)} to{' '}
-                  {replaceUnderscoresWithSpaces(eModes[selectedEmodeId]?.label)}. Borrowing will be
-                  restricted to assets within the new category.
-                </Trans>
-              )}
-              {supplyUnWrapped && (
-                <>
-                  {' '}
-                  <Trans>
-                    This will require two separate transactions: one to change E-Mode and one to
-                    supply.
-                  </Trans>
-                </>
-              )}
-            </Typography>
-          </Warning>
+              </>
+            )}
+          </Alert>
         )}
 
         {txError && <GasEstimationError txError={txError} />}
@@ -681,10 +678,10 @@ const ExchangeRate = ({
           <FormattedNumber
             value={tokenOutAmount || ''}
             variant="subheader2"
-            color="text.primary"
+            color="fg-1"
             visibleDecimals={2}
           />
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-2">
             sDAI
           </Typography>
         </>

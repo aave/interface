@@ -1,8 +1,7 @@
 import { calculateHealthFactorFromBalancesBigUnits, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Alert, AlertTitle, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 import {
   ExtendedFormattedUser,
   useAppDataContext,
@@ -148,28 +147,28 @@ export const CollateralChangeModalContent = ({
   return (
     <>
       {showEnableIsolationModeMsg && (
-        <Warning severity="warning" icon={false} sx={{ mb: 3 }}>
+        <Alert severity="warning" data-size="small" sx={{ width: '100%', mb: 3 }}>
           <Trans>
             Enabling this asset as collateral increases your borrowing power and Health Factor.
             However, it can get liquidated if your health factor drops below 1.
           </Trans>
-        </Warning>
+        </Alert>
       )}
 
       {showDisableIsolationModeMsg && (
-        <Warning severity="warning" icon={false} sx={{ mb: 3 }}>
+        <Alert severity="warning" data-size="small" sx={{ width: '100%', mb: 3 }}>
           <Trans>
             Disabling this asset as collateral affects your borrowing power and Health Factor.
           </Trans>
-        </Warning>
+        </Alert>
       )}
 
       {showEnterIsolationModeMsg && <IsolationModeWarning asset={poolReserve.symbol} />}
 
       {showExitIsolationModeMsg && (
-        <Warning severity="info" icon={false} sx={{ mb: 3 }}>
+        <Alert severity="info" data-size="small" sx={{ width: '100%', mb: 3 }}>
           <Trans>You will exit isolation mode and other tokens can now be used as collateral</Trans>
-        </Warning>
+        </Alert>
       )}
 
       {poolReserve.isIsolated && debtCeiling.determineWarningDisplay({ debtCeiling })}
@@ -190,17 +189,15 @@ export const CollateralChangeModalContent = ({
 
       {blockingError === ErrorType.ZERO_LTV_ENABLE_EMODE_FIRST && (
         <>
-          <Warning severity="info" sx={{ mt: 4, alignItems: 'center' }}>
-            <Typography variant="subheader1">
+          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 4 }}>
+            <AlertTitle>
               <Trans>E-Mode required</Trans>
-            </Typography>
-            <Typography variant="caption">
-              <Trans>
-                This asset has 0 LTV and cannot be used as collateral. Enable an E-Mode to use{' '}
-                {symbol} as collateral.
-              </Trans>
-            </Typography>
-          </Warning>
+            </AlertTitle>
+            <Trans>
+              This asset has 0 LTV and cannot be used as collateral. Enable an E-Mode to use{' '}
+              {symbol} as collateral.
+            </Trans>
+          </Alert>
           <CollateralOptionsSelector
             poolReserve={poolReserve}
             eModes={eModes}

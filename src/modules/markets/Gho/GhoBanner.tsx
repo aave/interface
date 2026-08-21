@@ -1,13 +1,13 @@
 import { Stake } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Skeleton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { ReactNode } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
-import { useModalContext } from 'src/hooks/useModal';
 import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
 
 /**
  * Whether the connected user has any legacy stkGHO (formerly "sGHO") staked.
@@ -21,19 +21,89 @@ const useHasLegacyStkGhoPosition = () => {
   return !!stkGhoRedeemable && stkGhoRedeemable !== '0';
 };
 
-export const SavingsGhoBanner = () => {
-  const theme = useTheme();
-  const isCustomBreakpoint = useMediaQuery('(min-width:1125px)');
-  const isMd = useMediaQuery(theme.breakpoints.up('xs'));
-  const isMd2 = useMediaQuery(theme.breakpoints.up('md'));
-  const downToMd = useMediaQuery('(min-width:870px)');
-  const downToSm = useMediaQuery('(max-width:780px)');
+/**
+ * Shared card surface (radius, hairline border, green→neutral tint gradient, soft shadow) for both
+ * banner variants — the diverging layout (row/6rem vs column/188px) is applied per variant on top.
+ */
+const BANNER_SURFACE_SX = {
+  borderRadius: '0.75rem',
+  border: '1px solid',
+  borderColor: 'border-1',
+  backgroundColor: figVars['table-bg'],
+  backgroundImage: `linear-gradient(90deg, ${figVars['sgho-banner-green']} 0%, transparent 42.79%)`,
+  boxShadow: `0px 2px 4px 0px ${figVars['shadow-low']}`,
+  position: 'relative',
+} as const;
 
-  const { openStkGhoMigrate } = useModalContext();
+/** Title + subtitle, shared by the desktop and mobile banner variants. */
+const SavingsGhoBannerHeading = ({ hasLegacyPosition }: { hasLegacyPosition: boolean }) => (
+  <Stack direction="column" gap="0.37rem">
+    <Typography
+      variant="h2"
+      sx={{
+        fontSize: '1.25rem',
+        fontWeight: 600,
+        lineHeight: 'normal',
+        letterSpacing: '-0.02063rem',
+        fontFeatureSettings: "'cv11' on",
+        color: 'fg-1',
+      }}
+    >
+      {hasLegacyPosition ? (
+        <Trans>Migrate your sGHO position</Trans>
+      ) : (
+        <Trans>Earn into sGHO</Trans>
+      )}
+    </Typography>
+    <Typography
+      variant="description"
+      sx={{ lineHeight: '100%', letterSpacing: 'normal' }}
+      color="fg-3"
+    >
+      {hasLegacyPosition ? (
+        <Trans>To continue claiming rewards, migrate now.</Trans>
+      ) : (
+        <Trans>GHO yield with instant withdraws.</Trans>
+      )}
+    </Typography>
+  </Stack>
+);
+
+/** One labelled stat (label above value), shared by both variants; shows a skeleton while loading. */
+const BannerStat = ({
+  label,
+  loading,
+  children,
+}: {
+  label: ReactNode;
+  loading: boolean;
+  children: ReactNode;
+}) => (
+  <Stack direction="column" alignItems="flex-start" gap="0.25rem">
+    <Typography variant="description" color="fg-3" noWrap>
+      {label}
+    </Typography>
+    {loading ? <Skeleton width={70} height={25} /> : children}
+  </Stack>
+);
+
+export const SavingsGhoBanner = ({
+  hasLegacyPositionOverride,
+}: {
+  /**
+   * Showcase/dev only: force the legacy ("Migrate your sGHO position") vs default ("Earn into
+   * sGHO") copy, bypassing wallet-based detection so /dev/components can show both states.
+   */
+  hasLegacyPositionOverride?: boolean;
+} = {}) => {
+  const theme = useTheme();
+  const downToSm = useMediaQuery(theme.breakpoints.down('sm'));
+
   const { vault, loading: vaultLoading } = useSGhoVaultContext();
   const totalDepositedUSD = vault?.totalAssets.usd ?? '0';
   const targetRate = vault?.targetRate ? +vault.targetRate.value : 0;
-  const hasLegacyPosition = useHasLegacyStkGhoPosition();
+  const detectedLegacyPosition = useHasLegacyStkGhoPosition();
+  const hasLegacyPosition = hasLegacyPositionOverride ?? detectedLegacyPosition;
 
   if (downToSm) {
     return <GhoSavingsBannerMobile hasLegacyPosition={hasLegacyPosition} />;
@@ -41,276 +111,95 @@ export const SavingsGhoBanner = () => {
 
   return (
     <Stack
+      component={Link}
+      href={ROUTES.sGHO}
       sx={{
-        pt: 5,
-        mb: 10,
-        px: { md: 6 },
-        overflow: 'hidden',
+        ...BANNER_SURFACE_SX,
+        mt: 5,
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '1.5rem',
+        height: '6rem',
+        padding: '1.25rem 2rem 1.25rem 1.5rem',
+        overflow: 'hidden',
       }}
     >
-      <Stack
-        component={Link}
-        href={ROUTES.sGHO}
-        sx={(theme) => ({
-          [theme.breakpoints.up(780)]: {
-            height: '116px',
-            flexDirection: 'row',
-            alignItems: 'center',
-          },
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          height: '188px',
-          borderRadius: { md: 4 },
-          display: 'flex',
-          backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#F7F7F9',
-          position: 'relative',
-          justifyContent: 'space-between',
-          gap: { xs: 6 },
-        })}
-      >
+      <Stack direction="row" alignItems="center" gap="1.5rem">
         <Box
           component="img"
-          src="/sgho-banner.svg"
-          alt="ghost and coin"
-          sx={{
-            height: isMd2 ? '130px' : '100px',
-            mb: isMd2 ? 2 : 1,
-            mr: isMd2 ? -8 : -4,
-            display: downToSm ? 'none' : 'block',
-          }}
+          src="/gho-coins.png"
+          alt="GHO coins"
+          sx={{ height: '3.5rem', flexShrink: 0 }}
         />
-        <Stack direction="column">
-          <Typography
-            sx={(theme) => ({
-              [theme.breakpoints.up(1125)]: { typography: 'h3' },
-              typography: {
-                xs: 'subheader1',
-                md: 'h4',
-              },
-            })}
-          >
-            {hasLegacyPosition ? (
-              <Trans>Migrate your sGHO position</Trans>
-            ) : (
-              <Trans>Earn into sGHO</Trans>
-            )}
-          </Typography>
-          <Typography
-            sx={(theme) => ({
-              [theme.breakpoints.up(1125)]: { typography: 'description' },
-              typography: { xs: 'caption' },
-            })}
-            color="text.secondary"
-          >
-            {hasLegacyPosition ? (
-              <Trans>To continue claiming rewards, migrate now.</Trans>
-            ) : (
-              <Trans>GHO yield with instant withdraws.</Trans>
-            )}
-          </Typography>
-        </Stack>
-        <Stack direction="row" alignItems="center" gap={3}>
-          <TokenIcon
-            symbol="sgho"
-            sx={{
-              fontSize: '38px',
-              display: downToMd ? 'block' : 'none',
-            }}
-          />
-          <Stack direction="column" alignItems="flex-start">
-            {vaultLoading ? (
-              <Skeleton width={70} height={25} />
-            ) : (
-              <Stack direction="row" gap={1} alignItems="center">
-                <FormattedNumber
-                  symbol="USD"
-                  compact
-                  variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                  value={totalDepositedUSD}
-                />
-              </Stack>
-            )}
-            <Typography
-              sx={{
-                ['@media screen and (min-width: 1125px)']: { typography: 'description' },
-                typography: { xs: 'caption' },
-              }}
-              color="text.secondary"
-              noWrap
-            >
-              <Trans>Total deposited</Trans>
-            </Typography>
-          </Stack>
-        </Stack>
-        <Stack>
-          {vaultLoading ? (
-            <Skeleton width={70} height={25} />
-          ) : (
-            <Stack direction="row" gap={1} alignItems="center">
-              <FormattedNumber
-                percent
-                variant={isCustomBreakpoint ? 'h3' : isMd ? 'secondary16' : 'secondary14'}
-                value={targetRate}
-              />
-            </Stack>
-          )}
-          <Typography
-            sx={{
-              ['@media screen and (min-width: 1125px)']: { typography: 'description' },
-              typography: { xs: 'caption' },
-            }}
-            color="text.secondary"
-            noWrap
-          >
-            <Trans>APY</Trans>
-          </Typography>
-        </Stack>
-        <Box />
-        <Stack
-          direction="row"
-          gap={2}
-          sx={{
-            mr: 8,
-            ml: isMd2 ? 12 : 0,
-          }}
-        >
-          <Button variant="outlined" component={Link} size="medium" href={ROUTES.sGHO}>
-            <Trans>View details</Trans>
-          </Button>
-          <Button
-            variant="contained"
-            component={Link}
-            size="medium"
-            href={ROUTES.sGHO}
-            onClick={() => {
-              if (hasLegacyPosition) openStkGhoMigrate();
-            }}
-          >
-            {hasLegacyPosition ? <Trans>Migrate</Trans> : <Trans>Start Earning</Trans>}
-          </Button>
-        </Stack>
+        <SavingsGhoBannerHeading hasLegacyPosition={hasLegacyPosition} />
+      </Stack>
+      <BannerStat label={<Trans>Total deposited</Trans>} loading={vaultLoading}>
+        <FormattedNumber symbol="USD" compact variant="h3" color="fg-1" value={totalDepositedUSD} />
+      </BannerStat>
+      <BannerStat label={<Trans>APY</Trans>} loading={vaultLoading}>
+        <FormattedNumber percent variant="h3" color="fg-1" value={targetRate} />
+      </BannerStat>
+      <Stack direction="row" gap="0.62rem">
+        <Button variant="tertiary" component={Link} size="medium" href={ROUTES.sGHO}>
+          <Trans>View details</Trans>
+        </Button>
       </Stack>
     </Stack>
   );
 };
 
 const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: boolean }) => {
-  const { openStkGhoMigrate } = useModalContext();
   const { vault, loading: vaultLoading } = useSGhoVaultContext();
   const totalDepositedUSD = vault?.totalAssets.usd ?? '0';
   const targetRate = vault?.targetRate ? +vault.targetRate.value : 0;
 
   return (
     <Stack
+      component={Link}
+      href={ROUTES.sGHO}
       sx={{
-        pt: 5,
-        mb: 10,
-        px: { md: 6 },
-        overflow: 'hidden',
+        ...BANNER_SURFACE_SX,
+        mt: 5,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        height: '188px',
+        gap: { xs: 6 },
       }}
     >
+      <Box
+        component="img"
+        src="/gho-coins.png"
+        alt="GHO coins"
+        sx={{ position: 'absolute', height: '100px', top: -8, right: 8 }}
+      />
       <Stack
-        component={Link}
-        href={ROUTES.sGHO}
-        sx={(theme) => ({
-          [theme.breakpoints.up(780)]: {
-            height: '116px',
-            flexDirection: 'row',
-            alignItems: 'center',
-          },
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          height: '188px',
-          borderRadius: { md: 4 },
-          display: 'flex',
-          backgroundColor: theme.palette.mode === 'dark' ? '#39375A80' : '#F7F7F9',
-          position: 'relative',
-          justifyContent: 'space-between',
-          gap: { xs: 6 },
-        })}
+        direction="column"
+        sx={{ width: '100%', height: '100%', padding: '16px' }}
+        justifyContent="space-between"
       >
-        <Box
-          component="img"
-          src="/sgho-banner.svg"
-          alt="ghost and coin"
-          sx={{ position: 'absolute', height: '100px', top: -8, right: 8 }}
-        />
-        <Stack
-          direction="column"
-          sx={{ width: '100%', height: '100%', padding: '16px' }}
-          justifyContent="space-between"
-        >
-          <Stack direction="column">
-            <Typography variant="subheader1">
-              {hasLegacyPosition ? (
-                <Trans>Migrate your sGHO position</Trans>
-              ) : (
-                <Trans>Earn into sGHO</Trans>
-              )}
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {hasLegacyPosition ? (
-                <Trans>To continue claiming rewards, migrate now.</Trans>
-              ) : (
-                <Trans>GHO yield with instant withdraws.</Trans>
-              )}
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" gap={4}>
-            <TokenIcon symbol="sgho" sx={{ fontSize: '38px' }} />
-            <Stack direction="column" alignItems="flex-start">
-              {vaultLoading ? (
-                <Skeleton width={70} height={25} />
-              ) : (
-                <Stack direction="row" gap={1} alignItems="center">
-                  <FormattedNumber
-                    symbol="USD"
-                    compact
-                    variant="secondary14"
-                    value={totalDepositedUSD}
-                  />
-                </Stack>
-              )}
-              <Typography variant="caption" color="text.secondary" noWrap>
-                <Trans>Total deposited</Trans>
-              </Typography>
-            </Stack>
-            <Stack>
-              {vaultLoading ? (
-                <Skeleton width={70} height={25} />
-              ) : (
-                <Stack direction="row" gap={1} alignItems="center">
-                  <FormattedNumber percent variant="secondary14" value={targetRate} />
-                </Stack>
-              )}
-              <Typography variant="caption" color="text.secondary" noWrap>
-                <Trans>APY</Trans>
-              </Typography>
-            </Stack>
-          </Stack>
-          <Stack direction="row" gap={2}>
-            <Button variant="outlined" fullWidth component={Link} size="medium" href={ROUTES.sGHO}>
-              <Trans>View details</Trans>
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              component={Link}
-              size="medium"
-              href={ROUTES.sGHO}
-              onClick={() => {
-                if (hasLegacyPosition) openStkGhoMigrate();
-              }}
-            >
-              {hasLegacyPosition ? <Trans>Migrate</Trans> : <Trans>Start Earning</Trans>}
-            </Button>
-          </Stack>
+        <SavingsGhoBannerHeading hasLegacyPosition={hasLegacyPosition} />
+        <Stack direction="row" alignItems="center" gap={4}>
+          <BannerStat label={<Trans>Total deposited</Trans>} loading={vaultLoading}>
+            <FormattedNumber
+              symbol="USD"
+              compact
+              variant="h3"
+              color="fg-1"
+              value={totalDepositedUSD}
+            />
+          </BannerStat>
+          <BannerStat label={<Trans>APY</Trans>} loading={vaultLoading}>
+            <FormattedNumber percent variant="h3" color="fg-1" value={targetRate} />
+          </BannerStat>
+        </Stack>
+        <Stack direction="row" gap="0.62rem">
+          <Button variant="tertiary" fullWidth component={Link} size="medium" href={ROUTES.sGHO}>
+            <Trans>View details</Trans>
+          </Button>
         </Stack>
       </Stack>
     </Stack>

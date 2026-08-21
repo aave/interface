@@ -1,74 +1,59 @@
 import { styled, ToggleButton, ToggleButtonProps } from '@mui/material';
-import React from 'react';
+import { figVars } from 'src/utils/figmaColors';
+import { darkScheme } from 'src/utils/theme';
 
-const CustomToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) => ({
-  border: '0px',
+// Dimmed inactive label: fg-max at 0.3 opacity in light, full opacity in dark. Shared by the
+// resting state and the disabled-not-selected state (which must re-assert it over MUI's default).
+const dimmedInactive = {
+  color: figVars['fg-max'],
+  opacity: 0.3,
+  ...darkScheme({ opacity: 1 }),
+};
+
+// Active pill: a bg-3 (white) fill with a border-1 ring in light; a bg-5 fill and no ring in dark,
+// fg-max label at full opacity. Shared by Mui-selected/focus and disabled-selected (some consumers
+// disable the active tab).
+const activeFill = {
+  opacity: 1,
+  color: figVars['fg-max'],
+  backgroundColor: figVars['bg-3'],
+  boxShadow: `inset 0 0 0 1px ${figVars['border-1']}`,
+  ...darkScheme({
+    backgroundColor: figVars['bg-5'],
+    boxShadow: 'none',
+  }),
+};
+
+const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>({
+  border: 0,
   flex: 1,
-  backgroundColor: '#383D51',
-  borderRadius: '4px',
+  height: '100%',
+  // Label typography (H5) is owned by each consumer's <Typography variant="h5">.
+  ...dimmedInactive,
 
-  '&.Mui-selected, &.Mui-selected:hover': {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '4px !important',
+  // Inactive hover: nudge the opacity up in light; unchanged in dark. Never a background.
+  '&:hover': {
+    backgroundColor: 'transparent',
+    opacity: 0.5,
+    ...darkScheme({ opacity: 1 }),
   },
 
-  '&.Mui-selected, &.Mui-disabled': {
-    zIndex: 100,
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
+  '&.Mui-selected, &.Mui-focusVisible': activeFill,
 
-    '.MuiTypography-subheader1': {
-      background: theme.palette.gradients.aaveGradient,
-      backgroundClip: 'text',
-      textFillColor: 'transparent',
-    },
-    '.MuiTypography-secondary14': {
-      background: theme.palette.gradients.aaveGradient,
-      backgroundClip: 'text',
-      textFillColor: 'transparent',
-    },
-  },
-})) as typeof ToggleButton;
-
-const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>(({ theme }) => ({
-  border: '0px',
-  flex: 1,
-  color: theme.palette.text.muted,
-  borderRadius: '4px',
-
-  // Selected (active) state
-  '&.Mui-selected, &.Mui-selected:hover': {
-    border: `1px solid ${theme.palette.other.standardInputLine}`,
-    backgroundColor: '#FFFFFF',
-    borderRadius: '4px !important',
-    color: theme.palette.background.header,
-    zIndex: 100,
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
+  // Active hover: step the fill one shade darker (bg-3 → bg-1 light, bg-5 → bg-6 dark); ring persists.
+  '&.Mui-selected:hover': {
+    backgroundColor: figVars['bg-1'],
+    ...darkScheme({ backgroundColor: figVars['bg-6'] }),
   },
 
-  // Disabled but NOT selected: keep readable text with slight fade
-  '&.Mui-disabled:not(.Mui-selected)': {
-    color: theme.palette.text.secondary,
-    opacity: 0.55,
-  },
-
-  // Disabled + selected: preserve the selected look
-  '&.Mui-disabled.Mui-selected': {
-    border: `1px solid ${theme.palette.other.standardInputLine}`,
-    backgroundColor: '#FFFFFF',
-    borderRadius: '4px !important',
-    color: theme.palette.background.header,
-    opacity: 1,
-  },
-})) as typeof ToggleButton;
+  // MUI's ToggleButton hard-codes `border: 1px solid action.disabledBackground` on .Mui-disabled,
+  // which outlines the pill and defeats the group's borderless frame. Consumers that disable the
+  // active segment (e.g. the dashboard's Supply/Borrow switch) would otherwise always show it, so
+  // re-assert border: 0 here — these selectors outrank MUI's on specificity.
+  '&.Mui-disabled:not(.Mui-selected)': { ...dimmedInactive, border: 0 },
+  '&.Mui-disabled.Mui-selected': { ...activeFill, border: 0 },
+}) as typeof ToggleButton;
 
 export function StyledTxModalToggleButton(props: ToggleButtonProps) {
   return <CustomTxModalToggleButton {...props} />;
-}
-
-export default function StyledToggleButton(props: ToggleButtonProps) {
-  return <CustomToggleButton {...props} />;
 }

@@ -24,8 +24,8 @@ interface IncentivesCardProps {
   value: string | number;
   incentives?: ReserveIncentiveResponse[];
   address?: string;
-  variant?: 'main14' | 'main16' | 'secondary14';
-  symbolsVariant?: 'secondary14' | 'secondary16';
+  variant?: 'subheader1' | 'h4' | 'h5';
+  symbolsVariant?: 'h5' | 'secondary16';
   color?: string;
   tooltip?: ReactNode;
   market: string;
@@ -39,7 +39,7 @@ export const IncentivesCard = ({
   value,
   incentives,
   address,
-  variant = 'secondary14',
+  variant = 'h5',
   symbolsVariant,
   align,
   color,
@@ -120,7 +120,9 @@ export const IncentivesCard = ({
     (protocolAction === ProtocolAction.borrow || protocolAction === ProtocolAction.supply) &&
     isMarketsOrDashboardPage;
 
-  const incentivesContent = (
+  // APR-bearing incentives — their yield is already inside the APY %; each renders the purple
+  // incentives icon and sits on the same row as (to the left of) the rate it contributes to.
+  const apyIncentives = (
     <>
       <IncentivesButton
         incentives={incentives}
@@ -146,70 +148,56 @@ export const IncentivesCard = ({
         protocolIncentives={incentives || []}
         hideValue={hideMerklValue}
       />
+    </>
+  );
+
+  // Points / airdrop programs — not part of the APY %; shown as [brand icon] [multiplier]
+  // alongside the rate.
+  const pointsIncentives = (
+    <>
       <EthenaIncentivesButton rewardedAsset={address} />
       <EtherfiIncentivesButton symbol={symbol} market={market} protocolAction={protocolAction} />
       <SonicIncentivesButton rewardedAsset={address} />
     </>
   );
 
+  const apyValue =
+    value.toString() === '-1' ? (
+      <NoData variant={variant} color={color || 'fg-2'} />
+    ) : displayAPY === 'Infinity' ? (
+      <Typography variant={variant} color={color || 'fg-2'}>
+        ∞ %
+      </Typography>
+    ) : (
+      <FormattedNumber
+        data-cy={`apy`}
+        value={displayAPY}
+        percent
+        variant={variant}
+        symbolsVariant={symbolsVariant}
+        color={color}
+        symbolsColor={color}
+      />
+    );
+
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: inlineIncentives ? 'row' : 'column',
-        alignItems: inlineIncentives ? 'center' : align || { xs: 'flex-end', xsm: 'center' },
-        justifyContent: inlineIncentives ? 'flex-start' : 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '0.38rem',
+        justifyContent: inlineIncentives
+          ? 'flex-start'
+          : align || { xs: 'flex-end', xsm: 'center' },
         textAlign: inlineIncentives ? 'left' : 'center',
-        gap: inlineIncentives ? 1 : 1,
       }}
     >
-      {value.toString() !== '-1' ? (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          {displayAPY === 'Infinity' ? (
-            <Typography variant={variant} color={color || 'text.secondary'}>
-              ∞ %
-            </Typography>
-          ) : (
-            <FormattedNumber
-              data-cy={`apy`}
-              value={displayAPY}
-              percent
-              variant={variant}
-              symbolsVariant={symbolsVariant}
-              color={color}
-              symbolsColor={color}
-            />
-          )}
-          {tooltip}
-          {inlineIncentives && (
-            <Box
-              sx={{
-                display: 'flex',
-                gap: '4px',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-              }}
-            >
-              {incentivesContent}
-            </Box>
-          )}
-        </Box>
-      ) : (
-        <NoData variant={variant} color={color || 'text.secondary'} />
-      )}
-      {!inlineIncentives && (
-        <Box
-          sx={{
-            display: 'flex',
-            gap: '4px',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {incentivesContent}
-        </Box>
-      )}
+      {apyIncentives}
+      {apyValue}
+      {tooltip}
+      {pointsIncentives}
     </Box>
   );
 };

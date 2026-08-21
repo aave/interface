@@ -1,8 +1,9 @@
-import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
+import { SearchIcon } from 'src/components/icons/SearchIcon';
+import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
 
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
@@ -36,19 +37,26 @@ export const SearchInput = ({
   }, [onSearchTermChange]);
   return (
     <Box
-      sx={(theme) => ({
+      component="label"
+      sx={{
         display: 'flex',
         alignItems: 'center',
         gap: 2,
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: '6px',
+        boxShadow: figSurfaceShadow(),
+        borderRadius: '0.5rem',
         height: '36px',
+        // Wrapping <label> so clicking anywhere in the field (the search icon, the padding) focuses
+        // the input, not just the input box itself.
+        cursor: 'text',
+        // Focus ring: a 3px fg-3 outline held 2px out (replaces the prior no-op focus).
+        '&:focus-within': {
+          outline: `3px solid ${figVars['fg-3']}`,
+          outlineOffset: '2px',
+        },
         ...wrapperSx,
-      })}
+      }}
     >
-      <Box sx={{ ml: 2, mt: 1 }}>
-        <SearchIcon height={16} />
-      </Box>
+      <SearchIcon sx={{ fontSize: 18, color: 'fg-icon', ml: 2, flexShrink: 0 }} />
       <InputBase
         autoFocus={sm}
         inputRef={inputEl}

@@ -14,6 +14,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { AssetCapHookData } from 'src/hooks/useAssetCapsSDK';
 import { GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -75,15 +76,16 @@ export const BorrowInfo = ({
           <>
             <CapsCircularStatus
               value={borrowCap.percentUsed}
+              color={figVars['data-orange']}
               tooltipContent={
                 <>
                   <Trans>
                     Maximum amount available to borrow is{' '}
-                    <FormattedNumber value={maxAvailableToBorrow} variant="secondary12" />{' '}
+                    <FormattedNumber value={maxAvailableToBorrow} variant="subheader2" />{' '}
                     {reserve.underlyingToken.symbol} (
                     <FormattedNumber
                       value={maxAvailableToBorrowUSD}
-                      variant="secondary12"
+                      variant="subheader2"
                       symbol="USD"
                     />
                     ).
@@ -122,25 +124,22 @@ export const BorrowInfo = ({
               }
             >
               <Box>
-                <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="main16" />
+                <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="h4" />
                 <Typography
                   component="span"
-                  color="text.primary"
+                  color="fg-1"
                   variant="secondary16"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber
-                  value={reserve.borrowInfo!.borrowCap.amount.value}
-                  variant="main16"
-                />
+                <FormattedNumber value={reserve.borrowInfo!.borrowCap.amount.value} variant="h4" />
               </Box>
               <Box>
                 <ReserveSubheader value={reserve.borrowInfo!.total.usd} />
                 <Typography
                   component="span"
-                  color="text.primary"
+                  color="fg-1"
                   variant="secondary16"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
@@ -159,7 +158,7 @@ export const BorrowInfo = ({
               </Box>
             }
           >
-            <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="main16" />
+            <FormattedNumber value={reserve.borrowInfo!.total.amount.value} variant="h4" />
             <ReserveSubheader value={reserve.borrowInfo!.total.usd} />
           </PanelItem>
         )}
@@ -189,7 +188,7 @@ export const BorrowInfo = ({
             incentives={borrowProtocolIncentives}
             address={reserve.vToken.address}
             symbol={reserve.underlyingToken.symbol}
-            variant="main16"
+            variant="h4"
             market={currentMarketData.market}
             protocolAction={ProtocolAction.borrow}
             inlineIncentives={true}
@@ -198,7 +197,7 @@ export const BorrowInfo = ({
 
         {reserve.borrowInfo?.borrowCap.usd && reserve.borrowInfo?.borrowCap.usd !== '0' && (
           <PanelItem title={<Trans>Borrow cap</Trans>}>
-            <FormattedNumber value={reserve.borrowInfo!.borrowCap.amount.value} variant="main16" />
+            <FormattedNumber value={reserve.borrowInfo!.borrowCap.amount.value} variant="h4" />
             <ReserveSubheader value={reserve.borrowInfo!.borrowCap.usd} />
           </PanelItem>
         )}

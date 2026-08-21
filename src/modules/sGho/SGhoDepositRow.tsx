@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { figVars } from 'src/utils/figmaColors';
 
 interface SGhoDepositRowProps {
   walletBalance: string;
@@ -23,18 +24,18 @@ export const SGhoDepositRow = ({
 
   return (
     <Box
-      sx={(theme) => ({
+      sx={{
         display: 'flex',
         alignItems: { xs: 'stretch', xsm: 'center' },
         justifyContent: 'space-between',
         flexDirection: { xs: 'column', xsm: 'row' },
         gap: 4,
         borderRadius: { xs: '8px', xsm: '6px' },
-        border: `1px solid ${theme.palette.divider}`,
+        border: `1px solid ${figVars['border-2']}`,
         p: 4,
         mb: 6,
-        background: theme.palette.background.paper,
-      })}
+        background: figVars['surface-elevated'],
+      }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, minWidth: 0 }}>
         <TokenIcon symbol="sgho" sx={{ width: 36, height: 36 }} />
@@ -43,13 +44,13 @@ export const SGhoDepositRow = ({
             sGHO
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" color="fg-2">
               <Trans>Available to deposit:</Trans>
             </Typography>
             <FormattedNumber
               value={walletBalance}
               variant="caption"
-              color="text.secondary"
+              color="fg-2"
               visibleDecimals={2}
             />
           </Box>
@@ -66,10 +67,10 @@ export const SGhoDepositRow = ({
         }}
       >
         <Box sx={{ textAlign: 'left' }}>
-          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+          <Typography variant="caption" color="fg-2" sx={{ display: 'block' }}>
             <Trans>Staking APR</Trans>
           </Typography>
-          <FormattedNumber value={rate} percent variant="main16" visibleDecimals={2} />
+          <FormattedNumber value={rate} percent variant="h4" visibleDecimals={2} />
         </Box>
 
         {hasGho ? (

@@ -12,11 +12,11 @@ export const MigrationListItemLoader = () => {
 
   return (
     <ListItem sx={{ pl: 0 }}>
-      <ListColumn align="center" maxWidth={64} minWidth={64}>
+      <ListColumn maxWidth={64} minWidth={64}>
         <Skeleton width={16} height={16} />
       </ListColumn>
 
-      <ListColumn align="left" isRow maxWidth={250} minWidth={170}>
+      <ListColumn isRow maxWidth={250} minWidth={170}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
           <Skeleton variant="circular" width={32} height={32} />
           <Skeleton sx={{ ml: 3 }} width={39} height={20} />
@@ -55,10 +55,10 @@ const MigrationListItemLoaderMobile = () => {
           pt: 2.5,
         }}
       >
-        <ListColumn align="center" maxWidth={48} minWidth={48}>
+        <ListColumn maxWidth={48} minWidth={48}>
           <Skeleton width={16} height={16} />
         </ListColumn>
-        <ListColumn align="left">
+        <ListColumn>
           <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
             <Skeleton variant="circular" width={32} height={32} />
             <Skeleton sx={{ ml: 3 }} width={39} height={20} />

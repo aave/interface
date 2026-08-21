@@ -1,19 +1,19 @@
 import { CogIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
+  Alert,
   Box,
   Button,
   InputAdornment,
   InputBase,
   Menu,
   SvgIcon,
-  ToggleButton,
-  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import { MouseEvent, useEffect, useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
-import { Warning } from 'src/components/primitives/Warning';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 
 import { ValidationData } from '../../helpers/shared/slippage.helpers';
 
@@ -123,7 +123,7 @@ export const SwitchSlippageSelector = ({
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: '4px' }}>
-      <Typography variant="subheader2" color="text.secondary" sx={{ opacity: 0.75 }}>
+      <Typography variant="subheader2" color="fg-2" sx={{ opacity: 0.75 }}>
         {isCustomSlippage ? (
           <Trans>Custom slippage</Trans>
         ) : provider === 'paraswap' ? (
@@ -157,32 +157,18 @@ export const SwitchSlippageSelector = ({
             <Trans>Max slippage</Trans>
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: '8px' }}>
-            <ToggleButtonGroup
-              sx={{
-                backgroundColor: 'background.surface',
-                borderRadius: '6px',
-                borderColor: 'background.surface',
-              }}
+            <StyledTxModalToggleGroup
+              value={suggestedSlippage === slippage ? 'Auto' : slippage}
               exclusive
-              onChange={(_, value) => handlePresetSlippageChange(value)}
+              onChange={(_, value) => value && handlePresetSlippageChange(value)}
+              // Compact menu footprint, sized to the custom-slippage input beside it; the
+              // shell/pill treatment comes from the shared control.
+              sx={{ width: 'auto', height: '28px' }}
             >
               {slippageOptions.map((option) => (
-                <ToggleButton
-                  sx={{
-                    borderRadius: 1,
-                    py: 1,
-                    px: 2,
-                    borderWidth: 2,
-                    backgroundColor:
-                      (suggestedSlippage === slippage && option == 'Auto') || option === slippage
-                        ? 'background.paper'
-                        : 'transparent',
-                  }}
-                  value={option}
-                  key={option}
-                >
+                <StyledTxModalToggleButton value={option} key={option}>
                   {isNaN(Number(option)) ? (
-                    <Typography variant="subheader2" color="primary.main">
+                    <Typography variant="subheader2">
                       {provider === 'paraswap' ? <Trans>Default</Trans> : <Trans>Auto</Trans>}
                     </Typography>
                   ) : (
@@ -191,13 +177,11 @@ export const SwitchSlippageSelector = ({
                       visibleDecimals={2}
                       symbol="%"
                       variant="subheader2"
-                      color="primary.main"
-                      symbolsColor="primary.main"
                     />
                   )}
-                </ToggleButton>
+                </StyledTxModalToggleButton>
               ))}
-            </ToggleButtonGroup>
+            </StyledTxModalToggleGroup>
             <InputBase
               type="percent"
               value={isCustomSlippage ? slippage : ''}
@@ -205,7 +189,7 @@ export const SwitchSlippageSelector = ({
               placeholder="Custom"
               endAdornment={
                 <InputAdornment position="end">
-                  <Typography variant="caption" color="text.muted">
+                  <Typography variant="caption" color="fg-3">
                     %
                   </Typography>
                 </InputAdornment>
@@ -216,18 +200,16 @@ export const SwitchSlippageSelector = ({
                 width: '120px',
                 border: 1,
                 borderWidth: '1px',
-                backgroundColor: 'background.surface',
-                borderColor: slippageValidation
-                  ? `${slippageValidation.severity}.main`
-                  : 'background.surface',
+                backgroundColor: 'bg-2',
+                borderColor: slippageValidation ? `${slippageValidation.severity}.main` : 'bg-2',
                 borderRadius: '4px',
               }}
             />
           </Box>
           {slippageValidation && (
-            <Warning sx={{ mb: 0, mt: 2 }} severity={slippageValidation.severity}>
+            <Alert sx={{ width: '100%', mb: 0, mt: 2 }} severity={slippageValidation.severity}>
               {slippageValidation.message}
-            </Warning>
+            </Alert>
           )}
         </Menu>
       </Typography>
@@ -252,7 +234,7 @@ export const SwitchSlippageSelector = ({
       >
         <FormattedNumber
           variant="caption"
-          color={slippageValidation ? `${slippageValidation.severity}.main` : 'text.primary'}
+          color={slippageValidation ? `${slippageValidation.severity}.main` : 'fg-1'}
           value={slippage}
           visibleDecimals={2}
           symbol="%"

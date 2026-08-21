@@ -60,11 +60,11 @@ export const TxErrorView = ({ txError }: { txError: TxErrorType }) => {
         </Typography>
 
         <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
-          <Button variant="outlined" onClick={handleGetSupport} size="small">
+          <Button variant="tertiary" onClick={handleGetSupport} size="small">
             <Trans>Get support</Trans>
           </Button>
           <Button
-            variant="outlined"
+            variant="tertiary"
             onClick={() =>
               navigator.clipboard.writeText(
                 txError?.rawError?.message ? txError.rawError.message.toString() : 'Unknown error'

@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import * as React from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 import { SupportedNetworkWithChainId } from './Bridge/BridgeConfig';
 
@@ -39,14 +40,14 @@ export const NetworkSelect = ({
   return (
     <Box sx={{ width: '100%', ...sx }}>
       <Box
-        sx={(theme) => ({
+        sx={{
           p: '8px 0px',
-          border: `1px solid ${theme.palette.divider}`,
+          border: `1px solid ${figVars['border-2']}`,
           borderRadius: '6px',
           mb: 1,
-        })}
+        }}
       >
-        <Typography color="text.secondary" sx={{ p: '0px 12px' }}>
+        <Typography color="fg-2" sx={{ p: '0px 12px' }}>
           Network
         </Typography>
         <FormControl fullWidth>
@@ -57,31 +58,19 @@ export const NetworkSelect = ({
             onChange={handleChange}
             variant="outlined"
             sx={{
-              '.MuiSelect-select': {
+              // Flatten the trigger: strip the theme's Select-pill (bg fill + surface-shadow ring)
+              // in all states so only the outer container remains. `&&` matches the theme's specificity.
+              '&&, &&:hover, &&:has(.MuiSelect-select[aria-expanded="true"])': {
                 backgroundColor: 'transparent',
+                boxShadow: 'none',
               },
-              '& .MuiOutlinedInput-root': {
-                background: 'transparent',
-                '&:hover': {
-                  '.MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'currentColor',
-                  },
-                },
-                '&.Mui-focused': {
-                  '.MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'primary.main',
-                  },
-                },
-              },
-              '& .MuiOutlinedInput-notchedOutline': {
-                border: 'none',
+              '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+              '& .MuiSelect-select': {
+                backgroundColor: 'transparent',
               },
               '& .MuiSelect-icon': {
                 marginRight: '12px',
                 display: disabled ? 'none' : 'inline-block',
-              },
-              '& input.Mui-disabled': {
-                color: 'red',
               },
               '& .MuiOutlinedInput-input.Mui-disabled': {
                 backgroundColor: 'transparent',

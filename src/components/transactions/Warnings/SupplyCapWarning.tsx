@@ -1,16 +1,16 @@
 import { Trans } from '@lingui/macro';
-import { AlertProps } from '@mui/material';
+import { Alert, AlertProps } from '@mui/material';
 import { AssetCapData } from 'src/hooks/useAssetCaps';
 
 import { Link } from '../../primitives/Link';
-import { Warning } from '../../primitives/Warning';
 
 type SupplyCapWarningProps = AlertProps & {
   supplyCap: AssetCapData;
   icon?: boolean;
 };
 
-export const SupplyCapWarning = ({ supplyCap, icon = true, ...rest }: SupplyCapWarningProps) => {
+// `icon` is destructured only to keep it out of `...rest` (the alert always shows its severity icon).
+export const SupplyCapWarning = ({ supplyCap, icon, ...rest }: SupplyCapWarningProps) => {
   // Don't show a warning when less than 98% utilized
   if (!supplyCap.percentUsed || supplyCap.percentUsed < 98) return null;
 
@@ -28,11 +28,11 @@ export const SupplyCapWarning = ({ supplyCap, icon = true, ...rest }: SupplyCapW
   };
 
   return (
-    <Warning severity={severity} icon={icon} {...rest}>
+    <Alert severity={severity} sx={{ mb: 6, width: '100%' }} {...rest}>
       {renderText()}{' '}
       <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps" underline="always">
         <Trans>Learn more</Trans>
       </Link>
-    </Warning>
+    </Alert>
   );
 };

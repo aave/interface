@@ -8,6 +8,7 @@ import { ListItem } from 'src/components/lists/ListItem';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
@@ -45,7 +46,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
 
   const theme = useTheme();
   const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-  const hideStatusBadgeForCancel = useMediaQuery('(min-width: 960px) and (max-width: 1050px)');
+  const hideStatusBadgeForCancel = useMediaQuery(theme.breakpoints.between('md', 'mdlg'));
 
   useEffect(() => {
     if (copyStatus) {
@@ -66,7 +67,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
         sx={{
           borderWidth: `1px 0 0 0`,
           borderStyle: `solid`,
-          borderColor: `${theme.palette.divider}`,
+          borderColor: `${figVars['border-0']}`,
           height: '72px',
         }}
       >
@@ -81,7 +82,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
           }}
         >
           <ActionTitle action={action} />
-          <Typography variant="caption" color="text.muted">
+          <Typography variant="caption" color="fg-3">
             {unixTimestampToFormattedTime({ unixTimestamp: timestamp })}
           </Typography>
         </Box>
@@ -97,7 +98,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
             }
           />
         </Box>
-        <ListColumn align="right">
+        <ListColumn>
           <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
             {isSwapTransaction(transaction) &&
               isCowSwapSubset(transaction) &&
@@ -108,7 +109,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
               )}
             {!downToMD && explorerLink && (
               <Button
-                variant="outlined"
+                variant="tertiary"
                 href={explorerLink}
                 target="_blank"
                 onClick={() =>
@@ -120,7 +121,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
                   sx={{
                     marginLeft: '5px',
                     fontSize: '20px',
-                    color: 'text.secondary',
+                    color: 'fg-2',
                   }}
                 >
                   <ArrowOutward />

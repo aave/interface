@@ -168,6 +168,7 @@ const BorrowedPositionsListItemDesktop = ({
       <ListButtonsColumn>
         {showSwitchButton ? (
           <Button
+            size="small"
             disabled={disableSwitch}
             variant="contained"
             onClick={onDetbSwitchClick}
@@ -176,11 +177,11 @@ const BorrowedPositionsListItemDesktop = ({
             <Trans>Swap</Trans>
           </Button>
         ) : (
-          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow}>
+          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow} size="small">
             <Trans>Borrow</Trans>
           </Button>
         )}
-        <Button disabled={disableRepay} variant="outlined" onClick={onOpenRepay}>
+        <Button disabled={disableRepay} variant="tertiary" onClick={onOpenRepay} size="small">
           <Trans>Repay</Trans>
         </Button>
       </ListButtonsColumn>
@@ -236,7 +237,7 @@ const BorrowedPositionsListItemMobile = ({
           incentives={incentives}
           address={variableDebtTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />
@@ -260,7 +261,7 @@ const BorrowedPositionsListItemMobile = ({
         )}
         <Button
           disabled={disableRepay}
-          variant="outlined"
+          variant="tertiary"
           onClick={onOpenRepay}
           sx={{ ml: 1.5 }}
           fullWidth

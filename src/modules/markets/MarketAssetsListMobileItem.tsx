@@ -71,7 +71,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
             textAlign: 'center',
           }}
         >
-          <FormattedNumber compact value={reserve.size.amount.value} variant="secondary14" />
+          <FormattedNumber compact value={reserve.size.amount.value} variant="h5" />
           <ReserveSubheader value={reserve.size.usd} rightAlign={true} />
         </Box>
       </Row>
@@ -87,7 +87,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           incentives={reserve.supplyProtocolIncentives}
           address={reserve.aToken.address}
           symbol={reserve.underlyingToken.symbol}
-          variant="secondary14"
+          variant="h5"
           tooltip={
             <>
               {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
@@ -117,12 +117,12 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
               <FormattedNumber
                 compact
                 value={Number(reserve.borrowInfo.total.amount.value)}
-                variant="secondary14"
+                variant="h5"
               />
               <ReserveSubheader value={String(reserve.borrowInfo.total.usd)} rightAlign={true} />
             </>
           ) : (
-            <NoData variant={'secondary14'} color="text.secondary" />
+            <NoData variant={'h5'} color="fg-2" />
           )}
         </Box>
       </Row>
@@ -148,7 +148,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           incentives={reserve.borrowProtocolIncentives}
           address={reserve.vToken.address}
           symbol={reserve.underlyingToken.symbol}
-          variant="secondary14"
+          variant="h5"
           tooltip={
             <>
               {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
@@ -164,7 +164,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           reserve.borrowInfo.total.amount.value !== '0' && <ReserveSubheader value={'Disabled'} />}
       </Row>
       <Button
-        variant="outlined"
+        variant="tertiary"
         component={Link}
         href={ROUTES.reserveOverview(reserve.underlyingToken.address.toLowerCase(), currentMarket)}
         fullWidth

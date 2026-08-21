@@ -42,7 +42,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 6, mb: 2 }}>
-      <Typography typography="caption" sx={{ mb: 5 }} color="text.secondary">
+      <Typography typography="caption" sx={{ mb: 5 }} color="fg-2">
         <Trans>{title}</Trans>
       </Typography>
       <Box sx={{ display: 'flex', gap: 4, flexDirection: 'column' }}>
@@ -64,7 +64,7 @@ const DelegatedPower: React.FC<DelegatedPowerProps> = ({
                 value={Number(aavePower) + Number(stkAavePower) + Number(aAavePower)}
                 variant="subheader1"
               />
-              <Typography variant="helperText" color="text.secondary">
+              <Typography variant="helperText" color="fg-2">
                 AAVE + stkAAVE + aAAVE
               </Typography>
             </Box>
@@ -161,12 +161,12 @@ export const DelegatedInfoPanel = () => {
     powers.aAavePropositionDelegatee !== constants.AddressZero;
 
   return (
-    <Paper sx={{ mt: 2 }}>
+    <Paper>
       <Box sx={{ px: 6, pb: 6, pt: 4 }}>
         <Typography typography="h3">
           <Trans>Delegated power</Trans>
         </Typography>
-        <Typography typography="description" sx={{ mt: 1 }} color="text.secondary">
+        <Typography typography="description" sx={{ mt: 1 }} color="fg-2">
           <Trans>
             Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers.
             You will not be sending any tokens, only the rights to vote and propose changes to the
@@ -176,7 +176,7 @@ export const DelegatedInfoPanel = () => {
             href="https://docs.aave.com/developers/v/2.0/protocol-governance/governance"
             target="_blank"
             variant="description"
-            color="text.secondary"
+            color="fg-2"
             sx={{ textDecoration: 'underline', ml: 1 }}
             onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { link: 'Learn More Delegation' })}
           >
@@ -184,7 +184,7 @@ export const DelegatedInfoPanel = () => {
           </Link>
         </Typography>
         {disableButton ? (
-          <Typography variant="description" color="text.muted" mt={6}>
+          <Typography variant="description" color="fg-3" mt={6}>
             <Trans>You have no AAVE/stkAAVE/aAave balance to delegate.</Trans>
           </Typography>
         ) : (
@@ -212,20 +212,13 @@ export const DelegatedInfoPanel = () => {
       </Box>
       <Divider />
       <Box sx={{ p: 6, display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Button
-          size="large"
-          sx={{ width: '100%' }}
-          variant="contained"
-          disabled={disableButton}
-          onClick={() => openGovDelegation()}
-        >
+        <Button variant="contained" disabled={disableButton} onClick={() => openGovDelegation()}>
           <Trans>Set up delegation</Trans>
         </Button>
         {showRevokeButton && (
           <Button
-            size="large"
             sx={{ width: '100%' }}
-            variant="outlined"
+            variant="tertiary"
             disabled={disableButton}
             onClick={() => openRevokeGovDelegation()}
           >

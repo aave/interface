@@ -98,7 +98,7 @@ export const SupplyAssetsListMobileItem = ({
           incentives={aIncentivesData}
           address={aTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -137,7 +137,7 @@ export const SupplyAssetsListMobileItem = ({
           <Trans>Supply</Trans>
         </Button>
         <Button
-          variant="outlined"
+          variant="tertiary"
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           fullWidth

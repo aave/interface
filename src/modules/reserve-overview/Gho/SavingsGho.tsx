@@ -86,11 +86,7 @@ export const SavingsGho = () => {
           {stakeDataLoading && <Skeleton variant="text" width={145} height={24} />}
           {!stakeDataLoading && stakeData && (
             <Stack direction="row" alignItems="center" gap={1}>
-              <FormattedNumber
-                value={stakeData.totalSupplyFormatted || 0}
-                variant="main16"
-                compact
-              />
+              <FormattedNumber value={stakeData.totalSupplyFormatted || 0} variant="h4" compact />
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {' ('}
                 <FormattedNumber
@@ -135,7 +131,7 @@ export const SavingsGho = () => {
               </TextWithTooltip>
             }
             bottomLineComponent={
-              <Typography variant="secondary12">
+              <Typography variant="subheader2">
                 <Trans>Instant</Trans>
               </Typography>
             }
@@ -150,15 +146,15 @@ export const SavingsGho = () => {
                     pt: 2,
                   }}
                 >
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography variant="caption" color="fg-2">
                     <Trans>Amount in cooldown</Trans>
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <TokenIcon symbol="GHO" sx={{ mr: 1, width: 14, height: 14 }} />
                     <FormattedNumber
                       value={formatEther(stakeUserData.userCooldownAmount)}
-                      variant="secondary14"
-                      color="text.primary"
+                      variant="h5"
+                      color="fg-1"
                     />
                   </Box>
                 </Box>
@@ -178,7 +174,7 @@ export const SavingsGho = () => {
                 <Trans>Deposit</Trans>
               </Button>
               {stakeUserData.stakeTokenUserBalance !== '0' && (
-                <Button fullWidth variant="outlined" onClick={() => openSavingsGhoWithdraw()}>
+                <Button fullWidth variant="tertiary" onClick={() => openSavingsGhoWithdraw()}>
                   <Trans>Withdraw</Trans>
                 </Button>
               )}

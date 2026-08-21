@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { ConfigStatus } from 'src/modules/reserve-overview/ReserveEModePanel';
+import { figVars } from 'src/utils/figmaColors';
 
 interface EmodeAssetTableProps {
   assets: Array<{
@@ -37,17 +38,37 @@ export const EmodeAssetTable = ({ assets, maxHeight = '270px' }: EmodeAssetTable
               },
             }}
           >
-            <TableCell align="center" sx={{ pl: 0, width: '120px' }}>
+            <TableCell
+              align="center"
+              sx={{
+                pl: 0,
+                width: '120px',
+                backgroundColor: figVars['bg-2'],
+                textTransform: 'uppercase',
+              }}
+            >
               <Typography variant="helperText">
                 <Trans>Asset</Trans>
               </Typography>
             </TableCell>
-            <TableCell align="center">
+            <TableCell
+              align="center"
+              sx={{
+                backgroundColor: figVars['bg-2'],
+                textTransform: 'uppercase',
+              }}
+            >
               <Typography variant="helperText">
                 <Trans>Boosted LTV</Trans>
               </Typography>
             </TableCell>
-            <TableCell align="center">
+            <TableCell
+              align="center"
+              sx={{
+                backgroundColor: figVars['bg-2'],
+                textTransform: 'uppercase',
+              }}
+            >
               <Typography variant="helperText">
                 <Trans>Borrowable</Trans>
               </Typography>
@@ -70,7 +91,7 @@ export const EmodeAssetTable = ({ assets, maxHeight = '270px' }: EmodeAssetTable
               <TableCell align="center" sx={{ py: 1 }}>
                 <Stack direction="row" gap={1} alignItems="center">
                   <TokenIcon symbol={asset.iconSymbol} sx={{ fontSize: '16px' }} />
-                  <Typography variant="secondary12">{asset.symbol}</Typography>
+                  <Typography variant="subheader2">{asset.symbol}</Typography>
                 </Stack>
               </TableCell>
               <TableCell align="center">

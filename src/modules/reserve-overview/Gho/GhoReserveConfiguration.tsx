@@ -48,7 +48,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           >
             <Button
               component={Link}
-              variant="outlined"
+              variant="tertiary"
               size="small"
               href="https://github.com/aave/gho/blob/main/techpaper/GHO_Technical_Paper.pdf"
               sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
@@ -62,7 +62,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
             </Button>
             <Button
               component={Link}
-              variant="outlined"
+              variant="tertiary"
               size="small"
               href="https://gho.xyz"
               sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
@@ -76,7 +76,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
             </Button>
             <Button
               component={Link}
-              variant="outlined"
+              variant="tertiary"
               size="small"
               href="https://docs.gho.xyz/concepts/faq"
               sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}

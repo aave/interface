@@ -1,13 +1,6 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
-import {
-  Box,
-  FormControl,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
+import { useState } from 'react';
+import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 
 import { SupportedNetworkWithChainId } from '../../helpers/shared/misc.helpers';
@@ -23,51 +16,57 @@ export const NetworkSelector = ({
   selectedNetwork,
   setSelectedNetwork,
 }: NetworkSelectorProps) => {
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    setSelectedNetwork(Number(event.target.value));
-  };
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const selected = networks.find((network) => network.chainId === selectedNetwork);
+
   return (
-    <FormControl sx={{ minWidth: 'unset', width: 'unset' }}>
-      <Select
-        native={false}
-        value={String(selectedNetwork)}
-        onChange={handleChange}
-        IconComponent={(props) => (
-          <SvgIcon sx={{ fontSize: '14px' }} {...props}>
-            <ChevronDownIcon />
-          </SvgIcon>
-        )}
-        sx={{
-          '&.MuiInputBase-root': {
-            border: 0,
-            '.MuiSelect-select': {
-              display: 'flex',
-              backgroundColor: 'transparent',
-              border: 0,
-            },
-          },
-          '& .MuiOutlinedInput-notchedOutline': {
-            border: 'none',
-          },
-        }}
+    <>
+      <Button
+        variant="text"
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        sx={{ px: 0, '&:hover': { backgroundColor: 'transparent' } }}
       >
+        {selected && (
+          <MarketLogo size={18} logo={selected.networkLogoPath} sx={{ mr: '0.38rem' }} />
+        )}
+        <Typography
+          sx={{ color: 'fg-1', fontSize: '0.75rem', fontWeight: 500, lineHeight: '120%' }}
+        >
+          {selected?.displayName || selected?.name}
+        </Typography>
+        <ChevronDownIcon
+          sx={{
+            ml: '0.25rem',
+            fontSize: '0.75rem',
+            color: 'fg-3',
+            transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 0.2s ease-in-out',
+          }}
+        />
+      </Button>
+
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
         {networks.map((network) => (
-          <MenuItem value={network.chainId} key={`${network.name}`}>
+          <MenuItem
+            key={network.name}
+            selected={network.chainId === selectedNetwork}
+            onClick={() => {
+              setSelectedNetwork(network.chainId);
+              setAnchorEl(null);
+            }}
+          >
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <MarketLogo
-                size={16}
-                logo={network.networkLogoPath}
-                sx={{
-                  mr: 1,
-                }}
-              />
-              <Typography variant="subheader2" color="text.secondary">
+              <MarketLogo size={24} logo={network.networkLogoPath} sx={{ mr: 1 }} />
+              <Typography variant="h5" color="fg-1">
                 {network.displayName || network.name}
               </Typography>
             </Box>
           </MenuItem>
         ))}
-      </Select>
-    </FormControl>
+      </Menu>
+    </>
   );
 };

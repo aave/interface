@@ -180,7 +180,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
                   borderRadius: '99px',
                 }}
               >
-                <Typography sx={{ m: 1 }} noWrap variant="secondary12">
+                <Typography sx={{ m: 1 }} noWrap variant="subheader2">
                   Avg {avgFormatted}%
                 </Typography>
               </Stack>
@@ -303,11 +303,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
               left={tooltipLeft + 40}
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
-              <Typography
-                variant="secondary12"
-                color="text.secondary"
-                sx={{ mb: 2, mr: 2, fontWeight: 400 }}
-              >
+              <Typography variant="subheader2" color="fg-2" sx={{ mb: 2, mr: 2, fontWeight: 400 }}>
                 {formatDate(getDate(tooltipData), selectedTimeRange)}
               </Typography>
               <Box
@@ -316,10 +312,10 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
+                <Typography variant="caption" color="fg-2" sx={{ mr: 2 }}>
                   {field.text}
                 </Typography>
-                <Typography variant="main12" color="text.primary">
+                <Typography variant="main12" color="fg-1">
                   {getData(tooltipData, field.name).toFixed(2)}%
                 </Typography>
               </Box>
@@ -382,7 +378,7 @@ export const PlaceholderChart = ({
 
         <Annotation x={width / 2} y={height / 2}>
           <HtmlLabel showAnchorLine={false}>
-            <Typography noWrap variant="subheader1" color="text.muted">
+            <Typography noWrap variant="subheader1" color="fg-3">
               No data available
             </Typography>
           </HtmlLabel>

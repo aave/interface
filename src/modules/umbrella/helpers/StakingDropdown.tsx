@@ -81,7 +81,8 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
         <Button
           disabled={totalAvailableToStake === '0'}
           fullWidth={isMobile}
-          variant="contained"
+          variant="tertiary"
+          size="small"
           onClick={() => {
             trackEvent(STAKE.STAKE_TOKEN, {
               action: STAKE.OPEN_STAKE_MODAL,
@@ -113,7 +114,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
-            size="medium"
+            size="small"
           >
             <MoreHorizIcon />
           </IconButton>
@@ -153,7 +154,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                     alignItems="center"
                     justifyContent="space-between"
                   >
-                    <Typography color="text.primary">
+                    <Typography color="fg-1">
                       <Trans>Cooling down</Trans>
                     </Typography>
                     <Typography variant="helperText">
@@ -191,7 +192,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <Typography color="text.primary">
+                  <Typography color="fg-1">
                     <Trans>Withdraw</Trans>
                   </Typography>
                   <Typography variant="helperText">

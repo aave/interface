@@ -114,7 +114,7 @@ export default function FaucetAssetsList() {
                   <Typography variant="h4" noWrap>
                     {reserve.name}
                   </Typography>
-                  <Typography variant="subheader2" color="text.muted" noWrap>
+                  <Typography variant="subheader2" color="fg-3" noWrap>
                     {reserve.symbol}
                   </Typography>
                 </Box>
@@ -123,15 +123,11 @@ export default function FaucetAssetsList() {
 
             {!downToXSM && (
               <ListColumn>
-                <FormattedNumber
-                  compact
-                  value={reserve.walletBalance.toString()}
-                  variant="main16"
-                />
+                <FormattedNumber compact value={reserve.walletBalance.toString()} variant="h4" />
               </ListColumn>
             )}
 
-            <ListColumn maxWidth={280} align="right">
+            <ListColumn maxWidth={280}>
               {!currentMarketData.addresses.FAUCET ? (
                 <Button
                   href="https://faucet.circle.com/"

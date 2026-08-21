@@ -26,7 +26,7 @@ export function OrderTypeSelector({
           value={OrderType.MARKET}
           disabled={switchType === OrderType.MARKET}
         >
-          <Typography variant="buttonM">
+          <Typography variant="h5">
             <Trans>Market</Trans>
           </Typography>
         </StyledTxModalToggleButton>
@@ -35,7 +35,7 @@ export function OrderTypeSelector({
           value={OrderType.LIMIT}
           disabled={switchType === OrderType.LIMIT || limitsOrderButtonBlocked}
         >
-          <Typography variant="buttonM">
+          <Typography variant="h5">
             <Trans>Limit</Trans>
           </Typography>
         </StyledTxModalToggleButton>

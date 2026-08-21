@@ -12,16 +12,16 @@ interface HealthFactorNumberProps extends TypographyProps {
 }
 
 export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactorNumberProps) => {
-  const { palette } = useTheme();
+  const theme = useTheme();
 
   const formattedHealthFactor = Number(valueToBigNumber(value).toFixed(2, BigNumber.ROUND_DOWN));
   let healthFactorColor = '';
   if (formattedHealthFactor >= 3) {
-    healthFactorColor = palette.success.main;
+    healthFactorColor = theme.vars.palette.success.main;
   } else if (formattedHealthFactor < 1.1) {
-    healthFactorColor = palette.error.main;
+    healthFactorColor = theme.vars.palette.error.main;
   } else {
-    healthFactorColor = palette.warning.main;
+    healthFactorColor = theme.vars.palette.warning.main;
   }
 
   return (
@@ -34,7 +34,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       data-cy={'HealthFactorTopPannel'}
     >
       {value === '-1' ? (
-        <Typography variant="secondary14" color={palette.success.main}>
+        <Typography variant="h5" color="success.main">
           ∞
         </Typography>
       ) : (
@@ -50,7 +50,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
       {onInfoClick && (
         <Button
           onClick={onInfoClick}
-          variant="surface"
+          variant="tertiary"
           size="small"
           sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
         >

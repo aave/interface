@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -20,23 +20,23 @@ const listHeaders = [
     sortKey: 'symbol',
   },
   {
-    title: <ApyTooltip />,
+    title: <ApyTooltip variant="subheader2" />,
     sortKey: 'totalAPY',
   },
   {
-    title: <StakedUnderlyingTooltip />,
+    title: <StakedUnderlyingTooltip variant="subheader2" />,
     sortKey: 'stakeTokenUnderlyingBalance',
   },
   {
-    title: <SharesTooltip />,
+    title: <SharesTooltip variant="subheader2" />,
     sortKey: 'stakeSharesTokens',
   },
   {
-    title: <Trans>Available to Stake</Trans>,
+    title: <Trans>Av. to Stake</Trans>,
     sortKey: 'totalAvailableToStake',
   },
   {
-    title: <Trans>Available to Claim</Trans>,
+    title: <Trans>Av. to Claim</Trans>,
     sortKey: 'totalAvailableToClaim',
   },
   {
@@ -55,7 +55,8 @@ export default function UmbrellaAssetsList({
   stakedDataWithTokenBalances,
   isLoadingStakedDataWithTokenBalances,
 }: UmbrelaAssetsListProps) {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const theme = useTheme();
+  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down('mdlg'));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 

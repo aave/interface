@@ -1,12 +1,11 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
 import { Link, ROUTES } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
 import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 import { useShallow } from 'zustand/shallow';
@@ -86,24 +85,22 @@ export const MigrationList = ({
   return (
     <Box sx={{ width: '100%' }}>
       <ListWrapper
-        paperSx={{ border: 0, boxShadow: 'none' }}
+        paperSx={{ boxShadow: 'none' }}
         titleComponent={
           <Box display="block">
-            <Typography component="div" variant="subheader2" sx={{ mr: 4 }}>
+            <Typography component="div" variant="h3" sx={{ mr: 4 }}>
               {titleComponent}
             </Typography>
             {isolatedReserveV3 && !isolatedReserveV3.enteringIsolationMode && (
               <Box sx={{ pt: '16px' }}>
-                <Warning severity="warning" icon={false} sx={{ mb: 0 }}>
-                  <Typography variant="caption" color={theme.palette.warning[100]}>
-                    <Trans>
-                      Some migrated assets will not be used as collateral due to enabled isolation
-                      mode in {marketName} V3 Market. Visit{' '}
-                      <Link href={marketLink}>{marketName} V3 Dashboard</Link> to manage isolation
-                      mode.
-                    </Trans>
-                  </Typography>
-                </Warning>
+                <Alert severity="warning" data-size="small" sx={{ width: '100%', mb: 0 }}>
+                  <Trans>
+                    Some migrated assets will not be used as collateral due to enabled isolation
+                    mode in {marketName} V3 Market. Visit{' '}
+                    <Link href={marketLink}>{marketName} V3 Dashboard</Link> to manage isolation
+                    mode.
+                  </Trans>
+                </Alert>
               </Box>
             )}
           </Box>
@@ -111,7 +108,7 @@ export const MigrationList = ({
       >
         {(isAvailable || loading) && (
           <ListHeaderWrapper sx={{ pl: 0 }}>
-            <ListColumn align="center" maxWidth={64} minWidth={64}>
+            <ListColumn maxWidth={64} minWidth={64}>
               <MigrationSelectionBox
                 allSelected={allSelected}
                 numSelected={numSelected}

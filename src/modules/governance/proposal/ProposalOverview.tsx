@@ -1,7 +1,8 @@
 import { DownloadIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Twitter } from '@mui/icons-material';
+import Twitter from '@mui/icons-material/Twitter';
 import {
+  Alert,
   Box,
   Button,
   Paper,
@@ -21,7 +22,6 @@ import {
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { LensIcon } from 'src/components/icons/LensIcon';
-import { Warning } from 'src/components/primitives/Warning';
 import { ProposalDetailDisplay } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { ipfsGateway } from 'src/ui-config/governanceConfig';
@@ -57,9 +57,9 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
       </Typography>
       {error ? (
         <Box sx={{ px: { md: 18 }, pt: 8 }}>
-          <Warning severity="error">
+          <Alert severity="error" sx={{ mb: 6, width: '100%' }}>
             <Trans>An error has occurred fetching the proposal.</Trans>
-          </Warning>
+          </Alert>
         </Box>
       ) : (
         <Box sx={{ px: { md: 18 }, pt: 8, wordBreak: 'break-word' }}>
@@ -233,7 +233,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                       component="blockquote"
                       sx={{
                         borderLeft: '4px solid',
-                        borderColor: 'divider',
+                        borderColor: 'border-2',
                         pl: 4,
                         my: 3,
                         ml: 0,
@@ -251,7 +251,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     <Box
                       component="code"
                       sx={{
-                        bgcolor: 'background.default',
+                        bgcolor: 'bg-5',
                         px: 1,
                         py: 0.25,
                         borderRadius: 0.5,
@@ -263,7 +263,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     <Box
                       component="pre"
                       sx={{
-                        bgcolor: 'background.default',
+                        bgcolor: 'bg-5',
                         p: 3,
                         borderRadius: 1,
                         overflow: 'auto',
@@ -279,7 +279,12 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   return (
                     <Box
                       component="hr"
-                      sx={{ my: 4, border: 'none', borderTop: '1px solid', borderColor: 'divider' }}
+                      sx={{
+                        my: 4,
+                        border: 'none',
+                        borderTop: '1px solid',
+                        borderColor: 'border-2',
+                      }}
                     />
                   );
                 },
