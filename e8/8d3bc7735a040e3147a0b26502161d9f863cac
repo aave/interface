@@ -1,0 +1,234 @@
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 349
+src/modules/reserve-overview/ReserveConfiguration.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 206
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_9a1e9249df3092::t_6fcd2307382f1f 157
+  s_9a1e9249df3092::t_99f000c0196948 18,28,62,75-78,80-85,101-109
+  s_9a1e9249df3092::t_88e417c47e9ed2 175-197
+  s_9a1e9249df3092::t_32fa9e13173507 1,8,14,17,52-61,65,79,100,158,160-167,170-171,173,200-255
+  s_9a1e9249df3092::t_477302950d3cd7 169
+  s_9a1e9249df3092::t_c69c9688ebbfcc 86
+src/components/WalletConnection/ReadOnlyModal.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 103
+src/utils/figmaColors.ts
+  s_9a1e9249df3092::t_a63748d213c5b2 127-130
+  h_407f16e676115d 21,49,53,135-140
+  s_9a1e9249df3092::t_d2955c501ed2f8 82,209
+  s_9a1e9249df3092::t_f13a10d4bdc5d4 96-99
+  s_9a1e9249df3092::t_39a76813ccab5f 126
+  s_9a1e9249df3092::t_995dd4e2e4ad40 250
+  s_9a1e9249df3092::t_e0bee2e412f904 251-254
+  s_9a1e9249df3092::t_f3d14b2b379107 17,32-33,38,50-52,61,66,163,177,182,197
+pages/404.page.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 47
+src/modules/migration/MigrationListItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 269,287
+src/components/TopInfoPanel/PageTitle.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 94
+src/components/transactions/FlowCommons/BaseWaiting.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 73
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListMobileItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 140
+src/modules/staking/GetABPToken.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 29
+src/components/TopInfoPanel/TopInfoPanel.tsx
+  s_9a1e9249df3092::t_afeaa4b606d39b 3,24
+src/components/BridgeButton.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 20
+src/modules/staking/GhoStakingPanel.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 432,449,472,488
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
+  s_9a1e9249df3092::t_ca0beb79bfc68e 62
+  s_9a1e9249df3092::t_32fa9e13173507 4
+  s_9a1e9249df3092::t_c0b0cb73330aad 71
+src/modules/dashboard/DashboardEModeButton.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 68,234
+src/components/MarketSwitcher.tsx
+  s_9a1e9249df3092::t_c17b00c7f60c6a 365,378,493
+src/components/PageHeader/PageHeader.tsx
+  s_9a1e9249df3092::t_afeaa4b606d39b 4,35
+  s_9a1e9249df3092::t_722d4993c85f46 3
+src/components/TitleWithSearchBar.tsx
+  s_9a1e9249df3092::t_fd8b982d8413a6 30
+  s_9a1e9249df3092::t_5ac89ef86348b4 54-59
+src/modules/history/TransactionRowItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 112
+src/components/transactions/FlowCommons/BaseSuccess.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 76
+src/modules/staking/BuyWithFiatModal.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 44
+src/modules/history/HistoryWrapper.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 247
+src/modules/governance/proposal/ProposalTopPanel.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 20
+src/modules/governance/ProposalsV3List.tsx
+  s_9a1e9249df3092::t_477302950d3cd7 189
+src/modules/migration/MigrationTopPanel.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 28
+src/modules/umbrella/UmbrellaAssetsDefault.tsx
+  s_9a1e9249df3092::t_32fa9e13173507 4
+  s_9a1e9249df3092::t_ca0beb79bfc68e 60
+  s_9a1e9249df3092::t_c0b0cb73330aad 68
+src/components/transactions/FunCheckout/FunSupplyButton.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 69
+src/modules/stkGho/StkGhoWithdrawRow.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 64
+src/modules/staking/GetGhoToken.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 19
+src/modules/history/HistoryWrapperMobile.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 285
+src/components/lists/ListWrapper.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 159
+  s_9a1e9249df3092::t_6bea07686e05ee 117
+  s_9a1e9249df3092::t_477302950d3cd7 105
+  s_9a1e9249df3092::t_4b1cb98dca2141 141
+src/components/transactions/FlowCommons/Error.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 63,67
+src/utils/theme.tsx
+  s_9a1e9249df3092::t_5f16248d05d2eb 46-61,68,77-79,85,89-93,95,97-98,110-112,509
+  s_9a1e9249df3092::t_9baee6b936b54f 63-67,69-76
+  s_9a1e9249df3092::t_477302950d3cd7 270
+  s_9a1e9249df3092::t_e5e73a0e049fc8 114
+  s_9a1e9249df3092::t_23bde044aadb19 647,651
+  s_9a1e9249df3092::t_f186af9eefd948 541,635-636,640-641,666,670-671,862
+  s_9a1e9249df3092::t_d568042c1e3985 652
+  s_9a1e9249df3092::t_5f6cd836684de8 932-934,942-948
+  s_9a1e9249df3092::t_0b884997041f02 105
+  s_9a1e9249df3092::t_7d58cf605fbe64 1208
+  s_9a1e9249df3092::t_3a5bd08bcaaba0 62
+  s_9a1e9249df3092::t_b07a32758366ba 659,662
+  s_9a1e9249df3092::t_6911146d2b554d 949-952
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 145
+src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 100,109
+src/components/transactions/FlowCommons/BaseCancelled.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 72
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 149
+src/modules/staking/StakingPanel.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 340,477,494,517,533
+src/modules/umbrella/helpers/StakingDropdown.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 84
+src/utils/buttonStyles.ts
+  s_9a1e9249df3092::t_684cfbce62b30d 8
+src/components/FaucetButton.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 29
+src/modules/governance/GovernanceTopPanel.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 23
+src/modules/reserve-overview/Gho/SavingsGho.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 177
+src/modules/markets/Gho/GhoBanner.tsx
+  s_9a1e9249df3092::t_c6c20b570a1b09 114-115,117-118,120-126,129-147,160-161,163-164,167-170,173-178,180-182,184-202
+  s_9a1e9249df3092::t_2b596b8fb9b6c9 32-33
+src/components/PageHeader/pageBandSx.ts
+  s_9a1e9249df3092::t_afeaa4b606d39b 1-15
+pages/safety-module.page.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 405
+src/modules/governance/ProposalListHeader.tsx
+  s_9a1e9249df3092::t_cc295ea6497bc6 37
+  s_9a1e9249df3092::t_aef93f74618cee 76
+src/modules/sGho/SGhoLoggedOutPreview.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 77
+src/components/transactions/FlowCommons/Success.tsx
+  s_9a1e9249df3092::t_5156a2815323d1 115
+src/components/AssetsFilterBar.tsx
+  s_9a1e9249df3092::t_684cfbce62b30d 13,50
+  s_9a1e9249df3092::t_ca0beb79bfc68e 7,17,24,52
+src/layouts/AppHeader.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 183,197,247,259,357
+  s_9a1e9249df3092::t_684cfbce62b30d 98-101
+  s_9a1e9249df3092::t_75158a91056d8a 215
+  s_9a1e9249df3092::t_c13674f59a8a4c 342
+  s_9a1e9249df3092::t_63471ceb3dfca7 304
+  s_9a1e9249df3092::t_7a49321f48a223 279
+src/components/WalletConnection/ConnectWalletButton.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 103
+src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 89,97
+src/modules/markets/MarketAssetsListMobileItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 167
+src/modules/sGho/SGhoWithdrawRow.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 34
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_9a1e9249df3092::t_5156a2815323d1 46-47
+src/components/lists/ListHeaderWrapper.tsx
+  s_9a1e9249df3092::t_2e8c0495e28392 22
+src/modules/dev/ComponentShowcase/components/OverlaysSection/index.tsx
+  s_9a1e9249df3092::t_5f6cd836684de8 36-37
+  s_9a1e9249df3092::t_0fe67838f64a35 39
+pages/500.page.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 49
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 261,455
+src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 184,264
+src/layouts/SettingsMenu.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 67
+src/modules/migration/MigrationListMobileItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 271,289
+src/modules/history/TransactionMobileRowItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 125
+src/modules/governance/DelegatedInfoPanel.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 221
+src/components/HealthFactorNumber.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 53
+src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 51,65,79
+src/modules/governance/proposal/VotersListContainer.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 50
+src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 125
+src/modules/bridge/BridgeTransactionListItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 215
+src/modules/staking/BuyWithFiat.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 37
+src/modules/staking/GetABPTokenModal.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 31
+src/components/Analytics/AnalyticsConsent.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 115
+src/modules/markets/MarketAssetsListItem.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 172
+src/components/AssetCategoryMultiselect.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 78
+src/modules/governance/proposal/VotingResults.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 162
+src/modules/dev/ComponentShowcase/components/ThemeControl/index.tsx
+  s_9a1e9249df3092::t_5156a2815323d1 19
+src/modules/dev/ComponentShowcase/components/ButtonsSection/index.tsx
+  s_9a1e9249df3092::t_5156a2815323d1 7
+src/layouts/MobileMenu.tsx
+  s_9a1e9249df3092::t_0fe67838f64a35 113,176,185
+src/locales/el/messages.js
+  s_9a1e9249df3092::t_8a4ddbd5e7ea46 1
+src/locales/en/messages.js
+  s_9a1e9249df3092::t_af25ba9489a828 1
+src/locales/en/messages.po
+  s_9a1e9249df3092::t_637c45cc632091 4349
+src/locales/es/messages.js
+  s_9a1e9249df3092::t_bdabbe4b34ba1b 1
+src/locales/fr/messages.js
+  s_9a1e9249df3092::t_cfaf8b8ecd6f04 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "e88d3bc7735a040e3147a0b26502161d9f863cac",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9a1e9249df3092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "185147c8-c903-4a9e-9255-047797ac1a4a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
