@@ -1,0 +1,28 @@
+src/modules/markets/MarketAssetsListItem.tsx
+  s_9a1e9249df3092::t_6688d951e88dc0 79,104,114,133,152
+src/utils/theme.tsx
+  s_9a1e9249df3092::t_a4443f182f670b 928
+src/components/ContentWithTooltip.tsx
+  h_407f16e676115d 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.23",
+  "base_commit_sha": "5859ffe2e11ebcc11f815bddbb45b56bffede0b9",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9a1e9249df3092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "185147c8-c903-4a9e-9255-047797ac1a4a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
