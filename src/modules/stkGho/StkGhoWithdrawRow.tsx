@@ -61,7 +61,7 @@ export const StkGhoWithdrawRow = ({
         }
       >
         <Button
-          variant="outlined"
+          variant="tertiary"
           fullWidth
           onClick={onWithdraw}
           disabled={!hasBalance}

@@ -203,7 +203,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   }
                   component={Link}
                   size="small"
-                  variant="outlined"
+                  variant="tertiary"
                   sx={{ verticalAlign: 'top' }}
                 >
                   <Trans>Interest rate strategy</Trans>

@@ -19,7 +19,7 @@ export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapp
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        bgcolor: 'surface-elevated',
+        bgcolor: 'table-bg',
         borderBottom: '1px solid',
         borderColor: 'border-0',
         borderTopLeftRadius: 'inherit',

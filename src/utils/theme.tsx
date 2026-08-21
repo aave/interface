@@ -43,69 +43,75 @@ const MENU_PAPER_RADIUS = '0.75rem';
 const MENU_LIST_INSET = '0.38rem';
 
 /**
- * The shared fill recipe for the two opaque "white pill" surfaces — the `outlined` button variant
- * and the Select trigger. They must stay in lockstep (the Select IS the outlined-button surface),
- * so the tokens live here once instead of being restated ~470 lines apart.
- *
- * The resting fill is bg-3 in light (a clean white pill against the page) and bg-4 in dark, so it
- * needs a `darkScheme` override rather than a single per-mode token. Written scheme-scoped rather
- * than mode-scoped so it still honours a nested boundary like the dev showcase's local toggle.
- * Selectors, transitions and focus rings stay with each consumer; only the fill is shared.
+ * The `::before` box the hover and disabled overlays both paint on: inset to the element's edges,
+ * behind its content but above its own background (`zIndex: -1` under `isolation: isolate`).
+ */
+const insetLayer: CSSObject = {
+  content: "''",
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  borderRadius: 'inherit',
+  zIndex: -1,
+};
+
+/**
+ * Composites a translucent `semantic/button` hover token over the button's own fill. Assigning one
+ * to `backgroundColor` would replace the base fill rather than tint it.
+ */
+const hoverOverlay = (fill: string): CSSObject => ({
+  position: 'relative',
+  isolation: 'isolate',
+  '&::before': {
+    ...insetLayer,
+    transition: `background-color ${motion.duration.hover}ms ${motion.easing.standard}`,
+  },
+  '&:hover::before, &.Mui-focusVisible::before, &[aria-expanded="true"]::before': {
+    backgroundColor: fill,
+  },
+});
+
+/**
+ * The shared resting fill for the opaque "white pill" surfaces — the pill button variants and the
+ * Select trigger — so the tokens live here once instead of being restated ~470 lines apart. bg-3 in
+ * both modes, so it needs no `darkScheme` override.
  */
 const surfaceFill = {
   backgroundColor: figVars['bg-3'],
-  ...darkScheme({ backgroundColor: figVars['bg-4'] }),
   boxShadow: figSurfaceShadow(),
 };
+/** Opaque hover step for the Select trigger, which tints by fill rather than by overlay. */
 const surfaceFillHover = { backgroundColor: figVars['bg-4-hover'], boxShadow: figSurfaceShadow() };
 
 /**
- * Secondary "white pill" style for the `outlined` button variant: a hairline ring instead
- * of a border, on the shared surface fill. On hover the ring is re-asserted (the global
- * `disableElevation` default otherwise strips box-shadow), and `border` is forced to none to
- * suppress MUI's default outlined hover border.
+ * The "white pill" button: `surfaceFill` with a hairline ring instead of a border, stepping to bg-4
+ * in dark and tinted on hover by the `button-hover-tertiary` overlay. Shared by `variant="tertiary"`
+ * (every pill button in the app) and the legacy `variant="outlined"` alias, so the two can't drift.
+ * On hover the ring is re-asserted — the global `disableElevation` default otherwise strips it — and
+ * `border` is forced to none to suppress MUI's default outlined hover border.
  */
-const secondaryPillStyle = {
+const pillStyle = {
   ...surfaceFill,
+  ...darkScheme({ backgroundColor: figVars['bg-4'] }),
+  ...hoverOverlay(figVars['button-hover-tertiary']),
   color: figVars['fg-1'],
   border: 'none',
   '& .MuiButton-startIcon': {
     color: figVars['fg-3'],
   },
-  // Open state (a menu/popover trigger with `aria-expanded="true"`) keeps the hover fill.
   '&:hover, &.Mui-focusVisible, &[aria-expanded="true"]': {
-    ...surfaceFillHover,
-    // Suppress MUI's default outlined hover border (its `:hover` rule would otherwise
-    // re-introduce a 1px border on top of the borderless pill).
+    boxShadow: figSurfaceShadow(),
     border: 'none',
   },
 };
 
-/**
- * Tertiary button (`variant="tertiary"`): the secondary pill with the ring/drop-shadow removed —
- * a flat fill, no border. Base bg-6 (light) / bg-5 (dark), stepping to bg-6 on hover.
- * fg-1 text + fg-3 start-icon otherwise match `secondaryPillStyle`. For low-emphasis header
- * actions (e.g. the dashboard Claim / share buttons).
- */
-const tertiaryPillStyle = {
-  color: figVars['fg-1'],
-  backgroundColor: figVars['bg-6'],
-  ...darkScheme({
-    backgroundColor: figVars['bg-5'],
-  }),
+/** Shared disabled state for both pill variants. */
+const pillDisabled = {
+  color: figVars['fg-3'],
   border: 'none',
-  boxShadow: 'none',
-  '& .MuiButton-startIcon': {
-    color: figVars['fg-3'],
-  },
-  '&:hover, &.Mui-focusVisible, &[aria-expanded="true"]': {
-    backgroundColor: figVars['bg-6'],
-    border: 'none',
-    boxShadow: 'none',
-    ...darkScheme({
-      backgroundColor: figVars['bg-6'],
-    }),
-  },
+  boxShadow: figSurfaceShadow(),
 };
 
 // Alert severity surface: a gradient from the severity colour (left) fading to bg-2 (right), plus
@@ -261,6 +267,7 @@ declare module '@mui/material/Paper' {
   interface PaperPropsVariantOverrides {
     modal: true;
     card: true;
+    table: true;
   }
 }
 
@@ -499,15 +506,8 @@ const disabledFade = (opts: { color: string; before: CSSObject }): CSSObject => 
   boxShadow: 'none',
   isolation: 'isolate',
   '&::before': {
-    content: "''",
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    borderRadius: 'inherit',
+    ...insetLayer,
     opacity: 0.5,
-    zIndex: -1,
     ...opts.before,
   },
 });
@@ -538,7 +538,7 @@ export function getThemedComponents(theme: AppTheme) {
             // pill uses, same 0.5rem radius (from `root`). The tokens are shared rather than
             // restated so the two can't drift. The notched border is dropped — the ring IS the
             // outline — so there's no blueish or animated border; hover & open step the fill while
-            // the ring stays put. `secondaryPillStyle` itself isn't spread here: its fg-1 color,
+            // the ring stays put. `pillStyle` itself isn't spread here: its fg-1 color,
             // start-icon selector and `[aria-expanded]` selector are all wrong for an input (the
             // attribute lands on the inner `.MuiSelect-select`, hence the `:has()` below).
             '&:has(.MuiSelect-select)': {
@@ -632,57 +632,43 @@ export function getThemedComponents(theme: AppTheme) {
           },
         },
         variants: [
-          // Secondary "white pill": a hairline ring instead of a border, on the shared
-          // `surfaceFill` recipe (bg-4 → bg-4-hover, both per-mode).
+          // Legacy alias for the pill — no call site passes `outlined` any more, but MUI's own
+          // outlined styling would render if this override were dropped.
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              ...secondaryPillStyle,
-              '&.Mui-disabled': {
-                color: figVars['fg-3'],
-                border: 'none',
-                boxShadow: figSurfaceShadow(),
-              },
+              ...pillStyle,
+              '&.Mui-disabled': pillDisabled,
             },
           },
           {
             props: { variant: 'contained', color: 'primary' },
             style: {
-              backgroundColor: figVars['fg-max'],
+              backgroundColor: figVars['fg-1'],
               // Same lift as the outlined pill, but ringed in the button's own fill (not
               // shadow-stroke-2) — the opaque bg already reads as a boundary, so the ring just
               // needs to disappear into it while the drop-shadow layer still adds the lift.
-              boxShadow: figSurfaceShadow('fg-max'),
-              '&:hover, &.Mui-focusVisible': {
-                // One per-scheme token (fg-max-hover: a warm near-black in light, bone off-white in
-                // dark) instead of a two-token swap via the dark selector — the hover follows the
-                // NEAREST color scheme (the dev showcase's local toggle), not the global <html>.
-                backgroundColor: figVars['fg-max-hover'],
-                boxShadow: figSurfaceShadow('fg-max-hover'),
-              },
+              boxShadow: figSurfaceShadow('fg-1'),
+              ...hoverOverlay(figVars['button-hover-primary']),
               // The root focus ring uses `currentColor`, which here is contrastText (bg-1) —
               // nearly the same shade as the page background, so it's invisible. Re-point it at
               // fg-1 (same ink the outlined variant's ring uses) so it reads against the page.
               '&.Mui-focusVisible': {
                 outlineColor: figVars['fg-1'],
               },
-              // Disabled: crisp label, fg-max fill at 50% (no box-shadow on contained).
+              // Disabled: crisp label, fg-1 fill at 50% (no box-shadow on contained).
               '&.Mui-disabled': disabledFade({
                 color: figVars['bg-1'],
-                before: { backgroundColor: figVars['fg-max'] },
+                before: { backgroundColor: figVars['fg-1'] },
               }),
             },
           },
-          // Tertiary: the secondary pill with no ring/shadow (flat fill).
+          // The pill button: every `variant="tertiary"` call site in the app.
           {
             props: { variant: 'tertiary', color: 'primary' },
             style: {
-              ...tertiaryPillStyle,
-              '&.Mui-disabled': {
-                color: figVars['fg-3'],
-                border: 'none',
-                boxShadow: 'none',
-              },
+              ...pillStyle,
+              '&.Mui-disabled': pillDisabled,
             },
           },
         ],
@@ -873,7 +859,7 @@ export function getThemedComponents(theme: AppTheme) {
                 backgroundColor: 'transparent',
               },
             // A row's leading icon sits one step back from its label, exactly like a button's
-            // start-icon (fg-3 icon against fg-1 text — see `secondaryPillStyle`). Scoped to a
+            // start-icon (fg-3 icon against fg-1 text — see `pillStyle`). Scoped to a
             // DIRECT SvgIcon child so it only catches currentColor UI icons; brand artwork
             // (TokenIcon, MarketLogo) is `<img>`-based and unaffected.
             '& > .MuiSvgIcon-root': {
@@ -943,12 +929,23 @@ export function getThemedComponents(theme: AppTheme) {
             },
           },
           {
-            // Canonical list/content card surface — the single source of truth for ListWrapper and
-            // the module cards (reserve-overview, staking, sGho, …). surface-elevated fill, 10px
-            // radius, the shared surface ring (shadow-stroke-1 hairline + soft drop).
+            // Canonical content card surface — the module cards (reserve-overview, staking, sGho,
+            // …). surface-elevated fill, 10px radius, the shared surface ring (shadow-stroke-1
+            // hairline + soft drop). Asset tables use the `table` variant below instead.
             props: { variant: 'card' },
             style: {
               backgroundColor: figVars['surface-elevated'],
+              borderRadius: '10px',
+              boxShadow: figSurfaceShadow('shadow-stroke-1'),
+            },
+          },
+          {
+            // The `card` surface on the table fill — the single source of truth for ListWrapper and
+            // the standalone asset tables. Only differs from `card` in dark mode, so a table left on
+            // `card` by mistake is invisible in light and wrong in dark.
+            props: { variant: 'table' },
+            style: {
+              backgroundColor: figVars['table-bg'],
               borderRadius: '10px',
               boxShadow: figSurfaceShadow('shadow-stroke-1'),
             },
@@ -1208,7 +1205,7 @@ export function getThemedComponents(theme: AppTheme) {
             fontWeight: 400,
             fontSize: pxToRem(14),
             minWidth: '375px',
-            backgroundColor: figVars['bg-2'],
+            backgroundColor: figVars['bg-1'],
             '> div:first-of-type': {
               minHeight: '100vh',
               display: 'flex',

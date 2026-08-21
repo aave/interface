@@ -26,7 +26,7 @@ export const FaucetButton = () => {
         }
         component={Link}
         href={ROUTES.faucet}
-        variant="outlined"
+        variant="tertiary"
         size="small"
       >
         <Typography variant="buttonS">

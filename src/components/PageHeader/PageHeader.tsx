@@ -1,6 +1,7 @@
 import { Box, Container, ContainerProps, Typography } from '@mui/material';
 import { ReactNode } from 'react';
-import { figVars } from 'src/utils/figmaColors';
+
+import { pageBandSx } from './pageBandSx';
 
 interface PageHeaderProps {
   title: ReactNode;
@@ -31,17 +32,7 @@ export const PageHeader = ({
   disableTitleTypography = false,
 }: PageHeaderProps) => {
   return (
-    <Box
-      sx={{
-        pt: { xs: 10, md: 12 },
-        pb: { xs: 10, md: 12 },
-        color: 'fg-1',
-        boxShadow: `0px 1px 0px ${figVars['border-0']}`,
-        // Mirrors TopInfoPanel: gradient (one→two) over solid color-three (a separate bg layer).
-        // Light tokens are all #fafafa → renders solid; dark gets the tint (P3 via the token vars).
-        background: `linear-gradient(180deg, ${figVars['info-panel-color-one']} 0%, ${figVars['info-panel-color-two']} 100%), ${figVars['info-panel-color-three']}`,
-      }}
-    >
+    <Box sx={pageBandSx}>
       <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>
         <Box
           sx={{

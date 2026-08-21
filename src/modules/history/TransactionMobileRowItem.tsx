@@ -122,7 +122,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
                     pl: 1,
                     pr: 1,
                   }}
-                  variant="outlined"
+                  variant="tertiary"
                   href={explorerLink}
                   target="_blank"
                   onClick={() =>

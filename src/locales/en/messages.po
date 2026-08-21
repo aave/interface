@@ -669,11 +669,6 @@ msgstr "View on CCIP Explorer"
 msgid "Disconnect Wallet"
 msgstr "Disconnect Wallet"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "assets"
-msgstr "assets"
-
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Balance to revoke"
 msgstr "Balance to revoke"
@@ -2742,7 +2737,6 @@ msgstr "after voting"
 msgid "Governance"
 msgstr "Governance"
 
-#: src/components/TitleWithFiltersAndSearchBar.tsx
 #: src/components/TitleWithSearchBar.tsx
 #: src/modules/history/HistoryWrapperMobile.tsx
 #: src/modules/history/TransactionMobileRowItem.tsx
@@ -4352,7 +4346,7 @@ msgstr "There are not enough funds in the{0}reserve to borrow"
 msgid "Show {0} more"
 msgstr "Show {0} more"
 
-#: src/modules/umbrella/StakeAssets/StakeAssetsFilters.tsx
+#: src/components/AssetsFilterBar.tsx
 msgid "In Wallet"
 msgstr "In Wallet"
 

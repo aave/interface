@@ -169,7 +169,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
 
       <ListColumn minWidth={95} maxWidth={95}>
         <Button
-          variant="outlined"
+          variant="tertiary"
           component={Link}
           href={ROUTES.reserveOverview(
             reserve.underlyingToken.address.toLowerCase(),

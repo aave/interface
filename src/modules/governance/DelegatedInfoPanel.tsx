@@ -218,7 +218,7 @@ export const DelegatedInfoPanel = () => {
         {showRevokeButton && (
           <Button
             sx={{ width: '100%' }}
-            variant="outlined"
+            variant="tertiary"
             disabled={disableButton}
             onClick={() => openRevokeGovDelegation()}
           >

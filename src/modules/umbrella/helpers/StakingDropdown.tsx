@@ -81,7 +81,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
         <Button
           disabled={totalAvailableToStake === '0'}
           fullWidth={isMobile}
-          variant="outlined"
+          variant="tertiary"
           size="small"
           onClick={() => {
             trackEvent(STAKE.STAKE_TOKEN, {

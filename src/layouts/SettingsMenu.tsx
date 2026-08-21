@@ -64,7 +64,7 @@ export function SettingsMenu() {
   return (
     <>
       <Button
-        variant="outlined"
+        variant="tertiary"
         aria-label="settings"
         id="settings-button"
         aria-controls={settingsOpen ? 'settings-menu' : undefined}

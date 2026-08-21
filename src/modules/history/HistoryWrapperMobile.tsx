@@ -282,7 +282,7 @@ export const HistoryWrapperMobile = () => {
             </Trans>
           </Typography>
           <Button
-            variant="outlined"
+            variant="tertiary"
             onClick={() => {
               setSearchQuery('');
               setFilterQuery([]);

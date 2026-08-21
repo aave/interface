@@ -174,7 +174,7 @@ export const SavingsGho = () => {
                 <Trans>Deposit</Trans>
               </Button>
               {stakeUserData.stakeTokenUserBalance !== '0' && (
-                <Button fullWidth variant="outlined" onClick={() => openSavingsGhoWithdraw()}>
+                <Button fullWidth variant="tertiary" onClick={() => openSavingsGhoWithdraw()}>
                   <Trans>Withdraw</Trans>
                 </Button>
               )}

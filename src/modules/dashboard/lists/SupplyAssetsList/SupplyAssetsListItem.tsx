@@ -258,7 +258,7 @@ export const SupplyAssetsListItemDesktop = ({
           id="supply-extra-button"
           sx={iconButtonSx}
           size="small"
-          variant="outlined"
+          variant="tertiary"
           onClick={handleClick}
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
@@ -452,7 +452,7 @@ export const SupplyAssetsListItemMobile = ({
           fullWidth
         />
         <Button
-          variant="outlined"
+          variant="tertiary"
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           fullWidth

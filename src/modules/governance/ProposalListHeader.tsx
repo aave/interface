@@ -34,7 +34,7 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
 }) => {
   return (
     <>
-      <Typography variant="h3" sx={{ flexGrow: 1 }}>
+      <Typography variant="h3" sx={{ flexGrow: 1, textTransform: 'capitalize' }}>
         <Trans>Proposals</Trans>
       </Typography>
       <Select
@@ -73,7 +73,7 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
     <>
       <TitleWithSearchBar
         title={<Trans>Proposals</Trans>}
-        titleProps={{ variant: 'h3' }}
+        titleProps={{ variant: 'h3', sx: { textTransform: 'capitalize' } }}
         onSearchTermChange={handleSearchQueryChange}
         searchPlaceholder="Search proposals"
       />

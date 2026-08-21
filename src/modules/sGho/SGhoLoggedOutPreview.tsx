@@ -74,7 +74,7 @@ export const SGhoLoggedOutPreview = ({ rate }: SGhoLoggedOutPreviewProps) => {
           </Typography>
         }
       >
-        <Button variant="outlined" fullWidth disabled data-cy="withdrawBtn_SGHO_loggedOut">
+        <Button variant="tertiary" fullWidth disabled data-cy="withdrawBtn_SGHO_loggedOut">
           <Trans>Withdraw</Trans>
         </Button>
       </StakeActionBox>

@@ -362,7 +362,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           cursor: 'pointer',
           // Hover/selected highlight on an inset pseudo-element so adjacent options keep a gap
           // (shared recipe with the dropdown menu items — see insetHighlight.ts). The current
-          // market gets a persistent fill via restFill; others fill in on hover.
+          // market holds the fill via restFill; others take the same fill on hover.
           ...insetHighlightBase({
             theme,
             radius: '8px',
@@ -375,7 +375,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
                 // Row highlight on hover AND on keyboard focus — of the row itself or its star
                 // button (`:focus-within`) — so tabbing through always shows where you are.
                 '&:hover::before, &:focus-within::before': insetHighlightActive(
-                  figVars['button-hover']
+                  figVars['selected']
                 ),
               }),
           // Star: always visible on mobile, hover-reveal on desktop; also reveal it whenever the
@@ -490,7 +490,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           cursor: 'pointer',
           // Hover highlight on an inset pseudo-element, matching the market rows (insetHighlight.ts).
           ...insetHighlightBase({ theme, radius: '8px', inset: '1px' }),
-          '&:hover::before': insetHighlightActive(figVars['button-hover']),
+          '&:hover::before': insetHighlightActive(figVars['selected']),
         }}
       >
         {renderRowLogo(logo)}

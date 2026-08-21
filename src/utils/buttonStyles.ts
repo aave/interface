@@ -5,7 +5,7 @@ import { SxProps, Theme } from '@mui/material';
  * sides, and a fixed 0.5rem radius regardless of button size. Compose it in `sx` on top of
  * any Button variant/size (it only adjusts sizing):
  *
- *   <Button variant="outlined" size="small" sx={iconButtonSx}>
+ *   <Button variant="tertiary" size="small" sx={iconButtonSx}>
  *     <SomeIcon />
  *   </Button>
  */

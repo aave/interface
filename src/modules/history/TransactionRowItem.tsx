@@ -109,7 +109,7 @@ function TransactionRowItem({ transaction }: TransactionHistoryItemProps) {
               )}
             {!downToMD && explorerLink && (
               <Button
-                variant="outlined"
+                variant="tertiary"
                 href={explorerLink}
                 target="_blank"
                 onClick={() =>

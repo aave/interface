@@ -164,7 +164,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           reserve.borrowInfo.total.amount.value !== '0' && <ReserveSubheader value={'Disabled'} />}
       </Row>
       <Button
-        variant="outlined"
+        variant="tertiary"
         component={Link}
         href={ROUTES.reserveOverview(reserve.underlyingToken.address.toLowerCase(), currentMarket)}
         fullWidth

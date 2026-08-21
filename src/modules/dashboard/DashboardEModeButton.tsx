@@ -65,7 +65,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         }}
         data-cy={`emode-open`}
         size="small"
-        variant="outlined"
+        variant="tertiary"
         sx={{
           ml: 1,
           borderRadius: '4px',
@@ -231,7 +231,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
               <Button
                 fullWidth
                 sx={{ mb: '6px' }}
-                variant="outlined"
+                variant="tertiary"
                 size="small"
                 onClick={() => {
                   trackEvent(GENERAL.OPEN_MODAL, {

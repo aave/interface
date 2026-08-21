@@ -100,7 +100,7 @@ export const ReadOnlyModal = () => {
           </Typography>
         )}
         {readOnlyMode && (
-          <Button sx={{ mt: 2 }} variant="outlined" onClick={handleRemoveWatchedAddress}>
+          <Button sx={{ mt: 2 }} variant="tertiary" onClick={handleRemoveWatchedAddress}>
             Remove watched address
           </Button>
         )}

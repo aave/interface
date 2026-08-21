@@ -17,7 +17,7 @@ export const ProposalTopPanel = () => {
         <Button
           component={Link}
           href={ROUTES.governance}
-          variant="outlined"
+          variant="tertiary"
           size="medium"
           onClick={() => trackEvent(AIP.GO_BACK)}
           color="primary"

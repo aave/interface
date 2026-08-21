@@ -41,7 +41,7 @@ export const BuyWithFiatModal = ({ cryptoSymbol, open, close }: BuyWithFiatModal
         {onRampServices.map(({ name, makeLink, icon }) => (
           <Button
             key={name}
-            variant="outlined"
+            variant="tertiary"
             size="large"
             endIcon={
               <SvgIcon>

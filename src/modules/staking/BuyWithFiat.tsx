@@ -34,7 +34,7 @@ export const BuyWithFiat = ({ cryptoSymbol, networkMarketName, funnel }: BuyWith
   return isAvailable ? (
     <>
       <Button
-        variant="outlined"
+        variant="tertiary"
         size="small"
         onClick={handleClick}
         startIcon={

@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Paper, Skeleton, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -20,7 +21,6 @@ import { useShallow } from 'zustand/shallow';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 import { NoStakeAssets } from './NoStakeAssets';
 import { StakeAssetName } from './StakeAssets/StakeAssetName';
-import { StakeAssetsFilters } from './StakeAssets/StakeAssetsFilters';
 
 export const UmrellaAssetsDefaultListContainer = () => {
   const [currentMarketData] = useRootStore(useShallow((store) => [store.currentMarketData]));
@@ -57,7 +57,7 @@ export const UmrellaAssetsDefaultListContainer = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-      <StakeAssetsFilters
+      <AssetsFilterBar
         searchPlaceholder={sm ? 'Search asset' : 'Search asset name or symbol'}
         onSearchTermChange={setSearchTerm}
         selectedCategories={selectedCategories}
@@ -65,7 +65,7 @@ export const UmrellaAssetsDefaultListContainer = () => {
         categoriesDisabled={isLoadingCategories || !!categoriesError}
       />
 
-      <Paper variant="card" sx={{ '& > div:first-of-type > hr': { display: 'none' } }}>
+      <Paper variant="table" sx={{ '& > div:first-of-type > hr': { display: 'none' } }}>
         <UmbrellaAssetsDefault stakeAssets={filteredAssets ?? []} loading={loading} />
 
         {noStakeAssetsConfigured ? (

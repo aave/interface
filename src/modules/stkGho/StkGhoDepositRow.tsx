@@ -43,8 +43,8 @@ export const StkGhoDepositRow = ({
 
   // When the user holds a legacy position, migration is the primary action:
   // invert the emphasis so Migrate is contained and Deposit/Get GHO is outlined.
-  const depositVariant = hasLegacyPosition ? 'outlined' : 'contained';
-  const migrateVariant = hasLegacyPosition ? 'contained' : 'outlined';
+  const depositVariant = hasLegacyPosition ? 'tertiary' : 'contained';
+  const migrateVariant = hasLegacyPosition ? 'contained' : 'tertiary';
 
   const handleGetGho = () => {
     openSwitch('', targetChainId);

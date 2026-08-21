@@ -181,7 +181,7 @@ const BorrowedPositionsListItemDesktop = ({
             <Trans>Borrow</Trans>
           </Button>
         )}
-        <Button disabled={disableRepay} variant="outlined" onClick={onOpenRepay} size="small">
+        <Button disabled={disableRepay} variant="tertiary" onClick={onOpenRepay} size="small">
           <Trans>Repay</Trans>
         </Button>
       </ListButtonsColumn>
@@ -261,7 +261,7 @@ const BorrowedPositionsListItemMobile = ({
         )}
         <Button
           disabled={disableRepay}
-          variant="outlined"
+          variant="tertiary"
           onClick={onOpenRepay}
           sx={{ ml: 1.5 }}
           fullWidth

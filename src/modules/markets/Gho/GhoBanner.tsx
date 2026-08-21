@@ -29,8 +29,8 @@ const BANNER_SURFACE_SX = {
   borderRadius: '0.75rem',
   border: '1px solid',
   borderColor: 'border-1',
-  backgroundColor: 'bg-2',
-  backgroundImage: `linear-gradient(90deg, ${figVars['sgho-banner-green']} 0%, ${figVars['sgho-banner-fade']} 42.79%)`,
+  backgroundColor: figVars['table-bg'],
+  backgroundImage: `linear-gradient(90deg, ${figVars['sgho-banner-green']} 0%, transparent 42.79%)`,
   boxShadow: `0px 2px 4px 0px ${figVars['shadow-low']}`,
   position: 'relative',
 } as const;
@@ -111,57 +111,40 @@ export const SavingsGhoBanner = ({
 
   return (
     <Stack
+      component={Link}
+      href={ROUTES.sGHO}
       sx={{
-        pt: 5,
-        mb: 10,
-        px: { md: 6 },
-        overflow: 'hidden',
+        ...BANNER_SURFACE_SX,
+        mt: 5,
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: '1.5rem',
+        height: '6rem',
+        padding: '1.25rem 2rem 1.25rem 1.5rem',
+        overflow: 'hidden',
       }}
     >
-      <Stack
-        component={Link}
-        href={ROUTES.sGHO}
-        sx={{
-          ...BANNER_SURFACE_SX,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '1.5rem',
-          height: '6rem',
-          padding: '1.25rem 2rem 1.25rem 1.5rem',
-          overflow: 'hidden',
-        }}
-      >
-        <Stack direction="row" alignItems="center" gap="1.5rem">
-          <Box
-            component="img"
-            src="/gho-coins.png"
-            alt="GHO coins"
-            sx={{ height: '3.5rem', flexShrink: 0 }}
-          />
-          <SavingsGhoBannerHeading hasLegacyPosition={hasLegacyPosition} />
-        </Stack>
-        <BannerStat label={<Trans>Total deposited</Trans>} loading={vaultLoading}>
-          <FormattedNumber
-            symbol="USD"
-            compact
-            variant="h3"
-            color="fg-1"
-            value={totalDepositedUSD}
-          />
-        </BannerStat>
-        <BannerStat label={<Trans>APY</Trans>} loading={vaultLoading}>
-          <FormattedNumber percent variant="h3" color="fg-1" value={targetRate} />
-        </BannerStat>
-        <Stack direction="row" gap="0.62rem">
-          <Button variant="outlined" component={Link} size="medium" href={ROUTES.sGHO}>
-            <Trans>View details</Trans>
-          </Button>
-        </Stack>
+      <Stack direction="row" alignItems="center" gap="1.5rem">
+        <Box
+          component="img"
+          src="/gho-coins.png"
+          alt="GHO coins"
+          sx={{ height: '3.5rem', flexShrink: 0 }}
+        />
+        <SavingsGhoBannerHeading hasLegacyPosition={hasLegacyPosition} />
+      </Stack>
+      <BannerStat label={<Trans>Total deposited</Trans>} loading={vaultLoading}>
+        <FormattedNumber symbol="USD" compact variant="h3" color="fg-1" value={totalDepositedUSD} />
+      </BannerStat>
+      <BannerStat label={<Trans>APY</Trans>} loading={vaultLoading}>
+        <FormattedNumber percent variant="h3" color="fg-1" value={targetRate} />
+      </BannerStat>
+      <Stack direction="row" gap="0.62rem">
+        <Button variant="tertiary" component={Link} size="medium" href={ROUTES.sGHO}>
+          <Trans>View details</Trans>
+        </Button>
       </Stack>
     </Stack>
   );
@@ -174,60 +157,49 @@ const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: bool
 
   return (
     <Stack
+      component={Link}
+      href={ROUTES.sGHO}
       sx={{
-        pt: 5,
-        mb: 10,
-        px: { md: 6 },
-        overflow: 'hidden',
+        ...BANNER_SURFACE_SX,
+        mt: 5,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        height: '188px',
+        gap: { xs: 6 },
       }}
     >
+      <Box
+        component="img"
+        src="/gho-coins.png"
+        alt="GHO coins"
+        sx={{ position: 'absolute', height: '100px', top: -8, right: 8 }}
+      />
       <Stack
-        component={Link}
-        href={ROUTES.sGHO}
-        sx={{
-          ...BANNER_SURFACE_SX,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          height: '188px',
-          gap: { xs: 6 },
-        }}
+        direction="column"
+        sx={{ width: '100%', height: '100%', padding: '16px' }}
+        justifyContent="space-between"
       >
-        <Box
-          component="img"
-          src="/gho-coins.png"
-          alt="GHO coins"
-          sx={{ position: 'absolute', height: '100px', top: -8, right: 8 }}
-        />
-        <Stack
-          direction="column"
-          sx={{ width: '100%', height: '100%', padding: '16px' }}
-          justifyContent="space-between"
-        >
-          <SavingsGhoBannerHeading hasLegacyPosition={hasLegacyPosition} />
-          <Stack direction="row" alignItems="center" gap={4}>
-            <BannerStat label={<Trans>Total deposited</Trans>} loading={vaultLoading}>
-              <FormattedNumber
-                symbol="USD"
-                compact
-                variant="h3"
-                color="fg-1"
-                value={totalDepositedUSD}
-              />
-            </BannerStat>
-            <BannerStat label={<Trans>APY</Trans>} loading={vaultLoading}>
-              <FormattedNumber percent variant="h3" color="fg-1" value={targetRate} />
-            </BannerStat>
-          </Stack>
-          <Stack direction="row" gap="0.62rem">
-            <Button variant="outlined" fullWidth component={Link} size="medium" href={ROUTES.sGHO}>
-              <Trans>View details</Trans>
-            </Button>
-          </Stack>
+        <SavingsGhoBannerHeading hasLegacyPosition={hasLegacyPosition} />
+        <Stack direction="row" alignItems="center" gap={4}>
+          <BannerStat label={<Trans>Total deposited</Trans>} loading={vaultLoading}>
+            <FormattedNumber
+              symbol="USD"
+              compact
+              variant="h3"
+              color="fg-1"
+              value={totalDepositedUSD}
+            />
+          </BannerStat>
+          <BannerStat label={<Trans>APY</Trans>} loading={vaultLoading}>
+            <FormattedNumber percent variant="h3" color="fg-1" value={targetRate} />
+          </BannerStat>
+        </Stack>
+        <Stack direction="row" gap="0.62rem">
+          <Button variant="tertiary" fullWidth component={Link} size="medium" href={ROUTES.sGHO}>
+            <Trans>View details</Trans>
+          </Button>
         </Stack>
       </Stack>
     </Stack>

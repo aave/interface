@@ -33,10 +33,10 @@ const MenuDemo = () => {
   const close = () => setAnchorEl(null);
   return (
     <>
-      {/* aria-expanded lets the outlined trigger keep the open/active fill (secondaryPillStyle
-          keys off it) — MUI does not set it automatically for Menu triggers. */}
+      {/* aria-expanded lets the pill trigger keep the open/active fill (pillStyle keys off it)
+          — MUI does not set it automatically for Menu triggers. */}
       <Button
-        variant="outlined"
+        variant="tertiary"
         color="primary"
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}

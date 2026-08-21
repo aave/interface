@@ -137,7 +137,7 @@ export const SupplyAssetsListMobileItem = ({
           <Trans>Supply</Trans>
         </Button>
         <Button
-          variant="outlined"
+          variant="tertiary"
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           fullWidth

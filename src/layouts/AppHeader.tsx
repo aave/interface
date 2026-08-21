@@ -95,7 +95,10 @@ const SWITCH_VISITED_KEY = 'switchVisited';
 // Dev-only environment badges (testnet / fork) — intentionally off-brand magenta to stand out.
 const envBadgeSx = {
   backgroundColor: '#B6509E',
-  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)' },
+  boxShadow: 'none',
+  '&:hover, &.Mui-focusVisible': { backgroundColor: 'rgba(182, 80, 158, 0.7)', boxShadow: 'none' },
+  // The pill variant tints on hover via a ::before overlay; the badge steps its own fill instead.
+  '&:hover::before, &.Mui-focusVisible::before': { backgroundColor: 'transparent' },
 };
 
 export function AppHeader() {
@@ -177,7 +180,7 @@ export function AppHeader() {
           FAQ.
         </Link>
       </Typography>
-      <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableTestnet}>
+      <Button variant="tertiary" sx={{ mt: '12px' }} onClick={disableTestnet}>
         <Trans>Disable testnet</Trans>
       </Button>
     </Box>
@@ -191,7 +194,7 @@ export function AppHeader() {
       <Typography variant="description">
         <Trans>The app is running in fork mode.</Trans>
       </Typography>
-      <Button variant="outlined" sx={{ mt: '12px' }} onClick={disableFork}>
+      <Button variant="tertiary" sx={{ mt: '12px' }} onClick={disableFork}>
         <Trans>Disable fork</Trans>
       </Button>
     </Box>
@@ -209,7 +212,7 @@ export function AppHeader() {
           top: 0,
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
-          bgcolor: 'bg-2',
+          bgcolor: 'bg-3',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -241,7 +244,7 @@ export function AppHeader() {
           <Box sx={{ mr: sm ? 1 : 3 }}>
             {ENABLE_TESTNET && (
               <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
-                <Button variant="outlined" size="small" color="primary" sx={envBadgeSx}>
+                <Button variant="tertiary" size="small" color="primary" sx={envBadgeSx}>
                   TESTNET
                   <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
                     <InformationCircleIcon />
@@ -253,7 +256,7 @@ export function AppHeader() {
           <Box sx={{ mr: sm ? 1 : 3 }}>
             {FORK_ENABLED && currentMarketData?.isFork && (
               <ContentWithTooltip tooltipContent={forkTooltip} offset={[0, -4]} withoutHover>
-                <Button variant="outlined" size="small" color="primary" sx={envBadgeSx}>
+                <Button variant="tertiary" size="small" color="primary" sx={envBadgeSx}>
                   FORK
                   <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
                     <InformationCircleIcon />
@@ -273,7 +276,7 @@ export function AppHeader() {
             <Button
               component={Link}
               href={AAVE_PRO_URL}
-              variant="outlined"
+              variant="tertiary"
               sx={{
                 p: '0 0.88rem',
                 minWidth: 'unset',
@@ -298,7 +301,7 @@ export function AppHeader() {
             >
               <Button
                 onClick={handleSwitchClick}
-                variant="outlined"
+                variant="tertiary"
                 startIcon={
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     {hasActiveOrders ? (
@@ -336,7 +339,7 @@ export function AppHeader() {
             >
               <Button
                 onClick={handleBridgeClick}
-                variant="outlined"
+                variant="tertiary"
                 startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
                 sx={collapsingTriggerSx}
               >
@@ -351,7 +354,7 @@ export function AppHeader() {
 
           {readOnlyMode ? (
             <Button
-              variant="outlined"
+              variant="tertiary"
               onClick={() => {
                 openReadMode();
               }}

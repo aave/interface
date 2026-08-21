@@ -268,7 +268,7 @@ export const MigrationListMobileItem = ({
             </Typography>
             <Box sx={{ display: 'flex' }}>
               <Button
-                variant="outlined"
+                variant="tertiary"
                 size="small"
                 sx={{ width: '50px', background: 'white' }}
                 disabled
@@ -286,7 +286,7 @@ export const MigrationListMobileItem = ({
                 />
               </SvgIcon>
               <Button
-                variant="outlined"
+                variant="tertiary"
                 size="small"
                 sx={{ width: '50px', background: 'white' }}
                 disabled

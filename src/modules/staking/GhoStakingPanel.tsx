@@ -429,7 +429,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
                   }
                 >
                   <Button
-                    variant="outlined"
+                    variant="tertiary"
                     data-cy={`reCoolDownBtn_${stakedToken}`}
                     sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
                     onClick={onCooldownAction}
@@ -446,7 +446,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           {isCooldownActive && !isUnstakeWindowActive && (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Button
-                variant="outlined"
+                variant="tertiary"
                 fullWidth
                 disabled
                 data-cy={`awaitCoolDownBtn_${stakedToken}`}
@@ -469,7 +469,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
                   }
                 >
                   <Button
-                    variant="outlined"
+                    variant="tertiary"
                     data-cy={`reCoolDownBtn_${stakedToken}`}
                     sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
                     onClick={onCooldownAction}
@@ -485,7 +485,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
 
           {!isCooldownActive && (
             <Button
-              variant="outlined"
+              variant="tertiary"
               fullWidth
               onClick={onCooldownAction}
               disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}

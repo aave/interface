@@ -16,7 +16,7 @@ export const ThemeControl = ({ mode, onChange }: ThemeControlProps) => (
       {(['light', 'dark'] as const).map((value) => (
         <Button
           key={value}
-          variant={mode === value ? 'contained' : 'outlined'}
+          variant={mode === value ? 'contained' : 'tertiary'}
           size="small"
           fullWidth
           onClick={() => onChange(value)}

@@ -112,7 +112,7 @@ export default function AnalyticsBanner({ preview = false }: { preview?: boolean
 
       <Box sx={{ display: 'flex', gap: '1rem' }}>
         <Button
-          variant="outlined"
+          variant="tertiary"
           onClick={preview ? undefined : () => optOutAnalytics()}
           sx={{ flex: 1 }}
         >

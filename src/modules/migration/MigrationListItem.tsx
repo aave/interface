@@ -266,7 +266,7 @@ export const MigrationListItem = ({
           <ListColumn>
             <Box sx={{ display: 'flex' }}>
               <Button
-                variant="outlined"
+                variant="tertiary"
                 size="small"
                 sx={{ width: '50px', background: figVars['surface-elevated'] }}
                 disabled
@@ -284,7 +284,7 @@ export const MigrationListItem = ({
                 />
               </SvgIcon>
               <Button
-                variant="outlined"
+                variant="tertiary"
                 size="small"
                 sx={{ width: '50px', background: figVars['surface-elevated'] }}
                 disabled

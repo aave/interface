@@ -244,7 +244,7 @@ export const HistoryWrapper = () => {
             </Trans>
           </Typography>
           <Button
-            variant="outlined"
+            variant="tertiary"
             onClick={() => {
               setSearchQuery('');
               setFilterQuery([]);

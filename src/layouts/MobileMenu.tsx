@@ -110,7 +110,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
     <>
       <Button
         id="settings-button-mobile"
-        variant="outlined"
+        variant="tertiary"
         aria-label="menu"
         aria-pressed={open}
         sx={{ p: '7px 8px', minWidth: 'unset', ml: 2 }}
@@ -173,7 +173,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', px: '0.75rem' }}>
                 <Button
                   fullWidth
-                  variant="outlined"
+                  variant="tertiary"
                   startIcon={<SwapIcon sx={{ fontSize: '18px' }} />}
                   onClick={handleSwap}
                   disabled={!showSwitchButton}
@@ -182,7 +182,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
                 </Button>
                 <Button
                   fullWidth
-                  variant="outlined"
+                  variant="tertiary"
                   startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
                   onClick={handleBridge}
                 >

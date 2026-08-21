@@ -346,7 +346,7 @@ export const BridgeModalContent = () => {
             href={`https://ccip.chain.link/address/${user}`}
             target="_blank"
             rel="noopener"
-            variant="outlined"
+            variant="tertiary"
             size="small"
             endIcon={<ArrowUpRightIcon sx={{ color: 'fg-3' }} />}
             sx={{ minWidth: 'unset', mr: 9 }}

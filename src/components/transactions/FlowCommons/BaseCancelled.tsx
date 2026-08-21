@@ -69,7 +69,7 @@ export const BaseCancelledView = ({
           <br />
         ) : (
           <Button
-            variant="outlined"
+            variant="tertiary"
             size="large"
             sx={{ borderRadius: 1, borderColor: 'border-2', borderWidth: 1, mt: 6, mb: 2 }}
             href={

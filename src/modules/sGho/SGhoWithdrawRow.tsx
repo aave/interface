@@ -31,7 +31,7 @@ export const SGhoWithdrawRow = ({ balance, balanceUSD, onWithdraw }: SGhoWithdra
         }
       >
         <Button
-          variant="outlined"
+          variant="tertiary"
           fullWidth
           onClick={onWithdraw}
           disabled={!hasBalance}

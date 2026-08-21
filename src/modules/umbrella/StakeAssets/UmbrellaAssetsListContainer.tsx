@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Paper, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
@@ -13,7 +14,6 @@ import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
 import { NoStakeAssets } from '../NoStakeAssets';
-import { StakeAssetsFilters } from './StakeAssetsFilters';
 import UmbrellaAssetsList from './UmbrellaAssetsList';
 
 export const UmbrellaAssetsListContainer = () => {
@@ -59,7 +59,7 @@ export const UmbrellaAssetsListContainer = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-      <StakeAssetsFilters
+      <AssetsFilterBar
         searchPlaceholder={sm ? 'Search asset' : 'Search asset name or symbol'}
         onSearchTermChange={setSearchTerm}
         inWallet={{ value: inWalletOnly, onChange: setInWalletOnly }}
@@ -68,7 +68,7 @@ export const UmbrellaAssetsListContainer = () => {
         categoriesDisabled={isLoadingCategories || !!categoriesError}
       />
 
-      <Paper variant="card" sx={{ '& > div:first-of-type > hr': { display: 'none' } }}>
+      <Paper variant="table" sx={{ '& > div:first-of-type > hr': { display: 'none' } }}>
         <UmbrellaAssetsList
           loading={loading}
           isLoadingStakedDataWithTokenBalances={isLoadingStakedDataWithTokenBalances}

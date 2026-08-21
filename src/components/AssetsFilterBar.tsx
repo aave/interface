@@ -4,24 +4,24 @@ import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselec
 import { SearchInput } from 'src/components/SearchInput';
 import { AssetCategory } from 'src/modules/markets/utils/assetCategories';
 
-interface StakeAssetsFiltersProps {
+interface AssetsFilterBarProps {
   searchPlaceholder: string;
   onSearchTermChange: (value: string) => void;
   selectedCategories: AssetCategory[];
   onCategoriesChange: (categories: AssetCategory[]) => void;
   categoriesDisabled?: boolean;
-  /** Optional "In Wallet" toggle — omit on the disconnected preview (no wallet to filter by). */
+  /** Optional "In Wallet" toggle — omit when there is no connected wallet to filter by. */
   inWallet?: { value: boolean; onChange: (value: boolean) => void };
 }
 
-export const StakeAssetsFilters = ({
+export const AssetsFilterBar = ({
   searchPlaceholder,
   onSearchTermChange,
   selectedCategories,
   onCategoriesChange,
   categoriesDisabled = false,
   inWallet,
-}: StakeAssetsFiltersProps) => {
+}: AssetsFilterBarProps) => {
   return (
     <Box
       sx={{
@@ -47,9 +47,9 @@ export const StakeAssetsFilters = ({
         }}
       >
         {inWallet && (
-          // Outlined toggle: the whole pill flips the filter; the Switch just mirrors its state.
+          // The whole pill flips the filter; the Switch just mirrors its state.
           <Button
-            variant="outlined"
+            variant="tertiary"
             onClick={() => inWallet.onChange(!inWallet.value)}
             aria-pressed={inWallet.value}
             sx={{

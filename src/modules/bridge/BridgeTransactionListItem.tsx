@@ -212,7 +212,7 @@ const BridgeTransactionMobileListItem = ({
                   pl: 1,
                   pr: 1,
                 }}
-                variant="outlined"
+                variant="tertiary"
                 href={`https://ccip.chain.link/tx/${txHash}`}
                 target="_blank"
               >

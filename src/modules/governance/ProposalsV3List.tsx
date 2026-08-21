@@ -186,7 +186,7 @@ export const ProposalsV3List = () => {
   }
 
   return (
-    <Paper>
+    <Paper variant="table">
       <ProposalListHeader
         proposalFilter={proposalFilter}
         handleProposalFilterChange={setProposalFilter}

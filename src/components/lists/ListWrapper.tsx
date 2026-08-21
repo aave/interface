@@ -102,7 +102,7 @@ export const ListWrapper = ({
   return (
     <>
       <Paper
-        variant="card"
+        variant="table"
         sx={[
           { mt: withTopMargin ? '2rem' : 0 },
           ...(paperSx ? (Array.isArray(paperSx) ? paperSx : [paperSx]) : []),
@@ -114,7 +114,7 @@ export const ListWrapper = ({
             flexDirection: 'column',
             gap: '1.25rem',
             padding: { xs: '0.875rem 1rem', xsm: '1rem 1rem 1rem 1.25rem' },
-            bgcolor: 'bg-2',
+            bgcolor: 'table-bg',
             // Hairline as an inset shadow rather than a border, so it doesn't add to the box height.
             boxShadow: `inset 0 -1px 0 ${figVars['border-0']}`,
             borderTopLeftRadius: 'inherit',
@@ -138,6 +138,7 @@ export const ListWrapper = ({
                 {
                   font: 'inherit',
                   letterSpacing: 'inherit',
+                  textTransform: 'capitalize',
                 },
             }}
           >
@@ -155,7 +156,7 @@ export const ListWrapper = ({
 
             {!!localStorageName && !noData && (
               <Button
-                variant="outlined"
+                variant="tertiary"
                 size="medium"
                 onClick={() => {
                   handleTrackingEvents();

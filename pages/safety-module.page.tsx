@@ -402,7 +402,7 @@ export default function Staking() {
                             </Typography>
                           </Box>
                           <Button
-                            variant="outlined"
+                            variant="tertiary"
                             size="small"
                             component={Link}
                             endIcon={

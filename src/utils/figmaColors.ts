@@ -14,11 +14,11 @@ export const figmaLight = {
   'bg-6': '#ebebeb',
   'border-0': 'rgba(0, 0, 0, 0.06)',
   'border-1': 'rgba(0, 0, 0, 0.08)',
-  'border-2': 'rgba(0, 0, 0, 0.12)',
+  'border-2': 'rgba(0, 0, 0, 0.1)',
   'fg-max': '#000000',
   'fg-1': '#000000',
   'fg-2': '#666666',
-  'fg-3': '#858585',
+  'fg-3': '#7d7d7d',
   'fg-4': '#a8a8a8',
   'fg-5': '#b3b3b3',
   // Muted icon grey (search, sortable-column chevrons, …). Deliberately mode-agnostic — the same
@@ -29,13 +29,13 @@ export const figmaLight = {
   'blue-2': '#48abff',
   'blue-3': '#a9e7ff',
   'yellow-1': '#ffb200',
-  'yellow-2': '#ffd631',
-  'yellow-3': '#fff798',
+  'yellow-2': '#ffcc00',
+  'yellow-3': '#f6d551',
   'red-1': '#f24900',
   'red-2': '#ff8947',
   'red-3': '#ffc693',
   'purple-1': '#9391f7',
-  'purple-2': '#6d6beb',
+  'purple-2': '#bcbbff',
   'purple-3': '#e2e0ff',
   'green-1': '#1f807b',
   'green-2': '#63bbb6',
@@ -46,11 +46,11 @@ export const figmaLight = {
   'navy-1': '#1c4886',
   'navy-2': '#6188c0',
   'navy-3': '#b0d3ff',
-  'shadow-low': 'rgba(0, 0, 0, 0.02)',
-  'shadow-medium': 'rgba(0, 0, 0, 0.04)',
-  'shadow-high': 'rgba(46, 15, 15, 0.07)',
-  'shadow-strong': 'rgba(46, 15, 15, 0.12)',
-  'shadow-stroke-1': 'rgba(46, 15, 15, 0.08)',
+  'shadow-low': 'rgba(0, 0, 0, 0.03)',
+  'shadow-medium': 'rgba(0, 0, 0, 0.05)',
+  'shadow-high': 'rgba(0, 0, 0, 0.07)',
+  'shadow-strong': 'rgba(0, 0, 0, 0.11)',
+  'shadow-stroke-1': 'rgba(0, 0, 0, 0.06)',
   'shadow-stroke-2': 'rgba(0, 0, 0, 0.08)',
   ethereum: '#25292e',
   focus: 'rgba(26, 136, 248, 0.2)',
@@ -58,12 +58,12 @@ export const figmaLight = {
   // Data-viz categorical palette (17 hues, red → pink).
   'data-red': '#FF4760',
   'data-coral': '#FF513D',
-  'data-orange': '#FF5500',
+  'data-orange': '#FF7029',
   'data-honey': '#FF8C00',
   'data-yellow': '#DBA400',
   'data-pear': '#CCAB00',
   'data-light-green': '#22CE80',
-  'data-green': '#00C550',
+  'data-green': '#00BD68',
   'data-matcha': '#89BE2D',
   'data-seafoam': '#00B89F',
   'data-teal': '#05B4C7',
@@ -79,9 +79,8 @@ export const figmaLight = {
   'favourite-star': '#FFB300',
   // Alert "danger" severity red (icon + gradient); distinct from the muted error-* palette.
   danger: '#DC2626',
-  // sGHO markets-banner gradient tints — data-green / neutral washes at 6%.
+  // sGHO markets-banner gradient: a data-green wash at 6% fading to the banner's own surface.
   'sgho-banner-green': 'rgba(50, 201, 88, 0.06)',
-  'sgho-banner-fade': 'rgba(255, 255, 255, 0.06)',
   'chain-testnet': '#8594ab',
   'chain-ethereum': '#25292e',
   'chain-polygon': '#8347e5',
@@ -93,17 +92,11 @@ export const figmaLight = {
   'chain-scroll': '#f8cf6e',
   'chain-worldchain': '#ff9d00',
   'chain-zksync': '#8c8dfe',
-  'info-panel-color-one': '#fafafa',
-  'info-panel-color-two': '#fafafa',
-  'info-panel-color-three': '#fafafa',
   bone: '#f6f7f4',
-  // Hover fills for the two opaque button surfaces. Each is a SINGLE per-mode token rather than a
-  // base + `darkScheme()` override, so it resolves to the NEAREST color scheme — the dev showcase's
-  // local toggle works even when the app's global scheme differs (the dark selector matches any
-  // ancestor, including <html>, so a two-token swap leaks across a nested scheme boundary).
-  // fg-max-hover: light = a warm near-black (a step off the pure-#000 fg-max base); dark = bone.
-  // bg-4-hover: one step down the ramp from the bg-4 control surface, per mode.
-  'fg-max-hover': '#201d1d',
+  // Opaque hover fill for the Select trigger. A SINGLE per-mode token rather than a base +
+  // `darkScheme()` override, so it resolves to the NEAREST color scheme — the dev showcase's local
+  // toggle works even when the app's global scheme differs (the dark selector matches any ancestor,
+  // including <html>, so a two-token swap leaks across a nested scheme boundary).
   'bg-4-hover': '#f6f7f4',
   // --- semantic tokens promoted from theme-file literals (SoT) ---
   'secondary-main': '#FF607B',
@@ -130,16 +123,21 @@ export const figmaLight = {
   'input-line': '#383D511F',
   'input-border-hover': '#CBCDD8',
   'surface-elevated': '#ffffff',
+  'table-bg': '#ffffff',
+  // --- semantic / button (Figma collection) ---
+  'button-hover-primary': 'rgba(255, 255, 255, 0.16)',
+  'button-hover-secondary': 'rgba(0, 0, 0, 0.03)',
+  'button-hover-tertiary': 'rgba(0, 0, 0, 0.04)',
 } as const;
 
 export const figmaDark = {
   'bg-max': '#0a0a0b',
-  'bg-1': '#0f0f10',
-  'bg-2': '#18181b',
-  'bg-3': '#1e1e20',
-  'bg-4': '#28282a',
-  'bg-5': '#36363a',
-  'bg-6': '#45454a',
+  'bg-1': '#100f0f',
+  'bg-2': '#1a1919',
+  'bg-3': '#1f1e1e',
+  'bg-4': '#2a2828',
+  'bg-5': '#393737',
+  'bg-6': '#494646',
   'border-0': 'rgba(255, 255, 255, 0.06)',
   'border-1': 'rgba(255, 255, 255, 0.08)',
   'border-2': 'rgba(255, 255, 255, 0.12)',
@@ -162,7 +160,7 @@ export const figmaDark = {
   'red-1': '#f24900',
   'red-2': '#ff8947',
   'red-3': '#ffc693',
-  'purple-1': '#9391ff',
+  'purple-1': '#9391f7',
   'purple-2': '#bcbbff',
   'purple-3': '#e2e0ff',
   'green-1': '#1f807b',
@@ -176,12 +174,12 @@ export const figmaDark = {
   'navy-3': '#b0d3ff',
   'data-red': '#E05269',
   'data-coral': '#FF7045',
-  'data-orange': '#FF784D',
+  'data-orange': '#E68662',
   'data-honey': '#F59942',
   'data-yellow': '#FDC75A',
   'data-pear': '#FFE042',
   'data-light-green': '#C1E38D',
-  'data-green': '#00C991',
+  'data-green': '#66C399',
   'data-matcha': '#92D492',
   'data-seafoam': '#78D3B3',
   'data-teal': '#8DE3CC',
@@ -196,7 +194,7 @@ export const figmaDark = {
   'shadow-high': 'rgba(0, 0, 0, 0.35)',
   'shadow-strong': 'rgba(0, 0, 0, 0.5)',
   'shadow-stroke-1': 'rgba(255, 255, 255, 0.08)',
-  'shadow-stroke-2': 'rgba(255, 255, 255, 0.08)',
+  'shadow-stroke-2': 'rgba(255, 255, 255, 0.1)',
   ethereum: '#434b55',
   focus: 'rgba(85, 167, 251, 0.3)',
   scrim: 'rgba(71, 67, 67, 0.8)',
@@ -208,9 +206,8 @@ export const figmaDark = {
   'favourite-star': '#FFB300',
   // Alert "danger" severity red (icon + gradient); distinct from the muted error-* palette.
   danger: '#DC2626',
-  // sGHO markets-banner gradient tints — dark data-green / neutral washes at 6%.
+  // sGHO markets-banner gradient: a data-green wash at 6% fading to the banner's own surface.
   'sgho-banner-green': 'rgba(102, 195, 153, 0.06)',
-  'sgho-banner-fade': 'rgba(255, 255, 255, 0.06)',
   'wallet-modal-more-networks-label': 'rgba(255, 255, 255, 0.4)',
   'chain-testnet': '#bfc6d1',
   'chain-ethereum': '#7e8287',
@@ -223,11 +220,7 @@ export const figmaDark = {
   'chain-scroll': '#f8cf6e',
   'chain-worldchain': '#ff9d00',
   'chain-zksync': '#8c8dfe',
-  'info-panel-color-one': 'rgba(29, 29, 33, 0.20)',
-  'info-panel-color-two': 'rgba(41, 41, 46, 0.20)',
-  'info-panel-color-three': 'rgba(255, 255, 255, 0.01)',
   bone: '#f6f7f4',
-  'fg-max-hover': '#f6f7f4',
   'bg-4-hover': '#28282a',
   // --- semantic tokens promoted from theme-file literals (SoT) ---
   'secondary-main': '#F48FB1',
@@ -254,6 +247,11 @@ export const figmaDark = {
   'input-line': '#EBEBEF6B',
   'input-border-hover': '#CBCDD8',
   'surface-elevated': '#1E1E20',
+  'table-bg': '#1A1919',
+  // --- semantic / button (Figma collection) ---
+  'button-hover-primary': 'rgba(0, 0, 0, 0.16)',
+  'button-hover-secondary': 'rgba(255, 255, 255, 0.04)',
+  'button-hover-tertiary': 'rgba(255, 255, 255, 0.06)',
 } as const;
 
 // Token names shared by both modes (light is the common subset; dark adds a few extras).

@@ -337,7 +337,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           >
             <Stack direction="row" gap={2} alignItems="center">
               <Button
-                variant="outlined"
+                variant="tertiary"
                 fullWidth
                 onClick={onMigrateAction}
                 disabled={stakeUserData.stakeTokenUserBalance === '0'}
@@ -474,7 +474,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                     }
                   >
                     <Button
-                      variant="outlined"
+                      variant="tertiary"
                       data-cy={`reCoolDownBtn_${stakedToken}`}
                       sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
                       onClick={onCooldownAction}
@@ -491,7 +491,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             {isCooldownActive && !isUnstakeWindowActive && (
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Button
-                  variant="outlined"
+                  variant="tertiary"
                   fullWidth
                   disabled
                   data-cy={`awaitCoolDownBtn_${stakedToken}`}
@@ -514,7 +514,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                     }
                   >
                     <Button
-                      variant="outlined"
+                      variant="tertiary"
                       data-cy={`reCoolDownBtn_${stakedToken}`}
                       sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
                       onClick={onCooldownAction}
@@ -530,7 +530,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 
             {!isCooldownActive && (
               <Button
-                variant="outlined"
+                variant="tertiary"
                 fullWidth
                 onClick={onCooldownAction}
                 disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}

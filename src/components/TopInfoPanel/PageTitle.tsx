@@ -91,7 +91,7 @@ export const PageTitle = ({
         {withFavoriteButton && (
           <Button
             onClick={handleFavoriteClick}
-            variant="outlined"
+            variant="tertiary"
             sx={{
               display: 'none',
               [theme.breakpoints.up(800)]: { display: 'flex' }, // Hide on mobile (xs) and for widths between 759px and 800px, show on small screens and up

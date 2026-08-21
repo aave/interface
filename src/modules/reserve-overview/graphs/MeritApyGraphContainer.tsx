@@ -122,7 +122,7 @@ export const MeritApyGraphContainer = ({
         <Trans>Data couldn&apos;t be fetched, please reload graph.</Trans>
       </Typography>
       {onRetry && (
-        <Button variant="outlined" color="primary" onClick={onRetry}>
+        <Button variant="tertiary" color="primary" onClick={onRetry}>
           <Trans>Reload</Trans>
         </Button>
       )}

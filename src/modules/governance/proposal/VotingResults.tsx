@@ -159,7 +159,7 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
                 })
               }
               href={discussionUrl}
-              variant="outlined"
+              variant="tertiary"
               fullWidth
               endIcon={
                 <SvgIcon>

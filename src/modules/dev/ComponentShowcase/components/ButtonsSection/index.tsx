@@ -4,7 +4,7 @@ import { Button, SvgIcon } from '@mui/material';
 import { Section } from '../Section';
 import { Specimen } from '../Specimen';
 
-const VARIANTS = ['contained', 'outlined', 'text'] as const;
+const VARIANTS = ['contained', 'tertiary', 'outlined', 'text'] as const;
 const SIZES = ['small', 'medium', 'large'] as const;
 const COLORS = ['primary', 'success', 'warning', 'error', 'secondary', 'info', 'inherit'] as const;
 
