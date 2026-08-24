@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import * as React from 'react';
-import { figVars } from 'src/utils/figmaColors';
+import { figSurfaceShadow } from 'src/utils/figmaColors';
 
 import { SupportedNetworkWithChainId } from './Bridge/BridgeConfig';
 
@@ -42,8 +42,9 @@ export const NetworkSelect = ({
       <Box
         sx={{
           p: '8px 0px',
-          border: `1px solid ${figVars['border-2']}`,
-          borderRadius: '6px',
+          borderRadius: '0.75rem',
+          boxShadow: figSurfaceShadow('shadow-stroke-1'),
+          backgroundColor: 'bg-2',
           mb: 1,
         }}
       >

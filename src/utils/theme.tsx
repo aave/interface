@@ -86,16 +86,16 @@ const surfaceFill = {
 const surfaceFillHover = { backgroundColor: figVars['bg-4-hover'], boxShadow: figSurfaceShadow() };
 
 /**
- * The "white pill" button: `surfaceFill` with a hairline ring instead of a border, stepping to bg-4
- * in dark and tinted on hover by the `button-hover-tertiary` overlay. Shared by `variant="tertiary"`
- * (every pill button in the app) and the legacy `variant="outlined"` alias, so the two can't drift.
- * On hover the ring is re-asserted — the global `disableElevation` default otherwise strips it — and
- * `border` is forced to none to suppress MUI's default outlined hover border.
+ * The "white pill" buttons, per the Figma `semantic/button` scale. Both sit on `surfaceFill` with a
+ * hairline ring instead of a border; they differ only in dark-mode fill and hover strength, so one
+ * factory keeps them from drifting. On hover the ring is re-asserted — the global `disableElevation`
+ * default otherwise strips it — and `border` is forced to none to suppress MUI's default outlined
+ * hover border.
  */
-const pillStyle = {
+const pillStyle = (hoverToken: FigmaColorName, darkFill?: FigmaColorName) => ({
   ...surfaceFill,
-  ...darkScheme({ backgroundColor: figVars['bg-4'] }),
-  ...hoverOverlay(figVars['button-hover-tertiary']),
+  ...(darkFill ? darkScheme({ backgroundColor: figVars[darkFill] }) : {}),
+  ...hoverOverlay(figVars[hoverToken]),
   color: figVars['fg-1'],
   border: 'none',
   '& .MuiButton-startIcon': {
@@ -105,7 +105,12 @@ const pillStyle = {
     boxShadow: figSurfaceShadow(),
     border: 'none',
   },
-};
+});
+
+/** Secondary: bg-3 in both modes. */
+const secondaryPillStyle = pillStyle('button-hover-secondary');
+/** Tertiary: one step up the dark ramp, with a stronger hover tint. */
+const tertiaryPillStyle = pillStyle('button-hover-tertiary', 'bg-4');
 
 /** Shared disabled state for both pill variants. */
 const pillDisabled = {
@@ -632,12 +637,11 @@ export function getThemedComponents(theme: AppTheme) {
           },
         },
         variants: [
-          // Legacy alias for the pill — no call site passes `outlined` any more, but MUI's own
-          // outlined styling would render if this override were dropped.
+          // Secondary pill (`variant="outlined"`): bg-3 in both modes.
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              ...pillStyle,
+              ...secondaryPillStyle,
               '&.Mui-disabled': pillDisabled,
             },
           },
@@ -663,11 +667,11 @@ export function getThemedComponents(theme: AppTheme) {
               }),
             },
           },
-          // The pill button: every `variant="tertiary"` call site in the app.
+          // Tertiary pill: the app's default button.
           {
             props: { variant: 'tertiary', color: 'primary' },
             style: {
-              ...pillStyle,
+              ...tertiaryPillStyle,
               '&.Mui-disabled': pillDisabled,
             },
           },
@@ -931,11 +935,12 @@ export function getThemedComponents(theme: AppTheme) {
           },
           {
             // Canonical content card surface — the module cards (reserve-overview, staking, sGho,
-            // …). surface-elevated fill, 10px radius, the shared surface ring (shadow-stroke-1
-            // hairline + soft drop). Asset tables use the `table` variant below instead.
+            // …). surface-elevated in light / bg-2 in dark, 10px radius, the shared surface ring
+            // (shadow-stroke-1 hairline + soft drop). Asset tables use the `table` variant below.
             props: { variant: 'card' },
             style: {
               backgroundColor: figVars['surface-elevated'],
+              ...darkScheme({ backgroundColor: figVars['bg-2'] }),
               borderRadius: '10px',
               boxShadow: figSurfaceShadow('shadow-stroke-1'),
             },

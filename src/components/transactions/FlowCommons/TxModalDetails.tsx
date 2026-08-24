@@ -50,7 +50,7 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   showGasStation = true,
 }) => {
   return (
-    <Box sx={{ pt: 5 }}>
+    <Box sx={{ pt: '1rem' }}>
       <Typography sx={{ mb: 1 }} color="fg-2">
         <Trans>Transaction overview</Trans>
       </Typography>

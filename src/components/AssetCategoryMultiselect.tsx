@@ -75,7 +75,7 @@ export const AssetCategoryMultiSelect = ({
       <Button
         onClick={handleClick}
         disabled={disabled}
-        variant="tertiary"
+        variant="outlined"
         aria-haspopup="true"
         aria-expanded={open}
         endIcon={<ChevronUpDownIcon sx={{ fontSize: 18, color: 'fg-3' }} />}

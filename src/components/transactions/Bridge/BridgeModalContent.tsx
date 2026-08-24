@@ -376,7 +376,7 @@ export const BridgeModalContent = () => {
       ) : (
         <>
           <Stack
-            sx={{ mb: 3 }}
+            sx={{ mb: '1rem' }}
             gap={3}
             direction="column"
             alignItems="center"
@@ -434,7 +434,7 @@ export const BridgeModalContent = () => {
             isMaxSelected={maxSelected}
           />
 
-          <Box sx={{ mt: 3 }}>
+          <Box sx={{ mt: '1rem' }}>
             <BridgeDestinationInput
               connectedAccount={user}
               onInputValid={(account) => {

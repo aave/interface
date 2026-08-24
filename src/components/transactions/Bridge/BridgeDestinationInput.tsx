@@ -127,20 +127,11 @@ export const BridgeDestinationInput = ({
           ) : null
         }
       />
-      <Typography
-        sx={{
-          visibility:
-            useConnectedAccount || fetchingIsContractAddress
-              ? 'hidden'
-              : showWarning
-              ? 'visible'
-              : 'hidden',
-        }}
-        variant="helperText"
-        color="error.main"
-      >
-        <Trans>Enter a valid address</Trans>
-      </Typography>
+      {showWarning && !useConnectedAccount && !fetchingIsContractAddress && (
+        <Typography variant="helperText" color="error.main">
+          <Trans>Enter a valid address</Trans>
+        </Typography>
+      )}
     </Stack>
   );
 };

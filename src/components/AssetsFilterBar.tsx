@@ -49,7 +49,7 @@ export const AssetsFilterBar = ({
         {inWallet && (
           // The whole pill flips the filter; the Switch just mirrors its state.
           <Button
-            variant="tertiary"
+            variant="outlined"
             onClick={() => inWallet.onChange(!inWallet.value)}
             aria-pressed={inWallet.value}
             sx={{
