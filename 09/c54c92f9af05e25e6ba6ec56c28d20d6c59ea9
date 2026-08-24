@@ -1,0 +1,38 @@
+src/components/transactions/NetworkSelect.tsx
+  s_9a1e9249df3092::t_4bf070075b32b4 11
+  s_9a1e9249df3092::t_8129150a8f9049 45-47
+src/components/AssetsFilterBar.tsx
+  s_9a1e9249df3092::t_a1d7a3214badaf 52
+src/components/transactions/FlowCommons/TxModalDetails.tsx
+  s_9a1e9249df3092::t_2a36d8d549855e 53
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_9a1e9249df3092::t_2a36d8d549855e 379,437
+src/components/AssetCategoryMultiselect.tsx
+  s_9a1e9249df3092::t_a1d7a3214badaf 78
+src/utils/theme.tsx
+  s_9a1e9249df3092::t_d584d246debf6f 89-93,95,97-98,108-113,640,644,670,674
+  s_9a1e9249df3092::t_5e02647a40a947 938-939,943
+src/components/transactions/Bridge/BridgeDestinationInput.tsx
+  s_9a1e9249df3092::t_360de48c98d9d6 130-134
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "09c54c92f9af05e25e6ba6ec56c28d20d6c59ea9",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9a1e9249df3092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "185147c8-c903-4a9e-9255-047797ac1a4a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
