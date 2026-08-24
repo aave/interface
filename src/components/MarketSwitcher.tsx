@@ -24,6 +24,7 @@ import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
 import { figVars, onAccent } from 'src/utils/figmaColors';
 import { insetHighlightActive, insetHighlightBase } from 'src/utils/insetHighlight';
+import { darkScheme } from 'src/utils/theme';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -599,7 +600,6 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
         sx={{
           height: '3.23rem',
           px: '1rem',
-          bgcolor: 'bg-3',
           boxShadow: `0 0 0 1px ${figVars['border-1']}`,
           display: 'flex',
           alignItems: 'center',
@@ -837,6 +837,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           onClose={handleClose}
           PaperProps={{
             sx: {
+              bgcolor: 'bg-3',
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
               maxHeight: '85vh',
@@ -876,6 +877,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
               sx: {
                 width: '34rem',
                 bgcolor: 'bg-3',
+                ...darkScheme({ backgroundColor: figVars['bg-3'] }),
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
