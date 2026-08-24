@@ -99,6 +99,14 @@ export const ListWrapper = ({
 
   const collapseText = collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>;
 
+  // When nothing renders below it, the band is the card's last visible element: round its bottom
+  // corners to the Paper's radius and drop the hairline that would otherwise dangle over nothing.
+  const bandIsCardTail = {
+    boxShadow: 'none',
+    borderBottomLeftRadius: 'inherit',
+    borderBottomRightRadius: 'inherit',
+  };
+
   return (
     <>
       <Paper
@@ -119,6 +127,10 @@ export const ListWrapper = ({
             boxShadow: `inset 0 -1px 0 ${figVars['border-0']}`,
             borderTopLeftRadius: 'inherit',
             borderTopRightRadius: 'inherit',
+            // Empty list: the children box is present but renders nothing.
+            '&:has(+ div:empty)': bandIsCardTail,
+            // Collapsed: the children box is `display: none`, so it is not `:empty`.
+            ...(collapsed ? bandIsCardTail : {}),
             ...wrapperSx,
           }}
         >

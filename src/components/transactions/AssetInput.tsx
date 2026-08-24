@@ -19,7 +19,7 @@ import React, { ReactNode } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
-import { figVars } from 'src/utils/figmaColors';
+import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
 
 import { CapType } from '../caps/helper';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
@@ -132,9 +132,10 @@ export const AssetInput = <T extends Asset = Asset>({
 
       <Box
         sx={{
-          border: `1px solid ${figVars['border-2']}`,
-          borderRadius: '6px',
+          borderRadius: '0.75rem',
+          boxShadow: figSurfaceShadow('shadow-stroke-1'),
           overflow: 'hidden',
+          backgroundColor: 'bg-2',
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, px: 3, py: 2 }}>

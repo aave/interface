@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
-import { figVars } from 'src/utils/figmaColors';
+import { figSurfaceShadow } from 'src/utils/figmaColors';
 
 import { SwappableToken, TokenType } from '../../types';
 
@@ -260,9 +260,10 @@ export const PriceInput = ({
     <Box
       ref={inputRef}
       sx={{
-        border: `1px solid ${figVars['border-2']}`,
-        borderRadius: '6px',
+        borderRadius: '0.75rem',
+        boxShadow: figSurfaceShadow('shadow-stroke-1'),
         overflow: 'hidden',
+        backgroundColor: 'bg-2',
         px: 3,
         py: 2,
         width: '100%',

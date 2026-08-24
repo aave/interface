@@ -28,7 +28,7 @@ import { Link } from 'src/components/primitives/Link';
 import { textCenterEllipsis } from 'src/helpers/text-center-ellipsis';
 import { useRootStore } from 'src/store/root';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
-import { figVars } from 'src/utils/figmaColors';
+import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { COMMON_SWAPS } from '../../../../../ui-config/TokenList';
@@ -275,9 +275,10 @@ export const SwitchAssetInput = ({
       <Box
         ref={inputRef}
         sx={{
-          border: `1px solid ${figVars['border-2']}`,
-          borderRadius: '6px',
+          borderRadius: '0.75rem',
+          boxShadow: figSurfaceShadow('shadow-stroke-1'),
           overflow: 'hidden',
+          backgroundColor: 'bg-2',
           px: 3,
           py: 2,
           width: '100%',
