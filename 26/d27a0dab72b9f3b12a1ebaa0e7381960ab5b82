@@ -1,0 +1,24 @@
+src/modules/reserve-overview/ReserveEModePanel.tsx
+  s_9a1e9249df3092::t_4c4e2cdc76ce43 173,175,180
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "26d27a0dab72b9f3b12a1ebaa0e7381960ab5b82",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9a1e9249df3092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "185147c8-c903-4a9e-9255-047797ac1a4a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
