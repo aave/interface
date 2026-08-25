@@ -16,7 +16,7 @@ import {
 import { Row } from 'src/components/primitives/Row';
 import { SecondsToString } from 'src/components/SecondsToString';
 import { CollateralType } from 'src/helpers/types';
-import { figVars } from 'src/utils/figmaColors';
+import { figSurfaceShadow } from 'src/utils/figmaColors';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
@@ -58,8 +58,8 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
       <Box
         sx={{
           p: 3,
-          border: `1px solid ${figVars['border-2']}`,
-          borderRadius: '4px',
+          boxShadow: figSurfaceShadow('shadow-stroke-1'),
+          borderRadius: '0.75rem',
           '.MuiBox-root:last-of-type': {
             mb: 0,
           },

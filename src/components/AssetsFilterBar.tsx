@@ -71,6 +71,7 @@ export const AssetsFilterBar = ({
         )}
 
         <AssetCategoryMultiSelect
+          variant="outlined"
           selectedCategories={selectedCategories}
           onCategoriesChange={onCategoriesChange}
           disabled={categoriesDisabled}

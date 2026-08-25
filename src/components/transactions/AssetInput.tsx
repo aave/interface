@@ -132,7 +132,7 @@ export const AssetInput = <T extends Asset = Asset>({
 
       <Box
         sx={{
-          borderRadius: '0.75rem',
+          borderRadius: '0.5rem',
           boxShadow: figSurfaceShadow('shadow-stroke-1'),
           overflow: 'hidden',
           backgroundColor: 'bg-2',

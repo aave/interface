@@ -245,10 +245,6 @@ export const BorrowAssetsList = () => {
                   selectedCategories={selectedCategories}
                   onCategoriesChange={setSelectedCategories}
                   disabled={isLoading || !!error}
-                  sx={{
-                    buttonGroup: { width: '100%', maxWidth: '100%', height: '30px' },
-                    button: { fontSize: '0.7rem' },
-                  }}
                 />
               </Box>
             </>

@@ -1,5 +1,6 @@
 import { SxProps, Theme } from '@mui/material';
 import { figVars } from 'src/utils/figmaColors';
+import { darkScheme } from 'src/utils/theme';
 
 /**
  * The outer band shared by the two page-header components (`PageHeader` and `TopInfoPanel`):
@@ -12,4 +13,5 @@ export const pageBandSx: SxProps<Theme> = {
   color: 'fg-1',
   boxShadow: `0px 1px 0px ${figVars['border-0']}`,
   bgcolor: 'bg-3',
+  ...darkScheme({ backgroundColor: figVars['bg-1'] }),
 };

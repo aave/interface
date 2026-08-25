@@ -21,6 +21,8 @@ interface AssetCategoryMultiSelectProps {
   onCategoriesChange: (categories: AssetCategory[]) => void;
   disabled?: boolean;
   sx?: SxProps<Theme>;
+  /** `outlined` (the secondary pill) in the shared filter bar; tertiary in the dashboard cards. */
+  variant?: 'outlined' | 'tertiary';
 }
 
 const categoryLabels = {
@@ -41,6 +43,7 @@ export const AssetCategoryMultiSelect = ({
   onCategoriesChange,
   disabled = false,
   sx,
+  variant = 'tertiary',
 }: AssetCategoryMultiSelectProps) => {
   const { breakpoints } = useTheme();
   const sm = useMediaQuery(breakpoints.down('sm'));
@@ -75,7 +78,7 @@ export const AssetCategoryMultiSelect = ({
       <Button
         onClick={handleClick}
         disabled={disabled}
-        variant="outlined"
+        variant={variant}
         aria-haspopup="true"
         aria-expanded={open}
         endIcon={<ChevronUpDownIcon sx={{ fontSize: 18, color: 'fg-3' }} />}

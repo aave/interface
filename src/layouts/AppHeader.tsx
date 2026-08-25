@@ -33,6 +33,7 @@ import { useRootStore } from 'src/store/root';
 import { iconButtonSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 import { ENABLE_TESTNET, FORK_ENABLED, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
+import { darkScheme } from 'src/utils/theme';
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
@@ -213,6 +214,7 @@ export function AppHeader() {
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
           bgcolor: 'bg-3',
+          ...darkScheme({ backgroundColor: figVars['bg-2'] }),
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
