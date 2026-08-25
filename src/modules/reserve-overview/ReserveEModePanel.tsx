@@ -170,14 +170,14 @@ export const ConfigStatus = ({
           <WarningAmberIcon fontSize="small" color="warning" sx={{ ml: 2, cursor: 'help' }} />
         </Tooltip>
       ) : enabled ? (
-        <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
+        <CheckRoundedIcon fontSize="small" sx={{ ml: 2, color: 'data-green' }} />
       ) : (
-        <CloseIcon fontSize="small" color="error" sx={{ ml: 2 }} />
+        <CloseIcon fontSize="small" sx={{ ml: 2, color: 'data-red' }} />
       )}
       {label && (
         <Typography
           variant="subheader1"
-          sx={{ color: warning ? '#E8A838' : enabled ? '#46BC4B' : '#F24E4E' }}
+          sx={{ color: warning ? '#E8A838' : enabled ? 'data-green' : 'data-red' }}
         >
           <Trans>{label}</Trans>
         </Typography>
