@@ -26,7 +26,7 @@ export const StakeAssetName = ({
       <TokenIcon symbol={iconSymbol} fontSize="large" />
       <Stack ml={2}>
         <Stack direction="row" alignItems="center" gap={1}>
-          <Typography variant="h4" noWrap>
+          <Typography variant="subheader1" noWrap>
             Stake {symbol}
           </Typography>
           <TokenContractTooltip explorerUrl={explorerUrl} />
