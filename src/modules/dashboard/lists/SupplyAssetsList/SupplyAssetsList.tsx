@@ -322,7 +322,7 @@ export const SupplyAssetsList = () => {
               />
             </Box>
           )}
-          <Box sx={{ px: 6 }}>
+          <Box>
             {user?.isInIsolationMode ? (
               <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
                 <Trans>

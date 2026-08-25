@@ -231,7 +231,7 @@ export const ListWrapper = ({
       </Paper>
 
       {/* Filters (e.g. "Show assets with 0 balance") sit below the card, outside it. */}
-      {subChildrenComponent && !collapsed && <Box sx={{ mt: 3 }}>{subChildrenComponent}</Box>}
+      {subChildrenComponent && !collapsed && <Box sx={{ mt: '1rem' }}>{subChildrenComponent}</Box>}
     </>
   );
 };

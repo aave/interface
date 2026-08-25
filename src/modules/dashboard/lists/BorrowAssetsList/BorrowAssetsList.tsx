@@ -249,7 +249,7 @@ export const BorrowAssetsList = () => {
               </Box>
             </>
           )}
-          <Box sx={{ px: 6 }}>
+          <Box>
             {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
               <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%' }}>
                 <Trans>
