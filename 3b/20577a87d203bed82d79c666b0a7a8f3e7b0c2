@@ -1,0 +1,42 @@
+src/components/AssetsFilterBar.tsx
+  s_9a1e9249df3092::t_92ea89cb6d5dfa 74
+src/components/transactions/FlowCommons/TxModalDetails.tsx
+  s_9a1e9249df3092::t_d686b4cc043051 62
+  s_9a1e9249df3092::t_7d3815dd0f2a1b 19
+  s_9a1e9249df3092::t_359ccd2035725c 61
+src/layouts/AppHeader.tsx
+  s_9a1e9249df3092::t_021f7da1759707 36,217
+src/components/transactions/Bridge/BridgeDestinationInput.tsx
+  s_9a1e9249df3092::t_7d3815dd0f2a1b 13
+  s_9a1e9249df3092::t_d686b4cc043051 78,119
+  s_9a1e9249df3092::t_ee5af39586ed78 82-107
+  s_9a1e9249df3092::t_a10c107cffc934 118
+src/components/AssetCategoryMultiselect.tsx
+  s_9a1e9249df3092::t_ee5af39586ed78 24
+  s_9a1e9249df3092::t_92ea89cb6d5dfa 25,46,81
+src/components/PageHeader/pageBandSx.ts
+  s_9a1e9249df3092::t_75db466c24c334 3,16
+src/components/transactions/AssetInput.tsx
+  s_9a1e9249df3092::t_d686b4cc043051 135
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "3b20577a87d203bed82d79c666b0a7a8f3e7b0c2",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9a1e9249df3092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "185147c8-c903-4a9e-9255-047797ac1a4a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
