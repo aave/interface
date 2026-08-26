@@ -1,0 +1,113 @@
+src/components/infoTooltips/DarkTooltip.tsx
+  s_9a1e9249df3092::t_0d27ac39d6e8cf 2,20-24
+  s_4be7b399b605b1::t_69dc6829a867f6 26
+src/components/transactions/Warnings/BorrowCapWarning.tsx
+  s_9a1e9249df3092::t_137d5ef7fb17f6 30
+src/modules/sGho/SGhoDepositRow.tsx
+  s_9a1e9249df3092::t_b960828fcec720 34
+  s_9a1e9249df3092::t_b3318f13f0b333 37
+src/modules/staking/GhoStakingPanel.tsx
+  s_9a1e9249df3092::t_52d1dd7dc7bacb 175
+  s_9a1e9249df3092::t_b3318f13f0b333 179
+src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+  s_9a1e9249df3092::t_dfac52e61044a2 39,405-413,418,425
+  s_4be7b399b605b1::t_666290e049b1de 414-417
+  s_9a1e9249df3092::t_e7b3389dd285dc 441
+  s_9a1e9249df3092::t_0f067c6c6fc019 489
+  s_9a1e9249df3092::t_5c9324657c8627 490
+  s_9a1e9249df3092::t_dbdf30d3ac7b89 491
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_9a1e9249df3092::t_44c3944c3b3ee0 213
+  s_4be7b399b605b1::t_1e7bea2340f1bb 212,236
+src/components/transactions/Swap/inputs/MarketOrderInputs.tsx
+  s_4be7b399b605b1::t_516ac000bcde69 121,123
+  s_9a1e9249df3092::t_c1527580ae88ae 119,124,128
+src/components/transactions/AssetInput.tsx
+  s_9a1e9249df3092::t_87bab07c6e1716 128
+src/modules/governance/UserGovernanceInfo.tsx
+  s_9a1e9249df3092::t_06fa35e8094a5e 22
+src/hooks/useReserveActionState.tsx
+  s_9a1e9249df3092::t_07a36764b74a7c 73
+src/modules/governance/VotingPowerInfoPanel.tsx
+  s_9a1e9249df3092::t_06fa35e8094a5e 26
+src/modules/governance/DelegatedInfoPanel.tsx
+  s_9a1e9249df3092::t_bd7557785f7959 169
+  s_9a1e9249df3092::t_06fa35e8094a5e 164
+  s_9a1e9249df3092::t_c76f1d4988c17c 166
+src/modules/staking/StakeActionBox.tsx
+  s_9a1e9249df3092::t_b3318f13f0b333 59
+  s_9a1e9249df3092::t_b960828fcec720 37
+src/components/transactions/FlowCommons/TxModalDetails.tsx
+  s_9a1e9249df3092::t_87bab07c6e1716 54
+src/layouts/components/LanguageSwitcher.tsx
+  s_9a1e9249df3092::t_7984a648e6f6c4 51-52,57
+  s_4be7b399b605b1::t_d8d0e48e4c8477 56
+src/modules/sGho/SGhoLoggedOutPreview.tsx
+  s_9a1e9249df3092::t_b3318f13f0b333 42
+  s_9a1e9249df3092::t_b960828fcec720 39
+src/modules/staking/StakingPanelNoWallet.tsx
+  s_9a1e9249df3092::t_b960828fcec720 49
+  s_9a1e9249df3092::t_b3318f13f0b333 51
+src/modules/dashboard/DashboardEModeButton.tsx
+  s_9a1e9249df3092::t_f7b9213979d764 68
+  s_9a1e9249df3092::t_9cfa7cacc87173 112,116
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_9a1e9249df3092::t_24adff14047e65 41,341
+src/components/transactions/Warnings/SupplyCapWarning.tsx
+  s_9a1e9249df3092::t_137d5ef7fb17f6 31
+src/modules/governance/RepresentativesInfoPanel.tsx
+  s_9a1e9249df3092::t_06fa35e8094a5e 42
+src/components/transactions/Bridge/BridgeDestinationInput.tsx
+  s_9a1e9249df3092::t_87bab07c6e1716 77
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_9a1e9249df3092::t_b3318f13f0b333 82
+  s_9a1e9249df3092::t_b960828fcec720 79
+src/components/transactions/Warnings/DebtCeilingWarning.tsx
+  s_9a1e9249df3092::t_137d5ef7fb17f6 34
+src/modules/staking/StakingPanel.tsx
+  s_9a1e9249df3092::t_b3318f13f0b333 176
+  s_9a1e9249df3092::t_52d1dd7dc7bacb 172
+src/modules/governance/GovernanceTopPanel.tsx
+  s_9a1e9249df3092::t_8db611351d4d9e 23
+src/components/SavingsCardSkeleton.tsx
+  s_4be7b399b605b1::t_a15b05fc3baa23 16,19
+src/locales/el/messages.js
+  s_4be7b399b605b1::t_49fb2f35392e79 1
+src/locales/en/messages.js
+  s_4be7b399b605b1::t_95d55586cd79a1 1
+src/locales/en/messages.po
+  s_4be7b399b605b1::t_dca638289aa08b 3126
+src/locales/es/messages.js
+  s_4be7b399b605b1::t_68087d97622097 1
+src/locales/fr/messages.js
+  s_4be7b399b605b1::t_21b24cc8cd7b9f 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "797b38c37b0d38fea02ee3c6649d10697d517d7f",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_4be7b399b605b1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cf8d7b61-8c32-4170-9fba-23ceee2f77fa",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_9a1e9249df3092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "185147c8-c903-4a9e-9255-047797ac1a4a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
