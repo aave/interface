@@ -208,9 +208,9 @@ export const MarketAssetsListContainer = () => {
 
         <Box
           sx={{
-            mt: 6,
             px: { xs: 4, xsm: 6 },
-            py: 3,
+            height: { sm: '40px' },
+            py: { xs: 3, sm: 0 },
             display: 'flex',
             flexDirection: { xs: 'column', sm: 'row' },
             alignItems: { xs: 'flex-start', sm: 'center' },
@@ -233,8 +233,7 @@ export const MarketAssetsListContainer = () => {
               />
               <Divider
                 orientation={sm ? 'horizontal' : 'vertical'}
-                flexItem
-                sx={{ width: { xs: '100%', sm: 'auto' } }}
+                sx={{ width: { xs: '100%', sm: 'auto' }, height: { sm: '1.25rem' } }}
               />
             </>
           )}

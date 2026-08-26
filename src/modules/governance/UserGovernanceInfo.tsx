@@ -19,7 +19,7 @@ export const UserGovernanceInfo = () => {
       <RepresentativesInfoPanel />
     </Box>
   ) : (
-    <Paper sx={{ p: 6 }}>
+    <Paper variant="card" sx={{ p: 6 }}>
       <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
         <Trans>Your info</Trans>
       </Typography>

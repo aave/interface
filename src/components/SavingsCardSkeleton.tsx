@@ -13,10 +13,10 @@ export const SavingsCardSkeleton = ({ hasAccount }: SavingsCardSkeletonProps) =>
           <Box
             sx={{
               borderRadius: { xs: '8px', xsm: '6px' },
-              border: `1px solid ${figVars['border-2']}`,
+              border: `1px solid ${figVars['border-0']}`,
               p: 4,
               mb: 4,
-              background: figVars['surface-elevated'],
+              background: figVars['bg-2'],
             }}
           >
             <Stack spacing={3}>

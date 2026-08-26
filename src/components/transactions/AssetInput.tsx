@@ -125,7 +125,7 @@ export const AssetInput = <T extends Asset = Asset>({
 
   return (
     <Box {...sx}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: '0.5rem' }}>
         <Typography color="fg-2">{inputTitle ? inputTitle : <Trans>Amount</Trans>}</Typography>
         {capType && <AvailableTooltip capType={capType} />}
       </Box>

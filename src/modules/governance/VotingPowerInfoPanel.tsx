@@ -23,7 +23,7 @@ export function VotingPowerInfoPanel() {
     ? Number(coreConfig.minPropositionPower)
     : undefined;
   return (
-    <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
+    <Paper variant="card" sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography
         variant="h3"
         sx={{ height: '36px', display: 'flex', alignItems: 'center', mb: 4 }}

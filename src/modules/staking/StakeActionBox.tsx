@@ -34,7 +34,7 @@ export const StakeActionBox = ({
         flex: 1,
         display: 'flex',
         borderRadius: '6px',
-        border: `1px solid ${figVars['border-2']}`,
+        border: `1px solid ${figVars['border-0']}`,
         position: 'relative',
         '&:after': {
           content: "''",
@@ -56,7 +56,7 @@ export const StakeActionBox = ({
           alignItems: 'center',
           flexDirection: 'column',
           borderRadius: '6px',
-          background: figVars['surface-elevated'],
+          background: figVars['bg-2'],
           position: 'relative',
           zIndex: 2,
         }}

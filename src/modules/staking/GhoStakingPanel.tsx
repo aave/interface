@@ -172,11 +172,11 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           flexDirection: { xs: 'column', xsm: 'row' },
           gap: { xs: 0, xsm: 2 },
           borderRadius: { xs: 0, xsm: '6px' },
-          border: { xs: 'unset', xsm: `1px solid ${figVars['border-2']}` },
+          border: { xs: 'unset', xsm: `1px solid ${figVars['border-0']}` },
           p: { xs: 0, xsm: 4 },
           background: {
             xs: 'unset',
-            xsm: figVars['surface-elevated'],
+            xsm: figVars['bg-2'],
           },
           position: 'relative',
           '&:after': {

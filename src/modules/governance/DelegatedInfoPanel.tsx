@@ -161,12 +161,12 @@ export const DelegatedInfoPanel = () => {
     powers.aAavePropositionDelegatee !== constants.AddressZero;
 
   return (
-    <Paper>
+    <Paper variant="card">
       <Box sx={{ px: 6, pb: 6, pt: 4 }}>
-        <Typography typography="h3">
+        <Typography typography="h3" sx={{ height: '36px', display: 'flex', alignItems: 'center' }}>
           <Trans>Delegated power</Trans>
         </Typography>
-        <Typography typography="description" sx={{ mt: 1 }} color="fg-2">
+        <Typography typography="description" sx={{ mt: 2 }} color="fg-2">
           <Trans>
             Use your AAVE, stkAAVE, or aAave balance to delegate your voting and proposition powers.
             You will not be sending any tokens, only the rights to vote and propose changes to the

@@ -116,20 +116,16 @@ export const MarketOrderInputs = ({
                 border: '1px solid',
                 borderColor: 'border-2',
                 backgroundColor: 'surface-elevated',
+                color: 'primary.main',
                 '&:hover': { backgroundColor: 'bg-2' },
-                '&:disabled': {
+                '&.Mui-disabled': {
                   backgroundColor: 'bg-2',
-                  opacity: '0.7',
-                  color: 'fg-2',
+                  borderColor: 'border-0',
+                  color: 'fg-3',
                 },
               }}
             >
-              <SvgIcon
-                sx={{
-                  color: 'primary.main',
-                  fontSize: '18px',
-                }}
-              >
+              <SvgIcon sx={{ fontSize: '18px' }}>
                 <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>

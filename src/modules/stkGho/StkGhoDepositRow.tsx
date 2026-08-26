@@ -76,10 +76,10 @@ export const StkGhoDepositRow = ({
         flexDirection: { xs: 'column', xsm: 'row' },
         gap: { xs: 4, xsm: 4 },
         borderRadius: { xs: '8px', xsm: '6px' },
-        border: `1px solid ${figVars['border-2']}`,
+        border: `1px solid ${figVars['border-0']}`,
         p: 4,
         mb: 6,
-        background: figVars['surface-elevated'],
+        background: figVars['bg-2'],
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, minWidth: 0 }}>

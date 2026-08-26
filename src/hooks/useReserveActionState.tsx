@@ -70,7 +70,7 @@ export const useReserveActionState = ({
       eModeBorrowDisabled ||
       maxAmountToBorrow === '0',
     alerts: (
-      <Stack gap={3}>
+      <Stack gap={3} sx={{ mt: '0.25rem', '&:empty': { display: 'none' } }}>
         {balance === '0' && !isGho && (
           <>
             {currentNetworkConfig.isTestnet ? (

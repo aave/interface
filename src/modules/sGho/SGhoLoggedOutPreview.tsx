@@ -36,10 +36,10 @@ export const SGhoLoggedOutPreview = ({ rate }: SGhoLoggedOutPreviewProps) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           borderRadius: { xs: '8px', xsm: '6px' },
-          border: `1px solid ${figVars['border-2']}`,
+          border: `1px solid ${figVars['border-0']}`,
           p: 4,
           mb: 6,
-          background: figVars['surface-elevated'],
+          background: figVars['bg-2'],
         }}
       >
         <Box>

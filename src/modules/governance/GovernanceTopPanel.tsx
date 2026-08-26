@@ -20,7 +20,7 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
 
   return (
     <Button
-      variant="tertiary"
+      variant="outlined"
       size="small"
       component={Link}
       href={href}

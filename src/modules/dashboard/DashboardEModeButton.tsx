@@ -65,7 +65,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         }}
         data-cy={`emode-open`}
         size="small"
-        variant="tertiary"
+        variant="outlined"
         sx={{
           ml: 1,
           borderRadius: '4px',
@@ -109,11 +109,11 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           </SvgIcon>
 
           {isEModeDisabled ? (
-            <Typography variant="buttonS" color="fg-2">
+            <Typography variant="buttonM" color="fg-2">
               <EModeLabelMessage />
             </Typography>
           ) : (
-            <TypographyGradient variant="buttonS">
+            <TypographyGradient variant="buttonM">
               <EModeLabelMessage />
             </TypographyGradient>
           )}

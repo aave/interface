@@ -38,6 +38,7 @@ import { AssetInput } from '../AssetInput';
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
+import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { BridgeActionProps, BridgeActions } from './BridgeActions';
 import { BridgeAmount } from './BridgeAmount';
@@ -337,9 +338,7 @@ export const BridgeModalContent = () => {
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 6 }}>
-        <Typography variant="h2">
-          <Trans>Bridge GHO</Trans>
-        </Typography>
+        <TxModalTitle title={<Trans>Bridge GHO</Trans>} sx={{ mb: 0 }} />
         {user && (
           <Button
             component={Link}

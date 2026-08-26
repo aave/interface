@@ -74,7 +74,7 @@ export const BridgeDestinationInput = ({
   const showWarning = !useConnectedAccount && !isAddress(destinationAccount);
 
   return (
-    <Stack direction="column" gap={1} width="100%">
+    <Stack direction="column" gap="0.5rem" width="100%">
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography color="fg-2">
           <Trans>To</Trans>

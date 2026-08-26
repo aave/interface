@@ -27,7 +27,7 @@ export const BorrowCapWarning = ({ borrowCap, icon, ...rest }: BorrowCapWarningP
   };
 
   return (
-    <Alert severity={severity} sx={{ mb: 6, width: '100%' }} {...rest}>
+    <Alert severity={severity} data-size="small" sx={{ mb: 6, width: '100%' }} {...rest}>
       {renderText()}{' '}
       <Link href="https://docs.aave.com/developers/whats-new/supply-borrow-caps" underline="always">
         <Trans>Learn more</Trans>

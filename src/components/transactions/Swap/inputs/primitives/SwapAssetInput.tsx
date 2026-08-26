@@ -36,6 +36,7 @@ import { BasicModal } from '../../../../primitives/BasicModal';
 import { FormattedNumber } from '../../../../primitives/FormattedNumber';
 import { ExternalTokenIcon } from '../../../../primitives/TokenIcon';
 import { SearchInput } from '../../../../SearchInput';
+import { TxModalTitle } from '../../../FlowCommons/TxModalTitle';
 import { SwappableToken, SwapType, TokenType } from '../../types';
 
 interface CustomProps {
@@ -401,80 +402,28 @@ export const SwitchAssetInput = ({
             )}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <Typography variant="h4" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    mt: 2,
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      fontWeight: 600,
-                      // mr: 1,
-                      lineHeight: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Trans>Select token</Trans>
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 0.5,
-                      height: 24,
-                    }}
-                  >
-                    <MarketLogo
-                      size={16}
-                      logo={networkConfig.networkLogoPath}
-                      sx={{
-                        ml: 0,
-                        mr: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        height: 16,
-                      }}
-                    />
-                    <Typography
-                      variant="caption"
-                      color="fg-2"
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        height: 16,
-                        lineHeight: 1,
-                        fontWeight: 500,
-                        fontSize: 16,
-                        ml: 0.5,
-                        mt: '1px',
-                      }}
-                    >
-                      {networkName}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  mb: '1rem',
+                }}
+              >
+                <TxModalTitle title={<Trans>Select token</Trans>} sx={{ mb: 0 }} />
+                <MarketLogo size={16} logo={networkConfig.networkLogoPath} sx={{ mr: 0 }} />
+                <Typography variant="secondary16" color="fg-2" sx={{ lineHeight: 1, mt: '1px' }}>
+                  {networkName}
+                </Typography>
+              </Box>
 
               <Box
                 sx={{
-                  borderBottom:
-                    assets.length > 3 && mergedPopular.length > 0
-                      ? `1px solid ${figVars['border-2']}`
-                      : 'none',
                   position: 'sticky',
                   top: 0,
                   zIndex: 2,
-                  mb: 3,
-                  pb: 3,
+                  mb: '1rem',
                   boxShadow: '0px 4px 6px -6px rgba(0, 0, 0, 0.1)',
-                  marginTop: -3,
-                  paddingTop: 3,
                 }}
               >
                 <SearchInput
@@ -489,7 +438,7 @@ export const SwitchAssetInput = ({
                       justifyContent: 'flex-start',
                       alignItems: 'flex-start',
                       flexWrap: 'wrap',
-                      mt: 2.5,
+                      mt: '1rem',
                       gap: 1.5,
                     }}
                   >
@@ -537,6 +486,9 @@ export const SwitchAssetInput = ({
                   flexGrow: 1,
                   overflowY: 'auto',
                   maxHeight: 'calc(800px - 180px)',
+                  mx: -6,
+                  pl: 3,
+                  pr: '1rem',
                   '&::-webkit-scrollbar': {
                     width: '8px',
                   },

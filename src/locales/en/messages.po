@@ -3123,6 +3123,7 @@ msgstr "Borrowable"
 msgid "Safety Module"
 msgstr "Safety Module"
 
+#: src/layouts/components/LanguageSwitcher.tsx
 #: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Back"
 msgstr "Back"
@@ -3261,10 +3262,6 @@ msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to a
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Unavailable"
 msgstr "Unavailable"
-
-#: src/layouts/components/LanguageSwitcher.tsx
-msgid "Select language"
-msgstr "Select language"
 
 #: src/components/transactions/Borrow/ParameterChangewarning.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
