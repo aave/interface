@@ -214,7 +214,7 @@ export function AppHeader() {
           transition: theme.transitions.create('top'),
           zIndex: theme.zIndex.appBar,
           bgcolor: 'bg-3',
-          ...darkScheme({ backgroundColor: figVars['bg-2'] }),
+          ...darkScheme({ backgroundColor: figVars['bg-1'] }),
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -278,7 +278,7 @@ export function AppHeader() {
             <Button
               component={Link}
               href={AAVE_PRO_URL}
-              variant="tertiary"
+              variant="outlined"
               sx={{
                 p: '0 0.88rem',
                 minWidth: 'unset',
@@ -303,7 +303,7 @@ export function AppHeader() {
             >
               <Button
                 onClick={handleSwitchClick}
-                variant="tertiary"
+                variant="outlined"
                 startIcon={
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     {hasActiveOrders ? (
@@ -341,7 +341,7 @@ export function AppHeader() {
             >
               <Button
                 onClick={handleBridgeClick}
-                variant="tertiary"
+                variant="outlined"
                 startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
                 sx={collapsingTriggerSx}
               >
@@ -356,7 +356,7 @@ export function AppHeader() {
 
           {readOnlyMode ? (
             <Button
-              variant="tertiary"
+              variant="outlined"
               onClick={() => {
                 openReadMode();
               }}
