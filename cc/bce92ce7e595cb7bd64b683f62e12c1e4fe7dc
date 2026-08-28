@@ -1,0 +1,25 @@
+src/components/infoTooltips/NetAPYTooltip.tsx
+  h_dd1a1ee57491bb 9-10
+  h_dd1a1ee57491bb 11
+src/locales/el/messages.js
+  h_dd1a1ee57491bb 1
+src/locales/en/messages.js
+  h_dd1a1ee57491bb 1
+src/locales/en/messages.po
+  h_dd1a1ee57491bb 865-868
+src/locales/es/messages.js
+  h_dd1a1ee57491bb 1
+src/locales/fr/messages.js
+  h_dd1a1ee57491bb 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "ccbce92ce7e595cb7bd64b683f62e12c1e4fe7dc",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}
