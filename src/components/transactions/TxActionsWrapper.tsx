@@ -149,7 +149,17 @@ export const TxActionsWrapper = ({
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
       {approvalParams && !readOnlyModeAddress && (
-        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center', gap: 4 }}>
+        // Wraps rather than squeezes: an exact allowance can be a full-precision 18-decimal
+        // figure, which does not share a line with the approval method toggle.
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'end',
+            alignItems: 'center',
+            columnGap: 4,
+          }}
+        >
           <RightHelperText
             approvalHash={approvalTxState?.txHash}
             tryPermit={tryPermit}

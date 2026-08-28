@@ -46,19 +46,31 @@ export const RepayAllowanceControl = ({
   };
 
   return (
-    <Box sx={{ display: 'inline-flex', alignItems: 'center', mb: 2 }}>
-      <Typography variant="subheader2" color="text.secondary">
+    // flexShrink: 0 is what makes the parent row wrap this onto its own line instead of
+    // squeezing it; maxWidth then caps it at the row, so a very long amount breaks rather
+    // than overflowing. Shrinking first would let the digits break while space remains.
+    <Box
+      sx={{ display: 'inline-flex', alignItems: 'center', mb: 2, maxWidth: '100%', flexShrink: 0 }}
+    >
+      <Typography variant="subheader2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
         <Trans>Allowance</Trans>&nbsp;
       </Typography>
       <Box
         onClick={(event: React.MouseEvent<HTMLDivElement>) => setAnchorEl(event.currentTarget)}
-        sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+        sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', minWidth: 0 }}
         data-cy="repayAllowanceChange"
       >
-        <Typography variant="subheader2" color="info.main" component="span">
+        <Typography
+          variant="subheader2"
+          color="info.main"
+          component="span"
+          // A full-precision 18-decimal amount is long. Breaking it is the last resort, once
+          // the row has already wrapped the control onto a line of its own.
+          sx={{ wordBreak: 'break-word' }}
+        >
           {isExact ? `${exactAmount} ${symbol}` : <Trans>Unlimited</Trans>}
         </Typography>
-        <SvgIcon sx={{ fontSize: 16, ml: 1, color: 'info.main' }}>
+        <SvgIcon sx={{ fontSize: 16, ml: 1, color: 'info.main', flexShrink: 0 }}>
           <CogIcon />
         </SvgIcon>
       </Box>
@@ -69,6 +81,9 @@ export const RepayAllowanceControl = ({
         onClose={() => setAnchorEl(null)}
         keepMounted={true}
         data-cy={`repayAllowanceMenu_${allowance}`}
+        PaperProps={{ sx: { maxWidth: 'min(360px, calc(100vw - 32px))' } }}
+        // MenuItem is nowrap by default, which clips the amount off the right edge on mobile.
+        MenuListProps={{ sx: { '& .MuiMenuItem-root': { whiteSpace: 'normal' } } }}
       >
         <MenuItem
           data-cy="repayAllowanceOption_exact"
@@ -86,7 +101,7 @@ export const RepayAllowanceControl = ({
           >
             <Trans>Exact amount</Trans>
           </ListItemText>
-          <ListItemIcon>
+          <ListItemIcon sx={{ alignSelf: 'flex-start', mt: 1 }}>
             <SvgIcon>{isExact && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
         </MenuItem>
@@ -103,7 +118,7 @@ export const RepayAllowanceControl = ({
           >
             <Trans>Unlimited</Trans>
           </ListItemText>
-          <ListItemIcon>
+          <ListItemIcon sx={{ alignSelf: 'flex-start', mt: 1 }}>
             <SvgIcon>{!isExact && <CheckIcon />}</SvgIcon>
           </ListItemIcon>
         </MenuItem>
