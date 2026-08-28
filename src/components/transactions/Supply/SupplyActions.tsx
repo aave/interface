@@ -12,6 +12,7 @@ import { Contract, PopulatedTransaction } from 'ethers';
 import { parseUnits, splitSignature } from 'ethers/lib/utils';
 import React, { useEffect, useState } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { usePoolSupportsMulticall } from 'src/hooks/pool/usePoolSupportsMulticall';
 import { SignedParams, useApprovalTx } from 'src/hooks/useApprovalTx';
 import { usePoolApprovedAmount } from 'src/hooks/useApprovedAmount';
 import { useModalContext } from 'src/hooks/useModal';
@@ -96,6 +97,8 @@ export const SupplyActions = React.memo(
     } = useModalContext();
     const permitAvailable = tryPermit({ reserveAddress: poolAddress, isWrappedBaseAsset });
     const { sendTx } = useWeb3Context();
+    // Resolved on modal open so it is cached well before the user picks an e-mode.
+    const { data: poolSupportsMulticall } = usePoolSupportsMulticall(currentMarketData);
     const queryClient = useQueryClient();
 
     const [signatureParams, setSignatureParams] = useState<SignedParams | undefined>();
@@ -176,22 +179,35 @@ export const SupplyActions = React.memo(
         const isNativeAsset = poolAddress.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 
         if (needsEmodeSwitch) {
-          if (isNativeAsset) {
-            // Native ETH goes through WETH Gateway which is a separate contract —
-            // can't bundle with Pool.multicall. Send setUserEMode first, then supply.
+          if (isNativeAsset || !poolSupportsMulticall) {
+            // Native ETH goes through WETH Gateway which is a separate contract,
+            // and pools below POOL_REVISION 8 have no multicall at all — neither
+            // can be bundled. Send setUserEMode first, then supply.
             const eModeTxs = await setUserEMode(selectedEmodeId);
             const eModeTx = await eModeTxs[0].tx();
             const eModeTxWithGas = await estimateGasLimit(eModeTx as PopulatedTransaction);
             const eModeResponse = await sendTx(eModeTxWithGas);
             await eModeResponse.wait(1);
 
-            action = ProtocolAction.supply;
-            let supplyTxData = supply({
-              amount: parseUnits(amountToSupply, decimals).toString(),
-              reserve: poolAddress,
-            });
-            supplyTxData = await estimateGasLimit(supplyTxData);
-            response = await sendTx(supplyTxData);
+            if (usePermit && signatureParams) {
+              action = ProtocolAction.supplyWithPermit;
+              let signedSupplyWithPermitTxData = supplyWithPermit({
+                signature: signatureParams.signature,
+                amount: parseUnits(amountToSupply, decimals).toString(),
+                reserve: poolAddress,
+                deadline: signatureParams.deadline,
+              });
+              signedSupplyWithPermitTxData = await estimateGasLimit(signedSupplyWithPermitTxData);
+              response = await sendTx(signedSupplyWithPermitTxData);
+            } else {
+              action = ProtocolAction.supply;
+              let supplyTxData = supply({
+                amount: parseUnits(amountToSupply, decimals).toString(),
+                reserve: poolAddress,
+              });
+              supplyTxData = await estimateGasLimit(supplyTxData);
+              response = await sendTx(supplyTxData);
+            }
             await response.wait(1);
           } else {
             // ERC20: Bundle setUserEMode + supply via Pool multicall

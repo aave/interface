@@ -2,10 +2,11 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { TransactionResponse } from '@ethersproject/providers';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
-import { Contract } from 'ethers';
+import { Contract, PopulatedTransaction } from 'ethers';
 import React from 'react';
 import { useTransactionHandler } from 'src/helpers/useTransactionHandler';
 import { ComputedReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { usePoolSupportsMulticall } from 'src/hooks/pool/usePoolSupportsMulticall';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -39,9 +40,10 @@ export const CollateralChangeActions = ({
   symbol,
   selectedEmodeId,
 }: CollateralChangeActionsProps) => {
-  const [setUsageAsCollateral, estimateGasLimit, currentMarketData] = useRootStore(
+  const [setUsageAsCollateral, setUserEMode, estimateGasLimit, currentMarketData] = useRootStore(
     useShallow((state) => [
       state.setUsageAsCollateral,
+      state.setUserEMode,
       state.estimateGasLimit,
       state.currentMarketData,
     ])
@@ -49,6 +51,8 @@ export const CollateralChangeActions = ({
   const { sendTx } = useWeb3Context();
   const queryClient = useQueryClient();
   const { mainTxState, setMainTxState, setTxError } = useModalContext();
+  // Resolved on modal open so it is cached well before the user picks an e-mode.
+  const { data: poolSupportsMulticall } = usePoolSupportsMulticall(currentMarketData);
 
   const needsEmodeSwitch = selectedEmodeId !== undefined;
 
@@ -76,29 +80,52 @@ export const CollateralChangeActions = ({
     skip: blocked || needsEmodeSwitch,
   });
 
-  // Multicall action: setUserEMode + setUserUseReserveAsCollateral
-  const multicallAction = async () => {
+  // setUserEMode + setUserUseReserveAsCollateral, bundled via Pool.multicall
+  // where the pool supports it and sent sequentially where it does not.
+  const emodeAction = async () => {
     try {
       setMainTxState({ ...mainTxState, loading: true });
 
-      const poolContractAddress = currentMarketData.addresses.LENDING_POOL;
-      const poolInterface = new Contract(poolContractAddress, POOL_MULTICALL_ABI).interface;
-      const currentAccount = useRootStore.getState().account;
+      let response: TransactionResponse;
 
-      const setEModeCalldata = poolInterface.encodeFunctionData('setUserEMode', [selectedEmodeId]);
+      if (poolSupportsMulticall) {
+        const poolContractAddress = currentMarketData.addresses.LENDING_POOL;
+        const poolInterface = new Contract(poolContractAddress, POOL_MULTICALL_ABI).interface;
+        const currentAccount = useRootStore.getState().account;
 
-      const setCollateralCalldata = poolInterface.encodeFunctionData(
-        'setUserUseReserveAsCollateral',
-        [poolReserve.underlyingAsset, usageAsCollateral]
-      );
+        const setEModeCalldata = poolInterface.encodeFunctionData('setUserEMode', [
+          selectedEmodeId,
+        ]);
 
-      let multicallTxData = await new Contract(
-        poolContractAddress,
-        POOL_MULTICALL_ABI
-      ).populateTransaction.multicall([setEModeCalldata, setCollateralCalldata]);
-      multicallTxData = { ...multicallTxData, from: currentAccount };
-      multicallTxData = await estimateGasLimit(multicallTxData);
-      const response: TransactionResponse = await sendTx(multicallTxData);
+        const setCollateralCalldata = poolInterface.encodeFunctionData(
+          'setUserUseReserveAsCollateral',
+          [poolReserve.underlyingAsset, usageAsCollateral]
+        );
+
+        let multicallTxData = await new Contract(
+          poolContractAddress,
+          POOL_MULTICALL_ABI
+        ).populateTransaction.multicall([setEModeCalldata, setCollateralCalldata]);
+        multicallTxData = { ...multicallTxData, from: currentAccount };
+        multicallTxData = await estimateGasLimit(multicallTxData);
+        response = await sendTx(multicallTxData);
+      } else {
+        // Pools below POOL_REVISION 8 have no multicall — send the two calls
+        // one after the other instead.
+        const eModeTxs = await setUserEMode(selectedEmodeId as number);
+        const eModeTx = await eModeTxs[0].tx();
+        const eModeTxWithGas = await estimateGasLimit(eModeTx as PopulatedTransaction);
+        const eModeResponse = await sendTx(eModeTxWithGas);
+        await eModeResponse.wait(1);
+
+        const collateralTxs = await setUsageAsCollateral({
+          reserve: poolReserve.underlyingAsset,
+          usageAsCollateral,
+        });
+        const collateralTx = await collateralTxs[0].tx();
+        const collateralTxWithGas = await estimateGasLimit(collateralTx as PopulatedTransaction);
+        response = await sendTx(collateralTxWithGas);
+      }
 
       await response.wait(1);
 
@@ -136,7 +163,7 @@ export const CollateralChangeActions = ({
         )
       }
       actionInProgressText={<Trans>Pending...</Trans>}
-      handleAction={needsEmodeSwitch ? multicallAction : action}
+      handleAction={needsEmodeSwitch ? emodeAction : action}
     />
   );
 };
