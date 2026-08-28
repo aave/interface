@@ -7,7 +7,11 @@ import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { isUSDTOnEthereum, needsUSDTApprovalReset } from 'src/utils/usdtHelpers';
+import {
+  getNewApprovalAmount,
+  isUSDTOnEthereum,
+  needsUSDTApprovalReset,
+} from 'src/utils/usdtHelpers';
 import { useShallow } from 'zustand/shallow';
 
 import { useModalContext } from './useModal';
@@ -68,12 +72,8 @@ export const useApprovalTx = ({
 
   const [requiresApprovalReset, setRequiresApprovalReset] = useState(false);
 
-  // What the next approval will actually be for, in token units. `signatureAmount` is only
-  // a stand-in for it: on a full repay it is the '-1' sentinel, which would skip the check
-  // below even though `amountToApprove` holds a real, finite allowance to compare against.
-  const newApprovalAmount = amountToApprove
-    ? formatUnits(amountToApprove, decimals)
-    : signatureAmount;
+  // What the next approval will actually grant, which is not `signatureAmount` - see the helper.
+  const newApprovalAmount = getNewApprovalAmount(amountToApprove, decimals, signatureAmount);
 
   // Warning for USDT on Ethereum approval reset
   useEffect(() => {
