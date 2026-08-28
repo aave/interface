@@ -35,7 +35,7 @@ export const TransactionListItemLoader = () => {
         <Skeleton width={90} height={24} />
       </ListColumn>
 
-      <ListColumn maxWidth={95} minWidth={95}>
+      <ListColumn align="right" maxWidth={95} minWidth={95}>
         <Skeleton width={24} height={24} />
       </ListColumn>
     </ListItem>

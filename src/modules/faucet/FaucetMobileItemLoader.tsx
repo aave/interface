@@ -13,7 +13,7 @@ export const FaucetMobileItemLoader = () => {
           <Skeleton width={75} height={24} />
         </Box>
       </ListColumn>
-      <ListColumn maxWidth={280}>
+      <ListColumn align="right" maxWidth={280}>
         <Button variant="contained">
           <Trans>Faucet</Trans>
         </Button>

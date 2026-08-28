@@ -7,6 +7,7 @@ import { textCenterEllipsis } from 'src/helpers/text-center-ellipsis';
 import { getSeatbeltReportUrl } from 'src/modules/governance/utils/seatbelt';
 import { ProposalPayload } from 'src/services/governance-cache-sdk';
 import { networkConfigs } from 'src/ui-config/networksConfig';
+import { cardPaddingSx } from 'src/utils/cardStyles';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 interface ProposalPayloadsProps {
@@ -79,7 +80,7 @@ export const ProposalPayloads = ({ payloads, loading }: ProposalPayloadsProps) =
 
   if (loading) {
     return (
-      <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+      <Paper variant="card" sx={cardPaddingSx}>
         <Skeleton height={120} />
       </Paper>
     );
@@ -91,7 +92,7 @@ export const ProposalPayloads = ({ payloads, loading }: ProposalPayloadsProps) =
   const visiblePayloads = expanded ? payloads : payloads.slice(0, COLLAPSED_COUNT);
 
   return (
-    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+    <Paper variant="card" sx={cardPaddingSx}>
       <Typography variant="h3" sx={{ mb: 4 }}>
         <Trans>Payloads</Trans>
       </Typography>

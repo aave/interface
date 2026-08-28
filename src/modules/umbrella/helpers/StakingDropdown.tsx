@@ -3,7 +3,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import StartIcon from '@mui/icons-material/Start';
-import { Button, Stack, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Stack, useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -33,14 +33,17 @@ const StyledMenuItem = styled(MenuItem)({
   },
 });
 
-export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) => {
+export const StakingDropdown = ({
+  stakeData,
+  fullWidth,
+}: {
+  stakeData: MergedStakeData;
+  fullWidth?: boolean;
+}) => {
   const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake, openUmbrellaClaim } =
     useModalContext();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const now = useCurrentTimestamp(1);
-  const { breakpoints } = useTheme();
-
-  const isMobile = useMediaQuery(breakpoints.down('lg'));
 
   const endOfCooldown = stakeData?.cooldownData.endOfCooldown || 0;
   const unstakeWindow = stakeData?.cooldownData.withdrawalWindow || 0;
@@ -80,7 +83,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
       {!hasStakeTokenBalance && !hasUnclaimedRewards ? (
         <Button
           disabled={totalAvailableToStake === '0'}
-          fullWidth={isMobile}
+          fullWidth={fullWidth}
           variant="tertiary"
           size="small"
           onClick={() => {
@@ -105,7 +108,7 @@ export const StakingDropdown = ({ stakeData }: { stakeData: MergedStakeData }) =
         <>
           <IconButton
             style={{
-              width: isMobile ? '100%' : 'auto',
+              width: fullWidth ? '100%' : 'auto',
               backgroundColor: theme.palette.mode === 'light' ? '#F7F7F9' : '#383D51',
               borderRadius: 4,
             }}

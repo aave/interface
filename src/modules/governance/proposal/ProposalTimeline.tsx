@@ -20,6 +20,7 @@ import { useGovernanceCoreConstants } from 'src/hooks/governance/useGovernanceCo
 import { ProposalDetail, ProposalPayload } from 'src/services/GovernanceCacheService';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { networkConfigs } from 'src/ui-config/networksConfig';
+import { cardPaddingSx } from 'src/utils/cardStyles';
 import { figVars } from 'src/utils/figmaColors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
@@ -507,7 +508,7 @@ export const ProposalTimeline = ({
 
   if (!proposal || payloadsLoading) {
     return (
-      <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+      <Paper variant="card" sx={cardPaddingSx}>
         <Skeleton height={220} />
       </Paper>
     );
@@ -567,7 +568,7 @@ export const ProposalTimeline = ({
   };
 
   return (
-    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+    <Paper variant="card" sx={cardPaddingSx}>
       <Typography variant="h3" sx={{ mb: 4 }}>
         <Trans>Timeline</Trans>
       </Typography>

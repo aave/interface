@@ -51,7 +51,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
   const lgUp = useMediaQuery(breakpoints.up('lg'));
 
   return (
-    <Paper sx={{ px: 6, pt: 4, pb: 12 }} data-cy="vote-info-body">
+    <Paper variant="card" sx={{ pt: 4, pb: 20, px: { xs: 4, xsm: 6 } }} data-cy="vote-info-body">
       <Typography variant="h3">
         <Trans>Proposal overview</Trans>
       </Typography>

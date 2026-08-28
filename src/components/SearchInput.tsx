@@ -3,7 +3,7 @@ import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@
 import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
 import { SearchIcon } from 'src/components/icons/SearchIcon';
-import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
+import { figVars } from 'src/utils/figmaColors';
 
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
@@ -42,7 +42,7 @@ export const SearchInput = ({
         display: 'flex',
         alignItems: 'center',
         gap: 2,
-        boxShadow: figSurfaceShadow(),
+        boxShadow: `0px 0px 0px 1px ${figVars['shadow-stroke-2']}`,
         borderRadius: '0.5rem',
         height: '36px',
         // Wrapping <label> so clicking anywhere in the field (the search icon, the padding) focuses

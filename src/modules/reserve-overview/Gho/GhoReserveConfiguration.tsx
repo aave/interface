@@ -1,7 +1,6 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Divider, SvgIcon, Typography } from '@mui/material';
-import { Link } from 'src/components/primitives/Link';
+import { Box, Divider, Typography } from '@mui/material';
+import { ExternalLinkButton } from 'src/components/ExternalLinkButton';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useRootStore } from 'src/store/root';
@@ -39,55 +38,16 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
               accrued by minters of GHO would be directly transferred to the AaveDAO treasury.
             </Trans>
           </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              flexWrap: 'wrap',
-            }}
-          >
-            <Button
-              component={Link}
-              variant="tertiary"
-              size="small"
-              href="https://github.com/aave/gho/blob/main/techpaper/GHO_Technical_Paper.pdf"
-              sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
-            >
-              <Typography sx={{ mr: 1, fontSize: '10px' }}>
-                <Trans>Techpaper</Trans>
-              </Typography>
-              <SvgIcon sx={{ fontSize: 14 }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Button>
-            <Button
-              component={Link}
-              variant="tertiary"
-              size="small"
-              href="https://gho.xyz"
-              sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
-            >
-              <Typography sx={{ mr: 1, fontSize: '10px' }}>
-                <Trans>Website</Trans>
-              </Typography>
-              <SvgIcon sx={{ fontSize: 14 }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Button>
-            <Button
-              component={Link}
-              variant="tertiary"
-              size="small"
-              href="https://docs.gho.xyz/concepts/faq"
-              sx={{ p: '2px 4px', mt: 2, mr: 2, minWidth: 0 }}
-            >
-              <Typography sx={{ mr: 1, fontSize: '10px' }}>
-                <Trans>FAQ</Trans>
-              </Typography>
-              <SvgIcon sx={{ fontSize: 14 }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            </Button>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mt: 2 }}>
+            <ExternalLinkButton href="https://github.com/aave/gho/blob/main/techpaper/GHO_Technical_Paper.pdf">
+              <Trans>Techpaper</Trans>
+            </ExternalLinkButton>
+            <ExternalLinkButton href="https://gho.xyz">
+              <Trans>Website</Trans>
+            </ExternalLinkButton>
+            <ExternalLinkButton href="https://docs.gho.xyz/concepts/faq">
+              <Trans>FAQ</Trans>
+            </ExternalLinkButton>
           </Box>
         </Box>
       </PanelRow>

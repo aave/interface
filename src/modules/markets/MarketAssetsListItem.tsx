@@ -165,7 +165,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           reserve.borrowInfo.total.amount.value !== '0' && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
 
-      <ListColumn minWidth={95} maxWidth={95}>
+      <ListColumn align="right" minWidth={95} maxWidth={95}>
         <Button
           variant="tertiary"
           component={Link}

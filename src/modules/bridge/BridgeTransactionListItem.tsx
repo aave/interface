@@ -146,7 +146,7 @@ export const BridgeTransactionListItem = ({
           <TxStatus state={executionState} />
         )}
       </ListColumn>
-      <ListColumn maxWidth={95} minWidth={95}>
+      <ListColumn align="right" maxWidth={95} minWidth={95}>
         <DarkTooltip title="View in explorer" sx={{ display: { xsm: 'none' } }}>
           <IconButton LinkComponent={Link} href={`https://ccip.chain.link/tx/${txHash}`}>
             <SvgIcon sx={{ fontSize: '16px' }}>

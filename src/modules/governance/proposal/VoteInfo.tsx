@@ -10,6 +10,7 @@ import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
 import { VoteProposalData } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
+import { cardPaddingSx } from 'src/utils/cardStyles';
 
 import { networkConfigs } from '../../../ui-config/networksConfig';
 
@@ -39,7 +40,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
     powerAtProposalStart && !didVote && !!user && voteOngoing && Number(powerAtProposalStart) !== 0;
 
   return (
-    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+    <Paper variant="card" sx={cardPaddingSx}>
       <Row
         sx={{ mb: 8 }}
         caption={
@@ -132,6 +133,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
                 variant="contained"
                 fullWidth
                 onClick={() => openGovVote(voteData, true, powerAtProposalStart)}
+                sx={{ mt: 4 }}
               >
                 <Trans>Vote YAE</Trans>
               </Button>

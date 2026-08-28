@@ -81,7 +81,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         </Box>
       </Row>
 
-      <StakingDropdown stakeData={umbrellaStakeAsset} />
+      <StakingDropdown stakeData={umbrellaStakeAsset} fullWidth />
     </ListMobileItemWrapper>
   );
 };

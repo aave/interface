@@ -7,6 +7,7 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { ProposalDetailDisplay, VotersSplitDisplay } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
+import { cardPaddingSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 
 import { StateBadge } from '../StateBadge';
@@ -24,7 +25,7 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
   const trackEvent = useRootStore((store) => store.trackEvent);
   const discussionUrl = proposal?.discussions?.match(/https?:\/\/[^\s"]+/)?.[0];
   return (
-    <Paper sx={{ px: 6, py: 4, mb: 2.5 }}>
+    <Paper variant="card" sx={cardPaddingSx}>
       <Typography variant="h3">
         <Trans>Voting results</Trans>
       </Typography>

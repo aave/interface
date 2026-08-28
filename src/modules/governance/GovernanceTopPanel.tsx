@@ -1,9 +1,8 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
-import * as React from 'react';
+import { Box, Typography } from '@mui/material';
 import { ChainAvailabilityText } from 'src/components/ChainAvailabilityText';
-import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
+import { ExternalLinkButton } from 'src/components/ExternalLinkButton';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
@@ -19,26 +18,16 @@ function ExternalLink({ text, href }: ExternalLinkProps) {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Button
-      variant="outlined"
-      size="small"
-      component={Link}
+    <ExternalLinkButton
       href={href}
-      target="_blank"
-      rel="noopener"
       onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { Link: text })}
-      endIcon={<ArrowUpRightIcon sx={{ color: 'fg-3' }} />}
-      sx={{ minWidth: 'unset' }}
     >
       {text}
-    </Button>
+    </ExternalLinkButton>
   );
 }
 
 export const GovernanceTopPanel = () => {
-  const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
@@ -47,7 +36,7 @@ export const GovernanceTopPanel = () => {
         <Box mb={4}>
           <ChainAvailabilityText wrapperSx={{ mb: 4 }} chainId={ChainId.mainnet} />
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-            <Typography variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}>
+            <Typography variant="h2" sx={{ fontSize: '1.875rem' }}>
               <Trans>Aave Governance</Trans>
             </Typography>
           </Box>
