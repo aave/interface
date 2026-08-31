@@ -17,6 +17,7 @@ import {
   usePoolFormattedReserves,
 } from '../pool/usePoolFormattedReserves';
 import { usePoolReservesHumanized } from '../pool/usePoolReserves';
+import { usePoolSupportsMulticall } from '../pool/usePoolSupportsMulticall';
 import { useUserPoolReservesHumanized } from '../pool/useUserPoolReserves';
 import { FormattedUserReserves } from '../pool/useUserSummaryAndIncentives';
 import { useMarketsData } from './useMarketsData';
@@ -57,6 +58,8 @@ export interface AppDataContextType {
   /** Legacy fields (deprecated) kept temporarily for incremental migration */
   reserves: ComputedReserveData[];
   eModes: Record<number, EmodeCategory>;
+  /** Pool.multicall exists (POOL_REVISION >= 8) — gates the bundled e-mode flows. */
+  poolSupportsMulticall: boolean;
   user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
   marketReferenceCurrencyDecimals: number;
@@ -126,6 +129,8 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const eModes = formattedPoolReserves ? formatEmodes(formattedPoolReserves) : {};
 
+  const { data: poolSupportsMulticall } = usePoolSupportsMulticall(currentMarketData);
+
   const { data: userReservesData, isPending: userReservesDataLoading } =
     useUserPoolReservesHumanized(currentMarketData);
   const { data: userSummary, isPending: userSummaryLoading } =
@@ -151,6 +156,7 @@ export const AppDataProvider: React.FC<PropsWithChildren> = ({ children }) => {
         // Legacy fields (to be removed once consumers migrate)
         reserves: formattedPoolReserves || [],
         eModes,
+        poolSupportsMulticall: poolSupportsMulticall ?? false,
         user: userSummary,
         userReserves: userReserves || [],
         marketReferencePriceInUsd: baseCurrencyData?.marketReferenceCurrencyPriceInUsd || '0',

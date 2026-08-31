@@ -5,8 +5,8 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 
 /**
  * Pool.multicall was introduced in Aave v3.4, which bumped POOL_REVISION to 8.
- * Pools below that revision revert on the call, so anything that bundles pool
- * actions has to fall back to sending them sequentially.
+ * Pools below that revision revert on the call, so the flows that bundle pool
+ * actions are hidden entirely on those markets.
  */
 export const MULTICALL_POOL_REVISION = 8;
 
@@ -27,8 +27,9 @@ export const usePoolSupportsMulticall = (marketData: MarketDataType) => {
         ).POOL_REVISION();
         return revision.gte(MULTICALL_POOL_REVISION);
       } catch (error) {
-        // Pools that predate the getter, and any RPC failure, fall back to
-        // sequential transactions — those work on every revision.
+        // Pools that predate the getter, and any RPC failure, report no
+        // support — the bundled flows stay hidden rather than sending a tx
+        // that would revert.
         console.error('Error reading POOL_REVISION:', error);
         return false;
       }
