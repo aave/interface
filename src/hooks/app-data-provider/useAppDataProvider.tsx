@@ -58,7 +58,7 @@ export interface AppDataContextType {
   /** Legacy fields (deprecated) kept temporarily for incremental migration */
   reserves: ComputedReserveData[];
   eModes: Record<number, EmodeCategory>;
-  /** Pool.multicall exists (POOL_REVISION >= 8) — gates the bundled e-mode flows. */
+  /** Pool.multicall exists (POOL_REVISION >= 8) */
   poolSupportsMulticall: boolean;
   user?: ExtendedFormattedUser;
   marketReferencePriceInUsd: string;
