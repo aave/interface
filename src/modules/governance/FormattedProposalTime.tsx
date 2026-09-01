@@ -27,11 +27,7 @@ export function FormattedProposalTime({
   if ([ProposalState.Pending].includes(state)) {
     return (
       <Typography component="span" variant="caption">
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: { xs: 'none', md: 'inline' } }}
-        >
+        <Typography variant="caption" color="fg-2" sx={{ display: { xs: 'none', md: 'inline' } }}>
           {state}&nbsp;
           <Trans>starts</Trans>
           &nbsp;
@@ -43,11 +39,7 @@ export function FormattedProposalTime({
   if ([ProposalState.Active].includes(state)) {
     return (
       <Typography component="span" variant="caption">
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: { xs: 'none', md: 'inline' } }}
-        >
+        <Typography variant="caption" color="fg-2" sx={{ display: { xs: 'none', md: 'inline' } }}>
           {state}&nbsp;
           <Trans>ends</Trans>
           &nbsp;
@@ -67,11 +59,7 @@ export function FormattedProposalTime({
   ) {
     return (
       <Typography component="span" variant="caption">
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: { xs: 'none', md: 'inline' } }}
-        >
+        <Typography variant="caption" color="fg-2" sx={{ display: { xs: 'none', md: 'inline' } }}>
           {state}&nbsp;
           <Trans>on</Trans>
           &nbsp;
@@ -85,11 +73,7 @@ export function FormattedProposalTime({
   const canBeExecuted = timestamp > executionTime;
   return (
     <Typography component="span" variant="caption">
-      <Typography
-        variant="caption"
-        color="text.secondary"
-        sx={{ display: { xs: 'none', md: 'inline' } }}
-      >
+      <Typography variant="caption" color="fg-2" sx={{ display: { xs: 'none', md: 'inline' } }}>
         {canBeExecuted ? <Trans>Expires</Trans> : <Trans>Can be executed</Trans>}
         &nbsp;
       </Typography>

@@ -1,13 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { SxProps, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, SxProps } from '@mui/material';
 
 export const FlashLoanDisabledBlockingError = ({ sx }: { sx?: SxProps }) => {
   return (
-    <Warning severity="error" sx={{ mt: 4, ...sx }} icon={false}>
-      <Typography variant="caption">
-        <Trans>Position swaps are disabled for this asset due to security reasons.</Trans>
-      </Typography>
-    </Warning>
+    <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%', mt: 4, ...sx }}>
+      <Trans>Position swaps are disabled for this asset due to security reasons.</Trans>
+    </Alert>
   );
 };

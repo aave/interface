@@ -58,7 +58,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 <FormattedNumber
                   value={e.hasLtvZero ? 0 : e.maxLTV.value}
                   percent
-                  variant="secondary14"
+                  variant="h5"
                   visibleDecimals={2}
                 />
               </ReserveOverviewBox>
@@ -73,7 +73,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 <FormattedNumber
                   value={e.liquidationThreshold.value}
                   percent
-                  variant="secondary14"
+                  variant="h5"
                   visibleDecimals={2}
                 />
               </ReserveOverviewBox>
@@ -88,7 +88,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 <FormattedNumber
                   value={e.liquidationPenalty.value}
                   percent
-                  variant="secondary14"
+                  variant="h5"
                   visibleDecimals={2}
                 />
               </ReserveOverviewBox>
@@ -96,7 +96,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
           </Fragment>
         ))}
 
-        <Typography variant="caption" color="text.secondary" paddingTop="24px">
+        <Typography variant="caption" color="fg-2" paddingTop="24px">
           <Trans>
             E-Mode increases your LTV for a selected category of assets, meaning that when E-mode is
             enabled, you will have higher borrowing power over assets of the same E-mode category
@@ -105,7 +105,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
               href={ROUTES.dashboard}
               sx={{ textDecoration: 'underline' }}
               variant="caption"
-              color="text.secondary"
+              color="fg-2"
               onClick={() => {
                 trackEvent(RESERVE_DETAILS.GO_DASHBOARD_EMODE);
               }}
@@ -117,7 +117,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
               href="https://aave.com/help/borrowing/e-mode"
               sx={{ textDecoration: 'underline' }}
               variant="caption"
-              color="text.secondary"
+              color="fg-2"
               onClick={() => {
                 trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'E-mode FAQ' });
               }}
@@ -129,7 +129,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
               href="https://github.com/aave/aave-v3-core/blob/master/techpaper/Aave_V3_Technical_Paper.pdf"
               sx={{ textDecoration: 'underline' }}
               variant="caption"
-              color="text.secondary"
+              color="fg-2"
               onClick={() => {
                 trackEvent(GENERAL.EXTERNAL_LINK, { Link: 'V3 Tech Paper' });
               }}
@@ -170,14 +170,14 @@ export const ConfigStatus = ({
           <WarningAmberIcon fontSize="small" color="warning" sx={{ ml: 2, cursor: 'help' }} />
         </Tooltip>
       ) : enabled ? (
-        <CheckRoundedIcon fontSize="small" color="success" sx={{ ml: 2 }} />
+        <CheckRoundedIcon fontSize="small" sx={{ ml: 2, color: 'data-green' }} />
       ) : (
-        <CloseIcon fontSize="small" color="error" sx={{ ml: 2 }} />
+        <CloseIcon fontSize="small" sx={{ ml: 2, color: 'data-red' }} />
       )}
       {label && (
         <Typography
           variant="subheader1"
-          sx={{ color: warning ? '#E8A838' : enabled ? '#46BC4B' : '#F24E4E' }}
+          sx={{ color: warning ? '#E8A838' : enabled ? 'data-green' : 'data-red' }}
         >
           <Trans>{label}</Trans>
         </Typography>

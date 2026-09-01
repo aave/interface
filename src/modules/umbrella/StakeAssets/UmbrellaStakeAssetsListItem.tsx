@@ -49,7 +49,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
         <AvailableToClaimItem stakeData={umbrellaStakeAsset} />
       </ListColumn>
 
-      <ListColumn>
+      <ListColumn align="right">
         <StakingDropdown stakeData={umbrellaStakeAsset} />
       </ListColumn>
     </ListItem>

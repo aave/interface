@@ -12,22 +12,25 @@ export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerW
   return (
     <Drawer
       data-cy={`mobile-menu`}
-      anchor="top"
+      anchor="right"
       open={open}
       onClose={() => setOpen(false)}
       hideBackdrop
+      disableScrollLock
       sx={{ top: `${headerHeight}px` }}
       PaperProps={{
         sx: {
-          background: 'rgba(27, 32, 48, 0.98)',
-          backdropFilter: 'blur(20px)',
+          bgcolor: 'bg-1',
           boxShadow: 'none',
           borderRadius: 'unset',
           width: '100%',
           top: `${headerHeight}px`,
-          pt: 6,
-          pb: 15,
-          minHeight: '100vh',
+          height: `calc(100dvh - ${headerHeight}px)`,
+          py: '0.75rem',
+          px: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
         },
       }}
     >

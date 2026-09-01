@@ -6,10 +6,10 @@ import {
   valueToBigNumber,
 } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
+import { Alert } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { BigNumber } from 'bignumber.js';
 import React, { useEffect, useRef, useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 import {
   ExtendedFormattedUser,
   useAppDataContext,
@@ -282,14 +282,12 @@ export const RepayModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       {showUSDTResetWarning && (
-        <Warning severity="info" sx={{ mt: 5 }}>
-          <Typography variant="caption">
-            <Trans>
-              USDT on Ethereum requires approval reset before a new approval. This will require an
-              additional transaction.
-            </Trans>
-          </Typography>
-        </Warning>
+        <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 5 }}>
+          <Trans>
+            USDT on Ethereum requires approval reset before a new approval. This will require an
+            additional transaction.
+          </Trans>
+        </Alert>
       )}
 
       <RepayActions

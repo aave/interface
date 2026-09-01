@@ -1,8 +1,7 @@
 import { normalize } from '@aave/math-utils';
 import { OrderStatus } from '@cowprotocol/cow-sdk';
-import { Link, Typography } from '@mui/material';
+import { Alert, Link } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useRootStore } from 'src/store/root';
 import { findByChainId } from 'src/ui-config/marketsConfig';
@@ -63,20 +62,18 @@ export function CowOpenOrdersWarning({ state }: { state: SwapState }) {
   if (!cowOpenOrdersTotalAmountFormatted && !hasActiveForToken) return null;
 
   return (
-    <Warning severity="info" icon={false} sx={{ mt: 2, mb: 2 }}>
-      <Typography variant="caption">
-        {cowOpenOrdersTotalAmountFormatted ? (
-          <>
-            You have open orders for {cowOpenOrdersTotalAmountFormatted} {state.sourceToken.symbol}.{' '}
-          </>
-        ) : (
-          <>You have in-progress swaps for {state.sourceToken.symbol}. </>
-        )}
-        <br /> Track them in your{' '}
-        <Link target="_blank" href={`/history?marketName=${findByChainId(state.chainId)?.market}`}>
-          transaction history
-        </Link>
-      </Typography>
-    </Warning>
+    <Alert severity="info" data-size="small" sx={{ width: '100%', mt: 2, mb: 2 }}>
+      {cowOpenOrdersTotalAmountFormatted ? (
+        <>
+          You have open orders for {cowOpenOrdersTotalAmountFormatted} {state.sourceToken.symbol}.{' '}
+        </>
+      ) : (
+        <>You have in-progress swaps for {state.sourceToken.symbol}. </>
+      )}
+      <br /> Track them in your{' '}
+      <Link target="_blank" href={`/history?marketName=${findByChainId(state.chainId)?.market}`}>
+        transaction history
+      </Link>
+    </Alert>
   );
 }

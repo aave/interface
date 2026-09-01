@@ -117,7 +117,7 @@ export const MigrateV3ModalContent = ({
       <TxSuccessView
         customAction={
           <Box mt={5}>
-            <Button variant="gradient" size="medium" onClick={handleGoToDashboard}>
+            <Button variant="contained" size="medium" onClick={handleGoToDashboard}>
               <Trans>Go to V3 Dashboard</Trans>
             </Button>
           </Box>

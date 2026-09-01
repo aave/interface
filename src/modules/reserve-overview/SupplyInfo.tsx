@@ -1,7 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { AlertTitle, Box, Typography } from '@mui/material';
+import { Alert, AlertTitle, Box, Typography } from '@mui/material';
 import { CapsCircularStatus } from 'src/components/caps/CapsCircularStatus';
 import { DebtCeilingStatus } from 'src/components/caps/DebtCeilingStatus';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
@@ -11,7 +11,6 @@ import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/Liquida
 import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
 import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
@@ -67,7 +66,7 @@ export const SupplyInfo = ({
                         valueToBigNumber(reserve.supplyInfo.supplyCap.amount.value).toNumber() -
                         valueToBigNumber(reserve.supplyInfo.total.value).toNumber()
                       }
-                      variant="secondary12"
+                      variant="subheader2"
                     />{' '}
                     {reserve.underlyingToken.symbol} (
                     <FormattedNumber
@@ -75,7 +74,7 @@ export const SupplyInfo = ({
                         valueToBigNumber(reserve.supplyInfo.supplyCap.usd).toNumber() -
                         valueToBigNumber(reserve.size.usd).toNumber()
                       }
-                      variant="secondary12"
+                      variant="subheader2"
                       symbol="USD"
                     />
                     ).
@@ -114,26 +113,23 @@ export const SupplyInfo = ({
               }
             >
               <Box>
-                <FormattedNumber value={reserve.supplyInfo.total.value} variant="main16" compact />
+                <FormattedNumber value={reserve.supplyInfo.total.value} variant="h4" compact />
                 <Typography
                   component="span"
-                  color="text.primary"
+                  color="fg-1"
                   variant="secondary16"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber
-                  value={reserve.supplyInfo.supplyCap.amount.value}
-                  variant="main16"
-                />
+                <FormattedNumber value={reserve.supplyInfo.supplyCap.amount.value} variant="h4" />
               </Box>
               <Box>
                 <ReserveSubheader value={reserve.size.usd} />
                 <Typography
                   component="span"
-                  color="text.secondary"
-                  variant="secondary12"
+                  color="fg-2"
+                  variant="subheader2"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>
@@ -151,7 +147,7 @@ export const SupplyInfo = ({
               </Box>
             }
           >
-            <FormattedNumber value={reserve.supplyInfo.total.value} variant="main16" compact />
+            <FormattedNumber value={reserve.supplyInfo.total.value} variant="h4" compact />
             <ReserveSubheader value={reserve.size.usd} />
           </PanelItem>
         )}
@@ -161,7 +157,7 @@ export const SupplyInfo = ({
             incentives={supplyProtocolIncentives}
             address={reserve.aToken.address}
             symbol={reserve.underlyingToken.symbol}
-            variant="main16"
+            variant="h4"
             market={currentMarketData.market}
             protocolAction={ProtocolAction.supply}
             inlineIncentives={true}
@@ -184,19 +180,16 @@ export const SupplyInfo = ({
             <Typography variant="subheader1" color="text.main" paddingBottom={'12px'}>
               <Trans>Collateral usage</Trans>
             </Typography>
-            <Warning severity="warning">
-              <Typography variant="subheader1">
+            <Alert severity="warning" sx={{ mb: 6, width: '100%' }}>
+              <AlertTitle>
                 <Trans>Asset can only be used as collateral in isolation mode only.</Trans>
-              </Typography>
-              <Typography variant="caption">
-                In Isolation mode you cannot supply other assets as collateral for borrowing. Assets
-                used as collateral in Isolation mode can only be borrowed to a specific debt
-                ceiling.{' '}
-                <Link href="https://docs.aave.com/faq/aave-v3-features#isolation-mode">
-                  Learn more
-                </Link>
-              </Typography>
-            </Warning>
+              </AlertTitle>
+              In Isolation mode you cannot supply other assets as collateral for borrowing. Assets
+              used as collateral in Isolation mode can only be borrowed to a specific debt ceiling.{' '}
+              <Link href="https://docs.aave.com/faq/aave-v3-features#isolation-mode">
+                Learn more
+              </Link>
+            </Alert>
           </Box>
         ) : reserve.supplyInfo.liquidationThreshold.value !== '0' ? (
           <Box
@@ -217,7 +210,7 @@ export const SupplyInfo = ({
             <Typography variant="subheader1" color="text.main">
               <Trans>Collateral usage</Trans>
             </Typography>
-            <Warning sx={{ my: '12px' }} severity="info">
+            <Alert sx={{ width: '100%', my: '12px' }} severity="info">
               <Trans>
                 This asset can only be used as collateral in E-Mode:{' '}
                 {reserve.eModeInfo
@@ -225,16 +218,16 @@ export const SupplyInfo = ({
                   .map((eMode) => replaceUnderscoresWithSpaces(eMode.label))
                   .join(', ')}
               </Trans>
-            </Warning>
+            </Alert>
           </Box>
         ) : (
           <Box sx={{ pt: '42px', pb: '12px' }}>
             <Typography variant="subheader1" color="text.main">
               <Trans>Collateral usage</Trans>
             </Typography>
-            <Warning sx={{ my: '12px' }} severity="warning">
+            <Alert sx={{ width: '100%', my: '12px' }} severity="warning">
               <Trans>Asset cannot be used as collateral.</Trans>
-            </Warning>
+            </Alert>
           </Box>
         )}
       </div>
@@ -265,7 +258,7 @@ export const SupplyInfo = ({
             <FormattedNumber
               value={reserve.supplyInfo.maxLTV.value}
               percent
-              variant="secondary14"
+              variant="h5"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>
@@ -289,7 +282,7 @@ export const SupplyInfo = ({
             <FormattedNumber
               value={reserve.supplyInfo.liquidationThreshold.value}
               percent
-              variant="secondary14"
+              variant="h5"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>
@@ -313,7 +306,7 @@ export const SupplyInfo = ({
             <FormattedNumber
               value={reserve.supplyInfo.liquidationBonus.value}
               percent
-              variant="secondary14"
+              variant="h5"
               visibleDecimals={2}
             />
           </ReserveOverviewBox>
@@ -331,7 +324,7 @@ export const SupplyInfo = ({
       )}
       {reserve.underlyingToken.symbol == 'stETH' && (
         <Box>
-          <Warning severity="info">
+          <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
             <AlertTitle>
               <Trans>Staking Rewards</Trans>
             </AlertTitle>
@@ -345,7 +338,7 @@ export const SupplyInfo = ({
             >
               <Trans>Learn more</Trans>
             </Link>
-          </Warning>
+          </Alert>
         </Box>
       )}
     </Box>

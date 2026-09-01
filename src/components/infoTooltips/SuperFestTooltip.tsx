@@ -20,7 +20,7 @@ export const SuperFestTooltip = () => {
           href="https://superfest.optimism.io"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           Learn more
         </Link>{' '}
@@ -32,7 +32,7 @@ export const SuperFestTooltip = () => {
           href="https://jumper.exchange/superfest"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           jumper.exchange
         </Link>

@@ -1,13 +1,20 @@
-import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Button, SvgIcon, Typography } from '@mui/material';
+import { Button, ListItemText, SvgIcon, Typography } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { clsx } from 'clsx';
+import { useRouter } from 'next/router';
 import React from 'react';
+import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/events';
+import { onAccent } from 'src/utils/figmaColors';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
+import { NAV_LINK_PADDING_X, NAV_LINK_PADDING_Y, navLinkSx } from './navLinkSx';
+
+const CHEVRON_GAP = '0.25rem';
+const CHEVRON_SIZE = '16px';
 
 interface StakingMenuProps {
   isMobile?: boolean;
@@ -16,6 +23,10 @@ interface StakingMenuProps {
 
 export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const router = useRouter();
+  // The trigger isn't a Link, so it never gets the route-aware `active` class on its own.
+  // Mark it active when the current route is one of the menu's destinations.
+  const isActive = router.pathname === ROUTES.staking || router.pathname === ROUTES.safetyModule;
 
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const open = Boolean(anchorEl);
@@ -42,7 +53,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           component={Link}
           href={ROUTES.staking}
           variant="h2"
-          color="#F1F1F3"
+          color={onAccent}
           sx={{ width: '100%', p: 4 }}
           onClick={() => handleMenuItemClick('Staking')}
         >
@@ -52,7 +63,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           component={Link}
           href={ROUTES.safetyModule}
           variant="h2"
-          color="#F1F1F3"
+          color={onAccent}
           sx={{ width: '100%', p: 4, pl: 6 }}
           onClick={() => handleMenuItemClick('Safety Module')}
         >
@@ -67,37 +78,23 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
       <Button
         aria-label="staking menu"
         id="staking-button"
+        className={clsx({ active: isActive })}
         aria-controls={open ? 'staking-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
-        sx={(theme) => ({
-          color: '#F1F1F3',
-          p: '6px 8px',
-          position: 'relative',
-          '.active&:after, &:hover&:after': {
-            transform: 'scaleX(1)',
-            transformOrigin: 'bottom left',
+        sx={[
+          navLinkSx(NAV_LINK_PADDING_Y, NAV_LINK_PADDING_X),
+          {
+            '&:after': { right: `calc(${NAV_LINK_PADDING_X} + ${CHEVRON_GAP} + ${CHEVRON_SIZE})` },
           },
-          '&:after': {
-            content: "''",
-            position: 'absolute',
-            width: '100%',
-            transform: 'scaleX(0)',
-            height: '2px',
-            bottom: '-6px',
-            left: '0',
-            background: theme.palette.gradients.aaveGradient,
-            transformOrigin: 'bottom right',
-            transition: 'transform 0.25s ease-out',
-          },
-        })}
+        ]}
       >
         <Trans>Staking</Trans>
         <SvgIcon
           sx={{
-            ml: 0.5,
-            fontSize: '16px',
+            ml: CHEVRON_GAP,
+            fontSize: CHEVRON_SIZE,
             transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
             transition: 'transform 0.2s ease-in-out',
           }}
@@ -116,11 +113,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
         onClose={handleClose}
         keepMounted={true}
         sx={{
-          '& .MuiPaper-root': {
-            bgcolor: 'background.paper',
-            border: '1px solid',
-            borderColor: 'divider',
-          },
+          mt: '-1.125rem',
         }}
       >
         <MenuItem
@@ -129,9 +122,9 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           onClick={() => handleMenuItemClick('Staking')}
           sx={{ minWidth: '140px' }}
         >
-          <Typography variant="subheader1">
+          <ListItemText>
             <Trans>Umbrella</Trans>
-          </Typography>
+          </ListItemText>
         </MenuItem>
         <MenuItem
           component={Link}
@@ -139,9 +132,9 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
           onClick={() => handleMenuItemClick('Safety Module')}
           sx={{ minWidth: '140px' }}
         >
-          <Typography variant="subheader1">
+          <ListItemText>
             <Trans>Safety Module</Trans>
-          </Typography>
+          </ListItemText>
         </MenuItem>
       </Menu>
     </>

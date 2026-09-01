@@ -4,7 +4,7 @@ import { formatUnits } from '@ethersproject/units';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { ExpandMore } from '@mui/icons-material';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import LaunchIcon from '@mui/icons-material/Launch';
 import {
   Box,
@@ -28,6 +28,7 @@ import { Link } from 'src/components/primitives/Link';
 import { textCenterEllipsis } from 'src/helpers/text-center-ellipsis';
 import { useRootStore } from 'src/store/root';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
+import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { COMMON_SWAPS } from '../../../../../ui-config/TokenList';
@@ -35,6 +36,7 @@ import { BasicModal } from '../../../../primitives/BasicModal';
 import { FormattedNumber } from '../../../../primitives/FormattedNumber';
 import { ExternalTokenIcon } from '../../../../primitives/TokenIcon';
 import { SearchInput } from '../../../../SearchInput';
+import { TxModalTitle } from '../../../FlowCommons/TxModalTitle';
 import { SwappableToken, SwapType, TokenType } from '../../types';
 
 interface CustomProps {
@@ -267,16 +269,17 @@ export const SwitchAssetInput = ({
       }}
     >
       {title && (
-        <Typography variant="secondary14" color="text.secondary" sx={{ mb: 1 }}>
+        <Typography variant="h5" color="fg-2" sx={{ mb: 1 }}>
           {title}
         </Typography>
       )}
       <Box
         ref={inputRef}
-        sx={(theme) => ({
-          border: `1px solid ${theme.palette.divider}`,
-          borderRadius: '6px',
+        sx={{
+          borderRadius: '0.75rem',
+          boxShadow: figSurfaceShadow('shadow-stroke-1'),
           overflow: 'hidden',
+          backgroundColor: 'bg-2',
           px: 3,
           py: 2,
           width: '100%',
@@ -284,11 +287,11 @@ export const SwitchAssetInput = ({
             ? {
                 transition: 'background-color 0.15s ease',
                 '&:hover': {
-                  backgroundColor: 'background.surface',
+                  backgroundColor: 'bg-2',
                 },
               }
             : {}),
-        })}
+        }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {loading ? (
@@ -334,9 +337,9 @@ export const SwitchAssetInput = ({
                 p: 0,
                 left: 8,
                 zIndex: 1,
-                color: 'text.muted',
+                color: 'fg-3',
                 '&:hover': {
-                  color: 'text.secondary',
+                  color: 'fg-2',
                 },
               }}
               onClick={() => {
@@ -372,8 +375,8 @@ export const SwitchAssetInput = ({
             />
             <Typography
               data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
-              variant="main16"
-              color="text.primary"
+              variant="h4"
+              color="fg-1"
               sx={{ fontWeight: 500 }}
             >
               {selectedAsset.symbol}
@@ -399,81 +402,28 @@ export const SwitchAssetInput = ({
             )}
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-              <Typography variant="main16" sx={{ fontSize: 18, fontWeight: 600, mb: 3 }}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    mt: 2,
-                  }}
-                >
-                  <Typography
-                    variant="main16"
-                    sx={{
-                      fontWeight: 600,
-                      // mr: 1,
-                      lineHeight: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Trans>Select token</Trans>
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 0.5,
-                      height: 24,
-                    }}
-                  >
-                    <MarketLogo
-                      size={16}
-                      logo={networkConfig.networkLogoPath}
-                      sx={{
-                        ml: 0,
-                        mr: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        height: 16,
-                      }}
-                    />
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        height: 16,
-                        lineHeight: 1,
-                        fontWeight: 500,
-                        fontSize: 16,
-                        ml: 0.5,
-                        mt: '1px',
-                      }}
-                    >
-                      {networkName}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  mb: '1rem',
+                }}
+              >
+                <TxModalTitle title={<Trans>Select token</Trans>} sx={{ mb: 0 }} />
+                <MarketLogo size={16} logo={networkConfig.networkLogoPath} sx={{ mr: 0 }} />
+                <Typography variant="secondary16" color="fg-2" sx={{ lineHeight: 1, mt: '1px' }}>
+                  {networkName}
+                </Typography>
+              </Box>
 
               <Box
                 sx={{
-                  borderBottom:
-                    assets.length > 3 && mergedPopular.length > 0
-                      ? `1px solid ${theme.palette.divider}`
-                      : 'none',
                   position: 'sticky',
                   top: 0,
                   zIndex: 2,
-                  mb: 3,
-                  pb: 3,
-                  backgroundColor: theme.palette.background.paper,
+                  mb: '1rem',
                   boxShadow: '0px 4px 6px -6px rgba(0, 0, 0, 0.1)',
-                  marginTop: -3,
-                  paddingTop: 3,
                 }}
               >
                 <SearchInput
@@ -488,13 +438,13 @@ export const SwitchAssetInput = ({
                       justifyContent: 'flex-start',
                       alignItems: 'flex-start',
                       flexWrap: 'wrap',
-                      mt: 2.5,
+                      mt: '1rem',
                       gap: 1.5,
                     }}
                   >
                     <Typography
                       variant="caption"
-                      color="text.secondary"
+                      color="fg-2"
                       sx={{ display: 'block', width: '100%' }}
                     >
                       <Trans>{popularSectionTitle}</Trans>
@@ -509,11 +459,11 @@ export const SwitchAssetInput = ({
                           p: 1,
                           borderRadius: '16px',
                           border: '1px solid',
-                          borderColor: theme.palette.divider,
+                          borderColor: 'border-2',
                           cursor: 'pointer',
                           transition: 'all 0.2s ease',
                           '&:hover': {
-                            backgroundColor: theme.palette.divider,
+                            backgroundColor: 'border-2',
                           },
                         }}
                         onClick={() => handleSelect(asset)}
@@ -523,7 +473,7 @@ export const SwitchAssetInput = ({
                           symbol={asset.symbol}
                           sx={{ fontSize: '24px', mr: 1 }}
                         />
-                        <Typography variant="main14" color="text.primary" sx={{ mr: 1 }}>
+                        <Typography variant="subheader1" color="fg-1" sx={{ mr: 1 }}>
                           {asset.symbol}
                         </Typography>
                       </Box>
@@ -536,6 +486,9 @@ export const SwitchAssetInput = ({
                   flexGrow: 1,
                   overflowY: 'auto',
                   maxHeight: 'calc(800px - 180px)',
+                  mx: -6,
+                  pl: 3,
+                  pr: '1rem',
                   '&::-webkit-scrollbar': {
                     width: '8px',
                   },
@@ -543,11 +496,11 @@ export const SwitchAssetInput = ({
                     background: 'transparent',
                   },
                   '&::-webkit-scrollbar-thumb': {
-                    background: theme.palette.divider,
+                    background: figVars['border-2'],
                     borderRadius: '4px',
                   },
                   '&::-webkit-scrollbar-thumb:hover': {
-                    background: theme.palette.action.hover,
+                    background: figVars['button-hover'],
                   },
                 }}
               >
@@ -590,7 +543,7 @@ export const SwitchAssetInput = ({
                         sx={{ mr: 2 }}
                       />
                       <Box sx={{ display: 'flex', flexDirection: 'column', mr: 2, minWidth: 0 }}>
-                        <Typography variant="main16" fontWeight={500} color="text.primary" noWrap>
+                        <Typography variant="h4" fontWeight={500} color="fg-1" noWrap>
                           {asset.name || asset.symbol}
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -610,21 +563,21 @@ export const SwitchAssetInput = ({
                               '&:hover .launch-icon-text': {
                                 color:
                                   theme.palette.mode === 'dark'
-                                    ? theme.palette.primary.light
-                                    : theme.palette.primary.main,
+                                    ? theme.vars.palette.primary.light
+                                    : theme.vars.palette.primary.main,
                               },
                               '&:hover .launch-icon-svg': {
                                 color:
                                   theme.palette.mode === 'dark'
-                                    ? theme.palette.primary.light
-                                    : theme.palette.primary.main,
+                                    ? theme.vars.palette.primary.light
+                                    : theme.vars.palette.primary.main,
                               },
                             }}
                           >
                             <Typography
                               variant="caption"
                               className="launch-icon-text"
-                              color="text.secondary"
+                              color="fg-2"
                               noWrap
                             >
                               {textCenterEllipsis(
@@ -635,7 +588,7 @@ export const SwitchAssetInput = ({
                             </Typography>
                             <SvgIcon
                               className="launch-icon-svg"
-                              sx={{ fontSize: 14, ml: 0.5, color: 'text.secondary' }}
+                              sx={{ fontSize: 14, ml: 0.5, color: 'fg-2' }}
                             >
                               <LaunchIcon />
                             </SvgIcon>
@@ -645,7 +598,7 @@ export const SwitchAssetInput = ({
                             if (!apy) return null;
                             return (
                               <>
-                                <Typography variant="caption" color="text.secondary">
+                                <Typography variant="caption" color="fg-2">
                                   {' • '}
                                 </Typography>
                                 <Tooltip title={apy.label}>
@@ -654,7 +607,7 @@ export const SwitchAssetInput = ({
                                       value={apy.value}
                                       percent
                                       variant="caption"
-                                      color="text.secondary"
+                                      color="fg-2"
                                     />
                                   </span>
                                 </Tooltip>
@@ -679,8 +632,8 @@ export const SwitchAssetInput = ({
                           <FormattedNumber
                             value={asset.balance}
                             compact
-                            variant="secondary14"
-                            color="text.primary"
+                            variant="h5"
+                            color="fg-1"
                             sx={{ textAlign: 'right' }}
                           />
                         )}
@@ -701,8 +654,8 @@ export const SwitchAssetInput = ({
                               compact
                               symbol="USD"
                               variant="helperText"
-                              color="text.secondary"
-                              symbolsColor="text.secondary"
+                              color="fg-2"
+                              symbolsColor="fg-2"
                               sx={{ textAlign: 'right' }}
                             />
                           </Box>
@@ -712,8 +665,8 @@ export const SwitchAssetInput = ({
                   ))
                 ) : (
                   <Typography
-                    variant="main14"
-                    color="text.primary"
+                    variant="subheader1"
+                    color="fg-1"
                     sx={{ width: 'auto', textAlign: 'center', m: 4 }}
                   >
                     {allowCustomTokens ? (
@@ -738,23 +691,23 @@ export const SwitchAssetInput = ({
               value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
               compact
               symbol="USD"
-              variant="secondary12"
-              color="text.muted"
-              symbolsColor="text.muted"
+              variant="subheader2"
+              color="fg-3"
+              symbolsColor="fg-3"
               flexGrow={1}
             />
           )}
 
           {showBalance && selectedAsset.balance && (
             <>
-              <Typography component="div" variant="secondary12" color="text.secondary">
+              <Typography component="div" variant="subheader2" color="fg-2">
                 <Trans>{balanceTitle || 'Balance'}</Trans>
                 <FormattedNumber
                   value={selectedAsset.balance}
                   compact
-                  variant="secondary12"
-                  color="text.secondary"
-                  symbolsColor="text.disabled"
+                  variant="subheader2"
+                  color="fg-2"
+                  symbolsColor="fg-4"
                   sx={{ ml: 1 }}
                 />
               </Typography>
@@ -834,9 +787,9 @@ const PercentSelector = ({
         PaperProps={{
           sx: {
             p: 1,
-            backgroundColor: 'background.surface',
+            backgroundColor: 'bg-2',
             border: '1px solid',
-            borderColor: 'divider',
+            borderColor: 'border-2',
           },
         }}
       >
@@ -844,9 +797,9 @@ const PercentSelector = ({
           <ToggleButtonGroup
             exclusive
             sx={{
-              backgroundColor: 'background.surface',
+              backgroundColor: 'bg-2',
               borderRadius: '6px',
-              borderColor: 'background.surface',
+              borderColor: 'bg-2',
             }}
             onChange={(_, v) => v && handlePick(v)}
           >
@@ -858,9 +811,9 @@ const PercentSelector = ({
                   borderRadius: 1,
                   py: 0.5,
                   px: 1,
-                  borderWidth: 2,
+                  border: 0,
                   '&.Mui-selected': {
-                    backgroundColor: 'background.paper',
+                    backgroundColor: 'surface-elevated',
                   },
                 }}
               >

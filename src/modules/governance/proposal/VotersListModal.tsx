@@ -2,8 +2,8 @@ import { Trans } from '@lingui/macro';
 import { Box, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { ProposalVoteDisplayInfo, VotersSplitDisplay } from 'src/modules/governance/types';
 
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -28,7 +28,7 @@ export const VotersListModal = ({
   const [voteView, setVoteView] = useState<'yaes' | 'nays'>('yaes');
   const borderBaseStyle = {
     border: '1px solid',
-    borderColor: 'divider',
+    borderColor: 'border-0',
     borderRadius: 1,
   };
 
@@ -52,13 +52,13 @@ export const VotersListModal = ({
             px: 4,
             py: 2,
             borderBottom: '1px solid',
-            borderColor: 'divider',
+            borderColor: 'border-0',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-3">
             <Trans>Addresses ({voters.yaeVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-3">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -91,13 +91,13 @@ export const VotersListModal = ({
             px: 4,
             py: 2,
             borderBottom: '1px solid',
-            borderColor: 'divider',
+            borderColor: 'border-0',
           }}
         >
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-3">
             <Trans>Addresses ({voters.nayVotes.length})</Trans>
           </Typography>
-          <Typography variant="subheader2" color="text.secondary">
+          <Typography variant="subheader2" color="fg-3">
             <Trans>Votes</Trans>
           </Typography>
         </Row>
@@ -129,24 +129,24 @@ export const VotersListModal = ({
         </Grid>
       ) : (
         <>
-          <StyledToggleButtonGroup
+          <StyledTxModalToggleGroup
             color="primary"
             value={voteView}
             exclusive
             onChange={(_, value) => setVoteView(value)}
-            sx={{ width: '100%', height: '44px', mt: 8, mb: 6 }}
+            sx={{ width: '100%', mt: 8, mb: 6 }}
           >
-            <StyledToggleButton value="yaes" disabled={voteView === 'yaes'}>
+            <StyledTxModalToggleButton value="yaes" disabled={voteView === 'yaes'}>
               <Typography variant="subheader1">
                 <Trans>Voted YAE</Trans>
               </Typography>
-            </StyledToggleButton>
-            <StyledToggleButton value="nays" disabled={voteView === 'nays'}>
+            </StyledTxModalToggleButton>
+            <StyledTxModalToggleButton value="nays" disabled={voteView === 'nays'}>
               <Typography variant="subheader1">
                 <Trans>Voted NAY</Trans>
               </Typography>
-            </StyledToggleButton>
-          </StyledToggleButtonGroup>
+            </StyledTxModalToggleButton>
+          </StyledTxModalToggleGroup>
           {voteView === 'yaes' && yesVotesUI}
           {voteView === 'nays' && noVotesUI}
         </>

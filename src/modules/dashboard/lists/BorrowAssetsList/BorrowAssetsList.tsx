@@ -1,14 +1,13 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { Warning } from 'src/components/primitives/Warning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
 import { AssetCategory, isAssetInCategoryDynamic } from 'src/modules/markets/utils/assetCategories';
@@ -217,7 +216,7 @@ export const BorrowAssetsList = () => {
             width: '100%',
             alignItems: 'center',
             justifyContent: 'space-between',
-            mr: 2,
+            mr: '0.62rem',
           }}
         >
           <Typography component="div" variant="h3" sx={{ flex: '0 0 auto', mr: 2 }}>
@@ -246,56 +245,52 @@ export const BorrowAssetsList = () => {
                   selectedCategories={selectedCategories}
                   onCategoriesChange={setSelectedCategories}
                   disabled={isLoading || !!error}
-                  sx={{
-                    buttonGroup: { width: '100%', maxWidth: '100%', height: '30px' },
-                    button: { fontSize: '0.7rem' },
-                  }}
                 />
               </Box>
             </>
           )}
-          <Box sx={{ px: 6 }}>
+          <Box>
             {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
-              <Warning severity="error">
+              <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%' }}>
                 <Trans>
                   Be careful - You are very close to liquidation. Consider depositing more
                   collateral or paying down some of your borrowed positions
                 </Trans>
-              </Warning>
+              </Alert>
             )}
 
             {!borrowDisabled && (
               <>
                 {user?.isInIsolationMode && (
-                  <Warning severity="warning">
+                  <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
                     <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
                     <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
                       Learn More
                     </Link>
-                  </Warning>
+                  </Alert>
                 )}
                 {user?.isInEmode && (
-                  <Warning severity="warning">
+                  <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
                     <Trans>
                       In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
                       assets
                     </Trans>
-                  </Warning>
+                  </Alert>
                 )}
                 {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                  <Warning severity="info">
+                  <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
                     <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-                  </Warning>
+                  </Alert>
                 )}
               </>
             )}
             {borrowDisabled && (
-              <Warning severity="info">
+              <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
                 <Trans>
                   We couldn&apos;t find any assets related to your search. Try again with a
                   different category.
                 </Trans>
-              </Warning>
+              </Alert>
             )}
           </Box>
         </>

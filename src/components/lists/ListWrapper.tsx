@@ -1,8 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { Box, BoxProps, Paper, PaperProps, Typography } from '@mui/material';
+import { Box, BoxProps, Button, Paper, PaperProps } from '@mui/material';
 import { ReactNode, useState } from 'react';
+import { MinusIcon } from 'src/components/icons/MinusIcon';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
 
@@ -11,6 +13,11 @@ interface ListWrapperProps {
   localStorageName?: string;
   subTitleComponent?: ReactNode;
   subChildrenComponent?: ReactNode;
+  /**
+   * Second header row. Must render NOTHING at all when it has no content (return null / a falsy
+   * branch) — not an empty wrapper element — or its divider will be drawn above blank space, since
+   * the row hides itself via `:empty`.
+   */
   topInfo?: ReactNode;
   children: ReactNode;
   withTopMargin?: boolean;
@@ -18,7 +25,6 @@ interface ListWrapperProps {
   wrapperSx?: BoxProps['sx'];
   tooltipOpen?: boolean;
   paperSx?: PaperProps['sx'];
-  topInfoSx?: BoxProps['sx'];
   onCollapseChange?: (collapsed: boolean) => void;
 }
 
@@ -34,7 +40,6 @@ export const ListWrapper = ({
   wrapperSx,
   tooltipOpen,
   paperSx,
-  topInfoSx,
   onCollapseChange,
 }: ListWrapperProps) => {
   const [isCollapse, setIsCollapse] = useState(
@@ -92,100 +97,141 @@ export const ListWrapper = ({
 
   const collapsed = isCollapse && !noData;
 
+  const collapseText = collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>;
+
+  // When nothing renders below it, the band is the card's last visible element: round its bottom
+  // corners to the Paper's radius and drop the hairline that would otherwise dangle over nothing.
+  const bandIsCardTail = {
+    boxShadow: 'none',
+    borderBottomLeftRadius: 'inherit',
+    borderBottomRightRadius: 'inherit',
+  };
+
   return (
-    <Paper
-      sx={{
-        mt: withTopMargin ? 4 : 0,
-        border: 1,
-        borderColor: 'divider',
-        ...paperSx,
-      }}
-    >
-      <Box
-        sx={{
-          px: { xs: 4, xsm: 6 },
-          py: { xs: 3.5, xsm: 4 },
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          ...wrapperSx,
-        }}
+    <>
+      <Paper
+        variant="table"
+        sx={[
+          { mt: withTopMargin ? '2rem' : 0 },
+          ...(paperSx ? (Array.isArray(paperSx) ? paperSx : [paperSx]) : []),
+        ]}
       >
         <Box
           sx={{
-            width: '100%',
             display: 'flex',
-            alignItems: { xs: 'flex-start', xsm: 'center' },
-            py: '3.6px',
-            flexDirection: { xs: 'column', xsm: 'row' },
+            flexDirection: 'column',
+            gap: '1.25rem',
+            padding: { xs: '0.875rem 1rem', xsm: '1rem 1rem 1rem 1.25rem' },
+            bgcolor: 'table-bg',
+            // Hairline as an inset shadow rather than a border, so it doesn't add to the box height.
+            boxShadow: `inset 0 -1px 0 ${figVars['border-0']}`,
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+            // Empty list: the children box is present but renders nothing.
+            '&:has(+ div:empty)': bandIsCardTail,
+            // Collapsed: the children box is `display: none`, so it is not `:empty`.
+            ...(collapsed ? bandIsCardTail : {}),
+            ...wrapperSx,
           }}
         >
-          {titleComponent}
-          {subTitleComponent}
-        </Box>
-
-        {!!localStorageName && !noData && (
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              cursor: 'pointer',
-              minHeight: '28px',
-              pl: 3,
-              span: {
-                width: '14px',
-                height: '2px',
-                bgcolor: 'text.secondary',
-                position: 'relative',
-                ml: 1,
-                '&:after': {
-                  content: "''",
-                  position: 'absolute',
-                  width: '14px',
-                  height: '2px',
-                  bgcolor: 'text.secondary',
-                  transition: 'all 0.2s ease',
-                  transform: collapsed ? 'rotate(90deg)' : 'rotate(0)',
-                  opacity: collapsed ? 1 : 0,
+              justifyContent: 'space-between',
+              // Title type (H4) — scoped to this row, NOT the whole band, or it would flatten the
+              // second row's stat typography too. Consumers pass their own heading variant, so
+              // neutralise those; control typography (search, selects) keeps its own smaller type.
+              color: 'fg-1',
+              fontSize: '1rem',
+              fontWeight: 500,
+              lineHeight: '1.125rem',
+              '& .MuiTypography-h1, & .MuiTypography-h2, & .MuiTypography-h3, & .MuiTypography-h4':
+                {
+                  font: 'inherit',
+                  letterSpacing: 'inherit',
+                  textTransform: 'capitalize',
                 },
-              },
-            }}
-            onClick={() => {
-              handleTrackingEvents();
-
-              if (localStorageName && !noData) {
-                const nextIsCollapse = !isCollapse;
-                toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName);
-                onCollapseChange?.(nextIsCollapse);
-              }
             }}
           >
-            <Typography variant="buttonM" color="text.secondary">
-              {collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>}
-            </Typography>
-            <span />
-          </Box>
-        )}
-      </Box>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                alignItems: { xs: 'flex-start', xsm: 'center' },
+                flexDirection: { xs: 'column', xsm: 'row' },
+              }}
+            >
+              {titleComponent}
+              {subTitleComponent}
+            </Box>
 
-      {topInfo && (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            px: { xs: 4, xsm: 6 },
-            pb: { xs: collapsed && !noData ? 6 : 2, xsm: collapsed && !noData ? 6 : 0 },
-            overflowX: tooltipOpen ? 'hidden' : 'auto',
-            ...topInfoSx,
-          }}
-        >
-          {topInfo}
+            {!!localStorageName && !noData && (
+              <Button
+                variant="tertiary"
+                size="medium"
+                onClick={() => {
+                  handleTrackingEvents();
+
+                  if (localStorageName && !noData) {
+                    const nextIsCollapse = !isCollapse;
+                    toggleLocalStorageClick(isCollapse, setIsCollapse, localStorageName);
+                    onCollapseChange?.(nextIsCollapse);
+                  }
+                }}
+                endIcon={
+                  // − when expanded; a rotated copy fades in to form a + when collapsed.
+                  <Box sx={{ position: 'relative', display: 'inline-flex', color: 'fg-3' }}>
+                    <MinusIcon sx={{ fontSize: 18 }} />
+                    <MinusIcon
+                      sx={{
+                        fontSize: 18,
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        transform: 'rotate(90deg)',
+                        opacity: collapsed ? 1 : 0,
+                        transition: 'opacity 0.2s ease',
+                      }}
+                    />
+                  </Box>
+                }
+              >
+                {collapseText}
+              </Button>
+            )}
+          </Box>
+
+          {/* Second header row. Its divider is drawn as this row's own top border rather than a
+              sibling <Divider>, so an empty row takes the rule with it — consumers pass topInfo as
+              a fragment that can render nothing (e.g. "Your borrows" with nothing borrowed), which
+              is truthy here but produces no DOM. Being a child of the padded band, the rule insets
+              to the band's left/right padding instead of running edge to edge like the bottom
+              hairline. */}
+          {topInfo && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                // Matches the stat spacing on the page header (PageHeader.tsx).
+                gap: '2.5rem',
+                borderTop: '1px solid',
+                borderColor: 'border-0',
+                pt: '1.25rem',
+                '&:empty': { display: 'none' },
+                overflowX: tooltipOpen ? 'hidden' : 'auto',
+              }}
+            >
+              {topInfo}
+            </Box>
+          )}
         </Box>
-      )}
-      {subChildrenComponent && !collapsed && (
-        <Box sx={{ marginBottom: { xs: 2, xsm: 0 } }}>{subChildrenComponent}</Box>
-      )}
-      <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
-    </Paper>
+
+        <Box sx={{ display: collapsed ? 'none' : 'block' }}>{children}</Box>
+      </Paper>
+
+      {/* Filters (e.g. "Show assets with 0 balance") sit below the card, outside it. */}
+      {subChildrenComponent && !collapsed && <Box sx={{ mt: '1rem' }}>{subChildrenComponent}</Box>}
+    </>
   );
 };

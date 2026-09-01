@@ -44,7 +44,7 @@ export default function Aave404Page() {
             <Trans>We suggest you go back to the home page.</Trans>
           </Typography>
           <Link href="/" passHref>
-            <Button variant="outlined" color="primary">
+            <Button variant="tertiary" color="primary">
               <Trans>Back home</Trans>
             </Button>
           </Link>

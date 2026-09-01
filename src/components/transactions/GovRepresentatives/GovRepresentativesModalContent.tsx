@@ -9,6 +9,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { figVars } from 'src/utils/figmaColors';
 import { getNetworkConfig, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
@@ -106,13 +107,11 @@ export const GovRepresentativesContent = ({
         {reps.map((r, i) => (
           <Box
             key={i}
-            sx={(theme) => ({
-              border: reps[i].remove
-                ? `1px solid ${theme.palette.action.active}`
-                : '1px solid transparent',
+            sx={{
+              border: reps[i].remove ? `1px solid ${figVars['fg-3']}` : '1px solid transparent',
               borderRadius: '8px',
-              background: reps[i].remove ? theme.palette.background.surface : 'transparent',
-            })}
+              background: reps[i].remove ? figVars['bg-2'] : 'transparent',
+            }}
           >
             <Stack gap={2} sx={{ px: 3, py: 3 }}>
               <Stack direction="row" alignItems="center" justifyContent="space-between">
@@ -123,7 +122,7 @@ export const GovRepresentativesContent = ({
                     width="16px"
                     alt="network logo"
                   />
-                  <Typography variant="description" color="text.secondary">
+                  <Typography variant="description" color="fg-2">
                     {networkConfigs[r.chainId].name}
                   </Typography>
                 </Stack>

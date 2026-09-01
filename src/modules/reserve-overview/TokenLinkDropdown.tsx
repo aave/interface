@@ -1,20 +1,19 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Menu, MenuItem, SvgIcon, Typography } from '@mui/material';
+import { Box, Divider, Menu, MenuItem } from '@mui/material';
 import * as React from 'react';
 import { useState } from 'react';
-import { CircleIcon } from 'src/components/CircleIcon';
-import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
 import { RESERVE_DETAILS } from '../../utils/events';
+import { ReserveHeaderIconButton } from './ReserveHeaderIconButton';
+import { MenuSectionLabel, TokenMenuItemContent } from './TokenMenuItems';
 
 interface TokenLinkDropdownProps {
   poolReserve: ReserveWithId;
   iconSymbol?: string;
-  downToSM: boolean;
   hideAToken?: boolean;
   hideVariableDebtToken?: boolean;
 }
@@ -22,7 +21,6 @@ interface TokenLinkDropdownProps {
 export const TokenLinkDropdown = ({
   poolReserve,
   iconSymbol,
-  downToSM,
   hideAToken,
   hideVariableDebtToken,
 }: TokenLinkDropdownProps) => {
@@ -61,21 +59,9 @@ export const TokenLinkDropdown = ({
   return (
     <>
       <Box onClick={handleClick}>
-        <CircleIcon tooltipText={'View token contracts'} downToSM={downToSM}>
-          <Box
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              color: '#A5A8B6',
-              '&:hover': { color: '#F1F1F3' },
-              cursor: 'pointer',
-            }}
-          >
-            <SvgIcon sx={{ fontSize: '14px' }}>
-              <ExternalLinkIcon />
-            </SvgIcon>
-          </Box>
-        </CircleIcon>
+        <ReserveHeaderIconButton tooltipText="View token contracts">
+          <ArrowUpRightIcon sx={{ fontSize: '18px' }} />
+        </ReserveHeaderIconButton>
       </Box>
       <Menu
         anchorEl={anchorEl}
@@ -87,11 +73,9 @@ export const TokenLinkDropdown = ({
         keepMounted={true}
         data-cy="addToWaletSelector"
       >
-        <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-          <Typography variant="secondary12" color="text.secondary">
-            <Trans>Underlying token</Trans>
-          </Typography>
-        </Box>
+        <MenuSectionLabel>
+          <Trans>Underlying token</Trans>
+        </MenuSectionLabel>
 
         <MenuItem
           onClick={() => {
@@ -109,24 +93,19 @@ export const TokenLinkDropdown = ({
             address: poolReserve?.underlyingToken.address.toLowerCase(),
           })}
           target="_blank"
-          divider={showVariableDebtToken}
         >
-          <TokenIcon
+          <TokenMenuItemContent
             symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
-            sx={{ fontSize: '20px' }}
+            label={poolReserve.underlyingToken.symbol}
           />
-          <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-            {poolReserve.underlyingToken.symbol}
-          </Typography>
         </MenuItem>
 
         {!hideAToken && (
-          <Box>
-            <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-              <Typography variant="secondary12" color="text.secondary">
-                <Trans>Aave aToken</Trans>
-              </Typography>
-            </Box>
+          <>
+            <Divider />
+            <MenuSectionLabel>
+              <Trans>Aave aToken</Trans>
+            </MenuSectionLabel>
 
             <MenuItem
               component="a"
@@ -144,54 +123,46 @@ export const TokenLinkDropdown = ({
                 address: poolReserve?.aToken.address.toLocaleLowerCase(),
               })}
               target="_blank"
-              divider={showVariableDebtToken}
             >
-              <TokenIcon
+              <TokenMenuItemContent
                 symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
                 aToken={true}
-                sx={{ fontSize: '20px' }}
+                label={poolReserve.aToken.symbol}
               />
-              <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-                {poolReserve.aToken.symbol}
-              </Typography>
             </MenuItem>
-          </Box>
+          </>
         )}
 
         {showVariableDebtToken && (
-          <Box sx={{ px: 4, pt: 3, pb: 2 }}>
-            <Typography variant="secondary12" color="text.secondary">
+          <>
+            <Divider />
+            <MenuSectionLabel>
               <Trans>Aave debt token</Trans>
-            </Typography>
-          </Box>
-        )}
-        {showVariableDebtToken && (
-          <MenuItem
-            component="a"
-            href={currentNetworkConfig.explorerLinkBuilder({
-              address: poolReserve?.vToken.address.toLocaleLowerCase(),
-            })}
-            target="_blank"
-            onClick={() => {
-              trackEvent(RESERVE_DETAILS.RESERVE_TOKEN_ACTIONS, {
-                type: 'Variable Debt',
-                assetName: poolReserve.underlyingToken.name,
-                asset: poolReserve.underlyingToken.address,
-                aToken: poolReserve.aToken.address,
-                market: currentMarket,
-                variableDebtToken: poolReserve.vToken.address,
-              });
-            }}
-          >
-            <TokenIcon
-              symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
-              waToken={true} //TODO: get a specific icon for variable debt token or apply waToken style
-              sx={{ fontSize: '20px' }}
-            />
-            <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
-              {poolReserve.vToken.symbol}
-            </Typography>
-          </MenuItem>
+            </MenuSectionLabel>
+            <MenuItem
+              component="a"
+              href={currentNetworkConfig.explorerLinkBuilder({
+                address: poolReserve?.vToken.address.toLocaleLowerCase(),
+              })}
+              target="_blank"
+              onClick={() => {
+                trackEvent(RESERVE_DETAILS.RESERVE_TOKEN_ACTIONS, {
+                  type: 'Variable Debt',
+                  assetName: poolReserve.underlyingToken.name,
+                  asset: poolReserve.underlyingToken.address,
+                  aToken: poolReserve.aToken.address,
+                  market: currentMarket,
+                  variableDebtToken: poolReserve.vToken.address,
+                });
+              }}
+            >
+              <TokenMenuItemContent
+                symbol={iconSymbol ?? poolReserve.underlyingToken.symbol}
+                waToken={true}
+                label={poolReserve.vToken.symbol}
+              />
+            </MenuItem>
+          </>
         )}
       </Menu>
     </>

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { useMediaQuery } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
@@ -52,7 +52,8 @@ export type ReserveWithProtocolIncentives = ReserveWithId & {
 };
 
 export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const theme = useTheme();
+  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down('mdlg'));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
   const sortedReserves = [...reserves].sort((a, b) => {

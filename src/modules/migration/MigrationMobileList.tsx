@@ -34,6 +34,10 @@ export const MigrationMobileList = ({
   return (
     <Box sx={{ width: '100%' }}>
       <ListWrapper
+        // Nested inside MigrationLists' outer card — strip this inner surface (matches the desktop
+        // MigrationList) so there's no card-in-card. The card variant has no border, so only the
+        // shadow needs cancelling.
+        paperSx={{ boxShadow: 'none' }}
         titleComponent={
           <Typography component="div" variant="h3" sx={{ mr: 4 }}>
             {titleComponent}
@@ -42,7 +46,7 @@ export const MigrationMobileList = ({
       >
         {(isAvailable || loading) && (
           <ListHeaderWrapper sx={{ pl: 0 }}>
-            <ListColumn align="center" maxWidth={48} minWidth={48}>
+            <ListColumn maxWidth={48} minWidth={48}>
               <MigrationSelectionBox
                 allSelected={allSelected}
                 numSelected={numSelected}
@@ -59,7 +63,7 @@ export const MigrationMobileList = ({
                 justifyContent: 'center',
               }}
             >
-              <Typography variant="subheader2" color="text.secondary">
+              <Typography variant="subheader2" color="fg-3">
                 <Trans>
                   {numSelected}/{numAvailable} assets selected
                 </Trans>

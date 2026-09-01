@@ -23,7 +23,7 @@ export function VotingPowerInfoPanel() {
     ? Number(coreConfig.minPropositionPower)
     : undefined;
   return (
-    <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
+    <Paper variant="card" sx={{ px: 6, pb: 6, pt: 4 }}>
       <Typography
         variant="h3"
         sx={{ height: '36px', display: 'flex', alignItems: 'center', mb: 4 }}
@@ -37,7 +37,7 @@ export function VotingPowerInfoPanel() {
         subtitleProps={{
           variant: 'caption',
           addressCompactMode: CompactMode.XXL,
-          color: 'text.secondary',
+          color: 'fg-2',
         }}
         funnel={'Your info: Governance'}
       />
@@ -47,7 +47,7 @@ export function VotingPowerInfoPanel() {
             <TextWithTooltip
               text="Voting power"
               variant="description"
-              textColor="text.secondary"
+              textColor="fg-2"
               event={{
                 eventName: GENERAL.TOOL_TIP,
                 eventParams: {
@@ -79,7 +79,7 @@ export function VotingPowerInfoPanel() {
             <TextWithTooltip
               text="Proposition power"
               variant="description"
-              textColor="text.secondary"
+              textColor="fg-2"
               event={{
                 eventName: GENERAL.TOOL_TIP,
                 eventParams: {

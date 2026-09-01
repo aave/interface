@@ -1,6 +1,7 @@
 import { CheckIcon, MinusSmIcon } from '@heroicons/react/solid';
-import { Box, SvgIcon, useTheme } from '@mui/material';
+import { Box, SvgIcon } from '@mui/material';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
+import { figVars } from 'src/utils/figmaColors';
 
 interface MigrationSelectionBoxProps {
   allSelected: boolean;
@@ -15,10 +16,9 @@ export const MigrationSelectionBox = ({
   onSelectAllClick,
   disabled,
 }: MigrationSelectionBoxProps) => {
-  const theme = useTheme();
   const selectionBoxStyle = {
-    border: `2px solid ${theme.palette.text.secondary}`,
-    background: theme.palette.text.secondary,
+    border: `2px solid ${figVars['fg-2']}`,
+    background: figVars['fg-2'],
     width: 16,
     height: 16,
     borderRadius: '2px',
@@ -34,8 +34,8 @@ export const MigrationSelectionBox = ({
         <Box
           sx={{
             ...selectionBoxStyle,
-            background: theme.palette.action.disabledBackground,
-            border: `2px solid ${theme.palette.action.disabled}`,
+            background: figVars['disabled-bg'],
+            border: `2px solid ${figVars['disabled-fg']}`,
             '&:hover': {
               cursor: 'not-allowed',
             },
@@ -48,13 +48,13 @@ export const MigrationSelectionBox = ({
     <ListHeaderTitle onClick={onSelectAllClick}>
       {allSelected ? (
         <Box sx={selectionBoxStyle} data-cy={`migration-checkbox-all`}>
-          <SvgIcon sx={{ fontSize: '14px', color: 'background.paper' }}>
+          <SvgIcon sx={{ fontSize: '14px', color: 'surface-elevated' }}>
             <CheckIcon />
           </SvgIcon>
         </Box>
       ) : numSelected !== 0 ? (
         <Box sx={selectionBoxStyle} data-cy={`migration-checkbox-all`}>
-          <SvgIcon sx={{ fontSize: '16px', color: 'background.paper' }}>
+          <SvgIcon sx={{ fontSize: '16px', color: 'surface-elevated' }}>
             <MinusSmIcon />
           </SvgIcon>
         </Box>

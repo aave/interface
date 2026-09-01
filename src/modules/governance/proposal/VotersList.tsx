@@ -15,7 +15,7 @@ export const VotersList = ({ compact = false, voters, sx }: VotersListProps): JS
   return (
     <Box sx={{ maxHeight: 205, overflow: 'hidden', overflowY: 'scroll', ...sx }}>
       {voters.length === 0 ? (
-        <Box sx={{ color: 'text.secondary' }}>—</Box>
+        <Box sx={{ color: 'fg-2' }}>—</Box>
       ) : (
         voters
           .sort((a, b) => Number(b.votingPower) - Number(a.votingPower))

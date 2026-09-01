@@ -1,8 +1,7 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
+import { Alert } from '@mui/material';
 import { useMemo } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { SwapState } from '../../types';
 import { OrderType } from '../../types/shared.types';
@@ -66,24 +65,20 @@ export function LimitOrderAmountWarning({ state }: { state: SwapState }) {
   if (!shouldShowWarning) return null;
 
   return (
-    <Warning
+    <Alert
       severity={isHigherDifference ? 'warning' : 'info'}
-      icon={false}
+      data-size="small"
       sx={{
+        width: '100%',
         mt: 2,
         mb: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
       }}
     >
-      <Typography variant="caption">
-        <Trans>
-          Your order amounts are {isHigherDifference ? 'significantly ' : ''} less favorable by{' '}
-          {differencePercentage?.abs()?.toFixed(1) ?? '0'}% to the liquidity provider than
-          recommended. This order may not be executed.
-        </Trans>
-      </Typography>
-    </Warning>
+      <Trans>
+        Your order amounts are {isHigherDifference ? 'significantly ' : ''} less favorable by{' '}
+        {differencePercentage?.abs()?.toFixed(1) ?? '0'}% to the liquidity provider than
+        recommended. This order may not be executed.
+      </Trans>
+    </Alert>
   );
 }

@@ -14,7 +14,7 @@ export const TransactionListItemLoader = () => {
         </Stack>
       </ListColumn>
 
-      <ListColumn align="left">
+      <ListColumn>
         <Stack direction="row" gap={3} alignItems="center">
           <Skeleton variant="circular" width={28} height={28} />
           <SvgIcon sx={{ fontSize: '13px' }}>
@@ -24,18 +24,18 @@ export const TransactionListItemLoader = () => {
         </Stack>
       </ListColumn>
 
-      <ListColumn align="left">
+      <ListColumn>
         <Stack direction="column" gap={1}>
           <Skeleton width={90} height={12} />
           <Skeleton width={140} height={12} />
         </Stack>
       </ListColumn>
 
-      <ListColumn align="left">
+      <ListColumn>
         <Skeleton width={90} height={24} />
       </ListColumn>
 
-      <ListColumn maxWidth={95} minWidth={95} align="left">
+      <ListColumn align="right" maxWidth={95} minWidth={95}>
         <Skeleton width={24} height={24} />
       </ListColumn>
     </ListItem>

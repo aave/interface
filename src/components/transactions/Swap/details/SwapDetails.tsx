@@ -138,7 +138,7 @@ export const IntentTxDetails = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14" color="common.white">
+                <Typography variant="h5">
                   {buyAmount} {buyToken.symbol}
                 </Typography>
               }
@@ -148,7 +148,7 @@ export const IntentTxDetails = ({
               leaveTouchDelay={500}
             >
               <Box>
-                <FormattedNumber value={buyAmount} variant="secondary14" compact roundDown={true} />
+                <FormattedNumber value={buyAmount} variant="h5" compact roundDown={true} />
               </Box>
             </DarkTooltip>
           </Box>
@@ -158,15 +158,15 @@ export const IntentTxDetails = ({
               variant="helperText"
               compact
               symbol="USD"
-              symbolsColor="text.secondary"
-              color="text.secondary"
+              symbolsColor="fg-2"
+              color="fg-2"
               roundDown={true}
             />
             {priceImpact && priceImpact > 0 && priceImpact < 100 && (
               <Typography
                 variant="helperText"
                 style={{ marginLeft: 4 }}
-                color={priceImpact > 10 ? 'error' : priceImpact > 5 ? 'warning' : 'text.secondary'}
+                color={priceImpact > 10 ? 'error' : priceImpact > 5 ? 'warning' : 'fg-2'}
               >
                 (-{priceImpact.toFixed(priceImpact > 3 ? 0 : priceImpact > 1 ? 1 : 2)}%)
               </Typography>
@@ -215,7 +215,7 @@ const MarketOrderTxDetails = ({
             />
             <DarkTooltip
               title={
-                <Typography variant="secondary14" color="common.white">
+                <Typography variant="h5">
                   {buyAmount} {buyToken.symbol}
                 </Typography>
               }
@@ -225,12 +225,7 @@ const MarketOrderTxDetails = ({
               leaveTouchDelay={500}
             >
               <Box>
-                <FormattedNumber
-                  value={Number(buyAmount)}
-                  variant="secondary14"
-                  compact
-                  roundDown={true}
-                />
+                <FormattedNumber value={Number(buyAmount)} variant="h5" compact roundDown={true} />
               </Box>
             </DarkTooltip>
           </Box>
@@ -239,8 +234,8 @@ const MarketOrderTxDetails = ({
             variant="helperText"
             compact
             symbol="USD"
-            symbolsColor="text.secondary"
-            color="text.secondary"
+            symbolsColor="fg-2"
+            color="fg-2"
             roundDown={true}
           />
         </Box>

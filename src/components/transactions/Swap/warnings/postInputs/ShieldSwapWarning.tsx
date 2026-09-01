@@ -1,8 +1,6 @@
-import { ShieldExclamationIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
 import { Dispatch, useEffect, useMemo } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 import { useRootStore } from 'src/store/root';
 
 import { ActionsBlockedReason, SwapState } from '../../types';
@@ -42,31 +40,14 @@ export function ShieldSwapWarning({
   if (!shouldBlock) return null;
 
   return (
-    <Warning
-      severity="error"
-      icon={false}
-      sx={{
-        mt: 2,
-        mb: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-        <SvgIcon sx={{ fontSize: 20 }}>
-          <ShieldExclamationIcon />
-        </SvgIcon>
-        <Typography variant="subheader1">
-          <Trans>Aave Shield: Transaction blocked</Trans>
-        </Typography>
-      </Box>
-      <Typography variant="caption">
-        <Trans>
-          This swap has a price impact of {(lostValue * 100).toFixed(1)}%, which exceeds the 25%
-          safety threshold. To proceed, disable Aave Shield in the settings menu.
-        </Trans>
-      </Typography>
-    </Warning>
+    <Alert severity="error" data-size="small" sx={{ width: '100%', mt: 2, mb: 2 }}>
+      <AlertTitle>
+        <Trans>Aave Shield: Transaction blocked</Trans>
+      </AlertTitle>
+      <Trans>
+        This swap has a price impact of {(lostValue * 100).toFixed(1)}%, which exceeds the 25%
+        safety threshold. To proceed, disable Aave Shield in the settings menu.
+      </Trans>
+    </Alert>
   );
 }

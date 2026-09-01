@@ -41,7 +41,7 @@ export const MarketOrderInputs = ({
         {(params.inputInputTitle || swapState.showNetworkSelector) && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             {params.inputInputTitle && (
-              <Typography variant="secondary14" color="text.secondary">
+              <Typography variant="h5" color="fg-2">
                 {params.inputInputTitle}
               </Typography>
             )}
@@ -114,22 +114,18 @@ export const MarketOrderInputs = ({
               disabled={!(customProps?.canSwitchTokens ?? false)}
               sx={{
                 border: '1px solid',
-                borderColor: 'divider',
-                backgroundColor: 'background.paper',
-                '&:hover': { backgroundColor: 'background.surface' },
-                '&:disabled': {
-                  backgroundColor: 'background.surface',
-                  opacity: '0.7',
-                  color: 'text.secondary',
+                borderColor: 'border-2',
+                backgroundColor: 'surface-elevated',
+                color: 'primary.main',
+                '&:hover': { backgroundColor: 'bg-2' },
+                '&.Mui-disabled': {
+                  backgroundColor: 'bg-2',
+                  borderColor: 'border-0',
+                  color: 'fg-3',
                 },
               }}
             >
-              <SvgIcon
-                sx={{
-                  color: 'primary.main',
-                  fontSize: '18px',
-                }}
-              >
+              <SvgIcon sx={{ fontSize: '18px' }}>
                 <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>
@@ -151,12 +147,12 @@ export const MarketOrderInputs = ({
                 disableFocusRipple
                 sx={{
                   border: '1px solid',
-                  borderColor: 'divider',
-                  backgroundColor: 'background.paper',
+                  borderColor: 'border-2',
+                  backgroundColor: 'surface-elevated',
                   '&:disabled': {
-                    backgroundColor: 'background.paper',
+                    backgroundColor: 'surface-elevated',
                   },
-                  '&:hover': { backgroundColor: 'background.paper' },
+                  '&:hover': { backgroundColor: 'surface-elevated' },
                 }}
               >
                 <SvgIcon

@@ -1,4 +1,5 @@
 import { Box, Tooltip, TooltipProps } from '@mui/material';
+import { figVars } from 'src/utils/figmaColors';
 
 export const DarkTooltip = ({
   title,
@@ -16,9 +17,13 @@ export const DarkTooltip = ({
         componentsProps={{
           tooltip: {
             sx: {
-              bgcolor: 'rgba(15, 18, 29, 0.8)',
+              color: 'fg-1',
+              bgcolor: 'scrim',
+              backdropFilter: 'blur(12px)',
+              borderRadius: '0.5rem',
+              boxShadow: `0 1px 12px 0 ${figVars['shadow-medium']}, inset 0 0 0 1px ${figVars['border-0']}`,
               '& .MuiTooltip-arrow': {
-                color: 'rgba(15, 18, 29, 0.8)',
+                color: 'scrim',
               },
             },
           },

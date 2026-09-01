@@ -1,23 +1,190 @@
-import {
-  CheckCircleIcon,
-  ChevronDownIcon,
-  ExclamationCircleIcon,
-  ExclamationIcon,
-  InformationCircleIcon,
-} from '@heroicons/react/outline';
-import { SvgIcon, Theme, ThemeOptions } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { Box, SvgIcon, ThemeOptions } from '@mui/material';
+import { type CSSObject, createTheme, experimental_extendTheme } from '@mui/material/styles';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { ColorPartial } from '@mui/material/styles/createPalette';
+// Augments MUI's base `Theme` (the one component `sx`/`styled` callbacks receive) with `.vars`,
+// so `theme.vars.palette.*` typechecks app-wide, not only against this file's `AppTheme` param.
+import type {} from '@mui/material/themeCssVarsAugmentation';
 import React from 'react';
+import {
+  AlertErrorIcon,
+  AlertInfoIcon,
+  AlertSuccessIcon,
+  AlertWarningIcon,
+} from 'src/components/icons/AlertIcons';
+import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
+import { ScaleFade } from 'src/components/primitives/transitions/ScaleFade';
+
+import { colorToP3 } from './colorToP3';
+import { type FigmaColorName, figSurfaceShadow, figVars, onAccent, pickFigma } from './figmaColors';
+import { insetHighlightActive, insetHighlightBase } from './insetHighlight';
+import { motion } from './motion';
+
+// The app theme is built with MUI's CSS-variables engine (`experimental_extendTheme`), so it
+// carries `.vars` (CSS custom-property refs like `figVars['bg-1']`) and
+// `.applyStyles(scheme, …)` for per-color-scheme overrides.
+type AppTheme = ReturnType<typeof experimental_extendTheme>;
+
+// MUI's `theme.applyStyles('dark', …)` needs the provider theme's `getColorSchemeSelector`,
+// which the raw `extendTheme` result (used to build the component overrides statically)
+// doesn't carry — so calling it there hits the classic `palette.mode` branch and throws (the
+// raw theme has no top-level `palette`). This helper inlines the exact CSS-vars selector
+// `applyStyles` emits, matching any ancestor with `data-mui-color-scheme="dark"` — the <html>
+// element (app-wide) or a local wrapper (the dev showcase) — so both switch correctly.
+export const darkScheme = (styles: CSSObject): CSSObject => ({
+  '*:where([data-mui-color-scheme="dark"]) &': styles,
+});
+
+// Dropdown geometry: the menu paper's corner radius and the list's inset. The option-row
+// highlight radius is derived from these (paper radius − inset) to stay concentric, so keep
+// them together here — otherwise that relationship silently drifts.
+const MENU_PAPER_RADIUS = '0.75rem';
+const MENU_LIST_INSET = '0.38rem';
+
+/**
+ * The `::before` box the hover and disabled overlays both paint on: inset to the element's edges,
+ * behind its content but above its own background (`zIndex: -1` under `isolation: isolate`).
+ */
+const insetLayer: CSSObject = {
+  content: "''",
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  borderRadius: 'inherit',
+  zIndex: -1,
+};
+
+/**
+ * Composites a translucent `semantic/button` hover token over the button's own fill. Assigning one
+ * to `backgroundColor` would replace the base fill rather than tint it.
+ */
+const hoverOverlay = (fill: string): CSSObject => ({
+  position: 'relative',
+  isolation: 'isolate',
+  '&::before': {
+    ...insetLayer,
+    transition: `background-color ${motion.duration.hover}ms ${motion.easing.standard}`,
+  },
+  '&:hover::before, &.Mui-focusVisible::before, &[aria-expanded="true"]::before': {
+    backgroundColor: fill,
+  },
+});
+
+/**
+ * The shared resting fill for the opaque "white pill" surfaces — the pill button variants and the
+ * Select trigger — so the tokens live here once instead of being restated ~470 lines apart. bg-3 in
+ * both modes, so it needs no `darkScheme` override.
+ */
+const surfaceFill = {
+  backgroundColor: figVars['bg-3'],
+  boxShadow: figSurfaceShadow(),
+};
+/** Opaque hover step for the Select trigger, which tints by fill rather than by overlay. */
+const surfaceFillHover = { backgroundColor: figVars['bg-4-hover'], boxShadow: figSurfaceShadow() };
+
+/**
+ * The "white pill" buttons, per the Figma `semantic/button` scale. Both sit on `surfaceFill` with a
+ * hairline ring instead of a border; they differ only in dark-mode fill and hover strength, so one
+ * factory keeps them from drifting. On hover the ring is re-asserted — the global `disableElevation`
+ * default otherwise strips it — and `border` is forced to none to suppress MUI's default outlined
+ * hover border.
+ */
+const pillStyle = (hoverToken: FigmaColorName, darkFill?: FigmaColorName) => ({
+  ...surfaceFill,
+  ...(darkFill ? darkScheme({ backgroundColor: figVars[darkFill] }) : {}),
+  ...hoverOverlay(figVars[hoverToken]),
+  color: figVars['fg-1'],
+  border: 'none',
+  '& .MuiButton-startIcon': {
+    color: figVars['fg-3'],
+  },
+  '&:hover, &.Mui-focusVisible, &[aria-expanded="true"]': {
+    boxShadow: figSurfaceShadow(),
+    border: 'none',
+  },
+});
+
+/** Secondary: bg-3 in both modes. */
+const secondaryPillStyle = pillStyle('button-hover-secondary');
+/** Tertiary: one step up the dark ramp, with a stronger hover tint. */
+const tertiaryPillStyle = pillStyle('button-hover-tertiary', 'bg-4');
+
+/** Shared disabled state for both pill variants. */
+const pillDisabled = {
+  color: figVars['fg-3'],
+  border: 'none',
+  boxShadow: figSurfaceShadow(),
+};
+
+// Alert severity surface: a gradient from the severity colour (left) fading to bg-2 (right), plus
+// the full colour + a 20% tint behind/inside the icon box. The two modes differ only in `tint` —
+// dark lifts it so the wash stays visible against the darker canvas — so the gradient itself is
+// written once here rather than duplicated into the dark override.
+const severityGradient = (color: string, tint: string) =>
+  `linear-gradient(90deg, color-mix(in srgb, ${color} ${tint}, transparent) 0%, ${figVars['bg-2']} 100%), ${figVars['bg-2']}`;
+
+const alertSeverityStyle = (color: string): CSSObject => ({
+  background: severityGradient(color, '3%'),
+  '.MuiAlert-icon': {
+    color,
+    backgroundColor: `color-mix(in srgb, ${color} 20%, transparent)`,
+  },
+  ...darkScheme({ background: severityGradient(color, '5%') }),
+});
+
+// Shared box geometry for the custom selection-control icons (checkbox + radio).
+const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
+
+// Keyboard-focus ring shared by the buttons and the selection controls / switch: a 2px ring in the
+// element's own colour, offset 3px out.
+const focusRing = { outline: '2px solid currentColor', outlineOffset: '3px' } as const;
+
+// Selection-control (checkbox + radio) icon recipes — shared so the two never drift. The unchecked
+// box is transparent (it picks up whatever surface it sits on) with an inset border-0 hairline that
+// darkens to fg-4 on hover (keyed to the shared .MuiButtonBase-root both controls carry, so one
+// selector covers both); the checked box is a purple-1 fill centered on its glyph. Radio spreads
+// these and overrides borderRadius to a circle.
+const selectionControlResting = {
+  ...checkboxIconBox,
+  backgroundColor: 'transparent',
+  boxShadow: `inset 0 0 0 1px ${figVars['border-0']}`,
+  boxSizing: 'border-box' as const,
+  '.MuiButtonBase-root:hover &': {
+    boxShadow: `inset 0 0 0 1px ${figVars['fg-4']}`,
+  },
+  // Keyboard-focus ring (see `focusRing`), hugging the icon box. The focus class lands on the
+  // shared ButtonBase root, so key it off that.
+  '.MuiButtonBase-root.Mui-focusVisible &': focusRing,
+};
+const selectionControlChecked = {
+  ...checkboxIconBox,
+  backgroundColor: figVars['purple-1'],
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // Keyboard-focus ring (see `focusRing`).
+  '.MuiButtonBase-root.Mui-focusVisible &': focusRing,
+};
+const selectionControlRootReset = {
+  root: {
+    '&:hover, &.Mui-focusVisible': {
+      backgroundColor: 'transparent',
+    },
+  },
+};
+
+// Soft shadow under the Switch's thumb.
+const controlThumbShadow = '0px 1px 1px rgba(0, 0, 0, 0.12)';
 
 const theme = createTheme();
 const {
   typography: { pxToRem },
 } = theme;
 
-const FONT = 'Inter, Arial';
+const FONT = "'Inter Variable', Inter, Arial";
 
 declare module '@mui/material/styles/createPalette' {
   interface PaletteColor extends ColorPartial {}
@@ -30,30 +197,18 @@ declare module '@mui/material/styles/createPalette' {
     default: string;
     paper: string;
     surface: string;
-    surface2: string;
-    header: string;
-    disabled: string;
   }
 
-  interface Palette {
-    gradients: {
-      aaveGradient: string;
-      newGradient: string;
-    };
-    other: {
-      standardInputLine: string;
-    };
-  }
+  // Design tokens are flattened onto the palette root (see `getDesignTokens`), so each token is
+  // a first-class palette member. This also turns a token name that collides with a built-in
+  // palette key (e.g. `error`, `background`) into a compile error rather than a silent overwrite.
+  interface Palette extends Record<FigmaColorName, string> {}
 
-  interface PaletteOptions {
-    gradients: {
-      aaveGradient: string;
-      newGradient: string;
-    };
-  }
+  interface PaletteOptions extends Partial<Record<FigmaColorName, string>> {}
 }
 
 interface TypographyCustomVariants {
+  base: React.CSSProperties;
   display1: React.CSSProperties;
   subheader1: React.CSSProperties;
   subheader2: React.CSSProperties;
@@ -62,15 +217,9 @@ interface TypographyCustomVariants {
   buttonM: React.CSSProperties;
   buttonS: React.CSSProperties;
   helperText: React.CSSProperties;
-  tooltip: React.CSSProperties;
-  main21: React.CSSProperties;
   secondary21: React.CSSProperties;
-  main16: React.CSSProperties;
   secondary16: React.CSSProperties;
-  main14: React.CSSProperties;
-  secondary14: React.CSSProperties;
   main12: React.CSSProperties;
-  secondary12: React.CSSProperties;
 }
 
 declare module '@mui/material/styles' {
@@ -89,6 +238,7 @@ declare module '@mui/material/styles' {
 // Update the Typography's variant prop options
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
+    base: true;
     display1: true;
     subheader1: true;
     subheader2: true;
@@ -97,16 +247,10 @@ declare module '@mui/material/Typography' {
     buttonM: true;
     buttonS: true;
     helperText: true;
-    tooltip: true;
-    main21: true;
     secondary21: true;
-    main16: true;
     secondary16: true;
-    main14: true;
-    secondary14: true;
     main12: true;
-    secondary12: true;
-    h5: false;
+    h5: true;
     h6: false;
     subtitle1: false;
     subtitle2: false;
@@ -117,99 +261,97 @@ declare module '@mui/material/Typography' {
   }
 }
 
+// Add a `tertiary` button variant (the secondary pill minus its ring/shadow).
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
-    surface: true;
-    gradient: true;
+    tertiary: true;
+  }
+}
+
+declare module '@mui/material/Paper' {
+  interface PaperPropsVariantOverrides {
+    modal: true;
+    card: true;
+    table: true;
   }
 }
 
 export const getDesignTokens = (mode: 'light' | 'dark') => {
-  const getColor = (lightColor: string, darkColor: string) =>
-    mode === 'dark' ? darkColor : lightColor;
+  const t = pickFigma(mode); // ← the one line of setup
 
   return {
     breakpoints: {
-      keys: ['xs', 'xsm', 'sm', 'md', 'lg', 'xl', 'xxl'],
+      keys: ['xs', 'xsm', 'sm', 'md', 'mdlg', 'lg', 'xl', 'xxl'],
       values: { xs: 0, xsm: 640, sm: 760, md: 960, mdlg: 1125, lg: 1280, xl: 1575, xxl: 1800 },
     },
     palette: {
       mode,
+      // Design tokens flattened onto the palette root → MUI generates a `--mui-palette-<name>`
+      // var per token, so `sx={{ bgcolor: 'bg-1' }}` and `figVars['bg-1']` both resolve to it.
+      ...t,
       primary: {
-        main: getColor('#383D51', '#EAEBEF'),
-        light: getColor('#62677B', '#F1F1F3'),
-        dark: getColor('#292E41', '#D2D4DC'),
-        contrast: getColor('#FFFFFF', '#0F121D'),
+        main: t['fg-1'],
+        light: t['fg-2'],
+        dark: t['fg-max'],
+        contrastText: t['bg-1'],
       },
       secondary: {
-        main: getColor('#FF607B', '#F48FB1'),
-        light: getColor('#FF607B', '#F6A5C0'),
-        dark: getColor('#B34356', '#AA647B'),
+        main: t['secondary-main'],
+        light: t['secondary-light'],
+        dark: t['secondary-dark'],
       },
       error: {
-        main: getColor('#BC0000B8', '#F44336'),
-        light: getColor('#D26666', '#E57373'),
-        dark: getColor('#BC0000', '#D32F2F'),
-        '100': getColor('#4F1919', '#FBB4AF'), // for alert text
-        '200': getColor('#F9EBEB', '#2E0C0A'), // for alert background
+        main: t['red-1'],
+        light: t['error-light'],
+        dark: t['error-dark'],
+        '100': t['error-text'], // alert text
+        '200': t['error-bg'], // alert background
       },
       warning: {
-        main: getColor('#F89F1A', '#FFA726'),
-        light: getColor('#FFCE00', '#FFB74D'),
-        dark: getColor('#C67F15', '#F57C00'),
-        '100': getColor('#63400A', '#FFDCA8'), // for alert text
-        '200': getColor('#FEF5E8', '#301E04'), // for alert background
+        main: t['yellow-1'],
+        light: t['warning-light'],
+        dark: t['warning-dark'],
+        '100': t['warning-text'],
+        '200': t['warning-bg'],
       },
       info: {
-        main: getColor('#0062D2', '#29B6F6'),
-        light: getColor('#0062D2', '#4FC3F7'),
-        dark: getColor('#002754', '#0288D1'),
-        '100': getColor('#002754', '#A9E2FB'), // for alert text
-        '200': getColor('#E5EFFB', '#071F2E'), // for alert background
+        main: t['blue-1'],
+        light: t['info-light'],
+        dark: t['info-dark'],
+        '100': t['info-text'],
+        '200': t['info-bg'],
       },
       success: {
-        main: getColor('#4CAF50', '#66BB6A'),
-        light: getColor('#90FF95', '#90FF95'),
-        dark: getColor('#318435', '#388E3C'),
-        '100': getColor('#1C4B1E', '#C2E4C3'), // for alert text
-        '200': getColor('#ECF8ED', '#0A130B'), // for alert background
+        main: t['data-green'],
+        light: t['success-light'],
+        dark: t['success-dark'],
+        '100': t['success-text'],
+        '200': t['success-bg'],
       },
       text: {
-        primary: getColor('#303549', '#F1F1F3'),
-        secondary: getColor('#62677B', '#A5A8B6'),
-        disabled: getColor('#D2D4DC', '#62677B'),
-        muted: getColor('#A5A8B6', '#8E92A3'),
-        highlight: getColor('#383D51', '#C9B3F9'),
+        primary: t['fg-1'],
+        secondary: t['fg-2'],
+        disabled: t['fg-4'],
+        muted: t['fg-3'],
       },
       background: {
-        default: getColor('#F1F1F3', '#1B2030'),
-        paper: getColor('#FFFFFF', '#292E41'),
-        surface: getColor('#F7F7F9', '#383D51'),
-        surface2: getColor('#F9F9FB', '#383D51'),
-        header: getColor('#2B2D3C', '#1B2030'),
-        disabled: getColor('#EAEBEF', '#EBEBEF14'),
+        default: t['bg-5'],
+        paper: t['surface-elevated'],
+        surface: t['bg-2'],
       },
-      divider: getColor('#EAEBEF', '#EBEBEF14'),
+      divider: t['border-0'],
       action: {
-        active: getColor('#8E92A3', '#EBEBEF8F'),
-        hover: getColor('#F1F1F3', '#EBEBEF14'),
-        selected: getColor('#EAEBEF', '#EBEBEF29'),
-        disabled: getColor('#BBBECA', '#EBEBEF4D'),
-        disabledBackground: getColor('#EAEBEF', '#EBEBEF1F'),
-        focus: getColor('#F1F1F3', '#EBEBEF1F'),
-      },
-      other: {
-        standardInputLine: getColor('#383D511F', '#EBEBEF6B'),
-      },
-      gradients: {
-        aaveGradient: 'linear-gradient(248.86deg, #B6509E 10.51%, #2EBAC6 93.41%)',
-        newGradient: 'linear-gradient(79.67deg, #8C3EBC 0%, #007782 95.82%)',
+        active: t['fg-3'],
+        hover: t['button-hover'],
+        selected: t['selected'],
+        disabled: t['disabled-fg'],
+        disabledBackground: t['disabled-bg'],
+        focus: t['focus'],
       },
     },
     spacing: 4,
     typography: {
       fontFamily: FONT,
-      h5: undefined,
       h6: undefined,
       subtitle1: undefined,
       subtitle2: undefined,
@@ -233,16 +375,14 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       },
       h2: {
         fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: 'unset',
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
+        fontWeight: 500,
+        lineHeight: '120%',
+        fontSize: pxToRem(24),
       },
       h3: {
         fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: '160%',
+        fontWeight: 500,
+        lineHeight: '120%',
         fontSize: pxToRem(18),
       },
       h4: {
@@ -251,6 +391,12 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.15),
         lineHeight: pxToRem(24),
         fontSize: pxToRem(16),
+      },
+      h5: {
+        fontFamily: FONT,
+        fontWeight: 500,
+        lineHeight: pxToRem(18),
+        fontSize: pxToRem(14),
       },
       subheader1: {
         fontFamily: FONT,
@@ -265,6 +411,12 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         letterSpacing: pxToRem(0.1),
         lineHeight: pxToRem(16),
         fontSize: pxToRem(12),
+      },
+      base: {
+        fontFamily: FONT,
+        fontWeight: 400,
+        lineHeight: '100%',
+        fontSize: pxToRem(14),
       },
       description: {
         fontFamily: FONT,
@@ -290,7 +442,8 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       buttonM: {
         fontFamily: FONT,
         fontWeight: 500,
-        lineHeight: pxToRem(24),
+        letterSpacing: '-0.00563rem',
+        lineHeight: '1.25rem',
         fontSize: pxToRem(14),
       },
       buttonS: {
@@ -308,31 +461,11 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         lineHeight: pxToRem(12),
         fontSize: pxToRem(10),
       },
-      tooltip: {
-        fontFamily: FONT,
-        fontWeight: 400,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
-      },
-      main21: {
-        fontFamily: FONT,
-        fontWeight: 800,
-        lineHeight: '133.4%',
-        fontSize: pxToRem(21),
-      },
       secondary21: {
         fontFamily: FONT,
         fontWeight: 500,
         lineHeight: '133.4%',
         fontSize: pxToRem(21),
-      },
-      main16: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(16),
       },
       secondary16: {
         fontFamily: FONT,
@@ -341,30 +474,9 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
         lineHeight: pxToRem(24),
         fontSize: pxToRem(16),
       },
-      main14: {
-        fontFamily: FONT,
-        fontWeight: 600,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
-      secondary14: {
-        fontFamily: FONT,
-        fontWeight: 500,
-        letterSpacing: pxToRem(0.15),
-        lineHeight: pxToRem(20),
-        fontSize: pxToRem(14),
-      },
       main12: {
         fontFamily: FONT,
         fontWeight: 600,
-        letterSpacing: pxToRem(0.1),
-        lineHeight: pxToRem(16),
-        fontSize: pxToRem(12),
-      },
-      secondary12: {
-        fontFamily: FONT,
-        fontWeight: 500,
         letterSpacing: pxToRem(0.1),
         lineHeight: pxToRem(16),
         fontSize: pxToRem(12),
@@ -373,7 +485,39 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
   } as ThemeOptions;
 };
 
-export function getThemedComponents(theme: Theme) {
+/**
+ * Subtle press feedback shared by buttons and dropdown triggers: the control scales down
+ * slightly while active (pointer/touch down), and never when disabled. Pair with a `transform`
+ * transition (at `motion.duration.hover`) so the release animates back. Reduced-motion users
+ * get the scale instantly via the global `prefers-reduced-motion` rule in MuiCssBaseline.
+ */
+const pressScaleActive = {
+  '&:active:not(.Mui-disabled)': {
+    transform: 'scale(0.99)',
+  },
+};
+
+/**
+ * Disabled button treatment: the label/icon stay crisp while the button's own background (+ box
+ * shadow) render at 50% on an `opacity: 0.5` `::before` layer. Opacity is used (not color-mix /
+ * channel alpha) so the faded fill keeps its Display-P3 color; a box-shadow also has no opacity of
+ * its own, so fading a layer is the only clean way to halve it. `isolation: isolate` makes the root
+ * a stacking context so the `z-index: -1` layer sits behind the label, not behind the parent bg.
+ */
+const disabledFade = (opts: { color: string; before: CSSObject }): CSSObject => ({
+  color: opts.color,
+  backgroundColor: 'transparent',
+  border: 'none',
+  boxShadow: 'none',
+  isolation: 'isolate',
+  '&::before': {
+    ...insetLayer,
+    opacity: 0.5,
+    ...opts.before,
+  },
+});
+
+export function getThemedComponents(theme: AppTheme) {
   return {
     components: {
       MuiSkeleton: {
@@ -386,27 +530,58 @@ export function getThemedComponents(theme: Theme) {
       MuiOutlinedInput: {
         styleOverrides: {
           root: {
-            borderRadius: '6px',
-            borderColor: theme.palette.divider,
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#CBCDD8',
+            borderRadius: '0.5rem',
+            // Text inputs (everything that isn't a Select): a bg-3 surface with the shared
+            // surface shadow (shadow-low drop + shadow-stroke-2 1px ring) instead of a border.
+            // Selects keep their own fill via the `:has(.MuiSelect-select)` block below.
+            '&:not(:has(.MuiSelect-select))': {
+              backgroundColor: figVars['bg-3'],
+              boxShadow: figSurfaceShadow(),
+              '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
             },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#CBCDD8',
+            // Select trigger = the outlined-button surface: the same `surfaceFill` recipe the
+            // pill uses, same 0.5rem radius (from `root`). The tokens are shared rather than
+            // restated so the two can't drift. The notched border is dropped — the ring IS the
+            // outline — so there's no blueish or animated border; hover & open step the fill while
+            // the ring stays put. `pillStyle` itself isn't spread here: its fg-1 color,
+            // start-icon selector and `[aria-expanded]` selector are all wrong for an input (the
+            // attribute lands on the inner `.MuiSelect-select`, hence the `:has()` below).
+            '&:has(.MuiSelect-select)': {
+              ...surfaceFill,
+              // Animate the hover/open fill+ring step (was instant — the root had no transition).
+              transition: theme.transitions.create(['background-color', 'box-shadow'], {
+                duration: motion.duration.hover,
+              }),
+              '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+              // Open fill is keyed to the Select's actual open state (`aria-expanded` on the
+              // select), NOT `.Mui-focused`: a Select keeps focus after its menu closes, so a
+              // focus-based fill would linger after closing and while other fields are focused.
+              '&:hover, &:has(.MuiSelect-select[aria-expanded="true"])': {
+                ...surfaceFillHover,
+                '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
+              },
+              // Keyboard-focus ring only (browser deems focus visible → keyboard nav, not the
+              // focus MUI restores to the trigger on close). Matches the outlined-button ring.
+              '&:has(.MuiSelect-select:focus-visible)': {
+                outline: `2px solid ${figVars['fg-1']}`,
+                outlineOffset: '3px',
+              },
+              // Disabled dropdown: inert to hover / pointer / touch (no hover fill step, no
+              // pointer cursor). The faded look still comes from MUI's `.Mui-disabled` text.
+              '&.Mui-disabled': {
+                pointerEvents: 'none',
+              },
             },
           },
         },
       },
-      MuiSlider: {
-        styleOverrides: {
-          root: {
-            '& .MuiSlider-thumb': {
-              color: theme.palette.mode === 'light' ? '#62677B' : '#C9B3F9',
-            },
-            '& .MuiSlider-track': {
-              color: theme.palette.mode === 'light' ? '#383D51' : '#9C93B3',
-            },
-          },
+      MuiButtonBase: {
+        defaultProps: {
+          // No ripple / pressed "splash" on any control (menu items, buttons, icon
+          // buttons, toggles, checkboxes, tabs, …). Interaction is conveyed by hover,
+          // keyboard focus, and the press-scale — not MUI's ripple. Set on ButtonBase so
+          // it covers every ButtonBase-derived component in one place.
+          disableRipple: true,
         },
       },
       MuiButton: {
@@ -415,54 +590,154 @@ export function getThemedComponents(theme: Theme) {
         },
         styleOverrides: {
           root: {
-            borderRadius: '4px',
+            // Size to content + padding, not MUI's default 64px floor (which let buttons in tight
+            // flex rows squish below their content). Row action buttons re-add an even floor
+            // locally (ListButtonsColumn); deliberate collapses keep their own minWidth: 0.
+            minWidth: 'unset',
+            // Never wrap the label to a second line — buttons size to their text and stay one line
+            // even in tight flex rows (e.g. the sGHO markets banner's action row).
+            whiteSpace: 'nowrap',
+            // Hover/focus state transition at 100ms (overrides MUI's 250ms default).
+            // `transform` is included so the active-press scale animates in and out.
+            transition: theme.transitions.create(
+              ['background-color', 'box-shadow', 'border-color', 'color', 'transform'],
+              { duration: motion.duration.hover }
+            ),
+            // Subtle press feedback — scale down while active (not when disabled).
+            ...pressScaleActive,
+            // Keyboard-focus ring in the variant's own text color; ButtonBase zeroes the
+            // native outline, so we set our own (2px, offset 3px out).
+            '&.Mui-focusVisible': {
+              outline: '2px solid currentColor',
+              outlineOffset: '3px',
+            },
           },
           sizeLarge: {
             ...theme.typography.buttonL,
-            padding: '10px 24px',
+            height: '48px',
+            padding: '0 24px',
+            borderRadius: '0.625rem',
           },
           sizeMedium: {
             ...theme.typography.buttonM,
-            padding: '6px 12px',
+            height: '36px',
+            // Text-side padding; a start/end icon's -4px slot margin (MUI default) tightens
+            // the icon side to ~10px automatically.
+            padding: '0 0.88rem',
+            borderRadius: '0.5rem',
           },
           sizeSmall: {
-            ...theme.typography.buttonS,
-            padding: '0 6px',
+            // v3: small buttons use buttonM (14px / 500 / no uppercase) + 0.62rem side padding —
+            // the same label style as sizeMedium, at a compact height. (Was the legacy buttonS:
+            // uppercase 10px / 6px padding, which the button rework never migrated.)
+            ...theme.typography.buttonM,
+            height: '28px',
+            padding: '0 0.62rem',
+            borderRadius: '0.375rem',
           },
         },
         variants: [
-          {
-            props: { variant: 'surface' },
-            style: {
-              color: theme.palette.common.white,
-              border: '1px solid',
-              borderColor: '#EBEBED1F',
-              backgroundColor: '#383D51',
-              '&:hover, &.Mui-focusVisible': {
-                backgroundColor: theme.palette.background.header,
-              },
-            },
-          },
-          {
-            props: { variant: 'gradient' },
-            style: {
-              color: theme.palette.common.white,
-              background: theme.palette.gradients.aaveGradient,
-              transition: 'all 0.2s ease',
-              '&:hover, &.Mui-focusVisible': {
-                background: theme.palette.gradients.aaveGradient,
-                opacity: '0.9',
-              },
-            },
-          },
+          // Secondary pill (`variant="outlined"`): bg-3 in both modes.
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
-              background: theme.palette.background.surface,
-              borderColor: theme.palette.divider,
+              ...secondaryPillStyle,
+              '&.Mui-disabled': pillDisabled,
+            },
+          },
+          {
+            props: { variant: 'contained', color: 'primary' },
+            style: {
+              backgroundColor: figVars['fg-1'],
+              // Same lift as the outlined pill, but ringed in the button's own fill (not
+              // shadow-stroke-2) — the opaque bg already reads as a boundary, so the ring just
+              // needs to disappear into it while the drop-shadow layer still adds the lift.
+              boxShadow: figSurfaceShadow('fg-1'),
+              ...hoverOverlay(figVars['button-hover-primary']),
+              // The root focus ring uses `currentColor`, which here is contrastText (bg-1) —
+              // nearly the same shade as the page background, so it's invisible. Re-point it at
+              // fg-1 (same ink the outlined variant's ring uses) so it reads against the page.
+              '&.Mui-focusVisible': {
+                outlineColor: figVars['fg-1'],
+              },
+              // Disabled: crisp label, fg-1 fill at 50% (no box-shadow on contained).
+              '&.Mui-disabled': disabledFade({
+                color: figVars['bg-1'],
+                before: { backgroundColor: figVars['fg-1'] },
+              }),
+            },
+          },
+          // Tertiary pill: the app's default button.
+          {
+            props: { variant: 'tertiary', color: 'primary' },
+            style: {
+              ...tertiaryPillStyle,
+              '&.Mui-disabled': pillDisabled,
             },
           },
         ],
+      },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            transition: theme.transitions.create(['background-color', 'color', 'transform'], {
+              duration: motion.duration.hover,
+            }),
+            // Subtle press feedback — scale down while active (not when disabled).
+            ...pressScaleActive,
+            // Keep the hover fill while the menu this button opens is expanded (open === hover).
+            // MUI's IconButton hover is `action.hover` (= button-hover), so match it.
+            '&[aria-expanded="true"]': {
+              backgroundColor: figVars['button-hover'],
+            },
+          },
+        },
+      },
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            transition: theme.transitions.create(
+              ['background-color', 'color', 'transform', 'opacity'],
+              {
+                duration: motion.duration.hover,
+              }
+            ),
+            // Subtle press feedback — scale down while active (not when disabled).
+            ...pressScaleActive,
+          },
+        },
+      },
+      MuiCheckbox: {
+        defaultProps: {
+          icon: <Box sx={selectionControlResting} />,
+          checkedIcon: (
+            <Box sx={selectionControlChecked}>
+              <SvgIcon sx={{ fontSize: 12, color: onAccent }} viewBox="0 0 12 12">
+                <path
+                  d="M2.5 6.5L5 9L9.5 3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </SvgIcon>
+            </Box>
+          ),
+        },
+        styleOverrides: selectionControlRootReset,
+      },
+      MuiRadio: {
+        defaultProps: {
+          // Circular twin of the custom checkbox — shares its recipe, overriding the shape.
+          icon: <Box sx={{ ...selectionControlResting, borderRadius: '50%' }} />,
+          checkedIcon: (
+            <Box sx={{ ...selectionControlChecked, borderRadius: '50%' }}>
+              <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: onAccent }} />
+            </Box>
+          ),
+        },
+        styleOverrides: selectionControlRootReset,
       },
       MuiTypography: {
         defaultProps: {
@@ -473,23 +748,19 @@ export function getThemedComponents(theme: Theme) {
             h2: 'h2',
             h3: 'h3',
             h4: 'h4',
+            h5: 'p',
             subheader1: 'p',
             subheader2: 'p',
             caption: 'p',
+            base: 'p',
             description: 'p',
             buttonL: 'p',
             buttonM: 'p',
             buttonS: 'p',
             main12: 'p',
-            main14: 'p',
-            main16: 'p',
-            main21: 'p',
-            secondary12: 'p',
-            secondary14: 'p',
             secondary16: 'p',
             secondary21: 'p',
             helperText: 'span',
-            tooltip: 'span',
           },
         },
       },
@@ -500,21 +771,56 @@ export function getThemedComponents(theme: Theme) {
       },
       MuiMenu: {
         defaultProps: {
+          // Menu hard-defaults transitionDuration='auto' and forwards it explicitly,
+          // shadowing the MuiPopover default below — so menus/selects need the duration
+          // set here too. TransitionComponent is set explicitly as well (rather than
+          // relying on the inner Popover's own default) to keep the theme authoritative.
+          TransitionComponent: ScaleFade,
+          transitionDuration: motion.duration.overlay,
           PaperProps: {
-            elevation: 0,
             variant: 'outlined',
             style: {
               minWidth: 240,
-              marginTop: '4px',
             },
           },
+        },
+        styleOverrides: {
+          // Own the dropdown paper's look HERE (not only via PaperProps) so it survives
+          // components that inject their own paper slotProps and drop the theme's PaperProps —
+          // most notably Select, whose menu would otherwise lose the 8px offset + outlined
+          // surface and look nothing like our other dropdowns. `&&` outweighs the MuiPaper
+          // variant styles. With the 0.38rem list inset + 2rem rows (MuiMenuItem), every
+          // dropdown (Selects included) matches the settings menu.
+          paper: {
+            '&&': {
+              marginTop: '8px',
+              borderRadius: MENU_PAPER_RADIUS,
+              border: 'none',
+              boxShadow: figSurfaceShadow(),
+              backgroundColor: figVars['surface-elevated'],
+            },
+            // Dark surface at the SAME doubled specificity as the light fill above, so it wins
+            // in dark mode. (The darkScheme helper's single `&` lost to `&&`, which left the
+            // light paper — and light-looking options — showing in dark mode.)
+            '*:where([data-mui-color-scheme="dark"]) &&': {
+              backgroundColor: figVars['bg-2'],
+            },
+            '.MuiList-root': { padding: MENU_LIST_INSET },
+          },
+        },
+      },
+      MuiPopover: {
+        // Covers raw Popover usages (MarketSwitcher desktop, multiselects, swap inputs).
+        defaultProps: {
+          TransitionComponent: ScaleFade,
+          transitionDuration: motion.duration.overlay,
         },
       },
       MuiList: {
         styleOverrides: {
           root: {
-            '.MuiMenuItem-root+.MuiDivider-root, .MuiDivider-root': {
-              marginTop: '4px',
+            '.MuiDivider-root': {
+              marginTop: '8px',
               marginBottom: '4px',
             },
           },
@@ -527,21 +833,59 @@ export function getThemedComponents(theme: Theme) {
       MuiMenuItem: {
         styleOverrides: {
           root: {
-            padding: '12px 16px',
+            minHeight: '2rem',
+            // MUI relaxes MenuItem min-height to `auto` at ≥sm; re-assert 2rem there so
+            // every option row is a firm 2rem tall on desktop too.
+            [theme.breakpoints.up('sm')]: { minHeight: '2rem' },
+            padding: '0.31rem 0.38rem',
+            // The hover/selected highlight is a pseudo-element inset 1px top & bottom, so
+            // adjacent highlights keep a small gap while the row itself stays full-height — the
+            // hover target is continuous, so moving between rows never interrupts the highlight.
+            // Shared recipe (geometry + motion) lives in insetHighlight.ts; the radius is kept
+            // concentric with the menu paper (paper radius − list inset).
+            ...insetHighlightBase({
+              theme,
+              radius: `calc(${MENU_PAPER_RADIUS} - ${MENU_LIST_INSET})`,
+              top: '1px',
+              bottom: '1px',
+            }),
+            // Hover, keyboard focus (arrow-key nav sets .Mui-focusVisible), and the selected row
+            // all share one subtle highlight — the button-hover fill, never MUI's primary tint.
+            '&:hover::before, &.Mui-focusVisible::before, &.Mui-selected::before':
+              insetHighlightActive(figVars['button-hover']),
+            // Highlight lives on the pseudo above — keep the row's own background clear.
+            // The compound selected states are listed explicitly: MUI's base MenuItem paints
+            // `&.Mui-selected:hover` / `&.Mui-selected.Mui-focusVisible` with a primary tint at
+            // higher specificity than a lone `&.Mui-selected`, so without these the selected row
+            // would show a stronger fill than other rows on hover/keyboard-focus.
+            '&:hover, &.Mui-focusVisible, &.Mui-selected, &.Mui-selected:hover, &.Mui-selected.Mui-focusVisible':
+              {
+                backgroundColor: 'transparent',
+              },
+            // A row's leading icon sits one step back from its label, exactly like a button's
+            // start-icon (fg-3 icon against fg-1 text — see `pillStyle`). Scoped to a
+            // DIRECT SvgIcon child so it only catches currentColor UI icons; brand artwork
+            // (TokenIcon, MarketLogo) is `<img>`-based and unaffected.
+            '& > .MuiSvgIcon-root': {
+              color: figVars['fg-3'],
+            },
           },
         },
       },
       MuiListItemText: {
         styleOverrides: {
           root: {
-            ...theme.typography.subheader1,
+            ...theme.typography.subheader2,
+            fontSize: pxToRem(14),
+            fontWeight: 400,
+            lineHeight: pxToRem(14),
           },
         },
       },
       MuiListItemIcon: {
         styleOverrides: {
           root: {
-            color: theme.palette.primary.light,
+            color: theme.vars.palette.primary.light,
             minWidth: 'unset !important',
             marginRight: '12px',
           },
@@ -558,26 +902,58 @@ export function getThemedComponents(theme: Theme) {
       MuiPaper: {
         styleOverrides: {
           root: {
-            borderRadius: '4px',
+            borderRadius: '8px',
           },
         },
         variants: [
           {
             props: { variant: 'outlined' },
             style: {
-              border: `1px solid ${theme.palette.divider}`,
-              boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-              background:
-                theme.palette.mode === 'light'
-                  ? theme.palette.background.paper
-                  : theme.palette.background.surface,
+              border: 'none',
+              boxShadow: figSurfaceShadow(),
+              background: figVars['surface-elevated'],
+              ...darkScheme({
+                background: figVars['bg-2'],
+              }),
             },
           },
           {
             props: { variant: 'elevation' },
             style: {
               boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-              ...(theme.palette.mode === 'dark' ? { backgroundImage: 'none' } : {}),
+              ...darkScheme({ backgroundImage: 'none' }),
+            },
+          },
+          {
+            props: { variant: 'modal' },
+            style: {
+              borderRadius: '0.75rem',
+              backgroundColor: figVars['bg-1'],
+              ...darkScheme({ backgroundColor: figVars['bg-2'] }),
+              boxShadow: `0 0 0 1px ${figVars['border-1']}, 0 4px 16px 0 ${figVars['shadow-medium']}`,
+            },
+          },
+          {
+            // Canonical content card surface — the module cards (reserve-overview, staking, sGho,
+            // …). surface-elevated in light / bg-2 in dark, 10px radius, the shared surface ring
+            // (shadow-stroke-1 hairline + soft drop). Asset tables use the `table` variant below.
+            props: { variant: 'card' },
+            style: {
+              backgroundColor: figVars['surface-elevated'],
+              ...darkScheme({ backgroundColor: figVars['bg-2'] }),
+              borderRadius: '10px',
+              boxShadow: figSurfaceShadow('shadow-stroke-1'),
+            },
+          },
+          {
+            // The `card` surface on the table fill — the single source of truth for ListWrapper and
+            // the standalone asset tables. Only differs from `card` in dark mode, so a table left on
+            // `card` by mistake is invisible in light and wrong in dark.
+            props: { variant: 'table' },
+            style: {
+              backgroundColor: figVars['table-bg'],
+              borderRadius: '10px',
+              boxShadow: figSurfaceShadow('shadow-stroke-1'),
             },
           },
         ],
@@ -589,10 +965,8 @@ export function getThemedComponents(theme: Theme) {
             flexDirection: 'column',
             flex: 1,
             paddingBottom: '39px',
-            [theme.breakpoints.up('xs')]: {
-              paddingLeft: '8px',
-              paddingRight: '8px',
-            },
+            paddingLeft: '8px',
+            paddingRight: '8px',
             [theme.breakpoints.up('xsm')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
@@ -601,18 +975,29 @@ export function getThemedComponents(theme: Theme) {
               paddingLeft: '48px',
               paddingRight: '48px',
             },
+            // 20px, not the 96px this used to carry. The box is still uncapped here, so padding IS
+            // the gutter: 96px made the content *narrower* at 960 (863px → 768px) than it was at
+            // 959, and left it 152px behind the page content all the way to 1279 — the header and
+            // footer visibly disagreed with the page they framed. This ladder must stay identical
+            // to whatever a page's own Container resolves to, or the two drift apart again.
             [theme.breakpoints.up('md')]: {
-              paddingLeft: '96px',
-              paddingRight: '96px',
+              paddingLeft: '20px',
+              paddingRight: '20px',
             },
             [theme.breakpoints.up('lg')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
+              maxWidth: '1280px',
             },
+            // The `xl` gutter is only safe because `maxWidth` rises with it: 96px of padding inside
+            // a box capped at 1632px still yields 1440px of content (1632 − 2×96), so content grows
+            // 1383px → 1440px across 1575–1632 and then holds, meeting `xxl` exactly. Raising this
+            // padding *without* lifting the cap is the old bug — it takes width from the content
+            // instead of adding outer gutter. Never pad a capped box without widening the cap.
             [theme.breakpoints.up('xl')]: {
-              maxWidth: 'unset',
               paddingLeft: '96px',
               paddingRight: '96px',
+              maxWidth: '1632px',
             },
             [theme.breakpoints.up('xxl')]: {
               paddingLeft: 0,
@@ -625,34 +1010,55 @@ export function getThemedComponents(theme: Theme) {
       MuiSwitch: {
         styleOverrides: {
           root: {
-            height: 20 + 6 * 2,
-            width: 34 + 6 * 2,
-            padding: 6,
+            width: '1.75rem',
+            height: '1.125rem',
+            padding: 0,
+            flexShrink: 0,
+            borderRadius: '9px',
+            // Keyboard-focus ring (see `focusRing`). The focus class lands on the inner
+            // switchBase, so key the root's ring off it.
+            '&:has(.Mui-focusVisible)': focusRing,
           },
           switchBase: {
-            padding: 8,
+            padding: 0,
+            margin: '2px',
             '&.Mui-checked': {
-              transform: 'translateX(14px)',
+              transform: 'translateX(10px)',
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.success.main,
+                backgroundColor: figVars['purple-1'],
                 opacity: 1,
               },
             },
             '&.Mui-disabled': {
-              opacity: theme.palette.mode === 'dark' ? 0.3 : 0.7,
+              opacity: 0.7,
+              ...darkScheme({ opacity: 0.3 }),
             },
           },
           thumb: {
-            color: theme.palette.common.white,
-            borderRadius: '6px',
-            width: '16px',
-            height: '16px',
-            boxShadow: '0px 1px 1px rgba(0, 0, 0, 0.12)',
+            color: onAccent,
+            borderRadius: '50%',
+            width: '14px',
+            height: '14px',
+            boxShadow: controlThumbShadow,
           },
           track: {
             opacity: 1,
-            backgroundColor: theme.palette.action.active,
-            borderRadius: '8px',
+            backgroundColor: figVars['bg-6'],
+            borderRadius: '9px',
+          },
+        },
+      },
+      MuiFormControlLabel: {
+        styleOverrides: {
+          root: {
+            // A Switch has no internal padding, so MUI's default -11px label offset (meant for
+            // padded checkboxes/radios) crams the switch against whatever precedes it in a row.
+            // Zero it for switch-labeled controls, and give the switch↔label text a 0.5rem gap.
+            // Checkbox/radio labels keep MUI's defaults.
+            '&:has(.MuiSwitch-root)': {
+              marginLeft: 0,
+              gap: '0.5rem',
+            },
           },
         },
       },
@@ -669,129 +1075,133 @@ export function getThemedComponents(theme: Theme) {
       MuiTableCell: {
         styleOverrides: {
           root: {
-            borderColor: theme.palette.divider,
+            borderColor: figVars['border-2'],
+          },
+          // Column labels are fg-3 app-wide. MUI defaults the `head` variant to text.primary
+          // (fg-1), which reads as body ink — this pins every <TableHead> cell to the muted
+          // header token, matching the `ListHeaderTitle` primitive the list-based tables use.
+          head: {
+            color: figVars['fg-3'],
           },
         },
       },
       MuiAlert: {
         styleOverrides: {
           root: {
-            boxShadow: 'none',
-            borderRadius: '4px',
-            padding: '8px 12px',
-            ...theme.typography.caption,
+            display: 'flex',
             alignItems: 'flex-start',
-            '.MuiAlert-message': {
-              padding: 0,
-              paddingTop: '2px',
-              paddingBottom: '2px',
-            },
+            gap: '0.88rem',
+            padding: '1rem 1.25rem',
+            borderRadius: '0.375rem',
+            boxShadow: figSurfaceShadow(),
+            // Icon box: a 2.5rem rounded square with a border-0 hairline. Its per-severity tint
+            // fill + icon color are set in the severity variants below.
             '.MuiAlert-icon': {
-              padding: 0,
+              margin: 0,
+              padding: '0.625rem',
+              width: '2.5rem',
+              height: '2.5rem',
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '0.375rem',
+              boxShadow: `inset 0 0 0 1px ${figVars['border-0']}`,
               opacity: 1,
               '.MuiSvgIcon-root': {
-                fontSize: pxToRem(20),
+                fontSize: '1rem',
+                flexShrink: 0,
               },
             },
-            a: {
-              ...theme.typography.caption,
+            // Message: Paragraph text in fg-max, centered against the icon box on a single line;
+            // multi-line grows and top-aligns via the container's flex-start.
+            '.MuiAlert-message': {
+              padding: 0,
+              alignSelf: 'center',
+              color: figVars['fg-max'],
+              fontFamily: FONT,
+              fontWeight: 400,
+              fontSize: pxToRem(14),
+              lineHeight: pxToRem(19),
+            },
+            // Title (AlertTitle): identical to the message text, one weight step up (500). No
+            // bespoke per-alert heading styling — overrides MUI's larger/heavier default + margins.
+            '.MuiAlertTitle-root': {
+              margin: 0,
+              marginBottom: '0.13rem',
+              color: figVars['fg-max'],
+              fontFamily: FONT,
               fontWeight: 500,
+              fontSize: pxToRem(14),
+              lineHeight: pxToRem(19),
+            },
+            a: {
+              color: 'inherit',
+              fontWeight: 'inherit',
               textDecoration: 'underline',
               '&:hover': {
                 textDecoration: 'none',
               },
             },
             '.MuiButton-text': {
-              ...theme.typography.caption,
-              fontWeight: 500,
+              // Inline buttons (copy / switch-network / …) fully match the alert text — same font
+              // size/family/line-height, no uppercase — plus an underline. Otherwise they keep MUI's
+              // button typography and render a size off (most visibly in the small variant).
+              color: 'inherit',
+              // `font` shorthand inherits family/size/weight/line-height in one go; letter-spacing
+              // isn't part of it, so inherit that separately.
+              font: 'inherit',
+              letterSpacing: 'inherit',
+              textTransform: 'none',
               textDecoration: 'underline',
               padding: 0,
               margin: 0,
               minWidth: 'unset',
+              height: 'auto',
+              verticalAlign: 'baseline',
               '&:hover': {
                 textDecoration: 'none',
                 background: 'transparent',
+              },
+            },
+            // Compact sizing: tighter padding + a 2rem icon box (the glyph inside keeps the default
+            // 1rem size). Shared by both `small` and `small-icon`. `small` additionally shrinks the
+            // text to 0.75rem; `small-icon` keeps the default-size text (for dense inline chips,
+            // e.g. history status badges).
+            '&[data-size="small"], &[data-size="small-icon"]': {
+              padding: '0.75rem',
+              gap: '0.75rem',
+              '.MuiAlert-icon': {
+                width: '2rem',
+                height: '2rem',
+                padding: '0.53125rem 0.5rem 0.46875rem 0.5rem',
+              },
+            },
+            '&[data-size="small"]': {
+              '.MuiAlert-message': {
+                fontSize: '0.75rem',
+                lineHeight: '1.0125rem',
+              },
+              '.MuiAlertTitle-root': {
+                fontSize: '0.75rem',
+                lineHeight: '1.0125rem',
               },
             },
           },
         },
         defaultProps: {
           iconMapping: {
-            error: (
-              <SvgIcon color="error">
-                <ExclamationIcon />
-              </SvgIcon>
-            ),
-            info: (
-              <SvgIcon color="info">
-                <InformationCircleIcon />
-              </SvgIcon>
-            ),
-            success: (
-              <SvgIcon color="success">
-                <CheckCircleIcon />
-              </SvgIcon>
-            ),
-            warning: (
-              <SvgIcon color="warning">
-                <ExclamationCircleIcon />
-              </SvgIcon>
-            ),
+            error: <AlertErrorIcon />,
+            info: <AlertInfoIcon />,
+            success: <AlertSuccessIcon />,
+            warning: <AlertWarningIcon />,
           },
         },
         variants: [
-          {
-            props: { severity: 'error' },
-            style: {
-              color: theme.palette.error['100'],
-              background: theme.palette.error['200'],
-              a: {
-                color: theme.palette.error['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.palette.error['100'],
-              },
-            },
-          },
-          {
-            props: { severity: 'info' },
-            style: {
-              color: theme.palette.info['100'],
-              background: theme.palette.info['200'],
-              a: {
-                color: theme.palette.info['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.palette.info['100'],
-              },
-            },
-          },
-          {
-            props: { severity: 'success' },
-            style: {
-              color: theme.palette.success['100'],
-              background: theme.palette.success['200'],
-              a: {
-                color: theme.palette.success['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.palette.success['100'],
-              },
-            },
-          },
-          {
-            props: { severity: 'warning' },
-            style: {
-              color: theme.palette.warning['100'],
-              background: theme.palette.warning['200'],
-              a: {
-                color: theme.palette.warning['100'],
-              },
-              '.MuiButton-text': {
-                color: theme.palette.warning['100'],
-              },
-            },
-          },
+          { props: { severity: 'error' }, style: alertSeverityStyle(figVars['danger']) },
+          { props: { severity: 'info' }, style: alertSeverityStyle(figVars['purple-1']) },
+          { props: { severity: 'success' }, style: alertSeverityStyle(figVars['data-green']) },
+          { props: { severity: 'warning' }, style: alertSeverityStyle(figVars['favourite-star']) },
         ],
       },
       MuiCssBaseline: {
@@ -801,10 +1211,21 @@ export function getThemedComponents(theme: Theme) {
             fontWeight: 400,
             fontSize: pxToRem(14),
             minWidth: '375px',
+            backgroundColor: figVars['bg-1'],
             '> div:first-of-type': {
               minHeight: '100vh',
               display: 'flex',
               flexDirection: 'column',
+            },
+          },
+          // Respect the OS "reduce motion" preference app-wide (incl. the dev showcase,
+          // since CssBaseline is injected once at the app root).
+          '@media (prefers-reduced-motion: reduce)': {
+            '*, *::before, *::after': {
+              animationDuration: '0.01ms !important',
+              animationIterationCount: '1 !important',
+              transitionDuration: '0.01ms !important',
+              scrollBehavior: 'auto !important',
             },
           },
         },
@@ -812,37 +1233,102 @@ export function getThemedComponents(theme: Theme) {
       MuiSvgIcon: {
         styleOverrides: {
           colorPrimary: {
-            color: theme.palette.primary.light,
+            color: theme.vars.palette.primary.light,
           },
         },
       },
       MuiSelect: {
         defaultProps: {
           IconComponent: (props) => (
-            <SvgIcon sx={{ fontSize: '16px' }} {...props}>
-              <ChevronDownIcon />
-            </SvgIcon>
+            <ChevronUpDownIcon {...props} sx={{ fontSize: '18px', color: figVars['fg-3'] }} />
           ),
         },
         styleOverrides: {
           outlined: {
-            backgroundColor: theme.palette.background.surface,
+            // The trigger's fill + ring live on the OutlinedInput root (see MuiOutlinedInput)
+            // so they're rounded and wrapped like the outlined button; here just the text.
             ...theme.typography.buttonM,
-            padding: '6px 12px',
-            color: theme.palette.primary.light,
+            color: figVars['fg-1'],
           },
         },
       },
       MuiLinearProgress: {
         styleOverrides: {
           bar1Indeterminate: {
-            background: theme.palette.gradients.aaveGradient,
+            background: figVars['purple-1'],
           },
           bar2Indeterminate: {
-            background: theme.palette.gradients.aaveGradient,
+            background: figVars['purple-1'],
           },
         },
       },
     },
   } as ThemeOptions;
 }
+
+/**
+ * Assemble the full app MUI theme (CSS-variables mode): both color schemes' design tokens
+ * plus the component overrides. Single source of truth shared by the app root
+ * (`AppGlobalStyles`) and the dev component showcase, so they can't drift apart. Color
+ * scheme is switched via the `data-mui-color-scheme` attribute, not by rebuilding the theme.
+ */
+export const createAppTheme = () => {
+  const light = getDesignTokens('light');
+  const dark = getDesignTokens('dark');
+  const shared = {
+    breakpoints: light.breakpoints,
+    spacing: light.spacing,
+    typography: light.typography,
+    colorSchemes: {
+      light: { palette: light.palette },
+      dark: { palette: dark.palette },
+    },
+  };
+  // Build a base theme first so `getThemedComponents` can read its `.vars` (CSS-var refs),
+  // then rebuild with those overrides attached. (A build-once `theme.components = …` mutation
+  // trips MUI's `Components<Theme>` typing, so the two-pass is the type-clean form.)
+  const base = experimental_extendTheme(shared);
+  return experimental_extendTheme({
+    ...shared,
+    components: getThemedComponents(base).components,
+  });
+};
+
+// --- Display-P3 override layer -------------------------------------------------------------
+
+const isColorValue = (v: string) => v.startsWith('#') || v.startsWith('rgb');
+
+// Walk a color scheme's palette and, for every solid color leaf, emit a P3 override keyed to
+// the CSS variable MUI generates for it (`--mui-palette-<path joined by '-'>`). Non-color
+// leaves (numbers, `mode`, channel strings like "32 29 29", gradients) are skipped.
+const collectP3Vars = (
+  node: Record<string, unknown>,
+  path: string[],
+  out: Record<string, string>
+) => {
+  Object.entries(node).forEach(([key, value]) => {
+    if (typeof value === 'string' && isColorValue(value)) {
+      out[`--mui-palette-${[...path, key].join('-')}`] = colorToP3(value);
+    } else if (value && typeof value === 'object') {
+      collectP3Vars(value as Record<string, unknown>, [...path, key], out);
+    }
+  });
+};
+
+/**
+ * Build Display-P3 overrides for the generated `--mui-palette-*` CSS variables — one entry
+ * per solid color token, per color scheme. Injected under `@supports (color-gamut: p3)` so
+ * wide-gamut displays get the richer color while everything else keeps the sRGB base var.
+ * (Alpha-composited tints via MUI's `rgba(<channel> / a)` stay sRGB — see migration notes.)
+ */
+export const buildP3Overrides = (theme: AppTheme) => {
+  const forScheme = (scheme?: { palette?: unknown }) => {
+    const out: Record<string, string> = {};
+    collectP3Vars((scheme?.palette ?? {}) as Record<string, unknown>, [], out);
+    return out;
+  };
+  return {
+    light: forScheme(theme.colorSchemes.light),
+    dark: forScheme(theme.colorSchemes.dark),
+  };
+};

@@ -27,6 +27,7 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
   titleProps,
   title,
 }: TitleWithSearchBarProps<T>) => {
+  const { sx: titleSx, ...restTitleProps } = titleProps ?? {};
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   const { breakpoints } = useTheme();
@@ -50,7 +51,12 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
       }}
     >
       {showMarketTitle && (
-        <Typography component="div" variant="h2" sx={{ mr: 4 }} {...titleProps}>
+        <Typography
+          component="div"
+          variant="h2"
+          {...restTitleProps}
+          sx={[{ mr: 4 }, ...(Array.isArray(titleSx) ? titleSx : [titleSx])]}
+        >
           {title}
         </Typography>
       )}

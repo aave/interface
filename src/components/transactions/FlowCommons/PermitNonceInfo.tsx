@@ -14,7 +14,7 @@ export const PermitNonceInfo = () => {
     >
       <Typography
         variant="helperText"
-        color="text.secondary"
+        color="fg-2"
         sx={{
           cursor: 'help',
           mb: 1,

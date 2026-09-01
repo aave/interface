@@ -29,7 +29,7 @@ export const UmbrellaAssetsListItemLoader = () => {
         <Skeleton width={70} height={24} />
       </ListColumn>
 
-      <ListColumn>
+      <ListColumn align="right">
         <Skeleton width={40} height={40} />
       </ListColumn>
     </ListItem>

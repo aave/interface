@@ -28,7 +28,7 @@ export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => {
           </Trans>
         </Typography>
         <Button
-          variant="outlined"
+          variant="tertiary"
           size="large"
           endIcon={
             <SvgIcon>

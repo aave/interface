@@ -79,7 +79,7 @@ export default function IpfsPreview() {
       <ProposalTopPanel />
 
       {!loading && (
-        <ContentContainer>
+        <ContentContainer disableTopPadding>
           <Grid container spacing={4}>
             <Grid item xs={12} md={8}>
               <ProposalOverview proposal={proposal} error={error} loading={loading} />

@@ -2,7 +2,7 @@ import { Stake } from '@aave/contract-helpers';
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
@@ -10,18 +10,19 @@ import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { Link } from 'src/components/primitives/Link';
-import { Warning } from 'src/components/primitives/Warning';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
+import { usePinnedMarket } from 'src/hooks/usePinnedMarket';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { GetABPToken } from 'src/modules/staking/GetABPToken';
 // import { GhoStakingPanel } from 'src/modules/staking/GhoStakingPanel';
 import { StakingHeader } from 'src/modules/staking/StakingHeader';
 import { StakingPanel } from 'src/modules/staking/StakingPanel';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { SAFETY_MODULE } from 'src/utils/events';
 import { ENABLE_TESTNET, STAGING_ENV } from 'src/utils/marketsAndNetworksConfig';
 
@@ -107,6 +108,9 @@ export default function Staking() {
     });
   }, [trackEvent]);
 
+  // Safety Module runs on the Core (mainnet) instance (pinned for the page, restored on unmount).
+  usePinnedMarket(CustomMarket.proto_mainnet_v3);
+
   const tvl = {
     'Staked Aave': Number(stkAave?.totalSupplyUSDFormatted || '0'),
     // 'Staked GHO': Number(stkGho?.totalSupplyUSDFormatted || '0'),
@@ -147,24 +151,24 @@ export default function Staking() {
                 mb: { xs: 3, xsm: 4 },
               }}
             >
-              <StyledToggleButtonGroup
+              <StyledTxModalToggleGroup
                 color="primary"
                 value={mode}
                 exclusive
                 onChange={(_, value) => setMode(value)}
                 sx={{ width: { xs: '100%', xsm: '359px' } }}
               >
-                <StyledToggleButton value="aave" disabled={mode === 'aave'}>
+                <StyledTxModalToggleButton value="aave" disabled={mode === 'aave'}>
                   <Typography variant="subheader1">
                     <Trans>Stake AAVE</Trans>
                   </Typography>
-                </StyledToggleButton>
-                <StyledToggleButton value="bpt" disabled={mode === 'bpt'}>
+                </StyledTxModalToggleButton>
+                <StyledTxModalToggleButton value="bpt" disabled={mode === 'bpt'}>
                   <Typography variant="subheader1">
                     <Trans>Stake ABPT</Trans>
                   </Typography>
-                </StyledToggleButton>
-              </StyledToggleButtonGroup>
+                </StyledTxModalToggleButton>
+              </StyledTxModalToggleGroup>
             </Box>
 
             <Grid container spacing={4}>
@@ -398,7 +402,7 @@ export default function Staking() {
                             </Typography>
                           </Box>
                           <Button
-                            variant="outlined"
+                            variant="tertiary"
                             size="small"
                             component={Link}
                             endIcon={
@@ -420,13 +424,13 @@ export default function Staking() {
                           mt: 4,
                         }}
                       >
-                        <Warning severity="warning" sx={{ mb: 0 }}>
+                        <Alert severity="warning" sx={{ width: '100%', mb: 0 }}>
                           <Trans>
                             As a result of governance decisions, this ABPT staking pool is now
                             deprecated. You have the flexibility to either migrate all of your
                             tokens to v2 or unstake them without any cooldown period.
                           </Trans>
-                        </Warning>
+                        </Alert>
                       </Box>
                     )}
                   </StakingPanel>

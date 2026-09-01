@@ -3,8 +3,8 @@ import { Box, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import StyledToggleButton from 'src/components/StyledToggleButton';
-import StyledToggleButtonGroup from 'src/components/StyledToggleButtonGroup';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import {
   ComputedReserveData,
   ReserveWithId,
@@ -102,24 +102,24 @@ export default function ReserveOverview() {
             mb: { xs: 3, xsm: 4 },
           }}
         >
-          <StyledToggleButtonGroup
+          <StyledTxModalToggleGroup
             color="primary"
             value={mode}
             exclusive
             onChange={(_, value) => setMode(value)}
-            sx={{ width: { xs: '100%', xsm: '359px' }, height: '44px' }}
+            sx={{ width: { xs: '100%', xsm: '359px' } }}
           >
-            <StyledToggleButton value="overview" disabled={mode === 'overview'}>
+            <StyledTxModalToggleButton value="overview" disabled={mode === 'overview'}>
               <Typography variant="subheader1">
                 <Trans>Overview</Trans>
               </Typography>
-            </StyledToggleButton>
-            <StyledToggleButton value="actions" disabled={mode === 'actions'}>
+            </StyledTxModalToggleButton>
+            <StyledTxModalToggleButton value="actions" disabled={mode === 'actions'}>
               <Typography variant="subheader1">
                 <Trans>Your info</Trans>
               </Typography>
-            </StyledToggleButton>
-          </StyledToggleButtonGroup>
+            </StyledTxModalToggleButton>
+          </StyledTxModalToggleGroup>
         </Box>
 
         <Box sx={{ display: 'flex' }}>

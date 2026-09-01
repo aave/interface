@@ -76,7 +76,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
       <ListColumn isRow maxWidth={280}>
         <TokenIcon symbol={displayIconSymbol} fontSize="large" />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
-          <Typography variant="h4" noWrap>
+          <Typography variant="subheader1" noWrap>
             {name || reserve.underlyingToken.name}
           </Typography>
 
@@ -85,7 +85,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
               p: { xs: '0', xsm: '3.625px 0px' },
             }}
           >
-            <Typography variant="subheader2" color="text.muted" noWrap>
+            <Typography variant="subheader2" color="fg-3" noWrap>
               {reserve.underlyingToken.symbol}
               {reserve.isolationModeConfig?.canBeCollateral && (
                 <span style={{ marginLeft: '8px' }}>
@@ -101,7 +101,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
       </ListColumn>
 
       <ListColumn>
-        <FormattedNumber compact value={reserve.size.amount.value} variant="main16" />
+        <FormattedNumber compact value={reserve.size.amount.value} variant="h5" />
         <ReserveSubheader value={reserve.size.usd} />
       </ListColumn>
 
@@ -111,8 +111,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           incentives={reserve.supplyProtocolIncentives}
           address={reserve.aToken.address}
           symbol={reserve.underlyingToken.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
+          variant="h5"
           tooltip={
             <>
               {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
@@ -131,12 +130,12 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
             <FormattedNumber
               compact
               value={Number(reserve.borrowInfo?.total.amount.value)}
-              variant="main16"
+              variant="h5"
             />{' '}
             <ReserveSubheader value={String(reserve.borrowInfo?.total.usd)} />
           </>
         ) : (
-          <NoData variant={'secondary14'} color="text.secondary" />
+          <NoData variant={'h5'} color="fg-2" />
         )}
       </ListColumn>
 
@@ -150,8 +149,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           incentives={reserve.borrowProtocolIncentives}
           address={reserve.vToken.address}
           symbol={reserve.underlyingToken.symbol}
-          variant="main16"
-          symbolsVariant="secondary16"
+          variant="h5"
           tooltip={
             <>
               {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
@@ -167,9 +165,9 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           reserve.borrowInfo.total.amount.value !== '0' && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
 
-      <ListColumn minWidth={95} maxWidth={95} align="right">
+      <ListColumn align="right" minWidth={95} maxWidth={95}>
         <Button
-          variant="outlined"
+          variant="tertiary"
           component={Link}
           href={ROUTES.reserveOverview(
             reserve.underlyingToken.address.toLowerCase(),

@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, Box } from '@mui/material';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -18,12 +17,9 @@ export const ParaswapErrorDisplay: React.FC<ErrorProps> = ({ txError }) => {
       {txError.rawError.message !== USER_DENIED_SIGNATURE &&
         txError.rawError.message !== USER_DENIED_TRANSACTION && (
           <Box sx={{ pt: 4 }}>
-            <Warning severity="info">
-              <Typography variant="description">
-                {' '}
-                <Trans> Tip: Try increasing slippage or reduce input amount</Trans>
-              </Typography>
-            </Warning>
+            <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
+              <Trans> Tip: Try increasing slippage or reduce input amount</Trans>
+            </Alert>
           </Box>
         )}
     </Box>
