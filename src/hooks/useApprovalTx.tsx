@@ -1,13 +1,17 @@
 import { ApproveType, MAX_UINT_AMOUNT, ProtocolAction } from '@aave/contract-helpers';
 import { SignatureLike } from '@ethersproject/bytes';
 import { constants, ethers } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
+import { formatUnits, parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { isUSDTOnEthereum, needsUSDTApprovalReset } from 'src/utils/usdtHelpers';
+import {
+  getNewApprovalAmount,
+  isUSDTOnEthereum,
+  needsUSDTApprovalReset,
+} from 'src/utils/usdtHelpers';
 import { useShallow } from 'zustand/shallow';
 
 import { useModalContext } from './useModal';
@@ -68,15 +72,17 @@ export const useApprovalTx = ({
 
   const [requiresApprovalReset, setRequiresApprovalReset] = useState(false);
 
+  // What the next approval will actually grant, which is not `signatureAmount` - see the helper.
+  const newApprovalAmount = getNewApprovalAmount(amountToApprove, decimals, signatureAmount);
+
   // Warning for USDT on Ethereum approval reset
   useEffect(() => {
     if (
       !chainId ||
       !isUSDTOnEthereum(symbol, chainId, underlyingChainId) ||
       !setShowUSDTResetWarning ||
-      !signatureAmount ||
-      signatureAmount === '0' ||
-      signatureAmount === '-1'
+      !newApprovalAmount ||
+      Number(newApprovalAmount) <= 0
     ) {
       return;
     }
@@ -84,7 +90,7 @@ export const useApprovalTx = ({
     const currentApproved = approvedAmount?.amount ?? '0';
 
     if (
-      needsUSDTApprovalReset(symbol, chainId, currentApproved, signatureAmount, underlyingChainId)
+      needsUSDTApprovalReset(symbol, chainId, currentApproved, newApprovalAmount, underlyingChainId)
     ) {
       setShowUSDTResetWarning(true);
       setRequiresApprovalReset(true);
@@ -97,7 +103,7 @@ export const useApprovalTx = ({
     chainId,
     underlyingChainId,
     approvedAmount?.amount,
-    signatureAmount,
+    newApprovalAmount,
     setShowUSDTResetWarning,
   ]);
 
@@ -207,7 +213,7 @@ export const useApprovalTx = ({
             action: ProtocolAction.approval,
             txState: 'success',
             asset: assetAddress,
-            amount: MAX_UINT_AMOUNT,
+            amount: amountToApprove ? formatUnits(amountToApprove, decimals) : MAX_UINT_AMOUNT,
             assetName: symbol,
           });
           if (onApprovalTxConfirmed) {

@@ -29,6 +29,7 @@ import {
   DetailsNumberLineWithSub,
   TxModalDetails,
 } from '../FlowCommons/TxModalDetails';
+import { getSafeAmountToRepayAll } from '../utils';
 import { RepayActions } from './RepayActions';
 
 interface RepayAsset extends Asset {
@@ -82,9 +83,7 @@ export const RepayModalContent = ({
     .multipliedBy(marketReferencePriceInUsd)
     .shiftedBy(-USD_DECIMALS);
 
-  const safeAmountToRepayAll = valueToBigNumber(debt)
-    .multipliedBy('1.0025')
-    .decimalPlaces(poolReserve.decimals, BigNumber.ROUND_UP);
+  const safeAmountToRepayAll = getSafeAmountToRepayAll(debt, poolReserve.decimals);
 
   // calculate max amount abailable to repay
   let maxAmountToRepay: BigNumber;
@@ -293,7 +292,7 @@ export const RepayModalContent = ({
       )}
 
       <RepayActions
-        maxApproveNeeded={safeAmountToRepayAll.toString()}
+        maxApproveNeeded={safeAmountToRepayAll.toString(10)}
         poolReserve={poolReserve}
         amountToRepay={isMaxSelected ? repayMax : amount}
         poolAddress={

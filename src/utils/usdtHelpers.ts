@@ -1,4 +1,6 @@
+import { MAX_UINT_AMOUNT } from '@aave/contract-helpers';
 import { valueToBigNumber } from '@aave/math-utils';
+import { formatUnits } from 'ethers/lib/utils';
 
 /**
  * Check if a token is USDT on Ethereum that requires approval reset
@@ -13,6 +15,27 @@ export const isUSDTOnEthereum = (
 ): boolean => {
   const effectiveChainId = underlyingChainId ?? chainId;
   return tokenSymbol.toUpperCase() === 'USDT' && effectiveChainId === 1; // Ethereum mainnet
+};
+
+/**
+ * The allowance the next `approve` call will actually grant, in token units, for comparison
+ * against the allowance already on-chain.
+ *
+ * `signatureAmount` is not that figure. On a full repay it is the '-1' sentinel, which hides
+ * a finite `amountToApprove` when the user asked for one and stands for an unlimited approve
+ * when they did not - and `Number('-1')` reads as "nothing to approve" to every caller.
+ *
+ * @param amountToApprove - the finite allowance requested, in base units, if any
+ * @param decimals - token decimals, to bring `amountToApprove` into token units
+ * @param signatureAmount - the transaction amount, used when no finite allowance was requested
+ */
+export const getNewApprovalAmount = (
+  amountToApprove: string | undefined,
+  decimals: number,
+  signatureAmount: string
+): string => {
+  if (amountToApprove) return formatUnits(amountToApprove, decimals);
+  return signatureAmount === '-1' ? MAX_UINT_AMOUNT : signatureAmount;
 };
 
 /**
