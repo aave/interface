@@ -41,7 +41,7 @@ export const CollateralChangeModalContent = ({
 }: ModalWrapperProps & { user: ExtendedFormattedUser }) => {
   const { gasLimit, mainTxState: collateralChangeTxState, txError } = useModalContext();
   const { debtCeiling } = useAssetCaps();
-  const { reserves, eModes } = useAppDataContext();
+  const { reserves, eModes, poolSupportsMulticall } = useAppDataContext();
 
   const [collateralEnabled, setCollateralEnabled] = useState(
     userReserve.usageAsCollateralEnabledOnUser
@@ -94,7 +94,11 @@ export const CollateralChangeModalContent = ({
   } else if (
     !userReserve.usageAsCollateralEnabledOnUser &&
     !hasNonZeroLtv &&
-    collateralEmodeCategories.length > 0
+    collateralEmodeCategories.length > 0 &&
+    // Enabling collateral on a 0 LTV asset only works if the e-mode switch
+    // lands first, which needs Pool.multicall. Without it, fall through to the
+    // plain "can not use as collateral" block, as before bundling existed.
+    poolSupportsMulticall
   ) {
     blockingError = ErrorType.ZERO_LTV_ENABLE_EMODE_FIRST;
   } else if (!userReserve.usageAsCollateralEnabledOnUser && !hasNonZeroLtv) {

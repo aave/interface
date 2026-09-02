@@ -866,6 +866,10 @@ msgstr "Swap saved in your <0>history</0> section."
 msgid "Migrate your assets"
 msgstr "Migrate your assets"
 
+#: src/components/infoTooltips/NetAPYTooltip.tsx
+msgid "Net APY is the combined effect of all supply and borrow positions on net worth, Merkl incentives are not included. It is possible to have a negative net APY if debt APY is higher than supply APY."
+msgstr "Net APY is the combined effect of all supply and borrow positions on net worth, Merkl incentives are not included. It is possible to have a negative net APY if debt APY is higher than supply APY."
+
 #: src/modules/staking/StakingHeader.tsx
 msgid "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
 msgstr "AAVE and ABPT holders (Ethereum network only) can stake their assets in the Safety Module to add more security to the protocol and earn Safety Incentives. In the case of a shortfall event, your stake can be slashed to cover the deficit, providing an additional layer of protection for the protocol."
@@ -3030,10 +3034,6 @@ msgstr "Earn into sGHO"
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
-
-#: src/components/infoTooltips/NetAPYTooltip.tsx
-msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
-msgstr "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid bridge protocol fee"
