@@ -1,0 +1,14 @@
+.github/workflows/update-prod-staging.yml
+  h_be8c3c572e9983 20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "c485fe7349e4dcd3c2774d7af12439d713da1941",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
