@@ -10,6 +10,7 @@ import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { networkConfigs } from 'src/ui-config/networksConfig';
+import { cardHeadingSx } from 'src/utils/cardStyles';
 import { figVars } from 'src/utils/figmaColors';
 
 import { ZERO_ADDRESS } from './utils/formatProposal';
@@ -42,14 +43,16 @@ export const RepresentativesInfoPanel = () => {
     <Paper variant="card">
       <Box sx={{ px: 6, pb: 6, pt: 4 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography typography="h3">
+          <Typography typography="h3" sx={cardHeadingSx}>
             <Trans>Linked addresses</Trans>
           </Typography>
           {isAddressSelectedAsRepresentative ? null : (
-            <Button onClick={() => openGovRepresentatives(data?.Representatives || [])}>
-              <Typography typography="subheader1">
-                <Trans>Edit</Trans>
-              </Typography>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => openGovRepresentatives(data?.Representatives || [])}
+            >
+              <Trans>Edit</Trans>
             </Button>
           )}
         </Stack>
@@ -99,20 +102,21 @@ const Representatives = ({
             networkName={networkConfigs[representative.chainId].name}
           />
           {representative.representative === ZERO_ADDRESS ? (
-            <Stack direction="row" gap={1} alignItems="center">
+            <Stack direction="row" gap={2} alignItems="center">
               <IconButton
                 sx={{
-                  height: '24px',
-                  width: '24px',
+                  height: '16px',
+                  width: '16px',
+                  p: 0,
                   background: figVars['bg-6'],
                 }}
                 onClick={onOpenRepresentatives}
               >
-                <SvgIcon sx={{ p: 1 }}>
+                <SvgIcon sx={{ fontSize: 12 }}>
                   <PlusIcon />
                 </SvgIcon>
               </IconButton>
-              <Typography variant="subheader1" color="fg-3">
+              <Typography variant="subheader1" color="fg-3" sx={{ lineHeight: '16px' }}>
                 <Trans>Connect</Trans>
               </Typography>
             </Stack>
@@ -166,7 +170,9 @@ const Network = ({
   return (
     <Stack direction="row" alignItems="center" gap={2}>
       <img src={networkLogoPath} height="16px" width="16px" alt="network logo" />
-      <Typography variant="subheader1">{networkName}</Typography>
+      <Typography variant="subheader1" sx={{ lineHeight: '16px' }}>
+        {networkName}
+      </Typography>
     </Stack>
   );
 };

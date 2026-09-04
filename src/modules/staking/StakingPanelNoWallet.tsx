@@ -48,7 +48,6 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
         borderRadius: '6px',
         border: `1px solid ${figVars['border-0']}`,
         p: 4,
-        background: figVars['bg-2'],
         width: '250px',
         height: '68px',
         margin: '0 auto',

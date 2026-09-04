@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import React, { ReactNode } from 'react';
 import { figVars } from 'src/utils/figmaColors';
+import { darkScheme } from 'src/utils/theme';
 
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Row } from '../../components/primitives/Row';
@@ -56,7 +57,8 @@ export const StakeActionBox = ({
           alignItems: 'center',
           flexDirection: 'column',
           borderRadius: '6px',
-          background: figVars['bg-2'],
+          backgroundColor: figVars['surface-elevated'],
+          ...darkScheme({ backgroundColor: figVars['bg-2'] }),
           position: 'relative',
           zIndex: 2,
         }}

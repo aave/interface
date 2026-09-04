@@ -3,6 +3,7 @@ import { Box, BoxProps, Button, Paper, PaperProps } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { MinusIcon } from 'src/components/icons/MinusIcon';
 import { useRootStore } from 'src/store/root';
+import { CARD_HEADING_HEIGHT } from 'src/utils/cardStyles';
 import { DASHBOARD } from 'src/utils/events';
 import { figVars } from 'src/utils/figmaColors';
 
@@ -139,6 +140,7 @@ export const ListWrapper = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              minHeight: CARD_HEADING_HEIGHT,
               // Title type (H4) — scoped to this row, NOT the whole band, or it would flatten the
               // second row's stat typography too. Consumers pass their own heading variant, so
               // neutralise those; control typography (search, selects) keeps its own smaller type.

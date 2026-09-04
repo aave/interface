@@ -13,6 +13,7 @@ import { usePowers } from 'src/hooks/governance/usePowers';
 import { useModalContext } from 'src/hooks/useModal';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
+import { cardHeadingSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 
 type DelegatedPowerProps = {
@@ -163,7 +164,7 @@ export const DelegatedInfoPanel = () => {
   return (
     <Paper variant="card">
       <Box sx={{ px: 6, pb: 6, pt: 4 }}>
-        <Typography typography="h3" sx={{ height: '36px', display: 'flex', alignItems: 'center' }}>
+        <Typography typography="h3" sx={cardHeadingSx}>
           <Trans>Delegated power</Trans>
         </Typography>
         <Typography typography="description" sx={{ mt: 2 }} color="fg-2">

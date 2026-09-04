@@ -8,6 +8,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { useProposalVotingConfig } from 'src/hooks/governance/useGovernanceCache';
 import { usePowers } from 'src/hooks/governance/usePowers';
+import { cardHeadingSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 
 export function VotingPowerInfoPanel() {
@@ -24,10 +25,7 @@ export function VotingPowerInfoPanel() {
     : undefined;
   return (
     <Paper variant="card" sx={{ px: 6, pb: 6, pt: 4 }}>
-      <Typography
-        variant="h3"
-        sx={{ height: '36px', display: 'flex', alignItems: 'center', mb: 4 }}
-      >
+      <Typography variant="h3" sx={{ ...cardHeadingSx, mb: 4 }}>
         <Trans>Your info</Trans>
       </Typography>
       <UserDisplay

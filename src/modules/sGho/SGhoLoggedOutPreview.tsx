@@ -39,7 +39,6 @@ export const SGhoLoggedOutPreview = ({ rate }: SGhoLoggedOutPreviewProps) => {
           border: `1px solid ${figVars['border-0']}`,
           p: 4,
           mb: 6,
-          background: figVars['bg-2'],
         }}
       >
         <Box>

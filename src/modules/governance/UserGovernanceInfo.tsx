@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Paper, Typography } from '@mui/material';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
 import { useRootStore } from 'src/store/root';
+import { cardHeadingSx } from 'src/utils/cardStyles';
 
 import { DelegatedInfoPanel } from './DelegatedInfoPanel';
 import { RepresentativesInfoPanel } from './RepresentativesInfoPanel';
@@ -20,7 +21,7 @@ export const UserGovernanceInfo = () => {
     </Box>
   ) : (
     <Paper variant="card" sx={{ p: 6 }}>
-      <Typography variant="h3" sx={{ mb: { xs: 6, xsm: 10 } }}>
+      <Typography variant="h3" sx={{ ...cardHeadingSx, mb: { xs: 6, xsm: 10 } }}>
         <Trans>Your info</Trans>
       </Typography>
       <Typography sx={{ mb: 6 }} color="fg-2">

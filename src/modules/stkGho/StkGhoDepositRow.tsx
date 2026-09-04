@@ -79,7 +79,6 @@ export const StkGhoDepositRow = ({
         border: `1px solid ${figVars['border-0']}`,
         p: 4,
         mb: 6,
-        background: figVars['bg-2'],
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, minWidth: 0 }}>

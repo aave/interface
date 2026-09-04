@@ -184,7 +184,7 @@ const {
   typography: { pxToRem },
 } = theme;
 
-const FONT = "'Inter Variable', Inter, Arial";
+export const FONT = "'Inter Variable', Inter, Arial";
 
 declare module '@mui/material/styles/createPalette' {
   interface PaletteColor extends ColorPartial {}

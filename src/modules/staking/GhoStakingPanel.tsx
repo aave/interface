@@ -174,10 +174,6 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           borderRadius: { xs: 0, xsm: '6px' },
           border: { xs: 'unset', xsm: `1px solid ${figVars['border-0']}` },
           p: { xs: 0, xsm: 4 },
-          background: {
-            xs: 'unset',
-            xsm: figVars['bg-2'],
-          },
           position: 'relative',
           '&:after': {
             content: "''",

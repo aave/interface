@@ -69,17 +69,18 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         sx={{
           ml: 1,
           borderRadius: '4px',
-          p: 0,
-          '&:after': {
-            content: "''",
-            position: 'absolute',
-            left: -1,
-            right: -1,
-            bottom: -1,
-            top: -1,
-            background: isEModeDisabled ? 'transparent' : figVars['purple-1'],
-            borderRadius: '4px',
-          },
+          ...(isEModeDisabled
+            ? { backgroundColor: open ? figVars['bg-6'] : undefined }
+            : {
+                backgroundColor: figVars['purple-1'],
+                '&:after': {
+                  content: "''",
+                  position: 'absolute',
+                  inset: '1px',
+                  borderRadius: '3px',
+                  backgroundColor: figVars['bg-3'],
+                },
+              }),
         }}
       >
         <Box
@@ -88,20 +89,12 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
             alignItems: 'center',
             position: 'relative',
             zIndex: 1,
-            bgcolor: isEModeDisabled
-              ? open
-                ? figVars['bg-6']
-                : 'transparent'
-              : figVars['surface-elevated'],
-            px: '4px',
-            borderRadius: '4px',
-            height: '100%',
           }}
         >
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              mr: '4px',
+              mr: 1,
               color: isEModeDisabled ? 'fg-3' : 'fg-1',
             }}
           >
@@ -121,7 +114,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              ml: '4px',
+              ml: 1,
               color: 'primary.light',
             }}
           >

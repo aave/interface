@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton, SvgIcon, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -51,31 +52,31 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
       ? iconSymbol
       : poolReserve!.underlyingToken.symbol;
 
-  const ReserveIcon = () => {
-    return (
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {loading ? (
-          <Skeleton variant="circular" width={56} height={56} />
-        ) : (
-          <img
-            src={`/icons/tokens/${displayIconSymbol.toLowerCase()}.svg`}
-            style={{ width: '3.5rem', height: '3.5rem' }}
-            alt=""
-          />
-        )}
-      </Box>
-    );
-  };
+  const reserveIcon = (
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      {loading ? (
+        <Skeleton variant="circular" width={56} height={56} />
+      ) : (
+        <img
+          src={`/icons/tokens/${displayIconSymbol.toLowerCase()}.svg`}
+          style={{ width: '3.5rem', height: '3.5rem' }}
+          alt=""
+        />
+      )}
+    </Box>
+  );
 
-  const ReserveName = () => {
-    return loading ? (
-      <Skeleton width={120} height={36} />
-    ) : (
-      <Typography variant="h2" sx={{ fontSize: '1.875rem', color: 'fg-1' }}>
-        {poolReserve.underlyingToken.name}
-      </Typography>
-    );
-  };
+  const reserveName = loading ? (
+    <Skeleton width={120} height={36} />
+  ) : (
+    <Box sx={{ minWidth: 0, maxWidth: '24rem', overflow: 'hidden' }}>
+      <DarkTooltip title={<Typography>{poolReserve.underlyingToken.name}</Typography>}>
+        <Typography variant="h2" noWrap sx={{ fontSize: '1.875rem', color: 'fg-1' }}>
+          {poolReserve.underlyingToken.name}
+        </Typography>
+      </DarkTooltip>
+    </Box>
+  );
 
   const isGho = displayGhoForMintableMarket({
     symbol: poolReserve.underlyingToken.symbol,
@@ -127,24 +128,27 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           flexDirection: { xs: 'column', md: 'row' },
           justifyContent: 'space-between',
           alignItems: { xs: 'flex-start', md: 'flex-end' },
-          gap: 4,
+          gap: '1rem',
           width: '100%',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <ReserveIcon />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: 0 }}>
+          {reserveIcon}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <ReserveName />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0 }}>
+                {reserveName}
                 {!loading && (
-                  <Typography variant="h2" sx={{ fontSize: '1.875rem', color: 'fg-3' }}>
+                  <Typography
+                    variant="h2"
+                    sx={{ fontSize: '1.875rem', color: 'fg-3', flexShrink: 0 }}
+                  >
                     {poolReserve.underlyingToken.symbol}
                   </Typography>
                 )}
               </Box>
               {!loading && (
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
                   <TokenLinkDropdown
                     poolReserve={poolReserve}
                     iconSymbol={displayIconSymbol}
@@ -187,7 +191,8 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
             display: 'flex',
             alignItems: 'flex-start',
             gap: '2.5rem',
-            flexWrap: 'wrap',
+            flexWrap: { xs: 'wrap', md: 'nowrap' },
+            flexShrink: 0,
           }}
         >
           {isGho ? (

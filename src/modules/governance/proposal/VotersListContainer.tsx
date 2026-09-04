@@ -27,26 +27,20 @@ export const VotersListContainer = ({ voteInfo, voters }: VotersListProps): JSX.
 
   if (!voters || voters.combinedVotes.length === 0) return <Box sx={{ mt: 8 }} />;
 
+  const hasMoreVoters = voters.combinedVotes.length > 10;
+
   return (
-    <Box sx={{ my: 8 }}>
-      <Row sx={{ mb: 3 }}>
+    <Box sx={{ mt: 8, mb: hasMoreVoters ? 8 : 4 }}>
+      <Row>
         <Typography variant="subheader2" color="fg-3">
-          {voters.combinedVotes.length > 10 ? (
-            <Trans>Top 10 addresses</Trans>
-          ) : (
-            <Trans>Addresses</Trans>
-          )}
+          {hasMoreVoters ? <Trans>Top 10 addresses</Trans> : <Trans>Addresses</Trans>}
         </Typography>
         <Typography variant="subheader2" color="fg-3">
           <Trans>Votes</Trans>
         </Typography>
       </Row>
-      <VotersList
-        compact={mdScreen}
-        voters={voters.combinedVotes.slice(0, 10)}
-        sx={{ my: 4, pr: 2.25 }}
-      />
-      {voters.combinedVotes.length > 10 && (
+      <VotersList compact={mdScreen} voters={voters.combinedVotes.slice(0, 10)} sx={{ pr: 2.25 }} />
+      {hasMoreVoters && (
         <Button variant="tertiary" fullWidth onClick={handleOpenAllVotes}>
           <Trans>View all votes</Trans>
         </Button>

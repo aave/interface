@@ -7,7 +7,7 @@ import { Link } from 'src/components/primitives/Link';
 import { Row } from 'src/components/primitives/Row';
 import { ProposalDetailDisplay, VotersSplitDisplay } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
-import { cardPaddingSx } from 'src/utils/cardStyles';
+import { cardHeadingSx, cardPaddingSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 
 import { StateBadge } from '../StateBadge';
@@ -26,7 +26,7 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
   const discussionUrl = proposal?.discussions?.match(/https?:\/\/[^\s"]+/)?.[0];
   return (
     <Paper variant="card" sx={cardPaddingSx}>
-      <Typography variant="h3">
+      <Typography variant="h3" sx={cardHeadingSx}>
         <Trans>Voting results</Trans>
       </Typography>
       {proposal ? (

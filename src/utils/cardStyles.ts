@@ -12,3 +12,15 @@ export const cardPaddingSx: SxProps<Theme> = {
   pb: { xs: 4, xsm: 6 },
   px: { xs: 4, xsm: 6 },
 };
+
+/**
+ * Card heading row: reserves the header band's height so a panel's header does not change height
+ * depending on whether an action button shares the row.
+ */
+export const CARD_HEADING_HEIGHT = '36px';
+
+export const cardHeadingSx = {
+  minHeight: CARD_HEADING_HEIGHT,
+  display: 'flex',
+  alignItems: 'center',
+} satisfies SxProps<Theme>;

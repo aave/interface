@@ -11,9 +11,24 @@ type VotersListProps = {
   sx?: SxProps<Theme>;
 };
 
+const VISIBLE_HEIGHT = 205;
+const GUTTER = 16;
+const FADE = '0.75rem';
+const SCROLL_FADE = `linear-gradient(to bottom, transparent, #000 ${FADE}, #000 calc(100% - ${FADE}), transparent)`;
+
 export const VotersList = ({ compact = false, voters, sx }: VotersListProps): JSX.Element => {
   return (
-    <Box sx={{ maxHeight: 205, overflow: 'hidden', overflowY: 'scroll', ...sx }}>
+    <Box
+      sx={{
+        maxHeight: VISIBLE_HEIGHT + GUTTER * 2,
+        overflow: 'hidden',
+        overflowY: 'scroll',
+        py: `${GUTTER}px`,
+        maskImage: SCROLL_FADE,
+        WebkitMaskImage: SCROLL_FADE,
+        ...sx,
+      }}
+    >
       {voters.length === 0 ? (
         <Box sx={{ color: 'fg-2' }}>—</Box>
       ) : (

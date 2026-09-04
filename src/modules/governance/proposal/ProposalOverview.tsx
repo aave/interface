@@ -25,6 +25,7 @@ import { LensIcon } from 'src/components/icons/LensIcon';
 import { ProposalDetailDisplay } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { ipfsGateway } from 'src/ui-config/governanceConfig';
+import { cardHeadingSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 
 import { StateBadge } from '../StateBadge';
@@ -47,12 +48,12 @@ interface ProposalOverviewProps {
 
 export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const { breakpoints, palette } = useTheme();
+  const { breakpoints } = useTheme();
   const lgUp = useMediaQuery(breakpoints.up('lg'));
 
   return (
     <Paper variant="card" sx={{ pt: 4, pb: 20, px: { xs: 4, xsm: 6 } }} data-cy="vote-info-body">
-      <Typography variant="h3">
+      <Typography variant="h3" sx={cardHeadingSx}>
         <Trans>Proposal overview</Trans>
       </Typography>
       {error ? (
@@ -68,7 +69,14 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
               <Typography variant="h2" sx={{ mb: 6 }}>
                 {proposal.title || <Skeleton />}
               </Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  '& .MuiButton-startIcon': { color: 'fg-3' },
+                }}
+              >
                 <Box
                   sx={{
                     display: 'flex',
@@ -136,11 +144,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   }&text=Check out this proposal on aave governance - ${
                     proposal.title
                   }&hashtags=Aave&preview=true`}
-                  startIcon={
-                    <LensIcon
-                      color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
-                    />
-                  }
+                  startIcon={<LensIcon />}
                 >
                   {lgUp && <Trans>Share on Lens</Trans>}
                 </Button>

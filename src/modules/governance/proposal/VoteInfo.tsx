@@ -10,7 +10,7 @@ import { useVotingPowerAt } from 'src/hooks/governance/useVotingPowerAt';
 import { useModalContext } from 'src/hooks/useModal';
 import { VoteProposalData } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
-import { cardPaddingSx } from 'src/utils/cardStyles';
+import { cardHeadingSx, cardPaddingSx } from 'src/utils/cardStyles';
 
 import { networkConfigs } from '../../../ui-config/networksConfig';
 
@@ -45,7 +45,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
         sx={{ mb: 8 }}
         caption={
           <>
-            <Typography variant="h3">
+            <Typography variant="h3" sx={cardHeadingSx}>
               <Trans>Your voting info</Trans>
             </Typography>
             {network && (
