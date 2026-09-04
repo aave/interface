@@ -1,0 +1,126 @@
+src/components/primitives/NoData.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 8,10-12
+  s_4be7b399b605b1::t_0af069175158ee 5,9
+  s_4be7b399b605b1::t_8fe59476512f87 4,6-7
+src/components/transactions/Swap/inputs/LimitOrderInputs.tsx
+  s_4be7b399b605b1::t_bfbb35de873f93 152,154,156-157,161,193
+  s_4be7b399b605b1::t_7e0048ea979e7e 188
+src/components/transactions/Swap/inputs/MarketOrderInputs.tsx
+  s_4be7b399b605b1::t_7e0048ea979e7e 151
+  s_4be7b399b605b1::t_bfbb35de873f93 119,124,156
+src/modules/dashboard/lists/ListItemLoader.tsx
+  s_4be7b399b605b1::t_30737c3de63c4b 12
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_4be7b399b605b1::t_bfbb35de873f93 402
+src/modules/faucet/FaucetItemLoader.tsx
+  s_4be7b399b605b1::t_30737c3de63c4b 11
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 238
+src/modules/markets/MarketAssetsListMobileItem.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 125
+src/modules/bridge/TransactionListItemLoader.tsx
+  s_4be7b399b605b1::t_30737c3de63c4b 10
+src/components/WalletConnection/ConnectWalletButton.tsx
+  s_4be7b399b605b1::t_841d5dc7e1abcc 11,19,22,123-124,126,128-129
+  s_4be7b399b605b1::t_0af069175158ee 18,125
+src/components/icons/AaveLogo.tsx
+  s_4be7b399b605b1::t_7e3f18ec18ccb3 3-11,23,30-40,42
+  s_4be7b399b605b1::t_97d9e5077bc9ed 41
+src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 93
+src/components/incentives/IncentivesCard.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 166
+src/modules/dashboard/DashboardTopPanel.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 196,222
+src/modules/markets/MarketAssetsListItemLoader.tsx
+  s_4be7b399b605b1::t_30737c3de63c4b 10
+src/components/lists/ListMobileItem.tsx
+  s_4be7b399b605b1::t_0af069175158ee 64
+src/modules/migration/MigrationListItemLoader.tsx
+  s_4be7b399b605b1::t_30737c3de63c4b 21,63
+src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+  s_4be7b399b605b1::t_4298742a2d5143 33,41
+src/modules/migration/MigrationListMobileItem.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 316,361
+src/modules/faucet/FaucetMobileItemLoader.tsx
+  s_4be7b399b605b1::t_30737c3de63c4b 11
+src/modules/dashboard/lists/ListItemCanBeCollateral.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 27
+src/modules/umbrella/UmbrellaAssetsDefault.tsx
+  s_4be7b399b605b1::t_30737c3de63c4b 213,230
+src/layouts/MobileMenu.tsx
+  s_4be7b399b605b1::t_0af069175158ee 150-156
+  s_4be7b399b605b1::t_841d5dc7e1abcc 6-7,157
+src/modules/markets/MarketAssetsListItem.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 138
+src/layouts/headerBreakpoints.ts
+  s_4be7b399b605b1::t_7f6c4cd1b6935a 1-10
+src/utils/motion.ts
+  s_4be7b399b605b1::t_471821232225f1 18
+  s_4be7b399b605b1::t_938fc54a21eeca 17
+src/components/MarketSwitcher.tsx
+  s_4be7b399b605b1::t_6861c211f12f4c 769
+  s_4be7b399b605b1::t_938fc54a21eeca 836
+  s_4be7b399b605b1::t_435845ebb73eab 27,764,766,777
+  s_4be7b399b605b1::t_0af069175158ee 39-40,393,765,768
+  s_4be7b399b605b1::t_f558e8272ff870 82,85,87-90,767,770,786,800,828-831
+src/modules/migration/StETHMigrationWarning.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 59
+src/components/PageHeader/PageHeader.tsx
+  s_4be7b399b605b1::t_745444a9b891cd 65
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListItemLoader.tsx
+  s_4be7b399b605b1::t_30737c3de63c4b 10
+src/layouts/AppHeader.tsx
+  s_4be7b399b605b1::t_7a8786691b2e1c 270
+  s_4be7b399b605b1::t_bf72ae80c84477 45
+  s_4be7b399b605b1::t_24e74e90996962 112,242,245,250,269,278,296,316,414
+  s_4be7b399b605b1::t_cc6b599a1e2e32 126,365,388
+  s_4be7b399b605b1::t_e743c5b59a00c6 124-125
+  s_4be7b399b605b1::t_bd4f1d2dd61acb 8-10,109,159-161,252-268,271-275,277,279-285,287-293
+  s_4be7b399b605b1::t_7fc6fac17496de 25,243-244,246-247
+  s_4be7b399b605b1::t_11f3f9a9cd0fdd 91,96,123,151,155,418
+  s_4be7b399b605b1::t_841d5dc7e1abcc 411
+  s_4be7b399b605b1::t_5795901a1a5ade 251,276,286,416
+  s_4be7b399b605b1::t_f2b5241f12d0bd 317-333
+  s_4be7b399b605b1::t_dd9429a9538490 86-88,309,342,380
+  s_4be7b399b605b1::t_0ba70b1d50fa8c 27,104-108,110-111,249,294-295
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItemLoader.tsx
+  s_4be7b399b605b1::t_30737c3de63c4b 12
+src/layouts/components/NavItems.tsx
+  s_4be7b399b605b1::t_bf72ae80c84477 23,59-62,94,117-119,172-173
+src/modules/migration/MigrationListItem.tsx
+  s_4be7b399b605b1::t_c3b575ba199ad5 241,303
+src/utils/theme.tsx
+  s_4be7b399b605b1::t_d9085e06210947 1070
+src/locales/el/messages.js
+  s_4be7b399b605b1::t_d1a3f5920beccb 1
+src/locales/en/messages.js
+  s_4be7b399b605b1::t_e82f2f942a6963 1
+src/locales/en/messages.po
+  s_4be7b399b605b1::t_528f788bf25141 63,3144
+src/locales/es/messages.js
+  s_4be7b399b605b1::t_b85c5fb26f3013 1
+src/locales/fr/messages.js
+  s_4be7b399b605b1::t_413a255f806f52 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "f3b8d2f5e7c9a0e76f055106353f0c0a7deed11c",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_4be7b399b605b1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cf8d7b61-8c32-4170-9fba-23ceee2f77fa",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
