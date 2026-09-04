@@ -399,7 +399,7 @@ export const BridgeModalContent = () => {
                 '&:hover': { backgroundColor: 'bg-2' },
               }}
             >
-              <SvgIcon sx={{ color: 'primary.main', fontSize: '18px' }}>
+              <SvgIcon sx={{ color: 'fg-3', fontSize: '18px' }}>
                 <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>

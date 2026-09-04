@@ -90,7 +90,7 @@ export const BridgeFeeTokenSelector = ({
         ))}
       </Menu>
       {!bridgeFeeFormatted && !loading ? (
-        <NoData variant="h5" color="fg-2" />
+        <NoData variant="h5" />
       ) : loading ? (
         <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
       ) : (

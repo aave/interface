@@ -3,6 +3,8 @@ import { Box, Button, Divider, List, ListItem, ListItemText } from '@mui/materia
 import { useEffect, useState } from 'react';
 import { BridgeIcon } from 'src/components/icons/BridgeIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
+import { AAVE_PRO_URL } from 'src/components/MarketSwitcher';
+import { Link } from 'src/components/primitives/Link';
 import { useConnectGate } from 'src/hooks/useConnectGate';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
@@ -145,6 +147,14 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
               <Divider sx={{ borderColor: 'border-0', my: 2 }} />
               {/* Watch Wallet sits above the global-settings rows, no divider between them. */}
               <List disablePadding sx={menuListSx}>
+                <ListItem
+                  component={Link}
+                  href={AAVE_PRO_URL}
+                  sx={{ color: 'fg-1' }}
+                  onClick={() => setOpen(false)}
+                >
+                  <ListItemText>Aave V4</ListItemText>
+                </ListItem>
                 <ListItem sx={{ color: 'fg-1' }} onClick={handleOpenReadMode}>
                   <ListItemText>
                     <Trans>Watch Wallet</Trans>

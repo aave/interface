@@ -61,7 +61,7 @@ export const ListMobileItem = ({
                 href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
                 sx={{ display: 'inline-flex', alignItems: 'center' }}
               >
-                <TokenIcon symbol={iconSymbol} sx={{ fontSize: '40px' }} onError={onIconError} />
+                <TokenIcon symbol={iconSymbol} fontSize="large" onError={onIconError} />
                 <Box sx={{ ml: 2 }}>
                   <Typography variant="h4">{name}</Typography>
                   <Box display="flex" alignItems="center">

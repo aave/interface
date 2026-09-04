@@ -238,7 +238,7 @@ export const MigrationListItem = ({
         {isSupplyList &&
           (loadingRates ? (
             <ListColumn>
-              <NoData variant="subheader1" color="fg-2" />
+              <NoData variant="subheader1" />
             </ListColumn>
           ) : (
             <ListColumn>
@@ -300,7 +300,7 @@ export const MigrationListItem = ({
         {!isSupplyList &&
           (loadingRates ? (
             <ListColumn>
-              <NoData variant="subheader1" color="fg-2" />
+              <NoData variant="subheader1" />
             </ListColumn>
           ) : (
             <ListColumn>

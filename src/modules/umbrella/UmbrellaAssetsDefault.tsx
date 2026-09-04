@@ -210,7 +210,7 @@ const DefaultAssetListItemLoader = () => {
   return (
     <ListItem px={4} minHeight={76}>
       <ListColumn isRow minWidth={275}>
-        <Skeleton variant="circular" width={32} height={32} />
+        <Skeleton variant="circular" width={40} height={40} />
         <Box sx={{ pl: 2, overflow: 'hidden' }}>
           <Skeleton width={150} height={28} />
         </Box>
@@ -227,7 +227,7 @@ const DefaultAssetListItemLoaderMobile = () => {
     <ListMobileItemWrapper>
       <ListColumn isRow>
         <Stack direction="row" alignItems="center" height={40}>
-          <Skeleton variant="circular" width={32} height={32} />
+          <Skeleton variant="circular" width={40} height={40} />
           <Box sx={{ pl: 2, overflow: 'hidden' }}>
             <Skeleton width={150} height={28} />
           </Box>

@@ -149,20 +149,16 @@ export const LimitOrderInputs = ({
                 borderColor: 'border-2',
                 transform: 'translateY(-130%)',
                 backgroundColor: 'surface-elevated',
+                color: 'fg-3',
                 '&:hover': { backgroundColor: 'bg-2' },
-                '&:disabled': {
+                '&.Mui-disabled': {
                   backgroundColor: 'bg-2',
-                  opacity: '0.7',
-                  color: 'fg-2',
+                  borderColor: 'border-0',
+                  color: 'fg-4',
                 },
               }}
             >
-              <SvgIcon
-                sx={{
-                  color: 'primary.main',
-                  fontSize: '18px',
-                }}
-              >
+              <SvgIcon sx={{ fontSize: '18px' }}>
                 <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>
@@ -184,24 +180,17 @@ export const LimitOrderInputs = ({
             <Box sx={{ position: 'absolute' }}>
               <IconButton
                 disabled
-                disableFocusRipple
                 sx={{
                   border: '1px solid',
                   borderColor: 'border-2',
                   transform: 'translateY(-130%)',
                   backgroundColor: 'surface-elevated',
-                  '&:disabled': {
+                  '&.Mui-disabled': {
                     backgroundColor: 'surface-elevated',
                   },
-                  '&:hover': { backgroundColor: 'surface-elevated' },
                 }}
               >
-                <SvgIcon
-                  sx={{
-                    color: 'primary.main',
-                    fontSize: '18px',
-                  }}
-                >
+                <SvgIcon sx={{ color: 'fg-3', fontSize: '18px' }}>
                   <ArrowDownIcon />
                 </SvgIcon>
               </IconButton>

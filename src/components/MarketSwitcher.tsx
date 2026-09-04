@@ -24,6 +24,7 @@ import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
 import { figVars, onAccent } from 'src/utils/figmaColors';
 import { insetHighlightActive, insetHighlightBase } from 'src/utils/insetHighlight';
+import { motion } from 'src/utils/motion';
 import { darkScheme } from 'src/utils/theme';
 import { useShallow } from 'zustand/shallow';
 
@@ -34,6 +35,8 @@ import {
   marketsData,
   networkConfigs,
 } from '../utils/marketsAndNetworksConfig';
+
+const HOVER_FADE = `${motion.duration.hoverSlow}ms ${motion.easing.standard}`;
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -76,11 +79,15 @@ type MarketLogoProps = {
   logo: string;
   testChainName?: string;
   sx?: BoxProps;
+  className?: string;
 };
 
-export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) => {
+export const MarketLogo = ({ size, logo, testChainName, sx, className }: MarketLogoProps) => {
   return (
-    <Box sx={{ mr: 2, width: size, height: size, position: 'relative', ...sx }}>
+    <Box
+      className={className}
+      sx={{ mr: 2, width: size, height: size, position: 'relative', ...sx }}
+    >
       <img
         src={logo}
         alt=""
@@ -383,7 +390,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           // row or the star button is focused, so keyboard users can see the favourite toggle.
           '& .grid-fav-btn': {
             opacity: isMobile || isFavorite ? 1 : 0,
-            transition: 'opacity 0.15s',
+            transition: `opacity ${HOVER_FADE}`,
           },
           '&:hover .grid-fav-btn, &:focus-within .grid-fav-btn': {
             opacity: 1,
@@ -754,13 +761,20 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           cursor: 'pointer',
           display: 'flex',
           flexDirection: 'column',
+          color: 'fg-1',
+          transition: `color ${HOVER_FADE}`,
+          '&:hover': { color: 'fg-3' },
+          '& .market-picker-fade': {
+            transition: `opacity ${HOVER_FADE}`,
+          },
+          '&:hover .market-picker-fade': { opacity: 0.6 },
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           {titlePrefix && (
             <Typography
               variant={upToLG ? 'display1' : 'h1'}
-              sx={{ fontSize: downToXSM ? '1.55rem' : undefined, color: 'fg-1', mr: 3 }}
+              sx={{ fontSize: downToXSM ? '1.55rem' : undefined, mr: 3 }}
             >
               {titlePrefix}
             </Typography>
@@ -769,12 +783,12 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
             size={28}
             logo={currentLogo}
             testChainName={currentMarketNaming.testChainName}
+            className="market-picker-fade"
             sx={{ width: '1.75rem', height: '1.75rem', mr: '0.75rem' }}
           />
           <Typography
             variant="h2"
             sx={{
-              color: 'fg-1',
               fontSize: '1.875rem',
               mr: '0.5rem',
             }}
@@ -783,6 +797,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
             {currentMarketData.isFork ? ' Fork' : ''}
           </Typography>
           <Box
+            className="market-picker-fade"
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -810,12 +825,15 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
               {currentMarketData.v3 ? 'v3' : 'v2'}
             </Typography>
           </Box>
-          <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }} />
+          <ChevronUpDownIcon
+            className="market-picker-fade"
+            sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }}
+          />
         </Box>
 
         {!hideTitleChrome && marketBlurbs[currentMarket] && (
           <Typography
-            variant="base"
+            variant="description"
             sx={{
               color: 'fg-3',
               mt: '1rem',

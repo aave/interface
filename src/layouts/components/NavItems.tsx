@@ -20,6 +20,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { navigation } from '../../ui-config/menu-items';
+import { HEADER_MOBILE_BELOW } from '../headerBreakpoints';
 import { NAV_LINK_PADDING_X, NAV_LINK_PADDING_Y, navLinkSx } from './navLinkSx';
 import { StakingMenu } from './StakingMenu';
 
@@ -55,7 +56,10 @@ const activeBarSx = {
 };
 
 // Wrapper for each nav ListItem: full-width in the mobile drawer, inline with a gap on desktop.
-const navListItemSx = { width: { xs: '100%', mdlg: 'unset' }, mr: { xs: 0, mdlg: 2 } };
+const navListItemSx = {
+  width: { xs: '100%', [HEADER_MOBILE_BELOW]: 'unset' },
+  mr: { xs: 0, [HEADER_MOBILE_BELOW]: 2 },
+};
 
 // A single mobile drawer nav link — top-level items and the Staking accordion's children all render
 // through here (children pass `indent`).
@@ -87,7 +91,7 @@ const MobileNavLink = ({
 export const NavItems = ({ setOpen }: NavItemsProps) => {
   const { i18n } = useLingui();
   const { breakpoints } = useTheme();
-  const mdlg = useMediaQuery(breakpoints.down('mdlg'));
+  const mdlg = useMediaQuery(breakpoints.down(HEADER_MOBILE_BELOW));
   const router = useRouter();
   const [stakingOpen, setStakingOpen] = React.useState(false);
   const [trackEvent, currentMarketData, account] = useRootStore(
@@ -110,9 +114,9 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
     <List
       sx={{
         display: 'flex',
-        alignItems: { xs: 'flex-start', mdlg: 'center' },
-        flexDirection: { xs: 'column', mdlg: 'row' },
-        gap: { xs: '0.5rem', mdlg: 0 },
+        alignItems: { xs: 'flex-start', [HEADER_MOBILE_BELOW]: 'center' },
+        flexDirection: { xs: 'column', [HEADER_MOBILE_BELOW]: 'row' },
+        gap: { xs: '0.5rem', [HEADER_MOBILE_BELOW]: 0 },
       }}
       disablePadding
     >
@@ -165,8 +169,8 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
       <ListItem
         sx={{
           ...navListItemSx,
-          flexDirection: { xs: 'column', mdlg: 'row' },
-          alignItems: { xs: 'stretch', mdlg: 'center' },
+          flexDirection: { xs: 'column', [HEADER_MOBILE_BELOW]: 'row' },
+          alignItems: { xs: 'stretch', [HEADER_MOBILE_BELOW]: 'center' },
         }}
         disablePadding
       >

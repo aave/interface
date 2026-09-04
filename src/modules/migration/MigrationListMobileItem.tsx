@@ -313,7 +313,7 @@ export const MigrationListMobileItem = ({
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="subheader1" color="fg-2" />
+                <NoData variant="subheader1" />
               ) : (
                 <>
                   <FormattedNumber
@@ -358,7 +358,7 @@ export const MigrationListMobileItem = ({
 
             <Box sx={{ display: 'flex' }}>
               {loadingRates ? (
-                <NoData variant="subheader1" color="fg-2" />
+                <NoData variant="subheader1" />
               ) : (
                 <>
                   <FormattedNumber

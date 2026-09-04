@@ -14,6 +14,8 @@ export const motion = {
     overlay: 100,
     /** interactive control feedback — button hover/focus state transitions */
     hover: 100,
+    /** deliberate hover fades on large targets */
+    hoverSlow: 150,
     /** modal enter/exit — reserved for Phase 2 (modals are not animated yet) */
     modal: 200,
     /** mobile modal slide-up — reserved for Phase 2/3 */

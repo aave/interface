@@ -30,7 +30,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           <Trans>About GHO</Trans>
         </PanelTitle>
         <Box>
-          <Typography gutterBottom>
+          <Typography>
             <Trans>
               GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is
               created by users via borrowing against multiple collateral. When user repays their GHO
@@ -38,7 +38,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
               accrued by minters of GHO would be directly transferred to the AaveDAO treasury.
             </Trans>
           </Typography>
-          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mt: 2 }}>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mt: 6 }}>
             <ExternalLinkButton href="https://github.com/aave/gho/blob/main/techpaper/GHO_Technical_Paper.pdf">
               <Trans>Techpaper</Trans>
             </ExternalLinkButton>

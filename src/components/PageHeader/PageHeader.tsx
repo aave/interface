@@ -62,7 +62,7 @@ export const PageHeader = ({
               </Box>
             )}
             {description && (
-              <Typography variant="h5" sx={{ color: 'fg-3', textWrap: 'balance' }}>
+              <Typography variant="description" sx={{ color: 'fg-3', textWrap: 'balance' }}>
                 {description}
               </Typography>
             )}

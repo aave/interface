@@ -193,7 +193,7 @@ export const DashboardTopPanel = () => {
               compact
             />
           ) : (
-            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
+            <NoData variant={noDataTypographyVariant} color="inherit" sx={{ opacity: '0.7' }} />
           )}
         </PageHeaderStat>
 
@@ -219,7 +219,7 @@ export const DashboardTopPanel = () => {
               percent
             />
           ) : (
-            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
+            <NoData variant={noDataTypographyVariant} color="inherit" sx={{ opacity: '0.7' }} />
           )}
         </PageHeaderStat>
 

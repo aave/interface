@@ -8,7 +8,7 @@ export const FaucetItemLoader = () => {
   return (
     <ListItem px={6} minHeight={76}>
       <ListColumn isRow maxWidth={280}>
-        <Skeleton variant="circular" width={32} height={32} />
+        <Skeleton variant="circular" width={40} height={40} />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
           <Skeleton width={75} height={24} />
         </Box>

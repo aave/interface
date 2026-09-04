@@ -116,12 +116,12 @@ export const MarketOrderInputs = ({
                 border: '1px solid',
                 borderColor: 'border-2',
                 backgroundColor: 'surface-elevated',
-                color: 'primary.main',
+                color: 'fg-3',
                 '&:hover': { backgroundColor: 'bg-2' },
                 '&.Mui-disabled': {
                   backgroundColor: 'bg-2',
                   borderColor: 'border-0',
-                  color: 'fg-3',
+                  color: 'fg-4',
                 },
               }}
             >
@@ -144,23 +144,16 @@ export const MarketOrderInputs = ({
             <Box sx={{ position: 'absolute' }}>
               <IconButton
                 disabled
-                disableFocusRipple
                 sx={{
                   border: '1px solid',
                   borderColor: 'border-2',
                   backgroundColor: 'surface-elevated',
-                  '&:disabled': {
+                  '&.Mui-disabled': {
                     backgroundColor: 'surface-elevated',
                   },
-                  '&:hover': { backgroundColor: 'surface-elevated' },
                 }}
               >
-                <SvgIcon
-                  sx={{
-                    color: 'primary.main',
-                    fontSize: '18px',
-                  }}
-                >
+                <SvgIcon sx={{ color: 'fg-3', fontSize: '18px' }}>
                   <ArrowDownIcon />
                 </SvgIcon>
               </IconButton>

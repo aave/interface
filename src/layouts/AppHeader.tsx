@@ -5,6 +5,9 @@ import {
   Button,
   CircularProgress,
   Container,
+  ListItemText,
+  Menu,
+  MenuItem,
   NoSsr,
   Slide,
   styled,
@@ -19,8 +22,9 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { AaveLogo } from 'src/components/icons/AaveLogo';
+import { AaveLogo, AaveLogoMark } from 'src/components/icons/AaveLogo';
 import { BridgeIcon } from 'src/components/icons/BridgeIcon';
+import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
 import { AAVE_PRO_URL } from 'src/components/MarketSwitcher';
 import { UserDisplay } from 'src/components/UserDisplay';
@@ -38,6 +42,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
 import { NavItems } from './components/NavItems';
+import { ENV_BADGE_ENABLED, HEADER_MOBILE_BELOW } from './headerBreakpoints';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
 
@@ -78,14 +83,17 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
+const desktopOnlyBlock = { xs: 'none', [HEADER_MOBILE_BELOW]: 'block' } as const;
+const desktopOnlyInlineFlex = { xs: 'none', [HEADER_MOBILE_BELOW]: 'inline-flex' } as const;
+
 function HideOnScroll({ children }: Props) {
   const { breakpoints } = useTheme();
-  const mdlg = useMediaQuery(breakpoints.down('mdlg'));
+  const mobile = useMediaQuery(breakpoints.down(HEADER_MOBILE_BELOW));
   const trigger = useScrollTrigger({ threshold: 80 });
 
   // Mobile keeps the header pinned (never hides on scroll); desktop still hides past the threshold.
   return (
-    <Slide appear={false} direction="down" in={mdlg || !trigger}>
+    <Slide appear={false} direction="down" in={mobile || !trigger}>
       {children}
     </Slide>
   );
@@ -93,7 +101,15 @@ function HideOnScroll({ children }: Props) {
 
 const SWITCH_VISITED_KEY = 'switchVisited';
 
-// Dev-only environment badges (testnet / fork) — intentionally off-brand magenta to stand out.
+const testModeInk = {
+  color: '#00B3A6',
+  '@supports (color: color(display-p3 0 0 0))': {
+    color: 'color(display-p3 0.1686 0.6784 0.6431)',
+  },
+  ...darkScheme({ color: '#00C1B8' }),
+};
+
+// Fork badge — intentionally off-brand magenta to stand out.
 const envBadgeSx = {
   backgroundColor: '#B6509E',
   boxShadow: 'none',
@@ -104,11 +120,10 @@ const envBadgeSx = {
 
 export function AppHeader() {
   const { breakpoints } = useTheme();
-  const mdlg = useMediaQuery(breakpoints.down('mdlg'));
-  const sm = useMediaQuery(breakpoints.down('sm'));
-  const lg = useMediaQuery(breakpoints.down('lg'));
-  // Shared by the Swap + Bridge triggers: icon-only square when collapsed (below lg), text otherwise.
-  const collapsingTriggerSx = lg
+  const mobile = useMediaQuery(breakpoints.down(HEADER_MOBILE_BELOW));
+  const belowLg = useMediaQuery(breakpoints.down('lg'));
+  const collapsed = ENV_BADGE_ENABLED || belowLg;
+  const collapsingTriggerSx = collapsed
     ? [iconButtonSx, { alignItems: 'center', '& .MuiButton-startIcon': { mx: 0 } }]
     : { p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' };
 
@@ -133,13 +148,16 @@ export function AppHeader() {
   const { hasActiveOrders } = useSwapOrdersTracking();
 
   useEffect(() => {
-    if (!mdlg) {
+    if (!mobile) {
       setMobileDrawerOpen(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mdlg]);
+  }, [mobile]);
 
   const headerHeight = 72;
+
+  const [testModeAnchor, setTestModeAnchor] = useState<null | HTMLElement>(null);
+  const testModeOpen = Boolean(testModeAnchor);
 
   const disableTestnet = () => {
     localStorage.setItem('testnetsEnabled', 'false');
@@ -166,26 +184,6 @@ export function AppHeader() {
   const handleBridgeClick = () => {
     openOrConnect(openBridge);
   };
-
-  const testnetTooltip = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
-      <Typography variant="subheader1">
-        <Trans>Testnet mode is ON</Trans>
-      </Typography>
-      <Typography variant="description">
-        <Trans>The app is running in testnet mode. Learn how it works in</Trans>{' '}
-        <Link
-          href="https://aave.com/faq"
-          style={{ fontSize: '14px', fontWeight: 400, textDecoration: 'underline' }}
-        >
-          FAQ.
-        </Link>
-      </Typography>
-      <Button variant="tertiary" sx={{ mt: '12px' }} onClick={disableTestnet}>
-        <Trans>Disable testnet</Trans>
-      </Button>
-    </Box>
-  );
 
   const forkTooltip = (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: 1 }}>
@@ -241,21 +239,61 @@ export function AppHeader() {
             }}
             onClick={() => setMobileDrawerOpen(false)}
           >
-            <AaveLogo width="5.26144rem" height="0.875rem" />
+            <Box sx={{ display: { xs: 'none', xsm: 'block' } }}>
+              <AaveLogo width="5.26144rem" height="0.875rem" />
+            </Box>
+            <Box sx={{ display: { xs: 'block', xsm: 'none' } }}>
+              <AaveLogoMark width="1.7rem" height="0.875rem" />
+            </Box>
           </Box>
-          <Box sx={{ mr: sm ? 1 : 3 }}>
-            {ENABLE_TESTNET && (
-              <ContentWithTooltip tooltipContent={testnetTooltip} offset={[0, -4]} withoutHover>
-                <Button variant="tertiary" size="small" color="primary" sx={envBadgeSx}>
-                  TESTNET
-                  <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
-                    <InformationCircleIcon />
-                  </SvgIcon>
-                </Button>
-              </ContentWithTooltip>
-            )}
-          </Box>
-          <Box sx={{ mr: sm ? 1 : 3 }}>
+          {ENABLE_TESTNET && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mr: { xs: 1, sm: 3 } }}>
+              <Box sx={{ width: '1px', height: '0.75rem', bgcolor: 'border-2' }} />
+              <Box
+                role="button"
+                tabIndex={0}
+                id="test-mode-button"
+                aria-haspopup="true"
+                aria-controls={testModeOpen ? 'test-mode-menu' : undefined}
+                aria-expanded={testModeOpen ? 'true' : undefined}
+                onClick={(e: React.MouseEvent<HTMLElement>) => setTestModeAnchor(e.currentTarget)}
+                onKeyDown={(e: React.KeyboardEvent<HTMLElement>) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setTestModeAnchor(e.currentTarget);
+                  }
+                }}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  minHeight: '28px',
+                  cursor: 'pointer',
+                  ...testModeInk,
+                }}
+              >
+                <Typography variant="buttonM" sx={{ lineHeight: '1.125rem' }}>
+                  <Trans>Test Mode</Trans>
+                </Typography>
+                <ChevronUpDownIcon sx={{ fontSize: '16px' }} />
+              </Box>
+              <Menu
+                id="test-mode-menu"
+                MenuListProps={{ 'aria-labelledby': 'test-mode-button' }}
+                anchorEl={testModeAnchor}
+                open={testModeOpen}
+                onClose={() => setTestModeAnchor(null)}
+                sx={{ mt: 1 }}
+              >
+                <MenuItem onClick={disableTestnet}>
+                  <ListItemText>
+                    <Trans>Disable testnet</Trans>
+                  </ListItemText>
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
+          <Box sx={{ mr: { xs: 1, sm: 3 } }}>
             {FORK_ENABLED && currentMarketData?.isFork && (
               <ContentWithTooltip tooltipContent={forkTooltip} offset={[0, -4]} withoutHover>
                 <Button variant="tertiary" size="small" color="primary" sx={envBadgeSx}>
@@ -268,29 +306,31 @@ export function AppHeader() {
             )}
           </Box>
 
-          <Box sx={{ display: { xs: 'none', mdlg: 'block' } }}>
+          <Box sx={{ display: desktopOnlyBlock }}>
             <NavItems />
           </Box>
 
           <Box sx={{ flexGrow: 1 }} />
 
           <NoSsr>
-            <Button
-              component={Link}
-              href={AAVE_PRO_URL}
-              variant="outlined"
-              sx={{
-                p: '0 0.88rem',
-                minWidth: 'unset',
-                alignItems: 'center',
-                mr: '0.62rem',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              <Typography component="span" variant="buttonM">
-                {lg ? 'V4' : 'Aave V4'}
-              </Typography>
-            </Button>
+            {!mobile && (
+              <Button
+                component={Link}
+                href={AAVE_PRO_URL}
+                variant="outlined"
+                sx={{
+                  p: '0 0.88rem',
+                  minWidth: 'unset',
+                  alignItems: 'center',
+                  mr: '0.62rem',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Typography component="span" variant="buttonM">
+                  {collapsed ? 'V4' : 'Aave V4'}
+                </Typography>
+              </Button>
+            )}
           </NoSsr>
 
           <NoSsr>
@@ -299,7 +339,7 @@ export function AppHeader() {
               variant="dot"
               badgeContent=""
               color="secondary"
-              sx={{ mr: '0.62rem', display: { xs: 'none', mdlg: 'inline-flex' } }}
+              sx={{ mr: '0.62rem', display: desktopOnlyInlineFlex }}
             >
               <Button
                 onClick={handleSwitchClick}
@@ -322,7 +362,7 @@ export function AppHeader() {
                 aria-label="Switch tool"
                 disabled={!showSwitchButton}
               >
-                {!lg && (
+                {!collapsed && (
                   <Typography component="span" variant="buttonM">
                     Swap
                   </Typography>
@@ -337,7 +377,7 @@ export function AppHeader() {
               // variant="dot"
               badgeContent=""
               color="secondary"
-              sx={{ mr: '0.62rem', display: { xs: 'none', mdlg: 'inline-flex' } }}
+              sx={{ mr: '0.62rem', display: desktopOnlyInlineFlex }}
             >
               <Button
                 onClick={handleBridgeClick}
@@ -345,7 +385,7 @@ export function AppHeader() {
                 startIcon={<BridgeIcon sx={{ fontSize: '18px' }} />}
                 sx={collapsingTriggerSx}
               >
-                {!lg && (
+                {!collapsed && (
                   <Typography component="span" variant="buttonM">
                     Bridge GHO
                   </Typography>
@@ -368,14 +408,14 @@ export function AppHeader() {
               />
             </Button>
           ) : (
-            <ConnectWalletButton />
+            <ConnectWalletButton compact={mobile} />
           )}
 
-          <Box sx={{ display: { xs: 'none', mdlg: 'block' } }}>{!mdlg && <SettingsMenu />}</Box>
+          <Box>{!mobile && <SettingsMenu />}</Box>
 
-          <Box sx={{ display: { xs: 'flex', mdlg: 'none' } }}>
+          <Box sx={{ display: { xs: 'flex', [HEADER_MOBILE_BELOW]: 'none' } }}>
             <MobileMenu
-              open={mobileDrawerOpen && mdlg}
+              open={mobileDrawerOpen && mobile}
               setOpen={setMobileDrawerOpen}
               headerHeight={headerHeight}
             />

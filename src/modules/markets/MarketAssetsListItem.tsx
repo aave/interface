@@ -135,7 +135,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
             <ReserveSubheader value={String(reserve.borrowInfo?.total.usd)} />
           </>
         ) : (
-          <NoData variant={'h5'} color="fg-2" />
+          <NoData variant={'h5'} />
         )}
       </ListColumn>
 

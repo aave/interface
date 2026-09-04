@@ -1067,7 +1067,7 @@ export function getThemedComponents(theme: AppTheme) {
           {
             props: { fontSize: 'large' },
             style: {
-              fontSize: pxToRem(32),
+              fontSize: pxToRem(40),
             },
           },
         ],

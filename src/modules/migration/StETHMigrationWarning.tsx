@@ -56,7 +56,7 @@ export const StETHMigrationWarning: React.FC<StETHMigrationWarningProps> = ({
             {').'}
           </>
         ) : (
-          <NoData variant="caption" component="span" />
+          <NoData variant="caption" component="span" color="inherit" />
         )}
       </Trans>{' '}
     </Alert>

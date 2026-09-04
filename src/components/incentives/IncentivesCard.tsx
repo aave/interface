@@ -163,7 +163,7 @@ export const IncentivesCard = ({
 
   const apyValue =
     value.toString() === '-1' ? (
-      <NoData variant={variant} color={color || 'fg-2'} />
+      <NoData variant={variant} color={color} />
     ) : displayAPY === 'Infinity' ? (
       <Typography variant={variant} color={color || 'fg-2'}>
         ∞ %

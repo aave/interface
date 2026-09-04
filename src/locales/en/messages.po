@@ -60,6 +60,7 @@ msgstr "Stake your Aave aTokens or underlying assets to earn rewards."
 msgid "Estimated time"
 msgstr "Estimated time"
 
+#: src/layouts/AppHeader.tsx
 #: src/layouts/components/TestNetModeSwitcher.tsx
 msgid "Test Mode"
 msgstr "Test Mode"
@@ -2121,10 +2122,6 @@ msgstr "Reload the page"
 msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave balance changes, your delegate's voting/proposition power will be automatically adjusted."
 msgstr "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave balance changes, your delegate's voting/proposition power will be automatically adjusted."
 
-#: src/layouts/AppHeader.tsx
-msgid "The app is running in testnet mode. Learn how it works in"
-msgstr "The app is running in testnet mode. Learn how it works in"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not borrowable in isolation mode"
 msgstr "Asset is not borrowable in isolation mode"
@@ -2415,10 +2412,6 @@ msgstr "Stake token shares"
 #: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Default slippage"
 msgstr "Default slippage"
-
-#: src/layouts/AppHeader.tsx
-msgid "Testnet mode is ON"
-msgstr "Testnet mode is ON"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
@@ -3148,6 +3141,7 @@ msgstr "Get Support"
 msgid "Enter an amount"
 msgstr "Enter an amount"
 
+#: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Connect"
 msgstr "Connect"

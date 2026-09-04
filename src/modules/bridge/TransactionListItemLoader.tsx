@@ -7,7 +7,7 @@ export const TransactionListItemLoader = () => {
   return (
     <ListItem>
       <ListColumn isRow>
-        <Skeleton variant="circular" width={32} height={32} />
+        <Skeleton variant="circular" width={40} height={40} />
         <Stack direction="column" gap={1}>
           <Skeleton sx={{ ml: 2 }} width={50} height={12} />
           {/* <Skeleton sx={{ ml: 2 }} width={50} height={12} /> */}
