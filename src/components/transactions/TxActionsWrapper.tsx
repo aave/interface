@@ -35,6 +35,8 @@ interface TxActionsWrapperProps extends BoxProps {
   };
   tryPermit?: boolean;
   permitInUse?: boolean;
+  /** Extra approval controls for a specific flow, shown alongside the method toggle. */
+  approvalOptions?: ReactNode;
   event?: TrackEventProps;
 }
 
@@ -59,6 +61,7 @@ export const TxActionsWrapper = ({
   errorParams,
   tryPermit,
   permitInUse = false,
+  approvalOptions,
   event,
   ...rest
 }: TxActionsWrapperProps) => {
@@ -146,12 +149,23 @@ export const TxActionsWrapper = ({
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
       {approvalParams && !readOnlyModeAddress && (
-        <Box sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+        // Wraps rather than squeezes: an exact allowance can be a full-precision 18-decimal
+        // figure, which does not share a line with the approval method toggle.
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'end',
+            alignItems: 'center',
+            columnGap: 4,
+          }}
+        >
           <RightHelperText
             approvalHash={approvalTxState?.txHash}
             tryPermit={tryPermit}
             permitInUse={permitInUse}
           />
+          {!approvalTxState?.txHash && approvalOptions}
         </Box>
       )}
 
