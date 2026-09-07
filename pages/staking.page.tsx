@@ -1,6 +1,8 @@
+import { Trans } from '@lingui/macro';
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { EmptyStatePaper } from 'src/components/EmptyStatePaper';
 import { usePinnedMarket } from 'src/hooks/usePinnedMarket';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { UmbrellaAssetsListContainer } from 'src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer';
@@ -45,13 +47,24 @@ export default function UmbrellaStaking() {
   }, [trackEvent]);
 
   // Staking always runs on the Core instance (pinned for the page, restored on unmount).
-  usePinnedMarket(CustomMarket.proto_mainnet_v3);
+  const marketAvailable = usePinnedMarket(CustomMarket.proto_mainnet_v3);
 
   return (
     <>
-      <UmbrellaHeader />
+      <UmbrellaHeader hideStats={!marketAvailable} />
       <ContentContainer>
-        {currentAccount ? <UmbrellaAssetsListContainer /> : <UmrellaAssetsDefaultListContainer />}
+        {!marketAvailable ? (
+          <EmptyStatePaper
+            title={<Trans>Not available in test mode</Trans>}
+            description={
+              <Trans>This page only works with live data. Exit test mode to view it.</Trans>
+            }
+          />
+        ) : currentAccount ? (
+          <UmbrellaAssetsListContainer />
+        ) : (
+          <UmrellaAssetsDefaultListContainer />
+        )}
       </ContentContainer>
     </>
   );

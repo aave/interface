@@ -146,14 +146,13 @@ export const LimitOrderInputs = ({
               disabled={!(customProps?.canSwitchTokens ?? false)}
               sx={{
                 border: '1px solid',
-                borderColor: 'border-2',
+                borderColor: 'border-opaque',
                 transform: 'translateY(-130%)',
-                backgroundColor: 'surface-elevated',
+                backgroundColor: 'bg-2',
                 color: 'fg-3',
-                '&:hover': { backgroundColor: 'bg-2' },
+                '&:hover': { backgroundColor: 'bg-3' },
                 '&.Mui-disabled': {
                   backgroundColor: 'bg-2',
-                  borderColor: 'border-0',
                   color: 'fg-4',
                 },
               }}
@@ -182,11 +181,10 @@ export const LimitOrderInputs = ({
                 disabled
                 sx={{
                   border: '1px solid',
-                  borderColor: 'border-2',
+                  borderColor: 'border-opaque',
                   transform: 'translateY(-130%)',
-                  backgroundColor: 'surface-elevated',
                   '&.Mui-disabled': {
-                    backgroundColor: 'surface-elevated',
+                    backgroundColor: 'bg-2',
                   },
                 }}
               >

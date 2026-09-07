@@ -61,7 +61,7 @@ const insetLayer: CSSObject = {
  * Composites a translucent `semantic/button` hover token over the button's own fill. Assigning one
  * to `backgroundColor` would replace the base fill rather than tint it.
  */
-const hoverOverlay = (fill: string): CSSObject => ({
+export const hoverOverlay = (fill: string): CSSObject => ({
   position: 'relative',
   isolation: 'isolate',
   '&::before': {

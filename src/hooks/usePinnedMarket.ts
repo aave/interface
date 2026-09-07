@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { availableMarkets } from 'src/utils/marketsAndNetworksConfig';
 
 /**
  * Pins the app's selected market to `market` for the lifetime of the calling page, restoring the
@@ -9,7 +10,7 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
  * modals all read the market from the store, so pinning here covers the whole page. No-op when
  * already on `market`.
  */
-export const usePinnedMarket = (market: CustomMarket) => {
+export const usePinnedMarket = (market: CustomMarket): boolean => {
   useEffect(() => {
     const { currentMarket: prevMarket, setCurrentMarket } = useRootStore.getState();
     if (prevMarket !== market) {
@@ -17,4 +18,6 @@ export const usePinnedMarket = (market: CustomMarket) => {
       return () => setCurrentMarket(prevMarket, true);
     }
   }, [market]);
+
+  return availableMarkets.includes(market);
 };

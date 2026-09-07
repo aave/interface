@@ -392,11 +392,11 @@ export const BridgeModalContent = () => {
               onClick={handleSwapNetworks}
               sx={{
                 border: '1px solid',
-                borderColor: 'border-2',
+                borderColor: 'border-opaque',
                 position: 'absolute',
-                backgroundColor: 'surface-elevated',
+                backgroundColor: 'bg-2',
                 mt: -1,
-                '&:hover': { backgroundColor: 'bg-2' },
+                '&:hover': { backgroundColor: 'bg-3' },
               }}
             >
               <SvgIcon sx={{ color: 'fg-3', fontSize: '18px' }}>

@@ -114,13 +114,12 @@ export const MarketOrderInputs = ({
               disabled={!(customProps?.canSwitchTokens ?? false)}
               sx={{
                 border: '1px solid',
-                borderColor: 'border-2',
-                backgroundColor: 'surface-elevated',
+                borderColor: 'border-opaque',
+                backgroundColor: 'bg-2',
                 color: 'fg-3',
-                '&:hover': { backgroundColor: 'bg-2' },
+                '&:hover': { backgroundColor: 'bg-3' },
                 '&.Mui-disabled': {
                   backgroundColor: 'bg-2',
-                  borderColor: 'border-0',
                   color: 'fg-4',
                 },
               }}
@@ -146,10 +145,9 @@ export const MarketOrderInputs = ({
                 disabled
                 sx={{
                   border: '1px solid',
-                  borderColor: 'border-2',
-                  backgroundColor: 'surface-elevated',
+                  borderColor: 'border-opaque',
                   '&.Mui-disabled': {
-                    backgroundColor: 'surface-elevated',
+                    backgroundColor: 'bg-2',
                   },
                 }}
               >

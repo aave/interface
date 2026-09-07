@@ -42,7 +42,11 @@ export const COLOR_GROUPS: { title: string; role: ColorRole; names: FigmaColorNa
     role: 'text',
     names: ['fg-max', 'fg-1', 'fg-2', 'fg-3', 'fg-4', 'fg-5'],
   },
-  { title: 'Borders / dividers', role: 'border', names: ['border-0', 'border-1', 'border-2'] },
+  {
+    title: 'Borders / dividers',
+    role: 'border',
+    names: ['border-0', 'border-1', 'border-2', 'border-opaque'],
+  },
   {
     title: 'Shadows',
     role: 'shadow',

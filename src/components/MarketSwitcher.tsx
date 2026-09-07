@@ -239,11 +239,11 @@ interface MarketSwitcherProps {
 }
 
 export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketSwitcherProps) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showLegacy, setShowLegacy] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
-  const open = Boolean(anchorEl);
+  const triggerRowRef = useRef<HTMLDivElement>(null);
 
   const theme = useTheme();
   const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
@@ -256,12 +256,12 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
   const toggleFavoriteMarket = useRootStore((store) => store.toggleFavoriteMarket);
   const favoriteMarkets = useRootStore((store) => store.favoriteMarkets);
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
     setSearchQuery('');
   };
 
@@ -749,7 +749,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
         onKeyDown={(e: React.KeyboardEvent) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            handleOpen(e as unknown as React.MouseEvent<HTMLElement>);
+            handleOpen();
           }
         }}
         aria-haspopup="true"
@@ -762,15 +762,10 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           display: 'flex',
           flexDirection: 'column',
           color: 'fg-1',
-          transition: `color ${HOVER_FADE}`,
-          '&:hover': { color: 'fg-3' },
-          '& .market-picker-fade': {
-            transition: `opacity ${HOVER_FADE}`,
-          },
           '&:hover .market-picker-fade': { opacity: 0.6 },
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box ref={triggerRowRef} sx={{ display: 'flex', alignItems: 'center' }}>
           {titlePrefix && (
             <Typography
               variant={upToLG ? 'display1' : 'h1'}
@@ -783,21 +778,21 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
             size={28}
             logo={currentLogo}
             testChainName={currentMarketNaming.testChainName}
-            className="market-picker-fade"
             sx={{ width: '1.75rem', height: '1.75rem', mr: '0.75rem' }}
           />
           <Typography
+            className="market-picker-fade"
             variant="h2"
             sx={{
               fontSize: '1.875rem',
               mr: '0.5rem',
+              transition: `opacity ${HOVER_FADE}`,
             }}
           >
             {currentMarketNaming.name}
             {currentMarketData.isFork ? ' Fork' : ''}
           </Typography>
           <Box
-            className="market-picker-fade"
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -825,10 +820,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
               {currentMarketData.v3 ? 'v3' : 'v2'}
             </Typography>
           </Box>
-          <ChevronUpDownIcon
-            className="market-picker-fade"
-            sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }}
-          />
+          <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }} />
         </Box>
 
         {!hideTitleChrome && marketBlurbs[currentMarket] && (
@@ -881,7 +873,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
       ) : (
         <Popover
           open={open}
-          anchorEl={anchorEl}
+          anchorEl={triggerRowRef.current}
           onClose={handleClose}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           transformOrigin={{ vertical: 'top', horizontal: 'left' }}
@@ -899,7 +891,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
-                mt: '-1rem',
+                mt: '1.25rem',
                 // Offset the panel 1rem to the left of the trigger's left edge.
                 ml: '-1rem',
               },

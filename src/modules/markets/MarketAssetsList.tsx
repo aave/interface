@@ -128,7 +128,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   return (
     <>
       {!isTableChangedToCards && (
-        <ListHeaderWrapper px={6}>
+        <ListHeaderWrapper px={5}>
           {listHeaders.map((col) => (
             <ListColumn
               isRow={col.sortKey === 'underlyingToken.symbol'}

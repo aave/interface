@@ -12,6 +12,7 @@ import { useRootStore } from 'src/store/root';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 import { cardHeadingSx } from 'src/utils/cardStyles';
 import { figVars } from 'src/utils/figmaColors';
+import { hoverOverlay } from 'src/utils/theme';
 
 import { ZERO_ADDRESS } from './utils/formatProposal';
 
@@ -108,7 +109,9 @@ const Representatives = ({
                   height: '16px',
                   width: '16px',
                   p: 0,
-                  background: figVars['bg-6'],
+                  backgroundColor: 'bg-6',
+                  ...hoverOverlay(figVars['overlay-hover']),
+                  '&:hover': { backgroundColor: 'bg-6' },
                 }}
                 onClick={onOpenRepresentatives}
               >

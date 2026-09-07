@@ -56,7 +56,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
 
   return (
     <ListItem
-      px={6}
+      px={5}
       minHeight={76}
       onClick={() => {
         trackEvent(MARKETS.DETAILS_NAVIGATION, {

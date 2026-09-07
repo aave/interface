@@ -13,7 +13,16 @@ type StatProps = {
   valueVariant: 'h4' | 'h2';
 };
 
-export const UmbrellaHeader: React.FC = () => {
+export const UmbrellaHeader: React.FC<{ hideStats?: boolean }> = ({ hideStats }) => (
+  <PageHeader
+    title="Staking"
+    description={<Trans>Stake your Aave aTokens or underlying assets to earn rewards.</Trans>}
+  >
+    {!hideStats && <UmbrellaStats />}
+  </PageHeader>
+);
+
+const UmbrellaStats = () => {
   const theme = useTheme();
   const { currentAccount } = useWeb3Context();
   // The market is pinned to Core on the staking page (see pages/staking.page.tsx), so this reads Core.
@@ -23,15 +32,12 @@ export const UmbrellaHeader: React.FC = () => {
   const valueVariant = downToSM ? 'h4' : 'h2';
 
   return (
-    <PageHeader
-      title="Staking"
-      description={<Trans>Stake your Aave aTokens or underlying assets to earn rewards.</Trans>}
-    >
+    <>
       <TotalStakedStat currentMarketData={currentMarketData} valueVariant={valueVariant} />
       {currentAccount ? (
         <UmbrellaUserStats currentMarketData={currentMarketData} valueVariant={valueVariant} />
       ) : null}
-    </PageHeader>
+    </>
   );
 };
 

@@ -39,7 +39,7 @@ export const PageHeader = ({
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
             justifyContent: 'space-between',
-            alignItems: { xs: 'flex-start', md: 'flex-end' },
+            alignItems: 'flex-start',
             gap: 4,
           }}
         >
@@ -72,6 +72,7 @@ export const PageHeader = ({
             sx={{
               display: 'flex',
               gap: '2.5rem',
+              alignSelf: { md: 'flex-end' },
             }}
           >
             {children}

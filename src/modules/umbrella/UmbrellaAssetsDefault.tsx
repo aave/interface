@@ -93,27 +93,13 @@ export const UmbrellaAssetsDefault = ({
 }) => {
   const theme = useTheme();
   const isTableChangedToCards = useMediaQuery(theme.breakpoints.down('mdlg'));
-
-  if (loading) {
-    return isTableChangedToCards ? (
-      <>
-        <DefaultAssetListItemLoaderMobile />
-        <DefaultAssetListItemLoaderMobile />
-        <DefaultAssetListItemLoaderMobile />
-        <DefaultAssetListItemLoaderMobile />
-      </>
-    ) : (
-      <Box pt={10}>
-        <DefaultAssetListItemLoader />
-        <DefaultAssetListItemLoader />
-        <DefaultAssetListItemLoader />
-        <DefaultAssetListItemLoader />
-      </Box>
-    );
-  }
+  const Loader = isTableChangedToCards
+    ? DefaultAssetListItemLoaderMobile
+    : DefaultAssetListItemLoader;
+  const Item = isTableChangedToCards ? AssetListItemMobile : AssetListItem;
 
   // Empty states (no assets configured / no search results) are handled by the container.
-  if (stakeAssets.length === 0) {
+  if (!loading && stakeAssets.length === 0) {
     return null;
   }
 
@@ -133,13 +119,9 @@ export const UmbrellaAssetsDefault = ({
           </ListColumn>
         </ListHeaderWrapper>
       )}
-      {stakeAssets.map((data, index) =>
-        !isTableChangedToCards ? (
-          <AssetListItem key={index} stakeData={data} />
-        ) : (
-          <AssetListItemMobile key={index} stakeData={data} />
-        )
-      )}
+      {loading
+        ? Array.from({ length: 4 }, (_, i) => <Loader key={i} />)
+        : stakeAssets.map((data, index) => <Item key={index} stakeData={data} />)}
     </>
   );
 };

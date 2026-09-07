@@ -62,7 +62,7 @@ export default function FaucetAssetsList() {
         </Typography>
       }
     >
-      <ListHeaderWrapper px={downToXSM ? 4 : 6}>
+      <ListHeaderWrapper px={downToXSM ? 4 : 5}>
         <ListColumn isRow maxWidth={280}>
           <ListHeaderTitle>
             <Trans>Asset</Trans>
@@ -99,7 +99,7 @@ export default function FaucetAssetsList() {
       ) : (
         listData.map((reserve) => (
           <ListItem
-            px={downToXSM ? 4 : 6}
+            px={downToXSM ? 4 : 5}
             key={reserve.symbol}
             data-cy={`faucetListItem_${reserve.symbol.toUpperCase()}`}
           >

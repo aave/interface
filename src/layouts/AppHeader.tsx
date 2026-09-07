@@ -37,7 +37,7 @@ import { useRootStore } from 'src/store/root';
 import { iconButtonSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 import { ENABLE_TESTNET, FORK_ENABLED, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { darkScheme } from 'src/utils/theme';
+import { darkScheme, hoverOverlay } from 'src/utils/theme';
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
@@ -268,7 +268,11 @@ export function AppHeader() {
                   alignItems: 'center',
                   gap: 1,
                   minHeight: '28px',
+                  px: '0.5rem',
+                  mx: '-0.5rem',
+                  borderRadius: '0.375rem',
                   cursor: 'pointer',
+                  ...hoverOverlay(figVars['overlay-hover']),
                   ...testModeInk,
                 }}
               >

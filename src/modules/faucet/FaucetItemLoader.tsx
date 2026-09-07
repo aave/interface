@@ -6,7 +6,7 @@ import { ListItem } from '../../components/lists/ListItem';
 
 export const FaucetItemLoader = () => {
   return (
-    <ListItem px={6} minHeight={76}>
+    <ListItem px={5} minHeight={76}>
       <ListColumn isRow maxWidth={280}>
         <Skeleton variant="circular" width={40} height={40} />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>

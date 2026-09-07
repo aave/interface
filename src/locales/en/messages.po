@@ -1039,6 +1039,10 @@ msgstr "Share my wallet address to help the support team resolve my issue"
 msgid "Restaking {symbol}"
 msgstr "Restaking {symbol}"
 
+#: pages/staking.page.tsx
+msgid "Not available in test mode"
+msgstr "Not available in test mode"
+
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
 msgstr "Withdrawing {symbol}"
@@ -2375,6 +2379,10 @@ msgstr "Umbrella"
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Merit Program and Self rewards can be claimed"
 msgstr "Merit Program and Self rewards can be claimed"
+
+#: pages/staking.page.tsx
+msgid "This page only works with live data. Exit test mode to view it."
+msgstr "This page only works with live data. Exit test mode to view it."
 
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "The order could't be filled."

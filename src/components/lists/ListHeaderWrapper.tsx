@@ -2,7 +2,7 @@ import { Box, BoxProps } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface ListHeaderWrapperProps extends BoxProps {
-  px?: 4 | 6;
+  px?: 4 | 5;
   children: ReactNode;
 }
 

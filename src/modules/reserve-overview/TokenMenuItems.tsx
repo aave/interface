@@ -1,4 +1,4 @@
-import { Box, ListItemIcon, Typography } from '@mui/material';
+import { Box, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 
@@ -26,11 +26,11 @@ export const TokenMenuItemContent = ({
   waToken,
 }: TokenMenuItemContentProps) => (
   <>
-    <ListItemIcon>
-      <TokenIcon symbol={symbol} aToken={aToken} waToken={waToken} sx={{ fontSize: '20px' }} />
+    <ListItemIcon sx={{ mr: '0.625rem' }}>
+      <TokenIcon symbol={symbol} aToken={aToken} waToken={waToken} sx={{ fontSize: '16px' }} />
     </ListItemIcon>
-    <Typography variant="subheader1" noWrap data-cy="assetName">
+    <ListItemText primaryTypographyProps={{ noWrap: true }} data-cy="assetName">
       {label}
-    </Typography>
+    </ListItemText>
   </>
 );
