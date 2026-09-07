@@ -154,6 +154,7 @@ export const SupplyModalContent = React.memo(
       eModes,
       reserves,
       userReserves,
+      poolSupportsMulticall,
     } = useAppDataContext();
     const currentTimestamp = useCurrentTimestamp(1);
     const { mainTxState: supplyTxState, gasLimit, txError } = useModalContext();
@@ -171,6 +172,10 @@ export const SupplyModalContent = React.memo(
     const [showUSDTResetWarning, setShowUSDTResetWarning] = useState(false);
     const [selectedEmodeId, setSelectedEmodeId] = useState<number>(user.userEmodeCategoryId);
     const hasEmodeOptions =
+      // Switching e-mode as part of the supply needs Pool.multicall to bundle
+      // the two calls atomically. Pools without it keep the pre-bundling
+      // behaviour: supply only, e-mode set separately from the dashboard.
+      poolSupportsMulticall &&
       !poolReserve.isIsolated &&
       !user.isInIsolationMode &&
       poolReserve.eModes.filter((e) => e.id !== 0 && e.collateralEnabled).length > 0;

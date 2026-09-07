@@ -840,6 +840,10 @@ msgstr "Swap saved in your <0>history</0> section."
 msgid "Migrate your assets"
 msgstr "Migrate your assets"
 
+#: src/components/infoTooltips/NetAPYTooltip.tsx
+msgid "Net APY is the combined effect of all supply and borrow positions on net worth, Merkl incentives are not included. It is possible to have a negative net APY if debt APY is higher than supply APY."
+msgstr "Net APY is the combined effect of all supply and borrow positions on net worth, Merkl incentives are not included. It is possible to have a negative net APY if debt APY is higher than supply APY."
+
 #: src/layouts/components/NavItems.tsx
 msgid "Savings"
 msgstr "Savings"
@@ -2989,10 +2993,6 @@ msgstr "Earn into sGHO"
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
-
-#: src/components/infoTooltips/NetAPYTooltip.tsx
-msgid "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
-msgstr "Net APY is the combined effect of all supply and borrow positions on net worth, including incentives. It is possible to have a negative net APY if debt APY is higher than supply APY."
 
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid bridge protocol fee"

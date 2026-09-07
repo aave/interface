@@ -54,12 +54,15 @@ export default async function handler(
   try {
     // use ?overrideResultStatus=false | true if you want to override the result
 
-    const response = await fetch(`${COMPLIANCE_API_URL}/check/${encodeURIComponent(address)}`, {
-      method: 'GET',
-      headers: {
-        'x-compliance-secret': COMPLIANCE_SECRET,
-      },
-    });
+    const response = await fetch(
+      `${COMPLIANCE_API_URL}/check/${encodeURIComponent(address)}?surface=v3`,
+      {
+        method: 'GET',
+        headers: {
+          'x-compliance-secret': COMPLIANCE_SECRET,
+        },
+      }
+    );
 
     if (!response.ok) {
       if (response.status === 401) {

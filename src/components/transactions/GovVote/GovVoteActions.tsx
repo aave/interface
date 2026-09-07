@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { AbiCoder, keccak256, RLP } from 'ethers/lib/utils';
 import { useGovernanceTokensAndPowers } from 'src/hooks/governance/useGovernanceTokensAndPowers';
+import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { VoteProposalData } from 'src/modules/governance/types';
@@ -201,7 +202,15 @@ export const GovVoteActions = ({
   const votingMachineAddress =
     governanceV3Config.votingChainConfig[votingChainId].votingMachineAddress;
 
-  const withGaslessVoting = process.env.NEXT_PUBLIC_ENABLE_GASLESS_VOTING === 'true';
+  // Smart contract wallets (e.g. Safe) can't use the sponsored path: the relay calls
+  // `submitVoteBySignature`, which verifies the vote with `ecrecover`, so the signer must
+  // be an EOA. The wallet has to be on the voting chain to sign (wallets reject typed data
+  // for another chainId), so that's where a contract wallet will have code. Stay self-paid
+  // until the lookup resolves.
+  const { data: isContractWallet } = useIsContractAddress(user, votingChainId);
+
+  const withGaslessVoting =
+    process.env.NEXT_PUBLIC_ENABLE_GASLESS_VOTING === 'true' && isContractWallet === false;
 
   const assets: Array<{ underlyingAsset: string; isWithDelegatedPower: boolean }> = [];
 
