@@ -98,8 +98,7 @@ export default function ReserveOverview() {
         <Box
           sx={{
             display: { xs: 'flex', lg: 'none' },
-            justifyContent: { xs: 'center', xsm: 'flex-start' },
-            mb: { xs: 3, xsm: 4 },
+            mb: '1.5rem',
           }}
         >
           <StyledTxModalToggleGroup

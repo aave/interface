@@ -62,6 +62,7 @@ export const LimitOrderInputs = ({
           justifyContent:
             inputInputTitle || swapState.showNetworkSelector ? 'space-between' : 'flex-end',
           alignItems: 'center',
+          mb: '0.5rem',
         }}
       >
         {(inputInputTitle || swapState.showNetworkSelector) && (

@@ -20,6 +20,7 @@ import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
+import { bareSelectSx } from 'src/utils/theme';
 
 import { CapType } from '../caps/helper';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
@@ -236,15 +237,15 @@ export const AssetInput = <T extends Asset = Asset>({
                 }}
                 sx={{
                   p: 0,
-                  '&.AssetInput__select .MuiOutlinedInput-input': {
-                    p: 0,
-                    backgroundColor: 'transparent',
-                    pr: '24px !important',
-                  },
-                  '&.AssetInput__select .MuiOutlinedInput-notchedOutline': { display: 'none' },
-                  '&.AssetInput__select .MuiSelect-icon': {
-                    color: 'fg-1',
-                    right: '0%',
+                  ...bareSelectSx,
+                  '&.AssetInput__select': {
+                    '& .MuiOutlinedInput-input': {
+                      p: 0,
+                      backgroundColor: 'transparent',
+                      pr: '24px !important',
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': { display: 'none' },
+                    '& .MuiSelect-icon': { color: 'fg-1', right: '0%' },
                   },
                 }}
                 renderValue={(symbol) => {

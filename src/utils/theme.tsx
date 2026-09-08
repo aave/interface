@@ -86,6 +86,22 @@ const surfaceFill = {
 const surfaceFillHover = { backgroundColor: figVars['bg-4-hover'], boxShadow: figSurfaceShadow() };
 
 /**
+ * Flattens a Select trigger: strips `surfaceFill`/`surfaceFillHover` in every state so only the
+ * host container's own surface shows. For Selects that sit *inside* another framed control (an
+ * amount input, a network row) rather than standing alone.
+ *
+ * `&&` doubles the class to match the base rule's specificity; the hover and open states are
+ * listed explicitly because the theme keys them higher. The open state is `aria-expanded` on the
+ * inner select, NOT `.Mui-focused` — same reason as the rule it is undoing.
+ */
+export const bareSelectSx = {
+  '&&, &&:hover, &&:has(.MuiSelect-select[aria-expanded="true"])': {
+    backgroundColor: 'transparent',
+    boxShadow: 'none',
+  },
+};
+
+/**
  * The "white pill" buttons, per the Figma `semantic/button` scale. Both sit on `surfaceFill` with a
  * hairline ring instead of a border; they differ only in dark-mode fill and hover strength, so one
  * factory keeps them from drifting. On hover the ring is re-asserted — the global `disableElevation`

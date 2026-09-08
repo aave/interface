@@ -25,6 +25,7 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ReserveWithProtocolIncentives } from './MarketAssetsList';
+import { showBorrowingDisabledNote } from './utils/borrowingDisabled';
 
 export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentives) => {
   const router = useRouter();
@@ -159,10 +160,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />
-        {reserve.borrowInfo?.borrowingState === 'DISABLED' &&
-          !reserve.isFrozen &&
-          !reserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed) &&
-          reserve.borrowInfo.total.amount.value !== '0' && <ReserveSubheader value={'Disabled'} />}
+        {showBorrowingDisabledNote(reserve) && <ReserveSubheader value={'Disabled'} />}
       </ListColumn>
 
       <ListColumn align="right" minWidth={95} maxWidth={95}>

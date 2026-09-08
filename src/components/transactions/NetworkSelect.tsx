@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import * as React from 'react';
 import { figSurfaceShadow } from 'src/utils/figmaColors';
+import { bareSelectSx } from 'src/utils/theme';
 
 import { SupportedNetworkWithChainId } from './Bridge/BridgeConfig';
 
@@ -59,12 +60,7 @@ export const NetworkSelect = ({
             onChange={handleChange}
             variant="outlined"
             sx={{
-              // Flatten the trigger: strip the theme's Select-pill (bg fill + surface-shadow ring)
-              // in all states so only the outer container remains. `&&` matches the theme's specificity.
-              '&&, &&:hover, &&:has(.MuiSelect-select[aria-expanded="true"])': {
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-              },
+              ...bareSelectSx,
               '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
               '& .MuiSelect-select': {
                 backgroundColor: 'transparent',

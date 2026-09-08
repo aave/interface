@@ -28,6 +28,9 @@ const CustomTxModalToggleButton = styled(ToggleButton)<ToggleButtonProps>({
   border: 0,
   flex: 1,
   height: '100%',
+  // The group owns height and the button is `height: 100%`, so MUI's vertical padding can never
+  // contribute to layout — it can only act as a floor that stops short groups shrinking the pill.
+  paddingBlock: 0,
   // Label typography (H5) is owned by each consumer's <Typography variant="h5">.
   ...dimmedInactive,
 

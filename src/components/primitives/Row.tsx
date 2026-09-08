@@ -1,4 +1,4 @@
-import { Box, BoxProps, Typography } from '@mui/material';
+import { Box, BoxProps, SxProps, Theme, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface RowProps extends BoxProps {
@@ -6,6 +6,12 @@ interface RowProps extends BoxProps {
   captionVariant?: 'secondary16' | 'description' | 'subheader1' | 'caption' | 'h3';
   captionColor?: string;
   align?: 'center' | 'flex-start';
+  /**
+   * Reaches the caption's own Typography. Needed when the caption holds unbounded content — it
+   * is a flex item, so without `minWidth: 0` (or a wrap) it cannot shrink and pushes the value
+   * out of the row.
+   */
+  captionSx?: SxProps<Theme>;
 }
 
 export const Row = ({
@@ -14,6 +20,7 @@ export const Row = ({
   captionVariant = 'secondary16',
   captionColor,
   align = 'center',
+  captionSx,
   ...rest
 }: RowProps) => {
   return (
@@ -22,7 +29,12 @@ export const Row = ({
       sx={{ display: 'flex', alignItems: align, justifyContent: 'space-between', ...rest.sx }}
     >
       {caption && (
-        <Typography component="div" variant={captionVariant} color={captionColor} sx={{ mr: 2 }}>
+        <Typography
+          component="div"
+          variant={captionVariant}
+          color={captionColor}
+          sx={[{ mr: 2 }, ...(Array.isArray(captionSx) ? captionSx : [captionSx])]}
+        >
           {caption}
         </Typography>
       )}

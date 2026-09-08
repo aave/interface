@@ -122,7 +122,7 @@ export const SwitchSlippageSelector = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: '4px' }}>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <Typography variant="subheader2" color="fg-2" sx={{ opacity: 0.75 }}>
         {isCustomSlippage ? (
           <Trans>Custom slippage</Trans>

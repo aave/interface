@@ -269,7 +269,7 @@ export const SwitchAssetInput = ({
       }}
     >
       {title && (
-        <Typography variant="h5" color="fg-2" sx={{ mb: 1 }}>
+        <Typography variant="h5" color="fg-2" sx={{ mb: '0.5rem' }}>
           {title}
         </Typography>
       )}

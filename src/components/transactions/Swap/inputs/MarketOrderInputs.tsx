@@ -36,6 +36,7 @@ export const MarketOrderInputs = ({
           justifyContent:
             params.inputInputTitle || swapState.showNetworkSelector ? 'space-between' : 'flex-end',
           alignItems: 'center',
+          mb: '0.5rem',
         }}
       >
         {(params.inputInputTitle || swapState.showNetworkSelector) && (
