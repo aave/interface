@@ -1,0 +1,51 @@
+src/components/transactions/TxActionsWrapper.tsx
+  s_326836c296b593::t_cd72e5186a9563 38-39,64,152-162,168
+src/components/transactions/Repay/RepayAllowanceControl.tsx
+  s_326836c296b593::t_cd72e5186a9563 1-128
+src/utils/usdtHelpers.ts
+  s_326836c296b593::t_cd72e5186a9563 1,3,20-38
+  s_326836c296b593::t_7ac5d58bbea541 39-40
+src/locales/el/messages.js
+  s_326836c296b593::t_b493c62a3c780e 1
+src/locales/es/messages.js
+  s_326836c296b593::t_b493c62a3c780e 1
+src/components/transactions/utils.ts
+  s_326836c296b593::t_cd72e5186a9563 1,24-69
+  s_326836c296b593::t_a3e581c14dab7f 70
+src/components/transactions/Repay/RepayModalContent.tsx
+  s_326836c296b593::t_cd72e5186a9563 32,86,293
+src/locales/en/messages.js
+  s_326836c296b593::t_b493c62a3c780e 1
+src/locales/en/messages.po
+  s_326836c296b593::t_b493c62a3c780e 176-179,1664-1668,1978-1981,3307-3310,3783-3785
+  s_326836c296b593::t_cb5b09df3214b7 3786
+src/locales/fr/messages.js
+  s_326836c296b593::t_b493c62a3c780e 1
+src/utils/__tests__/usdtHelpers.test.ts
+  s_326836c296b593::t_cd72e5186a9563 1-67
+src/hooks/useApprovalTx.tsx
+  s_326836c296b593::t_cd72e5186a9563 4,10-14,75-77,84-85,93,106,216
+src/components/transactions/__tests__/utils.test.ts
+  s_326836c296b593::t_cd72e5186a9563 1-103
+src/components/transactions/FlowCommons/RightHelperText.tsx
+  s_326836c296b593::t_cd72e5186a9563 61
+  s_326836c296b593::t_8de770ff73d2ea 62
+src/components/transactions/Repay/RepayActions.tsx
+  s_326836c296b593::t_cd72e5186a9563 21-22,82,109-112,118,122-131,146-148,278-287
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "1aa04f59e7c612eb7dbb0875e3805fa639701286",
+  "prompts": {},
+  "sessions": {
+    "s_326836c296b593": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0b887753-cdc8-4f43-8aa8-79675f8a490c",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
