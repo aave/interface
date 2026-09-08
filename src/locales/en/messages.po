@@ -173,6 +173,10 @@ msgstr "This is the total amount that you are able to supply to in this reserve.
 msgid "This asset is eligible for {0} Ethena Rewards."
 msgstr "This asset is eligible for {0} Ethena Rewards."
 
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "Exact amount"
+msgstr "Exact amount"
+
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
 msgid "Repay {0}"
@@ -1657,6 +1661,11 @@ msgstr "Weekly Rewards"
 msgid "Pending..."
 msgstr "Pending..."
 
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "Unlimited"
+msgstr "Unlimited"
+
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
 msgid "Wallet Balance"
@@ -1965,6 +1974,10 @@ msgstr "Enabled"
 #: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
 msgid "sGHO balance"
 msgstr "sGHO balance"
+
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "{exactAmount} {symbol} — covers interest accruing before the transaction lands"
+msgstr "{exactAmount} {symbol} — covers interest accruing before the transaction lands"
 
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
@@ -3291,6 +3304,10 @@ msgstr "Repayment amount to reach {0}% utilization"
 msgid "Proceed with migration"
 msgstr "Proceed with migration"
 
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "Allowance"
+msgstr "Allowance"
+
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "You can not stake this amount because it will cause collateral call"
 msgstr "You can not stake this amount because it will cause collateral call"
@@ -3762,6 +3779,10 @@ msgstr "All Categories"
 #: src/components/ConnectWalletPaper.tsx
 msgid "No Wallet Connected"
 msgstr "No Wallet Connected"
+
+#: src/components/transactions/Repay/RepayAllowanceControl.tsx
+msgid "No further approvals needed for future repays"
+msgstr "No further approvals needed for future repays"
 
 #: src/layouts/MoreMenu.tsx
 msgid "Migrate to Aave V3"

@@ -58,8 +58,8 @@ export const RightHelperText = ({
   // a signature is not submitted on-chain so there is no link to review
   if (!approvalHash && !isSigned && tryPermit)
     return (
-      <Box sx={{ display: 'inline-flex', alignItems: 'center', mb: 2 }}>
-        <Typography variant="subheader2" color="fg-2">
+      <Box sx={{ display: 'inline-flex', alignItems: 'center', mb: 2, flexShrink: 0 }}>
+        <Typography variant="subheader2" color="fg-2" sx={{ whiteSpace: 'nowrap' }}>
           <Trans>Approve with</Trans>&nbsp;
         </Typography>
         <ApprovalMethodToggleButton
