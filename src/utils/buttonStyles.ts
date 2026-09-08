@@ -22,3 +22,17 @@ export const iconButtonSx = {
   // `satisfies` (not a `SxProps` annotation) keeps the narrow literal type so this can also be
   // composed inside an `sx` array — e.g. `sx={[iconButtonSx, { ... }]}`.
 } satisfies SxProps<Theme>;
+
+/** Row action button in the sGHO / stkGHO deposit rows: full-width on mobile, fixed from `xsm`. */
+export const depositRowActionSx = {
+  minWidth: { xs: '140px', xsm: '96px' },
+  height: '36px',
+  width: { xs: '100%', xsm: 'auto' },
+} satisfies SxProps<Theme>;
+
+/** Row action button in the staking panels: full-width on mobile, fixed from `xsm`. */
+export const stakePanelActionSx = {
+  minWidth: '96px',
+  mb: { xs: 6, xsm: 0 },
+  width: { xs: '100%', xsm: 'auto' },
+} satisfies SxProps<Theme>;

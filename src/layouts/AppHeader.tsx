@@ -42,7 +42,12 @@ import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
 import { NavItems } from './components/NavItems';
-import { ENV_BADGE_ENABLED, HEADER_MOBILE_BELOW } from './headerBreakpoints';
+import {
+  ENV_BADGE_ENABLED,
+  HEADER_COLLAPSE_BELOW,
+  HEADER_HEIGHT,
+  HEADER_MOBILE_BELOW,
+} from './headerLayout';
 import { MobileMenu } from './MobileMenu';
 import { SettingsMenu } from './SettingsMenu';
 
@@ -121,8 +126,8 @@ const envBadgeSx = {
 export function AppHeader() {
   const { breakpoints } = useTheme();
   const mobile = useMediaQuery(breakpoints.down(HEADER_MOBILE_BELOW));
-  const belowLg = useMediaQuery(breakpoints.down('lg'));
-  const collapsed = ENV_BADGE_ENABLED || belowLg;
+  const belowCollapse = useMediaQuery(breakpoints.down(HEADER_COLLAPSE_BELOW));
+  const collapsed = ENV_BADGE_ENABLED || belowCollapse;
   const collapsingTriggerSx = collapsed
     ? [iconButtonSx, { alignItems: 'center', '& .MuiButton-startIcon': { mx: 0 } }]
     : { p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' };
@@ -153,8 +158,6 @@ export function AppHeader() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mobile]);
-
-  const headerHeight = 72;
 
   const [testModeAnchor, setTestModeAnchor] = useState<null | HTMLElement>(null);
   const testModeOpen = Boolean(testModeAnchor);
@@ -206,7 +209,7 @@ export function AppHeader() {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         sx={(theme) => ({
-          height: headerHeight,
+          height: HEADER_HEIGHT,
           position: 'sticky',
           top: 0,
           transition: theme.transitions.create('top'),
@@ -418,11 +421,7 @@ export function AppHeader() {
           <Box>{!mobile && <SettingsMenu />}</Box>
 
           <Box sx={{ display: { xs: 'flex', [HEADER_MOBILE_BELOW]: 'none' } }}>
-            <MobileMenu
-              open={mobileDrawerOpen && mobile}
-              setOpen={setMobileDrawerOpen}
-              headerHeight={headerHeight}
-            />
+            <MobileMenu open={mobileDrawerOpen && mobile} setOpen={setMobileDrawerOpen} />
           </Box>
         </Container>
       </Box>

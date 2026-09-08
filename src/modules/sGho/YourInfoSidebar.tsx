@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { Paper, Typography } from '@mui/material';
 import { ConnectWalletButton } from 'src/components/WalletConnection/ConnectWalletButton';
+import { cardPaddingSx } from 'src/utils/cardStyles';
 
 /**
  * Sidebar shown on the sGHO page when no wallet is connected — prompts the
@@ -11,9 +12,7 @@ export const YourInfoSidebar = () => {
     <Paper
       variant="card"
       sx={{
-        pt: 4,
-        pb: { xs: 4, xsm: 6 },
-        px: { xs: 4, xsm: 6 },
+        ...cardPaddingSx,
         minWidth: { xs: '100%', mdlg: '416px' },
         width: { xs: '100%', mdlg: '416px' },
         flexShrink: 0,

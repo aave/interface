@@ -4,9 +4,9 @@ import { Box, Button, Skeleton } from '@mui/material';
 import { ListColumn } from '../../components/lists/ListColumn';
 import { ListItem } from '../../components/lists/ListItem';
 
-export const FaucetItemLoader = () => {
+export const FaucetItemLoader = ({ compact }: { compact?: boolean }) => {
   return (
-    <ListItem px={5} minHeight={76}>
+    <ListItem px={compact ? 4 : 5} minHeight={76}>
       <ListColumn isRow maxWidth={280}>
         <Skeleton variant="circular" width={40} height={40} />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
@@ -14,9 +14,11 @@ export const FaucetItemLoader = () => {
         </Box>
       </ListColumn>
 
-      <ListColumn>
-        <Skeleton width={70} height={24} />
-      </ListColumn>
+      {!compact && (
+        <ListColumn>
+          <Skeleton width={70} height={24} />
+        </ListColumn>
+      )}
 
       <ListColumn align="right" maxWidth={280}>
         <Button variant="contained">

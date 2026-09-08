@@ -1,10 +1,11 @@
 import { Box, Skeleton, useMediaQuery, useTheme } from '@mui/material';
+import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 
 export const MigrationListItemLoader = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down(1125));
+  const isMobile = useMediaQuery(theme.breakpoints.down(TABLE_CARDS_BELOW));
 
   if (isMobile) {
     return <MigrationListItemLoaderMobile />;

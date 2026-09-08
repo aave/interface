@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
 import { marketContainerProps } from 'pages/markets.page';
 
 import { MarketSwitcher } from '../../components/MarketSwitcher';
@@ -10,9 +9,6 @@ import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvi
 
 export const MarketsTopPanel = () => {
   const { market, totalBorrows, loading } = useAppDataContext();
-  const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
 
   return (
     <PageHeader
@@ -24,7 +20,7 @@ export const MarketsTopPanel = () => {
         <FormattedNumber
           value={Number(market?.totalMarketSize)}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant="statValue"
           visibleDecimals={2}
           compact
         />
@@ -33,7 +29,7 @@ export const MarketsTopPanel = () => {
         <FormattedNumber
           value={Number(market?.totalAvailableLiquidity)}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant="statValue"
           visibleDecimals={2}
           compact
         />
@@ -42,7 +38,7 @@ export const MarketsTopPanel = () => {
         <FormattedNumber
           value={Number(totalBorrows)}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant="statValue"
           visibleDecimals={2}
           compact
         />

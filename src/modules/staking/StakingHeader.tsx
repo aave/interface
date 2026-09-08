@@ -1,5 +1,4 @@
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
 import { PageHeader } from 'src/components/PageHeader/PageHeader';
 import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -13,10 +12,6 @@ interface StakingHeaderProps {
 }
 
 export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, loading }) => {
-  const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-  const valueVariant = downToSM ? 'h4' : 'h2';
-
   const total = Object.values(tvl || {}).reduce((acc, item) => acc + item, 0);
 
   return (
@@ -33,7 +28,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         <FormattedNumber
           value={total}
           symbol="USD"
-          variant={valueVariant}
+          variant="statValue"
           visibleDecimals={2}
           compact
         />
@@ -43,7 +38,7 @@ export const StakingHeader: React.FC<StakingHeaderProps> = ({ tvl, stkEmission, 
         <FormattedNumber
           value={stkEmission || 0}
           symbol="AAVE"
-          variant={valueVariant}
+          variant="statValue"
           visibleDecimals={2}
         />
       </PageHeaderStat>

@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -25,14 +25,9 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
     useShallow((store) => [store.trackEvent, store.currentNetworkConfig])
   );
 
-  const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
   const poolReserve = reserves.find(
     (reserve) => reserve.underlyingAsset === underlyingAsset
   ) as ComputedReserveData;
-
-  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
 
   return (
     <>
@@ -40,7 +35,7 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
         <FormattedNumber
           value={Math.max(Number(poolReserve?.totalLiquidityUSD), 0)}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant="statValue"
         />
       </PageHeaderStat>
 
@@ -52,25 +47,17 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
               : 0
           }
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant="statValue"
         />
       </PageHeaderStat>
 
       <PageHeaderStat label={<Trans>Utilization rate</Trans>} loading={loading}>
-        <FormattedNumber
-          value={poolReserve?.borrowUsageRatio}
-          percent
-          variant={valueTypographyVariant}
-        />
+        <FormattedNumber value={poolReserve?.borrowUsageRatio} percent variant="statValue" />
       </PageHeaderStat>
 
       <PageHeaderStat label={<Trans>Oracle price</Trans>} loading={loading}>
         <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-          <FormattedNumber
-            value={poolReserve?.priceInUSD}
-            symbol="USD"
-            variant={valueTypographyVariant}
-          />
+          <FormattedNumber value={poolReserve?.priceInUSD} symbol="USD" variant="statValue" />
           <ReserveHeaderIconButton tooltipText="View oracle contract" size="1.25rem">
             <Link
               onClick={() =>

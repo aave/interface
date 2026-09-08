@@ -5,6 +5,7 @@ import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { MigrationDisabledTooltip } from 'src/components/infoTooltips/MigrationDisabledTooltip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
+import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -60,7 +61,7 @@ export const MigrationListItem = ({
   const [currentMarket, currentMarketData] = useRootStore(
     useShallow((store) => [store.currentMarket, store.currentMarketData])
   );
-  const isMobile = useMediaQuery(theme.breakpoints.down(1125));
+  const isMobile = useMediaQuery(theme.breakpoints.down(TABLE_CARDS_BELOW));
 
   const baseColor = disabled === undefined ? 'fg-1' : 'fg-3';
   const baseColorSecondary = disabled === undefined ? 'fg-2' : 'fg-3';

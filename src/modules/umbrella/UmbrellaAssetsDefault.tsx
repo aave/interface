@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Paper, Skeleton, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
+import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -65,7 +66,7 @@ export const UmrellaAssetsDefaultListContainer = () => {
         categoriesDisabled={isLoadingCategories || !!categoriesError}
       />
 
-      <Paper variant="table" sx={{ '& > div:first-of-type > hr': { display: 'none' } }}>
+      <Paper variant="table">
         <UmbrellaAssetsDefault stakeAssets={filteredAssets ?? []} loading={loading} />
 
         {noStakeAssetsConfigured ? (
@@ -92,7 +93,7 @@ export const UmbrellaAssetsDefault = ({
   loading: boolean;
 }) => {
   const theme = useTheme();
-  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down('mdlg'));
+  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down(TABLE_CARDS_BELOW));
   const Loader = isTableChangedToCards
     ? DefaultAssetListItemLoaderMobile
     : DefaultAssetListItemLoader;
@@ -106,7 +107,7 @@ export const UmbrellaAssetsDefault = ({
   return (
     <>
       {!isTableChangedToCards && (
-        <ListHeaderWrapper>
+        <ListHeaderWrapper px={5}>
           <ListColumn isRow>
             <ListHeaderTitle>
               <Trans>Asset</Trans>
@@ -129,7 +130,7 @@ export const UmbrellaAssetsDefault = ({
 const AssetListItem = ({ stakeData }: { stakeData: FormattedStakeData }) => {
   const [currentNetworkConfig] = useRootStore(useShallow((store) => [store.currentNetworkConfig]));
   return (
-    <ListItem>
+    <ListItem px={5} minHeight={76}>
       <ListColumn isRow minWidth={275}>
         <StakeAssetName
           iconSymbol={stakeData.iconSymbol}
@@ -166,16 +167,8 @@ const AssetListItemMobile = ({ stakeData }: { stakeData: FormattedStakeData }) =
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${stakeData.tokenAddress}`}
         />
       </ListColumn>
-      <Row mt={8} px={2} caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: { xs: 'flex-end' },
-            justifyContent: 'center',
-            textAlign: 'center',
-          }}
-        >
+      <Row mt={4} caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <FormattedNumber
             value={stakeData.totalRewardApy}
             percent
@@ -190,7 +183,7 @@ const AssetListItemMobile = ({ stakeData }: { stakeData: FormattedStakeData }) =
 
 const DefaultAssetListItemLoader = () => {
   return (
-    <ListItem px={4} minHeight={76}>
+    <ListItem px={5} minHeight={76}>
       <ListColumn isRow minWidth={275}>
         <Skeleton variant="circular" width={40} height={40} />
         <Box sx={{ pl: 2, overflow: 'hidden' }}>
@@ -216,9 +209,8 @@ const DefaultAssetListItemLoaderMobile = () => {
         </Stack>
       </ListColumn>
       <Row
-        mt={8}
+        mt={4}
         mb={3}
-        px={2}
         caption={<Skeleton width={100} height={20} />}
         captionVariant="description"
         align="flex-start"

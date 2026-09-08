@@ -179,7 +179,7 @@ const BridgeTransactionMobileListItem = ({
             </Typography>
           </Stack>
           <Stack direction="row">
-            <TokenIcon symbol="GHO" sx={{ fontSize: '40px' }} />
+            <TokenIcon symbol="GHO" fontSize="large" />
             <Stack sx={{ ml: 2 }} direction="column" alignItems="center" justifyContent="center">
               <FormattedNumber sx={{ mb: 1 }} variant="h5" visibleDecimals={2} value={amount} />
               {/* <FormattedNumber

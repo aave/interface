@@ -21,7 +21,6 @@ import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
 interface MobileMenuProps {
   open: boolean;
   setOpen: (value: boolean) => void;
-  headerHeight: number;
 }
 
 // The options scroll area: full-width so its scrollbar sits on the right edge, with 0.75rem inner
@@ -79,7 +78,7 @@ const MenuToggleIcon = ({ open }: { open: boolean }) => (
   </Box>
 );
 
-export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => {
+export const MobileMenu = ({ open, setOpen }: MobileMenuProps) => {
   const [isLanguagesListOpen, setIsLanguagesListOpen] = useState(false);
   // Drives the top scrim: it only shows once the options actually scroll, so it never dims the
   // first row at rest.
@@ -121,7 +120,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
         <MenuToggleIcon open={open} />
       </Button>
 
-      <DrawerWrapper open={open} setOpen={setOpen} headerHeight={headerHeight}>
+      <DrawerWrapper open={open} setOpen={setOpen}>
         {/* Fade scrim over the top of the scroll area (mirrors the bottom scrim). Only shown once
             scrolled, so it never dims the first row at rest. Inset from the top by the drawer's
             padding (clean band under the header) and from the right so it never touches the scrollbar. */}
@@ -136,7 +135,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
             zIndex: 1,
             opacity: scrolled ? 1 : 0,
             transition: 'opacity 0.2s ease',
-            background: `linear-gradient(to bottom, ${figVars['bg-2']}, transparent)`,
+            background: `linear-gradient(to bottom, ${figVars['bg-1']}, transparent)`,
           }}
         />
         {!isLanguagesListOpen ? (
@@ -177,7 +176,7 @@ export const MobileMenu = ({ open, setOpen, headerHeight }: MobileMenuProps) => 
                   right: 0,
                   height: '2rem',
                   pointerEvents: 'none',
-                  background: `linear-gradient(to top, ${figVars['bg-2']}, transparent)`,
+                  background: `linear-gradient(to top, ${figVars['bg-1']}, transparent)`,
                 }}
               />
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem', px: '0.75rem' }}>

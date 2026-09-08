@@ -40,7 +40,7 @@ export const ListMobileItem = ({
 }: ListMobileItemProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   return (
-    <Box>
+    <Box sx={{ '&:first-of-type > hr': { display: 'none' } }}>
       <Divider />
       <Box sx={{ px: 4, pt: 4, pb: 6 }}>
         <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>

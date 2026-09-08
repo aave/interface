@@ -5,6 +5,7 @@ import { Alert, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -87,7 +88,7 @@ export const BorrowAssetsList = () => {
   const currentMarket = currentMarketData.market;
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showCards = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 
@@ -175,7 +176,7 @@ export const BorrowAssetsList = () => {
   const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
-        {head.map((col) => (
+        {head.map((col, index) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
             maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
@@ -188,12 +189,13 @@ export const BorrowAssetsList = () => {
               setSortDesc={setSortDesc}
               sortKey={col.sortKey}
               source={'Borrow Dashboard'}
+              noTruncate={index === head.length - 1}
             >
               {col.title}
             </ListHeaderTitle>
           </ListColumn>
         ))}
-        <ListButtonsColumn isColumnHeader />
+        <ListButtonsColumn />
       </ListHeaderWrapper>
     );
   };
@@ -223,7 +225,7 @@ export const BorrowAssetsList = () => {
             <Trans>Assets to borrow</Trans>
           </Typography>
 
-          {!downToXSM && !isListCollapsed && (
+          {!showCards && !isListCollapsed && (
             <AssetCategoryMultiSelect
               selectedCategories={selectedCategories}
               onCategoriesChange={setSelectedCategories}
@@ -238,7 +240,7 @@ export const BorrowAssetsList = () => {
       noData={borrowDisabled}
       subChildrenComponent={
         <>
-          {downToXSM && (
+          {showCards && (
             <>
               <Box sx={{ px: 4, pb: 4, pt: '2px' }}>
                 <AssetCategoryMultiSelect
@@ -297,11 +299,11 @@ export const BorrowAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!borrowReserves.length && <RenderHeader />}
+        {!showCards && !!borrowReserves.length && <RenderHeader />}
         {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
-              {downToXSM ? (
+              {showCards ? (
                 <BorrowAssetsListMobileItem {...item} />
               ) : (
                 <BorrowAssetsListItem {...item} />

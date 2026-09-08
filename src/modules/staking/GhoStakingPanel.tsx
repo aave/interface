@@ -2,16 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  Paper,
-  Stack,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Paper, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
@@ -26,6 +17,8 @@ import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { stakePanelActionSx } from 'src/utils/buttonStyles';
+import { cardPaddingSx, panelStatLabelSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 import { figVars } from 'src/utils/figmaColors';
 
@@ -62,8 +55,6 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
   maxSlash,
   children,
 }) => {
-  const { breakpoints } = useTheme();
-  const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
   const { openSwitch } = useModalContext();
 
@@ -126,7 +117,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
   // const distributionEnded = Date.now() / 1000 > Number(stakeData.distributionEnd);
 
   return (
-    <Paper variant="card" sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
+    <Paper variant="card" sx={{ ...cardPaddingSx, height: '100%' }}>
       <Box
         sx={{
           display: { xs: 'none', xsm: 'flex' },
@@ -199,7 +190,9 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
             <Stack direction="column" ml={2} alignItems="start" justifyContent="center">
               <Stack direction="row">
-                <Typography variant={xsm ? 'subheader1' : 'h4'}>sGHO</Typography>
+                <Typography component="p" sx={{ typography: { xs: 'h4', xsm: 'subheader1' } }}>
+                  sGHO
+                </Typography>
                 <Box sx={{ display: { xsm: 'none' } }}>
                   <TokenContractTooltip
                     explorerUrl={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
@@ -243,7 +236,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           }}
         >
           <Stack direction="row">
-            <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
+            <Typography sx={panelStatLabelSx}>
               <Trans>Deposit APR </Trans>
             </Typography>
           </Stack>
@@ -260,7 +253,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
+          <Typography sx={panelStatLabelSx}>
             <Trans>Max slashing</Trans>
           </Typography>
           <FormattedNumber value={maxSlash} percent variant="h5" />
@@ -274,7 +267,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
+          <Typography sx={panelStatLabelSx}>
             <Trans>Wallet Balance</Trans>
           </Typography>
           <FormattedNumber value={availableToStake.toString()} />
@@ -285,9 +278,8 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
         {+availableToStake === 0 ? (
           <Button
             variant="contained"
-            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+            sx={stakePanelActionSx}
             onClick={handleSwitchClick}
-            fullWidth={!xsm}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
             <Trans>Get GHO</Trans>
@@ -295,10 +287,9 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
         ) : (
           <Button
             variant="contained"
-            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+            sx={stakePanelActionSx}
             onClick={onStakeAction}
             disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
-            fullWidth={!xsm}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
             <Trans>Deposit</Trans>

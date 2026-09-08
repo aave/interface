@@ -12,6 +12,12 @@ interface ListHeaderTitleProps {
   setSortName?: (value: string) => void;
   setSortDesc?: (value: boolean) => void;
   onClick?: () => void;
+  /**
+   * Size to the label instead of the column, spilling right rather than truncating. Only valid
+   * on the last mapped column, whose right-hand neighbour is the empty actions header — there is
+   * no reserved space, so a neighbour with content would be overlapped.
+   */
+  noTruncate?: boolean;
   children: ReactNode;
 }
 
@@ -23,6 +29,7 @@ export const ListHeaderTitle = ({
   setSortName,
   setSortDesc,
   onClick,
+  noTruncate = false,
   children,
 }: ListHeaderTitleProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -45,7 +52,7 @@ export const ListHeaderTitle = ({
         cursor: !!onClick || !!sortKey ? 'pointer' : 'default',
         display: 'inline-flex',
         alignItems: 'center',
-        maxWidth: '100%',
+        maxWidth: noTruncate ? 'fit-content' : '100%',
         minWidth: 0,
         fontFamily: 'Inter',
         fontSize: '0.6875rem',

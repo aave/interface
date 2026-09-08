@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { IncentivesIcon } from 'src/components/incentives/IncentivesButton';
@@ -10,6 +10,7 @@ import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { depositRowActionSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 
 interface StkGhoDepositRowProps {
@@ -27,8 +28,6 @@ export const StkGhoDepositRow = ({
   hasLegacyPosition = false,
   stakedToken,
 }: StkGhoDepositRowProps) => {
-  const { breakpoints } = useTheme();
-  const xsm = useMediaQuery(breakpoints.up('xsm'));
   const { openSwitch } = useModalContext();
   const { chainId: targetChainId } = useSavingsMarketData();
 
@@ -132,8 +131,7 @@ export const StkGhoDepositRow = ({
           <Button
             variant={depositVariant}
             onClick={onDeposit}
-            fullWidth={!xsm}
-            sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
+            sx={depositRowActionSx}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
             <Trans>Deposit</Trans>
@@ -142,8 +140,7 @@ export const StkGhoDepositRow = ({
           <Button
             variant={depositVariant}
             onClick={handleGetGho}
-            fullWidth={!xsm}
-            sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
+            sx={depositRowActionSx}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
             <Trans>Get GHO</Trans>
@@ -154,8 +151,7 @@ export const StkGhoDepositRow = ({
           variant={migrateVariant}
           onClick={onMigrate}
           disabled={!hasLegacyPosition}
-          fullWidth={!xsm}
-          sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
+          sx={depositRowActionSx}
           data-cy={`migrateBtn_${stakedToken.toUpperCase()}`}
         >
           <Trans>Migrate</Trans>

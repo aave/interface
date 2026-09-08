@@ -3,6 +3,7 @@ import { Box, Paper, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
+import { cardPaddingSx } from 'src/utils/cardStyles';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 type ReserveConfigurationProps = {
@@ -25,7 +26,7 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
   });
 
   return (
-    <Paper variant="card" sx={{ pt: 4, pb: 20, px: { xs: 4, xsm: 6 } }}>
+    <Paper variant="card" sx={{ ...cardPaddingSx, pb: 20 }}>
       <Box
         sx={{
           display: 'flex',

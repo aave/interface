@@ -2,16 +2,7 @@ import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-
 import { valueToBigNumber } from '@aave/math-utils';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  Paper,
-  Stack,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Paper, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
@@ -24,6 +15,8 @@ import { SecondsToString } from 'src/components/SecondsToString';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
+import { stakePanelActionSx } from 'src/utils/buttonStyles';
+import { cardPaddingSx, panelStatLabelSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 import { figVars } from 'src/utils/figmaColors';
 
@@ -64,8 +57,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   maxSlash,
   children,
 }) => {
-  const { breakpoints } = useTheme();
-  const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
 
   if (!stakeData || !stakeUserData) {
@@ -123,7 +114,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
   const distributionEnded = Date.now() / 1000 > Number(stakeData.distributionEnd);
 
   return (
-    <Paper variant="card" sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
+    <Paper variant="card" sx={{ ...cardPaddingSx, height: '100%' }}>
       <Box
         sx={{
           display: { xs: 'none', xsm: 'flex' },
@@ -196,7 +187,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
             <Stack direction="column" ml={2} alignItems="start" justifyContent="center">
               <Stack direction="row">
-                <Typography variant={xsm ? 'subheader1' : 'h4'}>{stakedToken}</Typography>
+                <Typography component="p" sx={{ typography: { xs: 'h4', xsm: 'subheader1' } }}>
+                  {stakedToken}
+                </Typography>
                 <Box sx={{ display: { xsm: 'none' } }}>
                   <TokenContractTooltip
                     explorerUrl={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
@@ -240,7 +233,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           }}
         >
           <Stack direction="row">
-            <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
+            <Typography sx={panelStatLabelSx}>
               <Trans>Staking APR</Trans>
             </Typography>
             {distributionEnded && (
@@ -279,7 +272,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
+          <Typography sx={panelStatLabelSx}>
             <Trans>Max slashing</Trans>
           </Typography>
           <FormattedNumber value={maxSlash} percent variant="h5" />
@@ -293,7 +286,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography variant={xsm ? 'subheader2' : 'description'} color={xsm ? 'fg-2' : 'fg-1'}>
+          <Typography sx={panelStatLabelSx}>
             <Trans>Wallet Balance</Trans>
           </Typography>
           <FormattedNumber value={availableToStake.toString()} />
@@ -303,10 +296,9 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
 
         <Button
           variant="contained"
-          sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+          sx={stakePanelActionSx}
           onClick={onStakeAction}
           disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
-          fullWidth={!xsm}
           data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
         >
           <Trans>Stake</Trans>

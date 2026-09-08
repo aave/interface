@@ -220,13 +220,17 @@ interface TypographyCustomVariants {
   secondary21: React.CSSProperties;
   secondary16: React.CSSProperties;
   main12: React.CSSProperties;
+  statValue: React.CSSProperties;
+  statValueNoData: React.CSSProperties;
+  pageTitle: React.CSSProperties;
 }
 
 declare module '@mui/material/styles' {
   interface TypographyVariants extends TypographyCustomVariants {}
 
-  // allow configuration using `createTheme`
-  interface TypographyVariantsOptions extends TypographyCustomVariants {}
+  // allow configuration using `createTheme` — partial, since the variants are supplied across
+  // two passes (the base set in `getDesignTokens`, the responsive ones in `createAppTheme`).
+  interface TypographyVariantsOptions extends Partial<TypographyCustomVariants> {}
 
   interface BreakpointOverrides {
     xsm: true;
@@ -250,6 +254,9 @@ declare module '@mui/material/Typography' {
     secondary21: true;
     secondary16: true;
     main12: true;
+    statValue: true;
+    statValueNoData: true;
+    pageTitle: true;
     h5: true;
     h6: false;
     subtitle1: false;
@@ -760,6 +767,9 @@ export function getThemedComponents(theme: AppTheme) {
             main12: 'p',
             secondary16: 'p',
             secondary21: 'p',
+            statValue: 'p',
+            statValueNoData: 'p',
+            pageTitle: 'h1',
             helperText: 'span',
           },
         },
@@ -1213,7 +1223,7 @@ export function getThemedComponents(theme: AppTheme) {
             minWidth: '375px',
             backgroundColor: figVars['bg-1'],
             '> div:first-of-type': {
-              minHeight: '100vh',
+              minHeight: '100dvh',
               display: 'flex',
               flexDirection: 'column',
             },
@@ -1288,8 +1298,24 @@ export const createAppTheme = () => {
   // then rebuild with those overrides attached. (A build-once `theme.components = …` mutation
   // trips MUI's `Components<Theme>` typing, so the two-pass is the type-clean form.)
   const base = experimental_extendTheme(shared);
+  const belowSm = base.breakpoints.down('sm');
+  const belowXsm = base.breakpoints.down('xsm');
+  const fromLg = base.breakpoints.up('lg');
   return experimental_extendTheme({
     ...shared,
+    typography: {
+      ...shared.typography,
+      statValue: { ...base.typography.h2, [belowSm]: base.typography.h4 },
+      statValueNoData: {
+        ...base.typography.secondary21,
+        [belowSm]: base.typography.secondary16,
+      },
+      pageTitle: {
+        ...base.typography.h1,
+        [belowXsm]: base.typography.h2,
+        [fromLg]: base.typography.display1,
+      },
+    },
     components: getThemedComponents(base).components,
   });
 };

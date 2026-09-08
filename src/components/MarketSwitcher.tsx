@@ -222,23 +222,7 @@ const V4_LINKS: V4Link[] = [
   },
 ];
 
-interface MarketSwitcherProps {
-  /**
-   * Hide the page-title-only chrome (the "Instance"/"Market" suffix and the market
-   * description blurb) when the switcher sits next to an existing page title, e.g. the
-   * Staking header. Default false = full title treatment (homepage).
-   */
-  hideTitleChrome?: boolean;
-  /**
-   * Optional label rendered inside the trigger, before the market logo and at the same
-   * size as the market name, so it reads and clicks as one unit (e.g. "Staking" on the
-   * Staking header). Prefer this over a sibling <Typography> next to <MarketSwitcher />,
-   * which would leave the label outside the clickable/hoverable trigger.
-   */
-  titlePrefix?: React.ReactNode;
-}
-
-export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketSwitcherProps) => {
+export const MarketSwitcher = () => {
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showLegacy, setShowLegacy] = useState(false);
@@ -246,8 +230,6 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
   const triggerRowRef = useRef<HTMLDivElement>(null);
 
   const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
@@ -766,14 +748,6 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
         }}
       >
         <Box ref={triggerRowRef} sx={{ display: 'flex', alignItems: 'center' }}>
-          {titlePrefix && (
-            <Typography
-              variant={upToLG ? 'display1' : 'h1'}
-              sx={{ fontSize: downToXSM ? '1.55rem' : undefined, mr: 3 }}
-            >
-              {titlePrefix}
-            </Typography>
-          )}
           <MarketLogo
             size={28}
             logo={currentLogo}
@@ -823,7 +797,7 @@ export const MarketSwitcher = ({ hideTitleChrome = false, titlePrefix }: MarketS
           <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }} />
         </Box>
 
-        {!hideTitleChrome && marketBlurbs[currentMarket] && (
+        {marketBlurbs[currentMarket] && (
           <Typography
             variant="description"
             sx={{

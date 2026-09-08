@@ -2,8 +2,8 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
-import * as React from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -19,7 +19,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
 import { FaucetItemLoader } from './FaucetItemLoader';
-import { FaucetMobileItemLoader } from './FaucetMobileItemLoader';
 
 export default function FaucetAssetsList() {
   const { reserves, loading } = useAppDataContext();
@@ -30,7 +29,7 @@ export default function FaucetAssetsList() {
   const { walletBalances } = useWalletBalances(currentMarketData);
 
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showCards = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
 
   const listData = reserves
     .filter(
@@ -62,14 +61,14 @@ export default function FaucetAssetsList() {
         </Typography>
       }
     >
-      <ListHeaderWrapper px={downToXSM ? 4 : 5}>
+      <ListHeaderWrapper px={showCards ? 4 : 5}>
         <ListColumn isRow maxWidth={280}>
           <ListHeaderTitle>
             <Trans>Asset</Trans>
           </ListHeaderTitle>
         </ListColumn>
 
-        {!downToXSM && (
+        {!showCards && (
           <ListColumn>
             <ListHeaderTitle>
               <Trans>Wallet balance</Trans>
@@ -81,11 +80,11 @@ export default function FaucetAssetsList() {
       </ListHeaderWrapper>
 
       {loading ? (
-        downToXSM ? (
+        showCards ? (
           <>
-            <FaucetMobileItemLoader />
-            <FaucetMobileItemLoader />
-            <FaucetMobileItemLoader />
+            <FaucetItemLoader compact />
+            <FaucetItemLoader compact />
+            <FaucetItemLoader compact />
           </>
         ) : (
           <>
@@ -99,7 +98,7 @@ export default function FaucetAssetsList() {
       ) : (
         listData.map((reserve) => (
           <ListItem
-            px={downToXSM ? 4 : 5}
+            px={showCards ? 4 : 5}
             key={reserve.symbol}
             data-cy={`faucetListItem_${reserve.symbol.toUpperCase()}`}
           >
@@ -121,7 +120,7 @@ export default function FaucetAssetsList() {
               </Link>
             </ListColumn>
 
-            {!downToXSM && (
+            {!showCards && (
               <ListColumn>
                 <FormattedNumber compact value={reserve.walletBalance.toString()} variant="h4" />
               </ListColumn>

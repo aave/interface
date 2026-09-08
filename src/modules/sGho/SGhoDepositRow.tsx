@@ -1,7 +1,8 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { depositRowActionSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 
 interface SGhoDepositRowProps {
@@ -17,9 +18,6 @@ export const SGhoDepositRow = ({
   onDeposit,
   onGetGho,
 }: SGhoDepositRowProps) => {
-  const { breakpoints } = useTheme();
-  const xsm = useMediaQuery(breakpoints.up('xsm'));
-
   const hasGho = +walletBalance > 0;
 
   return (
@@ -76,8 +74,7 @@ export const SGhoDepositRow = ({
           <Button
             variant="contained"
             onClick={onDeposit}
-            fullWidth={!xsm}
-            sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
+            sx={depositRowActionSx}
             data-cy="depositBtn_SGHO"
           >
             <Trans>Deposit</Trans>
@@ -86,8 +83,7 @@ export const SGhoDepositRow = ({
           <Button
             variant="contained"
             onClick={onGetGho}
-            fullWidth={!xsm}
-            sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
+            sx={depositRowActionSx}
             data-cy="getGhoBtn_SGHO"
           >
             <Trans>Get GHO</Trans>

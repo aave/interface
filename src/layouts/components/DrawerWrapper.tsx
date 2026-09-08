@@ -1,14 +1,15 @@
 import { Drawer } from '@mui/material';
 import { ReactNode } from 'react';
 
+import { HEADER_HEIGHT } from '../headerLayout';
+
 interface DrawerWrapperProps {
   open: boolean;
   setOpen: (value: boolean) => void;
-  headerHeight: number;
   children: ReactNode;
 }
 
-export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerWrapperProps) => {
+export const DrawerWrapper = ({ open, setOpen, children }: DrawerWrapperProps) => {
   return (
     <Drawer
       data-cy={`mobile-menu`}
@@ -17,15 +18,15 @@ export const DrawerWrapper = ({ open, setOpen, children, headerHeight }: DrawerW
       onClose={() => setOpen(false)}
       hideBackdrop
       disableScrollLock
-      sx={{ top: `${headerHeight}px` }}
+      sx={{ top: `${HEADER_HEIGHT}px` }}
       PaperProps={{
         sx: {
           bgcolor: 'bg-1',
           boxShadow: 'none',
           borderRadius: 'unset',
           width: '100%',
-          top: `${headerHeight}px`,
-          height: `calc(100dvh - ${headerHeight}px)`,
+          top: `${HEADER_HEIGHT}px`,
+          height: `calc(100dvh - ${HEADER_HEIGHT}px)`,
           py: '0.75rem',
           px: 0,
           display: 'flex',

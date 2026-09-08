@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, ListItemText, SvgIcon, Typography } from '@mui/material';
+import { Button, ListItemText, SvgIcon } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { clsx } from 'clsx';
@@ -8,7 +8,6 @@ import React from 'react';
 import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/events';
-import { onAccent } from 'src/utils/figmaColors';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { NAV_LINK_PADDING_X, NAV_LINK_PADDING_Y, navLinkSx } from './navLinkSx';
@@ -16,12 +15,7 @@ import { NAV_LINK_PADDING_X, NAV_LINK_PADDING_Y, navLinkSx } from './navLinkSx';
 const CHEVRON_GAP = '0.25rem';
 const CHEVRON_SIZE = '16px';
 
-interface StakingMenuProps {
-  isMobile?: boolean;
-  onClose?: () => void;
-}
-
-export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
+export function StakingMenu() {
   const trackEvent = useRootStore((store) => store.trackEvent);
   const router = useRouter();
   // The trigger isn't a Link, so it never gets the route-aware `active` class on its own.
@@ -43,35 +37,7 @@ export function StakingMenu({ isMobile = false, onClose }: StakingMenuProps) {
   const handleMenuItemClick = (title: string) => {
     trackEvent(NAV_BAR.MAIN_MENU, { nav_link: title });
     handleClose();
-    if (onClose) onClose();
   };
-
-  if (isMobile) {
-    return (
-      <>
-        <Typography
-          component={Link}
-          href={ROUTES.staking}
-          variant="h2"
-          color={onAccent}
-          sx={{ width: '100%', p: 4 }}
-          onClick={() => handleMenuItemClick('Staking')}
-        >
-          <Trans>Umbrella</Trans>
-        </Typography>
-        <Typography
-          component={Link}
-          href={ROUTES.safetyModule}
-          variant="h2"
-          color={onAccent}
-          sx={{ width: '100%', p: 4, pl: 6 }}
-          onClick={() => handleMenuItemClick('Safety Module')}
-        >
-          <Trans>Safety Module</Trans>
-        </Typography>
-      </>
-    );
-  }
 
   return (
     <>

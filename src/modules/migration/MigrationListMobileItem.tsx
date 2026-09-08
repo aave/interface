@@ -183,7 +183,7 @@ export const MigrationListMobileItem = ({
               <ArrowNarrowRightIcon
                 fontSize="14px"
                 color={
-                  disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+                  disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
                 }
               />
             </SvgIcon>
@@ -222,7 +222,7 @@ export const MigrationListMobileItem = ({
                 <ArrowNarrowRightIcon
                   fontSize="14px"
                   color={
-                    disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
                   }
                 />
               </SvgIcon>
@@ -270,7 +270,7 @@ export const MigrationListMobileItem = ({
               <Button
                 variant="tertiary"
                 size="small"
-                sx={{ width: '50px', background: 'white' }}
+                sx={{ width: '50px', background: figVars['surface-elevated'] }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColorPrimary}>
@@ -281,14 +281,14 @@ export const MigrationListMobileItem = ({
                 <ArrowNarrowRightIcon
                   fontSize="14px"
                   color={
-                    disabled === undefined ? theme.palette.text.secondary : theme.palette.text.muted
+                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
                   }
                 />
               </SvgIcon>
               <Button
                 variant="tertiary"
                 size="small"
-                sx={{ width: '50px', background: 'white' }}
+                sx={{ width: '50px', background: figVars['surface-elevated'] }}
                 disabled
               >
                 <Typography variant="buttonS" color={baseColorPrimary}>
@@ -327,7 +327,7 @@ export const MigrationListMobileItem = ({
                       fontSize="14px"
                       color={
                         disabled === undefined
-                          ? theme.palette.text.secondary
+                          ? theme.palette.text.primary
                           : theme.palette.text.muted
                       }
                     />
@@ -372,7 +372,7 @@ export const MigrationListMobileItem = ({
                       fontSize="14px"
                       color={
                         disabled === undefined
-                          ? theme.palette.text.secondary
+                          ? theme.palette.text.primary
                           : theme.palette.text.muted
                       }
                     />

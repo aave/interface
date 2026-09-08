@@ -20,7 +20,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { navigation } from '../../ui-config/menu-items';
-import { HEADER_MOBILE_BELOW } from '../headerBreakpoints';
+import { HEADER_MOBILE_BELOW } from '../headerLayout';
 import { NAV_LINK_PADDING_X, NAV_LINK_PADDING_Y, navLinkSx } from './navLinkSx';
 import { StakingMenu } from './StakingMenu';
 
@@ -91,7 +91,7 @@ const MobileNavLink = ({
 export const NavItems = ({ setOpen }: NavItemsProps) => {
   const { i18n } = useLingui();
   const { breakpoints } = useTheme();
-  const mdlg = useMediaQuery(breakpoints.down(HEADER_MOBILE_BELOW));
+  const mobileNav = useMediaQuery(breakpoints.down(HEADER_MOBILE_BELOW));
   const router = useRouter();
   const [stakingOpen, setStakingOpen] = React.useState(false);
   const [trackEvent, currentMarketData, account] = useRootStore(
@@ -124,7 +124,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
         .filter((item) => !item.isVisible || item.isVisible(currentMarketData))
         .map((item, index) => (
           <ListItem sx={navListItemSx} data-cy={item.dataCy} disablePadding key={index}>
-            {mdlg ? (
+            {mobileNav ? (
               <MobileNavLink
                 href={item.link}
                 label={i18n._(item.title)}
@@ -146,7 +146,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
         ))}
 
       <ListItem sx={navListItemSx} disablePadding>
-        {mdlg ? (
+        {mobileNav ? (
           <MobileNavLink
             href={ROUTES.sGHO}
             label={<Trans>sGHO</Trans>}
@@ -174,7 +174,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
         }}
         disablePadding
       >
-        {mdlg ? (
+        {mobileNav ? (
           <>
             <Box
               onClick={() => setStakingOpen((v) => !v)}

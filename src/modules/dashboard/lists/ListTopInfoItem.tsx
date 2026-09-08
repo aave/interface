@@ -1,4 +1,4 @@
-import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 
@@ -12,9 +12,6 @@ interface ListTopInfoItemProps {
 }
 
 export const ListTopInfoItem = ({ title, value, percent, tooltip }: ListTopInfoItemProps) => {
-  const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
   return (
     <PageHeaderStat
       label={
@@ -28,12 +25,7 @@ export const ListTopInfoItem = ({ title, value, percent, tooltip }: ListTopInfoI
         )
       }
     >
-      <FormattedNumber
-        value={value}
-        percent={percent}
-        variant={downToSM ? 'h4' : 'h2'}
-        symbol="USD"
-      />
+      <FormattedNumber value={value} percent={percent} variant="statValue" symbol="USD" />
     </PageHeaderStat>
   );
 };

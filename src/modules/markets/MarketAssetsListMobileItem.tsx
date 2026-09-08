@@ -62,15 +62,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
       }}
     >
       <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: { xs: 'flex-end' },
-            justifyContent: 'center',
-            textAlign: 'center',
-          }}
-        >
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <FormattedNumber compact value={reserve.size.amount.value} variant="h5" />
           <ReserveSubheader value={reserve.size.usd} rightAlign={true} />
         </Box>
@@ -103,15 +95,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
       <Divider sx={{ mb: 3 }} />
 
       <Row caption={<Trans>Total borrowed</Trans>} captionVariant="description" mb={3}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: { xs: 'flex-end' },
-            justifyContent: 'center',
-            textAlign: 'center',
-          }}
-        >
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           {reserve.borrowInfo && Number(reserve.borrowInfo?.total.amount.value) > 0 ? (
             <>
               <FormattedNumber

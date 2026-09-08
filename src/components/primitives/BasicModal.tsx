@@ -67,7 +67,7 @@ export const BasicModal = ({
           width: '100%',
           maxWidth: { xs: '359px', xsm: `${contentMaxWidth}px` },
           height: contentHeight ? `${contentHeight}px` : 'auto',
-          maxHeight: contentHeight ? `${contentHeight}px` : 'calc(100vh - 20px)',
+          maxHeight: contentHeight ? `${contentHeight}px` : 'calc(100dvh - 20px)',
           p: 6,
         }}
       >

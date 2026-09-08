@@ -140,9 +140,6 @@ export const DashboardTopPanel = () => {
           .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
           .toFixed();
 
-  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
-  const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
-
   const showHealthFactor = Boolean(currentAccount) && user?.healthFactor !== '-1';
 
   return (
@@ -188,12 +185,12 @@ export const DashboardTopPanel = () => {
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
               symbol="USD"
-              variant={valueTypographyVariant}
+              variant="statValue"
               visibleDecimals={2}
               compact
             />
           ) : (
-            <NoData variant={noDataTypographyVariant} color="inherit" sx={{ opacity: '0.7' }} />
+            <NoData variant="statValueNoData" color="inherit" sx={{ opacity: '0.7' }} />
           )}
         </PageHeaderStat>
 
@@ -214,12 +211,12 @@ export const DashboardTopPanel = () => {
           {currentAccount && user && Number(user.netWorthUSD) > 0 ? (
             <FormattedNumber
               value={hasEnhancedData ? enhancedNetAPY : user ? user.netAPY : 0}
-              variant={valueTypographyVariant}
+              variant="statValue"
               visibleDecimals={2}
               percent
             />
           ) : (
-            <NoData variant={noDataTypographyVariant} color="inherit" sx={{ opacity: '0.7' }} />
+            <NoData variant="statValueNoData" color="inherit" sx={{ opacity: '0.7' }} />
           )}
         </PageHeaderStat>
 
@@ -227,7 +224,7 @@ export const DashboardTopPanel = () => {
           <PageHeaderStat label={<Trans>Health factor</Trans>} loading={loading}>
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
-              variant={valueTypographyVariant}
+              variant="statValue"
               onInfoClick={() => {
                 trackEvent(DASHBOARD.VIEW_RISK_DETAILS);
                 setOpen(true);
@@ -248,7 +245,7 @@ export const DashboardTopPanel = () => {
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'Claim_Box'}>
                 <FormattedNumber
                   value={claimableRewardsUsd}
-                  variant={valueTypographyVariant}
+                  variant="statValue"
                   visibleDecimals={2}
                   compact
                   symbol="USD"

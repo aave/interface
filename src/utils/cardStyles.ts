@@ -24,3 +24,9 @@ export const cardHeadingSx = {
   display: 'flex',
   alignItems: 'center',
 } satisfies SxProps<Theme>;
+
+/** Stat label inside the staking panels: smaller and muted from `xsm`, larger and full-ink below. */
+export const panelStatLabelSx: SxProps<Theme> = {
+  typography: { xs: 'description', xsm: 'subheader2' },
+  color: { xs: 'fg-1', xsm: 'fg-2' },
+};

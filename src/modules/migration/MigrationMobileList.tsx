@@ -4,7 +4,9 @@ import { ReactNode } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 
+import { MigrationIsolationWarning } from './MigrationIsolationWarning';
 import { MigrationSelectionBox } from './MigrationSelectionBox';
 
 interface MigrationMobileListProps {
@@ -18,6 +20,7 @@ interface MigrationMobileListProps {
   numSelected: number;
   numAvailable: number;
   disabled: boolean;
+  isolatedReserveV3?: IsolatedReserve;
 }
 
 export const MigrationMobileList = ({
@@ -30,6 +33,7 @@ export const MigrationMobileList = ({
   numSelected,
   numAvailable,
   disabled,
+  isolatedReserveV3,
 }: MigrationMobileListProps) => {
   return (
     <Box sx={{ width: '100%' }}>
@@ -39,9 +43,12 @@ export const MigrationMobileList = ({
         // shadow needs cancelling.
         paperSx={{ boxShadow: 'none' }}
         titleComponent={
-          <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-            {titleComponent}
-          </Typography>
+          <Box>
+            <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+              {titleComponent}
+            </Typography>
+            <MigrationIsolationWarning isolatedReserveV3={isolatedReserveV3} />
+          </Box>
         }
       >
         {(isAvailable || loading) && (

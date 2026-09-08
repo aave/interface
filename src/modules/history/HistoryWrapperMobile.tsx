@@ -18,7 +18,7 @@ import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTrans
 
 import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
-import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
+import { HistoryItemLoader } from './HistoryItemLoader';
 import TransactionMobileRowItem from './TransactionMobileRowItem';
 import { FilterOptions, TransactionHistoryItemUnion } from './types';
 
@@ -237,27 +237,29 @@ export const HistoryWrapperMobile = () => {
 
       {isLoading ? (
         <>
-          <HistoryMobileItemLoader />
-          <HistoryMobileItemLoader />
+          <HistoryItemLoader compact />
+          <HistoryItemLoader compact />
         </>
       ) : !isEmpty ? (
-        Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
-          <React.Fragment key={groupIndex}>
-            <Typography variant="h4" color="fg-1" sx={{ ml: 4, mt: 6, mb: 2 }}>
-              {date}
-            </Typography>
-            {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
-              const isLastItem = index === txns.length - 1;
-              return (
-                <div ref={isLastItem ? lastElementRef : null} key={index}>
-                  <TransactionMobileRowItem
-                    transaction={transaction as TransactionHistoryItemUnion}
-                  />
-                </div>
-              );
-            })}
-          </React.Fragment>
-        ))
+        Object.entries(groupByDate(filteredTxns))
+          .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
+          .map(([date, txns], groupIndex) => (
+            <React.Fragment key={groupIndex}>
+              <Typography variant="h4" color="fg-1" sx={{ ml: 4, mt: 6, mb: 2 }}>
+                {date}
+              </Typography>
+              {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
+                const isLastItem = index === txns.length - 1;
+                return (
+                  <div ref={isLastItem ? lastElementRef : null} key={index}>
+                    <TransactionMobileRowItem
+                      transaction={transaction as TransactionHistoryItemUnion}
+                    />
+                  </div>
+                );
+              })}
+            </React.Fragment>
+          ))
       ) : filterActive ? (
         <Box
           sx={{

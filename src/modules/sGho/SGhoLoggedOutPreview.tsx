@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { figVars } from 'src/utils/figmaColors';
 
@@ -16,13 +16,10 @@ interface SGhoLoggedOutPreviewProps {
  * connect. Actual connect prompt lives in the sidebar.
  */
 export const SGhoLoggedOutPreview = ({ rate }: SGhoLoggedOutPreviewProps) => {
-  const { breakpoints } = useTheme();
-  const xsm = useMediaQuery(breakpoints.up('xsm'));
-
   return (
     <Box>
       <Box sx={{ mb: 4 }}>
-        <Typography variant={xsm ? 'h4' : 'subheader1'} sx={{ mb: 1 }}>
+        <Typography component="h4" sx={{ mb: 1, typography: { xs: 'subheader1', xsm: 'h4' } }}>
           <Trans>Deposit GHO</Trans>
         </Typography>
         <Typography color="fg-2">

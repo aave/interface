@@ -31,8 +31,6 @@ export const PageTitle = ({
   useRootStore((state) => state.favoriteMarkets);
 
   const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  // const upToMD = useMediaQuery(theme.breakpoints.up('md'));
   const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
 
   const isCurrentMarketFavorite = isFavoriteMarket(currentMarket);
@@ -53,7 +51,7 @@ export const PageTitle = ({
       {pageTitle && (downToXSM || !withMarketSwitcher) && (
         <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
           <Typography
-            variant={downToXSM ? 'h2' : upToLG ? 'display1' : 'h1'}
+            variant="pageTitle"
             sx={{
               color: withMarketSwitcher ? 'fg-3' : 'text.white',
               mr: { xs: 5, xsm: 3 },

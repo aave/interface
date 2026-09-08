@@ -3,6 +3,7 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { Row } from 'src/components/primitives/Row';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
@@ -36,7 +37,7 @@ export const BorrowedPositionsListItem = ({
     useShallow((state) => [state.currentMarket, state.currentMarketData])
   );
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showCards = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
   const { user } = useAppDataContext();
 
@@ -84,7 +85,7 @@ export const BorrowedPositionsListItem = ({
     },
   };
 
-  if (downToXSM) {
+  if (showCards) {
     return <BorrowedPositionsListItemMobile {...props} />;
   } else {
     return <BorrowedPositionsListItemDesktop {...props} />;

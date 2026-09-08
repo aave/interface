@@ -1,6 +1,5 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -9,10 +8,6 @@ import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/us
 
 export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) => {
   const { loading } = useAppDataContext();
-  const theme = useTheme();
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
 
   const totalBorrowed = BigNumber.min(
     valueToBigNumber(reserve.borrowInfo?.total.amount.value ?? '0'),
@@ -22,14 +17,14 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) =>
   return (
     <>
       <PageHeaderStat label={<Trans>Total borrowed</Trans>} loading={loading}>
-        <FormattedNumber value={totalBorrowed} symbol="USD" variant={valueTypographyVariant} />
+        <FormattedNumber value={totalBorrowed} symbol="USD" variant="statValue" />
       </PageHeaderStat>
 
       <PageHeaderStat label={<Trans>Maximum available to borrow</Trans>} loading={loading}>
         <FormattedNumber
           value={reserve.borrowInfo?.borrowCap.amount.value ?? '0'}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant="statValue"
         />
       </PageHeaderStat>
 
@@ -48,7 +43,7 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) =>
         }
         loading={loading}
       >
-        <FormattedNumber value={1} symbol="USD" variant={valueTypographyVariant} />
+        <FormattedNumber value={1} symbol="USD" variant="statValue" />
       </PageHeaderStat>
     </>
   );

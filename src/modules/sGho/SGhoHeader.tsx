@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 import NumberFlow from '@number-flow/react';
 import { BigNumber } from 'bignumber.js';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,6 @@ import { useRootStore } from 'src/store/root';
 import { convertAprToApy } from 'src/utils/utils';
 
 export const SGHOHeader: React.FC = () => {
-  const theme = useTheme();
   const trackEvent = useRootStore((store) => store.trackEvent);
   const { vault, loading } = useSGhoVaultContext();
 
@@ -22,11 +21,6 @@ export const SGHOHeader: React.FC = () => {
       'Page Name': 'sGHO',
     });
   }, [trackEvent]);
-
-  const downToSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const valueTypographyVariant = downToSM ? 'h4' : 'h2';
-  const iconSize = valueTypographyVariant === 'h2' ? 20 : 16;
 
   const apr = vault?.targetRate ? +vault.targetRate.value : 0;
   const apyPercent = (convertAprToApy(apr) * 100).toFixed(2);
@@ -61,25 +55,20 @@ export const SGHOHeader: React.FC = () => {
       }
     >
       <PageHeaderStat label={<Trans>Current APR</Trans>} loading={loading}>
-        <FormattedNumber value={apr} variant={valueTypographyVariant} visibleDecimals={2} percent />
+        <FormattedNumber value={apr} variant="statValue" visibleDecimals={2} percent />
       </PageHeaderStat>
 
       <PageHeaderStat label={<Trans>Total Deposited</Trans>} loading={loading}>
         <FormattedNumber
           value={totalDepositedUSD}
           symbol="USD"
-          variant={valueTypographyVariant}
+          variant="statValue"
           visibleDecimals={2}
         />
       </PageHeaderStat>
 
       <PageHeaderStat label={<Trans>Price</Trans>} loading={loading}>
-        <FormattedNumber
-          value={sharePrice}
-          symbol="USD"
-          variant={valueTypographyVariant}
-          visibleDecimals={2}
-        />
+        <FormattedNumber value={sharePrice} symbol="USD" variant="statValue" visibleDecimals={2} />
       </PageHeaderStat>
 
       <PageHeaderStat
@@ -95,7 +84,7 @@ export const SGHOHeader: React.FC = () => {
       >
         {balanceBN.gt(0) ? (
           <Typography
-            variant={valueTypographyVariant}
+            variant="statValue"
             sx={{
               display: 'inline-flex',
               flexDirection: 'row',
@@ -129,10 +118,13 @@ export const SGHOHeader: React.FC = () => {
               }}
               className="custom-number-flow"
             />
-            <TokenIcon symbol="sgho" sx={{ ml: 0.5, width: iconSize, height: iconSize }} />
+            <TokenIcon
+              symbol="sgho"
+              sx={{ ml: 0.5, width: { xs: 16, sm: 20 }, height: { xs: 16, sm: 20 } }}
+            />
           </Typography>
         ) : (
-          <Typography variant={valueTypographyVariant} color="fg-3">
+          <Typography variant="statValue" color="fg-3">
             —
           </Typography>
         )}

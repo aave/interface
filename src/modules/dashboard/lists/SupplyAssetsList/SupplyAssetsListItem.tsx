@@ -18,6 +18,7 @@ import { DotsHorizontalIcon } from 'src/components/icons/DotsHorizontalIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
@@ -52,7 +53,7 @@ export const SupplyAssetsListItem = (
   params: DashboardReserve & { walletBalances: WalletBalancesMap }
 ) => {
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showCards = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
   const { supplyCap } = useAssetCaps();
   const wrappedTokenReserves = useWrappedTokens();
   const currentMarket = useRootStore((store) => store.currentMarket);
@@ -85,7 +86,7 @@ export const SupplyAssetsListItem = (
     walletBalancesMap: params.walletBalances,
   };
 
-  if (downToXSM) {
+  if (showCards) {
     return <SupplyAssetsListItemMobile {...props} />;
   } else {
     return <SupplyAssetsListItemDesktop {...props} />;

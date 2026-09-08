@@ -1,5 +1,6 @@
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 
 import { ListWrapper } from '../../../components/lists/ListWrapper';
 import { ListHeader } from './ListHeader';
@@ -14,7 +15,7 @@ interface ListLoaderProps {
 
 export const ListLoader = ({ title, withTopMargin, head }: ListLoaderProps) => {
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showCards = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
 
   return (
     <ListWrapper
@@ -26,8 +27,8 @@ export const ListLoader = ({ title, withTopMargin, head }: ListLoaderProps) => {
       withTopMargin={withTopMargin}
     >
       <>
-        {!downToXSM && <ListHeader head={head} />}
-        {!downToXSM ? (
+        {!showCards && <ListHeader head={head} />}
+        {!showCards ? (
           <>
             <ListItemLoader columns={head.length} />
             <ListItemLoader columns={head.length} />

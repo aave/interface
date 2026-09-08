@@ -5,6 +5,7 @@ import { Alert, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { Fragment, useState } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -40,7 +41,7 @@ import { WalletEmptyInfo } from './WalletEmptyInfo';
 
 const head = [
   { title: <Trans key="assets">Assets</Trans>, sortKey: 'symbol' },
-  { title: <Trans key="Wallet balance">Wallet balance</Trans>, sortKey: 'walletBalance' },
+  { title: <Trans key="Balance">Balance</Trans>, sortKey: 'walletBalance' },
   { title: <Trans key="APY">APY</Trans>, sortKey: 'supplyAPY' },
   {
     title: <Trans key="Can be collateral">Can be collateral</Trans>,
@@ -65,7 +66,7 @@ export const SupplyAssetsList = () => {
   const wrappedTokenReserves = useWrappedTokens();
   const { walletBalances, loading } = useWalletBalances(currentMarketData);
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showCards = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
 
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
@@ -247,7 +248,7 @@ export const SupplyAssetsList = () => {
   const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
-        {head.map((col) => (
+        {head.map((col, index) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
             maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
@@ -261,12 +262,13 @@ export const SupplyAssetsList = () => {
               setSortDesc={setSortDesc}
               sortKey={col.sortKey}
               source="Supplies Dashbaord"
+              noTruncate={index === head.length - 1}
             >
               {col.title}
             </ListHeaderTitle>
           </ListColumn>
         ))}
-        <ListButtonsColumn isColumnHeader />
+        <ListButtonsColumn />
       </ListHeaderWrapper>
     );
   };
@@ -298,7 +300,7 @@ export const SupplyAssetsList = () => {
             <Trans>Assets to supply</Trans>
           </Typography>
 
-          {!downToXSM && !isListCollapsed && (
+          {!showCards && !isListCollapsed && (
             <AssetCategoryMultiSelect
               selectedCategories={selectedCategories}
               onCategoriesChange={setSelectedCategories}
@@ -313,7 +315,7 @@ export const SupplyAssetsList = () => {
       noData={supplyDisabled}
       subChildrenComponent={
         <>
-          {downToXSM && !isListCollapsed && (
+          {showCards && !isListCollapsed && (
             <Box sx={{ px: 4, pb: 2, pt: '2px' }}>
               <AssetCategoryMultiSelect
                 selectedCategories={selectedCategories}
@@ -374,7 +376,7 @@ export const SupplyAssetsList = () => {
       }
     >
       <>
-        {!downToXSM && !!sortedReserves && !supplyDisabled && <RenderHeader />}
+        {!showCards && !!sortedReserves && !supplyDisabled && <RenderHeader />}
         {sortedReserves.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
