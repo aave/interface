@@ -76,6 +76,7 @@ export const figmaLight = {
   'data-pink': '#EB47CF',
   'button-hover': 'rgba(0, 0, 0, 0.025)',
   'overlay-hover': 'rgba(0, 0, 0, 0.08)',
+  'overlay-hover-subtle': 'rgba(0, 0, 0, 0.04)',
   'data-green-gho': '#5dff93',
   // Gold for the favourited market star (mode-agnostic; Figma color(display-p3 1 0.7 0)).
   'favourite-star': '#FFB300',
@@ -203,6 +204,7 @@ export const figmaDark = {
   scrim: 'rgba(71, 67, 67, 0.8)',
   'button-hover': 'rgba(255, 255, 255, 0.025)',
   'overlay-hover': 'rgba(255, 255, 255, 0.08)',
+  'overlay-hover-subtle': 'rgba(255, 255, 255, 0.04)',
   'table-item-hover-1': '#1e1d1d',
   'table-item-hover-2': '#282727',
   'data-green-gho': '#5dff93',

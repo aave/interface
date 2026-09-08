@@ -1,4 +1,4 @@
-import { alpha, Box, IconButton, Modal, Paper } from '@mui/material';
+import { alpha, IconButton, Modal, Paper } from '@mui/material';
 import React from 'react';
 
 import { CloseIcon } from '../icons/CloseIcon';
@@ -74,24 +74,24 @@ export const BasicModal = ({
         {children}
 
         {withCloseButton && (
-          <Box sx={{ position: 'absolute', top: '23.5px', right: '54px', zIndex: 5 }}>
-            <IconButton
-              sx={{
-                borderRadius: '0.375rem',
-                p: 0,
-                minWidth: 0,
-                position: 'absolute',
-                '&:hover': {
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.text.primary, theme.palette.action.hoverOpacity),
-                },
-              }}
-              onClick={handleClose}
-              data-cy={'close-button'}
-            >
-              <CloseIcon data-cy={'CloseModalIcon'} sx={{ fontSize: '30px', color: 'fg-3' }} />
-            </IconButton>
-          </Box>
+          <IconButton
+            sx={{
+              position: 'absolute',
+              top: '21px',
+              right: '24px',
+              zIndex: 5,
+              borderRadius: '0.375rem',
+              p: 0,
+              '&:hover': {
+                backgroundColor: (theme) =>
+                  alpha(theme.palette.text.primary, theme.palette.action.hoverOpacity),
+              },
+            }}
+            onClick={handleClose}
+            data-cy={'close-button'}
+          >
+            <CloseIcon data-cy={'CloseModalIcon'} sx={{ fontSize: '30px', color: 'fg-3' }} />
+          </IconButton>
         )}
       </Paper>
     </Modal>

@@ -37,7 +37,8 @@ import { useRootStore } from 'src/store/root';
 import { iconButtonSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 import { ENABLE_TESTNET, FORK_ENABLED, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
-import { darkScheme, hoverOverlay } from 'src/utils/theme';
+import { motion } from 'src/utils/motion';
+import { darkScheme } from 'src/utils/theme';
 import { useShallow } from 'zustand/shallow';
 
 import { Link } from '../components/primitives/Link';
@@ -111,7 +112,12 @@ const testModeInk = {
   '@supports (color: color(display-p3 0 0 0))': {
     color: 'color(display-p3 0.1686 0.6784 0.6431)',
   },
-  ...darkScheme({ color: '#00C1B8' }),
+  transition: `color ${motion.duration.hover}ms ${motion.easing.standard}`,
+  '&:hover, &[aria-expanded="true"]': { color: figVars['green-1'] },
+  ...darkScheme({
+    color: '#00C1B8',
+    '&:hover, &[aria-expanded="true"]': { color: figVars['green-3'] },
+  }),
 };
 
 // Fork badge — intentionally off-brand magenta to stand out.
@@ -271,11 +277,7 @@ export function AppHeader() {
                   alignItems: 'center',
                   gap: 1,
                   minHeight: '28px',
-                  px: '0.5rem',
-                  mx: '-0.5rem',
-                  borderRadius: '0.375rem',
                   cursor: 'pointer',
-                  ...hoverOverlay(figVars['overlay-hover']),
                   ...testModeInk,
                 }}
               >

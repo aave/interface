@@ -11,6 +11,7 @@ import {
 import { useRootStore } from 'src/store/root';
 import { GOVERNANCE_PAGE } from 'src/utils/events';
 import { figVars } from 'src/utils/figmaColors';
+import { motion } from 'src/utils/motion';
 
 import { ProposalListHeader } from './ProposalListHeader';
 import { StateBadge, stringToState } from './StateBadge';
@@ -28,6 +29,8 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
         flexWrap: 'wrap',
         justifyContent: 'space-between',
         borderBottom: `1px solid ${figVars['border-0']}`,
+        transition: `background-color ${motion.duration.hover}ms ${motion.easing.standard}`,
+        '&:hover': { bgcolor: 'overlay-hover-subtle' },
       }}
       component={Link}
       href={ROUTES.dynamicRenderedProposal(+proposal.id)}
@@ -186,7 +189,7 @@ export const ProposalsV3List = () => {
   }
 
   return (
-    <Paper variant="table">
+    <Paper variant="table" sx={{ overflow: 'hidden' }}>
       <ProposalListHeader
         proposalFilter={proposalFilter}
         handleProposalFilterChange={setProposalFilter}
