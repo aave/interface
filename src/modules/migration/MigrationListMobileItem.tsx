@@ -151,7 +151,7 @@ export const MigrationListMobileItem = ({
             </Box>
             <FormattedNumber
               value={amountInUSD}
-              variant="subheader2"
+              variant="description"
               color={baseColorSecondary}
               symbolsColor={baseColorSecondary}
               symbol="USD"

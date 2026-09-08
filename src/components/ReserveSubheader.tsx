@@ -7,33 +7,24 @@ import { FormattedNumber } from './primitives/FormattedNumber';
 
 type ReserveSubheaderProps = {
   value: string;
-  rightAlign?: boolean;
 };
 
-export function ReserveSubheader({ value, rightAlign }: ReserveSubheaderProps) {
+export function ReserveSubheader({ value }: ReserveSubheaderProps) {
   return (
     <Box
       sx={{
-        p: rightAlign ? { xs: '0', xsm: '2px 0' } : { xs: '0', xsm: '3.625px 0px' },
+        mt: '2px',
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
       {value === 'Disabled' ? (
-        <Typography component="span" sx={{ mr: 0.5 }} variant="subheader2" color="fg-3">
+        <Typography component="span" sx={{ mr: 0.5 }} variant="description" color="fg-3">
           (<Trans>Disabled</Trans>)
         </Typography>
       ) : (
-        <FormattedNumber
-          compact
-          value={value}
-          variant="subheader2"
-          color="fg-2"
-          symbolsVariant="subheader2"
-          symbolsColor="fg-2"
-          symbol="USD"
-        />
+        <FormattedNumber compact value={value} variant="description" color="fg-2" symbol="USD" />
       )}
     </Box>
   );

@@ -129,7 +129,7 @@ export const SupplyInfo = ({
                 <Typography
                   component="span"
                   color="fg-2"
-                  variant="subheader2"
+                  variant="description"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>

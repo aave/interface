@@ -139,8 +139,8 @@ export const BorrowInfo = ({
                 <ReserveSubheader value={reserve.borrowInfo!.total.usd} />
                 <Typography
                   component="span"
-                  color="fg-1"
-                  variant="secondary16"
+                  color="fg-2"
+                  variant="description"
                   sx={{ display: 'inline-block', mx: 1 }}
                 >
                   <Trans>of</Trans>

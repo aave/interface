@@ -28,13 +28,7 @@ export const ListValueRow = ({
         </Box>
 
         {!disabled && (
-          <FormattedNumber
-            value={subValue}
-            variant="subheader2"
-            color="fg-2"
-            symbol="USD"
-            mb={0.5}
-          />
+          <FormattedNumber value={subValue} variant="description" color="fg-2" symbol="USD" />
         )}
       </Box>
     </Row>

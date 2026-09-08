@@ -64,7 +64,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
       <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <FormattedNumber compact value={reserve.size.amount.value} variant="h5" />
-          <ReserveSubheader value={reserve.size.usd} rightAlign={true} />
+          <ReserveSubheader value={reserve.size.usd} />
         </Box>
       </Row>
       <Row
@@ -103,7 +103,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
                 value={Number(reserve.borrowInfo.total.amount.value)}
                 variant="h5"
               />
-              <ReserveSubheader value={String(reserve.borrowInfo.total.usd)} rightAlign={true} />
+              <ReserveSubheader value={String(reserve.borrowInfo.total.usd)} />
             </>
           ) : (
             <NoData variant={'h5'} />

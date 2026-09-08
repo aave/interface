@@ -331,10 +331,10 @@ export const MigrationListItem = ({
           ))}
 
         <ListColumn>
-          <FormattedNumber value={amount} variant="h5" color={baseColor} />
+          <FormattedNumber value={amount} variant="h5" color={baseColor} sx={{ mb: '2px' }} />
           <FormattedNumber
             value={amountInUSD}
-            variant="subheader2"
+            variant="description"
             color={baseColor}
             symbol="USD"
             symbolsColor={baseColor}
