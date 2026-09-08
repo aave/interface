@@ -1,4 +1,4 @@
-import { SearchIcon, XIcon } from '@heroicons/react/outline';
+import { SearchIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
 import {
@@ -573,23 +573,13 @@ export const MarketSwitcher = () => {
 
   const renderSelectorContent = (mobile: boolean) => (
     <>
-      {/* Mobile-only close button */}
-      {mobile && (
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', px: 2, pt: 1 }}>
-          <IconButton size="small" onClick={handleClose} sx={{ p: 0.5 }}>
-            <SvgIcon sx={{ fontSize: '18px' }}>
-              <XIcon />
-            </SvgIcon>
-          </IconButton>
-        </Box>
-      )}
-
-      {/* Search — flush to the top edge; keeps the 1px ring border, no soft shadow */}
+      {/* Search — flush to the top edge; the desktop popover keeps a 1px ring, the mobile sheet
+          drops it so it doesn't read as two stray rules across the full-bleed width. */}
       <Box
         sx={{
           height: '3.23rem',
           px: '1rem',
-          boxShadow: `0 0 0 1px ${figVars['border-1']}`,
+          boxShadow: mobile ? 'none' : `0 0 0 1px ${figVars['border-1']}`,
           display: 'flex',
           alignItems: 'center',
           flexShrink: 0,

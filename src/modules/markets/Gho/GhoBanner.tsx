@@ -115,7 +115,6 @@ export const SavingsGhoBanner = ({
       href={ROUTES.sGHO}
       sx={{
         ...BANNER_SURFACE_SX,
-        mt: 5,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -161,21 +160,9 @@ const GhoSavingsBannerMobile = ({ hasLegacyPosition }: { hasLegacyPosition: bool
       href={ROUTES.sGHO}
       sx={{
         ...BANNER_SURFACE_SX,
-        mt: 5,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
         height: '188px',
-        gap: { xs: 6 },
       }}
     >
-      <Box
-        component="img"
-        src="/gho-coins.png"
-        alt="GHO coins"
-        sx={{ position: 'absolute', height: '100px', top: -8, right: 8 }}
-      />
       <Stack
         direction="column"
         sx={{ width: '100%', height: '100%', padding: '16px' }}

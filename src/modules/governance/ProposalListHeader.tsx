@@ -70,32 +70,32 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
   handleSearchQueryChange,
 }) => {
   return (
-    <>
-      <TitleWithSearchBar
-        title={<Trans>Proposals</Trans>}
-        titleProps={{ variant: 'h3', sx: { textTransform: 'capitalize' } }}
-        onSearchTermChange={handleSearchQueryChange}
-        searchPlaceholder="Search proposals"
-      />
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <Select
-          id="filter"
-          value={proposalFilter}
-          sx={{ minWidth: 140 }}
-          onChange={handleChange}
-          size="small"
-        >
-          <MenuItem value="all">
-            <Trans>All proposals</Trans>
-          </MenuItem>
-          {getProposalStates().map((key) => (
-            <MenuItem key={key} value={key}>
-              {key}
-            </MenuItem>
-          ))}
-        </Select>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <TitleWithSearchBar
+          title={<Trans>Proposals</Trans>}
+          titleProps={{ variant: 'h3', sx: { textTransform: 'capitalize' } }}
+          onSearchTermChange={handleSearchQueryChange}
+          searchPlaceholder="Search proposals"
+        />
       </Box>
-    </>
+      <Select
+        id="filter"
+        value={proposalFilter}
+        sx={{ minWidth: 140, flexShrink: 0 }}
+        onChange={handleChange}
+        size="small"
+      >
+        <MenuItem value="all">
+          <Trans>All proposals</Trans>
+        </MenuItem>
+        {getProposalStates().map((key) => (
+          <MenuItem key={key} value={key}>
+            {key}
+          </MenuItem>
+        ))}
+      </Select>
+    </Box>
   );
 };
 

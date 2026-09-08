@@ -154,7 +154,7 @@ export const MarketAssetsListContainer = () => {
   const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: '1.5rem', sm: '3rem' } }}>
       {displayGhoBanner && <SavingsGhoBanner />}
 
       <AssetsFilterBar
@@ -214,7 +214,7 @@ export const MarketAssetsListContainer = () => {
             display: 'flex',
             flexDirection: { xs: 'column', sm: 'row' },
             alignItems: { xs: 'flex-start', sm: 'center' },
-            gap: { xs: 1, sm: 3 },
+            gap: { xs: '1rem', sm: '0.75rem' },
           }}
         >
           {frozenOrPausedReserves.length > 0 && (
@@ -231,10 +231,7 @@ export const MarketAssetsListContainer = () => {
                 label={<Trans>Show frozen/paused assets</Trans>}
                 componentsProps={{ typography: { variant: 'subheader1' } }}
               />
-              <Divider
-                orientation={sm ? 'horizontal' : 'vertical'}
-                sx={{ width: { xs: '100%', sm: 'auto' }, height: { sm: '1.25rem' } }}
-              />
+              {!sm && <Divider orientation="vertical" sx={{ height: '1.25rem' }} />}
             </>
           )}
           <FormControlLabel

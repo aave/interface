@@ -491,27 +491,15 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           dataCy={`rewardBox_${stakedToken}`}
           bottomLineComponent={<Box sx={{ height: '19px' }} />}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { sm: 'row', xs: 'column' },
-              justifyContent: 'space-between',
-            }}
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={onStakeRewardClaimAction}
+            disabled={stakeUserData?.userIncentivesToClaim === '0'}
+            data-cy={`claimBtn_${stakedToken}`}
           >
-            <Button
-              variant="contained"
-              onClick={onStakeRewardClaimAction}
-              disabled={stakeUserData?.userIncentivesToClaim === '0'}
-              data-cy={`claimBtn_${stakedToken}`}
-              sx={{
-                flex: 1,
-                mb: { xs: 2, sm: 0 },
-                mr: { xs: 0, sm: 1 },
-              }}
-            >
-              <Trans>Claim</Trans>
-            </Button>
-          </Box>
+            <Trans>Claim</Trans>
+          </Button>
         </StakeActionBox>
       </Stack>
       {children}

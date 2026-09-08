@@ -10,7 +10,7 @@ import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { depositRowActionSx } from 'src/utils/buttonStyles';
+import { depositRowActionsSx, depositRowActionSx, depositRowSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 
 interface StkGhoDepositRowProps {
@@ -67,19 +67,7 @@ export const StkGhoDepositRow = ({
   );
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: { xs: 'stretch', xsm: 'center' },
-        justifyContent: 'space-between',
-        flexDirection: { xs: 'column', xsm: 'row' },
-        gap: { xs: 4, xsm: 4 },
-        borderRadius: { xs: '8px', xsm: '6px' },
-        border: `1px solid ${figVars['border-0']}`,
-        p: 4,
-        mb: 6,
-      }}
-    >
+    <Box sx={{ ...depositRowSx, border: `1px solid ${figVars['border-0']}` }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, minWidth: 0 }}>
         <TokenIcon symbol="stkgho" sx={{ width: 36, height: 36 }} />
         <Box sx={{ minWidth: 0 }}>
@@ -100,15 +88,7 @@ export const StkGhoDepositRow = ({
         </Box>
       </Box>
 
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: { xs: 'space-between', xsm: 'flex-end' },
-          gap: { xs: 4, xsm: 3 },
-          flexShrink: 0,
-        }}
-      >
+      <Box sx={depositRowActionsSx}>
         {meritIncentives ? (
           <ContentWithTooltip
             tooltipContent={

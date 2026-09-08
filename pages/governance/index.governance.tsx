@@ -51,7 +51,7 @@ export default function Governance() {
           onChange={(_, value) => setMode(value)}
           sx={{
             width: { xs: '100%', xsm: '359px' },
-            mb: 4,
+            mb: '1.5rem',
             display: { xs: 'flex', lg: 'none' },
           }}
         >

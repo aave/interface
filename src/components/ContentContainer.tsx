@@ -20,7 +20,7 @@ export const ContentContainer = ({
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        pt: disableTopPadding ? 0 : '2rem',
+        pt: disableTopPadding ? 0 : { xs: '1.5rem', xsm: '2rem' },
       }}
     >
       <Container {...containerProps}>{children}</Container>

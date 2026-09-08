@@ -97,6 +97,7 @@ export const ListWrapper = ({
   };
 
   const collapsed = isCollapse && !noData;
+  const showCollapseButton = !!localStorageName && !noData;
 
   const collapseText = collapsed ? <Trans>Show</Trans> : <Trans>Hide</Trans>;
 
@@ -138,8 +139,8 @@ export const ListWrapper = ({
           <Box
             sx={{
               display: 'flex',
+              flexWrap: 'wrap',
               alignItems: 'center',
-              justifyContent: 'space-between',
               minHeight: CARD_HEADING_HEIGHT,
               // Title type (H4) — scoped to this row, NOT the whole band, or it would flatten the
               // second row's stat typography too. Consumers pass their own heading variant, so
@@ -158,20 +159,45 @@ export const ListWrapper = ({
           >
             <Box
               sx={{
-                width: '100%',
                 display: 'flex',
-                alignItems: { xs: 'flex-start', xsm: 'center' },
-                flexDirection: { xs: 'column', xsm: 'row' },
+                alignItems: 'center',
+                minWidth: 0,
+                // A card without a subtitle wants the title to span, so its own controls can
+                // right-align inside it. One with a subtitle leaves room for it alongside.
+                ...(subTitleComponent ? {} : { flex: 1 }),
               }}
             >
               {titleComponent}
-              {subTitleComponent}
             </Box>
 
-            {!!localStorageName && !noData && (
+            {subTitleComponent && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  ...(showCollapseButton && {
+                    // Below xsm the Hide button takes the first row, so the subtitle sorts after
+                    // it and claims a full line of its own.
+                    order: { xs: 1, xsm: 0 },
+                    flexBasis: { xs: '100%', xsm: 'auto' },
+                    justifyContent: 'flex-end',
+                    mt: { xs: '1rem', xsm: 0 },
+                  }),
+                }}
+              >
+                {subTitleComponent}
+              </Box>
+            )}
+
+            {showCollapseButton && (
               <Button
                 variant="tertiary"
                 size="medium"
+                sx={{
+                  ml: 'auto',
+                  flexShrink: 0,
+                  '& .MuiButton-endIcon': { display: { xs: 'none', xsm: 'inline-flex' } },
+                }}
                 onClick={() => {
                   handleTrackingEvents();
 

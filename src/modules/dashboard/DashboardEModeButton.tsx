@@ -69,6 +69,8 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         sx={{
           ml: 1,
           borderRadius: '4px',
+          height: { xs: '2.25rem', xsm: '1.75rem' },
+          px: { xs: '0.88rem', xsm: '0.62rem' },
           ...(isEModeDisabled
             ? { backgroundColor: open ? figVars['bg-6'] : undefined }
             : {

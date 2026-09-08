@@ -449,6 +449,7 @@ export const SupplyAssetsListItemMobile = ({
           iconSymbol={iconSymbol}
           supplyAPY={supplyAPY}
           collateralEnabled={usageAsCollateralEnabledOnUser}
+          size="medium"
           sx={{ mr: 1.5 }}
           fullWidth
         />

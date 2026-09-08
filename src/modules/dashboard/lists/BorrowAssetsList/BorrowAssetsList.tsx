@@ -225,7 +225,7 @@ export const BorrowAssetsList = () => {
             <Trans>Assets to borrow</Trans>
           </Typography>
 
-          {!showCards && !isListCollapsed && (
+          {!isListCollapsed && (
             <AssetCategoryMultiSelect
               selectedCategories={selectedCategories}
               onCategoriesChange={setSelectedCategories}
@@ -239,63 +239,50 @@ export const BorrowAssetsList = () => {
       withTopMargin
       noData={borrowDisabled}
       subChildrenComponent={
-        <>
-          {showCards && (
+        <Box>
+          {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
+            <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%' }}>
+              <Trans>
+                Be careful - You are very close to liquidation. Consider depositing more collateral
+                or paying down some of your borrowed positions
+              </Trans>
+            </Alert>
+          )}
+
+          {!borrowDisabled && (
             <>
-              <Box sx={{ px: 4, pb: 4, pt: '2px' }}>
-                <AssetCategoryMultiSelect
-                  selectedCategories={selectedCategories}
-                  onCategoriesChange={setSelectedCategories}
-                  disabled={isLoading || !!error}
-                />
-              </Box>
+              {user?.isInIsolationMode && (
+                <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
+                  <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
+                  <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
+                    Learn More
+                  </Link>
+                </Alert>
+              )}
+              {user?.isInEmode && (
+                <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
+                  <Trans>
+                    In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
+                    assets
+                  </Trans>
+                </Alert>
+              )}
+              {user?.totalCollateralMarketReferenceCurrency === '0' && (
+                <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
+                  <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
+                </Alert>
+              )}
             </>
           )}
-          <Box>
-            {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
-              <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%' }}>
-                <Trans>
-                  Be careful - You are very close to liquidation. Consider depositing more
-                  collateral or paying down some of your borrowed positions
-                </Trans>
-              </Alert>
-            )}
-
-            {!borrowDisabled && (
-              <>
-                {user?.isInIsolationMode && (
-                  <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
-                    <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
-                    <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
-                      Learn More
-                    </Link>
-                  </Alert>
-                )}
-                {user?.isInEmode && (
-                  <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
-                    <Trans>
-                      In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
-                      assets
-                    </Trans>
-                  </Alert>
-                )}
-                {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                  <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
-                    <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-                  </Alert>
-                )}
-              </>
-            )}
-            {borrowDisabled && (
-              <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
-                <Trans>
-                  We couldn&apos;t find any assets related to your search. Try again with a
-                  different category.
-                </Trans>
-              </Alert>
-            )}
-          </Box>
-        </>
+          {borrowDisabled && (
+            <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
+              <Trans>
+                We couldn&apos;t find any assets related to your search. Try again with a different
+                category.
+              </Trans>
+            </Alert>
+          )}
+        </Box>
       }
     >
       <>

@@ -300,7 +300,7 @@ export const SupplyAssetsList = () => {
             <Trans>Assets to supply</Trans>
           </Typography>
 
-          {!showCards && !isListCollapsed && (
+          {!isListCollapsed && (
             <AssetCategoryMultiSelect
               selectedCategories={selectedCategories}
               onCategoriesChange={setSelectedCategories}
@@ -315,15 +315,6 @@ export const SupplyAssetsList = () => {
       noData={supplyDisabled}
       subChildrenComponent={
         <>
-          {showCards && !isListCollapsed && (
-            <Box sx={{ px: 4, pb: 2, pt: '2px' }}>
-              <AssetCategoryMultiSelect
-                selectedCategories={selectedCategories}
-                onCategoriesChange={setSelectedCategories}
-                disabled={isLoading || !!error}
-              />
-            </Box>
-          )}
           <Box>
             {user?.isInIsolationMode ? (
               <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>

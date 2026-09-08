@@ -36,3 +36,25 @@ export const stakePanelActionSx = {
   mb: { xs: 6, xsm: 0 },
   width: { xs: '100%', xsm: 'auto' },
 } satisfies SxProps<Theme>;
+
+/** Outer shell of an sGHO / stkGHO deposit row: identity on the left, actions on the right. */
+export const depositRowSx = {
+  display: 'flex',
+  alignItems: { xs: 'stretch', xsm: 'center' },
+  justifyContent: 'space-between',
+  flexDirection: { xs: 'column', xsm: 'row' },
+  gap: 4,
+  borderRadius: { xs: '8px', xsm: '6px' },
+  p: 4,
+  mb: 6,
+} satisfies SxProps<Theme>;
+
+/** The APR block + action buttons of a deposit row; the buttons take their own line on mobile. */
+export const depositRowActionsSx = {
+  display: 'flex',
+  flexDirection: { xs: 'column', xsm: 'row' },
+  alignItems: { xs: 'stretch', xsm: 'center' },
+  justifyContent: { xs: 'flex-start', xsm: 'flex-end' },
+  gap: { xs: '1rem', xsm: '0.75rem' },
+  flexShrink: 0,
+} satisfies SxProps<Theme>;

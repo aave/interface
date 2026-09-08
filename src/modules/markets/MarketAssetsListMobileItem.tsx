@@ -70,7 +70,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
       <Row
         caption={<Trans>Supply APY</Trans>}
         captionVariant="description"
-        mb={3}
+        mb="1rem"
         align="flex-start"
       >
         <IncentivesCard
@@ -92,7 +92,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
         />
       </Row>
 
-      <Divider sx={{ mb: 3 }} />
+      <Divider sx={{ mb: '1rem' }} />
 
       <Row caption={<Trans>Total borrowed</Trans>} captionVariant="description" mb={3}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
@@ -119,7 +119,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           />
         }
         captionVariant="description"
-        mb={3}
+        mb="1rem"
         align="flex-start"
       >
         <IncentivesCard

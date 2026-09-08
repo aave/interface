@@ -22,14 +22,16 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
 
   return (
     <ListMobileItemWrapper>
-      <StakeAssetName
-        iconSymbol={umbrellaStakeAsset.iconSymbol}
-        symbol={umbrellaStakeAsset.symbol}
-        totalAmountStakedUSD={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStakedUSD}
-        targetLiquidityUSD={umbrellaStakeAsset.formattedStakeTokenData.targetLiquidityUSD}
-        apyAtTargetLiquidity={umbrellaStakeAsset.totalRewardApyAtTargetLiquidity}
-        explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.tokenAddress}`}
-      />
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <StakeAssetName
+          iconSymbol={umbrellaStakeAsset.iconSymbol}
+          symbol={umbrellaStakeAsset.symbol}
+          totalAmountStakedUSD={umbrellaStakeAsset.formattedStakeTokenData.totalAmountStakedUSD}
+          targetLiquidityUSD={umbrellaStakeAsset.formattedStakeTokenData.targetLiquidityUSD}
+          apyAtTargetLiquidity={umbrellaStakeAsset.totalRewardApyAtTargetLiquidity}
+          explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.tokenAddress}`}
+        />
+      </Box>
       <Row mt={2} caption={<ApyTooltip />} captionVariant="description" mb={3}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <StakingApyItem stakeData={umbrellaStakeAsset} />

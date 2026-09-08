@@ -30,7 +30,7 @@ export const AmountSharesItem = ({ stakeData }: { stakeData: MergedStakeData }) 
   const unstakeTimeRemaining = endOfCooldown + unstakeWindow - now;
 
   return (
-    <Stack direction="column" alignItems="center" justifyContent="center">
+    <Stack direction="column" alignItems="flex-end" justifyContent="center">
       {!isCooldownActive && !isUnstakeWindowActive ? (
         <>
           <FormattedNumber compact value={stakeTokenBalance} variant="h5" />

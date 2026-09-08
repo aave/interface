@@ -40,7 +40,7 @@ export const PageHeader = ({
             flexDirection: { xs: 'column', md: 'row' },
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            gap: 4,
+            gap: { xs: '1.5rem', md: '1rem' },
           }}
         >
           <Box
@@ -71,7 +71,9 @@ export const PageHeader = ({
           <Box
             sx={{
               display: 'flex',
-              gap: '2.5rem',
+              flexWrap: 'wrap',
+              columnGap: '2.5rem',
+              rowGap: '1rem',
               alignSelf: { md: 'flex-end' },
             }}
           >

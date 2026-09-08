@@ -42,6 +42,7 @@ export const AssetsFilterBar = ({
         sx={{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: { xs: 'space-between' },
           gap: 2,
           width: { xs: '100%', sm: 'auto' },
         }}
@@ -56,7 +57,6 @@ export const AssetsFilterBar = ({
               gap: 2,
               textTransform: 'none',
               justifyContent: 'space-between',
-              flex: { xs: 1, sm: 'none' },
             }}
           >
             <Typography variant="buttonM" sx={{ whiteSpace: 'nowrap' }}>
@@ -75,7 +75,6 @@ export const AssetsFilterBar = ({
           selectedCategories={selectedCategories}
           onCategoriesChange={onCategoriesChange}
           disabled={categoriesDisabled}
-          sx={{ flex: { xs: 1, sm: 'none' }, width: { xs: 'auto', sm: 'unset' } }}
         />
       </Box>
     </Box>

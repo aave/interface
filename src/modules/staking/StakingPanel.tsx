@@ -548,8 +548,6 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
           <Box
             sx={{
               display: 'flex',
-              flexDirection: { sm: 'row', xs: 'column' },
-              justifyContent: 'space-between',
               gap: '0.75rem',
             }}
           >
@@ -558,11 +556,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
               onClick={onStakeRewardClaimAction}
               disabled={stakeUserData?.userIncentivesToClaim === '0'}
               data-cy={`claimBtn_${stakedToken}`}
-              sx={{
-                flex: 1,
-                mb: { xs: 2, sm: 0 },
-                mr: { xs: 0, sm: 1 },
-              }}
+              sx={{ flex: 1 }}
             >
               <Trans>Claim</Trans>
             </Button>
@@ -572,7 +566,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
                 onClick={onStakeRewardClaimRestakeAction}
                 disabled={stakeUserData?.userIncentivesToClaim === '0'}
                 data-cy={`restakeBtn_${stakedToken}`}
-                style={{ flex: 1 }} // marginLeft adds space between buttons
+                sx={{ flex: 1 }}
               >
                 <Trans>Restake</Trans>
               </Button>
