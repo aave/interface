@@ -1,0 +1,198 @@
+src/modules/sGho/SGhoDepositRow.tsx
+  s_17e48c68c2f1a5::t_b2e39f2234e726 2
+  s_17e48c68c2f1a5::t_5910e9b2bbd789 5,77,86
+src/layouts/components/StakingMenu.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 2
+  s_17e48c68c2f1a5::t_26cc7324192292 18
+src/modules/migration/MigrationIsolationWarning.tsx
+  s_17e48c68c2f1a5::t_26cc7324192292 23
+  s_17e48c68c2f1a5::t_6d380889f27cf9 1-22,24-33
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 5
+  s_17e48c68c2f1a5::t_510e035e3b18c9 144,157
+  s_17e48c68c2f1a5::t_09511c561f55a5 71,239,243
+  s_17e48c68c2f1a5::t_26cc7324192292 163
+src/modules/dashboard/lists/ListTopInfoItem.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 1,28
+src/components/lists/ListHeaderTitle.tsx
+  s_17e48c68c2f1a5::t_510e035e3b18c9 15-16,19-20,32,55
+  s_17e48c68c2f1a5::t_26cc7324192292 17-18
+src/modules/faucet/FaucetItemLoader.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 7,9,17-21
+src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
+  s_17e48c68c2f1a5::t_09511c561f55a5 40,88
+  s_17e48c68c2f1a5::t_17877dec0f6f02 6
+src/components/lists/ListMobileItem.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 43
+src/modules/bridge/BridgeTransactionListItem.tsx
+  s_17e48c68c2f1a5::t_6625b2979e8e03 182
+src/modules/dashboard/lists/ListButtonsColumn.tsx
+  s_17e48c68c2f1a5::t_26cc7324192292 5,14
+src/modules/reserve-overview/ReserveTopDetails.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 2,38,50,55,60
+src/modules/sGho/SGhoLoggedOutPreview.tsx
+  s_17e48c68c2f1a5::t_eacf9083437830 22
+  s_17e48c68c2f1a5::t_b2e39f2234e726 2
+src/modules/reserve-overview/ReserveConfigurationWrapper.tsx
+  s_17e48c68c2f1a5::t_0018c4b692c012 6,29
+src/modules/bridge/BridgeTopPanel.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 2
+src/utils/buttonStyles.ts
+  s_17e48c68c2f1a5::t_49d32965b97a86 25-38
+src/modules/history/HistoryItemLoader.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 6-8,10,18-27,39,42,44,47-49
+src/modules/dashboard/lists/ListHeader.tsx
+  s_17e48c68c2f1a5::t_26cc7324192292 17
+src/layouts/MobileMenu.tsx
+  s_17e48c68c2f1a5::t_6a1eebadc8d408 81,123
+  s_17e48c68c2f1a5::t_a72f5d4255aa2e 138,179
+src/layouts/components/DrawerWrapper.tsx
+  s_17e48c68c2f1a5::t_6a1eebadc8d408 4-5,12,21,28-29
+src/locales/en/messages.po
+  s_17e48c68c2f1a5::t_10ea15043c8286 748,2916
+src/modules/dashboard/lists/ListLoader.tsx
+  s_17e48c68c2f1a5::t_09511c561f55a5 18,30-31
+  s_17e48c68c2f1a5::t_17877dec0f6f02 3
+src/utils/theme.tsx
+  s_17e48c68c2f1a5::t_0018c4b692c012 1226
+  s_17e48c68c2f1a5::t_17877dec0f6f02 223-225,231-233,257-259,770-772,1301-1303,1306-1318
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+  s_17e48c68c2f1a5::t_09511c561f55a5 69,303,318,379
+  s_17e48c68c2f1a5::t_17877dec0f6f02 8
+  s_17e48c68c2f1a5::t_26cc7324192292 271
+  s_17e48c68c2f1a5::t_510e035e3b18c9 44,251,265
+src/utils/cardStyles.ts
+  s_17e48c68c2f1a5::t_49d32965b97a86 27-32
+src/modules/history/HistoryWrapperMobile.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 21,240-241,244-262
+src/modules/dashboard/DashboardContentNoData.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 10
+src/modules/migration/MigrationListItemLoader.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 2,8
+src/components/primitives/BasicModal.tsx
+  s_17e48c68c2f1a5::t_0018c4b692c012 70
+src/modules/staking/StakingHeader.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 31,41
+src/modules/migration/MigrationListItem.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 8,64
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+  s_17e48c68c2f1a5::t_6c723a55c4a322 26-32,34,60
+  s_17e48c68c2f1a5::t_6625b2979e8e03 25
+src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 20,27,46
+src/modules/faucet/FaucetAssetsList.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 6,85-87
+  s_17e48c68c2f1a5::t_09511c561f55a5 32,64,71,83,101,123
+src/modules/sGho/YourInfoSidebar.tsx
+  s_17e48c68c2f1a5::t_830f60ebd971c9 4,15
+src/modules/sGho/SGhoHeader.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 2,58,65,71,87,121-124,127
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_17e48c68c2f1a5::t_b2e39f2234e726 2
+  s_17e48c68c2f1a5::t_5910e9b2bbd789 13,134,143,154
+src/layouts/components/NavItems.tsx
+  s_17e48c68c2f1a5::t_09511c561f55a5 94,127,149,177
+  s_17e48c68c2f1a5::t_6a1eebadc8d408 23
+src/modules/staking/StakingPanel.tsx
+  s_17e48c68c2f1a5::t_5910e9b2bbd789 236,275,289
+  s_17e48c68c2f1a5::t_49d32965b97a86 299
+  s_17e48c68c2f1a5::t_830f60ebd971c9 117
+  s_17e48c68c2f1a5::t_26cc7324192292 190
+  s_17e48c68c2f1a5::t_b2e39f2234e726 5,191-192
+  s_17e48c68c2f1a5::t_4a82f7fbf47456 18-19
+src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+  s_17e48c68c2f1a5::t_26cc7324192292 141
+  s_17e48c68c2f1a5::t_09511c561f55a5 60,201
+  s_17e48c68c2f1a5::t_17877dec0f6f02 6
+  s_17e48c68c2f1a5::t_510e035e3b18c9 122,135
+src/components/MarketSwitcher.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 225,800
+src/layouts/AppHeader.tsx
+  s_17e48c68c2f1a5::t_6a1eebadc8d408 50
+  s_17e48c68c2f1a5::t_0018c4b692c012 212
+  s_17e48c68c2f1a5::t_17877dec0f6f02 129-130
+  s_17e48c68c2f1a5::t_4a82f7fbf47456 424
+  s_17e48c68c2f1a5::t_a8230de83fe9a3 45-49
+src/modules/staking/GhoStakingPanel.tsx
+  s_17e48c68c2f1a5::t_49d32965b97a86 281,290
+  s_17e48c68c2f1a5::t_4a82f7fbf47456 20-21
+  s_17e48c68c2f1a5::t_26cc7324192292 193
+  s_17e48c68c2f1a5::t_b2e39f2234e726 5,194-195
+  s_17e48c68c2f1a5::t_5910e9b2bbd789 239,256,270
+  s_17e48c68c2f1a5::t_830f60ebd971c9 120
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+  s_17e48c68c2f1a5::t_09511c561f55a5 56,89
+  s_17e48c68c2f1a5::t_17877dec0f6f02 21
+src/modules/dashboard/DashboardTopPanel.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 188,193,214,219,227,248
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 71
+src/modules/markets/MarketAssetsList.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 6,57
+src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 4,60
+src/modules/dashboard/DashboardContentWrapper.tsx
+  s_17e48c68c2f1a5::t_2adab9e48d1acb 1
+  s_17e48c68c2f1a5::t_f10a845934e842 17-22,25-28,31-33,35-37,39-44
+  s_17e48c68c2f1a5::t_26cc7324192292 8-9,16
+src/modules/migration/MigrationListMobileItem.tsx
+  s_17e48c68c2f1a5::t_d39a84dcb0bf58 186,225,284,330,375
+  s_17e48c68c2f1a5::t_17877dec0f6f02 273,291
+src/components/lists/listBreakpoints.ts
+  s_17e48c68c2f1a5::t_17877dec0f6f02 1-8,10-12
+  s_17e48c68c2f1a5::t_26cc7324192292 9
+src/components/TopInfoPanel/PageTitle.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 54
+src/modules/migration/MigrationMobileList.tsx
+  s_17e48c68c2f1a5::t_6d380889f27cf9 7,9,23,36,47-51
+  s_17e48c68c2f1a5::t_26cc7324192292 46
+src/modules/markets/MarketAssetsListMobileItem.tsx
+  s_17e48c68c2f1a5::t_6c723a55c4a322 65,98
+src/modules/staking/StakingPanelSkeleton.tsx
+  s_17e48c68c2f1a5::t_830f60ebd971c9 2,6
+src/modules/umbrella/UmbrellaHeader.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 30-31,37,45,55,71,79
+src/modules/history/HistoryTopPanel.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 2
+src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+  s_17e48c68c2f1a5::t_09511c561f55a5 91,228,243,302,306
+  s_17e48c68c2f1a5::t_17877dec0f6f02 8
+  s_17e48c68c2f1a5::t_510e035e3b18c9 179,192
+  s_17e48c68c2f1a5::t_26cc7324192292 198
+src/modules/markets/MarketsTopPanel.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 23,32,41
+src/modules/migration/MigrationList.tsx
+  s_17e48c68c2f1a5::t_26cc7324192292 84
+  s_17e48c68c2f1a5::t_daf38a1adcb183 2
+  s_17e48c68c2f1a5::t_6d380889f27cf9 11,72,88
+  s_17e48c68c2f1a5::t_17877dec0f6f02 4,60
+src/modules/umbrella/UmbrellaAssetsDefault.tsx
+  s_17e48c68c2f1a5::t_17877dec0f6f02 5,69,96
+  s_17e48c68c2f1a5::t_6c723a55c4a322 171
+  s_17e48c68c2f1a5::t_6625b2979e8e03 110,170,212
+  s_17e48c68c2f1a5::t_26cc7324192292 133,186
+src/modules/governance/proposal/ProposalOverview.tsx
+  s_17e48c68c2f1a5::t_0018c4b692c012 55
+  s_17e48c68c2f1a5::t_a8230de83fe9a3 28
+src/modules/reserve-overview/ReserveActions.tsx
+  s_17e48c68c2f1a5::t_6c723a55c4a322 22
+  s_17e48c68c2f1a5::t_0018c4b692c012 247,259
+src/layouts/headerLayout.ts
+  s_17e48c68c2f1a5::t_dfd30d80f8d879 11-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "c3406eb7e705126e11ccf42931c91859d4902dbc",
+  "prompts": {},
+  "sessions": {
+    "s_17e48c68c2f1a5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7ed58cee-44ab-4922-8c7f-26db7dc4435e",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
