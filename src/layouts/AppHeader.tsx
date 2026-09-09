@@ -248,12 +248,14 @@ export function AppHeader() {
             }}
             onClick={() => setMobileDrawerOpen(false)}
           >
-            <Box sx={{ display: { xs: 'none', xsm: 'block' } }}>
+            <Box sx={{ display: ENABLE_TESTNET ? { xs: 'none', xsm: 'block' } : 'block' }}>
               <AaveLogo width="5.26144rem" height="0.875rem" />
             </Box>
-            <Box sx={{ display: { xs: 'block', xsm: 'none' } }}>
-              <AaveLogoMark width="1.7rem" height="0.875rem" />
-            </Box>
+            {ENABLE_TESTNET && (
+              <Box sx={{ display: { xs: 'block', xsm: 'none' } }}>
+                <AaveLogoMark width="1.7rem" height="0.875rem" />
+              </Box>
+            )}
           </Box>
           {ENABLE_TESTNET && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mr: { xs: 1, sm: 3 } }}>

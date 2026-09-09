@@ -25,14 +25,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
   }
 
   return (
-    <Box
-      sx={{
-        display: 'inline-flex',
-        alignItems: { xs: 'flex-start', xsm: 'center' },
-        flexDirection: { xs: 'column', xsm: 'row' },
-      }}
-      data-cy={'HealthFactorTopPannel'}
-    >
+    <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'HealthFactorTopPannel'}>
       {value === '-1' ? (
         <Typography variant="h5" color="success.main">
           ∞
@@ -52,7 +45,7 @@ export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactor
           onClick={onInfoClick}
           variant="tertiary"
           size="small"
-          sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
+          sx={{ minWidth: 'unset', ml: 2 }}
         >
           <Trans>Risk details</Trans>
         </Button>

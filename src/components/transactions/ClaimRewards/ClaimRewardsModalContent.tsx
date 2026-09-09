@@ -357,7 +357,7 @@ export const ClaimRewardsModalContent = ({ user, reserves }: ClaimRewardsModalCo
       )}
 
       {meritClaimRewards?.claimable && meritClaimRewards.claimable.length > 0 && (
-        <Typography variant="description" color="fg-2" sx={{ mb: 2 }}>
+        <Typography variant="description" color="fg-2">
           {selectedRewardSymbol === RewardSymbol.ALL ? (
             <Trans>Claiming all protocol rewards and merit rewards together</Trans>
           ) : selectedRewardSymbol === RewardSymbol.MERIT_ALL ||

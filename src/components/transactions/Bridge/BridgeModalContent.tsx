@@ -337,7 +337,12 @@ export const BridgeModalContent = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 6 }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mb: 6, height: '1.5rem' }}
+      >
         <TxModalTitle title={<Trans>Bridge GHO</Trans>} sx={{ mb: 0, pr: 0 }} />
         {user && (
           <Button

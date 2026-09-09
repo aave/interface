@@ -235,13 +235,7 @@ export const DashboardTopPanel = () => {
 
         {currentAccount && (
           <PageHeaderStat label={<Trans>Available rewards</Trans>} loading={loading}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: { xs: 'flex-start', xsm: 'center' },
-                flexDirection: { xs: 'column', xsm: 'row' },
-              }}
-            >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'Claim_Box'}>
                 <FormattedNumber
                   value={claimableRewardsUsd}
@@ -257,7 +251,7 @@ export const DashboardTopPanel = () => {
                 variant="tertiary"
                 size="small"
                 onClick={() => openClaimRewards()}
-                sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
+                sx={{ minWidth: 'unset', ml: 2 }}
                 data-cy={'Dashboard_Claim_Button'}
               >
                 <Trans>Claim</Trans>
