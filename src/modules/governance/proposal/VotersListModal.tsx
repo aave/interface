@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
+import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { ProposalVoteDisplayInfo, VotersSplitDisplay } from 'src/modules/governance/types';
 
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -115,9 +116,7 @@ export const VotersListModal = ({
 
   return (
     <BasicModal open={open} setOpen={close} contentMaxWidth={mdUp ? 800 : 360}>
-      <Typography variant="h2">
-        <Trans>Votes</Trans>
-      </Typography>
+      <TxModalTitle title={<Trans>Votes</Trans>} sx={{ mb: 0 }} />
       {mdUp ? (
         <Grid container spacing={4} sx={{ mt: 4 }}>
           <Grid item xs={6}>

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 
 import { Section } from '../Section';
 import { Specimen } from '../Specimen';
@@ -15,9 +16,7 @@ const ModalDemo = () => {
         Open modal
       </Button>
       <BasicModal open={open} setOpen={setOpen}>
-        <Typography variant="h2" sx={{ mb: 4 }}>
-          Modal title
-        </Typography>
+        <TxModalTitle title="Modal title" sx={{ mb: 4 }} />
         <Typography variant="description" color="fg-2">
           BasicModal renders the Paper &quot;modal&quot; variant plus the themed backdrop and close
           icon.

@@ -18,6 +18,7 @@ export const TxModalTitle = ({ title, symbol, sx }: TxModalTitleProps) => {
           fontSize: '1rem',
           fontWeight: 500,
           lineHeight: '1.5rem',
+          pr: '2rem',
         },
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}

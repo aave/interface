@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { AlertColor, Typography } from '@mui/material';
+import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { onAccent } from 'src/utils/figmaColors';
@@ -50,9 +51,7 @@ export const LiquidationRiskParametresInfoModal = ({
 
   return (
     <BasicModal open={open} setOpen={setOpen}>
-      <Typography variant="h2" mb={6}>
-        <Trans>Liquidation risk parameters</Trans>
-      </Typography>
+      <TxModalTitle title={<Trans>Liquidation risk parameters</Trans>} />
       <Typography mb={6}>
         <Trans>
           Your health factor and loan to value determine the assurance of your collateral. To avoid

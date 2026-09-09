@@ -410,7 +410,7 @@ export const SwitchAssetInput = ({
                   mb: '1rem',
                 }}
               >
-                <TxModalTitle title={<Trans>Select token</Trans>} sx={{ mb: 0 }} />
+                <TxModalTitle title={<Trans>Select token</Trans>} sx={{ mb: 0, pr: 0 }} />
                 <MarketLogo size={16} logo={networkConfig.networkLogoPath} sx={{ mr: 0 }} />
                 <Typography variant="secondary16" color="fg-2" sx={{ lineHeight: 1, mt: '1px' }}>
                   {networkName}
