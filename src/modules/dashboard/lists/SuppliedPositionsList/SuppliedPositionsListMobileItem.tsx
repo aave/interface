@@ -61,6 +61,16 @@ export const SuppliedPositionsListMobileItem = ({
   const disableWithdraw = !isActive || isPaused;
   const disableSupply = !isActive || isFrozen || isPaused;
 
+  const handleCollateralChange = () =>
+    openCollateralChange(
+      underlyingAsset,
+      currentMarket,
+      reserve.name,
+      'dashboard',
+      usageAsCollateralEnabledOnUser
+    );
+  const rowOpensCollateralChange = canBeEnabledAsCollateral && !isPaused && !isIsolated;
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -106,21 +116,17 @@ export const SuppliedPositionsListMobileItem = ({
         align={isIsolated ? 'flex-start' : 'center'}
         captionVariant="description"
         mb={2}
+        {...(rowOpensCollateralChange && {
+          onClick: handleCollateralChange,
+          sx: { cursor: 'pointer' },
+        })}
       >
         <ListItemUsedAsCollateral
           disabled={reserve.isPaused}
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
           canBeEnabledAsCollateral={canBeEnabledAsCollateral}
-          onToggleSwitch={() =>
-            openCollateralChange(
-              underlyingAsset,
-              currentMarket,
-              reserve.name,
-              'dashboard',
-              usageAsCollateralEnabledOnUser
-            )
-          }
+          onToggleSwitch={handleCollateralChange}
         />
       </Row>
 
