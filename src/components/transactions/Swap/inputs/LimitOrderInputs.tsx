@@ -148,7 +148,10 @@ export const LimitOrderInputs = ({
               sx={{
                 border: '1px solid',
                 borderColor: 'border-opaque',
-                transform: 'translateY(-130%)',
+                transform: 'translateY(calc(-130% - 6px))',
+                '&:active:not(.Mui-disabled)': {
+                  transform: 'translateY(calc(-130% - 6px)) scale(0.99)',
+                },
                 backgroundColor: 'bg-2',
                 color: 'fg-3',
                 '&:hover': { backgroundColor: 'bg-3' },
@@ -170,7 +173,7 @@ export const LimitOrderInputs = ({
                 size={38}
                 paused={state.actionsLoading || !!state.mainTxState.txHash}
                 sx={{
-                  transform: 'translateY(-124%)',
+                  transform: 'translateY(calc(-124% - 6px))',
                 }}
               />
             )}
