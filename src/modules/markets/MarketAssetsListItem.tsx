@@ -81,20 +81,14 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
             {name || reserve.underlyingToken.name}
           </Typography>
 
-          <Box
-            sx={{
-              p: { xs: '0', xsm: '3.625px 0px' },
-            }}
-          >
-            <Typography variant="subheader2" color="fg-3" noWrap>
-              {reserve.underlyingToken.symbol}
-              {reserve.isolationModeConfig?.canBeCollateral && (
-                <span style={{ marginLeft: '8px' }}>
-                  <IsolatedEnabledBadge />
-                </span>
-              )}
-            </Typography>
-          </Box>
+          <Typography variant="description" color="fg-3" noWrap>
+            {reserve.underlyingToken.symbol}
+            {reserve.isolationModeConfig?.canBeCollateral && (
+              <span style={{ marginLeft: '8px' }}>
+                <IsolatedEnabledBadge />
+              </span>
+            )}
+          </Typography>
         </Box>
         {reserve.underlyingToken.symbol === 'AMPL' && <AMPLToolTip />}
         {reserve.underlyingToken.symbol === 'renFIL' && <RenFILToolTip />}

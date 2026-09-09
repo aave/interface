@@ -132,19 +132,24 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           width: '100%',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: 0 }}>
+        <Box
+          sx={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: 0, maxWidth: '100%' }}
+        >
           {reserveIcon}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: 0 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0 }}>
                 {reserveName}
                 {!loading && (
-                  <Typography
-                    variant="h2"
-                    sx={{ fontSize: '1.875rem', color: 'fg-3', flexShrink: 0 }}
-                  >
-                    {poolReserve.underlyingToken.symbol}
-                  </Typography>
+                  <Box sx={{ minWidth: 0, overflow: 'hidden' }}>
+                    <DarkTooltip
+                      title={<Typography>{poolReserve.underlyingToken.symbol}</Typography>}
+                    >
+                      <Typography variant="h2" noWrap sx={{ fontSize: '1.875rem', color: 'fg-3' }}>
+                        {poolReserve.underlyingToken.symbol}
+                      </Typography>
+                    </DarkTooltip>
+                  </Box>
                 )}
               </Box>
               {!loading && (
