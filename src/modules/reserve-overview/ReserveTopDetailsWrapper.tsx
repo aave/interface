@@ -195,7 +195,8 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           sx={{
             display: 'flex',
             alignItems: 'flex-start',
-            gap: '2.5rem',
+            columnGap: '2.5rem',
+            rowGap: '1rem',
             flexWrap: { xs: 'wrap', md: 'nowrap' },
             flexShrink: 0,
           }}
