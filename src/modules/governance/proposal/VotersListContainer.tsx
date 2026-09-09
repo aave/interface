@@ -41,7 +41,7 @@ export const VotersListContainer = ({ voteInfo, voters }: VotersListProps): JSX.
       </Row>
       <VotersList compact={mdScreen} voters={voters.combinedVotes.slice(0, 10)} sx={{ pr: 2.25 }} />
       {hasMoreVoters && (
-        <Button variant="tertiary" fullWidth onClick={handleOpenAllVotes}>
+        <Button variant="tertiary" fullWidth onClick={handleOpenAllVotes} sx={{ mt: 4 }}>
           <Trans>View all votes</Trans>
         </Button>
       )}
