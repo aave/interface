@@ -8,8 +8,6 @@ import {
   SxProps,
   Theme,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
@@ -45,8 +43,6 @@ export const AssetCategoryMultiSelect = ({
   sx,
   variant = 'tertiary',
 }: AssetCategoryMultiSelectProps) => {
-  const { breakpoints } = useTheme();
-  const sm = useMediaQuery(breakpoints.down('sm'));
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const currentMarket = useRootStore((store) => store.currentMarket);
 
@@ -83,8 +79,6 @@ export const AssetCategoryMultiSelect = ({
         aria-expanded={open}
         endIcon={<ChevronUpDownIcon sx={{ fontSize: 18, color: 'fg-3' }} />}
         sx={{
-          width: sm ? '100%' : 'unset',
-          justifyContent: sm ? 'space-between' : 'center',
           textTransform: 'none',
           ...sx,
         }}

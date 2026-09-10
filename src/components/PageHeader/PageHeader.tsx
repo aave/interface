@@ -49,6 +49,7 @@ export const PageHeader = ({
               flexDirection: 'column',
               alignItems: 'flex-start',
               gap: '1rem',
+              flex: { md: 1 },
             }}
           >
             {disableTitleTypography ? (

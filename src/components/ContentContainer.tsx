@@ -9,6 +9,9 @@ interface ContentContainerProps {
   disableTopPadding?: boolean;
 }
 
+/** Top padding of the page content band; the mobile tab switchers mirror it below themselves. */
+export const CONTENT_TOP_PADDING = { xs: '1.5rem', xsm: '2rem' };
+
 export const ContentContainer = ({
   children,
   containerProps,
@@ -20,7 +23,7 @@ export const ContentContainer = ({
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        pt: disableTopPadding ? 0 : { xs: '1.5rem', xsm: '2rem' },
+        pt: disableTopPadding ? 0 : CONTENT_TOP_PADDING,
       }}
     >
       <Container {...containerProps}>{children}</Container>

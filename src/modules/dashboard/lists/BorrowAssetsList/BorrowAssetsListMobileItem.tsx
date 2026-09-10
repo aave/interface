@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
 import { useRootStore } from 'src/store/root';
+import { mobileCardActionsSx } from 'src/utils/buttonStyles';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
@@ -83,12 +84,11 @@ export const BorrowAssetsListMobileItem = ({
           protocolAction={ProtocolAction.borrow}
         />
       </Row>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+      <Box sx={mobileCardActionsSx}>
         <Button
           disabled={disableBorrow}
           variant="tertiary"
           onClick={() => openBorrow(underlyingAsset, currentMarket, name, 'dashboard')}
-          sx={{ mr: 1.5 }}
           fullWidth
         >
           <Trans>Borrow</Trans>

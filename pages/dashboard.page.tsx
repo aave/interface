@@ -7,7 +7,7 @@ import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
 import { ConnectWalletPaper } from '../src/components/ConnectWalletPaper';
-import { ContentContainer } from '../src/components/ContentContainer';
+import { CONTENT_TOP_PADDING, ContentContainer } from '../src/components/ContentContainer';
 import { MainLayout } from '../src/layouts/MainLayout';
 import { useWeb3Context } from '../src/libs/hooks/useWeb3Context';
 import { DashboardContentWrapper } from '../src/modules/dashboard/DashboardContentWrapper';
@@ -38,7 +38,7 @@ export default function Dashboard() {
             sx={{
               display: { xs: 'flex', lg: 'none' },
               justifyContent: { xs: 'center', xsm: 'flex-start' },
-              mb: 8,
+              mb: CONTENT_TOP_PADDING,
             }}
           >
             <StyledTxModalToggleGroup

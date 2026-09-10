@@ -2,7 +2,7 @@ import { Representative, Rpresented } from '@aave/contract-helpers';
 import { PlusIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, IconButton, Paper, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, SvgIcon, Typography } from '@mui/material';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { Link } from 'src/components/primitives/Link';
 import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';
@@ -103,26 +103,39 @@ const Representatives = ({
             networkName={networkConfigs[representative.chainId].name}
           />
           {representative.representative === ZERO_ADDRESS ? (
-            <Stack direction="row" gap={2} alignItems="center">
-              <IconButton
+            <Button
+              variant="text"
+              onClick={onOpenRepresentatives}
+              sx={{
+                p: 0,
+                height: 'auto',
+                gap: 2,
+                color: 'fg-3',
+                '&:hover': { backgroundColor: 'transparent', color: 'fg-2' },
+                '&:hover .connect-plus::before': { backgroundColor: figVars['overlay-hover'] },
+              }}
+            >
+              <Box
+                className="connect-plus"
                 sx={{
                   height: '16px',
                   width: '16px',
-                  p: 0,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   backgroundColor: 'bg-6',
                   ...hoverOverlay(figVars['overlay-hover']),
-                  '&:hover': { backgroundColor: 'bg-6' },
                 }}
-                onClick={onOpenRepresentatives}
               >
                 <SvgIcon sx={{ fontSize: 12 }}>
                   <PlusIcon />
                 </SvgIcon>
-              </IconButton>
-              <Typography variant="subheader1" color="fg-3" sx={{ lineHeight: '16px' }}>
+              </Box>
+              <Typography variant="subheader1" sx={{ lineHeight: '16px' }}>
                 <Trans>Connect</Trans>
               </Typography>
-            </Stack>
+            </Button>
           ) : (
             <AddressLink
               explorerLink={networkConfigs[representative.chainId].explorerLink}

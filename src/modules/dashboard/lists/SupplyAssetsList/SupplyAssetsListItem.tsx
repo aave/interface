@@ -30,7 +30,7 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
-import { iconButtonSx } from 'src/utils/buttonStyles';
+import { iconButtonSx, mobileCardActionsSx } from 'src/utils/buttonStyles';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
 import { onAccent } from 'src/utils/figmaColors';
@@ -440,7 +440,7 @@ export const SupplyAssetsListItemMobile = ({
         />
       </Row>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+      <Box sx={mobileCardActionsSx}>
         <FunSupplyButton
           disabled={disableSupply}
           underlyingAsset={underlyingAsset}
@@ -450,7 +450,6 @@ export const SupplyAssetsListItemMobile = ({
           supplyAPY={supplyAPY}
           collateralEnabled={usageAsCollateralEnabledOnUser}
           size="medium"
-          sx={{ mr: 1.5 }}
           fullWidth
         />
         <Button

@@ -42,7 +42,18 @@ export const ListMobileItem = ({
   return (
     <Box sx={{ '&:first-of-type > hr': { display: 'none' } }}>
       <Divider />
-      <Box sx={{ px: 4, pt: 4, pb: 6 }}>
+      <Box
+        sx={{
+          px: 4,
+          pt: 4,
+          pb: 6,
+          '& .row-caption': {
+            color: 'fg-3',
+            '& .MuiSvgIcon-root': { color: 'fg-4' },
+            '& .MuiSvgIcon-root:hover': { color: 'fg-2' },
+          },
+        }}
+      >
         <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
           {loading ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>

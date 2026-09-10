@@ -3,7 +3,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import StartIcon from '@mui/icons-material/Start';
-import { Button, Stack, useTheme } from '@mui/material';
+import { Button, ButtonProps, Stack, useTheme } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -36,9 +36,11 @@ const StyledMenuItem = styled(MenuItem)({
 export const StakingDropdown = ({
   stakeData,
   fullWidth,
+  size = 'small',
 }: {
   stakeData: MergedStakeData;
   fullWidth?: boolean;
+  size?: ButtonProps['size'];
 }) => {
   const { openUmbrella, openUmbrellaStakeCooldown, openUmbrellaUnstake, openUmbrellaClaim } =
     useModalContext();
@@ -85,7 +87,7 @@ export const StakingDropdown = ({
           disabled={totalAvailableToStake === '0'}
           fullWidth={fullWidth}
           variant="tertiary"
-          size="small"
+          size={size}
           onClick={() => {
             trackEvent(STAKE.STAKE_TOKEN, {
               action: STAKE.OPEN_STAKE_MODAL,

@@ -135,7 +135,7 @@ export function AppHeader() {
   const belowCollapse = useMediaQuery(breakpoints.down(HEADER_COLLAPSE_BELOW));
   const collapsed = ENV_BADGE_ENABLED || belowCollapse;
   const collapsingTriggerSx = collapsed
-    ? [iconButtonSx, { alignItems: 'center', '& .MuiButton-startIcon': { mx: 0 } }]
+    ? iconButtonSx
     : { p: '0 0.88rem', minWidth: 'unset', alignItems: 'center' };
 
   const [, setVisitedSwitch] = useState(() => {

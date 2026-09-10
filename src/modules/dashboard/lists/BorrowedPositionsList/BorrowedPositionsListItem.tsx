@@ -9,6 +9,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
+import { mobileCardActionsSx } from 'src/utils/buttonStyles';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
@@ -244,7 +245,7 @@ const BorrowedPositionsListItemMobile = ({
         />
       </Row>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+      <Box sx={mobileCardActionsSx}>
         {showSwitchButton ? (
           <Button
             disabled={disableSwitch}
@@ -260,13 +261,7 @@ const BorrowedPositionsListItemMobile = ({
             <Trans>Borrow</Trans>
           </Button>
         )}
-        <Button
-          disabled={disableRepay}
-          variant="tertiary"
-          onClick={onOpenRepay}
-          sx={{ ml: 1.5 }}
-          fullWidth
-        >
+        <Button disabled={disableRepay} variant="tertiary" onClick={onOpenRepay} fullWidth>
           <Trans>Repay</Trans>
         </Button>
       </Box>

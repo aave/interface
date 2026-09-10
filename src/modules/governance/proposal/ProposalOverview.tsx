@@ -25,6 +25,7 @@ import { LensIcon } from 'src/components/icons/LensIcon';
 import { ProposalDetailDisplay } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { ipfsGateway } from 'src/ui-config/governanceConfig';
+import { iconButtonSx } from 'src/utils/buttonStyles';
 import { cardHeadingSx, cardPaddingSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 
@@ -50,6 +51,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
   const trackEvent = useRootStore((store) => store.trackEvent);
   const { breakpoints } = useTheme();
   const lgUp = useMediaQuery(breakpoints.up('lg'));
+  const shareButtonSx = lgUp ? { minWidth: '160px' } : iconButtonSx;
 
   return (
     <Paper variant="card" sx={{ ...cardPaddingSx, pb: 20 }} data-cy="vote-info-body">
@@ -92,7 +94,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 <Box sx={{ flexGrow: 1 }} />
                 <Button
                   component="a"
-                  sx={{ minWidth: lgUp ? '160px' : '' }}
+                  sx={shareButtonSx}
                   target="_blank"
                   rel="noopener"
                   onClick={() =>
@@ -112,7 +114,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 </Button>
                 <Button
                   component="a"
-                  sx={{ minWidth: lgUp ? '160px' : '' }}
+                  sx={shareButtonSx}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() =>
@@ -129,7 +131,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   {lgUp && <Trans>Share on twitter</Trans>}
                 </Button>
                 <Button
-                  sx={{ minWidth: lgUp ? '160px' : '' }}
+                  sx={shareButtonSx}
                   component="a"
                   target="_blank"
                   rel="noopener noreferrer"

@@ -29,7 +29,10 @@ export const Row = ({
       sx={{ display: 'flex', alignItems: align, justifyContent: 'space-between', ...rest.sx }}
     >
       {caption && (
+        // `row-caption` is a public styling hook: `ListMobileItem` uses it to colour every card
+        // caption at once. It outranks `captionColor`/`captionSx`, which are element-level.
         <Typography
+          className="row-caption"
           component="div"
           variant={captionVariant}
           color={captionColor}

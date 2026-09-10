@@ -4,6 +4,7 @@ import { Box, Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
+import { mobileCardActionsSx } from 'src/utils/buttonStyles';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
@@ -130,7 +131,7 @@ export const SuppliedPositionsListMobileItem = ({
         />
       </Row>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+      <Box sx={mobileCardActionsSx}>
         {isSwapButton ? (
           <Button
             disabled={disableSwap}
@@ -154,7 +155,6 @@ export const SuppliedPositionsListMobileItem = ({
           disabled={disableWithdraw}
           variant="tertiary"
           onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-          sx={{ ml: 1.5 }}
           fullWidth
         >
           <Trans>Withdraw</Trans>
