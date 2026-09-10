@@ -4,12 +4,12 @@ import { t, Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
-  Drawer,
   FormControlLabel,
   IconButton,
   InputBase,
   Popover,
   SvgIcon,
+  SwipeableDrawer,
   Switch,
   Tooltip,
   Typography,
@@ -805,10 +805,12 @@ export const MarketSwitcher = () => {
 
       {/* Market selector content (shared between Popover and Drawer) */}
       {isMobile ? (
-        <Drawer
+        <SwipeableDrawer
           anchor="bottom"
           open={open}
           onClose={handleClose}
+          onOpen={handleOpen}
+          disableSwipeToOpen
           PaperProps={{
             sx: {
               bgcolor: 'bg-3',
@@ -833,7 +835,7 @@ export const MarketSwitcher = () => {
             />
           </Box>
           {renderSelectorContent(true)}
-        </Drawer>
+        </SwipeableDrawer>
       ) : (
         <Popover
           open={open}
