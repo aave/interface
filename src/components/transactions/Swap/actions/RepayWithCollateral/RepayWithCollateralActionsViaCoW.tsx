@@ -263,8 +263,7 @@ export const RepayWithCollateralActionsViaCoW = ({
           hooksGasLimit: getHooksGasLimit(collateralsAmount),
         },
         {
-          sellAmount: BigInt(sellAmountWithMarginForDustProtection),
-          buyAmount: BigInt(buyAmountWithMarginForDustProtection),
+          flashLoanAmount: BigInt(sellAmountWithMarginForDustProtection),
           orderToSign,
           collateralPermit,
         }

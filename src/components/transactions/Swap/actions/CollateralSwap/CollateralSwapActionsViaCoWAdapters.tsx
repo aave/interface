@@ -238,8 +238,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
           hooksGasLimit: getHooksGasLimit(collateralsAmount),
         },
         {
-          sellAmount: state.sellAmountBigInt,
-          buyAmount: state.buyAmountBigInt,
+          flashLoanAmount: state.sellAmountBigInt,
           orderToSign,
           collateralPermit,
         }

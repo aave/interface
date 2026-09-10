@@ -265,8 +265,7 @@ export const DebtSwapActionsViaCoW = ({
           hooksGasLimit: getHooksGasLimit(debtAmount),
         },
         {
-          sellAmount: BigInt(sellAmountWithMarginForDustProtection),
-          buyAmount: BigInt(buyAmountWithMarginForDustProtection),
+          flashLoanAmount: BigInt(sellAmountWithMarginForDustProtection),
           orderToSign,
           collateralPermit: delegationPermit,
         }
