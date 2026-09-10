@@ -1,5 +1,5 @@
 import { DelegationType } from '@aave/contract-helpers';
-import { FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
+import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import { Fragment, useEffect } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -43,16 +43,19 @@ export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
 
   return (
     <Row
+      align="flex-start"
       sx={{ width: '100%' }}
       captionSx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 2 }}
       caption={symbols.map((token, index) => (
         <Fragment key={token}>
-          <TokenIcon
-            aToken={token === 'aAAVE'}
-            symbol={token === 'aAAVE' ? 'aave' : token}
-            sx={{ width: 16, height: 16 }}
-          />
-          <Typography variant="subheader1">{token}</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <TokenIcon
+              aToken={token === 'aAAVE'}
+              symbol={token === 'aAAVE' ? 'aave' : token}
+              sx={{ width: 16, height: 16 }}
+            />
+            <Typography variant="subheader1">{token}</Typography>
+          </Box>
           {index < symbols.length - 1 && <Typography variant="subheader1">+</Typography>}
         </Fragment>
       ))}
@@ -106,8 +109,8 @@ export const DelegationTokenSelector = ({
           setDelegationTokenType(Number(e.target.value) as unknown as DelegationTokenType)
         }
         sx={{
-          '& .MuiFormControlLabel-root': { mr: 0 },
-          '& .MuiFormControlLabel-label': { width: '100%', minWidth: 0 },
+          '& .MuiFormControlLabel-root': { mr: 0, alignItems: 'flex-start' },
+          '& .MuiFormControlLabel-label': { width: '100%', minWidth: 0, mt: '0.5rem' },
         }}
       >
         <FormControlLabel
