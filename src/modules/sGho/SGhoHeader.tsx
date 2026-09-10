@@ -10,7 +10,6 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { useSGhoVaultContext } from 'src/modules/sGho/SGhoVaultContext';
 import { useRootStore } from 'src/store/root';
-import { convertAprToApy } from 'src/utils/utils';
 
 export const SGHOHeader: React.FC = () => {
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -23,7 +22,7 @@ export const SGHOHeader: React.FC = () => {
   }, [trackEvent]);
 
   const apr = vault?.targetRate ? +vault.targetRate.value : 0;
-  const apyPercent = (convertAprToApy(apr) * 100).toFixed(2);
+  const aprPercent = (apr * 100).toFixed(2);
   const totalDepositedUSD = vault?.totalAssets?.usd ?? '0';
 
   const totalAssetsValue = vault?.totalAssets ? +vault.totalAssets.amount.value : 0;
@@ -50,7 +49,7 @@ export const SGHOHeader: React.FC = () => {
       titleIcon={<TokenIcon symbol="sgho" sx={{ width: 32, height: 32 }} />}
       description={
         <Trans>
-          Deposit GHO into Savings GHO (sGHO) and earn {apyPercent}% APY on your GHO holdings.
+          Deposit GHO into Savings GHO (sGHO) and earn {aprPercent}% APR on your GHO holdings.
         </Trans>
       }
     >

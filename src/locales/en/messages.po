@@ -1693,6 +1693,10 @@ msgstr "Nothing staked"
 msgid "{m}m"
 msgstr "{m}m"
 
+#: src/modules/sGho/SGhoHeader.tsx
+msgid "Deposit GHO into Savings GHO (sGHO) and earn {aprPercent}% APR on your GHO holdings."
+msgstr "Deposit GHO into Savings GHO (sGHO) and earn {aprPercent}% APR on your GHO holdings."
+
 #: src/layouts/SupportModal.tsx
 msgid "Inquiry"
 msgstr "Inquiry"
@@ -1834,10 +1838,6 @@ msgstr "Borrow apy"
 #: src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
 msgid "Fee"
 msgstr "Fee"
-
-#: src/modules/sGho/SGhoHeader.tsx
-msgid "Deposit GHO into Savings GHO (sGHO) and earn {apyPercent}% APY on your GHO holdings."
-msgstr "Deposit GHO into Savings GHO (sGHO) and earn {apyPercent}% APY on your GHO holdings."
 
 #: src/modules/umbrella/helpers/Helpers.tsx
 msgid "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
