@@ -600,6 +600,8 @@ export const MarketSwitcher = () => {
             flex: 1,
             color: 'fg-1',
             fontSize: '0.875rem',
+            // Safari zooms a focused input under 16px; keyed on pointer, not width, so tablets count.
+            '@media (pointer: coarse)': { fontSize: '1rem' },
             fontWeight: 400,
             lineHeight: 1,
             '& input::placeholder': {
