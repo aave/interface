@@ -5,7 +5,6 @@ import {
   OrderBookApi,
   OrderClass,
   OrderKind,
-  OrderParameters,
   OrderStatus,
   QuoteAndPost,
   SellTokenSource,
@@ -13,6 +12,7 @@ import {
   SlippageToleranceRequest,
   SlippageToleranceResponse,
   SupportedChainId,
+  UnsignedOrder,
   WRAPPED_NATIVE_CURRENCIES,
 } from '@cowprotocol/cow-sdk';
 import { AnyAppDataDocVersion, AppDataParams, MetadataApi } from '@cowprotocol/sdk-app-data';
@@ -55,7 +55,7 @@ const EIP_2612_PERMIT_ABI = [
 
 export type CowProtocolActionParams = {
   orderType: OrderType;
-  quote?: OrderParameters;
+  quote?: UnsignedOrder;
   provider: JsonRpcProvider;
   chainId: number;
   user: string;

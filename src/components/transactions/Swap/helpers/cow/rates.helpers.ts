@@ -196,16 +196,12 @@ export async function getCowProtocolSellRates({
   if (invertedQuoteRoute) {
     // Calculate Amounts
     const srcSpotAmount =
-      side === 'sell'
-        ? orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString()
-        : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString();
+      orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString();
     const srcSpotUSD = BigNumber(destTokenPriceUsd)
       .multipliedBy(BigNumber(srcSpotAmount).dividedBy(10 ** destDecimals))
       .toString();
     const destSpotAmount =
-      side === 'sell'
-        ? orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString()
-        : orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString();
+      orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString();
     const destSpotUSD = BigNumber(srcTokenPriceUsd)
       .multipliedBy(BigNumber(destSpotAmount).dividedBy(10 ** srcDecimals))
       .toString();
@@ -238,16 +234,12 @@ export async function getCowProtocolSellRates({
   } else {
     // Calculate Amounts
     const srcSpotAmount =
-      orderBookQuote.quoteResults.orderToSign.kind === OrderKind.SELL
-        ? orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.sellAmount.toString()
-        : orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString();
+      orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.sellAmount.toString();
     const srcSpotUSD = BigNumber(srcTokenPriceUsd)
       .multipliedBy(BigNumber(srcSpotAmount).dividedBy(10 ** srcDecimals))
       .toString();
     const destSpotAmount =
-      orderBookQuote.quoteResults.orderToSign.kind === OrderKind.SELL
-        ? orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString()
-        : orderBookQuote.quoteResults.amountsAndCosts.afterNetworkCosts.buyAmount.toString();
+      orderBookQuote.quoteResults.amountsAndCosts.beforeNetworkCosts.buyAmount.toString();
     const destSpotUSD = BigNumber(destTokenPriceUsd)
       .multipliedBy(BigNumber(destSpotAmount).dividedBy(10 ** destDecimals))
       .toString();
