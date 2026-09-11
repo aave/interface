@@ -19,11 +19,11 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { ApprovalMethod } from 'src/store/walletSlice';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
-import { queryKeysFactory } from 'src/ui-config/queries';
 import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { refetchSupplyPoolData } from './utils';
 
 // Minimal ABI for Pool multicall + setUserEMode + supply
 const POOL_MULTICALL_ABI = [
@@ -71,6 +71,7 @@ export const SupplyActions = React.memo(
       estimateGasLimit,
       addTransaction,
       currentMarketData,
+      account,
     ] = useRootStore(
       useShallow((state) => [
         state.tryPermit,
@@ -81,6 +82,7 @@ export const SupplyActions = React.memo(
         state.estimateGasLimit,
         state.addTransaction,
         state.currentMarketData,
+        state.account,
       ])
     );
     const { reserves } = useAppDataContext();
@@ -263,12 +265,6 @@ export const SupplyActions = React.memo(
           await response.wait(1);
         }
 
-        setMainTxState({
-          txHash: response.hash,
-          loading: false,
-          success: true,
-        });
-
         addTransaction(response.hash, {
           action,
           txState: 'success',
@@ -283,7 +279,13 @@ export const SupplyActions = React.memo(
           })(),
         });
 
-        queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+        await refetchSupplyPoolData(queryClient, account, currentMarketData);
+
+        setMainTxState({
+          txHash: response.hash,
+          loading: false,
+          success: true,
+        });
       } catch (error) {
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         setTxError(parsedError);

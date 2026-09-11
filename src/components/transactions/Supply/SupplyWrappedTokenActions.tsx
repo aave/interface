@@ -20,6 +20,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { TxActionsWrapper } from '../TxActionsWrapper';
 import { APPROVAL_GAS_LIMIT, checkRequiresApproval } from '../utils';
+import { refetchSupplyPoolData } from './utils';
 
 interface SignedParams {
   signature: SignatureLike;
@@ -166,12 +167,6 @@ export const SupplyWrappedTokenActions = ({
         await response.wait(1);
       }
 
-      setMainTxState({
-        txHash: response.hash,
-        loading: false,
-        success: true,
-      });
-
       addTransaction(response.hash, {
         action,
         txState: 'success',
@@ -181,7 +176,7 @@ export const SupplyWrappedTokenActions = ({
         amountUsd: valueToBigNumber(amountToSupply).multipliedBy(reserve.priceInUSD).toString(),
       });
 
-      queryClient.invalidateQueries({ queryKey: queryKeysFactory.pool });
+      await refetchSupplyPoolData(queryClient, user, marketData);
       queryClient.invalidateQueries({
         queryKey: queryKeysFactory.approvedAmount(
           user,
@@ -189,6 +184,12 @@ export const SupplyWrappedTokenActions = ({
           tokenWrapperAddress,
           marketData.chainId
         ),
+      });
+
+      setMainTxState({
+        txHash: response.hash,
+        loading: false,
+        success: true,
       });
     } catch (error) {
       const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
