@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, Box, Checkbox, Typography } from '@mui/material';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 
@@ -17,11 +16,11 @@ export const BorrowAmountWarning = ({
 
   return (
     <>
-      <Warning severity="error" sx={{ my: 6 }}>
+      <Alert severity="error" sx={{ width: '100%', my: 6 }}>
         <Trans>
           Borrowing this amount will reduce your health factor and increase risk of liquidation.
         </Trans>
-      </Warning>
+      </Alert>
       <Box
         sx={{
           display: 'flex',

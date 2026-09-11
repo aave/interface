@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { useMediaQuery } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { mapAaveProtocolIncentives } from 'src/components/incentives/incentives.helper';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -52,7 +53,8 @@ export type ReserveWithProtocolIncentives = ReserveWithId & {
 };
 
 export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const theme = useTheme();
+  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down(TABLE_CARDS_BELOW));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
   const sortedReserves = [...reserves].sort((a, b) => {
@@ -127,7 +129,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   return (
     <>
       {!isTableChangedToCards && (
-        <ListHeaderWrapper px={6}>
+        <ListHeaderWrapper px={5}>
           {listHeaders.map((col) => (
             <ListColumn
               isRow={col.sortKey === 'underlyingToken.symbol'}

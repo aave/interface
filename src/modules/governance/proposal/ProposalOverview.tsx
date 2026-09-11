@@ -1,7 +1,8 @@
 import { DownloadIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Twitter } from '@mui/icons-material';
+import Twitter from '@mui/icons-material/Twitter';
 import {
+  Alert,
   Box,
   Button,
   Paper,
@@ -21,10 +22,11 @@ import {
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { LensIcon } from 'src/components/icons/LensIcon';
-import { Warning } from 'src/components/primitives/Warning';
 import { ProposalDetailDisplay } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { ipfsGateway } from 'src/ui-config/governanceConfig';
+import { iconButtonSx } from 'src/utils/buttonStyles';
+import { cardHeadingSx, cardPaddingSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 
 import { StateBadge } from '../StateBadge';
@@ -47,19 +49,20 @@ interface ProposalOverviewProps {
 
 export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
-  const { breakpoints, palette } = useTheme();
+  const { breakpoints } = useTheme();
   const lgUp = useMediaQuery(breakpoints.up('lg'));
+  const shareButtonSx = lgUp ? { minWidth: '160px' } : iconButtonSx;
 
   return (
-    <Paper sx={{ px: 6, pt: 4, pb: 12 }} data-cy="vote-info-body">
-      <Typography variant="h3">
+    <Paper variant="card" sx={{ ...cardPaddingSx, pb: 20 }} data-cy="vote-info-body">
+      <Typography variant="h3" sx={cardHeadingSx}>
         <Trans>Proposal overview</Trans>
       </Typography>
       {error ? (
         <Box sx={{ px: { md: 18 }, pt: 8 }}>
-          <Warning severity="error">
+          <Alert severity="error" sx={{ mb: 6, width: '100%' }}>
             <Trans>An error has occurred fetching the proposal.</Trans>
-          </Warning>
+          </Alert>
         </Box>
       ) : (
         <Box sx={{ px: { md: 18 }, pt: 8, wordBreak: 'break-word' }}>
@@ -68,7 +71,14 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
               <Typography variant="h2" sx={{ mb: 6 }}>
                 {proposal.title || <Skeleton />}
               </Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  '& .MuiButton-startIcon': { color: 'fg-3' },
+                }}
+              >
                 <Box
                   sx={{
                     display: 'flex',
@@ -84,7 +94,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 <Box sx={{ flexGrow: 1 }} />
                 <Button
                   component="a"
-                  sx={{ minWidth: lgUp ? '160px' : '' }}
+                  sx={shareButtonSx}
                   target="_blank"
                   rel="noopener"
                   onClick={() =>
@@ -104,7 +114,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 </Button>
                 <Button
                   component="a"
-                  sx={{ minWidth: lgUp ? '160px' : '' }}
+                  sx={shareButtonSx}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() =>
@@ -121,7 +131,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   {lgUp && <Trans>Share on twitter</Trans>}
                 </Button>
                 <Button
-                  sx={{ minWidth: lgUp ? '160px' : '' }}
+                  sx={shareButtonSx}
                   component="a"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -136,11 +146,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   }&text=Check out this proposal on aave governance - ${
                     proposal.title
                   }&hashtags=Aave&preview=true`}
-                  startIcon={
-                    <LensIcon
-                      color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
-                    />
-                  }
+                  startIcon={<LensIcon />}
                 >
                   {lgUp && <Trans>Share on Lens</Trans>}
                 </Button>
@@ -233,7 +239,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                       component="blockquote"
                       sx={{
                         borderLeft: '4px solid',
-                        borderColor: 'divider',
+                        borderColor: 'border-2',
                         pl: 4,
                         my: 3,
                         ml: 0,
@@ -251,7 +257,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     <Box
                       component="code"
                       sx={{
-                        bgcolor: 'background.default',
+                        bgcolor: 'bg-5',
                         px: 1,
                         py: 0.25,
                         borderRadius: 0.5,
@@ -263,7 +269,7 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                     <Box
                       component="pre"
                       sx={{
-                        bgcolor: 'background.default',
+                        bgcolor: 'bg-5',
                         p: 3,
                         borderRadius: 1,
                         overflow: 'auto',
@@ -279,7 +285,12 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                   return (
                     <Box
                       component="hr"
-                      sx={{ my: 4, border: 'none', borderTop: '1px solid', borderColor: 'divider' }}
+                      sx={{
+                        my: 4,
+                        border: 'none',
+                        borderTop: '1px solid',
+                        borderColor: 'border-2',
+                      }}
                     />
                   );
                 },

@@ -1,20 +1,21 @@
-import { Box, Container } from '@mui/material';
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
+import { ContentContainer } from 'src/components/ContentContainer';
 import { MainLayout } from 'src/layouts/MainLayout';
 import { MarketAssetsListContainer } from 'src/modules/markets/MarketAssetsListContainer';
 import { MarketsTopPanel } from 'src/modules/markets/MarketsTopPanel';
 import { useRootStore } from 'src/store/root';
 
-interface MarketContainerProps {
-  children: ReactNode;
-}
-
+// Markets-specific Container overrides, shared with MarketsTopPanel (`containerProps=`) so the
+// top-panel stats align with the asset table at Markets' wider max-width. The theme's MuiContainer
+// override already supplies display/flexDirection/flex + the 39px bottom padding, so only the wider
+// px/maxWidth are set here.
+//
+// The ladder is monotonic — content never narrows as the viewport widens. `xl` keeps its 96px
+// gutter, so its cap is the 1440px content ceiling plus that gutter (1440 + 2×96 = 1632); it grows
+// 1383px → 1440px across 1575–1632 and then holds, meeting `xxl`'s 1440px exactly. Leaving `xl`
+// uncapped instead let content reach 1607px at 1799px, which then *dropped* to 1440px at 1800px.
 export const marketContainerProps = {
   sx: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    pb: '39px',
     px: {
       xs: 2,
       xsm: 5,
@@ -27,14 +28,10 @@ export const marketContainerProps = {
     maxWidth: {
       xs: 'unset',
       lg: '1240px',
-      xl: 'unset',
+      xl: '1632px',
       xxl: '1440px',
     },
   },
-};
-
-export const MarketContainer = ({ children }: MarketContainerProps) => {
-  return <Container {...marketContainerProps}>{children}</Container>;
 };
 
 export default function Markets() {
@@ -49,19 +46,9 @@ export default function Markets() {
   return (
     <>
       <MarketsTopPanel />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          flex: 1,
-          mt: { xs: '-32px', lg: '-46px', xl: '-44px', xxl: '-48px' },
-        }}
-      >
-        <MarketContainer>
-          <MarketAssetsListContainer />
-        </MarketContainer>
-      </Box>
+      <ContentContainer containerProps={marketContainerProps}>
+        <MarketAssetsListContainer />
+      </ContentContainer>
     </>
   );
 }

@@ -1,20 +1,16 @@
 import { Trans } from '@lingui/macro';
-import { AlertProps } from '@mui/material';
+import { Alert, AlertProps } from '@mui/material';
 import { AssetCapData } from 'src/hooks/useAssetCaps';
 
 import { Link } from '../../primitives/Link';
-import { Warning } from '../../primitives/Warning';
 
 type DebtCeilingWarningProps = AlertProps & {
   debtCeiling: AssetCapData;
   icon?: boolean;
 };
 
-export const DebtCeilingWarning = ({
-  debtCeiling,
-  icon = true,
-  ...rest
-}: DebtCeilingWarningProps) => {
+// `icon` is destructured only to keep it out of `...rest` (the alert always shows its severity icon).
+export const DebtCeilingWarning = ({ debtCeiling, icon, ...rest }: DebtCeilingWarningProps) => {
   // Don't show a warning when less than 98% utilized
   if (!debtCeiling.percentUsed || debtCeiling.percentUsed < 98) return null;
 
@@ -35,7 +31,7 @@ export const DebtCeilingWarning = ({
   };
 
   return (
-    <Warning severity={severity} icon={icon} {...rest}>
+    <Alert severity={severity} data-size="small" sx={{ mb: 6, width: '100%' }} {...rest}>
       {renderText()}{' '}
       <Link
         href="https://docs.aave.com/faq/aave-v3-features#how-does-isolation-mode-affect-my-borrowing-power"
@@ -43,6 +39,6 @@ export const DebtCeilingWarning = ({
       >
         <Trans>Learn more</Trans>
       </Link>
-    </Warning>
+    </Alert>
   );
 };

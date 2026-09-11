@@ -4,7 +4,9 @@ import { ReactNode } from 'react';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { IsolatedReserve } from 'src/store/v3MigrationSelectors';
 
+import { MigrationIsolationWarning } from './MigrationIsolationWarning';
 import { MigrationSelectionBox } from './MigrationSelectionBox';
 
 interface MigrationMobileListProps {
@@ -18,6 +20,7 @@ interface MigrationMobileListProps {
   numSelected: number;
   numAvailable: number;
   disabled: boolean;
+  isolatedReserveV3?: IsolatedReserve;
 }
 
 export const MigrationMobileList = ({
@@ -30,19 +33,27 @@ export const MigrationMobileList = ({
   numSelected,
   numAvailable,
   disabled,
+  isolatedReserveV3,
 }: MigrationMobileListProps) => {
   return (
     <Box sx={{ width: '100%' }}>
       <ListWrapper
+        // Nested inside MigrationLists' outer card — strip this inner surface (matches the desktop
+        // MigrationList) so there's no card-in-card. The card variant has no border, so only the
+        // shadow needs cancelling.
+        paperSx={{ boxShadow: 'none' }}
         titleComponent={
-          <Typography component="div" variant="h3" sx={{ mr: 4 }}>
-            {titleComponent}
-          </Typography>
+          <Box>
+            <Typography component="div" variant="h3" sx={{ mr: 4 }}>
+              {titleComponent}
+            </Typography>
+            <MigrationIsolationWarning isolatedReserveV3={isolatedReserveV3} />
+          </Box>
         }
       >
         {(isAvailable || loading) && (
           <ListHeaderWrapper sx={{ pl: 0 }}>
-            <ListColumn align="center" maxWidth={48} minWidth={48}>
+            <ListColumn maxWidth={48} minWidth={48}>
               <MigrationSelectionBox
                 allSelected={allSelected}
                 numSelected={numSelected}
@@ -59,7 +70,7 @@ export const MigrationMobileList = ({
                 justifyContent: 'center',
               }}
             >
-              <Typography variant="subheader2" color="text.secondary">
+              <Typography variant="subheader2" color="fg-3">
                 <Trans>
                   {numSelected}/{numAvailable} assets selected
                 </Trans>

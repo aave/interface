@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 
@@ -17,9 +18,7 @@ export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => {
   return (
     <>
       <BasicModal open={open} setOpen={close}>
-        <Typography variant="h2">
-          <Trans>Get ABP v2 Token</Trans>
-        </Typography>
+        <TxModalTitle title={<Trans>Get ABP v2 Token</Trans>} sx={{ mb: 0 }} />
         <Typography sx={{ my: 6 }}>
           <Trans>
             The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by
@@ -28,7 +27,7 @@ export const GetABPTokenModal = ({ open, close }: GetABPTokenModalProps) => {
           </Trans>
         </Typography>
         <Button
-          variant="outlined"
+          variant="tertiary"
           size="large"
           endIcon={
             <SvgIcon>

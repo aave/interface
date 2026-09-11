@@ -2,12 +2,14 @@ import { Trans } from '@lingui/macro';
 import CloseIcon from '@mui/icons-material/Close';
 import { useMediaQuery, useTheme } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import { SxProps, Theme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 import { ReactNode, useEffect, useState } from 'react';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 import { Link } from 'src/components/primitives/Link';
 import { useRootStore } from 'src/store/root';
@@ -37,11 +39,20 @@ interface RouteCampaigns {
 interface TopBarNotifyProps {
   campaigns: NetworkCampaigns;
   routeCampaigns?: RouteCampaigns;
+  /**
+   * Showcase/preview mode (e.g. /dev/components): force the banner visible regardless of the
+   * per-chain localStorage dismissal state, skip persisting any dismissal, and fall back to the
+   * first configured campaign when none matches the current chain. Never set in production.
+   */
+  preview?: boolean;
 }
 
-export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotifyProps) {
+export default function TopBarNotify({
+  campaigns,
+  routeCampaigns,
+  preview = false,
+}: TopBarNotifyProps) {
   const { breakpoints } = useTheme();
-  const md = useMediaQuery(breakpoints.down('md'));
   const sm = useMediaQuery(breakpoints.down('sm'));
   const router = useRouter();
 
@@ -52,10 +63,14 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
     return campaigns[currentChainId] || null;
   };
 
-  const currentCampaign = routeCampaigns?.[router.pathname] ?? getCurrentCampaign() ?? null;
+  const currentCampaign =
+    routeCampaigns?.[router.pathname] ??
+    getCurrentCampaign() ??
+    (preview ? Object.values(campaigns)[0] ?? null : null);
 
   const [showWarning, setShowWarning] = useState(() => {
     if (!currentCampaign) return false;
+    if (preview) return true;
 
     const storedBannerVersion = localStorage.getItem(`bannerVersion_${currentChainId}`);
     const warningBarOpen = localStorage.getItem(`warningBarOpen_${currentChainId}`);
@@ -68,7 +83,7 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
   });
 
   useEffect(() => {
-    if (!currentCampaign) return;
+    if (!currentCampaign || preview) return;
 
     const storedBannerVersion = localStorage.getItem(`bannerVersion_${currentChainId}`);
 
@@ -77,7 +92,7 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
       localStorage.setItem(`warningBarOpen_${currentChainId}`, 'true');
       setShowWarning(true);
     }
-  }, [currentCampaign, currentChainId]);
+  }, [currentCampaign, currentChainId, preview]);
 
   // If no campaign is configured for the current network, don't show anything
   if (!currentCampaign) {
@@ -85,7 +100,9 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
   }
 
   const handleClose = () => {
-    localStorage.setItem(`warningBarOpen_${currentChainId}`, 'false');
+    if (!preview) {
+      localStorage.setItem(`warningBarOpen_${currentChainId}`, 'false');
+    }
     setShowWarning(false);
   };
 
@@ -117,120 +134,128 @@ export default function TopBarNotify({ campaigns, routeCampaigns }: TopBarNotify
   };
 
   // Note: hide warnings when mobile menu is open
-  if (mobileDrawerOpen) return null;
+  if (mobileDrawerOpen && !preview) return null;
+
+  // Resolve the single call-to-action. A URL action becomes a real external <Link> (proper anchor
+  // semantics; the primitive adds target=_blank + rel=noopener); any other action type — or a
+  // function-style learnMoreLink — falls back to a click handler.
+  const { buttonAction, learnMoreLink } = currentCampaign;
+  const ctaHref =
+    buttonAction?.type === 'url'
+      ? buttonAction.value
+      : typeof learnMoreLink === 'string'
+      ? learnMoreLink
+      : undefined;
+  const ctaOnClick =
+    buttonAction && buttonAction.type !== 'url'
+      ? handleButtonAction
+      : typeof learnMoreLink === 'function'
+      ? learnMoreLink
+      : undefined;
+  const ctaLabel = currentCampaign.buttonText ?? 'Learn more';
+  const showCta = Boolean(ctaHref || ctaOnClick);
+
+  // "Try it out" text link — purple-2, Base type, with the arrow 0.25rem after the label. Shared
+  // by both the <Link> (URL) and <Button> (handler) render paths.
+  const ctaSx: SxProps<Theme> = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '0.25rem',
+    minWidth: 'auto',
+    p: 0,
+    color: 'purple-2',
+    fontSize: '0.875rem',
+    fontWeight: 400,
+    lineHeight: 1,
+    textTransform: 'none',
+    textDecoration: 'underline',
+    textDecorationColor: 'transparent',
+    transition: 'text-decoration-color 100ms ease',
+    '&:hover': { textDecorationColor: 'inherit', backgroundColor: 'transparent' },
+  };
+
+  // Label + trailing arrow, shared by the <Link> (URL) and <Button> (handler) render paths.
+  const ctaInner = (
+    <>
+      <Trans>{ctaLabel}</Trans>
+      <ArrowUpRightIcon sx={{ fontSize: '1rem' }} />
+    </>
+  );
 
   if (showWarning) {
     return (
       <AppBar
         component="header"
-        sx={{
-          padding: `8px, 12px, 8px, 12px`,
-          background: (theme) => theme.palette.gradients.newGradient,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderRadius: 0,
-        }}
         position="static"
+        sx={{
+          bgcolor: 'bg-1',
+          color: 'fg-1',
+          borderRadius: 0,
+          borderBottom: '1px solid',
+          borderColor: 'border-0',
+          boxShadow: 'none',
+        }}
       >
         <Toolbar
+          variant="dense"
           sx={{
+            position: 'relative',
             display: 'flex',
-            paddingRight: md ? 0 : '',
+            flexWrap: 'wrap',
             justifyContent: 'center',
             alignItems: 'center',
+            gap: '0.38rem',
             width: '100%',
+            px: 6,
           }}
-          variant="dense"
         >
-          <Box sx={{ padding: md ? '20px 10px' : '', paddingRight: 0 }}>
-            <Typography
-              sx={{ display: 'flex', alignContent: 'center', alignItems: 'center' }}
-              component="div"
-            >
-              <Trans>{currentCampaign.notifyText}</Trans>
+          <Typography
+            component="div"
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              textAlign: 'center',
+              color: 'fg-1',
+              fontSize: '0.875rem',
+              fontWeight: 400,
+              lineHeight: 1,
+            }}
+          >
+            <Trans>{currentCampaign.notifyText}</Trans>
 
-              {currentCampaign.customIcon ? currentCampaign.customIcon : null}
+            {currentCampaign.customIcon ? currentCampaign.customIcon : null}
 
-              {currentCampaign.icon && !sm ? (
-                <MarketLogo sx={{ ml: 2 }} size={28} logo={currentCampaign.icon} />
-              ) : (
-                ''
-              )}
-
-              {currentCampaign.learnMoreLink && md ? (
-                typeof currentCampaign.learnMoreLink === 'string' ? (
-                  <Link
-                    sx={{ color: 'white', textDecoration: 'underline', paddingLeft: 2 }}
-                    href={currentCampaign.learnMoreLink}
-                  >
-                    <Trans>
-                      {currentCampaign.buttonText ? currentCampaign.buttonText : `Learn more`}
-                    </Trans>
-                  </Link>
-                ) : (
-                  <Button
-                    sx={{
-                      color: 'white',
-                      textDecoration: 'underline',
-                      paddingLeft: 2,
-                      background: 'none',
-                      textTransform: 'none',
-                      minWidth: 'auto',
-                      padding: 0,
-                      marginLeft: 2,
-                    }}
-                    onClick={currentCampaign.learnMoreLink}
-                  >
-                    <Trans>
-                      {currentCampaign.buttonText ? currentCampaign.buttonText : `Learn more`}
-                    </Trans>
-                  </Button>
-                )
-              ) : null}
-            </Typography>
-
-            {sm && currentCampaign.buttonText && currentCampaign.buttonAction ? (
-              <Button
-                size="medium"
-                onClick={handleButtonAction}
-                sx={{
-                  width: '100%',
-                  height: '36px',
-                  background: '#383D51',
-                  color: '#EAEBEF',
-                  mt: 1,
-                  fontSize: '14px',
-                  fontWeight: 500,
-                }}
-              >
-                <Trans>{currentCampaign.buttonText.toUpperCase()}</Trans>
-              </Button>
+            {currentCampaign.icon && !sm ? (
+              <MarketLogo sx={{ ml: 2 }} size={28} logo={currentCampaign.icon} />
             ) : null}
-          </Box>
+          </Typography>
 
-          <Box>
-            {!sm && currentCampaign.buttonText && currentCampaign.buttonAction ? (
-              <Button
-                size="small"
-                onClick={handleButtonAction}
-                sx={{
-                  minWidth: '90px',
-                  marginLeft: 5,
-                  height: '24px',
-                  background: '#383D51',
-                  color: '#EAEBEF',
-                }}
-              >
-                <Trans>{currentCampaign.buttonText.toUpperCase()}</Trans>
+          {showCta ? (
+            ctaHref ? (
+              <Link href={ctaHref} sx={ctaSx}>
+                {ctaInner}
+              </Link>
+            ) : (
+              <Button onClick={ctaOnClick} disableRipple sx={ctaSx}>
+                {ctaInner}
               </Button>
-            ) : null}
-          </Box>
-          <Button
-            sx={{ color: 'white', paddingRight: 0 }}
+            )
+          ) : null}
+
+          <IconButton
             onClick={handleClose}
-            startIcon={<CloseIcon />}
-          />
+            aria-label="Dismiss notification"
+            size="small"
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: 'fg-1',
+            }}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
         </Toolbar>
       </AppBar>
     );

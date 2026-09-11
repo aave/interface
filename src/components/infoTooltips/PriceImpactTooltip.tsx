@@ -31,8 +31,8 @@ export const PriceImpactTooltip = ({
 
   return (
     <TextWithTooltip
-      variant="secondary12"
-      color="text.secondary"
+      variant="subheader2"
+      color="fg-2"
       event={{
         eventName: GENERAL.TOOL_TIP,
         eventParams: { tooltip: 'Price Impact' },
@@ -54,8 +54,8 @@ export const PriceImpactTooltip = ({
               <FormattedNumber
                 value={priceImpact}
                 visibleDecimals={2}
-                variant="secondary12"
-                color="text.secondary"
+                variant="subheader2"
+                color="fg-2"
                 sx={{ marginLeft: '4px', color: warning ? 'warning.main' : 'unset' }}
               />
             )}

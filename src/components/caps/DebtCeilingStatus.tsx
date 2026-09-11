@@ -24,11 +24,11 @@ export const DebtCeilingStatus = ({
 }: LinearProgressProps & DebtCeilingTooltipProps) => {
   const determineColor = (theme: Theme): string => {
     if (usageData.isMaxed || usageData.percentUsed >= 99.99) {
-      return theme.palette.error.main;
+      return theme.vars.palette.error.main;
     } else if (usageData.percentUsed >= 98) {
-      return theme.palette.warning.main;
+      return theme.vars.palette.warning.main;
     } else {
-      return theme.palette.success.main;
+      return theme.vars.palette.success.main;
     }
   };
 
@@ -38,7 +38,7 @@ export const DebtCeilingStatus = ({
     height: 5,
     [`&.${linearProgressClasses.colorPrimary}`]: {
       backgroundColor: (theme: Theme) =>
-        theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+        theme.vars.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
     },
     [`& .${linearProgressClasses.bar}`]: {
       borderRadius: 5,
@@ -50,7 +50,7 @@ export const DebtCeilingStatus = ({
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Box display="flex" alignItems="center">
-          <Typography color="text.secondary" component="span">
+          <Typography color="fg-2" component="span">
             <Trans>Isolated Debt Ceiling</Trans>
           </Typography>
           <TextWithTooltip>
@@ -71,24 +71,24 @@ export const DebtCeilingStatus = ({
         <Box>
           <FormattedNumber
             value={debt}
-            variant="main14"
+            variant="subheader1"
             symbol="USD"
-            symbolsVariant="secondary14"
+            symbolsVariant="h5"
             visibleDecimals={2}
           />
           <Typography
             component="span"
-            color="text.secondary"
-            variant="secondary14"
+            color="fg-2"
+            variant="h5"
             sx={{ display: 'inline-block', mx: 1 }}
           >
             <Trans>of</Trans>
           </Typography>
           <FormattedNumber
             value={ceiling}
-            variant="main14"
+            variant="subheader1"
             symbol="USD"
-            symbolsVariant="secondary14"
+            symbolsVariant="h5"
             visibleDecimals={2}
           />
         </Box>

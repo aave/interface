@@ -1,6 +1,7 @@
-import { XIcon } from '@heroicons/react/outline';
-import { Box, IconButton, Modal, Paper, SvgIcon } from '@mui/material';
+import { alpha, IconButton, Modal, Paper } from '@mui/material';
 import React from 'react';
+
+import { CloseIcon } from '../icons/CloseIcon';
 
 export interface BasicModalProps {
   open: boolean;
@@ -47,6 +48,9 @@ export const BasicModal = ({
         '.MuiPaper-root': {
           outline: 'none',
         },
+        '.MuiBackdrop-root': {
+          backgroundColor: 'rgba(0, 0, 0, 0.32)',
+        },
       }}
       onClick={(e) => {
         e.stopPropagation();
@@ -55,6 +59,7 @@ export const BasicModal = ({
       data-cy={'Modal'}
     >
       <Paper
+        variant="modal"
         sx={{
           position: 'relative',
           margin: '10px',
@@ -62,30 +67,31 @@ export const BasicModal = ({
           width: '100%',
           maxWidth: { xs: '359px', xsm: `${contentMaxWidth}px` },
           height: contentHeight ? `${contentHeight}px` : 'auto',
-          maxHeight: contentHeight ? `${contentHeight}px` : 'calc(100vh - 20px)',
+          maxHeight: contentHeight ? `${contentHeight}px` : 'calc(100dvh - 20px)',
           p: 6,
         }}
       >
         {children}
 
         {withCloseButton && (
-          <Box sx={{ position: 'absolute', top: '24px', right: '50px', zIndex: 5 }}>
-            <IconButton
-              sx={{
-                borderRadius: '50%',
-                p: 0,
-                minWidth: 0,
-                position: 'absolute',
-                bgcolor: 'background.paper',
-              }}
-              onClick={handleClose}
-              data-cy={'close-button'}
-            >
-              <SvgIcon sx={{ fontSize: '28px', color: 'text.primary' }}>
-                <XIcon data-cy={'CloseModalIcon'} />
-              </SvgIcon>
-            </IconButton>
-          </Box>
+          <IconButton
+            sx={{
+              position: 'absolute',
+              top: '21px',
+              right: '24px',
+              zIndex: 5,
+              borderRadius: '0.375rem',
+              p: 0,
+              '&:hover': {
+                backgroundColor: (theme) =>
+                  alpha(theme.palette.text.primary, theme.palette.action.hoverOpacity),
+              },
+            }}
+            onClick={handleClose}
+            data-cy={'close-button'}
+          >
+            <CloseIcon data-cy={'CloseModalIcon'} sx={{ fontSize: '30px', color: 'fg-3' }} />
+          </IconButton>
         )}
       </Paper>
     </Modal>

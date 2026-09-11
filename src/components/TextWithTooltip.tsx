@@ -74,9 +74,10 @@ export const TextWithTooltip = ({
           <SvgIcon
             sx={{
               fontSize: iconSize,
-              color: iconColor ? iconColor : open ? 'info.main' : 'text.muted',
+              // On-theme neutrals (was info.main blue): fg-3 at rest, fg-1 when open/active.
+              color: iconColor ? iconColor : open ? 'fg-1' : 'fg-3',
               borderRadius: '50%',
-              '&:hover': { color: iconColor || 'info.main' },
+              '&:hover': { color: iconColor || 'fg-2' },
             }}
           >
             {icon || <InformationCircleIcon />}

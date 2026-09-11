@@ -1,8 +1,9 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { ExclamationIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { ArrowDownward } from '@mui/icons-material';
+import ArrowDownward from '@mui/icons-material/ArrowDownward';
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -15,7 +16,6 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { IsolationModeWarning } from 'src/components/transactions/Warnings/IsolationModeWarning';
 import { UserSummaryAfterMigration } from 'src/hooks/migration/useUserSummaryAfterMigration';
 import { UserSummaryAndIncentives } from 'src/hooks/pool/useUserSummaryAndIncentives';
@@ -180,8 +180,8 @@ export const MigrationBottomPanel = ({
           />
           <Box
             border={1}
-            borderColor="divider"
-            bgcolor="background.paper"
+            borderColor="border-2"
+            bgcolor="surface-elevated"
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -203,9 +203,9 @@ export const MigrationBottomPanel = ({
         </Box>
 
         {blockingError !== null && (
-          <Warning severity="warning">
+          <Alert severity="warning" sx={{ mb: 6, width: '100%' }}>
             <BlockErrorText blockingError={blockingError} />
-          </Warning>
+          </Alert>
         )}
 
         {enteringIsolationMode && <IsolationModeWarning severity="warning" />}
@@ -214,7 +214,7 @@ export const MigrationBottomPanel = ({
           <Box
             sx={{
               height: '44px',
-              backgroundColor: 'background.surface',
+              backgroundColor: 'bg-2',
               borderRadius: '4px',
               display: 'flex',
               justifyContent: 'center',
@@ -245,7 +245,7 @@ export const MigrationBottomPanel = ({
             onClick={openV3Migration}
             disabled={loading || !isChecked || blockingError !== null}
             sx={{ width: '100%', height: '44px' }}
-            variant={!isChecked || blockingError !== null ? 'contained' : 'gradient'}
+            variant="contained"
             size="medium"
             data-cy={`migration-button`}
           >

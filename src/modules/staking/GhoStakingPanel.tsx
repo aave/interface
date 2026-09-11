@@ -2,16 +2,7 @@ import { ChainId } from '@aave/contract-helpers';
 import { GetUserStakeUIDataHumanized } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  Paper,
-  Stack,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Paper, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import React from 'react';
@@ -26,7 +17,10 @@ import { StakeTokenFormatted } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useCurrentTimestamp } from 'src/hooks/useCurrentTimestamp';
 import { useModalContext } from 'src/hooks/useModal';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
+import { stakePanelActionSx } from 'src/utils/buttonStyles';
+import { cardPaddingSx, panelStatLabelSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 
 import { StakeActionBox } from './StakeActionBox';
 import { StakingPanelSkeleton } from './StakingPanelSkeleton';
@@ -61,8 +55,6 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
   maxSlash,
   children,
 }) => {
-  const { breakpoints } = useTheme();
-  const xsm = useMediaQuery(breakpoints.up('xsm'));
   const now = useCurrentTimestamp(1);
   const { openSwitch } = useModalContext();
 
@@ -125,7 +117,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
   // const distributionEnded = Date.now() / 1000 > Number(stakeData.distributionEnd);
 
   return (
-    <Paper sx={{ p: { xs: 4, xsm: 6 }, pt: 4, height: '100%' }}>
+    <Paper variant="card" sx={{ ...cardPaddingSx, height: '100%' }}>
       <Box
         sx={{
           display: { xs: 'none', xsm: 'flex' },
@@ -143,7 +135,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
               />
             </Stack>
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             Total deposited:{' '}
             <FormattedNumber
               variant="caption"
@@ -164,19 +156,15 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
       </Box>
 
       <Box
-        sx={(theme) => ({
+        sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: { xs: 'flex-start', xsm: 'center' },
           flexDirection: { xs: 'column', xsm: 'row' },
           gap: { xs: 0, xsm: 2 },
           borderRadius: { xs: 0, xsm: '6px' },
-          border: { xs: 'unset', xsm: `1px solid ${theme.palette.divider}` },
+          border: { xs: 'unset', xsm: `1px solid ${figVars['border-0']}` },
           p: { xs: 0, xsm: 4 },
-          background: {
-            xs: 'unset',
-            xsm: theme.palette.background.paper,
-          },
           position: 'relative',
           '&:after': {
             content: "''",
@@ -185,9 +173,9 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             left: '-16px',
             width: 'calc(100% + 32px)',
             height: '1px',
-            bgcolor: { xs: 'divider', xsm: 'transparent' },
+            bgcolor: { xs: 'border-2', xsm: 'transparent' },
           },
-        })}
+        }}
       >
         <Box
           sx={{
@@ -202,18 +190,16 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             <TokenIcon symbol={icon} sx={{ fontSize: { xs: '40px', xsm: '32px' } }} />
             <Stack direction="column" ml={2} alignItems="start" justifyContent="center">
               <Stack direction="row">
-                <Typography variant={xsm ? 'subheader1' : 'h4'}>sGHO</Typography>
+                <Typography component="p" sx={{ typography: { xs: 'h4', xsm: 'subheader1' } }}>
+                  sGHO
+                </Typography>
                 <Box sx={{ display: { xsm: 'none' } }}>
                   <TokenContractTooltip
                     explorerUrl={`https://etherscan.io/address/${stakeData.stakeTokenContract}`}
                   />
                 </Box>
               </Stack>
-              <Typography
-                sx={{ display: { xsm: 'none' } }}
-                variant="caption"
-                color="text.secondary"
-              >
+              <Typography sx={{ display: { xsm: 'none' } }} variant="caption" color="fg-2">
                 Total deposited{' '}
                 <FormattedNumber
                   variant="caption"
@@ -250,10 +236,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           }}
         >
           <Stack direction="row">
-            <Typography
-              variant={xsm ? 'subheader2' : 'description'}
-              color={xsm ? 'text.secondary' : 'text.primary'}
-            >
+            <Typography sx={panelStatLabelSx}>
               <Trans>Deposit APR </Trans>
             </Typography>
           </Stack>
@@ -270,13 +253,10 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'subheader2' : 'description'}
-            color={xsm ? 'text.secondary' : 'text.primary'}
-          >
+          <Typography sx={panelStatLabelSx}>
             <Trans>Max slashing</Trans>
           </Typography>
-          <FormattedNumber value={maxSlash} percent variant="secondary14" />
+          <FormattedNumber value={maxSlash} percent variant="h5" />
         </Box>
         <Box
           sx={{
@@ -287,10 +267,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
             mb: { xs: 3, xsm: 0 },
           }}
         >
-          <Typography
-            variant={xsm ? 'subheader2' : 'description'}
-            color={xsm ? 'text.secondary' : 'text.primary'}
-          >
+          <Typography sx={panelStatLabelSx}>
             <Trans>Wallet Balance</Trans>
           </Typography>
           <FormattedNumber value={availableToStake.toString()} />
@@ -301,9 +278,8 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
         {+availableToStake === 0 ? (
           <Button
             variant="contained"
-            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+            sx={stakePanelActionSx}
             onClick={handleSwitchClick}
-            fullWidth={!xsm}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
             <Trans>Get GHO</Trans>
@@ -311,10 +287,9 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
         ) : (
           <Button
             variant="contained"
-            sx={{ minWidth: '96px', mb: { xs: 6, xsm: 0 } }}
+            sx={stakePanelActionSx}
             onClick={onStakeAction}
             disabled={+availableToStake === 0 || stakeData.inPostSlashingPeriod}
-            fullWidth={!xsm}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
             <Trans>Deposit</Trans>
@@ -371,17 +346,17 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           bottomLineComponent={
             <>
               {isCooldownActive && !isUnstakeWindowActive ? (
-                <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                <Typography variant="h5" sx={{ display: 'inline-flex', gap: 1 }}>
                   <SecondsToString seconds={stakeCooldownSeconds - userCooldownDelta} />
                 </Typography>
               ) : isUnstakeWindowActive ? (
-                <Typography variant="secondary14" sx={{ display: 'inline-flex', gap: 1 }}>
+                <Typography variant="h5" sx={{ display: 'inline-flex', gap: 1 }}>
                   <SecondsToString
                     seconds={stakeUnstakeWindow + stakeCooldownSeconds - userCooldownDelta}
                   />
                 </Typography>
               ) : (
-                <Typography variant="secondary12">
+                <Typography variant="subheader2">
                   <Trans>Instant</Trans>
                 </Typography>
               )}
@@ -398,15 +373,15 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
                   pt: 2,
                 }}
               >
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" color="fg-2">
                   <Trans>Amount in cooldown</Trans>
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <TokenIcon symbol="GHO" sx={{ mr: 1, width: 14, height: 14 }} />
                   <FormattedNumber
                     value={formatEther(stakeUserData?.userCooldownAmount || 0)}
-                    variant="secondary14"
-                    color="text.primary"
+                    variant="h5"
+                    color="fg-1"
                   />
                 </Box>
               </Box>
@@ -419,7 +394,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           {isUnstakeWindowActive && (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Button
-                variant="gradient"
+                variant="contained"
                 fullWidth
                 onClick={onUnstakeAction}
                 data-cy={`unstakeBtn_${stakedToken}`}
@@ -429,11 +404,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
               {availableToReactivateCooldown && (
                 <DarkTooltip
                   title={
-                    <Typography
-                      variant="caption"
-                      color="common.white"
-                      sx={{ textAlign: 'center', width: '162px' }}
-                    >
+                    <Typography variant="caption" sx={{ textAlign: 'center', width: '162px' }}>
                       <Trans>
                         Reactivate cooldown period to unstake{' '}
                         {Number(
@@ -445,7 +416,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
                   }
                 >
                   <Button
-                    variant="outlined"
+                    variant="tertiary"
                     data-cy={`reCoolDownBtn_${stakedToken}`}
                     sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
                     onClick={onCooldownAction}
@@ -462,7 +433,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           {isCooldownActive && !isUnstakeWindowActive && (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Button
-                variant="outlined"
+                variant="tertiary"
                 fullWidth
                 disabled
                 data-cy={`awaitCoolDownBtn_${stakedToken}`}
@@ -473,11 +444,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
               {availableToReactivateCooldown && (
                 <DarkTooltip
                   title={
-                    <Typography
-                      variant="caption"
-                      color="common.white"
-                      sx={{ textAlign: 'center', width: '162px' }}
-                    >
+                    <Typography variant="caption" sx={{ textAlign: 'center', width: '162px' }}>
                       <Trans>
                         Reactivate cooldown period to unstake{' '}
                         {Number(
@@ -489,7 +456,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
                   }
                 >
                   <Button
-                    variant="outlined"
+                    variant="tertiary"
                     data-cy={`reCoolDownBtn_${stakedToken}`}
                     sx={{ ml: 1, height: '36px', width: '36px', minWidth: '36px' }}
                     onClick={onCooldownAction}
@@ -505,7 +472,7 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
 
           {!isCooldownActive && (
             <Button
-              variant="outlined"
+              variant="tertiary"
               fullWidth
               onClick={onCooldownAction}
               disabled={stakeUserData?.stakeTokenRedeemableAmount === '0'}
@@ -524,27 +491,15 @@ export const GhoStakingPanel: React.FC<GhoStakingPanelProps> = ({
           dataCy={`rewardBox_${stakedToken}`}
           bottomLineComponent={<Box sx={{ height: '19px' }} />}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: { sm: 'row', xs: 'column' },
-              justifyContent: 'space-between',
-            }}
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={onStakeRewardClaimAction}
+            disabled={stakeUserData?.userIncentivesToClaim === '0'}
+            data-cy={`claimBtn_${stakedToken}`}
           >
-            <Button
-              variant="contained"
-              onClick={onStakeRewardClaimAction}
-              disabled={stakeUserData?.userIncentivesToClaim === '0'}
-              data-cy={`claimBtn_${stakedToken}`}
-              sx={{
-                flex: 1,
-                mb: { xs: 2, sm: 0 },
-                mr: { xs: 0, sm: 1 },
-              }}
-            >
-              <Trans>Claim</Trans>
-            </Button>
-          </Box>
+            <Trans>Claim</Trans>
+          </Button>
         </StakeActionBox>
       </Stack>
       {children}

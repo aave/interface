@@ -2,7 +2,7 @@ import { Box, BoxProps } from '@mui/material';
 import { ReactNode } from 'react';
 
 interface ListHeaderWrapperProps extends BoxProps {
-  px?: 4 | 6;
+  px?: 4 | 5;
   children: ReactNode;
 }
 
@@ -13,15 +13,17 @@ export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapp
       sx={{
         display: 'flex',
         alignItems: 'flex-end',
+        gap: '1rem',
         px,
-        pt: 4,
-        pb: 1,
+        py: '12.5px',
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        bgcolor: 'background.paper',
+        bgcolor: 'table-bg',
         borderBottom: '1px solid',
-        borderColor: 'divider',
+        borderColor: 'border-0',
+        borderTopLeftRadius: 'inherit',
+        borderTopRightRadius: 'inherit',
         ...rest.sx,
       }}
     >

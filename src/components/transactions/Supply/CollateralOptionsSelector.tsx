@@ -21,6 +21,7 @@ import {
   ComputedReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { figVars } from 'src/utils/figmaColors';
 
 export interface CollateralOption {
   emodeId: number; // 0 = default (no e-mode), >0 = specific e-mode category
@@ -256,7 +257,7 @@ export const CollateralOptionsSelector = React.memo(
 
     return (
       <Box sx={{ mt: 4, mb: 2 }}>
-        <Typography variant="description" color="text.secondary" sx={{ mb: 2 }}>
+        <Typography variant="description" color="fg-2" sx={{ mb: 2 }}>
           <Trans>Collateral options</Trans>
         </Typography>
         <Stack spacing={1}>
@@ -276,7 +277,7 @@ export const CollateralOptionsSelector = React.memo(
                   display: 'block',
                   textAlign: 'left',
                   border: `1px solid ${
-                    isSelected ? theme.palette.primary.main : theme.palette.divider
+                    isSelected ? theme.vars.palette.primary.main : figVars['border-2']
                   }`,
                   borderRadius: '8px',
                   cursor: option.blocked ? 'not-allowed' : 'pointer',
@@ -284,8 +285,8 @@ export const CollateralOptionsSelector = React.memo(
                   opacity: option.blocked ? 0.5 : 1,
                   '&:hover': {
                     borderColor: option.blocked
-                      ? theme.palette.divider
-                      : theme.palette.primary.main,
+                      ? figVars['border-2']
+                      : theme.vars.palette.primary.main,
                   },
                   transition: 'all 0.15s ease',
                 })}
@@ -298,7 +299,7 @@ export const CollateralOptionsSelector = React.memo(
                         height: 16,
                         borderRadius: '50%',
                         border: `2px solid ${
-                          isSelected ? theme.palette.primary.main : theme.palette.divider
+                          isSelected ? theme.vars.palette.primary.main : figVars['border-2']
                         }`,
                         display: 'flex',
                         alignItems: 'center',
@@ -321,9 +322,9 @@ export const CollateralOptionsSelector = React.memo(
                       percent
                       visibleDecimals={0}
                       variant="subheader1"
-                      color="text.primary"
+                      color="fg-1"
                     />
-                    <Typography variant="subheader1" color="text.primary">
+                    <Typography variant="subheader1" color="fg-1">
                       <Trans>LTV</Trans>
                     </Typography>
                     {option.isCurrentEmode && (
@@ -348,7 +349,7 @@ export const CollateralOptionsSelector = React.memo(
                           px: 1,
                           py: 0.25,
                           borderRadius: '4px',
-                          bgcolor: 'text.secondary',
+                          bgcolor: 'fg-2',
                           color: '#fff',
                           fontSize: '10px',
                         }}
@@ -389,7 +390,7 @@ export const CollateralOptionsSelector = React.memo(
                   <AssetRow label={<Trans>Borrow:</Trans>} assets={option.borrowableAssets} />
                 )}
                 {option.emodeId === 0 && (
-                  <Typography variant="caption" color="text.secondary" sx={{ mt: 1, ml: 3.5 }}>
+                  <Typography variant="caption" color="fg-2" sx={{ mt: 1, ml: 3.5 }}>
                     <Trans>Borrow: All eligible assets</Trans>
                   </Typography>
                 )}
@@ -439,7 +440,7 @@ export const CollateralOptionsSelector = React.memo(
               expandIcon={<ExpandMoreIcon />}
               sx={{ px: 0, minHeight: 'auto', '& .MuiAccordionSummary-content': { my: 1 } }}
             >
-              <Typography variant="description" color="text.secondary">
+              <Typography variant="description" color="fg-2">
                 <Trans>Category assets</Trans>
               </Typography>
             </AccordionSummary>
@@ -463,19 +464,19 @@ const AssetRow = ({
   assets: Array<{ symbol: string; iconSymbol: string }>;
 }) => (
   <Stack direction="row" alignItems="center" spacing={0.5} sx={{ mt: 1, ml: 3.5 }}>
-    <Typography variant="caption" color="text.secondary">
+    <Typography variant="caption" color="fg-2">
       {label}
     </Typography>
     {assets.slice(0, MAX_VISIBLE_ASSETS).map((asset) => (
       <Stack key={asset.symbol} direction="row" alignItems="center" spacing={0.25}>
         <TokenIcon symbol={asset.iconSymbol} sx={{ fontSize: '14px' }} />
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="fg-2">
           {asset.symbol}
         </Typography>
       </Stack>
     ))}
     {assets.length > MAX_VISIBLE_ASSETS && (
-      <Typography variant="caption" color="text.secondary">
+      <Typography variant="caption" color="fg-2">
         +{assets.length - MAX_VISIBLE_ASSETS}
       </Typography>
     )}

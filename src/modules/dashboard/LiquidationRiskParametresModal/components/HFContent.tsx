@@ -45,7 +45,7 @@ export const HFContent = ({ healthFactor }: HFContentProps) => {
               height: 0,
               borderStyle: 'solid',
               borderWidth: '6px 4px 0 4px',
-              borderColor: `${theme.palette.primary.main} transparent transparent transparent`,
+              borderColor: `${theme.vars.palette.primary.main} transparent transparent transparent`,
               content: "''",
               position: 'absolute',
               left: dotPosition > 75 ? 'auto' : '50%',

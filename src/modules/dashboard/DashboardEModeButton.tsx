@@ -7,6 +7,7 @@ import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvide
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { DASHBOARD, GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
 
 import LightningBoltGradient from '/public/lightningBoltGradient.svg';
@@ -53,7 +54,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         e.stopPropagation();
       }}
     >
-      <Typography mr={1} variant="description" color="text.secondary">
+      <Typography mr={1} variant="description" color="fg-2">
         <Trans>E-Mode</Trans>
       </Typography>
 
@@ -65,53 +66,49 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
         data-cy={`emode-open`}
         size="small"
         variant="outlined"
-        sx={(theme) => ({
+        sx={{
           ml: 1,
           borderRadius: '4px',
-          p: 0,
-          '&:after': {
-            content: "''",
-            position: 'absolute',
-            left: -1,
-            right: -1,
-            bottom: -1,
-            top: -1,
-            background: isEModeDisabled ? 'transparent' : theme.palette.gradients.aaveGradient,
-            borderRadius: '4px',
-          },
-        })}
+          height: { xs: '2.25rem', xsm: '1.75rem' },
+          px: { xs: '0.88rem', xsm: '0.62rem' },
+          ...(isEModeDisabled
+            ? { backgroundColor: open ? figVars['bg-6'] : undefined }
+            : {
+                backgroundColor: figVars['purple-1'],
+                '&:after': {
+                  content: "''",
+                  position: 'absolute',
+                  inset: '1px',
+                  borderRadius: '3px',
+                  backgroundColor: figVars['bg-3'],
+                },
+              }),
+        }}
       >
         <Box
-          sx={(theme) => ({
+          sx={{
             display: 'inline-flex',
             alignItems: 'center',
             position: 'relative',
             zIndex: 1,
-            bgcolor: isEModeDisabled
-              ? open
-                ? theme.palette.background.disabled
-                : theme.palette.background.surface
-              : theme.palette.background.paper,
-            px: '4px',
-            borderRadius: '4px',
-          })}
+          }}
         >
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              mr: '4px',
-              color: isEModeDisabled ? 'text.muted' : 'text.primary',
+              mr: 1,
+              color: isEModeDisabled ? 'fg-3' : 'fg-1',
             }}
           >
             {isEModeDisabled ? <LightningBoltIcon /> : <LightningBoltGradient />}
           </SvgIcon>
 
           {isEModeDisabled ? (
-            <Typography variant="buttonS" color="text.secondary">
+            <Typography variant="buttonM" color="fg-2">
               <EModeLabelMessage />
             </Typography>
           ) : (
-            <TypographyGradient variant="buttonS">
+            <TypographyGradient variant="buttonM">
               <EModeLabelMessage />
             </TypographyGradient>
           )}
@@ -119,7 +116,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           <SvgIcon
             sx={{
               fontSize: iconButtonSize,
-              ml: '4px',
+              ml: 1,
               color: 'primary.light',
             }}
           >
@@ -142,17 +139,17 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
 
           {!isEModeDisabled && (
             <Box>
-              <Typography mb={1} variant="caption" color="text.secondary">
+              <Typography mb={1} variant="caption" color="fg-2">
                 <Trans>Asset category</Trans>
               </Typography>
 
               <Box
-                sx={(theme) => ({
+                sx={{
                   p: 2,
                   mb: 3,
                   borderRadius: '6px',
-                  border: `1px solid ${theme.palette.divider}`,
-                })}
+                  border: `1px solid ${figVars['border-2']}`,
+                }}
               >
                 <Row
                   caption={
@@ -165,7 +162,7 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
                       >
                         <LightningBoltGradient />
                       </SvgIcon>
-                      <Typography variant="subheader2" color="text.primary">
+                      <Typography variant="subheader2" color="fg-1">
                         <EModeLabelMessage />
                       </Typography>
                     </Box>
@@ -192,14 +189,14 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
             </Box>
           )}
 
-          <Typography variant="caption" color="text.secondary" mb={4}>
+          <Typography variant="caption" color="fg-2" mb={4}>
             <Trans>
               E-Mode increases your LTV for a selected category of assets.{' '}
               <Link
                 href="https://aave.com/help/borrowing/e-mode"
                 sx={{ textDecoration: 'underline' }}
                 variant="caption"
-                color="text.secondary"
+                color="fg-2"
               >
                 Learn more
               </Link>
@@ -209,7 +206,8 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
           {isEModeDisabled ? (
             <Button
               fullWidth
-              variant={'gradient'}
+              variant="contained"
+              size="small"
               onClick={() => {
                 trackEvent(GENERAL.OPEN_MODAL, {
                   type: 'Enable E-Mode',
@@ -228,7 +226,8 @@ export const DashboardEModeButton = ({ userEmodeCategoryId }: DashboardEModeButt
               <Button
                 fullWidth
                 sx={{ mb: '6px' }}
-                variant={'outlined'}
+                variant="tertiary"
+                size="small"
                 onClick={() => {
                   trackEvent(GENERAL.OPEN_MODAL, {
                     modal: 'Switch E-Mode',

@@ -14,7 +14,7 @@ export const ListHeader = ({ head }: ListHeaderProps) => {
     <ListHeaderWrapper>
       {head.map((title, i) => (
         <ListColumn overFlow={'visible'} key={i} isRow={i === 0}>
-          <ListHeaderTitle>{title}</ListHeaderTitle>
+          <ListHeaderTitle noTruncate={i === head.length - 1}>{title}</ListHeaderTitle>
         </ListColumn>
       ))}
 

@@ -6,6 +6,7 @@ namespace NodeJS {
   interface ProcessEnv {
     NEXT_PUBLIC_ENABLE_GOVERNANCE: string;
     NEXT_PUBLIC_ENABLE_STAKING: string;
+    NEXT_PUBLIC_ENABLE_DEV_PAGES?: string;
     NEXT_PUBLIC_ENV: string;
     NEXT_PUBLIC_API_BASEURL: string;
     NEXT_PUBLIC_FORK_BASE_CHAIN_ID?: string;

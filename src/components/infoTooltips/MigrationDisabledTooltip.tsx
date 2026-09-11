@@ -73,7 +73,7 @@ export const MigrationDisabledTooltip = ({
 
   return (
     <TextWithTooltip iconSize={16} color="error.main" icon={<ExclamationIcon />}>
-      <Typography variant="caption" color="text.secondary">
+      <Typography variant="caption" color="fg-2">
         {warningText[warningType]}
       </Typography>
     </TextWithTooltip>

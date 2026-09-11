@@ -57,6 +57,7 @@ export const MigrationLists = ({
 
   return (
     <Paper
+      variant="card"
       sx={{
         display: 'flex',
         flexDirection: 'column',

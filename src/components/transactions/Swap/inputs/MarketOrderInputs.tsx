@@ -36,12 +36,13 @@ export const MarketOrderInputs = ({
           justifyContent:
             params.inputInputTitle || swapState.showNetworkSelector ? 'space-between' : 'flex-end',
           alignItems: 'center',
+          mb: '0.5rem',
         }}
       >
         {(params.inputInputTitle || swapState.showNetworkSelector) && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             {params.inputInputTitle && (
-              <Typography variant="secondary14" color="text.secondary">
+              <Typography variant="h5" color="fg-2">
                 {params.inputInputTitle}
               </Typography>
             )}
@@ -114,22 +115,17 @@ export const MarketOrderInputs = ({
               disabled={!(customProps?.canSwitchTokens ?? false)}
               sx={{
                 border: '1px solid',
-                borderColor: 'divider',
-                backgroundColor: 'background.paper',
-                '&:hover': { backgroundColor: 'background.surface' },
-                '&:disabled': {
-                  backgroundColor: 'background.surface',
-                  opacity: '0.7',
-                  color: 'text.secondary',
+                borderColor: 'border-opaque',
+                backgroundColor: 'bg-2',
+                color: 'fg-3',
+                '&:hover': { backgroundColor: 'bg-3' },
+                '&.Mui-disabled': {
+                  backgroundColor: 'bg-2',
+                  color: 'fg-4',
                 },
               }}
             >
-              <SvgIcon
-                sx={{
-                  color: 'primary.main',
-                  fontSize: '18px',
-                }}
-              >
+              <SvgIcon sx={{ fontSize: '18px' }}>
                 <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>
@@ -148,23 +144,15 @@ export const MarketOrderInputs = ({
             <Box sx={{ position: 'absolute' }}>
               <IconButton
                 disabled
-                disableFocusRipple
                 sx={{
                   border: '1px solid',
-                  borderColor: 'divider',
-                  backgroundColor: 'background.paper',
-                  '&:disabled': {
-                    backgroundColor: 'background.paper',
+                  borderColor: 'border-opaque',
+                  '&.Mui-disabled': {
+                    backgroundColor: 'bg-2',
                   },
-                  '&:hover': { backgroundColor: 'background.paper' },
                 }}
               >
-                <SvgIcon
-                  sx={{
-                    color: 'primary.main',
-                    fontSize: '18px',
-                  }}
-                >
+                <SvgIcon sx={{ color: 'fg-3', fontSize: '18px' }}>
                   <ArrowDownIcon />
                 </SvgIcon>
               </IconButton>

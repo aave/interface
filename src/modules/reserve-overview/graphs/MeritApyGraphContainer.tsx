@@ -98,7 +98,7 @@ export const MeritApyGraphContainer = ({
       }}
     >
       <CircularProgress size={20} sx={{ mb: 2, opacity: 0.5 }} />
-      <Typography variant="subheader1" color="text.muted">
+      <Typography variant="subheader1" color="fg-3">
         <Trans>Loading data...</Trans>
       </Typography>
     </Box>
@@ -122,7 +122,7 @@ export const MeritApyGraphContainer = ({
         <Trans>Data couldn&apos;t be fetched, please reload graph.</Trans>
       </Typography>
       {onRetry && (
-        <Button variant="outlined" color="primary" onClick={onRetry}>
+        <Button variant="tertiary" color="primary" onClick={onRetry}>
           <Trans>Reload</Trans>
         </Button>
       )}

@@ -1,15 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { SxProps, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, SxProps } from '@mui/material';
 
 export const SupplyCapBlockingError = ({ symbol, sx }: { symbol: string; sx?: SxProps }) => {
   return (
-    <Warning severity="error" sx={{ mt: 4, ...sx }} icon={false}>
-      <Typography variant="caption">
-        <Trans>
-          Supply cap reached for {symbol}. Reduce the amount or choose a different asset.
-        </Trans>
-      </Typography>
-    </Warning>
+    <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%', mt: 4, ...sx }}>
+      <Trans>Supply cap reached for {symbol}. Reduce the amount or choose a different asset.</Trans>
+    </Alert>
   );
 };

@@ -1,6 +1,5 @@
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
-import { ListColumn } from 'src/components/lists/ListColumn';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
 import { StakingDropdown } from 'src/modules/umbrella/helpers/StakingDropdown';
 import { useRootStore } from 'src/store/root';
@@ -23,7 +22,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
 
   return (
     <ListMobileItemWrapper>
-      <ListColumn isRow>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <StakeAssetName
           iconSymbol={umbrellaStakeAsset.iconSymbol}
           symbol={umbrellaStakeAsset.symbol}
@@ -32,18 +31,10 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
           apyAtTargetLiquidity={umbrellaStakeAsset.totalRewardApyAtTargetLiquidity}
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${umbrellaStakeAsset.tokenAddress}`}
         />
-      </ListColumn>
+      </Box>
       <Row mt={2} caption={<ApyTooltip />} captionVariant="description" mb={3}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: { xs: 'flex-end' },
-            justifyContent: 'center',
-            textAlign: 'center',
-          }}
-        >
-          <StakingApyItem stakeData={umbrellaStakeAsset} isMobile />
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <StakingApyItem stakeData={umbrellaStakeAsset} />
         </Box>
       </Row>
       <Row
@@ -52,7 +43,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         mb={3}
         align="flex-start"
       >
-        <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} isMobile />
+        <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} />
       </Row>
       <Row caption={<SharesTooltip />} captionVariant="description" mb={3} align="flex-start">
         <AmountSharesItem stakeData={umbrellaStakeAsset} />
@@ -64,24 +55,16 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         mb={3}
         align="flex-start"
       >
-        <AvailableToStakeItem stakeData={umbrellaStakeAsset} isMobile />
+        <AvailableToStakeItem stakeData={umbrellaStakeAsset} />
       </Row>
 
       <Row caption={<Trans>Available to claim</Trans>} captionVariant="description" mb={3}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: { xs: 'flex-end' },
-            justifyContent: 'center',
-            textAlign: 'center',
-          }}
-        >
-          <AvailableToClaimItem stakeData={umbrellaStakeAsset} isMobile />
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <AvailableToClaimItem stakeData={umbrellaStakeAsset} />
         </Box>
       </Row>
 
-      <StakingDropdown stakeData={umbrellaStakeAsset} />
+      <StakingDropdown stakeData={umbrellaStakeAsset} fullWidth size="medium" />
     </ListMobileItemWrapper>
   );
 };

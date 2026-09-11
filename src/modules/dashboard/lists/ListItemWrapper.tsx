@@ -85,7 +85,11 @@ export const ListItemWrapper = ({
           noWrap
           sx={{ display: 'inline-flex', alignItems: 'center' }}
         >
-          <TokenIcon symbol={iconSymbol} fontSize="large" />
+          <TokenIcon
+            symbol={iconSymbol}
+            fontSize="large"
+            sx={{ fontSize: { lg: '1.5rem', xl: '2.5rem' } }}
+          />
           <Tooltip title={`${name} (${symbol})`} arrow placement="top">
             <Typography variant="subheader1" sx={{ ml: 3 }} noWrap data-cy={`assetName`}>
               {symbol}

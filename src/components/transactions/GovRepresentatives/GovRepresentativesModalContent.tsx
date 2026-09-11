@@ -9,6 +9,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
 import { useRootStore } from 'src/store/root';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
+import { figVars } from 'src/utils/figmaColors';
 import { getNetworkConfig, networkConfigs } from 'src/utils/marketsAndNetworksConfig';
 import { useShallow } from 'zustand/shallow';
 
@@ -93,7 +94,7 @@ export const GovRepresentativesContent = ({
   return (
     <Box sx={{ m: -3 }}>
       <Box sx={{ p: 3 }}>
-        <TxModalTitle title="Edit address" />
+        <TxModalTitle title="Edit address" sx={{ mb: 0 }} />
       </Box>
       {isWrongNetwork && !readOnlyModeAddress && (
         <ChangeNetworkWarning
@@ -102,19 +103,17 @@ export const GovRepresentativesContent = ({
           chainId={govChain}
         />
       )}
-      <Stack direction="column" gap={2}>
+      <Stack>
         {reps.map((r, i) => (
           <Box
             key={i}
-            sx={(theme) => ({
-              border: reps[i].remove
-                ? `1px solid ${theme.palette.action.active}`
-                : '1px solid transparent',
+            sx={{
+              border: r.remove ? `1px solid ${figVars['fg-3']}` : '1px solid transparent',
               borderRadius: '8px',
-              background: reps[i].remove ? theme.palette.background.surface : 'transparent',
-            })}
+              background: r.remove ? figVars['bg-2'] : 'transparent',
+            }}
           >
-            <Stack gap={2} sx={{ px: 3, py: 3 }}>
+            <Stack gap={2} sx={{ px: 3, py: 2 }}>
               <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Stack direction="row" alignItems="center" gap={2}>
                   <img
@@ -123,12 +122,12 @@ export const GovRepresentativesContent = ({
                     width="16px"
                     alt="network logo"
                   />
-                  <Typography variant="description" color="text.secondary">
+                  <Typography variant="description" color="fg-2">
                     {networkConfigs[r.chainId].name}
                   </Typography>
                 </Stack>
                 <FormControlLabel
-                  sx={{ mr: 0 }}
+                  sx={{ m: 0 }}
                   label={
                     <Typography sx={{ mr: 1 }} variant="subheader1" color="error.main">
                       <Trans>Remove</Trans>
@@ -137,8 +136,8 @@ export const GovRepresentativesContent = ({
                   labelPlacement="start"
                   control={
                     <Checkbox
-                      sx={{ width: '16px', height: '16px' }}
-                      checked={reps[i].remove}
+                      sx={{ p: 0 }}
+                      checked={r.remove}
                       onChange={(e) => {
                         setReps((prev) => {
                           const newReps = [...prev];
@@ -168,13 +167,11 @@ export const GovRepresentativesContent = ({
                   handleChange(e.target.value, i);
                 }}
               />
-              <Typography
-                sx={{ visibility: r.invalid && !r.remove ? 'visible' : 'hidden' }}
-                variant="helperText"
-                color="error.main"
-              >
-                <Trans>Can&apos;t validate the wallet address. Try again.</Trans>
-              </Typography>
+              {r.invalid && !r.remove && (
+                <Typography variant="helperText" color="error.main">
+                  <Trans>Can&apos;t validate the wallet address. Try again.</Trans>
+                </Typography>
+              )}
             </Stack>
           </Box>
         ))}

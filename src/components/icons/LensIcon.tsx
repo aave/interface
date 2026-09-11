@@ -1,10 +1,10 @@
 import { SvgIcon } from '@mui/material';
 
 interface IconProps {
-  color: string;
+  color?: string;
 }
 
-export const LensIcon = ({ color }: IconProps) => {
+export const LensIcon = ({ color = 'currentColor' }: IconProps) => {
   return (
     <SvgIcon xmlns="http://www.w3.org/2000/svg" aria-label="Lens">
       <svg

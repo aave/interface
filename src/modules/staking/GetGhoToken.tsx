@@ -16,7 +16,7 @@ export const GetGhoToken = () => {
     <>
       <DarkTooltip title="Get GHO to stake within the Aave Protocol">
         <Button
-          variant="outlined"
+          variant="tertiary"
           size="small"
           onClick={handleClick}
           data-cy={`getGho-token`} // todo tests

@@ -182,8 +182,10 @@ function InnerCheckout() {
   const colorMode = muiTheme.palette.mode;
 
   useEffect(() => {
-    const persisted = (localStorage?.getItem('colorMode') as 'light' | 'dark') || colorMode;
-    toggleTheme(persisted);
+    // `colorMode` (theme.palette.mode) is reactive under CssVarsProvider, so sync funkit to
+    // it directly. (Dropped the legacy `colorMode` localStorage read — MUI now persists the
+    // color scheme under its own key, so that value is stale.)
+    toggleTheme(colorMode);
   }, [colorMode, toggleTheme]);
 
   const beginSupply = async (reserve: FunSupplyReserve) => {

@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Alert, Box, CircularProgress } from '@mui/material';
 import React, { Dispatch, useEffect, useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { SwapError, SwapState } from '../../types';
 
@@ -71,9 +70,10 @@ export const UserDenied = ({
 
   return (
     <Box sx={{ mt: 4, display: visible ? 'block' : 'none' }}>
-      <Warning
+      <Alert
         severity="info"
         sx={{
+          width: '100%',
           margin: 0,
           '& .MuiAlert-action': { display: 'flex', alignItems: 'center', marginRight: 0, p: 0 },
         }}
@@ -86,10 +86,8 @@ export const UserDenied = ({
           />
         }
       >
-        <Typography variant="description">
-          <Trans> User denied the operation.</Trans>
-        </Typography>
-      </Warning>
+        <Trans> User denied the operation.</Trans>
+      </Alert>
     </Box>
   );
 };

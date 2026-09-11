@@ -15,15 +15,15 @@ export const EModeTooltip = ({
         <FormattedNumber
           value={Number(eModeLtv) / 10000}
           percent
-          variant="secondary12"
-          color="text.secondary"
+          variant="subheader2"
+          color="fg-2"
         />
         .{' '}
         <Link
           href="https://docs.aave.com/faq/aave-v3-features#high-efficiency-mode-e-mode"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           Learn more
         </Link>

@@ -23,7 +23,7 @@ export const KernelAirdropTooltip = () => {
           href="https://kerneldao.gitbook.io/kernel/getting-started/editor/kernel-points-guide "
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           {'here'}
         </Link>

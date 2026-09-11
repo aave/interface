@@ -52,8 +52,8 @@ export const SwitchRates = ({
         visibleDecimals={0}
         variant="main12"
         symbol={isSwitched ? destSymbol : srcSymbol}
-        symbolsVariant="secondary12"
-        symbolsColor="text.secondary"
+        symbolsVariant="subheader2"
+        symbolsColor="fg-2"
         value={'1'}
       />
       <ButtonBase
@@ -68,8 +68,8 @@ export const SwitchRates = ({
       <FormattedNumber
         variant="main12"
         symbol={isSwitched ? srcSymbol : destSymbol}
-        symbolsVariant="secondary12"
-        symbolsColor="text.secondary"
+        symbolsVariant="subheader2"
+        symbolsColor="fg-2"
         value={rate.toString()}
         visibleDecimals={3}
       />

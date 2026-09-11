@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
 import { resolveEnsAddress } from 'src/utils/ensClient';
+import { figSurfaceShadow } from 'src/utils/figmaColors';
 import { isAddress } from 'viem';
 
 export const BridgeDestinationInput = ({
@@ -73,39 +74,37 @@ export const BridgeDestinationInput = ({
   const showWarning = !useConnectedAccount && !isAddress(destinationAccount);
 
   return (
-    <Stack direction="column" gap={1} width="100%">
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
-        <Typography color="text.secondary">
+    <Stack direction="column" gap="0.5rem" width="100%">
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography color="fg-2">
           <Trans>To</Trans>
         </Typography>
-        <Stack direction="row" alignItems="center" sx={{ mb: -1 }}>
-          <FormControlLabel
-            sx={{ mx: 0 }}
-            control={
-              <Switch
-                disableRipple
-                checked={useConnectedAccount}
-                onClick={() => {
-                  const newValue = !useConnectedAccount;
-                  if (newValue) {
-                    setDestinationAccount(connectedAccount);
-                    onInputValid(connectedAccount);
-                  } else {
-                    setDestinationAccount('');
-                    onInputError();
-                  }
-                  setUseConnectedAccount(newValue);
-                }}
-              />
-            }
-            labelPlacement="start"
-            label={
-              <Typography sx={{ fontSize: '0.75rem' }} color="text.secondary">
-                <Trans>Use connected account</Trans>
-              </Typography>
-            }
-          />
-        </Stack>
+        <FormControlLabel
+          sx={{ mx: 0 }}
+          control={
+            <Switch
+              disableRipple
+              checked={useConnectedAccount}
+              onClick={() => {
+                const newValue = !useConnectedAccount;
+                if (newValue) {
+                  setDestinationAccount(connectedAccount);
+                  onInputValid(connectedAccount);
+                } else {
+                  setDestinationAccount('');
+                  onInputError();
+                }
+                setUseConnectedAccount(newValue);
+              }}
+            />
+          }
+          labelPlacement="start"
+          label={
+            <Typography sx={{ fontSize: '0.75rem' }} color="fg-2">
+              <Trans>Use connected account</Trans>
+            </Typography>
+          }
+        />
       </Stack>
       <InputBase
         fullWidth
@@ -113,33 +112,24 @@ export const BridgeDestinationInput = ({
         disabled={useConnectedAccount || fetchingIsContractAddress}
         onChange={(e) => setDestinationAccount(e.target.value)}
         placeholder={t`Enter ETH address or ENS`}
-        sx={(theme) => ({
+        sx={{
           height: '44px',
           px: 2,
-          border: `1px solid ${theme.palette.divider}`,
-          borderRadius: '6px',
+          boxShadow: figSurfaceShadow('shadow-stroke-1'),
+          borderRadius: '0.5rem',
           overflow: 'hidden',
-        })}
+        }}
         endAdornment={
           validatingENS || fetchingIsContractAddress ? (
             <CircularProgress color="inherit" size="16px" />
           ) : null
         }
       />
-      <Typography
-        sx={{
-          visibility:
-            useConnectedAccount || fetchingIsContractAddress
-              ? 'hidden'
-              : showWarning
-              ? 'visible'
-              : 'hidden',
-        }}
-        variant="helperText"
-        color="error.main"
-      >
-        <Trans>Enter a valid address</Trans>
-      </Typography>
+      {showWarning && !useConnectedAccount && !fetchingIsContractAddress && (
+        <Typography variant="helperText" color="error.main">
+          <Trans>Enter a valid address</Trans>
+        </Typography>
+      )}
     </Stack>
   );
 };

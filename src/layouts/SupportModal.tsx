@@ -203,20 +203,11 @@ export const SupportModal = () => {
           </div>
         ) : (
           <Box width={'100%'}>
-            <Typography
-              variant="h3"
-              display="flex"
-              justifyContent="flex-start"
-              color="text.primary"
-            >
+            <Typography variant="h3" display="flex" justifyContent="flex-start" color="fg-1">
               <Trans>Support</Trans>
             </Typography>
 
-            <Typography
-              variant="subheader1"
-              color="text.primary"
-              sx={{ textAlign: 'start', mb: 4, mt: 4 }}
-            >
+            <Typography variant="subheader1" color="fg-1" sx={{ textAlign: 'start', mb: 4, mt: 4 }}>
               <Trans>
                 Let us know how we can help you. You may also consider joining our community
               </Trans>
@@ -224,7 +215,7 @@ export const SupportModal = () => {
             <Box width={'100%'}>
               <form style={{ width: '100%' }} onSubmit={handleSupportSubmit}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Typography color="text.secondary">
+                  <Typography color="fg-2">
                     <Trans>Email</Trans>
                   </Typography>
                 </Box>
@@ -246,7 +237,7 @@ export const SupportModal = () => {
                   }}
                 />
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Typography color="text.secondary">
+                  <Typography color="fg-2">
                     <Trans>Country (optional)</Trans>
                   </Typography>
                 </Box>
@@ -274,7 +265,7 @@ export const SupportModal = () => {
                   )}
                 />
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                  <Typography color="text.secondary">
+                  <Typography color="fg-2">
                     <Trans>Inquiry</Trans>
                   </Typography>
                 </Box>
@@ -297,7 +288,7 @@ export const SupportModal = () => {
                 />
 
                 {account && !hasOptedIn && (
-                  <Box sx={{ mt: 2, p: 2, bgcolor: 'background.surface', borderRadius: 1.5 }}>
+                  <Box sx={{ mt: 2, p: 2, bgcolor: 'bg-2', borderRadius: 1.5 }}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -309,7 +300,7 @@ export const SupportModal = () => {
                       }
                       label={
                         <Box>
-                          <Typography color="text.primary">
+                          <Typography color="fg-1">
                             <Trans>
                               Share my wallet address to help the support team resolve my issue
                             </Trans>

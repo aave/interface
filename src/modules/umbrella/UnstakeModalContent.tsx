@@ -199,15 +199,15 @@ export const UnStakeModalContent = ({
                       }
                       sx={{ mr: 2, ml: 4, fontSize: '20px' }}
                     />
-                    <FormattedNumber value={redeemedAmount || '0'} variant="secondary14" compact />
+                    <FormattedNumber value={redeemedAmount || '0'} variant="h5" compact />
                   </Stack>
                   <FormattedNumber
                     value={redeemedAmountUsd.toString()}
                     variant="helperText"
                     compact
                     symbol="USD"
-                    symbolsColor="text.secondary"
-                    color="text.secondary"
+                    symbolsColor="fg-2"
+                    color="fg-2"
                   />
                 </>
               )}

@@ -42,22 +42,22 @@ export const StkGhoSavingsRate = ({ totalDepositedUSD }: StkGhoSavingsRateProps)
         sx={{ mb: 4 }}
       >
         <Box>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>Total Deposited</Trans>
           </Typography>
           <FormattedNumber
             value={totalDepositedUSD}
-            variant="main16"
+            variant="h4"
             symbol="USD"
             visibleDecimals={2}
           />
         </Box>
 
         <Box>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>APY</Trans>
           </Typography>
-          <FormattedNumber value={stakeApyDecimal} percent variant="main16" />
+          <FormattedNumber value={stakeApyDecimal} percent variant="h4" />
         </Box>
       </Stack>
 

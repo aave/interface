@@ -6,13 +6,7 @@ import { useRootStore } from 'src/store/root';
 
 import { usePreviewRedeem } from './hooks/usePreviewRedeem';
 
-export const AmountStakedUnderlyingItem = ({
-  stakeData,
-  isMobile,
-}: {
-  stakeData: MergedStakeData;
-  isMobile?: boolean;
-}) => {
+export const AmountStakedUnderlyingItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const currentMarketData = useRootStore((s) => s.currentMarketData);
   const chainId = currentMarketData?.chainId;
 
@@ -33,13 +27,8 @@ export const AmountStakedUnderlyingItem = ({
   const assetUnderlyingAmount = isGhoToken ? formattedGhoAmount : sharesEquivalentAssets;
 
   return (
-    <Stack
-      direction={isMobile ? 'row' : 'column'}
-      alignItems="center"
-      justifyContent="center"
-      gap={2}
-    >
-      <FormattedNumber compact value={assetUnderlyingAmount} variant="secondary14" />
+    <Stack direction="row" alignItems="center" justifyContent="center" gap={2}>
+      <FormattedNumber compact value={assetUnderlyingAmount} variant="h5" />
     </Stack>
   );
 };

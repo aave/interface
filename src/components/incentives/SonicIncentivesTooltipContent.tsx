@@ -13,7 +13,7 @@ export const SonicAirdropTooltipContent = ({ points }: { points: number }) => {
         href="https://blog.soniclabs.com/sonic-points-simplified-how-to-qualify-for-200-million-s-airdrop/"
         sx={{ textDecoration: 'underline' }}
         variant="caption"
-        color="text.secondary"
+        color="fg-2"
       >
         {'here'}
       </Link>

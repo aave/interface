@@ -71,7 +71,7 @@ export const SavingsGhoProgram = () => {
         <Box display="flex" flexDirection="column" alignItems={['flex-start']} gap={3}>
           <Typography
             variant="subheader1"
-            color="text.primary"
+            color="fg-1"
             width={['221px', '400px']}
             textAlign={['left']}
           >

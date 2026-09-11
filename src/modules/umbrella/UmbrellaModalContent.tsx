@@ -1,11 +1,10 @@
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Skeleton, Stack, Typography } from '@mui/material';
+import { Alert, Box, Checkbox, Skeleton, Stack, Typography } from '@mui/material';
 import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
-import { Warning } from 'src/components/primitives/Warning';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { AssetInput } from 'src/components/transactions/AssetInput';
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
@@ -224,10 +223,10 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
                 />
               ) : (
                 <>
-                  <FormattedNumber value={stakeShares || '0'} variant="secondary14" compact />
+                  <FormattedNumber value={stakeShares || '0'} variant="h5" compact />
                   <FormattedNumber
                     value={stakeSharesUsd}
-                    color="text.secondary"
+                    color="fg-2"
                     variant="helperText"
                     compact
                     symbol="USD"
@@ -244,11 +243,11 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
 
       {displayRiskCheckbox && (
         <>
-          <Warning severity="error" sx={{ my: 6 }}>
+          <Alert severity="error" sx={{ width: '100%', my: 6 }}>
             <Trans>
               Staking this amount will reduce your health factor and increase risk of liquidation.
             </Trans>
-          </Warning>
+          </Alert>
           <Box
             sx={{
               display: 'flex',

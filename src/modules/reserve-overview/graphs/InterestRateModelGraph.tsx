@@ -378,7 +378,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                   parseFloat(reserve.totalDebtUSD) >
                 0 ? (
                   <>
-                    <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
+                    <Typography variant="caption" color="fg-2" sx={{ mr: 2 }}>
                       <Trans>Borrow amount to reach {tooltipData.utilization}% utilization</Trans>
                     </Typography>
                     <Typography variant="main12" color="primary">
@@ -394,7 +394,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
                   </>
                 ) : (
                   <>
-                    <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
+                    <Typography variant="caption" color="fg-2" sx={{ mr: 2 }}>
                       <Trans>
                         Repayment amount to reach {tooltipData.utilization}% utilization
                       </Trans>
@@ -417,10 +417,10 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
 
               {fields.map((field) => (
                 <Box key={field.name} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography variant="caption" color="text.secondary" sx={{ mr: 2 }}>
+                  <Typography variant="caption" color="fg-2" sx={{ mr: 2 }}>
                     {field.text}
                   </Typography>
-                  <Typography variant="main12" color="text.primary">
+                  <Typography variant="main12" color="fg-1">
                     {tooltipValueAccessors[field.name](tooltipData).toFixed(2)}%
                   </Typography>
                 </Box>

@@ -1,26 +1,31 @@
-import { ChevronDownIcon, SearchIcon, XIcon } from '@heroicons/react/outline';
-import { ExternalLinkIcon, StarIcon } from '@heroicons/react/solid';
+import { SearchIcon } from '@heroicons/react/outline';
+import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
-  Divider,
-  Drawer,
+  FormControlLabel,
   IconButton,
-  InputAdornment,
+  InputBase,
   Popover,
   SvgIcon,
+  SwipeableDrawer,
   Switch,
-  TextField,
   Tooltip,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import React, { useMemo, useRef, useState } from 'react';
+import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
+import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
+import { figVars, onAccent } from 'src/utils/figmaColors';
+import { insetHighlightActive, insetHighlightBase } from 'src/utils/insetHighlight';
+import { motion } from 'src/utils/motion';
+import { darkScheme } from 'src/utils/theme';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -30,6 +35,8 @@ import {
   marketsData,
   networkConfigs,
 } from '../utils/marketsAndNetworksConfig';
+
+const HOVER_FADE = `${motion.duration.hoverSlow}ms ${motion.easing.standard}`;
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -72,11 +79,15 @@ type MarketLogoProps = {
   logo: string;
   testChainName?: string;
   sx?: BoxProps;
+  className?: string;
 };
 
-export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) => {
+export const MarketLogo = ({ size, logo, testChainName, sx, className }: MarketLogoProps) => {
   return (
-    <Box sx={{ mr: 2, width: size, height: size, position: 'relative', ...sx }}>
+    <Box
+      className={className}
+      sx={{ mr: 2, width: size, height: size, position: 'relative', ...sx }}
+    >
       <img
         src={logo}
         alt=""
@@ -93,7 +104,7 @@ export const MarketLogo = ({ size, logo, testChainName, sx }: MarketLogoProps) =
               width: '16px',
               height: '16px',
               borderRadius: '50%',
-              color: 'common.white',
+              color: onAccent,
               fontSize: '12px',
               lineHeight: '16px',
               display: 'flex',
@@ -212,15 +223,13 @@ const V4_LINKS: V4Link[] = [
 ];
 
 export const MarketSwitcher = () => {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showLegacy, setShowLegacy] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
-  const open = Boolean(anchorEl);
+  const triggerRowRef = useRef<HTMLDivElement>(null);
 
   const theme = useTheme();
-  const upToLG = useMediaQuery(theme.breakpoints.up('lg'));
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [trackEvent, currentMarket, setCurrentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket, store.setCurrentMarket])
@@ -229,12 +238,12 @@ export const MarketSwitcher = () => {
   const toggleFavoriteMarket = useRootStore((store) => store.toggleFavoriteMarket);
   const favoriteMarkets = useRootStore((store) => store.favoriteMarkets);
 
-  const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setOpen(false);
     setSearchQuery('');
   };
 
@@ -264,7 +273,7 @@ export const MarketSwitcher = () => {
       </Trans>
     ),
     proto_mainnet_v3: (
-      <Trans>Main Ethereum market with the largest selection of assets and yield options</Trans>
+      <Trans>Main market with the largest selection of assets and yield options.</Trans>
     ),
     proto_lido_v3: (
       <Trans>Optimized for efficiency and risk by supporting blue-chip collateral assets</Trans>
@@ -301,71 +310,17 @@ export const MarketSwitcher = () => {
 
   // --- Render helpers ---
 
-  const renderPinnedChip = (marketId: CustomMarket) => {
-    const { market, logo } = getMarketInfoById(marketId);
-    const marketNaming = getMarketHelpData(market.marketTitle);
-    const isSelected = marketId === currentMarket;
-    return (
-      <Box
-        key={marketId}
-        role="button"
-        tabIndex={0}
-        onClick={() => handleSelectMarket(marketId)}
-        onKeyDown={(e: React.KeyboardEvent) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleSelectMarket(marketId);
-          }
-        }}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '7px',
-          height: 36,
-          pl: '6px',
-          pr: '10px',
-          py: 1,
-          borderRadius: '48px',
-          border: '1px solid',
-          borderColor: isSelected ? 'primary.main' : 'rgba(0,0,0,0.1)',
-          bgcolor: isSelected ? 'action.selected' : 'transparent',
-          cursor: 'pointer',
-          '&:hover': { bgcolor: 'action.hover' },
-          flexShrink: 0,
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box sx={{ width: 20, height: 20, flexShrink: 0 }}>
-            <img
-              src={logo}
-              alt=""
-              width="100%"
-              height="100%"
-              style={{ display: 'block', objectFit: 'contain' }}
-            />
-          </Box>
-          <Typography
-            noWrap
-            sx={{ fontSize: '14px', fontWeight: 600, letterSpacing: '0.15px', lineHeight: '20px' }}
-          >
-            {marketNaming.name} {market.isFork ? 'Fork' : ''}
-          </Typography>
-        </Box>
-        <IconButton
-          size="small"
-          onClick={(e) => handleStarClick(e, marketId)}
-          sx={{
-            padding: 0,
-            flexShrink: 0,
-          }}
-        >
-          <SvgIcon sx={{ fontSize: '20px', color: 'text.secondary' }}>
-            <XIcon />
-          </SvgIcon>
-        </IconButton>
-      </Box>
-    );
-  };
+  const renderRowLogo = (src: string) => (
+    <Box sx={{ width: '1.5rem', height: '1.5rem', mr: '0.75rem', flexShrink: 0 }}>
+      <img
+        src={src}
+        alt=""
+        width="100%"
+        height="100%"
+        style={{ display: 'block', objectFit: 'contain' }}
+      />
+    </Box>
+  );
 
   const renderGridItem = (marketId: CustomMarket, isMobile?: boolean, width = '33.33%') => {
     const { market, logo } = getMarketInfoById(marketId);
@@ -388,49 +343,73 @@ export const MarketSwitcher = () => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          py: '10px',
-          px: '12px',
+          height: '2.5rem',
+          py: '0.5rem',
+          px: '0.75rem',
           width: isMobile ? '50%' : width,
           boxSizing: 'border-box',
           borderRadius: '8px',
           cursor: 'pointer',
-          position: 'relative',
-          bgcolor: isSelected ? 'action.selected' : 'transparent',
-          '&:hover': { bgcolor: isSelected ? 'action.selected' : 'action.hover' },
-          // Star: always visible on mobile, hover-reveal on desktop
+          // Hover/selected highlight on an inset pseudo-element so adjacent options keep a gap
+          // (shared recipe with the dropdown menu items — see insetHighlight.ts). The current
+          // market holds the fill via restFill; others take the same fill on hover.
+          ...insetHighlightBase({
+            theme,
+            radius: '8px',
+            inset: '1px',
+            restFill: isSelected ? figVars['selected'] : undefined,
+          }),
+          ...(isSelected
+            ? {}
+            : {
+                // Row highlight on hover AND on keyboard focus — of the row itself or its star
+                // button (`:focus-within`) — so tabbing through always shows where you are.
+                '&:hover::before, &:focus-within::before': insetHighlightActive(
+                  figVars['selected']
+                ),
+              }),
+          // Star: always visible on mobile, hover-reveal on desktop; also reveal it whenever the
+          // row or the star button is focused, so keyboard users can see the favourite toggle.
           '& .grid-fav-btn': {
             opacity: isMobile || isFavorite ? 1 : 0,
-            transition: 'opacity 0.15s',
+            transition: `opacity ${HOVER_FADE}`,
           },
-          '&:hover .grid-fav-btn': {
+          '&:hover .grid-fav-btn, &:focus-within .grid-fav-btn': {
             opacity: 1,
           },
+          // Keyboard focus lands on the star itself: ring it with an outline so it reads as focused
+          // (global ripple is disabled — add our own affordance).
+          '& .grid-fav-btn:focus-visible': {
+            opacity: 1,
+            // Same focus ring the buttons use (MuiButton root in theme.tsx).
+            outline: `2px solid ${figVars['fg-1']}`,
+            outlineOffset: '2px',
+          },
+          // The empty (non-favourited) star fills a step stronger (fg-4 → fg-3) on hover / focus.
+          ...(isFavorite
+            ? {}
+            : {
+                '&:hover .grid-fav-btn .MuiSvgIcon-root, & .grid-fav-btn:focus-visible .MuiSvgIcon-root':
+                  {
+                    color: figVars['fg-3'],
+                  },
+              }),
         }}
       >
-        <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
-          <img
-            src={logo}
-            alt=""
-            width="100%"
-            height="100%"
-            style={{ display: 'block', objectFit: 'contain' }}
-          />
-        </Box>
+        {renderRowLogo(logo)}
         <Typography
           noWrap
+          variant="h5"
+          color="fg-1"
           sx={{
             flex: '1 1 0',
             minWidth: 0,
-            fontSize: '14px',
-            fontWeight: 600,
-            letterSpacing: '0.15px',
-            lineHeight: '20px',
           }}
         >
           {marketNaming.name} {market.isFork ? 'Fork' : ''}
         </Typography>
         {market.externalUrl && (
-          <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
+          <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
             <ExternalLinkIcon />
           </SvgIcon>
         )}
@@ -440,14 +419,12 @@ export const MarketSwitcher = () => {
           onClick={(e) => handleStarClick(e, marketId)}
           sx={{ padding: '1px', ml: 0.5, flexShrink: 0 }}
         >
-          <SvgIcon
+          <StarIcon
             sx={{
               fontSize: '16px',
-              color: isFavorite ? '#FBCC5F' : 'text.disabled',
+              color: isFavorite ? FAVOURITE_STAR_COLOR : 'fg-4',
             }}
-          >
-            <StarIcon />
-          </SvgIcon>
+          />
         </IconButton>
       </Box>
     );
@@ -458,101 +435,132 @@ export const MarketSwitcher = () => {
     window.open(link.url, '_blank');
   };
 
-  const renderV4Link = (link: V4Link, isMobile?: boolean, width = '33.33%') => (
-    <Box
-      key={link.id}
-      role="button"
-      tabIndex={0}
-      data-cy={`marketSelector_${link.id}`}
-      onClick={() => handleSelectV4Link(link)}
-      onKeyDown={(e: React.KeyboardEvent) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleSelectV4Link(link);
-        }
-      }}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        py: '10px',
-        px: '12px',
-        width: isMobile ? '50%' : width,
-        boxSizing: 'border-box',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        '&:hover': { bgcolor: 'action.hover' },
-      }}
-    >
-      <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
-        <img
-          src={link.logo}
-          alt=""
-          width="100%"
-          height="100%"
-          style={{ display: 'block', objectFit: 'contain' }}
-        />
-      </Box>
+  const renderLinkRow = (
+    {
+      id,
+      logo,
+      label,
+      href,
+      badge,
+      onSelect,
+    }: {
+      id?: string;
+      logo: string;
+      label: React.ReactNode;
+      href: string;
+      badge?: React.ReactNode;
+      onSelect?: () => void;
+    },
+    isMobile?: boolean,
+    width = '33.33%'
+  ) => {
+    const select = onSelect ?? (() => window.open(href, '_blank'));
+    return (
       <Box
+        key={id ?? href}
+        role="button"
+        tabIndex={0}
+        data-cy={id ? `marketSelector_${id}` : undefined}
+        onClick={select}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            select();
+          }
+        }}
         sx={{
-          flex: '1 1 0',
-          minWidth: 0,
           display: 'flex',
           alignItems: 'center',
-          gap: '6px',
+          height: '2.5rem',
+          py: '0.5rem',
+          px: '0.75rem',
+          width: isMobile ? '50%' : width,
+          boxSizing: 'border-box',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          // Hover highlight on an inset pseudo-element, matching the market rows (insetHighlight.ts).
+          ...insetHighlightBase({ theme, radius: '8px', inset: '1px' }),
+          '&:hover::before': insetHighlightActive(figVars['selected']),
         }}
       >
-        <Typography
-          noWrap
-          sx={{
-            minWidth: 0,
-            fontSize: '14px',
-            fontWeight: 600,
-            letterSpacing: '0.15px',
-            lineHeight: '20px',
-          }}
-        >
-          {link.label}
-        </Typography>
-        <Box
-          component="span"
-          sx={{
-            width: 26,
-            height: 16,
-            borderRadius: '50px',
-            bgcolor: 'rgba(151, 142, 255, 0.1)',
-            color: '#978eff',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            fontSize: '10px',
-            fontWeight: 700,
-            lineHeight: 1,
-            letterSpacing: 0,
-          }}
-        >
-          V4
-        </Box>
+        {renderRowLogo(logo)}
+        {badge ? (
+          <Box
+            sx={{ flex: '1 1 0', minWidth: 0, display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            <Typography noWrap variant="h5" color="fg-1" sx={{ minWidth: 0 }}>
+              {label}
+            </Typography>
+            {badge}
+          </Box>
+        ) : (
+          <Typography noWrap variant="h5" color="fg-1" sx={{ flex: '1 1 0', minWidth: 0 }}>
+            {label}
+          </Typography>
+        )}
+        <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
+          <ExternalLinkIcon />
+        </SvgIcon>
       </Box>
-      <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
-        <ExternalLinkIcon />
-      </SvgIcon>
-    </Box>
-  );
+    );
+  };
+
+  const renderV4Link = (link: V4Link, isMobile?: boolean, width = '33.33%') =>
+    renderLinkRow(
+      {
+        id: link.id,
+        logo: link.logo,
+        label: link.label,
+        href: link.url,
+        badge: (
+          <Box
+            component="span"
+            sx={{
+              width: 26,
+              height: 16,
+              borderRadius: '50px',
+              bgcolor: 'rgba(151, 142, 255, 0.1)',
+              color: '#978eff',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              fontSize: '10px',
+              fontWeight: 700,
+              lineHeight: 1,
+              letterSpacing: 0,
+            }}
+          >
+            V4
+          </Box>
+        ),
+        onSelect: () => handleSelectV4Link(link),
+      },
+      isMobile,
+      width
+    );
 
   const sectionHeader = (label: React.ReactNode) => (
     <Typography
-      variant="secondary12"
-      color="text.secondary"
       sx={{
-        letterSpacing: '0.1px',
-        px: '24px',
-        py: 1,
-        lineHeight: '16px',
+        color: 'fg-3',
+        fontSize: '0.6875rem',
+        fontWeight: 600,
+        lineHeight: '120%',
+        letterSpacing: '0.00063rem',
+        textTransform: 'uppercase',
+        fontFeatureSettings: "'cv11' on",
       }}
     >
       {label}
     </Typography>
+  );
+
+  const renderSection = (title: React.ReactNode, children: React.ReactNode) => (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+      {sectionHeader(title)}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>{children}</Box>
+    </Box>
   );
 
   const noResults =
@@ -565,223 +573,136 @@ export const MarketSwitcher = () => {
 
   const renderSelectorContent = (mobile: boolean) => (
     <>
-      {/* Fixed header with search */}
-      <Box sx={{ px: 1.5, pt: 1.5, pb: '2px' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {/* <Typography variant="subheader2" color="text.secondary">
-            <Trans>
-              {ENABLE_TESTNET || STAGING_ENV ? 'Select Aave Testnet Market' : 'Select Aave Market'}
-            </Trans>
-          </Typography> */}
-          {mobile && (
-            <IconButton size="small" onClick={handleClose} sx={{ p: 0.5 }}>
-              <SvgIcon sx={{ fontSize: '18px' }}>
-                <XIcon />
-              </SvgIcon>
-            </IconButton>
-          )}
-        </Box>
-      </Box>
-      <Box sx={{ px: 1.5, pb: '10px' }}>
-        <TextField
+      {/* Search — flush to the top edge; the desktop popover keeps a 1px ring, the mobile sheet
+          drops it so it doesn't read as two stray rules across the full-bleed width. */}
+      <Box
+        sx={{
+          height: '3.23rem',
+          px: '1rem',
+          boxShadow: mobile ? 'none' : `0 0 0 1px ${figVars['border-1']}`,
+          display: 'flex',
+          alignItems: 'center',
+          flexShrink: 0,
+        }}
+      >
+        <InputBase
           inputRef={searchRef}
-          size="small"
           placeholder={t`Search markets...`}
           inputProps={{ 'aria-label': t`Search markets` }}
-          fullWidth
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" sx={{ mr: '9px' }}>
-                <SvgIcon sx={{ fontSize: 16, color: '#A5A8B6' }}>
-                  <SearchIcon />
-                </SvgIcon>
-              </InputAdornment>
-            ),
-          }}
+          startAdornment={
+            <SvgIcon sx={{ fontSize: 18, color: 'fg-4', mr: '0.5rem' }}>
+              <SearchIcon />
+            </SvgIcon>
+          }
           sx={{
-            '& .MuiOutlinedInput-root': {
-              borderRadius: '6px',
-              height: '36px',
-              '& fieldset': {
-                borderColor: '#EAEBEF',
-              },
-            },
-            '& .MuiOutlinedInput-input': {
-              fontSize: '14px',
-              letterSpacing: '0.15px',
-              '&::placeholder': {
-                color: '#A5A8B6',
-                opacity: 1,
-              },
+            flex: 1,
+            color: 'fg-1',
+            fontSize: '0.875rem',
+            // Safari zooms a focused input under 16px; keyed on pointer, not width, so tablets count.
+            '@media (pointer: coarse)': { fontSize: '1rem' },
+            fontWeight: 400,
+            lineHeight: 1,
+            '& input::placeholder': {
+              color: 'fg-4',
+              opacity: 1,
             },
           }}
         />
       </Box>
 
-      {/* Content (scrolls on mobile, extends on desktop) */}
+      {/* Contents box — 1rem padding all sides, 1.5rem between sections */}
       <Box
         sx={{
-          pb: 1,
+          p: '1rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.5rem',
           ...(mobile && { overflowY: 'auto', flex: 1 }),
         }}
       >
         {/* Favourites */}
-        {pinned.length > 0 && (
-          <Box>
-            <Typography
-              variant="secondary12"
-              color="text.secondary"
-              sx={{
-                letterSpacing: '0.1px',
-                px: '24px',
-                py: 1,
-                lineHeight: '16px',
-              }}
-            >
-              <Trans>Favourites</Trans>
-            </Typography>
-            <Box sx={{ display: 'flex', gap: '4px', flexWrap: 'wrap', px: 1.5, pb: '4px' }}>
-              {pinned.map(renderPinnedChip)}
-            </Box>
-            <Divider sx={{ mt: 1 }} />
-          </Box>
-        )}
+        {pinned.length > 0 &&
+          renderSection(
+            <Trans>Favourites</Trans>,
+            pinned.map((id) => renderGridItem(id, mobile))
+          )}
 
-        {/* Ethereum */}
-        {(ethereum.length > 0 || v4Ethereum.length > 0) && (
-          <Box>
-            {sectionHeader(<Trans>Ethereum</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
-              {ethereum.map((id) => renderGridItem(id, mobile, '33%'))}
-              {v4Ethereum.map((link) => renderV4Link(link, mobile, '33%'))}
-            </Box>
-            {(other.length > 0 ||
-              v4Other.length > 0 ||
-              l2.length > 0 ||
-              (showLegacy && legacy.length > 0)) && <Divider sx={{ my: 1 }} />}
-          </Box>
-        )}
+        {/* Ethereum + V4 links */}
+        {(ethereum.length > 0 || v4Ethereum.length > 0) &&
+          renderSection(
+            <Trans>Ethereum</Trans>,
+            <>
+              {ethereum.map((id) => renderGridItem(id, mobile))}
+              {v4Ethereum.map((link) => renderV4Link(link, mobile))}
+            </>
+          )}
 
         {/* L1 Networks */}
-        {(other.length > 0 || v4Other.length > 0) && (
-          <Box>
-            {sectionHeader(<Trans>L1 Networks</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+        {(other.length > 0 || v4Other.length > 0) &&
+          renderSection(
+            <Trans>L1 Networks</Trans>,
+            <>
               {other.map((id) => renderGridItem(id, mobile))}
               {v4Other.map((link) => renderV4Link(link, mobile))}
-            </Box>
-            {(l2.length > 0 || showLegacy) && <Divider sx={{ my: 1 }} />}
-          </Box>
-        )}
+            </>
+          )}
 
         {/* L2 Networks */}
-        {l2.length > 0 && (
-          <Box>
-            {sectionHeader(<Trans>L2 Networks</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
-              {l2.map((id) => renderGridItem(id, mobile))}
-            </Box>
-            {showLegacy && <Divider sx={{ my: 1 }} />}
-          </Box>
-        )}
+        {l2.length > 0 &&
+          renderSection(
+            <Trans>L2 Networks</Trans>,
+            l2.map((id) => renderGridItem(id, mobile))
+          )}
 
-        {/* Legacy */}
-        {showLegacy && (
-          <Box>
-            {sectionHeader(<Trans>Legacy</Trans>)}
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', px: 1.5 }}>
+        {/* Legacy + V2 markets link */}
+        {showLegacy &&
+          renderSection(
+            <Trans>Legacy</Trans>,
+            <>
               {legacy.map((id) => renderGridItem(id, mobile))}
-              {/* V2 markets external link */}
-              <Box
-                role="button"
-                tabIndex={0}
-                onClick={() => window.open('https://v2-market.aave.com/', '_blank')}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    window.open('https://v2-market.aave.com/', '_blank');
-                  }
-                }}
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  py: '10px',
-                  px: '12px',
-                  width: mobile ? '50%' : '33.33%',
-                  boxSizing: 'border-box',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  '&:hover': { bgcolor: 'action.hover' },
-                }}
-              >
-                <Box sx={{ width: 20, height: 20, mr: 1, flexShrink: 0 }}>
-                  <img
-                    src="/favicon.ico"
-                    alt=""
-                    width="100%"
-                    height="100%"
-                    style={{ display: 'block', objectFit: 'contain' }}
-                  />
-                </Box>
-                <Typography
-                  noWrap
-                  sx={{
-                    flex: '1 1 0',
-                    minWidth: 0,
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    letterSpacing: '0.15px',
-                    lineHeight: '20px',
-                  }}
-                >
-                  <Trans>V2 Markets</Trans>
-                </Typography>
-                <SvgIcon sx={{ fontSize: '14px', color: 'text.muted', ml: 0.5, flexShrink: 0 }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              </Box>
-            </Box>
-          </Box>
-        )}
+              {renderLinkRow(
+                {
+                  logo: '/favicon.ico',
+                  href: 'https://v2-market.aave.com/',
+                  label: <Trans>V2 Markets</Trans>,
+                },
+                mobile
+              )}
+            </>
+          )}
 
         {/* No results */}
         {noResults && (
           <Box sx={{ px: 4, py: 3, textAlign: 'center' }}>
-            <Typography variant="description" color="text.secondary">
+            <Typography variant="description" color="fg-2">
               <Trans>No markets found</Trans>
             </Typography>
           </Box>
         )}
-      </Box>
 
-      {/* Legacy markets toggle */}
-      <Box
-        sx={{
-          borderTop: '1px solid',
-          borderColor: 'divider',
-          px: '24px',
-          py: 1,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
-        }}
-      >
-        <Typography
+        {/* Show legacy markets — label + switch as a single control */}
+        <FormControlLabel
+          labelPlacement="start"
+          control={
+            <Switch
+              checked={showLegacy}
+              onChange={(e) => setShowLegacy(e.target.checked)}
+              inputProps={{ 'aria-label': t`Show legacy markets` }}
+            />
+          }
+          label={<Trans>Show legacy markets</Trans>}
           sx={{
-            fontSize: '14px',
-            fontWeight: 500,
-            letterSpacing: '0.15px',
-            color: 'text.secondary',
+            m: 0,
+            alignSelf: 'flex-start',
+            '& .MuiFormControlLabel-label': {
+              color: 'fg-2',
+              fontSize: '0.875rem',
+              fontWeight: 400,
+              lineHeight: '100%',
+            },
           }}
-        >
-          <Trans>Show legacy markets</Trans>
-        </Typography>
-        <Switch
-          checked={showLegacy}
-          onChange={(e) => setShowLegacy(e.target.checked)}
-          inputProps={{ 'aria-label': t`Show legacy markets` }}
         />
       </Box>
     </>
@@ -802,7 +723,7 @@ export const MarketSwitcher = () => {
         onKeyDown={(e: React.KeyboardEvent) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            handleOpen(e as unknown as React.MouseEvent<HTMLElement>);
+            handleOpen();
           }
         }}
         aria-haspopup="true"
@@ -814,80 +735,68 @@ export const MarketSwitcher = () => {
           cursor: 'pointer',
           display: 'flex',
           flexDirection: 'column',
+          color: 'fg-1',
+          '&:hover .market-picker-fade': { opacity: 0.6 },
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box ref={triggerRowRef} sx={{ display: 'flex', alignItems: 'center' }}>
           <MarketLogo
-            size={upToLG ? 32 : 28}
+            size={28}
             logo={currentLogo}
             testChainName={currentMarketNaming.testChainName}
+            sx={{ width: '1.75rem', height: '1.75rem', mr: '0.75rem' }}
           />
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography
+            className="market-picker-fade"
+            variant="h2"
+            sx={{
+              fontSize: '1.875rem',
+              mr: '0.5rem',
+              transition: `opacity ${HOVER_FADE}`,
+            }}
+          >
+            {currentMarketNaming.name}
+            {currentMarketData.isFork ? ' Fork' : ''}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              height: '1.5rem',
+              px: '0.625rem',
+              borderRadius: '1.5rem',
+              mt: '0.3125rem',
+              background: 'rgba(147, 145, 254, 0.16)',
+              '@supports (color: color(display-p3 0 0 0))': {
+                background: 'color(display-p3 0.5765 0.5686 0.9686 / 0.16)',
+              },
+            }}
+          >
             <Typography
-              variant={upToLG ? 'display1' : 'h1'}
               sx={{
-                fontSize: downToXSM ? '1.55rem' : undefined,
-                color: 'common.white',
-                mr: 1,
+                color: '#8374FF',
+                fontSize: '1rem',
+                fontWeight: 600,
+                lineHeight: '1.125rem',
+                '@supports (color: color(display-p3 0 0 0))': {
+                  color: 'color(display-p3 0.5033 0.4581 1)',
+                },
               }}
             >
-              {currentMarketNaming.name} {currentMarketData.isFork ? 'Fork' : ''}
-              {upToLG && (currentMarket === 'proto_mainnet_v3' || currentMarket === 'proto_lido_v3')
-                ? 'Instance'
-                : ' Market'}
+              {currentMarketData.v3 ? 'v3' : 'v2'}
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              {currentMarketData.v3 ? (
-                <Box
-                  sx={{
-                    color: '#fff',
-                    px: 2,
-                    borderRadius: '12px',
-                    background: (theme) => theme.palette.gradients.aaveGradient,
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Typography variant="subheader2">V3</Typography>
-                </Box>
-              ) : (
-                <Box
-                  sx={{
-                    color: '#A5A8B6',
-                    px: 2,
-                    borderRadius: '12px',
-                    backgroundColor: '#383D51',
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Typography variant="subheader2">V2</Typography>
-                </Box>
-              )}
-              <SvgIcon
-                fontSize="medium"
-                sx={{
-                  ml: 1,
-                  color: '#F1F1F3',
-                  transform: open ? 'rotate(180deg)' : 'none',
-                  transition: 'transform 0.2s',
-                }}
-              >
-                <ChevronDownIcon />
-              </SvgIcon>
-            </Box>
           </Box>
+          <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }} />
         </Box>
 
         {marketBlurbs[currentMarket] && (
           <Typography
+            variant="description"
             sx={{
-              color: 'common.white',
-              mt: 0.5,
-              fontSize: '0.85rem',
+              color: 'fg-3',
+              mt: '1rem',
               wordWrap: 'break-word',
               whiteSpace: 'normal',
-              lineHeight: 1.3,
               maxWidth: '100%',
             }}
           >
@@ -898,12 +807,15 @@ export const MarketSwitcher = () => {
 
       {/* Market selector content (shared between Popover and Drawer) */}
       {isMobile ? (
-        <Drawer
+        <SwipeableDrawer
           anchor="bottom"
           open={open}
           onClose={handleClose}
+          onOpen={handleOpen}
+          disableSwipeToOpen
           PaperProps={{
             sx: {
+              bgcolor: 'bg-3',
               borderTopLeftRadius: '16px',
               borderTopRightRadius: '16px',
               maxHeight: '85vh',
@@ -920,16 +832,16 @@ export const MarketSwitcher = () => {
                 width: 36,
                 height: 4,
                 borderRadius: '2px',
-                bgcolor: 'divider',
+                bgcolor: 'border-2',
               }}
             />
           </Box>
           {renderSelectorContent(true)}
-        </Drawer>
+        </SwipeableDrawer>
       ) : (
         <Popover
           open={open}
-          anchorEl={anchorEl}
+          anchorEl={triggerRowRef.current}
           onClose={handleClose}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           transformOrigin={{ vertical: 'top', horizontal: 'left' }}
@@ -938,16 +850,18 @@ export const MarketSwitcher = () => {
           }}
           slotProps={{
             paper: {
+              variant: 'modal',
               elevation: 0,
               sx: {
-                width: 535,
+                width: '34rem',
+                bgcolor: 'bg-3',
+                ...darkScheme({ backgroundColor: figVars['bg-3'] }),
                 overflow: 'hidden',
                 display: 'flex',
                 flexDirection: 'column',
-                mt: 1,
-                borderRadius: '8px',
-                border: '1px solid rgba(0,0,0,0.04)',
-                boxShadow: '0px 0px 3px 0px rgba(0,0,0,0.1), 0px 4px 20px 0px rgba(0,0,0,0.15)',
+                mt: '1.25rem',
+                // Offset the panel 1rem to the left of the trigger's left edge.
+                ml: '-1rem',
               },
             },
           }}

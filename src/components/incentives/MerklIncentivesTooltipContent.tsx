@@ -16,7 +16,7 @@ export const MerklIncentivesTooltipContent = ({
 }) => {
   const theme = useTheme();
 
-  const typographyVariant = 'secondary12';
+  const typographyVariant = 'subheader2';
 
   const merklIncentivesFormatted = getSymbolMap(merklIncentives);
 
@@ -41,7 +41,7 @@ export const MerklIncentivesTooltipContent = ({
         alt=""
       />
 
-      <Typography variant="caption" color="text.primary" mb={3}>
+      <Typography variant="caption" color="fg-1" mb={3}>
         {merklIncentives.isSelf ? (
           <Trans>Eligible for incentives through Merkl and Boosted Yield via Self.</Trans>
         ) : (
@@ -49,7 +49,7 @@ export const MerklIncentivesTooltipContent = ({
         )}
       </Typography>
 
-      <Typography variant="caption" color="text.secondary" mb={3}>
+      <Typography variant="caption" color="fg-2" mb={3}>
         <Trans>
           This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not
           guarantee the program and accepts no liability.
@@ -80,7 +80,7 @@ export const MerklIncentivesTooltipContent = ({
                   href="https://aave.self.xyz/"
                   sx={{ textDecoration: 'underline' }}
                   variant="caption"
-                  color="text.secondary"
+                  color="fg-2"
                 >
                   verifying your humanity through Self
                 </Link>
@@ -96,7 +96,7 @@ export const MerklIncentivesTooltipContent = ({
                   href="https://aave.self.xyz/"
                   sx={{ textDecoration: 'underline' }}
                   variant="caption"
-                  color="text.secondary"
+                  color="fg-2"
                 >
                   https://aave.self.xyz/
                 </Link>
@@ -316,7 +316,7 @@ export const MerklIncentivesTooltipContent = ({
             )}
 
             {/* Total APY */}
-            <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'divider' }}>
+            <Box sx={{ mt: 2, pt: 2, borderTop: 1, borderColor: 'border-2' }}>
               <Row
                 height={32}
                 caption={
@@ -331,9 +331,9 @@ export const MerklIncentivesTooltipContent = ({
                     value={merklIncentives.breakdown.totalAPY}
                     percent
                     variant={typographyVariant}
-                    color="text.primary"
+                    color="fg-1"
                   />
-                  <Typography variant={typographyVariant} sx={{ ml: 1 }} color="text.primary">
+                  <Typography variant={typographyVariant} sx={{ ml: 1 }} color="fg-1">
                     <Trans>APY</Trans>
                   </Typography>
                 </Box>

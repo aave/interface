@@ -25,7 +25,7 @@ export const DebtSwapModal = () => {
         </>
       ) : (
         <Box sx={{ display: 'flex', flexDirection: 'column', mt: 4, alignItems: 'center' }}>
-          <Typography sx={{ mb: 6, textAlign: 'center' }} color="text.secondary">
+          <Typography sx={{ mb: 6, textAlign: 'center' }} color="fg-2">
             <Trans>Please connect your wallet to swap debt.</Trans>
           </Typography>
           <ConnectWalletButton onClick={() => close()} />

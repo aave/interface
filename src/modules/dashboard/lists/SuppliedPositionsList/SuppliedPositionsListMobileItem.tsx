@@ -4,6 +4,7 @@ import { Box, Button } from '@mui/material';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
+import { mobileCardActionsSx } from 'src/utils/buttonStyles';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
@@ -61,6 +62,16 @@ export const SuppliedPositionsListMobileItem = ({
   const disableWithdraw = !isActive || isPaused;
   const disableSupply = !isActive || isFrozen || isPaused;
 
+  const handleCollateralChange = () =>
+    openCollateralChange(
+      underlyingAsset,
+      currentMarket,
+      reserve.name,
+      'dashboard',
+      usageAsCollateralEnabledOnUser
+    );
+  const rowOpensCollateralChange = canBeEnabledAsCollateral && !isPaused && !isIsolated;
+
   return (
     <ListMobileItemWrapper
       symbol={symbol}
@@ -95,7 +106,7 @@ export const SuppliedPositionsListMobileItem = ({
           incentives={aIncentivesData}
           address={aTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -106,25 +117,21 @@ export const SuppliedPositionsListMobileItem = ({
         align={isIsolated ? 'flex-start' : 'center'}
         captionVariant="description"
         mb={2}
+        {...(rowOpensCollateralChange && {
+          onClick: handleCollateralChange,
+          sx: { cursor: 'pointer' },
+        })}
       >
         <ListItemUsedAsCollateral
           disabled={reserve.isPaused}
           isIsolated={isIsolated}
           usageAsCollateralEnabledOnUser={usageAsCollateralEnabledOnUser}
           canBeEnabledAsCollateral={canBeEnabledAsCollateral}
-          onToggleSwitch={() =>
-            openCollateralChange(
-              underlyingAsset,
-              currentMarket,
-              reserve.name,
-              'dashboard',
-              usageAsCollateralEnabledOnUser
-            )
-          }
+          onToggleSwitch={handleCollateralChange}
         />
       </Row>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+      <Box sx={mobileCardActionsSx}>
         {isSwapButton ? (
           <Button
             disabled={disableSwap}
@@ -146,9 +153,8 @@ export const SuppliedPositionsListMobileItem = ({
         )}
         <Button
           disabled={disableWithdraw}
-          variant="outlined"
+          variant="tertiary"
           onClick={() => openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
-          sx={{ ml: 1.5 }}
           fullWidth
         >
           <Trans>Withdraw</Trans>

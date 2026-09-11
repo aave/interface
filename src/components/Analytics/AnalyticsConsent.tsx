@@ -1,14 +1,19 @@
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import * as Sentry from '@sentry/nextjs';
 import React, { useEffect, useState } from 'react';
-import { CookieConsent as AnalyticsConsentBanner } from 'react-cookie-consent';
 import { Link } from 'src/components/primitives/Link';
 import { CONSENT_KEY } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
 import { useAccount } from 'wagmi';
 import { useShallow } from 'zustand/shallow';
 
-export default function AnalyticsBanner() {
+/**
+ * `preview` (showcase/dev only, e.g. /dev/components): render inline (non-fixed) and always
+ * visible, with the consent buttons inert — so the banner can be displayed without reading or
+ * mutating real analytics consent state. Never set in production.
+ */
+export default function AnalyticsBanner({ preview = false }: { preview?: boolean } = {}) {
   const [optInAnalytics, optOutAnalytics, analyticsConfigOpen, isTrackingEnabled] = useRootStore(
     useShallow((store) => [
       store.acceptAnalytics,
@@ -21,15 +26,14 @@ export default function AnalyticsBanner() {
   const [bannerVisible, setBannerVisible] = useState(false);
 
   useEffect(() => {
+    if (preview) return;
     // Adds a delay before showing the banner.
     const timerId = setTimeout(() => {
       setBannerVisible(true);
     }, 1000); // Start sliding in after 1 second.
 
     return () => clearTimeout(timerId);
-  }, []);
-
-  const theme = useTheme();
+  }, [preview]);
 
   const { breakpoints } = useTheme();
   const isMobile = useMediaQuery(breakpoints.down('sm'));
@@ -37,6 +41,7 @@ export default function AnalyticsBanner() {
   // Bind Sentry user to wallet if analytics consent is accepted
   const { isConnected, address, connector } = useAccount();
   useEffect(() => {
+    if (preview) return;
     const hasConsent = isTrackingEnabled;
     if (hasConsent && isConnected && address) {
       Sentry.setUser({
@@ -46,103 +51,81 @@ export default function AnalyticsBanner() {
     } else {
       Sentry.setUser(null);
     }
-  }, [isTrackingEnabled, isConnected, address, connector]);
+  }, [isTrackingEnabled, isConnected, address, connector, preview]);
 
   const hasUserMadeChoice =
     typeof window !== 'undefined' && localStorage.getItem(CONSENT_KEY) !== null;
 
-  // Note: If they have already chosen don't show again unless configured from footer
-  if (hasUserMadeChoice) return null;
+  // Hide once the user has made a choice. Reopening from the footer clears the stored choice and
+  // reopens analyticsConfigOpen, which brings the banner back.
+  if (!preview && (hasUserMadeChoice || !analyticsConfigOpen)) return null;
 
   return (
-    <>
-      <AnalyticsConsentBanner
-        buttonText={<Typography>Allow analytics </Typography>}
-        declineButtonText={<Typography>Opt-out</Typography>}
-        disableStyles={true}
-        visible={analyticsConfigOpen ? 'show' : 'hidden'}
-        flipButtons
-        style={{
-          background: theme.palette.background.paper,
-          bottom: isMobile ? '24px' : '24px',
-          right: isMobile ? '50%' : '24px',
-          left: isMobile ? '50%' : 'auto',
-          position: 'fixed',
-          width: '400px',
-          // height: '184px',
-          gap: '16px',
-          display: 'flex',
-          flexDirection: 'column',
-          flexFlow: 'column',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          color: theme.palette.text.primary,
-          marginBottom: '16px',
-          fontSize: '14px',
-          lineHeight: '20.02px',
-          padding: '16px 16px',
-          zIndex: 100,
-          borderRadius: '12px',
-          border: '0.5px solid rgba(235, 235, 239, 0.42)',
-          boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-          transition: 'transform 0.5s ease-out', // Add this
-
-          transform: bannerVisible
-            ? isMobile
-              ? 'translateX(-50%)'
-              : 'none'
-            : 'translateX(100%) translateY(100%)',
-        }}
-        buttonStyle={{
-          background: theme.palette.mode === 'dark' ? '#F7F7F9' : '#383D51',
-          color: theme.palette.mode === 'dark' ? '#383D51' : '#F7F7F9',
-
-          fontSize: '14px',
-          borderRadius: '4px',
-          margin: '0px',
-          border: '1px solid #000',
-          width: '172px',
-          height: '36px',
-          fontWeight: '700',
-          cursor: 'pointer',
-        }}
-        declineButtonStyle={{
-          // background:  '#F7F7F9',
-          background: theme.palette.mode === 'dark' ? '#383D51' : '#F7F7F9',
-          color: theme.palette.mode === 'dark' ? '#EAEBEF' : '#383D51',
-
-          fontFamily: 'Inter',
-          fontWeight: '500',
-          lineHeight: '24px',
-          fontSize: '14px',
-          borderRadius: '4px',
-          margin: '10px',
-          // padding: '10px 20px',
-          border: `1px solid ${theme.palette.mode === 'dark' ? '#383D51' : '#EAEBEF'}`,
-          width: '172px',
-          height: '36px',
-          // padding: '0px',
-          cursor: 'pointer',
-        }}
-        enableDeclineButton
-        onDecline={() => {
-          optOutAnalytics();
-        }}
-        onAccept={() => {
-          optInAnalytics();
-        }}
-        cookieName={CONSENT_KEY}
-      >
-        <Box>
+    <Box
+      sx={{
+        position: preview ? 'relative' : 'fixed',
+        ...(preview
+          ? {}
+          : {
+              zIndex: 100,
+              bottom: '24px',
+              ...(isMobile ? { left: '50%' } : { right: '24px' }),
+            }),
+        width: '400px',
+        maxWidth: 'calc(100vw - 48px)',
+        p: '1.25rem',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.25rem',
+        borderRadius: '0.625rem',
+        backgroundColor: figVars['bg-2'],
+        boxShadow: `0 0 0 1px ${figVars['shadow-stroke-2']}, 0 6px 32px 0 ${figVars['shadow-high']}`,
+        transition: 'transform 0.5s ease-out',
+        transform: preview
+          ? 'none'
+          : bannerVisible
+          ? isMobile
+            ? 'translateX(-50%)'
+            : 'none'
+          : 'translateX(100%) translateY(100%)',
+      }}
+    >
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <Typography variant="h5" sx={{ color: 'fg-1' }}>
+          We value your privacy
+        </Typography>
+        <Typography
+          sx={{ color: 'fg-3', fontSize: '0.875rem', fontWeight: 400, lineHeight: '1.1875rem' }}
+        >
           We may employ on-the-spot tracking techniques during your browsing session to collect data
           on your interactions, preferences, and behaviour. This data helps us personalise your
-          experience and improve our services. See our
-          <Link sx={{ color: theme.palette.info.main }} href="https://aave.com/privacy-policy/">
-            {' '}
-            Privacy Policy.
+          experience and improve our services. See our{' '}
+          <Link
+            href="https://aave.com/privacy-policy/"
+            sx={{ textDecoration: 'underline', color: 'fg-3' }}
+          >
+            Privacy Policy
           </Link>
-        </Box>
-      </AnalyticsConsentBanner>
-    </>
+          .
+        </Typography>
+      </Box>
+
+      <Box sx={{ display: 'flex', gap: '1rem' }}>
+        <Button
+          variant="tertiary"
+          onClick={preview ? undefined : () => optOutAnalytics()}
+          sx={{ flex: 1 }}
+        >
+          Opt-out
+        </Button>
+        <Button
+          variant="contained"
+          onClick={preview ? undefined : () => optInAnalytics()}
+          sx={{ flex: 1 }}
+        >
+          Allow analytics
+        </Button>
+      </Box>
+    </Box>
   );
 }

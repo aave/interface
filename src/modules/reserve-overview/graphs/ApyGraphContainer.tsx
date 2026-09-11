@@ -7,9 +7,10 @@ import {
   useSupplyAPYHistory,
 } from '@aave/react';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography, useTheme } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import { useState } from 'react';
+import { pickFigma } from 'src/utils/figmaColors';
 
 import { ApyGraph, FormattedReserveHistoryItem, PlaceholderChart } from './ApyGraph';
 import { GraphLegend } from './GraphLegend';
@@ -42,6 +43,7 @@ type ApyGraphProps = {
 
 export const SupplyApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastWeek);
+  const { palette } = useTheme();
 
   const { data, loading, error } = useSupplyAPYHistory({
     chainId: chainId(chain),
@@ -53,7 +55,7 @@ export const SupplyApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps
   return (
     <ApyGraphContainer
       label="Supply APR"
-      color="#2EBAC6"
+      color={pickFigma(palette.mode)['data-green']}
       data={transformApyData(data)}
       loading={loading}
       error={error || false}
@@ -65,6 +67,7 @@ export const SupplyApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps
 
 export const BorrowApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastWeek);
+  const { palette } = useTheme();
 
   const { data, loading, error } = useBorrowAPYHistory({
     chainId: chainId(chain),
@@ -76,7 +79,7 @@ export const BorrowApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps
   return (
     <ApyGraphContainer
       label="Borrow APR, variable"
-      color="#B6509E"
+      color={pickFigma(palette.mode)['data-orange']}
       data={transformApyData(data)}
       loading={loading}
       error={error || false}
@@ -110,7 +113,7 @@ const ApyGraphContainer = ({
       }}
     >
       <CircularProgress size={20} sx={{ mb: 2, opacity: 0.5 }} />
-      <Typography variant="subheader1" color="text.muted">
+      <Typography variant="subheader1" color="fg-3">
         <Trans>Loading data...</Trans>
       </Typography>
     </Box>

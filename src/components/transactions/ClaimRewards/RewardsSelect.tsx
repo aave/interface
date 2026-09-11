@@ -29,7 +29,7 @@ export const RewardsSelect = ({
 }: RewardsSelectProps) => {
   return (
     <FormControl sx={{ width: '100%' }}>
-      <FormLabel sx={{ mb: 1, mt: 3, color: 'text.secondary' }}>
+      <FormLabel sx={{ mb: 1, mt: 3, color: 'fg-2' }}>
         <Trans>Rewards to claim</Trans>
       </FormLabel>
 
@@ -40,42 +40,42 @@ export const RewardsSelect = ({
           width: '100%',
           height: '44px',
           borderRadius: '6px',
-          borderColor: 'divider',
+          borderColor: 'border-2',
           outline: 'none !important',
-          color: 'text.primary',
+          color: 'fg-1',
           '.MuiOutlinedInput-input': {
             backgroundColor: 'transparent',
           },
           '&:hover .MuiOutlinedInput-notchedOutline, .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'divider',
+            borderColor: 'border-2',
             outline: 'none !important',
             borderWidth: '1px',
           },
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: 'divider',
+            borderColor: 'border-2',
             borderWidth: '1px',
           },
-          '.MuiSelect-icon': { color: 'text.primary' },
+          '.MuiSelect-icon': { color: 'fg-1' },
         }}
         native={false}
         renderValue={(reward) => {
           if (reward === RewardSymbol.ALL) {
             return (
-              <Typography color="text.primary">
+              <Typography color="fg-1">
                 <Trans>Claim all rewards</Trans>
               </Typography>
             );
           }
           if (reward === RewardSymbol.MERIT_ALL) {
             return (
-              <Typography color="text.primary">
+              <Typography color="fg-1">
                 <Trans>Claim all merit rewards</Trans>
               </Typography>
             );
           }
           if (reward === RewardSymbol.PROTOCOL_ALL) {
             return (
-              <Typography color="text.primary">
+              <Typography color="fg-1">
                 <Trans>Claim all protocol rewards</Trans>
               </Typography>
             );
@@ -94,7 +94,7 @@ export const RewardsSelect = ({
           return (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <TokenIcon symbol={selected.symbol} sx={{ mr: 2, fontSize: '16px' }} />
-              <Typography color="text.primary">{selected.symbol}</Typography>
+              <Typography color="fg-1">{selected.symbol}</Typography>
             </Box>
           );
         }}
@@ -102,7 +102,7 @@ export const RewardsSelect = ({
         <MenuItem key="all-header" disabled sx={{ opacity: 1, cursor: 'default' }}>
           <Typography
             variant="caption"
-            color="text.secondary"
+            color="fg-2"
             sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}
           >
             <Trans>All Rewards</Trans>
@@ -120,7 +120,7 @@ export const RewardsSelect = ({
           <MenuItem key="merit-header" disabled sx={{ opacity: 1, cursor: 'default' }}>
             <Typography
               variant="caption"
-              color="text.secondary"
+              color="fg-2"
               sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}
             >
               <Trans>Merit Rewards</Trans>
@@ -159,7 +159,7 @@ export const RewardsSelect = ({
                   component="span"
                   sx={{ display: 'inline-flex', alignItems: 'center' }}
                   variant="caption"
-                  color="text.muted"
+                  color="fg-3"
                 >
                   ~
                 </Typography>
@@ -168,8 +168,8 @@ export const RewardsSelect = ({
                   variant="caption"
                   compact
                   symbol="USD"
-                  symbolsColor="text.muted"
-                  color="text.muted"
+                  symbolsColor="fg-3"
+                  color="fg-3"
                 />
               </Box>
             </MenuItem>
@@ -182,7 +182,7 @@ export const RewardsSelect = ({
           <MenuItem key="protocol-header" disabled sx={{ opacity: 1, cursor: 'default' }}>
             <Typography
               variant="caption"
-              color="text.secondary"
+              color="fg-2"
               sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}
             >
               <Trans>Protocol Rewards</Trans>
@@ -191,7 +191,7 @@ export const RewardsSelect = ({
           ...(rewards.length > 1
             ? [
                 <MenuItem value={RewardSymbol.PROTOCOL_ALL} key="protocol-all">
-                  <Typography variant="subheader1" color="text.primary">
+                  <Typography variant="subheader1" color="fg-1">
                     <Trans>Claim all protocol rewards</Trans>
                   </Typography>
                 </MenuItem>,
@@ -208,7 +208,7 @@ export const RewardsSelect = ({
                   component="span"
                   sx={{ display: 'inline-flex', alignItems: 'center' }}
                   variant="caption"
-                  color="text.muted"
+                  color="fg-3"
                 >
                   ~
                 </Typography>
@@ -217,8 +217,8 @@ export const RewardsSelect = ({
                   variant="caption"
                   compact
                   symbol="USD"
-                  symbolsColor="text.muted"
-                  color="text.muted"
+                  symbolsColor="fg-3"
+                  color="fg-3"
                 />
               </Box>
             </MenuItem>

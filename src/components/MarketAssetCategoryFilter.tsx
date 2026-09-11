@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
 import { SxProps, Theme, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { AssetCategory } from 'src/modules/markets/utils/assetCategories';
+import { figVars } from 'src/utils/figmaColors';
 
 interface MarketAssetCategoryFiltersProps {
   selectedCategory: AssetCategory;
@@ -59,19 +60,19 @@ export const MarketAssetCategoryFilter = ({
           disableRipple
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          sx={(theme): SxProps<Theme> | undefined => ({
+          sx={(): SxProps<Theme> | undefined => ({
             flex: { xs: 1, xsm: 1, sm: 'auto' },
             '&.MuiToggleButtonGroup-grouped:not(.Mui-selected), &.MuiToggleButtonGroup-grouped&.Mui-disabled':
               {
                 border: '1px solid transparent',
-                backgroundColor: 'background.surface',
-                color: 'action.disabled',
+                backgroundColor: 'bg-2',
+                color: 'disabled-fg',
               },
             '&.MuiToggleButtonGroup-grouped&.Mui-selected': {
               borderRadius: '4px',
-              border: `1px solid ${theme.palette.divider}`,
+              border: `1px solid ${figVars['border-2']}`,
               boxShadow: '0px 2px 1px rgba(0, 0, 0, 0.05), 0px 0px 1px rgba(0, 0, 0, 0.25)',
-              backgroundColor: 'background.paper',
+              backgroundColor: 'surface-elevated',
             },
             ...props.sx?.button,
           })}

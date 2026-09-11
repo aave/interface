@@ -46,7 +46,7 @@ export default function Aave500Page() {
             </Trans>
           </Typography>
           <Button
-            variant="outlined"
+            variant="tertiary"
             color="primary"
             startIcon={
               <SvgIcon>

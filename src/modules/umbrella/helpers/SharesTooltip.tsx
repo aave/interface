@@ -1,9 +1,10 @@
 import { Trans } from '@lingui/macro';
+import { TypographyProps } from '@mui/material';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 
-export const SharesTooltip = () => {
+export const SharesTooltip = ({ variant }: { variant?: TypographyProps['variant'] }) => {
   return (
-    <TextWithTooltip text={<Trans>Shares</Trans>}>
+    <TextWithTooltip text={<Trans>Shares</Trans>} variant={variant}>
       <>
         <Trans>
           Shares are Umbrella Stake Tokens you receive when staking. They represent your ownership

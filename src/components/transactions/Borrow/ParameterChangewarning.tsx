@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, Box, Link } from '@mui/material';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 
@@ -7,11 +7,14 @@ export const ParameterChangewarning = ({ underlyingAsset }: { underlyingAsset: s
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Warning severity="info" sx={{ my: 6 }}>
+    <Alert severity="info" data-size="small" sx={{ width: '100%', my: 6 }}>
       <Trans>
-        <b>Attention:</b> Parameter changes via governance can alter your account health factor and
-        risk of liquidation. Follow the{' '}
-        <a
+        <Box component="span" sx={{ fontWeight: 500 }}>
+          Attention:
+        </Box>{' '}
+        Parameter changes via governance can alter your account health factor and risk of
+        liquidation. Follow the{' '}
+        <Link
           onClick={() => {
             trackEvent(GENERAL.EXTERNAL_LINK, {
               asset: underlyingAsset,
@@ -19,11 +22,13 @@ export const ParameterChangewarning = ({ underlyingAsset }: { underlyingAsset: s
             });
           }}
           href="https://governance.aave.com/"
+          target="_blank"
+          rel="noopener"
         >
           Aave governance forum
-        </a>{' '}
+        </Link>{' '}
         for updates.
       </Trans>
-    </Warning>
+    </Alert>
   );
 };

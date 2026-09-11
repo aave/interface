@@ -1,5 +1,6 @@
 import { Box, ClickAwayListener, Popper, styled, Tooltip } from '@mui/material';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 interface ContentWithTooltipProps {
   children: ReactNode;
@@ -14,19 +15,24 @@ interface ContentWithTooltipProps {
 
 export const PopperComponent = styled(Popper)(({ theme }) =>
   theme.unstable_sx({
+    // Solid bg-5 tooltip surface, framed by an inset border-0 hairline + a soft shadow-medium
+    // drop. Padding lives here (not the inner Box).
     '.MuiTooltip-tooltip': {
-      color: 'text.primary',
-      backgroundColor: 'background.paper',
-      p: 0,
-      borderRadius: '6px',
-      boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      maxWidth: '280px',
+      color: 'fg-1',
+      backgroundColor: 'bg-5',
+      borderRadius: '0.5rem',
+      boxShadow: `0 1px 12px 0 ${figVars['shadow-medium']}, inset 0 0 0 1px ${figVars['border-0']}`,
+      padding: '0.88rem',
+      maxWidth: '250px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      textWrap: 'pretty',
+      fontSize: '0.625rem',
+      fontWeight: 400,
+      lineHeight: '135%',
     },
     '.MuiTooltip-arrow': {
-      color: 'background.paper',
-      '&:before': {
-        boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      },
+      color: 'bg-5',
     },
   })
 );
@@ -86,10 +92,7 @@ export const ContentWithTooltip = ({
         >
           <Box
             sx={{
-              py: 4,
-              px: 6,
-              fontSize: '12px',
-              lineHeight: '16px',
+              // Padding lives on the tooltip surface (above); this Box just carries link styling.
               a: {
                 fontSize: '12px',
                 lineHeight: '16px',

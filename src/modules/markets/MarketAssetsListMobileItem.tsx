@@ -19,6 +19,7 @@ import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 import { ReserveWithProtocolIncentives } from './MarketAssetsList';
+import { showBorrowingDisabledNote } from './utils/borrowingDisabled';
 
 export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIncentives) => {
   const [trackEvent, currentMarket] = useRootStore(
@@ -61,24 +62,21 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
         kernelPoints: externalIncentivesTooltipsSupplySide.kernelPoints,
       }}
     >
-      <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: { xs: 'flex-end' },
-            justifyContent: 'center',
-            textAlign: 'center',
-          }}
-        >
-          <FormattedNumber compact value={reserve.size.amount.value} variant="secondary14" />
-          <ReserveSubheader value={reserve.size.usd} rightAlign={true} />
+      <Row
+        caption={<Trans>Total supplied</Trans>}
+        captionVariant="description"
+        mb={3}
+        align="flex-start"
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <FormattedNumber compact value={reserve.size.amount.value} variant="h5" />
+          <ReserveSubheader value={reserve.size.usd} />
         </Box>
       </Row>
       <Row
         caption={<Trans>Supply APY</Trans>}
         captionVariant="description"
-        mb={3}
+        mb="1rem"
         align="flex-start"
       >
         <IncentivesCard
@@ -87,7 +85,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           incentives={reserve.supplyProtocolIncentives}
           address={reserve.aToken.address}
           symbol={reserve.underlyingToken.symbol}
-          variant="secondary14"
+          variant="h5"
           tooltip={
             <>
               {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
@@ -100,29 +98,26 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
         />
       </Row>
 
-      <Divider sx={{ mb: 3 }} />
+      <Divider sx={{ mb: '1rem' }} />
 
-      <Row caption={<Trans>Total borrowed</Trans>} captionVariant="description" mb={3}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: { xs: 'flex-end' },
-            justifyContent: 'center',
-            textAlign: 'center',
-          }}
-        >
+      <Row
+        caption={<Trans>Total borrowed</Trans>}
+        captionVariant="description"
+        mb={3}
+        align="flex-start"
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           {reserve.borrowInfo && Number(reserve.borrowInfo?.total.amount.value) > 0 ? (
             <>
               <FormattedNumber
                 compact
                 value={Number(reserve.borrowInfo.total.amount.value)}
-                variant="secondary14"
+                variant="h5"
               />
-              <ReserveSubheader value={String(reserve.borrowInfo.total.usd)} rightAlign={true} />
+              <ReserveSubheader value={String(reserve.borrowInfo.total.usd)} />
             </>
           ) : (
-            <NoData variant={'secondary14'} color="text.secondary" />
+            <NoData variant={'h5'} />
           )}
         </Box>
       </Row>
@@ -135,36 +130,35 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           />
         }
         captionVariant="description"
-        mb={3}
+        mb="1rem"
         align="flex-start"
       >
-        <IncentivesCard
-          align="flex-end"
-          value={
-            reserve.borrowInfo && Number(reserve.borrowInfo.total.amount.value) > 0
-              ? String(reserve.borrowInfo.apy.value)
-              : '-1'
-          }
-          incentives={reserve.borrowProtocolIncentives}
-          address={reserve.vToken.address}
-          symbol={reserve.underlyingToken.symbol}
-          variant="secondary14"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
-            </>
-          }
-          market={currentMarket}
-          protocolAction={ProtocolAction.borrow}
-        />
-        {reserve.borrowInfo?.borrowingState === 'DISABLED' &&
-          !reserve.isFrozen &&
-          !reserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed) &&
-          reserve.borrowInfo.total.amount.value !== '0' && <ReserveSubheader value={'Disabled'} />}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <IncentivesCard
+            align="flex-end"
+            value={
+              reserve.borrowInfo && Number(reserve.borrowInfo.total.amount.value) > 0
+                ? String(reserve.borrowInfo.apy.value)
+                : '-1'
+            }
+            incentives={reserve.borrowProtocolIncentives}
+            address={reserve.vToken.address}
+            symbol={reserve.underlyingToken.symbol}
+            variant="h5"
+            tooltip={
+              <>
+                {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
+                {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
+              </>
+            }
+            market={currentMarket}
+            protocolAction={ProtocolAction.borrow}
+          />
+          {showBorrowingDisabledNote(reserve) && <ReserveSubheader value={'Disabled'} />}
+        </Box>
       </Row>
       <Button
-        variant="outlined"
+        variant="tertiary"
         component={Link}
         href={ROUTES.reserveOverview(reserve.underlyingToken.address.toLowerCase(), currentMarket)}
         fullWidth

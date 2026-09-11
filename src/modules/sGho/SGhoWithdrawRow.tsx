@@ -20,18 +20,18 @@ export const SGhoWithdrawRow = ({ balance, balanceUSD, onWithdraw }: SGhoWithdra
         valueUSD={balanceUSD}
         dataCy="sghoBalanceBox"
         bottomLineTitle={
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>Cooldown period</Trans>
           </Typography>
         }
         bottomLineComponent={
-          <Typography variant="secondary12">
+          <Typography variant="subheader2">
             <Trans>Instant</Trans>
           </Typography>
         }
       >
         <Button
-          variant="outlined"
+          variant="tertiary"
           fullWidth
           onClick={onWithdraw}
           disabled={!hasBalance}

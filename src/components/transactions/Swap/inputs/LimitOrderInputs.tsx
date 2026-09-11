@@ -62,12 +62,13 @@ export const LimitOrderInputs = ({
           justifyContent:
             inputInputTitle || swapState.showNetworkSelector ? 'space-between' : 'flex-end',
           alignItems: 'center',
+          mb: '0.5rem',
         }}
       >
         {(inputInputTitle || swapState.showNetworkSelector) && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             {inputInputTitle && (
-              <Typography variant="secondary14" color="text.secondary">
+              <Typography variant="h5" color="fg-2">
                 {inputInputTitle}
               </Typography>
             )}
@@ -146,23 +147,21 @@ export const LimitOrderInputs = ({
               disabled={!(customProps?.canSwitchTokens ?? false)}
               sx={{
                 border: '1px solid',
-                borderColor: 'divider',
-                transform: 'translateY(-130%)',
-                backgroundColor: 'background.paper',
-                '&:hover': { backgroundColor: 'background.surface' },
-                '&:disabled': {
-                  backgroundColor: 'background.surface',
-                  opacity: '0.7',
-                  color: 'text.secondary',
+                borderColor: 'border-opaque',
+                transform: 'translateY(calc(-130% - 6px))',
+                '&:active:not(.Mui-disabled)': {
+                  transform: 'translateY(calc(-130% - 6px)) scale(0.99)',
+                },
+                backgroundColor: 'bg-2',
+                color: 'fg-3',
+                '&:hover': { backgroundColor: 'bg-3' },
+                '&.Mui-disabled': {
+                  backgroundColor: 'bg-2',
+                  color: 'fg-4',
                 },
               }}
             >
-              <SvgIcon
-                sx={{
-                  color: 'primary.main',
-                  fontSize: '18px',
-                }}
-              >
+              <SvgIcon sx={{ fontSize: '18px' }}>
                 <SwitchVerticalIcon />
               </SvgIcon>
             </IconButton>
@@ -174,7 +173,7 @@ export const LimitOrderInputs = ({
                 size={38}
                 paused={state.actionsLoading || !!state.mainTxState.txHash}
                 sx={{
-                  transform: 'translateY(-124%)',
+                  transform: 'translateY(calc(-124% - 6px))',
                 }}
               />
             )}
@@ -184,24 +183,16 @@ export const LimitOrderInputs = ({
             <Box sx={{ position: 'absolute' }}>
               <IconButton
                 disabled
-                disableFocusRipple
                 sx={{
                   border: '1px solid',
-                  borderColor: 'divider',
+                  borderColor: 'border-opaque',
                   transform: 'translateY(-130%)',
-                  backgroundColor: 'background.paper',
-                  '&:disabled': {
-                    backgroundColor: 'background.paper',
+                  '&.Mui-disabled': {
+                    backgroundColor: 'bg-2',
                   },
-                  '&:hover': { backgroundColor: 'background.paper' },
                 }}
               >
-                <SvgIcon
-                  sx={{
-                    color: 'primary.main',
-                    fontSize: '18px',
-                  }}
-                >
+                <SvgIcon sx={{ color: 'fg-3', fontSize: '18px' }}>
                   <ArrowDownIcon />
                 </SvgIcon>
               </IconButton>

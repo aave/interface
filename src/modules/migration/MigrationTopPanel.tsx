@@ -25,7 +25,7 @@ export const MigrationTopPanel = () => {
             }}
           >
             <Button
-              variant="surface"
+              variant="tertiary"
               size="medium"
               color="primary"
               startIcon={

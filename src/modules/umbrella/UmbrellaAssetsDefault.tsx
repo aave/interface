@@ -1,13 +1,21 @@
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Box, Paper, Skeleton, Stack, useMediaQuery, useTheme } from '@mui/material';
+import { useState } from 'react';
+import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
+import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 import { ListItem } from 'src/components/lists/ListItem';
-import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { NoSearchResults } from 'src/components/NoSearchResults';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { FormattedStakeData, useStakeDataSummary } from 'src/hooks/stake/useUmbrellaSummary';
+import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
+import {
+  AssetCategory,
+  matchesSelectedCategories,
+} from 'src/modules/markets/utils/assetCategories';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
@@ -16,50 +24,90 @@ import { NoStakeAssets } from './NoStakeAssets';
 import { StakeAssetName } from './StakeAssets/StakeAssetName';
 
 export const UmrellaAssetsDefaultListContainer = () => {
-  return (
-    <ListWrapper
-      titleComponent={
-        <Typography variant="h2">
-          <Trans>Assets to stake</Trans>
-        </Typography>
-      }
-    >
-      <UmbrellaAssetsDefault />
-    </ListWrapper>
-  );
-};
-export const UmbrellaAssetsDefault = () => {
   const [currentMarketData] = useRootStore(useShallow((store) => [store.currentMarketData]));
   const { data: stakeData, loading } = useStakeDataSummary(currentMarketData);
+  const {
+    data: categoryData,
+    isLoading: isLoadingCategories,
+    error: categoriesError,
+  } = useCoingeckoCategories();
 
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<AssetCategory[]>([]);
+  const { breakpoints } = useTheme();
+  const sm = useMediaQuery(breakpoints.down('sm'));
 
-  if (loading) {
-    return isTableChangedToCards ? (
-      <>
-        <DefaultAssetListItemLoaderMobile />
-        <DefaultAssetListItemLoaderMobile />
-        <DefaultAssetListItemLoaderMobile />
-        <DefaultAssetListItemLoaderMobile />
-      </>
-    ) : (
-      <Box pt={10}>
-        <DefaultAssetListItemLoader />
-        <DefaultAssetListItemLoader />
-        <DefaultAssetListItemLoader />
-        <DefaultAssetListItemLoader />
-      </Box>
+  const filteredAssets = stakeData?.stakeAssets
+    // Search by asset symbol
+    .filter((res) => {
+      if (!searchTerm) return true;
+      const term = searchTerm.toLowerCase().trim();
+      return res.symbol.toLowerCase().includes(term);
+    })
+    // Category filter (shares the markets page's dynamic CoinGecko categorization)
+    .filter((res) =>
+      matchesSelectedCategories(
+        res.symbol,
+        selectedCategories,
+        categoryData?.stablecoinSymbols,
+        categoryData?.ethCorrelatedSymbols
+      )
     );
-  }
 
-  if (!loading && (!stakeData || stakeData.stakeAssets.length === 0)) {
-    return <NoStakeAssets />;
+  const noStakeAssetsConfigured = !loading && (!stakeData || stakeData.stakeAssets.length === 0);
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+      <AssetsFilterBar
+        searchPlaceholder={sm ? 'Search asset' : 'Search asset name or symbol'}
+        onSearchTermChange={setSearchTerm}
+        selectedCategories={selectedCategories}
+        onCategoriesChange={setSelectedCategories}
+        categoriesDisabled={isLoadingCategories || !!categoriesError}
+      />
+
+      <Paper variant="table">
+        <UmbrellaAssetsDefault stakeAssets={filteredAssets ?? []} loading={loading} />
+
+        {noStakeAssetsConfigured ? (
+          <NoStakeAssets />
+        ) : (
+          !loading &&
+          filteredAssets?.length === 0 && (
+            <NoSearchResults
+              searchTerm={searchTerm}
+              subtitle={<Trans>We couldn&apos;t find any assets related to your search.</Trans>}
+            />
+          )
+        )}
+      </Paper>
+    </Box>
+  );
+};
+
+export const UmbrellaAssetsDefault = ({
+  stakeAssets,
+  loading,
+}: {
+  stakeAssets: FormattedStakeData[];
+  loading: boolean;
+}) => {
+  const theme = useTheme();
+  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down(TABLE_CARDS_BELOW));
+  const Loader = isTableChangedToCards
+    ? DefaultAssetListItemLoaderMobile
+    : DefaultAssetListItemLoader;
+  const Item = isTableChangedToCards ? AssetListItemMobile : AssetListItem;
+
+  // Empty states (no assets configured / no search results) are handled by the container.
+  if (!loading && stakeAssets.length === 0) {
+    return null;
   }
 
   return (
     <>
       {!isTableChangedToCards && (
-        <ListHeaderWrapper>
+        <ListHeaderWrapper px={5}>
           <ListColumn isRow>
             <ListHeaderTitle>
               <Trans>Asset</Trans>
@@ -72,14 +120,9 @@ export const UmbrellaAssetsDefault = () => {
           </ListColumn>
         </ListHeaderWrapper>
       )}
-      {stakeData &&
-        stakeData.stakeAssets.map((data, index) =>
-          !isTableChangedToCards ? (
-            <AssetListItem key={index} stakeData={data} />
-          ) : (
-            <AssetListItemMobile key={index} stakeData={data} />
-          )
-        )}
+      {loading
+        ? Array.from({ length: 4 }, (_, i) => <Loader key={i} />)
+        : stakeAssets.map((data, index) => <Item key={index} stakeData={data} />)}
     </>
   );
 };
@@ -87,7 +130,7 @@ export const UmbrellaAssetsDefault = () => {
 const AssetListItem = ({ stakeData }: { stakeData: FormattedStakeData }) => {
   const [currentNetworkConfig] = useRootStore(useShallow((store) => [store.currentNetworkConfig]));
   return (
-    <ListItem>
+    <ListItem px={5} minHeight={76}>
       <ListColumn isRow minWidth={275}>
         <StakeAssetName
           iconSymbol={stakeData.iconSymbol}
@@ -102,7 +145,7 @@ const AssetListItem = ({ stakeData }: { stakeData: FormattedStakeData }) => {
         <FormattedNumber
           value={stakeData.totalRewardApy}
           percent
-          variant="main16"
+          variant="h4"
           visibleDecimals={2}
         />
       </ListColumn>
@@ -124,20 +167,12 @@ const AssetListItemMobile = ({ stakeData }: { stakeData: FormattedStakeData }) =
           explorerUrl={`${currentNetworkConfig.explorerLink}/address/${stakeData.tokenAddress}`}
         />
       </ListColumn>
-      <Row mt={8} px={2} caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: { xs: 'flex-end' },
-            justifyContent: 'center',
-            textAlign: 'center',
-          }}
-        >
+      <Row mt={4} caption={<Trans>Staking APY</Trans>} captionVariant="description" mb={3}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
           <FormattedNumber
             value={stakeData.totalRewardApy}
             percent
-            variant="secondary14"
+            variant="h5"
             visibleDecimals={2}
           />
         </Box>
@@ -148,9 +183,9 @@ const AssetListItemMobile = ({ stakeData }: { stakeData: FormattedStakeData }) =
 
 const DefaultAssetListItemLoader = () => {
   return (
-    <ListItem px={4} minHeight={76}>
+    <ListItem px={5} minHeight={76}>
       <ListColumn isRow minWidth={275}>
-        <Skeleton variant="circular" width={32} height={32} />
+        <Skeleton variant="circular" width={40} height={40} />
         <Box sx={{ pl: 2, overflow: 'hidden' }}>
           <Skeleton width={150} height={28} />
         </Box>
@@ -167,16 +202,15 @@ const DefaultAssetListItemLoaderMobile = () => {
     <ListMobileItemWrapper>
       <ListColumn isRow>
         <Stack direction="row" alignItems="center" height={40}>
-          <Skeleton variant="circular" width={32} height={32} />
+          <Skeleton variant="circular" width={40} height={40} />
           <Box sx={{ pl: 2, overflow: 'hidden' }}>
             <Skeleton width={150} height={28} />
           </Box>
         </Stack>
       </ListColumn>
       <Row
-        mt={8}
+        mt={4}
         mb={3}
-        px={2}
         caption={<Skeleton width={100} height={20} />}
         captionVariant="description"
         align="flex-start"

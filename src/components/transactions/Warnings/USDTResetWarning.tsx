@@ -1,16 +1,13 @@
 import { Trans } from '@lingui/macro';
-import { Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert } from '@mui/material';
 
 export const USDTResetWarning = () => {
   return (
-    <Warning severity="info" sx={{ mt: 5 }}>
-      <Typography variant="caption">
-        <Trans>
-          USDT on Ethereum requires approval reset before a new approval. This will require an
-          additional transaction.
-        </Trans>
-      </Typography>
-    </Warning>
+    <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 5 }}>
+      <Trans>
+        USDT on Ethereum requires approval reset before a new approval. This will require an
+        additional transaction.
+      </Trans>
+    </Alert>
   );
 };

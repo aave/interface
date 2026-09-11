@@ -48,15 +48,15 @@ export const ParaswapCostsDetails = ({ state }: { state: SwapState }) => {
             width="16px"
             sx={{ mr: 2, ml: 4, fontSize: '16px' }}
           />
-          <FormattedNumber value={flashLoanFeeFormatted} variant="secondary12" compact />
+          <FormattedNumber value={flashLoanFeeFormatted} variant="subheader2" compact />
         </Box>
         <FormattedNumber
           value={flashLoanFeeUsd}
           variant="helperText"
           compact
           symbol="USD"
-          symbolsColor="text.secondary"
-          color="text.secondary"
+          symbolsColor="fg-2"
+          color="fg-2"
         />
       </Box>
     </Row>
