@@ -208,7 +208,7 @@ export const BridgeActions = React.memo(
         handleApproval={approval}
         handleAction={action}
         requiresApproval={requiresApproval}
-        tryPermit={false} // permit not availabe
+        tryPermit={false} // permit not available
         sx={sx}
         {...props}
       />
