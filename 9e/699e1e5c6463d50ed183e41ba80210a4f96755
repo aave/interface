@@ -1,0 +1,78 @@
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+  s_001e1a32ba193b::t_ca34f676e6a486 49
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_001e1a32ba193b::t_2cf68b81a6b23a 15
+  s_001e1a32ba193b::t_7562d0dd97c804 158
+src/components/AssetsFilterBar.tsx
+  s_001e1a32ba193b::t_023869ea897e37 32
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_001e1a32ba193b::t_99f5cb9d7e1240 118,122
+  s_001e1a32ba193b::t_c1899f1166b275 13-18,115,124,126-128,130,132,134
+src/modules/reserve-overview/ReservePanels.tsx
+  s_001e1a32ba193b::t_a2cd188ba3769a 16-35
+src/modules/governance/proposal/ProposalOverview.tsx
+  s_001e1a32ba193b::t_dc1b21a1829eeb 54-57,59-60
+  s_001e1a32ba193b::t_b2e2c2de3abec0 23,79
+  s_001e1a32ba193b::t_e1c337be9cfd72 22,76-78,80-209,323
+  s_001e1a32ba193b::t_5dbd3abd4ec4b8 26,46-53,58,71-73
+src/modules/markets/MarketAssetsList.tsx
+  s_001e1a32ba193b::t_bfad0105229cc4 71,73,100-101
+src/components/MarketSwitcher.tsx
+  s_001e1a32ba193b::t_692e05c20e6b49 786
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
+  s_001e1a32ba193b::t_2cf68b81a6b23a 5,62
+src/modules/reserve-overview/SupplyInfo.tsx
+  s_001e1a32ba193b::t_a2cd188ba3769a 25,48,160
+src/utils/buttonStyles.ts
+  s_001e1a32ba193b::t_8770b32f5f4329 79,82-87,89
+  s_001e1a32ba193b::t_7a63e756a8bec6 90
+  s_001e1a32ba193b::t_7fef8f2ee1da37 43-48,50,52-56,75,77,88
+src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+  s_001e1a32ba193b::t_023869ea897e37 141-148
+src/modules/markets/MarketAssetsListMobileItem.tsx
+  s_001e1a32ba193b::t_f5a10b5305971e 65,98
+  s_001e1a32ba193b::t_e787725e03726b 66,99
+src/components/ContentContainer.tsx
+  s_001e1a32ba193b::t_acc43513faaaed 12-16
+src/components/lists/ListMobileItem.tsx
+  s_001e1a32ba193b::t_f0c5830a592f7c 57-60
+src/modules/reserve-overview/BorrowInfo.tsx
+  s_001e1a32ba193b::t_a2cd188ba3769a 24,67,198
+src/components/ContentWithTooltip.tsx
+  s_001e1a32ba193b::t_023869ea897e37 30
+src/modules/umbrella/UmbrellaAssetsDefault.tsx
+  s_001e1a32ba193b::t_2cf68b81a6b23a 5,61
+src/components/SearchInput.tsx
+  s_001e1a32ba193b::t_530b37069b3b26 7,52-54,56
+src/modules/umbrella/AmountSharesItem.tsx
+  s_001e1a32ba193b::t_e787725e03726b 18-21
+  s_001e1a32ba193b::t_ca34f676e6a486 23-30
+  s_001e1a32ba193b::t_f25a55afe92bb0 3,16-17,22,46-52,56-62
+src/utils/dashboardSortUtils.ts
+  s_001e1a32ba193b::t_8226a0e2245564 32-44,52-54,57-67,70-75,78-79
+src/modules/dashboard/lists/ListValueRow.tsx
+  s_001e1a32ba193b::t_213353e9a78abf 23-24,30
+  s_001e1a32ba193b::t_e787725e03726b 25-29
+src/components/lists/ListHeaderTitle.tsx
+  s_001e1a32ba193b::t_ece48340d0508c 4-5
+  s_001e1a32ba193b::t_db0071da5637f8 9-20,92
+  s_001e1a32ba193b::t_4c49000ee153a2 54,57
+  s_001e1a32ba193b::t_7b5bfed3f63f9a 93-96,108-115
+  s_001e1a32ba193b::t_c93ac041e5615e 58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "9e699e1e5c6463d50ed183e41ba80210a4f96755",
+  "prompts": {},
+  "sessions": {
+    "s_001e1a32ba193b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1666f613-77d0-41f9-8e43-98891b07b7ab",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
