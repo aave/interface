@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Paper, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
+import { CONTENT_TOP_PADDING } from 'src/components/ContentContainer';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
@@ -58,7 +59,7 @@ export const UmbrellaAssetsListContainer = () => {
     !isLoadingStakedDataWithTokenBalances && !stakedDataWithTokenBalances;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: CONTENT_TOP_PADDING }}>
       <AssetsFilterBar
         searchPlaceholder={sm ? 'Search asset' : 'Search asset name or symbol'}
         onSearchTermChange={setSearchTerm}

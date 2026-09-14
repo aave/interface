@@ -62,13 +62,8 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
         kernelPoints: externalIncentivesTooltipsSupplySide.kernelPoints,
       }}
     >
-      <Row
-        caption={<Trans>Total supplied</Trans>}
-        captionVariant="description"
-        mb={3}
-        align="flex-start"
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+      <Row caption={<Trans>Total supplied</Trans>} captionVariant="description" mb={3}>
+        <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
           <FormattedNumber compact value={reserve.size.amount.value} variant="h5" />
           <ReserveSubheader value={reserve.size.usd} />
         </Box>
@@ -100,13 +95,8 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
 
       <Divider sx={{ mb: '1rem' }} />
 
-      <Row
-        caption={<Trans>Total borrowed</Trans>}
-        captionVariant="description"
-        mb={3}
-        align="flex-start"
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+      <Row caption={<Trans>Total borrowed</Trans>} captionVariant="description" mb={3}>
+        <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
           {reserve.borrowInfo && Number(reserve.borrowInfo?.total.amount.value) > 0 ? (
             <>
               <FormattedNumber

@@ -9,7 +9,11 @@ interface ContentContainerProps {
   disableTopPadding?: boolean;
 }
 
-/** Top padding of the page content band; the mobile tab switchers mirror it below themselves. */
+/**
+ * Top padding of the page content band. Also mirrored below anything that leads the band — the
+ * mobile tab switchers, and the asset filter bars on markets/staking — so a leading row sits the
+ * same distance from the header hairline as from the content beneath it.
+ */
 export const CONTENT_TOP_PADDING = { xs: '1.5rem', xsm: '2rem' };
 
 export const ContentContainer = ({

@@ -29,7 +29,7 @@ export const AssetsFilterBar = ({
         flexDirection: { xs: 'column', sm: 'row' },
         alignItems: { xs: 'stretch', sm: 'center' },
         justifyContent: 'space-between',
-        gap: 2,
+        gap: { xs: '0.75rem', sm: '0.5rem' },
       }}
     >
       <SearchInput

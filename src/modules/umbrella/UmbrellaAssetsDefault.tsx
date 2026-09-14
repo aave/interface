@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Paper, Skeleton, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
+import { CONTENT_TOP_PADDING } from 'src/components/ContentContainer';
 import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -57,7 +58,7 @@ export const UmrellaAssetsDefaultListContainer = () => {
   const noStakeAssetsConfigured = !loading && (!stakeData || stakeData.stakeAssets.length === 0);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: CONTENT_TOP_PADDING }}>
       <AssetsFilterBar
         searchPlaceholder={sm ? 'Search asset' : 'Search asset name or symbol'}
         onSearchTermChange={setSearchTerm}

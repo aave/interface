@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
+import { CONTENT_TOP_PADDING } from 'src/components/ContentContainer';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { Link } from 'src/components/primitives/Link';
 import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
@@ -154,7 +155,7 @@ export const MarketAssetsListContainer = () => {
   const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: '1.5rem', sm: '3rem' } }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: CONTENT_TOP_PADDING }}>
       {displayGhoBanner && <SavingsGhoBanner />}
 
       <AssetsFilterBar

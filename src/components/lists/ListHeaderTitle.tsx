@@ -1,8 +1,22 @@
 import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useRootStore } from 'src/store/root';
+import { figVars } from 'src/utils/figmaColors';
+import { motion } from 'src/utils/motion';
 
 import { MARKETS } from '../../utils/events';
+
+// Every value here is a module-scope constant, so the object is built once rather than per
+// sortable column per render. The transition sits on `path`, not on the active class, so the
+// chevron losing the highlight fades out too — the class is removed, not restyled.
+const SORT_INDICATOR_SX = {
+  display: 'inline-flex',
+  flexShrink: 0,
+  ml: 1,
+  color: 'fg-icon',
+  '& path': { transition: `stroke ${motion.duration.hover}ms ${motion.easing.standard}` },
+  '& .sort-arrow-active': { stroke: figVars['fg-1'] },
+};
 
 interface ListHeaderTitleProps {
   sortName?: string;
@@ -36,12 +50,11 @@ export const ListHeaderTitle = ({
 
   const handleSorting = (name: string) => {
     trackEvent(MARKETS.SORT, { sort_by: name, tile: source });
-    setSortDesc && setSortDesc(false);
     setSortName && setSortName(name);
-    if (sortName === name) {
-      setSortDesc && setSortDesc(!sortDesc);
-    }
+    setSortDesc && setSortDesc(sortName === name ? !sortDesc : true);
   };
+
+  const isSorted = !!sortKey && sortName === sortKey;
 
   return (
     <Typography
@@ -76,10 +89,11 @@ export const ListHeaderTitle = ({
       </Box>
 
       {!!sortKey && (
-        <Box sx={{ display: 'inline-flex', flexShrink: 0, ml: 1, color: 'fg-icon' }}>
-          {/* Static sortable indicator: an up/down chevron. Color comes from the fg-icon token via
-              currentColor on the Box — the P3-safe way to tint an SVG, since var() doesn't resolve
-              in SVG presentation attributes. stroke/width/caps are inherited by both paths. */}
+        <Box sx={SORT_INDICATOR_SX}>
+          {/* Sortable indicator: an up/down chevron, the one matching the active direction lit.
+              The resting color comes from the fg-icon token via currentColor on the Box — the
+              P3-safe way to tint an SVG, since var() doesn't resolve in SVG presentation
+              attributes. stroke/width/caps are inherited by both paths. */}
           <svg
             width="8"
             height="10"
@@ -91,8 +105,14 @@ export const ListHeaderTitle = ({
             strokeLinejoin="round"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M1.59961 3L3.99961 1L6.39961 3" />
-            <path d="M1.59961 7L3.99961 9L6.39961 7" />
+            <path
+              className={isSorted && !sortDesc ? 'sort-arrow-active' : undefined}
+              d="M1.59961 3L3.99961 1L6.39961 3"
+            />
+            <path
+              className={isSorted && sortDesc ? 'sort-arrow-active' : undefined}
+              d="M1.59961 7L3.99961 9L6.39961 7"
+            />
           </svg>
         </Box>
       )}

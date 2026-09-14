@@ -13,6 +13,26 @@ export const PanelRow: React.FC<BoxProps> = (props) => (
     }}
   />
 );
+/**
+ * The wrapping row of `PanelItem`s at the head of a reserve panel.
+ *
+ * Centring only lines the item dividers up while the row is single-line, and `PanelItem` draws
+ * those from `md` up — so below `md`, where the items wrap, each line top-aligns instead and a
+ * short stat (an APY has no USD sub-line) stops floating against its taller neighbour. Column
+ * spacing comes from each `PanelItem`'s own `pr`/`mr`, so only the row axis is set here.
+ */
+export const PanelItemRow: React.FC<BoxProps> = (props) => (
+  <Box
+    {...props}
+    sx={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: { xs: 'flex-start', md: 'center' },
+      rowGap: '1rem',
+      ...props.sx,
+    }}
+  />
+);
 export const PanelTitle: React.FC<TypographyProps> = (props) => (
   <Typography
     {...props}

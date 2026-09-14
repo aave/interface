@@ -40,12 +40,21 @@ export const stakePanelActionSx = {
   width: { xs: '100%', xsm: 'auto' },
 } satisfies SxProps<Theme>;
 
+/**
+ * Shared by the deposit row shell and both groups inside it: stacked and full-width on a phone, a
+ * centred row from `xsm`. One definition, so the three can never start stacking at different
+ * widths and leave a group laid out across the shell's axis.
+ */
+const stackUntilXsm = {
+  display: 'flex',
+  flexDirection: { xs: 'column', xsm: 'row' },
+  alignItems: { xs: 'stretch', xsm: 'center' },
+} satisfies SxProps<Theme>;
+
 /** Outer shell of an sGHO / stkGHO deposit row: identity on the left, actions on the right. */
 export const depositRowSx = {
-  display: 'flex',
-  alignItems: { xs: 'stretch', xsm: 'center' },
+  ...stackUntilXsm,
   justifyContent: 'space-between',
-  flexDirection: { xs: 'column', xsm: 'row' },
   gap: 4,
   borderRadius: { xs: '8px', xsm: '6px' },
   p: 4,
@@ -63,12 +72,19 @@ export const mobileCardActionsSx = {
   mt: 5,
 } satisfies SxProps<Theme>;
 
-/** The APR block + action buttons of a deposit row; the buttons take their own line on mobile. */
+/** A deposit row's metric and its action group, which takes its own line on mobile. */
 export const depositRowActionsSx = {
-  display: 'flex',
-  flexDirection: { xs: 'column', xsm: 'row' },
-  alignItems: { xs: 'stretch', xsm: 'center' },
+  ...stackUntilXsm,
   justifyContent: { xs: 'flex-start', xsm: 'flex-end' },
-  gap: { xs: '1rem', xsm: '0.75rem' },
+  gap: { xs: '1rem', xsm: '1.5rem' },
   flexShrink: 0,
+} satisfies SxProps<Theme>;
+
+/**
+ * Groups a deposit row's buttons so they stay a tighter cluster than `depositRowActionsSx`
+ * puts between them and the metric. Only needed where a row has more than one button.
+ */
+export const depositRowButtonsSx = {
+  ...stackUntilXsm,
+  gap: { xs: '1rem', xsm: '0.75rem' },
 } satisfies SxProps<Theme>;

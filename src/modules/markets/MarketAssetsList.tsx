@@ -68,9 +68,9 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
         aValue = a.underlyingToken.symbol.toUpperCase();
         bValue = b.underlyingToken.symbol.toUpperCase();
         if (sortDesc) {
-          return aValue < bValue ? -1 : 1;
+          return bValue < aValue ? -1 : 1;
         }
-        return bValue < aValue ? -1 : 1;
+        return aValue < bValue ? -1 : 1;
 
       case 'size.usd':
         aValue = Number(a.size.usd) || 0;
@@ -97,8 +97,8 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
     }
 
     return sortDesc
-      ? (aValue as number) - (bValue as number)
-      : (bValue as number) - (aValue as number);
+      ? (bValue as number) - (aValue as number)
+      : (aValue as number) - (bValue as number);
   });
   const reservesWithIncentives: ReserveWithProtocolIncentives[] = sortedReserves.map((reserve) => ({
     ...reserve,

@@ -783,7 +783,7 @@ export const MarketSwitcher = () => {
                 },
               }}
             >
-              {currentMarketData.v3 ? 'v3' : 'v2'}
+              {currentMarketData.v3 ? 'V3' : 'V2'}
             </Typography>
           </Box>
           <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }} />

@@ -46,7 +46,7 @@ export const UmbrellaAssetsListMobileItem = ({ ...umbrellaStakeAsset }: MergedSt
         <AmountStakedUnderlyingItem stakeData={umbrellaStakeAsset} />
       </Row>
       <Row caption={<SharesTooltip />} captionVariant="description" mb={3} align="flex-start">
-        <AmountSharesItem stakeData={umbrellaStakeAsset} />
+        <AmountSharesItem stakeData={umbrellaStakeAsset} inline />
       </Row>
 
       <Row

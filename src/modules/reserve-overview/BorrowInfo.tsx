@@ -21,7 +21,7 @@ import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfi
 import { mapAaveProtocolIncentives } from '../../components/incentives/incentives.helper';
 import { BorrowApyGraph } from './graphs/ApyGraphContainer';
 import { ReserveFactorOverview } from './ReserveFactorOverview';
-import { PanelItem } from './ReservePanels';
+import { PanelItem, PanelItemRow } from './ReservePanels';
 
 interface BorrowInfoProps {
   reserve: ReserveWithId;
@@ -64,13 +64,7 @@ export const BorrowInfo = ({
 
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}
-      >
+      <PanelItemRow>
         {showBorrowCapStatus ? (
           // With a borrow cap
           <>
@@ -201,7 +195,7 @@ export const BorrowInfo = ({
             <ReserveSubheader value={reserve.borrowInfo!.borrowCap.usd} />
           </PanelItem>
         )}
-      </Box>
+      </PanelItemRow>
       {renderCharts && (
         <BorrowApyGraph
           chain={currentMarketData.chainId}

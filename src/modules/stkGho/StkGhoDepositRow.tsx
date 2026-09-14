@@ -10,7 +10,12 @@ import { useMeritIncentives } from 'src/hooks/useMeritIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useSavingsMarketData } from 'src/hooks/useSavingsMarketData';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { depositRowActionsSx, depositRowActionSx, depositRowSx } from 'src/utils/buttonStyles';
+import {
+  depositRowActionsSx,
+  depositRowActionSx,
+  depositRowButtonsSx,
+  depositRowSx,
+} from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 
 interface StkGhoDepositRowProps {
@@ -107,35 +112,26 @@ export const StkGhoDepositRow = ({
           aprDisplay
         )}
 
-        {hasGho ? (
+        <Box sx={depositRowButtonsSx}>
           <Button
             variant={depositVariant}
-            onClick={onDeposit}
+            onClick={hasGho ? onDeposit : handleGetGho}
             sx={depositRowActionSx}
             data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
           >
-            <Trans>Deposit</Trans>
+            {hasGho ? <Trans>Deposit</Trans> : <Trans>Get GHO</Trans>}
           </Button>
-        ) : (
-          <Button
-            variant={depositVariant}
-            onClick={handleGetGho}
-            sx={depositRowActionSx}
-            data-cy={`stakeBtn_${stakedToken.toUpperCase()}`}
-          >
-            <Trans>Get GHO</Trans>
-          </Button>
-        )}
 
-        <Button
-          variant={migrateVariant}
-          onClick={onMigrate}
-          disabled={!hasLegacyPosition}
-          sx={depositRowActionSx}
-          data-cy={`migrateBtn_${stakedToken.toUpperCase()}`}
-        >
-          <Trans>Migrate</Trans>
-        </Button>
+          <Button
+            variant={migrateVariant}
+            onClick={onMigrate}
+            disabled={!hasLegacyPosition}
+            sx={depositRowActionSx}
+            data-cy={`migrateBtn_${stakedToken.toUpperCase()}`}
+          >
+            <Trans>Migrate</Trans>
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

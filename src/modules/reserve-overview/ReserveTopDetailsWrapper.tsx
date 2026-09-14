@@ -138,7 +138,14 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           {reserveIcon}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: 0 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: { xs: '0.25rem', sm: '0.5rem' },
+                  minWidth: 0,
+                }}
+              >
                 {reserveName}
                 {!loading && (
                   <Box sx={{ minWidth: 0, overflow: 'hidden' }}>

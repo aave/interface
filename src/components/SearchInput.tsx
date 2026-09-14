@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
 import { SearchIcon } from 'src/components/icons/SearchIcon';
 import { figVars } from 'src/utils/figmaColors';
+import { motion } from 'src/utils/motion';
 
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
@@ -48,10 +49,11 @@ export const SearchInput = ({
         // Wrapping <label> so clicking anywhere in the field (the search icon, the padding) focuses
         // the input, not just the input box itself.
         cursor: 'text',
-        // Focus ring: a 3px fg-3 outline held 2px out (replaces the prior no-op focus).
+        transition: `background-color ${motion.duration.hover}ms ${motion.easing.standard}`,
+        // Focused: fill with the secondary pill's surface rather than ringing the field, so the
+        // active state reads as the same family as the buttons it sits beside.
         '&:focus-within': {
-          outline: `3px solid ${figVars['fg-3']}`,
-          outlineOffset: '2px',
+          backgroundColor: figVars['bg-3'],
         },
         ...wrapperSx,
       }}

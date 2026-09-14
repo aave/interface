@@ -22,7 +22,7 @@ import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
 
 import { SupplyApyGraph } from './graphs/ApyGraphContainer';
 import { ConfigStatus } from './ReserveEModePanel';
-import { PanelItem } from './ReservePanels';
+import { PanelItem, PanelItemRow } from './ReservePanels';
 
 interface SupplyInfoProps {
   reserve: ReserveWithId;
@@ -45,13 +45,7 @@ export const SupplyInfo = ({
   const apyValue = Number(reserve.supplyInfo?.apy.value);
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-        }}
-      >
+      <PanelItemRow>
         {showSupplyCapStatus ? (
           // With supply cap
           <>
@@ -163,7 +157,7 @@ export const SupplyInfo = ({
             inlineIncentives={true}
           />
         </PanelItem>
-      </Box>
+      </PanelItemRow>
       {renderCharts &&
         (reserve.borrowInfo?.borrowingState === 'ENABLED' ||
           Number(reserve.borrowInfo?.total.amount.value) > 0 ||
