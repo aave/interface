@@ -14,6 +14,9 @@ import { cardHeadingSx, cardPaddingSx } from 'src/utils/cardStyles';
 
 import { networkConfigs } from '../../../ui-config/networksConfig';
 
+/** Both alerts sit in the same slot under the voting-power row, so they share its spacing. */
+const VOTE_ALERT_SX = { width: '100%', mt: '1.5rem', mb: '0.5rem' };
+
 interface VoteInfoProps {
   voteData: VoteProposalData;
 }
@@ -104,10 +107,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
             </Row>
           )}
           {showAlreadyVotedMsg && voteOnProposal && (
-            <Alert
-              severity={voteOnProposal.support ? 'success' : 'error'}
-              sx={{ width: '100%', my: 2 }}
-            >
+            <Alert severity={voteOnProposal.support ? 'success' : 'error'} sx={VOTE_ALERT_SX}>
               <AlertTitle>
                 <Trans>You voted {voteOnProposal.support ? 'YAE' : 'NAY'}</Trans>
               </AlertTitle>
@@ -122,7 +122,7 @@ export function VoteInfo({ voteData }: VoteInfoProps) {
             </Alert>
           )}
           {showCannotVoteMsg && (
-            <Alert severity="warning" sx={{ width: '100%', my: 2 }}>
+            <Alert severity="warning" sx={VOTE_ALERT_SX}>
               <Trans>Not enough voting power to participate in this proposal</Trans>
             </Alert>
           )}

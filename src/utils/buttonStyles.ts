@@ -26,6 +26,18 @@ export const iconButtonSx = {
   // composed inside an `sx` array — e.g. `sx={[iconButtonSx, { ... }]}`.
 } satisfies SxProps<Theme>;
 
+/**
+ * Resizes a Button's `startIcon` glyph.
+ *
+ * MUI sizes it per button size through `.MuiButton-startIcon > *:nth-of-type(1)` — specificity
+ * (0,2,0), which outranks an `sx` on the icon element itself at (0,1,0). So `<Button startIcon={<X
+ * sx={{ fontSize: 18 }} />}>` silently renders at MUI's size; the override has to come back
+ * through the same selector.
+ */
+export const startIconSizeSx = (fontSize: string) => ({
+  '& .MuiButton-startIcon > *:nth-of-type(1)': { fontSize },
+});
+
 /** Row action button in the sGHO / stkGHO deposit rows: full-width on mobile, fixed from `xsm`. */
 export const depositRowActionSx = {
   minWidth: { xs: '140px', xsm: '96px' },

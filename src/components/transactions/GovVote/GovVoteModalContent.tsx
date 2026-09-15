@@ -1,13 +1,10 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { VoteProposalData } from 'src/modules/governance/types';
-import { useRootStore } from 'src/store/root';
-import { AIP } from 'src/utils/events';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
-import { LensIcon } from '../../../components/icons/LensIcon';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
@@ -22,13 +19,6 @@ export type GovVoteModalContentProps = {
   power: string;
 };
 
-export interface Asset {
-  symbol: string;
-  icon: string;
-  value: number;
-  address: string;
-}
-
 export enum ErrorType {
   NOT_ENOUGH_VOTING_POWER,
 }
@@ -40,8 +30,6 @@ export const GovVoteModalContent = ({
 }: GovVoteModalContentProps) => {
   const { chainId: connectedChainId, readOnlyModeAddress } = useWeb3Context();
   const { gasLimit, mainTxState: txState, txError } = useModalContext();
-  const { palette } = useTheme();
-  const trackEvent = useRootStore((store) => store.trackEvent);
 
   // handle delegate address errors
   let blockingError: ErrorType | undefined = undefined;
@@ -73,32 +61,7 @@ export const GovVoteModalContent = ({
     return <TxErrorView txError={txError} />;
   }
 
-  if (txState.success)
-    return (
-      <TxSuccessView
-        customAction={
-          <Box mt={5}>
-            <Button
-              component="a"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackEvent(AIP.SHARE_VOTE_ON_LENS)}
-              href={`https://hey.xyz/?url=${
-                window.location.href
-              }&text=${`I just voted on the latest active proposal on aave governance`}&hashtags=Aave&preview=true`}
-              startIcon={
-                <LensIcon
-                  color={palette.mode === 'dark' ? palette.primary.light : palette.text.primary}
-                />
-              }
-            >
-              <Trans>Share on Lens</Trans>
-            </Button>
-          </Box>
-        }
-        customText={<Trans>Thank you for voting</Trans>}
-      />
-    );
+  if (txState.success) return <TxSuccessView customText={<Trans>Thank you for voting</Trans>} />;
 
   return (
     <>

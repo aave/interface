@@ -120,7 +120,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           />
         }
         captionVariant="description"
-        mb="1rem"
+        mb="1.5rem"
         align="flex-start"
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>

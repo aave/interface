@@ -128,7 +128,9 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           flexDirection: { xs: 'column', md: 'row' },
           justifyContent: 'space-between',
           alignItems: { xs: 'flex-start', md: 'flex-end' },
-          gap: '1rem',
+          // Stacked on mobile, so this is the gap under the title block rather than between two
+          // columns; it needs more room there than the 1rem that separates them side by side.
+          gap: { xs: '1.5rem', md: '1rem' },
           width: '100%',
         }}
       >

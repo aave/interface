@@ -11,7 +11,6 @@ import { figVars } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import DiscordIcon from '/public/icons/discord.svg';
-import LensLogoIcon from '/public/icons/lens-logo.svg';
 
 interface StyledLinkProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
@@ -28,9 +27,9 @@ const StyledLink = styled(Link)<StyledLinkProps>({
 
 const FOOTER_ICONS = [
   {
-    href: 'https://twitter.com/aave',
+    href: 'https://x.com/aave',
     icon: <X />,
-    title: 'Twitter',
+    title: 'X',
   },
   {
     href: 'https://www.instagram.com/aave/',
@@ -61,11 +60,6 @@ const FOOTER_ICONS = [
     href: 'https://github.com/aave',
     icon: <GitHub />,
     title: 'Github',
-  },
-  {
-    href: 'https://hey.xyz/u/aave',
-    icon: <LensLogoIcon />,
-    title: 'Aave on Lens',
   },
 ];
 

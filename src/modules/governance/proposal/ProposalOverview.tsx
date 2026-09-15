@@ -1,6 +1,6 @@
 import { DownloadIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import Twitter from '@mui/icons-material/Twitter';
+import X from '@mui/icons-material/X';
 import {
   Alert,
   Box,
@@ -22,12 +22,11 @@ import {
 import { Children, ReactNode, useMemo } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { LensIcon } from 'src/components/icons/LensIcon';
 import { textCenterEllipsis } from 'src/helpers/text-center-ellipsis';
 import { ProposalDetailDisplay } from 'src/modules/governance/types';
 import { useRootStore } from 'src/store/root';
 import { ipfsGateway } from 'src/ui-config/governanceConfig';
-import { iconButtonSx } from 'src/utils/buttonStyles';
+import { iconButtonSx, startIconSizeSx } from 'src/utils/buttonStyles';
 import { cardHeadingSx, cardPaddingSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 
@@ -57,6 +56,10 @@ const compactAddresses = (children: ReactNode): ReactNode =>
   });
 
 const REMARK_PLUGINS = [remarkGfm];
+
+// 16px rather than MUI's 20px: the X glyph is solid and fills its box, where the Raw-Ipfs outline
+// icon beside it is a thin stroke — so the smaller box reads at a matching weight, not smaller.
+const SHARE_ICON_SX = startIconSizeSx('1rem');
 
 interface ProposalOverviewProps {
   error: boolean;
@@ -268,41 +271,23 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
                 </Button>
                 <Button
                   component="a"
-                  sx={shareButtonSx}
+                  sx={[shareButtonSx, SHARE_ICON_SX]}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() =>
                     trackEvent(GENERAL.EXTERNAL_LINK, {
                       AIP: proposal.id,
+                      // Deliberately not renamed with the label: this is an analytics key,
+                      // and changing it would split the metric from its history.
                       Link: 'Share on twitter',
                     })
                   }
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  href={`https://x.com/intent/tweet?text=${encodeURIComponent(
                     proposal.title
                   )}&url=${typeof window !== 'undefined' ? window.location.href : ''}`}
-                  startIcon={<Twitter />}
+                  startIcon={<X />}
                 >
-                  {lgUp && <Trans>Share on twitter</Trans>}
-                </Button>
-                <Button
-                  sx={shareButtonSx}
-                  component="a"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() =>
-                    trackEvent(GENERAL.EXTERNAL_LINK, {
-                      AIP: proposal.id,
-                      Link: 'Share on lens',
-                    })
-                  }
-                  href={`https://hey.xyz/?url=${
-                    typeof window !== 'undefined' ? window.location.href : ''
-                  }&text=Check out this proposal on aave governance - ${
-                    proposal.title
-                  }&hashtags=Aave&preview=true`}
-                  startIcon={<LensIcon />}
-                >
-                  {lgUp && <Trans>Share on Lens</Trans>}
+                  {lgUp && <Trans>Share on X</Trans>}
                 </Button>
               </Box>
             </>

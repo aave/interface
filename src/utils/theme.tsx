@@ -1135,7 +1135,7 @@ export function getThemedComponents(theme: AppTheme) {
               boxShadow: `inset 0 0 0 1px ${figVars['border-0']}`,
               opacity: 1,
               '.MuiSvgIcon-root': {
-                fontSize: '1rem',
+                fontSize: '1.25rem',
                 flexShrink: 0,
               },
             },
@@ -1190,10 +1190,10 @@ export function getThemedComponents(theme: AppTheme) {
                 background: 'transparent',
               },
             },
-            // Compact sizing: tighter padding + a 2rem icon box (the glyph inside keeps the default
-            // 1rem size). Shared by both `small` and `small-icon`. `small` additionally shrinks the
-            // text to 0.75rem; `small-icon` keeps the default-size text (for dense inline chips,
-            // e.g. history status badges).
+            // Compact sizing: tighter padding, a 2rem icon box and a smaller glyph to match.
+            // Shared by both `small` and `small-icon`. `small` additionally shrinks the text to
+            // 0.75rem; `small-icon` keeps the default-size text (for dense inline chips, e.g.
+            // history status badges).
             '&[data-size="small"], &[data-size="small-icon"]': {
               padding: '0.75rem',
               gap: '0.75rem',
@@ -1201,6 +1201,9 @@ export function getThemedComponents(theme: AppTheme) {
                 width: '2rem',
                 height: '2rem',
                 padding: '0.53125rem 0.5rem 0.46875rem 0.5rem',
+                // Held at 1rem: that padding leaves exactly 16px of content box, so the default
+                // size's larger glyph would have nothing to sit in.
+                '.MuiSvgIcon-root': { fontSize: '1rem' },
               },
             },
             '&[data-size="small"]': {

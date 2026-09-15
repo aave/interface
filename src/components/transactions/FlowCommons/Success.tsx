@@ -58,12 +58,8 @@ export const TxSuccessView = ({
           </Typography>
         )}
 
-        {customAction && (
-          <Typography>
-            {customText}
-            {customAction}
-          </Typography>
-        )}
+        {customText && <Typography>{customText}</Typography>}
+        {customAction}
 
         {!action && !amount && symbol && (
           <Typography>

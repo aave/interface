@@ -57,7 +57,14 @@ export const ListMobileItem = ({
         {/* Cards that bring their own heading (the staking list) render nothing here, and an empty
             header still contributed its `mb`, leaving twice the padding above the card's first row
             as below its last one. */}
-        <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', '&:empty': { display: 'none' } }}>
+        <Box
+          sx={{
+            mb: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            '&:empty': { display: 'none' },
+          }}
+        >
           {loading ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <Skeleton variant="circular" width={40} height={40} />

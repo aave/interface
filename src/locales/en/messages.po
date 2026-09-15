@@ -591,11 +591,6 @@ msgstr "Borrowing is unavailable because you’re using Isolation mode. To manag
 msgid "Payload {0} received"
 msgstr "Payload {0} received"
 
-#: src/components/transactions/GovVote/GovVoteModalContent.tsx
-#: src/modules/governance/proposal/ProposalOverview.tsx
-msgid "Share on Lens"
-msgstr "Share on Lens"
-
 #: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Redeem as aToken"
 msgstr "Redeem as aToken"
@@ -2007,6 +2002,10 @@ msgstr "Shares are Umbrella Stake Tokens you receive when staking. They represen
 msgid "Liquidation Threshold"
 msgstr "Liquidation Threshold"
 
+#: src/modules/governance/proposal/ProposalOverview.tsx
+msgid "Share on X"
+msgstr "Share on X"
+
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
 msgstr "Total available"
@@ -2610,10 +2609,6 @@ msgstr "Withdraw sGHO"
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
 msgid "Asset"
 msgstr "Asset"
-
-#: src/modules/governance/proposal/ProposalOverview.tsx
-msgid "Share on twitter"
-msgstr "Share on twitter"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Isolated assets have limited borrowing power and other assets cannot be used as collateral."

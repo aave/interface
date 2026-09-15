@@ -48,10 +48,16 @@ export const ListHeaderTitle = ({
 }: ListHeaderTitleProps) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
 
+  // Three-state cycle: descending, then ascending, then cleared. An empty `sortName` is what
+  // unsorts, and the direction goes back to the `false` every list mounts with — the borrowed
+  // positions pre-sort still reads it once the name is gone, so `true` would clear that list into
+  // the reverse of its own order rather than into it.
   const handleSorting = (name: string) => {
     trackEvent(MARKETS.SORT, { sort_by: name, tile: source });
-    setSortName && setSortName(name);
-    setSortDesc && setSortDesc(sortName === name ? !sortDesc : true);
+    const [nextName, nextDesc]: [string, boolean] =
+      sortName !== name ? [name, true] : sortDesc ? [name, false] : ['', false];
+    setSortName?.(nextName);
+    setSortDesc?.(nextDesc);
   };
 
   const isSorted = !!sortKey && sortName === sortKey;

@@ -52,11 +52,15 @@ export const handleSortDashboardReserves = (
   // Direction is decided once and multiplied into each comparator, rather than mirrored across a
   // pair of functions that have to be edited in lockstep.
   const dir = sortDesc ? -1 : 1;
+  // Sort a copy: `SuppliedPositionsList` and friends pass a memoised array straight in, and
+  // sorting it in place would permanently reorder the list's own ordering — so clearing the sort
+  // could never get back to it.
+  const sorted = [...positions];
 
   if (sortName === 'symbol') {
     // Equal symbols keep returning 1 rather than 0, as they always have; `dir * 1` would reorder
     // ties when descending instead of leaving them alone.
-    return positions.sort((a, b) =>
+    return sorted.sort((a, b) =>
       dir === 1
         ? symbolOf(a, sortPosition) < symbolOf(b, sortPosition)
           ? -1
@@ -71,10 +75,10 @@ export const handleSortDashboardReserves = (
   // direction as that sort, and with no `sortName` it is the whole ordering — which is how the
   // APY column sorts at all, since its `borrowAPY` key does not resolve on these objects.
   if (isBorrowedPosition) {
-    positions.sort(
+    sorted.sort(
       (a, b) => dir * (Number(a.reserve.variableBorrowAPY) - Number(b.reserve.variableBorrowAPY))
     );
   }
 
-  return positions.sort((a, b) => dir * (numericValue(a, sortName) - numericValue(b, sortName)));
+  return sorted.sort((a, b) => dir * (numericValue(a, sortName) - numericValue(b, sortName)));
 };
