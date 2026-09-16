@@ -3,7 +3,6 @@ import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseIcon from '@mui/icons-material/Close';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { Box, SvgIcon, Tooltip, Typography } from '@mui/material';
-import { Fragment } from 'react';
 import { LiquidationPenaltyTooltip } from 'src/components/infoTooltips/LiquidationPenaltyTooltip';
 import { LiquidationThresholdTooltip } from 'src/components/infoTooltips/LiquidationThresholdTooltip';
 import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
@@ -29,9 +28,19 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
   return (
     <PanelRow>
       <PanelTitle>E-Mode info</PanelTitle>
-      <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          minWidth: 0,
+          maxWidth: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '24px',
+        }}
+      >
         {reserve.eModeInfo?.map((e) => (
-          <Fragment key={e.label}>
+          <Box key={e.label}>
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <SvgIcon sx={{ fontSize: '14px', mr: 0.5, ml: 2 }}>
                 <LightningBoltGradient />
@@ -50,6 +59,8 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 flexWrap: 'wrap',
                 justifyContent: 'space-between',
                 pt: '12px',
+                rowGap: '12px',
+                '& > *': { marginBottom: 0 },
               }}
             >
               <ReserveOverviewBox
@@ -93,7 +104,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 />
               </ReserveOverviewBox>
             </Box>
-          </Fragment>
+          </Box>
         ))}
 
         <Typography variant="caption" color="fg-2" paddingTop="24px">

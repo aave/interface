@@ -123,8 +123,20 @@ const pillStyle = (hoverToken: FigmaColorName, darkFill?: FigmaColorName) => ({
   },
 });
 
-/** Secondary: bg-3 in both modes. */
-const secondaryPillStyle = pillStyle('button-hover-secondary');
+/**
+ * Secondary: bg-3 in light. Dark has its own button surface and drops the surface shadow
+ * entirely — both of that shadow's layers are transparent in the dark token set, so the pill
+ * reads as a flat fill with no ring. `&&` outranks the base rule the variant inherits.
+ */
+const secondaryPillStyle = {
+  ...pillStyle('button-hover-secondary'),
+  ...darkScheme({
+    backgroundColor: figVars['button-bg-secondary'],
+    '&&, &&:hover, &&.Mui-focusVisible, &&[aria-expanded="true"], &&.Mui-disabled': {
+      boxShadow: 'none',
+    },
+  }),
+};
 /** Tertiary: one step up the dark ramp, with a stronger hover tint. */
 const tertiaryPillStyle = pillStyle('button-hover-tertiary', 'bg-4');
 

@@ -128,6 +128,7 @@ export const figmaLight = {
   'surface-elevated': '#ffffff',
   'table-bg': '#ffffff',
   // --- semantic / button (Figma collection) ---
+  'button-bg-secondary': '#ffffff',
   'button-hover-primary': 'rgba(255, 255, 255, 0.16)',
   'button-hover-secondary': 'rgba(0, 0, 0, 0.03)',
   'button-hover-tertiary': 'rgba(0, 0, 0, 0.04)',
@@ -255,6 +256,7 @@ export const figmaDark = {
   'surface-elevated': '#1E1E20',
   'table-bg': '#1A1919',
   // --- semantic / button (Figma collection) ---
+  'button-bg-secondary': '#28282a',
   'button-hover-primary': 'rgba(0, 0, 0, 0.16)',
   'button-hover-secondary': 'rgba(255, 255, 255, 0.04)',
   'button-hover-tertiary': 'rgba(255, 255, 255, 0.06)',
