@@ -123,20 +123,22 @@ const pillStyle = (hoverToken: FigmaColorName, darkFill?: FigmaColorName) => ({
   },
 });
 
+/** Secondary: bg-3 in light; its dark surface is `secondaryPillDark`, applied by the variant. */
+const secondaryPillStyle = pillStyle('button-hover-secondary');
+
 /**
- * Secondary: bg-3 in light. Dark has its own button surface and drops the surface shadow
- * entirely — both of that shadow's layers are transparent in the dark token set, so the pill
- * reads as a flat fill with no ring. `&&` outranks the base rule the variant inherits.
+ * Dark secondary surface: its own fill, and no shadow in any state — both layers of the button's
+ * shadow are transparent in the dark token set, so the pill is a flat fill with no ring.
+ *
+ * Must be spread *after* the variant's own rules: these match at equal specificity and win on
+ * source order only. `&&` cannot raise it instead — inside `darkScheme` the parent is a descendant
+ * selector, so `&&` expands to `.MuiButton-outlined*:where(…)`, which is invalid and drops the rule.
  */
-const secondaryPillStyle = {
-  ...pillStyle('button-hover-secondary'),
-  ...darkScheme({
-    backgroundColor: figVars['button-bg-secondary'],
-    '&&, &&:hover, &&.Mui-focusVisible, &&[aria-expanded="true"], &&.Mui-disabled': {
-      boxShadow: 'none',
-    },
-  }),
-};
+const secondaryPillDark = darkScheme({
+  backgroundColor: figVars['button-bg-secondary'],
+  boxShadow: 'none',
+  '&:hover, &.Mui-focusVisible, &[aria-expanded="true"], &.Mui-disabled': { boxShadow: 'none' },
+});
 /** Tertiary: one step up the dark ramp, with a stronger hover tint. */
 const tertiaryPillStyle = pillStyle('button-hover-tertiary', 'bg-4');
 
@@ -672,12 +674,13 @@ export function getThemedComponents(theme: AppTheme) {
           },
         },
         variants: [
-          // Secondary pill (`variant="outlined"`): bg-3 in both modes.
+          // Secondary pill (`variant="outlined"`): bg-3 in light, `secondaryPillDark` in dark.
           {
             props: { color: 'primary', variant: 'outlined' },
             style: {
               ...secondaryPillStyle,
               '&.Mui-disabled': pillDisabled,
+              ...secondaryPillDark,
             },
           },
           {
