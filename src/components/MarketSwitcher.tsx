@@ -194,6 +194,49 @@ const getMarketOrder = (marketId: CustomMarket): number => {
   return MARKET_ORDER_BY_TITLE[market.marketTitle] ?? 999;
 };
 
+/**
+ * The line under the market name. Every single-market network says the same thing, so they share
+ * one translatable string that takes the network's name; the Ethereum instances sit side by side
+ * and have to distinguish themselves, so those are written out.
+ *
+ * Keyed by market id rather than title, because titles collide — `Avalanche` and `Polygon` each
+ * name both a v2 and a v3 market.
+ */
+const onNetwork = (network: string) => <Trans>Supply and borrow core assets on {network}.</Trans>;
+
+const MARKET_DESCRIPTIONS: Partial<Record<CustomMarket, React.ReactNode>> = {
+  [CustomMarket.proto_mainnet_v3]: (
+    <Trans>Supply and borrow the widest range of assets in Aave&apos;s deepest market.</Trans>
+  ),
+  [CustomMarket.proto_lido_v3]: (
+    <Trans>Supply and borrow ETH-correlated and blue-chip assets.</Trans>
+  ),
+  [CustomMarket.proto_horizon_v3]: (
+    <Trans>Supply and borrow stablecoins against tokenized real-world assets.</Trans>
+  ),
+  [CustomMarket.proto_arbitrum_v3]: onNetwork('Arbitrum'),
+  [CustomMarket.proto_avalanche_v3]: onNetwork('Avalanche'),
+  [CustomMarket.proto_base_v3]: onNetwork('Base'),
+  [CustomMarket.proto_bnb_v3]: onNetwork('BNB Chain'),
+  [CustomMarket.proto_celo_v3]: onNetwork('Celo'),
+  [CustomMarket.proto_gnosis_v3]: onNetwork('Gnosis'),
+  [CustomMarket.proto_ink_v3]: onNetwork('Ink'),
+  [CustomMarket.proto_linea_v3]: onNetwork('Linea'),
+  [CustomMarket.proto_mantle_v3]: onNetwork('Mantle'),
+  [CustomMarket.proto_megaeth_v3]: onNetwork('MegaETH'),
+  [CustomMarket.proto_metis_v3]: onNetwork('Metis'),
+  [CustomMarket.proto_monad_v3]: onNetwork('Monad'),
+  [CustomMarket.proto_optimism_v3]: onNetwork('Optimism'),
+  [CustomMarket.proto_plasma_v3]: onNetwork('Plasma'),
+  [CustomMarket.proto_polygon_v3]: onNetwork('Polygon'),
+  [CustomMarket.proto_scroll_v3]: onNetwork('Scroll'),
+  [CustomMarket.proto_soneium_v3]: onNetwork('Soneium'),
+  [CustomMarket.proto_sonic_v3]: onNetwork('Sonic'),
+  [CustomMarket.proto_xlayer_v3]: onNetwork('X Layer'),
+  [CustomMarket.proto_zksync_v3]: onNetwork('ZKsync Era'),
+  [CustomMarket.proto_aptos_v3]: onNetwork('Aptos'),
+};
+
 export const AAVE_PRO_URL = 'https://pro.aave.com/';
 
 type V4Link = {
@@ -263,21 +306,6 @@ export const MarketSwitcher = () => {
   const handleStarClick = (e: React.MouseEvent, marketId: CustomMarket) => {
     e.stopPropagation();
     toggleFavoriteMarket(marketId);
-  };
-
-  const marketBlurbs: { [key: string]: JSX.Element } = {
-    proto_ink_v3: (
-      <Trans>
-        This Ink instance is operated by Tydro and governed by the Ink Foundation, independent from
-        Aave DAO operated markets.
-      </Trans>
-    ),
-    proto_mainnet_v3: (
-      <Trans>Main market with the largest selection of assets and yield options.</Trans>
-    ),
-    proto_lido_v3: (
-      <Trans>Optimized for efficiency and risk by supporting blue-chip collateral assets</Trans>
-    ),
   };
 
   // Filter to V3 markets only
@@ -789,7 +817,7 @@ export const MarketSwitcher = () => {
           <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }} />
         </Box>
 
-        {marketBlurbs[currentMarket] && (
+        {MARKET_DESCRIPTIONS[currentMarket] && (
           <Typography
             variant="description"
             sx={{
@@ -800,7 +828,7 @@ export const MarketSwitcher = () => {
               maxWidth: '100%',
             }}
           >
-            {marketBlurbs[currentMarket]}
+            {MARKET_DESCRIPTIONS[currentMarket]}
           </Typography>
         )}
       </Box>
