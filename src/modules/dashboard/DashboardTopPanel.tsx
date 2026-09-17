@@ -7,10 +7,11 @@ import Link from 'next/link';
 import * as React from 'react';
 import { useState } from 'react';
 import { NetAPYTooltip } from 'src/components/infoTooltips/NetAPYTooltip';
-import { getMarketInfoById } from 'src/components/MarketSwitcher';
+import { getMarketInfoById, MarketSwitcher } from 'src/components/MarketSwitcher';
+import { PageHeader } from 'src/components/PageHeader/PageHeader';
+import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ROUTES } from 'src/components/primitives/Link';
-import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
@@ -21,8 +22,6 @@ import { useShallow } from 'zustand/shallow';
 
 import { HealthFactorNumber } from '../../components/HealthFactorNumber';
 import { NoData } from '../../components/primitives/NoData';
-import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
-import { TopInfoPanelItem } from '../../components/TopInfoPanel/TopInfoPanelItem';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
 import { useEnhancedUserYield } from '../../hooks/useEnhancedUserYield';
 import { LiquidationRiskParametresInfoModal } from './LiquidationRiskParametresModal/LiquidationRiskParametresModal';
@@ -141,8 +140,7 @@ export const DashboardTopPanel = () => {
           .dividedBy(user?.totalCollateralMarketReferenceCurrency || '1')
           .toFixed();
 
-  const valueTypographyVariant = downToSM ? 'main16' : 'main21';
-  const noDataTypographyVariant = downToSM ? 'secondary16' : 'secondary21';
+  const showHealthFactor = Boolean(currentAccount) && user?.healthFactor !== '-1';
 
   return (
     <>
@@ -150,7 +148,7 @@ export const DashboardTopPanel = () => {
         <Box sx={{ width: '100%' }}>
           <Link href={ROUTES.migrationTool}>
             <Button
-              variant="gradient"
+              variant="contained"
               sx={{
                 height: '40px',
                 width: '100%',
@@ -163,18 +161,15 @@ export const DashboardTopPanel = () => {
           </Link>
         </Box>
       )}
-      <TopInfoPanel
-        titleComponent={
+      <PageHeader
+        disableTitleTypography
+        title={
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <PageTitle
-              pageTitle={<Trans>Dashboard</Trans>}
-              withMarketSwitcher={true}
-              bridge={currentNetworkConfig.bridge}
-            />
+            <MarketSwitcher />
             {showMigrateButton && !downToSM && (
-              <Box sx={{ alignSelf: 'center', mb: 4, width: '100%' }}>
+              <Box sx={{ ml: 2 }}>
                 <Link href={ROUTES.marketMigrationTool(currentMarket)}>
-                  <Button variant="gradient" sx={{ height: '20px' }}>
+                  <Button variant="contained" sx={{ height: '20px' }}>
                     <Typography variant="buttonS" data-cy={`migration-button`}>
                       <Trans>Migrate to v3</Trans>
                     </Typography>
@@ -185,25 +180,23 @@ export const DashboardTopPanel = () => {
           </Box>
         }
       >
-        <TopInfoPanelItem title={<Trans>Net worth</Trans>} loading={loading} hideIcon>
+        <PageHeaderStat label={<Trans>Net worth</Trans>} loading={loading}>
           {currentAccount ? (
             <FormattedNumber
               value={Number(user?.netWorthUSD || 0)}
               symbol="USD"
-              variant={valueTypographyVariant}
+              variant="statValue"
               visibleDecimals={2}
               compact
-              symbolsColor="#A5A8B6"
-              symbolsVariant={noDataTypographyVariant}
             />
           ) : (
-            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
+            <NoData variant="statValueNoData" color="inherit" sx={{ opacity: '0.7' }} />
           )}
-        </TopInfoPanelItem>
+        </PageHeaderStat>
 
-        <TopInfoPanelItem
-          title={
-            <div style={{ display: 'flex' }}>
+        <PageHeaderStat
+          label={
+            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <Trans>Net APY</Trans>
               <NetAPYTooltip
                 event={{
@@ -211,81 +204,62 @@ export const DashboardTopPanel = () => {
                   eventParams: { tooltip: 'NET APY: Dashboard Banner' },
                 }}
               />
-            </div>
+            </Box>
           }
           loading={loading}
-          hideIcon
         >
           {currentAccount && user && Number(user.netWorthUSD) > 0 ? (
             <FormattedNumber
               value={hasEnhancedData ? enhancedNetAPY : user ? user.netAPY : 0}
-              variant={valueTypographyVariant}
+              variant="statValue"
               visibleDecimals={2}
               percent
-              symbolsColor="#A5A8B6"
-              symbolsVariant={noDataTypographyVariant}
             />
           ) : (
-            <NoData variant={noDataTypographyVariant} sx={{ opacity: '0.7' }} />
+            <NoData variant="statValueNoData" color="inherit" sx={{ opacity: '0.7' }} />
           )}
-        </TopInfoPanelItem>
+        </PageHeaderStat>
 
-        {currentAccount && user?.healthFactor !== '-1' && (
-          <TopInfoPanelItem
-            title={
-              <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-                <Trans>Health factor</Trans>
-              </Box>
-            }
-            loading={loading}
-            hideIcon
-          >
+        {showHealthFactor && (
+          <PageHeaderStat label={<Trans>Health factor</Trans>} loading={loading}>
             <HealthFactorNumber
               value={user?.healthFactor || '-1'}
-              variant={valueTypographyVariant}
+              variant="statValue"
               onInfoClick={() => {
                 trackEvent(DASHBOARD.VIEW_RISK_DETAILS);
                 setOpen(true);
               }}
             />
-          </TopInfoPanelItem>
+          </PageHeaderStat>
         )}
 
         {currentAccount && (
-          <TopInfoPanelItem title={<Trans>Available rewards</Trans>} loading={loading} hideIcon>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: { xs: 'flex-start', xsm: 'center' },
-                flexDirection: { xs: 'column', xsm: 'row' },
-              }}
-            >
+          <PageHeaderStat label={<Trans>Available rewards</Trans>} loading={loading}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'Claim_Box'}>
                 <FormattedNumber
                   value={claimableRewardsUsd}
-                  variant={valueTypographyVariant}
+                  variant="statValue"
                   visibleDecimals={2}
                   compact
                   symbol="USD"
-                  symbolsColor="#A5A8B6"
-                  symbolsVariant={noDataTypographyVariant}
                   data-cy={'Claim_Value'}
                 />
               </Box>
 
               <Button
-                variant="gradient"
+                variant="tertiary"
                 size="small"
                 onClick={() => openClaimRewards()}
-                sx={{ minWidth: 'unset', ml: { xs: 0, xsm: 2 } }}
+                sx={{ minWidth: 'unset', ml: 2 }}
                 data-cy={'Dashboard_Claim_Button'}
               >
                 <Trans>Claim</Trans>
               </Button>
             </Box>
-          </TopInfoPanelItem>
+          </PageHeaderStat>
         )}
-      </TopInfoPanel>
+      </PageHeader>
       <LiquidationRiskParametresInfoModal
         open={open}
         setOpen={setOpen}

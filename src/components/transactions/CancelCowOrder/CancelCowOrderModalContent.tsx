@@ -57,7 +57,7 @@ export const CancelCowOrderModalContent = ({ cowOrder }: CancelCowOrderModalCont
         <Typography variant="h2">
           <Trans>Cancel order</Trans>
         </Typography>
-        <Typography sx={{ mt: 2, mb: 4 }} variant="description" color="text.secondary">
+        <Typography sx={{ mt: 2, mb: 4 }} variant="description" color="fg-2">
           {isCowSwapSubset(cowOrder) && cowOrder.usedAdapter ? (
             <Trans>
               This will cancel the order via an on-chain transaction. Note that the order will not

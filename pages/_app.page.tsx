@@ -1,4 +1,5 @@
 import '/public/fonts/inter/inter.css';
+import '/public/fonts/inter/inter-variable.css';
 import '/src/styles/variables.css';
 // Preflight must come before funkit's own styles so funkit rules win source-order ties.
 import '/src/ui-config/funkit/funkitPreflight.css';

@@ -16,7 +16,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
   const [currentNetworkConfig] = useRootStore(useShallow((store) => [store.currentNetworkConfig]));
 
   return (
-    <ListItem px={6} minHeight={76} sx={{ cursor: 'default' }} button>
+    <ListItem px={5} minHeight={76} sx={{ cursor: 'default' }} button>
       <ListColumn isRow minWidth={275}>
         <StakeAssetName
           iconSymbol={umbrellaStakeAsset.iconSymbol}
@@ -49,7 +49,7 @@ export const UmbrellaStakeAssetsListItem = ({ ...umbrellaStakeAsset }: MergedSta
         <AvailableToClaimItem stakeData={umbrellaStakeAsset} />
       </ListColumn>
 
-      <ListColumn>
+      <ListColumn align="right">
         <StakingDropdown stakeData={umbrellaStakeAsset} />
       </ListColumn>
     </ListItem>

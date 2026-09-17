@@ -1,6 +1,5 @@
 import { ProtocolAction } from '@aave/contract-helpers';
-import { SwitchHorizontalIcon } from '@heroicons/react/outline';
-import { EyeIcon } from '@heroicons/react/solid';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -15,8 +14,11 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
+import { DotsHorizontalIcon } from 'src/components/icons/DotsHorizontalIcon';
+import { SwapIcon } from 'src/components/icons/SwapIcon';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
@@ -28,8 +30,10 @@ import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWrappedTokens } from 'src/hooks/useWrappedTokens';
 import { useRootStore } from 'src/store/root';
+import { iconButtonSx, mobileCardActionsSx } from 'src/utils/buttonStyles';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
+import { onAccent } from 'src/utils/figmaColors';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 
@@ -49,7 +53,7 @@ export const SupplyAssetsListItem = (
   params: DashboardReserve & { walletBalances: WalletBalancesMap }
 ) => {
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showCards = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
   const { supplyCap } = useAssetCaps();
   const wrappedTokenReserves = useWrappedTokens();
   const currentMarket = useRootStore((store) => store.currentMarket);
@@ -82,7 +86,7 @@ export const SupplyAssetsListItem = (
     walletBalancesMap: params.walletBalances,
   };
 
-  if (downToXSM) {
+  if (showCards) {
     return <SupplyAssetsListItemMobile {...props} />;
   } else {
     return <SupplyAssetsListItemDesktop {...props} />;
@@ -188,12 +192,7 @@ export const SupplyAssetsListItemDesktop = ({
                 justifyContent: 'center',
               }}
             >
-              <FormattedNumber
-                value={0}
-                variant="secondary14"
-                sx={{ mb: '2px' }}
-                symbolsColor="common.white"
-              />
+              <FormattedNumber value={0} variant="h5" sx={{ mb: '2px' }} symbolsColor={onAccent} />
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
                 <FormattedNumber
@@ -201,8 +200,8 @@ export const SupplyAssetsListItemDesktop = ({
                     walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
                   }
                   visibleDecimals={2}
-                  variant="secondary12"
-                  color="text.secondary"
+                  variant="subheader2"
+                  color="fg-2"
                 />
               </Stack>
             </Box>
@@ -237,7 +236,7 @@ export const SupplyAssetsListItemDesktop = ({
 
       <ListColumn>
         {debtCeiling.isMaxed ? (
-          <NoData variant="main14" color="text.secondary" />
+          <NoData variant="subheader1" />
         ) : (
           <ListItemCanBeCollateral
             isIsolated={isIsolated}
@@ -258,17 +257,15 @@ export const SupplyAssetsListItemDesktop = ({
         />
         <Button
           id="supply-extra-button"
-          sx={{
-            minWidth: 0,
-            px: 4,
-          }}
-          variant="outlined"
+          sx={iconButtonSx}
+          size="small"
+          variant="tertiary"
           onClick={handleClick}
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
         >
-          <Trans>...</Trans>
+          <DotsHorizontalIcon sx={{ fontSize: 20, color: 'fg-3' }} />
         </Button>
         <Menu
           id="supply-item-extra-menu"
@@ -294,9 +291,7 @@ export const SupplyAssetsListItemDesktop = ({
             onClick={handleSwitchClick}
             disabled={!isFeatureEnabled.switch(currentMarketData)}
           >
-            <SvgIcon fontSize="small">
-              <SwitchHorizontalIcon />
-            </SvgIcon>
+            <SwapIcon fontSize="small" />
             <ListItemText>Swap</ListItemText>
           </MenuItem>
           <MenuItem
@@ -306,7 +301,7 @@ export const SupplyAssetsListItemDesktop = ({
             onClick={onDetailsClick}
           >
             <SvgIcon fontSize="small">
-              <EyeIcon />
+              <InformationCircleIcon />
             </SvgIcon>
             <ListItemText>Details</ListItemText>
           </MenuItem>
@@ -384,12 +379,7 @@ export const SupplyAssetsListItemMobile = ({
                 justifyContent: 'center',
               }}
             >
-              <FormattedNumber
-                value={0}
-                variant="secondary14"
-                sx={{ mb: '2px' }}
-                symbolsColor="common.white"
-              />
+              <FormattedNumber value={0} variant="h5" sx={{ mb: '2px' }} symbolsColor={onAccent} />
               <Stack direction="row" alignItems="center">
                 <TokenIcon sx={{ fontSize: '14px', mr: 1 }} symbol="DAI" />
                 <FormattedNumber
@@ -397,8 +387,8 @@ export const SupplyAssetsListItemMobile = ({
                     walletBalancesMap[wrappedToken.tokenIn.underlyingAsset.toLowerCase()].amount
                   }
                   visibleDecimals={2}
-                  variant="secondary12"
-                  color="text.secondary"
+                  variant="subheader2"
+                  color="fg-2"
                 />
               </Stack>
             </Box>
@@ -432,7 +422,7 @@ export const SupplyAssetsListItemMobile = ({
           incentives={aIncentivesData}
           address={aTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
@@ -450,7 +440,7 @@ export const SupplyAssetsListItemMobile = ({
         />
       </Row>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+      <Box sx={mobileCardActionsSx}>
         <FunSupplyButton
           disabled={disableSupply}
           underlyingAsset={underlyingAsset}
@@ -459,11 +449,11 @@ export const SupplyAssetsListItemMobile = ({
           iconSymbol={iconSymbol}
           supplyAPY={supplyAPY}
           collateralEnabled={usageAsCollateralEnabledOnUser}
-          sx={{ mr: 1.5 }}
+          size="medium"
           fullWidth
         />
         <Button
-          variant="outlined"
+          variant="tertiary"
           component={Link}
           href={ROUTES.reserveOverview(detailsAddress, currentMarket)}
           fullWidth

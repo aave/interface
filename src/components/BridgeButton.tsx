@@ -17,7 +17,7 @@ export const BridgeButton = ({ bridge }: Pick<NetworkConfig, 'bridge'>) => {
       }
       component={Link}
       size="small"
-      variant="outlined"
+      variant="tertiary"
       href={bridge.url || ''}
     >
       <Typography variant="buttonS">{bridge.name}</Typography>

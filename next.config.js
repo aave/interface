@@ -8,6 +8,17 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const pageExtensions = ['page.tsx', 'ts'];
 if (process.env.NEXT_PUBLIC_ENABLE_GOVERNANCE === 'true') pageExtensions.push('governance.tsx');
 if (process.env.NEXT_PUBLIC_ENABLE_STAKING === 'true') pageExtensions.push('staking.tsx');
+// Component showcase at `/dev/components`. Its pages are named `*.dev.tsx`, so unless that
+// extension is registered here Next never sees them: no route, no bundle, a real 404 rather than a
+// blank page. On for `next dev` and Vercel preview builds; off for the production IPFS build, which
+// sets neither. A `VERCEL_ENV` of `production` vetoes it outright, so a dashboard variable left
+// scoped to every environment by mistake still can't leak the showcase into production.
+const enableDevPages =
+  process.env.VERCEL_ENV !== 'production' &&
+  (process.env.NEXT_PUBLIC_ENABLE_DEV_PAGES === 'true' ||
+    process.env.VERCEL_ENV === 'preview' ||
+    process.env.NODE_ENV === 'development');
+if (enableDevPages) pageExtensions.push('dev.tsx');
 
 /** @type {import('next').NextConfig} */
 module.exports = withSentryConfig(

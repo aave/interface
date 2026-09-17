@@ -1,5 +1,4 @@
-import { Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert } from '@mui/material';
 
 import { SwapState, TokenType } from '../../types';
 
@@ -14,10 +13,8 @@ export function CustomTokenWarning({ state }: { state: SwapState }) {
   }
 
   return (
-    <Warning severity="warning" icon={false} sx={{ mt: 2, mb: 2 }}>
-      <Typography variant="caption">
-        You selected a custom imported token. Make sure it&apos;s the right token.
-      </Typography>
-    </Warning>
+    <Alert severity="warning" data-size="small" sx={{ width: '100%', mt: 2, mb: 2 }}>
+      You selected a custom imported token. Make sure it&apos;s the right token.
+    </Alert>
   );
 }

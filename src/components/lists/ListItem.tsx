@@ -15,13 +15,14 @@ export const ListItem = ({ children, minHeight = 71, px = 4, button, ...rest }: 
       sx={{
         display: 'flex',
         alignItems: 'center',
+        gap: '1rem',
         minHeight,
         px,
         '&:not(:last-child)': {
           borderBottom: '1px solid',
-          borderColor: 'divider',
+          borderColor: 'border-0',
         },
-        ...(button ? { '&:hover': { bgcolor: 'action.hover' } } : {}),
+        ...(button ? { '&:hover': { bgcolor: 'button-hover' } } : {}),
         ...rest.sx,
       }}
     >

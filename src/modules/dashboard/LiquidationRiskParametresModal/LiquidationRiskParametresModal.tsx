@@ -1,7 +1,9 @@
 import { Trans } from '@lingui/macro';
 import { AlertColor, Typography } from '@mui/material';
+import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
+import { onAccent } from 'src/utils/figmaColors';
 
 import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -49,9 +51,7 @@ export const LiquidationRiskParametresInfoModal = ({
 
   return (
     <BasicModal open={open} setOpen={setOpen}>
-      <Typography variant="h2" mb={6}>
-        <Trans>Liquidation risk parameters</Trans>
-      </Typography>
+      <TxModalTitle title={<Trans>Liquidation risk parameters</Trans>} />
       <Typography mb={6}>
         <Trans>
           Your health factor and loan to value determine the assurance of your collateral. To avoid
@@ -65,7 +65,7 @@ export const LiquidationRiskParametresInfoModal = ({
           }}
           href="https://docs.aave.com/faq/"
           sx={{ textDecoration: 'underline' }}
-          color="text.primary"
+          color="fg-1"
           variant="description"
         >
           <Trans>Learn more</Trans>
@@ -81,11 +81,7 @@ export const LiquidationRiskParametresInfoModal = ({
           </Trans>
         }
         topValue={
-          <HealthFactorNumber
-            value={healthFactor}
-            variant="main12"
-            sx={{ color: 'common.white' }}
-          />
+          <HealthFactorNumber value={healthFactor} variant="main12" sx={{ color: onAccent }} />
         }
         bottomText={
           <Trans>
@@ -108,8 +104,8 @@ export const LiquidationRiskParametresInfoModal = ({
             value={loanToValue}
             percent
             variant="main12"
-            color="common.white"
-            symbolsColor="common.white"
+            color={onAccent}
+            symbolsColor={onAccent}
           />
         }
         bottomText={

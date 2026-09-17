@@ -1,5 +1,4 @@
-import { SxProps, Typography } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, SxProps } from '@mui/material';
 
 import { SwapError, SwapProvider, SwapState } from '../../types';
 import { convertCowProtocolErrorMessage } from '../cow/quote.helpers';
@@ -40,8 +39,8 @@ export const ProviderError = ({ error, sx, provider, state }: QuoteErrorProps) =
   }
 
   return (
-    <Warning severity="error" icon={false} sx={{ mt: 4, ...sx }}>
-      <Typography variant="caption">{customErrorMessage}</Typography>
-    </Warning>
+    <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%', mt: 4, ...sx }}>
+      {customErrorMessage}
+    </Alert>
   );
 };

@@ -1,7 +1,6 @@
 import { Trans } from '@lingui/macro';
-import { Box, Checkbox, Typography } from '@mui/material';
+import { Alert, Box, Checkbox } from '@mui/material';
 import { Dispatch, useEffect, useState } from 'react';
-import { Warning } from 'src/components/primitives/Warning';
 
 import { ActionsBlockedReason, SwapParams, SwapState } from '../../types';
 import { shouldRequireConfirmationHFlow } from '../helpers';
@@ -40,44 +39,30 @@ export function LowHealthFactorWarning({
   }
 
   return (
-    <Warning
-      severity="warning"
-      icon={false}
-      sx={{
-        mt: 2,
-        mb: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <Typography variant="caption">
-        <Trans>
-          Low health factor after swap. Your position will carry a higher risk of liquidation.
-        </Trans>
-      </Typography>
+    <Alert severity="warning" data-size="small" sx={{ width: '100%', mt: 2, mb: 2 }}>
+      <Trans>
+        Low health factor after swap. Your position will carry a higher risk of liquidation.
+      </Trans>
       {!state.actionsBlocked[ActionsBlockedReason.IS_LIQUIDATABLE] && (
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
             alignItems: 'center',
-            mt: 2,
+            mt: '0.13rem',
           }}
         >
-          <Typography variant="caption">
-            <Trans>I understand the liquidation risk and want to proceed</Trans>
-          </Typography>
+          <Trans>I understand the liquidation risk and want to proceed</Trans>
           <Checkbox
             checked={lowHFConfirmed}
             onChange={() => {
               setLowHFConfirmed(!lowHFConfirmed);
             }}
             size="small"
+            sx={{ p: 0, ml: 2 }}
             data-cy={'low-hf-checkbox'}
           />
         </Box>
       )}
-    </Warning>
+    </Alert>
   );
 }

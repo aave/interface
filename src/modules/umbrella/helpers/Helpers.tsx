@@ -44,7 +44,7 @@ export const UmbrellaAssetBreakdown = ({
             flexDirection: 'column',
           }}
         >
-          <Typography variant="caption" color="text.secondary" mb={3}>
+          <Typography variant="caption" color="fg-2" mb={3}>
             <Trans>
               Participating in staking {symbol} gives annualized rewards. Your wallet balance is the
               sum of your aTokens and underlying assets. The breakdown to stake is below
@@ -70,7 +70,7 @@ export const UmbrellaAssetBreakdown = ({
               <FormattedNumber
                 value={normalize(Number(underlyingTokenBalance), underlyingTokenDecimals)}
                 compact
-                variant="main16"
+                variant="h4"
                 values={underlyingTokenBalance}
               />
             </Row>
@@ -92,7 +92,7 @@ export const UmbrellaAssetBreakdown = ({
               <FormattedNumber
                 value={normalize(Number(underlyingWaTokenBalance), underlyingTokenDecimals)}
                 compact
-                variant="main16"
+                variant="h4"
                 values={underlyingWaTokenBalance}
               />
             </Row>
@@ -115,12 +115,12 @@ export const UmbrellaAssetBreakdown = ({
               <FormattedNumber
                 value={normalize(Number(underlyingWaTokenATokenBalance), underlyingTokenDecimals)}
                 compact
-                variant="main16"
+                variant="h4"
                 values={underlyingWaTokenATokenBalance}
               />
             </Row>
 
-            <Box sx={() => ({ pt: 1, mt: 1 })}>
+            <Box sx={{ pt: 1, mt: 1 }}>
               <Row caption={<Trans>Total</Trans>} height={32}>
                 <FormattedNumber
                   value={normalize(
@@ -130,7 +130,7 @@ export const UmbrellaAssetBreakdown = ({
                     underlyingTokenDecimals
                   )}
                   compact
-                  variant="main16"
+                  variant="h4"
                 />
               </Row>
             </Box>

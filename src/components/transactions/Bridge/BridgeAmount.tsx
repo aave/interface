@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Typography, useTheme } from '@mui/material';
+import { Typography } from '@mui/material';
 import { formatEther } from 'ethers/lib/utils';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
@@ -22,8 +22,6 @@ export const BridgeAmount = ({
   refillRate: string;
   maxRateLimitCapacity: string;
 }) => {
-  const { palette } = useTheme();
-
   const bridgeLimitTooltip = (
     <Typography variant="caption">
       Due to bridging limits, the maximum amount currently available to bridge is{' '}
@@ -52,7 +50,7 @@ export const BridgeAmount = ({
         amount !== '' && (maxAmountReducedDueToBridgeLimit || maxAmountReducedDueToRateLimit) ? (
           <TextWithTooltip
             text={
-              <Typography color={palette.warning.main}>
+              <Typography color="warning.main">
                 <Trans>Amount</Trans>
               </Typography>
             }

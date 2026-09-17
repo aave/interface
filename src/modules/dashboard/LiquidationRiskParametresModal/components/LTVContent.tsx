@@ -3,6 +3,7 @@ import { Trans } from '@lingui/macro';
 import { AlertColor, Box, Typography, useTheme } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
 import { FormattedNumber } from '../../../../components/primitives/FormattedNumber';
 
@@ -19,7 +20,7 @@ export const LTVContent = ({
   currentLiquidationThreshold,
   color,
 }: LTVContentProps) => {
-  const { palette } = useTheme();
+  const { vars } = useTheme();
 
   const LTVLineWidth = valueToBigNumber(loanToValue)
     .multipliedBy(100)
@@ -120,7 +121,7 @@ export const LTVContent = ({
               height: 0,
               borderStyle: 'solid',
               borderWidth: '6px 4px 0 4px',
-              borderColor: `${theme.palette.primary.main} transparent transparent transparent`,
+              borderColor: `${theme.vars.palette.primary.main} transparent transparent transparent`,
               content: "''",
               position: 'absolute',
               left: LTVLineWidth > 75 ? 'auto' : '50%',
@@ -146,7 +147,7 @@ export const LTVContent = ({
           >
             <FormattedNumber value={loanToValue} percent visibleDecimals={2} variant="main12" />
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-              <Typography variant="helperText" color="text.muted" mr={0.5}>
+              <Typography variant="helperText" color="fg-3" mr={0.5}>
                 <Trans>MAX</Trans>
               </Typography>
               <FormattedNumber
@@ -154,8 +155,8 @@ export const LTVContent = ({
                 percent
                 visibleDecimals={2}
                 variant="helperText"
-                color="text.muted"
-                symbolsColor="text.muted"
+                color="fg-3"
+                symbolsColor="fg-3"
               />
             </Box>
           </Box>
@@ -168,7 +169,7 @@ export const LTVContent = ({
           width: '100%',
           borderRadius: '1px',
           position: 'relative',
-          bgcolor: 'divider',
+          bgcolor: 'border-2',
         }}
       >
         <Box
@@ -193,7 +194,7 @@ export const LTVContent = ({
               borderRadius: '1px',
               width: `${CurrentLTVLineWidth > 100 ? 100 : CurrentLTVLineWidth}%`,
               maxWidth: '100%',
-              background: `repeating-linear-gradient(-45deg, ${palette.divider}, ${palette.divider} 4px, ${palette[color].main} 4px, ${palette[color].main} 7px)`,
+              background: `repeating-linear-gradient(-45deg, ${figVars['border-2']}, ${figVars['border-2']} 4px, ${vars.palette[color].main} 4px, ${vars.palette[color].main} 7px)`,
             }}
           />
         )}

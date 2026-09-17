@@ -1,7 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Link, Typography } from '@mui/material';
-
-import { Warning } from '../../primitives/Warning';
+import { Alert, Link } from '@mui/material';
 
 const WarningMessage = ({ market }: { market: string }) => {
   if (market) {
@@ -27,13 +25,11 @@ interface MarketWarningProps {
 // NOTE: Deprecated for now as no frozen markets
 export const MarketWarning = ({ marketName, forum }: MarketWarningProps) => {
   return (
-    <Warning severity="error">
-      <Typography variant="caption">
-        <WarningMessage market={marketName} />{' '}
-        <Link href={getLink(marketName)} target="_blank">
-          {forum ? <Trans>Join the community discussion</Trans> : <Trans>Learn more</Trans>}
-        </Link>
-      </Typography>
-    </Warning>
+    <Alert severity="error" sx={{ mb: 6, width: '100%' }}>
+      <WarningMessage market={marketName} />{' '}
+      <Link href={getLink(marketName)} target="_blank">
+        {forum ? <Trans>Join the community discussion</Trans> : <Trans>Learn more</Trans>}
+      </Link>
+    </Alert>
   );
 };

@@ -20,25 +20,20 @@ export const ListValueRow = ({
   disabled,
 }: ListValueRowProps) => {
   return (
-    <Row caption={title} captionVariant="description" align="flex-start" mb={2}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-          <FormattedNumber
-            value={value}
-            variant="secondary14"
-            color={disabled ? 'text.disabled' : 'text.primary'}
-          />
+    <Row caption={title} captionVariant="description" mb={2}>
+      {/* Amount and its USD equivalent sit side by side rather than stacked, so every row of a
+          mobile card is a single line. Baseline-aligned, because the two variants have
+          different leading (h5 18px vs description 20px) and centring leaves them a pixel off.
+          The inner Box keeps the caps hint bound to the amount at its own 4px inset instead of
+          picking up the 8px gap. */}
+      <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <FormattedNumber value={value} variant="h5" color={disabled ? 'fg-4' : 'fg-1'} />
           {capsComponent}
         </Box>
 
         {!disabled && (
-          <FormattedNumber
-            value={subValue}
-            variant="secondary12"
-            color="text.secondary"
-            symbol="USD"
-            mb={0.5}
-          />
+          <FormattedNumber value={subValue} variant="description" color="fg-2" symbol="USD" />
         )}
       </Box>
     </Row>

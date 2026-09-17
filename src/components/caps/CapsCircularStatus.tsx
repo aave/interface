@@ -9,9 +9,19 @@ type CapsCircularStatusProps = {
   value: number;
   tooltipContent: ReactNode;
   onClick?: (open: boolean) => void;
+  /**
+   * Fixed arc color. Overrides the cap-utilisation ramp (success → warning → error), for sections
+   * whose ring is keyed to the section itself rather than to how full the cap is.
+   */
+  color?: string;
 };
 
-export const CapsCircularStatus = ({ value, tooltipContent, onClick }: CapsCircularStatusProps) => {
+export const CapsCircularStatus = ({
+  value,
+  tooltipContent,
+  onClick,
+  color,
+}: CapsCircularStatusProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   // If value is zero, don't show anything
@@ -52,7 +62,7 @@ export const CapsCircularStatus = ({ value, tooltipContent, onClick }: CapsCircu
         <CircularProgress
           variant="determinate"
           sx={{
-            color: (theme) => theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+            color: (theme) => theme.vars.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
             position: 'absolute',
             left: 1.25,
             top: 1.25,
@@ -63,8 +73,9 @@ export const CapsCircularStatus = ({ value, tooltipContent, onClick }: CapsCircu
         />
         <CircularProgress
           variant="determinate"
-          color={determineColor()}
+          color={color ? undefined : determineColor()}
           sx={{
+            ...(color ? { color } : {}),
             [`& .${circularProgressClasses.circle}`]: {
               strokeLinecap: 'round',
             },
@@ -75,7 +86,7 @@ export const CapsCircularStatus = ({ value, tooltipContent, onClick }: CapsCircu
           value={value <= 2 ? 2 : value > 100 ? 100 : value}
         />
         <Typography
-          variant="secondary14"
+          variant="h5"
           sx={{
             position: 'absolute',
             top: 0,

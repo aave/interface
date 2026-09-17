@@ -13,7 +13,7 @@ export const EthenaAirdropTooltipContent = ({ points }: { points: number }) => {
         href="https://app.ethena.fi/join"
         sx={{ textDecoration: 'underline' }}
         variant="caption"
-        color="text.secondary"
+        color="fg-2"
       >
         {'here'}
       </Link>

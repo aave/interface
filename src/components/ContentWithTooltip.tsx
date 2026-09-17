@@ -1,5 +1,7 @@
 import { Box, ClickAwayListener, Popper, styled, Tooltip } from '@mui/material';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
+import { figVars } from 'src/utils/figmaColors';
+import { darkScheme } from 'src/utils/theme';
 
 interface ContentWithTooltipProps {
   children: ReactNode;
@@ -10,23 +12,46 @@ interface ContentWithTooltipProps {
   open?: boolean;
   setOpen?: (value: boolean) => void;
   offset?: [number, number];
+  /** `card` for panel-shaped content; leave as `tooltip` for a line or two of text. */
+  variant?: 'tooltip' | 'card';
 }
+
+/** Set on the popper to pick the card surface; `PopperProps` has no room for a data attribute. */
+const CARD_CLASS = 'content-tooltip-card';
 
 export const PopperComponent = styled(Popper)(({ theme }) =>
   theme.unstable_sx({
+    // The surface is a variable so the arrow can state that it matches, rather than repeating it.
+    '--tooltip-surface': figVars['bg-5'],
+    // Solid surface framed by an inset border-0 hairline + a soft shadow-medium drop. Padding
+    // lives here (not the inner Box).
     '.MuiTooltip-tooltip': {
-      color: 'text.primary',
-      backgroundColor: 'background.paper',
-      p: 0,
-      borderRadius: '6px',
-      boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      maxWidth: '280px',
+      color: 'fg-1',
+      backgroundColor: 'var(--tooltip-surface)',
+      borderRadius: '0.5rem',
+      boxShadow: `0 1px 12px 0 ${figVars['shadow-medium']}, inset 0 0 0 1px ${figVars['border-0']}`,
+      padding: '0.88rem',
+      maxWidth: '250px',
+      textAlign: 'center',
+      whiteSpace: 'pre-wrap',
+      textWrap: 'pretty',
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      lineHeight: '135%',
     },
-    '.MuiTooltip-arrow': {
-      color: 'background.paper',
-      '&:before': {
-        boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-      },
+    '.MuiTooltip-arrow': { color: 'var(--tooltip-surface)' },
+    /**
+     * The card surface: bg-3 in light, bg-4 in dark. The tooltip grey reads as a chip, which is
+     * wrong under a panel of rows — and bg-4 alone would not have changed light mode, where it
+     * sits a single step off bg-5.
+     *
+     * The two type rules are dropped rather than inherited: a panel of rows is read down its left
+     * edge, and 250px is a caption budget that Merit's widest row already overflows.
+     */
+    [`&.${CARD_CLASS}`]: {
+      '--tooltip-surface': figVars['bg-3'],
+      ...darkScheme({ '--tooltip-surface': figVars['bg-4'] }),
+      '.MuiTooltip-tooltip': { maxWidth: '20rem', textAlign: 'start' },
     },
   })
 );
@@ -39,6 +64,7 @@ export const ContentWithTooltip = ({
   open,
   setOpen,
   offset,
+  variant = 'tooltip',
 }: ContentWithTooltipProps) => {
   const [openTooltip, setOpenTooltip] = useState(false);
 
@@ -59,6 +85,7 @@ export const ContentWithTooltip = ({
       PopperComponent={PopperComponent}
       componentsProps={{
         popper: {
+          className: variant === 'card' ? CARD_CLASS : undefined,
           modifiers: [
             {
               name: 'offset',
@@ -86,10 +113,7 @@ export const ContentWithTooltip = ({
         >
           <Box
             sx={{
-              py: 4,
-              px: 6,
-              fontSize: '12px',
-              lineHeight: '16px',
+              // Padding lives on the tooltip surface (above); this Box just carries link styling.
               a: {
                 fontSize: '12px',
                 lineHeight: '16px',

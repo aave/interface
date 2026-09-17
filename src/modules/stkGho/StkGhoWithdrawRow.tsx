@@ -50,18 +50,18 @@ export const StkGhoWithdrawRow = ({
         valueUSD={stakedUSD}
         dataCy={`stakedBox_${stakedToken}`}
         bottomLineTitle={
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>Cooldown period</Trans>
           </Typography>
         }
         bottomLineComponent={
-          <Typography variant="secondary12">
+          <Typography variant="subheader2">
             <Trans>Instant</Trans>
           </Typography>
         }
       >
         <Button
-          variant="outlined"
+          variant="tertiary"
           fullWidth
           onClick={onWithdraw}
           disabled={!hasBalance}

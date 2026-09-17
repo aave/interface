@@ -8,6 +8,7 @@ import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { UserDisplay } from 'src/components/UserDisplay';
 import { useProposalVotingConfig } from 'src/hooks/governance/useGovernanceCache';
 import { usePowers } from 'src/hooks/governance/usePowers';
+import { cardHeadingSx } from 'src/utils/cardStyles';
 import { GENERAL } from 'src/utils/events';
 
 export function VotingPowerInfoPanel() {
@@ -23,11 +24,8 @@ export function VotingPowerInfoPanel() {
     ? Number(coreConfig.minPropositionPower)
     : undefined;
   return (
-    <Paper sx={{ px: 6, pb: 6, pt: 4 }}>
-      <Typography
-        variant="h3"
-        sx={{ height: '36px', display: 'flex', alignItems: 'center', mb: 4 }}
-      >
+    <Paper variant="card" sx={{ px: 6, pb: 6, pt: 4 }}>
+      <Typography variant="h3" sx={{ ...cardHeadingSx, mb: 4 }}>
         <Trans>Your info</Trans>
       </Typography>
       <UserDisplay
@@ -37,7 +35,7 @@ export function VotingPowerInfoPanel() {
         subtitleProps={{
           variant: 'caption',
           addressCompactMode: CompactMode.XXL,
-          color: 'text.secondary',
+          color: 'fg-2',
         }}
         funnel={'Your info: Governance'}
       />
@@ -47,7 +45,7 @@ export function VotingPowerInfoPanel() {
             <TextWithTooltip
               text="Voting power"
               variant="description"
-              textColor="text.secondary"
+              textColor="fg-2"
               event={{
                 eventName: GENERAL.TOOL_TIP,
                 eventParams: {
@@ -79,7 +77,7 @@ export function VotingPowerInfoPanel() {
             <TextWithTooltip
               text="Proposition power"
               variant="description"
-              textColor="text.secondary"
+              textColor="fg-2"
               event={{
                 eventName: GENERAL.TOOL_TIP,
                 eventParams: {

@@ -54,7 +54,7 @@ export function BridgeWrapper() {
         <Typography variant={'h3'}>
           <Trans>You don&apos;t have any bridge transactions</Trans>
         </Typography>{' '}
-        <Button sx={{ mt: 4 }} onClick={openBridge} variant="gradient">
+        <Button sx={{ mt: 4 }} onClick={openBridge} variant="contained">
           <Typography typography="subheader1">Bridge GHO</Typography>
         </Button>
       </Paper>
@@ -88,13 +88,13 @@ export function BridgeWrapper() {
     >
       {!downToSm && (
         <ListHeaderWrapper>
-          <ListColumn align="left">
+          <ListColumn>
             <ListHeaderTitle>
               <Trans>Asset</Trans>
             </ListHeaderTitle>
           </ListColumn>
 
-          <ListColumn align="left">
+          <ListColumn>
             <ListHeaderTitle>
               <Trans>Source</Trans>
               <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
@@ -104,13 +104,13 @@ export function BridgeWrapper() {
             </ListHeaderTitle>
           </ListColumn>
 
-          <ListColumn align="left">
+          <ListColumn>
             <ListHeaderTitle>
               <Trans>Age</Trans>
             </ListHeaderTitle>
           </ListColumn>
 
-          <ListColumn align="left">
+          <ListColumn>
             <ListHeaderTitle>
               <Trans>Status</Trans>
             </ListHeaderTitle>

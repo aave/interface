@@ -8,15 +8,18 @@ import { AUTH } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
 import { AvatarSize } from '../Avatar';
+import { CompactMode } from '../CompactableTypography';
 import { UserDisplay } from '../UserDisplay';
 
 export interface ConnectWalletProps {
   funnel?: string;
   onIsConnecting?: (isConnecting: boolean) => void;
   onClick?: () => void;
+  /** Shortens the label to 'Connect' and truncates long ENS names. */
+  compact?: boolean;
 }
 
-export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onClick }) => {
+export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onClick, compact }) => {
   const [trackEvent, walletType, account] = useRootStore(
     useShallow((store) => [store.trackEvent, store.walletType, store.account])
   );
@@ -100,7 +103,7 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onCl
 
           return (
             <Button
-              variant={isConnected ? 'surface' : 'gradient'}
+              variant="outlined"
               onClick={() => {
                 // Track initial button click
                 trackEvent(AUTH.CONNECT_WALLET, {
@@ -117,10 +120,15 @@ export const ConnectWalletButton: React.FC<ConnectWalletProps> = ({ funnel, onCl
                 <UserDisplay
                   avatarProps={{ size: AvatarSize.SM }}
                   oneLiner={true}
-                  titleProps={{ variant: 'buttonM' }}
+                  titleProps={{
+                    variant: 'buttonM',
+                    domainCompactMode: compact ? CompactMode.SM : undefined,
+                  }}
                 />
+              ) : compact ? (
+                <Trans>Connect</Trans>
               ) : (
-                <Trans>Connect wallet</Trans>
+                <Trans>Connect Wallet</Trans>
               )}
             </Button>
           );

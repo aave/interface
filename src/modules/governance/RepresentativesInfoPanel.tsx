@@ -2,7 +2,7 @@ import { Representative, Rpresented } from '@aave/contract-helpers';
 import { PlusIcon } from '@heroicons/react/outline';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, IconButton, Paper, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, SvgIcon, Typography } from '@mui/material';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
 import { Link } from 'src/components/primitives/Link';
 import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';
@@ -10,6 +10,9 @@ import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { networkConfigs } from 'src/ui-config/networksConfig';
+import { cardHeadingSx } from 'src/utils/cardStyles';
+import { figVars } from 'src/utils/figmaColors';
+import { hoverOverlay } from 'src/utils/theme';
 
 import { ZERO_ADDRESS } from './utils/formatProposal';
 
@@ -38,23 +41,25 @@ export const RepresentativesInfoPanel = () => {
   // }
 
   return (
-    <Paper sx={{ mt: 2 }}>
+    <Paper variant="card">
       <Box sx={{ px: 6, pb: 6, pt: 4 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography typography="h3">
+          <Typography typography="h3" sx={cardHeadingSx}>
             <Trans>Linked addresses</Trans>
           </Typography>
           {isAddressSelectedAsRepresentative ? null : (
-            <Button onClick={() => openGovRepresentatives(data?.Representatives || [])}>
-              <Typography typography="subheader1">
-                <Trans>Edit</Trans>
-              </Typography>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => openGovRepresentatives(data?.Representatives || [])}
+            >
+              <Trans>Edit</Trans>
             </Button>
           )}
         </Stack>
         <Stack gap={8} sx={{ mt: 2 }}>
           <Stack direction="column">
-            <Typography variant="description" color="text.secondary">
+            <Typography variant="description" color="fg-2">
               {isAddressSelectedAsRepresentative ? (
                 <Trans>
                   Representing smart contract wallet (ie. Safe) addresses on other chains.
@@ -98,23 +103,39 @@ const Representatives = ({
             networkName={networkConfigs[representative.chainId].name}
           />
           {representative.representative === ZERO_ADDRESS ? (
-            <Stack direction="row" gap={1} alignItems="center">
-              <IconButton
-                sx={(theme) => ({
-                  height: '24px',
-                  width: '24px',
-                  background: theme.palette.background.disabled,
-                })}
-                onClick={onOpenRepresentatives}
+            <Button
+              variant="text"
+              onClick={onOpenRepresentatives}
+              sx={{
+                p: 0,
+                height: 'auto',
+                gap: 2,
+                color: 'fg-3',
+                '&:hover': { backgroundColor: 'transparent', color: 'fg-2' },
+                '&:hover .connect-plus::before': { backgroundColor: figVars['overlay-hover'] },
+              }}
+            >
+              <Box
+                className="connect-plus"
+                sx={{
+                  height: '16px',
+                  width: '16px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: 'bg-6',
+                  ...hoverOverlay(figVars['overlay-hover']),
+                }}
               >
-                <SvgIcon sx={{ p: 1 }}>
+                <SvgIcon sx={{ fontSize: 12 }}>
                   <PlusIcon />
                 </SvgIcon>
-              </IconButton>
-              <Typography variant="subheader1" color="text.muted">
+              </Box>
+              <Typography variant="subheader1" sx={{ lineHeight: '16px' }}>
                 <Trans>Connect</Trans>
               </Typography>
-            </Stack>
+            </Button>
           ) : (
             <AddressLink
               explorerLink={networkConfigs[representative.chainId].explorerLink}
@@ -137,7 +158,7 @@ const Representing = ({ representing }: { representing: Rpresented[] }) => {
             networkName={networkConfigs[representing.chainId].name}
           />
           {representing.votersRepresented.length === 0 ? (
-            <Typography sx={{ ml: 4 }} color="text.secondary">
+            <Typography sx={{ ml: 4 }} color="fg-2">
               <Trans>None</Trans>
             </Typography>
           ) : (
@@ -165,7 +186,9 @@ const Network = ({
   return (
     <Stack direction="row" alignItems="center" gap={2}>
       <img src={networkLogoPath} height="16px" width="16px" alt="network logo" />
-      <Typography variant="subheader1">{networkName}</Typography>
+      <Typography variant="subheader1" sx={{ lineHeight: '16px' }}>
+        {networkName}
+      </Typography>
     </Stack>
   );
 };
@@ -183,12 +206,12 @@ const AddressLink = ({ explorerLink, address }: { explorerLink: string; address:
           {address}
         </CompactableTypography>
         <SvgIcon
-          sx={(theme) => ({
+          sx={{
             width: 14,
             height: 14,
             ml: 0.5,
-            color: theme.palette.text.muted,
-          })}
+            color: 'fg-3',
+          }}
         >
           <ExternalLinkIcon />
         </SvgIcon>

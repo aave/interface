@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
+import { figSurfaceShadow } from 'src/utils/figmaColors';
 
 import { SwappableToken, TokenType } from '../../types';
 
@@ -258,20 +259,21 @@ export const PriceInput = ({
   return (
     <Box
       ref={inputRef}
-      sx={(theme) => ({
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: '6px',
+      sx={{
+        borderRadius: '0.75rem',
+        boxShadow: figSurfaceShadow('shadow-stroke-1'),
         overflow: 'hidden',
+        backgroundColor: 'bg-2',
         px: 3,
         py: 2,
         width: '100%',
         transition: 'background-color 0.15s ease',
         '&:hover': {
-          backgroundColor: 'background.surface',
+          backgroundColor: 'bg-2',
         },
-      })}
+      }}
     >
-      <Typography variant="secondary12" color="text.muted">
+      <Typography variant="subheader2" color="fg-3">
         When 1 {fromAsset.symbol} is worth:
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -330,8 +332,8 @@ export const PriceInput = ({
           />
           <Typography
             data-cy={`assetsSelectedOption_${toAsset.symbol.toUpperCase()}`}
-            variant="main16"
-            color="text.primary"
+            variant="h4"
+            color="fg-1"
             sx={{ fontWeight: 500 }}
           >
             {toAsset.symbol}
@@ -350,11 +352,11 @@ export const PriceInput = ({
               width: 22,
               height: 22,
               borderRadius: '50%',
-              backgroundColor: 'background.paper',
+              backgroundColor: 'surface-elevated',
               ml: 1,
               transition: 'background-color 0.2s ease',
               '&:hover': {
-                backgroundColor: 'background.surface',
+                backgroundColor: 'bg-2',
               },
               '&:hover .refresh-spin': {
                 transform: 'rotate(360deg)',
@@ -382,20 +384,20 @@ export const PriceInput = ({
             value={rate.usd ? rate.usd.toString() : 0}
             compact
             symbol="USD"
-            variant="secondary12"
-            color="text.muted"
-            symbolsColor="text.muted"
+            variant="subheader2"
+            color="fg-3"
+            symbolsColor="fg-3"
             flexGrow={1}
           />
         )}
 
-        <Typography component="div" variant="secondary12" color="text.secondary">
+        <Typography component="div" variant="subheader2" color="fg-2">
           <FormattedNumber
             value={lastMarketRate.nominal ? lastMarketRate.nominal.toNumber() : 0}
             compact
-            variant="secondary12"
-            color="text.secondary"
-            symbolsColor="text.disabled"
+            variant="subheader2"
+            color="fg-2"
+            symbolsColor="fg-4"
             sx={{ ml: 1 }}
           />
         </Typography>

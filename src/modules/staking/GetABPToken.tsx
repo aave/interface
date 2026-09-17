@@ -26,7 +26,7 @@ export const GetABPToken = () => {
     <>
       <DarkTooltip title="Get ABP tokens to stake within the Aave Protocol">
         <Button
-          variant="outlined"
+          variant="tertiary"
           size="small"
           onClick={handleClick}
           data-cy={`getAbp-token`}

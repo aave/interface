@@ -18,7 +18,7 @@ import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTrans
 
 import { downloadData, formatTransactionData, groupByDate } from './helpers';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
-import { HistoryMobileItemLoader } from './HistoryMobileItemLoader';
+import { HistoryItemLoader } from './HistoryItemLoader';
 import TransactionMobileRowItem from './TransactionMobileRowItem';
 import { FilterOptions, TransactionHistoryItemUnion } from './types';
 
@@ -172,7 +172,7 @@ export const HistoryWrapperMobile = () => {
                 open={Boolean(menuAnchorEl)}
                 onClose={handleDownloadMenuClose}
               >
-                <Typography variant="subheader2" color="text.secondary" sx={{ mx: 4, my: 3 }}>
+                <Typography variant="subheader2" color="fg-2" sx={{ mx: 4, my: 3 }}>
                   <Trans>Export data to</Trans>
                 </Typography>
                 <MenuItem
@@ -237,27 +237,29 @@ export const HistoryWrapperMobile = () => {
 
       {isLoading ? (
         <>
-          <HistoryMobileItemLoader />
-          <HistoryMobileItemLoader />
+          <HistoryItemLoader compact />
+          <HistoryItemLoader compact />
         </>
       ) : !isEmpty ? (
-        Object.entries(groupByDate(filteredTxns)).map(([date, txns], groupIndex) => (
-          <React.Fragment key={groupIndex}>
-            <Typography variant="h4" color="text.primary" sx={{ ml: 4, mt: 6, mb: 2 }}>
-              {date}
-            </Typography>
-            {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
-              const isLastItem = index === txns.length - 1;
-              return (
-                <div ref={isLastItem ? lastElementRef : null} key={index}>
-                  <TransactionMobileRowItem
-                    transaction={transaction as TransactionHistoryItemUnion}
-                  />
-                </div>
-              );
-            })}
-          </React.Fragment>
-        ))
+        Object.entries(groupByDate(filteredTxns))
+          .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
+          .map(([date, txns], groupIndex) => (
+            <React.Fragment key={groupIndex}>
+              <Typography variant="h4" color="fg-1" sx={{ ml: 4, mt: 6, mb: 2 }}>
+                {date}
+              </Typography>
+              {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
+                const isLastItem = index === txns.length - 1;
+                return (
+                  <div ref={isLastItem ? lastElementRef : null} key={index}>
+                    <TransactionMobileRowItem
+                      transaction={transaction as TransactionHistoryItemUnion}
+                    />
+                  </div>
+                );
+              })}
+            </React.Fragment>
+          ))
       ) : filterActive ? (
         <Box
           sx={{
@@ -272,17 +274,17 @@ export const HistoryWrapperMobile = () => {
             my: 24,
           }}
         >
-          <Typography variant="h3" color="text.primary">
+          <Typography variant="h3" color="fg-1">
             <Trans>Nothing found</Trans>
           </Typography>
-          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="text.secondary">
+          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="fg-2">
             <Trans>
               We couldn&apos;t find any transactions related to your search. Try again with a
               different asset name, or reset filters.
             </Trans>
           </Typography>
           <Button
-            variant="outlined"
+            variant="tertiary"
             onClick={() => {
               setSearchQuery('');
               setFilterQuery([]);
@@ -304,7 +306,7 @@ export const HistoryWrapperMobile = () => {
             flex: 1,
           }}
         >
-          <Typography sx={{ my: 24 }} variant="h3" color="text.primary">
+          <Typography sx={{ my: 24 }} variant="h3" color="fg-1">
             <Trans>No transactions yet.</Trans>
           </Typography>
         </Box>

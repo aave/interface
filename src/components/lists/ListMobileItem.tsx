@@ -40,10 +40,31 @@ export const ListMobileItem = ({
 }: ListMobileItemProps) => {
   const { supplyCap, borrowCap, debtCeiling } = useAssetCaps();
   return (
-    <Box>
+    <Box sx={{ '&:first-of-type > hr': { display: 'none' } }}>
       <Divider />
-      <Box sx={{ px: 4, pt: 4, pb: 6 }}>
-        <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
+      <Box
+        sx={{
+          px: 4,
+          pt: 4,
+          pb: 6,
+          '& .row-caption': {
+            color: 'fg-3',
+            '& .MuiSvgIcon-root': { color: 'fg-4' },
+            '& .MuiSvgIcon-root:hover': { color: 'fg-2' },
+          },
+        }}
+      >
+        {/* Cards that bring their own heading (the staking list) render nothing here, and an empty
+            header still contributed its `mb`, leaving twice the padding above the card's first row
+            as below its last one. */}
+        <Box
+          sx={{
+            mb: '1.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            '&:empty': { display: 'none' },
+          }}
+        >
           {loading ? (
             <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
               <Skeleton variant="circular" width={40} height={40} />
@@ -61,11 +82,11 @@ export const ListMobileItem = ({
                 href={ROUTES.reserveOverview(underlyingAsset, currentMarket)}
                 sx={{ display: 'inline-flex', alignItems: 'center' }}
               >
-                <TokenIcon symbol={iconSymbol} sx={{ fontSize: '40px' }} onError={onIconError} />
+                <TokenIcon symbol={iconSymbol} fontSize="large" onError={onIconError} />
                 <Box sx={{ ml: 2 }}>
                   <Typography variant="h4">{name}</Typography>
                   <Box display="flex" alignItems="center">
-                    <Typography variant="subheader2" color="text.muted">
+                    <Typography variant="subheader2" color="fg-3">
                       {symbol}
                     </Typography>
                     {isIsolated && (

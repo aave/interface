@@ -7,7 +7,7 @@ const OuterBar = styled('div')(({ theme }) =>
     position: 'relative',
     width: '100%',
     height: '8px',
-    bgcolor: 'divider',
+    bgcolor: 'border-2',
     display: 'block',
     borderRadius: '6px',
   })
@@ -40,12 +40,12 @@ interface VoteBarProps extends BoxProps {
 export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: VoteBarProps) {
   return (
     <Box {...rest}>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', mb: { xs: '1rem', lg: '0.25rem' } }}>
         <Typography variant="description" sx={{ mr: 2 }}>
           {yae ? <Trans>YAE</Trans> : <Trans>NAY</Trans>}
         </Typography>
         {loading ? (
-          <Typography variant="secondary14" sx={{ flexGrow: 1, lineHeight: '1rem' }}>
+          <Typography variant="h5" sx={{ flexGrow: 1, lineHeight: '1rem' }}>
             <Skeleton width={40} />
           </Typography>
         ) : (
@@ -54,12 +54,12 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
               value={votes}
               visibleDecimals={0}
               sx={{ mr: 1 }}
-              variant="secondary14"
+              variant="h5"
               roundDown
               compact={compact}
             />
             {!compact && (
-              <Typography variant="description" component="span" color="text.secondary">
+              <Typography variant="description" component="span" color="fg-2">
                 AAVE
               </Typography>
             )}
@@ -70,7 +70,7 @@ export function VoteBar({ percent, yae, votes, loading, compact, ...rest }: Vote
             <Skeleton width={40} />
           </Typography>
         ) : (
-          <FormattedNumber value={percent} percent variant="caption" color="text.secondary" />
+          <FormattedNumber value={percent} percent variant="caption" color="fg-2" />
         )}
       </Box>
       {loading ? (

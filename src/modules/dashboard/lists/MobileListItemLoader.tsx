@@ -1,4 +1,5 @@
 import { Box, Skeleton } from '@mui/material';
+import { mobileCardActionsSx } from 'src/utils/buttonStyles';
 
 import { Row } from '../../../components/primitives/Row';
 import { ListMobileItemWrapper } from './ListMobileItemWrapper';
@@ -33,8 +34,8 @@ export const MobileListItemLoader = () => {
         <Skeleton width={70} height={20} />
       </Row>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
-        <Skeleton width="100%" height={36} sx={{ mr: 1.5 }} />
+      <Box sx={mobileCardActionsSx}>
+        <Skeleton width="100%" height={36} />
         <Skeleton width="100%" height={36} />
       </Box>
     </ListMobileItemWrapper>

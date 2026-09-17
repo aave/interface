@@ -23,7 +23,7 @@ export const SpkAirdropTooltip = () => {
           href="https://forum.sky.money/t/spark-proposal-for-integrations-into-aave/25005"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           {'here'}
         </Link>{' '}
@@ -32,7 +32,7 @@ export const SpkAirdropTooltip = () => {
           href="https://docs.spark.fi/rewards/spk-token#what-is-the-spk-pre-farming-airdrop"
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           {'here'}
         </Link>

@@ -34,13 +34,16 @@ export const ProposalListHeaderDesktop: React.FC<ProposalListHeaderElementProps>
 }) => {
   return (
     <>
-      <Typography variant="h3" sx={{ flexGrow: 1 }}>
+      <Typography variant="h3" sx={{ flexGrow: 1, textTransform: 'capitalize' }}>
         <Trans>Proposals</Trans>
       </Typography>
-      <Typography>
-        <Trans>Filter</Trans>
-      </Typography>
-      <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
+      <Select
+        id="filter"
+        value={proposalFilter}
+        sx={{ minWidth: 140 }}
+        onChange={handleChange}
+        size="small"
+      >
         <MenuItem value="all">
           <Trans>All proposals</Trans>
         </MenuItem>
@@ -67,29 +70,32 @@ export const ProposalListHeaderMobile: React.FC<ProposalListHeaderElementProps> 
   handleSearchQueryChange,
 }) => {
   return (
-    <>
-      <TitleWithSearchBar
-        title={<Trans>Proposals</Trans>}
-        titleProps={{ variant: 'h3' }}
-        onSearchTermChange={handleSearchQueryChange}
-        searchPlaceholder="Search proposals"
-      />
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <Typography>
-          <Trans>Filter</Trans>
-        </Typography>
-        <Select id="filter" value={proposalFilter} sx={{ minWidth: 140 }} onChange={handleChange}>
-          <MenuItem value="all">
-            <Trans>All proposals</Trans>
-          </MenuItem>
-          {getProposalStates().map((key) => (
-            <MenuItem key={key} value={key}>
-              {key}
-            </MenuItem>
-          ))}
-        </Select>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <TitleWithSearchBar
+          title={<Trans>Proposals</Trans>}
+          titleProps={{ variant: 'h3', sx: { textTransform: 'capitalize' } }}
+          onSearchTermChange={handleSearchQueryChange}
+          searchPlaceholder="Search proposals"
+        />
       </Box>
-    </>
+      <Select
+        id="filter"
+        value={proposalFilter}
+        sx={{ minWidth: 140, flexShrink: 0 }}
+        onChange={handleChange}
+        size="small"
+      >
+        <MenuItem value="all">
+          <Trans>All proposals</Trans>
+        </MenuItem>
+        {getProposalStates().map((key) => (
+          <MenuItem key={key} value={key}>
+            {key}
+          </MenuItem>
+        ))}
+      </Select>
+    </Box>
   );
 };
 
@@ -123,7 +129,7 @@ export const ProposalListHeader: React.FC<ProposalListHeaderProps> = ({
         },
         gap: 3,
         borderBottom: '1px solid',
-        borderColor: 'divider',
+        borderColor: 'border-0',
       }}
     >
       {!md ? (

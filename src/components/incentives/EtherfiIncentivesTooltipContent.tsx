@@ -17,7 +17,7 @@ export const EtherFiAirdropTooltipContent = ({ multiplier }: { multiplier: numbe
         href="https://etherfi.gitbook.io/etherfi/getting-started/loyalty-points"
         sx={{ textDecoration: 'underline' }}
         variant="caption"
-        color="text.secondary"
+        color="fg-2"
       >
         here
       </Link>

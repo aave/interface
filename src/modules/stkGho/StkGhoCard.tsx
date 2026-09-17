@@ -1,7 +1,6 @@
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
 import { Trans } from '@lingui/macro';
-import { Box, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { Warning } from 'src/components/primitives/Warning';
+import { Alert, Box, Paper, Typography } from '@mui/material';
 import { StakeTokenFormatted, useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -16,8 +15,6 @@ export const StkGhoCard = () => {
   const [trackEvent, currentMarketData] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarketData])
   );
-  const { breakpoints } = useTheme();
-  const downToXsm = useMediaQuery(breakpoints.down('xsm'));
 
   const { data: stakeGeneralResult } = useGeneralStakeUiData(currentMarketData);
   const { data: stakeUserResult } = useUserStakeUiData(currentMarketData);
@@ -34,10 +31,9 @@ export const StkGhoCard = () => {
 
   return (
     <Paper
+      variant="card"
       sx={{
-        pt: 4,
-        pb: { xs: 6, md: 20 },
-        px: downToXsm ? 4 : 6,
+        p: 6,
         flex: 1,
         minWidth: 0,
         width: { xs: '100%', mdlg: 'auto' },
@@ -49,9 +45,9 @@ export const StkGhoCard = () => {
         </Typography>
       </Box>
 
-      <Warning severity="warning" sx={{ mb: 4 }}>
+      <Alert severity="warning" sx={{ width: '100%', mb: 4 }}>
         <Trans>Rewards for legacy Savings GHO have ended. Migrate to continue earning.</Trans>
-      </Warning>
+      </Alert>
 
       <StkGhoDepositPanel
         stakedToken="GHO"

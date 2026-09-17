@@ -1,18 +1,16 @@
-import { useTheme } from '@mui/material';
 import { Toaster } from 'sonner';
+import { figVars } from 'src/utils/figmaColors';
 
 export const CowOrderToast = () => {
-  const theme = useTheme();
-
   return (
     <Toaster
       position="bottom-right"
       toastOptions={{
         duration: 6000,
         style: {
-          background: `${theme.palette.background.paper}`,
-          color: `${theme.palette.text.primary}`,
-          border: `1px solid ${theme.palette.divider}`,
+          background: `${figVars['surface-elevated']}`,
+          color: `${figVars['fg-1']}`,
+          border: `1px solid ${figVars['border-2']}`,
         },
       }}
     />

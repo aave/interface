@@ -1,13 +1,5 @@
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  Divider,
-  InputBase,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ReadOnlyModeTooltip } from 'src/components/infoTooltips/ReadOnlyModeTooltip';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
@@ -28,8 +20,6 @@ export const ReadOnlyModal = () => {
   const [inputMockWalletAddress, setInputMockWalletAddress] = useState('');
   const [validAddressError, setValidAddressError] = useState<boolean>(false);
   const { type, close } = useModalContext();
-  const { breakpoints } = useTheme();
-  const sm = useMediaQuery(breakpoints.down('sm'));
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   const handleReadAddress = async (inputMockWalletAddress: string): Promise<void> => {
@@ -76,47 +66,32 @@ export const ReadOnlyModal = () => {
   return (
     <BasicModal open={type === ModalType.ReadMode} setOpen={handleClose}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <TxModalTitle title="Watch Wallet" />
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1, padding: '10px 0' }}>
-          <Typography variant="subheader1" color="text.secondary">
+        <TxModalTitle title="Watch Wallet" sx={{ mb: '2rem' }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: '0.75rem' }}>
+          <Typography variant="caption" sx={{ color: 'fg-3', lineHeight: '135%' }}>
             <Trans>Watch a wallet balance in read-only mode</Trans>
           </Typography>
           <ReadOnlyModeTooltip />
         </Box>
         <form onSubmit={handleSubmit}>
-          <InputBase
-            sx={(theme) => ({
-              py: 1,
-              px: 3,
-              border: `1px solid ${theme.palette.divider}`,
-              borderRadius: '6px',
-              mb: 1,
-              overflow: 'show',
-              fontSize: sm ? '16px' : '14px',
-            })}
-            placeholder="Enter ethereum address or ENS name"
+          <TextField
             fullWidth
+            size="small"
+            placeholder="Enter ethereum address or ENS name"
             value={inputMockWalletAddress}
             onChange={(e) => setInputMockWalletAddress(e.target.value)}
-            inputProps={{
-              'aria-label': 'read-only mode address',
-            }}
+            inputProps={{ 'aria-label': 'read-only mode address' }}
+            sx={{ mb: '2rem' }}
           />
           <Button
             type="submit"
-            variant="outlined"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              mb: '8px',
-            }}
-            size="large"
+            variant="contained"
+            sx={{ mb: '8px' }}
             fullWidth
             onClick={() => trackEvent(AUTH.MOCK_WALLET)}
             aria-label="read-only mode address"
           >
-            <Trans>Track wallet</Trans>
+            <Trans>Watch wallet</Trans>
           </Button>
         </form>
         {validAddressError && (
@@ -125,12 +100,9 @@ export const ReadOnlyModal = () => {
           </Typography>
         )}
         {readOnlyMode && (
-          <>
-            <Divider />
-            <Button sx={{ mt: 2 }} variant="outlined" onClick={handleRemoveWatchedAddress}>
-              Remove watched address
-            </Button>
-          </>
+          <Button sx={{ mt: 2 }} variant="tertiary" onClick={handleRemoveWatchedAddress}>
+            Remove watched address
+          </Button>
         )}
       </Box>
     </BasicModal>

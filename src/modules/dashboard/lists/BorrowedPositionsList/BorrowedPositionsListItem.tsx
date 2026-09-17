@@ -3,11 +3,13 @@ import { ReserveIncentiveResponse } from '@aave/math-utils/dist/esm/formatters/i
 import { Trans } from '@lingui/macro';
 import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { Row } from 'src/components/primitives/Row';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
+import { mobileCardActionsSx } from 'src/utils/buttonStyles';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
@@ -36,7 +38,7 @@ export const BorrowedPositionsListItem = ({
     useShallow((state) => [state.currentMarket, state.currentMarketData])
   );
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showCards = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
   const { openBorrow, openRepay, openDebtSwitch } = useModalContext();
   const { user } = useAppDataContext();
 
@@ -84,7 +86,7 @@ export const BorrowedPositionsListItem = ({
     },
   };
 
-  if (downToXSM) {
+  if (showCards) {
     return <BorrowedPositionsListItemMobile {...props} />;
   } else {
     return <BorrowedPositionsListItemDesktop {...props} />;
@@ -168,6 +170,7 @@ const BorrowedPositionsListItemDesktop = ({
       <ListButtonsColumn>
         {showSwitchButton ? (
           <Button
+            size="small"
             disabled={disableSwitch}
             variant="contained"
             onClick={onDetbSwitchClick}
@@ -176,11 +179,11 @@ const BorrowedPositionsListItemDesktop = ({
             <Trans>Swap</Trans>
           </Button>
         ) : (
-          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow}>
+          <Button disabled={disableBorrow} variant="contained" onClick={onOpenBorrow} size="small">
             <Trans>Borrow</Trans>
           </Button>
         )}
-        <Button disabled={disableRepay} variant="outlined" onClick={onOpenRepay}>
+        <Button disabled={disableRepay} variant="tertiary" onClick={onOpenRepay} size="small">
           <Trans>Repay</Trans>
         </Button>
       </ListButtonsColumn>
@@ -236,13 +239,13 @@ const BorrowedPositionsListItemMobile = ({
           incentives={incentives}
           address={variableDebtTokenAddress}
           symbol={symbol}
-          variant="secondary14"
+          variant="h5"
           market={currentMarket}
           protocolAction={ProtocolAction.borrow}
         />
       </Row>
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 5 }}>
+      <Box sx={mobileCardActionsSx}>
         {showSwitchButton ? (
           <Button
             disabled={disableSwitch}
@@ -258,13 +261,7 @@ const BorrowedPositionsListItemMobile = ({
             <Trans>Borrow</Trans>
           </Button>
         )}
-        <Button
-          disabled={disableRepay}
-          variant="outlined"
-          onClick={onOpenRepay}
-          sx={{ ml: 1.5 }}
-          fullWidth
-        >
+        <Button disabled={disableRepay} variant="tertiary" onClick={onOpenRepay} fullWidth>
           <Trans>Repay</Trans>
         </Button>
       </Box>

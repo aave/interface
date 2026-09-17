@@ -29,6 +29,19 @@ export type DashboardReserve = DashboardReserveData & {
   reserve: ComputedReserveData;
 };
 
+/**
+ * `borrowAPY` is derived inside the row component (`BorrowedPositionsListItem`), so it is not a
+ * field on the objects sorted here — reading it directly compares two `undefined`s. Map it back
+ * onto the reserve value it is computed from.
+ */
+const numericValue = (position: DashboardReserve, sortName: string): number =>
+  sortName === 'borrowAPY'
+    ? Number(position.reserve.variableBorrowAPY)
+    : Number(position[sortName as keyof DashboardReserve]);
+
+const symbolOf = (position: DashboardReserve, sortPosition: string): string =>
+  (sortPosition === 'position' ? position.reserve.symbol : position.symbol).toUpperCase();
+
 export const handleSortDashboardReserves = (
   sortDesc: boolean,
   sortName: string,
@@ -36,87 +49,36 @@ export const handleSortDashboardReserves = (
   positions: DashboardReserve[],
   isBorrowedPosition?: boolean
 ): DashboardReserve[] => {
-  if (sortDesc) {
-    return handleSortDesc(sortName, sortPosition, positions, isBorrowedPosition || false);
-  } else {
-    return sortAsc(sortName, sortPosition, positions, isBorrowedPosition || false);
-  }
-};
+  // Direction is decided once and multiplied into each comparator, rather than mirrored across a
+  // pair of functions that have to be edited in lockstep.
+  const dir = sortDesc ? -1 : 1;
+  // Sort a copy: `SuppliedPositionsList` and friends pass a memoised array straight in, and
+  // sorting it in place would permanently reorder the list's own ordering — so clearing the sort
+  // could never get back to it.
+  const sorted = [...positions];
 
-const handleSortDesc = (
-  sortName: string,
-  sortPosition: string,
-  positions: DashboardReserve[],
-  isBorrowedPosition: boolean
-) => {
   if (sortName === 'symbol') {
-    return handleSymbolSort(true, sortPosition, positions);
-  } else if (sortName === 'usageAsCollateralEnabledOnUser' || sortName === 'debt') {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return positions.sort((a, b) => Number(a[sortName]) - Number(b[sortName]));
-  } else {
-    if (isBorrowedPosition) {
-      positions.sort(
-        (a, b) => Number(b.reserve.variableBorrowAPY) - Number(a.reserve.variableBorrowAPY)
-      );
-    }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return positions.sort((a, b) => a[sortName] - b[sortName]);
-  }
-};
-
-const sortAsc = (
-  sortName: string,
-  sortPosition: string,
-  positions: DashboardReserve[],
-  isBorrowedPosition: boolean
-) => {
-  if (sortName === 'symbol') {
-    return handleSymbolSort(false, sortPosition, positions);
-  } else if (sortName === 'usageAsCollateralEnabledOnUser' || sortName === 'debt') {
-    // NOTE parse to number for sorting
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return positions.sort((a, b) => Number(b[sortName]) - Number(a[sortName]));
-  } else {
-    // Note because borrow positions have extra logic we need to have this
-    if (isBorrowedPosition) {
-      positions.sort(
-        (a, b) => Number(a.reserve.variableBorrowAPY) - Number(b.reserve.variableBorrowAPY)
-      );
-    }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return positions.sort((a, b) => b[sortName] - a[sortName]);
-  }
-};
-
-const handleSymbolSort = (
-  sortDesc: boolean,
-  sortPosition: string,
-  positions: DashboardReserve[]
-) => {
-  // NOTE because the data structure is different we need to check for positions(supplied|borrowed)
-  // if position then a.reserve.symbol otherwise a.symbol
-  if (sortDesc) {
-    if (sortPosition === 'position') {
-      return positions.sort((a, b) =>
-        a.reserve.symbol.toUpperCase() < b.reserve.symbol.toUpperCase() ? -1 : 1
-      );
-    }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return positions.sort((a, b) => (a.symbol.toUpperCase() < b.symbol.toUpperCase() ? -1 : 1));
-  }
-
-  if (sortPosition === 'position') {
-    return positions.sort((a, b) =>
-      b.reserve.symbol.toUpperCase() < a.reserve.symbol.toUpperCase() ? -1 : 1
+    // Equal symbols keep returning 1 rather than 0, as they always have; `dir * 1` would reorder
+    // ties when descending instead of leaving them alone.
+    return sorted.sort((a, b) =>
+      dir === 1
+        ? symbolOf(a, sortPosition) < symbolOf(b, sortPosition)
+          ? -1
+          : 1
+        : symbolOf(b, sortPosition) < symbolOf(a, sortPosition)
+        ? -1
+        : 1
     );
   }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  return positions.sort((a, b) => (b.symbol.toUpperCase() < a.symbol.toUpperCase() ? -1 : 1));
+
+  // Borrowed positions tie-break on borrow APY underneath the primary sort. It runs in the same
+  // direction as that sort, and with no `sortName` it is the whole ordering — which is how the
+  // APY column sorts at all, since its `borrowAPY` key does not resolve on these objects.
+  if (isBorrowedPosition) {
+    sorted.sort(
+      (a, b) => dir * (Number(a.reserve.variableBorrowAPY) - Number(b.reserve.variableBorrowAPY))
+    );
+  }
+
+  return sorted.sort((a, b) => dir * (numericValue(a, sortName) - numericValue(b, sortName)));
 };

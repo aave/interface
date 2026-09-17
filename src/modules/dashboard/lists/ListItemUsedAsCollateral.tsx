@@ -20,25 +20,22 @@ export const ListItemUsedAsCollateral = ({
   disabled,
 }: ListItemUsedAsCollateralProps) => {
   const isEnabled = usageAsCollateralEnabledOnUser && canBeEnabledAsCollateral;
-  return (
-    <>
-      {!isIsolated ? (
-        <Switch
-          onClick={onToggleSwitch}
-          disableRipple
-          checked={isEnabled}
-          disabled={!canBeEnabledAsCollateral || disabled}
-        />
-      ) : (
-        <ListItemIsolationBadge>
-          <Switch
-            onClick={onToggleSwitch}
-            disableRipple
-            checked={isEnabled}
-            disabled={!canBeEnabledAsCollateral || disabled}
-          />
-        </ListItemIsolationBadge>
-      )}
-    </>
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onToggleSwitch();
+  };
+  const switchProps = {
+    onClick: handleClick,
+    disableRipple: true,
+    checked: isEnabled,
+    disabled: !canBeEnabledAsCollateral || disabled,
+  };
+
+  return isIsolated ? (
+    <ListItemIsolationBadge>
+      <Switch {...switchProps} />
+    </ListItemIsolationBadge>
+  ) : (
+    <Switch {...switchProps} />
   );
 };

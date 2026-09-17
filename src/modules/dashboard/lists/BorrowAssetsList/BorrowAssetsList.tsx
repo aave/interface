@@ -1,14 +1,14 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { USD_DECIMALS, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
 import { VariableAPYTooltip } from 'src/components/infoTooltips/VariableAPYTooltip';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
-import { Warning } from 'src/components/primitives/Warning';
 import { AssetCapsProvider } from 'src/hooks/useAssetCaps';
 import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
 import { AssetCategory, isAssetInCategoryDynamic } from 'src/modules/markets/utils/assetCategories';
@@ -88,7 +88,7 @@ export const BorrowAssetsList = () => {
   const currentMarket = currentMarketData.market;
   const { user, reserves, marketReferencePriceInUsd, loading } = useAppDataContext();
   const theme = useTheme();
-  const downToXSM = useMediaQuery(theme.breakpoints.down('xsm'));
+  const showCards = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 
@@ -176,7 +176,7 @@ export const BorrowAssetsList = () => {
   const RenderHeader: React.FC = () => {
     return (
       <ListHeaderWrapper>
-        {head.map((col) => (
+        {head.map((col, index) => (
           <ListColumn
             isRow={col.sortKey === 'symbol'}
             maxWidth={col.sortKey === 'symbol' ? DASHBOARD_LIST_COLUMN_WIDTHS.ASSET : undefined}
@@ -189,12 +189,13 @@ export const BorrowAssetsList = () => {
               setSortDesc={setSortDesc}
               sortKey={col.sortKey}
               source={'Borrow Dashboard'}
+              noTruncate={index === head.length - 1}
             >
               {col.title}
             </ListHeaderTitle>
           </ListColumn>
         ))}
-        <ListButtonsColumn isColumnHeader />
+        <ListButtonsColumn />
       </ListHeaderWrapper>
     );
   };
@@ -217,14 +218,14 @@ export const BorrowAssetsList = () => {
             width: '100%',
             alignItems: 'center',
             justifyContent: 'space-between',
-            mr: 2,
+            mr: '0.62rem',
           }}
         >
           <Typography component="div" variant="h3" sx={{ flex: '0 0 auto', mr: 2 }}>
             <Trans>Assets to borrow</Trans>
           </Typography>
 
-          {!downToXSM && !isListCollapsed && (
+          {!isListCollapsed && (
             <AssetCategoryMultiSelect
               selectedCategories={selectedCategories}
               onCategoriesChange={setSelectedCategories}
@@ -238,75 +239,58 @@ export const BorrowAssetsList = () => {
       withTopMargin
       noData={borrowDisabled}
       subChildrenComponent={
-        <>
-          {downToXSM && (
+        <Box>
+          {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
+            <Alert severity="error" data-size="small" sx={{ mb: 6, width: '100%' }}>
+              <Trans>
+                Be careful - You are very close to liquidation. Consider depositing more collateral
+                or paying down some of your borrowed positions
+              </Trans>
+            </Alert>
+          )}
+
+          {!borrowDisabled && (
             <>
-              <Box sx={{ px: 4, pb: 4, pt: '2px' }}>
-                <AssetCategoryMultiSelect
-                  selectedCategories={selectedCategories}
-                  onCategoriesChange={setSelectedCategories}
-                  disabled={isLoading || !!error}
-                  sx={{
-                    buttonGroup: { width: '100%', maxWidth: '100%', height: '30px' },
-                    button: { fontSize: '0.7rem' },
-                  }}
-                />
-              </Box>
+              {user?.isInIsolationMode && (
+                <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
+                  <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
+                  <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
+                    Learn More
+                  </Link>
+                </Alert>
+              )}
+              {user?.isInEmode && (
+                <Alert severity="warning" data-size="small" sx={{ mb: 6, width: '100%' }}>
+                  <Trans>
+                    In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
+                    assets
+                  </Trans>
+                </Alert>
+              )}
+              {user?.totalCollateralMarketReferenceCurrency === '0' && (
+                <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
+                  <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
+                </Alert>
+              )}
             </>
           )}
-          <Box sx={{ px: 6 }}>
-            {user?.healthFactor !== '-1' && Number(user?.healthFactor) <= 1.1 && (
-              <Warning severity="error">
-                <Trans>
-                  Be careful - You are very close to liquidation. Consider depositing more
-                  collateral or paying down some of your borrowed positions
-                </Trans>
-              </Warning>
-            )}
-
-            {!borrowDisabled && (
-              <>
-                {user?.isInIsolationMode && (
-                  <Warning severity="warning">
-                    <Trans>Borrowing power and assets are limited due to Isolation mode. </Trans>
-                    <Link href="https://docs.aave.com/faq/" target="_blank" rel="noopener">
-                      Learn More
-                    </Link>
-                  </Warning>
-                )}
-                {user?.isInEmode && (
-                  <Warning severity="warning">
-                    <Trans>
-                      In E-Mode some assets are not borrowable. Exit E-Mode to get access to all
-                      assets
-                    </Trans>
-                  </Warning>
-                )}
-                {user?.totalCollateralMarketReferenceCurrency === '0' && (
-                  <Warning severity="info">
-                    <Trans>To borrow you need to supply any asset to be used as collateral.</Trans>
-                  </Warning>
-                )}
-              </>
-            )}
-            {borrowDisabled && (
-              <Warning severity="info">
-                <Trans>
-                  We couldn&apos;t find any assets related to your search. Try again with a
-                  different category.
-                </Trans>
-              </Warning>
-            )}
-          </Box>
-        </>
+          {borrowDisabled && (
+            <Alert severity="info" data-size="small" sx={{ mb: 6, width: '100%' }}>
+              <Trans>
+                We couldn&apos;t find any assets related to your search. Try again with a different
+                category.
+              </Trans>
+            </Alert>
+          )}
+        </Box>
       }
     >
       <>
-        {!downToXSM && !!borrowReserves.length && <RenderHeader />}
+        {!showCards && !!borrowReserves.length && <RenderHeader />}
         {sortedReserves?.map((item) => (
           <Fragment key={item.underlyingAsset}>
             <AssetCapsProvider asset={item.reserve}>
-              {downToXSM ? (
+              {showCards ? (
                 <BorrowAssetsListMobileItem {...item} />
               ) : (
                 <BorrowAssetsListItem {...item} />

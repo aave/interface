@@ -111,6 +111,7 @@ export const SuppliedPositionsListItem = ({
       <ListButtonsColumn>
         {showSwitchButton ? (
           <Button
+            size="small"
             disabled={disableSwap}
             variant="contained"
             onClick={() => {
@@ -130,6 +131,7 @@ export const SuppliedPositionsListItem = ({
           </Button>
         ) : (
           <Button
+            size="small"
             disabled={disableSupply}
             variant="contained"
             onClick={() => openSupply(underlyingAsset, currentMarket, reserve.name, 'dashboard')}
@@ -138,8 +140,9 @@ export const SuppliedPositionsListItem = ({
           </Button>
         )}
         <Button
+          size="small"
           disabled={disableWithdraw}
-          variant="outlined"
+          variant="tertiary"
           onClick={() => {
             openWithdraw(underlyingAsset, currentMarket, reserve.name, 'dashboard');
           }}

@@ -10,13 +10,7 @@ import invariant from 'tiny-invariant';
 
 import { IconData, MultiIconWithTooltip } from './helpers/MultiIcon';
 
-export const StakingApyItem = ({
-  stakeData,
-  isMobile,
-}: {
-  stakeData: MergedStakeData;
-  isMobile?: boolean;
-}) => {
+export const StakingApyItem = ({ stakeData }: { stakeData: MergedStakeData }) => {
   const { reserves } = useAppDataContext();
 
   const icons: IconData[] = [];
@@ -68,24 +62,14 @@ export const StakingApyItem = ({
   }
 
   return (
-    <Stack
-      direction={isMobile ? 'row' : 'column'}
-      alignItems="center"
-      justifyContent="center"
-      gap={2}
-    >
-      <FormattedNumber
-        value={stakeData.totalRewardApy}
-        percent
-        variant="secondary14"
-        visibleDecimals={2}
-      />
+    <Stack direction="row" alignItems="center" justifyContent="center" gap={2}>
+      <FormattedNumber value={stakeData.totalRewardApy} percent variant="h5" visibleDecimals={2} />
       <MultiIconWithTooltip
         icons={icons}
         tooltipContent={
           <StakingApyTooltipcontent
             description={
-              <Typography variant="caption" color="text.secondary" mb={3}>
+              <Typography variant="caption" color="fg-2" mb={3}>
                 {stakeData.underlyingIsStataToken ? (
                   <Trans>
                     Staking this asset will earn the underlying asset supply yield in addition to
@@ -145,9 +129,9 @@ export const StakingApyTooltipcontent = ({
                     symbol={reward.symbol}
                     sx={{ fontSize: '20px', mr: 1 }}
                   />
-                  <Typography variant="secondary12">{reward.name}</Typography>
+                  <Typography variant="subheader2">{reward.name}</Typography>
                   {reward.fromSupply && (
-                    <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                    <Typography variant="caption" color="fg-2" sx={{ ml: 1 }}>
                       (<Trans>supply</Trans>)
                     </Typography>
                   )}
@@ -157,8 +141,8 @@ export const StakingApyTooltipcontent = ({
               width="100%"
             >
               <Stack direction="row">
-                <FormattedNumber value={+reward.apy} percent variant="secondary12" />
-                <Typography variant="secondary12" sx={{ ml: 1 }}>
+                <FormattedNumber value={+reward.apy} percent variant="subheader2" />
+                <Typography variant="subheader2" sx={{ ml: 1 }}>
                   <Trans>APY</Trans>
                 </Typography>
               </Stack>
@@ -172,18 +156,18 @@ export const StakingApyTooltipcontent = ({
               mt: 1,
               pt: 2,
               borderTop: '1px solid',
-              borderColor: 'divider',
+              borderColor: 'border-2',
             }}
             caption={
-              <Typography variant="secondary12" fontWeight="medium">
+              <Typography variant="subheader2" fontWeight="medium">
                 <Trans>Total</Trans>
               </Typography>
             }
             width="100%"
           >
             <Stack direction="row">
-              <FormattedNumber value={totalApy} percent variant="secondary12" fontWeight="medium" />
-              <Typography variant="secondary12" fontWeight="medium" sx={{ ml: 1 }}>
+              <FormattedNumber value={totalApy} percent variant="subheader2" fontWeight="medium" />
+              <Typography variant="subheader2" fontWeight="medium" sx={{ ml: 1 }}>
                 <Trans>APY</Trans>
               </Typography>
             </Stack>

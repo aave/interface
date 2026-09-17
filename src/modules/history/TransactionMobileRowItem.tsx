@@ -1,12 +1,13 @@
 import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import ArrowOutward from '@mui/icons-material/ArrowOutward';
-import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { ListItem } from 'src/components/lists/ListItem';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 import { useShallow } from 'zustand/shallow';
 
 import { ActionDetails, ActionTextMap } from './actions/ActionDetails';
@@ -20,7 +21,7 @@ import {
 
 function ActionTitle({ action }: { action: ActionName }) {
   return (
-    <Typography variant="subheader2" color="text.muted">
+    <Typography variant="subheader2" color="fg-3">
       <ActionTextMap action={action} />
     </Typography>
   );
@@ -36,7 +37,6 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
     useShallow((state) => [state.currentNetworkConfig, state.trackEvent])
   );
   const { openCancelCowOrder } = useModalContext();
-  const theme = useTheme();
   const explorerLink = getExplorerLink(transaction, currentNetworkConfig);
   const action = getTransactionAction(transaction);
   const timestamp = Date.parse(transaction.timestamp);
@@ -60,7 +60,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
         sx={{
           borderWidth: `1px 0 0 0`,
           borderStyle: `solid`,
-          borderColor: `${theme.palette.divider}`,
+          borderColor: `${figVars['border-0']}`,
         }}
       >
         <Box
@@ -87,7 +87,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
             </Box>
 
             <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
-              <Typography variant="caption" color="text.muted">
+              <Typography variant="caption" color="fg-3">
                 {unixTimestampToFormattedTime({ unixTimestamp: timestamp })}
               </Typography>
               {isSwapTransaction(transaction) &&
@@ -122,7 +122,7 @@ function TransactionMobileRowItem({ transaction }: TransactionHistoryItemProps) 
                     pl: 1,
                     pr: 1,
                   }}
-                  variant="outlined"
+                  variant="tertiary"
                   href={explorerLink}
                   target="_blank"
                   onClick={() =>

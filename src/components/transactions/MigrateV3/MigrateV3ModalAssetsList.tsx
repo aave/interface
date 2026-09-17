@@ -35,8 +35,8 @@ export const MigrateV3ModalAssetsList = ({ caption, assets }: MigrateV3ModalAsse
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <TokenIcon symbol={asset.iconSymbol} sx={{ mr: 1, fontSize: '16px' }} />
-                  <FormattedNumber value={asset.amount} variant="secondary14" compact />
-                  <Typography ml={1} variant="secondary14">
+                  <FormattedNumber value={asset.amount} variant="h5" compact />
+                  <Typography ml={1} variant="h5">
                     {asset.symbol}
                   </Typography>
                 </Box>
@@ -45,7 +45,7 @@ export const MigrateV3ModalAssetsList = ({ caption, assets }: MigrateV3ModalAsse
                   variant="helperText"
                   compact
                   symbol="USD"
-                  color="text.secondary"
+                  color="fg-2"
                 />
               </Box>
             ) : (

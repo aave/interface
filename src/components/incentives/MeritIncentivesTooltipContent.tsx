@@ -114,7 +114,7 @@ export const MeritIncentivesTooltipContent = ({
   const theme = useTheme();
   const { openClaimRewards } = useModalContext();
   const account = useRootStore((store) => store.account);
-  const typographyVariant = 'secondary12';
+  const typographyVariant = 'subheader2';
 
   const handleClaimClick = () => {
     openClaimRewards();
@@ -153,11 +153,11 @@ export const MeritIncentivesTooltipContent = ({
         alt=""
       />
 
-      <Typography variant="caption" color="text.primary" fontSize={13}>
+      <Typography variant="caption" color="fg-1" fontSize={13}>
         <Trans>{campaignConfig.title}</Trans>
       </Typography>
 
-      <Typography variant="caption" color="text.secondary">
+      <Typography variant="caption" color="fg-2">
         <Trans>
           This is a program initiated and implemented by the Aave Chan Initiative (ACI). Aave Labs
           does not guarantee the program and accepts no liability.
@@ -166,7 +166,7 @@ export const MeritIncentivesTooltipContent = ({
           href={'https://apps.aavechan.com/merit'}
           sx={{ textDecoration: 'underline' }}
           variant="caption"
-          color="text.secondary"
+          color="fg-2"
         >
           Learn more
         </Link>
@@ -174,7 +174,7 @@ export const MeritIncentivesTooltipContent = ({
 
       {campaignConfig.type === CampaignType.SELF_VERIFICATION && selfConfig && (
         <>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>
               Supply {selfConfig.token} and double your yield by{' '}
               <span>
@@ -182,7 +182,7 @@ export const MeritIncentivesTooltipContent = ({
                   href="https://aave.self.xyz/"
                   sx={{ textDecoration: 'underline' }}
                   variant="caption"
-                  color="text.secondary"
+                  color="fg-2"
                 >
                   verifying your humanity through Self
                 </Link>
@@ -190,7 +190,7 @@ export const MeritIncentivesTooltipContent = ({
               for {selfConfig.limit} per user.
             </Trans>{' '}
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption" color="fg-2">
             <Trans>
               Visit{' '}
               <span>
@@ -198,7 +198,7 @@ export const MeritIncentivesTooltipContent = ({
                   href="https://aave.self.xyz/"
                   sx={{ textDecoration: 'underline' }}
                   variant="caption"
-                  color="text.secondary"
+                  color="fg-2"
                 >
                   https://aave.self.xyz/
                 </Link>
@@ -209,19 +209,19 @@ export const MeritIncentivesTooltipContent = ({
         </>
       )}
       {isMultipleCampaigns(meritIncentives.activeActions) && remainingCustomMessage && (
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="fg-2">
           <Trans>{remainingCustomMessage}</Trans>
         </Typography>
       )}
       {meritIncentives.customMessage ? (
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="caption" color="fg-2">
           <Trans>{meritIncentives.customMessage}</Trans>
         </Typography>
       ) : null}
 
       <Typography
         variant="caption"
-        color="text.primary"
+        color="fg-1"
         fontSize={13}
         fontWeight={'600'}
         sx={{ display: 'inline' }}
@@ -315,7 +315,7 @@ export const MeritIncentivesTooltipContent = ({
         <Box>
           <Typography
             variant={typographyVariant}
-            // color="text.primary"
+            // color="fg-1"
             // fontSize={13}
             fontWeight={'600'}
             sx={{ mb: 1, mt: 1 }}
@@ -509,7 +509,7 @@ export const MeritIncentivesTooltipContent = ({
                 <Typography variant={typographyVariant} fontWeight="600">
                   Total APY
                 </Typography>
-                <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+                <Typography variant="caption" color="fg-2" sx={{ ml: 1 }}>
                   ({meritIncentives.breakdown.isBorrow ? 'Borrow Rate' : 'Supply Rate'})
                 </Typography>
               </Box>

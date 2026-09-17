@@ -1,7 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { depositRowActionsSx, depositRowActionSx, depositRowSx } from 'src/utils/buttonStyles';
+import { figVars } from 'src/utils/figmaColors';
 
 interface SGhoDepositRowProps {
   walletBalance: string;
@@ -16,26 +18,10 @@ export const SGhoDepositRow = ({
   onDeposit,
   onGetGho,
 }: SGhoDepositRowProps) => {
-  const { breakpoints } = useTheme();
-  const xsm = useMediaQuery(breakpoints.up('xsm'));
-
   const hasGho = +walletBalance > 0;
 
   return (
-    <Box
-      sx={(theme) => ({
-        display: 'flex',
-        alignItems: { xs: 'stretch', xsm: 'center' },
-        justifyContent: 'space-between',
-        flexDirection: { xs: 'column', xsm: 'row' },
-        gap: 4,
-        borderRadius: { xs: '8px', xsm: '6px' },
-        border: `1px solid ${theme.palette.divider}`,
-        p: 4,
-        mb: 6,
-        background: theme.palette.background.paper,
-      })}
-    >
+    <Box sx={{ ...depositRowSx, border: `1px solid ${figVars['border-0']}` }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, minWidth: 0 }}>
         <TokenIcon symbol="sgho" sx={{ width: 36, height: 36 }} />
         <Box sx={{ minWidth: 0 }}>
@@ -43,41 +29,32 @@ export const SGhoDepositRow = ({
             sGHO
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography variant="caption" color="text.secondary">
+            <Typography variant="caption" color="fg-2">
               <Trans>Available to deposit:</Trans>
             </Typography>
             <FormattedNumber
               value={walletBalance}
               variant="caption"
-              color="text.secondary"
+              color="fg-2"
               visibleDecimals={2}
             />
           </Box>
         </Box>
       </Box>
 
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: { xs: 'space-between', xsm: 'flex-end' },
-          gap: { xs: 4, xsm: 3 },
-          flexShrink: 0,
-        }}
-      >
+      <Box sx={depositRowActionsSx}>
         <Box sx={{ textAlign: 'left' }}>
-          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+          <Typography variant="caption" color="fg-2" sx={{ display: 'block' }}>
             <Trans>Staking APR</Trans>
           </Typography>
-          <FormattedNumber value={rate} percent variant="main16" visibleDecimals={2} />
+          <FormattedNumber value={rate} percent variant="h4" visibleDecimals={2} />
         </Box>
 
         {hasGho ? (
           <Button
             variant="contained"
             onClick={onDeposit}
-            fullWidth={!xsm}
-            sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
+            sx={depositRowActionSx}
             data-cy="depositBtn_SGHO"
           >
             <Trans>Deposit</Trans>
@@ -86,8 +63,7 @@ export const SGhoDepositRow = ({
           <Button
             variant="contained"
             onClick={onGetGho}
-            fullWidth={!xsm}
-            sx={{ minWidth: { xs: '140px', xsm: '96px' }, height: '36px' }}
+            sx={depositRowActionSx}
             data-cy="getGhoBtn_SGHO"
           >
             <Trans>Get GHO</Trans>

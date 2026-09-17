@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Box, useMediaQuery } from '@mui/material';
+import { useMediaQuery, useTheme } from '@mui/material';
 import { useMemo, useState } from 'react';
+import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
@@ -20,23 +21,23 @@ const listHeaders = [
     sortKey: 'symbol',
   },
   {
-    title: <ApyTooltip />,
+    title: <ApyTooltip variant="subheader2" />,
     sortKey: 'totalAPY',
   },
   {
-    title: <StakedUnderlyingTooltip />,
+    title: <StakedUnderlyingTooltip variant="subheader2" />,
     sortKey: 'stakeTokenUnderlyingBalance',
   },
   {
-    title: <SharesTooltip />,
+    title: <SharesTooltip variant="subheader2" />,
     sortKey: 'stakeSharesTokens',
   },
   {
-    title: <Trans>Available to Stake</Trans>,
+    title: <Trans>Av. to Stake</Trans>,
     sortKey: 'totalAvailableToStake',
   },
   {
-    title: <Trans>Available to Claim</Trans>,
+    title: <Trans>Av. to Claim</Trans>,
     sortKey: 'totalAvailableToClaim',
   },
   {
@@ -55,7 +56,8 @@ export default function UmbrellaAssetsList({
   stakedDataWithTokenBalances,
   isLoadingStakedDataWithTokenBalances,
 }: UmbrelaAssetsListProps) {
-  const isTableChangedToCards = useMediaQuery('(max-width:1125px)');
+  const theme = useTheme();
+  const isTableChangedToCards = useMediaQuery(theme.breakpoints.down(TABLE_CARDS_BELOW));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
 
@@ -105,30 +107,19 @@ export default function UmbrellaAssetsList({
     });
   }, [stakedDataWithTokenBalances, sortName, sortDesc]);
 
-  if (loading || isLoadingStakedDataWithTokenBalances) {
-    return isTableChangedToCards ? (
-      <>
-        <UmbrellaAssetsListMobileItemLoader />
-        <UmbrellaAssetsListMobileItemLoader />
-        <UmbrellaAssetsListMobileItemLoader />
-      </>
-    ) : (
-      <Box mt={11}>
-        <UmbrellaAssetsListItemLoader />
-        <UmbrellaAssetsListItemLoader />
-        <UmbrellaAssetsListItemLoader />
-        <UmbrellaAssetsListItemLoader />
-      </Box>
-    );
-  }
+  const isLoading = loading || isLoadingStakedDataWithTokenBalances;
+  const Loader = isTableChangedToCards
+    ? UmbrellaAssetsListMobileItemLoader
+    : UmbrellaAssetsListItemLoader;
+  const Item = isTableChangedToCards ? UmbrellaAssetsListMobileItem : UmbrellaStakeAssetsListItem;
+
   // Hide list when no results, via search term or if a market has no assets
-  if (stakedDataWithTokenBalances == undefined || stakedDataWithTokenBalances.length === 0)
-    return null;
+  if (!isLoading && sortedData.length === 0) return null;
 
   return (
     <>
       {!isTableChangedToCards && (
-        <ListHeaderWrapper px={6}>
+        <ListHeaderWrapper px={5}>
           {listHeaders.map((col) => (
             <ListColumn
               isRow={col.sortKey === 'symbol'}
@@ -149,13 +140,11 @@ export default function UmbrellaAssetsList({
         </ListHeaderWrapper>
       )}
 
-      {sortedData.map((umbrellaStakeAsset, index) =>
-        isTableChangedToCards ? (
-          <UmbrellaAssetsListMobileItem {...umbrellaStakeAsset} key={index} />
-        ) : (
-          <UmbrellaStakeAssetsListItem {...umbrellaStakeAsset} key={index} />
-        )
-      )}
+      {isLoading
+        ? Array.from({ length: isTableChangedToCards ? 3 : 4 }, (_, i) => <Loader key={i} />)
+        : sortedData.map((umbrellaStakeAsset, index) => (
+            <Item {...umbrellaStakeAsset} key={index} />
+          ))}
     </>
   );
 }

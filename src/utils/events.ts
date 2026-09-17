@@ -156,7 +156,6 @@ export const AIP = {
   VIEW_ALL_VOTES: 'View all votes modal AIP page', //done (not sure why we don't use normal modal context)
   VOTE: 'Vote on proposal transaction', //need help
   GO_BACK: 'GO Back: AIP', //done
-  SHARE_VOTE_ON_LENS: 'Share vote to lens: Vote Modal', //done
 };
 export const NAV_BAR = {
   MAIN_MENU: 'Main menu navigation', //done

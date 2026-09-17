@@ -121,7 +121,7 @@ const BlankIncentives = () => {
         justifyContent: 'center',
       }}
     >
-      <Typography variant="main12" color="text.secondary">
+      <Typography variant="main12" color="fg-2">
         &nbsp;
       </Typography>
     </Box>
@@ -154,6 +154,7 @@ export const MeritIncentivesButton = (params: {
           onClose={() => setOpen(false)}
         />
       }
+      variant="card"
       withoutHover
       setOpen={setOpen}
       open={open}
@@ -194,6 +195,7 @@ export const MerklIncentivesButton = (params: {
   return (
     <ContentWithTooltip
       tooltipContent={<MerklIncentivesTooltipContent merklIncentives={incentiveData} />}
+      variant="card"
       withoutHover
       setOpen={setOpen}
       open={open}
@@ -316,6 +318,7 @@ export const IncentivesButton = ({
           address={address}
         />
       }
+      variant="card"
       withoutHover
       setOpen={setOpen}
       open={open}
@@ -372,7 +375,7 @@ const Content = ({
     if (hideValue && hasGhoIncentives) {
       return (
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <IncentivesIcon width="16" height="16" />
+          <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
         </Box>
       );
     }
@@ -380,13 +383,8 @@ const Content = ({
       if (incentivesNetAPR !== INFINITY && incentivesNetAPR < 10000) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <FormattedNumber
-              value={incentivesNetAPR}
-              percent
-              variant="secondary12"
-              color="text.secondary"
-            />
-            <IncentivesIcon width="16" height="16" />
+            <FormattedNumber value={incentivesNetAPR} percent variant="subheader2" color="fg-2" />
+            <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
           </Box>
         );
       } else if (incentivesNetAPR !== INFINITY && incentivesNetAPR > 9999) {
@@ -396,19 +394,19 @@ const Content = ({
               value={incentivesNetAPR}
               percent
               compact
-              variant="secondary12"
-              color="text.secondary"
+              variant="subheader2"
+              color="fg-2"
             />
-            <IncentivesIcon width="16" height="16" />
+            <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
           </Box>
         );
       } else if (incentivesNetAPR === INFINITY) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <Typography variant="main12" color="text.secondary">
+            <Typography variant="main12" color="fg-2">
               ∞
             </Typography>
-            <IncentivesIcon width="16" height="16" />
+            <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
           </Box>
         );
       }
@@ -417,7 +415,7 @@ const Content = ({
     // Default behavior: show icon for non-GHO incentives
     return (
       <>
-        <IncentivesIcon width="16" height="16" />
+        <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
       </>
     );
   };
@@ -426,7 +424,7 @@ const Content = ({
 
   return (
     <Box
-      sx={() => ({
+      sx={{
         borderRadius: '4px',
         cursor: 'pointer',
         display: 'flex',
@@ -434,10 +432,10 @@ const Content = ({
         justifyContent: 'center',
         transition: 'opacity 0.2s ease',
         '&:hover': {
-          bgcolor: 'action.hover',
-          borderColor: 'action.disabled',
+          bgcolor: 'button-hover',
+          borderColor: 'disabled-fg',
         },
-      })}
+      }}
       onClick={() => {
         // TODO: How to handle this for event props?
         trackEvent(DASHBOARD.VIEW_LM_DETAILS_DASHBOARD, {});
@@ -495,39 +493,19 @@ const Content = ({
 };
 
 const ContentButton = ({ value, iconSrc }: { value: number; iconSrc: string }) => {
-  const [open, setOpen] = useState(false);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
     <Box
-      sx={(theme) => ({
-        p: { xs: '0 4px', xsm: '2px 4px' },
-        border: `1px solid ${open ? theme.palette.action.disabled : theme.palette.divider}`,
-        borderRadius: '4px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        transition: 'opacity 0.2s ease',
-        bgcolor: open ? 'action.hover' : 'transparent',
-        '&:hover': {
-          bgcolor: 'action.hover',
-          borderColor: 'action.disabled',
-        },
-      })}
+      sx={{ display: 'flex', alignItems: 'center', gap: '0.38rem', cursor: 'pointer' }}
       onClick={() => {
         trackEvent(DASHBOARD.VIEW_LM_DETAILS_DASHBOARD, {});
-        setOpen(!open);
       }}
     >
-      <Box sx={{ mr: 2 }}>
-        <Typography component="span" variant="secondary12" color="text.secondary">
-          {`${value}x`}
-        </Typography>
-      </Box>
-      <Box sx={{ display: 'inline-flex' }}>
-        <img src={iconSrc} width={12} height={12} alt="icon" />
-      </Box>
+      <img src={iconSrc} alt="icon" style={{ width: '0.875rem', height: '0.875rem' }} />
+      <Typography component="span" variant="subheader2" color="fg-3" sx={{ fontSize: '0.875rem' }}>
+        {`${value}x`}
+      </Typography>
     </Box>
   );
 };

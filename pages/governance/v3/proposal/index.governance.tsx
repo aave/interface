@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Meta } from 'src/components/Meta';
@@ -49,7 +49,7 @@ export default function ProposalPage() {
       )}
       <ProposalTopPanel />
 
-      <ContentContainer>
+      <ContentContainer disableTopPadding>
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             <ProposalOverview
@@ -59,21 +59,23 @@ export default function ProposalPage() {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            {proposal?.voteProposalData && <VoteInfo voteData={proposal.voteProposalData} />}
-            <VotingResults
-              proposal={proposal}
-              voters={voters}
-              loading={proposalLoading}
-              votesLoading={voters.isFetching}
-            />
-            <ProposalPayloads payloads={payloads} loading={payloadsLoading} />
-            {proposal?.rawCacheDetail ? (
-              <ProposalTimeline
-                proposal={proposal.rawCacheDetail}
-                payloads={payloads}
-                payloadsLoading={payloadsLoading}
+            <Stack gap={4}>
+              {proposal?.voteProposalData && <VoteInfo voteData={proposal.voteProposalData} />}
+              <VotingResults
+                proposal={proposal}
+                voters={voters}
+                loading={proposalLoading}
+                votesLoading={voters.isFetching}
               />
-            ) : null}
+              <ProposalPayloads payloads={payloads} loading={payloadsLoading} />
+              {proposal?.rawCacheDetail ? (
+                <ProposalTimeline
+                  proposal={proposal.rawCacheDetail}
+                  payloads={payloads}
+                  payloadsLoading={payloadsLoading}
+                />
+              ) : null}
+            </Stack>
           </Grid>
         </Grid>
       </ContentContainer>

@@ -1,7 +1,7 @@
 import { DelegationType } from '@aave/contract-helpers';
 import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
@@ -39,37 +39,28 @@ type TokenRowProps = {
 };
 
 export const TokenRow: React.FC<TokenRowProps> = ({ symbol, amount }) => {
+  const symbols = Array.isArray(symbol) ? symbol : [symbol];
+
   return (
     <Row
-      sx={{ alignItems: 'center', width: '100%' }}
-      caption={
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          {Array.isArray(symbol) ? (
-            symbol.map((token, index) => (
-              <>
-                <TokenIcon
-                  aToken={token === 'aAAVE'}
-                  symbol={token === 'aAAVE' ? 'aave' : token}
-                  sx={{ width: 16, height: 16 }}
-                />
-                <Typography variant="subheader1">{token}</Typography>
-                {index < symbol.length - 1 && <Typography variant="subheader1">+</Typography>}
-              </>
-            ))
-          ) : (
-            <>
-              <TokenIcon
-                aToken={symbol === 'aAAVE'}
-                symbol={symbol === 'aAAVE' ? 'aave' : symbol}
-                sx={{ width: 16, height: 16 }}
-              />
-              <Typography variant="subheader1">{symbol}</Typography>
-            </>
-          )}
-        </Box>
-      }
+      align="flex-start"
+      sx={{ width: '100%' }}
+      captionSx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 2 }}
+      caption={symbols.map((token, index) => (
+        <Fragment key={token}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <TokenIcon
+              aToken={token === 'aAAVE'}
+              symbol={token === 'aAAVE' ? 'aave' : token}
+              sx={{ width: 16, height: 16 }}
+            />
+            <Typography variant="subheader1">{token}</Typography>
+          </Box>
+          {index < symbols.length - 1 && <Typography variant="subheader1">+</Typography>}
+        </Fragment>
+      ))}
     >
-      <FormattedNumber variant="secondary14" color="text.secondary" value={amount} />
+      <FormattedNumber variant="h5" color="fg-2" value={amount} sx={{ flexShrink: 0 }} />
     </Row>
   );
 };
@@ -117,11 +108,14 @@ export const DelegationTokenSelector = ({
         onChange={(e) =>
           setDelegationTokenType(Number(e.target.value) as unknown as DelegationTokenType)
         }
+        sx={{
+          '& .MuiFormControlLabel-root': { mr: 0, alignItems: 'flex-start' },
+          '& .MuiFormControlLabel-label': { width: '100%', minWidth: 0, mt: '0.5rem' },
+        }}
       >
         <FormControlLabel
           value={DelegationTokenType.ALL}
           control={<Radio size="small" />}
-          componentsProps={{ typography: { width: '100%' } }}
           label={
             <TokenRow
               symbol={['AAVE', 'stkAAVE', 'aAAVE']}
@@ -133,21 +127,18 @@ export const DelegationTokenSelector = ({
         <FormControlLabel
           value={DelegationTokenType.AAVE}
           control={<Radio size="small" />}
-          componentsProps={{ typography: { width: '100%' } }}
           label={<TokenRow symbol="AAVE" amount={aave} />}
           data-cy={`delegate-token-AAVE`}
         />
         <FormControlLabel
           value={DelegationTokenType.STKAAVE}
           control={<Radio size="small" />}
-          componentsProps={{ typography: { width: '100%' } }}
           label={<TokenRow symbol="stkAAVE" amount={stkAave} />}
           data-cy={`delegate-token-stkAAVE`}
         />
         <FormControlLabel
           value={DelegationTokenType.aAave}
           control={<Radio size="small" />}
-          componentsProps={{ typography: { width: '100%' } }}
           label={<TokenRow symbol="aAAVE" amount={aAave} />}
           data-cy={`delegate-token-aAave`}
         />

@@ -17,7 +17,7 @@ export const ListColumn = ({
   children,
   minWidth,
   maxWidth,
-  align = 'center',
+  align = 'left',
   overFlow = 'visible',
   flex = 1,
   p = 1,
