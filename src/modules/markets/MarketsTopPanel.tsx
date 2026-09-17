@@ -6,6 +6,7 @@ import { PageHeader } from '../../components/PageHeader/PageHeader';
 import { PageHeaderStat } from '../../components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { useAppDataContext } from '../../hooks/app-data-provider/useAppDataProvider';
+import { ProtocolTotalsStats } from './ProtocolTotalsStats';
 
 export const MarketsTopPanel = () => {
   const { market, totalBorrows, loading } = useAppDataContext();
@@ -16,6 +17,7 @@ export const MarketsTopPanel = () => {
       title={<MarketSwitcher />}
       containerProps={marketContainerProps}
     >
+      <ProtocolTotalsStats />
       <PageHeaderStat label={<Trans>Total market size</Trans>} loading={loading}>
         <FormattedNumber
           value={Number(market?.totalMarketSize)}
