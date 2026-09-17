@@ -1,0 +1,26 @@
+src/components/ContentWithTooltip.tsx
+  s_a6ac004da5fc5f::t_2dd47ba1afa806 4,15-16,67
+  s_a6ac004da5fc5f::t_16b5e9acb54c31 19-21,51,88
+  s_a6ac004da5fc5f::t_0b245730333e9a 24-27,30,42-50,52-54
+src/modules/dev/ComponentShowcase/components/OverlaysSection/index.tsx
+  s_a6ac004da5fc5f::t_d1e77242e48fe0 56-79,94,99-100
+  s_a6ac004da5fc5f::t_b00cb6fd4efbfb 1,5,95-98
+src/components/incentives/IncentivesButton.tsx
+  s_a6ac004da5fc5f::t_5a243ea86d2633 157,198,321
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1cf4edcc67c0d432ed7bcb4e9fb33335aa1ec36e",
+  "prompts": {},
+  "sessions": {
+    "s_a6ac004da5fc5f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cb2c04ce-07fa-40a4-94c2-b6ae2b3f4789",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
