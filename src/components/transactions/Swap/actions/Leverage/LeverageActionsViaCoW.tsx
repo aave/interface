@@ -18,16 +18,12 @@ import { COW_PARTNER_FEE } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
   addOrderTypeToAppData,
-  getCowFlashLoanSdk,
+  getCowLeverageSdk,
   getCowTradingSdkByChainIdAndAppCode,
   overrideSmartSlippageOnAppData,
   toSdkFlashLoanType,
 } from '../../helpers/cow';
-import {
-  accountForDustProtection,
-  calculateInstanceAddress,
-  getHooksGasLimit,
-} from '../../helpers/cow/adapters.helpers';
+import { calculateInstanceAddress, getHooksGasLimit } from '../../helpers/cow/adapters.helpers';
 import { useCollateralsAmount } from '../../hooks/useCollateralsAmount';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
@@ -44,15 +40,17 @@ import {
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
- * Debt swap via CoW Protocol Flashloan Adapters.
+ * Leverage via CoW Protocol Flashloan Adapters.
  *
  * Flow summary:
- * 1) Approve delegation on the destination variable debt token (permit supported)
- * 2) Compute flashloan fee and sell amount; we temporarily borrow to close existing debt
- * 3) Create a LIMIT order INVERTED relative to the UI: new debt asset -> old debt asset
- * 4) Post order with adapter swap settings; adapter executes the repay + reborrow atomically
+ * 1) Approve delegation on the borrowed asset's variable debt token (permit supported)
+ * 2) Flash-loan that asset and sell it for the collateral the user asked for
+ * 3) The post-hook supplies the bought collateral, then draws the debt to repay the flash loan
+ *
+ * The order is INVERTED relative to the UI: the user picks collateral to acquire, the swap sells
+ * the debt that finances it.
  */
-export const DebtSwapActionsViaCoW = ({
+export const LeverageActionsViaCoW = ({
   state,
   setState,
   trackingHandlers,
@@ -66,7 +64,7 @@ export const DebtSwapActionsViaCoW = ({
     useShallow((state) => [state.account, state.currentMarket])
   );
 
-  const debtAmount = useCollateralsAmount();
+  const collateralsAmount = useCollateralsAmount();
 
   const {
     mainTxState,
@@ -86,15 +84,14 @@ export const DebtSwapActionsViaCoW = ({
     [state.expiry]
   );
 
-  // Pre-compute instance address.
-  // Skip recalculation while approval is in progress or succeeded to prevent in-flight quote
-  // responses from changing the adapter address and invalidating the user's signature.
+  // Skip recalculation while approval is in progress or succeeded, so an in-flight quote cannot
+  // change the adapter address and invalidate the user's signature.
   useEffect(() => {
     if (approvalTxState.loading || approvalTxState.success) return;
     calculateInstanceAddress({
       user,
       validTo,
-      type: FlashLoanFlow.DebtSwap,
+      type: FlashLoanFlow.Leverage,
       state,
       market: currentMarket,
     })
@@ -134,10 +131,11 @@ export const DebtSwapActionsViaCoW = ({
 
   const { hasActiveOrderForSellToken, trackSwapOrderProgress } = useSwapOrdersTracking();
   const sellAssetAddress =
-    state.sellAmountToken?.underlyingAddress || state.sourceToken.addressToSwap;
+    state.sellAmountToken?.underlyingAddress || state.destinationToken.addressToSwap;
   const disablePermitDueToActiveOrder = hasActiveOrderForSellToken(state.chainId, sellAssetAddress);
 
-  // Approval is to the destination token via delegation Approval
+  // The adapter draws the borrowed asset on the user's behalf, so it needs credit delegation on
+  // that asset's debt token.
   const {
     requiresApproval,
     approval,
@@ -155,14 +153,13 @@ export const DebtSwapActionsViaCoW = ({
     decimals: state.destinationToken.decimals,
     spender: precalculatedInstanceAddress,
     setState,
-    allowPermit: !disablePermitDueToActiveOrder, // avoid nonce reuse if active order present
-    type: 'delegation', // Debt swap uses delegation
+    allowPermit: !disablePermitDueToActiveOrder,
+    type: 'delegation',
     trackingHandlers,
     swapType: state.swapType,
     validTo,
   });
 
-  // Use centralized gas estimation
   useSwapGasEstimation({
     state,
     setState,
@@ -197,42 +194,30 @@ export const DebtSwapActionsViaCoW = ({
         state.chainId,
         APP_CODE_PER_SWAP_TYPE[state.swapType]
       );
-      const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
-
-      const sellAmountWithMarginForDustProtection = accountForDustProtection(
-        state.sellAmountBigInt.toString(),
-        state.swapType,
-        state.orderType
-      );
-      const buyAmountWithMarginForDustProtection = accountForDustProtection(
-        state.buyAmountBigInt.toString(),
-        state.swapType,
-        state.orderType
-      );
+      const flashLoanSdk = await getCowLeverageSdk(state.chainId);
 
       const delegationPermit = signatureParams
         ? {
-            amount: signatureParams?.amount,
-            deadline: Number(signatureParams?.deadline),
-            v: signatureParams?.splitedSignature.v,
-            r: signatureParams?.splitedSignature.r,
-            s: signatureParams?.splitedSignature.s,
+            amount: signatureParams.amount,
+            deadline: Number(signatureParams.deadline),
+            v: signatureParams.splitedSignature.v,
+            r: signatureParams.splitedSignature.r,
+            s: signatureParams.splitedSignature.s,
           }
         : undefined;
 
       const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
         flashLoanFeeBps: state.flashLoanFeeBps,
-        sellAmount: BigInt(sellAmountWithMarginForDustProtection),
+        sellAmount: state.sellAmountBigInt,
       });
 
-      // On Debt Swap, the side is inverted for the swap
       const limitOrder: LimitTradeParameters = {
         sellToken: state.sellAmountToken.underlyingAddress,
         sellTokenDecimals: state.sellAmountToken.decimals,
         buyToken: state.buyAmountToken.underlyingAddress,
         buyTokenDecimals: state.buyAmountToken.decimals,
         sellAmount: sellAmountToSign.toString(),
-        buyAmount: buyAmountWithMarginForDustProtection.toString(),
+        buyAmount: state.buyAmountBigInt.toString(),
         kind: state.processedSide === 'buy' ? OrderKind.BUY : OrderKind.SELL,
         quoteId: isCowProtocolRates(state.swapRate) ? state.swapRate?.quoteId : undefined,
         validTo,
@@ -258,17 +243,18 @@ export const DebtSwapActionsViaCoW = ({
       );
 
       const orderPostParams = await flashLoanSdk.getOrderPostingSettings(
-        toSdkFlashLoanType(FlashLoanFlow.DebtSwap),
+        toSdkFlashLoanType(FlashLoanFlow.Leverage),
         {
           chainId: state.chainId,
           validTo,
           owner: user as `0x${string}`,
           flashLoanFeeAmount,
-          hooksGasLimit: getHooksGasLimit(debtAmount),
+          hooksGasLimit: getHooksGasLimit(collateralsAmount),
         },
         {
-          flashLoanAmount: BigInt(sellAmountWithMarginForDustProtection),
+          flashLoanAmount: state.sellAmountBigInt,
           orderToSign,
+          // Carries the credit delegation; the leverage post-hook encodes it as its second tuple.
           collateralPermit: delegationPermit,
         }
       );
@@ -281,7 +267,6 @@ export const DebtSwapActionsViaCoW = ({
           instanceAddress,
           approvedAddress
         );
-        // Force re-approve
         setPrecalculatedInstanceAddress(instanceAddress);
         setApprovalTxState({
           txHash: undefined,
@@ -311,7 +296,6 @@ export const DebtSwapActionsViaCoW = ({
         success: true,
         txHash: result.orderId,
       });
-      // Save to local history and start tracking status
       saveCowOrderToUserHistory({
         protocol: 'cow',
         orderId: result.orderId,
@@ -333,7 +317,7 @@ export const DebtSwapActionsViaCoW = ({
           decimals: state.buyAmountToken.decimals,
         },
         adapterInstanceAddress: instanceAddress,
-        usedAdapter: true, // DebtSwap always uses adapter
+        usedAdapter: true,
         srcAmount: state.sellAmountBigInt.toString(),
         destAmount: state.buyAmountBigInt.toString(),
       });
@@ -342,7 +326,7 @@ export const DebtSwapActionsViaCoW = ({
         actionsLoading: false,
       });
     } catch (error) {
-      console.error('DebtSwapActionsViaCoW error', error);
+      console.error('LeverageActionsViaCoW error', error);
       setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, true));
       setMainTxState({
         txHash: undefined,
@@ -373,14 +357,14 @@ export const DebtSwapActionsViaCoW = ({
         approvalTxState.loading ? (
           <Trans>Checking approval</Trans>
         ) : (
-          <Trans>Swap {state.sourceToken.symbol} debt</Trans>
+          <Trans>Leverage {state.sourceToken.symbol}</Trans>
         )
       }
       actionInProgressText={
         approvalTxState.loading ? (
           <Trans>Checking approval</Trans>
         ) : (
-          <Trans>Swapping {state.sourceToken.symbol} debt</Trans>
+          <Trans>Leveraging {state.sourceToken.symbol}</Trans>
         )
       }
       errorParams={{
@@ -392,7 +376,7 @@ export const DebtSwapActionsViaCoW = ({
         content: approvalTxState.loading ? (
           <Trans>Checking approval</Trans>
         ) : (
-          <Trans>Swap {state.sourceToken.symbol} debt</Trans>
+          <Trans>Leverage {state.sourceToken.symbol}</Trans>
         ),
         handleClick: action,
       }}

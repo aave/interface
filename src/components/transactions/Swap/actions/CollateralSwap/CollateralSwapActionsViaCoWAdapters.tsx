@@ -1,6 +1,6 @@
 import { normalize } from '@aave/math-utils';
 import { getOrderToSign, LimitTradeParameters, OrderKind, OrderStatus } from '@cowprotocol/cow-sdk';
-import { AaveFlashLoanType, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
+import { HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
@@ -20,6 +20,7 @@ import {
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
   overrideSmartSlippageOnAppData,
+  toSdkFlashLoanType,
 } from '../../helpers/cow';
 import { calculateInstanceAddress, getHooksGasLimit } from '../../helpers/cow/adapters.helpers';
 import { useCollateralsAmount } from '../../hooks/useCollateralsAmount';
@@ -27,6 +28,7 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
   ExpiryToSecondsMap,
+  FlashLoanFlow,
   isCowProtocolRates,
   isShieldBlocked,
   OrderType,
@@ -83,7 +85,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
     calculateInstanceAddress({
       user,
       validTo,
-      type: AaveFlashLoanType.CollateralSwap,
+      type: FlashLoanFlow.CollateralSwap,
       state,
       market: currentMarket,
     })
@@ -229,7 +231,7 @@ export const CollateralSwapActionsViaCowAdapters = ({
       );
 
       const orderPostParams = await flashLoanSdk.getOrderPostingSettings(
-        AaveFlashLoanType.CollateralSwap,
+        toSdkFlashLoanType(FlashLoanFlow.CollateralSwap),
         {
           chainId: state.chainId,
           validTo,

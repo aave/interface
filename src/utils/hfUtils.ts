@@ -25,6 +25,17 @@ export interface CalculateHFAfterSwapProps {
   eModes: Record<number, EmodeCategory>;
 }
 
+export interface CalculateHFAfterLeverageProps {
+  /** Collateral bought by the swap and supplied for the user. */
+  collateralAmount: BigNumberValue;
+  collateralAssetData: ComputedReserveData;
+  /** Debt drawn on the user's position to repay the flash loan. */
+  debtAmount: BigNumberValue;
+  debtAssetData: ComputedReserveData;
+  user: ExtendedFormattedUser;
+  eModes: Record<number, EmodeCategory>;
+}
+
 interface CalculateHFAfterSwapRepayProps {
   amountToReceiveAfterSwap: BigNumberValue;
   amountToSwap: BigNumberValue;
@@ -210,6 +221,75 @@ export function calculateHFAfterSwap({
   }
 
   return { hfEffectOfFromAmount, hfAfterSwap };
+}
+
+/**
+ * Leverage raises collateral and debt together, which no `fromAssetType`/`toAssetType` pair in
+ * `calculateHFAfterSwap` expresses: every combination there withdraws or repays one side.
+ *
+ * Collateral that cannot count for the user (zero effective LTV, or blocked by isolation mode) is
+ * left out of the projection, so the resulting health factor stays honest about the position
+ * getting worse rather than better.
+ */
+export function calculateHFAfterLeverage({
+  collateralAmount,
+  collateralAssetData,
+  debtAmount,
+  debtAssetData,
+  user,
+  eModes,
+}: CalculateHFAfterLeverageProps) {
+  const currentCollateral = valueToBigNumber(user.totalCollateralMarketReferenceCurrency);
+  const currentBorrows = valueToBigNumber(user.totalBorrowsMarketReferenceCurrency);
+
+  const collateralEmode = collateralAssetData.eModes.find(
+    (elem) => elem.id === user.userEmodeCategoryId
+  );
+  const countsAsCollateral =
+    hasNonZeroEffectiveLtv({
+      baseLTVasCollateral: collateralAssetData.baseLTVasCollateral,
+      isInEmode: user.isInEmode,
+      emodeEntry: collateralEmode,
+      isEModeIsolated: !!eModes[user.userEmodeCategoryId]?.isolated,
+    }) &&
+    ((!user.isInIsolationMode && !collateralAssetData.isIsolated) ||
+      (user.isInIsolationMode &&
+        user.isolatedReserve?.underlyingAsset === collateralAssetData.underlyingAsset));
+
+  const addCollateralMR = countsAsCollateral
+    ? valueToBigNumber(collateralAmount).multipliedBy(
+        collateralAssetData.formattedPriceInMarketReferenceCurrency
+      )
+    : valueToBigNumber('0');
+  const addDebtMR = valueToBigNumber(debtAmount).multipliedBy(
+    debtAssetData.formattedPriceInMarketReferenceCurrency
+  );
+
+  const newCollateral = currentCollateral.plus(addCollateralMR);
+  const newBorrows = currentBorrows.plus(addDebtMR);
+
+  if (newCollateral.lte(0)) {
+    return { hfAfterLeverage: valueToBigNumber('-1') };
+  }
+
+  const collateralReserveLT =
+    user.isInEmode && collateralEmode
+      ? collateralEmode.eMode.formattedLiquidationThreshold
+      : collateralAssetData.formattedReserveLiquidationThreshold;
+
+  const ltAfter = valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
+    .multipliedBy(user.currentLiquidationThreshold)
+    .plus(addCollateralMR.multipliedBy(collateralReserveLT))
+    .div(newCollateral)
+    .toFixed(4);
+
+  return {
+    hfAfterLeverage: calculateHealthFactorFromBalancesBigUnits({
+      collateralBalanceMarketReferenceCurrency: newCollateral,
+      borrowBalanceMarketReferenceCurrency: newBorrows,
+      currentLiquidationThreshold: ltAfter,
+    }),
+  };
 }
 
 export const calculateHFAfterRepay = ({

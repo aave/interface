@@ -37,6 +37,8 @@ interface TokenSelectionParams {
 export const swapTypesThatRequiresInvertedQuote: SwapType[] = [
   SwapType.DebtSwap,
   SwapType.RepayWithCollateral,
+  // The user asks for collateral to acquire; the swap sells the debt that finances it.
+  SwapType.Leverage,
 ];
 
 const getTokenSelectionForQuote = (

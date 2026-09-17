@@ -17,8 +17,22 @@ import {
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { COW_PARTNER_FEE, DUST_PROTECTION_MULTIPLIER } from '../../constants/cow.constants';
-import { isCowProtocolRates, OrderType, SwapProvider, SwapState, SwapType } from '../../types';
-import { getCowFlashLoanSdk } from './env.helpers';
+import {
+  FlashLoanFlow,
+  isCowProtocolRates,
+  OrderType,
+  SwapProvider,
+  SwapState,
+  SwapType,
+} from '../../types';
+import { getCowFlashLoanSdkForFlow } from './env.helpers';
+
+/**
+ * `FlashLoanFlow` mirrors the value set of the SDK's `AaveFlashLoanType`, but TypeScript enums are
+ * nominal, so the SDK will not accept ours directly. This is the single place that widening
+ * happens, and it stays sound while the string values agree.
+ */
+export const toSdkFlashLoanType = (flow: FlashLoanFlow) => flow as unknown as AaveFlashLoanType;
 
 export const accountForDustProtection = (
   amount: string,
@@ -40,7 +54,7 @@ export const calculateInstanceAddress = async ({
 }: {
   user: string;
   validTo: number;
-  type: AaveFlashLoanType;
+  type: FlashLoanFlow;
   state: SwapState;
   market: CustomMarket;
 }) => {
@@ -54,7 +68,7 @@ export const calculateInstanceAddress = async ({
   )
     return;
 
-  const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
+  const flashLoanSdk = await getCowFlashLoanSdkForFlow(state.chainId, type);
   const {
     sellAmountWithMarginForDustProtection,
     buyAmountWithMarginForDustProtection,
@@ -133,7 +147,7 @@ export const calculateInstanceAddress = async ({
   };
 
   return await flashLoanSdk.getExpectedInstanceAddress(
-    type,
+    toSdkFlashLoanType(type),
     state.chainId,
     user as `0x${string}`,
     hookAmounts,
@@ -228,13 +242,13 @@ export const getAppDataForQuote = async ({}: // user,
   //   AAVE_ADAPTER_FACTORY[chainId].length > 0 ? AAVE_ADAPTER_FACTORY[chainId] : API_ETH_MOCK_ADDRESS;
   // const pool =
   //   AAVE_POOL_ADDRESS[chainId].length > 0 ? AAVE_POOL_ADDRESS[chainId] : API_ETH_MOCK_ADDRESS;
-  // const AAVE_SWAP_TYPE_TO_COW_TYPE: Partial<Record<SwapType, AaveFlashLoanType>> = {
-  //   [SwapType.CollateralSwap]: AaveFlashLoanType.CollateralSwap,
-  //   [SwapType.DebtSwap]: AaveFlashLoanType.DebtSwap,
-  //   [SwapType.RepayWithCollateral]: AaveFlashLoanType.RepayCollateral,
+  // const AAVE_SWAP_TYPE_TO_COW_TYPE: Partial<Record<SwapType, FlashLoanFlow>> = {
+  //   [SwapType.CollateralSwap]: FlashLoanFlow.CollateralSwap,
+  //   [SwapType.DebtSwap]: FlashLoanFlow.DebtSwap,
+  //   [SwapType.RepayWithCollateral]: FlashLoanFlow.RepayCollateral,
   // } as const;
   // const dappId =
-  //   AAVE_DAPP_ID_PER_TYPE[AAVE_SWAP_TYPE_TO_COW_TYPE[type] ?? AaveFlashLoanType.CollateralSwap];
+  //   AAVE_DAPP_ID_PER_TYPE[AAVE_SWAP_TYPE_TO_COW_TYPE[type] ?? FlashLoanFlow.CollateralSwap];
 
   // // const flashLoanSdk = new AaveCollateralSwapSdk();
   // // const { flashLoanFeeAmount, sellAmountToSign } = flashLoanSdk.calculateFlashLoanAmounts({
@@ -242,13 +256,13 @@ export const getAppDataForQuote = async ({}: // user,
   // //   flashLoanFeeBps: FLASH_LOAN_FEE_BPS,
   // // });
 
-  // // let cowType: AaveFlashLoanType;
+  // // let cowType: FlashLoanFlow;
   // // if (type === SwapType.CollateralSwap) {
-  // //   cowType = AaveFlashLoanType.CollateralSwap;
+  // //   cowType = FlashLoanFlow.CollateralSwap;
   // // } else if (type === SwapType.DebtSwap) {
-  // //   cowType = AaveFlashLoanType.DebtSwap;
+  // //   cowType = FlashLoanFlow.DebtSwap;
   // // } else  if(type === SwapType.RepayWithCollateral) {
-  // //   cowType = AaveFlashLoanType.RepayCollateral;
+  // //   cowType = FlashLoanFlow.RepayCollateral;
   // // } else {
   // //   throw new Error('Invalid swap type');
   // // }

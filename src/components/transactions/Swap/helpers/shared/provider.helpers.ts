@@ -73,6 +73,9 @@ export const getSwitchProvider = ({
     return SwapProvider.COW_PROTOCOL;
   }
 
+  // Leverage exists only on the CoW adapters, so there is nothing to fall back to.
+  if (swapType === SwapType.Leverage) return undefined;
+
   // Fallback to ParaSwap only if supported on this chain
   if (ParaswapSupportedNetworks.includes(chainId)) {
     return SwapProvider.PARASWAP;
