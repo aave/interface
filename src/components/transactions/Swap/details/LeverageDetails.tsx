@@ -135,7 +135,7 @@ export const LeverageDetails = ({
         </Row>
       )}
 
-      <Row caption={<Trans>Net apy</Trans>} captionVariant="description" mb={4}>
+      <Row caption={<Trans>Net APY</Trans>} captionVariant="description" mb={4}>
         {state.ratesLoading || !netApy ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
         ) : (
