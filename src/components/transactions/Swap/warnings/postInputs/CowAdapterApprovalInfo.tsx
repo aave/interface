@@ -12,7 +12,8 @@ export function CowAdapterApprovalInfo({ state }: { state: SwapState }) {
   const isAdapterFlow =
     state.swapType === SwapType.CollateralSwap ||
     state.swapType === SwapType.DebtSwap ||
-    state.swapType === SwapType.RepayWithCollateral;
+    state.swapType === SwapType.RepayWithCollateral ||
+    state.swapType === SwapType.Leverage;
   const isFlashloan = state.useFlashloan;
 
   if (!isCow || !isAdapterFlow || approvalTxState?.success || !isFlashloan) return null;
