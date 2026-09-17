@@ -689,21 +689,11 @@ export const MarketSwitcher = () => {
             l2.map((id) => renderGridItem(id, mobile))
           )}
 
-        {/* Legacy + V2 markets link */}
+        {/* Legacy */}
         {showLegacy &&
           renderSection(
             <Trans>Legacy</Trans>,
-            <>
-              {legacy.map((id) => renderGridItem(id, mobile))}
-              {renderLinkRow(
-                {
-                  logo: '/favicon.ico',
-                  href: 'https://v2-market.aave.com/',
-                  label: <Trans>V2 Markets</Trans>,
-                },
-                mobile
-              )}
-            </>
+            legacy.map((id) => renderGridItem(id, mobile))
           )}
 
         {/* No results */}
