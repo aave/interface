@@ -1,4 +1,4 @@
-import { OrderParameters, QuoteAmountsAndCosts, QuoteAndPost } from '@cowprotocol/cow-sdk';
+import { QuoteAmountsAndCosts, QuoteAndPost, UnsignedOrder } from '@cowprotocol/cow-sdk';
 import { OptimalRate } from '@paraswap/core';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -82,7 +82,7 @@ export type CowProtocolRatesType = BaseSwitchRates & {
   suggestedSlippage: number;
   amountAndCosts: QuoteAmountsAndCosts;
 
-  order: OrderParameters;
+  order: UnsignedOrder;
   quoteId?: number;
   orderBookQuote: QuoteAndPost;
 };
