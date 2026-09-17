@@ -75,7 +75,7 @@ export const LeverageMultiplierSelector = ({
         <Typography variant="description" color="text.secondary">
           <Trans>Leverage</Trans>
         </Typography>
-        <Typography variant="secondary14">
+        <Typography variant="h5">
           {(projected ?? current).toFixed(2)}
           {'×'}
         </Typography>

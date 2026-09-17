@@ -252,8 +252,7 @@ export const LeverageActionsViaCoW = ({
           hooksGasLimit: getHooksGasLimit(collateralsAmount),
         },
         {
-          sellAmount: state.sellAmountBigInt,
-          buyAmount: state.buyAmountBigInt,
+          flashLoanAmount: state.sellAmountBigInt,
           orderToSign,
           // Carries the credit delegation; the leverage post-hook encodes it as its second tuple.
           collateralPermit: delegationPermit,
