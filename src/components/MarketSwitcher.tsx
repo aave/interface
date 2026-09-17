@@ -19,6 +19,7 @@ import {
 import React, { useMemo, useRef, useState } from 'react';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
+import { ShimmerText } from 'src/components/ShimmerText';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
 import { DASHBOARD } from 'src/utils/events';
@@ -37,6 +38,8 @@ import {
 } from '../utils/marketsAndNetworksConfig';
 
 const HOVER_FADE = `${motion.duration.hoverSlow}ms ${motion.easing.standard}`;
+
+const MARKET_TITLE_SX = { fontSize: '1.875rem', mr: '0.5rem' };
 
 export const getMarketInfoById = (marketId: CustomMarket) => {
   const market: MarketDataType = marketsData[marketId as CustomMarket];
@@ -267,6 +270,8 @@ const V4_LINKS: V4Link[] = [
 
 export const MarketSwitcher = () => {
   const [open, setOpen] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showLegacy, setShowLegacy] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -758,13 +763,18 @@ export const MarketSwitcher = () => {
         aria-expanded={open}
         aria-label={t`Select market`}
         data-cy="marketSelector"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onFocus={(e: React.FocusEvent<HTMLElement>) =>
+          setFocused(e.target.matches(':focus-visible'))
+        }
+        onBlur={() => setFocused(false)}
         sx={{
           mr: 2,
           cursor: 'pointer',
           display: 'flex',
           flexDirection: 'column',
           color: 'fg-1',
-          '&:hover .market-picker-fade': { opacity: 0.6 },
         }}
       >
         <Box ref={triggerRowRef} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -774,18 +784,12 @@ export const MarketSwitcher = () => {
             testChainName={currentMarketNaming.testChainName}
             sx={{ width: '1.75rem', height: '1.75rem', mr: '0.75rem' }}
           />
-          <Typography
-            className="market-picker-fade"
+          <ShimmerText
             variant="h2"
-            sx={{
-              fontSize: '1.875rem',
-              mr: '0.5rem',
-              transition: `opacity ${HOVER_FADE}`,
-            }}
-          >
-            {currentMarketNaming.name}
-            {currentMarketData.isFork ? ' Fork' : ''}
-          </Typography>
+            sx={MARKET_TITLE_SX}
+            active={hovered || focused || open}
+            text={`${currentMarketNaming.name}${currentMarketData.isFork ? ' Fork' : ''}`}
+          />
           <Box
             sx={{
               display: 'flex',
