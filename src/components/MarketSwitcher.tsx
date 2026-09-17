@@ -266,6 +266,13 @@ const V4_LINKS: V4Link[] = [
     url: AAVE_PRO_URL,
     section: 'other',
   },
+  {
+    id: 'aave_pro_arc_v4',
+    label: 'Arc',
+    logo: '/icons/networks/arc.svg',
+    url: AAVE_PRO_URL,
+    section: 'other',
+  },
 ];
 
 export const MarketSwitcher = () => {
