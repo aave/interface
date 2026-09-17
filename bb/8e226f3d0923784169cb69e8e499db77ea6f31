@@ -1,0 +1,39 @@
+src/components/transactions/Swap/details/LeverageDetails.tsx
+  s_ab10332123d478::t_95f7b9785dc0b8 138
+src/components/transactions/Swap/errors/shared/SupplyCapBlockingGuard.tsx
+  s_ab10332123d478::t_1b97eb55e7bfd6 16-19
+src/components/transactions/Swap/errors/shared/ZeroLTVBlockingGuard.tsx
+  s_ab10332123d478::t_e83a0457cb73b6 21-22
+src/components/transactions/Swap/helpers/shared/__tests__/leverage.helpers.spec.ts
+  s_ab10332123d478::t_d41706136a6539 1-129
+src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+  s_ab10332123d478::t_65d6f82ed4af4f 143-150
+src/components/transactions/Swap/warnings/postInputs/CowAdapterApprovalInfo.tsx
+  s_ab10332123d478::t_48cb1357849247 15-16
+src/locales/el/messages.js
+  s_ab10332123d478::t_dd2859f07d1f50 1
+src/locales/en/messages.js
+  s_ab10332123d478::t_6c4c9b4c506e03 1
+src/locales/en/messages.po
+  s_ab10332123d478::t_fdec173f65b88c 3054
+src/locales/es/messages.js
+  s_ab10332123d478::t_37f25a6bebe6f1 1
+src/locales/fr/messages.js
+  s_ab10332123d478::t_6a8c873ca84513 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "bb8e226f3d0923784169cb69e8e499db77ea6f31",
+  "prompts": {},
+  "sessions": {
+    "s_ab10332123d478": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c596ad02-962e-4ef0-b54d-7acc7669cb29",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
