@@ -61,8 +61,8 @@ export const HOOK_ADAPTER_PER_TYPE: Record<FlashLoanFlow, Record<SupportedChainI
     [SupportedChainId.LINEA]: '',
     [SupportedChainId.PLASMA]: '',
     [SupportedChainId.SEPOLIA]: '',
-    [SupportedChainId.LENS]: '',
     [SupportedChainId.INK]: '',
+    [SupportedChainId.SOLANA]: '',
   },
 };
 

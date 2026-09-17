@@ -80,7 +80,7 @@ export const LeverageDetails = ({
         <>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <TokenIcon symbol={iconSymbol} sx={{ mr: 2, ml: 4, fontSize: '16px' }} />
-            <FormattedNumber value={amount} variant="secondary14" compact symbol={symbol} />
+            <FormattedNumber value={amount} variant="h5" compact symbol={symbol} />
           </Box>
           <FormattedNumber
             value={amountUSD}
@@ -120,13 +120,13 @@ export const LeverageDetails = ({
               />
             ) : (
               <>
-                <Typography variant="secondary14">{`${leverageBefore.toFixed(2)}×`}</Typography>
+                <Typography variant="h5">{`${leverageBefore.toFixed(2)}×`}</Typography>
                 {leverageAfter && (
                   <>
                     <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
                       <ArrowNarrowRightIcon />
                     </SvgIcon>
-                    <Typography variant="secondary14">{`${leverageAfter.toFixed(2)}×`}</Typography>
+                    <Typography variant="h5">{`${leverageAfter.toFixed(2)}×`}</Typography>
                   </>
                 )}
               </>
@@ -139,7 +139,7 @@ export const LeverageDetails = ({
         {state.ratesLoading || !netApy ? (
           <Skeleton variant="rectangular" height={20} width={100} sx={{ borderRadius: '4px' }} />
         ) : (
-          <FormattedNumber value={netApy.toString()} variant="secondary14" percent />
+          <FormattedNumber value={netApy.toString()} variant="h5" percent />
         )}
       </Row>
 
