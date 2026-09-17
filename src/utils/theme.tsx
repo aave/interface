@@ -102,15 +102,14 @@ export const bareSelectSx = {
 };
 
 /**
- * The "white pill" buttons, per the Figma `semantic/button` scale. Both sit on `surfaceFill` with a
- * hairline ring instead of a border; they differ only in dark-mode fill and hover strength, so one
- * factory keeps them from drifting. On hover the ring is re-asserted — the global `disableElevation`
+ * The light "white pill" buttons, per the Figma `semantic/button` scale. Both sit on `surfaceFill`
+ * with a hairline ring instead of a border; they differ only in hover strength, so one factory
+ * keeps them from drifting. On hover the ring is re-asserted — the global `disableElevation`
  * default otherwise strips it — and `border` is forced to none to suppress MUI's default outlined
- * hover border.
+ * hover border. Dark is `pillDark`, applied separately by each variant.
  */
-const pillStyle = (hoverToken: FigmaColorName, darkFill?: FigmaColorName) => ({
+const pillStyle = (hoverToken: FigmaColorName) => ({
   ...surfaceFill,
-  ...(darkFill ? darkScheme({ backgroundColor: figVars[darkFill] }) : {}),
   ...hoverOverlay(figVars[hoverToken]),
   color: figVars['fg-1'],
   border: 'none',
@@ -123,24 +122,29 @@ const pillStyle = (hoverToken: FigmaColorName, darkFill?: FigmaColorName) => ({
   },
 });
 
-/** Secondary: bg-3 in light; its dark surface is `secondaryPillDark`, applied by the variant. */
-const secondaryPillStyle = pillStyle('button-hover-secondary');
-
 /**
- * Dark secondary surface: its own fill, and no shadow in any state — both layers of the button's
- * shadow are transparent in the dark token set, so the pill is a flat fill with no ring.
+ * The dark pill surface: its own fill, and no shadow in any state — both layers of the button's
+ * shadow are transparent in the dark token set, so a pill is a flat fill with no ring.
  *
  * Must be spread *after* the variant's own rules: these match at equal specificity and win on
  * source order only. `&&` cannot raise it instead — inside `darkScheme` the parent is a descendant
- * selector, so `&&` expands to `.MuiButton-outlined*:where(…)`, which is invalid and drops the rule.
+ * selector, so `&&` expands to `.MuiButton-outlined*:where(…)`, which is invalid and drops the
+ * rule. For the same reason the fill lives here rather than in `pillStyle`: two `darkScheme` calls
+ * on one element collide on the same key, and the later spread would drop the earlier one whole.
  */
-const secondaryPillDark = darkScheme({
-  backgroundColor: figVars['button-bg-secondary'],
-  boxShadow: 'none',
-  '&:hover, &.Mui-focusVisible, &[aria-expanded="true"], &.Mui-disabled': { boxShadow: 'none' },
-});
+const pillDark = (fill: FigmaColorName) =>
+  darkScheme({
+    backgroundColor: figVars[fill],
+    boxShadow: 'none',
+    '&:hover, &.Mui-focusVisible, &[aria-expanded="true"], &.Mui-disabled': { boxShadow: 'none' },
+  });
+
+/** Secondary: bg-3 in light, its own button surface in dark. */
+const secondaryPillStyle = pillStyle('button-hover-secondary');
+const secondaryPillDark = pillDark('button-bg-secondary');
 /** Tertiary: one step up the dark ramp, with a stronger hover tint. */
-const tertiaryPillStyle = pillStyle('button-hover-tertiary', 'bg-4');
+const tertiaryPillStyle = pillStyle('button-hover-tertiary');
+const tertiaryPillDark = pillDark('bg-4');
 
 /** Shared disabled state for both pill variants. */
 const pillDisabled = {
@@ -711,6 +715,7 @@ export function getThemedComponents(theme: AppTheme) {
             style: {
               ...tertiaryPillStyle,
               '&.Mui-disabled': pillDisabled,
+              ...tertiaryPillDark,
             },
           },
         ],
