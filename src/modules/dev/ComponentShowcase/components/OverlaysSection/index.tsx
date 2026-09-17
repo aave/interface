@@ -1,7 +1,8 @@
-import { Button, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Button, Menu, MenuItem, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { BasicModal } from 'src/components/primitives/BasicModal';
+import { Row } from 'src/components/primitives/Row';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 
@@ -52,6 +53,30 @@ const MenuDemo = () => {
   );
 };
 
+const clickTrigger = (
+  <Typography variant="subheader1" sx={{ borderBottom: '1px dashed', cursor: 'pointer' }}>
+    Click me
+  </Typography>
+);
+
+/** Sized to the widest real card row so the specimen catches wrapping, not just the surface. */
+const cardContent = (
+  <Box sx={{ width: '100%' }}>
+    <Typography variant="caption" color="fg-2" sx={{ display: 'block', mb: 3 }}>
+      A program initiated by the Aave DAO. Aave Labs does not guarantee it and accepts no liability.
+    </Typography>
+    <Row caption={<Typography variant="subheader2">Protocol APY</Typography>} width="100%">
+      <Typography variant="subheader2">3.42%</Typography>
+    </Row>
+    <Row
+      caption={<Typography variant="subheader2">Merit Incentives Combined (+)</Typography>}
+      width="100%"
+    >
+      <Typography variant="subheader2">1.08%</Typography>
+    </Row>
+  </Box>
+);
+
 export const OverlaysSection = () => (
   <Section title="Overlays & modal">
     <Specimen label="BasicModal">
@@ -66,9 +91,13 @@ export const OverlaysSection = () => (
       <ContentWithTooltip
         tooltipContent={<Typography variant="caption">Tooltip body content.</Typography>}
       >
-        <Typography variant="subheader1" sx={{ borderBottom: '1px dashed', cursor: 'pointer' }}>
-          Click me
-        </Typography>
+        {clickTrigger}
+      </ContentWithTooltip>
+    </Specimen>
+
+    <Specimen label='ContentWithTooltip variant="card"'>
+      <ContentWithTooltip variant="card" tooltipContent={cardContent}>
+        {clickTrigger}
       </ContentWithTooltip>
     </Specimen>
 

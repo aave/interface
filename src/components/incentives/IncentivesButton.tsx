@@ -154,6 +154,7 @@ export const MeritIncentivesButton = (params: {
           onClose={() => setOpen(false)}
         />
       }
+      variant="card"
       withoutHover
       setOpen={setOpen}
       open={open}
@@ -194,6 +195,7 @@ export const MerklIncentivesButton = (params: {
   return (
     <ContentWithTooltip
       tooltipContent={<MerklIncentivesTooltipContent merklIncentives={incentiveData} />}
+      variant="card"
       withoutHover
       setOpen={setOpen}
       open={open}
@@ -316,6 +318,7 @@ export const IncentivesButton = ({
           address={address}
         />
       }
+      variant="card"
       withoutHover
       setOpen={setOpen}
       open={open}
