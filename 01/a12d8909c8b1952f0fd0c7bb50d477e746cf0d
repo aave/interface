@@ -1,0 +1,25 @@
+src/modules/reserve-overview/TimeRangeSelector.tsx
+  s_303978b07e61f6::t_406f7d4b5ecb00 68
+src/modules/reserve-overview/graphs/MeritApyGraph.tsx
+  s_303978b07e61f6::t_fe8cd6d00c1261 137
+  s_303978b07e61f6::t_c3f40ed6c6f623 138
+src/modules/reserve-overview/graphs/ApyGraph.tsx
+  s_303978b07e61f6::t_fe8cd6d00c1261 155
+  s_303978b07e61f6::t_c3f40ed6c6f623 156
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "01a12d8909c8b1952f0fd0c7bb50d477e746cf0d",
+  "prompts": {},
+  "sessions": {
+    "s_303978b07e61f6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5bff8270-b8af-4dec-bf09-a3d3f3bccbc2",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
