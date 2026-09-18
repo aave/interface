@@ -3556,6 +3556,10 @@ msgstr "Debt"
 msgid "Learn more about the Ether.fi program"
 msgstr "Learn more about the Ether.fi program"
 
+#: pages/dashboard.page.tsx
+msgid "View transactions"
+msgstr "View transactions"
+
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/helpers/StakingDropdown.tsx
 msgid "Cooldown to unstake"
@@ -4113,6 +4117,10 @@ msgstr "Approve with"
 #: src/components/MarketAssetCategoryFilter.tsx
 msgid "PTs"
 msgstr "PTs"
+
+#: pages/dashboard.page.tsx
+msgid "Your Positions"
+msgstr "Your Positions"
 
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Language"
