@@ -134,8 +134,8 @@ export const MeritApyGraph = withTooltip<MeritApyGraphProps, TooltipData>(
         merit_apy: avg,
       }));
 
-      const annotationX = (dateScale(getDate(avgArray[0])) ?? 0) + 70;
-      const annotationY = (yValueScale(avg * 100) ?? 0) - 8;
+      const annotationX = (dateScale(getDate(avgArray[0])) ?? 0) + 78;
+      const annotationY = (yValueScale(max(data, getMeritApy) ?? 0) ?? 0) + 3;
 
       return {
         avgArray,
