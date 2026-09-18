@@ -169,6 +169,48 @@ const alertSeverityStyle = (color: string): CSSObject => ({
   ...darkScheme({ background: severityGradient(color, '5%') }),
 });
 
+/**
+ * Badge variant: a status chip rather than a banner. The severity colour as a flat 20% tint (no
+ * gradient, no surface shadow), the glyph at its bare 1rem with no icon box, and H5 text. Used for
+ * the CoW order states in transaction history.
+ */
+const alertBadgeStyle: CSSObject = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.375rem',
+  padding: '0.375rem 0.625rem 0.375rem 0.5625rem',
+  borderRadius: '2.375rem',
+  boxShadow: 'none',
+  '.MuiAlert-icon': {
+    width: '1rem',
+    height: '1rem',
+    padding: 0,
+    borderRadius: 0,
+    boxShadow: 'none',
+    backgroundColor: 'transparent',
+    '.MuiSvgIcon-root': { fontSize: '1rem' },
+  },
+  '.MuiAlert-message': {
+    color: figVars['fg-1'],
+    fontWeight: 500,
+    fontSize: '0.875rem',
+    lineHeight: '1.125rem',
+  },
+  // Icon-only chip: drop the empty message box, or its gap pads the right edge by 0.375rem.
+  '.MuiAlert-message:empty': { display: 'none' },
+};
+
+const alertBadgeSeverityStyle = (color: string): CSSObject => {
+  const tint = `color-mix(in srgb, ${color} 20%, transparent)`;
+  return {
+    background: tint,
+    '.MuiAlert-icon': { color, backgroundColor: 'transparent' },
+    // Neutralises the banner severity style's own dark override, which would otherwise win on
+    // selector specificity and put the gradient back.
+    ...darkScheme({ background: tint }),
+  };
+};
+
 // Shared box geometry for the custom selection-control icons (checkbox + radio).
 const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
 
@@ -306,6 +348,13 @@ declare module '@mui/material/Typography' {
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     tertiary: true;
+  }
+}
+
+// Add a `badge` Alert variant (the status chip — see `alertBadgeStyle`).
+declare module '@mui/material/Alert' {
+  interface AlertPropsVariantOverrides {
+    badge: true;
   }
 }
 
@@ -1251,6 +1300,25 @@ export function getThemedComponents(theme: AppTheme) {
           { props: { severity: 'info' }, style: alertSeverityStyle(figVars['purple-1']) },
           { props: { severity: 'success' }, style: alertSeverityStyle(figVars['data-green']) },
           { props: { severity: 'warning' }, style: alertSeverityStyle(figVars['favourite-star']) },
+          // Badge: geometry, then the per-severity tint. Both after the banner severities above,
+          // whose background and icon box they replace.
+          { props: { variant: 'badge' }, style: alertBadgeStyle },
+          {
+            props: { variant: 'badge', severity: 'error' },
+            style: alertBadgeSeverityStyle(figVars['danger']),
+          },
+          {
+            props: { variant: 'badge', severity: 'info' },
+            style: alertBadgeSeverityStyle(figVars['purple-1']),
+          },
+          {
+            props: { variant: 'badge', severity: 'success' },
+            style: alertBadgeSeverityStyle(figVars['data-green']),
+          },
+          {
+            props: { variant: 'badge', severity: 'warning' },
+            style: alertBadgeSeverityStyle(figVars['favourite-star']),
+          },
         ],
       },
       MuiCssBaseline: {

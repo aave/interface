@@ -74,15 +74,8 @@ const StatusBadgeIconOnly = ({
 }) => {
   return (
     <DarkTooltip title={title} arrow enterTouchDelay={100} leaveTouchDelay={500} placement="top">
-      <Box>
-        <Alert
-          severity={severity}
-          data-size="small-icon"
-          sx={{
-            width: '100%',
-            my: 0,
-          }}
-        />
+      <Box sx={{ display: 'inline-flex' }}>
+        <Alert variant="badge" severity={severity} />
       </Box>
     </DarkTooltip>
   );
@@ -96,15 +89,8 @@ const StatusBadgeText = ({
   severity: 'info' | 'success' | 'error';
 }) => {
   return (
-    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-      <Alert
-        severity={severity}
-        data-size="small-icon"
-        sx={{
-          width: '100%',
-          my: 0,
-        }}
-      >
+    <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
+      <Alert variant="badge" severity={severity}>
         {children}
       </Alert>
     </Box>
