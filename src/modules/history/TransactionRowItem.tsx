@@ -24,15 +24,9 @@ interface TransactionRowItemProps {
   transaction: TransactionHistoryItemUnion;
   /** Below `HISTORY_CARDS_BELOW` the three columns stack into one. */
   stacked?: boolean;
-  /** True in the width band where a Cancel button leaves no room for the status badge's label. */
-  collapseStatusBadge?: boolean;
 }
 
-function TransactionRowItem({
-  transaction,
-  stacked,
-  collapseStatusBadge,
-}: TransactionRowItemProps) {
+function TransactionRowItem({ transaction, stacked }: TransactionRowItemProps) {
   const [currentNetworkConfig, trackEvent] = useRootStore(
     useShallow((state) => [state.currentNetworkConfig, state.trackEvent])
   );
@@ -108,11 +102,7 @@ function TransactionRowItem({
       </ListColumn>
 
       <ListColumn {...HISTORY_DETAILS_COLUMN}>
-        <ActionDetails
-          transaction={transaction}
-          iconSize="20px"
-          showStatusBadgeAsIconOnly={!!cancellableOrder && collapseStatusBadge}
-        />
+        <ActionDetails transaction={transaction} iconSize="20px" />
       </ListColumn>
 
       <ListColumn {...HISTORY_ACTIONS_COLUMN}>

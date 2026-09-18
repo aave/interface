@@ -3,7 +3,6 @@ import { Box, Button, CircularProgress, Paper, useMediaQuery, useTheme } from '@
 import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { CONTENT_TOP_PADDING } from 'src/components/ContentContainer';
-import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
@@ -29,12 +28,6 @@ export const HistoryWrapper = () => {
 
   const theme = useTheme();
   const stackRows = useMediaQuery(theme.breakpoints.down(HISTORY_CARDS_BELOW));
-  // The band where a row carries a Cancel button but is too narrow to also show the status
-  // badge's label. Resolved once here rather than per row — each `useMediaQuery` is its own
-  // matchMedia listener, and this list is not virtualised.
-  const collapseStatusBadge = useMediaQuery(
-    theme.breakpoints.between(HISTORY_CARDS_BELOW, TABLE_CARDS_BELOW)
-  );
 
   const {
     data: transactions,
@@ -139,12 +132,7 @@ export const HistoryWrapper = () => {
           <Fragment key={date}>
             <HistoryDateHeading>{date}</HistoryDateHeading>
             {rows.map(({ id, transaction }) => (
-              <TransactionRowItem
-                key={id}
-                transaction={transaction}
-                stacked={stackRows}
-                collapseStatusBadge={collapseStatusBadge}
-              />
+              <TransactionRowItem key={id} transaction={transaction} stacked={stackRows} />
             ))}
           </Fragment>
         ))}

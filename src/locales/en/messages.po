@@ -1566,8 +1566,6 @@ msgid "This will cancel the order via an on-chain transaction. Note that the ord
 msgstr "This will cancel the order via an on-chain transaction. Note that the order will not be marked as cancelled in the CoW Protocol system, but will remain open and expire naturally. Keep in mind that a solver may already have filled your order."
 
 #: src/modules/history/actions/ActionDetails.tsx
-#: src/modules/history/actions/ActionDetails.tsx
-#: src/modules/history/actions/ActionDetails.tsx
 msgid "Expired"
 msgstr "Expired"
 
@@ -2305,8 +2303,6 @@ msgstr "User cannot withdraw more than the available balance"
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 
-#: src/modules/history/actions/ActionDetails.tsx
-#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "In Progress"
 msgstr "In Progress"
@@ -4122,8 +4118,6 @@ msgstr "We couldn't find any proposals related to your search."
 
 #: src/modules/governance/proposal/ProposalTimeline.tsx
 #: src/modules/history/actions/ActionDetails.tsx
-#: src/modules/history/actions/ActionDetails.tsx
-#: src/modules/history/actions/ActionDetails.tsx
 msgid "Cancelled"
 msgstr "Cancelled"
 
@@ -4411,8 +4405,6 @@ msgstr "Show legacy markets"
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
 msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
 
-#: src/modules/history/actions/ActionDetails.tsx
-#: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Filled"
 msgstr "Filled"
