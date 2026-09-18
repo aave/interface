@@ -1037,10 +1037,6 @@ msgstr "Share my wallet address to help the support team resolve my issue"
 msgid "Restaking {symbol}"
 msgstr "Restaking {symbol}"
 
-#: pages/staking.page.tsx
-msgid "Not available in test mode"
-msgstr "Not available in test mode"
-
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdrawing {symbol}"
 msgstr "Withdrawing {symbol}"
@@ -1292,6 +1288,10 @@ msgstr "Cooldown period"
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
+#: pages/staking.page.tsx
+msgid "Staking is not available on this market"
+msgstr "Staking is not available on this market"
+
 #: src/modules/markets/Gho/GhoBanner.tsx
 msgid "Migrate your sGHO position"
 msgstr "Migrate your sGHO position"
@@ -1473,6 +1473,7 @@ msgstr "Merkl rewards are claimed through the"
 #: src/layouts/components/NavItems.tsx
 #: src/layouts/components/StakingMenu.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
+#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Staking"
 msgstr "Staking"
 
@@ -2391,10 +2392,6 @@ msgstr "Umbrella"
 msgid "Merit Program and Self rewards can be claimed"
 msgstr "Merit Program and Self rewards can be claimed"
 
-#: pages/staking.page.tsx
-msgid "This page only works with live data. Exit test mode to view it."
-msgstr "This page only works with live data. Exit test mode to view it."
-
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "The order could't be filled."
 msgstr "The order could't be filled."
@@ -3298,6 +3295,10 @@ msgstr "To repay on behalf of a user an explicit amount to repay is needed"
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
 msgid "Repayment amount to reach {0}% utilization"
 msgstr "Repayment amount to reach {0}% utilization"
+
+#: pages/staking.page.tsx
+msgid "Switch to a market that supports staking to continue."
+msgstr "Switch to a market that supports staking to continue."
 
 #: src/components/transactions/StkGhoMigrate/StkGhoMigrateActions.tsx
 msgid "Proceed with migration"
