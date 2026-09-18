@@ -476,9 +476,9 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       buttonL: {
         fontFamily: FONT,
         fontWeight: 500,
-        letterSpacing: pxToRem(0.46),
-        lineHeight: pxToRem(24),
-        fontSize: pxToRem(16),
+        letterSpacing: '-0.00563rem',
+        lineHeight: 'normal',
+        fontSize: '0.9375rem',
       },
       buttonM: {
         fontFamily: FONT,
@@ -975,7 +975,13 @@ export function getThemedComponents(theme: AppTheme) {
             style: {
               borderRadius: '0.75rem',
               backgroundColor: figVars['bg-1'],
-              ...darkScheme({ backgroundColor: figVars['bg-2'] }),
+              // Published so content can paint its own fades in the surface colour (the token
+              // picker's scroll scrims) without restating the light/dark pair.
+              '--modal-surface': figVars['bg-1'],
+              ...darkScheme({
+                backgroundColor: figVars['bg-2'],
+                '--modal-surface': figVars['bg-2'],
+              }),
               boxShadow: `0 0 0 1px ${figVars['border-1']}, 0 4px 16px 0 ${figVars['shadow-medium']}`,
             },
           },

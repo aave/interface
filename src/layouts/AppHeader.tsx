@@ -23,6 +23,7 @@ import { useEffect, useState } from 'react';
 import { AvatarSize } from 'src/components/Avatar';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { AaveLogo, AaveLogoMark } from 'src/components/icons/AaveLogo';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { BridgeIcon } from 'src/components/icons/BridgeIcon';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
@@ -34,7 +35,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { iconButtonSx } from 'src/utils/buttonStyles';
+import { iconButtonSx, startIconSizeSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 import { ENABLE_TESTNET, FORK_ENABLED, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { motion } from 'src/utils/motion';
@@ -329,12 +330,14 @@ export function AppHeader() {
                 component={Link}
                 href={AAVE_PRO_URL}
                 variant="outlined"
+                startIcon={<ArrowUpRightIcon />}
                 sx={{
                   p: '0 0.88rem',
                   minWidth: 'unset',
                   alignItems: 'center',
                   mr: '0.62rem',
                   whiteSpace: 'nowrap',
+                  ...startIconSizeSx('18px'),
                 }}
               >
                 <Typography component="span" variant="buttonM">

@@ -3,6 +3,7 @@ import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { figSurfaceShadow } from 'src/utils/figmaColors';
+import { darkScheme } from 'src/utils/theme';
 
 interface ReserveHeaderIconButtonProps {
   tooltipText: string;
@@ -12,9 +13,11 @@ interface ReserveHeaderIconButtonProps {
 }
 
 // Surface icon button for the reserve header affordances (token contracts / add-to-wallet /
-// oracle link): a bg-3 circle with the shared shadow-low-border-2 ring. The icon color is a
-// constant `fg-2` via `currentColor` (icon children only need `stroke="currentColor"`); hover
-// tints the circle background instead — one step down the ramp to bg-5.
+// oracle link): a bg-3 circle with the shared shadow-low-border-2 ring in light, and a flat fill
+// with no ring in dark — the same treatment the pill buttons get, since shadow-stroke-2 is a
+// visible white hairline against the dark canvas. The icon color is a constant `fg-2` via
+// `currentColor` (icon children only need `stroke="currentColor"`); hover tints the circle
+// background instead — one step down the ramp to bg-5.
 export const ReserveHeaderIconButton = ({
   tooltipText,
   size = '1.75rem',
@@ -39,6 +42,7 @@ export const ReserveHeaderIconButton = ({
           borderRadius: '50%',
           backgroundColor: 'bg-3',
           boxShadow: figSurfaceShadow(),
+          ...darkScheme({ boxShadow: 'none' }),
           color: 'fg-2',
           cursor: 'pointer',
           transition: 'background-color 100ms ease',
