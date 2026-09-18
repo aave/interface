@@ -152,8 +152,8 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
         };
       });
 
-      const annotationX = (dateScale(getDate(avgArray[0])) ?? 0) + 70;
-      const annotationY = (yValueScale(getData(avgArray[0], 'value')) ?? 0) - 8;
+      const annotationX = (dateScale(getDate(avgArray[0])) ?? 0) + 78;
+      const annotationY = (yValueScale(max(data, (d) => getData(d, 'value')) ?? 0) ?? 0) + 3;
 
       avgLine = (
         <>

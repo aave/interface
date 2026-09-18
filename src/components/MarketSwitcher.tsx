@@ -1,5 +1,4 @@
 import { SearchIcon } from '@heroicons/react/outline';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
 import {
   Box,
@@ -17,6 +16,7 @@ import {
   useTheme,
 } from '@mui/material';
 import React, { useMemo, useRef, useState } from 'react';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
 import { ShimmerText } from 'src/components/ShimmerText';
@@ -240,6 +240,11 @@ const MARKET_DESCRIPTIONS: Partial<Record<CustomMarket, React.ReactNode>> = {
   [CustomMarket.proto_aptos_v3]: onNetwork('Aptos'),
 };
 
+// Trailing "this leaves the app" marker, shared by the external-market rows and the V4 links.
+const EXTERNAL_LINK_ICON = (
+  <ArrowUpRightIcon sx={{ fontSize: '16px', color: 'fg-3', ml: 0.5, flexShrink: 0 }} />
+);
+
 export const AAVE_PRO_URL = 'https://pro.aave.com/';
 
 type V4Link = {
@@ -448,11 +453,7 @@ export const MarketSwitcher = () => {
         >
           {marketNaming.name} {market.isFork ? 'Fork' : ''}
         </Typography>
-        {market.externalUrl && (
-          <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
-            <ExternalLinkIcon />
-          </SvgIcon>
-        )}
+        {market.externalUrl && EXTERNAL_LINK_ICON}
         <IconButton
           className="grid-fav-btn"
           size="small"
@@ -538,9 +539,7 @@ export const MarketSwitcher = () => {
             {label}
           </Typography>
         )}
-        <SvgIcon sx={{ fontSize: '14px', color: 'fg-3', ml: 0.5, flexShrink: 0 }}>
-          <ExternalLinkIcon />
-        </SvgIcon>
+        {EXTERNAL_LINK_ICON}
       </Box>
     );
   };

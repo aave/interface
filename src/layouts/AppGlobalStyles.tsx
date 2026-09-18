@@ -2,7 +2,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material/styles';
 import { ReactNode, useMemo } from 'react';
-import { FaviconSwitcher } from 'src/components/FaviconSwitcher';
 
 import { buildP3Overrides, createAppTheme } from '../utils/theme';
 
@@ -37,7 +36,6 @@ export function AppGlobalStyles({ children }: { children: ReactNode }) {
       {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
       <CssBaseline enableColorScheme />
       <GlobalStyles styles={p3Styles} />
-      <FaviconSwitcher />
 
       {children}
     </CssVarsProvider>

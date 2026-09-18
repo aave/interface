@@ -65,7 +65,7 @@ export const TimeRangeSelector = ({
     >
       {timeRanges.map((interval) => (
         <StyledTxModalToggleButton key={interval} value={interval} sx={props.sx?.button}>
-          <Typography variant="buttonM">{formattedInterval(interval)}</Typography>
+          <Typography variant="subheader2">{formattedInterval(interval)}</Typography>
         </StyledTxModalToggleButton>
       ))}
     </StyledTxModalToggleGroup>

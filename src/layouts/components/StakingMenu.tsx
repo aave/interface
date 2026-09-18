@@ -1,5 +1,5 @@
 import { Trans } from '@lingui/macro';
-import { Button, ListItemText, SvgIcon } from '@mui/material';
+import { Button, SvgIcon, Theme } from '@mui/material';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { clsx } from 'clsx';
@@ -8,12 +8,28 @@ import React from 'react';
 import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 import { useRootStore } from 'src/store/root';
 import { NAV_BAR } from 'src/utils/events';
+import { figVars } from 'src/utils/figmaColors';
 
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { NAV_LINK_PADDING_X, NAV_LINK_PADDING_Y, navLinkSx } from './navLinkSx';
 
 const CHEVRON_GAP = '0.25rem';
 const CHEVRON_SIZE = '16px';
+
+// The options read as nav links rather than menu rows, so they take the nav bar's own type and
+// colour — buttonM, fg-3 until their route is current, fg-1 on hover — in place of the 400-weight
+// ListItemText default every other menu row uses. `component={Link}` already applies `.active` on
+// the current route, so the match is left to CSS as it is for the top-level links. The row
+// highlight stays with MuiMenuItem.
+const optionSx = (theme: Theme) => ({
+  minWidth: '140px',
+  ...theme.typography.buttonM,
+  color: figVars['fg-3'],
+  transition: 'color 0.25s ease-out',
+  '&.active, &:hover': {
+    color: figVars['fg-1'],
+  },
+});
 
 export function StakingMenu() {
   const trackEvent = useRootStore((store) => store.trackEvent);
@@ -86,21 +102,17 @@ export function StakingMenu() {
           component={Link}
           href={ROUTES.staking}
           onClick={() => handleMenuItemClick('Staking')}
-          sx={{ minWidth: '140px' }}
+          sx={optionSx}
         >
-          <ListItemText>
-            <Trans>Umbrella</Trans>
-          </ListItemText>
+          <Trans>Umbrella</Trans>
         </MenuItem>
         <MenuItem
           component={Link}
           href={ROUTES.safetyModule}
           onClick={() => handleMenuItemClick('Safety Module')}
-          sx={{ minWidth: '140px' }}
+          sx={optionSx}
         >
-          <ListItemText>
-            <Trans>Safety Module</Trans>
-          </ListItemText>
+          <Trans>Safety Module</Trans>
         </MenuItem>
       </Menu>
     </>

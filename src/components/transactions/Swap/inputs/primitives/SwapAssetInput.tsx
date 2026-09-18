@@ -70,6 +70,32 @@ export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProp
   }
 );
 
+// Both ends of the token list fade into the modal surface instead of cutting off. Each scrim sits
+// over the scroll area's own padding, so with nothing scrolled under it the gradient paints the
+// modal surface onto itself and is invisible — it only appears once rows pass beneath.
+// `--modal-surface` is published by the Paper this renders inside (MuiPaper `variant: 'modal'`).
+const scrimBase = {
+  position: 'absolute',
+  left: 0,
+  // Stop short of the scrollbar gutter.
+  right: '1rem',
+  pointerEvents: 'none',
+} as const;
+
+const TOP_SCRIM_SX = {
+  ...scrimBase,
+  top: 0,
+  height: '1rem',
+  background: 'linear-gradient(to bottom, var(--modal-surface), transparent)',
+} as const;
+
+const BOTTOM_SCRIM_SX = {
+  ...scrimBase,
+  bottom: 0,
+  height: '1.5rem',
+  background: 'linear-gradient(to top, var(--modal-surface), transparent)',
+} as const;
+
 export interface AssetInputProps {
   value: string;
   usdValue: string;
@@ -422,8 +448,6 @@ export const SwitchAssetInput = ({
                   position: 'sticky',
                   top: 0,
                   zIndex: 2,
-                  mb: '1rem',
-                  boxShadow: '0px 4px 6px -6px rgba(0, 0, 0, 0.1)',
                 }}
               >
                 <SearchInput
@@ -483,201 +507,217 @@ export const SwitchAssetInput = ({
               </Box>
               <Box
                 sx={{
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
                   flexGrow: 1,
-                  overflowY: 'auto',
+                  minHeight: 0,
                   maxHeight: 'calc(800px - 180px)',
                   mx: -6,
-                  pl: 3,
-                  pr: '1rem',
-                  '&::-webkit-scrollbar': {
-                    width: '8px',
-                  },
-                  '&::-webkit-scrollbar-track': {
-                    background: 'transparent',
-                  },
-                  '&::-webkit-scrollbar-thumb': {
-                    background: figVars['border-2'],
-                    borderRadius: '4px',
-                  },
-                  '&::-webkit-scrollbar-thumb:hover': {
-                    background: figVars['button-hover'],
-                  },
+                  mb: -6,
                 }}
               >
-                {loadingNewAsset ? (
-                  <Box
-                    sx={{
-                      maxHeight: '220px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      minHeight: '80px',
-                    }}
-                  >
-                    <CircularProgress sx={{ mx: 'auto', my: 'auto' }} />
-                  </Box>
-                ) : filteredAssets.length > 0 ? (
-                  filteredAssets.map((asset) => (
-                    <MenuItem
-                      key={asset.addressToSwap}
-                      value={asset.symbol}
-                      data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
+                <Box
+                  sx={{
+                    flex: 1,
+                    minHeight: 0,
+                    overflowY: 'auto',
+                    pt: '1rem',
+                    pb: 6,
+                    pl: 3,
+                    pr: '1rem',
+                    '&::-webkit-scrollbar': {
+                      width: '8px',
+                    },
+                    '&::-webkit-scrollbar-track': {
+                      background: 'transparent',
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                      background: figVars['border-2'],
+                      borderRadius: '4px',
+                    },
+                    '&::-webkit-scrollbar-thumb:hover': {
+                      background: figVars['button-hover'],
+                    },
+                  }}
+                >
+                  {loadingNewAsset ? (
+                    <Box
                       sx={{
-                        py: 1.5,
-                        px: 3,
-                        borderRadius: '8px',
-                        my: 0.5,
-                        '&:hover': {
-                          backgroundColor:
-                            theme.palette.mode === 'dark'
-                              ? 'rgba(255, 255, 255, 0.05)'
-                              : 'rgba(0, 0, 0, 0.03)',
-                        },
+                        maxHeight: '220px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        minHeight: '80px',
                       }}
-                      onClick={() => handleSelect(asset)}
                     >
-                      <ExternalTokenIcon
-                        symbol={asset.symbol}
-                        logoURI={asset.logoURI}
-                        height="24px"
-                        width="24px"
-                        sx={{ mr: 2 }}
-                      />
-                      <Box sx={{ display: 'flex', flexDirection: 'column', mr: 2, minWidth: 0 }}>
-                        <Typography variant="h4" fontWeight={500} color="fg-1" noWrap>
-                          {asset.name || asset.symbol}
-                        </Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Link
-                            href={getNetworkConfig(chainId).explorerLinkBuilder({
-                              address: asset.underlyingAddress || asset.addressToSwap,
-                            })}
-                            noLinkStyle
-                            onClick={(e) => {
-                              e.stopPropagation();
-                            }}
-                            sx={{
-                              display:
-                                asset.tokenType === TokenType.NATIVE ? 'none' : 'inline-flex',
-                              alignItems: 'center',
-                              textDecoration: 'none',
-                              '&:hover .launch-icon-text': {
-                                color:
-                                  theme.palette.mode === 'dark'
-                                    ? theme.vars.palette.primary.light
-                                    : theme.vars.palette.primary.main,
-                              },
-                              '&:hover .launch-icon-svg': {
-                                color:
-                                  theme.palette.mode === 'dark'
-                                    ? theme.vars.palette.primary.light
-                                    : theme.vars.palette.primary.main,
-                              },
-                            }}
-                          >
-                            <Typography
-                              variant="caption"
-                              className="launch-icon-text"
-                              color="fg-2"
-                              noWrap
-                            >
-                              {textCenterEllipsis(
-                                (asset.underlyingAddress || asset.addressToSwap) ?? '',
-                                6,
-                                4
-                              )}
-                            </Typography>
-                            <SvgIcon
-                              className="launch-icon-svg"
-                              sx={{ fontSize: 14, ml: 0.5, color: 'fg-2' }}
-                            >
-                              <LaunchIcon />
-                            </SvgIcon>
-                          </Link>
-                          {(() => {
-                            const apy = getApyInfo(asset, swapType, side);
-                            if (!apy) return null;
-                            return (
-                              <>
-                                <Typography variant="caption" color="fg-2">
-                                  {' • '}
-                                </Typography>
-                                <Tooltip title={apy.label}>
-                                  <span>
-                                    <FormattedNumber
-                                      value={apy.value}
-                                      percent
-                                      variant="caption"
-                                      color="fg-2"
-                                    />
-                                  </span>
-                                </Tooltip>
-                              </>
-                            );
-                          })()}
-                        </Box>
-                      </Box>
-                      {asset.tokenType === TokenType.USER_CUSTOM && (
-                        <SvgIcon sx={{ fontSize: 16, mr: 1 }} color="warning">
-                          <ExclamationIcon />
-                        </SvgIcon>
-                      )}
-                      <Box
+                      <CircularProgress sx={{ mx: 'auto', my: 'auto' }} />
+                    </Box>
+                  ) : filteredAssets.length > 0 ? (
+                    filteredAssets.map((asset) => (
+                      <MenuItem
+                        key={asset.addressToSwap}
+                        value={asset.symbol}
+                        data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
                         sx={{
-                          display: valueToBigNumber(asset.balance || '0').gt(0) ? 'flex' : 'none',
-                          flexDirection: 'column',
-                          ml: 'auto',
+                          py: 1.5,
+                          px: 3,
+                          borderRadius: '8px',
+                          my: 0.5,
+                          '&:hover': {
+                            backgroundColor:
+                              theme.palette.mode === 'dark'
+                                ? 'rgba(255, 255, 255, 0.05)'
+                                : 'rgba(0, 0, 0, 0.03)',
+                          },
                         }}
+                        onClick={() => handleSelect(asset)}
                       >
-                        {asset.balance && (
-                          <FormattedNumber
-                            value={asset.balance}
-                            compact
-                            variant="h5"
-                            color="fg-1"
-                            sx={{ textAlign: 'right' }}
-                          />
+                        <ExternalTokenIcon
+                          symbol={asset.symbol}
+                          logoURI={asset.logoURI}
+                          height="24px"
+                          width="24px"
+                          sx={{ mr: 2 }}
+                        />
+                        <Box sx={{ display: 'flex', flexDirection: 'column', mr: 2, minWidth: 0 }}>
+                          <Typography variant="h4" fontWeight={500} color="fg-1" noWrap>
+                            {asset.name || asset.symbol}
+                          </Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <Link
+                              href={getNetworkConfig(chainId).explorerLinkBuilder({
+                                address: asset.underlyingAddress || asset.addressToSwap,
+                              })}
+                              noLinkStyle
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                              sx={{
+                                display:
+                                  asset.tokenType === TokenType.NATIVE ? 'none' : 'inline-flex',
+                                alignItems: 'center',
+                                textDecoration: 'none',
+                                '&:hover .launch-icon-text': {
+                                  color:
+                                    theme.palette.mode === 'dark'
+                                      ? theme.vars.palette.primary.light
+                                      : theme.vars.palette.primary.main,
+                                },
+                                '&:hover .launch-icon-svg': {
+                                  color:
+                                    theme.palette.mode === 'dark'
+                                      ? theme.vars.palette.primary.light
+                                      : theme.vars.palette.primary.main,
+                                },
+                              }}
+                            >
+                              <Typography
+                                variant="caption"
+                                className="launch-icon-text"
+                                color="fg-2"
+                                noWrap
+                              >
+                                {textCenterEllipsis(
+                                  (asset.underlyingAddress || asset.addressToSwap) ?? '',
+                                  6,
+                                  4
+                                )}
+                              </Typography>
+                              <SvgIcon
+                                className="launch-icon-svg"
+                                sx={{ fontSize: 14, ml: 0.5, color: 'fg-2' }}
+                              >
+                                <LaunchIcon />
+                              </SvgIcon>
+                            </Link>
+                            {(() => {
+                              const apy = getApyInfo(asset, swapType, side);
+                              if (!apy) return null;
+                              return (
+                                <>
+                                  <Typography variant="caption" color="fg-2">
+                                    {' • '}
+                                  </Typography>
+                                  <Tooltip title={apy.label}>
+                                    <span>
+                                      <FormattedNumber
+                                        value={apy.value}
+                                        percent
+                                        variant="caption"
+                                        color="fg-2"
+                                      />
+                                    </span>
+                                  </Tooltip>
+                                </>
+                              );
+                            })()}
+                          </Box>
+                        </Box>
+                        {asset.tokenType === TokenType.USER_CUSTOM && (
+                          <SvgIcon sx={{ fontSize: 16, mr: 1 }} color="warning">
+                            <ExclamationIcon />
+                          </SvgIcon>
                         )}
-                        {asset.usdPrice && (
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              justifyContent: 'flex-end',
-                              width: '100%',
-                            }}
-                          >
+                        <Box
+                          sx={{
+                            display: valueToBigNumber(asset.balance || '0').gt(0) ? 'flex' : 'none',
+                            flexDirection: 'column',
+                            ml: 'auto',
+                          }}
+                        >
+                          {asset.balance && (
                             <FormattedNumber
-                              value={Number(
-                                valueToBigNumber(asset.balance || '0')
-                                  .multipliedBy(asset.usdPrice)
-                                  .toString()
-                              )}
+                              value={asset.balance}
                               compact
-                              symbol="USD"
-                              variant="helperText"
-                              color="fg-2"
-                              symbolsColor="fg-2"
+                              variant="h5"
+                              color="fg-1"
                               sx={{ textAlign: 'right' }}
                             />
-                          </Box>
-                        )}
-                      </Box>
-                    </MenuItem>
-                  ))
-                ) : (
-                  <Typography
-                    variant="subheader1"
-                    color="fg-1"
-                    sx={{ width: 'auto', textAlign: 'center', m: 4 }}
-                  >
-                    {allowCustomTokens ? (
-                      <Trans>
-                        No results found. You can import a custom token with a contract address
-                      </Trans>
-                    ) : (
-                      <Trans>No results found.</Trans>
-                    )}
-                  </Typography>
-                )}
+                          )}
+                          {asset.usdPrice && (
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                justifyContent: 'flex-end',
+                                width: '100%',
+                              }}
+                            >
+                              <FormattedNumber
+                                value={Number(
+                                  valueToBigNumber(asset.balance || '0')
+                                    .multipliedBy(asset.usdPrice)
+                                    .toString()
+                                )}
+                                compact
+                                symbol="USD"
+                                variant="helperText"
+                                color="fg-2"
+                                symbolsColor="fg-2"
+                                sx={{ textAlign: 'right' }}
+                              />
+                            </Box>
+                          )}
+                        </Box>
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <Typography
+                      variant="subheader1"
+                      color="fg-1"
+                      sx={{ width: 'auto', textAlign: 'center', m: 4 }}
+                    >
+                      {allowCustomTokens ? (
+                        <Trans>
+                          No results found. You can import a custom token with a contract address
+                        </Trans>
+                      ) : (
+                        <Trans>No results found.</Trans>
+                      )}
+                    </Typography>
+                  )}
+                </Box>
+                <Box sx={TOP_SCRIM_SX} />
+                <Box sx={BOTTOM_SCRIM_SX} />
               </Box>
             </Box>
           </BasicModal>
