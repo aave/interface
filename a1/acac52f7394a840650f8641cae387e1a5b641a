@@ -1,0 +1,99 @@
+src/modules/history/HistoryExportMenu.tsx
+  s_5f507ef3a0834b::t_133d99e0c56a4b 4,6,9,11-13,16-19,21,23-26,28-42,44,47-61,64,66-84,86
+  s_5f507ef3a0834b::t_aa3ca50f1edb54 2,63
+  s_5f507ef3a0834b::t_94717f837e3320 3,8
+src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+  s_5f507ef3a0834b::t_d3098bd9c5be57 87
+  s_5f507ef3a0834b::t_0c88370b12ecae 2-3,6
+src/locales/en/messages.po
+  s_5f507ef3a0834b::t_0f1ee29060201f 142-145,243-246,1161-1164,1273-1275,2773-2776,3130,3259-3262,3329-3331,3663-3666,3860-3862
+  s_5f507ef3a0834b::t_d26089911ac888 1276,2051,3863
+src/utils/cardStyles.ts
+  s_5f507ef3a0834b::t_5c1a8fe6db75bc 2,29-48
+  s_5f507ef3a0834b::t_db97f8f4b65e94 49
+src/modules/history/HistoryItemLoader.tsx
+  s_5f507ef3a0834b::t_f105da833253f9 17,33
+  s_5f507ef3a0834b::t_f1d00163e812f1 14-15,54,58,60-62
+  s_5f507ef3a0834b::t_c793b63af552db 16,18-30,35-36,40-43,46,48-49
+  s_5f507ef3a0834b::t_8416b37efa9c0c 5-12,34,39,47,57,59
+src/components/MarketSwitcher.tsx
+  s_5f507ef3a0834b::t_72ee3455ac30f7 278-279,283,285-286
+  s_5f507ef3a0834b::t_98cad421779cbb 280-282,284,287,830
+src/modules/history/helpers.ts
+  s_5f507ef3a0834b::t_1c656ab16a8473 159-165,187
+  s_5f507ef3a0834b::t_635087da2ac81e 167-179,182-183,185-186,189-198,200-202
+  s_5f507ef3a0834b::t_94717f837e3320 125-146
+  s_5f507ef3a0834b::t_f2c2738170c057 166,188
+src/components/NoSearchResults.tsx
+  s_5f507ef3a0834b::t_ffacaa9dbe50e2 7-8,10-11,14-19,52
+  s_5f507ef3a0834b::t_3350d752ac23c7 34-35
+src/modules/history/HistoryFilterMenu.tsx
+  s_5f507ef3a0834b::t_773fb12bbb223e 24-27
+  s_5f507ef3a0834b::t_aa3ca50f1edb54 2,95-100
+  s_5f507ef3a0834b::t_d3098bd9c5be57 34-56,111-113,117-126
+  s_5f507ef3a0834b::t_f95f6aec516d94 3-4,15-23,30-33,64,66,69-72,75-77,80,82,86,88-93,103,106-109,114-116,128
+  s_5f507ef3a0834b::t_666641148a2e4a 65,67
+src/modules/history/HistoryListLayout.tsx
+  s_5f507ef3a0834b::t_7f460c327b73d8 1,6-8,10-16,25-26,29
+  s_5f507ef3a0834b::t_62be84dafb4625 3
+  s_5f507ef3a0834b::t_d5f0f5da49791a 2,4-5,9,18-23,28,30-32
+  s_5f507ef3a0834b::t_f105da833253f9 17
+  s_5f507ef3a0834b::t_3fd67512938e4d 24,27
+src/modules/history/TransactionRowItem.tsx
+  s_5f507ef3a0834b::t_1e3aaa55a09c7f 2,15-21,27-28,105,110,114,118,125-127
+  s_5f507ef3a0834b::t_eff8ab6dd99b4a 4,108-109,111-113,115-117,120-121
+  s_5f507ef3a0834b::t_ddf469a501c2ab 3,23,25-26,31-35,46-50,52-56,58-64,66-80,82-90,92-98,100-101,106-107,119
+  s_5f507ef3a0834b::t_f105da833253f9 104
+  s_5f507ef3a0834b::t_e583cbdc06fa5b 44
+  s_5f507ef3a0834b::t_510e2f7c8ff62c 102-103
+src/modules/history/HistoryTopPanel.tsx
+  s_5f507ef3a0834b::t_d088a49e3d75fe 3
+  s_5f507ef3a0834b::t_bd80831be949c6 10,12-14
+  s_5f507ef3a0834b::t_98cad421779cbb 15,18
+  s_5f507ef3a0834b::t_1ec860274deeb4 4,8-9
+src/components/BackButton/index.tsx
+  s_5f507ef3a0834b::t_531f9ff42d17f1 1,3-12,15-17,22,24-38,40,42-43
+  s_5f507ef3a0834b::t_aa3ca50f1edb54 2,18-21,23,41
+  s_5f507ef3a0834b::t_eb549bd7e24c93 13
+  s_5f507ef3a0834b::t_f26f8d8d5ca9a5 14,39
+src/modules/history/HistoryWrapper.tsx
+  s_5f507ef3a0834b::t_f1d00163e812f1 2,95-96
+  s_5f507ef3a0834b::t_73d30b6b74b144 5,156-176,182-183,186-190,192-197,200-201,204-205
+  s_5f507ef3a0834b::t_c7f0834b943cf9 6,13,17,71,138,140-148
+  s_5f507ef3a0834b::t_34578bf47e6966 7,14,28,73-77,82,181
+  s_5f507ef3a0834b::t_a316097e40ad16 3,89-93,98-105,110-113,115-137,139,149-154
+  s_5f507ef3a0834b::t_30ebecab646c58 19,31-37
+  s_5f507ef3a0834b::t_b4cfaee097b15b 29-30,47,49
+  s_5f507ef3a0834b::t_6b8939d1455f91 72,155
+src/components/lists/ListWrapper.tsx
+  s_5f507ef3a0834b::t_765247044a523d 6,125-127,146
+src/components/PageHeader/PageHeader.tsx
+  s_5f507ef3a0834b::t_98cad421779cbb 73-85
+  s_5f507ef3a0834b::t_a06f55d197b6f4 9-10
+src/modules/history/types.ts
+  s_5f507ef3a0834b::t_1c656ab16a8473 152-160
+src/locales/el/messages.js
+  s_5f507ef3a0834b::t_e29ba0eef5f71f 1
+src/locales/en/messages.js
+  s_5f507ef3a0834b::t_4468445802ebb7 1
+src/locales/es/messages.js
+  s_5f507ef3a0834b::t_14311715547d27 1
+src/locales/fr/messages.js
+  s_5f507ef3a0834b::t_f10d19fe8d2cfe 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a1acac52f7394a840650f8641cae387e1a5b641a",
+  "prompts": {},
+  "sessions": {
+    "s_5f507ef3a0834b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8ab0e42e-cee1-4a48-aa69-156d2deb2fb8",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
