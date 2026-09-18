@@ -280,7 +280,16 @@ const V4_LINKS: V4Link[] = [
   },
 ];
 
-export const MarketSwitcher = () => {
+interface MarketSwitcherProps {
+  /**
+   * Drops the current market's blurb from under the trigger. For pages whose header needs that
+   * line to describe the page rather than the market — the copy then belongs in the page header's
+   * own description slot, outside this button.
+   */
+  hideDescription?: boolean;
+}
+
+export const MarketSwitcher = ({ hideDescription }: MarketSwitcherProps) => {
   const [open, setOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -817,7 +826,7 @@ export const MarketSwitcher = () => {
           <ChevronUpDownIcon sx={{ ml: 1, color: 'fg-3', mt: '0.3125rem' }} />
         </Box>
 
-        {MARKET_DESCRIPTIONS[currentMarket] && (
+        {!hideDescription && MARKET_DESCRIPTIONS[currentMarket] && (
           <Typography
             variant="description"
             sx={{

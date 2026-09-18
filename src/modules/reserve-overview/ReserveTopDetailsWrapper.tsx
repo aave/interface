@@ -1,8 +1,9 @@
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, SvgIcon, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
+import { Box, Skeleton, Typography } from '@mui/material';
+import { BackButton } from 'src/components/BackButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
+import { ROUTES } from 'src/components/primitives/Link';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
@@ -21,7 +22,6 @@ interface ReserveTopDetailsProps {
 }
 
 export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsProps) => {
-  const router = useRouter();
   const { supplyReserves, loading } = useAppDataContext();
   const [currentMarket, currentChainId] = useRootStore(
     useShallow((state) => [state.currentMarket, state.currentChainId])
@@ -84,44 +84,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   });
 
   return (
-    <TopInfoPanel
-      titleComponent={
-        <Box
-          onClick={() => {
-            // https://github.com/vercel/next.js/discussions/34980
-            if (!!history.state.idx) router.back();
-            else router.push('/markets');
-          }}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.25rem',
-            width: 'fit-content',
-            mb: '1rem',
-            cursor: 'pointer',
-            color: 'fg-3',
-            '&:hover': { color: 'fg-1' },
-          }}
-        >
-          <SvgIcon sx={{ fontSize: '1rem' }} viewBox="0 0 16 16">
-            <path
-              d="M12.8 8.03271L3.20005 8.03271M7.24215 4.03271L3.20005 8.03271L7.24215 12.0327"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-          </SvgIcon>
-          <Typography
-            variant="description"
-            sx={{ color: 'inherit', lineHeight: '0.875rem', letterSpacing: 0 }}
-          >
-            <Trans>Back</Trans>
-          </Typography>
-        </Box>
-      }
-    >
+    <TopInfoPanel titleComponent={<BackButton fallbackHref={ROUTES.markets} />}>
       <Box
         sx={{
           display: 'flex',

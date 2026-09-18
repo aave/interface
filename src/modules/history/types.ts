@@ -149,6 +149,15 @@ export const isSwapTransaction = (
   );
 };
 
+// A still-open CoW order, which the user can cancel — or undefined for anything else. Returns the
+// narrowed transaction rather than a boolean, so it stays assignable to the cancel modal.
+export const getCancellableCowOrder = (transaction: TransactionHistoryItemUnion) =>
+  isSwapTransaction(transaction) &&
+  isCowSwapSubset(transaction) &&
+  transaction.status === OrderStatus.OPEN
+    ? transaction
+    : undefined;
+
 export const hasReserve = (
   txn: TransactionHistoryItemUnion
 ): txn is

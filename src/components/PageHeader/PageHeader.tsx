@@ -6,7 +6,8 @@ import { pageBandSx } from './pageBandSx';
 interface PageHeaderProps {
   title: ReactNode;
   description?: ReactNode;
-  children: ReactNode;
+  /** Right-aligned `PageHeaderStat` items. Omit on pages that have no stats to show. */
+  children?: ReactNode;
   containerProps?: ContainerProps;
   /** Optional icon rendered before the heading-wrapped title. Ignored when `disableTitleTypography` is set. */
   titleIcon?: ReactNode;
@@ -69,17 +70,19 @@ export const PageHeader = ({
             )}
           </Box>
 
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              columnGap: '2.5rem',
-              rowGap: '1rem',
-              alignSelf: { md: 'flex-end' },
-            }}
-          >
-            {children}
-          </Box>
+          {children && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                columnGap: '2.5rem',
+                rowGap: '1rem',
+                alignSelf: { md: 'flex-end' },
+              }}
+            >
+              {children}
+            </Box>
+          )}
         </Box>
       </Container>
     </Box>

@@ -7,6 +7,14 @@ import { Specimen } from '../Specimen';
 
 const SEVERITIES = ['error', 'warning', 'info', 'success'] as const;
 
+// Badges label a state in a word or two — they sit inline in a table row, not in a banner.
+const BADGE_LABELS: Record<(typeof SEVERITIES)[number], string> = {
+  error: 'Expired',
+  warning: 'Pending',
+  info: 'In Progress',
+  success: 'Filled',
+};
+
 export const FeedbackSection = () => (
   <Section title="Feedback">
     <Specimen label="Alert (MuiAlert severities)" fullWidth>
@@ -31,6 +39,20 @@ export const FeedbackSection = () => (
           </Alert>
         ))}
       </Box>
+    </Specimen>
+
+    <Specimen label="Alert — badge (status chip)">
+      {SEVERITIES.map((severity) => (
+        <Alert key={severity} variant="badge" severity={severity}>
+          {BADGE_LABELS[severity]}
+        </Alert>
+      ))}
+    </Specimen>
+
+    <Specimen label="Alert — badge, icon only">
+      {SEVERITIES.map((severity) => (
+        <Alert key={severity} variant="badge" severity={severity} />
+      ))}
     </Specimen>
 
     <Specimen label="Skeleton">

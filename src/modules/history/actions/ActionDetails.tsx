@@ -2,7 +2,6 @@ import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Alert, Box, SvgIcon, Typography } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
-import React from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -29,8 +28,10 @@ import {
 interface ActionDetailsProps {
   transaction: TransactionHistoryItemUnion;
   iconSize?: string;
-  showStatusBadgeAsIconOnly?: boolean;
 }
+
+// The tokens hug the arrow between them; the status badge keeps a wider gap from the pair.
+const BADGE_SX = { ml: 4.5 };
 
 export const ActionTextMap = ({ action }: { action: ActionName }) => {
   switch (action) {
@@ -65,57 +66,7 @@ export const ActionTextMap = ({ action }: { action: ActionName }) => {
   }
 };
 
-const StatusBadgeIconOnly = ({
-  title,
-  severity,
-}: {
-  title: React.ReactNode;
-  severity: 'info' | 'success' | 'error';
-}) => {
-  return (
-    <DarkTooltip title={title} arrow enterTouchDelay={100} leaveTouchDelay={500} placement="top">
-      <Box>
-        <Alert
-          severity={severity}
-          data-size="small-icon"
-          sx={{
-            width: '100%',
-            my: 0,
-          }}
-        />
-      </Box>
-    </DarkTooltip>
-  );
-};
-
-const StatusBadgeText = ({
-  children,
-  severity,
-}: {
-  children: React.ReactNode;
-  severity: 'info' | 'success' | 'error';
-}) => {
-  return (
-    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-      <Alert
-        severity={severity}
-        data-size="small-icon"
-        sx={{
-          width: '100%',
-          my: 0,
-        }}
-      >
-        {children}
-      </Alert>
-    </Box>
-  );
-};
-
-export const ActionDetails = ({
-  transaction,
-  iconSize = '16px',
-  showStatusBadgeAsIconOnly = false,
-}: ActionDetailsProps) => {
+export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsProps) => {
   if (isSDKTransaction(transaction) && hasAmount(transaction)) {
     const { amount, reserve } = transaction;
     const action = transaction.__typename;
@@ -177,7 +128,7 @@ export const ActionDetails = ({
 
     return (
       <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }} pr={4.5}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }} pr={2}>
           <Typography variant="caption" color="fg-2">
             <Trans>Liquidated collateral</Trans>
           </Typography>
@@ -230,7 +181,7 @@ export const ActionDetails = ({
           <ArrowNarrowRightIcon />
         </SvgIcon>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column' }} pl={4.5}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }} pl={2}>
           <Typography variant="caption" color="fg-2">
             <Trans>Covered debt</Trans>
           </Typography>
@@ -346,7 +297,7 @@ export const ActionDetails = ({
 
     return (
       <Box sx={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }} pr={4.5}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }} pr={2}>
           <TokenIcon
             symbol={formattedCowSwapSrcToken.symbol}
             sx={{ fontSize: iconSize }}
@@ -391,7 +342,7 @@ export const ActionDetails = ({
         <SvgIcon sx={{ fontSize: '14px' }}>
           <ArrowNarrowRightIcon />
         </SvgIcon>
-        <Box sx={{ display: 'flex', alignItems: 'center' }} pl={4.5}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }} pl={2}>
           <TokenIcon
             symbol={formattedCowSwapDestToken.symbol}
             sx={{ fontSize: iconSize }}
@@ -436,75 +387,19 @@ export const ActionDetails = ({
 
         {/* Status */}
         {isOrderLoading(swapTx.status) && (
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-            {showStatusBadgeAsIconOnly ? (
-              <StatusBadgeIconOnly title={<Trans>In Progress</Trans>} severity="info" />
-            ) : (
-              <>
-                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-                  <StatusBadgeIconOnly title={<Trans>In Progress</Trans>} severity="info" />
-                </Box>
-                <StatusBadgeText severity="info">
-                  <Trans>In Progress</Trans>
-                </StatusBadgeText>
-              </>
-            )}
-          </Box>
+          <Alert variant="badge" severity="info" sx={BADGE_SX}>
+            <Trans>In Progress</Trans>
+          </Alert>
         )}
         {isOrderFilled(swapTx.status) && (
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-            {showStatusBadgeAsIconOnly ? (
-              <StatusBadgeIconOnly title={<Trans>Filled</Trans>} severity="success" />
-            ) : (
-              <>
-                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-                  <StatusBadgeIconOnly title={<Trans>Filled</Trans>} severity="success" />
-                </Box>
-                <StatusBadgeText severity="success">
-                  <Trans>Filled</Trans>
-                </StatusBadgeText>
-              </>
-            )}
-          </Box>
+          <Alert variant="badge" severity="success" sx={BADGE_SX}>
+            <Trans>Filled</Trans>
+          </Alert>
         )}
-
         {(isOrderCancelled(swapTx.status) || isOrderExpired(swapTx.status)) && (
-          <Box sx={{ display: 'flex', alignItems: 'center', ml: 4.5 }}>
-            {showStatusBadgeAsIconOnly ? (
-              <StatusBadgeIconOnly
-                title={
-                  isOrderCancelled(swapTx.status) ? (
-                    <Trans>Cancelled</Trans>
-                  ) : (
-                    <Trans>Expired</Trans>
-                  )
-                }
-                severity="error"
-              />
-            ) : (
-              <>
-                <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
-                  <StatusBadgeIconOnly
-                    title={
-                      isOrderCancelled(swapTx.status) ? (
-                        <Trans>Cancelled</Trans>
-                      ) : (
-                        <Trans>Expired</Trans>
-                      )
-                    }
-                    severity="error"
-                  />
-                </Box>
-                <StatusBadgeText severity="error">
-                  {isOrderCancelled(swapTx.status) ? (
-                    <Trans>Cancelled</Trans>
-                  ) : (
-                    <Trans>Expired</Trans>
-                  )}
-                </StatusBadgeText>
-              </>
-            )}
-          </Box>
+          <Alert variant="badge" severity="error" sx={BADGE_SX}>
+            {isOrderCancelled(swapTx.status) ? <Trans>Cancelled</Trans> : <Trans>Expired</Trans>}
+          </Alert>
         )}
       </Box>
     );

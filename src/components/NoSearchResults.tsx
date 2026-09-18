@@ -4,10 +4,19 @@ import { ReactNode } from 'react';
 
 type NoSearchResultsProps = {
   searchTerm?: string;
+  /** Overrides the default search-term headline, for lists that are empty for another reason. */
+  title?: ReactNode;
   subtitle?: ReactNode;
+  /** Optional action under the description (e.g. a "Reset filters" button). */
+  children?: ReactNode;
 };
 
-export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm, subtitle }) => {
+export const NoSearchResults: React.FC<NoSearchResultsProps> = ({
+  searchTerm,
+  title,
+  subtitle,
+  children,
+}) => {
   return (
     <Box
       sx={{
@@ -22,7 +31,8 @@ export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm, su
     >
       {/* Title: H5, fg-max, centered; a long keyword ellipsizes rather than wrapping. */}
       <Typography variant="h5" color="fg-max" noWrap sx={{ textAlign: 'center', maxWidth: '100%' }}>
-        {searchTerm ? t`No search results for` + ` '${searchTerm}'` : t`No search results`}
+        {title ??
+          (searchTerm ? t`No search results for` + ` '${searchTerm}'` : t`No search results`)}
       </Typography>
       {/* Description: fg-3 "Paragraph" (0.875rem / 400 / 1.1875rem), supplied per search context. */}
       {subtitle && (
@@ -39,6 +49,7 @@ export const NoSearchResults: React.FC<NoSearchResultsProps> = ({ searchTerm, su
           {subtitle}
         </Typography>
       )}
+      {children && <Box sx={{ mt: '1rem' }}>{children}</Box>}
     </Box>
   );
 };
