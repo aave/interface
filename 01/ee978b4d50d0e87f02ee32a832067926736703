@@ -1,0 +1,37 @@
+src/modules/reserve-overview/ReserveHeaderIconButton.tsx
+  s_303978b07e61f6::t_5b85967afb4281 6,16-20,45
+pages/_app.page.tsx
+  s_303978b07e61f6::t_e74eb5c920daa1 162
+src/components/MarketSwitcher.tsx
+  s_303978b07e61f6::t_d3a6fd6fba30b6 19
+  s_303978b07e61f6::t_f97c21fa77da4d 243-247,542
+  s_303978b07e61f6::t_2cb1bb7056173d 456
+src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+  s_303978b07e61f6::t_f97c21fa77da4d 76-77,85-98,719-720
+  s_303978b07e61f6::t_14b3175997648c 73-75,78-84,510-512,514,517,520-545,547-550,553-560,562-571,573,575-659,661-668,670,672-673,676-718
+src/utils/theme.tsx
+  s_303978b07e61f6::t_0a6e79e0c629ec 479-481
+  s_303978b07e61f6::t_d11cef34d3e626 978-984
+src/layouts/AppHeader.tsx
+  s_303978b07e61f6::t_d11cef34d3e626 38,333,340
+  s_303978b07e61f6::t_edc7e34d609844 26
+src/layouts/components/StakingMenu.tsx
+  s_303978b07e61f6::t_a98778b777b8a7 21-24,27,29,105,113
+  s_303978b07e61f6::t_49b0815c257d41 2,11,19-20,25-26,28,30-33,107,115
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "01ee978b4d50d0e87f02ee32a832067926736703",
+  "prompts": {},
+  "sessions": {
+    "s_303978b07e61f6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5bff8270-b8af-4dec-bf09-a3d3f3bccbc2",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
