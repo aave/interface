@@ -5,8 +5,8 @@ import { availableMarkets } from 'src/utils/marketsAndNetworksConfig';
 
 /**
  * Pins the app's selected market to `market` for the lifetime of the calling page, restoring the
- * user's prior market on unmount — so a page that must run on a single instance (e.g. staking /
- * safety module on Core) can force it without a lasting global change. The header, lists, and tx
+ * user's prior market on unmount — so a page that must run on a single instance (e.g. the safety
+ * module on Core) can force it without a lasting global change. The header, lists, and tx
  * modals all read the market from the store, so pinning here covers the whole page. No-op when
  * already on `market`.
  */

@@ -1,4 +1,6 @@
 import { Trans } from '@lingui/macro';
+import { Box, Typography } from '@mui/material';
+import { MarketSwitcher } from 'src/components/MarketSwitcher';
 import { PageHeader } from 'src/components/PageHeader/PageHeader';
 import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -13,7 +15,23 @@ type StatProps = {
 
 export const UmbrellaHeader: React.FC<{ hideStats?: boolean }> = ({ hideStats }) => (
   <PageHeader
-    title="Staking"
+    disableTitleTypography
+    title={
+      // Tighter than PageHeader's 1rem column gap, so the eyebrow reads as attached to the switcher.
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          gap: '0.75rem',
+        }}
+      >
+        <Typography variant="h5" color="fg-3">
+          <Trans>Staking</Trans>
+        </Typography>
+        <MarketSwitcher hideDescription />
+      </Box>
+    }
     description={<Trans>Stake your Aave aTokens or underlying assets to earn rewards.</Trans>}
   >
     {!hideStats && <UmbrellaStats />}
@@ -22,7 +40,6 @@ export const UmbrellaHeader: React.FC<{ hideStats?: boolean }> = ({ hideStats })
 
 const UmbrellaStats = () => {
   const { currentAccount } = useWeb3Context();
-  // The market is pinned to Core on the staking page (see pages/staking.page.tsx), so this reads Core.
   const currentMarketData = useRootStore((store) => store.currentMarketData);
 
   return (

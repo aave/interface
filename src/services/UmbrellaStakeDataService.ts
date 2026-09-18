@@ -25,6 +25,10 @@ export const stakeUmbrellaConfig: StakeUmbrellaConfig = {
   [`fork_${CustomMarket.proto_mainnet_v3}`]: umbrellaMainnet,
 };
 
+/** Whether Umbrella is deployed on `market` — i.e. whether the stake data queries below can run. */
+export const isUmbrellaAvailable = (market: CustomMarket | ForkedMarket) =>
+  !!stakeUmbrellaConfig[market];
+
 export class UmbrellaStakeDataService {
   constructor(private readonly getProvider: (chainId: number) => Provider) {}
 
