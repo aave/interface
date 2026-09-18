@@ -17,6 +17,14 @@ pages/api/protocol-totals.ts
   s_47b36486644885::t_db51da9046b094 1-36
 .env.example
   s_47b36486644885::t_103ed1be623b27 56-57
+src/locales/es/messages.js
+  s_47b36486644885::t_f4c5420225ae8c 1
+src/locales/el/messages.js
+  s_47b36486644885::t_f4c5420225ae8c 1
+src/locales/fr/messages.js
+  s_47b36486644885::t_f4c5420225ae8c 1
+src/locales/en/messages.js
+  s_47b36486644885::t_f4c5420225ae8c 1
 ---
 {
   "schema_version": "authorship/3.0.0",
