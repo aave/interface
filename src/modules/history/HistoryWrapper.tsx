@@ -179,7 +179,11 @@ export const HistoryWrapper = () => {
         </Box>
       </Box>
 
-      <Paper variant="table">
+      {/* Clipped, because a date heading carries the band's own surface: as a square-cornered
+          child it would otherwise paint over the card's rounded corners. The neighbouring tables
+          round each such child individually instead, which only works while the child is a direct
+          child of the Paper — here the rows sit one level down, inside their own wrapper. */}
+      <Paper variant="table" sx={{ overflow: 'hidden' }}>
         {renderBody()}
 
         {!isEmpty && <Box ref={loadMoreRef} sx={{ height: '1px' }} />}
