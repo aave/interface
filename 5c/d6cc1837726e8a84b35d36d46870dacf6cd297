@@ -1,0 +1,36 @@
+src/hooks/useProtocolTotals.ts
+  s_47b36486644885::t_d3d3cefeb65da1 8,11,15
+  s_47b36486644885::t_db51da9046b094 1-7,9-10,12-14,16-22
+src/locales/en/messages.po
+  s_47b36486644885::t_022c042918a9e1 1010-1013,1220-1223,4267-4269
+  s_47b36486644885::t_890b40ca3973a4 4270
+src/modules/markets/ProtocolTotalsStats.tsx
+  s_47b36486644885::t_3913b391973ad1 70-71,74,77,88,97
+  s_47b36486644885::t_103ed1be623b27 1-69,72-73,75-76,78-87,89-96,98-106
+pages/api/ProtocolTotalsService.ts
+  s_47b36486644885::t_db51da9046b094 1-86
+src/utils/__tests__/protocolTotals.test.ts
+  s_47b36486644885::t_90cbf7d1efda44 1-56
+src/modules/markets/MarketsTopPanel.tsx
+  s_47b36486644885::t_103ed1be623b27 9,20
+pages/api/protocol-totals.ts
+  s_47b36486644885::t_db51da9046b094 1-36
+.env.example
+  s_47b36486644885::t_103ed1be623b27 56-57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "5cd6cc1837726e8a84b35d36d46870dacf6cd297",
+  "prompts": {},
+  "sessions": {
+    "s_47b36486644885": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "761ab91c-aed9-4198-b14d-060fed2d5a91",
+        "model": "unknown"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
