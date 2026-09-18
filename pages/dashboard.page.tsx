@@ -1,6 +1,7 @@
 import { Trans } from '@lingui/macro';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Link, ROUTES } from 'src/components/primitives/Link';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 import { useRootStore } from 'src/store/root';
@@ -33,6 +34,25 @@ export default function Dashboard() {
       <DashboardTopPanel />
 
       <ContentContainer>
+        {currentAccount && (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '1rem',
+              mb: '1.5rem',
+            }}
+          >
+            <Typography variant="h2" sx={{ color: 'fg-1' }}>
+              <Trans>Your Positions</Trans>
+            </Typography>
+            <Button variant="outlined" component={Link} size="medium" href={ROUTES.history}>
+              <Trans>View transactions</Trans>
+            </Button>
+          </Box>
+        )}
+
         {currentAccount && (
           <Box
             sx={{
