@@ -1,0 +1,43 @@
+src/modules/umbrella/UmbrellaHeader.tsx
+  s_d56c10feedfedb::t_ec61215e678e5b 2-3,18-19,21-28,30-31,33-34
+  s_d56c10feedfedb::t_9ead77bc1b8a5e 20,29,32
+pages/staking.page.tsx
+  s_d56c10feedfedb::t_6c4ac1cdd7ab54 10,49
+  s_d56c10feedfedb::t_220a111c741fbf 48,53,55,57-58
+src/locales/es/messages.js
+  s_d56c10feedfedb::t_4949bfc3336e13 1
+src/services/UmbrellaStakeDataService.ts
+  s_d56c10feedfedb::t_646583cbc1f99e 28-31
+src/locales/en/messages.po
+  s_d56c10feedfedb::t_4949bfc3336e13 1291-1294,1476,3299-3301
+  s_d56c10feedfedb::t_f96ff01eea8959 3302
+src/components/PageHeader/PageHeader.tsx
+  s_d56c10feedfedb::t_00ff74980ef63c 43
+src/components/MarketSwitcher.tsx
+  s_d56c10feedfedb::t_8898badf303d2b 278,282-283
+  s_d56c10feedfedb::t_8f772b26f46945 279-281,284,827
+src/locales/fr/messages.js
+  s_d56c10feedfedb::t_4949bfc3336e13 1
+src/hooks/usePinnedMarket.ts
+  s_d56c10feedfedb::t_13af74eca8f1bf 8-9
+src/locales/en/messages.js
+  s_d56c10feedfedb::t_4949bfc3336e13 1
+src/locales/el/messages.js
+  s_d56c10feedfedb::t_4949bfc3336e13 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "15fe75525fb896b47e4d900c7174b5f4193399c5",
+  "prompts": {},
+  "sessions": {
+    "s_d56c10feedfedb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fb52b35f-0a9d-4246-b0ee-a90993adf732",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
