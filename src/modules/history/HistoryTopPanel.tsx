@@ -1,23 +1,21 @@
 import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
-import { PageTitle } from 'src/components/TopInfoPanel/PageTitle';
-
-import { TopInfoPanel } from '../../components/TopInfoPanel/TopInfoPanel';
+import { MarketSwitcher } from 'src/components/MarketSwitcher';
+import { PageHeader } from 'src/components/PageHeader/PageHeader';
 
 export const HistoryTopPanel = () => {
   return (
-    <TopInfoPanel
-      pageTitle={<></>}
-      titleComponent={
+    <PageHeader
+      disableTitleTypography
+      title={
         <Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h3" sx={{ color: '#A5A8B6' }}>
-              <Trans>Transaction history</Trans>
-            </Typography>
-          </Box>
-          <PageTitle withMarketSwitcher={true} />
+          <Typography variant="h5" sx={{ color: 'fg-3', mb: '0.75rem' }}>
+            <Trans>Transaction history</Trans>
+          </Typography>
+          <MarketSwitcher hideDescription />
         </Box>
       }
+      description={<Trans>This list may not include all your swaps.</Trans>}
     />
   );
 };

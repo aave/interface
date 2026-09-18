@@ -1,23 +1,9 @@
-import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import CheckIcon from '@mui/icons-material/Check';
-import SortIcon from '@mui/icons-material/Sort';
-import {
-  Box,
-  Button,
-  Divider,
-  Menu,
-  MenuItem,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
+import { Button, Checkbox, Divider, ListItemText, Menu, MenuItem } from '@mui/material';
+import React, { useState } from 'react';
+import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { useRootStore } from 'src/store/root';
 import { TRANSACTION_HISTORY } from 'src/utils/events';
-import { figVars } from 'src/utils/figmaColors';
 
 import { FilterOptions } from './types';
 
@@ -26,249 +12,119 @@ interface HistoryFilterMenuProps {
   currentFilter: FilterOptions[];
 }
 
-interface FilterLabelProps {
-  filter: FilterOptions;
-}
-
-const FilterLabel: React.FC<FilterLabelProps> = ({ filter }) => {
-  switch (filter) {
-    case FilterOptions.SUPPLY:
-      return <Trans>Supply</Trans>;
-    case FilterOptions.BORROW:
-      return <Trans>Borrow</Trans>;
-    case FilterOptions.WITHDRAW:
-      return <Trans>Withdraw</Trans>;
-    case FilterOptions.REPAY:
-      return <Trans>Repay</Trans>;
-    case FilterOptions.RATECHANGE:
-      return <Trans>Rate change</Trans>;
-    case FilterOptions.COLLATERALCHANGE:
-      return <Trans>Collateral change</Trans>;
-    case FilterOptions.LIQUIDATION:
-      return <Trans>Liquidation</Trans>;
-    case FilterOptions.SWAP:
-      return <Trans>Swap</Trans>;
-    case FilterOptions.COLLATERAL_SWAP:
-      return <Trans>Collateral Swap</Trans>;
-    case FilterOptions.DEBT_SWAP:
-      return <Trans>Debt Swap</Trans>;
-    case FilterOptions.REPAY_WITH_COLLATERAL:
-      return <Trans>Repay with Collateral</Trans>;
-    case FilterOptions.WITHDRAW_AND_SWAP:
-      return <Trans>Withdraw and Swap</Trans>;
-  }
+const filterLabels: Record<FilterOptions, React.ReactNode> = {
+  [FilterOptions.SUPPLY]: <Trans>Supply</Trans>,
+  [FilterOptions.BORROW]: <Trans>Borrow</Trans>,
+  [FilterOptions.WITHDRAW]: <Trans>Withdraw</Trans>,
+  [FilterOptions.REPAY]: <Trans>Repay</Trans>,
+  [FilterOptions.RATECHANGE]: <Trans>Rate change</Trans>,
+  [FilterOptions.COLLATERALCHANGE]: <Trans>Collateral change</Trans>,
+  [FilterOptions.LIQUIDATION]: <Trans>Liquidation</Trans>,
+  [FilterOptions.SWAP]: <Trans>Swap</Trans>,
+  [FilterOptions.COLLATERAL_SWAP]: <Trans>Collateral Swap</Trans>,
+  [FilterOptions.DEBT_SWAP]: <Trans>Debt Swap</Trans>,
+  [FilterOptions.REPAY_WITH_COLLATERAL]: <Trans>Repay with Collateral</Trans>,
+  [FilterOptions.WITHDRAW_AND_SWAP]: <Trans>Withdraw and Swap</Trans>,
 };
+
+const filterOptions = Object.keys(FilterOptions)
+  .filter((key) => isNaN(Number(key)))
+  .map((key) => FilterOptions[key as keyof typeof FilterOptions]);
+
+// The menu's option row. `role` differs between the reset row (radio: picks one state) and the
+// type rows (checkbox: each toggles independently); everything else is shared.
+const OptionRow = ({
+  role,
+  checked,
+  onClick,
+  children,
+}: {
+  role: 'menuitemradio' | 'menuitemcheckbox';
+  checked: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) => (
+  <MenuItem onClick={onClick} role={role} aria-checked={checked} sx={{ gap: '0.5rem' }}>
+    <Checkbox
+      checked={checked}
+      inputProps={{ readOnly: true, tabIndex: -1, 'aria-hidden': true }}
+      sx={{ p: 0, pointerEvents: 'none' }}
+    />
+    <ListItemText>{children}</ListItemText>
+  </MenuItem>
+);
 
 export const HistoryFilterMenu: React.FC<HistoryFilterMenuProps> = ({
   onFilterChange,
   currentFilter,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [localFilter, setLocalFilter] = useState<FilterOptions[]>(currentFilter);
   const trackEvent = useRootStore((store) => store.trackEvent);
 
-  useEffect(() => {
-    onFilterChange(localFilter);
-  }, [localFilter, onFilterChange]);
+  const open = Boolean(anchorEl);
+  const selectedCount = currentFilter.length;
+  // No type selected is the same result as every type selected, and reads better on the trigger.
+  const allSelected = selectedCount === 0;
 
-  const theme = useTheme();
-  const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-
-  const allSelected = currentFilter.length === 0;
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-    onFilterChange(currentFilter);
-  };
-
-  const handleFilterClick = (filter: FilterOptions | undefined) => {
-    let newFilter: FilterOptions[] = [];
-    if (filter !== undefined) {
-      if (currentFilter.includes(filter)) {
-        newFilter = currentFilter.filter((item) => item !== filter);
-      } else {
-        trackEvent(TRANSACTION_HISTORY.FILTER, { value: filter });
-        newFilter = [...currentFilter, filter];
-        // Checks if all filter options are selected,  enum length is divided by 2 based on how Typescript creates object from enum
-        if (newFilter.length === Object.keys(FilterOptions).length / 2) {
-          newFilter = [];
-        }
-      }
+  const handleFilterToggle = (filter: FilterOptions) => {
+    if (currentFilter.includes(filter)) {
+      onFilterChange(currentFilter.filter((item) => item !== filter));
+      return;
     }
 
-    setLocalFilter(newFilter);
+    trackEvent(TRANSACTION_HISTORY.FILTER, { value: filter });
+    const newFilter = [...currentFilter, filter];
+    onFilterChange(newFilter.length === filterOptions.length ? [] : newFilter);
   };
 
-  const FilterButtonLabel = () => {
-    if (allSelected) {
-      return <Trans>All transactions</Trans>;
-    } else {
-      const displayLimit = 2;
-      const hiddenCount = currentFilter.length - displayLimit;
-      const displayedFilters = currentFilter.slice(0, displayLimit).map((filter) => (
-        <React.Fragment key={filter}>
-          <FilterLabel filter={filter} />
-          {filter !== currentFilter[currentFilter.length - 1] && ','}
-          {filter !== currentFilter[displayLimit - 1] && ' '}
-        </React.Fragment>
-      ));
-
-      return (
-        <Box sx={{ display: 'flex' }}>
-          <Typography variant="description" color="primary.main" sx={{ mr: 1 }}>
-            TXs:
-          </Typography>
-          {displayedFilters}
-          {hiddenCount > 0 && <React.Fragment>...(+{hiddenCount})</React.Fragment>}
-        </Box>
-      );
-    }
-  };
-
-  const handleClearFilter = (event: React.MouseEvent) => {
+  const handleSelectAll = () => {
     trackEvent(TRANSACTION_HISTORY.FILTER, { value: 'cleared' });
-    event.stopPropagation();
-    setLocalFilter([]);
+    onFilterChange([]);
   };
 
   return (
-    <Box>
+    <>
       <Button
-        sx={{
-          minWidth: 148,
-          maxWidth: downToMD ? '100%' : 360,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 36,
-          border: '1px solid',
-          borderColor: 'border-2',
-          borderRadius: '4px',
-          mr: downToMD ? 0 : 2,
-          ml: downToMD ? 4 : 0,
-          pl: 2,
-          pr: 1,
-        }}
-        onClick={handleClick}
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+        variant="outlined"
+        aria-haspopup="true"
+        aria-expanded={open}
+        endIcon={<ChevronUpDownIcon sx={{ fontSize: 18, color: 'fg-3' }} />}
+        sx={{ textTransform: 'none' }}
       >
-        <Box display="flex" alignItems="center" overflow="hidden">
-          <SvgIcon height={9} width={9} color="primary">
-            <SortIcon />
-          </SvgIcon>
-          <Typography
-            variant="subheader1"
-            color="fg-1"
-            sx={{
-              ml: 1,
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              mr: 1,
-            }}
-          >
-            <FilterButtonLabel />
-          </Typography>
-        </Box>
-        {!allSelected && (
-          <DarkTooltip
-            title={
-              <Typography variant="caption">
-                <Trans>Reset</Trans>
-              </Typography>
-            }
-          >
-            <Box
-              sx={{
-                cursor: 'pointer',
-                color: 'primary',
-                height: 'auto',
-                width: 'auto',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-              onClick={handleClearFilter}
-            >
-              <SvgIcon sx={{ color: 'fg-3', fontSize: 18 }}>
-                <XCircleIcon />
-              </SvgIcon>
-            </Box>
-          </DarkTooltip>
+        {allSelected ? (
+          <Trans>All transactions</Trans>
+        ) : selectedCount === 1 ? (
+          filterLabels[currentFilter[0]]
+        ) : (
+          <Trans>{selectedCount} transaction types</Trans>
         )}
       </Button>
+
       <Menu
         anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        PaperProps={{
-          sx: {
-            width: 280,
-            maxHeight: 300,
-            mt: 1,
-            boxShadow: '0px 0px 2px rgba(0, 0, 0, 0.2), 0px 2px 10px rgba(0, 0, 0, 0.1)',
-            borderRadius: '4px',
-          },
-        }}
+        open={open}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
       >
-        <MenuItem
-          onClick={() => handleFilterClick(undefined)}
-          sx={{
-            background: allSelected ? figVars['bg-2'] : undefined,
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Typography variant="subheader1" color="fg-1">
-            <Trans>All transactions</Trans>
-          </Typography>
-          {allSelected && (
-            <SvgIcon sx={{ fontSize: '16px' }}>
-              <CheckIcon />
-            </SvgIcon>
-          )}
-        </MenuItem>
-        <Divider sx={{ mt: 1 }} />
-        <Box
-          sx={{
-            overflowY: 'scroll',
-            maxHeight: 200,
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-            '::-webkit-scrollbar': {
-              display: 'none',
-            },
-          }}
-        >
-          {Object.keys(FilterOptions)
-            .filter((key) => isNaN(Number(key)))
-            .map((optionKey) => {
-              const option = FilterOptions[optionKey as keyof typeof FilterOptions];
-              return (
-                <MenuItem
-                  key={optionKey}
-                  onClick={() => handleFilterClick(option)}
-                  sx={{
-                    background: currentFilter.includes(option) ? figVars['bg-2'] : undefined,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Typography variant="subheader1" color="fg-1">
-                    <FilterLabel filter={option} />
-                  </Typography>
-                  {currentFilter.includes(option) && (
-                    <SvgIcon sx={{ fontSize: '16px' }}>
-                      <CheckIcon />
-                    </SvgIcon>
-                  )}
-                </MenuItem>
-              );
-            })}
-        </Box>
+        <OptionRow role="menuitemradio" checked={allSelected} onClick={handleSelectAll}>
+          <Trans>All transactions</Trans>
+        </OptionRow>
+
+        <Divider />
+
+        {filterOptions.map((option) => (
+          <OptionRow
+            key={option}
+            role="menuitemcheckbox"
+            checked={currentFilter.includes(option)}
+            onClick={() => handleFilterToggle(option)}
+          >
+            {filterLabels[option]}
+          </OptionRow>
+        ))}
       </Menu>
-    </Box>
+    </>
   );
 };

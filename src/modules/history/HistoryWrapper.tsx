@@ -1,39 +1,40 @@
-import { DocumentDownloadIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Box, Button, CircularProgress, Paper, useMediaQuery, useTheme } from '@mui/material';
+import { Fragment, useCallback, useMemo, useRef, useState } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
-import { ListWrapper } from 'src/components/lists/ListWrapper';
+import { CONTENT_TOP_PADDING } from 'src/components/ContentContainer';
+import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
+import { NoSearchResults } from 'src/components/NoSearchResults';
 import { SearchInput } from 'src/components/SearchInput';
 import { applyTxHistoryFilters, useTransactionHistory } from 'src/hooks/useTransactionHistory';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { TRANSACTION_HISTORY } from 'src/utils/events';
 
-import { downloadData, formatTransactionData, groupByDate } from './helpers';
+import { groupByDate } from './helpers';
+import { HistoryExportMenu } from './HistoryExportMenu';
 import { HistoryFilterMenu } from './HistoryFilterMenu';
 import { HistoryItemLoader } from './HistoryItemLoader';
-import { HistoryWrapperMobile } from './HistoryWrapperMobile';
+import { HISTORY_CARDS_BELOW, HistoryDateHeading } from './HistoryListLayout';
 import TransactionRowItem from './TransactionRowItem';
-import { FilterOptions, TransactionHistoryItemUnion } from './types';
+import { FilterOptions } from './types';
 
 export const HistoryWrapper = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [loadingDownload, setLoadingDownload] = useState(false);
   const [filterQuery, setFilterQuery] = useState<FilterOptions[]>([]);
   const [searchResetKey, setSearchResetKey] = useState(0);
 
   const isFilterActive = searchQuery.length > 0 || filterQuery.length > 0;
-  const trackEvent = useRootStore((store) => store.trackEvent);
   const currentMarket = useRootStore((store) => store.currentMarket);
+  const { currentAccount } = useWeb3Context();
+
+  const theme = useTheme();
+  const stackRows = useMediaQuery(theme.breakpoints.down(HISTORY_CARDS_BELOW));
+  // The band where a row carries a Cancel button but is too narrow to also show the status
+  // badge's label. Resolved once here rather than per row — each `useMediaQuery` is its own
+  // matchMedia listener, and this list is not virtualised.
+  const collapseStatusBadge = useMediaQuery(
+    theme.breakpoints.between(HISTORY_CARDS_BELOW, TABLE_CARDS_BELOW)
+  );
 
   const {
     data: transactions,
@@ -43,52 +44,9 @@ export const HistoryWrapper = () => {
     fetchForDownload,
   } = useTransactionHistory({ isFilterActive });
 
-  const handleJsonDownload = async () => {
-    trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'JSON' });
-    setLoadingDownload(true);
-    const data = await fetchForDownload({ searchQuery, filterQuery });
-    const formattedData = formatTransactionData({ data, csv: false });
-    const jsonData = JSON.stringify(formattedData, null, 2);
-    downloadData('transactions.json', jsonData, 'application/json');
-    setLoadingDownload(false);
-  };
-
-  const handleCsvDownload = async () => {
-    trackEvent(TRANSACTION_HISTORY.DOWNLOAD, { type: 'CSV' });
-
-    setLoadingDownload(true);
-    const data: TransactionHistoryItemUnion[] = await fetchForDownload({
-      searchQuery,
-      filterQuery,
-    });
-    const formattedData = formatTransactionData({ data, csv: true });
-
-    // Getting all the unique headers
-    const headersSet = new Set<string>();
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      Object.keys(transaction).forEach((key) => headersSet.add(key));
-    });
-
-    const headers: string[] = Array.from(headersSet);
-    let csvContent = headers.join(',') + '\n';
-
-    formattedData.forEach((transaction: TransactionHistoryItemUnion) => {
-      const row: string[] = headers.map((header) => {
-        const value = transaction[header as keyof TransactionHistoryItemUnion];
-        if (typeof value === 'object') {
-          return JSON.stringify(value) ?? '';
-        }
-        return String(value) ?? '';
-      });
-      csvContent += row.join(',') + '\n';
-    });
-
-    downloadData('transactions.csv', csvContent, 'text/csv');
-    setLoadingDownload(false);
-  };
-
+  // Sentinel under the last row: pull the next page once it scrolls into view.
   const observer = useRef<IntersectionObserver | null>(null);
-  const lastElementRef = useCallback(
+  const loadMoreRef = useCallback(
     (node: HTMLDivElement | null) => {
       if (isLoading) return;
       if (observer.current) observer.current.disconnect();
@@ -101,9 +59,6 @@ export const HistoryWrapper = () => {
     },
     [fetchNextPage, isLoading]
   );
-  const theme = useTheme();
-  const downToMD = useMediaQuery(theme.breakpoints.down('md'));
-  const { currentAccount } = useWeb3Context();
 
   const flatTxns = useMemo(
     () => transactions?.pages?.flatMap((page) => page) || [],
@@ -113,189 +68,141 @@ export const HistoryWrapper = () => {
     () => applyTxHistoryFilters({ searchQuery, filterQuery, txns: flatTxns }),
     [searchQuery, filterQuery, flatTxns]
   );
+  const dateGroups = useMemo(() => groupByDate(filteredTxns), [filteredTxns]);
+
+  const resetFilters = () => {
+    setSearchQuery('');
+    setFilterQuery([]);
+    setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput to clear its search query
+  };
 
   if (!currentAccount) {
     return (
       <ConnectWalletPaper
-        description={<Trans> Please connect your wallet to view transaction history.</Trans>}
+        description={<Trans>Please connect your wallet to view transaction history.</Trans>}
       />
     );
   }
 
-  if (downToMD) {
-    return <HistoryWrapperMobile />;
-  }
-
   const isEmpty = filteredTxns.length === 0;
-  const filterActive = searchQuery !== '' || filterQuery.length > 0;
 
-  return (
-    <ListWrapper
-      titleComponent={
+  // Four sibling states rather than a ternary tree, so the list branch can stay long without
+  // burying the three short ones.
+  const renderBody = () => {
+    if (isLoading) {
+      return (
         <>
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-            <Typography component="div" variant="h2" sx={{ mr: 4 }}>
-              <Trans>Transactions</Trans>
-            </Typography>
-            <Typography variant="subheader2" color="fg-2" sx={{ mt: 1 }}>
-              <Trans>This list may not include all your swaps.</Trans>
-            </Typography>
-          </Box>
+          <HistoryItemLoader stacked={stackRows} />
+          <HistoryItemLoader stacked={stackRows} />
         </>
-      }
-    >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mx: 8, mt: 6, mb: 4 }}>
-        <Box sx={{ display: 'inline-flex' }}>
-          <HistoryFilterMenu onFilterChange={setFilterQuery} currentFilter={filterQuery} />
-          <SearchInput
-            onSearchTermChange={setSearchQuery}
-            placeholder="Search assets..."
-            wrapperSx={{ width: '280px' }}
-            key={searchResetKey}
-          />
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', height: 36, gap: 0.5 }}>
-          {loadingDownload && <CircularProgress size={16} sx={{ mr: 2 }} color="inherit" />}
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-              mr: 6,
-            }}
-            onClick={handleCsvDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="fg-1">
-              <Trans>.CSV</Trans>
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              cursor: 'pointer',
-              color: 'primary',
-              height: 'auto',
-              width: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-            onClick={handleJsonDownload}
-          >
-            <SvgIcon>
-              <DocumentDownloadIcon width={22} height={22} />
-            </SvgIcon>
-            <Typography variant="buttonM" color="fg-1">
-              <Trans>.JSON</Trans>
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
+      );
+    }
 
-      {isLoading ? (
-        <>
-          <HistoryItemLoader />
-          <HistoryItemLoader />
-        </>
-      ) : !isEmpty ? (
-        Object.entries(groupByDate(filteredTxns))
-          .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime())
-          .map(([date, txns], groupIndex) => (
-            <React.Fragment key={groupIndex}>
-              <Typography variant="h4" color="fg-1" sx={{ ml: 9, mt: 6, mb: 2 }}>
-                {date}
-              </Typography>
-              {txns.map((transaction: TransactionHistoryItemUnion, index: number) => {
-                const isLastItem = index === txns.length - 1;
-                return (
-                  <div ref={isLastItem ? lastElementRef : null} key={index}>
-                    <TransactionRowItem transaction={transaction as TransactionHistoryItemUnion} />
-                  </div>
-                );
-              })}
-            </React.Fragment>
-          ))
-      ) : filterActive ? (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            p: 4,
-            flex: 1,
-            maxWidth: '468px',
-            margin: '0 auto',
-            my: 24,
-          }}
-        >
-          <Typography variant="h3" color="fg-1">
-            <Trans>Nothing found</Trans>
-          </Typography>
-          <Typography sx={{ mt: 1, mb: 4 }} variant="description" color="fg-2">
+    if (isEmpty && isFilterActive) {
+      return (
+        <NoSearchResults
+          searchTerm={searchQuery}
+          subtitle={
             <Trans>
               We couldn&apos;t find any transactions related to your search. Try again with a
               different asset name, or reset filters.
             </Trans>
-          </Typography>
-          <Button
-            variant="tertiary"
-            onClick={() => {
-              setSearchQuery('');
-              setFilterQuery([]);
-              setSearchResetKey((prevKey) => prevKey + 1); // Remount SearchInput component to clear search query
-            }}
-          >
-            Reset Filters
+          }
+        >
+          <Button variant="tertiary" onClick={resetFilters}>
+            <Trans>Reset filters</Trans>
           </Button>
-        </Box>
-      ) : !isFetchingNextPage ? (
+        </NoSearchResults>
+      );
+    }
+
+    if (isEmpty) {
+      return (
+        <NoSearchResults
+          title={<Trans>No transactions yet</Trans>}
+          subtitle={
+            currentMarket === 'proto_plasma_v3' ? (
+              <Trans>Transaction history for Plasma is not supported yet, coming soon.</Trans>
+            ) : (
+              <Trans>Your supplies, borrows and swaps on this market will show up here.</Trans>
+            )
+          }
+        />
+      );
+    }
+
+    // One flat run of date headings and rows, so a row's hairline comes from ListItem's own
+    // `:not(:last-child)` rule and the last row in the card goes without one.
+    return (
+      <Box>
+        {dateGroups.map(({ date, rows }) => (
+          <Fragment key={date}>
+            <HistoryDateHeading>{date}</HistoryDateHeading>
+            {rows.map(({ id, transaction }) => (
+              <TransactionRowItem
+                key={id}
+                transaction={transaction}
+                stacked={stackRows}
+                collapseStatusBadge={collapseStatusBadge}
+              />
+            ))}
+          </Fragment>
+        ))}
+      </Box>
+    );
+  };
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: CONTENT_TOP_PADDING }}>
+      {/* Same shape as the markets / staking filter bars (AssetsFilterBar): search on the left,
+          the dropdowns on the right, each full width once they stack. */}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', xsm: 'row' },
+          alignItems: { xs: 'stretch', xsm: 'center' },
+          justifyContent: 'space-between',
+          gap: { xs: '0.75rem', xsm: '0.5rem' },
+        }}
+      >
+        <SearchInput
+          key={searchResetKey}
+          onSearchTermChange={setSearchQuery}
+          placeholder="Search assets"
+          wrapperSx={{ width: { xs: '100%', xsm: '340px' } }}
+        />
+
+        {/* On their own line the two dropdowns take opposite ends; once the row is sized to its
+            content space-between is inert and the gap sets them apart. */}
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            p: 4,
-            flex: 1,
+            justifyContent: 'space-between',
+            gap: 2,
+            width: { xs: '100%', xsm: 'auto' },
           }}
         >
-          <Typography sx={{ my: 24 }} variant="h3" color="fg-1">
-            {currentMarket === 'proto_plasma_v3' ? (
-              <Trans>Transaction history for Plasma not supported yet, coming soon.</Trans>
-            ) : (
-              <Trans>No transactions yet.</Trans>
-            )}
-          </Typography>
+          <HistoryFilterMenu onFilterChange={setFilterQuery} currentFilter={filterQuery} />
+          <HistoryExportMenu
+            fetchForDownload={fetchForDownload}
+            filters={{ searchQuery, filterQuery }}
+          />
         </Box>
-      ) : (
-        <></>
-      )}
+      </Box>
 
-      <Box
-        sx={{ display: 'flex', justifyContent: 'center', mb: isFetchingNextPage ? 6 : 0, mt: 10 }}
-      >
+      <Paper variant="table">
+        {renderBody()}
+
+        {!isEmpty && <Box ref={loadMoreRef} sx={{ height: '1px' }} />}
+
         {isFetchingNextPage && (
-          <Box
-            sx={{
-              height: 36,
-              width: 186,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <CircularProgress size={20} style={{ color: '#383D51' }} />
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+            <CircularProgress size={20} sx={{ color: 'fg-3' }} />
           </Box>
         )}
-      </Box>
-    </ListWrapper>
+      </Paper>
+    </Box>
   );
 };
 

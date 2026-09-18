@@ -139,6 +139,10 @@ msgstr "Rate change"
 msgid "Sorry, we couldn't find the page you were looking for."
 msgstr "Sorry, we couldn't find the page you were looking for."
 
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Your supplies, borrows and swaps on this market will show up here."
+msgstr "Your supplies, borrows and swaps on this market will show up here."
+
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "Select token"
 msgstr "Select token"
@@ -235,6 +239,10 @@ msgstr "View details"
 #: src/layouts/MoreMenu.tsx
 msgid "More"
 msgstr "More"
+
+#: src/modules/history/HistoryFilterMenu.tsx
+msgid "{selectedCount} transaction types"
+msgstr "{selectedCount} transaction types"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Available liquidity"
@@ -387,8 +395,6 @@ msgid "Sign to continue"
 msgstr "Sign to continue"
 
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
-#: src/modules/history/HistoryWrapper.tsx
-#: src/modules/history/HistoryWrapperMobile.tsx
 msgid "Transactions"
 msgstr "Transactions"
 
@@ -1152,6 +1158,10 @@ msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to
 msgid "Switch E-Mode"
 msgstr "Switch E-Mode"
 
+#: src/modules/history/HistoryExportMenu.tsx
+msgid "Export"
+msgstr "Export"
+
 #: src/components/MarketSwitcher.tsx
 msgid "Supply and borrow the widest range of assets in Aave's deepest market."
 msgstr "Supply and borrow the widest range of assets in Aave's deepest market."
@@ -1259,6 +1269,10 @@ msgstr "E-Mode required"
 #: src/components/infoTooltips/CollateralTooltip.tsx
 msgid "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
 msgstr "The total amount of your assets denominated in USD that can be used as collateral for borrowing assets."
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Reset filters"
+msgstr "Reset filters"
 
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimActions.tsx
 msgid "Claiming {symbol}"
@@ -1738,10 +1752,6 @@ msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing agains
 msgid "Favourites"
 msgstr "Favourites"
 
-#: src/modules/history/HistoryFilterMenu.tsx
-msgid "Reset"
-msgstr "Reset"
-
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "disabled"
 msgstr "disabled"
@@ -2038,7 +2048,7 @@ msgstr "Disabling E-Mode"
 msgid "Legacy"
 msgstr "Legacy"
 
-#: src/modules/history/HistoryWrapper.tsx
+#: src/modules/history/HistoryTopPanel.tsx
 msgid "This list may not include all your swaps."
 msgstr "This list may not include all your swaps."
 
@@ -2436,11 +2446,6 @@ msgstr "Default slippage"
 msgid "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 msgstr "If your loan to value goes above the liquidation threshold your collateral supplied may be liquidated."
 
-#: src/modules/history/TransactionMobileRowItem.tsx
-#: src/modules/history/TransactionRowItem.tsx
-msgid "VIEW"
-msgstr "VIEW"
-
 #: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Target"
 msgstr "Target"
@@ -2753,8 +2758,6 @@ msgid "Governance"
 msgstr "Governance"
 
 #: src/components/TitleWithSearchBar.tsx
-#: src/modules/history/HistoryWrapperMobile.tsx
-#: src/modules/history/TransactionMobileRowItem.tsx
 #: src/modules/history/TransactionRowItem.tsx
 msgid "Cancel"
 msgstr "Cancel"
@@ -2766,6 +2769,10 @@ msgstr "Av. to Stake"
 #: src/ui-config/errorMapping.tsx
 msgid "Ltv validation failed"
 msgstr "Ltv validation failed"
+
+#: src/modules/history/HistoryWrapper.tsx
+msgid "Transaction history for Plasma is not supported yet, coming soon."
+msgstr "Transaction history for Plasma is not supported yet, coming soon."
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
@@ -2858,11 +2865,6 @@ msgstr "Bridge GHO"
 #: src/components/MarketSwitcher.tsx
 msgid "Search markets..."
 msgstr "Search markets..."
-
-#: src/modules/history/HistoryWrapper.tsx
-#: src/modules/history/HistoryWrapperMobile.tsx
-msgid "No transactions yet."
-msgstr "No transactions yet."
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -3009,11 +3011,6 @@ msgstr "Invalid bridge protocol fee"
 msgid "Representing smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representing smart contract wallet (ie. Safe) addresses on other chains."
 
-#: src/modules/history/HistoryWrapper.tsx
-#: src/modules/history/HistoryWrapperMobile.tsx
-msgid ".CSV"
-msgstr ".CSV"
-
 #: src/components/infoTooltips/NetworkCostTooltip.tsx
 msgid "This is the cost of settling your order on-chain, including gas and any LP fees."
 msgstr "This is the cost of settling your order on-chain, including gas and any LP fees."
@@ -3130,18 +3127,14 @@ msgstr "Borrowable"
 msgid "Safety Module"
 msgstr "Safety Module"
 
+#: src/components/BackButton/index.tsx
 #: src/layouts/components/LanguageSwitcher.tsx
-#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "Back"
 msgstr "Back"
 
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
 msgstr "Estimated weekly rewards based on your current sGHO balance and APR. Actual rewards may vary depending on market conditions."
-
-#: src/modules/history/HistoryWrapper.tsx
-msgid "Transaction history for Plasma not supported yet, coming soon."
-msgstr "Transaction history for Plasma not supported yet, coming soon."
 
 #: src/modules/dashboard/lists/SlippageList.tsx
 msgid "Select slippage tolerance"
@@ -3263,6 +3256,10 @@ msgstr "Migrated"
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 msgstr "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
 
+#: src/modules/history/TransactionRowItem.tsx
+msgid "View"
+msgstr "View"
+
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
@@ -3329,10 +3326,9 @@ msgstr "Supply cap is exceeded"
 msgid "{0} collateral would have 0% LTV without E-Mode. Disable {1} as collateral to use this option."
 msgstr "{0} collateral would have 0% LTV without E-Mode. Disable {1} as collateral to use this option."
 
-#: src/modules/history/HistoryWrapper.tsx
-#: src/modules/history/HistoryWrapperMobile.tsx
-msgid ".JSON"
-msgstr ".JSON"
+#: src/modules/history/HistoryExportMenu.tsx
+msgid "Download CSV"
+msgstr "Download CSV"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Debt ceiling is not zero"
@@ -3363,7 +3359,6 @@ msgid "Voted YAE"
 msgstr "Voted YAE"
 
 #: src/modules/history/HistoryWrapper.tsx
-#: src/modules/history/HistoryWrapperMobile.tsx
 msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
 msgstr "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
 
@@ -3620,11 +3615,6 @@ msgstr "Default"
 msgid "Per the community, the {market} has been frozen."
 msgstr "Per the community, the {market} has been frozen."
 
-#: src/modules/history/HistoryWrapper.tsx
-#: src/modules/history/HistoryWrapperMobile.tsx
-msgid "Nothing found"
-msgstr "Nothing found"
-
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signatures ready"
 msgstr "Signatures ready"
@@ -3669,6 +3659,10 @@ msgstr "please check that the amount you want to supply is not currently being u
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Minimum amount received"
 msgstr "Minimum amount received"
+
+#: src/modules/history/HistoryExportMenu.tsx
+msgid "Download JSON"
+msgstr "Download JSON"
 
 #: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Access level"
@@ -3863,6 +3857,10 @@ msgstr "Your proposition power is based on your AAVE/stkAAVE balance and receive
 msgid "To continue claiming rewards, migrate now."
 msgstr "To continue claiming rewards, migrate now."
 
+#: src/modules/history/HistoryWrapper.tsx
+msgid "No transactions yet"
+msgstr "No transactions yet"
+
 #: src/modules/bridge/BridgeWrapper.tsx
 msgid "You don't have any bridge transactions"
 msgstr "You don't have any bridge transactions"
@@ -4044,10 +4042,6 @@ msgstr "There is an active order for the same sell asset (avoid nonce reuse)."
 #: src/ui-config/errorMapping.tsx
 msgid "For repayment of a specific type of debt, the user needs to have debt that type"
 msgstr "For repayment of a specific type of debt, the user needs to have debt that type"
-
-#: src/modules/history/HistoryWrapperMobile.tsx
-msgid "Export data to"
-msgstr "Export data to"
 
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Buy Crypto with Fiat"

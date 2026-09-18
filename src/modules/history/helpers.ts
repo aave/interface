@@ -122,6 +122,28 @@ export const unixTimestampToFormattedTime = ({ unixTimestamp }: { unixTimestamp:
   return `${formattedHours}:${formattedMinutes} ${amOrPm}`;
 };
 
+// Flattens the formatted transactions into CSV: the union of every row's keys becomes the header,
+// and object-valued cells are JSON-encoded.
+export const toCsv = (data: TransactionHistoryItemUnion[]) => {
+  const headersSet = new Set<string>();
+  data.forEach((transaction) => {
+    Object.keys(transaction).forEach((key) => headersSet.add(key));
+  });
+
+  const headers: string[] = Array.from(headersSet);
+
+  const rows = data.map((transaction) =>
+    headers
+      .map((header) => {
+        const value = transaction[header as keyof TransactionHistoryItemUnion];
+        return typeof value === 'object' ? JSON.stringify(value) : String(value);
+      })
+      .join(',')
+  );
+
+  return [headers.join(','), ...rows].join('\n') + '\n';
+};
+
 export const downloadData = (fileName: string, content: string, mimeType: string) => {
   const file = new Blob([content], { type: mimeType });
   const downloadUrl = URL.createObjectURL(file);
@@ -134,24 +156,50 @@ export const downloadData = (fileName: string, content: string, mimeType: string
   URL.revokeObjectURL(downloadUrl);
 };
 
+// Built once: constructing a DateTimeFormat costs far more than formatting with one, and grouping
+// re-runs for every page that lands during an infinite scroll.
+const groupDateFormatter = new Intl.DateTimeFormat(undefined, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+export interface TransactionDateGroup {
+  date: string;
+  /** Newest transaction in the group, for ordering the groups themselves. */
+  latest: number;
+  rows: { id: string; transaction: TransactionHistoryItemUnion }[];
+}
+
+/**
+ * Groups transactions under their formatted day, newest day first. Ordering is done on the raw
+ * timestamps rather than by re-parsing the formatted label: `new Date('18. September 2026')` is
+ * `Invalid Date` in plenty of locales, which would silently collapse the comparator to a no-op.
+ * Row ids come along because the caller needs a stable React key per row anyway.
+ */
 export const groupByDate = (
   transactions: TransactionHistoryItemUnion[]
-): Record<string, TransactionHistoryItemUnion[]> => {
-  return transactions.reduce((grouped, transaction) => {
+): TransactionDateGroup[] => {
+  const groups = new Map<string, TransactionDateGroup>();
+
+  transactions.forEach((transaction) => {
     const timestamp = Date.parse(transaction.timestamp);
+    const date = groupDateFormatter.format(new Date(timestamp));
 
-    const date = new Intl.DateTimeFormat(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }).format(new Date(timestamp));
-
-    if (!grouped[date]) {
-      grouped[date] = [];
+    const group = groups.get(date);
+    if (group) {
+      group.latest = Math.max(group.latest, timestamp);
+      group.rows.push({ id: getTransactionId(transaction), transaction });
+    } else {
+      groups.set(date, {
+        date,
+        latest: timestamp,
+        rows: [{ id: getTransactionId(transaction), transaction }],
+      });
     }
-    grouped[date].push(transaction);
-    return grouped;
-  }, {} as Record<string, TransactionHistoryItemUnion[]>);
+  });
+
+  return Array.from(groups.values()).sort((a, b) => b.latest - a.latest);
 };
 interface FormatTransactionDataParams {
   data: TransactionHistoryItemUnion[];

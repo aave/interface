@@ -3,9 +3,8 @@ import { Box, BoxProps, Button, Paper, PaperProps } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { MinusIcon } from 'src/components/icons/MinusIcon';
 import { useRootStore } from 'src/store/root';
-import { CARD_HEADING_HEIGHT } from 'src/utils/cardStyles';
+import { CARD_HEADING_HEIGHT, cardHeaderBandSx, cardHeaderTitleSx } from 'src/utils/cardStyles';
 import { DASHBOARD } from 'src/utils/events';
-import { figVars } from 'src/utils/figmaColors';
 
 import { toggleLocalStorageClick } from '../../helpers/toggle-local-storage-click';
 
@@ -123,10 +122,9 @@ export const ListWrapper = ({
             display: 'flex',
             flexDirection: 'column',
             gap: '1.25rem',
-            padding: { xs: '0.875rem 1rem', xsm: '1rem 1rem 1rem 1.25rem' },
-            bgcolor: 'table-bg',
-            // Hairline as an inset shadow rather than a border, so it doesn't add to the box height.
-            boxShadow: `inset 0 -1px 0 ${figVars['border-0']}`,
+            ...cardHeaderBandSx,
+            pl: { xs: '1rem', xsm: '1.25rem' },
+            pr: '1rem',
             borderTopLeftRadius: 'inherit',
             borderTopRightRadius: 'inherit',
             // Empty list: the children box is present but renders nothing.
@@ -145,10 +143,7 @@ export const ListWrapper = ({
               // Title type (H4) — scoped to this row, NOT the whole band, or it would flatten the
               // second row's stat typography too. Consumers pass their own heading variant, so
               // neutralise those; control typography (search, selects) keeps its own smaller type.
-              color: 'fg-1',
-              fontSize: '1rem',
-              fontWeight: 500,
-              lineHeight: '1.125rem',
+              ...cardHeaderTitleSx,
               '& .MuiTypography-h1, & .MuiTypography-h2, & .MuiTypography-h3, & .MuiTypography-h4':
                 {
                   font: 'inherit',
