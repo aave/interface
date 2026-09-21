@@ -1,0 +1,19 @@
+pages/api/protocol-totals.ts
+  s_47b36486644885::t_7014b953ace159 22-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "ab13ba623eb6c87a515ee9f07688df8c19509b0b",
+  "prompts": {},
+  "sessions": {
+    "s_47b36486644885": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "761ab91c-aed9-4198-b14d-060fed2d5a91",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
