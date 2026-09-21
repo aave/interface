@@ -19,6 +19,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // The CDN cache is keyed by URL, so a unique query string would force a fresh
+  // upstream read on every request. There are no parameters to accept.
+  if (Object.keys(req.query).length > 0) {
+    return res.status(400).json({ error: 'Query parameters are not supported' });
+  }
+
   const apiKey = process.env.TL_API_KEY;
   if (!apiKey) {
     // A configuration state, not a failed read: the client renders no figures.
