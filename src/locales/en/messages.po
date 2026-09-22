@@ -1007,6 +1007,10 @@ msgstr "I fully understand the risks of migrating."
 msgid "The underlying asset cannot be rescued"
 msgstr "The underlying asset cannot be rescued"
 
+#: src/modules/markets/ProtocolTotalsStats.tsx
+msgid "Aave total deposits"
+msgstr "Aave total deposits"
+
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
 msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
@@ -1212,6 +1216,10 @@ msgstr "Swapping {0} collateral"
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
+
+#: src/modules/markets/ProtocolTotalsStats.tsx
+msgid "Aave total loans"
+msgstr "Aave total loans"
 
 #: pages/500.page.tsx
 msgid "Sorry, an unexpected error happened. In the meantime you may try reloading the page, or come back later."
@@ -4255,6 +4263,10 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens, please go to the"
 msgstr "tokens, please go to the"
+
+#: src/modules/markets/ProtocolTotalsStats.tsx
+msgid "Across every Aave version and network"
+msgstr "Across every Aave version and network"
 
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
