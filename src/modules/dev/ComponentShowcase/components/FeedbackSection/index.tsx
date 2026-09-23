@@ -1,4 +1,10 @@
 import { Alert, Box, LinearProgress, Skeleton } from '@mui/material';
+import {
+  StatusCancelledIcon,
+  StatusExpiredIcon,
+  StatusFilledIcon,
+  StatusInProgressIcon,
+} from 'src/components/icons/StatusIcons';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { NoData } from 'src/components/primitives/NoData';
 
@@ -7,13 +13,16 @@ import { Specimen } from '../Specimen';
 
 const SEVERITIES = ['error', 'warning', 'info', 'success'] as const;
 
-// Badges label a state in a word or two — they sit inline in a table row, not in a banner.
-const BADGE_LABELS: Record<(typeof SEVERITIES)[number], string> = {
-  error: 'Expired',
-  warning: 'Pending',
-  info: 'In Progress',
-  success: 'Filled',
-};
+// Badges label a state in a word or two — they sit inline in a table row, not in a banner. Their
+// severities carry the CoW order states rather than the banner's semantics (see the
+// `variant: 'badge'` entries in theme.tsx), and each pairs with its own status glyph. Listed in
+// order of an order's life, which is why this is a list and not keyed off SEVERITIES.
+const BADGE_STATES = [
+  { severity: 'warning', label: 'In Progress', icon: <StatusInProgressIcon /> },
+  { severity: 'success', label: 'Filled', icon: <StatusFilledIcon /> },
+  { severity: 'error', label: 'Cancelled', icon: <StatusCancelledIcon /> },
+  { severity: 'info', label: 'Expired', icon: <StatusExpiredIcon /> },
+] as const;
 
 export const FeedbackSection = () => (
   <Section title="Feedback">
@@ -42,16 +51,16 @@ export const FeedbackSection = () => (
     </Specimen>
 
     <Specimen label="Alert — badge (status chip)">
-      {SEVERITIES.map((severity) => (
-        <Alert key={severity} variant="badge" severity={severity}>
-          {BADGE_LABELS[severity]}
+      {BADGE_STATES.map(({ severity, label, icon }) => (
+        <Alert key={severity} variant="badge" severity={severity} icon={icon}>
+          {label}
         </Alert>
       ))}
     </Specimen>
 
     <Specimen label="Alert — badge, icon only">
-      {SEVERITIES.map((severity) => (
-        <Alert key={severity} variant="badge" severity={severity} />
+      {BADGE_STATES.map(({ severity, icon }) => (
+        <Alert key={severity} variant="badge" severity={severity} icon={icon} />
       ))}
     </Specimen>
 

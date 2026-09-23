@@ -2,6 +2,12 @@ import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Alert, Box, SvgIcon, Typography } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
+import {
+  StatusCancelledIcon,
+  StatusExpiredIcon,
+  StatusFilledIcon,
+  StatusInProgressIcon,
+} from 'src/components/icons/StatusIcons';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -385,20 +391,26 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
           </DarkTooltip>
         </Box>
 
-        {/* Status */}
+        {/* Status. Cancelled and expired share a branch but not a chip: one is the error orange
+            with a cross, the other the neutral grey with a clock. */}
         {isOrderLoading(swapTx.status) && (
-          <Alert variant="badge" severity="info" sx={BADGE_SX}>
+          <Alert variant="badge" severity="warning" icon={<StatusInProgressIcon />} sx={BADGE_SX}>
             <Trans>In Progress</Trans>
           </Alert>
         )}
         {isOrderFilled(swapTx.status) && (
-          <Alert variant="badge" severity="success" sx={BADGE_SX}>
+          <Alert variant="badge" severity="success" icon={<StatusFilledIcon />} sx={BADGE_SX}>
             <Trans>Filled</Trans>
           </Alert>
         )}
-        {(isOrderCancelled(swapTx.status) || isOrderExpired(swapTx.status)) && (
-          <Alert variant="badge" severity="error" sx={BADGE_SX}>
-            {isOrderCancelled(swapTx.status) ? <Trans>Cancelled</Trans> : <Trans>Expired</Trans>}
+        {isOrderCancelled(swapTx.status) && (
+          <Alert variant="badge" severity="error" icon={<StatusCancelledIcon />} sx={BADGE_SX}>
+            <Trans>Cancelled</Trans>
+          </Alert>
+        )}
+        {isOrderExpired(swapTx.status) && (
+          <Alert variant="badge" severity="info" icon={<StatusExpiredIcon />} sx={BADGE_SX}>
+            <Trans>Expired</Trans>
           </Alert>
         )}
       </Box>

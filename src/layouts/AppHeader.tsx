@@ -35,7 +35,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { iconButtonSx, startIconSizeSx } from 'src/utils/buttonStyles';
+import { endIconSizeSx, iconButtonSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 import { ENABLE_TESTNET, FORK_ENABLED, isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { motion } from 'src/utils/motion';
@@ -330,14 +330,14 @@ export function AppHeader() {
                 component={Link}
                 href={AAVE_PRO_URL}
                 variant="outlined"
-                startIcon={<ArrowUpRightIcon />}
+                endIcon={<ArrowUpRightIcon sx={{ color: 'fg-3' }} />}
                 sx={{
                   p: '0 0.88rem',
                   minWidth: 'unset',
                   alignItems: 'center',
                   mr: '0.62rem',
                   whiteSpace: 'nowrap',
-                  ...startIconSizeSx('18px'),
+                  ...endIconSizeSx('18px'),
                 }}
               >
                 <Typography component="span" variant="buttonM">

@@ -1,7 +1,8 @@
-import { ExternalLinkIcon, XIcon } from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { useModalContext } from 'src/hooks/useModal';
 import { useRootStore } from 'src/store/root';
 
@@ -14,9 +15,7 @@ export type BaseWaitingTxViewProps = {
 };
 
 const ExtLinkIcon = () => (
-  <SvgIcon sx={{ ml: 2, fontWeight: 800, fontSize: '20px', color: 'fg-1' }}>
-    <ExternalLinkIcon />
-  </SvgIcon>
+  <ArrowUpRightIcon sx={{ ml: 2, fontWeight: 800, fontSize: '20px', color: 'fg-1' }} />
 );
 
 export const BaseCancelledView = ({

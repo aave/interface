@@ -1,7 +1,7 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Avatar, Box, Button, Paper, Skeleton, SvgIcon, Typography } from '@mui/material';
+import { Avatar, Box, Button, Paper, Skeleton, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { Link } from 'src/components/primitives/Link';
 import { textCenterEllipsis } from 'src/helpers/text-center-ellipsis';
 import { getSeatbeltReportUrl } from 'src/modules/governance/utils/seatbelt';
@@ -64,9 +64,7 @@ const AddressRow = ({
           <Typography variant="caption" color="primary">
             {textCenterEllipsis(address, 6, 4)}
           </Typography>
-          <SvgIcon sx={{ fontSize: 12, ml: 0.5, color: 'primary.main' }}>
-            <ExternalLinkIcon />
-          </SvgIcon>
+          <ArrowUpRightIcon sx={{ fontSize: 12, ml: 0.5, color: 'primary.main' }} />
         </Link>
       ) : (
         <Typography variant="caption">{textCenterEllipsis(address, 6, 4)}</Typography>
@@ -164,9 +162,7 @@ export const ProposalPayloads = ({ payloads, loading }: ProposalPayloadsProps) =
                 <Typography variant="caption" color="primary">
                   <Trans>Seatbelt report</Trans>
                 </Typography>
-                <SvgIcon sx={{ fontSize: 12, ml: 0.5, color: 'primary.main' }}>
-                  <ExternalLinkIcon />
-                </SvgIcon>
+                <ArrowUpRightIcon sx={{ fontSize: 12, ml: 0.5, color: 'primary.main' }} />
               </Link>
             )}
           </Box>

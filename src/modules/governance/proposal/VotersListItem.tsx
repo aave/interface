@@ -1,6 +1,6 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
-import { Avatar, Box, SvgIcon, Typography } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import { blo } from 'blo';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { VoteDisplay } from 'src/modules/governance/types';
@@ -68,9 +68,7 @@ export const VotersListItem = ({ compact, voter }: VotersListItemProps): JSX.Ele
               sx={{ display: 'flex', alignItems: 'center' }}
             >
               {displayName(ensName)}
-              <SvgIcon sx={{ width: 14, height: 14, ml: 0.5 }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
+              <ArrowUpRightIcon sx={{ width: 14, height: 14, ml: 0.5 }} />
             </Typography>
           </Link>
         </Box>

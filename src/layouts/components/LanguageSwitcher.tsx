@@ -1,19 +1,11 @@
-import { CheckIcon } from '@heroicons/react/solid';
 import { t, Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
-import {
-  Box,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import { ListItem, MenuItem } from '@mui/material';
 import React from 'react';
-import { ChevronRightIcon } from 'src/components/icons/ChevronRightIcon';
 
 import { dynamicActivateLanguage } from '../../libs/LanguageProvider';
+import { SettingsNavRow } from './SettingsNavRow';
+import { SettingsSubmenuList } from './SettingsSubmenuList';
 
 const langMap = {
   en: t`English`,
@@ -21,6 +13,13 @@ const langMap = {
   fr: t`French`,
   el: t`Greek`,
 };
+
+// The flags are static artwork, so the elements are built once. Their box is sized by the icon
+// slot — 20x14 in the menu, scaled up by the drawer's own row rules (see MobileMenu's menuListSx).
+const FLAG_OPTIONS = Object.keys(langMap).map((lang) => ({
+  key: lang,
+  icon: <img src={`/icons/flags/${lang}.svg`} width="100%" height="100%" alt={`${lang} icon`} />,
+}));
 
 interface LanguageListItemProps {
   component?: typeof MenuItem | typeof ListItem;
@@ -31,15 +30,12 @@ export const LanguageListItem = ({ component = ListItem, onClick }: LanguageList
   const { i18n } = useLingui();
 
   return (
-    <Box component={component} onClick={onClick} sx={{ color: 'fg-1' }}>
-      <ListItemText>
-        <Trans>Language</Trans>
-      </ListItemText>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'fg-3' }}>
-        <ListItemText>{i18n._(langMap[i18n.locale as keyof typeof langMap])}</ListItemText>
-        <ChevronRightIcon sx={{ fontSize: 20 }} />
-      </Box>
-    </Box>
+    <SettingsNavRow
+      component={component}
+      label={<Trans>Language</Trans>}
+      value={i18n._(langMap[i18n.locale as keyof typeof langMap])}
+      onClick={onClick}
+    />
   );
 };
 
@@ -47,44 +43,15 @@ export const LanguagesList = ({ component = ListItem, onClick }: LanguageListIte
   const { i18n } = useLingui();
 
   return (
-    <>
-      <Box component={component} sx={{ color: 'fg-3', mb: '4px' }} onClick={onClick}>
-        <ListItemIcon sx={{ minWidth: 'unset !important', mr: 2, color: 'fg-3' }}>
-          <ChevronRightIcon sx={{ fontSize: 20, transform: 'rotate(180deg)' }} />
-        </ListItemIcon>
-        <ListItemText disableTypography>
-          <Typography variant="base">
-            <Trans>Back</Trans>
-          </Typography>
-        </ListItemText>
-      </Box>
-
-      {Object.keys(langMap).map((lang) => (
-        <Box
-          component={component}
-          key={lang}
-          onClick={() => dynamicActivateLanguage(lang)}
-          sx={{
-            color: 'fg-1',
-            '.MuiListItemIcon-root': { minWidth: 'unset' },
-            '.MuiMenuItemIcon-root': { minWidth: 'unset' },
-          }}
-        >
-          <ListItemIcon
-            sx={{ mr: 3, borderRadius: '2px', overflow: 'hidden', width: 20, height: 14 }}
-          >
-            <img src={`/icons/flags/${lang}.svg`} width="100%" height="100%" alt={`${lang} icon`} />
-          </ListItemIcon>
-          <ListItemText>{i18n._(langMap[lang as keyof typeof langMap])}</ListItemText>
-          {lang === i18n.locale && (
-            <ListItemIcon sx={{ m: 0 }}>
-              <SvgIcon fontSize="small" sx={{ color: 'fg-1' }}>
-                <CheckIcon />
-              </SvgIcon>
-            </ListItemIcon>
-          )}
-        </Box>
-      ))}
-    </>
+    <SettingsSubmenuList
+      component={component}
+      selectedKey={i18n.locale}
+      onBack={onClick}
+      onSelect={dynamicActivateLanguage}
+      options={FLAG_OPTIONS.map((option) => ({
+        ...option,
+        label: i18n._(langMap[option.key as keyof typeof langMap]),
+      }))}
+    />
   );
 };

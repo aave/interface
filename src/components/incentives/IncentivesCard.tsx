@@ -121,7 +121,9 @@ export const IncentivesCard = ({
     isMarketsOrDashboardPage;
 
   // APR-bearing incentives — their yield is already inside the APY %; each renders the purple
-  // incentives icon and sits on the same row as (to the left of) the rate it contributes to.
+  // incentives icon and sits on the same row, trailing the rate it contributes to. Trailing, not
+  // leading, so the rate reads first and every annotation (these, `tooltip`, `pointsIncentives`)
+  // sits on one side of it.
   const apyIncentives = (
     <>
       <IncentivesButton
@@ -194,8 +196,8 @@ export const IncentivesCard = ({
         textAlign: inlineIncentives ? 'left' : 'center',
       }}
     >
-      {apyIncentives}
       {apyValue}
+      {apyIncentives}
       {tooltip}
       {pointsIncentives}
     </Box>
