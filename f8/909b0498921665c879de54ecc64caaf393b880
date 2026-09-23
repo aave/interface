@@ -1,0 +1,161 @@
+pages/safety-module.page.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 11,408
+  s_8bcc38939dd026::t_20d81eab1af8fb 4
+src/modules/reserve-overview/ReserveConfiguration.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 4,199
+  s_8bcc38939dd026::t_20d81eab1af8fb 3
+src/modules/history/actions/ActionDetails.tsx
+  s_8bcc38939dd026::t_85876be2e31ba0 397
+  s_8bcc38939dd026::t_c4f1e3a3e03149 394-395,402,406-413
+  s_8bcc38939dd026::t_f3bf3591afb014 5-10
+src/modules/governance/proposal/ProposalTimeline.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 17
+  s_8bcc38939dd026::t_20d81eab1af8fb 559
+src/modules/reserve-overview/ReserveFactorOverview.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 3
+  s_8bcc38939dd026::t_20d81eab1af8fb 2,88
+src/modules/staking/GetABPTokenModal.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 3,32
+  s_8bcc38939dd026::t_20d81eab1af8fb 2
+pages/markets.page.tsx
+  s_8bcc38939dd026::t_97088204ea91bd 19-21
+src/modules/governance/RepresentativesInfoPanel.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 6,208
+src/locales/fr/messages.js
+  s_8bcc38939dd026::t_ecba226a682806 1
+src/components/icons/CheckIcon.tsx
+  s_8bcc38939dd026::t_480b37a1186355 1-19
+src/layouts/components/SettingsSubmenuList/index.tsx
+  s_8bcc38939dd026::t_2f8d3b3fd14b80 7
+  s_8bcc38939dd026::t_c85ca15eeb6513 40-44
+  s_8bcc38939dd026::t_41819d01a1ef49 4-5,38,53-54
+  s_8bcc38939dd026::t_fb990981a77bb9 1,3,6,11,13-35,39,45-48,51-52,55-60
+  s_8bcc38939dd026::t_9e53ed3952b4da 2,8-10,12,36-37,49-50
+src/modules/faucet/FaucetAssetsList.tsx
+  s_8bcc38939dd026::t_20d81eab1af8fb 3
+  s_8bcc38939dd026::t_517f9207a5467a 5,135
+src/components/FaucetButton.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 3,22
+  s_8bcc38939dd026::t_20d81eab1af8fb 2
+src/modules/governance/proposal/VotersListItem.tsx
+  s_8bcc38939dd026::t_20d81eab1af8fb 1,71
+  s_8bcc38939dd026::t_517f9207a5467a 3
+src/utils/figmaColors.ts
+  s_8bcc38939dd026::t_2ac1ae04ff21fc 42
+  s_8bcc38939dd026::t_7d11127181e563 33-41,43-53
+  s_8bcc38939dd026::t_a0c10c84e42026 28-31,162-165
+src/components/infoTooltips/TokenContractTooltip.tsx
+  s_8bcc38939dd026::t_20d81eab1af8fb 1,10
+  s_8bcc38939dd026::t_517f9207a5467a 2
+src/components/UserNameText.tsx
+  s_8bcc38939dd026::t_20d81eab1af8fb 1,54
+  s_8bcc38939dd026::t_517f9207a5467a 2
+src/components/incentives/IncentivesCard.tsx
+  s_8bcc38939dd026::t_97088204ea91bd 124-126
+  s_8bcc38939dd026::t_657170c8249820 200
+src/components/icons/ChevronLeftIcon.tsx
+  s_8bcc38939dd026::t_480b37a1186355 1-20
+pages/404.page.tsx
+  s_8bcc38939dd026::t_686b0ee954bbce 2,5-7,10,20,22-48,50-53
+src/locales/en/messages.po
+  s_8bcc38939dd026::t_d089d356bfe009 213-216,959-962,1118-1121,3147,3704-3706
+  s_8bcc38939dd026::t_e996b8c4fb8454 753-755,1207-1209
+  s_8bcc38939dd026::t_e3853433522fad 756
+  s_8bcc38939dd026::t_bcbb600490f0d9 1210
+  s_8bcc38939dd026::t_9f45fcbddc5bde 3707
+src/components/transactions/FlowCommons/RightHelperText.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 4,20
+  s_8bcc38939dd026::t_20d81eab1af8fb 2
+src/locales/es/messages.js
+  s_8bcc38939dd026::t_ecba226a682806 1
+src/layouts/MobileMenu.tsx
+  s_8bcc38939dd026::t_8692c168d355d4 19,93,104,106,154,177-178
+  s_8bcc38939dd026::t_955826c03e7318 53-57,218
+  s_8bcc38939dd026::t_220b408da02997 21-22,58-60,94-95,219
+  s_8bcc38939dd026::t_11fb3eb33b31b1 20
+src/utils/theme.tsx
+  s_8bcc38939dd026::t_0b07615b97aac1 181
+  s_8bcc38939dd026::t_dfd95c9f27ab74 1335
+  s_8bcc38939dd026::t_d260b5ac024ef1 212
+  s_8bcc38939dd026::t_b4efbd40a62bcf 1087-1090
+  s_8bcc38939dd026::t_26d2f9bed42353 1336-1338
+  s_8bcc38939dd026::t_0dc227666d10d1 1260-1262,1264-1265
+  s_8bcc38939dd026::t_72c5b4bbb3ae9a 139-146,148,207-210,215-219,222-225,227-230
+  s_8bcc38939dd026::t_20dcf3827d57fc 107-113,124
+  s_8bcc38939dd026::t_44323d2ea9741c 221,226
+  s_8bcc38939dd026::t_76f14a0dd8058a 1345-1347,1349
+  s_8bcc38939dd026::t_21a8c2f9efdbce 220
+src/modules/dev/ComponentShowcase/components/FeedbackSection/index.tsx
+  s_8bcc38939dd026::t_3e4470f201d664 18-25,54-56,62-63
+  s_8bcc38939dd026::t_85876be2e31ba0 2-7,16-17
+src/layouts/components/SettingsNavRow/index.tsx
+  s_8bcc38939dd026::t_fb990981a77bb9 1-28
+src/layouts/SettingsMenu.tsx
+  s_8bcc38939dd026::t_94efb48f1e7780 24-25,27-32,35-37,41-42,45,51,57,61,71-72,80,84,93-94
+  s_8bcc38939dd026::t_7a1869ba8e5171 2,14
+src/locales/en/messages.js
+  s_8bcc38939dd026::t_ecba226a682806 1
+src/layouts/components/LanguageSwitcher.tsx
+  s_8bcc38939dd026::t_f6a4931172547e 3,7-8,23,33-38,46-50,54-55
+  s_8bcc38939dd026::t_9e53ed3952b4da 17-22,51-53
+src/utils/buttonStyles.ts
+  s_8bcc38939dd026::t_041bf243cc5131 30,32-35,37-38,41-47
+  s_8bcc38939dd026::t_d1bb13b661f285 48
+src/layouts/AppHeader.tsx
+  s_8bcc38939dd026::t_20fe39a721cf67 333,340
+  s_8bcc38939dd026::t_30d3427c00be4d 38
+src/components/icons/ThemeIcons.tsx
+  s_8bcc38939dd026::t_16c7bf6744d751 1-25,28-36,40-47,49-83
+  s_8bcc38939dd026::t_e17180df383db2 26-27,37-39,48
+src/components/BridgeButton.tsx
+  s_8bcc38939dd026::t_20d81eab1af8fb 1
+  s_8bcc38939dd026::t_517f9207a5467a 2,13
+src/utils/events.ts
+  s_8bcc38939dd026::t_fd182fa1dd0fae 170-171
+src/components/icons/StatusIcons.tsx
+  s_8bcc38939dd026::t_7f0b6f36dbc626 1-14,25
+  s_8bcc38939dd026::t_e17180df383db2 15-24,26-29
+src/modules/bridge/BridgeTransactionListItem.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 21,219
+  s_8bcc38939dd026::t_20d81eab1af8fb 2,153
+src/modules/bridge/BridgeWrapper.tsx
+  s_8bcc38939dd026::t_20d81eab1af8fb 1,82
+  s_8bcc38939dd026::t_517f9207a5467a 5
+src/modules/governance/proposal/ProposalPayloads.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 4
+  s_8bcc38939dd026::t_20d81eab1af8fb 2,67,165
+src/modules/governance/proposal/VotingResults.tsx
+  s_8bcc38939dd026::t_20d81eab1af8fb 2
+  s_8bcc38939dd026::t_517f9207a5467a 3,165
+src/locales/el/messages.js
+  s_8bcc38939dd026::t_ecba226a682806 1
+src/modules/staking/BuyWithFiatModal.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 3,45
+src/layouts/components/ThemeSwitcher/index.tsx
+  s_8bcc38939dd026::t_a15fdc069f889b 1,13-17,19-24,33,39-44,62
+  s_8bcc38939dd026::t_a1d7e5b4faffbd 2-12,18,25-32,34-38,45-61,63-65
+src/hooks/useReserveActionState.tsx
+  s_8bcc38939dd026::t_517f9207a5467a 3,88
+  s_8bcc38939dd026::t_20d81eab1af8fb 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f8909b0498921665c879de54ecc64caaf393b880",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_8bcc38939dd026": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "38cd70a0-0124-4ea3-b7b2-c639bf7eebc8",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
