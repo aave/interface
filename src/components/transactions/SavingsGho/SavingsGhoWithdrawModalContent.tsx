@@ -96,6 +96,7 @@ export const SavingsGhoModalWithdrawContent = ({ icon }: UnStakeProps) => {
   if (txState.success)
     return (
       <TxSuccessView
+        title={<Trans>Withdrawn Successfully</Trans>}
         action={<Trans>withdrew</Trans>}
         amount={amountRef.current}
         symbol={nameFormatted}

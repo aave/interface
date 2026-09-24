@@ -96,10 +96,6 @@ msgstr "Borrowing this amount will reduce your health factor and increase risk o
 msgid "{0} {symbol}..."
 msgstr "{0} {symbol}..."
 
-#: src/components/transactions/FlowCommons/BaseWaiting.tsx
-msgid "In progress"
-msgstr "In progress"
-
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Amount available to unstake"
 msgstr "Amount available to unstake"
@@ -154,6 +150,10 @@ msgstr "Recent Transactions"
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Liquidation risk"
 msgstr "Liquidation risk"
+
+#: src/components/transactions/Swap/modals/request/RepayWithCollateralModalContent.tsx
+msgid "and repaid"
+msgstr "and repaid"
 
 #: src/modules/migration/MigrationListMobileItem.tsx
 msgid "Current v2 Balance"
@@ -214,6 +214,10 @@ msgstr "USDT on Ethereum requires approval reset before a new approval. This wil
 msgid "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 msgstr "After the cooldown period ends, you will enter the unstake window of {0}. You will continue receiving rewards during cooldown and the unstake period."
 
+#: src/components/transactions/FlowCommons/TxResultView/index.tsx
+msgid "Transaction Cancelled"
+msgstr "Transaction Cancelled"
+
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
 msgstr "Liquidation <0/> threshold"
@@ -222,14 +226,15 @@ msgstr "Liquidation <0/> threshold"
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
-#: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
-msgid "Cancellation submited"
-msgstr "Cancellation submited"
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "Surplus"
+msgstr "Surplus"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "This transaction will switch E-Mode from {0} to {1}. Borrowing will be restricted to assets within the new category."
 msgstr "This transaction will switch E-Mode from {0} to {1}. Borrowing will be restricted to assets within the new category."
 
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
@@ -255,10 +260,6 @@ msgstr "Please connect your wallet to swap collateral."
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
 msgstr "Asset cannot be migrated due to supply cap restriction in {marketName} v3 market."
-
-#: src/components/transactions/FlowCommons/Error.tsx
-msgid "Need help? Our support team can assist."
-msgstr "Need help? Our support team can assist."
 
 #: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 msgid "This asset is eligible for the Ether.fi Loyalty program with a <0>x{multiplier} multiplier</0>."
@@ -334,6 +335,10 @@ msgstr "{0} Balance{1}"
 msgid "Supply {symbol}"
 msgstr "Supply {symbol}"
 
+#: src/components/transactions/Swap/modals/request/DebtSwapModalContent.tsx
+msgid "Debt sent"
+msgstr "Debt sent"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/migration/MigrationList.tsx
@@ -344,6 +349,7 @@ msgid "Max LTV"
 msgstr "Max LTV"
 
 #: src/components/transactions/Repay/RepayModal.tsx
+#: src/components/transactions/Swap/modals/request/RepayWithCollateralModalContent.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
@@ -389,6 +395,10 @@ msgstr "Maximum available to borrow"
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "or from the"
 msgstr "or from the"
+
+#: src/components/transactions/FlowCommons/TxResultView/index.tsx
+msgid "Transaction Expired"
+msgstr "Transaction Expired"
 
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Sign to continue"
@@ -528,6 +538,10 @@ msgstr "Cooling down..."
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Voting power"
 msgstr "Voting power"
+
+#: src/components/transactions/Swap/modals/request/CollateralSwapModalContent.tsx
+msgid "Collateral received"
+msgstr "Collateral received"
 
 #: src/ui-config/menu-items/index.tsx
 msgid "Markets"
@@ -692,10 +706,6 @@ msgstr "Utilization Rate"
 msgid "View contract"
 msgstr "View contract"
 
-#: src/components/transactions/FlowCommons/BaseCancelled.tsx
-msgid "Transaction cancelled"
-msgstr "Transaction cancelled"
-
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Please connect your wallet to be able to bridge your tokens."
 msgstr "Please connect your wallet to be able to bridge your tokens."
@@ -754,6 +764,13 @@ msgstr "This asset has almost reached its borrow cap. There is only {messageValu
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
+msgid "claimed"
+msgstr "claimed"
+
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
@@ -771,6 +788,10 @@ msgstr "MAI has been paused due to a community decision. Supply, borrows and rep
 #: src/modules/reserve-overview/TokenLinkDropdown.tsx
 msgid "Underlying token"
 msgstr "Underlying token"
+
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "Details will be available soon"
+msgstr "Details will be available soon"
 
 #: src/modules/dashboard/lists/ListBottomText.tsx
 msgid "Since this is a test network, you can get any of the assets if you have ETH on your wallet"
@@ -922,6 +943,10 @@ msgstr "Votes tallied and sent to governance"
 msgid "Points"
 msgstr "Points"
 
+#: src/components/transactions/Swap/modals/request/CollateralSwapModalContent.tsx
+msgid "Collateral sent"
+msgstr "Collateral sent"
+
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "Greek"
 msgstr "Greek"
@@ -970,6 +995,10 @@ msgstr "This action will reduce health factor of V3 below liquidation threshold.
 msgid "Gas estimation error"
 msgstr "Gas estimation error"
 
+#: src/components/transactions/FlowCommons/TxResultActions/index.tsx
+msgid "Review Transaction"
+msgstr "Review Transaction"
+
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoLoggedOutPreview.tsx
 #: src/modules/sGho/SGhoWithdrawRow.tsx
@@ -1007,6 +1036,10 @@ msgstr "I fully understand the risks of migrating."
 msgid "The underlying asset cannot be rescued"
 msgstr "The underlying asset cannot be rescued"
 
+#: src/components/transactions/FlowCommons/TxResultActions/index.tsx
+msgid "Done"
+msgstr "Done"
+
 #: src/modules/markets/ProtocolTotalsStats.tsx
 msgid "Aave total deposits"
 msgstr "Aave total deposits"
@@ -1038,6 +1071,11 @@ msgstr "Disabled"
 #: src/components/infoTooltips/GhoRateTooltip.tsx
 msgid "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
 msgstr "Estimated compounding interest rate, that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand."
+
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx
+#: src/modules/umbrella/UnstakeModalContent.tsx
+msgid "unstaked"
+msgstr "unstaked"
 
 #: src/layouts/SupportModal.tsx
 msgid "Share my wallet address to help the support team resolve my issue"
@@ -1080,6 +1118,10 @@ msgstr "Destination"
 msgid "Queued for execution"
 msgstr "Queued for execution"
 
+#: src/components/transactions/Repay/RepayModalContent.tsx
+msgid "Repaid Successfully"
+msgstr "Repaid Successfully"
+
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
@@ -1111,6 +1153,11 @@ msgstr "Learn more."
 msgid "Active"
 msgstr "Active"
 
+#: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/modules/umbrella/UmbrellaModalContent.tsx
+msgid "Staked Successfully"
+msgstr "Staked Successfully"
+
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationList.tsx
 msgid "Current v2 balance"
@@ -1127,6 +1174,10 @@ msgstr "Borrow power used"
 #: src/ui-config/errorMapping.tsx
 msgid "Operation not supported"
 msgstr "Operation not supported"
+
+#: src/components/transactions/Swap/modals/request/DebtSwapModalContent.tsx
+msgid "debt"
+msgstr "debt"
 
 #: src/components/MarketSwitcher.tsx
 msgid "L2 Networks"
@@ -1149,6 +1200,10 @@ msgstr "Assets to supply"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Restake"
 msgstr "Restake"
+
+#: src/components/transactions/FlowCommons/Error.tsx
+msgid "We were unable to complete this transaction"
+msgstr "We were unable to complete this transaction"
 
 #: src/components/transactions/CancelCowOrder/CancelCowOrderActions.tsx
 msgid "Sending cancel..."
@@ -1290,7 +1345,7 @@ msgstr "Claiming {symbol}"
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
-#: src/components/transactions/FlowCommons/BaseSuccess.tsx
+#: src/components/transactions/FlowCommons/TxResultView/index.tsx
 msgid "All done"
 msgstr "All done"
 
@@ -1371,6 +1426,10 @@ msgstr "Manage analytics"
 msgid "Stablecoins"
 msgstr "Stablecoins"
 
+#: src/components/transactions/CancelCowOrder/CancelCowOrderModalContent.tsx
+msgid "Cancellation Submitted"
+msgstr "Cancellation Submitted"
+
 #: src/components/transactions/UnStake/UnStakeActions.tsx
 #: src/modules/umbrella/UnstakeModalActions.tsx
 msgid "Unstaking {symbol}"
@@ -1412,6 +1471,10 @@ msgstr "Not enough balance on your wallet"
 #: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "Get GHO"
 msgstr "Get GHO"
+
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "Send"
+msgstr "Send"
 
 #: src/components/transactions/Repay/RepayModalContent.tsx
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
@@ -1711,6 +1774,10 @@ msgstr "{m}m"
 #: src/modules/sGho/SGhoHeader.tsx
 msgid "Deposit GHO into Savings GHO (sGHO) and earn {aprPercent}% APR on your GHO holdings."
 msgstr "Deposit GHO into Savings GHO (sGHO) and earn {aprPercent}% APR on your GHO holdings."
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "borrowed"
+msgstr "borrowed"
 
 #: src/layouts/SupportModal.tsx
 msgid "Inquiry"
@@ -2030,6 +2097,10 @@ msgstr "Total available"
 msgid "Fees exceed wallet balance"
 msgstr "Fees exceed wallet balance"
 
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "You've successfully swapped {titleItems}."
+msgstr "You've successfully swapped {titleItems}."
+
 #: src/components/infoTooltips/ReadOnlyModeTooltip.tsx
 msgid "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
 msgstr "Read-only mode allows to see address positions in Aave, but you won't be able to perform transactions."
@@ -2074,6 +2145,7 @@ msgstr "Can't validate the wallet address. Try again."
 msgid "GHO balance"
 msgstr "GHO balance"
 
+#: src/components/transactions/Faucet/FaucetModalContent.tsx
 #: src/components/transactions/StkGhoMigrate/StkGhoMigrateModalContent.tsx
 msgid "received"
 msgstr "received"
@@ -2143,10 +2215,6 @@ msgstr "Double your yield by <0><1>verifying your humanity through Self</1></0>.
 msgid "Show assets with small balance"
 msgstr "Show assets with small balance"
 
-#: src/components/transactions/Bridge/BridgeModalContent.tsx
-msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
-msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below"
-
 #: pages/500.page.tsx
 msgid "Reload the page"
 msgstr "Reload the page"
@@ -2154,6 +2222,11 @@ msgstr "Reload the page"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave balance changes, your delegate's voting/proposition power will be automatically adjusted."
 msgstr "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave balance changes, your delegate's voting/proposition power will be automatically adjusted."
+
+#: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
+msgid "Deposited Successfully"
+msgstr "Deposited Successfully"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not borrowable in isolation mode"
@@ -2207,6 +2280,10 @@ msgstr "The Maximum LTV ratio represents the maximum borrowing power of a specif
 msgid "You'll need to wait {0} before you can unstake your tokens. This cooldown starts when you request to unstake. Once it ends, you can withdraw during the unstake window."
 msgstr "You'll need to wait {0} before you can unstake your tokens. This cooldown starts when you request to unstake. Once it ends, you can withdraw during the unstake window."
 
+#: src/components/transactions/Swap/modals/request/CollateralSwapModalContent.tsx
+msgid "collateral"
+msgstr "collateral"
+
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
@@ -2256,12 +2333,6 @@ msgstr "Supply balance after swap"
 msgid "Claiming all merit rewards only"
 msgstr "Claiming all merit rewards only"
 
-#: src/components/transactions/FlowCommons/BaseCancelled.tsx
-#: src/components/transactions/FlowCommons/BaseSuccess.tsx
-#: src/components/transactions/FlowCommons/BaseWaiting.tsx
-msgid "Review tx details"
-msgstr "Review tx details"
-
 #: src/components/transactions/SGhoVault/SGhoVaultDepositModal.tsx
 msgid "Deposit GHO into sGHO"
 msgstr "Deposit GHO into sGHO"
@@ -2291,9 +2362,21 @@ msgstr "E-Mode increases your LTV for a selected category of assets up to<0/>. <
 msgid "Reserve size"
 msgstr "Reserve size"
 
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "tokens"
+msgstr "tokens"
+
 #: src/modules/reserve-overview/ReserveConfigurationWrapper.tsx
 msgid "Reserve status & configuration"
 msgstr "Reserve status & configuration"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "restaked"
+msgstr "restaked"
+
+#: src/components/transactions/Swap/modals/request/WithdrawAndSwapModalContent.tsx
+msgid "Withdrawn"
+msgstr "Withdrawn"
 
 #: src/layouts/SupportModal.tsx
 msgid "Let us know how we can help you. You may also consider joining our community"
@@ -2311,6 +2394,7 @@ msgstr "User cannot withdraw more than the available balance"
 msgid "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 msgstr "<0>Ampleforth</0> is a rebasing asset. Visit the <1>documentation</1> to learn more."
 
+#: src/components/transactions/FlowCommons/TxResultView/index.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "In Progress"
 msgstr "In Progress"
@@ -2408,10 +2492,6 @@ msgstr "Merit Program and Self rewards can be claimed"
 #: pages/staking.page.tsx
 msgid "This page only works with live data. Exit test mode to view it."
 msgstr "This page only works with live data. Exit test mode to view it."
-
-#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
-msgid "The order could't be filled."
-msgstr "The order could't be filled."
 
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Collateral options"
@@ -2544,11 +2624,6 @@ msgstr "Disabling this asset as collateral affects your borrowing power and Heal
 msgid "Price"
 msgstr "Price"
 
-#: src/components/transactions/UnStake/UnStakeModalContent.tsx
-#: src/modules/umbrella/UnstakeModalContent.tsx
-msgid "Unstaked"
-msgstr "Unstaked"
-
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "E-Mode change"
 msgstr "E-Mode change"
@@ -2606,6 +2681,10 @@ msgstr "Cooldown"
 #: src/components/transactions/SGhoVault/SGhoVaultWithdrawModal.tsx
 msgid "Withdraw sGHO"
 msgstr "Withdraw sGHO"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Your {symbol} is no longer used as collateral"
+msgstr "Your {symbol} is no longer used as collateral"
 
 #: src/components/transactions/Emode/EmodeAssetTable.tsx
 #: src/modules/bridge/BridgeWrapper.tsx
@@ -2882,11 +2961,6 @@ msgstr "Total borrowed"
 msgid "The collateral balance is 0"
 msgstr "The collateral balance is 0"
 
-#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
-#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
-msgid "You've successfully swapped {0}."
-msgstr "You've successfully swapped {0}."
-
 #: src/components/ChainAvailabilityText.tsx
 msgid "Available on"
 msgstr "Available on"
@@ -2907,17 +2981,14 @@ msgstr "Net worth"
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
 
-#: src/components/transactions/FlowCommons/Success.tsx
-msgid "You switched to {0} rate"
-msgstr "You switched to {0} rate"
-
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
-msgid "Borrowed"
-msgstr "Borrowed"
-
-#: src/components/transactions/Faucet/FaucetModalContent.tsx
+#: src/components/transactions/Swap/modals/request/WithdrawAndSwapModalContent.tsx
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "Received"
 msgstr "Received"
+
+#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
+msgid "Restaked Successfully"
+msgstr "Restaked Successfully"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your current loan to value based on your collateral supplied."
@@ -2938,11 +3009,6 @@ msgstr "Balance"
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
-
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-#: src/components/transactions/Supply/SupplyModalContent.tsx
-msgid "Supplied"
-msgstr "Supplied"
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Migrate to stkABPT v2"
@@ -3019,6 +3085,10 @@ msgstr "Representing smart contract wallet (ie. Safe) addresses on other chains.
 msgid "This is the cost of settling your order on-chain, including gas and any LP fees."
 msgstr "This is the cost of settling your order on-chain, including gas and any LP fees."
 
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "Sent"
+msgstr "Sent"
+
 #: src/components/transactions/SavingsGho/SavingsGhoWithdrawActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
 #: src/components/transactions/StakeCooldown/StakeCooldownActions.tsx
@@ -3039,13 +3109,6 @@ msgstr "There was some error. Please try changing the parameters or <0>copy the 
 #: src/layouts/SupportModal.tsx
 msgid "Submit"
 msgstr "Submit"
-
-#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
-#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
-#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
-#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
-msgid "Claimed"
-msgstr "Claimed"
 
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
@@ -3089,6 +3152,10 @@ msgstr "dashboard"
 #: src/components/transactions/Borrow/BorrowActions.tsx
 msgid "Borrowing {symbol}"
 msgstr "Borrowing {symbol}"
+
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+msgid "migrated"
+msgstr "migrated"
 
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Borrow: All eligible assets"
@@ -3156,6 +3223,14 @@ msgstr "Enter an amount"
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Connect"
 msgstr "Connect"
+
+#: src/components/transactions/FlowCommons/Error.tsx
+msgid "Transaction Failed"
+msgstr "Transaction Failed"
+
+#: src/components/transactions/Swap/modals/request/DebtSwapModalContent.tsx
+msgid "Debt received"
+msgstr "Debt received"
 
 #: src/components/transactions/Warnings/AAVEWarning.tsx
 msgid "tokens is not the same as staking them. If you wish to stake your"
@@ -3234,6 +3309,11 @@ msgstr "Enable E-Mode"
 msgid "Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is restricted to assets within the selected category. <0>Learn more</0> about how it works and the applied restrictions."
 msgstr "Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is restricted to assets within the selected category. <0>Learn more</0> about how it works and the applied restrictions."
 
+#: src/components/transactions/UnStake/UnStakeModalContent.tsx
+#: src/modules/umbrella/UnstakeModalContent.tsx
+msgid "Unstaked Successfully"
+msgstr "Unstaked Successfully"
+
 #: src/components/transactions/Emode/EmodeAssetTable.tsx
 msgid "Boosted LTV"
 msgstr "Boosted LTV"
@@ -3250,11 +3330,6 @@ msgstr "Cooldown time left"
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "{0} on-ramp service is provided by External Provider and by selecting you agree to Terms of the Provider. Your access to the service might be reliant on the External Provider being operational."
 msgstr "{0} on-ramp service is provided by External Provider and by selecting you agree to Terms of the Provider. Your access to the service might be reliant on the External Provider being operational."
-
-#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
-#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
-msgid "Migrated"
-msgstr "Migrated"
 
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "In E-Mode some assets are not borrowable. Exit E-Mode to get access to all assets"
@@ -3354,6 +3429,15 @@ msgstr "LTV"
 msgid "Refresh"
 msgstr "Refresh"
 
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "Receive"
+msgstr "Receive"
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "supplied"
+msgstr "supplied"
+
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in {marketName} v3 market."
 msgstr "Asset cannot be migrated due to insufficient liquidity or borrow cap limitation in {marketName} v3 market."
@@ -3439,12 +3523,6 @@ msgstr "Buy {cryptoSymbol} with Fiat"
 #: pages/safety-module.page.tsx
 msgid "Stake AAVE"
 msgstr "Stake AAVE"
-
-#: src/components/transactions/FlowCommons/BaseCancelled.tsx
-#: src/components/transactions/FlowCommons/BaseSuccess.tsx
-#: src/components/transactions/FlowCommons/BaseWaiting.tsx
-msgid "Ok, Close"
-msgstr "Ok, Close"
 
 #: src/modules/sGho/SGhoCard.tsx
 msgid "Savings GHO (sGHO)"
@@ -3567,6 +3645,14 @@ msgstr "Cooldown to unstake"
 #: src/ui-config/errorMapping.tsx
 msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "User does not have outstanding variable rate debt on this reserve"
+
+#: src/components/transactions/Swap/modals/result/SwapResultView.tsx
+msgid "The order couldn't be filled."
+msgstr "The order couldn't be filled."
+
+#: src/components/transactions/Faucet/FaucetModalContent.tsx
+msgid "Received Successfully"
+msgstr "Received Successfully"
 
 #: src/layouts/components/DarkModeSwitcher.tsx
 msgid "Dark Mode"
@@ -3705,10 +3791,8 @@ msgstr "Migrate to V3"
 msgid "Interest rate strategy"
 msgstr "Interest rate strategy"
 
-#: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
-#: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Staked"
 msgstr "Staked"
 
@@ -3777,6 +3861,10 @@ msgstr "All Categories"
 msgid "No Wallet Connected"
 msgstr "No Wallet Connected"
 
+#: src/components/transactions/Swap/modals/request/RepayWithCollateralModalContent.tsx
+msgid "With"
+msgstr "With"
+
 #: src/components/transactions/Repay/RepayAllowanceControl.tsx
 msgid "No further approvals needed for future repays"
 msgstr "No further approvals needed for future repays"
@@ -3822,6 +3910,11 @@ msgstr "APY"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
 msgstr "Asset cannot be migrated because you have isolated collateral in {marketName} v3 Market which limits borrowable assets. You can manage your collateral in <0>{marketName} V3 Dashboard</0>"
+
+#: src/components/transactions/Stake/StakeModalContent.tsx
+#: src/modules/umbrella/UmbrellaModalContent.tsx
+msgid "staked"
+msgstr "staked"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
 msgid "Show assets with 0 balance"
@@ -3878,6 +3971,10 @@ msgstr "You don't have any bridge transactions"
 msgid "Unstake {symbol}"
 msgstr "Unstake {symbol}"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below."
+msgstr "Asset has been successfully sent to CCIP contract. You can check the status of the transactions below."
+
 #: src/components/transactions/Bridge/BridgeDestinationInput.tsx
 msgid "Enter ETH address or ENS"
 msgstr "Enter ETH address or ENS"
@@ -3906,6 +4003,12 @@ msgstr "Exchange rate"
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "You unstake here"
 msgstr "You unstake here"
+
+#: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+#: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
+#: src/components/transactions/StkGhoMigrate/StkGhoMigrateModalContent.tsx
+msgid "Migrated Successfully"
+msgstr "Migrated Successfully"
 
 #: src/components/caps/CapsHint.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
@@ -3959,6 +4062,12 @@ msgstr "Oracle price"
 msgid "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 msgstr "This gas calculation is only an estimation. Your wallet will set the price of the transaction. You can modify the gas settings directly from your wallet provider."
 
+#: src/components/transactions/SavingsGho/SavingsGhoWithdrawModalContent.tsx
+#: src/components/transactions/SGhoVault/SGhoVaultWithdrawModalContent.tsx
+#: src/components/transactions/Withdraw/WithdrawModalContent.tsx
+msgid "Withdrawn Successfully"
+msgstr "Withdrawn Successfully"
+
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Go to V3 Dashboard"
 msgstr "Go to V3 Dashboard"
@@ -4001,10 +4110,6 @@ msgstr "Your supplies"
 msgid "You must disable {0} as collateral before exiting E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral."
 msgstr "You must disable {0} as collateral before exiting E-Mode. These assets have 0 LTV outside of E-Mode and cannot be used as collateral."
 
-#: src/components/transactions/FlowCommons/Error.tsx
-msgid "Transaction failed"
-msgstr "Transaction failed"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid flashloan premium"
 msgstr "Invalid flashloan premium"
@@ -4043,6 +4148,13 @@ msgstr "Migrating"
 msgid "Swap {0} debt"
 msgstr "Swap {0} debt"
 
+#: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
+#: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
+#: src/modules/umbrella/UmbrellaClaimModalContent.tsx
+msgid "Claimed Successfully"
+msgstr "Claimed Successfully"
+
 #: src/components/transactions/FlowCommons/PermitNonceInfo.tsx
 msgid "There is an active order for the same sell asset (avoid nonce reuse)."
 msgstr "There is an active order for the same sell asset (avoid nonce reuse)."
@@ -4078,10 +4190,6 @@ msgstr "Payloads queued"
 #: src/components/transactions/Swap/errors/shared/InsufficientBorrowPowerBlockingError.tsx
 msgid "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
 msgstr "Insufficient collateral to cover new borrow position. Wallet must have borrowing power remaining to perform debt switch."
-
-#: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
-msgid "Restaked"
-msgstr "Restaked"
 
 #: src/components/transactions/Swap/actions/ActionsBlocked.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
@@ -4136,6 +4244,10 @@ msgstr "We couldn't find any proposals related to your search."
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Cancelled"
 msgstr "Cancelled"
+
+#: src/components/transactions/FlowCommons/Success.tsx
+msgid "Your {symbol} is now used as collateral"
+msgstr "Your {symbol} is now used as collateral"
 
 #: src/utils/eMode.ts
 msgid "Stablecoin"
@@ -4264,6 +4376,10 @@ msgstr "Your {networkName} wallet is empty. Get free test {0} at"
 msgid "tokens, please go to the"
 msgstr "tokens, please go to the"
 
+#: src/components/transactions/Swap/modals/request/WithdrawAndSwapModalContent.tsx
+msgid "and withdrawn"
+msgstr "and withdrawn"
+
 #: src/modules/markets/ProtocolTotalsStats.tsx
 msgid "Across every Aave version and network"
 msgstr "Across every Aave version and network"
@@ -4321,6 +4437,10 @@ msgstr "Eligible for incentives through Merkl and Boosted Yield via Self."
 #: src/modules/governance/proposal/ProposalTimeline.tsx
 msgid "Executes"
 msgstr "Executes"
+
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
+msgid "Borrowed Successfully"
+msgstr "Borrowed Successfully"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 msgid "Transaction overview"
@@ -4424,6 +4544,11 @@ msgstr "Show legacy markets"
 #: src/layouts/SupportModal.tsx
 msgid "Submission did not work, please try again later or contact wecare@avara.xyz"
 msgstr "Submission did not work, please try again later or contact wecare@avara.xyz"
+
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
+msgid "Supplied Successfully"
+msgstr "Supplied Successfully"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Filled"

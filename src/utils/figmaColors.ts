@@ -96,10 +96,7 @@ export const figmaLight = {
   'chain-worldchain': '#ff9d00',
   'chain-zksync': '#8c8dfe',
   bone: '#f6f7f4',
-  // Opaque hover fill for the Select trigger. A SINGLE per-mode token rather than a base +
-  // `darkScheme()` override, so it resolves to the NEAREST color scheme — the dev showcase's local
-  // toggle works even when the app's global scheme differs (the dark selector matches any ancestor,
-  // including <html>, so a two-token swap leaks across a nested scheme boundary).
+  // Opaque hover fill for the Select trigger.
   'bg-4-hover': '#f6f7f4',
   // --- semantic tokens promoted from theme-file literals (SoT) ---
   'secondary-main': '#FF607B',

@@ -1,5 +1,6 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
+import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ComputedReserveData,
@@ -78,9 +79,9 @@ export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsse
     titleTokenPostfix: 'supply',
     sourceReserve: initialSourceUserReserve,
     destinationReserve: initialTargetUserReserve,
-    resultScreenTokensFromTitle: 'Collateral sent',
-    resultScreenTokensToTitle: 'Collateral received',
-    resultScreenTitleItems: 'collateral',
+    resultScreenTokensFromTitle: <Trans>Collateral sent</Trans>,
+    resultScreenTokensToTitle: <Trans>Collateral received</Trans>,
+    resultScreenTitleItems: <Trans>collateral</Trans>,
 
     // Note: Collateral Swap order is not inverted
     inputInputTitleSell: 'Swap',

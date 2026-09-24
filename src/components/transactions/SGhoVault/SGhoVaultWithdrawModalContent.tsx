@@ -92,6 +92,7 @@ export const SGhoVaultWithdrawModalContent = () => {
   if (mainTxState.success) {
     return (
       <TxSuccessView
+        title={<Trans>Withdrawn Successfully</Trans>}
         action={<Trans>withdrew</Trans>}
         amount={submittedAmountRef.current ?? amount}
         symbol={SGHO_SYMBOL}

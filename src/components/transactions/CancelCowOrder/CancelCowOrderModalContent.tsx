@@ -42,11 +42,11 @@ export const CancelCowOrderModalContent = ({ cowOrder }: CancelCowOrderModalCont
     const hasTxHash = !!mainTxState.txHash;
 
     return (
-      <BaseSuccessView hideTx={!hasTxHash} txHash={mainTxState.txHash}>
-        <Typography sx={{ mt: 4 }} variant="h2">
-          <Trans>Cancellation submited</Trans>
-        </Typography>
-      </BaseSuccessView>
+      <BaseSuccessView
+        hideTx={!hasTxHash}
+        txHash={mainTxState.txHash}
+        title={<Trans>Cancellation Submitted</Trans>}
+      />
     );
   }
 

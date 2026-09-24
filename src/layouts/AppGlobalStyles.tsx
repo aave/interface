@@ -22,9 +22,8 @@ export function AppGlobalStyles({ children }: { children: ReactNode }) {
       '@supports (color: color(display-p3 1 1 1))': {
         '@media (color-gamut: p3)': {
           // Doubled selectors (specificity 0,2,0) beat MUI's own var sheets (0,1,0), so the
-          // P3 layer wins regardless of stylesheet source order — and still match both <html>
-          // and the showcase's local `data-mui-color-scheme` wrapper.
-          ':root:root, [data-mui-color-scheme="light"][data-mui-color-scheme="light"]': light,
+          // P3 layer wins regardless of stylesheet source order.
+          ':root:root': light,
           '[data-mui-color-scheme="dark"][data-mui-color-scheme="dark"]': dark,
         },
       },

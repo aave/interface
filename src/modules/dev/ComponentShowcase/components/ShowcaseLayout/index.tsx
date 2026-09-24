@@ -1,14 +1,5 @@
 import { MenuIcon } from '@heroicons/react/outline';
-import {
-  Box,
-  Container,
-  Drawer,
-  IconButton,
-  PaletteMode,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
-import { useColorScheme } from '@mui/material/styles';
+import { Box, Container, Drawer, IconButton, SvgIcon, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
 
@@ -23,15 +14,6 @@ interface ShowcaseLayoutProps {
 const SIDEBAR_WIDTH = 248;
 
 export const ShowcaseLayout = ({ activeSlug, children }: ShowcaseLayoutProps) => {
-  const { mode: appMode, systemMode } = useColorScheme();
-
-  // The showcase runs on its OWN color scheme (seeded once from the app's) so switching it
-  // here re-declares the CSS variables for this subtree only — via the `data-mui-color-scheme`
-  // attribute — without flipping the whole app. Colors below use `sx` palette shortcuts,
-  // which resolve to CSS-var refs and therefore follow that attribute.
-  const [scheme, setScheme] = useState<PaletteMode>(
-    () => (appMode === 'system' ? systemMode : appMode) ?? 'light'
-  );
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   // Some sections (page-wide banners) opt out of the max-width content container.
@@ -93,7 +75,6 @@ export const ShowcaseLayout = ({ activeSlug, children }: ShowcaseLayoutProps) =>
 
   return (
     <Box
-      data-mui-color-scheme={scheme}
       sx={{
         display: 'flex',
         minHeight: '100vh',
@@ -121,18 +102,14 @@ export const ShowcaseLayout = ({ activeSlug, children }: ShowcaseLayoutProps) =>
         {nav}
       </Box>
 
-      {/* Mobile drawer (below md). It portals to <body>, outside the local-scheme wrapper above,
-          so the inner Box re-declares `data-mui-color-scheme` to keep it on the showcase theme. */}
+      {/* Mobile drawer (below md) */}
       <Drawer
         open={mobileNavOpen}
         onClose={() => setMobileNavOpen(false)}
         sx={{ display: { xs: 'block', md: 'none' } }}
         PaperProps={{ sx: { width: SIDEBAR_WIDTH, border: 'none' } }}
       >
-        <Box
-          data-mui-color-scheme={scheme}
-          sx={{ height: '100%', p: 4, overflowY: 'auto', bgcolor: 'bg-2', color: 'fg-1' }}
-        >
+        <Box sx={{ height: '100%', p: 4, overflowY: 'auto', bgcolor: 'bg-2', color: 'fg-1' }}>
           {nav}
         </Box>
       </Drawer>
@@ -174,7 +151,7 @@ export const ShowcaseLayout = ({ activeSlug, children }: ShowcaseLayoutProps) =>
               Component showcase
             </Typography>
           </Box>
-          <ThemeControl mode={scheme} onChange={setScheme} />
+          <ThemeControl />
         </Box>
 
         <Container maxWidth={fullBleed ? false : 'lg'} sx={{ py: { xs: 6, md: 10 } }}>
