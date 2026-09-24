@@ -12,6 +12,7 @@ import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
+import { isHorizonMarket } from '../../constants/shared.constants';
 import { invalidateAppStateForSwap } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType, TokenType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
@@ -23,6 +24,7 @@ export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsse
   );
   const queryClient = useQueryClient();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
+  const isHorizon = isHorizonMarket(currentMarketName);
   const baseTokens: TokenInfo[] = reserves.map((reserve) => {
     return {
       address: reserve.underlyingAsset,
@@ -34,8 +36,8 @@ export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsse
     };
   });
 
-  const tokensFrom = getTokensFrom(user, baseTokens, chainId);
-  const tokensTo = getTokensTo(user, reserves, baseTokens, currentMarketName, chainId);
+  const tokensFrom = getTokensFrom(user, baseTokens, chainId, isHorizon);
+  const tokensTo = getTokensTo(user, reserves, baseTokens, currentMarketName, chainId, isHorizon);
 
   const userSelectedInputToken = tokensFrom.find(
     (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase()
@@ -135,11 +137,14 @@ const getDefaultOutputToken = (
 const getTokensFrom = (
   user: ExtendedFormattedUser | undefined,
   baseTokensInfo: TokenInfo[],
-  chainId: number
+  chainId: number,
+  isHorizon: boolean
 ): SwappableToken[] => {
   // Tokens From should be the supplied tokens
   const suppliedPositions =
-    user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0') || [];
+    user?.userReservesData
+      .filter((userReserve) => userReserve.underlyingBalance !== '0')
+      .filter((userReserve) => !isHorizon || userReserve.reserve.borrowingEnabled) || [];
 
   return suppliedPositions
     .map<SwappableToken | undefined>((position) => {
@@ -210,12 +215,14 @@ const getTokensTo = (
   reserves: ComputedReserveData[],
   baseTokensInfo: TokenInfo[],
   currentMarket: string,
-  chainId: number
+  chainId: number,
+  isHorizon: boolean
 ): SwappableToken[] => {
   // Tokens To should be the potential supply tokens (so we have an aToken)
   const tokensToSupply = reserves.filter(
     (reserve: ComputedReserveData) =>
       !(reserve.isFrozen || reserve.isPaused) &&
+      (!isHorizon || reserve.borrowingEnabled) &&
       !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket: currentMarket })
   );
 
