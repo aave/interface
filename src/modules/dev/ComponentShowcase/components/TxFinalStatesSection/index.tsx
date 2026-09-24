@@ -14,16 +14,14 @@ import { Group } from '../Group';
 import { Section } from '../Section';
 import { Specimen } from '../Specimen';
 import {
-  AMOUNT_SUCCESS_CASES,
+  BASE_SUCCESS_CASES,
   BLOCKING_ERROR_CASES,
-  CUSTOM_SUCCESS_CASES,
   INLINE_ERROR_CASES,
   MOCK_TX_HASH,
   MockCase,
-  STATUS_SUCCESS_CASES,
-  SWAP_FLOW_CASES,
+  SUCCESS_CASES,
+  SWAP_CASES,
   SWAP_INLINE_ERROR_CASES,
-  SWAP_STATUS_CASES,
 } from './utils/mocks';
 
 const MockTxProvider = ({ children }: { children: ReactNode }) => {
@@ -72,45 +70,35 @@ export const TxFinalStatesSection = () => (
   <MockTxProvider>
     <Section
       title="Transaction final states"
-      description="What each transaction modal shows once its transaction resolves, rendered with mock data. Props mirror each modal's call site; the modal and wallet contexts are mocked, so Close and Add to wallet do nothing."
+      description="One example per layout, rendered with mock data; each label lists the flows that share it. The modal and wallet contexts are mocked, so Done and Add to wallet do nothing."
     >
       <CaseGroup
-        title="Success — TxSuccessView with amount"
-        cases={AMOUNT_SUCCESS_CASES}
+        title="Success — TxSuccessView"
+        cases={SUCCESS_CASES}
         render={(props) => <TxSuccessView {...props} />}
       />
       <CaseGroup
-        title="Success — TxSuccessView without amount"
-        cases={STATUS_SUCCESS_CASES}
-        render={(props) => <TxSuccessView {...props} />}
-      />
-      <CaseGroup
-        title="Success — BaseSuccessView with custom content"
-        cases={CUSTOM_SUCCESS_CASES}
+        title="Success — BaseSuccessView"
+        cases={BASE_SUCCESS_CASES}
         render={(props) => <BaseSuccessView {...props} />}
       />
       <CaseGroup
-        title="Swap — SwapTxSuccessView by order status"
-        cases={SWAP_STATUS_CASES}
+        title="Swap result — SwapTxSuccessView"
+        cases={SWAP_CASES}
         render={(props) => <SwapTxSuccessView {...props} />}
       />
       <CaseGroup
-        title="Swap — SwapTxSuccessView copy per flow"
-        cases={SWAP_FLOW_CASES}
-        render={(props) => <SwapTxSuccessView {...props} />}
-      />
-      <CaseGroup
-        title="Failed — TxErrorView (blocking)"
+        title="Failed — TxErrorView"
         cases={BLOCKING_ERROR_CASES}
         render={(txError) => <TxErrorView txError={txError} />}
       />
       <CaseGroup
-        title="Failed — GasEstimationError (inline)"
+        title="Failed, inline — GasEstimationError"
         cases={INLINE_ERROR_CASES}
         render={(txError) => <GasEstimationError txError={txError} />}
       />
       <CaseGroup
-        title="Failed — swap GasEstimationError (inline)"
+        title="Failed, inline (swap) — GasEstimationError with tip"
         cases={SWAP_INLINE_ERROR_CASES}
         render={(props) => <SwapGasEstimationError {...props} />}
       />
