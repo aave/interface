@@ -6,12 +6,24 @@ export const timeMessage = (time: number) => {
   return `${formattedTime(time)} ${timeText(time)}`;
 };
 
-export const formattedTime = (time: number) =>
-  daysFromSeconds(time) < 1
-    ? hoursFromSeconds(time) < 1
-      ? minutesFromSeconds(time)
-      : hoursFromSeconds(time)
-    : daysFromSeconds(time);
+export const formattedTime = (time: number) => {
+  const days = daysFromSeconds(time);
 
-export const timeText = (time: number) =>
-  daysFromSeconds(time) < 1 ? (hoursFromSeconds(time) < 1 ? 'minutes' : 'hours') : 'days';
+  if (days < 1) {
+    const hours = hoursFromSeconds(time);
+    return hours < 1 ? minutesFromSeconds(time) : hours;
+  }
+
+  return days;
+};
+
+export const timeText = (time: number) => {
+  const days = daysFromSeconds(time);
+
+  if (days < 1) {
+    const hours = hoursFromSeconds(time);
+    return hours < 1 ? 'minutes' : 'hours';
+  }
+
+  return 'days';
+};
