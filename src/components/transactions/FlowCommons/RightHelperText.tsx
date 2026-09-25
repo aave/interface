@@ -1,7 +1,7 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 import { useEffect } from 'react';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { ApprovalMethodToggleButton } from 'src/components/transactions/FlowCommons/ApprovalMethodToggleButton';
 import { MOCK_SIGNED_HASH } from 'src/helpers/useTransactionHandler';
 import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
@@ -17,11 +17,7 @@ export type RightHelperTextProps = {
   permitInUse?: boolean;
 };
 
-const ExtLinkIcon = () => (
-  <SvgIcon sx={{ ml: '2px', fontSize: '11px' }}>
-    <ExternalLinkIcon />
-  </SvgIcon>
-);
+const ExtLinkIcon = () => <ArrowUpRightIcon sx={{ ml: '2px', fontSize: '11px' }} />;
 
 export const RightHelperText = ({
   approvalHash,

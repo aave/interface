@@ -1,6 +1,6 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Button, SvgIcon, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { useRootStore } from 'src/store/root';
 
 import { DarkTooltip } from './infoTooltips/DarkTooltip';
@@ -19,11 +19,7 @@ export const FaucetButton = () => {
             style={{ width: 14, height: 14 }}
           />
         }
-        endIcon={
-          <SvgIcon sx={{ width: 14, height: 14 }}>
-            <ExternalLinkIcon />
-          </SvgIcon>
-        }
+        endIcon={<ArrowUpRightIcon sx={{ width: 14, height: 14 }} />}
         component={Link}
         href={ROUTES.faucet}
         variant="tertiary"

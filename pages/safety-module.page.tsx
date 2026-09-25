@@ -1,14 +1,14 @@
 import { Stake } from '@aave/contract-helpers';
 import { StakeUIUserData } from '@aave/contract-helpers/dist/esm/V3-uiStakeDataProvider-contract/types';
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Button, Grid, Stack, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, Button, Grid, Stack, Typography } from '@mui/material';
 import { BigNumber } from 'ethers/lib/ethers';
 import { formatEther } from 'ethers/lib/utils';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { ConnectWalletPaperStaking } from 'src/components/ConnectWalletPaperStaking';
 import { ContentContainer } from 'src/components/ContentContainer';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { Link } from 'src/components/primitives/Link';
 import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
 import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
@@ -405,11 +405,7 @@ export default function Staking() {
                             variant="tertiary"
                             size="small"
                             component={Link}
-                            endIcon={
-                              <SvgIcon sx={{ width: 14, height: 14 }}>
-                                <ExternalLinkIcon />
-                              </SvgIcon>
-                            }
+                            endIcon={<ArrowUpRightIcon sx={{ width: 14, height: 14 }} />}
                             href="https://pools.balancer.exchange/#/pool/0xc697051d1c6296c24ae3bcef39aca743861d9a81/"
                           >
                             <Trans>Balancer Pool</Trans>

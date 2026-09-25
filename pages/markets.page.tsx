@@ -16,11 +16,10 @@ import { useRootStore } from 'src/store/root';
 // uncapped instead let content reach 1607px at 1799px, which then *dropped* to 1440px at 1800px.
 export const marketContainerProps = {
   sx: {
+    // Only the `lg`+ steps differ from the theme's MuiContainer ladder; below that the ladder
+    // already resolves to these values, so inheriting it is what keeps the two in step. (An sx
+    // breakpoint value persists upward, so `xl`/`xxl` still have to be restated.)
     px: {
-      xs: 2,
-      xsm: 5,
-      sm: 12,
-      md: 5,
       lg: 0,
       xl: '96px',
       xxl: 0,

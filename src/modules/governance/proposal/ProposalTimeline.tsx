@@ -1,4 +1,3 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
@@ -9,13 +8,13 @@ import {
   Link,
   Paper,
   Skeleton,
-  SvgIcon,
   Theme,
   Typography,
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { useGovernanceCoreConstants } from 'src/hooks/governance/useGovernanceCoreConstants';
 import { ProposalDetail, ProposalPayload } from 'src/services/GovernanceCacheService';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
@@ -557,9 +556,7 @@ export const ProposalTimeline = ({
               rel="noopener noreferrer"
               sx={{ display: 'inline-flex' }}
             >
-              <SvgIcon sx={{ fontSize: 12, color: 'primary.main' }}>
-                <ExternalLinkIcon />
-              </SvgIcon>
+              <ArrowUpRightIcon sx={{ fontSize: 12, color: 'primary.main' }} />
             </Link>
           )}
         </Box>

@@ -127,17 +127,9 @@ msgstr "Total worth"
 msgid "User did not borrow the specified currency"
 msgstr "User did not borrow the specified currency"
 
-#: pages/404.page.tsx
-msgid "We suggest you go back to the home page."
-msgstr "We suggest you go back to the home page."
-
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Rate change"
 msgstr "Rate change"
-
-#: pages/404.page.tsx
-msgid "Sorry, we couldn't find the page you were looking for."
-msgstr "Sorry, we couldn't find the page you were looking for."
 
 #: src/modules/history/HistoryWrapper.tsx
 msgid "Your supplies, borrows and swaps on this market will show up here."
@@ -217,6 +209,10 @@ msgstr "After the cooldown period ends, you will enter the unstake window of {0}
 #: src/modules/dashboard/LiquidationRiskParametresModal/components/LTVContent.tsx
 msgid "Liquidation <0/> threshold"
 msgstr "Liquidation <0/> threshold"
+
+#: src/layouts/components/ThemeSwitcher/index.tsx
+msgid "Light"
+msgstr "Light"
 
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
@@ -754,6 +750,10 @@ msgstr "This asset has almost reached its borrow cap. There is only {messageValu
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 
+#: pages/404.page.tsx
+msgid "We could not find the page you were looking for."
+msgstr "We could not find the page you were looking for."
+
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
@@ -956,6 +956,10 @@ msgstr "Protocol Incentives"
 msgid "Watch wallet"
 msgstr "Watch wallet"
 
+#: src/layouts/components/ThemeSwitcher/index.tsx
+msgid "System"
+msgstr "System"
+
 #: src/modules/markets/MarketAssetsListContainer.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
@@ -1111,6 +1115,10 @@ msgstr "Learn more."
 msgid "Active"
 msgstr "Active"
 
+#: src/layouts/components/ThemeSwitcher/index.tsx
+msgid "Theme"
+msgstr "Theme"
+
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationList.tsx
 msgid "Current v2 balance"
@@ -1195,6 +1203,10 @@ msgstr "ends"
 #: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
+
+#: pages/404.page.tsx
+msgid "Back to App"
+msgstr "Back to App"
 
 #: src/components/transactions/Swap/warnings/postInputs/LiquidationCriticalWarning.tsx
 msgid "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
@@ -3132,7 +3144,7 @@ msgid "Safety Module"
 msgstr "Safety Module"
 
 #: src/components/BackButton/index.tsx
-#: src/layouts/components/LanguageSwitcher.tsx
+#: src/layouts/components/SettingsSubmenuList/index.tsx
 msgid "Back"
 msgstr "Back"
 
@@ -3568,10 +3580,6 @@ msgstr "Cooldown to unstake"
 msgid "User does not have outstanding variable rate debt on this reserve"
 msgstr "User does not have outstanding variable rate debt on this reserve"
 
-#: src/layouts/components/DarkModeSwitcher.tsx
-msgid "Dark Mode"
-msgstr "Dark Mode"
-
 #: src/modules/sGho/SGhoSavingsRate.tsx
 msgid "Savings Rate"
 msgstr "Savings Rate"
@@ -3692,6 +3700,10 @@ msgstr "I understand how cooldown ({0}) and unstaking ({1}) work"
 #: src/components/incentives/IncentivesTooltipContent.tsx
 msgid "Net Protocol Incentives"
 msgstr "Net Protocol Incentives"
+
+#: src/layouts/components/ThemeSwitcher/index.tsx
+msgid "Dark"
+msgstr "Dark"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of this function must be a pool"
@@ -4373,10 +4385,6 @@ msgstr "Payloads"
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Add to Favourites"
 msgstr "Add to Favourites"
-
-#: pages/404.page.tsx
-msgid "Back home"
-msgstr "Back home"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx

@@ -1,7 +1,7 @@
 import { AaveV2Ethereum } from '@aave-dao/aave-address-book';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, Button, Divider, SvgIcon } from '@mui/material';
+import { Alert, Box, Button, Divider } from '@mui/material';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { getFrozenProposalLink } from 'src/components/infoTooltips/FrozenTooltip';
 import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
@@ -196,11 +196,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   href={currentNetworkConfig.explorerLinkBuilder({
                     address: reserve.interestRateStrategyAddress,
                   })}
-                  endIcon={
-                    <SvgIcon sx={{ width: 14, height: 14 }}>
-                      <ExternalLinkIcon />
-                    </SvgIcon>
-                  }
+                  endIcon={<ArrowUpRightIcon sx={{ width: 14, height: 14 }} />}
                   component={Link}
                   size="small"
                   variant="tertiary"

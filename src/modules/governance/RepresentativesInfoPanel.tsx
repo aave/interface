@@ -1,9 +1,9 @@
 import { Representative, Rpresented } from '@aave/contract-helpers';
 import { PlusIcon } from '@heroicons/react/outline';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Paper, Stack, SvgIcon, Typography } from '@mui/material';
 import { CompactableTypography, CompactMode } from 'src/components/CompactableTypography';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { Link } from 'src/components/primitives/Link';
 import { useRepresentatives } from 'src/hooks/governance/useRepresentatives';
 // import { useIsContractAddress } from 'src/hooks/useIsContractAddress';
@@ -205,16 +205,7 @@ const AddressLink = ({ explorerLink, address }: { explorerLink: string; address:
         >
           {address}
         </CompactableTypography>
-        <SvgIcon
-          sx={{
-            width: 14,
-            height: 14,
-            ml: 0.5,
-            color: 'fg-3',
-          }}
-        >
-          <ExternalLinkIcon />
-        </SvgIcon>
+        <ArrowUpRightIcon sx={{ width: 14, height: 14, ml: 0.5, color: 'fg-3' }} />
       </Stack>
     </Link>
   );
