@@ -148,6 +148,7 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   Plasma: 'other',
   Avalanche: 'other',
   'BNB Chain': 'other',
+  Aptos: 'other',
   // Legacy markets
   EtherFi: 'legacy',
   ZKsync: 'legacy',
@@ -156,7 +157,6 @@ const MARKET_CATEGORY: Record<string, MarketCategory> = {
   Scroll: 'legacy',
   Gnosis: 'legacy',
   Sonic: 'legacy',
-  Aptos: 'legacy',
 };
 
 const getMarketCategory = (marketId: CustomMarket): MarketCategory => {
@@ -178,18 +178,18 @@ const MARKET_ORDER_BY_TITLE: { [title: string]: number } = {
   'BNB Chain': 9,
   'X Layer': 10,
   Polygon: 11,
-  Linea: 12,
-  OP: 13,
-  MegaETH: 14,
-  Celo: 15,
-  Scroll: 16,
-  ZKsync: 17,
-  Soneium: 18,
-  Metis: 19,
-  EtherFi: 20,
-  Gnosis: 21,
-  Sonic: 22,
-  Aptos: 23,
+  Aptos: 12,
+  Linea: 13,
+  OP: 14,
+  MegaETH: 15,
+  Celo: 16,
+  Scroll: 17,
+  ZKsync: 18,
+  Soneium: 19,
+  Metis: 20,
+  EtherFi: 21,
+  Gnosis: 22,
+  Sonic: 23,
 };
 
 const getMarketOrder = (marketId: CustomMarket): number => {
