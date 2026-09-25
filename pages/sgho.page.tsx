@@ -78,9 +78,6 @@ export default function SavingsGho() {
           }}
         >
           <SGhoCard />
-          {/* The Legacy Savings GHO (stkGHO) card is temporarily hidden. To restore it,
-              re-import StkGhoCard and render
-              `isConnected ? <StkGhoCard /> : <YourInfoSidebar />` here. */}
           {!isConnected && <YourInfoSidebar />}
         </Box>
       </ContentContainer>
