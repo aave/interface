@@ -1,0 +1,112 @@
+src/ui-config/merklConfig.ts
+  s_8bbda5968e125d::t_af268535cd2fc0 40-46
+src/utils/figmaColors.ts
+  s_8bbda5968e125d::t_af268535cd2fc0 28-31,33-53,159-162
+src/components/UserNameText.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-2,54
+src/modules/staking/BuyWithFiatModal.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 3,45
+pages/safety-module.page.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 4,11,408
+src/components/MarketSwitcher.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 157-159,181-192
+pages/404.page.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2,5-7,10,20,22-48,50-53
+pages/markets.page.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 19-21
+src/components/icons/ChevronLeftIcon.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-20
+src/layouts/AppHeader.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 38,333,340
+src/layouts/components/SettingsSubmenuList/index.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-60
+src/layouts/MobileMenu.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 19-22,53-60,93-95,104,106,154,177-178,218-219
+src/components/icons/ThemeIcons.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-83
+src/locales/es/messages.js
+  s_8bbda5968e125d::t_cde951038561ff 1
+src/locales/fr/messages.js
+  s_8bbda5968e125d::t_cde951038561ff 1
+src/layouts/SettingsMenu.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2,14,24-25,27-32,35-37,41-42,45,51,57,61,71-72,80,84,93-94
+src/modules/bridge/BridgeTransactionListItem.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2,21,153,219
+src/components/icons/CheckIcon.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-19
+src/modules/governance/proposal/VotingResults.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2-3,165
+src/modules/history/actions/ActionDetails.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 5-10,394-395,397,402,406-413
+src/modules/reserve-overview/ReserveConfiguration.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 3-4,199
+src/locales/en/messages.js
+  s_8bbda5968e125d::t_cde951038561ff 1
+src/layouts/components/LanguageSwitcher.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 3,7-8,17-23,33-38,46-55
+src/components/incentives/IncentivesCard.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 124-126,200
+src/layouts/components/ThemeSwitcher/index.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-65
+src/components/infoTooltips/TokenContractTooltip.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-2,10
+src/modules/governance/proposal/VotersListItem.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1,3,71
+src/modules/governance/proposal/ProposalTimeline.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 17,559
+src/components/FaucetButton.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2-3,22
+src/components/transactions/FlowCommons/RightHelperText.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2,4,20
+src/modules/dev/ComponentShowcase/components/FeedbackSection/index.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2-7,16-25,54-56,62-63
+src/modules/staking/GetABPTokenModal.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2-3,32
+src/utils/buttonStyles.ts
+  s_8bbda5968e125d::t_af268535cd2fc0 30,32-35,37-38,41-47
+  s_8bbda5968e125d::t_2ed9949061d45d 48
+src/locales/en/messages.po
+  s_8bbda5968e125d::t_cde951038561ff 217-220,770-773,984-987,1160-1163,1262-1265,3214,3790-3792
+  s_8bbda5968e125d::t_fbf8c4537de05a 3793
+src/hooks/useReserveActionState.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2-3,88
+src/components/icons/StatusIcons.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-29
+src/layouts/components/SettingsNavRow/index.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-28
+src/utils/events.ts
+  s_8bbda5968e125d::t_af268535cd2fc0 170-171
+src/utils/theme.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 107-113,124,140-142,144-146,148,183,209-212,214,217-232,1091-1094,1264-1266,1268-1269,1339-1342,1349-1351,1353
+  s_8bbda5968e125d::t_103e612cf4d5c0 139,143
+src/locales/el/messages.js
+  s_8bbda5968e125d::t_cde951038561ff 1
+src/modules/bridge/BridgeWrapper.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1,5,82
+src/modules/governance/proposal/ProposalPayloads.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2,4,67,165
+src/modules/reserve-overview/ReserveFactorOverview.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 2-3,88
+src/components/BridgeButton.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 1-2,13
+src/modules/faucet/FaucetAssetsList.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 3,5,135
+src/modules/governance/RepresentativesInfoPanel.tsx
+  s_8bbda5968e125d::t_af268535cd2fc0 6,208
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "8b69b1363f56f1188c751b8f5f6f6cbecffb466b",
+  "prompts": {},
+  "sessions": {
+    "s_8bbda5968e125d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8421bd73-9aa0-441d-95d7-aa9996f34293",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
