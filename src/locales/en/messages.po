@@ -627,10 +627,6 @@ msgstr "Data couldn't be fetched, please reload graph."
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: src/modules/stkGho/StkGhoCard.tsx
-msgid "Rewards for legacy Savings GHO have ended. Migrate to continue earning."
-msgstr "Rewards for legacy Savings GHO have ended. Migrate to continue earning."
-
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
@@ -3992,6 +3988,10 @@ msgstr "Current APR"
 msgid "Cancel order"
 msgstr "Cancel order"
 
+#: src/modules/stkGho/StkGhoCard.tsx
+msgid "Rewards for legacy Savings GHO have ended. Withdraw and deposit to continue earning."
+msgstr "Rewards for legacy Savings GHO have ended. Withdraw and deposit to continue earning."
+
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please, connect your wallet"
 msgstr "Please, connect your wallet"
@@ -4314,7 +4314,6 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
-#: src/modules/stkGho/StkGhoDepositRow.tsx
 msgid "Migrate"
 msgstr "Migrate"
 
