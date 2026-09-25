@@ -8,7 +8,6 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { SGhoCard } from 'src/modules/sGho/SGhoCard';
 import { SGHOHeader } from 'src/modules/sGho/SGhoHeader';
 import { YourInfoSidebar } from 'src/modules/sGho/YourInfoSidebar';
-import { StkGhoCard } from 'src/modules/stkGho/StkGhoCard';
 import { useRootStore } from 'src/store/root';
 import { useShallow } from 'zustand/shallow';
 
@@ -79,7 +78,10 @@ export default function SavingsGho() {
           }}
         >
           <SGhoCard />
-          {isConnected ? <StkGhoCard /> : <YourInfoSidebar />}
+          {/* The Legacy Savings GHO (stkGHO) card is temporarily hidden. To restore it,
+              re-import StkGhoCard and render
+              `isConnected ? <StkGhoCard /> : <YourInfoSidebar />` here. */}
+          {!isConnected && <YourInfoSidebar />}
         </Box>
       </ContentContainer>
     </>
