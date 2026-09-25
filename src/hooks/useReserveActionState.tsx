@@ -1,6 +1,6 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Alert, Button, Stack, SvgIcon, Typography } from '@mui/material';
+import { Alert, Button, Stack, Typography } from '@mui/material';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { getEmodeMessage } from 'src/components/transactions/Emode/EmodeNaming';
 import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
@@ -85,11 +85,7 @@ export const useReserveActionState = ({
                     component={Link}
                     sx={{ verticalAlign: 'top' }}
                     disableRipple
-                    endIcon={
-                      <SvgIcon sx={{ width: 14, height: 14 }}>
-                        <ExternalLinkIcon />
-                      </SvgIcon>
-                    }
+                    endIcon={<ArrowUpRightIcon sx={{ width: 14, height: 14 }} />}
                   >
                     <Typography variant="caption">
                       <Trans>{networkName} Faucet</Trans>

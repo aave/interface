@@ -1,6 +1,6 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { BasicModal } from 'src/components/primitives/BasicModal';
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
@@ -42,11 +42,7 @@ export const BuyWithFiatModal = ({ cryptoSymbol, open, close }: BuyWithFiatModal
             key={name}
             variant="tertiary"
             size="large"
-            endIcon={
-              <SvgIcon>
-                <ExternalLinkIcon />
-              </SvgIcon>
-            }
+            endIcon={<ArrowUpRightIcon />}
             fullWidth
             sx={{ px: 4, '&:not(:first-of-type)': { mt: 4 } }}
             href={makeLink({ cryptoSymbol, network, walletAddress })}

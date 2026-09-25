@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { ArrowNarrowRightIcon, ExternalLinkIcon, XIcon } from '@heroicons/react/outline';
+import { ArrowNarrowRightIcon, XIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
@@ -18,6 +18,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
@@ -149,9 +150,7 @@ export const BridgeTransactionListItem = ({
       <ListColumn align="right" maxWidth={95} minWidth={95}>
         <DarkTooltip title="View in explorer" sx={{ display: { xsm: 'none' } }}>
           <IconButton LinkComponent={Link} href={`https://ccip.chain.link/tx/${txHash}`}>
-            <SvgIcon sx={{ fontSize: '16px' }}>
-              <ExternalLinkIcon />
-            </SvgIcon>
+            <ArrowUpRightIcon sx={{ fontSize: '16px' }} />
           </IconButton>
         </DarkTooltip>
       </ListColumn>
@@ -217,15 +216,7 @@ const BridgeTransactionMobileListItem = ({
                 target="_blank"
               >
                 <Trans>View TX</Trans>{' '}
-                <SvgIcon
-                  sx={{
-                    fontSize: '15px',
-                    pl: 1,
-                    pb: 0.5,
-                  }}
-                >
-                  <ExternalLinkIcon />
-                </SvgIcon>
+                <ArrowUpRightIcon sx={{ fontSize: '15px', pl: 1, pb: 0.5 }} />
               </Button>
             </Stack>
             <Stack direction="row" gap={3} alignItems="center">

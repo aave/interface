@@ -104,9 +104,13 @@ export const bareSelectSx = {
 /**
  * The light "white pill" buttons, per the Figma `semantic/button` scale. Both sit on `surfaceFill`
  * with a hairline ring instead of a border; they differ only in hover strength, so one factory
- * keeps them from drifting. On hover the ring is re-asserted — the global `disableElevation`
- * default otherwise strips it — and `border` is forced to none to suppress MUI's default outlined
- * hover border. Dark is `pillDark`, applied separately by each variant.
+ * keeps them from drifting. `surfaceFill` is re-asserted on hover and `border` forced to none: the
+ * base outlined variant paints `&:hover { background-color: rgba(primary.main / hoverOpacity) }`
+ * plus a 1px border at (0,2,0), which outranks the fill we set on the root — so without this the
+ * pill LOST its bg-3 surface on hover and the `hoverOverlay` tint composited straight onto the
+ * page instead (light mode: #fff → #eb, a far heavier step than the 3% it should be). Re-asserting
+ * the whole `surfaceFill` also restores the ring the global `disableElevation` default strips.
+ * Dark is `pillDark`, applied separately by each variant.
  */
 const pillStyle = (hoverToken: FigmaColorName) => ({
   ...surfaceFill,
@@ -117,7 +121,7 @@ const pillStyle = (hoverToken: FigmaColorName) => ({
     color: figVars['fg-3'],
   },
   '&:hover, &.Mui-focusVisible, &[aria-expanded="true"]': {
-    boxShadow: figSurfaceShadow(),
+    ...surfaceFill,
     border: 'none',
   },
 });
@@ -132,12 +136,16 @@ const pillStyle = (hoverToken: FigmaColorName) => ({
  * rule. For the same reason the fill lives here rather than in `pillStyle`: two `darkScheme` calls
  * on one element collide on the same key, and the later spread would drop the earlier one whole.
  */
-const pillDark = (fill: string) =>
-  darkScheme({
-    backgroundColor: fill,
-    boxShadow: 'none',
-    '&:hover, &.Mui-focusVisible, &[aria-expanded="true"], &.Mui-disabled': { boxShadow: 'none' },
+const pillDark = (fill: string) => {
+  // Restated on the state selectors for the same reason `pillStyle` restates `surfaceFill`: the
+  // base outlined `&:hover` background outranks a root-level one. Named once so the two copies
+  // can't drift — a drift here shows up in one mode and one state only.
+  const flat = { backgroundColor: fill, boxShadow: 'none' };
+  return darkScheme({
+    ...flat,
+    '&:hover, &.Mui-focusVisible, &[aria-expanded="true"], &.Mui-disabled': flat,
   });
+};
 
 /** Secondary: bg-3 in light, its own button surface in dark. */
 const secondaryPillStyle = pillStyle('button-hover-secondary');
@@ -172,7 +180,7 @@ const alertSeverityStyle = (color: string): CSSObject => ({
 });
 
 /**
- * Badge variant: a status chip rather than a banner. The severity colour as a flat 20% tint (no
+ * Badge variant: a status chip rather than a banner. The severity colour as a flat 8% tint (no
  * gradient, no surface shadow), the glyph at its bare 1rem with no icon box, and H5 text. Used for
  * the CoW order states in transaction history.
  */
@@ -198,20 +206,30 @@ const alertBadgeStyle: CSSObject = {
     fontSize: '0.875rem',
     lineHeight: '1.125rem',
   },
-  // Icon-only chip: drop the empty message box, or its gap pads the right edge by 0.375rem.
+  // Icon-only chip — a spec'd state of the badge, currently exercised only by the dev showcase.
+  // Drop the empty message box, or its gap pads the right edge by 0.375rem, and even the side
+  // padding up to the vertical one so the disc sits in a square (a circle, at this radius)
+  // rather than a stubby pill.
   '.MuiAlert-message:empty': { display: 'none' },
+  '&:has(.MuiAlert-message:empty)': { padding: '0.375rem' },
 };
 
-const alertBadgeSeverityStyle = (color: string): CSSObject => {
-  const tint = `color-mix(in srgb, ${color} 20%, transparent)`;
-  return {
-    background: tint,
-    '.MuiAlert-icon': { color, backgroundColor: 'transparent' },
-    // Neutralises the banner severity style's own dark override, which would otherwise win on
-    // selector specificity and put the gradient back.
-    ...darkScheme({ background: tint }),
-  };
-};
+/** A badge's glyph in `c`, on a flat 8% tint of the same colour. */
+const badgeTone = (c: string): CSSObject => ({
+  background: `color-mix(in srgb, ${c} 8%, transparent)`,
+  '.MuiAlert-icon': { color: c, backgroundColor: 'transparent' },
+});
+
+/**
+ * One badge severity. `darkColor` is only for tokens with no usable dark value of their own —
+ * everything else already switches per mode, so the same var carries both. The dark block is
+ * emitted either way: it also neutralises the banner severity style's own dark override, which
+ * would otherwise win on selector specificity and put the gradient back.
+ */
+const alertBadgeSeverityStyle = (color: string, darkColor = color): CSSObject => ({
+  ...badgeTone(color),
+  ...darkScheme(badgeTone(darkColor)),
+});
 
 // Shared box geometry for the custom selection-control icons (checkbox + radio).
 const checkboxIconBox = { width: 18, height: 18, borderRadius: '0.375rem' };
@@ -1070,8 +1088,10 @@ export function getThemedComponents(theme: AppTheme) {
             flexDirection: 'column',
             flex: 1,
             paddingBottom: '39px',
-            paddingLeft: '8px',
-            paddingRight: '8px',
+            // Phone gutter (< xsm). Mirrored by `marketContainerProps` (markets.page), which runs
+            // its own ladder at a wider max-width — the two must stay in step.
+            paddingLeft: '1rem',
+            paddingRight: '1rem',
             [theme.breakpoints.up('xsm')]: {
               paddingLeft: '20px',
               paddingRight: '20px',
@@ -1241,8 +1261,12 @@ export function getThemedComponents(theme: AppTheme) {
               lineHeight: pxToRem(19),
             },
             a: {
+              // Same treatment as `.MuiButton-text` below, and for the same reason: MuiLink
+              // defaults to the `description` variant (14px/143%), so an inline link inside a
+              // `data-size="small"` alert rendered 2px larger than the 12px text around it.
               color: 'inherit',
-              fontWeight: 'inherit',
+              font: 'inherit',
+              letterSpacing: 'inherit',
               textDecoration: 'underline',
               '&:hover': {
                 textDecoration: 'none',
@@ -1312,14 +1336,21 @@ export function getThemedComponents(theme: AppTheme) {
           { props: { severity: 'warning' }, style: alertSeverityStyle(figVars['favourite-star']) },
           // Badge: geometry, then the per-severity tint. Both after the banner severities above,
           // whose background and icon box they replace.
+          //
+          // Same colours as the banner severities above — the data-* ramp's dark halves are too
+          // pale to carry the glyph's white ink, whereas these already do exactly that job in the
+          // banner icon box. Only `info` differs: the badge uses it as the neutral/ended chip.
           { props: { variant: 'badge' }, style: alertBadgeStyle },
           {
             props: { variant: 'badge', severity: 'error' },
             style: alertBadgeSeverityStyle(figVars['danger']),
           },
           {
+            // `fg-5` is the spec's #B3B3B3 in light, but its dark entry is the stale #ffffff (a
+            // duplicate of fg-1 that nothing outside the dev colour catalog reads) — which would
+            // put the white glyph on a white disc. Dark borrows fg-3 until that token is fixed.
             props: { variant: 'badge', severity: 'info' },
-            style: alertBadgeSeverityStyle(figVars['purple-1']),
+            style: alertBadgeSeverityStyle(figVars['fg-5'], figVars['fg-3']),
           },
           {
             props: { variant: 'badge', severity: 'success' },

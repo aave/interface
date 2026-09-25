@@ -1,5 +1,5 @@
-import { ExternalLinkIcon } from '@heroicons/react/solid';
-import { Box, Link, SvgIcon, TypographyProps } from '@mui/material';
+import { Box, Link, TypographyProps } from '@mui/material';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 
@@ -51,9 +51,7 @@ export const UserNameText: React.FC<UserNameTextProps> = ({
             sx={{ display: 'flex' }}
             onClick={() => trackEvent(GENERAL.EXTERNAL_LINK, { funnel: funnel, Link: 'Etherscan' })}
           >
-            <SvgIcon sx={{ fontSize: iconSize }}>
-              <ExternalLinkIcon />
-            </SvgIcon>
+            <ArrowUpRightIcon sx={{ fontSize: iconSize }} />
           </Link>
         </DarkTooltip>
       )}

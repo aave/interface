@@ -1,6 +1,6 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Paper, Skeleton, SvgIcon, Typography } from '@mui/material';
+import { Box, Button, Paper, Skeleton, Typography } from '@mui/material';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { CheckBadge } from 'src/components/primitives/CheckBadge';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -162,11 +162,7 @@ export const VotingResults = ({ proposal, loading, voters, votesLoading }: Votin
               href={discussionUrl}
               variant="tertiary"
               fullWidth
-              endIcon={
-                <SvgIcon>
-                  <ExternalLinkIcon />
-                </SvgIcon>
-              }
+              endIcon={<ArrowUpRightIcon />}
               sx={{ mt: 4 }}
             >
               <Trans>Forum discussion</Trans>

@@ -1,8 +1,8 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
+import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -132,11 +132,7 @@ export default function FaucetAssetsList() {
                   href="https://faucet.circle.com/"
                   component={Link}
                   variant="contained"
-                  endIcon={
-                    <SvgIcon sx={{ width: 14, height: 14 }}>
-                      <ExternalLinkIcon />
-                    </SvgIcon>
-                  }
+                  endIcon={<ArrowUpRightIcon sx={{ width: 14, height: 14 }} />}
                 >
                   <Trans>Faucet</Trans>
                 </Button>

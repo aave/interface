@@ -27,16 +27,24 @@ export const iconButtonSx = {
 } satisfies SxProps<Theme>;
 
 /**
- * Resizes a Button's `startIcon` glyph.
+ * Resizes a Button's icon glyph.
  *
- * MUI sizes it per button size through `.MuiButton-startIcon > *:nth-of-type(1)` — specificity
- * (0,2,0), which outranks an `sx` on the icon element itself at (0,1,0). So `<Button startIcon={<X
- * sx={{ fontSize: 18 }} />}>` silently renders at MUI's size; the override has to come back
- * through the same selector.
+ * MUI sizes it per button size through `.MuiButton-{start,end}Icon > *:nth-of-type(1)` —
+ * specificity (0,2,0), which outranks an `sx` on the icon element itself at (0,1,0). So `<Button
+ * startIcon={<X sx={{ fontSize: 18 }} />}>` silently renders at MUI's size; the override has to
+ * come back through the same selector.
  */
-export const startIconSizeSx = (fontSize: string) => ({
-  '& .MuiButton-startIcon > *:nth-of-type(1)': { fontSize },
+const iconSlotSizeSx = (slot: 'startIcon' | 'endIcon', fontSize: string) => ({
+  [`& .MuiButton-${slot} > *:nth-of-type(1)`]: { fontSize },
 });
+
+export const startIconSizeSx = (fontSize: string) => iconSlotSizeSx('startIcon', fontSize);
+
+/**
+ * Same for the trailing slot. Note the pill variants only tint `.MuiButton-startIcon` to fg-3, so
+ * an end icon also needs its colour set on the icon itself (see `ExternalLinkButton`).
+ */
+export const endIconSizeSx = (fontSize: string) => iconSlotSizeSx('endIcon', fontSize);
 
 /** Row action button in the sGHO / stkGHO deposit rows: full-width on mobile, fixed from `xsm`. */
 export const depositRowActionSx = {

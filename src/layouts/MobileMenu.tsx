@@ -11,12 +11,15 @@ import { useRootStore } from 'src/store/root';
 import { figVars } from 'src/utils/figmaColors';
 import { isFeatureEnabled, PROD_ENV } from 'src/utils/marketsAndNetworksConfig';
 
-import { DarkModeSwitcher } from './components/DarkModeSwitcher';
 import { DrawerWrapper } from './components/DrawerWrapper';
 import { LanguageListItem, LanguagesList } from './components/LanguageSwitcher';
 import { NavItems } from './components/NavItems';
 import { ShieldSwitcher } from './components/ShieldSwitcher';
 import { TestNetModeSwitcher } from './components/TestNetModeSwitcher';
+import { ThemeListItem, ThemesList } from './components/ThemeSwitcher';
+
+// The drill-in lists the options view can be replaced by. Keys are the submenu state.
+const SUBMENUS = { languages: LanguagesList, themes: ThemesList };
 
 interface MobileMenuProps {
   open: boolean;
@@ -47,6 +50,14 @@ const menuListSx = {
     cursor: 'pointer',
   },
   '& .MuiListItemText-primary': { fontSize: '1.125rem', fontWeight: 500, lineHeight: '120%' },
+  // Glyphs scale with the rows: the settings chevrons, the theme icons and the selected-option
+  // check all ship at their 18-20px desktop size, which reads as tiny against an 18px label in a
+  // 3rem row. Only currentColor SvgIcons are caught — the language flags are `<img>` and carry
+  // their own responsive box.
+  '& .MuiSvgIcon-root': { fontSize: '1.5rem' },
+  // The language flags are `<img>`, not currentColor glyphs, so they scale by box rather than
+  // font-size. `:has(img)` keeps this off the Back chevron and check slots in the same list.
+  '& .MuiListItemIcon-root:has(img)': { width: 28, height: 20 },
 };
 
 // The hamburger (three rounded lines, per the design SVG) that morphs into an X. Rendered inside
@@ -79,7 +90,9 @@ const MenuToggleIcon = ({ open }: { open: boolean }) => (
 );
 
 export const MobileMenu = ({ open, setOpen }: MobileMenuProps) => {
-  const [isLanguagesListOpen, setIsLanguagesListOpen] = useState(false);
+  // Which drill-in list has replaced the main options view, if any.
+  const [submenu, setSubmenu] = useState<keyof typeof SUBMENUS | null>(null);
+  const SubmenuList = submenu && SUBMENUS[submenu];
   // Drives the top scrim: it only shows once the options actually scroll, so it never dims the
   // first row at rest.
   const [scrolled, setScrolled] = useState(false);
@@ -88,9 +101,9 @@ export const MobileMenu = ({ open, setOpen }: MobileMenuProps) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const showSwitchButton = isFeatureEnabled.switch(currentMarketData);
 
-  useEffect(() => setIsLanguagesListOpen(false), [open]);
+  useEffect(() => setSubmenu(null), [open]);
   // A fresh scroll area always starts at the top, so reset on open / view switch.
-  useEffect(() => setScrolled(false), [open, isLanguagesListOpen]);
+  useEffect(() => setScrolled(false), [open, submenu]);
 
   const handleOpenReadMode = () => {
     setOpen(false);
@@ -138,7 +151,7 @@ export const MobileMenu = ({ open, setOpen }: MobileMenuProps) => {
             background: `linear-gradient(to bottom, ${figVars['bg-1']}, transparent)`,
           }}
         />
-        {!isLanguagesListOpen ? (
+        {submenu === null ? (
           <>
             {/* Only the options scroll — the action buttons below stay pinned. */}
             <Box sx={scrollAreaSx} onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 0)}>
@@ -159,10 +172,10 @@ export const MobileMenu = ({ open, setOpen }: MobileMenuProps) => {
                     <Trans>Watch Wallet</Trans>
                   </ListItemText>
                 </ListItem>
-                <DarkModeSwitcher />
                 <ShieldSwitcher />
                 {PROD_ENV && <TestNetModeSwitcher />}
-                <LanguageListItem onClick={() => setIsLanguagesListOpen(true)} />
+                <LanguageListItem onClick={() => setSubmenu('languages')} />
+                <ThemeListItem onClick={() => setSubmenu('themes')} />
               </List>
             </Box>
 
@@ -202,11 +215,8 @@ export const MobileMenu = ({ open, setOpen }: MobileMenuProps) => {
           </>
         ) : (
           <Box sx={scrollAreaSx} onScroll={(e) => setScrolled(e.currentTarget.scrollTop > 0)}>
-            <List
-              disablePadding
-              sx={{ ...menuListSx, '& .MuiListItemIcon-root': { width: 28, height: 20 } }}
-            >
-              <LanguagesList onClick={() => setIsLanguagesListOpen(false)} />
+            <List disablePadding sx={menuListSx}>
+              {SubmenuList && <SubmenuList onClick={() => setSubmenu(null)} />}
             </List>
           </Box>
         )}
