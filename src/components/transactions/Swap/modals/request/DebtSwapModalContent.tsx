@@ -1,5 +1,6 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
+import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ComputedReserveData,
@@ -64,9 +65,9 @@ export const DebtSwapModalContent = ({ underlyingAsset }: { underlyingAsset: str
     outputBalanceTitle: 'Current',
     chainId: currentNetworkConfig.wagmiChain.id,
     titleTokenPostfix: 'debt',
-    resultScreenTokensFromTitle: 'Debt sent',
-    resultScreenTokensToTitle: 'Debt received',
-    resultScreenTitleItems: 'debt',
+    resultScreenTokensFromTitle: <Trans>Debt sent</Trans>,
+    resultScreenTokensToTitle: <Trans>Debt received</Trans>,
+    resultScreenTitleItems: <Trans>debt</Trans>,
 
     // Note: Debt Swap order is inverted
     inputInputTitleSell: 'Swap at most',

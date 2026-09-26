@@ -17,10 +17,6 @@ import { SearchInput } from 'src/components/SearchInput';
 import { Section } from '../Section';
 import { Specimen } from '../Specimen';
 
-// Showcase-only: render Select menus inline (disablePortal) so they inherit the showcase's LOCAL
-// `data-mui-color-scheme` box instead of escaping to <body> and following the app's global scheme.
-const SELECT_MENU_PROPS = { disablePortal: true } as const;
-
 // Shared option set for the Select demos below.
 const NETWORKS = [
   { value: 'ethereum', label: 'Ethereum' },
@@ -42,7 +38,6 @@ const SelectDemo = () => {
       onChange={(e: SelectChangeEvent) => setValue(e.target.value)}
       size="small"
       sx={{ minWidth: 160 }}
-      MenuProps={SELECT_MENU_PROPS}
     >
       {networkMenuItems}
     </Select>
@@ -62,7 +57,6 @@ const MultiSelectDemo = () => {
       }}
       size="small"
       sx={{ minWidth: 220 }}
-      MenuProps={SELECT_MENU_PROPS}
       renderValue={(selected) =>
         selected.length === 0 ? (
           <Box component="span" sx={{ color: 'fg-3' }}>
@@ -100,13 +94,7 @@ export const FormControlsSection = () => (
 
     <Specimen label="Select — default / disabled / multiple" fullWidth>
       <SelectDemo />
-      <Select
-        defaultValue="ethereum"
-        size="small"
-        disabled
-        sx={{ minWidth: 160 }}
-        MenuProps={SELECT_MENU_PROPS}
-      >
+      <Select defaultValue="ethereum" size="small" disabled sx={{ minWidth: 160 }}>
         {networkMenuItems}
       </Select>
       <MultiSelectDemo />

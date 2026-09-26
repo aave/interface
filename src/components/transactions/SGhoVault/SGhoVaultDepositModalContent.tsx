@@ -95,6 +95,7 @@ export const SGhoVaultDepositModalContent = () => {
   if (mainTxState.success) {
     return (
       <TxSuccessView
+        title={<Trans>Deposited Successfully</Trans>}
         action={<Trans>deposited</Trans>}
         amount={submittedAmountRef.current ?? amount}
         symbol="sGHO"
