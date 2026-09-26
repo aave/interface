@@ -6,7 +6,6 @@ import {
   useUserTransactionHistory,
 } from '@aave/react';
 import { Cursor } from '@aave/types';
-import { OrderBookApi } from '@cowprotocol/cow-sdk';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swap/constants/cow.constants';
@@ -14,7 +13,6 @@ import {
   APP_CODE_PER_SWAP_TYPE,
   APP_CODE_VALUES,
 } from 'src/components/transactions/Swap/constants/shared.constants';
-import { COW_ENV } from 'src/components/transactions/Swap/helpers/cow';
 import { SwapType } from 'src/components/transactions/Swap/types';
 import { getTransactionAction, getTransactionId } from 'src/modules/history/helpers';
 import {
@@ -35,6 +33,7 @@ import { ERC20Service } from 'src/services/Erc20Service';
 import { useRootStore } from 'src/store/root';
 import { queryKeysFactory } from 'src/ui-config/queries';
 import { TOKEN_LIST } from 'src/ui-config/TokenList';
+import { fetchCowOrder, fetchCowOrders } from 'src/utils/cowOrderbook';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import {
   CowAdapterEntry,
@@ -248,12 +247,15 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
     const chainId = currentMarketData.chainId;
 
     let apiTxns: TransactionHistoryItemUnion[] = [];
-    if (isChainIdSupportedByCoWProtocol(chainId)) {
-      const orderBookApi = new OrderBookApi({ chainId: chainId, env: COW_ENV });
-      const orders = await orderBookApi.getOrders({
+    if (account && isChainIdSupportedByCoWProtocol(chainId)) {
+      const orders = await fetchCowOrders({
+        chainId,
         owner: account,
         limit: first,
         offset: skip,
+      }).catch((error) => {
+        console.error('Error fetching CoW orders history', error);
+        return [];
       });
 
       const filteredCowAaveOrders = (
@@ -423,8 +425,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
           let status = e.status;
           try {
             if (isChainIdSupportedByCoWProtocol(chainId)) {
-              const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
-              const order = await orderBookApi.getOrder(e.orderId, { chainId });
+              const order = await fetchCowOrder({ chainId, orderUid: e.orderId });
               // Prefer executed amounts if non-zero
               if (order?.executedSellAmount && order.executedSellAmount !== '0') {
                 srcAmount = order.executedSellAmount;
