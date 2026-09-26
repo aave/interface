@@ -73,11 +73,11 @@ runs:
       if: github.event_name != 'push'
       shell: bash
       run: |
-        body=$(cat .next/analyze/__bundle_analysis_comment.txt)
-        body="${body//'%'/'%25'}"
-        body="${body//$'\n'/'%0A'}"
-        body="${body//$'\r'/'%0D'}"
-        echo ::set-output name=body::$body
+        {
+          echo 'body<<BUNDLE_ANALYSIS_EOF'
+          cat .next/analyze/__bundle_analysis_comment.txt
+          echo 'BUNDLE_ANALYSIS_EOF'
+        } >> "$GITHUB_OUTPUT"
 
     - name: Find Comment
       uses: peter-evans/find-comment@1769778a0c5bd330272d749d12c036d65e70d39d # v2.0.0
