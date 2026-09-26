@@ -149,7 +149,7 @@ export class FixedPointNumber implements IFixedPointNumber {
   eq(value: FixedPointNumberValue): boolean {
     if (value instanceof FixedPointNumber) {
       if (this.scale > value.scale) {
-        return this.value === value.value * BigInt(10) * (this.scale - value.scale);
+        return this.value === value.value * BigInt(10) ** (this.scale - value.scale);
       }
       return this.value * BigInt(10) ** (value.scale - this.scale) === value.value;
     }
