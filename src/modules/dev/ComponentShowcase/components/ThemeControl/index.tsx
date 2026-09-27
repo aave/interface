@@ -1,30 +1,32 @@
-import { Box, Button, PaletteMode, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { useColorScheme } from '@mui/material/styles';
+import { StyledTxModalToggleButton } from 'src/components/StyledToggleButton';
+import { StyledTxModalToggleGroup } from 'src/components/StyledToggleButtonGroup';
 
-interface ThemeControlProps {
-  mode: PaletteMode;
-  onChange: (mode: PaletteMode) => void;
-}
+const MODES = [
+  { value: 'light', label: 'Light' },
+  { value: 'dark', label: 'Dark' },
+  { value: 'system', label: 'System' },
+] as const;
 
-// Segmented Light/Dark control for the showcase's local theme. Uses the themed
-// Button variants so it reads natively in whichever mode is active.
-export const ThemeControl = ({ mode, onChange }: ThemeControlProps) => (
-  <Box sx={{ mb: 3 }}>
-    <Typography variant="helperText" color="fg-2" sx={{ mb: 1, display: 'block' }}>
-      Theme
-    </Typography>
-    <Box sx={{ display: 'flex', gap: 1 }}>
-      {(['light', 'dark'] as const).map((value) => (
-        <Button
-          key={value}
-          variant={mode === value ? 'contained' : 'tertiary'}
-          size="small"
-          fullWidth
-          onClick={() => onChange(value)}
-          sx={{ textTransform: 'capitalize' }}
-        >
-          {value}
-        </Button>
+type Mode = (typeof MODES)[number]['value'];
+
+export const ThemeControl = () => {
+  const { mode, setMode } = useColorScheme();
+
+  return (
+    <StyledTxModalToggleGroup
+      value={mode ?? 'system'}
+      exclusive
+      onChange={(_, value: Mode | null) => value && setMode(value)}
+      aria-label="Theme"
+      sx={{ width: 'auto', flexShrink: 0 }}
+    >
+      {MODES.map(({ value, label }) => (
+        <StyledTxModalToggleButton key={value} value={value} sx={{ px: 2.5 }}>
+          <Typography variant="h5">{label}</Typography>
+        </StyledTxModalToggleButton>
       ))}
-    </Box>
-  </Box>
-);
+    </StyledTxModalToggleGroup>
+  );
+};

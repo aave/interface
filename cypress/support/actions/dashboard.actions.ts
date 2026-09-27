@@ -39,7 +39,10 @@ export class DashboardActions {
         cy.get('[data-cy=Modal]').find(`[data-cy="risk-checkbox"]`).click();
       }
       cy.doConfirm(hasApproval, _actionName, asset.shortName);
-      cy.get('[data-cy=CloseModalIcon]').should('not.be.disabled').click();
+      cy.get('[data-cy=CloseModalIcon], [data-cy=closeButton]')
+        .last()
+        .should('not.be.disabled')
+        .click();
       cy.get('[data-cy=Modal]').should('not.exist');
     });
   }

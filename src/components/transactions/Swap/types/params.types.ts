@@ -1,4 +1,5 @@
 import { InterestRate } from '@aave/contract-helpers';
+import { ReactNode } from 'react';
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
 import { SupportedNetworkWithChainId } from '../helpers/shared/misc.helpers';
@@ -74,11 +75,11 @@ export type TokensSwapParams = {
   /** Order side selected for the UI; defaults to 'sell'. */
   swapKind: SwapKind;
   /** Label for the tokens from in the result screen. */
-  resultScreenTokensFromTitle?: string;
+  resultScreenTokensFromTitle?: ReactNode;
   /** Label for the tokens to in the result screen. */
-  resultScreenTokensToTitle?: string;
+  resultScreenTokensToTitle?: ReactNode;
   /** Label for the title items in the result screen. */
-  resultScreenTitleItems?: string;
+  resultScreenTitleItems?: ReactNode;
 };
 
 export const isProtocolSwapParams = (params: SwapParams): params is ProtocolSwapParams => {

@@ -63,6 +63,7 @@ export const StkGhoMigrateModalContent = () => {
   if (mainTxState.success) {
     return (
       <TxSuccessView
+        title={<Trans>Migrated Successfully</Trans>}
         action={<Trans>received</Trans>}
         amount={receivedSharesRef.current ?? previewShares?.value ?? '0'}
         symbol="sGHO"

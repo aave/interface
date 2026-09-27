@@ -9,12 +9,13 @@ interface SpecimenProps {
   // toggles); pass 'flex-start' when items differ in height (e.g. a field with error text) so
   // their top edges line up.
   align?: 'center' | 'flex-start';
+  bare?: boolean;
   children: ReactNode;
 }
 
 // A single example: a small uppercase caption above the component, which sits on a
 // plain bordered "stage" (no fill) — matching the reference showcase.
-export const Specimen = ({ label, fullWidth, align = 'center', children }: SpecimenProps) => (
+export const Specimen = ({ label, fullWidth, align = 'center', bare, children }: SpecimenProps) => (
   <Box
     sx={{
       display: 'flex',
@@ -43,10 +44,12 @@ export const Specimen = ({ label, fullWidth, align = 'center', children }: Speci
         alignItems: align,
         flexWrap: 'wrap',
         gap: 3,
-        p: 6,
-        minHeight: 56,
-        border: `1px solid ${figVars['border-2']}`,
-        borderRadius: '12px',
+        ...(!bare && {
+          p: 6,
+          minHeight: 56,
+          border: `1px solid ${figVars['border-2']}`,
+          borderRadius: '12px',
+        }),
       }}
     >
       {children}

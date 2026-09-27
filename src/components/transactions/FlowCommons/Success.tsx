@@ -1,23 +1,20 @@
-import { InterestRate } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
-import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Base64Token, TokenIcon } from 'src/components/primitives/TokenIcon';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
-import { figVars } from 'src/utils/figmaColors';
 
 import { BaseSuccessView } from './BaseSuccess';
 
 export type SuccessTxViewProps = {
   txHash?: string;
+  title?: ReactNode;
   action?: ReactNode;
   amount?: string;
   symbol?: string;
   collateral?: boolean;
-  rate?: InterestRate;
   addToken?: ERC20TokenType;
   customAction?: ReactNode;
   customText?: ReactNode;
@@ -25,108 +22,78 @@ export type SuccessTxViewProps = {
 
 export const TxSuccessView = ({
   txHash,
+  title,
   action,
   amount,
   symbol,
   collateral,
-  rate,
   addToken,
   customAction,
   customText,
 }: SuccessTxViewProps) => {
   const { addERC20Token } = useWeb3Context();
   const [base64, setBase64] = useState('');
-  const theme = useTheme();
+
+  let description: ReactNode;
+  if (action && amount && symbol) {
+    description = (
+      <Trans>
+        You {action}{' '}
+        <FormattedNumber
+          value={Number(amount)}
+          compact
+          variant="h5"
+          color="fg-1"
+          component="span"
+        />{' '}
+        {symbol}
+      </Trans>
+    );
+  } else if (customText) {
+    description = customText;
+  } else if (!action && !amount && symbol) {
+    description = collateral ? (
+      <Trans>Your {symbol} is now used as collateral</Trans>
+    ) : (
+      <Trans>Your {symbol} is no longer used as collateral</Trans>
+    );
+  }
 
   return (
-    <BaseSuccessView txHash={txHash}>
-      <Box
-        sx={{
-          mt: 2,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-        }}
-      >
-        {action && amount && symbol && (
-          <Typography>
-            <Trans>
-              You {action} <FormattedNumber value={Number(amount)} compact variant="h5" /> {symbol}
-            </Trans>
-          </Typography>
-        )}
+    <BaseSuccessView txHash={txHash} title={title} description={description}>
+      {customAction}
 
-        {customText && <Typography>{customText}</Typography>}
-        {customAction}
-
-        {!action && !amount && symbol && (
-          <Typography>
-            Your {symbol} {collateral ? 'now' : 'is not'} used as collateral
-          </Typography>
-        )}
-
-        {rate && (
-          <Typography>
-            <Trans>
-              You switched to {rate === InterestRate.Variable ? 'variable' : 'stable'} rate
-            </Trans>
-          </Typography>
-        )}
-
-        {addToken && symbol && (
-          <Box
-            sx={(theme) => ({
-              border: theme.palette.mode === 'dark' ? `1px solid ${figVars['border-2']}` : 'none',
-              background: theme.palette.mode === 'dark' ? 'none' : '#F7F7F9',
-              borderRadius: '12px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              mt: '24px',
-            })}
-          >
-            <TokenIcon
+      {addToken && symbol && (
+        <>
+          {addToken.symbol && !/_/.test(addToken.symbol) && (
+            <Base64Token
               symbol={addToken.symbol}
-              aToken={addToken && addToken.aToken ? true : false}
-              sx={{ fontSize: '32px', mt: '12px', mb: '8px' }}
+              onImageGenerated={setBase64}
+              aToken={addToken.aToken}
             />
-            <Typography variant="description" color="fg-1" sx={{ mx: '24px' }}>
-              <Trans>
-                Add {addToken && addToken.aToken ? 'aToken ' : 'token '} to wallet to track your
-                balance.
-              </Trans>
-            </Typography>
-            <Button
-              onClick={() => {
-                addERC20Token({
-                  address: addToken.address,
-                  decimals: addToken.decimals,
-                  symbol: addToken.aToken ? '' : addToken.symbol,
-                  image: !/_/.test(addToken.symbol) ? base64 : undefined,
-                });
-              }}
-              variant={theme.palette.mode === 'dark' ? 'tertiary' : 'contained'}
-              size="medium"
-              sx={{ mt: '8px', mb: '12px' }}
-            >
-              {addToken.symbol && !/_/.test(addToken.symbol) && (
-                <Base64Token
-                  symbol={addToken.symbol}
-                  onImageGenerated={setBase64}
-                  aToken={addToken.aToken}
-                />
-              )}
-              <WalletIcon sx={{ width: '20px', height: '20px' }} />
-              <Typography variant="buttonM" color="white" ml="4px">
-                <Trans>Add to wallet</Trans>
-              </Typography>
-            </Button>
-          </Box>
-        )}
-      </Box>
+          )}
+          <Typography variant="base" color="fg-3" sx={{ textAlign: 'center', mb: '0.75rem' }}>
+            <Trans>
+              Add {addToken.aToken ? 'aToken' : 'token'} to wallet to track your balance.
+            </Trans>
+          </Typography>
+          <Button
+            variant="outlined"
+            size="medium"
+            startIcon={<TokenIcon symbol={addToken.symbol} aToken={addToken.aToken} />}
+            onClick={() => {
+              addERC20Token({
+                address: addToken.address,
+                decimals: addToken.decimals,
+                symbol: addToken.aToken ? '' : addToken.symbol,
+                image: !/_/.test(addToken.symbol) ? base64 : undefined,
+              });
+            }}
+          >
+            <Trans>Add to wallet</Trans>
+          </Button>
+        </>
+      )}
     </BaseSuccessView>
   );
 };

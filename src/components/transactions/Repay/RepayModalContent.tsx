@@ -228,6 +228,7 @@ export const RepayModalContent = ({
   if (repayTxState.success)
     return (
       <TxSuccessView
+        title={<Trans>Repaid Successfully</Trans>}
         action={<Trans>repaid</Trans>}
         amount={amountRef.current}
         symbol={repayWithATokens ? poolReserve.symbol : tokenToRepayWith.symbol}

@@ -1,25 +1,12 @@
-import { Box, Typography } from '@mui/material';
-import { ReactNode } from 'react';
+import { Box } from '@mui/material';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { EmptyStatePaper } from 'src/components/EmptyStatePaper';
 import { SGhoLoggedOutPreview } from 'src/modules/sGho/SGhoLoggedOutPreview';
 import { YourInfoSidebar } from 'src/modules/sGho/YourInfoSidebar';
 
+import { Group } from '../Group';
 import { Section } from '../Section';
 import { Specimen } from '../Specimen';
-
-// A titled sub-group within the section — a full-width band with a subheader and a wrapping
-// row of specimens (mirrors the grouping used in ColorsSection).
-const Group = ({ title, children }: { title: string; children: ReactNode }) => (
-  <Box sx={{ flex: '1 1 100%', mb: 8 }}>
-    <Typography variant="subheader1" sx={{ mb: 4, display: 'block' }}>
-      {title}
-    </Typography>
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 6 }}>
-      {children}
-    </Box>
-  </Box>
-);
 
 /**
  * Live gallery of the app's empty-state UI (connect-wallet prompts and the no-positions

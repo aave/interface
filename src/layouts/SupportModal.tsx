@@ -154,11 +154,11 @@ export const SupportModal = () => {
         {isLoading ? (
           <CircularProgress />
         ) : success ? (
-          <BaseSuccessView hideTx={true} onClose={onClose}>
-            <Box display="flex" justifyContent={'center'} mt={3}>
-              <Trans>Thank you for submitting your inquiry!</Trans>
-            </Box>
-          </BaseSuccessView>
+          <BaseSuccessView
+            hideTx={true}
+            onClose={onClose}
+            description={<Trans>Thank you for submitting your inquiry!</Trans>}
+          />
         ) : error ? (
           <div>
             <Box

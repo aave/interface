@@ -30,8 +30,8 @@ type AppTheme = ReturnType<typeof experimental_extendTheme>;
 // which the raw `extendTheme` result (used to build the component overrides statically)
 // doesn't carry — so calling it there hits the classic `palette.mode` branch and throws (the
 // raw theme has no top-level `palette`). This helper inlines the exact CSS-vars selector
-// `applyStyles` emits, matching any ancestor with `data-mui-color-scheme="dark"` — the <html>
-// element (app-wide) or a local wrapper (the dev showcase) — so both switch correctly.
+// `applyStyles` emits, matching any ancestor with `data-mui-color-scheme="dark"` (MUI sets it on
+// <html>).
 export const darkScheme = (styles: CSSObject): CSSObject => ({
   '*:where([data-mui-color-scheme="dark"]) &': styles,
 });
@@ -136,11 +136,11 @@ const pillStyle = (hoverToken: FigmaColorName) => ({
  * rule. For the same reason the fill lives here rather than in `pillStyle`: two `darkScheme` calls
  * on one element collide on the same key, and the later spread would drop the earlier one whole.
  */
-const pillDark = (fill: FigmaColorName) => {
+const pillDark = (fill: string) => {
   // Restated on the state selectors for the same reason `pillStyle` restates `surfaceFill`: the
   // base outlined `&:hover` background outranks a root-level one. Named once so the two copies
   // can't drift — a drift here shows up in one mode and one state only.
-  const flat = { backgroundColor: figVars[fill], boxShadow: 'none' };
+  const flat = { backgroundColor: fill, boxShadow: 'none' };
   return darkScheme({
     ...flat,
     '&:hover, &.Mui-focusVisible, &[aria-expanded="true"], &.Mui-disabled': flat,
@@ -149,10 +149,12 @@ const pillDark = (fill: FigmaColorName) => {
 
 /** Secondary: bg-3 in light, its own button surface in dark. */
 const secondaryPillStyle = pillStyle('button-hover-secondary');
-const secondaryPillDark = pillDark('button-bg-secondary');
+const secondaryPillDark = pillDark(
+  `var(--modal-button-secondary-fill, ${figVars['button-bg-secondary']})`
+);
 /** Tertiary: one step up the dark ramp, with a stronger hover tint. */
 const tertiaryPillStyle = pillStyle('button-hover-tertiary');
-const tertiaryPillDark = pillDark('bg-4');
+const tertiaryPillDark = pillDark(figVars['bg-4']);
 
 /** Shared disabled state for both pill variants. */
 const pillDisabled = {
@@ -523,7 +525,7 @@ export const getDesignTokens = (mode: 'light' | 'dark') => {
       base: {
         fontFamily: FONT,
         fontWeight: 400,
-        lineHeight: '100%',
+        lineHeight: pxToRem(18),
         fontSize: pxToRem(14),
       },
       description: {
@@ -1041,6 +1043,7 @@ export function getThemedComponents(theme: AppTheme) {
             props: { variant: 'modal' },
             style: {
               borderRadius: '0.75rem',
+              isolation: 'isolate',
               backgroundColor: figVars['bg-1'],
               // Published so content can paint its own fades in the surface colour (the token
               // picker's scroll scrims) without restating the light/dark pair.
@@ -1048,6 +1051,7 @@ export function getThemedComponents(theme: AppTheme) {
               ...darkScheme({
                 backgroundColor: figVars['bg-2'],
                 '--modal-surface': figVars['bg-2'],
+                '--modal-button-secondary-fill': figVars['bg-4-hover'],
               }),
               boxShadow: `0 0 0 1px ${figVars['border-1']}, 0 4px 16px 0 ${figVars['shadow-medium']}`,
             },

@@ -44,7 +44,7 @@ const MenuDemo = () => {
       >
         Open menu
       </Button>
-      <Menu anchorEl={anchorEl} open={open} onClose={close} disablePortal>
+      <Menu anchorEl={anchorEl} open={open} onClose={close}>
         <MenuItem onClick={close}>First option</MenuItem>
         <MenuItem onClick={close}>Second option</MenuItem>
         <MenuItem onClick={close}>Third option</MenuItem>

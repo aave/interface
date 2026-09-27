@@ -1,4 +1,5 @@
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
+import { Trans } from '@lingui/macro';
 import { Box, CircularProgress } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
@@ -91,9 +92,9 @@ export const WithdrawAndSwapModalContent = ({ underlyingAsset }: { underlyingAss
     showOutputBalance: true,
     inputInputTitle: 'Withdraw',
     outputInputTitle: 'And swap to',
-    resultScreenTitleItems: 'and withdrawn',
-    resultScreenTokensFromTitle: 'Withdrawn',
-    resultScreenTokensToTitle: 'Received',
+    resultScreenTitleItems: <Trans>and withdrawn</Trans>,
+    resultScreenTokensFromTitle: <Trans>Withdrawn</Trans>,
+    resultScreenTokensToTitle: <Trans>Received</Trans>,
 
     // Note: Withdraw And Swap order is not inverted
     inputInputTitleSell: 'Withdraw',
