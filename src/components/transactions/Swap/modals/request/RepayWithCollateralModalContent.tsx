@@ -14,6 +14,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { useShallow } from 'zustand/shallow';
 
+import { isHorizonMarket } from '../../constants/shared.constants';
 import { invalidateAppStateForSwap } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
@@ -27,9 +28,10 @@ export const RepayWithCollateralModalContent = ({
 }) => {
   const { user, reserves } = useAppDataContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
-  const [account, chainId] = useRootStore(
-    useShallow((store) => [store.account, store.currentChainId])
+  const [account, chainId, currentMarket] = useRootStore(
+    useShallow((store) => [store.account, store.currentChainId, store.currentMarket])
   );
+  const isHorizon = isHorizonMarket(currentMarket);
 
   const baseTokens: TokenInfo[] = reserves.map((reserve) => {
     return {
@@ -43,7 +45,8 @@ export const RepayWithCollateralModalContent = ({
   });
 
   const tokensFrom = getTokensFrom(user, currentNetworkConfig.wagmiChain.id, currentNetworkConfig);
-  const tokensTo = getTokensTo(user, baseTokens, currentNetworkConfig.wagmiChain.id);
+  const tokensTo = getTokensTo(user, baseTokens, currentNetworkConfig.wagmiChain.id, isHorizon);
+
   const defaultInputToken = tokensFrom.find(
     (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase()
   );
@@ -56,6 +59,7 @@ export const RepayWithCollateralModalContent = ({
       token.addressToSwap.toLowerCase() !== defaultInputToken?.addressToSwap.toLowerCase() &&
       token.underlyingAddress.toLowerCase() !== defaultInputToken?.underlyingAddress.toLowerCase()
   );
+
   const defaultOutputToken = tokensWithoutInputToken.sort(
     (a, b) => Number(b.balance) - Number(a.balance)
   )[0];
@@ -75,7 +79,7 @@ export const RepayWithCollateralModalContent = ({
     // allowLimitOrders: false,
     invalidateAppState,
     sourceTokens: tokensFrom,
-    destinationTokens: tokensTo,
+    destinationTokens: tokensWithoutInputToken,
     chainId,
     forcedInputToken: defaultInputToken,
     suggestedDefaultOutputToken: defaultOutputToken,
@@ -186,11 +190,14 @@ const getTokensFrom = (
 const getTokensTo = (
   user: ExtendedFormattedUser | undefined,
   baseTokensInfo: TokenInfo[],
-  chainId: number
+  chainId: number,
+  isHorizon: boolean
 ): SwappableToken[] => {
   // Tokens From should be the supplied tokens
   const suppliedPositions =
-    user?.userReservesData.filter((userReserve) => userReserve.underlyingBalance !== '0') || [];
+    user?.userReservesData
+      .filter((userReserve) => userReserve.underlyingBalance !== '0')
+      .filter((userReserve) => !isHorizon || userReserve.reserve.borrowingEnabled) || [];
 
   return suppliedPositions
     .map<SwappableToken | undefined>((position) => {
