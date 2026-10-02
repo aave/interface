@@ -504,7 +504,6 @@ export const BridgeModalContent = () => {
                   <Typography variant="h5">{estimatedTimeToDestination}</Typography>
                 )}
               </Box> */}
-            <Row /> {/* Spacer */}
             {feesExceedWalletBalance && (
               <Alert severity="warning" sx={{ width: '100%', my: 0 }}>
                 <Trans>Fees exceed wallet balance</Trans>

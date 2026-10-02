@@ -139,7 +139,7 @@ export const AssetInput = <T extends Asset = Asset>({
           backgroundColor: 'bg-2',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, px: 3, py: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, px: 3, pt: 3, pb: 2 }}>
           {loading ? (
             <Box sx={{ flex: 1 }}>
               <CircularProgress color="inherit" size="16px" />
@@ -297,7 +297,7 @@ export const AssetInput = <T extends Asset = Asset>({
           )}
         </Box>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', height: '16px', px: 3, py: 2, mb: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', height: '16px', px: 3, mb: 3 }}>
           {loading ? (
             <Box sx={{ flex: 1 }} />
           ) : (

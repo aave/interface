@@ -142,6 +142,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
     );
 
     let avgLine: ReactNode = null;
+    let avgLabel: ReactNode = null;
     const avg = data.reduce((acc, cur) => acc + cur['value'], 0) / data.length;
     if (avg > 0) {
       const avgFormatted = (avg * 100).toFixed(2);
@@ -156,37 +157,37 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
       const annotationY = (yValueScale(max(data, (d) => getData(d, 'value')) ?? 0) ?? 0) + 3;
 
       avgLine = (
-        <>
-          <LinePath
-            key="avg"
-            data={avgArray}
-            strokeDasharray="3,5"
-            stroke="#D2D4DC"
-            strokeWidth={2}
-            x={(d) => dateScale(getDate(d)) ?? 0}
-            y={(d) => yValueScale(getData(d, 'value')) ?? 0}
-          />
-          <Annotation x={annotationX} y={annotationY}>
-            <HtmlLabel showAnchorLine={false}>
-              <Stack
-                alignItems="center"
-                direction="row"
-                justifyContent="center"
-                sx={{
-                  mx: 2,
-                  my: 0.5,
-                  fontSize: 12,
-                  background: theme.palette.divider,
-                  borderRadius: '99px',
-                }}
-              >
-                <Typography sx={{ m: 1 }} noWrap variant="subheader2">
-                  Avg {avgFormatted}%
-                </Typography>
-              </Stack>
-            </HtmlLabel>
-          </Annotation>
-        </>
+        <LinePath
+          key="avg"
+          data={avgArray}
+          strokeDasharray="3,5"
+          stroke="#D2D4DC"
+          strokeWidth={2}
+          x={(d) => dateScale(getDate(d)) ?? 0}
+          y={(d) => yValueScale(getData(d, 'value')) ?? 0}
+        />
+      );
+      avgLabel = (
+        <Annotation x={annotationX} y={annotationY}>
+          <HtmlLabel showAnchorLine={false}>
+            <Stack
+              alignItems="center"
+              direction="row"
+              justifyContent="center"
+              sx={{
+                mx: 2,
+                my: 0.5,
+                fontSize: 12,
+                background: theme.palette.divider,
+                borderRadius: '99px',
+              }}
+            >
+              <Typography sx={{ m: 1 }} noWrap variant="subheader2">
+                Avg {avgFormatted}%
+              </Typography>
+            </Stack>
+          </HtmlLabel>
+        </Annotation>
       );
     }
 
@@ -204,6 +205,8 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
               numTicks={3}
             />
 
+            {avgLine}
+
             {/* Data Value Lines */}
             <LinePath
               key={field.name}
@@ -215,7 +218,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
               curve={curveMonotoneX}
             />
 
-            {avgLine}
+            {avgLabel}
 
             {/* X Axis */}
             <AxisBottom
