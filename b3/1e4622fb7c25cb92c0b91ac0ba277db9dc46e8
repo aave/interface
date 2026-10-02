@@ -1,0 +1,33 @@
+src/components/transactions/AssetInput.tsx
+  s_1fe98d2a114aa5::t_784b892f0bf692 142
+  s_1fe98d2a114aa5::t_51056001f44e0f 300
+src/modules/reserve-overview/ReserveActions.tsx
+  s_1fe98d2a114aa5::t_922365dcb97ed4 330
+src/components/transactions/NetworkSelect.tsx
+  s_1fe98d2a114aa5::t_150baec85eb4ad 45
+  s_1fe98d2a114aa5::t_9467672872ba91 67-68
+src/components/transactions/Bridge/BridgeDestinationInput.tsx
+  s_1fe98d2a114aa5::t_8d9ba4f31215fd 117
+src/modules/reserve-overview/graphs/MeritApyGraph.tsx
+  s_1fe98d2a114aa5::t_af9abd3318f2cf 162-174,187-206
+src/modules/reserve-overview/graphs/ApyGraph.tsx
+  s_1fe98d2a114aa5::t_900fe8aadfa9b8 145
+  s_1fe98d2a114aa5::t_70f95b30a0df3b 208-209,221
+  s_1fe98d2a114aa5::t_6eb4c6b9a2ac72 160-190
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b31e4622fb7c25cb92c0b91ac0ba277db9dc46e8",
+  "prompts": {},
+  "sessions": {
+    "s_1fe98d2a114aa5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6026a483-30de-455a-a7c5-4b4e428960ad",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
