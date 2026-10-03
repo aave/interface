@@ -12,11 +12,6 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: aave-interface\n"
-"X-Crowdin-Project-ID: 502668\n"
-"X-Crowdin-Language: es-ES\n"
-"X-Crowdin-File: /src/locales/en/messages.po\n"
-"X-Crowdin-File-ID: 46\n"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
