@@ -4,9 +4,14 @@ import { ReactNode } from 'react';
 import { CheckIcon } from 'src/components/icons/CheckIcon';
 import { ChevronLeftIcon } from 'src/components/icons/ChevronLeftIcon';
 
-// Chevron/icon-to-label gap, per the design spec — the Back row runs 2px wider than an option.
-const BACK_ICON_SX = { mr: '0.625rem', color: 'fg-chevron' };
-const OPTION_ICON_SX = { mr: '0.5rem', color: 'fg-3' };
+const ICON_SLOT_SX = {
+  width: '1.25rem',
+  mr: '0.5rem',
+  justifyContent: 'center',
+  '&:has(img)': { height: '0.875rem', borderRadius: '2px', overflow: 'hidden' },
+};
+const BACK_ICON_SX = { ...ICON_SLOT_SX, color: 'fg-chevron' };
+const OPTION_ICON_SX = { ...ICON_SLOT_SX, color: 'fg-3' };
 const ROW_SX = { cursor: 'pointer', color: 'fg-1' };
 
 interface SettingsSubmenuOption {

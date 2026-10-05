@@ -55,9 +55,9 @@ const menuListSx = {
   // 3rem row. Only currentColor SvgIcons are caught — the language flags are `<img>` and carry
   // their own responsive box.
   '& .MuiSvgIcon-root': { fontSize: '1.5rem' },
-  // The language flags are `<img>`, not currentColor glyphs, so they scale by box rather than
-  // font-size. `:has(img)` keeps this off the Back chevron and check slots in the same list.
-  '& .MuiListItemIcon-root:has(img)': { width: 28, height: 20 },
+  // The submenus' leading icon slot (the check trails, never first) widens for 28x20 flags.
+  '& .MuiListItemIcon-root:first-child': { width: 28 },
+  '& .MuiListItemIcon-root:has(img)': { height: 20 },
 };
 
 // The hamburger (three rounded lines, per the design SVG) that morphs into an X. Rendered inside
