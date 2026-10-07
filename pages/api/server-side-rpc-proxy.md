@@ -45,6 +45,12 @@ AVALANCHE_RPC_API_KEY=<your-avalanche-rpc-api-key>
 
 5. The result is then returned to the caller as if it was fetched directly from the RPC endpoint.
 
+### Standard JSON-RPC (wagmi / WalletConnect)
+
+The endpoint also accepts standard JSON-RPC requests (`{ jsonrpc, id, method, params }`) with the chain passed in the query string, e.g. `/api/rpc-proxy/?chainId=8453`. The request `id` is preserved in the response.
+
+When `NEXT_PUBLIC_PRIVATE_RPC_ENABLED=true`, the wagmi transports in `src/ui-config/wagmiConfig.ts` point at this URL. The WalletConnect connector builds its `rpcMap` from those transports, so the read calls it makes from the browser (gas estimation, block number, receipt polling) go through our domain rather than third-party public RPCs, which some networks block. Batched (array) requests are not supported.
+
 ## Adding Support for More Chains
 
 To add support for more chains:

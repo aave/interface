@@ -61,7 +61,16 @@ const cypressConfig = createConfig(
   })
 );
 
+// Route wagmi (and WalletConnect, which builds its rpcMap from these transports) through the
+// same-origin server proxy so reads don't depend on public RPCs that may reject browser requests.
+// WalletConnect requires an absolute URL, so this is only possible in the browser.
+const usePrivateRpc =
+  process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED === 'true' && typeof window !== 'undefined';
+
 const getTransport = (chainId: number) => {
+  if (usePrivateRpc && !(FORK_ENABLED && chainId === FORK_CHAIN_ID)) {
+    return `${window.location.origin}/api/rpc-proxy/?chainId=${chainId}`;
+  }
   return networkConfigs[chainId]?.publicJsonRPCUrl[0];
 };
 

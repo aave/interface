@@ -90,7 +90,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { chainId, method, params } = req.body;
+    // Accepts either the ServerJsonRpcProvider shape ({ chainId, method, params }) or a standard
+    // JSON-RPC request with the chain in the query string (?chainId=1), as sent by viem/WalletConnect
+    const { method, params, id } = req.body;
+    const chainId = req.body.chainId ?? req.query.chainId;
 
     if (typeof method !== 'string' || method.startsWith('alchemy_')) {
       return res.status(400).json({ error: 'Method not allowed' });
@@ -105,7 +108,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const rpcRequest = {
       jsonrpc: '2.0',
-      id: Date.now(),
+      id: id ?? Date.now(),
       method,
       params,
     };
