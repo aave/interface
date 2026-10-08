@@ -38,6 +38,7 @@ describe.skip(`DELEGATION SPEC`, () => {
   });
   describe(`Open page`, () => {
     it(`Open governance page`, () => {
+      cy.get('[data-cy="menuMore"]').click();
       cy.get('[data-cy="menuGovernance"]').click();
       cy.get('button:contains("Your info")').click();
     });

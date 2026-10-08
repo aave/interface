@@ -21,8 +21,8 @@ import { useShallow } from 'zustand/shallow';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { navigation } from '../../ui-config/menu-items';
 import { HEADER_MOBILE_BELOW } from '../headerLayout';
+import { MoreMenu } from './MoreMenu';
 import { NAV_LINK_PADDING_X, NAV_LINK_PADDING_Y, navLinkSx } from './navLinkSx';
-import { StakingMenu } from './StakingMenu';
 
 interface NavItemsProps {
   setOpen?: (value: boolean) => void;
@@ -61,7 +61,7 @@ const navListItemSx = {
   mr: { xs: 0, [HEADER_MOBILE_BELOW]: 2 },
 };
 
-// A single mobile drawer nav link — top-level items and the Staking accordion's children all render
+// A single mobile drawer nav link — top-level items and the More accordion's children all render
 // through here (children pass `indent`).
 const MobileNavLink = ({
   href,
@@ -93,7 +93,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
   const { breakpoints } = useTheme();
   const mobileNav = useMediaQuery(breakpoints.down(HEADER_MOBILE_BELOW));
   const router = useRouter();
-  const [stakingOpen, setStakingOpen] = React.useState(false);
+  const [moreOpen, setMoreOpen] = React.useState(false);
   const [trackEvent, currentMarketData, account] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarketData, store.account])
   );
@@ -177,31 +177,40 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
         {mobileNav ? (
           <>
             <Box
-              onClick={() => setStakingOpen((v) => !v)}
+              onClick={() => setMoreOpen((v) => !v)}
               sx={[
                 mobileNavItemSx,
                 { cursor: 'pointer', justifyContent: 'space-between' },
-                !stakingOpen &&
-                  (isActive(ROUTES.staking) || isActive(ROUTES.safetyModule)) &&
+                !moreOpen &&
+                  (isActive(ROUTES.staking) ||
+                    isActive(ROUTES.safetyModule) ||
+                    isActive(ROUTES.governance)) &&
                   activeBarSx,
               ]}
             >
               <Typography variant="h3" color="fg-1">
-                <Trans>Staking</Trans>
+                <Trans>More</Trans>
               </Typography>
               <SvgIcon
                 sx={{
                   fontSize: 18,
                   color: 'fg-2',
-                  transform: stakingOpen ? 'rotate(180deg)' : 'none',
+                  transform: moreOpen ? 'rotate(180deg)' : 'none',
                   transition: 'transform 0.2s ease',
                 }}
               >
                 <ChevronDownIcon />
               </SvgIcon>
             </Box>
-            <Collapse in={stakingOpen} sx={{ width: '100%' }}>
+            <Collapse in={moreOpen} sx={{ width: '100%' }}>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', pt: '0.5rem' }}>
+                <MobileNavLink
+                  href={ROUTES.governance}
+                  label={<Trans>Governance</Trans>}
+                  active={isActive(ROUTES.governance)}
+                  indent
+                  onClick={() => handleClick('Governance', true)}
+                />
                 <MobileNavLink
                   href={ROUTES.staking}
                   label={<Trans>Umbrella</Trans>}
@@ -220,7 +229,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
             </Collapse>
           </>
         ) : (
-          <StakingMenu />
+          <MoreMenu />
         )}
       </ListItem>
     </List>

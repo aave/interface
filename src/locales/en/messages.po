@@ -232,6 +232,8 @@ msgstr "This transaction will switch E-Mode from {0} to {1}. Borrowing will be r
 msgid "View details"
 msgstr "View details"
 
+#: src/layouts/components/MoreMenu.tsx
+#: src/layouts/components/NavItems.tsx
 #: src/layouts/MoreMenu.tsx
 msgid "More"
 msgstr "More"
@@ -1504,8 +1506,6 @@ msgid "Merkl rewards are claimed through the"
 msgstr "Merkl rewards are claimed through the"
 
 #: src/components/transactions/Stake/StakeActions.tsx
-#: src/layouts/components/NavItems.tsx
-#: src/layouts/components/StakingMenu.tsx
 #: src/modules/umbrella/UmbrellaActions.tsx
 msgid "Staking"
 msgstr "Staking"
@@ -2408,8 +2408,8 @@ msgstr "Target {0}"
 msgid "For security reasons, limit orders are not supported for Native tokens. To place a limit order, use the wrapped version."
 msgstr "For security reasons, limit orders are not supported for Native tokens. To place a limit order, use the wrapped version."
 
+#: src/layouts/components/MoreMenu.tsx
 #: src/layouts/components/NavItems.tsx
-#: src/layouts/components/StakingMenu.tsx
 msgid "Umbrella"
 msgstr "Umbrella"
 
@@ -2769,7 +2769,8 @@ msgstr "Created"
 msgid "after voting"
 msgstr "after voting"
 
-#: src/ui-config/menu-items/index.tsx
+#: src/layouts/components/MoreMenu.tsx
+#: src/layouts/components/NavItems.tsx
 msgid "Governance"
 msgstr "Governance"
 
@@ -3138,8 +3139,8 @@ msgstr "You voted {0}"
 msgid "Borrowable"
 msgstr "Borrowable"
 
+#: src/layouts/components/MoreMenu.tsx
 #: src/layouts/components/NavItems.tsx
-#: src/layouts/components/StakingMenu.tsx
 msgid "Safety Module"
 msgstr "Safety Module"
 
