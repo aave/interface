@@ -77,13 +77,7 @@ export type BaseNetworkConfig = Omit<NetworkConfig, 'explorerLinkBuilder'>;
 export const testnetConfig: Record<string, BaseNetworkConfig> = {
   [ChainId.sepolia]: {
     name: 'Ethereum Sepolia',
-    publicJsonRPCUrl: [
-      'https://eth-sepolia.public.blastapi.io',
-      'https://rpc.sepolia.org',
-      'https://rpc2.sepolia.org',
-      'https://rpc.sepolia.online',
-      'https://www.sepoliarpc.space',
-    ],
+    publicJsonRPCUrl: ['https://ethereum-sepolia-rpc.publicnode.com'],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -97,8 +91,7 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
     name: 'Avalanche Fuji',
     publicJsonRPCUrl: [
       'https://api.avax-test.network/ext/bc/C/rpc',
-      'https://rpc.ankr.com/avalanche_fuji',
-      'https://ava-testnet.public.blastapi.io/ext/bc/C/rpc',
+      'https://avalanche-fuji-c-chain-rpc.publicnode.com',
     ],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
@@ -118,7 +111,7 @@ export const testnetConfig: Record<string, BaseNetworkConfig> = {
     name: 'Arbitrum Sepolia',
     publicJsonRPCUrl: [
       'https://sepolia-rollup.arbitrum.io/rpc',
-      'https://public.stackup.sh/api/v1/node/arbitrum-sepolia',
+      'https://arbitrum-sepolia-rpc.publicnode.com',
     ],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
@@ -176,8 +169,6 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     publicJsonRPCUrl: [
       'https://mainnet.gateway.tenderly.co',
       'https://rpc.flashbots.net',
-      'https://eth.llamarpc.com',
-      'https://eth-mainnet.public.blastapi.io',
       'https://ethereum-rpc.publicnode.com',
     ],
     baseUniswapAdapter: '0xc3efa200a60883a96ffe3d5b492b121d6e9a1f3f',
@@ -193,10 +184,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     displayName: 'Polygon',
     publicJsonRPCUrl: [
       'https://gateway.tenderly.co/public/polygon',
-      'https://polygon-pokt.nodies.app',
       'https://polygon-bor-rpc.publicnode.com',
-      'https://polygon-rpc.com',
-      'https://polygon-mainnet.public.blastapi.io',
       'https://rpc-mainnet.matic.quiknode.pro',
     ],
     baseAssetSymbol: 'POL',
@@ -215,8 +203,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     name: 'Avalanche',
     publicJsonRPCUrl: [
       'https://api.avax.network/ext/bc/C/rpc',
-      'https://ava-mainnet.public.blastapi.io/ext/bc/C/rpc',
-      'https://rpc.ankr.com/avalanche',
+      'https://avalanche-c-chain-rpc.publicnode.com',
     ],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'AVAX',
@@ -233,11 +220,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.arbitrum_one]: {
     name: 'Arbitrum',
-    publicJsonRPCUrl: [
-      'https://arb1.arbitrum.io/rpc',
-      'https://rpc.ankr.com/arbitrum',
-      'https://1rpc.io/arb',
-    ],
+    publicJsonRPCUrl: ['https://arb1.arbitrum.io/rpc', 'https://arbitrum-one-rpc.publicnode.com'],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -253,12 +236,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.base]: {
     name: 'Base',
-    publicJsonRPCUrl: [
-      'https://1rpc.io/base',
-      'https://base.llamarpc.com',
-      'https://base.publicnode.com',
-      'https://base-mainnet.public.blastapi.io',
-    ],
+    publicJsonRPCUrl: ['https://mainnet.base.org', 'https://base-rpc.publicnode.com'],
     baseUniswapAdapter: '0x0',
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
@@ -320,7 +298,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.bnb]: {
     name: 'Binance Smart Chain',
-    publicJsonRPCUrl: ['https://bsc.publicnode.com	', 'wss://bsc.publicnode.com'],
+    publicJsonRPCUrl: ['https://bsc-rpc.publicnode.com'],
     baseAssetSymbol: 'BNB',
     wrappedBaseAssetSymbol: 'WBNB',
     baseAssetDecimals: 18,
@@ -335,7 +313,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.scroll]: {
     name: 'Scroll',
-    publicJsonRPCUrl: ['https://rpc.scroll.io', 'https://rpc.ankr.com/scroll'],
+    publicJsonRPCUrl: ['https://rpc.scroll.io', 'https://scroll-rpc.publicnode.com'],
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
@@ -365,11 +343,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.linea]: {
     name: 'Linea',
-    publicJsonRPCUrl: [
-      'https://1rpc.io/linea',
-      'https://linea.drpc.org',
-      'https://linea-rpc.publicnode.com',
-    ],
+    publicJsonRPCUrl: ['https://linea.drpc.org', 'https://linea-rpc.publicnode.com'],
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
@@ -403,7 +377,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.celo]: {
     name: 'Celo',
-    publicJsonRPCUrl: ['https://rpc.ankr.com/celo', 'https://celo.drpc.org'],
+    publicJsonRPCUrl: ['https://rpc.ankr.com/celo', 'https://celo-rpc.publicnode.com'],
     baseAssetSymbol: '', // N/A
     wrappedBaseAssetSymbol: '', // N/A
     baseAssetDecimals: 0, // N/A
@@ -418,7 +392,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
   },
   [ChainId.soneium]: {
     name: 'Soneium',
-    publicJsonRPCUrl: ['https://soneium.drpc.org', 'https://rpc.soneium.org'],
+    publicJsonRPCUrl: ['https://rpc.soneium.org', 'https://soneium.drpc.org'],
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
