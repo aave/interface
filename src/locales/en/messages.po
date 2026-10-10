@@ -469,6 +469,7 @@ msgid "Allowance required action"
 msgstr "Allowance required action"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
+#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Available rewards"
 msgstr "Available rewards"
 
@@ -3150,6 +3151,7 @@ msgstr "Proposal created"
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/stkGho/StkGhoWithdrawRow.tsx
 #: src/modules/umbrella/UmbrellaClaimActions.tsx
+#: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Claim"
 msgstr "Claim"
 

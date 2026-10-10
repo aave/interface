@@ -1,8 +1,10 @@
 import { Trans } from '@lingui/macro';
+import { Box, Button } from '@mui/material';
 import { PageHeader } from 'src/components/PageHeader/PageHeader';
 import { PageHeaderStat } from 'src/components/PageHeader/PageHeaderStat';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { useStakeDataSummary, useUmbrellaSummary } from 'src/hooks/stake/useUmbrellaSummary';
+import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -55,9 +57,18 @@ const TotalStakedStat = ({ currentMarketData }: StatProps) => {
 const UmbrellaUserStats = ({ currentMarketData }: StatProps) => {
   const { data: stakedDataWithTokenBalances, loading: isLoadingStakedDataWithTokenBalances } =
     useUmbrellaSummary(currentMarketData);
+  const { openUmbrellaClaimAll } = useModalContext();
 
   const totalUSDAggregateStaked = stakedDataWithTokenBalances?.aggregatedTotalStakedUSD;
   const weightedAverageApy = stakedDataWithTokenBalances?.weightedAverageApy;
+
+  const userRewardsUsd = stakedDataWithTokenBalances?.stakeData.reduce(
+    (acc, stake) =>
+      acc +
+      stake.formattedRewards.reduce((sum, reward) => sum + Number(reward.accruedUsd || '0'), 0),
+    0
+  );
+  const userHasRewards = userRewardsUsd !== undefined && userRewardsUsd > 0;
 
   return (
     <>
@@ -81,6 +92,33 @@ const UmbrellaUserStats = ({ currentMarketData }: StatProps) => {
           percent
         />
       </PageHeaderStat>
+
+      {userHasRewards && (
+        <PageHeaderStat
+          label={<Trans>Available rewards</Trans>}
+          loading={isLoadingStakedDataWithTokenBalances}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <FormattedNumber
+              value={userRewardsUsd}
+              variant="statValue"
+              visibleDecimals={2}
+              compact
+              symbol="USD"
+              data-cy={'Umbrella_Claim_Value'}
+            />
+            <Button
+              variant="tertiary"
+              size="small"
+              onClick={() => openUmbrellaClaimAll()}
+              sx={{ minWidth: 'unset', ml: 2 }}
+              data-cy={'Umbrella_Claim_All_Button'}
+            >
+              <Trans>Claim</Trans>
+            </Button>
+          </Box>
+        </PageHeaderStat>
+      )}
     </>
   );
 };
