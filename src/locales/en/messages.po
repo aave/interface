@@ -271,6 +271,10 @@ msgstr "Aave is a fully decentralized, community governed protocol by the AAVE t
 msgid "Please enter a valid wallet address."
 msgstr "Please enter a valid wallet address."
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payload {payloadId} executed"
+msgstr "Payload {payloadId} executed"
+
 #: src/components/ConnectWalletPaper.tsx
 msgid "Connect your wallet to see your supplies, borrowings, and open positions."
 msgstr "Connect your wallet to see your supplies, borrowings, and open positions."
@@ -1812,10 +1816,6 @@ msgstr "Email"
 msgid "here"
 msgstr "here"
 
-#: src/modules/governance/proposal/ProposalTimeline.tsx
-msgid "Payload {0} executed"
-msgstr "Payload {0} executed"
-
 #: src/modules/staking/StakingPanel.tsx
 #: src/modules/umbrella/UnstakeModal.tsx
 msgid "Unstake"
@@ -1973,6 +1973,10 @@ msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can r
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
 msgid "Merit Rewards"
 msgstr "Merit Rewards"
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payload {payloadId} execution"
+msgstr "Payload {payloadId} execution"
 
 #: src/components/transactions/SGhoVault/SGhoVaultWithdrawActions.tsx
 #: src/components/transactions/Withdraw/WithdrawAndUnwrapActions.tsx
@@ -3308,6 +3312,10 @@ msgstr "Supplying your"
 msgid "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
 msgstr "Interest rate that is determined by Aave Governance. This rate may be changed over time depending on the need for the GHO supply to contract/expand. <0>Learn more</0>"
 
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payload {payloadId} expired"
+msgstr "Payload {payloadId} expired"
+
 #: src/components/transactions/Emode/EmodeActions.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Disable E-Mode"
@@ -3628,6 +3636,10 @@ msgstr "Something went wrong"
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 msgid "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
 msgstr "Withdrawing this amount will reduce your health factor and increase risk of liquidation."
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payload {payloadId} not executed"
+msgstr "Payload {payloadId} not executed"
 
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 msgid "Your health factor and loan to value determine the assurance of your collateral. To avoid liquidations you can supply more collateral or repay borrow positions."
@@ -4032,6 +4044,10 @@ msgstr "Available to borrow"
 #: src/ui-config/errorMapping.tsx
 msgid "Health factor is not below the threshold"
 msgstr "Health factor is not below the threshold"
+
+#: src/modules/governance/proposal/ProposalTimeline.tsx
+msgid "Payload {payloadId} cancelled"
+msgstr "Payload {payloadId} cancelled"
 
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 #: src/modules/migration/MigrationTopPanel.tsx
@@ -4500,6 +4516,7 @@ msgid "In Wallet"
 msgstr "In Wallet"
 
 #: src/modules/governance/proposal/ProposalPayloads.tsx
+#: src/modules/governance/proposal/ProposalTimeline.tsx
 msgid "Payloads"
 msgstr "Payloads"
 
