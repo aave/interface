@@ -294,7 +294,6 @@ export const MarketSwitcher = ({ hideDescription }: MarketSwitcherProps) => {
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showLegacy, setShowLegacy] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const triggerRowRef = useRef<HTMLDivElement>(null);
 
@@ -306,6 +305,10 @@ export const MarketSwitcher = ({ hideDescription }: MarketSwitcherProps) => {
   const isFavoriteMarket = useRootStore((store) => store.isFavoriteMarket);
   const toggleFavoriteMarket = useRootStore((store) => store.toggleFavoriteMarket);
   const favoriteMarkets = useRootStore((store) => store.favoriteMarkets);
+
+  // A legacy market the user is actually on must not be missing from the list: the legacy
+  // group is only rendered while this is on, so default it from the market being viewed.
+  const [showLegacy, setShowLegacy] = useState(() => getMarketCategory(currentMarket) === 'legacy');
 
   const handleOpen = () => {
     setOpen(true);
