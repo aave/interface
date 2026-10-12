@@ -1,0 +1,38 @@
+src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+  s_326836c296b593::t_cecf2f03b1da99 413
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_326836c296b593::t_cecf2f03b1da99 341
+src/modules/governance/proposal/VotersListModal.tsx
+  s_326836c296b593::t_d3ec0ab2885f7e 7
+  s_326836c296b593::t_324719eb587c0b 119
+src/modules/dev/ComponentShowcase/components/OverlaysSection/index.tsx
+  s_326836c296b593::t_324719eb587c0b 19
+  s_326836c296b593::t_d3ec0ab2885f7e 6
+src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+  s_326836c296b593::t_d3ec0ab2885f7e 3
+  s_326836c296b593::t_324719eb587c0b 54
+src/modules/staking/GetABPTokenModal.tsx
+  s_326836c296b593::t_d3ec0ab2885f7e 6
+  s_326836c296b593::t_324719eb587c0b 21
+src/components/transactions/FlowCommons/TxModalTitle.tsx
+  s_326836c296b593::t_cecf2f03b1da99 21
+src/modules/staking/BuyWithFiatModal.tsx
+  s_326836c296b593::t_d3ec0ab2885f7e 5
+  s_326836c296b593::t_324719eb587c0b 27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.2",
+  "base_commit_sha": "98c1f0366e182e2e36377a67be0d87d9725b1a1d",
+  "prompts": {},
+  "sessions": {
+    "s_326836c296b593": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0b887753-cdc8-4f43-8aa8-79675f8a490c",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

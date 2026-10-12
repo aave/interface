@@ -1,0 +1,45 @@
+src/locales/fr/messages.js
+  s_2610bcdecd426c::t_be548e525f8b32 1
+src/locales/en/messages.js
+  s_2610bcdecd426c::t_be548e525f8b32 1
+src/hooks/app-data-provider/useAppDataProvider.tsx
+  s_2610bcdecd426c::t_0c1d9440afaaf1 20,61-62,132-133,159
+src/locales/el/messages.js
+  s_2610bcdecd426c::t_be548e525f8b32 1
+src/components/infoTooltips/NetAPYTooltip.tsx
+  s_2610bcdecd426c::t_0c1d9440afaaf1 9-11
+src/ui-config/merklConfig.ts
+  s_2610bcdecd426c::t_0c1d9440afaaf1 39
+src/hooks/pool/usePoolSupportsMulticall.ts
+  s_2610bcdecd426c::t_0c1d9440afaaf1 1-43
+src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+  s_2610bcdecd426c::t_0c1d9440afaaf1 44,97-101
+src/components/transactions/Supply/SupplyModalContent.tsx
+  s_2610bcdecd426c::t_0c1d9440afaaf1 158,176-179
+.github/workflows/update-prod-staging.yml
+  s_2610bcdecd426c::t_0c1d9440afaaf1 20
+src/components/transactions/GovVote/GovVoteActions.tsx
+  s_2610bcdecd426c::t_0c1d9440afaaf1 6,205-213
+pages/api/preflight-compliance.ts
+  s_2610bcdecd426c::t_0c1d9440afaaf1 57-65
+src/locales/en/messages.po
+  s_2610bcdecd426c::t_0c1d9440afaaf1 869-872
+src/locales/es/messages.js
+  s_2610bcdecd426c::t_be548e525f8b32 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "deaba173f05dde3bf1854bce03cfa9b09cdd262c",
+  "prompts": {},
+  "sessions": {
+    "s_2610bcdecd426c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a8bec601-334a-441d-aa11-415e2cf51e49",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

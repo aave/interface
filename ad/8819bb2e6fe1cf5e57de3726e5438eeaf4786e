@@ -1,0 +1,19 @@
+src/ui-config/merklConfig.ts
+  s_921361dfa71c9c::t_4273ff38a52c42 47-49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "ad8819bb2e6fe1cf5e57de3726e5438eeaf4786e",
+  "prompts": {},
+  "sessions": {
+    "s_921361dfa71c9c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0d81e-9ed7-7a50-a7d6-296cd368abcf",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

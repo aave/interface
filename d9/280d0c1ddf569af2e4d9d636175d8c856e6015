@@ -1,0 +1,37 @@
+src/modules/stkGho/StkGhoCard.tsx
+  s_2e28c8c372b708::t_7c8572438f6f74 49-51
+src/modules/stkGho/StkGhoDepositRow.tsx
+  h_dd1a1ee57491bb 124-125,133
+  s_2e28c8c372b708::t_56a380e25fc4e8 32,51
+src/locales/en/messages.po
+  s_2e28c8c372b708::t_fb89f9e5cb5fd5 3991-3994
+src/locales/el/messages.js
+  h_dd1a1ee57491bb 1
+src/locales/en/messages.js
+  h_dd1a1ee57491bb 1
+src/locales/es/messages.js
+  h_dd1a1ee57491bb 1
+src/locales/fr/messages.js
+  h_dd1a1ee57491bb 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d9280d0c1ddf569af2e4d9d636175d8c856e6015",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2e28c8c372b708": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0da56-460a-78c0-b616-ed8500aa452c",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

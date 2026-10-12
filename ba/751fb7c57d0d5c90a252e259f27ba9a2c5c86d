@@ -1,0 +1,29 @@
+src/layouts/AppHeader.tsx
+  s_4be7b399b605b1::t_d661d0c54dfaf1 217
+  s_4be7b399b605b1::t_cbf2b88571ab91 281,306,344,359
+src/components/WalletConnection/ConnectWalletButton.tsx
+  s_4be7b399b605b1::t_cbf2b88571ab91 103
+src/layouts/SettingsMenu.tsx
+  s_4be7b399b605b1::t_cbf2b88571ab91 67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "ba751fb7c57d0d5c90a252e259f27ba9a2c5c86d",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_4be7b399b605b1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cf8d7b61-8c32-4170-9fba-23ceee2f77fa",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

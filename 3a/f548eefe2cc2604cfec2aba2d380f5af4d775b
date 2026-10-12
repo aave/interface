@@ -1,0 +1,33 @@
+src/hooks/pool/usePoolSupportsMulticall.ts
+  s_5a7ac6885880cd::t_330cf8c19be6e2 1-40
+src/components/transactions/Supply/SupplyActions.tsx
+  s_5a7ac6885880cd::t_15a85d3c04fc95 100-101
+  s_5a7ac6885880cd::t_d2a851f3aa6eca 182-185,192-210
+  s_5a7ac6885880cd::t_c6eb4f0bc526c5 15
+src/components/transactions/CollateralChange/CollateralChangeActions.tsx
+  s_5a7ac6885880cd::t_54d5ec3b2b5deb 5,9
+  s_5a7ac6885880cd::t_de372d321cf391 43,46,54-55
+  s_5a7ac6885880cd::t_f232584125be70 166
+  s_5a7ac6885880cd::t_f248df99e6d41c 83-85,89-128
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "3af548eefe2cc2604cfec2aba2d380f5af4d775b",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_5a7ac6885880cd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "433e88a3-5283-4964-8473-f2d92362829c",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

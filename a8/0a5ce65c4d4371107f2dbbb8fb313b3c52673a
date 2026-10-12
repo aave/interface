@@ -1,0 +1,29 @@
+src/components/MarketSwitcher.tsx
+  s_bca6c9efd54453::t_5b1ba77e2e720b 197-239,820,831
+src/locales/el/messages.js
+  s_bca6c9efd54453::t_3b560cdf456b8a 1
+src/locales/en/messages.js
+  s_bca6c9efd54453::t_d2d2f1db906161 1
+src/locales/en/messages.po
+  s_bca6c9efd54453::t_74431953f27710 199-202,1159-1162,2637-2640,2664-2667
+src/locales/es/messages.js
+  s_bca6c9efd54453::t_339636337d6879 1
+src/locales/fr/messages.js
+  s_bca6c9efd54453::t_9e31280496bf06 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a80a5ce65c4d4371107f2dbbb8fb313b3c52673a",
+  "prompts": {},
+  "sessions": {
+    "s_bca6c9efd54453": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7bff3ca2-055e-4079-ac59-25ecc9931567",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

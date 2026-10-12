@@ -1,0 +1,19 @@
+src/modules/staking/StakingPanel.tsx
+  s_11c5ec45026718::t_19e29dcccc9b84 258
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "4ac97c15c55a79d7cbc9cd5b71eac4356ebfa4b7",
+  "prompts": {},
+  "sessions": {
+    "s_11c5ec45026718": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "af122776-5502-485e-82e4-733c9044db42",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

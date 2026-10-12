@@ -1,0 +1,32 @@
+src/locales/el/messages.js
+  s_5f507ef3a0834b::t_6c430e076b55f0 1
+src/locales/es/messages.js
+  s_5f507ef3a0834b::t_6c430e076b55f0 1
+src/locales/fr/messages.js
+  s_5f507ef3a0834b::t_6c430e076b55f0 1
+src/locales/en/messages.js
+  s_5f507ef3a0834b::t_6c430e076b55f0 1
+pages/dashboard.page.tsx
+  s_5f507ef3a0834b::t_128c0e97e9f1f2 2,4,37-55
+src/locales/en/messages.po
+  s_5f507ef3a0834b::t_128c0e97e9f1f2 3550-3553,4111-4113
+  s_5f507ef3a0834b::t_f397cb599bc146 4114
+src/utils/figmaColors.ts
+  s_5f507ef3a0834b::t_128c0e97e9f1f2 259
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "a90d0f7a6b43ede429b6ed02ac519974581d2de8",
+  "prompts": {},
+  "sessions": {
+    "s_5f507ef3a0834b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8ab0e42e-cee1-4a48-aa69-156d2deb2fb8",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
