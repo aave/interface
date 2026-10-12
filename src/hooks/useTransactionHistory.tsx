@@ -470,6 +470,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
             orderId: e.orderId,
             chainId: e.chainId,
             adapterInstanceAddress: e.adapterInstanceAddress,
+            adapterFactoryAddress: e.adapterFactoryAddress,
             usedAdapter: e.usedAdapter,
           } as TransactionHistoryItemUnion;
         })
