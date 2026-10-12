@@ -8,18 +8,6 @@ export enum SwapType {
   Leverage = 'leverage',
 }
 
-/**
- * Flow discriminator for the Aave flash-loan hook adapters, replacing the enum of the same
- * shape in `@cowprotocol/sdk-flash-loans`, which carries no Leverage variant. The string
- * values match theirs so the adapter maps stay assignable to the SDK's config.
- */
-export enum FlashLoanFlow {
-  CollateralSwap = 'CollateralSwap',
-  DebtSwap = 'DebtSwap',
-  RepayCollateral = 'RepayCollateral',
-  Leverage = 'Leverage',
-}
-
 /** Order flavor shown in the UI. */
 export enum OrderType {
   MARKET = 'market',

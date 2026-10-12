@@ -1,12 +1,13 @@
 import { CowEnv, OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
+import { AaveFlashLoanType } from '@cowprotocol/sdk-flash-loans';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { getAssetGroup } from '../helpers/shared/assetCorrelation.helpers';
-import { FlashLoanFlow, OrderType, SwapType } from '../types';
+import { OrderType, SwapType } from '../types';
 
-export const HOOK_ADAPTER_PER_TYPE: Record<FlashLoanFlow, Record<SupportedChainId, string>> = {
-  [FlashLoanFlow.CollateralSwap]: {
+export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedChainId, string>> = {
+  [AaveFlashLoanType.CollateralSwap]: {
     [SupportedChainId.MAINNET]: '0xa1138627412212e53C208e220696f14b0185a82c',
     [SupportedChainId.GNOSIS_CHAIN]: '0xa1138627412212e53C208e220696f14b0185a82c',
     [SupportedChainId.ARBITRUM_ONE]: '0xa1138627412212e53C208e220696f14b0185a82c',
@@ -20,7 +21,7 @@ export const HOOK_ADAPTER_PER_TYPE: Record<FlashLoanFlow, Record<SupportedChainI
     [SupportedChainId.INK]: '',
     [SupportedChainId.SOLANA]: '',
   },
-  [FlashLoanFlow.DebtSwap]: {
+  [AaveFlashLoanType.DebtSwap]: {
     [SupportedChainId.MAINNET]: '0xC898f87b572018ED25F501FFD620894a32dCa1AC',
     [SupportedChainId.GNOSIS_CHAIN]: '0xC898f87b572018ED25F501FFD620894a32dCa1AC',
     [SupportedChainId.ARBITRUM_ONE]: '0xC898f87b572018ED25F501FFD620894a32dCa1AC',
@@ -34,7 +35,7 @@ export const HOOK_ADAPTER_PER_TYPE: Record<FlashLoanFlow, Record<SupportedChainI
     [SupportedChainId.INK]: '',
     [SupportedChainId.SOLANA]: '',
   },
-  [FlashLoanFlow.RepayCollateral]: {
+  [AaveFlashLoanType.RepayCollateral]: {
     [SupportedChainId.MAINNET]: '0x4AE46995af9ED4f4EdFC6FF1523b114EE4D7053a',
     [SupportedChainId.GNOSIS_CHAIN]: '0x4AE46995af9ED4f4EdFC6FF1523b114EE4D7053a',
     [SupportedChainId.ARBITRUM_ONE]: '0x4AE46995af9ED4f4EdFC6FF1523b114EE4D7053a',
@@ -48,7 +49,7 @@ export const HOOK_ADAPTER_PER_TYPE: Record<FlashLoanFlow, Record<SupportedChainI
     [SupportedChainId.INK]: '',
     [SupportedChainId.SOLANA]: '',
   },
-  [FlashLoanFlow.Leverage]: {
+  [AaveFlashLoanType.Leverage]: {
     [SupportedChainId.MAINNET]: '0xaEE8B0666BF8a584e9D67bFaa65007E74c70b26a',
     [SupportedChainId.GNOSIS_CHAIN]: '0xaEE8B0666BF8a584e9D67bFaa65007E74c70b26a',
     [SupportedChainId.ARBITRUM_ONE]: '0xaEE8B0666BF8a584e9D67bFaa65007E74c70b26a',

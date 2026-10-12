@@ -6,7 +6,7 @@ import {
   OrderStatus,
   SupportedChainId,
 } from '@cowprotocol/cow-sdk';
-import { HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
+import { AaveFlashLoanType, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
@@ -27,7 +27,6 @@ import {
   getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
   overrideSmartSlippageOnAppData,
-  toSdkFlashLoanType,
 } from '../../helpers/cow';
 import {
   accountForDustProtection,
@@ -39,7 +38,6 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
   ExpiryToSecondsMap,
-  FlashLoanFlow,
   isCowProtocolRates,
   isProtocolSwapState,
   isShieldBlocked,
@@ -100,7 +98,7 @@ export const DebtSwapActionsViaCoW = ({
     calculateInstanceAddress({
       user,
       validTo,
-      type: FlashLoanFlow.DebtSwap,
+      type: AaveFlashLoanType.DebtSwap,
       state,
       market: currentMarket,
     })
@@ -264,7 +262,7 @@ export const DebtSwapActionsViaCoW = ({
       );
 
       const orderPostParams = await flashLoanSdk.getOrderPostingSettings(
-        toSdkFlashLoanType(FlashLoanFlow.DebtSwap),
+        AaveFlashLoanType.DebtSwap,
         {
           chainId: state.chainId,
           validTo,

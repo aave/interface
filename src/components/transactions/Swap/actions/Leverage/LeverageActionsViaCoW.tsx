@@ -1,6 +1,12 @@
 import { normalize } from '@aave/math-utils';
-import { getOrderToSign, LimitTradeParameters, OrderKind, OrderStatus } from '@cowprotocol/cow-sdk';
-import { HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
+import {
+  getOrderToSign,
+  LimitTradeParameters,
+  OrderKind,
+  OrderStatus,
+  SupportedChainId,
+} from '@cowprotocol/cow-sdk';
+import { AaveFlashLoanType, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
@@ -14,14 +20,13 @@ import { zeroAddress } from 'viem';
 import { useShallow } from 'zustand/react/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import { COW_PARTNER_FEE } from '../../constants/cow.constants';
+import { ADAPTER_FACTORY, COW_PARTNER_FEE } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
   addOrderTypeToAppData,
-  getCowLeverageSdk,
+  getCowFlashLoanSdk,
   getCowTradingSdkByChainIdAndAppCode,
   overrideSmartSlippageOnAppData,
-  toSdkFlashLoanType,
 } from '../../helpers/cow';
 import { calculateInstanceAddress, getHooksGasLimit } from '../../helpers/cow/adapters.helpers';
 import { useCollateralsAmount } from '../../hooks/useCollateralsAmount';
@@ -29,7 +34,6 @@ import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
   ExpiryToSecondsMap,
-  FlashLoanFlow,
   isCowProtocolRates,
   isProtocolSwapState,
   isShieldBlocked,
@@ -91,7 +95,7 @@ export const LeverageActionsViaCoW = ({
     calculateInstanceAddress({
       user,
       validTo,
-      type: FlashLoanFlow.Leverage,
+      type: AaveFlashLoanType.Leverage,
       state,
       market: currentMarket,
     })
@@ -194,7 +198,7 @@ export const LeverageActionsViaCoW = ({
         state.chainId,
         APP_CODE_PER_SWAP_TYPE[state.swapType]
       );
-      const flashLoanSdk = await getCowLeverageSdk(state.chainId);
+      const flashLoanSdk = await getCowFlashLoanSdk(state.chainId);
 
       const delegationPermit = signatureParams
         ? {
@@ -243,7 +247,7 @@ export const LeverageActionsViaCoW = ({
       );
 
       const orderPostParams = await flashLoanSdk.getOrderPostingSettings(
-        toSdkFlashLoanType(FlashLoanFlow.Leverage),
+        AaveFlashLoanType.Leverage,
         {
           chainId: state.chainId,
           validTo,
@@ -317,6 +321,7 @@ export const LeverageActionsViaCoW = ({
           decimals: state.buyAmountToken.decimals,
         },
         adapterInstanceAddress: instanceAddress,
+        adapterFactoryAddress: ADAPTER_FACTORY[state.chainId as SupportedChainId],
         usedAdapter: true,
         srcAmount: state.sellAmountBigInt.toString(),
         destAmount: state.buyAmountBigInt.toString(),

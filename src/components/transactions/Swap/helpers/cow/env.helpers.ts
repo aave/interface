@@ -12,8 +12,7 @@ import {
   HOOK_ADAPTER_PER_TYPE,
 } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
-import { FlashLoanFlow, SwapState } from '../../types';
-import { AaveLeverageFlashLoanSdk } from './leverage.helpers';
+import { SwapState } from '../../types';
 import { COW_ENV } from './orders.helpers';
 
 export const getCowTradingSdk = async (state: SwapState, env: CowEnv = 'prod') => {
@@ -56,15 +55,6 @@ export const getCowFlashLoanSdk = async (chainId: number) => {
   setGlobalAdapter(await getCowAdapter(chainId));
   return new AaveCollateralSwapSdk(FLASH_LOAN_SDK_CONFIG);
 };
-
-/** Leverage needs a two-tuple post-hook the base SDK cannot encode. */
-export const getCowLeverageSdk = async (chainId: number) => {
-  setGlobalAdapter(await getCowAdapter(chainId));
-  return new AaveLeverageFlashLoanSdk(FLASH_LOAN_SDK_CONFIG);
-};
-
-export const getCowFlashLoanSdkForFlow = async (chainId: number, flow: FlashLoanFlow) =>
-  flow === FlashLoanFlow.Leverage ? getCowLeverageSdk(chainId) : getCowFlashLoanSdk(chainId);
 
 export const getCowAdapter = async (chainId: number) => {
   const { connector } = getAccount(wagmiConfig);
