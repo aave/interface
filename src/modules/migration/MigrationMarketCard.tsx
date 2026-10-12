@@ -1,4 +1,5 @@
 import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
+import { t } from '@lingui/macro';
 import KeyboardArrowDown from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import {
@@ -89,7 +90,7 @@ export const MigrationMarketCard: FC<MigrationMarketCardProps> = ({
         </Typography>
         {selectableMarkets && setFromMarketData && (
           <>
-            <IconButton onClick={handleClick} sx={{ ml: 'auto' }}>
+            <IconButton aria-label={t`Select market`} onClick={handleClick} sx={{ ml: 'auto' }}>
               {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
             </IconButton>
             <Menu

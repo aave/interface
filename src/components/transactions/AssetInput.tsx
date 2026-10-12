@@ -1,5 +1,5 @@
 import { XCircleIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
@@ -187,6 +187,7 @@ export const AssetInput = <T extends Asset = Asset>({
                   color: 'fg-2',
                 },
               }}
+              aria-label={t`Clear amount`}
               onClick={() => {
                 onChange && onChange('');
               }}

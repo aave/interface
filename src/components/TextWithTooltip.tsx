@@ -1,4 +1,5 @@
 import { InformationCircleIcon } from '@heroicons/react/outline';
+import { t } from '@lingui/macro';
 import { Box, BoxProps, IconButton, SvgIcon, Typography } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
@@ -13,6 +14,8 @@ export interface TextWithTooltipProps extends TypographyProps {
   iconSize?: number;
   iconColor?: string;
   iconMargin?: number;
+  /** Accessible name for the icon button. Defaults to "More information". */
+  iconLabel?: string;
   textColor?: string;
   // eslint-disable-next-line
   children?: ReactElement<any, string | JSXElementConstructor<any>>;
@@ -28,6 +31,7 @@ export const TextWithTooltip = ({
   iconSize = 14,
   iconColor,
   iconMargin,
+  iconLabel,
   children,
   textColor,
   wrapperProps: { sx: boxSx, ...boxRest } = {},
@@ -65,6 +69,7 @@ export const TextWithTooltip = ({
             minWidth: 0,
             ml: iconMargin || 0.5,
           }}
+          aria-label={iconLabel ?? t`More information`}
           onClick={() => {
             if (event) {
               trackEvent(event.eventName, { ...event.eventParams });

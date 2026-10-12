@@ -1,7 +1,7 @@
 import { ChainId } from '@aave/contract-helpers';
 import { ArrowNarrowRightIcon, XIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import {
   Box,
   Button,
@@ -149,7 +149,11 @@ export const BridgeTransactionListItem = ({
       </ListColumn>
       <ListColumn align="right" maxWidth={95} minWidth={95}>
         <DarkTooltip title="View in explorer" sx={{ display: { xsm: 'none' } }}>
-          <IconButton LinkComponent={Link} href={`https://ccip.chain.link/tx/${txHash}`}>
+          <IconButton
+            LinkComponent={Link}
+            href={`https://ccip.chain.link/tx/${txHash}`}
+            aria-label={t`View in explorer`}
+          >
             <ArrowUpRightIcon sx={{ fontSize: '16px' }} />
           </IconButton>
         </DarkTooltip>

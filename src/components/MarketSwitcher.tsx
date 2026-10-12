@@ -466,6 +466,7 @@ export const MarketSwitcher = ({ hideDescription }: MarketSwitcherProps) => {
         <IconButton
           className="grid-fav-btn"
           size="small"
+          aria-label={isFavorite ? t`Remove from Favourites` : t`Add to Favourites`}
           onClick={(e) => handleStarClick(e, marketId)}
           sx={{ padding: '1px', ml: 0.5, flexShrink: 0 }}
         >
