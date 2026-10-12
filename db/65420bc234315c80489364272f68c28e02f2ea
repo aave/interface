@@ -1,0 +1,37 @@
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_62ca5204a4a57a::t_d35d600a3f4507 86-88
+  s_62ca5204a4a57a::t_16d8e3e5c55b7c 11-19,25-33,39-61,69-77
+  s_62ca5204a4a57a::t_5d687fc46e7c1b 83-85
+src/components/transactions/Swap/helpers/cow/env.helpers.ts
+  s_62ca5204a4a57a::t_9426b1aff721c4 9-13,49
+src/components/transactions/CancelCowOrder/CancelAdapterOrderActions.tsx
+  s_62ca5204a4a57a::t_e1e03dc4c36b3c 1,19,62-63
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+  s_62ca5204a4a57a::t_6bf3b0602233c4 2-8,22,313
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+  s_62ca5204a4a57a::t_4554a580ad9cd2 2-8,23,340
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+  s_62ca5204a4a57a::t_d320cf64399860 2-8,22,338
+src/hooks/useTransactionHistory.tsx
+  s_62ca5204a4a57a::t_7dc3dd977dac77 473
+src/modules/history/types.ts
+  s_62ca5204a4a57a::t_b852f3311c4359 60
+src/utils/swapAdapterHistory.ts
+  s_62ca5204a4a57a::t_1114c6426d06dd 26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "db65420bc234315c80489364272f68c28e02f2ea",
+  "prompts": {},
+  "sessions": {
+    "s_62ca5204a4a57a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cba225dd-df41-4a5d-bed3-3b92d7d1f14a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
