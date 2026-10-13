@@ -659,6 +659,10 @@ export const EXTRA_WHITELIST_TOKENS: MerklWhitelistConfig = {
       customMessage:
         'You need to supply syrupUSDC and borrow USDC to be eligible to this incentive campaign. This is a program initiated and implemented by ACI in collaboration with Merkl.',
     },
+    '8453-0xD4a0e0b9149BCee3C920d2E00b5dE09138fd8bb7': {
+      customMessage:
+        'You need to supply WETH on Aave on Base to receive USDC rewards. Only new supplies made after the campaign started qualify.',
+    },
     '1-0x7c0477d085ECb607CF8429f3eC91Ae5E1e460F4F': {
       customMessage:
         'You need to supply USDG without holding any USDG debt. This is a program initiated and implemented by ACI in collaboration with Merkl and Paxos.',
