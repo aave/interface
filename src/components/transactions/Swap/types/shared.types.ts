@@ -5,6 +5,7 @@ export enum SwapType {
   DebtSwap = 'debt_swap',
   RepayWithCollateral = 'repay_with_collateral',
   WithdrawAndSwap = 'withdraw_and_swap',
+  Leverage = 'leverage',
 }
 
 /** Order flavor shown in the UI. */

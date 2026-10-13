@@ -45,6 +45,7 @@ export enum ModalType {
   // Swaps
   Swap,
   CollateralSwap,
+  Leverage,
   DebtSwap,
   RepayWithCollateral,
   WithdrawAndSwap,
@@ -137,6 +138,7 @@ export interface ModalContextType<T extends ModalArgsType> {
   openEmode: () => void;
   openFaucet: (underlyingAsset: string) => void;
   openCollateralSwap: (underlyingAsset: string) => void;
+  openLeverage: (underlyingAsset: string) => void;
   openDebtSwitch: (underlyingAsset: string) => void;
   openGovDelegation: () => void;
   openRevokeGovDelegation: () => void;
@@ -372,6 +374,11 @@ export const ModalContextProvider: React.FC<PropsWithChildren> = ({ children }) 
         openCollateralSwap: (underlyingAsset) => {
           trackEvent(GENERAL.OPEN_MODAL, { modal: 'Collateral Swap' });
           setType(ModalType.CollateralSwap);
+          setArgs({ underlyingAsset });
+        },
+        openLeverage: (underlyingAsset) => {
+          trackEvent(GENERAL.OPEN_MODAL, { modal: 'Leverage' });
+          setType(ModalType.Leverage);
           setArgs({ underlyingAsset });
         },
         openBridge: () => {

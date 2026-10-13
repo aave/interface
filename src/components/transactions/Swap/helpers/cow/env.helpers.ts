@@ -41,17 +41,19 @@ export const getCowTradingSdkByChainIdAndAppCode = async (
   );
 };
 
+const FLASH_LOAN_SDK_CONFIG = {
+  hookAdapterPerType: HOOK_ADAPTER_PER_TYPE,
+  aaveAdapterFactory: ADAPTER_FACTORY,
+  adapterDomainName: ADAPTER_FACTORY_DOMAIN_NAME,
+  hooksGasLimit: {
+    pre: BigInt(300000),
+    post: BigInt(700000),
+  },
+};
+
 export const getCowFlashLoanSdk = async (chainId: number) => {
   setGlobalAdapter(await getCowAdapter(chainId));
-  return new AaveCollateralSwapSdk({
-    hookAdapterPerType: HOOK_ADAPTER_PER_TYPE,
-    aaveAdapterFactory: ADAPTER_FACTORY,
-    adapterDomainName: ADAPTER_FACTORY_DOMAIN_NAME,
-    hooksGasLimit: {
-      pre: BigInt(300000),
-      post: BigInt(700000),
-    },
-  });
+  return new AaveCollateralSwapSdk(FLASH_LOAN_SDK_CONFIG);
 };
 
 export const getCowAdapter = async (chainId: number) => {

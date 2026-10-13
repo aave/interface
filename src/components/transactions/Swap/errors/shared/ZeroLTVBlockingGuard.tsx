@@ -18,6 +18,8 @@ export const hasZeroLTVBlocking = (state: SwapState, blockingAssets: string[]) =
   // DebtSwap repays old debt and opens new debt. Neither path withdraws an
   // aToken from the user, so validateHFAndLtvzero never fires.
   if (state.swapType === SwapType.DebtSwap) return false;
+  // Leverage supplies the bought collateral and draws new debt; nothing is withdrawn either.
+  if (state.swapType === SwapType.Leverage) return false;
 
   const withdrawnSymbol = state.sellAmountToken?.symbol;
   // Conservative: if we can't identify the withdrawn asset yet, block.
