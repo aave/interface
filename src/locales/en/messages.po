@@ -1286,6 +1286,10 @@ msgstr "Swapping {0} collateral"
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
 
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+msgid "Recently used & Popular"
+msgstr "Recently used & Popular"
+
 #: src/modules/markets/ProtocolTotalsStats.tsx
 msgid "Aave total loans"
 msgstr "Aave total loans"
@@ -1594,10 +1598,6 @@ msgstr "Market"
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
 msgid "Learn more about Ethena Rewards program"
 msgstr "Learn more about Ethena Rewards program"
-
-#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
-msgid "{popularSectionTitle}"
-msgstr "{popularSectionTitle}"
 
 #: src/modules/governance/proposal/ProposalTimeline.tsx
 #: src/modules/governance/proposal/ProposalTimeline.tsx
@@ -3057,6 +3057,10 @@ msgstr "about SuperFest."
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Withdraw and Swap"
 msgstr "Withdraw and Swap"
+
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+msgid "Popular"
+msgstr "Popular"
 
 #: src/components/infoTooltips/FrozenTooltip.tsx
 msgid "This asset is frozen due to an Aave Protocol Governance decision. <0>More details</0>"
