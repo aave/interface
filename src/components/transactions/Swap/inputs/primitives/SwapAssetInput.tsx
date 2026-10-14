@@ -235,7 +235,6 @@ export const SwitchAssetInput = ({
     return true;
   });
 
-  const popularSectionTitle = recentAssets.length > 0 ? 'Recently used & Popular' : 'Popular';
   const handleSearchAssetChange = (value: string) => {
     const searchQuery = value.trim().toLowerCase();
     const matchingAssets = assets.filter(
@@ -471,7 +470,11 @@ export const SwitchAssetInput = ({
                       color="fg-2"
                       sx={{ display: 'block', width: '100%' }}
                     >
-                      <Trans>{popularSectionTitle}</Trans>
+                      {recentAssets.length > 0 ? (
+                        <Trans>Recently used &amp; Popular</Trans>
+                      ) : (
+                        <Trans>Popular</Trans>
+                      )}
                     </Typography>
                     {mergedPopular.map((asset) => (
                       <Box
