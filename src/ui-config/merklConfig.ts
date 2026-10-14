@@ -1,5 +1,7 @@
 type AdditionalIncentiveInfo = {
   customMessage?: string;
+  onChainCampaignId?: string;
+  customCampaignMessage?: string;
   customClaimMessage?: string;
   customForumLink?: string;
 };
@@ -662,6 +664,9 @@ export const EXTRA_WHITELIST_TOKENS: MerklWhitelistConfig = {
     '8453-0xD4a0e0b9149BCee3C920d2E00b5dE09138fd8bb7': {
       customMessage:
         'You need to supply WETH on Aave on Base to receive USDC rewards. Only new supplies made after the campaign started qualify.',
+      onChainCampaignId: '0x955de5b8c1acdce952561774211fb2faaa4249c50a1dfee193d7faaaeb258091',
+      customCampaignMessage:
+        'is available as an extra incentive only to users who have bridged at least $500 to Base through Jumper since October 14, 2026. Only new deposits qualify. Existing positions do not earn these rewards.',
     },
     '1-0x7c0477d085ECb607CF8429f3eC91Ae5E1e460F4F': {
       customMessage:

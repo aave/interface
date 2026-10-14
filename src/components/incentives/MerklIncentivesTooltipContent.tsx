@@ -21,6 +21,13 @@ export const MerklIncentivesTooltipContent = ({
   const merklIncentivesFormatted = getSymbolMap(merklIncentives);
 
   const isPointsBased = Boolean(merklIncentives?.breakdown?.points);
+  const campaign = merklIncentives.onChainCampaignId
+    ? merklIncentives.rewardsTokensMappedApys?.find(
+        (reward) =>
+          reward.onChainCampaignId.toLowerCase() ===
+          merklIncentives.onChainCampaignId?.toLowerCase()
+      )
+    : undefined;
   return (
     <Box
       sx={{
@@ -136,6 +143,18 @@ export const MerklIncentivesTooltipContent = ({
           >
             Learn more
           </Link>
+        </Typography>
+      )}
+
+      {campaign && merklIncentives.customCampaignMessage && (
+        <Typography variant="caption" color="text.strong" mb={3}>
+          <FormattedNumber
+            value={merklIncentives.breakdown.isBorrow ? -campaign.apy : campaign.apy}
+            percent
+            variant="caption"
+            component="span"
+          />{' '}
+          <Trans>APY</Trans> <Trans>{merklIncentives.customCampaignMessage}</Trans>
         </Typography>
       )}
 
