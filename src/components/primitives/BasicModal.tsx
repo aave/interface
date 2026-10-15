@@ -1,3 +1,4 @@
+import { t } from '@lingui/macro';
 import { alpha, IconButton, Modal, Paper, PaperProps } from '@mui/material';
 import React, { createContext, forwardRef, useContext, useLayoutEffect, useState } from 'react';
 
@@ -86,6 +87,7 @@ export const BasicModalSurface = forwardRef<HTMLDivElement, BasicModalSurfacePro
               },
             }}
             onClick={onClose}
+            aria-label={t`Close`}
             data-cy={'close-button'}
           >
             <CloseIcon data-cy={'CloseModalIcon'} sx={{ fontSize: '30px', color: 'fg-3' }} />

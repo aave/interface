@@ -1,3 +1,4 @@
+import { t } from '@lingui/macro';
 import { IconButton } from '@mui/material';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 
@@ -6,7 +7,12 @@ import { DarkTooltip } from './DarkTooltip';
 
 export const TokenContractTooltip = ({ explorerUrl }: { explorerUrl: string }) => (
   <DarkTooltip title="View token contract" sx={{ display: { xsm: 'none' } }}>
-    <IconButton LinkComponent={Link} href={explorerUrl} sx={{ height: '24px', width: '24px' }}>
+    <IconButton
+      LinkComponent={Link}
+      href={explorerUrl}
+      aria-label={t`View token contract`}
+      sx={{ height: '24px', width: '24px' }}
+    >
       <ArrowUpRightIcon sx={{ fontSize: '14px' }} />
     </IconButton>
   </DarkTooltip>

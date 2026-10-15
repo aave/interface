@@ -1,6 +1,6 @@
 import { ChainId } from '@aave/contract-helpers';
 import { SwitchVerticalIcon } from '@heroicons/react/outline';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import {
   Alert,
   Box,
@@ -393,6 +393,7 @@ export const BridgeModalContent = () => {
               defaultNetwork={sourceNetworkObj}
             />
             <IconButton
+              aria-label={t`Switch source and destination networks`}
               onClick={handleSwapNetworks}
               sx={{
                 border: '1px solid',

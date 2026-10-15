@@ -22,6 +22,10 @@ msgstr "If you DO NOT unstake within {0} of unstake window, you will need to act
 msgid "Reward APY at target liquidity"
 msgstr "Reward APY at target liquidity"
 
+#: src/components/infoTooltips/TokenContractTooltip.tsx
+msgid "View token contract"
+msgstr "View token contract"
+
 #: src/layouts/SupportModal.tsx
 msgid "Thank you for submitting your inquiry!"
 msgstr "Thank you for submitting your inquiry!"
@@ -811,6 +815,10 @@ msgstr "This is a program initiated by the Aave DAO and implemented by Merkl. Aa
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
 
+#: src/components/TitleWithSearchBar.tsx
+msgid "Search"
+msgstr "Search"
+
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
@@ -982,6 +990,10 @@ msgstr "Protocol Incentives"
 #: src/components/WalletConnection/ReadOnlyModal.tsx
 msgid "Watch wallet"
 msgstr "Watch wallet"
+
+#: src/modules/bridge/BridgeTransactionListItem.tsx
+msgid "View in explorer"
+msgstr "View in explorer"
 
 #: src/layouts/components/ThemeSwitcher/index.tsx
 msgid "System"
@@ -1276,6 +1288,10 @@ msgstr "{selectedCount} Categories"
 #: src/modules/reserve-overview/ReserveHeaderIconButton.tsx
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
+
+#: src/components/MarketSwitcher.tsx
+msgid "Remove from Favourites"
+msgstr "Remove from Favourites"
 
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
@@ -1961,6 +1977,10 @@ msgstr "This action will reduce V2 health factor below liquidation threshold. re
 msgid "{currentMethod}"
 msgstr "{currentMethod}"
 
+#: src/components/transactions/Bridge/BridgeModalContent.tsx
+msgid "Switch source and destination networks"
+msgstr "Switch source and destination networks"
+
 #: src/modules/bridge/BridgeTransactionListItem.tsx
 msgid "View TX"
 msgstr "View TX"
@@ -2193,6 +2213,7 @@ msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
 #: src/components/MarketSwitcher.tsx
+#: src/modules/migration/MigrationMarketCard.tsx
 msgid "Select market"
 msgstr "Select market"
 
@@ -2317,6 +2338,10 @@ msgstr "I understand the liquidation risk and want to proceed"
 #: src/components/transactions/Swap/warnings/postInputs/HighPriceImpactWarning.tsx
 msgid "I confirm the swap knowing that I could lose up to <0>{0}%</0> on this swap."
 msgstr "I confirm the swap knowing that I could lose up to <0>{0}%</0> on this swap."
+
+#: src/components/SearchInput.tsx
+msgid "Clear search"
+msgstr "Clear search"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Covered debt"
@@ -3415,6 +3440,10 @@ msgstr "Deposit"
 msgid "Supply cap is exceeded"
 msgstr "Supply cap is exceeded"
 
+#: src/components/TextWithTooltip.tsx
+msgid "More information"
+msgstr "More information"
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "{0} collateral would have 0% LTV without E-Mode. Disable {1} as collateral to use this option."
 msgstr "{0} collateral would have 0% LTV without E-Mode. Disable {1} as collateral to use this option."
@@ -3480,6 +3509,10 @@ msgstr "English"
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
+
+#: src/components/transactions/AssetInput.tsx
+msgid "Clear amount"
+msgstr "Clear amount"
 
 #: src/components/transactions/Warnings/CowLowerThanMarketWarning.tsx
 msgid "The selected rate is lower than the market price. You might incur a loss if you proceed."
@@ -4505,10 +4538,12 @@ msgstr "In Wallet"
 msgid "Payloads"
 msgstr "Payloads"
 
+#: src/components/MarketSwitcher.tsx
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Add to Favourites"
 msgstr "Add to Favourites"
 
+#: src/components/primitives/BasicModal.tsx
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
 msgid "Close"
