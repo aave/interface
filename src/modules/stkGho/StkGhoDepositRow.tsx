@@ -29,7 +29,7 @@ interface StkGhoDepositRowProps {
 export const StkGhoDepositRow = ({
   availableToStake,
   onDeposit,
-  onMigrate,
+  // onMigrate,
   hasLegacyPosition = false,
   stakedToken,
 }: StkGhoDepositRowProps) => {
@@ -48,7 +48,7 @@ export const StkGhoDepositRow = ({
   // When the user holds a legacy position, migration is the primary action:
   // invert the emphasis so Migrate is contained and Deposit/Get GHO is outlined.
   const depositVariant = hasLegacyPosition ? 'tertiary' : 'contained';
-  const migrateVariant = hasLegacyPosition ? 'contained' : 'tertiary';
+  // const migrateVariant = hasLegacyPosition ? 'contained' : 'tertiary';
 
   const handleGetGho = () => {
     openSwitch('', targetChainId);
@@ -121,8 +121,8 @@ export const StkGhoDepositRow = ({
           >
             {hasGho ? <Trans>Deposit</Trans> : <Trans>Get GHO</Trans>}
           </Button>
-
-          <Button
+          {/*HotFix: Hide migrate button until contract is ready back*/}
+          {/* <Button
             variant={migrateVariant}
             onClick={onMigrate}
             disabled={!hasLegacyPosition}
@@ -130,7 +130,7 @@ export const StkGhoDepositRow = ({
             data-cy={`migrateBtn_${stakedToken.toUpperCase()}`}
           >
             <Trans>Migrate</Trans>
-          </Button>
+          </Button> */}
         </Box>
       </Box>
     </Box>

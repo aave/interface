@@ -46,7 +46,9 @@ export const StkGhoCard = () => {
       </Box>
 
       <Alert severity="warning" sx={{ width: '100%', mb: 4 }}>
-        <Trans>Rewards for legacy Savings GHO have ended. Migrate to continue earning.</Trans>
+        <Trans>
+          Rewards for legacy Savings GHO have ended. Withdraw and deposit to continue earning.
+        </Trans>
       </Alert>
 
       <StkGhoDepositPanel
