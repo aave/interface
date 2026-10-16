@@ -1,4 +1,4 @@
-import { OrderStatus, SupportedChainId } from '@cowprotocol/cow-sdk';
+import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import { Interface } from 'ethers/lib/utils';
@@ -16,7 +16,7 @@ import { useRootStore } from 'src/store/root';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { updateCowOrderStatus } from 'src/utils/swapAdapterHistory';
 
-import { ADAPTER_FACTORY } from '../Swap/constants/cow.constants';
+import { LEGACY_ADAPTER_FACTORY } from '../Swap/constants/cow.constants';
 import { TxActionsWrapper } from '../TxActionsWrapper';
 
 interface CancelAdapterOrderActionsProps {
@@ -59,11 +59,8 @@ export const CancelAdapterOrderActions = ({
 
       const adapterInterface = new Interface(ADAPTER_ABI);
 
-      const factoryAddress = ADAPTER_FACTORY[cowOrder.chainId as SupportedChainId];
-
-      if (!factoryAddress) {
-        throw new Error('Factory address not found for this chain');
-      }
+      // An instance is only cancelled on the factory that created it.
+      const factoryAddress = cowSwapOrder.adapterFactoryAddress ?? LEGACY_ADAPTER_FACTORY;
 
       const data = adapterInterface.encodeFunctionData('cancelInstance', [
         cowSwapOrder.adapterInstanceAddress,
