@@ -101,7 +101,11 @@ export const UmbrellaClaimAllModalContent = ({ stakeData }: UmbrellaClaimAllModa
   }
   if (claimRewardsTxState.success)
     return (
-      <TxSuccessView action={<Trans>Claimed</Trans>} amount={totalClaimableAmount.toString()} />
+      <TxSuccessView
+        title={<Trans>Claimed Successfully</Trans>}
+        action={<Trans>claimed</Trans>}
+        amount={totalClaimableAmount.toString()}
+      />
     );
 
   return (
@@ -193,7 +197,8 @@ export const UmbrellaClaimModalContent = ({ stakeData }: UmbrellaClaimModalConte
   if (claimRewardsTxState.success)
     return (
       <TxSuccessView
-        action={<Trans>Claimed</Trans>}
+        title={<Trans>Claimed Successfully</Trans>}
+        action={<Trans>claimed</Trans>}
         amount={selectedRewardClaimableBalance.toString()}
       />
     );

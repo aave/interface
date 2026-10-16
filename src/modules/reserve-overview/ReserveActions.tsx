@@ -327,6 +327,7 @@ const SupplyAction = ({
           disabled={disable}
           fullWidth={false}
           variant="contained"
+          size="medium"
           data-cy="supplyButton"
           underlyingAsset={underlyingAsset}
           name={reserve.name}

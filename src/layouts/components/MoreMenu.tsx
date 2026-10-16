@@ -31,19 +31,22 @@ const optionSx = (theme: Theme) => ({
   },
 });
 
-export function StakingMenu() {
+export function MoreMenu() {
   const trackEvent = useRootStore((store) => store.trackEvent);
   const router = useRouter();
   // The trigger isn't a Link, so it never gets the route-aware `active` class on its own.
   // Mark it active when the current route is one of the menu's destinations.
-  const isActive = router.pathname === ROUTES.staking || router.pathname === ROUTES.safetyModule;
+  const isActive =
+    router.pathname === ROUTES.staking ||
+    router.pathname === ROUTES.safetyModule ||
+    router.pathname.startsWith(ROUTES.governance);
 
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setAnchorEl(event.currentTarget);
-    trackEvent(NAV_BAR.MAIN_MENU, { nav_link: 'Staking' });
+    trackEvent(NAV_BAR.MAIN_MENU, { nav_link: 'More' });
   };
 
   const handleClose = () => {
@@ -58,10 +61,11 @@ export function StakingMenu() {
   return (
     <>
       <Button
-        aria-label="staking menu"
-        id="staking-button"
+        aria-label="more menu"
+        id="more-button"
+        data-cy="menuMore"
         className={clsx({ active: isActive })}
-        aria-controls={open ? 'staking-menu' : undefined}
+        aria-controls={open ? 'more-menu' : undefined}
         aria-expanded={open ? 'true' : undefined}
         aria-haspopup="true"
         onClick={handleClick}
@@ -72,7 +76,7 @@ export function StakingMenu() {
           },
         ]}
       >
-        <Trans>Staking</Trans>
+        <Trans>More</Trans>
         <SvgIcon
           sx={{
             ml: CHEVRON_GAP,
@@ -86,9 +90,9 @@ export function StakingMenu() {
       </Button>
 
       <Menu
-        id="staking-menu"
+        id="more-menu"
         MenuListProps={{
-          'aria-labelledby': 'staking-button',
+          'aria-labelledby': 'more-button',
         }}
         anchorEl={anchorEl}
         open={open}
@@ -98,6 +102,15 @@ export function StakingMenu() {
           mt: '-1.125rem',
         }}
       >
+        <MenuItem
+          component={Link}
+          href={ROUTES.governance}
+          onClick={() => handleMenuItemClick('Governance')}
+          data-cy="menuGovernance"
+          sx={optionSx}
+        >
+          <Trans>Governance</Trans>
+        </MenuItem>
         <MenuItem
           component={Link}
           href={ROUTES.staking}

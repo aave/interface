@@ -6,7 +6,7 @@ export const NAV_LINK_PADDING_Y = '2.25rem';
 export const NAV_LINK_PADDING_X = '0.8125rem';
 
 /**
- * Shared style for the top-nav links — the NavItems entries and the Staking menu trigger.
+ * Shared style for the top-nav links — the NavItems entries and the More menu trigger.
  * `fg-3` by default, animating to `fg-1` when active or hovered (no background change), plus a
  * static underline shown only for the active page. Only the padding differs between call sites.
  */
@@ -19,7 +19,7 @@ export const navLinkSx = (paddingY: string, paddingX: string): SystemStyleObject
   '.active&': {
     color: figVars['fg-1'],
   },
-  // An open dropdown trigger ([aria-expanded="true"], e.g. the Staking menu) keeps the fg-1 text color (but not the underline).
+  // An open dropdown trigger ([aria-expanded="true"], e.g. the More menu) keeps the fg-1 text color (but not the underline).
   '&:hover, &[aria-expanded="true"]': {
     backgroundColor: 'transparent',
     color: figVars['fg-1'],

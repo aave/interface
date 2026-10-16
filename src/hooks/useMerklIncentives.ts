@@ -89,6 +89,8 @@ export type MerklOpportunity = {
 type ReserveIncentiveAdditionalData = {
   customClaimMessage?: string;
   customMessage?: string;
+  onChainCampaignId?: string;
+  customCampaignMessage?: string;
   customForumLink?: string;
 };
 

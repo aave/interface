@@ -1,5 +1,7 @@
 type AdditionalIncentiveInfo = {
   customMessage?: string;
+  onChainCampaignId?: string;
+  customCampaignMessage?: string;
   customClaimMessage?: string;
   customForumLink?: string;
 };
@@ -44,6 +46,9 @@ export const EXTRA_WHITELIST_TOKENS: MerklWhitelistConfig = {
     '0xb44944598003fda6a0c4122121f07ae8e1293570',
     '0xcc878b7a567c462e43295ad0dc7d2f87f53f633d',
     '0x6052928a2c3c8ff52834421cca2c5ba095523828',
+    '0xd143211f04fd4273e6f55c70d62cfcdc6ea48618',
+    '0x280a7f6264b55758eea38c1f5efbfaa99d56cf74',
+    '0xeffd19f350f11c8e5f60d72effa9b1aa80c2db5b',
     // END
     '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
     '0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8',
@@ -655,6 +660,13 @@ export const EXTRA_WHITELIST_TOKENS: MerklWhitelistConfig = {
     '8453-0xD7424238CcbE7b7198Ab3cFE232e0271E22da7bd': {
       customMessage:
         'You need to supply syrupUSDC and borrow USDC to be eligible to this incentive campaign. This is a program initiated and implemented by ACI in collaboration with Merkl.',
+    },
+    '8453-0xD4a0e0b9149BCee3C920d2E00b5dE09138fd8bb7': {
+      customMessage:
+        'You need to supply WETH on Aave on Base to receive USDC rewards. Only new supplies made after the campaign started qualify.',
+      onChainCampaignId: '0x955de5b8c1acdce952561774211fb2faaa4249c50a1dfee193d7faaaeb258091',
+      customCampaignMessage:
+        'is available as an extra incentive only to users who have bridged at least $500 to Base through Jumper since October 14, 2026. Only new deposits qualify. Existing positions do not earn these rewards.',
     },
     '1-0x7c0477d085ECb607CF8429f3eC91Ae5E1e460F4F': {
       customMessage:

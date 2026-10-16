@@ -6,7 +6,7 @@ import { TxModalTitle } from '../FlowCommons/TxModalTitle';
 import { CancelCowOrderModalContent } from './CancelCowOrderModalContent';
 
 export const CancelCowOrderModal = () => {
-  const { type, close, args } = useModalContext() as ModalContextType<{
+  const { type, close, args, mainTxState } = useModalContext() as ModalContextType<{
     cowOrder: TransactionHistoryItem<
       | SwapActionFields[ActionName.Swap]
       | SwapActionFields[ActionName.CollateralSwap]
@@ -17,7 +17,7 @@ export const CancelCowOrderModal = () => {
   }>;
   return (
     <BasicModal open={type === ModalType.CancelCowOrder} setOpen={close}>
-      <TxModalTitle title={`Cancel order`} />
+      {!mainTxState.success && <TxModalTitle title={`Cancel order`} />}
       <CancelCowOrderModalContent cowOrder={args.cowOrder} />
     </BasicModal>
   );

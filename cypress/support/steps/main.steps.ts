@@ -622,7 +622,7 @@ export const changeCollateral = (
           .wait(3000)
           .click();
       }
-      cy.get("[data-cy=Modal] h2:contains('All done')").should('be.visible');
+      cy.get('[data-cy=Modal] [data-cy=txSuccess]').should('be.visible');
     });
     doCloseModal();
   });
@@ -782,7 +782,10 @@ export const emodeActivating = (
  */
 export const doCloseModal = () => {
   return it(`Close modal popup`, () => {
-    cy.get('[data-cy=CloseModalIcon]').last().should('not.be.disabled').click({ force: true });
+    cy.get('[data-cy=CloseModalIcon], [data-cy=closeButton]')
+      .last()
+      .should('not.be.disabled')
+      .click({ force: true });
     cy.get('[data-cy=Modal]').should('not.exist');
   });
 };

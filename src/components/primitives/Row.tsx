@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 interface RowProps extends BoxProps {
   caption?: ReactNode;
-  captionVariant?: 'secondary16' | 'description' | 'subheader1' | 'caption' | 'h3';
+  captionVariant?: 'secondary16' | 'description' | 'subheader1' | 'caption' | 'h3' | 'base';
   captionColor?: string;
   align?: 'center' | 'flex-start';
   /**

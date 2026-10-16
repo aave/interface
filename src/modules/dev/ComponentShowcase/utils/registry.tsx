@@ -102,6 +102,15 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     fullBleed: true,
     Component: dynamic(() => import('../components/BannersSection').then((m) => m.BannersSection)),
   },
+  {
+    slug: 'tx-final-states',
+    label: 'Final states',
+    group: 'Transactions',
+    fullBleed: true,
+    Component: dynamic(() =>
+      import('../components/TxFinalStatesSection').then((m) => m.TxFinalStatesSection)
+    ),
+  },
 ];
 
 // Sections grouped for the sidebar, preserving declaration order.

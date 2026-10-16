@@ -1,5 +1,6 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
+import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ComputedUserReserveData,
@@ -87,9 +88,9 @@ export const RepayWithCollateralModalContent = ({
     inputInputTitle: 'Repay',
     outputInputTitle: 'Using',
     interestMode,
-    resultScreenTokensFromTitle: 'Repay',
-    resultScreenTokensToTitle: 'With',
-    resultScreenTitleItems: ' and repaid',
+    resultScreenTokensFromTitle: <Trans>Repay</Trans>,
+    resultScreenTokensToTitle: <Trans>With</Trans>,
+    resultScreenTitleItems: <Trans>and repaid</Trans>,
     customReceivedTitle: 'Repaid',
 
     // Note: Repay With Collateral order is inverted

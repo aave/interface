@@ -42,7 +42,7 @@ export const NetworkSelect = ({
     <Box sx={{ width: '100%', ...sx }}>
       <Box
         sx={{
-          p: '8px 0px',
+          p: '12px 0px 8px',
           borderRadius: '0.75rem',
           boxShadow: figSurfaceShadow('shadow-stroke-1'),
           backgroundColor: 'bg-2',
@@ -64,6 +64,8 @@ export const NetworkSelect = ({
               '& .MuiOutlinedInput-notchedOutline': { border: 'none' },
               '& .MuiSelect-select': {
                 backgroundColor: 'transparent',
+                py: '4px',
+                pl: '12px',
               },
               '& .MuiSelect-icon': {
                 marginRight: '12px',

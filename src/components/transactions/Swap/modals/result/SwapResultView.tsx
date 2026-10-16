@@ -1,21 +1,21 @@
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, CircularProgress, Divider, Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip, TextWithTooltipProps } from 'src/components/TextWithTooltip';
+import { useModalContext } from 'src/hooks/useModal';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { findByChainId } from 'src/ui-config/marketsConfig';
 import { networkConfigs } from 'src/ui-config/networksConfig';
 import { parseUnits } from 'viem';
 
-import { BaseCancelledView } from '../../../FlowCommons/BaseCancelled';
-import { BaseSuccessView } from '../../../FlowCommons/BaseSuccess';
-import { BaseWaitingView } from '../../../FlowCommons/BaseWaiting';
+import { TxResultDetails, TxResultRow } from '../../../FlowCommons/TxResultDetails';
+import { TxResultStatus, TxResultView } from '../../../FlowCommons/TxResultView';
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import {
   generateCoWExplorerLink,
@@ -27,6 +27,59 @@ import {
   isOrderLoading,
 } from '../../helpers/cow';
 import { SwapParams, SwapProvider, SwapState } from '../../types';
+
+type OrderResultStatus = 'succeed' | 'failed' | 'expired' | 'open';
+
+const ORDER_RESULT_STATUS: Record<OrderResultStatus, TxResultStatus> = {
+  open: 'pending',
+  succeed: 'success',
+  failed: 'cancelled',
+  expired: 'expired',
+};
+
+const TokenAmount = ({
+  amount,
+  symbol,
+  iconSymbol,
+  iconUri,
+}: {
+  amount: string;
+  symbol: string;
+  iconSymbol: string;
+  iconUri?: string;
+}) => (
+  <>
+    <ExternalTokenIcon
+      symbol={iconSymbol}
+      logoURI={iconUri}
+      height="18px"
+      width="18px"
+      sx={{ fontSize: 18 }}
+    />
+    <DarkTooltip
+      title={
+        <Typography variant="h5">
+          {amount} {symbol}
+        </Typography>
+      }
+      arrow
+      placement="top"
+      enterTouchDelay={100}
+      leaveTouchDelay={500}
+    >
+      <span>
+        <FormattedNumber
+          value={amount}
+          visibleDecimals={2}
+          variant="h5"
+          color="fg-1"
+          component="span"
+        />{' '}
+        {symbol}
+      </span>
+    </DarkTooltip>
+  </>
+);
 
 export type SwapTxSuccessViewProps = {
   isInvertedSwap: boolean;
@@ -43,10 +96,15 @@ export type SwapTxSuccessViewProps = {
   chainId: number;
   buyDecimals: number;
   sellDecimals: number;
-  resultScreenTokensFromTitle?: string;
-  resultScreenTokensToTitle?: string;
-  resultScreenTitleItems?: string;
+  resultScreenTokensFromTitle?: ReactNode;
+  resultScreenTokensToTitle?: ReactNode;
+  resultScreenTitleItems?: ReactNode;
   invalidateAppState: () => void;
+  /**
+   * Showcase/dev only: pins the CoW order result and skips order tracking and polling.
+   * Never set in production.
+   */
+  previewOrder?: { status: OrderResultStatus; surplus?: bigint };
 };
 
 export const SwapWithSurplusTooltip = ({
@@ -133,13 +191,15 @@ export const SwapTxSuccessView = ({
   resultScreenTokensToTitle,
   resultScreenTitleItems,
   invalidateAppState,
+  previewOrder,
   trackingHandlers,
 }: SwapTxSuccessViewProps & { trackingHandlers?: TrackAnalyticsHandlers }) => {
   const { trackSwapOrderProgress, setHasActiveOrders } = useSwapOrdersTracking();
+  const { close } = useModalContext();
 
   // Do polling each 10 seconds until the order get's filled
-  const [orderStatus, setOrderStatus] = useState<'succeed' | 'failed' | 'open'>('open');
-  const [surplus, setSurplus] = useState<bigint | undefined>(undefined);
+  const [orderStatus, setOrderStatus] = useState<OrderResultStatus>(previewOrder?.status ?? 'open');
+  const [surplus, setSurplus] = useState<bigint | undefined>(previewOrder?.surplus);
   const [inAmount, setInAmount] = useState<string>(!isInvertedSwap ? amount : outAmount);
   const [outFinalAmount, setOutFinalAmount] = useState<string>(
     !isInvertedSwap ? outAmount : amount
@@ -150,13 +210,14 @@ export const SwapTxSuccessView = ({
 
   // Start tracking the order when the component mounts
   useEffect(() => {
+    if (previewOrder) return;
     if (provider === 'cowprotocol' && txHashOrOrderId) {
       trackSwapOrderProgress(txHashOrOrderId, chainId);
     } else if (provider === 'cowprotocol' && orderStatus === 'open') {
       // If the order is open, force the spinner to show, waiting for order details e.g. eth flow
       setHasActiveOrders(true);
     }
-  }, [txHashOrOrderId, chainId, provider]);
+  }, [txHashOrOrderId, chainId, provider, previewOrder]);
 
   // Poll the order status for UI updates
   const interval = useRef<NodeJS.Timeout | null>(null);
@@ -194,7 +255,7 @@ export const SwapTxSuccessView = ({
             // Analytics: CoW order filled
             trackingHandlers?.trackSwapFilled(order.executedSellAmount, order.executedBuyAmount);
           } else if (isOrderCancelled(order.status) || isOrderExpired(order.status)) {
-            setOrderStatus('failed');
+            setOrderStatus(isOrderExpired(order.status) ? 'expired' : 'failed');
             if (interval.current) {
               clearInterval(interval.current);
             }
@@ -212,6 +273,7 @@ export const SwapTxSuccessView = ({
   };
   useEffect(() => {
     if (
+      !previewOrder &&
       txHashOrOrderId &&
       provider === 'cowprotocol' &&
       chainId &&
@@ -220,29 +282,19 @@ export const SwapTxSuccessView = ({
     ) {
       interval.current = setInterval(pollOrder, 10000);
     }
-  }, [txHashOrOrderId, chainId, provider, buyDecimals]);
+  }, [txHashOrOrderId, chainId, provider, buyDecimals, previewOrder]);
 
-  const View = useMemo(() => {
-    if (provider === 'cowprotocol' && orderStatus === 'open') {
-      return BaseWaitingView;
-    } else if (provider === 'cowprotocol' && orderStatus === 'failed') {
-      return BaseCancelledView;
-    }
-    return BaseSuccessView; // Default case
-  }, [orderStatus, provider]);
+  const status = provider === 'cowprotocol' ? ORDER_RESULT_STATUS[orderStatus] : 'success';
+  const sending =
+    status === 'cancelled' ||
+    status === 'expired' ||
+    (status === 'pending' && !isNativeToken(symbol));
 
   const surplusFormatted = surplus
     ? Number(normalize(surplus.toString(), isInvertedSwap ? sellDecimals : buyDecimals))
     : undefined;
-  const surplusDisplay =
-    surplusFormatted && surplusFormatted > 0
-      ? surplusFormatted <= 0.0001
-        ? `Includes small ${outSymbol} Surplus`
-        : `Includes +${surplusFormatted.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: surplusFormatted < 0.01 ? 4 : 2,
-          })} ${outSymbol} Surplus`
-      : undefined;
+
+  const titleItems = resultScreenTitleItems || <Trans>tokens</Trans>;
 
   const customExplorerLink = useMemo(() => {
     return provider === 'cowprotocol'
@@ -253,7 +305,7 @@ export const SwapTxSuccessView = ({
   const customExplorerLinkText = useMemo(() => {
     return provider === 'cowprotocol' ? (
       txHashOrOrderId ? (
-        <>View details</>
+        <Trans>View details</Trans>
       ) : (
         <>
           <CircularProgress
@@ -263,167 +315,90 @@ export const SwapTxSuccessView = ({
               color: (theme) => theme.vars.palette.grey[400],
             }}
           />
-          Details will be available soon
+          <Trans>Details will be available soon</Trans>
         </>
       )
     ) : undefined;
   }, [provider, txHashOrOrderId]);
 
   return (
-    <View
+    <TxResultView
+      status={status}
       txHash={txHashOrOrderId}
       customExplorerLink={customExplorerLink}
       customExplorerLinkText={customExplorerLinkText}
+      description={
+        status === 'pending' ? (
+          <Trans>You&apos;ve successfully submitted an order.</Trans>
+        ) : status === 'success' ? (
+          <Trans>You&apos;ve successfully swapped {titleItems}.</Trans>
+        ) : (
+          <Trans>The order couldn&apos;t be filled.</Trans>
+        )
+      }
     >
-      <Box display="flex" flexDirection="column" alignItems="center" mt={2} mb={3}>
-        <Typography color="fg-2">
-          {provider === 'cowprotocol' ? (
-            <>
-              {orderStatus === 'open' ? (
-                <Trans>You&apos;ve successfully submitted an order.</Trans>
-              ) : orderStatus === 'failed' ? (
-                <Trans>The order could&apos;t be filled.</Trans>
-              ) : (
-                <Trans>
-                  You&apos;ve successfully swapped{' '}
-                  {resultScreenTitleItems ? resultScreenTitleItems : 'tokens'}.
-                </Trans>
-              )}
-            </>
-          ) : (
-            <Trans>
-              You&apos;ve successfully swapped{' '}
-              {resultScreenTitleItems ? resultScreenTitleItems : 'tokens'}.
-            </Trans>
-          )}
-        </Typography>
-      </Box>
-
-      <Box
-        sx={{
-          background: 'bg-5',
-          borderRadius: 2,
-          border: '1px solid',
-          borderColor: 'border-2',
-          p: 3,
-          mb: 4,
-          width: '80%',
-        }}
-      >
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-          <Typography color="fg-2">
-            {provider == 'cowprotocol' &&
-            ((orderStatus == 'open' && !isNativeToken(symbol)) || orderStatus == 'failed')
-              ? `${resultScreenTokensFromTitle ?? 'Send'}`
-              : `${resultScreenTokensFromTitle ?? 'Sent'}`}
-          </Typography>
-          <Box display="flex" alignItems="center" gap={1}>
-            <ExternalTokenIcon
-              symbol={iconSymbol}
-              logoURI={iconUri}
-              height="20px"
-              width="20px"
-              sx={{ fontSize: 20 }}
-            />
-            <DarkTooltip
-              title={
-                <Typography variant="h5">
-                  {inAmount} {symbol}
-                </Typography>
-              }
-              arrow
-              placement="top"
-              enterTouchDelay={100}
-              leaveTouchDelay={500}
-            >
-              <Box>
-                <Typography fontWeight={600}>
-                  {Number(inAmount).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: Number(inAmount) < 0.01 ? 4 : 2,
-                  })}{' '}
-                </Typography>
-              </Box>
-            </DarkTooltip>
-            <Typography fontWeight={600} sx={{ color: 'fg-2' }}>
-              {symbol}
-            </Typography>
-          </Box>
-        </Box>
-        <Divider sx={{ my: 1 }} />
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
-          <Typography color="fg-2">
-            {provider == 'cowprotocol' && (orderStatus == 'open' || orderStatus == 'failed')
-              ? `${resultScreenTokensToTitle ?? 'Receive'}`
-              : `${resultScreenTokensToTitle ?? 'Received'}`}
-          </Typography>
-          <Box display="flex" alignItems="center" gap={1}>
-            <ExternalTokenIcon
-              symbol={outIconSymbol}
-              logoURI={outIconUri}
-              height="20px"
-              width="20px"
-              sx={{ fontSize: 20 }}
-            />
-            <DarkTooltip
-              title={
-                <Typography variant="h5">
-                  {outFinalAmount} {outSymbol}
-                </Typography>
-              }
-              arrow
-              placement="top"
-              enterTouchDelay={100}
-              leaveTouchDelay={500}
-            >
-              <Box>
-                <Typography fontWeight={600}>
-                  {Number(outFinalAmount).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: Number(outFinalAmount) < 0.01 ? 4 : 2,
-                  })}
-                </Typography>
-              </Box>
-            </DarkTooltip>
-            <Typography fontWeight={600} sx={{ color: 'fg-2' }}>
+      <TxResultDetails>
+        <TxResultRow
+          label={
+            resultScreenTokensFromTitle ?? (sending ? <Trans>Send</Trans> : <Trans>Sent</Trans>)
+          }
+        >
+          <TokenAmount
+            amount={inAmount}
+            symbol={symbol}
+            iconSymbol={iconSymbol}
+            iconUri={iconUri}
+          />
+        </TxResultRow>
+        <TxResultRow
+          label={
+            resultScreenTokensToTitle ??
+            (status === 'success' ? <Trans>Received</Trans> : <Trans>Receive</Trans>)
+          }
+        >
+          <TokenAmount
+            amount={outFinalAmount}
+            symbol={outSymbol}
+            iconSymbol={outIconSymbol}
+            iconUri={outIconUri}
+          />
+        </TxResultRow>
+        {surplusFormatted !== undefined && surplusFormatted > 0 && (
+          <TxResultRow label={<Trans>Surplus</Trans>}>
+            <span>
+              <FormattedNumber
+                value={surplusFormatted}
+                visibleDecimals={2}
+                variant="h5"
+                color="fg-1"
+                component="span"
+              />{' '}
               {outSymbol}
-            </Typography>
-          </Box>
-        </Box>
-        {surplusDisplay && (
-          <Typography
-            variant="helperText"
-            fontWeight={500}
-            sx={{ float: 'right', color: 'fg-2' }}
-            mt={0.5}
-          >
-            {surplusDisplay}
-          </Typography>
+            </span>
+          </TxResultRow>
         )}
-      </Box>
+      </TxResultDetails>
 
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography color="fg-2">
-          <Trans>
-            Swap saved in your{' '}
-            <Link
-              target="_blank"
-              sx={{
-                color: 'fg-1',
-                '&:hover': {
-                  color: 'fg-2',
-                  transition: 'color 0.2s ease',
-                  cursor: 'pointer',
-                },
-              }}
-              href={`/history?marketName=${findByChainId(chainId)?.market}`}
-            >
-              history
-            </Link>{' '}
-            section.
-          </Trans>
-        </Typography>
-      </Box>
-    </View>
+      <Typography variant="base" color="fg-3" sx={{ mt: '1.5rem', textAlign: 'center' }}>
+        <Trans>
+          Swap saved in your{' '}
+          <Link
+            onClick={close}
+            sx={{
+              color: 'fg-1',
+              '&:hover': {
+                color: 'fg-2',
+                transition: 'color 0.2s ease',
+                cursor: 'pointer',
+              },
+            }}
+            href={`/history?marketName=${findByChainId(chainId)?.market}`}
+          >
+            history
+          </Link>{' '}
+          section.
+        </Trans>
+      </Typography>
+    </TxResultView>
   );
 };

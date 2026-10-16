@@ -135,7 +135,8 @@ export const UnStakeModalContent = ({
   if (txState.success)
     return (
       <TxSuccessView
-        action={<Trans>Unstaked</Trans>}
+        title={<Trans>Unstaked Successfully</Trans>}
+        action={<Trans>unstaked</Trans>}
         amount={amountRef.current}
         symbol={symbolFormatted}
       />

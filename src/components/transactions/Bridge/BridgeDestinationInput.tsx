@@ -114,7 +114,7 @@ export const BridgeDestinationInput = ({
         placeholder={t`Enter ETH address or ENS`}
         sx={{
           height: '44px',
-          px: 2,
+          px: 3,
           boxShadow: figSurfaceShadow('shadow-stroke-1'),
           borderRadius: '0.5rem',
           overflow: 'hidden',

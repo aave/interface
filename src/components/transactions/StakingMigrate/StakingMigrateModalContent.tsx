@@ -49,7 +49,8 @@ export const StakingMigrateModalContent = () => {
   if (mainTxState.success)
     return (
       <TxSuccessView
-        action={<Trans>Migrated</Trans>}
+        title={<Trans>Migrated Successfully</Trans>}
+        action={<Trans>migrated</Trans>}
         amount={amountRef.current}
         symbol={'stkABPT'}
       />

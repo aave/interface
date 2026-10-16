@@ -255,12 +255,7 @@ export const StakingPanel: React.FC<StakingPanelProps> = ({
             )}
           </Stack>
           <Stack direction="row" alignItems="center">
-            <FormattedNumber
-              sx={{ mr: 2 }}
-              value={stakeData.stakeApyFormatted}
-              percent
-              variant="h5"
-            />
+            <FormattedNumber value={stakeData.stakeApyFormatted} percent variant="h5" />
           </Stack>
         </Box>
         <Box

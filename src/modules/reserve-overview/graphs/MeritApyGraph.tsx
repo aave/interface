@@ -159,6 +159,19 @@ export const MeritApyGraph = withTooltip<MeritApyGraphProps, TooltipData>(
               numTicks={3}
             />
 
+            {/* Average Line */}
+            {averageLine && (
+              <LinePath
+                key="avg"
+                data={averageLine.avgArray}
+                strokeDasharray="3,5"
+                stroke="#D2D4DC"
+                strokeWidth={2}
+                x={(d) => dateScale(getDate(d)) ?? 0}
+                y={(d) => yValueScale(getMeritApy(d)) ?? 0}
+              />
+            )}
+
             {/* Merit APY Line */}
             <LinePath
               key="merit-apy"
@@ -170,39 +183,27 @@ export const MeritApyGraph = withTooltip<MeritApyGraphProps, TooltipData>(
               curve={curveMonotoneX}
             />
 
-            {/* Average Line */}
             {averageLine && (
-              <>
-                <LinePath
-                  key="avg"
-                  data={averageLine.avgArray}
-                  strokeDasharray="3,5"
-                  stroke="#D2D4DC"
-                  strokeWidth={2}
-                  x={(d) => dateScale(getDate(d)) ?? 0}
-                  y={(d) => yValueScale(getMeritApy(d)) ?? 0}
-                />
-                <Annotation x={averageLine.annotationX} y={averageLine.annotationY}>
-                  <HtmlLabel showAnchorLine={false}>
-                    <Stack
-                      alignItems="center"
-                      direction="row"
-                      justifyContent="center"
-                      sx={{
-                        mx: 2,
-                        my: 0.5,
-                        fontSize: 12,
-                        background: theme.palette.divider,
-                        borderRadius: '99px',
-                      }}
-                    >
-                      <Typography sx={{ m: 1 }} noWrap variant="subheader2">
-                        Avg {averageLine.avgFormatted}%
-                      </Typography>
-                    </Stack>
-                  </HtmlLabel>
-                </Annotation>
-              </>
+              <Annotation x={averageLine.annotationX} y={averageLine.annotationY}>
+                <HtmlLabel showAnchorLine={false}>
+                  <Stack
+                    alignItems="center"
+                    direction="row"
+                    justifyContent="center"
+                    sx={{
+                      mx: 2,
+                      my: 0.5,
+                      fontSize: 12,
+                      background: theme.palette.divider,
+                      borderRadius: '99px',
+                    }}
+                  >
+                    <Typography sx={{ m: 1 }} noWrap variant="subheader2">
+                      Avg {averageLine.avgFormatted}%
+                    </Typography>
+                  </Stack>
+                </HtmlLabel>
+              </Annotation>
             )}
 
             {/* X Axis */}

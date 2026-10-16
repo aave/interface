@@ -80,7 +80,6 @@ export const StakingPanelNoWallet: React.FC<StakingPanelNoWalletProps> = ({
       <Box
         sx={{
           display: 'block',
-          width: { xs: '100%', xsm: 'unset' },
           justifyContent: 'space-between',
           alignItems: 'center',
         }}

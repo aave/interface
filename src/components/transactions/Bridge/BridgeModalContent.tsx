@@ -295,14 +295,13 @@ export const BridgeModalContent = () => {
         txHash={bridgeTxState.txHash}
         customExplorerLink={`https://ccip.chain.link/tx/${bridgeTxState.txHash}`}
         customExplorerLinkText={<Trans>View on CCIP Explorer</Trans>}
-      >
-        <Typography sx={{ mt: 2, textAlign: 'center' }}>
+        description={
           <Trans>
             Asset has been successfully sent to CCIP contract. You can check the status of the
-            transactions below
+            transactions below.
           </Trans>
-        </Typography>
-      </BaseSuccessView>
+        }
+      />
     );
   }
 
@@ -505,7 +504,6 @@ export const BridgeModalContent = () => {
                   <Typography variant="h5">{estimatedTimeToDestination}</Typography>
                 )}
               </Box> */}
-            <Row /> {/* Spacer */}
             {feesExceedWalletBalance && (
               <Alert severity="warning" sx={{ width: '100%', my: 0 }}>
                 <Trans>Fees exceed wallet balance</Trans>
