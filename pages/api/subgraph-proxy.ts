@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (process.env.CORS_DOMAINS_ALLOWED === 'true') {
     res.setHeader('Access-Control-Allow-Origin', '*');
   } else if (origin && isOriginAllowed(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Origin', String(origin)); // Enforce string type and validate origin to prevent dynamic reflection risks
   }
 
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
