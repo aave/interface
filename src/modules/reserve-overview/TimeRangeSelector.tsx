@@ -28,6 +28,8 @@ export interface TimeRangeSelectorProps {
 
 const formattedInterval = (interval: TimeWindow) => {
   switch (interval) {
+    case TimeWindow.LastDay:
+      return '1d';
     case TimeWindow.LastWeek:
       return '1w';
     case TimeWindow.LastMonth:
