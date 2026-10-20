@@ -4,7 +4,7 @@
  * proposals / votes / payloads; user & protocol state is read on-chain in
  * separate hooks.
  */
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { Contract } from 'ethers';
 import {
   adaptCacheProposalToDetail,
@@ -96,12 +96,19 @@ const useEnsNames = (proposalId: number, addresses: string[]) => {
 // Proposals — list / search / detail
 // ============================================
 
-/** Paginated proposals list, adapted to the canonical list item type. */
-export const useGovernanceProposals = () =>
+/**
+ * Paginated proposals list, adapted to the canonical list item type. `stateFilter` is a cache
+ * state (`executed`, `active`, …) applied server-side, so every page holds matching proposals.
+ */
+export const useGovernanceProposals = (stateFilter?: string) =>
   useInfiniteQuery({
-    queryKey: queryKeysFactory.governanceCacheProposals(),
+    queryKey: queryKeysFactory.governanceCacheProposals(stateFilter),
     queryFn: async ({ pageParam = 0 }) => {
-      const proposals = await getProposals(PROPOSALS_PAGE_SIZE, pageParam * PROPOSALS_PAGE_SIZE);
+      const proposals = await getProposals(
+        PROPOSALS_PAGE_SIZE,
+        pageParam * PROPOSALS_PAGE_SIZE,
+        stateFilter
+      );
       return { proposals: proposals.map(adaptCacheProposalToListItem) };
     },
     initialPageParam: 0,
@@ -121,6 +128,7 @@ export const useGovernanceProposalsSearch = (query: string) => {
       return results.map(adaptCacheProposalToListItem);
     },
     enabled: query.trim() !== '',
+    placeholderData: keepPreviousData,
     ...CACHE_QUERY_OPTIONS,
   });
   return { results: (data ?? []) as ProposalListItem[], loading: isFetching };
