@@ -186,11 +186,6 @@ export const ProposalsV3List = () => {
     data.pages.forEach((page) => listItems.push(...page.proposals));
   }
 
-  // Search has no server-side state filter, so its (at most ten) results are filtered here.
-  if (searchTerm && filterBadge) {
-    listItems = listItems.filter((proposal) => proposal.badgeState === filterBadge);
-  }
-
   return (
     <Paper variant="table" sx={{ overflow: 'hidden' }}>
       <ProposalListHeader
