@@ -1,0 +1,14 @@
+src/services/governance-cache-sdk/client.ts
+  h_6dd45743ed61bc 22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "48df259bbda829f58cb68e6feddc854afd64d22f",
+  "prompts": {},
+  "humans": {
+    "h_6dd45743ed61bc": {
+      "author": "Christophe Roberge <robergesoftware@gmail.com>"
+    }
+  }
+}
