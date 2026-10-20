@@ -1,0 +1,19 @@
+src/ui-config/wagmiConfig.ts
+  s_f03c2feec876ed::t_d1304959baf83b 83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d44142d67e9b247d20d85a0ee42e023b74fc3109",
+  "prompts": {},
+  "sessions": {
+    "s_f03c2feec876ed": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8570c085-e943-4ef9-afb7-d6c36b4fb825",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
