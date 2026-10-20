@@ -1,0 +1,25 @@
+src/modules/reserve-overview/TimeRangeSelector.tsx
+  s_b449b01dde4aba::t_b060250281d175 31-32
+src/modules/reserve-overview/graphs/ApyGraph.tsx
+  s_b449b01dde4aba::t_b060250281d175 25,36
+src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+  s_b449b01dde4aba::t_b060250281d175 45,69
+src/modules/reserve-overview/graphs/GraphTimeRangeSelector.tsx
+  s_b449b01dde4aba::t_b060250281d175 19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0f4972132725a566ead08c27f56173d2ed182d8a",
+  "prompts": {},
+  "sessions": {
+    "s_b449b01dde4aba": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "92b6ec1d-1862-4df8-996a-fe739bc30a68",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
