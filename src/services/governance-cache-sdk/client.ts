@@ -19,6 +19,7 @@ export { gql };
  * its README). This default stays :3002 for backwards-compat with existing
  * local setups — set NEXT_PUBLIC_GOVERNANCE_CACHE_URL to reconcile.
  */
+// Testing
 export const CACHE_ENDPOINT =
   process.env.NEXT_PUBLIC_GOVERNANCE_CACHE_URL || 'http://localhost:3002/graphql';
 
