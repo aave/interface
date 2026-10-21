@@ -1,0 +1,52 @@
+src/components/AssetCategoryMultiselect.tsx
+  s_9510c0e86310c4::t_eaa6eae420fede 5-7,100,102,107-110,112-115,118-120,122-126
+  s_9510c0e86310c4::t_d1a8cd35f98b51 104-105
+src/modules/umbrella/UmbrellaAssetsDefault.tsx
+  s_9510c0e86310c4::t_dc555ce1d45080 2-3,8,12,23,26-46,54-57,59-79,82-88,92-98,120-122,141-147
+  s_9510c0e86310c4::t_a840f30aaa0480 47-53
+  s_9510c0e86310c4::t_74d70754a05e5c 80-81
+  s_9510c0e86310c4::t_08fdfaca5fe17d 13-16
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
+  s_9510c0e86310c4::t_63e4968a5460de 88-89
+  s_9510c0e86310c4::t_437c1907023815 2,7,16,26-30,33-34,38-44,47,55,61-64,66-68,71-87,90-96
+  s_9510c0e86310c4::t_08fdfaca5fe17d 8-11
+  s_9510c0e86310c4::t_22b65d3aacf58d 45-46
+  s_9510c0e86310c4::t_c83e4a34f6ab38 65
+  s_9510c0e86310c4::t_3f415a120a2451 48-54
+src/utils/theme.tsx
+  s_9510c0e86310c4::t_d980b369c2b3c9 84
+  s_9510c0e86310c4::t_8ffbc2faecaace 90
+  s_9510c0e86310c4::t_0b2b0404029aa6 89
+src/modules/umbrella/StakeAssets/StakeAssetsFilters.tsx
+  s_9510c0e86310c4::t_cf8ebaa27d35d4 1-12,15-22,24-48,72-82
+  s_9510c0e86310c4::t_c3bf15d8901024 50-52,55-65,67-71
+  s_9510c0e86310c4::t_788a354601054f 13-14,23,49,53-54,66
+src/modules/markets/utils/assetCategories.ts
+  s_9510c0e86310c4::t_7816444849a355 68-85
+src/locales/el/messages.js
+  s_9510c0e86310c4::t_27ce67ac754226 1
+src/locales/en/messages.js
+  s_9510c0e86310c4::t_7f9c9fcda7560a 1
+src/locales/en/messages.po
+  s_9510c0e86310c4::t_f975a7021d585e 2521,4381-4384
+src/locales/es/messages.js
+  s_9510c0e86310c4::t_5dc0d685da997c 1
+src/locales/fr/messages.js
+  s_9510c0e86310c4::t_76451af20ab0e8 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "11f7766b5b2c746ee8e90bd7c75f9fc7ed37df39",
+  "prompts": {},
+  "sessions": {
+    "s_9510c0e86310c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b31ce7a4-0a0d-4ab2-a65e-4b2c8ab8c63d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

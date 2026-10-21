@@ -1,0 +1,14 @@
+.github/actions/cypress/action.yml
+  h_873f745f99aed2 19,21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "f0e019a6484aef750c1975fa84d034bbcf5396f0",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

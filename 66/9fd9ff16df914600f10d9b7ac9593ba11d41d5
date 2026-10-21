@@ -1,0 +1,14 @@
+pages/_app.page.tsx
+  h_be8c3c572e9983 7,118
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "669fd9ff16df914600f10d9b7ac9593ba11d41d5",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

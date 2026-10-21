@@ -1,0 +1,31 @@
+src/ui-config/merklConfig.ts
+  h_dd1a1ee57491bb 1-649
+src/components/incentives/IncentivesTooltipContent.tsx
+  h_dd1a1ee57491bb 206-210
+src/hooks/useMerklIncentives.ts
+  h_dd1a1ee57491bb 236,242,317
+src/components/incentives/MerklIncentivesTooltipContent.tsx
+  s_25ca429adb3353::t_2f513d2f57b512 190
+  s_25ca429adb3353::t_1659e26241c982 191-193
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "5ebf679d70f904f7d1556a0acc177074c90b0bf0",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_25ca429adb3353": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e21fc8b6-5917-42c7-b1bd-6006b2f3ceca",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

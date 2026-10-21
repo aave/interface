@@ -1,0 +1,14 @@
+src/components/MarketSwitcher.tsx
+  h_407f16e676115d 813
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "6e57d6d239511ca68d43247d297d4adbecb8a204",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

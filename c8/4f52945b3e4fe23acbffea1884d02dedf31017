@@ -1,0 +1,50 @@
+src/modules/dev/ComponentShowcase/components/ColorRegressionSection/utils/previousTokens.ts
+  s_49cd428a5a1d14::t_1da34db8f3efc6 1-88
+src/modules/dev/ComponentShowcase/components/ColorRegressionSection/components/TokenDiff/index.tsx
+  s_49cd428a5a1d14::t_bd880826c0a2ae 2,5,10-21,25-30,34-35,39,42-45,50,58-59,61-62
+  s_49cd428a5a1d14::t_f88b545110bee0 1,3-4,6-9,22-24,31-33,36-38,40-41,46-49,51-57,60,63-66
+src/modules/dev/ComponentShowcase/components/ColorRegressionSection/components/SwatchLadder/index.tsx
+  s_49cd428a5a1d14::t_0fc1228024821b 1,5-28,61-62
+  s_49cd428a5a1d14::t_5c1c2fcb0f01f8 29-60
+  s_49cd428a5a1d14::t_d74f802f5b1c66 2-4
+src/modules/dev/ComponentShowcase/components/ColorRegressionSection/components/RegressionCase/index.tsx
+  s_49cd428a5a1d14::t_03b6053745c40f 29-30,53-57,60
+  s_49cd428a5a1d14::t_077e979d5ebafc 1-2,5-28,31-52,58-59,61-62
+  s_49cd428a5a1d14::t_a3b965c45d2c09 3-4
+src/modules/dev/ComponentShowcase/components/ColorRegressionSection/index.tsx
+  s_49cd428a5a1d14::t_6b8e549f16c84f 1-11,18-20,24-28,30-35,41-44,55-61,80-84,86-103,112,114-115,153-156,159-162,165-169,171-177,180-186,190-197,200-210,213-226,230-236,240-241,243-246,248-252,254-260,263-293,296-299,302-315,318-384,386-439,441-521,530-535,601-602
+  s_49cd428a5a1d14::t_9e48be50028a72 12
+  s_49cd428a5a1d14::t_2a8eec0dd53002 13-17
+  s_49cd428a5a1d14::t_afe8c9900a4307 522-529
+  s_49cd428a5a1d14::t_9b8778d14326d9 157-158,163-164,178-179,187-189,198-199,211,229,237-239,253,261-262,294-295,300-301,316-317
+  s_49cd428a5a1d14::t_53df5069575a25 29
+  s_49cd428a5a1d14::t_67969752d2bfdb 71-75,140-142,145-147,170,385,440
+  s_49cd428a5a1d14::t_8dcd23978dda21 85,582,586-596,598
+  s_49cd428a5a1d14::t_34327962da2166 21-23,45-54,62-70,76-79,104-111,113,116-139,143-144,148-152
+  s_49cd428a5a1d14::t_1f5ef9708ae8a8 566,569,572
+  s_49cd428a5a1d14::t_c99d71f866e848 536-565,567-568,570-571,573-581,583-585,597,599-600
+  s_49cd428a5a1d14::t_27f63b65280576 36-40,212,227-228,242,247
+src/modules/dev/ComponentShowcase/utils/registry.tsx
+  s_49cd428a5a1d14::t_35e3cfa5b20f0f 115-124
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "c84f52945b3e4fe23acbffea1884d02dedf31017",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_49cd428a5a1d14": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3931130f-c0c8-4652-be11-79dd9fbf0f6b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

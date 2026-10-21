@@ -1,0 +1,16 @@
+src/ui-config/merklConfig.ts
+  h_873f745f99aed2 37
+src/components/incentives/IncentivesTooltipContent.tsx
+  h_873f745f99aed2 271-275
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "1f21766e5f76c9d47b61daab7b706493eaa8acd0",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

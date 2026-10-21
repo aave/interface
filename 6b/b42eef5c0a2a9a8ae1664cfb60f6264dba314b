@@ -1,0 +1,19 @@
+pages/api/preflight-compliance.ts
+  s_7f350816bce25b::t_1ee2747de42e40 57-65
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "6bb42eef5c0a2a9a8ae1664cfb60f6264dba314b",
+  "prompts": {},
+  "sessions": {
+    "s_7f350816bce25b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "41cf5b17-fba6-4019-ad7d-e7dde525ea6a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

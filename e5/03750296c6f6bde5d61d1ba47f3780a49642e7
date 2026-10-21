@@ -1,0 +1,19 @@
+src/components/transactions/Swap/hooks/useFlowSelector.ts
+  s_2bf21af3abca11::t_913fb2d087fa40 149,151-153
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "e503750296c6f6bde5d61d1ba47f3780a49642e7",
+  "prompts": {},
+  "sessions": {
+    "s_2bf21af3abca11": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77e01469-ce50-4cdc-9e5d-cbbcbe0ae562",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": null
+    }
+  }
+}

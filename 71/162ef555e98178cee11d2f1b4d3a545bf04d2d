@@ -1,0 +1,29 @@
+src/hooks/useApprovalTx.tsx
+  s_43d8443e2c6e5b::t_f85157947215f6 10-14,75-76
+src/utils/__tests__/usdtHelpers.test.ts
+  s_43d8443e2c6e5b::t_591e638f43e2c0 1-67
+src/utils/usdtHelpers.ts
+  s_43d8443e2c6e5b::t_2e61cc2c5135f5 1,3,20-38
+  s_43d8443e2c6e5b::t_de97ced5519844 39-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "71162ef555e98178cee11d2f1b4d3a545bf04d2d",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_43d8443e2c6e5b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4060e1a-0e77-47f0-8063-33c74d40c1c8",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

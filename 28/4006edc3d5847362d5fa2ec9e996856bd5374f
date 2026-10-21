@@ -1,0 +1,27 @@
+src/modules/dashboard/lists/constants.ts
+  s_4331ce9bb28087::t_90ee7378af48c2 6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "284006edc3d5847362d5fa2ec9e996856bd5374f",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_4331ce9bb28087": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "737c6112-f0df-4e78-9ea4-fa566b599d15",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

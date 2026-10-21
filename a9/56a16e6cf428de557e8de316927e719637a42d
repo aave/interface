@@ -1,0 +1,27 @@
+src/services/governance-cache-sdk/payloads.ts
+  s_cc023d19ae9515::t_fed9b890287111 49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "a956a16e6cf428de557e8de316927e719637a42d",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_cc023d19ae9515": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5269601c-242e-4a8a-b254-516772db1a62",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

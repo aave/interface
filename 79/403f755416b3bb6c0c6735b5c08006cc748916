@@ -1,0 +1,14 @@
+pages/_app.page.tsx
+  h_873f745f99aed2 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.8",
+  "base_commit_sha": "79403f755416b3bb6c0c6735b5c08006cc748916",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+src/layouts/components/SettingSwitchRow.tsx
+  s_b123436350916b::t_1e56ce047b588a 1-41
+src/layouts/components/TestNetModeSwitcher.tsx
+  s_b123436350916b::t_e32e24480f6825 2-3,7-8,28,30-31,33-34
+src/layouts/components/ShieldSwitcher.tsx
+  s_b123436350916b::t_3aa86acc22514a 2,6-7,18,20-21,27
+src/layouts/components/DarkModeSwitcher.tsx
+  s_b123436350916b::t_fe31fd1821c81b 2-3,8,16,20,22-23,25-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "5d6db7867403694609f6b1bdfda74bdeb5ec14ca",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b123436350916b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e05079-8b10-488f-b2c2-f8480447c4cf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

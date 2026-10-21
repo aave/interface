@@ -1,0 +1,115 @@
+src/modules/governance/proposal/ProposalPayloads.tsx
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-188
+src/hooks/governance/useGovernanceCoreConstants.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-17
+src/modules/governance/types.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 49,51,57
+src/locales/el/messages.js
+  s_e6bb362df14a8a::t_0d24c589fbf2cd 1
+src/services/governance-cache-sdk/payloads.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-111
+.nvmrc
+  s_e6bb362df14a8a::t_a51c09dd34b286 1
+src/modules/governance/Architecture.md
+  s_e6bb362df14a8a::t_a51c09dd34b286 5,7,9,17,19-23,25-28,35,40,42,44-50,52-61,65,70-73,76,78,80-87,89,91,93,99-100,107-112,114-116,122,126,130,140-141,143,145,147-149,154-164,166,168-170,178,186-187,190,194-202
+  s_e6bb362df14a8a::t_26d05fb6f69303 209
+cypress/README.md
+  s_e6bb362df14a8a::t_a51c09dd34b286 5-6,13,17,29,37-38,42,57,68
+src/services/governance-cache-sdk/proposals.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-320
+src/services/GovernanceCacheService.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 2-9,11-27
+src/locales/en/messages.po
+  s_e6bb362df14a8a::t_0d24c589fbf2cd 4404
+  s_e6bb362df14a8a::t_a51c09dd34b286 392-395,549,571-573,598-601,728-731,948-951,1092-1095,1433-1437,1529-1534,1646-1649,1654-1657,1732-1735,1766-1769,2094-2097,2163-2166,2192-2198,2335-2338,2355-2358,2383-2386,2391-2394,2458-2461,2645-2648,2738-2741,2746,2764-2771,3092-3095,3642-3645,3705-3708,4111-4114,4163,4210-4213,4255-4258,4275-4280,4353-4356,4397-4403
+CONTRIBUTING.md
+  s_e6bb362df14a8a::t_a51c09dd34b286 59,62-68,88,96,102,108,114,131,135,138
+.prettierignore
+  s_e6bb362df14a8a::t_a51c09dd34b286 9,30
+src/services/governance-cache-sdk/config.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-124
+src/ui-config/queries.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 52-86
+src/modules/governance/ProposalsV3List.tsx
+  s_e6bb362df14a8a::t_a51c09dd34b286 9
+src/modules/governance/proposal/ProposalTimeline.tsx
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-735
+src/locales/fr/messages.js
+  s_e6bb362df14a8a::t_0d24c589fbf2cd 1
+src/services/governance-cache-sdk/index.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-27
+pages/governance/v3/proposal/index.governance.tsx
+  s_e6bb362df14a8a::t_a51c09dd34b286 7,9,12-13,36-39,69-71
+package.json
+  s_e6bb362df14a8a::t_a51c09dd34b286 6-23,29,38-40,43,176
+.npmrc
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-4
+.github/workflows/build-test-deploy-dev.yml
+  s_e6bb362df14a8a::t_a51c09dd34b286 73,147,172
+.github/actions/build/action.yml
+  s_e6bb362df14a8a::t_a51c09dd34b286 4-5,56-57,61,65,81
+.github/workflows/build-test-deploy.yml
+  s_e6bb362df14a8a::t_a51c09dd34b286 95,165,190
+.github/workflows/i18n-check.yml
+  s_e6bb362df14a8a::t_a51c09dd34b286 22,31
+.github/workflows/crowdin-download.yml
+  s_e6bb362df14a8a::t_a51c09dd34b286 24-25,29,51-52
+.env.example
+  s_e6bb362df14a8a::t_a51c09dd34b286 8-9,58-59
+.github/workflows/test-deploy-fork.yml
+  s_e6bb362df14a8a::t_a51c09dd34b286 86,159,180
+pnpm-workspace.yaml
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-31
+cypress/support/e2e.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 8-23
+src/hooks/governance/useGovernanceCache.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-239
+src/locales/en/messages.js
+  s_e6bb362df14a8a::t_0d24c589fbf2cd 1
+README.md
+  s_e6bb362df14a8a::t_a51c09dd34b286 26-27,32-33
+src/modules/governance/GovernanceTopPanel.tsx
+  s_e6bb362df14a8a::t_a51c09dd34b286 72,93
+src/modules/governance/proposal/VotingResults.tsx
+  s_e6bb362df14a8a::t_a51c09dd34b286 1,3,6,9-10,24-25,150-173
+src/modules/governance/utils/seatbelt.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-27
+.github/workflows/crowdin-upload.yml
+  s_e6bb362df14a8a::t_a51c09dd34b286 18-19,23
+src/modules/governance/VotingPowerInfoPanel.tsx
+  s_e6bb362df14a8a::t_a51c09dd34b286 9,15-24,99-140
+.husky/pre-commit
+  s_e6bb362df14a8a::t_a51c09dd34b286 5
+src/services/governance-cache-sdk/client.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-109
+src/services/governance-cache-sdk/types.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-156
+src/components/transactions/GovVote/GovVoteActions.tsx
+  s_e6bb362df14a8a::t_a51c09dd34b286 10,12,183-203,210,224,256-306,325,328
+src/locales/es/messages.js
+  s_e6bb362df14a8a::t_0d24c589fbf2cd 1
+.github/actions/cypress/action.yml
+  s_e6bb362df14a8a::t_a51c09dd34b286 13-14,19-20,24,29-35,60,62
+src/services/governance-cache-sdk/votes.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-116
+pages/api/gelato/relay.ts
+  s_e6bb362df14a8a::t_a51c09dd34b286 1-64
+pnpm-lock.yaml
+  s_e6bb362df14a8a::t_f1838420622df3 1-23754
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "5057e17ce78d0e85cd313912220d2f885ae4f65d",
+  "prompts": {},
+  "sessions": {
+    "s_e6bb362df14a8a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b4c84b9d-026b-4028-9f36-71e6275fe11a",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

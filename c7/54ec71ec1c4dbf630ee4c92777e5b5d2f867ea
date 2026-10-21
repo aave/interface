@@ -1,0 +1,32 @@
+src/locales/en/messages.po
+  s_f4f69855add9f4::t_208e9708dae51e 1877-1880
+src/locales/es/messages.js
+  s_f4f69855add9f4::t_208e9708dae51e 1
+src/locales/en/messages.js
+  s_f4f69855add9f4::t_208e9708dae51e 1
+src/locales/fr/messages.js
+  s_f4f69855add9f4::t_208e9708dae51e 1
+src/locales/el/messages.js
+  s_f4f69855add9f4::t_208e9708dae51e 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.11",
+  "base_commit_sha": "c754ec71ec1c4dbf630ee4c92777e5b5d2f867ea",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_f4f69855add9f4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "136aea3b-814e-42f4-8ab0-4cdc908c0d00",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

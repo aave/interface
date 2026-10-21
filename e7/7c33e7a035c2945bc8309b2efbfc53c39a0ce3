@@ -1,0 +1,29 @@
+src/locales/en/messages.po
+  s_326836c296b593::t_b4e460caab434c 1696-1699
+src/modules/sGho/SGhoHeader.tsx
+  s_326836c296b593::t_324958eb2e2a37 25,52
+src/locales/el/messages.js
+  s_326836c296b593::t_2f4d49ff54252f 1
+src/locales/en/messages.js
+  s_326836c296b593::t_1a53203dd47814 1
+src/locales/es/messages.js
+  s_326836c296b593::t_d67c96beca0e49 1
+src/locales/fr/messages.js
+  s_326836c296b593::t_f34dd5a5e77db0 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e77c33e7a035c2945bc8309b2efbfc53c39a0ce3",
+  "prompts": {},
+  "sessions": {
+    "s_326836c296b593": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0b887753-cdc8-4f43-8aa8-79675f8a490c",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

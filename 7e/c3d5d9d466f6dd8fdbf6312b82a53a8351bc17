@@ -1,0 +1,19 @@
+src/modules/governance/proposal/ProposalLifecycleCache.tsx
+  s_7a9ce3877ac6fd::t_b86cbb05c93fe1 285
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "7ec3d5d9d466f6dd8fdbf6312b82a53a8351bc17",
+  "prompts": {},
+  "sessions": {
+    "s_7a9ce3877ac6fd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "05865ac2-1a52-4641-ac2b-a0ec3f728ebe",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

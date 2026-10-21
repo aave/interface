@@ -1,0 +1,19 @@
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_a51ccd4991d535::t_5fd347c4fbcbde 185
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "ba08a130e1918784fad8919cf2c8b4fc68f6c4a0",
+  "prompts": {},
+  "sessions": {
+    "s_a51ccd4991d535": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5b49bfca-5ac8-4762-a1f5-6527caa277c2",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

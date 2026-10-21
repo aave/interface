@@ -1,0 +1,39 @@
+pages/api/gelato/relay.ts
+  s_cc023d19ae9515::t_1cca1b94ffd2fa 1-61
+  s_cc023d19ae9515::t_3756a276671670 62-64
+.env.example
+  s_cc023d19ae9515::t_f913640d15e2f7 8-9
+  s_cc023d19ae9515::t_5546bbc5475ab2 57-58
+src/components/transactions/GovVote/GovVoteActions.tsx
+  s_cc023d19ae9515::t_e34df739e13509 224
+  s_cc023d19ae9515::t_53df42c49c2083 12
+  s_cc023d19ae9515::t_fe5fb7f7113a40 256-274
+  s_cc023d19ae9515::t_9d655d5ef9af9b 275-306,325,328
+  s_cc023d19ae9515::t_ed6513bfe11263 10
+  s_cc023d19ae9515::t_a184d2af448a8c 210
+  s_cc023d19ae9515::t_ec1664d80ed9d8 183-203
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.9",
+  "base_commit_sha": "ec0396df1e0a9c984eedc4f8d69e11064709a839",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_cc023d19ae9515": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5269601c-242e-4a8a-b254-516772db1a62",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

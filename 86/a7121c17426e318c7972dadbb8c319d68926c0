@@ -1,0 +1,24 @@
+src/modules/reserve-overview/ReserveTopDetails.tsx
+  s_f97a864d83e12e::t_208d1aa14f5fd0 59-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "86a7121c17426e318c7972dadbb8c319d68926c0",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_f97a864d83e12e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "42e7514a-97dc-43b9-a982-51760d1daae8",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

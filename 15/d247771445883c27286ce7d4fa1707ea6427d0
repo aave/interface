@@ -1,0 +1,63 @@
+src/components/transactions/Swap/modals/result/SwapResultView.tsx
+  s_b123436350916b::t_ece61ed977f559 330,370
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+  s_d9475e91105919::t_ddcbdc43c48649 33
+  s_d9475e91105919::t_f757985a6614fb 196,392
+src/modules/staking/StakingPanel.tsx
+  s_b123436350916b::t_9b5ab576cb04e8 477,517
+src/modules/history/HistoryFilterMenu.tsx
+  s_b123436350916b::t_f053f31e12ce6b 193-195
+  s_b123436350916b::t_d7ed0b80079b14 177
+src/components/transactions/Swap/details/DebtSwapDetails.tsx
+  s_b123436350916b::t_50ff0710e32ae8 112,162
+src/components/transactions/Swap/details/CollateralSwapDetails.tsx
+  s_b123436350916b::t_59d4a3e27aaf81 226,278
+src/components/infoTooltips/DarkTooltip.tsx
+  s_b123436350916b::t_a17821e81c05ac 2
+  s_b123436350916b::t_7250b369f167ab 40
+src/modules/dashboard/lists/ListValueColumn.tsx
+  s_d9475e91105919::t_b64b171a641905 77,84
+  s_d9475e91105919::t_2542fe6cea5045 3
+src/components/transactions/Swap/details/SwapDetails.tsx
+  s_b123436350916b::t_e643ba617d1053 141,218
+src/modules/history/PriceUnavailable.tsx
+  s_d9475e91105919::t_28034ac1f83b88 13
+  s_d9475e91105919::t_04611def557750 4
+src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+  s_d9475e91105919::t_5b97020830c6a9 112-113
+  s_d9475e91105919::t_923fd9d12af6c8 5
+  s_d9475e91105919::t_a2cda31f892f96 88
+src/modules/staking/GhoStakingPanel.tsx
+  s_b123436350916b::t_7026dc48325626 432,472
+src/modules/history/actions/ActionDetails.tsx
+  s_b123436350916b::t_3ba67701f79a51 149,151-152,172,209,216,262,269,325,370,392,415,437
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "15d247771445883c27286ce7d4fa1707ea6427d0",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b123436350916b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e05079-8b10-488f-b2c2-f8480447c4cf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_d9475e91105919": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f1f4f7a8-ec6d-4d9e-9952-79ee1f11c1e0",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

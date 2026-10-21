@@ -1,0 +1,40 @@
+src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+  s_525cd554e38fca::t_c8690c2f112c89 14,42,59-76,80,82-87,90,93
+src/components/transactions/FlowCommons/RightHelperText.tsx
+  s_525cd554e38fca::t_c8690c2f112c89 9,59,66
+src/components/transactions/Repay/RepayAllowanceControl.tsx
+  s_525cd554e38fca::t_1bfd8a809eb7ca 59
+  s_525cd554e38fca::t_4e994eb6890d35 1-58,60-113
+src/components/transactions/TxActionsWrapper.tsx
+  s_525cd554e38fca::t_4c1d8bcec652ca 38-39,64,152,158
+src/components/transactions/Repay/RepayActions.tsx
+  s_525cd554e38fca::t_b045d4f17e3428 15,22,82,122-130,146-148,278-287
+src/store/walletSlice.ts
+  s_525cd554e38fca::t_c8690c2f112c89 47-48
+src/locales/el/messages.js
+  s_525cd554e38fca::t_7780e88a0e6e56 1
+src/locales/en/messages.js
+  s_525cd554e38fca::t_7f3c2ddd03b2cc 1
+src/locales/en/messages.po
+  s_525cd554e38fca::t_b8edf908d66eb4 167-170,1341-1342,1684-1688,1886-1889,1999-2002,3349-3352,3834-3837
+src/locales/es/messages.js
+  s_525cd554e38fca::t_daddf221101356 1
+src/locales/fr/messages.js
+  s_525cd554e38fca::t_8241b48c9174a7 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "61848e63de7f2aeec5dcfa144ae2a6cb93377796",
+  "prompts": {},
+  "sessions": {
+    "s_525cd554e38fca": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f0438cce-d81f-4109-bc0e-7bf8f9be8e91",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

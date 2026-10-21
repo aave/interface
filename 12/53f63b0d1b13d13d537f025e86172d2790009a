@@ -1,0 +1,20 @@
+src/components/transactions/GovVote/GovVoteActions.tsx
+  s_c6e9bd1e3b5c71::t_7f7d3fb92ec1ab 207-210,212-213
+  s_c6e9bd1e3b5c71::t_588b58f8d3a76e 6,205-206,211
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "1253f63b0d1b13d13d537f025e86172d2790009a",
+  "prompts": {},
+  "sessions": {
+    "s_c6e9bd1e3b5c71": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e987b0f3-893d-4645-bf94-4ef31ddff880",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

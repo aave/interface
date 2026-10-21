@@ -1,0 +1,55 @@
+src/layouts/AppFooter.tsx
+  s_001e1a32ba193b::t_bba511888725b9 30,32
+src/utils/dashboardSortUtils.ts
+  s_001e1a32ba193b::t_57e2b3468df02a 55-58,63,78,83
+src/components/transactions/FlowCommons/Success.tsx
+  s_001e1a32ba193b::t_378154d038ad83 61-62
+src/utils/theme.tsx
+  s_001e1a32ba193b::t_7860dc96aa8152 1193-1196
+  s_001e1a32ba193b::t_9763ae8d181a46 1138,1204-1206
+src/utils/buttonStyles.ts
+  s_001e1a32ba193b::t_7860dc96aa8152 29-40
+src/components/lists/ListHeaderTitle.tsx
+  s_001e1a32ba193b::t_57e2b3468df02a 51-54,57-60
+src/components/lists/ListMobileItem.tsx
+  s_001e1a32ba193b::t_a8ee69299faf91 60-67
+src/modules/markets/MarketAssetsListMobileItem.tsx
+  s_001e1a32ba193b::t_a8ee69299faf91 123
+src/modules/governance/proposal/ProposalOverview.tsx
+  s_001e1a32ba193b::t_7860dc96aa8152 29,60-62,280-281,285
+  s_001e1a32ba193b::t_09728fa21b0929 63,274
+  s_001e1a32ba193b::t_bba511888725b9 3,288,290
+src/modules/governance/proposal/VoteInfo.tsx
+  s_001e1a32ba193b::t_378154d038ad83 17-19,110,125
+src/components/transactions/GovVote/GovVoteModalContent.tsx
+  s_001e1a32ba193b::t_f1c8dac73164e6 2
+  s_001e1a32ba193b::t_124bbff4c26e91 64
+src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+  s_001e1a32ba193b::t_a8ee69299faf91 131-133
+src/locales/el/messages.js
+  s_001e1a32ba193b::t_e93a3c685ff961 1
+src/locales/en/messages.js
+  s_001e1a32ba193b::t_4194e65311da11 1
+src/locales/en/messages.po
+  s_001e1a32ba193b::t_298320809c894e 2005-2008
+src/locales/es/messages.js
+  s_001e1a32ba193b::t_11bb12b106df8c 1
+src/locales/fr/messages.js
+  s_001e1a32ba193b::t_80c0cfba220c9c 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "40a74d496a14f67a7b465ce6bcf56abf40a286c0",
+  "prompts": {},
+  "sessions": {
+    "s_001e1a32ba193b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1666f613-77d0-41f9-8e43-98891b07b7ab",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

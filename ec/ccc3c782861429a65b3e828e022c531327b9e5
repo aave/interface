@@ -1,0 +1,14 @@
+src/components/transactions/Withdraw/WithdrawModalContent.tsx
+  h_dd1a1ee57491bb 171
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "ecccc3c782861429a65b3e828e022c531327b9e5",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

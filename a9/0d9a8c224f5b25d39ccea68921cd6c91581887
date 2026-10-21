@@ -1,0 +1,23 @@
+.github/workflows/build-test-deploy-dev.yml
+  s_35a8c384bd9dd6::t_c02b9ecbf73e34 103-105
+.github/workflows/build-test-deploy.yml
+  s_35a8c384bd9dd6::t_7d043ee75b202b 128-129
+.github/workflows/test-deploy-fork.yml
+  s_35a8c384bd9dd6::t_823122c6fa9a23 107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "a90d9a8c224f5b25d39ccea68921cd6c91581887",
+  "prompts": {},
+  "sessions": {
+    "s_35a8c384bd9dd6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ab88acf-9fd5-47d1-9f0e-44d47696cf68",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

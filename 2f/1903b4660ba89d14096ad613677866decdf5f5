@@ -1,0 +1,28 @@
+patches/connectkit@1.9.2.patch
+  s_7539284991a2d3::t_ebfc9fe84975a4 1-13
+package.json
+  s_7539284991a2d3::t_ebfc9fe84975a4 23-24
+  s_7539284991a2d3::t_3b08b18d19ef87 25-26
+.prettierignore
+  s_7539284991a2d3::t_439639736a569f 30
+patches/@funkit__connect@9.28.1.patch
+  s_7539284991a2d3::t_cca66e8deca743 1-13
+pnpm-lock.yaml
+  s_7539284991a2d3::t_7a895b6bc23eb6 20-27,76,154,12416,17783
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "2f1903b4660ba89d14096ad613677866decdf5f5",
+  "prompts": {},
+  "sessions": {
+    "s_7539284991a2d3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c9eac512-d79f-4934-a16a-d7005cebaac5",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

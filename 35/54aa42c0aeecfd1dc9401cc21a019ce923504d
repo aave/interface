@@ -1,0 +1,24 @@
+src/modules/history/HistoryWrapper.tsx
+  s_5f507ef3a0834b::t_04c3e6c16e9ee5 135
+src/modules/history/actions/ActionDetails.tsx
+  s_5f507ef3a0834b::t_4ca13a44d6da0e 69,391-392,396-397,401-402
+  s_5f507ef3a0834b::t_097b8b1980663e 33-35,131,184,300,345,390,395,400
+src/modules/history/TransactionRowItem.tsx
+  s_5f507ef3a0834b::t_04c3e6c16e9ee5 29,105
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "3554aa42c0aeecfd1dc9401cc21a019ce923504d",
+  "prompts": {},
+  "sessions": {
+    "s_5f507ef3a0834b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8ab0e42e-cee1-4a48-aa69-156d2deb2fb8",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

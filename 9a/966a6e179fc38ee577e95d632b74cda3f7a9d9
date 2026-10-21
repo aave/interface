@@ -1,0 +1,26 @@
+src/hooks/pool/usePoolSupportsMulticall.ts
+  s_5a7ac6885880cd::t_dd590aa8f104f5 33
+  s_5a7ac6885880cd::t_24302dabc960bf 15,17-19,26-32,34,39-41
+  h_be8c3c572e9983 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "9a966a6e179fc38ee577e95d632b74cda3f7a9d9",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_5a7ac6885880cd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "433e88a3-5283-4964-8473-f2d92362829c",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

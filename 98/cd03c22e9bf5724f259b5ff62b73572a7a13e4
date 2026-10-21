@@ -1,0 +1,14 @@
+src/layouts/components/NavItems.tsx
+  h_407f16e676115d 71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "98cd03c22e9bf5724f259b5ff62b73572a7a13e4",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

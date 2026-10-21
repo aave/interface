@@ -1,0 +1,40 @@
+src/components/TopInfoPanel/PageTitle.tsx
+  h_407f16e676115d 51
+src/components/TopInfoPanel/TopInfoPanel.tsx
+  s_d9475e91105919::t_fd70210bc700f1 28
+  h_407f16e676115d 32
+src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+  s_b123436350916b::t_dfb81955f566d7 74
+  s_b123436350916b::t_214a3e3bbb3a7a 159
+  s_b123436350916b::t_8906ceb4c25328 89
+  s_d9475e91105919::t_98b7585da68b4d 135
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "5557796351d6d345aba1c0b637c7738c3863ea62",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b123436350916b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e05079-8b10-488f-b2c2-f8480447c4cf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_d9475e91105919": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f1f4f7a8-ec6d-4d9e-9952-79ee1f11c1e0",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+src/components/transactions/Swap/hooks/useMaxNativeAmount.ts
+  ai_agent 42-45,47-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "47b0c8166a7e0c77f67055fbf745b34a93b1b8ca",
+  "prompts": {}
+}

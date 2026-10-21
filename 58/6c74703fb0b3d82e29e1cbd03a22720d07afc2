@@ -1,0 +1,57 @@
+src/layouts/components/NavItems.tsx
+  s_4a5a35cb33f785::t_1955c4c6cb297c 23,136,158
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_4a5a35cb33f785::t_6de1e9ea4cc70a 134-135
+  s_4a5a35cb33f785::t_6d03d4d45a531f 339
+  h_407f16e676115d 359,368
+  s_4a5a35cb33f785::t_34dbad4d71344f 360-367
+src/components/NoSearchResults.tsx
+  h_407f16e676115d 19
+src/modules/governance/ProposalsV3List.tsx
+  h_407f16e676115d 50
+src/layouts/components/StakingMenu.tsx
+  s_4a5a35cb33f785::t_1955c4c6cb297c 14,87
+  s_4a5a35cb33f785::t_af6b5bb6f59fc2 88-90
+  s_4a5a35cb33f785::t_0c888791abedc7 15-17
+  s_4a5a35cb33f785::t_95a72ef20da378 86,91,96-97
+src/components/transactions/Swap/inputs/shared/ExpirySelector.tsx
+  s_4a5a35cb33f785::t_08ef7c1da92547 28,35,37-41,43,46
+  s_4a5a35cb33f785::t_54d9b1d232f245 2-4,14-16,18-27,29,31,33,44-45,47-61
+src/utils/theme.tsx
+  s_4a5a35cb33f785::t_3ec7b252d95aca 1142-1143
+  s_4a5a35cb33f785::t_80ce2ce348b95e 1042
+src/components/transactions/Swap/inputs/shared/NetworkSelector.tsx
+  s_4a5a35cb33f785::t_8dd2dfffbd57dd 1-3,19-22,24-29,32,34-39,49-50,53-60,62,69-70
+  s_4a5a35cb33f785::t_da9fe7eef797a0 30,33,40-48,51
+src/components/transactions/Warnings/ChangeNetworkWarning.tsx
+  s_4a5a35cb33f785::t_e8994b2dc36bc2 73,76
+  s_4a5a35cb33f785::t_54240d8d6568c2 26
+src/components/transactions/Bridge/BridgeFeeTokenSelector.tsx
+  s_4a5a35cb33f785::t_8abed6fa28a2ba 73
+  s_4a5a35cb33f785::t_8ae86be64f18b4 2-4,27,32-33,55-72,74-91
+src/layouts/components/navLinkSx.ts
+  s_4a5a35cb33f785::t_cad192c5ba8e75 5-7
+  s_4a5a35cb33f785::t_299f3ed6e062ca 13,16
+  s_4a5a35cb33f785::t_840bbd4d782a1d 36-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "586c74703fb0b3d82e29e1cbd03a22720d07afc2",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_4a5a35cb33f785": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "302409f1-a0b1-4062-8ac3-119d23cf22dc",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

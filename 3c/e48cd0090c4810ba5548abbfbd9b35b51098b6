@@ -1,0 +1,75 @@
+src/layouts/components/navLinkSx.ts
+  s_e8edff4d0716d1::t_d58c28b8960e5b 8
+  s_e8edff4d0716d1::t_e120ddefbcd4a3 19
+  s_e8edff4d0716d1::t_d55137a6d2e376 7
+  s_e8edff4d0716d1::t_734d52c0d3238d 24-25
+  s_e8edff4d0716d1::t_17408d847747cf 15,26,36
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_e8edff4d0716d1::t_73c4baa9d29352 246-257
+  s_e8edff4d0716d1::t_d04db8bcf36f7f 265-276
+  s_e8edff4d0716d1::t_e72e636f8af70e 2
+src/components/icons/ExternalLinkIcon.tsx
+  s_e8edff4d0716d1::t_59e00dfd7374df 1-25
+src/components/MarketSwitcher.tsx
+  s_e8edff4d0716d1::t_a8d5dd299b7d94 706,709,711-735,738-741,744
+  s_e8edff4d0716d1::t_0ecc2a968f5821 752,754-755
+  s_e8edff4d0716d1::t_5499d5d88504ea 261
+src/modules/dashboard/DashboardContentWrapper.tsx
+  s_e8edff4d0716d1::t_936d8265187ca4 2
+src/hooks/useConnectGate.ts
+  s_e8edff4d0716d1::t_3c1e78c9e6dcc0 1-21
+src/layouts/AppHeader.tsx
+  s_e8edff4d0716d1::t_cd0808d2448bc6 127
+  s_e8edff4d0716d1::t_518462d91ac40e 168,172
+  s_e8edff4d0716d1::t_bd4aef37785811 27
+src/layouts/components/NavItems.tsx
+  s_e8edff4d0716d1::t_4ea469f956c8d5 27-28
+  s_e8edff4d0716d1::t_c57597b52e2c7c 112,114,116-117
+  s_e8edff4d0716d1::t_154bab7abc6475 17
+  s_e8edff4d0716d1::t_a10c85468f01fa 231-250
+  s_e8edff4d0716d1::t_e46cad8c783275 113,115
+src/components/WalletConnection/ReadOnlyModal.tsx
+  s_e8edff4d0716d1::t_46ca50123e3306 70,77,79-80,83-84,88-89,94
+  s_e8edff4d0716d1::t_4422cb21a9df1a 69,71
+  s_e8edff4d0716d1::t_f0239b32523ef0 2
+src/modules/dashboard/DashboardTopPanel.tsx
+  s_e8edff4d0716d1::t_a61fec95d0b9b9 146-147
+  s_e8edff4d0716d1::t_c142dfaaac327e 10-12
+  s_e8edff4d0716d1::t_9f7096e6d227e0 167-169,171,173,186,198,200-202,210,224,226-227,236,240,269,271
+src/layouts/MobileMenu.tsx
+  s_e8edff4d0716d1::t_64a96f6a5e08c2 6
+  s_e8edff4d0716d1::t_2aea50839da795 101,106
+  s_e8edff4d0716d1::t_50a115e73cbe15 86
+src/components/PageHeader/PageHeader.tsx
+  s_e8edff4d0716d1::t_c4b41291f1dbe4 10-15
+  s_e8edff4d0716d1::t_70b80cf7fbd647 28
+  s_e8edff4d0716d1::t_322026366812a4 60-66
+src/components/transactions/FlowCommons/TxModalTitle.tsx
+  s_e8edff4d0716d1::t_6807049ec4ede8 1,7,10,14-23
+src/locales/el/messages.js
+  s_e8edff4d0716d1::t_43da5c8b150a08 1
+src/locales/en/messages.js
+  s_e8edff4d0716d1::t_5fb4d8654f30a9 1
+src/locales/es/messages.js
+  s_e8edff4d0716d1::t_ef5737568b2253 1
+src/locales/fr/messages.js
+  s_e8edff4d0716d1::t_c6aff55ae5351a 1
+src/locales/en/messages.po
+  s_e8edff4d0716d1::t_a9ef8b4700b2f3 972-975,2763,3680-3683
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "3ce48cd0090c4810ba5548abbfbd9b35b51098b6",
+  "prompts": {},
+  "sessions": {
+    "s_e8edff4d0716d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2dfb1aca-df0c-4f9e-b0f7-19dc6135f592",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

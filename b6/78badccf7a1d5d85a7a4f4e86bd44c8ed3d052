@@ -1,0 +1,28 @@
+src/components/MarketSwitcher.tsx
+  s_b9837e5b92777c::t_f1442fa1a6f3f5 463-464,466-467,500
+  s_b9837e5b92777c::t_c8f976020bafe9 186-188,428-442,444-458,460-462,501-505
+  s_b9837e5b92777c::t_82461cb4f2d83d 341,364,427,443
+  s_b9837e5b92777c::t_48bab6086f0f93 459,465,468-499
+  h_dd1a1ee57491bb 616-617
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "b678badccf7a1d5d85a7a4f4e86bd44c8ed3d052",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b9837e5b92777c": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ea80a-465c-7343-9447-a3061d7f538b",
+        "model": "gpt-5.5"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

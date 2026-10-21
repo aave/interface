@@ -1,0 +1,49 @@
+src/layouts/components/StakingMenu.tsx
+  h_407f16e676115d 6
+src/components/TopInfoPanel/TopInfoPanel.tsx
+  s_2dcd2bf87cccfc::t_5281d45c2ad6e7 30-32
+src/components/transactions/FunCheckout/FunSupplyButton.tsx
+  h_407f16e676115d 69-70
+src/utils/buttonStyles.ts
+  s_2dcd2bf87cccfc::t_73135850992147 5-6,15-17
+src/utils/theme.tsx
+  s_2dcd2bf87cccfc::t_58535d018ba38b 493
+  h_407f16e676115d 215
+  s_2dcd2bf87cccfc::t_62b38c773acc66 499
+  s_2dcd2bf87cccfc::t_dcb35e2a7391f6 661
+  s_2dcd2bf87cccfc::t_a14162d809ade6 485
+  s_2dcd2bf87cccfc::t_51eb845a4d52fc 94,96
+  s_2dcd2bf87cccfc::t_d157c4ffc4ed15 748-749
+  s_2dcd2bf87cccfc::t_673a5cff7df54b 522-525
+src/components/icons/ChevronDownIcon.tsx
+  h_407f16e676115d 1-23
+src/layouts/SettingsMenu.tsx
+  h_407f16e676115d 74
+src/layouts/AppHeader.tsx
+  h_407f16e676115d 279,317
+src/utils/figmaColors.ts
+  h_407f16e676115d 21,59,153
+  s_2dcd2bf87cccfc::t_bfff69b12e2764 107
+  s_2dcd2bf87cccfc::t_8276a09aa51cf3 213
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "55f86d118db2374a2b000f66a4ef8c304d516bbf",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2dcd2bf87cccfc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8fd233eb-6c83-496c-9e84-129410fc4845",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

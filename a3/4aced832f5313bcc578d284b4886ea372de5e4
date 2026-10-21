@@ -1,0 +1,28 @@
+src/modules/governance/adapters.ts
+  s_7a9ce3877ac6fd::t_fe9583a2f6bc94 38-41
+src/modules/governance/proposal/ProposalLifecycleCache.tsx
+  s_7a9ce3877ac6fd::t_5eb42d368e83fc 161-170
+  s_7a9ce3877ac6fd::t_772b2bb944d5f3 279-294,296,298-299
+  s_7a9ce3877ac6fd::t_6e7bc2d496db17 217-220,222
+src/modules/governance/StateBadge.tsx
+  s_7a9ce3877ac6fd::t_440105a570eefa 56
+  s_7a9ce3877ac6fd::t_51ffda197c36b9 96-97
+  s_7a9ce3877ac6fd::t_fc61141b0e06f5 19
+  s_7a9ce3877ac6fd::t_34fee616ad90b3 117-118
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "a34aced832f5313bcc578d284b4886ea372de5e4",
+  "prompts": {},
+  "sessions": {
+    "s_7a9ce3877ac6fd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "05865ac2-1a52-4641-ac2b-a0ec3f728ebe",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

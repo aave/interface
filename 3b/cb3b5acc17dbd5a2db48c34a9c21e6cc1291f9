@@ -1,0 +1,75 @@
+src/utils/theme.tsx
+  s_761dd4371f1a34::t_4601f86f019389 478
+  s_761dd4371f1a34::t_e755cacf2b7003 894
+  s_761dd4371f1a34::t_b0f22b2d5beae5 24-31,33-41
+  s_761dd4371f1a34::t_32c7970e48fb85 473-474
+  s_761dd4371f1a34::t_852a7309cb57d8 940-949
+  s_761dd4371f1a34::t_c75c73e5620249 19-22
+  s_761dd4371f1a34::t_2ce2e79b6879c3 12
+src/layouts/AppHeader.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 244,256,282,305,335
+src/modules/migration/MigrationTopPanel.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 28
+src/modules/umbrella/UmbrellaHeader.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 205
+src/modules/dashboard/DashboardEModeButton.tsx
+  s_761dd4371f1a34::t_fee4884cd7c8d1 212
+src/layouts/AppGlobalStyles.tsx
+  s_761dd4371f1a34::t_3b4021564f68fd 45
+  s_761dd4371f1a34::t_49817c408d2163 3,6
+src/utils/figmaColors.ts
+  h_407f16e676115d 88,90
+src/layouts/SettingsMenu.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 67
+src/modules/dashboard/DashboardTopPanel.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 153,177,277
+src/modules/staking/GhoStakingPanel.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 422
+src/components/WalletConnection/ConnectWalletButton.tsx
+  s_761dd4371f1a34::t_a8ace0d8fec9ce 103
+src/modules/migration/MigrationBottomPanel.tsx
+  s_761dd4371f1a34::t_94c4abfa0c874d 248
+src/components/TopInfoPanel/PageTitle.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 81,85,95
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 355
+src/modules/governance/proposal/ProposalTopPanel.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 20
+src/layouts/MobileMenu.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 68
+src/modules/bridge/BridgeWrapper.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 57
+src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 115
+src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 120
+src/modules/staking/StakingPanel.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 467
+src/components/HealthFactorNumber.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 53
+src/modules/dashboard/DashboardContentWrapper.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 69,104
+src/modules/governance/GovernanceTopPanel.tsx
+  s_761dd4371f1a34::t_39a870cb8240d8 23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "3bcb3b5acc17dbd5a2db48c34a9c21e6cc1291f9",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_761dd4371f1a34": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ae7f60f-27bd-4669-95ee-d0ed816a8662",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

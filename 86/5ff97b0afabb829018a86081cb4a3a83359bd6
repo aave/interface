@@ -1,0 +1,56 @@
+src/modules/umbrella/AvailableToClaimItem.tsx
+  s_4a5a35cb33f785::t_e72a220b7b20a3 10
+  s_4a5a35cb33f785::t_b112814e5917f0 27
+src/modules/umbrella/UmbrellaAssetsDefault.tsx
+  s_b7891d03132575::t_90951907581860 68
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
+  s_4a5a35cb33f785::t_c7d42ddbc8c4af 67,80
+  s_4a5a35cb33f785::t_202b8daedfdf32 55
+src/components/WalletConnection/ReadOnlyModal.tsx
+  h_407f16e676115d 2
+  h_407f16e676115d 103-105
+src/components/transactions/GasStation/GasStation.tsx
+  h_407f16e676115d 111
+src/modules/governance/ProposalsV3List.tsx
+  h_407f16e676115d 30,111
+src/modules/umbrella/AvailableToStakeItem.tsx
+  s_4a5a35cb33f785::t_fc6e365ad9b27c 10
+  s_4a5a35cb33f785::t_5d613484b2b548 44
+src/modules/umbrella/AmountStakedUnderlyingItem.tsx
+  s_4a5a35cb33f785::t_202b8daedfdf32 9,30
+src/modules/dashboard/DashboardEModeButton.tsx
+  h_407f16e676115d 215,234-235
+src/utils/theme.tsx
+  h_407f16e676115d 322
+src/modules/umbrella/StakeAssets/UmbrellaAssetsListContainer.tsx
+  s_b7891d03132575::t_82281a1723489d 71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "865ff97b0afabb829018a86081cb4a3a83359bd6",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_4a5a35cb33f785": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "302409f1-a0b1-4062-8ac3-119d23cf22dc",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_b7891d03132575": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6b94e036-78c7-400c-b7ca-1d3699b79fc5",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

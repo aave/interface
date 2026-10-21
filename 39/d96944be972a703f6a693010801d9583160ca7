@@ -1,0 +1,133 @@
+src/layouts/components/navLinkSx.ts
+  s_b123436350916b::t_0d0d5def369c2f 1-37
+src/components/icons/BridgeIcon.tsx
+  s_b123436350916b::t_d4db5a5aca0488 1-9
+src/components/AssetCategoryMultiselect.tsx
+  s_d9475e91105919::t_290266c2125874 14
+  s_d9475e91105919::t_053ae38f62b5fa 109,116
+src/components/icons/ChevronUpDownIcon.tsx
+  s_d9475e91105919::t_532565d7058d2b 1-27
+src/components/icons/AaveLogo.tsx
+  s_d9475e91105919::t_60a1fec5151e8b 1-22
+src/layouts/SettingsMenu.tsx
+  h_407f16e676115d 74,76
+  s_b123436350916b::t_a56f31c6cd754c 4
+src/modules/umbrella/UmbrellaMarketSwitcher.tsx
+  s_d9475e91105919::t_abf6be5bc898cd 14
+  s_d9475e91105919::t_ff408280c95833 18
+  s_d9475e91105919::t_f63da12e3c9b0e 180
+  s_d9475e91105919::t_1b69bf057d3658 86
+  s_b123436350916b::t_d5f396c2c6e426 204-206
+src/components/transactions/Swap/inputs/shared/NetworkSelector.tsx
+  s_b123436350916b::t_ff413538839a15 1
+src/components/icons/SwapIcon.tsx
+  s_b123436350916b::t_9191f6381644b7 1-32
+src/components/MarketSwitcher.tsx
+  s_b123436350916b::t_300504e7ffe33e 826
+  s_d9475e91105919::t_0206933e323975 21
+  s_d9475e91105919::t_96d52933ba9a41 834
+  s_d9475e91105919::t_f78eef3c461b5d 25
+  s_d9475e91105919::t_54826d2a0908b0 789
+  s_b123436350916b::t_e964feeedca063 569
+  s_b123436350916b::t_4a9df06756e572 576
+  s_b123436350916b::t_65c22407ad9be8 558
+  s_d9475e91105919::t_4e1309241d98ee 1
+  s_d9475e91105919::t_79414dfaef93c8 98
+src/layouts/AppHeader.tsx
+  s_d9475e91105919::t_60cbe0d3036973 363
+  s_d9475e91105919::t_898f2113b339f6 219,221-222
+  s_b123436350916b::t_dad721c84aecda 283
+  s_d9475e91105919::t_dbdbd398539ecb 22
+  s_d9475e91105919::t_5cd3ab95871b6d 214-215,223
+  s_d9475e91105919::t_c177284a2b39ad 226-243,245-255,257-279,281,286,288-290,292-302,304,306-315,317-319,321-322,324,326-328,330-331,333,336-338,340-344,346-348,350-351,353-362
+  s_d9475e91105919::t_6a40c7cd348f2e 7
+  s_b123436350916b::t_5f911841a6b82f 287,325
+  s_b123436350916b::t_30ec69249dbdac 90-95
+  s_b123436350916b::t_7511a67d245001 316
+  s_b123436350916b::t_824e3780b6500a 23-24
+  s_b123436350916b::t_d5f396c2c6e426 244,256
+  h_407f16e676115d 133,212,216,284,320
+  s_b123436350916b::t_6d4d96e479e124 1
+src/components/icons/SettingsIcon.tsx
+  s_b123436350916b::t_d03f06a3dd27f0 1-15
+src/utils/figmaColors.ts
+  s_b123436350916b::t_c4e1a6cd9d75c4 173-182
+  s_d9475e91105919::t_21365150f07f00 1-14,17,24-25,28-51,53-56,58-89,93-137,139-162,164-165
+  h_407f16e676115d 15-16,18-23,26-27,52,57,90-92,138
+  s_d9475e91105919::t_3cfae17a09c0b6 163,166-172
+src/utils/theme.tsx
+  s_d9475e91105919::t_1b1394918da087 177
+  s_d9475e91105919::t_3952de00a7748c 198
+  s_b123436350916b::t_f71e05931f58aa 495,497
+  s_b123436350916b::t_3595c84f915287 15-35
+  s_b123436350916b::t_8944a8a3aeee84 839
+  h_407f16e676115d 155-156,166,212,217,496
+  s_d9475e91105919::t_eba9f68006fad3 191
+  s_d9475e91105919::t_7028d09d451a4c 417
+  s_d9475e91105919::t_7de2c4221fa1ac 866
+  s_d9475e91105919::t_031c37f1f22f5e 858-861
+  s_d9475e91105919::t_0ee38faaf9941b 869
+  s_b123436350916b::t_60b7fa62d11e12 483,487
+  s_d9475e91105919::t_22a740ad14d1bb 68,76
+  s_b123436350916b::t_a2cd753afe6058 484-486,488
+  s_d9475e91105919::t_440b16ef5ca64f 167-169
+  s_d9475e91105919::t_44609a3a34aab5 184
+  s_d9475e91105919::t_259d1e0ef39a93 213-216
+  s_d9475e91105919::t_48f1b0c499251f 219,221-223,226
+  s_d9475e91105919::t_44833c258aa07b 596,603
+  s_b123436350916b::t_51f17c627f7ffd 466
+  s_b123436350916b::t_700a9d0c12c260 604
+  s_d9475e91105919::t_43a7893d5bd41f 446
+  s_d9475e91105919::t_5db1e0c7ceb815 13-14
+  s_b123436350916b::t_2cb74c15466f93 320-321
+  s_d9475e91105919::t_86ccbeb19f3a99 462-463
+  s_d9475e91105919::t_5e6a64fce7d8ee 471,681
+  s_d9475e91105919::t_530e3565007534 205-208
+  s_d9475e91105919::t_22005b8e0c77dd 164
+  s_b123436350916b::t_ed890ff615a986 491-494
+  s_b123436350916b::t_067b5eeddd9323 489-490
+  s_b123436350916b::t_3a35b4ca0163f2 218
+src/components/transactions/Swap/inputs/shared/ExpirySelector.tsx
+  s_d9475e91105919::t_45973708362e4b 2
+src/layouts/components/StakingMenu.tsx
+  h_407f16e676115d 81
+  s_b123436350916b::t_86243dc764e7f7 12
+  s_b123436350916b::t_13a5d23945d5f0 9
+  s_b123436350916b::t_1edf056d043e1b 47,57
+  s_b123436350916b::t_f37a8182dd709f 76
+src/layouts/components/NavItems.tsx
+  s_b123436350916b::t_70aba492309d71 60,91,122,146
+  s_b123436350916b::t_bafb8aefab04cb 7
+  s_b123436350916b::t_04d2a0ddad096d 12
+  s_b123436350916b::t_f417057bf37832 102
+  s_b123436350916b::t_4ab53177119d94 71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "39d96944be972a703f6a693010801d9583160ca7",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b123436350916b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e05079-8b10-488f-b2c2-f8480447c4cf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_d9475e91105919": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f1f4f7a8-ec6d-4d9e-9952-79ee1f11c1e0",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

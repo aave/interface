@@ -1,0 +1,38 @@
+src/layouts/components/SettingSwitchRow.tsx
+  s_9510c0e86310c4::t_2594397b36790b 35
+src/layouts/components/NavItems.tsx
+  s_9510c0e86310c4::t_c184ba2aec0b80 123,145,173
+  s_9510c0e86310c4::t_a0cfe4e0abc112 58,113-115,168-169
+  s_9510c0e86310c4::t_f865cf0aadbeb2 90
+src/layouts/AppHeader.tsx
+  s_9510c0e86310c4::t_22143911f0137a 287,325
+  s_9510c0e86310c4::t_f699c13364031e 364
+  s_9510c0e86310c4::t_15cf78fbdd6c98 145
+  s_9510c0e86310c4::t_7b6147d90ce47d 275,359
+  s_9510c0e86310c4::t_d19d824707fa74 133,140
+  s_9510c0e86310c4::t_fdd65059b6d7bc 310
+  s_9510c0e86310c4::t_15802c0081976f 333
+  s_9510c0e86310c4::t_08a341417c5778 81,86
+  s_9510c0e86310c4::t_40c018f380e14b 102,104-106
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "13b9fa0ba94225c048d906a5f4642f22c72e8507",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9510c0e86310c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b31ce7a4-0a0d-4ab2-a65e-4b2c8ab8c63d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

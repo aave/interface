@@ -1,0 +1,24 @@
+src/modules/umbrella/helpers/StakingDropdown.tsx
+  h_407f16e676115d 84-85,117
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+  h_407f16e676115d 295
+src/utils/figmaColors.ts
+  h_407f16e676115d 14,26,129,141
+src/components/TopInfoPanel/TopInfoPanelItem.tsx
+  h_407f16e676115d 3,61
+src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+  h_407f16e676115d 220
+src/modules/dashboard/lists/ListItemLoader.tsx
+  h_407f16e676115d 25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "5d414fbb35a0e8c91ebcc083112f32608d1a8749",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

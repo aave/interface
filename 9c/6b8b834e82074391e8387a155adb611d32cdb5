@@ -1,0 +1,85 @@
+.github/workflows/i18n-check.yml
+  s_9a1e9249df3092::t_ca230d8d972359 13-15
+.github/workflows/dependency-review.yml
+  s_9a1e9249df3092::t_ca230d8d972359 20-21
+src/components/MarketSwitcher.tsx
+  s_9a1e9249df3092::t_bb0746657455bf 467,474,478
+  s_9a1e9249df3092::t_ca230d8d972359 189-215,296,308-309,316-317,469,481-483,494-495,577-582,666-667
+  s_9a1e9249df3092::t_29a29b3896fab4 443-447,450,455-463,466,468,470-473,475-477,479-480,484-493,496-507,510-551
+  s_9a1e9249df3092::t_342f3bca21b0cd 651-652,657,662,665,668
+src/locales/el/messages.js
+  s_9a1e9249df3092::t_28ebc02dd17ca0 1
+.github/workflows/crowdin-upload.yml
+  s_9a1e9249df3092::t_ca230d8d972359 9-12
+.github/workflows/test-deploy-fork.yml
+  s_9a1e9249df3092::t_ca230d8d972359 12-16,20-23,61-64,106-109,201-204,234-237
+src/ui-config/merklConfig.ts
+  s_9a1e9249df3092::t_ca230d8d972359 36-38
+src/locales/fr/messages.js
+  s_9a1e9249df3092::t_28ebc02dd17ca0 1
+src/locales/en/messages.js
+  s_9a1e9249df3092::t_28ebc02dd17ca0 1
+src/layouts/AppHeader.tsx
+  s_9a1e9249df3092::t_c0186e8f8b3cbc 273-290
+  s_9a1e9249df3092::t_ca230d8d972359 25
+  s_9a1e9249df3092::t_fde75d42bb3c44 272
+.github/workflows/build-test-deploy-dev.yml
+  s_9a1e9249df3092::t_ca230d8d972359 11-14,82-84,103-105
+.github/workflows/update-prod-staging.yml
+  s_9a1e9249df3092::t_ca230d8d972359 11-14
+pages/api/governance/vote-relay/[...path].ts
+  s_9a1e9249df3092::t_ca230d8d972359 1-87
+src/components/transactions/GovVote/GovVoteActions.tsx
+  s_9a1e9249df3092::t_ca230d8d972359 16,204,229-252,258-280,282-311,314-315
+.prettierignore
+  s_9a1e9249df3092::t_ca230d8d972359 30
+patches/connectkit@1.9.2.patch
+  s_9a1e9249df3092::t_ca230d8d972359 1-13
+.github/workflows/build-test-deploy.yml
+  s_9a1e9249df3092::t_ca230d8d972359 11-14,101-103,125-126,208-209,223-224
+src/components/incentives/IncentivesTooltipContent.tsx
+  s_9a1e9249df3092::t_ca230d8d972359 186-190,221-225,271-275
+src/locales/es/messages.js
+  s_9a1e9249df3092::t_28ebc02dd17ca0 1
+.github/workflows/build-fork.yml
+  s_9a1e9249df3092::t_ca230d8d972359 11-13
+package.json
+  s_9a1e9249df3092::t_ca230d8d972359 22-30
+src/components/transactions/GovVote/temporary/voteRelayClient.ts
+  s_9a1e9249df3092::t_ca230d8d972359 1-114
+src/ui-config/marketsConfig.tsx
+  s_9a1e9249df3092::t_ca230d8d972359 497,511
+src/ui-config/wagmiConfig.ts
+  s_9a1e9249df3092::t_ca230d8d972359 90
+.env.example
+  s_9a1e9249df3092::t_ca230d8d972359 8,60-62
+src/layouts/MainLayout.tsx
+  s_9a1e9249df3092::t_ca230d8d972359 12
+.github/workflows/crowdin-download.yml
+  s_9a1e9249df3092::t_ca230d8d972359 12-15
+patches/@funkit__connect@9.28.1.patch
+  s_9a1e9249df3092::t_ca230d8d972359 1-13
+pnpm-lock.yaml
+  s_9a1e9249df3092::t_72fa2f40a4deeb 19-30,80,116,158,194,1885-1887,1891-1893,1897-1903,1907-1908,1912-1913,1918-1919,1924-1925,1930-1931,1936-1937,1942-1943,1948-1949,1954-1955,1960-1962,1967-1969,1974-1976,1981-1983,1988-1990,1995-1997,2002-2004,2009-2011,2016-2022,2025-2027,2031-2033,2037-2039,3291,3300,8983-8984,9110-9117,12422,12542,12604,12606,12609,12611-12616,12619,12622,12625,12628,12631,12634,12637,12640,12643,12646,12649,12651,12654,12656,12659,12661,12664,12666,12669,12671,12674,12676,12679,12681,12684,12686,12689,12694-12699,12702,12705,14381,14383,14390,14392,14398,14520,14522,14532,14535,17799,18951,21060,21078,21081,22116,22245,22251-22276
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "9c6b8b834e82074391e8387a155adb611d32cdb5",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9a1e9249df3092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "185147c8-c903-4a9e-9255-047797ac1a4a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

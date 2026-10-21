@@ -1,0 +1,26 @@
+pages/api/rpc-proxy.ts
+  s_ed7b5d57435690::t_cda224e9d54162 3
+.env.example
+  h_dd1a1ee57491bb 49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "13b7dfa43048fc112e840e2c84436a2ce34edd74",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_ed7b5d57435690": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bdd7f8c7-0f61-47d9-b155-35ee1456e036",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+src/utils/theme.tsx
+  s_761dd4371f1a34::t_cab59df91aa37f 154-159
+  s_761dd4371f1a34::t_50d4bd3b4219be 680-687
+src/components/icons/CloseIcon.tsx
+  s_761dd4371f1a34::t_2859909ae25414 1-14
+src/components/primitives/BasicModal.tsx
+  s_761dd4371f1a34::t_a1a2339060defa 1,4
+  s_761dd4371f1a34::t_1f19c8ff87a4aa 89-92
+  s_761dd4371f1a34::t_ab494658786126 51-53
+  s_761dd4371f1a34::t_64bfe502a094f4 62
+  s_761dd4371f1a34::t_c695ec6639d839 5
+src/utils/figmaColors.ts
+  s_761dd4371f1a34::t_40022774d5ab8c 53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "e48b9e7a8d47d07ceddfbcc5a8c7cc58bc7462bb",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_761dd4371f1a34": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ae7f60f-27bd-4669-95ee-d0ed816a8662",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+src/ui-config/menu-items/index.tsx
+  s_e8edff4d0716d1::t_81096231b804db 33-41
+  s_e8edff4d0716d1::t_c90f3efa163ab4 32
+src/locales/en/messages.po
+  s_e8edff4d0716d1::t_6c1d0818b184dc 2766
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "34fde6e2545f0c4b1bdfaf68d50e0bfe7e884737",
+  "prompts": {},
+  "sessions": {
+    "s_e8edff4d0716d1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2dfb1aca-df0c-4f9e-b0f7-19dc6135f592",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

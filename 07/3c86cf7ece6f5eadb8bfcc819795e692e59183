@@ -1,0 +1,16 @@
+src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
+  h_407f16e676115d 100
+src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
+  h_407f16e676115d 89
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "073c86cf7ece6f5eadb8bfcc819795e692e59183",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

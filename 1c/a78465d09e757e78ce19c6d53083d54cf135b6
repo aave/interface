@@ -1,0 +1,27 @@
+src/components/transactions/FunCheckout/FunkitCheckout.tsx
+  s_cc4cc84299aff0::t_d44f5a4ccdcc59 94-104,108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.11",
+  "base_commit_sha": "1ca78465d09e757e78ce19c6d53083d54cf135b6",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_cc4cc84299aff0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6ef27024-cc71-430a-8b98-1af82953ec39",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

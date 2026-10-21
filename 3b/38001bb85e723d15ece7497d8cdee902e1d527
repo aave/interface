@@ -1,0 +1,24 @@
+src/modules/reserve-overview/ReserveEModePanel.tsx
+  s_bca6c9efd54453::t_4a87027aeeabe1 31-41,43,62-63,107
+src/utils/figmaColors.ts
+  s_bca6c9efd54453::t_ffc3b6bbd83f5f 131,259
+src/utils/theme.tsx
+  s_bca6c9efd54453::t_723beedf28f9b5 135-137
+  s_bca6c9efd54453::t_ffc3b6bbd83f5f 126-134,138-139
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "3b38001bb85e723d15ece7497d8cdee902e1d527",
+  "prompts": {},
+  "sessions": {
+    "s_bca6c9efd54453": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7bff3ca2-055e-4079-ac59-25ecc9931567",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

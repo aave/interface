@@ -1,0 +1,80 @@
+src/layouts/components/SettingSwitchRow.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 29
+src/layouts/TopBarNotify.tsx
+  s_2dcd2bf87cccfc::t_8bd8bb274f310b 128
+src/layouts/components/NavItems.tsx
+  s_7edf19a7347db7::t_90087a7244d71c 7,60,91,122,146
+  s_7edf19a7347db7::t_72189b5cbc4542 71,102
+src/layouts/AppGlobalStyles.tsx
+  s_2a638d6da031a9::t_fa689303847c09 3-4,9-12,15,35-37,40-41
+  s_2a638d6da031a9::t_8317ad75a8dd80 24-28
+  s_2a638d6da031a9::t_ca22cc8ac3d20d 2,6,17-23,29,31-32,38
+  s_2a638d6da031a9::t_9a7f2f2505dcd1 16
+src/layouts/components/StakingMenu.tsx
+  s_7edf19a7347db7::t_90087a7244d71c 9,47,57
+  s_7edf19a7347db7::t_2ad18f04e3c179 76
+  s_7edf19a7347db7::t_edbefa4d53fe01 102,104
+src/layouts/components/LanguageSwitcher.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 39,54,81,94
+  s_7edf19a7347db7::t_d03f9144cf4397 33
+src/layouts/SupportModal.tsx
+  s_7edf19a7347db7::t_edbefa4d53fe01 218,240,268,291,303
+  s_7edf19a7347db7::t_d03f9144cf4397 206,210
+src/layouts/components/navLinkSx.ts
+  s_7edf19a7347db7::t_7d06a9c8563bc6 7,10-11,16,20,34
+  s_7edf19a7347db7::t_062afeb5596118 3
+src/layouts/AppFooter.tsx
+  s_7edf19a7347db7::t_f8b7f3d798f5a4 17,24
+  s_7edf19a7347db7::t_ee3904e38f4c6f 18,20
+  s_7edf19a7347db7::t_200c997e7c84f9 7
+src/layouts/components/DarkModeSwitcher.tsx
+  s_2a638d6da031a9::t_66a2f903962800 2-3,14,17-20,25-27
+src/layouts/SettingsMenu.tsx
+  s_7edf19a7347db7::t_13cfe78e5fdc5f 76
+  s_7edf19a7347db7::t_edbefa4d53fe01 91
+src/layouts/AppHeader.tsx
+  s_7edf19a7347db7::t_203cecfc5e9a29 290
+  h_407f16e676115d 327
+  s_7edf19a7347db7::t_edbefa4d53fe01 234
+  s_7edf19a7347db7::t_1cd2a244f0f51f 213,217
+  s_7edf19a7347db7::t_4865eb2cfd7f44 31
+  s_7edf19a7347db7::t_8667d00f99cb88 51-52
+  s_7edf19a7347db7::t_40e4fc83bb9f05 276,282,284-289,291-297,299-300,304,314,320,322
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "212879456e9d90d657308471648b0be6837108ce",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2a638d6da031a9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f9e089d0-1f76-4134-bf98-6714f19a62a8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_2dcd2bf87cccfc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8fd233eb-6c83-496c-9e84-129410fc4845",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_7edf19a7347db7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1a737811-bbb1-4377-978b-befdf741d8c0",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

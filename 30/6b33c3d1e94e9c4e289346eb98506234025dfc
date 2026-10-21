@@ -1,0 +1,71 @@
+src/modules/stkGho/StkGhoCard.tsx
+  h_dd1a1ee57491bb 78
+  s_9caebe1dc6cfbb::t_429011860b6c3a 15
+  s_9caebe1dc6cfbb::t_3aa5bdb9044d9b 76-77,79-83
+src/utils/events.ts
+  h_dd1a1ee57491bb 132
+src/components/transactions/StkGhoMigrate/StkGhoMigrateModal.tsx
+  s_9caebe1dc6cfbb::t_d920c3cffd0424 1-24
+pages/sgho.page.tsx
+  s_9caebe1dc6cfbb::t_49cc395c8f9114 40-44
+  s_9caebe1dc6cfbb::t_5e3b173773b635 99
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_9caebe1dc6cfbb::t_78179a9b548b67 152-153,155-162
+  s_9caebe1dc6cfbb::t_30f037bfedfc06 133,143,154
+  s_9caebe1dc6cfbb::t_fea15d3686f2f5 17-18,25-26
+  s_9caebe1dc6cfbb::t_2c8231a2274651 43-47
+src/hooks/useModal.tsx
+  s_9caebe1dc6cfbb::t_fe35fd8da16839 42
+  s_9caebe1dc6cfbb::t_7998467f55ce44 155
+  s_9caebe1dc6cfbb::t_427769600315f9 444-448
+src/modules/markets/Gho/GhoBanner.tsx
+  s_9caebe1dc6cfbb::t_8f29ab7e424ffa 8
+  s_9caebe1dc6cfbb::t_953c521bab0a93 183-191
+  s_9caebe1dc6cfbb::t_5fedf54a48e01f 201
+  s_9caebe1dc6cfbb::t_ec5bee4e763197 32
+  s_9caebe1dc6cfbb::t_db0a6d7c5a95df 301-310
+src/hooks/compliance/service-compliance.ts
+  s_9caebe1dc6cfbb::t_f3c3de4b07f852 14-16
+src/components/transactions/StkGhoMigrate/StkGhoMigrateActions.tsx
+  s_9caebe1dc6cfbb::t_943ba56f5e7106 18
+  s_9caebe1dc6cfbb::t_23f6771173b7e6 1-17,19-22,26-48,50-60,67,69-117,119-128
+  s_9caebe1dc6cfbb::t_abe526f6d7cb4c 49
+  s_9caebe1dc6cfbb::t_8023ba0afea894 61-66,68
+  s_9caebe1dc6cfbb::t_19e384d890711a 118
+  s_9caebe1dc6cfbb::t_0af58d22d78685 23-25
+src/modules/stkGho/StkGhoDepositPanel.tsx
+  s_9caebe1dc6cfbb::t_d7c47742425140 78-79
+  s_9caebe1dc6cfbb::t_b13f3b8daeced0 32
+  s_9caebe1dc6cfbb::t_afb87681acc004 65-67
+src/components/transactions/StkGhoMigrate/StkGhoMigrateModalContent.tsx
+  s_9caebe1dc6cfbb::t_ad319d796d3672 1-4,6-8,10-14,16-35,49-50,62-63,71-75,77,80-81,83,86-98
+  s_9caebe1dc6cfbb::t_99824f57cf119c 36-38,41-47
+  s_9caebe1dc6cfbb::t_ef941b3fffe3d5 39-40,48
+  s_9caebe1dc6cfbb::t_cef57faaffaaa5 79,85
+  s_9caebe1dc6cfbb::t_170127ab885f18 9,15
+  s_9caebe1dc6cfbb::t_c36e841c7de87b 5
+  s_9caebe1dc6cfbb::t_f33c58ebfe75ba 57,60-61,64-65,69-70
+  s_9caebe1dc6cfbb::t_3c062090088d7e 51-56,58-59,66-68
+  s_9caebe1dc6cfbb::t_60bfeda68522e0 76,78,82,84
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.10",
+  "base_commit_sha": "306b33c3d1e94e9c4e289346eb98506234025dfc",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_9caebe1dc6cfbb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "db3666f1-e581-406f-8aa9-b6bcdf7fedf7",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

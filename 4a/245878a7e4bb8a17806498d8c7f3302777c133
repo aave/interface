@@ -1,0 +1,102 @@
+src/layouts/components/navLinkSx.ts
+  s_89dfc36179084a::t_ff0775c1e49e3e 18-19,23
+src/modules/sGho/SGhoHeader.tsx
+  s_2f06aafc3cd5a0::t_f8687260eef83b 71
+src/layouts/components/StakingMenu.tsx
+  s_fc23a987c90429::t_b1b54e4c37cac2 78
+  s_fc23a987c90429::t_12711c83fa7d5f 5-6
+  s_fc23a987c90429::t_5ef0bf9bbb4745 23-26
+src/modules/staking/StakingHeader.tsx
+  s_2f06aafc3cd5a0::t_1d65c8dcd25a3b 65
+  s_2f06aafc3cd5a0::t_1caec912bbefef 62
+  s_2f06aafc3cd5a0::t_112a828ef20c01 81
+  s_8808aa063c0ec2::t_4af3415ee7df55 57
+src/layouts/TopBarNotify.tsx
+  h_407f16e676115d 82-83
+src/modules/governance/GovernanceTopPanel.tsx
+  s_8808aa063c0ec2::t_39667fd00bf8cb 54
+  s_2f06aafc3cd5a0::t_ed7a41868b7e64 59
+  s_2f06aafc3cd5a0::t_c4a7bbf0ebf4da 69
+src/utils/figmaColors.ts
+  h_407f16e676115d 21
+src/components/Analytics/AnalyticsConsent.tsx
+  s_8808aa063c0ec2::t_d67a90edaea2c5 1
+  s_8808aa063c0ec2::t_1ad6e41e3644c8 57,69-71
+  s_8808aa063c0ec2::t_0a021a0597f653 52-54,58-68,72-86,89,97-99,101-107
+  s_8808aa063c0ec2::t_b437b1ee072f78 100
+  s_8808aa063c0ec2::t_cd56918959e029 90-93
+  s_8808aa063c0ec2::t_bf06f5a1c03aa5 108
+  h_407f16e676115d 94,96
+src/modules/governance/ProposalListHeader.tsx
+  h_407f16e676115d 48,92
+src/components/ChainAvailabilityText.tsx
+  h_407f16e676115d 28,39
+src/utils/theme.tsx
+  s_263201637630c4::t_3d8a1cd7ad03db 798-805
+src/components/MarketSwitcher.tsx
+  s_8808aa063c0ec2::t_0dd3191f4d4c92 192-198,206-207
+  s_8808aa063c0ec2::t_88f2ed36d40b5a 856
+  s_8808aa063c0ec2::t_748fca725b6d80 199-205
+  s_8808aa063c0ec2::t_c51aea092917fe 208
+  s_8808aa063c0ec2::t_5053dcf2fe7c27 794-801
+  s_8808aa063c0ec2::t_509638830ec1dc 817-821
+src/modules/umbrella/UmbrellaHeader.tsx
+  s_8808aa063c0ec2::t_3c79c6f04d71c8 36
+  s_89dfc36179084a::t_8d92aa105e695d 3
+  s_2f06aafc3cd5a0::t_0c09fee6ac3744 44
+  s_2f06aafc3cd5a0::t_ac174217133019 55
+  s_2f06aafc3cd5a0::t_a43e8084c23764 39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "4a245878a7e4bb8a17806498d8c7f3302777c133",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_263201637630c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "64aa768d-ec4b-4af6-9f67-ffa054db8412",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_2f06aafc3cd5a0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "970c71c4-61b5-45c9-8940-828bf4e23321",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_8808aa063c0ec2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "10b27b18-cb0d-4b39-bedc-db49e7b24d44",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_89dfc36179084a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ce413fc7-4c91-4cab-804f-abbfe02a3911",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_fc23a987c90429": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6cb34acf-0bdf-4cb0-99f2-c3215b29cbab",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

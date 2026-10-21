@@ -1,0 +1,48 @@
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_62ca5204a4a57a::t_78dcd952563128 59
+  s_62ca5204a4a57a::t_009e38c7b0f739 56-58
+  s_62ca5204a4a57a::t_71038232fee698 60-61
+  s_62ca5204a4a57a::t_16d8e3e5c55b7c 9-22,24-38,42-53
+src/components/transactions/Swap/helpers/cow/env.helpers.ts
+  s_62ca5204a4a57a::t_3bf48d72a18fd0 1,3,5,7,10
+  s_62ca5204a4a57a::t_9778d71601aca1 41-48,51-62
+src/components/transactions/Swap/hooks/useFlashLoanFeeBps.ts
+  s_62ca5204a4a57a::t_caf616cf618ebc 53
+  s_62ca5204a4a57a::t_171a92f6d8c324 21,68
+src/components/transactions/CancelCowOrder/CancelAdapterOrderActions.tsx
+  s_62ca5204a4a57a::t_8fd747eefbe4cf 1,19,62-63
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+  s_62ca5204a4a57a::t_feb7b27a7b0946 16,24-28,187,251-259,320
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+  s_62ca5204a4a57a::t_65f862eeb657d2 17,29,199,295-303,344
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+  s_62ca5204a4a57a::t_0f41ba02ea0839 16,28,197,273-281,342
+src/components/transactions/Swap/helpers/cow/adapters.helpers.ts
+  s_62ca5204a4a57a::t_1bc9a1d2631cf1 8,14-15,22-26,64,151-197
+src/components/transactions/Swap/helpers/shared/provider.helpers.ts
+  s_62ca5204a4a57a::t_bce5e2e1ac0c4f 1-2,5,13-14,18,26-31,70,77,84-91
+src/components/transactions/Swap/hooks/useSwapQuote.ts
+  s_62ca5204a4a57a::t_4215a7f60e6b23 112-113,124,134
+src/hooks/useTransactionHistory.tsx
+  s_62ca5204a4a57a::t_cc91414c1fbbe5 473
+src/modules/history/types.ts
+  s_62ca5204a4a57a::t_2878143edcb70c 60
+src/utils/swapAdapterHistory.ts
+  s_62ca5204a4a57a::t_02560e752f01cc 26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "42f84c5001607dc60e5a0e010bfc2e21cb8230dc",
+  "prompts": {},
+  "sessions": {
+    "s_62ca5204a4a57a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cba225dd-df41-4a5d-bed3-3b92d7d1f14a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+src/components/transactions/Repay/RepayModalContent.tsx
+  s_c764ea9a080558::t_22c9bf14f4454e 261
+  s_c764ea9a080558::t_2444b3c47e86f5 205-209
+  s_c764ea9a080558::t_69463e22601090 320
+  s_c764ea9a080558::t_269eb57c73cfbf 143
+  s_c764ea9a080558::t_eb1d0be73661b2 105-113,115,119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "0eca8eefe78571b2dd1e1f2794e3a5c61d8ab322",
+  "prompts": {},
+  "sessions": {
+    "s_c764ea9a080558": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "419b8e5f-eca0-4479-8dcd-d72fa8e41c3f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

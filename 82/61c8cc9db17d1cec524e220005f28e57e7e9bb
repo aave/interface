@@ -1,0 +1,30 @@
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_2264425d2f0b57::t_7e27cc5f8929fa 2,18
+  h_407f16e676115d 353
+  s_2264425d2f0b57::t_2abddb0c832f9d 345-352,355-356
+src/components/primitives/BasicModal.tsx
+  s_2264425d2f0b57::t_02b820edab0a63 84-87
+  h_407f16e676115d 77,80,92
+  s_2264425d2f0b57::t_749dc54d539aa4 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "8261c8cc9db17d1cec524e220005f28e57e7e9bb",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_2264425d2f0b57": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a8fb38dc-82c6-4422-801e-cd66ed9b3e9e",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,41 @@
+src/modules/governance/proposal/ProposalPayloads.tsx
+  s_cc023d19ae9515::t_90f0e6172cca8e 3-4
+  s_cc023d19ae9515::t_e0d41344eb9744 35-36
+  s_cc023d19ae9515::t_1ea9be6dc16aac 78-79,90-92,99
+  s_cc023d19ae9515::t_5fa4960c54e4da 176-184
+  s_cc023d19ae9515::t_b99bc330c9609f 174-175,185
+src/locales/el/messages.js
+  s_cc023d19ae9515::t_ea384c5942131c 1
+src/locales/en/messages.js
+  s_cc023d19ae9515::t_e356cda613bca4 1
+src/locales/en/messages.po
+  s_cc023d19ae9515::t_c3f8991617718e 540,4309-4312
+src/locales/es/messages.js
+  s_cc023d19ae9515::t_b727bb58bc7e4b 1
+src/locales/fr/messages.js
+  s_cc023d19ae9515::t_16711327106522 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "b1bb0bee289c0f0e86482f74a9007c85ca12de35",
+  "prompts": {},
+  "humans": {
+    "h_0feed110d555ac": {
+      "author": "Joaquin Battilana <battilanajn@gmail.com>"
+    },
+    "h_a4f3b5d28b0320": {
+      "author": "Joaquin Battilana"
+    }
+  },
+  "sessions": {
+    "s_cc023d19ae9515": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5269601c-242e-4a8a-b254-516772db1a62",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

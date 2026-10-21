@@ -1,0 +1,14 @@
+src/ui-config/marketsConfig.tsx
+  h_be8c3c572e9983 497,511
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "481042c9c0a89a6259bd2e52821dcaefa6cafdee",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

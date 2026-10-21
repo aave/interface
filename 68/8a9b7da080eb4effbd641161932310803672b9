@@ -1,0 +1,81 @@
+src/components/TopInfoPanel/TopInfoPanelItem.tsx
+  s_49cd428a5a1d14::t_cc6d35abc4c078 61
+src/modules/governance/proposal/VotersListContainer.tsx
+  s_49cd428a5a1d14::t_bbe1f9e7d40257 33,40
+src/layouts/components/DrawerWrapper.tsx
+  s_49cd428a5a1d14::t_cc6d35abc4c078 23
+src/modules/dev/ComponentShowcase/utils/tokenHex.ts
+  s_49cd428a5a1d14::t_82234f97e01d47 1-11,13-24
+  s_49cd428a5a1d14::t_67969752d2bfdb 12
+src/components/MarketSwitcher.tsx
+  s_49cd428a5a1d14::t_cc6d35abc4c078 512,812
+src/utils/theme.tsx
+  s_49cd428a5a1d14::t_7af017fb2f84fe 1047-1052
+  s_49cd428a5a1d14::t_40b46138295172 644-645
+  s_49cd428a5a1d14::t_ff221f41ab5e4a 46-55,58-60,63,71
+  s_49cd428a5a1d14::t_6200e6c204a70d 105-111,113,118
+  s_49cd428a5a1d14::t_e75b19f66f1c70 524-530,532,542
+  s_49cd428a5a1d14::t_c2c020ff23eaa9 129-130,134-136
+  s_49cd428a5a1d14::t_c46352997d846d 516,520
+  s_49cd428a5a1d14::t_29419a6a8b4883 622-623
+  s_49cd428a5a1d14::t_96f414661377e9 45
+src/modules/governance/proposal/VotersListModal.tsx
+  s_49cd428a5a1d14::t_bbe1f9e7d40257 58,61,97,100
+src/modules/governance/GovernanceTopPanel.tsx
+  s_49cd428a5a1d14::t_cc6d35abc4c078 30
+src/layouts/MobileMenu.tsx
+  s_49cd428a5a1d14::t_cc6d35abc4c078 137,170
+src/modules/migration/MigrationMobileList.tsx
+  s_49cd428a5a1d14::t_bbe1f9e7d40257 66
+src/components/StyledToggleButton.tsx
+  s_49cd428a5a1d14::t_71e17a24696589 13-15,19
+  s_49cd428a5a1d14::t_881fc567ae5293 43
+src/modules/dev/ComponentShowcase/components/Swatch/index.tsx
+  s_49cd428a5a1d14::t_0b97e6956b0346 33
+  s_49cd428a5a1d14::t_a7057f46a94d6f 1-4,7
+src/utils/figmaColors.ts
+  s_49cd428a5a1d14::t_8d02e8c16c9d83 8,11-12,20,23-24
+  s_49cd428a5a1d14::t_cfdddfa821f160 101-106,108
+  s_49cd428a5a1d14::t_25dfb45881a1eb 137-144,151,153
+  s_49cd428a5a1d14::t_ddee8383aa729d 233
+  s_49cd428a5a1d14::t_9f6e4595b85780 25-26,154-155
+src/modules/dev/ComponentShowcase/components/ColorSpecimen/index.tsx
+  s_49cd428a5a1d14::t_cef9124fb93b5c 6
+  s_49cd428a5a1d14::t_87dc4b8383dca9 36,52,72,89
+src/layouts/TopBarNotify.tsx
+  s_49cd428a5a1d14::t_cc6d35abc4c078 191
+src/modules/dev/ComponentShowcase/utils/catalog.ts
+  s_49cd428a5a1d14::t_6b631f63353d01 38
+src/modules/reserve-overview/ReserveHeaderIconButton.tsx
+  s_49cd428a5a1d14::t_f69b800e052b05 15
+  s_49cd428a5a1d14::t_33b2d763caf0d0 40
+  s_49cd428a5a1d14::t_51e11af8466932 17
+  s_49cd428a5a1d14::t_a7c1ed4cbcce15 45-46
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_49cd428a5a1d14::t_cc6d35abc4c078 352
+src/components/lists/ListHeaderTitle.tsx
+  s_49cd428a5a1d14::t_3c9a63480d64e0 43
+src/modules/dev/ComponentShowcase/components/TokenHexLabel/index.tsx
+  s_49cd428a5a1d14::t_05995d67aba314 1-33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "688a9b7da080eb4effbd641161932310803672b9",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_49cd428a5a1d14": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3931130f-c0c8-4652-be11-79dd9fbf0f6b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

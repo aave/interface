@@ -1,0 +1,26 @@
+package.json
+  s_515c502c8071e6::t_2054990962309b 35
+  s_515c502c8071e6::t_ef7abae29524cc 150
+patches/connectkit+1.9.2.patch
+  s_515c502c8071e6::t_029cf25f0b57e9 1-13
+.prettierignore
+  s_515c502c8071e6::t_028483828b50e3 29
+yarn.lock
+  s_515c502c8071e6::t_2c8e8426ca5c23 6345-6349,7319,9339-9345,9432-9440,9704,10268-10272,10494-10500,11223-11233,11265-11269,11326-11332,12671-12678,12895-12914,14179-14183,14769,15844-15848
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "e0d2f02761fe3b17e4ba55f42d067acc4809fbb1",
+  "prompts": {},
+  "sessions": {
+    "s_515c502c8071e6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cb81f570-7871-4d16-a1b3-f07afb3b5d87",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

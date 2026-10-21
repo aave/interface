@@ -1,0 +1,28 @@
+src/modules/reserve-overview/ReserveTopDetails.tsx
+  s_75de5ff7ddb010::t_d2c85e54a7c4b5 9
+  s_75de5ff7ddb010::t_a3df9f6ee53801 61
+src/utils/__tests__/getMaxAmountAvailableToBorrow.spec.ts
+  s_75de5ff7ddb010::t_777e41556568cb 2-4,17,21,46,49
+  s_75de5ff7ddb010::t_01dc6cdb963002 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.3",
+  "base_commit_sha": "e36f1ec11ef3ac88c60e876326ef5e3a26f15ae3",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  },
+  "sessions": {
+    "s_75de5ff7ddb010": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "02678341-e1b4-4220-9f5c-193ad58c6262",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

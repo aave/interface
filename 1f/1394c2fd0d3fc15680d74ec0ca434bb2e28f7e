@@ -1,0 +1,40 @@
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+  s_a51ccd4991d535::t_2529c6f3fd56ea 217
+  s_a51ccd4991d535::t_538bdde9ef41cf 184-185
+  s_a51ccd4991d535::t_a048b64980d3de 16
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+  s_a51ccd4991d535::t_8447667322b5f5 186-187
+  s_a51ccd4991d535::t_b446310ba72ea7 17
+  s_a51ccd4991d535::t_631dcbb827ed5f 219
+src/components/transactions/Swap/hooks/useFlashLoanFeeBps.ts
+  s_a51ccd4991d535::t_be57953c6a7eff 69-73,83,86,104-106
+src/components/transactions/Swap/hooks/useSwapOrderAmounts.ts
+  s_a51ccd4991d535::t_4aea2e1e0593a7 100-102
+src/components/transactions/Swap/helpers/cow/adapters.helpers.ts
+  s_a51ccd4991d535::t_68e2510970ecf6 92
+  s_a51ccd4991d535::t_0d1657b08ae686 52-53
+  s_a51ccd4991d535::t_c10c90f2f47f4f 171-175,184
+  s_a51ccd4991d535::t_375eddef938978 19
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+  s_a51ccd4991d535::t_ba8245d18534a3 193
+  s_a51ccd4991d535::t_8e462fe21e44aa 171-172
+  s_a51ccd4991d535::t_6adc17fc224380 16
+src/components/transactions/Swap/helpers/paraswap/flashloan.helpers.ts
+  s_a51ccd4991d535::t_7fe9b6b3b78bbb 7-9,25-26,36-37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "1f1394c2fd0d3fc15680d74ec0ca434bb2e28f7e",
+  "prompts": {},
+  "sessions": {
+    "s_a51ccd4991d535": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5b49bfca-5ac8-4762-a1f5-6527caa277c2",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

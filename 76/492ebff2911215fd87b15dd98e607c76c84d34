@@ -1,0 +1,19 @@
+public/favicon.svg
+  s_303978b07e61f6::t_3f845042279ae7 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "76492ebff2911215fd87b15dd98e607c76c84d34",
+  "prompts": {},
+  "sessions": {
+    "s_303978b07e61f6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5bff8270-b8af-4dec-bf09-a3d3f3bccbc2",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

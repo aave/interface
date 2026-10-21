@@ -1,0 +1,27 @@
+src/modules/umbrella/helpers/ApyTooltip.tsx
+  s_9510c0e86310c4::t_ae038e25c66ec6 2,6,8
+src/modules/umbrella/helpers/StakedUnderlyingTooltip.tsx
+  s_9510c0e86310c4::t_f9b665483bbb59 2,5,7
+src/modules/umbrella/helpers/SharesTooltip.tsx
+  s_9510c0e86310c4::t_75510e2dfac005 2,5,7
+src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
+  s_9510c0e86310c4::t_9e38579f6594c9 23
+  s_9510c0e86310c4::t_c98bf09eb48d9b 31
+  s_9510c0e86310c4::t_31d02650524607 27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "2a19028b739f287c352198250ac8f8079e6b935b",
+  "prompts": {},
+  "sessions": {
+    "s_9510c0e86310c4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b31ce7a4-0a0d-4ab2-a65e-4b2c8ab8c63d",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

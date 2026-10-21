@@ -1,0 +1,28 @@
+src/components/transactions/Withdraw/WithdrawModalContent.tsx
+  s_0d733cafe839e1::t_fac9b79648dccf 170,172-178
+  h_dd1a1ee57491bb 171
+src/components/transactions/AssetInput.tsx
+  h_dd1a1ee57491bb 198,206-207,209,211-213
+  s_0d733cafe839e1::t_e430a8702d1660 210
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.5",
+  "base_commit_sha": "caa6aa85f0fce78a4874a9569a4c6cb455b8ddae",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_0d733cafe839e1": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f18b9-cd32-75d3-b566-fda60b0a42cd",
+        "model": "gpt-5.5"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

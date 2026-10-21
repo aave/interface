@@ -1,0 +1,84 @@
+src/locales/en/messages.js
+  s_1d38c58a067900::t_42c65a2bcc5877 1
+src/hooks/useModal.tsx
+  s_1d38c58a067900::t_0611b665404c72 48,141,379-383
+src/components/transactions/Swap/helpers/cow/env.helpers.ts
+  s_1d38c58a067900::t_ea72ba7062c319 11-12,41-49,52,55-63
+src/components/transactions/Swap/helpers/shared/provider.helpers.ts
+  s_1d38c58a067900::t_fb077f9b685882 76-78
+src/components/transactions/Swap/helpers/cow/adapters.helpers.ts
+  s_1d38c58a067900::t_92ac6b698fb2bb 12,28-35,71
+src/locales/fr/messages.js
+  s_1d38c58a067900::t_9461140fd4ce7d 1
+src/components/transactions/Swap/hooks/useSwapQuote.ts
+  s_1d38c58a067900::t_c799218bbea2f9 40-41
+src/components/transactions/Swap/shared/SwapModalTitle.tsx
+  s_1d38c58a067900::t_2a3c09a0970dee 2,5-6,9
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+  s_1d38c58a067900::t_75e2738351a467 30-31,54-56,144-161
+src/components/transactions/Swap/helpers/shared/invalidation.helpers.ts
+  s_1d38c58a067900::t_fcbefe4a59f232 41-44
+src/locales/el/messages.js
+  s_1d38c58a067900::t_966df3254a427d 1
+src/locales/en/messages.po
+  s_1d38c58a067900::t_57c05cee1aec51 51-54,220-223,934-937,1194-1198,1482-1486,2161-2164,3085-3088,3447-3450,3455,3491-3493
+src/utils/hfUtils.ts
+  s_1d38c58a067900::t_e0bf159923b568 28-38,226-294
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+  s_1d38c58a067900::t_a882e05ab8320a 3
+  s_1d38c58a067900::t_4ae5faa8b11fab 24,36
+src/components/transactions/Swap/details/index.ts
+  s_1d38c58a067900::t_27dda556ef7cac 15,43-44
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+  s_1d38c58a067900::t_824340c45cda09 30-31,148-158
+pages/_app.page.tsx
+  s_1d38c58a067900::t_e8c9c5267e8fdd 47-52,202
+src/components/transactions/Swap/modals/LeverageModal.tsx
+  s_1d38c58a067900::t_dc63b034bfd3b6 1-34
+src/components/transactions/Swap/helpers/cow/index.ts
+  s_1d38c58a067900::t_93053cf2c92c74 3
+src/components/transactions/Swap/actions/Leverage/LeverageActionsViaCoW.tsx
+  s_1d38c58a067900::t_27c6882e7c02cd 1-391
+src/components/transactions/Swap/helpers/cow/leverage.helpers.ts
+  s_1d38c58a067900::t_2de23e41db5fdb 1-110
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+  s_1d38c58a067900::t_7f7b89ddade536 3
+  s_1d38c58a067900::t_58bf4beda34f4c 23,31
+src/components/transactions/Swap/modals/request/LeverageModalContent.tsx
+  s_1d38c58a067900::t_9e2510be1259f2 216-217
+  s_1d38c58a067900::t_06f9f8a7df21b5 1-215,218
+  s_1d38c58a067900::t_39ffcf24a74c37 219-220
+src/components/transactions/Swap/actions/index.ts
+  s_1d38c58a067900::t_8db1a1826c7016 17,66-72
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+  s_1d38c58a067900::t_bb9b34f9178e33 3
+  s_1d38c58a067900::t_deaa10f5f6c8f3 23,35
+src/components/transactions/Swap/hooks/useFlowSelector.ts
+  s_1d38c58a067900::t_bf262625ee49f0 9-13,121-125,166-168,190-213
+src/locales/es/messages.js
+  s_1d38c58a067900::t_47ce52ad3da9b5 1
+src/components/transactions/Swap/errors/SwapErrors.tsx
+  s_1d38c58a067900::t_2e3e2e4362efd1 9-13
+src/components/transactions/Swap/types/params.types.ts
+  s_1d38c58a067900::t_c26054bdab8df5 91-92,110-111
+src/components/transactions/Swap/actions/Leverage/LeverageActions.tsx
+  s_1d38c58a067900::t_7dea5f503d33d3 1-29
+src/components/transactions/Swap/details/LeverageDetails.tsx
+  s_1d38c58a067900::t_3cb06951b1ec45 1-124
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "7da50775411899635d2f5da7e203f39d2d080a41",
+  "prompts": {},
+  "sessions": {
+    "s_1d38c58a067900": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0d9af6bd-c897-44af-9008-d49c9e5cc8c8",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

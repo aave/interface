@@ -1,0 +1,29 @@
+src/modules/dev/ComponentShowcase/components/ColorsSection/index.tsx
+  s_db0e85e62af974::t_a8777ca44374d6 3-4,11,13,20
+  s_db0e85e62af974::t_247c37ccb6a246 14
+  s_db0e85e62af974::t_3be81ba05fd974 15,18
+src/modules/dev/ComponentShowcase/components/ColorSpecimen/index.tsx
+  s_db0e85e62af974::t_23b3cc43e31de5 1-6,9-11,13-14,16-29,31,47-53,55-56,59-70,72-73,75-78,80,82-89,91-92,96,98-106
+  s_db0e85e62af974::t_f5e207897b92b1 7-8,12,15,32,44-46,54,57-58,71,74,79,81,93,95,97
+  s_db0e85e62af974::t_2a87b2dcfed88d 30,33-43
+  s_db0e85e62af974::t_2183f19a9ae29c 90,94
+src/modules/dev/ComponentShowcase/utils/catalog.ts
+  s_db0e85e62af974::t_f3760a4c213127 32-33
+  s_db0e85e62af974::t_c41ed2c45b49d4 29-31,34,36-38,41-43,45,47-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "daaaa239e8fd24a8d769b73b24ae225509a7d776",
+  "prompts": {},
+  "sessions": {
+    "s_db0e85e62af974": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa54de49-2594-4269-bf45-ee6841275814",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

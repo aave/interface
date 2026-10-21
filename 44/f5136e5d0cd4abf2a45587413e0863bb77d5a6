@@ -1,0 +1,14 @@
+src/components/incentives/IncentivesTooltipContent.tsx
+  h_873f745f99aed2 248
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "44f5136e5d0cd4abf2a45587413e0863bb77d5a6",
+  "prompts": {},
+  "humans": {
+    "h_873f745f99aed2": {
+      "author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

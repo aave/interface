@@ -1,0 +1,33 @@
+src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+  s_09e76c1c85406a::t_f9cc3c9c301e2b 12
+  s_09e76c1c85406a::t_3d17a0bc5f4bd2 286
+  s_09e76c1c85406a::t_aad1a5f76e16a7 283-285,287-288
+  s_09e76c1c85406a::t_2d7128384c3626 342-377
+  s_09e76c1c85406a::t_1d7477a797050b 31
+src/components/transactions/Swap/helpers/cow/orders.helpers.ts
+  s_09e76c1c85406a::t_7f360453c5f76e 243-339
+  s_09e76c1c85406a::t_63e48a40bb727a 9
+src/helpers/eip7702.ts
+  s_09e76c1c85406a::t_694cb6b8b958bd 1-25,28-53
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "cb8cffb0f680dbe3943a2acbd16cca34c02198eb",
+  "prompts": {},
+  "humans": {
+    "h_7c3b9193a510d5": {
+      "author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  },
+  "sessions": {
+    "s_09e76c1c85406a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27697950-c04a-4f72-ba6d-5a7f3ff22ed0",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

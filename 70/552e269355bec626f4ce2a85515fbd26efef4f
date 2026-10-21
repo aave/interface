@@ -1,0 +1,19 @@
+src/libs/web3-data-provider/Web3Provider.tsx
+  s_4abbd96f155ef5::t_2a69c66e896d2b 210-211
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "70552e269355bec626f4ce2a85515fbd26efef4f",
+  "prompts": {},
+  "sessions": {
+    "s_4abbd96f155ef5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b7d228ed-0435-4a52-bd0f-8df14dcb6e5c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

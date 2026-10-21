@@ -1,0 +1,14 @@
+src/hooks/app-data-provider/useAppDataProvider.tsx
+  h_be8c3c572e9983 61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "5fe4c7ed894d31a07588e28e5f026b5c8fab34d1",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

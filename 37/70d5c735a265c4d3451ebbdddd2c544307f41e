@@ -1,0 +1,42 @@
+.github/workflows/update-prod-staging.yml
+  s_35a8c384bd9dd6::t_082a3788519d21 11-14
+.github/workflows/build-fork.yml
+  s_35a8c384bd9dd6::t_84fc31b4009b66 11-13
+.github/workflows/build-test-deploy.yml
+  s_35a8c384bd9dd6::t_4262e3af96ea7e 11-14
+  s_35a8c384bd9dd6::t_33fa7baab1604e 104-106
+  s_35a8c384bd9dd6::t_64648490a97952 209-210
+  s_35a8c384bd9dd6::t_b2c1e65d6f4afc 224-225
+.github/workflows/build-test-deploy-dev.yml
+  s_35a8c384bd9dd6::t_32454930bf6c53 11-14
+  s_35a8c384bd9dd6::t_49d08fbb076aa9 82-84
+.github/workflows/crowdin-download.yml
+  s_35a8c384bd9dd6::t_5e14c5f2422721 12-15
+.github/workflows/i18n-check.yml
+  s_35a8c384bd9dd6::t_f0ea837aead82d 13-15
+.github/workflows/test-deploy-fork.yml
+  s_35a8c384bd9dd6::t_a3c1464a92b453 12-16
+  s_35a8c384bd9dd6::t_ee226c539d8ef5 20-23
+  s_35a8c384bd9dd6::t_7cf4ec1eb28b19 106-109
+  s_35a8c384bd9dd6::t_70d6b2746c640f 201-204
+  s_35a8c384bd9dd6::t_38cae8068ebbaa 61-64
+  s_35a8c384bd9dd6::t_3a098c9c13d1cd 234-237
+.github/workflows/crowdin-upload.yml
+  s_35a8c384bd9dd6::t_f4277c63a2888e 9-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "3770d5c735a265c4d3451ebbdddd2c544307f41e",
+  "prompts": {},
+  "sessions": {
+    "s_35a8c384bd9dd6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5ab88acf-9fd5-47d1-9f0e-44d47696cf68",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

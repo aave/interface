@@ -1,0 +1,37 @@
+src/components/lists/ListWrapper.tsx
+  s_db0e85e62af974::t_24d564fdba83dd 99-110
+  s_db0e85e62af974::t_2a64a4be6fbc92 143-145,155-172,174-175
+  s_db0e85e62af974::t_42244d3764ff48 2,4
+  s_db0e85e62af974::t_1add708dba5a4d 24-25
+  s_db0e85e62af974::t_6efcd74130b1b9 42
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+  s_db0e85e62af974::t_feafb366db9725 2
+  s_db0e85e62af974::t_b6f05e6cc4ac0c 178
+src/components/icons/MinusIcon.tsx
+  s_db0e85e62af974::t_aa1ba33689532f 1-15
+src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
+  s_db0e85e62af974::t_e2ff97df7042e3 153
+  s_db0e85e62af974::t_495f1c1ac3fb5f 3
+src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+  s_db0e85e62af974::t_4189758f649fa9 3
+  s_db0e85e62af974::t_73c41b22911d43 238
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+  s_db0e85e62af974::t_05352c8513b461 3
+  s_db0e85e62af974::t_c645b57b6574fb 313
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "7a6c13d872eebc93a73fd234619dd09e7af0cf16",
+  "prompts": {},
+  "sessions": {
+    "s_db0e85e62af974": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa54de49-2594-4269-bf45-ee6841275814",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

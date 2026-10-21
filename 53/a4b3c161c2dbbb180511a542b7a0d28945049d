@@ -1,0 +1,26 @@
+pages/markets.page.tsx
+  s_49cd428a5a1d14::t_b90bb55bb6efd2 12-16,31
+src/utils/theme.tsx
+  s_49cd428a5a1d14::t_495483b8b399c2 965-970
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.20",
+  "base_commit_sha": "53a4b3c161c2dbbb180511a542b7a0d28945049d",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_49cd428a5a1d14": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3931130f-c0c8-4652-be11-79dd9fbf0f6b",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

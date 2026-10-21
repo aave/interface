@@ -1,0 +1,71 @@
+src/components/icons/SwapIcon.tsx
+  s_b123436350916b::t_9191f6381644b7 1-32
+src/layouts/SettingsMenu.tsx
+  h_407f16e676115d 74,76
+  s_b123436350916b::t_a56f31c6cd754c 4
+src/layouts/AppHeader.tsx
+  s_b123436350916b::t_5f911841a6b82f 287,325
+  s_d9475e91105919::t_60cbe0d3036973 363
+  s_d9475e91105919::t_6a40c7cd348f2e 7
+  s_b123436350916b::t_824e3780b6500a 23-24
+  s_d9475e91105919::t_c177284a2b39ad 226-243,245-255,257-279,281,286,288-290,292-302,304,306-315,317-319,321-322,324,326-328,330-331,333,336-338,340-344,346-348,350-351,353-362
+  s_b123436350916b::t_30ec69249dbdac 90-94
+  s_d9475e91105919::t_898f2113b339f6 219,221-222
+  s_d9475e91105919::t_5cd3ab95871b6d 214-215,223
+  s_b123436350916b::t_dad721c84aecda 283
+  h_407f16e676115d 133,212,216,284,320
+  s_b123436350916b::t_7511a67d245001 316
+  s_d9475e91105919::t_dbdbd398539ecb 22
+  s_b123436350916b::t_d5f396c2c6e426 244,256
+  s_b123436350916b::t_6d4d96e479e124 1
+  s_b123436350916b::t_0e21bddc2287f4 95
+src/components/icons/SettingsIcon.tsx
+  s_b123436350916b::t_d03f06a3dd27f0 1-15
+src/layouts/components/StakingMenu.tsx
+  s_b123436350916b::t_13a5d23945d5f0 9
+  s_b123436350916b::t_1edf056d043e1b 47,57
+  s_b123436350916b::t_86243dc764e7f7 12
+  s_b123436350916b::t_f37a8182dd709f 76
+  h_407f16e676115d 81
+src/components/icons/AaveLogo.tsx
+  s_d9475e91105919::t_60a1fec5151e8b 1-22
+src/layouts/components/navLinkSx.ts
+  s_b123436350916b::t_0d0d5def369c2f 1-37
+src/components/icons/BridgeIcon.tsx
+  s_b123436350916b::t_d4db5a5aca0488 1-9
+src/layouts/components/NavItems.tsx
+  s_b123436350916b::t_f417057bf37832 102
+  s_b123436350916b::t_04d2a0ddad096d 12
+  s_b123436350916b::t_70aba492309d71 60,91,122,146
+  s_b123436350916b::t_4ab53177119d94 71
+  s_b123436350916b::t_bafb8aefab04cb 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.14",
+  "base_commit_sha": "2fcdde0748053b71059f79670c0bf58b05e30c4f",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b123436350916b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e05079-8b10-488f-b2c2-f8480447c4cf",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_d9475e91105919": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f1f4f7a8-ec6d-4d9e-9952-79ee1f11c1e0",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

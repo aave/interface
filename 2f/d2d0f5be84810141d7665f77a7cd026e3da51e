@@ -1,0 +1,54 @@
+src/utils/figmaColors.ts
+  h_407f16e676115d 15,38,125
+src/locales/es/messages.js
+  s_c18d7b4505f5ab::t_33a6d5525b7da6 1
+src/locales/en/messages.po
+  s_c18d7b4505f5ab::t_33a6d5525b7da6 463-466
+src/locales/en/messages.js
+  s_c18d7b4505f5ab::t_33a6d5525b7da6 1
+src/layouts/MainLayout.tsx
+  s_c18d7b4505f5ab::t_cee859564ab202 16,27,39,50,62,74,86,98,110,122
+src/layouts/TopBarNotify.tsx
+  s_c18d7b4505f5ab::t_4adf83ffa1f9d2 220,224
+  s_c18d7b4505f5ab::t_15741ee4c6d6b5 131-132,137-138
+  s_c18d7b4505f5ab::t_50a56b0b96f868 161-168
+  s_c18d7b4505f5ab::t_e733897847df89 6-7,12,123-130,133-136,139-154,159-160,173,178-180,184,186,188,191,193,196-213,215-219,221-223,226-229,231-242
+  h_407f16e676115d 155-156,158,175
+  s_c18d7b4505f5ab::t_6e160c704c8436 157
+  s_8808aa063c0ec2::t_a17585823fdcc2 176
+src/components/icons/ArrowUpRightIcon.tsx
+  s_c18d7b4505f5ab::t_a448f599cb6cc6 1-26
+src/locales/el/messages.js
+  s_c18d7b4505f5ab::t_33a6d5525b7da6 1
+src/locales/fr/messages.js
+  s_c18d7b4505f5ab::t_33a6d5525b7da6 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "2fd2d0f5be84810141d7665f77a7cd026e3da51e",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_8808aa063c0ec2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "10b27b18-cb0d-4b39-bedc-db49e7b24d44",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_c18d7b4505f5ab": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fc3def31-53d3-4bc7-8fc3-d7db0dfa7794",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

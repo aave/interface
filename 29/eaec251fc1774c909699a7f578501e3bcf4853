@@ -1,0 +1,41 @@
+src/components/MarketSwitcher.tsx
+  h_407f16e676115d 366-367
+  s_db0e85e62af974::t_e226a78f6b2332 361-362,369-377
+  s_db0e85e62af974::t_a426eb5ec78c27 345-353,358,363-364
+  s_db0e85e62af974::t_bc1e7b5a9a8cfd 365
+src/modules/dev/ComponentShowcase/utils/registry.tsx
+  s_db0e85e62af974::t_c6494325744bea 9-10
+  s_db0e85e62af974::t_bc1d8dec2481b8 88
+src/modules/dev/ComponentShowcase/components/BannersSection/index.tsx
+  s_db0e85e62af974::t_dc4d7330fa1e04 1,29-31,39-41,44-46,49-51,54-56
+src/modules/dev/ComponentShowcase/components/ShowcaseLayout/index.tsx
+  s_db0e85e62af974::t_7ea3fe0e455512 37-39
+  s_db0e85e62af974::t_2c49c57e9d7852 15
+  s_db0e85e62af974::t_510ea10f9ed107 180
+src/components/icons/StarIcon.tsx
+  s_db0e85e62af974::t_7144c254ac69cb 3-6
+src/utils/figmaColors.ts
+  s_db0e85e62af974::t_8468491079d831 70-71
+  s_db0e85e62af974::t_7b0ad48f88e75a 188-189
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "29eaec251fc1774c909699a7f578501e3bcf4853",
+  "prompts": {},
+  "humans": {
+    "h_407f16e676115d": {
+      "author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_db0e85e62af974": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa54de49-2594-4269-bf45-ee6841275814",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+src/ui-config/wagmiConfig.ts
+  h_be8c3c572e9983 77,97,99,102
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "6594fde30bc5edab23202ad4d9fbe2f4b9cd6e3e",
+  "prompts": {},
+  "humans": {
+    "h_be8c3c572e9983": {
+      "author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

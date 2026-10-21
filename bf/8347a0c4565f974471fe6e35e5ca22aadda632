@@ -1,0 +1,80 @@
+src/components/transactions/Bridge/useGetBridgeMessage.tsx
+  s_abd150669b56be::t_91b31002717dae 88-90
+  s_abd150669b56be::t_c21848480b57f4 1-2,9-14,33,45-48,50-55,57-58,61-66,73,86-87,91-99
+next.config.js
+  s_abd150669b56be::t_4625e51bb0301d 35-40
+yarn.lock
+  s_abd150669b56be::t_46bf2a3912c3ec 93-97,191-218,1179,1234-1258,1457-1484,3339-3374,3459-3465,3494-3501,3515-3519,3540,3545-3549,3613-3632,3847-3851,3880,3889-3897,3914,3922-3929,4153-4183,4191-4199,4209-4216,4225-4241,4251-4261,4273-4288,4385-4395,4574-4598,4665-4685,4799-4805,4873-4886,4957-4963,5116-5127,5215-5228,6045,6087-6091,6099-6105,6425-6444,6571-6577,6610-6617,6627-6633,6677,6687-6700,6751-6757,6780-6785,6801,6858,6911,7159-7173,7367-7371,7654-7658,7801-7805,7932-7939,8252-8263,8637-8649,8706-8711,8856-8860,8871-8875,8907-8916,8962-8966,9322,9355-9359,9568-9574,10136-10140,10243-10260,10705-10709,10835,10891-10895,11208-11214,11504-11511,11898,12010-12017,12424-12428,12624-12628,13346-13359,13686-13693,13859-13870,14098-14102,14108-14112,14162-14166,14176-14180,14269-14273,14362-14367,14443-14449,14551-14555,14752-14758,14809-14813,15142-15146,15162,15167,15224-15228,15310
+src/components/transactions/Bridge/BridgeConfig.ts
+  s_abd150669b56be::t_cf0cf42467be7e 22
+  s_abd150669b56be::t_43b8d9f92e62c4 355,359-362,364
+src/modules/bridge/BridgeTransactionListItem.tsx
+  s_abd150669b56be::t_2759126b557c94 29
+  s_abd150669b56be::t_cb6c86a4682230 189,192
+  s_abd150669b56be::t_307a5218de14e9 136,140
+  s_abd150669b56be::t_fe329e702ce178 173-182
+  s_abd150669b56be::t_c274fec52ea29f 208
+  s_abd150669b56be::t_3f4908f5a2633e 53,60-61
+  s_abd150669b56be::t_79445bfd0de3ac 157
+  s_abd150669b56be::t_091b94e3554aed 269
+  s_abd150669b56be::t_775c22d16da4da 294-302
+  s_abd150669b56be::t_e05ef48e0c5598 2
+  s_abd150669b56be::t_e80f5f8b521cd8 85
+  s_abd150669b56be::t_b18822546201bb 104-113
+  s_abd150669b56be::t_b6fc4fc59c9029 86,96
+  s_abd150669b56be::t_59aade5ed3cf10 241,245
+src/modules/bridge/BridgeWrapper.tsx
+  s_abd150669b56be::t_5ea09512ca2a13 1
+  s_abd150669b56be::t_d67b0c4a182d9f 77
+src/components/transactions/Bridge/ccipSdk.ts
+  s_abd150669b56be::t_4c070022dd016d 1-20
+src/components/transactions/Bridge/useGetBridgeLimits.tsx
+  s_abd150669b56be::t_529ab9280defb9 7
+  s_abd150669b56be::t_9236e98c21ebb7 1,9-14,36,80,82,84-85,87,89-91
+src/components/transactions/Bridge/BridgeModalContent.tsx
+  s_abd150669b56be::t_bdc77f87d64250 2,296
+  s_abd150669b56be::t_83ac2c10b0fe12 76
+  s_abd150669b56be::t_3e4c0dfba55c39 95
+  s_abd150669b56be::t_78e9be8091012f 3
+  s_abd150669b56be::t_ef10ec1456af57 352-353
+  s_abd150669b56be::t_08d2d77aef5e97 19
+tsconfig.json
+  s_abd150669b56be::t_66e1e026fbe826 9
+src/components/transactions/Bridge/BridgeActions.tsx
+  s_abd150669b56be::t_eb2ff9d40f21b9 1,5,15,17,50,86-87,89-116,119,121,140,142,144,146-148,150-151,153-167,170-189
+  s_abd150669b56be::t_146de566890243 19-38
+  s_abd150669b56be::t_c345267c73b12d 149
+  s_abd150669b56be::t_6e9e0d98f583fb 191
+  s_abd150669b56be::t_d3ecd2f7f2ec5f 2,6
+src/hooks/useBridgeTransactionHistory.tsx
+  s_abd150669b56be::t_96e5faec29e55a 29
+  s_abd150669b56be::t_fcda4d58078f2f 2,4,8,20-28,30-45,48-49
+src/components/transactions/Bridge/useGetFinalityTime.tsx
+  s_abd150669b56be::t_dec202d943a98c 1,5-6,10,13,17-22,24,28-29
+src/hooks/useBridgeTransactionStatus.tsx
+  s_abd150669b56be::t_0958a072002368 3,5,10-15,17,22
+  s_abd150669b56be::t_ae077b804d7322 1,8-9,18,20-21
+package.json
+  s_abd150669b56be::t_bf17bc30321d1d 46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "bf8347a0c4565f974471fe6e35e5ca22aadda632",
+  "prompts": {},
+  "humans": {
+    "h_075bcc15b434db": {
+      "author": "Mark Grothe"
+    }
+  },
+  "sessions": {
+    "s_abd150669b56be": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "34230a4f-545b-44fc-a0f4-807ea4d351b8",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

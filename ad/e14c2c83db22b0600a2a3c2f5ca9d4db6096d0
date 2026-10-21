@@ -1,0 +1,55 @@
+src/components/transactions/Repay/RepayActions.tsx
+  s_525cd554e38fca::t_6ac5c797d65a4f 111,123
+  s_525cd554e38fca::t_db04769ddb70ca 15,21,60,73,109-110,112,118,122,139-142,145-149,279
+  s_525cd554e38fca::t_e7e3c24faa7335 143-144
+  s_525cd554e38fca::t_6f4d9a015fac9c 124
+src/components/transactions/TxActionsWrapper.tsx
+  s_525cd554e38fca::t_f4e5d873f187ec 38,63,156
+src/components/transactions/Repay/RepayModalContent.tsx
+  s_525cd554e38fca::t_d8c00021adfc37 32,86,295
+src/components/transactions/utils.ts
+  s_525cd554e38fca::t_17f1648dda8367 1,24-40,42-43,46,49-50,53-54,57-58,63-64
+  s_525cd554e38fca::t_6ac5c797d65a4f 41
+  s_525cd554e38fca::t_e7e3c24faa7335 44-45,47-48,51-52,55-56,59-62,65-66
+  s_525cd554e38fca::t_836877873ec474 67
+src/locales/en/messages.po
+  s_525cd554e38fca::t_1f5539349d81a6 515-519,846-849,2077-2081,2557-2560,2617-2620
+  s_525cd554e38fca::t_dd6ff88ac0245a 2621
+src/components/transactions/__tests__/utils.test.ts
+  s_525cd554e38fca::t_6e97f8bde441c7 1-2,4-25,28-40,43-76
+  s_525cd554e38fca::t_6ac5c797d65a4f 3
+  s_525cd554e38fca::t_e7e3c24faa7335 26-27,41-42
+src/components/transactions/FlowCommons/ApprovalMethodToggleButton.tsx
+  s_525cd554e38fca::t_2fdace01859817 14,19-27,33-36,47-68,77,94-131,133-136,143,146-150,153-156
+  s_525cd554e38fca::t_6ac5c797d65a4f 139-141
+src/store/walletSlice.ts
+  s_525cd554e38fca::t_a02e2774e7bdae 10-14,25-27,41-51,66-67,97-123
+src/hooks/useApprovalTx.tsx
+  s_525cd554e38fca::t_d8c00021adfc37 210
+src/components/transactions/FlowCommons/RightHelperText.tsx
+  s_525cd554e38fca::t_d1e27325500330 9,18-23,36,42-43,50-51,70,77-78,80-83
+src/locales/el/messages.js
+  s_525cd554e38fca::t_9b75cded777138 1
+src/locales/en/messages.js
+  s_525cd554e38fca::t_7fd3154ef555a2 1
+src/locales/es/messages.js
+  s_525cd554e38fca::t_9a69499dbcd5d4 1
+src/locales/fr/messages.js
+  s_525cd554e38fca::t_b078a2a8f31f59 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "ade14c2c83db22b0600a2a3c2f5ca9d4db6096d0",
+  "prompts": {},
+  "sessions": {
+    "s_525cd554e38fca": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f0438cce-d81f-4109-bc0e-7bf8f9be8e91",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

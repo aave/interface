@@ -1,0 +1,29 @@
+src/components/transactions/Swap/hooks/useFlashLoanFeeBps.ts
+  s_a51ccd4991d535::t_ec66fb5c6f91bf 40-41
+  s_a51ccd4991d535::t_28268bea60aad4 10,12
+src/components/transactions/Swap/types/state.types.ts
+  s_a51ccd4991d535::t_eb305ba2af1f8a 292
+src/components/transactions/Swap/hooks/useSwapOrderAmounts.ts
+  s_a51ccd4991d535::t_d91696a83c995a 101-105
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "f888f5728df472a0d6fd6740b73965101180baef",
+  "prompts": {},
+  "humans": {
+    "h_7c3b9193a510d5": {
+      "author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  },
+  "sessions": {
+    "s_a51ccd4991d535": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5b49bfca-5ac8-4762-a1f5-6527caa277c2",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
