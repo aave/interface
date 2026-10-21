@@ -17,6 +17,31 @@ import {
 } from './types';
 
 // ============================================
+// Badge -> cache state mapping (the inverse, for the server-side state filter)
+// ============================================
+
+export function badgeToCacheState(badge: ProposalBadgeState): string {
+  switch (badge) {
+    case ProposalBadgeState.Created:
+      return 'created';
+    case ProposalBadgeState.OpenForVoting:
+      return 'active';
+    case ProposalBadgeState.Passed:
+      return 'queued';
+    case ProposalBadgeState.Executed:
+      return 'executed';
+    case ProposalBadgeState.Failed:
+      return 'failed';
+    case ProposalBadgeState.Cancelled:
+      return 'cancelled';
+    case ProposalBadgeState.Expired:
+      return 'expired';
+    case ProposalBadgeState.PartiallyExecuted:
+      return 'partially_executed';
+  }
+}
+
+// ============================================
 // Cache state -> badge mapping (replaces mapStateToBadge duplicated in 3 cache files)
 // ============================================
 

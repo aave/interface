@@ -13,8 +13,9 @@ import { GOVERNANCE_PAGE } from 'src/utils/events';
 import { figVars } from 'src/utils/figmaColors';
 import { motion } from 'src/utils/motion';
 
+import { badgeToCacheState } from './adapters';
 import { ProposalListHeader } from './ProposalListHeader';
-import { StateBadge, stringToState } from './StateBadge';
+import { ProposalBadgeState, StateBadge } from './StateBadge';
 import { ProposalListItem } from './types';
 import { VoteBar } from './VoteBar';
 
@@ -162,7 +163,8 @@ const ProposalListSkeleton = () => {
 
 export const ProposalsV3List = () => {
   const [proposalFilter, setProposalFilter] = useState<string>('all');
-  const filterState = stringToState(proposalFilter);
+  // The dropdown's values are the badge labels; the backend filters on cache states.
+  const filterBadge = proposalFilter === 'all' ? undefined : (proposalFilter as ProposalBadgeState);
 
   const [searchTerm, setSearchTerm] = useState<string>('');
 
@@ -174,7 +176,7 @@ export const ProposalsV3List = () => {
     isFetching: loadingProposals,
     fetchNextPage,
     hasNextPage,
-  } = useGovernanceProposals();
+  } = useGovernanceProposals(filterBadge && badgeToCacheState(filterBadge));
 
   let listItems: ProposalListItem[] = [];
 
@@ -182,10 +184,6 @@ export const ProposalsV3List = () => {
     listItems = searchResults;
   } else if (!searchTerm && data) {
     data.pages.forEach((page) => listItems.push(...page.proposals));
-  }
-
-  if (proposalFilter !== 'all') {
-    listItems = listItems.filter((proposal) => proposal.badgeState === filterState);
   }
 
   return (
