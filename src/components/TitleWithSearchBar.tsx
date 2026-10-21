@@ -1,5 +1,5 @@
 import { SearchIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import {
   Box,
   Button,
@@ -71,7 +71,7 @@ export const TitleWithSearchBar = <T extends React.ElementType>({
         }}
       >
         {showSearchIcon && (
-          <IconButton onClick={() => setShowSearchBar(true)}>
+          <IconButton aria-label={t`Search`} onClick={() => setShowSearchBar(true)}>
             <SvgIcon>
               <SearchIcon />
             </SvgIcon>

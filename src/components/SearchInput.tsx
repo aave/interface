@@ -1,4 +1,5 @@
 import { XCircleIcon } from '@heroicons/react/solid';
+import { t } from '@lingui/macro';
 import { Box, BoxProps, IconButton, InputBase, useMediaQuery, useTheme } from '@mui/material';
 import debounce from 'lodash/debounce';
 import { useMemo, useRef, useState } from 'react';
@@ -75,6 +76,7 @@ export const SearchInput = ({
       />
       <IconButton
         sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
+        aria-label={t`Clear search`}
         onClick={() => handleClear()}
       >
         <XCircleIcon height={16} />
