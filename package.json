@@ -31,14 +31,14 @@
     }
   },
   "scripts": {
-    "dev": "NODE_OPTIONS=\"$NODE_OPTIONS --require \\\"$(pwd)/scripts/tls-policy.cjs\\\"\" next dev",
+    "dev": "next dev",
     "dev:special": "NODE_OPTIONS='--inspect --max_old_space_size=8000' next dev",
-    "build": "NODE_OPTIONS=\"$NODE_OPTIONS --require \\\"$(pwd)/scripts/tls-policy.cjs\\\"\" next build",
+    "build": "next build",
     "build:analyze": "ANALYZE=true pnpm build",
-    "build:static": "NODE_OPTIONS=\"$NODE_OPTIONS --require \\\"$(pwd)/scripts/tls-policy.cjs\\\"\" STATIC_EXPORT=true next build",
+    "build:static": "STATIC_EXPORT=true next build",
     "build:optimize-svgs": "find public -type f -name '*.svg' -print0 | xargs -0 -n 1 -P 6 npx svgo --final-newline",
     "serve:static": "npx serve out",
-    "start": "NODE_OPTIONS=\"$NODE_OPTIONS --require \\\"$(pwd)/scripts/tls-policy.cjs\\\"\" next start",
+    "start": "next start",
     "lint:code": "next lint --dir src --dir pages",
     "lint:code:fix": "next lint --dir src --dir pages --fix",
     "lint:formatting": "prettier src pages cypress . --check",
@@ -54,8 +54,7 @@
     "test:headless": "export DOTENV_CONFIG_PATH='../../../.env.local' && cypress run --config-file './cypress/configs/local/full.config.ts'",
     "test": "jest --watch",
     "test:ci": "jest --ci",
-    "test:coverage": "jest --coverage",
-    "test:tls": "node --test scripts/tls-policy.test.cjs"
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@aave-dao/aave-address-book": "^4.55.6",
