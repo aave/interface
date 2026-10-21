@@ -159,9 +159,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           protocolAction={ProtocolAction.borrow}
         />
         {showBorrowingDisabledNote(reserve) && <ReserveSubheader value={'Disabled'} />}
-        {borrowableOnlyInEModeLabels.length > 0 && (
-          <BorrowableOnlyInEModeTooltip eModeLabels={borrowableOnlyInEModeLabels} />
-        )}
+        {borrowableOnlyInEModeLabels.length > 0 && <BorrowableOnlyInEModeTooltip />}
       </ListColumn>
 
       <ListColumn align="right" minWidth={95} maxWidth={95}>

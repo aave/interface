@@ -2306,6 +2306,10 @@ msgstr "collateral"
 msgid "No rewards to claim"
 msgstr "No rewards to claim"
 
+#: src/components/Warnings/BorrowableOnlyInEModeWarning.tsx
+msgid "This reserve can only be borrowed in E-Mode. See below for which categories allow borrowing."
+msgstr "This reserve can only be borrowed in E-Mode. See below for which categories allow borrowing."
+
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Reserve factor"
 msgstr "Reserve factor"
@@ -3095,6 +3099,10 @@ msgstr "Zero address not valid"
 msgid "Invalid bridge protocol fee"
 msgstr "Invalid bridge protocol fee"
 
+#: src/components/infoTooltips/BorrowableOnlyInEModeTooltip.tsx
+msgid "Borrowing is only available in E-Mode"
+msgstr "Borrowing is only available in E-Mode"
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Representing smart contract wallet (ie. Safe) addresses on other chains."
 msgstr "Representing smart contract wallet (ie. Safe) addresses on other chains."
@@ -3611,10 +3619,6 @@ msgstr "Both"
 #: src/components/transactions/StkGhoMigrate/StkGhoMigrateModal.tsx
 msgid "Migrate stkGHO to sGHO"
 msgstr "Migrate stkGHO to sGHO"
-
-#: src/components/Warnings/BorrowableOnlyInEModeWarning.tsx
-msgid "Borrowable only in E-Mode: {categories}. Borrowing is disabled outside these E-Mode categories."
-msgstr "Borrowable only in E-Mode: {categories}. Borrowing is disabled outside these E-Mode categories."
 
 #: src/components/SecondsToString.tsx
 msgid "{h}h"

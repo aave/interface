@@ -149,9 +149,7 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
             protocolAction={ProtocolAction.borrow}
           />
           {showBorrowingDisabledNote(reserve) && <ReserveSubheader value={'Disabled'} />}
-          {borrowableOnlyInEModeLabels.length > 0 && (
-            <BorrowableOnlyInEModeTooltip eModeLabels={borrowableOnlyInEModeLabels} />
-          )}
+          {borrowableOnlyInEModeLabels.length > 0 && <BorrowableOnlyInEModeTooltip />}
         </Box>
       </Row>
       <Button

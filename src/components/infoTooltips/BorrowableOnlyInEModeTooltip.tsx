@@ -1,14 +1,8 @@
 import { Trans } from '@lingui/macro';
 
 import { TextWithTooltip } from '../TextWithTooltip';
-import { BorrowableOnlyInEModeWarning } from '../Warnings/BorrowableOnlyInEModeWarning';
 
-interface BorrowableOnlyInEModeTooltipProps {
-  eModeLabels: string[];
-}
-export const BorrowableOnlyInEModeTooltip = ({
-  eModeLabels,
-}: BorrowableOnlyInEModeTooltipProps) => {
+export const BorrowableOnlyInEModeTooltip = () => {
   return (
     <TextWithTooltip
       text={<Trans>E-Mode only</Trans>}
@@ -17,7 +11,7 @@ export const BorrowableOnlyInEModeTooltip = ({
       iconSize={12}
       wrapperProps={{ sx: { mt: '2px' } }}
     >
-      <BorrowableOnlyInEModeWarning eModeLabels={eModeLabels} />
+      <Trans>Borrowing is only available in E-Mode</Trans>
     </TextWithTooltip>
   );
 };

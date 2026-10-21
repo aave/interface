@@ -1,16 +1,9 @@
 import { Trans } from '@lingui/macro';
 
-interface BorrowableOnlyInEModeWarningProps {
-  eModeLabels: string[];
-}
-export const BorrowableOnlyInEModeWarning = ({
-  eModeLabels,
-}: BorrowableOnlyInEModeWarningProps) => {
-  const categories = eModeLabels.join(', ');
+export const BorrowableOnlyInEModeWarning = () => {
   return (
     <Trans>
-      Borrowable only in E-Mode: {categories}. Borrowing is disabled outside these E-Mode
-      categories.
+      This reserve can only be borrowed in E-Mode. See below for which categories allow borrowing.
     </Trans>
   );
 };

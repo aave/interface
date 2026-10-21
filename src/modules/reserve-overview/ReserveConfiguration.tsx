@@ -146,7 +146,7 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                 )}
               {borrowableOnlyInEModeLabels.length > 0 && (
                 <Alert sx={{ width: '100%', mb: '40px' }} severity="info">
-                  <BorrowableOnlyInEModeWarning eModeLabels={borrowableOnlyInEModeLabels} />
+                  <BorrowableOnlyInEModeWarning />
                 </Alert>
               )}
               <BorrowInfo
