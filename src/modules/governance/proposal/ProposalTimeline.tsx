@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { useGovernanceCoreConstants } from 'src/hooks/governance/useGovernanceCoreConstants';
+import { getPayloadLabelKind, PayloadLabelKind } from 'src/modules/governance/utils/payloadStatus';
 import { ProposalDetail, ProposalPayload } from 'src/services/GovernanceCacheService';
 import { governanceV3Config } from 'src/ui-config/governanceConfig';
 import { networkConfigs } from 'src/ui-config/networksConfig';
@@ -88,6 +89,25 @@ const fmtRemaining = (seconds: number): string | null => {
   if (h > 0) return `${h}h ${m}m`;
   if (m > 0) return `${m}m`;
   return '<1m';
+};
+
+/**
+ * The sub-row label must only claim what the payload state actually supports — saying
+ * "executed" next to a countdown reads as a finished on-chain action (issue #2480).
+ */
+const payloadSubRowLabel = (kind: PayloadLabelKind, payloadId: number): ReactNode => {
+  switch (kind) {
+    case 'executed':
+      return <Trans>Payload {payloadId} executed</Trans>;
+    case 'cancelled':
+      return <Trans>Payload {payloadId} cancelled</Trans>;
+    case 'expired':
+      return <Trans>Payload {payloadId} expired</Trans>;
+    case 'not-executed':
+      return <Trans>Payload {payloadId} not executed</Trans>;
+    default:
+      return <Trans>Payload {payloadId} execution</Trans>;
+  }
 };
 
 interface SubRow {
@@ -455,34 +475,36 @@ export const ProposalTimeline = ({
         key: 'payloads-executed',
         // "finalized" when settled with some that didn't execute (expired/cancelled), so the yellow
         // "0 / N executed" isn't mistaken for still-running.
-        name:
-          settled && !allExecuted ? (
-            <Trans>Payloads finalized</Trans>
-          ) : (
-            <Trans>Payloads executed</Trans>
-          ),
+        name: allExecuted ? (
+          <Trans>Payloads executed</Trans>
+        ) : settled ? (
+          <Trans>Payloads finalized</Trans>
+        ) : (
+          <Trans>Payloads</Trans>
+        ),
         status: allExecuted ? 'ok' : settled ? 'settled' : anyQueued ? 'now' : 'pending',
         value: executedValue,
         valueKind: 'count',
         subRows: list.map((pl) => {
           const plDelay = pl.delaySeconds ?? FALLBACK_PAYLOAD_TIMELOCK_SECONDS;
+          const labelKind = getPayloadLabelKind(pl.state);
           let value: ReactNode =
             fmtEstimate(clampFuture(projExecuted != null ? projExecuted + plDelay : null)) ??
             'pending';
           let tone: SubRow['tone'] = 'estimate';
           let txHash: string | null | undefined;
-          if (pl.state === 'executed') {
+          if (labelKind === 'executed') {
             value = fmtIso(pl.executedAt) ?? 'executed';
             tone = 'done';
             txHash = pl.executedTxHash;
-          } else if (pl.state === 'cancelled') {
+          } else if (labelKind === 'cancelled') {
             value = 'cancelled';
             tone = 'wait';
             txHash = pl.cancelledTxHash;
-          } else if (pl.state === 'expired') {
+          } else if (labelKind === 'expired') {
             value = 'expired';
             tone = 'wait';
-          } else if (pl.state === 'queued') {
+          } else if (labelKind === 'not-executed') {
             // Payload execution timelock: executable at queuedAt + delay (real, from the snapshot).
             const qUnix = isoToUnix(pl.queuedAt);
             const execAt = qUnix != null ? qUnix + plDelay : null;
@@ -493,7 +515,7 @@ export const ProposalTimeline = ({
           return {
             key: `e-${pl.chainId}-${pl.payloadId}`,
             chainId: pl.chainId,
-            label: <Trans>Payload {pl.payloadId} executed</Trans>,
+            label: payloadSubRowLabel(labelKind, pl.payloadId),
             value,
             tone,
             txHash,
