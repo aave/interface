@@ -7,6 +7,7 @@ import { PausedTooltipText } from 'src/components/infoTooltips/PausedTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
+import { BorrowableOnlyInEModeWarning } from 'src/components/Warnings/BorrowableOnlyInEModeWarning';
 import { BorrowDisabledWarning } from 'src/components/Warnings/BorrowDisabledWarning';
 import {
   AssetsBeingOffboarded,
@@ -15,6 +16,7 @@ import {
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCapsSDK } from 'src/hooks/useAssetCapsSDK';
 import { useRootStore } from 'src/store/root';
+import { getBorrowableOnlyInEModeLabels } from 'src/utils/borrowableOnlyInEMode';
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
@@ -53,6 +55,8 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const { supplyCap, borrowCap, debtCeiling } = useAssetCapsSDK();
   const showSupplyCapStatus: boolean = reserve.supplyInfo.supplyCap.amount.value !== '0';
   const showBorrowCapStatus: boolean = reserve.borrowInfo?.borrowCap.amount.value !== '0';
+
+  const borrowableOnlyInEModeLabels = getBorrowableOnlyInEModeLabels(reserve);
 
   const offboardingDiscussion =
     AssetsBeingOffboarded[currentMarket]?.[reserve.underlyingToken.symbol];
@@ -140,6 +144,11 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                     />
                   </Alert>
                 )}
+              {borrowableOnlyInEModeLabels.length > 0 && (
+                <Alert sx={{ width: '100%', mb: '40px' }} severity="info">
+                  <BorrowableOnlyInEModeWarning />
+                </Alert>
+              )}
               <BorrowInfo
                 reserve={reserve}
                 currentMarketData={currentMarketData}
