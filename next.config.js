@@ -20,6 +20,8 @@ const enableDevPages =
     process.env.NODE_ENV === 'development');
 if (enableDevPages) pageExtensions.push('dev.tsx');
 
+console.log('Node.js version:', process.version);
+
 /** @type {import('next').NextConfig} */
 module.exports = withSentryConfig(
   withBundleAnalyzer({
