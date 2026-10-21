@@ -98,6 +98,7 @@ export type ExtendedReserveIncentiveResponse = ReserveIncentiveResponse &
   ReserveIncentiveAdditionalData & {
     breakdown: MerklIncentivesBreakdown;
     description?: string;
+    merklOpportunityUrl?: string;
     isSelf?: boolean;
     rewardsTokensMappedApys?: {
       token: {
@@ -145,6 +146,7 @@ export type MerklIncentivesBreakdown = {
 
 const MERKL_ENDPOINT =
   'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave&items=100&status=LIVE'; // Merkl API
+const MERKL_OPPORTUNITY_URL = 'https://app.merkl.xyz/opportunities';
 const AAVE_NET_APR_DISTRIBUTION_TYPE = 'AAVE_NET_APR';
 const convertApyToApr = (apy: number) => 12 * ((1 + apy) ** (1 / 12) - 1);
 
@@ -328,6 +330,7 @@ export const useMerklIncentives = ({
         rewardTokenAddress: rewardToken.address,
         rewardTokenSymbol: rewardToken.symbol,
         description: description,
+        merklOpportunityUrl: `${MERKL_OPPORTUNITY_URL}/${primaryOpportunity.id}`,
         ...incentiveAdditionalData,
         isSelf,
         rewardsTokensMappedApys,

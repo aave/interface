@@ -28,6 +28,10 @@ export const MerklIncentivesTooltipContent = ({
           merklIncentives.onChainCampaignId?.toLowerCase()
       )
     : undefined;
+  const learnMoreLink =
+    merklIncentives.customForumLink ??
+    merklIncentives.merklOpportunityUrl ??
+    'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898';
   return (
     <Box
       sx={{
@@ -117,30 +121,14 @@ export const MerklIncentivesTooltipContent = ({
       {merklIncentives.customMessage ? (
         <Typography variant="caption" color="text.strong" mb={3}>
           <Trans>{merklIncentives.customMessage}</Trans>{' '}
-          <Link
-            href={
-              merklIncentives.customForumLink
-                ? merklIncentives.customForumLink
-                : 'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898'
-            }
-            sx={{ textDecoration: 'underline' }}
-            variant="caption"
-          >
+          <Link href={learnMoreLink} sx={{ textDecoration: 'underline' }} variant="caption">
             Learn more
           </Link>
         </Typography>
       ) : (
         <Typography variant="caption" color="text.strong" mb={3}>
           <Trans>{merklIncentives.description}</Trans>{' '}
-          <Link
-            href={
-              merklIncentives.customForumLink
-                ? merklIncentives.customForumLink
-                : 'https://governance.aave.com/t/arfc-set-aci-as-emission-manager-for-liquidity-mining-programs/17898'
-            }
-            sx={{ textDecoration: 'underline' }}
-            variant="caption"
-          >
+          <Link href={learnMoreLink} sx={{ textDecoration: 'underline' }} variant="caption">
             Learn more
           </Link>
         </Typography>
