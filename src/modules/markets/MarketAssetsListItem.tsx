@@ -2,6 +2,7 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
+import { BorrowableOnlyInEModeTooltip } from 'src/components/infoTooltips/BorrowableOnlyInEModeTooltip';
 import { KernelAirdropTooltip } from 'src/components/infoTooltips/KernelAirdropTooltip';
 import { OffboardingTooltip } from 'src/components/infoTooltips/OffboardingToolTip';
 import { RenFILToolTip } from 'src/components/infoTooltips/RenFILToolTip';
@@ -13,6 +14,7 @@ import { ReserveSubheader } from 'src/components/ReserveSubheader';
 import { AssetsBeingOffboarded } from 'src/components/Warnings/OffboardingWarning';
 import { useRootStore } from 'src/store/root';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { getBorrowableOnlyInEModeLabels } from 'src/utils/borrowableOnlyInEMode';
 import { MARKETS } from 'src/utils/events';
 import { showExternalIncentivesTooltip } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
@@ -54,6 +56,8 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
     iconSymbol?.toLowerCase() !== reserve.underlyingToken.symbol.toLowerCase()
       ? iconSymbol
       : reserve.underlyingToken.symbol;
+
+  const borrowableOnlyInEModeLabels = getBorrowableOnlyInEModeLabels(reserve);
 
   return (
     <ListItem
@@ -155,6 +159,9 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           protocolAction={ProtocolAction.borrow}
         />
         {showBorrowingDisabledNote(reserve) && <ReserveSubheader value={'Disabled'} />}
+        {borrowableOnlyInEModeLabels.length > 0 && (
+          <BorrowableOnlyInEModeTooltip eModeLabels={borrowableOnlyInEModeLabels} />
+        )}
       </ListColumn>
 
       <ListColumn align="right" minWidth={95} maxWidth={95}>

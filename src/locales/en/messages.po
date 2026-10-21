@@ -100,6 +100,10 @@ msgstr "{0} {symbol}..."
 msgid "Amount available to unstake"
 msgstr "Amount available to unstake"
 
+#: src/components/infoTooltips/BorrowableOnlyInEModeTooltip.tsx
+msgid "E-Mode only"
+msgstr "E-Mode only"
+
 #: src/components/transactions/Bridge/BridgeDestinationInput.tsx
 msgid "To"
 msgstr "To"
@@ -3607,6 +3611,10 @@ msgstr "Both"
 #: src/components/transactions/StkGhoMigrate/StkGhoMigrateModal.tsx
 msgid "Migrate stkGHO to sGHO"
 msgstr "Migrate stkGHO to sGHO"
+
+#: src/components/Warnings/BorrowableOnlyInEModeWarning.tsx
+msgid "Borrowable only in E-Mode: {categories}. Borrowing is disabled outside these E-Mode categories."
+msgstr "Borrowable only in E-Mode: {categories}. Borrowing is disabled outside these E-Mode categories."
 
 #: src/components/SecondsToString.tsx
 msgid "{h}h"
