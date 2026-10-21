@@ -58,7 +58,7 @@ runs:
 
     - name: install
       shell: sh
-      run: pnpm install --frozen-lockfile --prefer-offline
+      run: NODE_OPTIONS="$NODE_OPTIONS --require \"$(pwd)/scripts/tls-policy.cjs\"" pnpm install --frozen-lockfile --prefer-offline
 
     - name: Restore next cache
       uses: actions/cache@v4

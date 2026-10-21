@@ -26,7 +26,7 @@ runs:
     - name: install
       shell: sh
       run: |
-        pnpm install --frozen-lockfile --prefer-offline
+        NODE_OPTIONS="$NODE_OPTIONS --require \"$(pwd)/scripts/tls-policy.cjs\"" pnpm install --frozen-lockfile --prefer-offline
         pnpm add serve
         # pnpm doesn't reliably repopulate the Cypress binary cache
         # (~/.cache/Cypress) on warm CI runs the way yarn did, and that dir

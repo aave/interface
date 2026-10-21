@@ -1,3 +1,7 @@
+// Apply the trust policy before Sentry can create a TLS client.
+// eslint-disable-next-line simple-import-sort/imports
+import './scripts/tls-policy.cjs';
+
 // This file configures the initialization of Sentry on the server.
 // The config you add here will be used whenever the server handles a request.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
