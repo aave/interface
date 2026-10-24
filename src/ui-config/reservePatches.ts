@@ -276,6 +276,21 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'PT sUSDe October 2026',
       iconSymbol: 'ptsusde',
     },
+    '0x8b562578b2f9aa8c14ccda3c5d6cbcead3b06a57': {
+      symbol: 'PT AUSD December 17th 2026',
+      name: 'PT AUSD December 2026',
+      iconSymbol: 'ausd',
+    },
+    '0x9a09a9e491db3dd8ada5b1b889991ac9ad5fd362': {
+      symbol: 'PT USDG October 29th 2026',
+      name: 'PT USDG October 2026',
+      iconSymbol: 'ptusdg',
+    },
+    '0x5ea1f184af5ced57725213d8267b5c4c834557d4': {
+      symbol: 'PT USDG February 25th 2027',
+      name: 'PT USDG February 2027',
+      iconSymbol: 'ptusdg',
+    },
     [AaveV3EthereumHorizon.ASSETS.USCC.UNDERLYING.toLowerCase()]: {
       symbol: 'USCC',
       name: 'Bitwise Crypto Carry Fund',
