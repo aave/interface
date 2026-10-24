@@ -1,4 +1,5 @@
 import { ArrowDownIcon, SwitchVerticalIcon } from '@heroicons/react/outline';
+import { t } from '@lingui/macro';
 import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
 import { Dispatch } from 'react';
 
@@ -111,6 +112,7 @@ export const MarketOrderInputs = ({
         {params.showSwitchInputAndOutputAssetsButton ? (
           <Box sx={{ position: 'absolute' }}>
             <IconButton
+              aria-label={t`Switch input and output assets`}
               onClick={swapState.onSwitchReserves}
               disabled={!(customProps?.canSwitchTokens ?? false)}
               sx={{
@@ -143,6 +145,7 @@ export const MarketOrderInputs = ({
           !params.outputInputTitle && (
             <Box sx={{ position: 'absolute' }}>
               <IconButton
+                aria-label={t`Swap direction`}
                 disabled
                 sx={{
                   border: '1px solid',

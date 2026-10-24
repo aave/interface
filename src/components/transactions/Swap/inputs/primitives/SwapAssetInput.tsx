@@ -3,12 +3,13 @@ import { isAddress } from '@ethersproject/address';
 import { formatUnits } from '@ethersproject/units';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
+import { t, Trans } from '@lingui/macro';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import LaunchIcon from '@mui/icons-material/Launch';
 import {
   Box,
   Button,
+  ButtonBase,
   CircularProgress,
   IconButton,
   InputBase,
@@ -340,7 +341,7 @@ export const SwitchAssetInput = ({
                 }
               }}
               inputProps={{
-                'aria-label': 'amount input',
+                'aria-label': side === 'input' ? t`Input amount` : t`Output amount`,
                 style: {
                   width: '100%',
                   fontSize: '21px',
@@ -358,6 +359,7 @@ export const SwitchAssetInput = ({
           )}
           {value !== '' && !disableInput && (
             <IconButton
+              aria-label={t`Clear amount`}
               sx={{
                 minWidth: 0,
                 p: 0,
@@ -474,7 +476,7 @@ export const SwitchAssetInput = ({
                       <Trans>{popularSectionTitle}</Trans>
                     </Typography>
                     {mergedPopular.map((asset) => (
-                      <Box
+                      <ButtonBase
                         key={asset.addressToSwap}
                         sx={{
                           display: 'flex',
@@ -489,6 +491,9 @@ export const SwitchAssetInput = ({
                           '&:hover': {
                             backgroundColor: 'border-2',
                           },
+                          '&.Mui-focusVisible': {
+                            backgroundColor: 'border-2',
+                          },
                         }}
                         onClick={() => handleSelect(asset)}
                       >
@@ -500,7 +505,7 @@ export const SwitchAssetInput = ({
                         <Typography variant="subheader1" color="fg-1" sx={{ mr: 1 }}>
                           {asset.symbol}
                         </Typography>
-                      </Box>
+                      </ButtonBase>
                     ))}
                   </Box>
                 )}

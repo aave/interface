@@ -523,6 +523,11 @@ msgstr "Withdrawing GHO"
 msgid "Signing"
 msgstr "Signing"
 
+#: src/components/transactions/Swap/inputs/LimitOrderInputs.tsx
+#: src/components/transactions/Swap/inputs/MarketOrderInputs.tsx
+msgid "Switch input and output assets"
+msgstr "Switch input and output assets"
+
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
@@ -1086,6 +1091,10 @@ msgstr "Estimated compounding interest rate, that is determined by Aave Governan
 #: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "unstaked"
 msgstr "unstaked"
+
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+msgid "Output amount"
+msgstr "Output amount"
 
 #: src/layouts/SupportModal.tsx
 msgid "Share my wallet address to help the support team resolve my issue"
@@ -3091,6 +3100,10 @@ msgstr "This swap has a price impact of {0}%, which exceeds the 25% safety thres
 msgid "Earn into sGHO"
 msgstr "Earn into sGHO"
 
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+msgid "Input amount"
+msgstr "Input amount"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Zero address not valid"
 msgstr "Zero address not valid"
@@ -3331,6 +3344,11 @@ msgstr "Disable E-Mode"
 msgid "Enable E-Mode"
 msgstr "Enable E-Mode"
 
+#: src/components/transactions/Swap/inputs/LimitOrderInputs.tsx
+#: src/components/transactions/Swap/inputs/MarketOrderInputs.tsx
+msgid "Swap direction"
+msgstr "Swap direction"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is restricted to assets within the selected category. <0>Learn more</0> about how it works and the applied restrictions."
 msgstr "Enabling E-Mode allows you to maximize your borrowing power, however, borrowing is restricted to assets within the selected category. <0>Learn more</0> about how it works and the applied restrictions."
@@ -3492,6 +3510,10 @@ msgstr "English"
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
 msgstr "Learn more in our <0>FAQ guide</0>"
+
+#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+msgid "Clear amount"
+msgstr "Clear amount"
 
 #: src/components/transactions/Warnings/CowLowerThanMarketWarning.tsx
 msgid "The selected rate is lower than the market price. You might incur a loss if you proceed."
@@ -3850,6 +3872,10 @@ msgstr "Please connect your wallet to see your supplies, borrowings, and open po
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid expiration"
 msgstr "Invalid expiration"
+
+#: src/components/transactions/Swap/inputs/shared/PriceInput.tsx
+msgid "Limit price"
+msgstr "Limit price"
 
 #: src/modules/umbrella/AvailableToClaimItem.tsx
 msgid "Rewards available to claim"

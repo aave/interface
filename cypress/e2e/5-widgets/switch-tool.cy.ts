@@ -51,7 +51,7 @@ const switchByTool = ({
       if (isMaxAmount) {
         cy.get('[data-cy=Modal]').find('button:contains("Max")').click();
       } else {
-        cy.get('[data-cy=Modal] input[aria-label="amount input"]')
+        cy.get('[data-cy=Modal] input[aria-label="Input amount"]')
           .first()
           .type(amount.toString(), { force: true });
       }
