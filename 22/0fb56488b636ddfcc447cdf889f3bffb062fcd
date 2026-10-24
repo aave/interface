@@ -1,0 +1,24 @@
+src/ui-config/reservePatches.ts
+  s_a69e73d27404b3::t_1baab5c0c0de44 279-293
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "220fb56488b636ddfcc447cdf889f3bffb062fcd",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_a69e73d27404b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "af4643f6-68b3-49cc-ab12-4a4474afbfb3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}
