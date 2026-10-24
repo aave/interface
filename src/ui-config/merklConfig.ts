@@ -49,6 +49,7 @@ export const EXTRA_WHITELIST_TOKENS: MerklWhitelistConfig = {
     '0xd143211f04fd4273e6f55c70d62cfcdc6ea48618',
     '0x280a7f6264b55758eea38c1f5efbfaa99d56cf74',
     '0xeffd19f350f11c8e5f60d72effa9b1aa80c2db5b',
+    '0xfe2e11bd16f614d79a64d55c79595b76446d2ada',
     // END
     '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
     '0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8',
