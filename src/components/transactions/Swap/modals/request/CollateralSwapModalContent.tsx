@@ -8,7 +8,9 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { TokenInfoWithBalance } from 'src/hooks/generic/useTokensBalance';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
+import { isAssetHidden } from 'src/modules/dashboard/lists/constants';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
@@ -210,14 +212,15 @@ const getTokensTo = (
   user: ExtendedFormattedUser | undefined,
   reserves: ComputedReserveData[],
   baseTokensInfo: TokenInfo[],
-  currentMarket: string,
+  currentMarket: CustomMarket,
   chainId: number
 ): SwappableToken[] => {
   // Tokens To should be the potential supply tokens (so we have an aToken)
   const tokensToSupply = reserves.filter(
     (reserve: ComputedReserveData) =>
       !(reserve.isFrozen || reserve.isPaused) &&
-      !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket: currentMarket })
+      !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket: currentMarket }) &&
+      !isAssetHidden(currentMarket, reserve.underlyingAsset)
   );
 
   const suppliedPositions =
