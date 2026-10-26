@@ -8,6 +8,7 @@ import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedT
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { FunDepositOptionsLink } from 'src/components/transactions/FunCheckout/FunDepositOptionsLink';
 import { AMPLWarning } from 'src/components/Warnings/AMPLWarning';
 import { CollateralType } from 'src/helpers/types';
 import { useWalletBalances } from 'src/hooks/app-data-provider/useWalletBalances';
@@ -356,6 +357,18 @@ export const SupplyModalContent = React.memo(
               assetName: poolReserve.name,
             },
           }}
+        />
+
+        <FunDepositOptionsLink
+          underlyingAsset={poolReserve.underlyingAsset}
+          symbol={poolReserve.symbol}
+          iconSymbol={poolReserve.iconSymbol}
+          supplyAPY={poolReserve.supplyAPY}
+          collateralEnabled={
+            effectiveCollateralType === CollateralType.ENABLED ||
+            effectiveCollateralType === CollateralType.ISOLATED_ENABLED
+          }
+          disabled={supplyTxState.loading}
         />
 
         {hasEmodeOptions && (

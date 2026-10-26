@@ -24,7 +24,6 @@ import { NoData } from 'src/components/primitives/NoData';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { isFunSupplyAsset } from 'src/components/transactions/FunCheckout/funSupplyAssets';
-import { FunSupplyButton } from 'src/components/transactions/FunCheckout/FunSupplyButton';
 import { WalletBalancesMap } from 'src/hooks/app-data-provider/useWalletBalances';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -122,7 +121,7 @@ export const SupplyAssetsListItemDesktop = ({
   const currentMarket = useRootStore((store) => store.currentMarket);
   const wrappedTokenReserves = useWrappedTokens();
 
-  const { openSwitch } = useModalContext();
+  const { openSupply, openSwitch } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage, debtCeiling } = useAssetCaps();
@@ -246,15 +245,14 @@ export const SupplyAssetsListItemDesktop = ({
       </ListColumn>
 
       <ListButtonsColumn>
-        <FunSupplyButton
+        <Button
           disabled={disableSupply}
-          underlyingAsset={underlyingAsset}
-          name={name}
-          symbol={symbol}
-          iconSymbol={iconSymbol}
-          supplyAPY={supplyAPY}
-          collateralEnabled={usageAsCollateralEnabledOnUser}
-        />
+          variant="tertiary"
+          size="small"
+          onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
+        >
+          <Trans>Supply</Trans>
+        </Button>
         <Button
           id="supply-extra-button"
           sx={iconButtonSx}
@@ -332,6 +330,7 @@ export const SupplyAssetsListItemMobile = ({
 }: SupplyAssetsListItemProps) => {
   const currentMarket = useRootStore((store) => store.currentMarket);
   const wrappedTokenReserves = useWrappedTokens();
+  const { openSupply } = useModalContext();
 
   // Disable the asset to prevent it from being supplied if supply cap has been reached
   const { supplyCap: supplyCapUsage } = useAssetCaps();
@@ -441,17 +440,15 @@ export const SupplyAssetsListItemMobile = ({
       </Row>
 
       <Box sx={mobileCardActionsSx}>
-        <FunSupplyButton
+        <Button
           disabled={disableSupply}
-          underlyingAsset={underlyingAsset}
-          name={name}
-          symbol={symbol}
-          iconSymbol={iconSymbol}
-          supplyAPY={supplyAPY}
-          collateralEnabled={usageAsCollateralEnabledOnUser}
+          variant="tertiary"
           size="medium"
           fullWidth
-        />
+          onClick={() => openSupply(underlyingAsset, currentMarket, name, 'dashboard')}
+        >
+          <Trans>Supply</Trans>
+        </Button>
         <Button
           variant="tertiary"
           component={Link}

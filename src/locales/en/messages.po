@@ -2752,12 +2752,14 @@ msgid "supply"
 msgstr "supply"
 
 #: pages/dashboard.page.tsx
-#: src/components/transactions/FunCheckout/FunSupplyButton.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+#: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Supply"
 msgstr "Supply"
 
@@ -3512,6 +3514,10 @@ msgstr "Blocked by Shield"
 #: src/modules/staking/StakingHeader.tsx
 msgid "Total emission per day"
 msgstr "Total emission per day"
+
+#: src/components/transactions/FunCheckout/FunDepositOptionsLink.tsx
+msgid "or use a card, exchanges or swaps to deposit"
+msgstr "or use a card, exchanges or swaps to deposit"
 
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"
