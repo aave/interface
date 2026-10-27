@@ -58,7 +58,7 @@ runs:
         install: false
         record: false
         start: pnpm serve:static
-        wait-on: 'http://localhost:3000'
+        wait-on: 'http://127.0.0.1:3000'
         command: ${{ inputs.TEST_COMMAND }}
       env:
         CYPRESS_URL: 'http://localhost:3000'
