@@ -61,7 +61,16 @@ export const GovVoteModalContent = ({
     return <TxErrorView txError={txError} />;
   }
 
-  if (txState.success) return <TxSuccessView customText={<Trans>Thank you for voting</Trans>} />;
+  // The vote tx lives on the voting chain, not the market's network the modal defaults to.
+  if (txState.success)
+    return (
+      <TxSuccessView
+        customText={<Trans>Thank you for voting</Trans>}
+        customExplorerLink={
+          txState.txHash ? networkConfig.explorerLinkBuilder({ tx: txState.txHash }) : undefined
+        }
+      />
+    );
 
   return (
     <>

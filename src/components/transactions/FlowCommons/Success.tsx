@@ -18,6 +18,7 @@ export type SuccessTxViewProps = {
   addToken?: ERC20TokenType;
   customAction?: ReactNode;
   customText?: ReactNode;
+  customExplorerLink?: string;
 };
 
 export const TxSuccessView = ({
@@ -30,6 +31,7 @@ export const TxSuccessView = ({
   addToken,
   customAction,
   customText,
+  customExplorerLink,
 }: SuccessTxViewProps) => {
   const { addERC20Token } = useWeb3Context();
   const [base64, setBase64] = useState('');
@@ -60,7 +62,12 @@ export const TxSuccessView = ({
   }
 
   return (
-    <BaseSuccessView txHash={txHash} title={title} description={description}>
+    <BaseSuccessView
+      txHash={txHash}
+      title={title}
+      description={description}
+      customExplorerLink={customExplorerLink}
+    >
       {customAction}
 
       {addToken && symbol && (
