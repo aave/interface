@@ -51,15 +51,19 @@ runs:
         name: out_cypress
         path: out
 
+    # Start the server and wait for it ourselves rather than via
+    # cypress-io/github-action: its v3 ping fails immediately on Node >=24.20
+    # (cypress-io/github-action#1873), and v7 no longer accepts a custom
+    # `command` for cypress-repeat.
+    - name: start server
+      shell: bash
+      run: |
+        nohup pnpm serve:static > serve.log 2>&1 &
+        curl --silent --fail --output /dev/null --retry 60 --retry-delay 2 --retry-connrefused --retry-all-errors http://localhost:3000 || { cat serve.log; exit 1; }
+
     - name: test
-      uses: cypress-io/github-action@16aacf8ea6a67e5e5d907d34bc3be8ad0e6e979f # v3.0.3
-      with:
-        headless: true
-        install: false
-        record: false
-        start: pnpm serve:static
-        wait-on: 'http://localhost:3000'
-        command: ${{ inputs.TEST_COMMAND }}
+      shell: bash
+      run: ${{ inputs.TEST_COMMAND }}
       env:
         CYPRESS_URL: 'http://localhost:3000'
         CYPRESS_TENDERLY_ACCOUNT: ${{ inputs.CYPRESS_TENDERLY_ACCOUNT }}
