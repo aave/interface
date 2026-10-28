@@ -167,6 +167,7 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
     if (
+      config.isFork ||
       (FORK_ENABLED && FORK_BASE_CHAIN_ID === chainId) ||
       process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED !== 'true'
     ) {
