@@ -2604,7 +2604,7 @@ msgid "Low health factor after swap. Your position will carry a higher risk of l
 msgstr ""
 
 #: src/components/AssetCategoryMultiselect.tsx
-msgid "Principle Tokens"
+msgid "Principal Tokens"
 msgstr ""
 
 #: src/ui-config/menu-items/index.tsx
