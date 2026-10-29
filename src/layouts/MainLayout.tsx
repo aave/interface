@@ -11,14 +11,15 @@ import TopBarNotify from './TopBarNotify';
 
 // Shown on every supported chain. Bump bannerVersion to re-show it to users who dismissed it.
 const globalCampaign = {
-  notifyText: 'TODO: banner message',
-  buttonText: 'Learn more',
+  notifyText:
+    'Aave markets are temporarily frozen as a precaution. Withdrawals and repayments on existing positions remain available.',
+  buttonText: 'Full announcement',
   buttonAction: {
     type: 'url' as const,
-    value: 'https://TODO',
+    value: 'https://x.com/aave/status/2115937863162339637',
     target: '_blank' as const,
   },
-  bannerVersion: 'global-v1',
+  bannerVersion: 'markets-frozen-v1',
 };
 
 const getCampaignConfigs = () =>
@@ -28,7 +29,7 @@ const getCampaignConfigs = () =>
 const routeCampaigns = {
   // '/sgho': {
   //   notifyText: "Earn 4% higher yield on savings GHO using OKX's GHO staking vault.",
-  //   buttonText: 'Learn more',
+  //   buttonText: 'Full announcement',
   //   buttonAction: {
   //     type: 'url' as const,
   //     value: 'https://web3.okx.com/earn/activity/aave-gho',
