@@ -207,6 +207,7 @@ export default function TopBarNotify({
             gap: '0.38rem',
             width: '100%',
             px: 6,
+            py: 3,
           }}
         >
           <Typography
