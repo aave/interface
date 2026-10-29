@@ -29,7 +29,7 @@ const getCampaignConfigs = () =>
 const routeCampaigns = {
   // '/sgho': {
   //   notifyText: "Earn 4% higher yield on savings GHO using OKX's GHO staking vault.",
-  //   buttonText: 'Full announcement',
+  //   buttonText: 'Learn more',
   //   buttonAction: {
   //     type: 'url' as const,
   //     value: 'https://web3.okx.com/earn/activity/aave-gho',
