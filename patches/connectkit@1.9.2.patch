@@ -1,8 +1,102 @@
 diff --git a/build/index.es.js b/build/index.es.js
-index 5108586ac4d353e0a35ded139a65d464ceef29c8..d0cd8737204d897209507ed7c7f30eca41af183c 100644
+index 5108586ac4d353e0a35ded139a65d464ceef29c8..320be5eea066ae31811c953ab55cdd64ce4f743c 100644
 --- a/build/index.es.js
 +++ b/build/index.es.js
-@@ -8558,7 +8558,7 @@ const Avatar = ({ address, name, size = 96, radius = 96 }) => {
+@@ -311,6 +311,8 @@ const isPortoConnector = (connectorId) => connectorId === 'xyz.ithaca.porto';
+ const isSafeConnector = (connectorId) => connectorId === 'safe';
+ const isInjectedConnector = (connectorId) => connectorId === 'injected';
+ 
++const Oath = (props) => (jsxs("svg", { ...props, xmlns: "http://www.w3.org/2000/svg", width: "32", height: "32", viewBox: "0 0 1024 1024", children: [jsx("title", { children: "Oath \u2014 Signal Blue" }), jsxs("defs", { children: [jsx("clipPath", { id: "connectkit-oath-ct", children: jsx("rect", { width: "1024", height: "512" }) }), jsx("clipPath", { id: "connectkit-oath-cb", children: jsx("rect", { y: "512", width: "1024", height: "512" }) }), jsxs("mask", { id: "connectkit-oath-m0", maskUnits: "userSpaceOnUse", x: "0", y: "0", width: "1024", height: "1024", children: [jsx("circle", { cx: "372", cy: "512", r: "230", fill: "none", stroke: "#fff", strokeWidth: "120" }), jsx("circle", { cx: "652", cy: "512", r: "230", fill: "none", stroke: "#000", strokeWidth: "164", clipPath: "url(#connectkit-oath-cb)" })] }), jsxs("mask", { id: "connectkit-oath-m1", maskUnits: "userSpaceOnUse", x: "0", y: "0", width: "1024", height: "1024", children: [jsx("circle", { cx: "652", cy: "512", r: "230", fill: "none", stroke: "#fff", strokeWidth: "120" }), jsx("circle", { cx: "372", cy: "512", r: "230", fill: "none", stroke: "#000", strokeWidth: "164", clipPath: "url(#connectkit-oath-ct)" })] }), jsxs("linearGradient", { id: "connectkit-oath-bg", x1: "0", y1: "0", x2: "1", y2: "1", children: [jsx("stop", { stopColor: "#247BFF" }), jsx("stop", { offset: "1", stopColor: "#183ED4" })] })] }), jsx("rect", { width: "1024", height: "1024", rx: "256", fill: "url(#connectkit-oath-bg)" }), jsxs("g", { transform: "translate(138 260) scale(.86976744186) translate(-82 -222)", children: [jsx("g", { mask: "url(#connectkit-oath-m0)", children: jsx("rect", { width: "1024", height: "1024", fill: "#FFFFFF" }) }), jsx("g", { mask: "url(#connectkit-oath-m1)", children: jsx("rect", { width: "1024", height: "1024", fill: "#FFFFFF" }) })] })] }));
++
+ // Organised in alphabetical order by key
+ const walletConfigs = {
+     mock: {
+@@ -648,6 +650,25 @@ const walletConfigs = {
+             firefox: 'https://addons.mozilla.org/en-US/firefox/addon/talisman-wallet-extension/',
+         },
+     },
++    oath: {
++        name: 'Oath Wallet',
++        shortName: 'Oath',
++        icon: jsx(Oath, {}),
++        iconShape: 'squircle',
++        walletConnectOnly: true,
++        downloadUrls: {
++            download: 'https://apps.apple.com/app/id6780187283',
++            ios: 'https://apps.apple.com/app/id6780187283',
++            website: 'https://oathwallet.org',
++        },
++        getWalletConnectDeeplink: (uri) => {
++            if (!uri)
++                return '';
++            return isMobile() && !isAndroid()
++                ? `oathwallet://wc?uri=${encodeURIComponent(uri)}`
++                : uri;
++        },
++    },
+     walletConnect: {
+         name: 'Other Wallets',
+         shortName: 'Other',
+@@ -669,7 +690,7 @@ const wallets = Object.keys(walletConfigs).reduce((acc, key) => {
+         target: {
+             id: target,
+             name: (_d = (_c = config.name) !== null && _c !== void 0 ? _c : config.shortName) !== null && _d !== void 0 ? _d : key,
+-            provider: (w) => { var _a; return (_a = w === null || w === void 0 ? void 0 : w.ethereum) === null || _a === void 0 ? void 0 : _a[`is${flag}`]; },
++            provider: (w) => { var _a; return config.walletConnectOnly ? undefined : (_a = w === null || w === void 0 ? void 0 : w.ethereum) === null || _a === void 0 ? void 0 : _a[`is${flag}`]; },
+         },
+     });
+     const name = ((_f = (_e = config.name) !== null && _e !== void 0 ? _e : config.shortName) !== null && _f !== void 0 ? _f : key)
+@@ -4526,6 +4547,7 @@ const useWallets = () => {
+                 ...c,
+                 iconConnector: connector.icon ? (jsx("img", { src: connector.icon, alt: connector.name, width: '100%', height: '100%' })) : undefined,
+                 ...wallet,
++                isInstalled: wallet.walletConnectOnly ? false : c.isInstalled,
+             };
+         }
+         return c;
+@@ -6925,6 +6947,9 @@ const ConnectorItem = ({ wallet, isRecent, }) => {
+         (wallet.shouldDeeplinkDesktop && !isMobile)
+         ? (_a = wallet.getWalletConnectDeeplink) === null || _a === void 0 ? void 0 : _a.call(wallet, uri !== null && uri !== void 0 ? uri : '')
+         : undefined;
++    // A native-only wallet keeps desktop/unsupported-mobile users on the QR screen.
++    if (wallet.walletConnectOnly && deeplink === uri)
++        deeplink = undefined;
+     const redirectToMoreWallets = isMobile && isWalletConnectConnector(wallet.id);
+     // Safari requires opening popup on user gesture, so we connect immediately here
+     const shouldConnectImmediately = (detectBrowser() === 'safari' || detectBrowser() === 'ios') &&
+@@ -6932,7 +6957,8 @@ const ConnectorItem = ({ wallet, isRecent, }) => {
+             isPortoConnector(wallet.connector.id));
+     if (redirectToMoreWallets || shouldConnectImmediately)
+         deeplink = undefined; // mobile redirects to more wallets page
+-    return (jsxs(ConnectorButton, { type: "button", as: deeplink ? 'a' : undefined, href: deeplink ? deeplink : undefined, disabled: context.route !== routes.CONNECTORS, onClick: deeplink
++    return (jsxs(ConnectorButton, { type: "button", as: deeplink ? 'a' : undefined, href: deeplink ? deeplink : undefined, disabled: context.route !== routes.CONNECTORS ||
++            (wallet.walletConnectOnly && isMobile && !uri), onClick: deeplink
+             ? undefined
+             : () => {
+                 if (redirectToMoreWallets) {
+@@ -7274,15 +7300,21 @@ const MobileConnectors = () => {
+     const wallets = useWallets();
+     // filter out installed wallets
+     const walletsIdsToDisplay = (_a = Object.keys(walletConfigs).filter((walletId) => {
++        var _a;
+         const wallet = walletConfigs[walletId];
+         if (wallets.find((w) => w.connector.id === walletId))
+             return false;
+         if (!wallet.getWalletConnectDeeplink)
+             return false;
++        // Do not offer an iOS-only app as a same-device Android handoff.
++        if (wallet.walletConnectOnly && isAndroid() && !((_a = wallet.downloadUrls) === null || _a === void 0 ? void 0 : _a.android))
++            return false;
+         return true;
+     })) !== null && _a !== void 0 ? _a : [];
+     const connectWallet = (wallet) => {
+         var _a;
++        if (!wcUri)
++            return;
+         const uri = (_a = wallet.getWalletConnectDeeplink) === null || _a === void 0 ? void 0 : _a.call(wallet, wcUri);
+         if (uri)
+             window.location.href = uri;
+@@ -8558,7 +8590,7 @@ const Avatar = ({ address, name, size = 96, radius = 96 }) => {
      });
      const { data: ensAvatar } = useEnsAvatar({
          chainId: 1,
@@ -11,3 +105,15 @@ index 5108586ac4d353e0a35ded139a65d464ceef29c8..d0cd8737204d897209507ed7c7f30eca
          config: ensFallbackConfig,
      });
      const ens = {
+diff --git a/build/wallets/walletConfigs.d.ts b/build/wallets/walletConfigs.d.ts
+index f75e3f1d2eb2faa1394540a3e75cb4f852d06021..197fb2e6801f80a1249141ee5df2a18c1f6f1995 100644
+--- a/build/wallets/walletConfigs.d.ts
++++ b/build/wallets/walletConfigs.d.ts
+@@ -25,6 +25,7 @@ export type WalletConfigProps = {
+     };
+     getWalletConnectDeeplink?: (uri: string) => string;
+     shouldDeeplinkDesktop?: boolean;
++    walletConnectOnly?: boolean;
+ };
+ export declare const walletConfigs: {
+     [rdns: string]: WalletConfigProps;
