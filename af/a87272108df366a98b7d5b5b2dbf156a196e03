@@ -1,0 +1,32 @@
+src/locales/en/messages.js
+  s_20f4380c0c080f::t_690be1a2d0954d 1
+src/locales/es/messages.js
+  s_20f4380c0c080f::t_690be1a2d0954d 1
+src/locales/fr/messages.js
+  s_20f4380c0c080f::t_690be1a2d0954d 1
+src/locales/en/messages.po
+  s_20f4380c0c080f::t_690be1a2d0954d 103-106,3615-3617
+  s_20f4380c0c080f::t_37c34dcb4086b0 3618
+jest.config.js
+  s_20f4380c0c080f::t_18e3958d4056cc 12-13,27-30,32-41
+src/locales/el/messages.js
+  s_20f4380c0c080f::t_690be1a2d0954d 1
+jest.polyfills.js
+  s_20f4380c0c080f::t_18e3958d4056cc 1-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "afa87272108df366a98b7d5b5b2dbf156a196e03",
+  "prompts": {},
+  "sessions": {
+    "s_20f4380c0c080f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f183b60e-fde3-45f5-9355-0e725c206d51",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

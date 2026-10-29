@@ -1,0 +1,39 @@
+src/locales/en/messages.js
+  s_20f4380c0c080f::t_c49ba1dd265488 1
+src/locales/en/messages.po
+  s_20f4380c0c080f::t_653e989c0da844 103-106,3615-3618
+src/modules/markets/MarketAssetsListMobileItem.tsx
+  s_20f4380c0c080f::t_e9b6550f5e6027 4,13,52-53,152-154
+src/modules/markets/MarketAssetsListItem.tsx
+  s_20f4380c0c080f::t_1a542404f98ca6 5,17,60-61,162-164
+src/utils/borrowableOnlyInEMode.ts
+  s_20f4380c0c080f::t_5aac9be57c92ca 1-24
+src/locales/es/messages.js
+  s_20f4380c0c080f::t_3e366e9bb905f4 1
+src/modules/reserve-overview/ReserveConfiguration.tsx
+  s_20f4380c0c080f::t_65451f4405a70b 10,19,59-60,147-151
+src/locales/el/messages.js
+  s_20f4380c0c080f::t_2cb114cab679ab 1
+src/components/Warnings/BorrowableOnlyInEModeWarning.tsx
+  s_20f4380c0c080f::t_3a50936074807b 1-16
+src/locales/fr/messages.js
+  s_20f4380c0c080f::t_7f35a106facd2e 1
+src/components/infoTooltips/BorrowableOnlyInEModeTooltip.tsx
+  s_20f4380c0c080f::t_1751fafc84bf8b 1-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0e4b89e83ae1b4bb4f492b9ff9aa91bb54414aec",
+  "prompts": {},
+  "sessions": {
+    "s_20f4380c0c080f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f183b60e-fde3-45f5-9355-0e725c206d51",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
