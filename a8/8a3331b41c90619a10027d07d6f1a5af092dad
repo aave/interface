@@ -1,0 +1,19 @@
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_01650672d8c08d::t_1ad44a62d11378 149
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a88a3331b41c90619a10027d07d6f1a5af092dad",
+  "prompts": {},
+  "sessions": {
+    "s_01650672d8c08d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e9bf0763-cb8b-4cab-ae8f-360ed73aa3bc",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
