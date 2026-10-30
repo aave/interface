@@ -54,6 +54,7 @@
     "test:headless": "export DOTENV_CONFIG_PATH='../../../.env.local' && cypress run --config-file './cypress/configs/local/full.config.ts'",
     "test": "jest --watch",
     "test:ci": "jest --ci",
+    "test:oath-wallet": "node --test scripts/test-oath-wallet.mjs",
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
