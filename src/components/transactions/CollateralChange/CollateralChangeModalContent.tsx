@@ -86,7 +86,12 @@ export const CollateralChangeModalContent = ({
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
-  if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
+  if (
+    assetsBlockingWithdraw.length > 0 &&
+    !assetsBlockingWithdraw.some(
+      (r) => r.underlyingAsset.toLowerCase() === poolReserve.underlyingAsset.toLowerCase()
+    )
+  ) {
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
   } else if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
     blockingError = ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY;
@@ -129,8 +134,8 @@ export const CollateralChangeModalContent = ({
       case ErrorType.ZERO_LTV_WITHDRAW_BLOCKED:
         return (
           <Trans>
-            Assets with zero LTV ({assetsBlockingWithdraw.join(', ')}) must be withdrawn or disabled
-            as collateral to perform this action
+            Assets with zero LTV ({assetsBlockingWithdraw.map((r) => r.reserve.symbol).join(', ')})
+            must be withdrawn or disabled as collateral to perform this action
           </Trans>
         );
       default:

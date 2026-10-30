@@ -17,7 +17,7 @@ export const useZeroLTVBlockingWithdraw = () => {
     return [];
   }
 
-  const zeroLTVBlockingWithdraw: string[] = [];
+  const zeroLTVBlockingWithdraw: typeof userSummary.userReservesData = [];
   userSummary.userReservesData.forEach((userReserve) => {
     const emodeCategory = userReserve.reserve.eModes.find(
       (e) => e.id === userSummary.userEmodeCategoryId
@@ -35,7 +35,7 @@ export const useZeroLTVBlockingWithdraw = () => {
       userReserve.usageAsCollateralEnabledOnUser &&
       userReserve.reserve.reserveLiquidationThreshold !== '0'
     ) {
-      zeroLTVBlockingWithdraw.push(userReserve.reserve.symbol);
+      zeroLTVBlockingWithdraw.push(userReserve);
     }
   });
 
