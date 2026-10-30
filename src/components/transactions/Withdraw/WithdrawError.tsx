@@ -4,6 +4,7 @@ import {
   ComputedReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
 
 enum ErrorType {
@@ -13,7 +14,7 @@ enum ErrorType {
 }
 
 interface WithdrawErrorProps {
-  assetsBlockingWithdraw: string[];
+  assetsBlockingWithdraw: FormattedUserReserves[];
   poolReserve: ComputedReserveData;
   healthFactorAfterWithdraw: BigNumber;
   withdrawAmount: string;
@@ -32,7 +33,12 @@ export const useWithdrawError = ({
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
 
   if (!withdrawTxState.success && !withdrawTxState.txHash) {
-    if (assetsBlockingWithdraw.length > 0 && !assetsBlockingWithdraw.includes(poolReserve.symbol)) {
+    if (
+      assetsBlockingWithdraw.length > 0 &&
+      !assetsBlockingWithdraw.some(
+        (r) => r.underlyingAsset.toLowerCase() === poolReserve.underlyingAsset.toLowerCase()
+      )
+    ) {
       blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
     } else if (
       healthFactorAfterWithdraw.lt('1') &&
@@ -59,8 +65,8 @@ export const useWithdrawError = ({
     ),
     [ErrorType.ZERO_LTV_WITHDRAW_BLOCKED]: (
       <Trans>
-        Assets with zero LTV ({assetsBlockingWithdraw.join(', ')}) must be withdrawn or disabled as
-        collateral to perform this action
+        Assets with zero LTV ({assetsBlockingWithdraw.map((r) => r.reserve.symbol).join(', ')}) must
+        be withdrawn or disabled as collateral to perform this action
       </Trans>
     ),
   };

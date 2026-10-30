@@ -1,29 +1,38 @@
 import { SxProps } from '@mui/material';
 import React, { Dispatch, useEffect } from 'react';
+import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 
 import { ActionsBlockedReason, SwapError, SwapState, SwapType } from '../../types';
 import { ZeroLTVBlockingError } from './ZeroLTVBlockingError';
 
+// The cow-swap-adapter withdraws `_sellToken` (see
+// cow-swap-adapters/src/adapters/v3/*Adapter.sol): the collateral picked as
+// "Using" on repay with collateral, the source collateral otherwise. Read it from
+// the selected token, which changes in the same update that resets errors, and
+// match by address since the token symbol can be the native one (ETH for WETH).
+const getWithdrawnAsset = (state: SwapState) =>
+  (state.swapType === SwapType.RepayWithCollateral
+    ? state.destinationToken
+    : state.sourceToken
+  ).underlyingAddress.toLowerCase();
+
 // Mirrors `validateHFAndLtvzero` in aave-v3-origin SupplyLogic: when the user
 // has any zero-LTV collateral enabled, every withdrawn aToken must itself have
-// zero LTV. The cow-swap-adapter withdraws `_sellToken` (see
-// cow-swap-adapters/src/adapters/v3/*Adapter.sol), which the interface exposes
-// as `state.sellAmountToken` — checking by symbol against the user's blocking
-// asset list mirrors what the protocol validates on-chain.
-export const hasZeroLTVBlocking = (state: SwapState, blockingAssets: string[]) => {
-  if (blockingAssets.length === 0) return false;
+// zero LTV.
+export const hasZeroLTVBlocking = (state: SwapState, blockingReserves: FormattedUserReserves[]) => {
+  if (blockingReserves.length === 0) return false;
   // Direct DEX swaps don't touch Aave; the on-chain check never runs.
   if (state.swapType === SwapType.Swap) return false;
   // DebtSwap repays old debt and opens new debt. Neither path withdraws an
   // aToken from the user, so validateHFAndLtvzero never fires.
   if (state.swapType === SwapType.DebtSwap) return false;
 
-  const withdrawnSymbol = state.sellAmountToken?.symbol;
-  // Conservative: if we can't identify the withdrawn asset yet, block.
-  if (!withdrawnSymbol) return true;
+  const withdrawnAsset = getWithdrawnAsset(state);
   // Withdrawing the LTV=0 asset itself is allowed by the protocol.
-  return !blockingAssets.includes(withdrawnSymbol);
+  return !blockingReserves.some(
+    (userReserve) => userReserve.underlyingAsset.toLowerCase() === withdrawnAsset
+  );
 };
 
 export const ZeroLTVBlockingGuard = ({
@@ -38,6 +47,7 @@ export const ZeroLTVBlockingGuard = ({
   isSwapFlowSelected: boolean;
 }) => {
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
+  const withdrawnAsset = getWithdrawnAsset(state);
 
   useEffect(() => {
     const isBlocking = hasZeroLTVBlocking(state, assetsBlockingWithdraw);
@@ -74,7 +84,7 @@ export const ZeroLTVBlockingGuard = ({
         });
       }
     }
-  }, [assetsBlockingWithdraw, state.sellAmountToken?.symbol, state.swapType]);
+  }, [assetsBlockingWithdraw, withdrawnAsset, state.swapType]);
 
   if (hasZeroLTVBlocking(state, assetsBlockingWithdraw)) {
     return <ZeroLTVBlockingError sx={{ mb: !isSwapFlowSelected ? 0 : 4, ...sx }} />;
