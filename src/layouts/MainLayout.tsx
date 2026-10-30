@@ -3,33 +3,19 @@ import React, { ReactNode } from 'react';
 import AnalyticsConsent from 'src/components/Analytics/AnalyticsConsent';
 // import { useModalContext } from 'src/hooks/useModal';
 import { SupportModal } from 'src/layouts/SupportModal';
-import { FORK_ENABLED, getSupportedChainIds } from 'src/utils/marketsAndNetworksConfig';
+import { FORK_ENABLED } from 'src/utils/marketsAndNetworksConfig';
 
 import { AppFooter } from './AppFooter';
 import { AppHeader } from './AppHeader';
 import TopBarNotify from './TopBarNotify';
 
-// Shown on every supported chain. Bump bannerVersion to re-show it to users who dismissed it.
-const globalCampaign = {
-  notifyText:
-    'Aave markets are temporarily frozen as a precaution. Withdrawals and repayments on existing positions remain available.',
-  buttonText: 'Full announcement',
-  buttonAction: {
-    type: 'url' as const,
-    value: 'https://x.com/aave/status/2115937863162339637',
-    target: '_blank' as const,
-  },
-  bannerVersion: 'markets-frozen-v1',
-};
-
-const getCampaignConfigs = () =>
-  Object.fromEntries(getSupportedChainIds().map((chainId) => [chainId, globalCampaign]));
+const getCampaignConfigs = () => ({});
 
 // For defining Route specific campaigns if needed in future
 const routeCampaigns = {
   // '/sgho': {
   //   notifyText: "Earn 4% higher yield on savings GHO using OKX's GHO staking vault.",
-  //   buttonText: 'Full announcement',
+  //   buttonText: 'Learn more',
   //   buttonAction: {
   //     type: 'url' as const,
   //     value: 'https://web3.okx.com/earn/activity/aave-gho',
