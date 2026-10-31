@@ -52,14 +52,14 @@ importers:
         specifier: ^2.13.0
         version: 2.44.5
       '@cowprotocol/cow-sdk':
-        specifier: 9.2.7
-        version: 9.2.7(ajv@8.20.0)(cross-fetch@4.1.0)(multiformats@9.9.0)
+        specifier: 9.2.21
+        version: 9.2.21(ajv@8.20.0)(cross-fetch@4.1.0)(multiformats@9.9.0)
       '@cowprotocol/sdk-ethers-v5-adapter':
-        specifier: 0.4.11
-        version: 0.4.11(@ethersproject/abstract-signer@5.8.0)(@typechain/ethers-v5@11.1.2(@ethersproject/abi@5.8.0)(@ethersproject/providers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typechain@8.3.2(typescript@5.9.3))(typescript@5.9.3))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))
+        specifier: 0.4.21
+        version: 0.4.21(@ethersproject/abstract-signer@5.8.0)(@typechain/ethers-v5@11.1.2(@ethersproject/abi@5.8.0)(@ethersproject/providers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typechain@8.3.2(typescript@5.9.3))(typescript@5.9.3))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))
       '@cowprotocol/sdk-flash-loans':
-        specifier: 3.3.4
-        version: 3.3.4(ajv@8.20.0)(multiformats@9.9.0)
+        specifier: 4.0.0
+        version: 4.0.0(ajv@8.20.0)(multiformats@9.9.0)
       '@emotion/cache':
         specifier: 11.10.3
         version: 11.10.3
@@ -1260,8 +1260,8 @@ packages:
     resolution: {integrity: sha512-PXDQXkAmiMEG162Bqdh9ChML/GJZo6vU+7F03ALKDK8zYc6SuAr47LjG7hGYRqUOz+WK0dU7bQ0xzuqFMdxzeQ==}
     engines: {node: '>=v14'}
 
-  '@cowprotocol/cow-sdk@9.2.7':
-    resolution: {integrity: sha512-rNT6msuhl+2ZLICGZNgq9ov0EOarpiZxYC3BDaJum+Z5hnnl46zeXZUbBQ4AA+zkNgAudUvChCpGgcXzw1o45Q==}
+  '@cowprotocol/cow-sdk@9.2.21':
+    resolution: {integrity: sha512-RuaoODRTwGbJbz8cHhd3epUTWCSTj+BR7Ydszc8IB0sE9EL8FdzkppvHHiQqJK7sBSBdtwT83SePN2jFlN5M7A==}
     peerDependencies:
       '@openzeppelin/merkle-tree': ^1.x
       cross-fetch: ^3.x
@@ -1272,39 +1272,39 @@ packages:
       multiformats:
         optional: true
 
-  '@cowprotocol/sdk-app-data@6.0.0':
-    resolution: {integrity: sha512-0qoq0Y6WiaKfl32twLtLHrxoFlAlFaW17VMr+7KHGado79mJh/9tI4UsWfIoDrZICfSRxfdzIVCzMRRJK0abEA==}
+  '@cowprotocol/sdk-app-data@6.0.11':
+    resolution: {integrity: sha512-FLqTjDWXGyPGPsh3ZfGYFCI9t+9uToUzVNY2VnSZyXU7ztvg4Sh+KHZYRVn5co6nicLscm+CjUU/e+3CC/0a/w==}
     peerDependencies:
       ajv: ^8.x
       multiformats: ^9.x
 
-  '@cowprotocol/sdk-common@0.12.1':
-    resolution: {integrity: sha512-eh8o2b8iLHNRnS7ATRDNOkISp67KHV7JDzYn1qd/reCVPLlnN/lRDnNomT+A8uPU1aYV2eNkCkbLyTkkQ5bT4g==}
+  '@cowprotocol/sdk-common@0.14.5':
+    resolution: {integrity: sha512-Y+pzjo1zsIKg3qc5d7hMs/4JBQjtP0FJWpcBquEpvqiw3aFlyp/6HjcaS5tTGhSKy85D1H2uq7H1reuy3GYKQA==}
 
-  '@cowprotocol/sdk-config@2.4.0':
-    resolution: {integrity: sha512-NMJOqq3LfIjlFFUHd4zbx3Rc3YJl/oCklEaAxw10VHVDNMFMqcdK3tR6W9CPTILR8zAv5DDy1C2cPErXpcrzkQ==}
+  '@cowprotocol/sdk-config@2.10.0':
+    resolution: {integrity: sha512-k4mBAzwpemn0ZYFrMIXzqRPngI22mEHQU0edETLwxj+kG9nUrKBh56uuF5GOaX6OmT9RDL+b4bVR5+AxFoUDdg==}
 
-  '@cowprotocol/sdk-contracts-ts@3.4.0':
-    resolution: {integrity: sha512-mPnwaUp0rLX6o8dH9hXZoA0Nj5kpPaQMGePTpxq+DfggZc4Y17d6Re2rzaHJMoWMDm9zG+82xIXQnn4JWEwK7A==}
+  '@cowprotocol/sdk-contracts-ts@3.7.5':
+    resolution: {integrity: sha512-UNdbi7NhHBc+jE4/KZFKUHEJCxPL1wPCnunBSLtTvX0fyRpjlaTE1HHXqBUKXJOxLwWccjnofgYxKDY++AFzpQ==}
 
-  '@cowprotocol/sdk-ethers-v5-adapter@0.4.11':
-    resolution: {integrity: sha512-smFc78/x4VrHu7zLpTU5GF/cp1KE9qBQIyGhLkhT6edMzqq0ASpnuPajT2ddHylcUUR93sTAn9YYmUjYAb+VLQ==}
+  '@cowprotocol/sdk-ethers-v5-adapter@0.4.21':
+    resolution: {integrity: sha512-YabeSaouocAChyFN1nRjF4I1KtQY925GULzbMg+XNby8335XqW1OO7TFf20bGWUlkulnvnfzlFFak4jzjbLI/g==}
     peerDependencies:
       '@ethersproject/abstract-signer': ^5.8.0
       '@typechain/ethers-v5': ^11.1.2
       ethers: ^5.7.2
 
-  '@cowprotocol/sdk-flash-loans@3.3.4':
-    resolution: {integrity: sha512-5IaWqtvQeGaa9fEqpiGxZHPT1HT2F//RSPhcM7NGnCZuv3ptwMrvNhhmxcLhtuCIuVe5RqAiT3VUrfCN4XDfUA==}
+  '@cowprotocol/sdk-flash-loans@4.0.0':
+    resolution: {integrity: sha512-IBmuCRh7koAxTlrhsLOItSNZW8GLEhVCdsN75aOF5kkgh3CosEVWjhNPUjW7J2TsBAT4BALapUqaFv0UMvMTlQ==}
 
-  '@cowprotocol/sdk-order-book@4.0.2':
-    resolution: {integrity: sha512-IuR6LARLtIrfRNkEqgPRkK5/1HRpR3+YktbkfqrH8B3Bi2YzMQxRVxu+N8KtEdC5fbHvkLixKKDDwN2gKAI3bA==}
+  '@cowprotocol/sdk-order-book@4.3.4':
+    resolution: {integrity: sha512-wwxFHA8/oun3NO5Kpz2xivdohOAmDG0vcg3m909quGkUr4BsJsSzaNgfuEFBCTYNfKZm8qaHwrtrq60mDlSUjg==}
 
-  '@cowprotocol/sdk-order-signing@1.1.7':
-    resolution: {integrity: sha512-0n1/Jsk/YHWfXoTx7IC9T5sCDd5NllRotkptjcV7cUWXS8HZVaUuw0EI+17gFHd/S+dro5s8e8Bmydvxq//8XQ==}
+  '@cowprotocol/sdk-order-signing@1.1.20':
+    resolution: {integrity: sha512-kjbea4pzPndQ1baErXNzbgyEIFYvnrnBtr4p8KbOXYsDBx3QFkNe4ylQZZhBXafeRJVRGo2yHbxHqDVCAunGqg==}
 
-  '@cowprotocol/sdk-trading@2.3.0':
-    resolution: {integrity: sha512-fuDfMTN/7t4PzXe0vcAHS09sEBMJqYIHx5gDgWMI65kMo9xnVJwHXHXV5nF2OpaTkvyOb6Z9CT7TIsSEmIAWrw==}
+  '@cowprotocol/sdk-trading@2.7.8':
+    resolution: {integrity: sha512-KFvBWsba4xn6Z9WMFEDmWxZJPZcFNimkV3z29yMc8hOGllHpGZzF5mOUwG5bFlS+XiNxVo23YLyqDBCT7BGglw==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -11536,15 +11536,15 @@ snapshots:
     dependencies:
       chalk: 4.1.2
 
-  '@cowprotocol/cow-sdk@9.2.7(ajv@8.20.0)(cross-fetch@4.1.0)(multiformats@9.9.0)':
+  '@cowprotocol/cow-sdk@9.2.21(ajv@8.20.0)(cross-fetch@4.1.0)(multiformats@9.9.0)':
     dependencies:
-      '@cowprotocol/sdk-app-data': 6.0.0(ajv@8.20.0)(multiformats@9.9.0)
-      '@cowprotocol/sdk-common': 0.12.1
-      '@cowprotocol/sdk-config': 2.4.0
-      '@cowprotocol/sdk-contracts-ts': 3.4.0
-      '@cowprotocol/sdk-order-book': 4.0.2
-      '@cowprotocol/sdk-order-signing': 1.1.7
-      '@cowprotocol/sdk-trading': 2.3.0(ajv@8.20.0)(multiformats@9.9.0)
+      '@cowprotocol/sdk-app-data': 6.0.11(ajv@8.20.0)(multiformats@9.9.0)
+      '@cowprotocol/sdk-common': 0.14.5
+      '@cowprotocol/sdk-config': 2.10.0
+      '@cowprotocol/sdk-contracts-ts': 3.7.5
+      '@cowprotocol/sdk-order-book': 4.3.4
+      '@cowprotocol/sdk-order-signing': 1.1.20
+      '@cowprotocol/sdk-trading': 2.7.8(ajv@8.20.0)(multiformats@9.9.0)
       cross-fetch: 4.1.0
     optionalDependencies:
       multiformats: 9.9.0
@@ -11552,74 +11552,74 @@ snapshots:
       - ajv
       - encoding
 
-  '@cowprotocol/sdk-app-data@6.0.0(ajv@8.20.0)(multiformats@9.9.0)':
+  '@cowprotocol/sdk-app-data@6.0.11(ajv@8.20.0)(multiformats@9.9.0)':
     dependencies:
-      '@cowprotocol/sdk-common': 0.12.1
+      '@cowprotocol/sdk-common': 0.14.5
       ajv: 8.20.0
       json-stringify-deterministic: 1.0.14
       multiformats: 9.9.0
 
-  '@cowprotocol/sdk-common@0.12.1':
+  '@cowprotocol/sdk-common@0.14.5':
     dependencies:
-      '@cowprotocol/sdk-config': 2.4.0
+      '@cowprotocol/sdk-config': 2.10.0
 
-  '@cowprotocol/sdk-config@2.4.0':
+  '@cowprotocol/sdk-config@2.10.0':
     dependencies:
       exponential-backoff: 3.1.3
       limiter: 2.1.0
 
-  '@cowprotocol/sdk-contracts-ts@3.4.0':
+  '@cowprotocol/sdk-contracts-ts@3.7.5':
     dependencies:
-      '@cowprotocol/sdk-common': 0.12.1
-      '@cowprotocol/sdk-config': 2.4.0
+      '@cowprotocol/sdk-common': 0.14.5
+      '@cowprotocol/sdk-config': 2.10.0
 
-  '@cowprotocol/sdk-ethers-v5-adapter@0.4.11(@ethersproject/abstract-signer@5.8.0)(@typechain/ethers-v5@11.1.2(@ethersproject/abi@5.8.0)(@ethersproject/providers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typechain@8.3.2(typescript@5.9.3))(typescript@5.9.3))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))':
+  '@cowprotocol/sdk-ethers-v5-adapter@0.4.21(@ethersproject/abstract-signer@5.8.0)(@typechain/ethers-v5@11.1.2(@ethersproject/abi@5.8.0)(@ethersproject/providers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typechain@8.3.2(typescript@5.9.3))(typescript@5.9.3))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))':
     dependencies:
-      '@cowprotocol/sdk-common': 0.12.1
+      '@cowprotocol/sdk-common': 0.14.5
       '@ethersproject/abstract-signer': 5.8.0
       '@typechain/ethers-v5': 11.1.2(@ethersproject/abi@5.8.0)(@ethersproject/providers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typechain@8.3.2(typescript@5.9.3))(typescript@5.9.3)
       ethers: 5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
 
-  '@cowprotocol/sdk-flash-loans@3.3.4(ajv@8.20.0)(multiformats@9.9.0)':
+  '@cowprotocol/sdk-flash-loans@4.0.0(ajv@8.20.0)(multiformats@9.9.0)':
     dependencies:
-      '@cowprotocol/sdk-app-data': 6.0.0(ajv@8.20.0)(multiformats@9.9.0)
-      '@cowprotocol/sdk-common': 0.12.1
-      '@cowprotocol/sdk-config': 2.4.0
-      '@cowprotocol/sdk-order-book': 4.0.2
-      '@cowprotocol/sdk-order-signing': 1.1.7
-      '@cowprotocol/sdk-trading': 2.3.0(ajv@8.20.0)(multiformats@9.9.0)
+      '@cowprotocol/sdk-app-data': 6.0.11(ajv@8.20.0)(multiformats@9.9.0)
+      '@cowprotocol/sdk-common': 0.14.5
+      '@cowprotocol/sdk-config': 2.10.0
+      '@cowprotocol/sdk-order-book': 4.3.4
+      '@cowprotocol/sdk-order-signing': 1.1.20
+      '@cowprotocol/sdk-trading': 2.7.8(ajv@8.20.0)(multiformats@9.9.0)
     transitivePeerDependencies:
       - ajv
       - encoding
       - multiformats
 
-  '@cowprotocol/sdk-order-book@4.0.2':
+  '@cowprotocol/sdk-order-book@4.3.4':
     dependencies:
-      '@cowprotocol/sdk-common': 0.12.1
-      '@cowprotocol/sdk-config': 2.4.0
+      '@cowprotocol/sdk-common': 0.14.5
+      '@cowprotocol/sdk-config': 2.10.0
       cross-fetch: 3.2.0
       exponential-backoff: 3.1.3
       limiter: 3.0.0
     transitivePeerDependencies:
       - encoding
 
-  '@cowprotocol/sdk-order-signing@1.1.7':
+  '@cowprotocol/sdk-order-signing@1.1.20':
     dependencies:
-      '@cowprotocol/sdk-common': 0.12.1
-      '@cowprotocol/sdk-config': 2.4.0
-      '@cowprotocol/sdk-contracts-ts': 3.4.0
-      '@cowprotocol/sdk-order-book': 4.0.2
+      '@cowprotocol/sdk-common': 0.14.5
+      '@cowprotocol/sdk-config': 2.10.0
+      '@cowprotocol/sdk-contracts-ts': 3.7.5
+      '@cowprotocol/sdk-order-book': 4.3.4
     transitivePeerDependencies:
       - encoding
 
-  '@cowprotocol/sdk-trading@2.3.0(ajv@8.20.0)(multiformats@9.9.0)':
+  '@cowprotocol/sdk-trading@2.7.8(ajv@8.20.0)(multiformats@9.9.0)':
     dependencies:
-      '@cowprotocol/sdk-app-data': 6.0.0(ajv@8.20.0)(multiformats@9.9.0)
-      '@cowprotocol/sdk-common': 0.12.1
-      '@cowprotocol/sdk-config': 2.4.0
-      '@cowprotocol/sdk-contracts-ts': 3.4.0
-      '@cowprotocol/sdk-order-book': 4.0.2
-      '@cowprotocol/sdk-order-signing': 1.1.7
+      '@cowprotocol/sdk-app-data': 6.0.11(ajv@8.20.0)(multiformats@9.9.0)
+      '@cowprotocol/sdk-common': 0.14.5
+      '@cowprotocol/sdk-config': 2.10.0
+      '@cowprotocol/sdk-contracts-ts': 3.7.5
+      '@cowprotocol/sdk-order-book': 4.3.4
+      '@cowprotocol/sdk-order-signing': 1.1.20
       deepmerge: 4.3.1
     transitivePeerDependencies:
       - ajv
