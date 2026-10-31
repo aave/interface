@@ -1,5 +1,6 @@
 import { BigNumberValue, valueToBigNumber } from '@aave/math-utils';
 import { ExclamationIcon, RefreshIcon } from '@heroicons/react/outline';
+import { t } from '@lingui/macro';
 import { Box, Button, CircularProgress, InputBase, SvgIcon, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import NumberFormat, { NumberFormatProps } from 'react-number-format';
@@ -289,7 +290,7 @@ export const PriceInput = ({
             autoFocus
             disabled={disabled}
             inputProps={{
-              'aria-label': 'amount input',
+              'aria-label': t`Limit price`,
               style: {
                 width: '100%',
                 fontSize: '21px',
