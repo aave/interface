@@ -1,27 +1,28 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, ButtonProps } from '@mui/material';
 import { ReactNode } from 'react';
+import { useModalContext } from 'src/hooks/useModal';
+import { useRootStore } from 'src/store/root';
 
 import { useFunSupplyATokenIcon } from './useFunSupplyATokenIcon';
-import { useSupplyButtonAction } from './useSupplyButtonAction';
+import { useOpenFunSupply } from './useOpenFunSupply';
 
 export type FunSupplyButtonProps = Omit<ButtonProps, 'onClick' | 'children'> & {
   /** Reserve underlying address (matched case-insensitively against the allowlist). */
   underlyingAsset: string;
-  /** Reserve display name — forwarded to the native supply modal fallback. */
+  /** Reserve display name — forwarded to the native supply modal. */
   name: string;
   /** Patched display symbol of the underlying (drives the funkit checkout title). */
   symbol: string;
-  /**
-   * Symbol used to generate the ringed aToken icon. Often equals `symbol`, but
-   * can differ (e.g. wrapped tokens), so it's passed explicitly.
-   */
+  /** Symbol used to generate the ringed aToken icon (can differ from `symbol`). */
   iconSymbol: string;
   /** Aave's `supplyAPY` — a 0–1 fraction. */
   supplyAPY: string | number;
-  /** Collateral flag shown in the funkit checkout (`collateralizationEnabled`). */
+  /** Whether this supply is/will be enabled as collateral for the user. */
   collateralEnabled: boolean;
-  /** Analytics funnel for the native supply modal fallback. Defaults to `'dashboard'`. */
+  /** The user's wallet balance of the underlying. Zero routes fun assets straight to funkit. */
+  walletBalance: string;
+  /** Analytics funnel for the native supply modal. Defaults to `'dashboard'`. */
   funnel?: string;
   /** The native supply modal's reserve-page flag (`openSupply`'s 5th arg). Defaults to `false`. */
   isReserve?: boolean;
@@ -30,15 +31,11 @@ export type FunSupplyButtonProps = Omit<ButtonProps, 'onClick' | 'children'> & {
 };
 
 /**
- * The Supply button, everywhere. It owns the funkit branch so individual call
- * sites can't forget it: renders the hidden ringed-aToken icon generator and
- * routes the click through `useSupplyButtonAction` (funkit checkout for the
- * allowlisted Core-mainnet assets, native Aave supply modal otherwise). Every
- * MUI `Button` prop (`sx`, `variant`, `disabled`, `fullWidth`, `data-cy`, …)
- * passes straight through, so it drops into any layout.
- *
- * Adding a new Supply entry point? Render this instead of calling `openSupply`
- * directly — keeping the funkit branch in one place is the whole point (ENG-4228).
+ * The Supply button. Opens the native Aave supply modal, except for allowlisted
+ * fun assets the user holds none of: there's nothing to supply natively, so it
+ * opens the funkit checkout (swaps, cross-chain, card, exchange) straight away.
+ * Falls back to the native modal — which links to the same checkout — if funkit
+ * isn't ready. Every MUI `Button` prop passes straight through.
  */
 export function FunSupplyButton({
   underlyingAsset,
@@ -47,43 +44,39 @@ export function FunSupplyButton({
   iconSymbol,
   supplyAPY,
   collateralEnabled,
-  funnel,
-  isReserve,
+  walletBalance,
+  funnel = 'dashboard',
+  isReserve = false,
   children,
   ...buttonProps
 }: FunSupplyButtonProps) {
-  const handleSupplyClick = useSupplyButtonAction({ funnel, isReserve });
+  const currentMarket = useRootStore((store) => store.currentMarket);
+  const { openSupply } = useModalContext();
+  const openFunSupply = useOpenFunSupply();
+  const hasBalance = Number(walletBalance) > 0;
   const { aTokenBase64, generator } = useFunSupplyATokenIcon(underlyingAsset, iconSymbol);
+
+  const handleClick = () => {
+    if (
+      !hasBalance &&
+      openFunSupply({ underlyingAsset, symbol, aTokenBase64, supplyAPY, collateralEnabled })
+    ) {
+      return;
+    }
+    openSupply(underlyingAsset, currentMarket, name, funnel, isReserve);
+  };
 
   return (
     <>
-      {/* Hidden ringed-aToken icon generator (fun-routed rows only). Wrapped out
-          of flow so it never participates as a flex/grid item in the host layout
-          — it's a 0×0 element and would otherwise take a slot / introduce a gap. */}
+      {/* Hidden ringed-aToken icon generator; kept out of flow (0×0 element). */}
       {generator && (
         <Box component="span" sx={{ position: 'absolute', width: 0, height: 0 }}>
           {generator}
         </Box>
       )}
-      <Button
-        variant="tertiary"
-        size="small"
-        {...buttonProps}
-        onClick={() =>
-          handleSupplyClick({
-            underlyingAsset,
-            name,
-            symbol,
-            aTokenBase64,
-            supplyAPY,
-            collateralEnabled,
-          })
-        }
-      >
+      <Button variant="tertiary" size="small" {...buttonProps} onClick={handleClick}>
         {children ?? <Trans>Supply</Trans>}
       </Button>
     </>
   );
 }
-
-export default FunSupplyButton;

@@ -163,6 +163,7 @@ export const ReserveActions = ({ reserve }: ReserveActionsProps) => {
               disable={disableSupplyButton}
               underlyingAsset={supplyUnderlyingAsset}
               collateralEnabled={collateralEnabled}
+              walletBalance={balance?.amount || '0'}
             />
             {assetCanBeBorrowedByUser(reserve, user) && (
               <BorrowAction
@@ -287,9 +288,11 @@ const SupplyAction = ({
   disable,
   underlyingAsset,
   collateralEnabled,
+  walletBalance,
 }: Omit<ActionProps, 'onActionClicked'> & {
   underlyingAsset: string;
   collateralEnabled: boolean;
+  walletBalance: string;
 }) => {
   return (
     <Stack>
@@ -335,6 +338,7 @@ const SupplyAction = ({
           iconSymbol={reserve.iconSymbol}
           supplyAPY={reserve.supplyAPY}
           collateralEnabled={collateralEnabled}
+          walletBalance={walletBalance}
           funnel="reserve"
           isReserve
         />

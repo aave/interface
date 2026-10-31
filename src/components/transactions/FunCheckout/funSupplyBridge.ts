@@ -1,10 +1,10 @@
 import type { FunSupplyReserve } from './funSupplyAssets';
 
 /**
- * Imperative bridge between the Supply buttons (pre-rendered tree) and funkit's
+ * Imperative bridge between the native supply modal (pre-rendered tree) and funkit's
  * checkout (an `ssr: false` island — `@funkit/connect` is client-only, and this
  * app pre-renders/static-exports). The island registers its `beginSupply` impl
- * on mount; buttons invoke it at click time. No context/state on purpose: React
+ * on mount; the modal's deposit-options link invokes it at click time. No context/state on purpose: React
  * never renders from this value, so subscription machinery would be dead weight
  * (it's also what previously forced the setState + ref-dance layers).
  */
@@ -22,8 +22,8 @@ export function registerFunSupply(fn: (reserve: FunSupplyReserve) => void): () =
 
 /**
  * Opens the funkit checkout for `reserve`. Returns false when the island hasn't
- * mounted yet (dynamic chunk still loading) — callers fall back to the native
- * supply modal instead of dropping the click.
+ * mounted yet (dynamic chunk still loading) — the native supply modal stays
+ * open instead of dropping the user.
  */
 export function beginFunSupply(reserve: FunSupplyReserve): boolean {
   if (!impl) {
