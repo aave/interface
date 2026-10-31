@@ -19,6 +19,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
+import { hasNoMarketResults, shouldShowLegacySection } from 'src/components/marketSwitcher.utils';
 import { ShimmerText } from 'src/components/ShimmerText';
 import { useRootStore } from 'src/store/root';
 import { BaseNetworkConfig } from 'src/ui-config/networksConfig';
@@ -611,13 +612,23 @@ export const MarketSwitcher = ({ hideDescription }: MarketSwitcherProps) => {
     </Box>
   );
 
-  const noResults =
-    pinned.length === 0 &&
-    ethereum.length === 0 &&
-    l2.length === 0 &&
-    other.length === 0 &&
-    v4Ethereum.length === 0 &&
-    v4Other.length === 0;
+  // An active search reveals matching legacy markets even while the switch is off, so a searched
+  // market is never hidden from the person who just named it.
+  const showLegacySection = shouldShowLegacySection({
+    showLegacy,
+    searchQuery,
+    legacyCount: legacy.length,
+  });
+
+  const noResults = hasNoMarketResults([
+    pinned.length,
+    ethereum.length,
+    l2.length,
+    other.length,
+    legacy.length,
+    v4Ethereum.length,
+    v4Other.length,
+  ]);
 
   const renderSelectorContent = (mobile: boolean) => (
     <>
@@ -705,7 +716,7 @@ export const MarketSwitcher = ({ hideDescription }: MarketSwitcherProps) => {
           )}
 
         {/* Legacy */}
-        {showLegacy &&
+        {showLegacySection &&
           renderSection(
             <Trans>Legacy</Trans>,
             legacy.map((id) => renderGridItem(id, mobile))
