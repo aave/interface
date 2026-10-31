@@ -15,7 +15,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { FAVOURITE_STAR_COLOR, StarIcon } from 'src/components/icons/StarIcon';
@@ -294,7 +294,6 @@ export const MarketSwitcher = ({ hideDescription }: MarketSwitcherProps) => {
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showLegacy, setShowLegacy] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const triggerRowRef = useRef<HTMLDivElement>(null);
 
@@ -306,6 +305,18 @@ export const MarketSwitcher = ({ hideDescription }: MarketSwitcherProps) => {
   const isFavoriteMarket = useRootStore((store) => store.isFavoriteMarket);
   const toggleFavoriteMarket = useRootStore((store) => store.toggleFavoriteMarket);
   const favoriteMarkets = useRootStore((store) => store.favoriteMarkets);
+
+  // A legacy market the user is actually on must not be missing from the list: the legacy
+  // group is only rendered while this is on, so default it from the market being viewed.
+  const [showLegacy, setShowLegacy] = useState(() => getMarketCategory(currentMarket) === 'legacy');
+
+  // The header stays mounted across shallow market changes, and the store hydrates `marketName`
+  // from the URL after the initial render, so the initialiser alone can latch a stale `false`.
+  useEffect(() => {
+    if (getMarketCategory(currentMarket) === 'legacy') {
+      setShowLegacy(true);
+    }
+  }, [currentMarket]);
 
   const handleOpen = () => {
     setOpen(true);
