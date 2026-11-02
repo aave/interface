@@ -3513,6 +3513,10 @@ msgstr "Blocked by Shield"
 msgid "Total emission per day"
 msgstr "Total emission per day"
 
+#: src/components/transactions/FunCheckout/FunDepositOptionsLink.tsx
+msgid "or use a card, exchanges or swaps to deposit"
+msgstr "or use a card, exchanges or swaps to deposit"
+
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"
 msgstr "Selected borrow assets"

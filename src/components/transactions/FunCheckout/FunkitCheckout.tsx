@@ -33,7 +33,7 @@ import { registerFunSupply } from './funSupplyBridge';
  *
  * `InnerCheckout` runs inside the provider, owns the single `useFunkitCheckout`
  * instance, and registers `beginSupply` on the module bridge (`funSupplyBridge`)
- * for the Supply buttons to invoke. Per-asset configs are passed at call time
+ * for the native supply modal's deposit-options link to invoke. Per-asset configs are passed at call time
  * via funkit's supported `beginCheckout(configOverride)`.
  */
 

@@ -254,6 +254,7 @@ export const SupplyAssetsListItemDesktop = ({
           iconSymbol={iconSymbol}
           supplyAPY={supplyAPY}
           collateralEnabled={usageAsCollateralEnabledOnUser}
+          walletBalance={walletBalance}
         />
         <Button
           id="supply-extra-button"
@@ -449,6 +450,7 @@ export const SupplyAssetsListItemMobile = ({
           iconSymbol={iconSymbol}
           supplyAPY={supplyAPY}
           collateralEnabled={usageAsCollateralEnabledOnUser}
+          walletBalance={walletBalance}
           size="medium"
           fullWidth
         />
