@@ -27,8 +27,6 @@ export type ProviderRatesParams = {
   inputSymbol?: string;
   outputSymbol?: string;
 
-  isInputTokenCustom?: boolean;
-  isOutputTokenCustom?: boolean;
   appCode: string;
   market: CustomMarket;
 
