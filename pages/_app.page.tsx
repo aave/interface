@@ -5,6 +5,7 @@ import '/src/styles/variables.css';
 import '/src/ui-config/funkit/funkitPreflight.css';
 import '@funkit/connect/styles.css';
 
+import { staging } from '@aave/client';
 import { AaveClient, AaveProvider } from '@aave/react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { NoSsr } from '@mui/material';
@@ -116,7 +117,8 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-export const client = AaveClient.create();
+// TEMP (test/v38-vnets): point at the staging backend, which indexes the v3.8 vnets
+export const client = AaveClient.create({ environment: staging });
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
