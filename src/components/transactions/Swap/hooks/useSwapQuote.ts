@@ -19,7 +19,6 @@ import {
   SwapQuoteType as SwapQuoteType,
   SwapState,
   SwapType,
-  TokenType,
 } from '../types';
 
 interface TokenSelectionParams {
@@ -29,8 +28,6 @@ interface TokenSelectionParams {
   destDecimals: number;
   inputSymbol: string;
   outputSymbol: string;
-  isInputTokenCustom: boolean;
-  isOutputTokenCustom: boolean;
   side: 'buy' | 'sell';
 }
 
@@ -68,12 +65,6 @@ const getTokenSelectionForQuote = (
   const outputSymbol = invertedQuoteRoute
     ? state.sourceToken.symbol
     : state.destinationToken.symbol;
-  const isInputTokenCustom = invertedQuoteRoute
-    ? state.destinationToken.tokenType === TokenType.USER_CUSTOM
-    : state.sourceToken.tokenType === TokenType.USER_CUSTOM;
-  const isOutputTokenCustom = invertedQuoteRoute
-    ? state.sourceToken.tokenType === TokenType.USER_CUSTOM
-    : state.destinationToken.tokenType === TokenType.USER_CUSTOM;
   const side = invertedQuoteRoute ? (state.side === 'buy' ? 'sell' : 'buy') : state.side;
 
   return {
@@ -83,8 +74,6 @@ const getTokenSelectionForQuote = (
     destDecimals,
     inputSymbol,
     outputSymbol,
-    isInputTokenCustom,
-    isOutputTokenCustom,
     side,
   };
 };
@@ -309,27 +298,18 @@ const useMultiProviderSwapQuoteQuery = ({
 
   const appCode = APP_CODE_PER_SWAP_TYPE[params.swapType];
 
-  const {
-    srcToken,
-    destToken,
-    srcDecimals,
-    destDecimals,
-    inputSymbol,
-    outputSymbol,
-    isInputTokenCustom,
-    isOutputTokenCustom,
-    side,
-  } = useMemo(
-    () => getTokenSelectionForQuote(requiresQuoteInverted, provider, state),
-    [
-      provider,
-      state.sourceToken,
-      state.destinationToken,
-      state.side,
-      requiresQuoteInverted,
-      state.useFlashloan,
-    ]
-  );
+  const { srcToken, destToken, srcDecimals, destDecimals, inputSymbol, outputSymbol, side } =
+    useMemo(
+      () => getTokenSelectionForQuote(requiresQuoteInverted, provider, state),
+      [
+        provider,
+        state.sourceToken,
+        state.destinationToken,
+        state.side,
+        requiresQuoteInverted,
+        state.useFlashloan,
+      ]
+    );
 
   return useQuery<SwapQuoteType | null>({
     queryFn: async () => {
@@ -378,8 +358,6 @@ const useMultiProviderSwapQuoteQuery = ({
             destDecimals,
             inputSymbol,
             outputSymbol,
-            isInputTokenCustom,
-            isOutputTokenCustom,
             appCode,
             market: currentMarket,
             setError,
