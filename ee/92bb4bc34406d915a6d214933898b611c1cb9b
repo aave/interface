@@ -1,0 +1,25 @@
+src/components/transactions/Swap/errors/shared/__tests__/ZeroLTVBlockingGuard.test.ts
+  s_7b697b935bb6a8::t_7df22408723ed3 1-41,43-60
+  s_7b697b935bb6a8::t_77bc45be31f217 42
+src/components/transactions/Swap/errors/shared/ZeroLTVBlockingGuard.tsx
+  s_7b697b935bb6a8::t_a16af8a18bc0aa 6,9-16,20-22,25,34
+  s_7b697b935bb6a8::t_75827d3c1b83dd 17-19
+  s_7b697b935bb6a8::t_a2e4133f2ecfad 53
+  s_7b697b935bb6a8::t_25e4f71d11bb08 90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ee92bb4bc34406d915a6d214933898b611c1cb9b",
+  "prompts": {},
+  "sessions": {
+    "s_7b697b935bb6a8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f00e2f46-4103-4030-b04b-199e23d00d8d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "DhairyaSethi <55102840+DhairyaSethi@users.noreply.github.com>"
+    }
+  }
+}

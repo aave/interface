@@ -1,0 +1,19 @@
+src/layouts/TopBarNotify.tsx
+  s_18cbf88638bd0d::t_74be2d62af79cc 210
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d38576c610e6d0fd9fa8f1bbce8b31d8ac495f99",
+  "prompts": {},
+  "sessions": {
+    "s_18cbf88638bd0d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "18960f00-5a20-4019-85d1-c337f7e11496",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
