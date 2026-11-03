@@ -4,6 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 // The browser never holds the relay's api key: it calls this route, which attaches
 // the server-side `x-api-key` and forwards to the relay, mirroring `rpc-proxy.ts`.
 // See governance-v3-cache PR #126 for the relay contract.
+
+// Testing endpoint swap here
 const VOTE_RELAY_URL = process.env.VOTE_RELAY_URL; // e.g. https://governance-cache-api.aave.com/relay
 const VOTE_RELAY_API_KEY = process.env.VOTE_RELAY_API_KEY;
 
