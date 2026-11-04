@@ -1,0 +1,19 @@
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_318107b102af38::t_5b8260f7bf5b13 219
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "44fda1efbb2b4b4ad711b3ec1788817f581b3954",
+  "prompts": {},
+  "sessions": {
+    "s_318107b102af38": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "123129e0-1c82-4eab-8eee-5c16597d3c47",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
