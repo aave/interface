@@ -216,7 +216,7 @@ export const MarketAssetsListContainer = () => {
                   label={<Trans>Show restricted assets</Trans>}
                   componentsProps={{ typography: { variant: 'subheader1' } }}
                 />
-                <TextWithTooltip>
+                <TextWithTooltip iconMargin={2}>
                   <Trans>
                     These assets are temporarily restricted. Supplying and borrowing are
                     unavailable, but you can still repay and withdraw.
