@@ -260,9 +260,9 @@ export const MarketAssetsListContainer = () => {
             }
             label={
               isEthereumCore ? (
-                <Trans>{'Show assets <$1M supply'}</Trans>
+                <Trans>{'Show <$1M supply'}</Trans>
               ) : (
-                <Trans>{'Show assets <$100k supply'}</Trans>
+                <Trans>{'Show <$100k supply'}</Trans>
               )
             }
             componentsProps={{ typography: { variant: 'subheader1' } }}
