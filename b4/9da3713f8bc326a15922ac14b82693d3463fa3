@@ -1,0 +1,32 @@
+pages/_app.page.tsx
+  s_496c05f9e6b2ad::t_a2abeb1aff57b1 160
+src/locales/en/messages.js
+  s_496c05f9e6b2ad::t_adc6672a1e93cd 1
+src/locales/es/messages.js
+  s_496c05f9e6b2ad::t_adc6672a1e93cd 1
+src/locales/en/messages.po
+  s_496c05f9e6b2ad::t_a2abeb1aff57b1 1555-1559,1985-1987
+  s_496c05f9e6b2ad::t_172dd8c5b8c9e7 1988
+src/locales/el/messages.js
+  s_496c05f9e6b2ad::t_adc6672a1e93cd 1
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_496c05f9e6b2ad::t_a2abeb1aff57b1 17,53-60,186-187,216-235
+src/locales/fr/messages.js
+  s_496c05f9e6b2ad::t_adc6672a1e93cd 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b49da3713f8bc326a15922ac14b82693d3463fa3",
+  "prompts": {},
+  "sessions": {
+    "s_496c05f9e6b2ad": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d4ced226-df13-43dc-b423-17a55f3aa1f3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
