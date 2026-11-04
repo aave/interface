@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
 import { CONTENT_TOP_PADDING } from 'src/components/ContentContainer';
 import { NoSearchResults } from 'src/components/NoSearchResults';
-import { Link } from 'src/components/primitives/Link';
+import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { usePoolTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
 import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
@@ -23,7 +23,6 @@ import { useRootStore } from 'src/store/root';
 import { GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
-import { GENERAL } from '../../utils/events';
 import { isAssetHidden } from '../dashboard/lists/constants';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
 import { AssetCategory, matchesSelectedCategories } from './utils/assetCategories';
@@ -50,16 +49,14 @@ export const MarketAssetsListContainer = () => {
 
   const { supplyReserves, loading } = useAppDataContext();
 
-  const [trackEvent, account, currentMarket, currentMarketData, currentNetworkConfig] =
-    useRootStore(
-      useShallow((store) => [
-        store.trackEvent,
-        store.account,
-        store.currentMarket,
-        store.currentMarketData,
-        store.currentNetworkConfig,
-      ])
-    );
+  const [account, currentMarket, currentMarketData, currentNetworkConfig] = useRootStore(
+    useShallow((store) => [
+      store.account,
+      store.currentMarket,
+      store.currentMarketData,
+      store.currentNetworkConfig,
+    ])
+  );
   const { data: tokenBalances } = usePoolTokensBalance(currentMarketData);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<AssetCategory[]>([]);
@@ -176,22 +173,8 @@ export const MarketAssetsListContainer = () => {
             <Box sx={{ mt: 10, px: { xs: 4, xsm: 6 } }}>
               <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
                 <Trans>
-                  These assets are temporarily frozen or paused by Aave community decisions, meaning
-                  that further supply / borrow, or rate swap of these assets are unavailable.
-                  Withdrawals and debt repayments are allowed. Follow the{' '}
-                  <Link
-                    onClick={() => {
-                      trackEvent(GENERAL.EXTERNAL_LINK, {
-                        link: 'Frozen Market Markets Page',
-                        frozenMarket: currentNetworkConfig.name,
-                      });
-                    }}
-                    href="https://governance.aave.com"
-                    underline="always"
-                  >
-                    Aave governance forum
-                  </Link>{' '}
-                  for further updates.
+                  These assets are temporarily restricted. Supplying and borrowing are unavailable,
+                  but you can still repay and withdraw.
                 </Trans>
               </Alert>
             </Box>
@@ -220,18 +203,26 @@ export const MarketAssetsListContainer = () => {
         >
           {frozenOrPausedReserves.length > 0 && (
             <>
-              <FormControlLabel
-                sx={{ m: 0 }}
-                control={
-                  <Switch
-                    checked={showFrozenMarketsToggle}
-                    onChange={handleChange}
-                    inputProps={{ 'aria-label': 'show frozen or paused assets' }}
-                  />
-                }
-                label={<Trans>Show frozen/paused assets</Trans>}
-                componentsProps={{ typography: { variant: 'subheader1' } }}
-              />
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <FormControlLabel
+                  sx={{ m: 0 }}
+                  control={
+                    <Switch
+                      checked={showFrozenMarketsToggle}
+                      onChange={handleChange}
+                      inputProps={{ 'aria-label': 'show restricted assets' }}
+                    />
+                  }
+                  label={<Trans>Show restricted assets</Trans>}
+                  componentsProps={{ typography: { variant: 'subheader1' } }}
+                />
+                <TextWithTooltip>
+                  <Trans>
+                    These assets are temporarily restricted. Supplying and borrowing are
+                    unavailable, but you can still repay and withdraw.
+                  </Trans>
+                </TextWithTooltip>
+              </Box>
               {!sm && <Divider orientation="vertical" sx={{ height: '1.25rem' }} />}
             </>
           )}

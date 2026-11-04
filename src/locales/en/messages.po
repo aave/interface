@@ -1548,6 +1548,11 @@ msgstr "Total Staked"
 msgid "Isolated"
 msgstr "Isolated"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "These assets are temporarily restricted. Supplying and borrowing are unavailable, but you can still repay and withdraw."
+msgstr "These assets are temporarily restricted. Supplying and borrowing are unavailable, but you can still repay and withdraw."
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Borrow:"
 msgstr "Borrow:"
@@ -1972,6 +1977,10 @@ msgstr "View TX"
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show restricted assets"
+msgstr "Show restricted assets"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
@@ -3977,10 +3986,6 @@ msgstr "Bridging {symbol}"
 msgid "Claim all rewards"
 msgstr "Claim all rewards"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
-msgstr "These assets are temporarily frozen or paused by Aave community decisions, meaning that further supply / borrow, or rate swap of these assets are unavailable. Withdrawals and debt repayments are allowed. Follow the <0>Aave governance forum</0> for further updates."
-
 #: src/modules/governance/VotingPowerInfoPanel.tsx
 msgid "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
 msgstr "Your proposition power is based on your AAVE/stkAAVE balance and received delegations."
@@ -4307,10 +4312,6 @@ msgstr "You {action} <0/> {symbol}"
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Discord channel"
-
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Show frozen/paused assets"
-msgstr "Show frozen/paused assets"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
