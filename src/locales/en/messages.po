@@ -492,10 +492,6 @@ msgstr "To continue, you need to grant smart contracts permission to move your f
 msgid "View all votes"
 msgstr "View all votes"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Show assets <$100k supply"
-msgstr "Show assets <$100k supply"
-
 #: pages/reserve-overview.page.tsx
 msgid "Overview"
 msgstr "Overview"
@@ -1248,6 +1244,10 @@ msgstr "This asset is frozen due to an Aave Protocol Governance decision. On the
 msgid "Assets"
 msgstr "Assets"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show <$100k supply"
+msgstr "Show <$100k supply"
+
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization rate"
 msgstr "Utilization rate"
@@ -1301,6 +1301,10 @@ msgstr "Sorry, an unexpected error happened. In the meantime you may try reloadi
 #: src/components/SecondsToString.tsx
 msgid "{d}d"
 msgstr "{d}d"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show <$1M supply"
+msgstr "Show <$1M supply"
 
 #: src/components/transactions/Swap/errors/shared/BalanceLowerThanInput.tsx
 msgid "Your {0} balance is lower than the selected amount."

@@ -20,6 +20,7 @@ import { usePoolTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
 import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
 import MarketAssetsList from 'src/modules/markets/MarketAssetsList';
 import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
@@ -107,15 +108,24 @@ export const MarketAssetsListContainer = () => {
       )
     );
 
-  // If every remaining asset is below the $100k supply threshold, showing the
+  // V3 Core on Ethereum hides assets under $1M supply; all other markets use $100k.
+  const isEthereumCore = currentMarketData.market === CustomMarket.proto_mainnet_v3;
+  const lowLiquidityThreshold = isEthereumCore ? 1_000_000 : 100_000;
+
+  // If every remaining asset is below the supply threshold, showing the
   // low-liquidity filter would leave the list empty, so show all assets instead.
-  const hasHighLiquidityAssets = baseFilteredData.some((res) => Number(res.size.usd) >= 100_000);
+  const hasHighLiquidityAssets = baseFilteredData.some(
+    (res) => Number(res.size.usd) >= lowLiquidityThreshold
+  );
 
   const filteredData = baseFilteredData
-    // Filter out low-liquidity assets (<$100k supply) unless toggle is enabled
+    // Filter out low-liquidity assets (below the threshold) unless toggle is enabled
     // (or unless all assets would otherwise be filtered out)
     .filter(
-      (res) => showLowLiquidityToggle || !hasHighLiquidityAssets || Number(res.size.usd) >= 100_000
+      (res) =>
+        showLowLiquidityToggle ||
+        !hasHighLiquidityAssets ||
+        Number(res.size.usd) >= lowLiquidityThreshold
     )
     // Add initial sorting by total supplied in USD descending
     .sort((a, b) => {
@@ -232,10 +242,20 @@ export const MarketAssetsListContainer = () => {
               <Switch
                 checked={showLowLiquidityToggle || !hasHighLiquidityAssets}
                 onChange={() => setShowLowLiquidityToggle((prev) => !prev)}
-                inputProps={{ 'aria-label': 'show assets under 100k supply' }}
+                inputProps={{
+                  'aria-label': isEthereumCore
+                    ? 'show assets under 1M supply'
+                    : 'show assets under 100k supply',
+                }}
               />
             }
-            label={<Trans>{'Show assets <$100k supply'}</Trans>}
+            label={
+              isEthereumCore ? (
+                <Trans>{'Show <$1M supply'}</Trans>
+              ) : (
+                <Trans>{'Show <$100k supply'}</Trans>
+              )
+            }
             componentsProps={{ typography: { variant: 'subheader1' } }}
           />
         </Box>
