@@ -4369,6 +4369,10 @@ msgstr "Get ABP v2 Token"
 msgid "Payloads dispatched to execution chains"
 msgstr "Payloads dispatched to execution chains"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Show assets <$1M supply"
+msgstr "Show assets <$1M supply"
+
 #: src/components/incentives/SonicIncentivesTooltipContent.tsx
 msgid "This asset is eligible for {0} Sonic Rewards."
 msgstr "This asset is eligible for {0} Sonic Rewards."
