@@ -247,6 +247,9 @@ const EXTERNAL_LINK_ICON = (
 
 export const AAVE_PRO_URL = 'https://pro.aave.com/';
 
+// Aave Pro's explore page scoped to one chain via its `?chain=` filter.
+const getAaveProChainUrl = (chainId: number) => `${AAVE_PRO_URL}explore/earn?chain=${chainId}`;
+
 type V4Link = {
   id: string;
   label: string;
@@ -268,14 +271,14 @@ const V4_LINKS: V4Link[] = [
     id: 'aave_pro_avalanche_v4',
     label: 'Avalanche',
     logo: '/icons/networks/avalanche.svg',
-    url: AAVE_PRO_URL,
+    url: getAaveProChainUrl(43114),
     section: 'other',
   },
   {
     id: 'aave_pro_arc_v4',
     label: 'Arc',
     logo: '/icons/networks/arc.svg',
-    url: AAVE_PRO_URL,
+    url: getAaveProChainUrl(5042),
     section: 'other',
   },
 ];
