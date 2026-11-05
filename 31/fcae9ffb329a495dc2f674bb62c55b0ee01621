@@ -1,0 +1,23 @@
+src/store/protocolDataSlice.ts
+  s_7d47a4968ad092::t_90ccdb37edc61a 50
+src/store/utils/queryParams.ts
+  s_7d47a4968ad092::t_90ccdb37edc61a 3-11,15-22
+src/store/root.ts
+  s_7d47a4968ad092::t_90ccdb37edc61a 76-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "31fcae9ffb329a495dc2f674bb62c55b0ee01621",
+  "prompts": {},
+  "sessions": {
+    "s_7d47a4968ad092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8a34a738-6fe0-4129-b40c-91c088e786c4",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
