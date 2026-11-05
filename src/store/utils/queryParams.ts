@@ -1,10 +1,25 @@
 import Router from 'next/router';
 
-export const setQueryParameter = (key: string, value: string) => {
-  if (typeof window !== 'undefined') {
+/**
+ * Pushes a history entry with `key` set to `value`. Pass `currentValue` when the param is state
+ * that Back should restore: if the entry being left has no `key` yet, it is stamped with
+ * `currentValue` first (in place, no new entry), so going back returns to what it showed.
+ */
+export const setQueryParameter = (key: string, value: string, currentValue?: string) => {
+  if (typeof window === 'undefined') return;
+
+  const push = () =>
     Router.push({ query: { ...getAllQueryParameters(), [key]: value } }, undefined, {
       shallow: true,
     });
+
+  const query = getAllQueryParameters() ?? {};
+  if (currentValue && !(key in query)) {
+    Router.replace({ query: { ...query, [key]: currentValue } }, undefined, {
+      shallow: true,
+    }).then(push);
+  } else {
+    push();
   }
 };
 
