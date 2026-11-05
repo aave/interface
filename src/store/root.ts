@@ -1,4 +1,5 @@
 import { enableMapSet } from 'immer';
+import Router from 'next/router';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { create } from 'zustand';
 import { devtools, subscribeWithSelector } from 'zustand/middleware';
@@ -72,6 +73,16 @@ if (typeof document !== 'undefined') {
       useRootStore.getState().hydrateShield();
     }
   };
+
+  // Keep the selected market in sync with ?marketName= on client-side navigation (e.g. browser
+  // back/forward), not just on first load. Routes without the param leave the market as is.
+  Router.events.on('routeChangeComplete', () => {
+    const marketFromUrl = getQueryParameter('marketName');
+    const { currentMarket, setCurrentMarket } = useRootStore.getState();
+    if (marketFromUrl && marketFromUrl !== currentMarket) {
+      setCurrentMarket(marketFromUrl as CustomMarket, true);
+    }
+  });
 }
 
 useRootStore.subscribe(
