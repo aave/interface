@@ -72,6 +72,17 @@ if (typeof document !== 'undefined') {
       useRootStore.getState().hydrateShield();
     }
   };
+
+  // Back/forward lands on an entry whose ?marketName= may differ from the selected market (each
+  // market switch pushes an entry), so follow the URL. popstate fires only for history traversal
+  // and the location has already updated by then; routes without the param keep the market.
+  window.addEventListener('popstate', () => {
+    const marketFromUrl = getQueryParameter('marketName');
+    const { currentMarket, setCurrentMarket } = useRootStore.getState();
+    if (marketFromUrl && marketFromUrl !== currentMarket) {
+      setCurrentMarket(marketFromUrl as CustomMarket, true);
+    }
+  });
 }
 
 useRootStore.subscribe(
