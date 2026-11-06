@@ -247,8 +247,9 @@ const EXTERNAL_LINK_ICON = (
 
 export const AAVE_PRO_URL = 'https://pro.aave.com/';
 
-// Aave Pro's explore page scoped to one chain via its `?chain=` filter.
-const getAaveProChainUrl = (chainId: number) => `${AAVE_PRO_URL}explore/earn?chain=${chainId}`;
+// Aave Pro's hub page. Pro's hub ids are base64 of `<chainId>::<hubAddress>`.
+const getAaveProHubUrl = (chainId: number, hubAddress: string) =>
+  `${AAVE_PRO_URL}explore/hub/${encodeURIComponent(btoa(`${chainId}::${hubAddress}`))}`;
 
 type V4Link = {
   id: string;
@@ -271,14 +272,14 @@ const V4_LINKS: V4Link[] = [
     id: 'aave_pro_avalanche_v4',
     label: 'Avalanche',
     logo: '/icons/networks/avalanche.svg',
-    url: getAaveProChainUrl(43114),
+    url: getAaveProHubUrl(43114, '0xd07369fAE4A5BB13c9Ce446B052c7867B1AbDf6e'), // Core hub
     section: 'other',
   },
   {
     id: 'aave_pro_arc_v4',
     label: 'Arc',
     logo: '/icons/networks/arc.svg',
-    url: getAaveProChainUrl(5042),
+    url: getAaveProHubUrl(5042, '0x17288dfc86205301064577b98B02b81017e6F79C'), // Core hub
     section: 'other',
   },
 ];
