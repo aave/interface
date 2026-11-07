@@ -30,17 +30,20 @@ export const ENABLE_TESTNET =
 export const FORK_ENABLED =
   !!process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   global?.window?.localStorage.getItem('forkEnabled') === 'true';
+// localStorage takes precedence over env so a deployment built with fork env vars can still target any fork
 // specifies which network was forked
 export const FORK_BASE_CHAIN_ID =
+  Number(global?.window?.localStorage.getItem('forkBaseChainId')) ||
   Number(process.env.NEXT_PUBLIC_FORK_BASE_CHAIN_ID) ||
-  Number(global?.window?.localStorage.getItem('forkBaseChainId') || 1);
+  1;
 // specifies on which chainId the fork is running
 export const FORK_CHAIN_ID =
+  Number(global?.window?.localStorage.getItem('forkNetworkId')) ||
   Number(process.env.NEXT_PUBLIC_FORK_CHAIN_ID) ||
-  Number(global?.window?.localStorage.getItem('forkNetworkId') || 3030);
+  3030;
 export const FORK_RPC_URL =
-  process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   global?.window?.localStorage.getItem('forkRPCUrl') ||
+  process.env.NEXT_PUBLIC_FORK_URL_RPC ||
   'http://127.0.0.1:8545';
 
 /**
@@ -164,6 +167,7 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
   if (!providers[chainId]) {
     const config = getNetworkConfig(chainId);
     if (
+      config.isFork ||
       (FORK_ENABLED && FORK_BASE_CHAIN_ID === chainId) ||
       process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED !== 'true'
     ) {
