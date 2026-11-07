@@ -16,6 +16,7 @@ export const GraphTimeRangeSelector = ({
   <TimeRangeSelector
     disabled={disabled}
     timeRanges={[
+      TimeWindow.LastDay,
       TimeWindow.LastWeek,
       TimeWindow.LastMonth,
       TimeWindow.LastSixMonths,

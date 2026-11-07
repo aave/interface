@@ -42,7 +42,7 @@ type ApyGraphProps = {
 };
 
 export const SupplyApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps) => {
-  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastWeek);
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastDay);
   const { palette } = useTheme();
 
   const { data, loading, error } = useSupplyAPYHistory({
@@ -66,7 +66,7 @@ export const SupplyApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps
 };
 
 export const BorrowApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps) => {
-  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastWeek);
+  const [selectedTimeRange, setSelectedTimeRange] = useState<TimeWindow>(TimeWindow.LastDay);
   const { palette } = useTheme();
 
   const { data, loading, error } = useBorrowAPYHistory({
