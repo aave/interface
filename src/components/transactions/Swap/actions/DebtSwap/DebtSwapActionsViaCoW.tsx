@@ -1,5 +1,11 @@
 import { normalize } from '@aave/math-utils';
-import { getOrderToSign, LimitTradeParameters, OrderKind, OrderStatus } from '@cowprotocol/cow-sdk';
+import {
+  getOrderToSign,
+  LimitTradeParameters,
+  OrderKind,
+  OrderStatus,
+  SupportedChainId,
+} from '@cowprotocol/cow-sdk';
 import { AaveFlashLoanType, HASH_ZERO } from '@cowprotocol/sdk-flash-loans';
 import { Trans } from '@lingui/macro';
 import { Dispatch, useEffect, useMemo, useState } from 'react';
@@ -14,7 +20,7 @@ import { zeroAddress } from 'viem';
 import { useShallow } from 'zustand/react/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import { COW_PARTNER_FEE } from '../../constants/cow.constants';
+import { ADAPTER_FACTORY, COW_PARTNER_FEE } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import {
   addOrderTypeToAppData,
@@ -331,6 +337,7 @@ export const DebtSwapActionsViaCoW = ({
           decimals: state.buyAmountToken.decimals,
         },
         adapterInstanceAddress: instanceAddress,
+        adapterFactoryAddress: ADAPTER_FACTORY[state.chainId as SupportedChainId],
         usedAdapter: true, // DebtSwap always uses adapter
         srcAmount: state.sellAmountBigInt.toString(),
         destAmount: state.buyAmountBigInt.toString(),

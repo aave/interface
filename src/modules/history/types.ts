@@ -57,6 +57,7 @@ export type CowSwapSubset = SwapSubset & {
   protocol: 'cow';
   orderId: string;
   adapterInstanceAddress?: string; // Instance address for adapter-based swaps
+  adapterFactoryAddress?: string; // Factory that created the instance
   usedAdapter?: boolean; // Whether adapter was used
 };
 
