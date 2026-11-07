@@ -18,6 +18,17 @@ import { useShallow } from 'zustand/shallow';
 
 export const MOCK_SIGNED_HASH = 'Signed correctly';
 
+const MAIN_ACTION_TX_TYPES = [
+  'DLP_ACTION',
+  'REWARD_ACTION',
+  'FAUCET_V2_MINT',
+  'FAUCET_MINT',
+  'STAKE_ACTION',
+  'GOV_DELEGATION_ACTION',
+  'GOVERNANCE_ACTION',
+  'V3_MIGRATION_ACTION',
+];
+
 interface UseTransactionHandlerProps {
   handleGetTxns: () => Promise<EthereumTransactionTypeExtended[]>;
   handleGetPermitTxns?: (
@@ -84,7 +95,7 @@ export const useTransactionHandler = ({
   );
 
   const [approvalTxes, setApprovalTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
-  const [actionTx, setActionTx] = useState<EthereumTransactionTypeExtended | undefined>();
+  const [actionTxes, setActionTxes] = useState<EthereumTransactionTypeExtended[] | undefined>();
   const [usePermit, setUsePermit] = useState(false);
   const mounted = useRef(false);
 
@@ -313,31 +324,44 @@ export const useTransactionHandler = ({
         });
       }
     }
-    if ((!usePermit || !approvalTxes) && actionTx) {
+    if ((!usePermit || !approvalTxes) && actionTxes?.length) {
+      let errorHandled = false;
       try {
         setMainTxState({ ...mainTxState, loading: true });
-        const params = await actionTx.tx();
-        delete params.gasPrice;
-        return processTx({
-          tx: () => sendTx(params),
-          successCallback: (txnResponse: TransactionResponse) => {
-            setMainTxState({
-              txHash: txnResponse.hash,
-              loading: false,
-              success: true,
+
+        for (let index = 0; index < actionTxes.length; index++) {
+          const actionTx = actionTxes[index];
+          const params = await actionTx.tx();
+          const isLastAction = index === actionTxes.length - 1;
+          delete params.gasPrice;
+
+          await new Promise<void>((resolve, reject) => {
+            processTx({
+              tx: () => sendTx(params),
+              successCallback: (txnResponse: TransactionResponse) => {
+                setMainTxState({
+                  txHash: txnResponse.hash,
+                  loading: !isLastAction,
+                  success: isLastAction,
+                });
+                setTxError(undefined);
+                resolve();
+              },
+              errorCallback: (error, hash) => {
+                errorHandled = true;
+                const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
+                setTxError(parsedError);
+                setMainTxState({
+                  txHash: hash,
+                  loading: false,
+                });
+                reject(error);
+              },
             });
-            setTxError(undefined);
-          },
-          errorCallback: (error, hash) => {
-            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION);
-            setTxError(parsedError);
-            setMainTxState({
-              txHash: hash,
-              loading: false,
-            });
-          },
-        });
+          });
+        }
       } catch (error) {
+        if (errorHandled) return;
         const parsedError = getErrorTextFromError(error, TxAction.GAS_ESTIMATION, false);
         console.error(error, parsedError);
         setTxError(parsedError);
@@ -388,20 +412,7 @@ export const useTransactionHandler = ({
               } else {
                 setApprovalTxes(undefined);
               }
-              setActionTx(
-                txs.find((tx) =>
-                  [
-                    'DLP_ACTION',
-                    'REWARD_ACTION',
-                    'FAUCET_V2_MINT',
-                    'FAUCET_MINT',
-                    'STAKE_ACTION',
-                    'GOV_DELEGATION_ACTION',
-                    'GOVERNANCE_ACTION',
-                    'V3_MIGRATION_ACTION',
-                  ].includes(tx.txType)
-                )
-              );
+              setActionTxes(txs.filter((tx) => MAIN_ACTION_TX_TYPES.includes(tx.txType)));
               setMainTxState({
                 txHash: undefined,
               });
@@ -437,7 +448,7 @@ export const useTransactionHandler = ({
       return () => clearTimeout(timeout);
     } else {
       setApprovalTxes(undefined);
-      setActionTx(undefined);
+      setActionTxes(undefined);
     }
   }, [skip, ...deps, tryPermit, walletApprovalMethodPreference]);
 
