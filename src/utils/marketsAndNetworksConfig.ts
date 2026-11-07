@@ -44,11 +44,117 @@ export const FORK_RPC_URL =
   'http://127.0.0.1:8545';
 
 /**
+ * TEMP (throwaway branch test/v38-vnets): every prod market runs on its Aave v3.8 upgrade Tenderly
+ * vnet instead of the real chain. Markets on chains without a vnet are hidden. Vnet chain ids match
+ * aave-v3-backend crates/types/src/chain.rs, which indexes them on staging.
+ * Keyed by the real (base) chain id.
+ */
+export const V38_VNETS: Record<number, { chainId: number; rpcUrl: string }> = {
+  1: {
+    chainId: 73571,
+    rpcUrl: 'https://virtual.mainnet.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/7f5ad6',
+  }, // ethereum
+  10: {
+    chainId: 735710,
+    rpcUrl: 'https://virtual.optimism.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/7e071f',
+  }, // optimism
+  56: {
+    chainId: 735756,
+    rpcUrl: 'https://virtual.binance.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/cf02f6',
+  }, // bnb
+  100: {
+    chainId: 7357100,
+    rpcUrl: 'https://virtual.gnosis.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/652218',
+  }, // gnosis
+  137: {
+    chainId: 7357137,
+    rpcUrl: 'https://virtual.polygon.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/6b2f41',
+  }, // polygon
+  143: {
+    chainId: 7357143,
+    rpcUrl: 'https://virtual.monad.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/ab04e1',
+  }, // monad
+  4326: {
+    chainId: 73574326,
+    rpcUrl: 'https://virtual.megaeth.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/97f0b4',
+  }, // megaeth
+  5000: {
+    chainId: 73575000,
+    rpcUrl: 'https://virtual.mantle.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/dfc1cf',
+  }, // mantle
+  8453: {
+    chainId: 73578453,
+    rpcUrl: 'https://virtual.base.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/405b9d',
+  }, // base
+  9745: {
+    chainId: 73579745,
+    rpcUrl: 'https://virtual.plasma.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/3e2886',
+  }, // plasma
+  42161: {
+    chainId: 735742161,
+    rpcUrl: 'https://virtual.arbitrum.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/b45e6a',
+  }, // arbitrum
+  42220: {
+    chainId: 735742220,
+    rpcUrl: 'https://virtual.celo.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/6f29b0',
+  }, // celo
+  43114: {
+    chainId: 735743114,
+    rpcUrl: 'https://virtual.avalanche.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/b04c6e',
+  }, // avalanche
+  57073: {
+    chainId: 735757073,
+    rpcUrl: 'https://virtual.ink.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/f27feb',
+  }, // ink
+  59144: {
+    chainId: 735759144,
+    rpcUrl: 'https://virtual.linea.eu.rpc.tenderly.co/aave/aave-v3-8-upgrade/fbdfa1',
+  }, // linea
+};
+
+/**
+ * TEMP (test/v38-vnets): instances upgraded by the v3.8 payload, per Deployments.sol in
+ * aave-dao/aave-proposals-v3#1233 (@5e5d24d). EtherFi and Horizon are not part of it. X Layer is in
+ * scope but has no vnet, so it stays hidden.
+ */
+const V38_UPGRADE_MARKETS = new Set<CustomMarket>([
+  CustomMarket.proto_mainnet_v3,
+  CustomMarket.proto_lido_v3,
+  CustomMarket.proto_plasma_v3,
+  CustomMarket.proto_avalanche_v3,
+  CustomMarket.proto_bnb_v3,
+  CustomMarket.proto_monad_v3,
+  CustomMarket.proto_polygon_v3,
+  CustomMarket.proto_gnosis_v3,
+  CustomMarket.proto_celo_v3,
+  CustomMarket.proto_base_v3,
+  CustomMarket.proto_arbitrum_v3,
+  CustomMarket.proto_optimism_v3,
+  CustomMarket.proto_mantle_v3,
+  CustomMarket.proto_ink_v3,
+  CustomMarket.proto_xlayer_v3,
+  CustomMarket.proto_linea_v3,
+  CustomMarket.proto_megaeth_v3,
+]);
+
+const V38_VNET_CHAIN_IDS = new Set(Object.values(V38_VNETS).map((vnet) => vnet.chainId));
+
+/**
  * Generates network configs based on networkConfigs & fork settings.
  * Forks will have a rpcOnly clone of their underlying base network config.
  */
 export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) => {
   acc[value] = _networkConfigs[value];
+  const vnet = V38_VNETS[Number(value)];
+  if (vnet) {
+    acc[vnet.chainId] = {
+      ..._networkConfigs[value],
+      name: `${_networkConfigs[value].name} v3.8 vnet`,
+      isFork: true,
+      publicJsonRPCUrl: vnet.rpcUrl ? [vnet.rpcUrl] : [],
+      underlyingChainId: Number(value),
+    };
+  }
   if (FORK_ENABLED && Number(value) === FORK_BASE_CHAIN_ID) {
     acc[FORK_CHAIN_ID] = {
       ..._networkConfigs[value],
@@ -67,17 +173,15 @@ export const networkConfigs = Object.keys(_networkConfigs).reduce((acc, value) =
  */
 
 export const marketsData = Object.keys(_marketsData).reduce((acc, value) => {
-  acc[value] = _marketsData[value as keyof typeof CustomMarket];
-  if (
-    FORK_ENABLED &&
-    _marketsData[value as keyof typeof CustomMarket].chainId === FORK_BASE_CHAIN_ID
-  ) {
-    acc[`fork_${value}`] = {
-      ..._marketsData[value as keyof typeof CustomMarket],
-      chainId: FORK_CHAIN_ID,
-      isFork: true,
-    };
-  }
+  // TEMP (test/v38-vnets): only markets in scope for the v3.8 upgrade, each swapped onto its vnet.
+  const market = _marketsData[value as keyof typeof CustomMarket];
+  const vnet = V38_VNETS[market.chainId];
+  if (!vnet || !V38_UPGRADE_MARKETS.has(value as CustomMarket)) return acc;
+  acc[value] = {
+    ...market,
+    chainId: vnet.chainId,
+    isFork: true,
+  };
   return acc;
 }, {} as { [key: string]: MarketDataType });
 
@@ -86,23 +190,12 @@ export function getDefaultChainId() {
 }
 
 export function getSupportedChainIds(): number[] {
+  // TEMP (test/v38-vnets): marketsData only holds vnet markets, so no testnet/staging filtering.
   return Array.from(
-    Object.keys(marketsData)
-      .filter((value) => {
-        const isTestnet =
-          networkConfigs[marketsData[value as keyof typeof CustomMarket].chainId].isTestnet;
-
-        // If this is a staging environment, or the testnet toggle is on, only show testnets
-        if (STAGING_ENV || ENABLE_TESTNET) {
-          return isTestnet;
-        }
-
-        return !isTestnet;
-      })
-      .reduce(
-        (acc, value) => acc.add(marketsData[value as keyof typeof CustomMarket].chainId),
-        new Set<number>()
-      )
+    Object.keys(marketsData).reduce(
+      (acc, value) => acc.add(marketsData[value as keyof typeof CustomMarket].chainId),
+      new Set<number>()
+    )
   );
 }
 
@@ -165,6 +258,7 @@ export const getProvider = (chainId: ChainId): ProviderWithSend => {
     const config = getNetworkConfig(chainId);
     if (
       (FORK_ENABLED && FORK_BASE_CHAIN_ID === chainId) ||
+      V38_VNET_CHAIN_IDS.has(chainId) ||
       process.env.NEXT_PUBLIC_PRIVATE_RPC_ENABLED !== 'true'
     ) {
       // No private RPC or there is a fork configured, use public ones directly

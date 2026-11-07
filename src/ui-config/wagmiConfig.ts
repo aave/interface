@@ -7,6 +7,7 @@ import {
   FORK_ENABLED,
   FORK_RPC_URL,
   networkConfigs,
+  V38_VNETS,
 } from 'src/utils/marketsAndNetworksConfig';
 import { type Chain } from 'viem';
 import { createConfig, CreateConfigParameters, http } from 'wagmi';
@@ -43,6 +44,22 @@ const forkChain: Chain = {
 if (FORK_ENABLED) {
   prodChains = [forkChain, ...prodChains];
 }
+
+// TEMP (test/v38-vnets): a wagmi chain per vnet, cloned from its base chain (keeps multicall3 etc.).
+const vnetChains = Object.entries(V38_VNETS).flatMap(([baseChainId, vnet]) => {
+  const base = prodNetworkConfig[baseChainId]?.wagmiChain;
+  if (!base) return [];
+  return [
+    {
+      ...base,
+      id: vnet.chainId,
+      name: `${base.name} v3.8 vnet`,
+      rpcUrls: { default: { http: vnet.rpcUrl ? [vnet.rpcUrl] : [] } },
+      testnet: false,
+    } as Chain,
+  ];
+});
+prodChains = [...(vnetChains as [Chain, ...Chain[]]), ...prodChains];
 
 const defaultConfig = {
   walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string,
