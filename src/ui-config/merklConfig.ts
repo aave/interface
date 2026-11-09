@@ -578,19 +578,19 @@ export const EXTRA_WHITELIST_TOKENS: MerklWhitelistConfig = {
   additionalIncentiveInfo: {
     '1-0x4F5923Fc5FD4a93352581b38B7cD26943012DECF': {
       customMessage:
-        'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate less the USDe supply rate earned for the foreseeable future.',
+        'To be eligible, your USDe supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate less the USDe supply rate earned for the foreseeable future.',
     },
     '9745-0x7519403E12111ff6b710877Fcd821D0c12CAF43A': {
       customMessage:
-        'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate less the USDe supply rate earned for the foreseeable future.',
+        'To be eligible, your USDe supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate less the USDe supply rate earned for the foreseeable future.',
     },
     '5000-0xb9aCA933C9c0aa854a6DBb7b12f0CC3FdaC15ee7': {
       customMessage:
-        'You must supply USDe and hold an equal or greater amount of sUSDe (by USD value) to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate less the USDe supply rate earned for the foreseeable future.',
+        'To be eligible, your USDe supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate less the USDe supply rate earned for the foreseeable future.',
     },
     '4326-0x78f2cB75D664d6f71433174056c25A5958B4016F': {
       customMessage:
-        'You must supply USDe to receive the incentives. To be eligible, your assets supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate less the USDe supply rate earned for the foreseeable future.',
+        'To be eligible, your USDe supplied must be at least 2x your account equity, and you must not be borrowing any USDe. The rate provided to eligible users will change week by week, but will be roughly in line with the sUSDe rate less the USDe supply rate earned for the foreseeable future.',
     },
     '1-0xEc4ef66D4fCeEba34aBB4dE69dB391Bc5476ccc8': {
       customMessage:
