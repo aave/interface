@@ -1,20 +1,11 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
-import { Trans } from '@lingui/macro';
-import {
-  Alert,
-  Box,
-  Divider,
-  FormControlLabel,
-  Paper,
-  Switch,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { t, Trans } from '@lingui/macro';
+import { Alert, Box, Paper, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
 import { CONTENT_TOP_PADDING } from 'src/components/ContentContainer';
+import { DisplaySettingsMenu } from 'src/components/DisplaySettingsMenu';
 import { NoSearchResults } from 'src/components/NoSearchResults';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { usePoolTokensBalance } from 'src/hooks/pool/usePoolTokensBalance';
 import { useCoingeckoCategories } from 'src/hooks/useCoinGeckoCategories';
@@ -155,11 +146,56 @@ export const MarketAssetsListContainer = () => {
 
   const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
 
-  const handleChange = () => {
-    setShowFrozenMarketsToggle((prevState) => !prevState);
-  };
-
   const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
+
+  const displaySettings = (
+    <DisplaySettingsMenu
+      isDefault={!showLowLiquidityToggle && !showFrozenMarketsToggle}
+      onReset={() => {
+        setShowLowLiquidityToggle(false);
+        setShowFrozenMarketsToggle(false);
+      }}
+      sections={[
+        [
+          {
+            key: 'low-liquidity',
+            label: isEthereumCore ? (
+              <Trans>{'Show <$1M supply'}</Trans>
+            ) : (
+              <Trans>{'Show <$100k supply'}</Trans>
+            ),
+            ariaLabel: isEthereumCore
+              ? t`show assets under 1M supply`
+              : t`show assets under 100k supply`,
+            tooltip: isEthereumCore ? (
+              <Trans>Assets with less than $1M supplied are hidden by default.</Trans>
+            ) : (
+              <Trans>Assets with less than $100k supplied are hidden by default.</Trans>
+            ),
+            checked: showLowLiquidityToggle || !hasHighLiquidityAssets,
+            onChange: setShowLowLiquidityToggle,
+          },
+        ],
+        frozenOrPausedReserves.length > 0
+          ? [
+              {
+                key: 'restricted',
+                label: <Trans>Show restricted assets</Trans>,
+                ariaLabel: t`show restricted assets`,
+                tooltip: (
+                  <Trans>
+                    These assets are temporarily restricted. Supplying and borrowing are
+                    unavailable, but you can still repay and withdraw.
+                  </Trans>
+                ),
+                checked: showFrozenMarketsToggle,
+                onChange: setShowFrozenMarketsToggle,
+              },
+            ]
+          : [],
+      ]}
+    />
+  );
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: CONTENT_TOP_PADDING }}>
@@ -172,6 +208,7 @@ export const MarketAssetsListContainer = () => {
         selectedCategories={selectedCategories}
         onCategoriesChange={setSelectedCategories}
         categoriesDisabled={isLoading || !!error}
+        displaySettings={displaySettings}
       />
 
       <Paper variant="table">
@@ -199,66 +236,6 @@ export const MarketAssetsListContainer = () => {
             subtitle={<Trans>We couldn&apos;t find any assets related to your search.</Trans>}
           />
         )}
-
-        <Box
-          sx={{
-            px: { xs: 4, xsm: 6 },
-            height: { sm: '40px' },
-            py: { xs: 3, sm: 0 },
-            display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
-            alignItems: { xs: 'flex-start', sm: 'center' },
-            gap: { xs: '1rem', sm: '0.75rem' },
-          }}
-        >
-          {frozenOrPausedReserves.length > 0 && (
-            <>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <FormControlLabel
-                  sx={{ m: 0 }}
-                  control={
-                    <Switch
-                      checked={showFrozenMarketsToggle}
-                      onChange={handleChange}
-                      inputProps={{ 'aria-label': 'show restricted assets' }}
-                    />
-                  }
-                  label={<Trans>Show restricted assets</Trans>}
-                  componentsProps={{ typography: { variant: 'subheader1' } }}
-                />
-                <TextWithTooltip iconMargin={2}>
-                  <Trans>
-                    These assets are temporarily restricted. Supplying and borrowing are
-                    unavailable, but you can still repay and withdraw.
-                  </Trans>
-                </TextWithTooltip>
-              </Box>
-              {!sm && <Divider orientation="vertical" sx={{ height: '1.25rem' }} />}
-            </>
-          )}
-          <FormControlLabel
-            sx={{ m: 0 }}
-            control={
-              <Switch
-                checked={showLowLiquidityToggle || !hasHighLiquidityAssets}
-                onChange={() => setShowLowLiquidityToggle((prev) => !prev)}
-                inputProps={{
-                  'aria-label': isEthereumCore
-                    ? 'show assets under 1M supply'
-                    : 'show assets under 100k supply',
-                }}
-              />
-            }
-            label={
-              isEthereumCore ? (
-                <Trans>{'Show <$1M supply'}</Trans>
-              ) : (
-                <Trans>{'Show <$100k supply'}</Trans>
-              )
-            }
-            componentsProps={{ typography: { variant: 'subheader1' } }}
-          />
-        </Box>
       </Paper>
     </Box>
   );

@@ -758,6 +758,10 @@ msgstr "Current votes"
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "show restricted assets"
+msgstr "show restricted assets"
+
 #: src/modules/migration/MigrationIsolationWarning.tsx
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
@@ -810,6 +814,10 @@ msgstr "This is a program initiated by the Aave DAO and implemented by Merkl. Aa
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Assets with less than $100k supplied are hidden by default."
+msgstr "Assets with less than $100k supplied are hidden by default."
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
@@ -1285,6 +1293,10 @@ msgstr "{tooltipText}"
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
 msgid "Swapping {0} collateral"
 msgstr "Swapping {0} collateral"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "show assets under 1M supply"
+msgstr "show assets under 1M supply"
 
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "Rewards can be claimed through"
@@ -1851,6 +1863,10 @@ msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing agains
 msgid "Favourites"
 msgstr "Favourites"
 
+#: src/components/DisplaySettingsMenu.tsx
+msgid "Reset"
+msgstr "Reset"
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "disabled"
 msgstr "disabled"
@@ -2225,6 +2241,10 @@ msgstr "Available to stake"
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "show assets under 100k supply"
+msgstr "show assets under 100k supply"
+
 #: src/layouts/AppFooter.tsx
 msgid "Docs"
 msgstr "Docs"
@@ -2493,6 +2513,10 @@ msgstr "Deposit APR"
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Amount to Bridge"
 msgstr "Amount to Bridge"
+
+#: src/components/DisplaySettingsMenu.tsx
+msgid "Display"
+msgstr "Display"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
@@ -3216,6 +3240,10 @@ msgstr "About GHO"
 msgid "Inconsistent flashloan parameters"
 msgstr "Inconsistent flashloan parameters"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Assets with less than $1M supplied are hidden by default."
+msgstr "Assets with less than $1M supplied are hidden by default."
+
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Not enough voting power to participate in this proposal"
 msgstr "Not enough voting power to participate in this proposal"
@@ -3471,6 +3499,10 @@ msgstr "Refresh"
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "Receive"
 msgstr "Receive"
+
+#: src/components/DisplaySettingsMenu.tsx
+msgid "Display settings"
+msgstr "Display settings"
 
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
