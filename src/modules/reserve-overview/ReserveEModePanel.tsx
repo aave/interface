@@ -9,7 +9,7 @@ import { MaxLTVTooltip } from 'src/components/infoTooltips/MaxLTVTooltip';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { ReserveOverviewBox } from 'src/components/ReserveOverviewBox';
-import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { ReserveWithId, useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
 import { GENERAL, RESERVE_DETAILS } from 'src/utils/events';
 import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
@@ -24,6 +24,16 @@ type ReserverEModePanelProps = {
 
 export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }) => {
   const trackEvent = useRootStore((store) => store.trackEvent);
+  const { supplyReserves } = useAppDataContext();
+
+  // hasLtvZero is per reserve, so a borrow-only asset never has it set. When every
+  // collateral in the category is ltvzero, the category's effective max LTV is 0.
+  const allCollateralLtvZero = (categoryId: number) => {
+    const collaterals = supplyReserves
+      .flatMap((r) => r.eModeInfo ?? [])
+      .filter((e) => e.categoryId === categoryId && e.canBeCollateral);
+    return collaterals.length > 0 && collaterals.every((e) => e.hasLtvZero);
+  };
 
   return (
     <PanelRow>
@@ -67,7 +77,7 @@ export const ReserveEModePanel: React.FC<ReserverEModePanelProps> = ({ reserve }
                 title={<MaxLTVTooltip variant="description" text={<Trans>Max LTV</Trans>} />}
               >
                 <FormattedNumber
-                  value={e.hasLtvZero ? 0 : e.maxLTV.value}
+                  value={e.hasLtvZero || allCollateralLtvZero(e.categoryId) ? 0 : e.maxLTV.value}
                   percent
                   variant="h5"
                   visibleDecimals={2}
