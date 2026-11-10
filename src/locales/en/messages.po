@@ -1560,6 +1560,10 @@ msgstr "Total Staked"
 msgid "Isolated"
 msgstr "Isolated"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "These assets are temporarily restricted. Supplying and borrowing are unavailable, but you can still repay and withdraw."
+msgstr "These assets are temporarily restricted. Supplying and borrowing are unavailable, but you can still repay and withdraw."
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Borrow:"
 msgstr "Borrow:"
@@ -2430,6 +2434,10 @@ msgstr "Let us know how we can help you. You may also consider joining our commu
 #: src/components/transactions/Withdraw/WithdrawTypeSelector.tsx
 msgid "Withdraw & Swap"
 msgstr "Withdraw & Swap"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "These assets are deprecated and no longer available to supply or borrow. You can still repay and withdraw."
+msgstr "These assets are deprecated and no longer available to supply or borrow. You can still repay and withdraw."
 
 #: src/ui-config/errorMapping.tsx
 msgid "User cannot withdraw more than the available balance"

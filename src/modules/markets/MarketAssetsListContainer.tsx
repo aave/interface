@@ -209,6 +209,12 @@ export const MarketAssetsListContainer = () => {
           <MarketAssetsAccordion
             title={<Trans>Restricted assets</Trans>}
             count={frozenOrPausedReserves.length}
+            notice={
+              <Trans>
+                These assets are temporarily restricted. Supplying and borrowing are unavailable,
+                but you can still repay and withdraw.
+              </Trans>
+            }
           >
             <MarketAssetsList reserves={frozenOrPausedReserves} loading={false} />
           </MarketAssetsAccordion>
@@ -216,6 +222,12 @@ export const MarketAssetsListContainer = () => {
           <MarketAssetsAccordion
             title={<Trans>Deprecated</Trans>}
             count={deprecatedReserves.length}
+            notice={
+              <Trans>
+                These assets are deprecated and no longer available to supply or borrow. You can
+                still repay and withdraw.
+              </Trans>
+            }
           >
             <MarketAssetsList reserves={deprecatedReserves} loading={false} />
           </MarketAssetsAccordion>

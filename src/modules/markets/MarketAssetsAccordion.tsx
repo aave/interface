@@ -1,15 +1,22 @@
-import { Box, ButtonBase, Collapse, Paper, Typography } from '@mui/material';
+import { Alert, Box, ButtonBase, Collapse, Paper, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
 
 interface MarketAssetsAccordionProps {
   title: ReactNode;
   count: number;
+  /** Info banner shown above the table when the section is open. */
+  notice?: ReactNode;
   children: ReactNode;
 }
 
 /** Collapsed-by-default table below the main markets table, e.g. restricted assets. */
-export const MarketAssetsAccordion = ({ title, count, children }: MarketAssetsAccordionProps) => {
+export const MarketAssetsAccordion = ({
+  title,
+  count,
+  notice,
+  children,
+}: MarketAssetsAccordionProps) => {
   const [open, setOpen] = useState(false);
 
   if (count === 0) return null;
@@ -39,6 +46,13 @@ export const MarketAssetsAccordion = ({ title, count, children }: MarketAssetsAc
       </ButtonBase>
       <Collapse in={open} unmountOnExit>
         <Paper variant="table" sx={{ mt: 4 }}>
+          {notice && (
+            <Box sx={{ pt: 4, px: { xs: 4, xsm: 6 } }}>
+              <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
+                {notice}
+              </Alert>
+            </Box>
+          )}
           {children}
         </Paper>
       </Collapse>
