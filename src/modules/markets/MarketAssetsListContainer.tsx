@@ -1,6 +1,6 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import { t, Trans } from '@lingui/macro';
-import { Alert, Box, Paper, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Paper, useMediaQuery, useTheme } from '@mui/material';
 import { useState } from 'react';
 import { AssetsFilterBar } from 'src/components/AssetsFilterBar';
 import { CONTENT_TOP_PADDING } from 'src/components/ContentContainer';
@@ -17,6 +17,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { isAssetHidden } from '../dashboard/lists/constants';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
+import { MarketAssetsAccordion } from './MarketAssetsAccordion';
 import { AssetCategory, matchesSelectedCategories } from './utils/assetCategories';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
@@ -103,21 +104,7 @@ export const MarketAssetsListContainer = () => {
   const isEthereumCore = currentMarketData.market === CustomMarket.proto_mainnet_v3;
   const lowLiquidityThreshold = isEthereumCore ? 1_000_000 : 100_000;
 
-  // If every remaining asset is below the supply threshold, showing the
-  // low-liquidity filter would leave the list empty, so show all assets instead.
-  const hasHighLiquidityAssets = baseFilteredData.some(
-    (res) => Number(res.size.usd) >= lowLiquidityThreshold
-  );
-
   const filteredData = baseFilteredData
-    // Filter out low-liquidity assets (below the threshold) unless toggle is enabled
-    // (or unless all assets would otherwise be filtered out)
-    .filter(
-      (res) =>
-        showLowLiquidityToggle ||
-        !hasHighLiquidityAssets ||
-        Number(res.size.usd) >= lowLiquidityThreshold
-    )
     // Add initial sorting by total supplied in USD descending
     .sort((a, b) => {
       const aValue = Number(a.size.usd) || 0;
@@ -139,22 +126,31 @@ export const MarketAssetsListContainer = () => {
         : {}),
     }));
 
-  // const marketFrozen = !reserves.some((reserve) => !reserve.isFrozen);
-  // const showFrozenMarketWarning =
-  //   marketFrozen && ['Fantom', 'Ethereum AMM'].includes(currentMarketData.marketTitle);
+  const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
   const unfrozenReserves = filteredData.filter((r) => !r.isFrozen && !r.isPaused);
 
-  const [showFrozenMarketsToggle, setShowFrozenMarketsToggle] = useState(false);
+  // If every remaining asset is below the supply threshold, showing the
+  // low-liquidity filter would leave the list empty, so show all assets instead.
+  const hasHighLiquidityAssets = unfrozenReserves.some(
+    (res) => Number(res.size.usd) >= lowLiquidityThreshold
+  );
 
-  const frozenOrPausedReserves = filteredData.filter((r) => r.isFrozen || r.isPaused);
+  // Filter out low-liquidity assets (below the threshold) unless toggle is enabled
+  // (or unless all assets would otherwise be filtered out)
+  const mainReserves = unfrozenReserves.filter(
+    (res) =>
+      showLowLiquidityToggle ||
+      !hasHighLiquidityAssets ||
+      Number(res.size.usd) >= lowLiquidityThreshold
+  );
+
+  // TODO: populate once deprecation logic exists; the section stays hidden while empty.
+  const deprecatedReserves: ReserveWithId[] = [];
 
   const displaySettings = (
     <DisplaySettingsMenu
-      isDefault={!showLowLiquidityToggle && !showFrozenMarketsToggle}
-      onReset={() => {
-        setShowLowLiquidityToggle(false);
-        setShowFrozenMarketsToggle(false);
-      }}
+      isDefault={!showLowLiquidityToggle}
+      onReset={() => setShowLowLiquidityToggle(false)}
       sections={[
         [
           {
@@ -176,23 +172,6 @@ export const MarketAssetsListContainer = () => {
             onChange: setShowLowLiquidityToggle,
           },
         ],
-        frozenOrPausedReserves.length > 0
-          ? [
-              {
-                key: 'restricted',
-                label: <Trans>Show restricted assets</Trans>,
-                ariaLabel: t`show restricted assets`,
-                tooltip: (
-                  <Trans>
-                    These assets are temporarily restricted. Supplying and borrowing are
-                    unavailable, but you can still repay and withdraw.
-                  </Trans>
-                ),
-                checked: showFrozenMarketsToggle,
-                onChange: setShowFrozenMarketsToggle,
-              },
-            ]
-          : [],
       ]}
     />
   );
@@ -211,32 +190,37 @@ export const MarketAssetsListContainer = () => {
         displaySettings={displaySettings}
       />
 
-      <Paper variant="table">
-        {/* Unfrozen assets list */}
-        <MarketAssetsList reserves={unfrozenReserves} loading={loading} />
+      {(loading || mainReserves.length > 0 || filteredData.length === 0) && (
+        <Paper variant="table">
+          <MarketAssetsList reserves={mainReserves} loading={loading} />
 
-        {showFrozenMarketsToggle && frozenOrPausedReserves.length > 0 && (
-          <>
-            <Box sx={{ mt: 10, px: { xs: 4, xsm: 6 } }}>
-              <Alert severity="info" sx={{ mb: 6, width: '100%' }}>
-                <Trans>
-                  These assets are temporarily restricted. Supplying and borrowing are unavailable,
-                  but you can still repay and withdraw.
-                </Trans>
-              </Alert>
-            </Box>
-            <MarketAssetsList reserves={frozenOrPausedReserves} loading={loading} />
-          </>
-        )}
+          {/* Show no search results message if nothing hits in any list */}
+          {!loading && filteredData.length === 0 && !displayGhoBanner && (
+            <NoSearchResults
+              searchTerm={searchTerm}
+              subtitle={<Trans>We couldn&apos;t find any assets related to your search.</Trans>}
+            />
+          )}
+        </Paper>
+      )}
 
-        {/* Show no search results message if nothing hits in either list */}
-        {!loading && filteredData.length === 0 && !displayGhoBanner && (
-          <NoSearchResults
-            searchTerm={searchTerm}
-            subtitle={<Trans>We couldn&apos;t find any assets related to your search.</Trans>}
-          />
-        )}
-      </Paper>
+      {!loading && (
+        <>
+          <MarketAssetsAccordion
+            title={<Trans>Restricted assets</Trans>}
+            count={frozenOrPausedReserves.length}
+          >
+            <MarketAssetsList reserves={frozenOrPausedReserves} loading={false} />
+          </MarketAssetsAccordion>
+
+          <MarketAssetsAccordion
+            title={<Trans>Deprecated</Trans>}
+            count={deprecatedReserves.length}
+          >
+            <MarketAssetsList reserves={deprecatedReserves} loading={false} />
+          </MarketAssetsAccordion>
+        </>
+      )}
     </Box>
   );
 };

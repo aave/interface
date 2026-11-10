@@ -758,10 +758,6 @@ msgstr "Current votes"
 msgid "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 msgstr "This asset has almost reached its borrow cap. There is only {messageValue} available to be borrowed from this market."
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "show restricted assets"
-msgstr "show restricted assets"
-
 #: src/modules/migration/MigrationIsolationWarning.tsx
 msgid "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
 msgstr "Some migrated assets will not be used as collateral due to enabled isolation mode in {marketName} V3 Market. Visit <0>{marketName} V3 Dashboard</0> to manage isolation mode."
@@ -1564,11 +1560,6 @@ msgstr "Total Staked"
 msgid "Isolated"
 msgstr "Isolated"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "These assets are temporarily restricted. Supplying and borrowing are unavailable, but you can still repay and withdraw."
-msgstr "These assets are temporarily restricted. Supplying and borrowing are unavailable, but you can still repay and withdraw."
-
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Borrow:"
 msgstr "Borrow:"
@@ -1998,10 +1989,6 @@ msgstr "View TX"
 msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Show restricted assets"
-msgstr "Show restricted assets"
-
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
@@ -2170,6 +2157,10 @@ msgstr "Disabling E-Mode"
 #: src/components/MarketSwitcher.tsx
 msgid "Legacy"
 msgstr "Legacy"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Deprecated"
+msgstr "Deprecated"
 
 #: src/modules/history/HistoryTopPanel.tsx
 msgid "This list may not include all your swaps."
@@ -3516,6 +3507,10 @@ msgstr "Asset cannot be migrated due to insufficient liquidity or borrow cap lim
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Voted YAE"
 msgstr "Voted YAE"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Restricted assets"
+msgstr "Restricted assets"
 
 #: src/modules/history/HistoryWrapper.tsx
 msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
