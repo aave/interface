@@ -811,6 +811,10 @@ msgstr "This is a program initiated by the Aave DAO and implemented by Merkl. Aa
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Assets with less than $100k supplied are hidden by default."
+msgstr "Assets with less than $100k supplied are hidden by default."
+
 #: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
@@ -1286,6 +1290,10 @@ msgstr "{tooltipText}"
 msgid "Swapping {0} collateral"
 msgstr "Swapping {0} collateral"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "show assets under 1M supply"
+msgstr "show assets under 1M supply"
+
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "Rewards can be claimed through"
 msgstr "Rewards can be claimed through"
@@ -1552,7 +1560,6 @@ msgstr "Total Staked"
 msgid "Isolated"
 msgstr "Isolated"
 
-#: src/modules/markets/MarketAssetsListContainer.tsx
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "These assets are temporarily restricted. Supplying and borrowing are unavailable, but you can still repay and withdraw."
 msgstr "These assets are temporarily restricted. Supplying and borrowing are unavailable, but you can still repay and withdraw."
@@ -1851,6 +1858,10 @@ msgstr "Protocol debt ceiling is at 100% for this asset. Futher borrowing agains
 msgid "Favourites"
 msgstr "Favourites"
 
+#: src/components/DisplaySettingsMenu.tsx
+msgid "Reset"
+msgstr "Reset"
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "disabled"
 msgstr "disabled"
@@ -1981,10 +1992,6 @@ msgstr "View TX"
 #: src/modules/staking/GetABPTokenModal.tsx
 msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
-
-#: src/modules/markets/MarketAssetsListContainer.tsx
-msgid "Show restricted assets"
-msgstr "Show restricted assets"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
@@ -2155,6 +2162,10 @@ msgstr "Disabling E-Mode"
 msgid "Legacy"
 msgstr "Legacy"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Deprecated"
+msgstr "Deprecated"
+
 #: src/modules/history/HistoryTopPanel.tsx
 msgid "This list may not include all your swaps."
 msgstr "This list may not include all your swaps."
@@ -2224,6 +2235,10 @@ msgstr "Available to stake"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "show assets under 100k supply"
+msgstr "show assets under 100k supply"
 
 #: src/layouts/AppFooter.tsx
 msgid "Docs"
@@ -2420,6 +2435,10 @@ msgstr "Let us know how we can help you. You may also consider joining our commu
 msgid "Withdraw & Swap"
 msgstr "Withdraw & Swap"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "These assets are deprecated and no longer available to supply or borrow. You can still repay and withdraw."
+msgstr "These assets are deprecated and no longer available to supply or borrow. You can still repay and withdraw."
+
 #: src/ui-config/errorMapping.tsx
 msgid "User cannot withdraw more than the available balance"
 msgstr "User cannot withdraw more than the available balance"
@@ -2493,6 +2512,10 @@ msgstr "Deposit APR"
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Amount to Bridge"
 msgstr "Amount to Bridge"
+
+#: src/components/DisplaySettingsMenu.tsx
+msgid "Display"
+msgstr "Display"
 
 #: src/modules/migration/MigrationBottomPanel.tsx
 msgid "Please always be aware of your <0>Health Factor (HF)</0> when partially migrating a position and that your rates will be updated to V3 rates."
@@ -3216,6 +3239,10 @@ msgstr "About GHO"
 msgid "Inconsistent flashloan parameters"
 msgstr "Inconsistent flashloan parameters"
 
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Assets with less than $1M supplied are hidden by default."
+msgstr "Assets with less than $1M supplied are hidden by default."
+
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "Not enough voting power to participate in this proposal"
 msgstr "Not enough voting power to participate in this proposal"
@@ -3472,6 +3499,10 @@ msgstr "Refresh"
 msgid "Receive"
 msgstr "Receive"
 
+#: src/components/DisplaySettingsMenu.tsx
+msgid "Display settings"
+msgstr "Display settings"
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "supplied"
@@ -3484,6 +3515,10 @@ msgstr "Asset cannot be migrated due to insufficient liquidity or borrow cap lim
 #: src/modules/governance/proposal/VotersListModal.tsx
 msgid "Voted YAE"
 msgstr "Voted YAE"
+
+#: src/modules/markets/MarketAssetsListContainer.tsx
+msgid "Restricted assets"
+msgstr "Restricted assets"
 
 #: src/modules/history/HistoryWrapper.tsx
 msgid "We couldn't find any transactions related to your search. Try again with a different asset name, or reset filters."
