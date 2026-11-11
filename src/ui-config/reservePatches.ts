@@ -301,6 +301,9 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
       name: 'Invesco Short Duration US Government Securities Fund',
       iconSymbol: 'ustb',
     },
+    '0x4e72025984424e52838cf8953e2863eff036b67a': {
+      iconSymbol: 'mwin',
+    },
 
     '0xa693B19d2931d498c5B318dF961919BB4aee87a5': { iconSymbol: 'UST', name: 'UST (Wormhole)' },
     '0x59a19d8c652fa0284f44113d0ff9aba70bd46fb4': { iconSymbol: 'BPT_BAL_WETH' },
