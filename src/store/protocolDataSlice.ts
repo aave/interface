@@ -47,7 +47,7 @@ export const createProtocolDataSlice: StateCreator<
       const nextMarketData = marketsData[market];
       localStorage.setItem('selectedMarket', market);
       if (!omitQueryParameterUpdate) {
-        setQueryParameter('marketName', market);
+        setQueryParameter('marketName', market, get().currentMarket);
       }
       set({
         currentMarket: market,
