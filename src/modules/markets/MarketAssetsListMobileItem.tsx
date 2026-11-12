@@ -20,10 +20,15 @@ import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { Row } from '../../components/primitives/Row';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
+import { DynamicCapCheck, DynamicCapChipWithTooltip } from '../dynamic-caps/DynamicCapChip';
+import { useDynamicCap, useMarketsTag } from '../dynamic-caps/useDynamicCap';
 import { ReserveWithProtocolIncentives } from './MarketAssetsList';
 import { showBorrowingDisabledNote } from './utils/borrowingDisabled';
 
-export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIncentives) => {
+export const MarketAssetsListMobileItem = ({
+  showDynamicCapColumn,
+  ...reserve
+}: ReserveWithProtocolIncentives & { showDynamicCapColumn?: boolean }) => {
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
   );
@@ -50,6 +55,10 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
       : reserve.underlyingToken.symbol;
 
   const borrowableOnlyInEModeLabels = getBorrowableOnlyInEModeLabels(reserve);
+
+  const dynamicCap = useDynamicCap(reserve.underlyingToken.address);
+  const [marketsTag] = useMarketsTag();
+  const showDynamicCap = !!dynamicCap && marketsTag === 'on';
 
   return (
     <ListMobileItemWrapper
@@ -109,6 +118,9 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
                 variant="h5"
               />
               <ReserveSubheader value={String(reserve.borrowInfo.total.usd)} />
+              {showDynamicCap && (
+                <DynamicCapChipWithTooltip cap={dynamicCap} sx={{ alignSelf: 'center' }} />
+              )}
             </>
           ) : (
             <NoData variant={'h5'} />
@@ -152,6 +164,11 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
           {borrowableOnlyInEModeLabels.length > 0 && <BorrowableOnlyInEModeTooltip />}
         </Box>
       </Row>
+      {showDynamicCapColumn && (
+        <Row caption={<Trans>Dynamic cap</Trans>} captionVariant="description" mb="1.5rem">
+          <DynamicCapCheck cap={dynamicCap} />
+        </Row>
+      )}
       <Button
         variant="tertiary"
         component={Link}

@@ -26,10 +26,15 @@ import { ListItem } from '../../components/lists/ListItem';
 import { FormattedNumber } from '../../components/primitives/FormattedNumber';
 import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
-import { ReserveWithProtocolIncentives } from './MarketAssetsList';
+import { DynamicCapCheck, DynamicCapChipWithTooltip } from '../dynamic-caps/DynamicCapChip';
+import { useDynamicCap, useMarketsTag } from '../dynamic-caps/useDynamicCap';
+import { DYNAMIC_CAP_COLUMN_WIDTH, ReserveWithProtocolIncentives } from './MarketAssetsList';
 import { showBorrowingDisabledNote } from './utils/borrowingDisabled';
 
-export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentives) => {
+export const MarketAssetsListItem = ({
+  showDynamicCapColumn,
+  ...reserve
+}: ReserveWithProtocolIncentives & { showDynamicCapColumn?: boolean }) => {
   const router = useRouter();
   const [trackEvent, currentMarket] = useRootStore(
     useShallow((store) => [store.trackEvent, store.currentMarket])
@@ -58,6 +63,10 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
       : reserve.underlyingToken.symbol;
 
   const borrowableOnlyInEModeLabels = getBorrowableOnlyInEModeLabels(reserve);
+
+  const dynamicCap = useDynamicCap(reserve.underlyingToken.address);
+  const [marketsTag] = useMarketsTag();
+  const showDynamicCap = !!dynamicCap && marketsTag === 'on';
 
   return (
     <ListItem
@@ -126,11 +135,14 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
       <ListColumn>
         {reserve.borrowInfo && Number(reserve.borrowInfo.total.amount.value) > 0 ? (
           <>
-            <FormattedNumber
-              compact
-              value={Number(reserve.borrowInfo?.total.amount.value)}
-              variant="h5"
-            />{' '}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <FormattedNumber
+                compact
+                value={Number(reserve.borrowInfo?.total.amount.value)}
+                variant="h5"
+              />
+              {showDynamicCap && <DynamicCapChipWithTooltip cap={dynamicCap} />}
+            </Box>
             <ReserveSubheader value={String(reserve.borrowInfo?.total.usd)} />
           </>
         ) : (
@@ -161,6 +173,12 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
         {showBorrowingDisabledNote(reserve) && <ReserveSubheader value={'Disabled'} />}
         {borrowableOnlyInEModeLabels.length > 0 && <BorrowableOnlyInEModeTooltip />}
       </ListColumn>
+
+      {showDynamicCapColumn && (
+        <ListColumn align="center" maxWidth={DYNAMIC_CAP_COLUMN_WIDTH}>
+          <DynamicCapCheck cap={dynamicCap} />
+        </ListColumn>
+      )}
 
       <ListColumn align="right" minWidth={95} maxWidth={95}>
         <Button

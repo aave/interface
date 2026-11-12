@@ -16,6 +16,8 @@ import { GHO_MINTING_MARKETS, GHO_SYMBOL } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
 import { isAssetHidden } from '../dashboard/lists/constants';
+import { DynamicCapsMarketBanner } from '../dynamic-caps/DynamicCapNotices';
+import { useMarketHasDynamicCaps, useMarketsNotice } from '../dynamic-caps/useDynamicCap';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
 import { MarketAssetsAccordion } from './MarketAssetsAccordion';
 import { AssetCategory, matchesSelectedCategories } from './utils/assetCategories';
@@ -60,6 +62,10 @@ export const MarketAssetsListContainer = () => {
   const sm = useMediaQuery(breakpoints.down('sm'));
 
   const displayGhoBanner = shouldDisplayGhoBanner(currentMarket, searchTerm);
+
+  const [marketsNotice] = useMarketsNotice();
+  const marketHasDynamicCaps = useMarketHasDynamicCaps();
+  const displayDynamicCapsBanner = marketHasDynamicCaps && marketsNotice === 'on';
 
   const [showLowLiquidityToggle, setShowLowLiquidityToggle] = useState(false);
 
@@ -192,6 +198,13 @@ export const MarketAssetsListContainer = () => {
 
       {(loading || mainReserves.length > 0 || filteredData.length === 0) && (
         <Paper variant="table">
+          {displayDynamicCapsBanner && !loading && mainReserves.length > 0 && (
+            // Same placement as the notice in the Restricted assets card below: Aave puts a list's
+            // notice inside its card, above the column headers.
+            <Box sx={{ pt: 4, px: { xs: 4, xsm: 6 } }}>
+              <DynamicCapsMarketBanner sx={{ mb: 6, width: '100%' }} />
+            </Box>
+          )}
           <MarketAssetsList reserves={mainReserves} loading={loading} />
 
           {/* Show no search results message if nothing hits in any list */}

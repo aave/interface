@@ -19,6 +19,9 @@ import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { MarketDataType, NetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { mapAaveProtocolIncentives } from '../../components/incentives/incentives.helper';
+import { DynamicCapBar } from '../dynamic-caps/DynamicCapBar';
+import { formatCapAmount } from '../dynamic-caps/DynamicCapChip';
+import { useBarHover, useDynamicCap, useReserveVariant } from '../dynamic-caps/useDynamicCap';
 import { BorrowApyGraph } from './graphs/ApyGraphContainer';
 import { ReserveFactorOverview } from './ReserveFactorOverview';
 import { PanelItem, PanelItemRow } from './ReservePanels';
@@ -40,19 +43,50 @@ export const BorrowInfo = ({
   showBorrowCapStatus,
   borrowCap,
 }: BorrowInfoProps) => {
-  const maxAvailableToBorrow = BigNumber.max(
-    valueToBigNumber(reserve.borrowInfo!.borrowCap.amount.value).minus(
-      valueToBigNumber(reserve.borrowInfo!.total.amount.value)
-    ),
-    0
-  ).toNumber();
+  const dynamicCap = useDynamicCap(reserve.underlyingToken.address);
+  const [variant] = useReserveVariant();
+  const [barHover] = useBarHover();
+  // Option 3 and the combined option: usage is read against the ceiling, so the ring stops
+  // sitting near 100%.
+  const measuredAgainstMaxCap = !!dynamicCap && (variant === 'vs-max' || variant === 'combined');
+  // The combined option keeps Aave's wording and gives the max cap a column of its own.
+  const isCombined = !!dynamicCap && variant === 'combined';
 
-  const maxAvailableToBorrowUSD = BigNumber.max(
-    valueToBigNumber(reserve.borrowInfo!.borrowCap.usd).minus(
-      valueToBigNumber(reserve.borrowInfo!.total.usd)
-    ),
-    0
-  ).toNumber();
+  const reportedCap = Number(reserve.borrowInfo!.borrowCap.amount.value);
+  const usdPerToken = reportedCap > 0 ? Number(reserve.borrowInfo!.borrowCap.usd) / reportedCap : 0;
+
+  // The cap the pool enforces now. On a dynamic cap that is the current cap, not the ceiling.
+  const enforcedCap = dynamicCap ? dynamicCap.currentCap : reportedCap;
+  const enforcedCapUSD = dynamicCap
+    ? dynamicCap.currentCap * usdPerToken
+    : reserve.borrowInfo!.borrowCap.usd;
+
+  // What "Total borrowed" is set against, and what the ring fills towards.
+  const comparedCap = measuredAgainstMaxCap ? dynamicCap.maxCap : enforcedCap;
+  const comparedCapUSD = measuredAgainstMaxCap ? dynamicCap.maxCap * usdPerToken : enforcedCapUSD;
+  const capUsage = dynamicCap
+    ? measuredAgainstMaxCap
+      ? dynamicCap.usageOfMaxCap
+      : dynamicCap.usageOfCurrentCap
+    : borrowCap.percentUsed;
+
+  const maxAvailableToBorrow = dynamicCap
+    ? dynamicCap.availableNow
+    : BigNumber.max(
+        valueToBigNumber(reserve.borrowInfo!.borrowCap.amount.value).minus(
+          valueToBigNumber(reserve.borrowInfo!.total.amount.value)
+        ),
+        0
+      ).toNumber();
+
+  const maxAvailableToBorrowUSD = dynamicCap
+    ? dynamicCap.availableNow * usdPerToken
+    : BigNumber.max(
+        valueToBigNumber(reserve.borrowInfo!.borrowCap.usd).minus(
+          valueToBigNumber(reserve.borrowInfo!.total.usd)
+        ),
+        0
+      ).toNumber();
 
   const isGho = displayGhoForMintableMarket({
     symbol: reserve.underlyingToken.symbol,
@@ -64,12 +98,12 @@ export const BorrowInfo = ({
 
   return (
     <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
-      <PanelItemRow>
+      <PanelItemRow data-dyncap="borrow-stats">
         {showBorrowCapStatus ? (
           // With a borrow cap
           <>
             <CapsCircularStatus
-              value={borrowCap.percentUsed}
+              value={capUsage}
               color={figVars['data-orange']}
               tooltipContent={
                 <>
@@ -90,7 +124,11 @@ export const BorrowInfo = ({
             <PanelItem
               title={
                 <Box display="flex" alignItems="center">
-                  <Trans>Total borrowed</Trans>
+                  {measuredAgainstMaxCap && !isCombined ? (
+                    <Trans>Borrowed of max cap</Trans>
+                  ) : (
+                    <Trans>Total borrowed</Trans>
+                  )}
                   <TextWithTooltip
                     event={{
                       eventName: GENERAL.TOOL_TIP,
@@ -127,7 +165,7 @@ export const BorrowInfo = ({
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <FormattedNumber value={reserve.borrowInfo!.borrowCap.amount.value} variant="h4" />
+                <FormattedNumber value={comparedCap} variant="h4" />
               </Box>
               <Box>
                 <ReserveSubheader value={reserve.borrowInfo!.total.usd} />
@@ -139,7 +177,7 @@ export const BorrowInfo = ({
                 >
                   <Trans>of</Trans>
                 </Typography>
-                <ReserveSubheader value={reserve.borrowInfo!.borrowCap.usd} />
+                <ReserveSubheader value={String(comparedCapUSD)} />
               </Box>
             </PanelItem>
           </>
@@ -190,12 +228,43 @@ export const BorrowInfo = ({
         </PanelItem>
 
         {reserve.borrowInfo?.borrowCap.usd && reserve.borrowInfo?.borrowCap.usd !== '0' && (
-          <PanelItem title={<Trans>Borrow cap</Trans>}>
-            <FormattedNumber value={reserve.borrowInfo!.borrowCap.amount.value} variant="h4" />
-            <ReserveSubheader value={reserve.borrowInfo!.borrowCap.usd} />
+          <PanelItem
+            title={measuredAgainstMaxCap ? <Trans>Current cap</Trans> : <Trans>Borrow cap</Trans>}
+          >
+            <FormattedNumber value={enforcedCap} variant="h4" />
+            <ReserveSubheader value={String(enforcedCapUSD)} />
+            {dynamicCap && variant === 'max-cap' && (
+              <Typography variant="description" color="fg-2" data-dyncap="max-cap" sx={{ mt: 1.5 }}>
+                <Trans>Max</Trans>{' '}
+                <Typography component="span" variant="subheader1" color="fg-1">
+                  {formatCapAmount(dynamicCap.maxCap)}
+                </Typography>
+              </Typography>
+            )}
+            {measuredAgainstMaxCap && (
+              <Typography
+                variant="description"
+                color="fg-2"
+                data-dyncap="available-now"
+                sx={{ mt: 1.5 }}
+              >
+                <Typography component="span" variant="subheader1" color="fg-1">
+                  {formatCapAmount(dynamicCap.availableNow)}
+                </Typography>{' '}
+                <Trans>available now</Trans>
+              </Typography>
+            )}
+          </PanelItem>
+        )}
+
+        {isCombined && (
+          <PanelItem title={<Trans>Max cap</Trans>}>
+            <FormattedNumber value={dynamicCap.maxCap} variant="h4" />
+            <ReserveSubheader value={String(dynamicCap.maxCap * usdPerToken)} />
           </PanelItem>
         )}
       </PanelItemRow>
+      {measuredAgainstMaxCap && <DynamicCapBar cap={dynamicCap} interactive={barHover === 'on'} />}
       {renderCharts && (
         <BorrowApyGraph
           chain={currentMarketData.chainId}

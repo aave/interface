@@ -9,6 +9,7 @@ import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
 import { ListHeaderWrapper } from 'src/components/lists/ListHeaderWrapper';
 
 import { ReserveWithId } from '../../hooks/app-data-provider/useAppDataProvider';
+import { useMarketHasDynamicCaps, useMarketsColumn } from '../dynamic-caps/useDynamicCap';
 import { MarketAssetsListItem } from './MarketAssetsListItem';
 import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
 import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
@@ -43,6 +44,8 @@ const listHeaders = [
   },
 ];
 
+export const DYNAMIC_CAP_COLUMN_WIDTH = 110;
+
 type MarketAssetsListProps = {
   reserves: ReserveWithId[];
   loading: boolean;
@@ -57,6 +60,8 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
   const isTableChangedToCards = useMediaQuery(theme.breakpoints.down(TABLE_CARDS_BELOW));
   const [sortName, setSortName] = useState('');
   const [sortDesc, setSortDesc] = useState(false);
+  const [marketsColumn] = useMarketsColumn();
+  const showDynamicCapColumn = useMarketHasDynamicCaps() && marketsColumn === 'on';
   const sortedReserves = [...reserves].sort((a, b) => {
     if (!sortName) return 0;
 
@@ -148,15 +153,30 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
               </ListHeaderTitle>
             </ListColumn>
           ))}
+          {showDynamicCapColumn && (
+            <ListColumn align="center" maxWidth={DYNAMIC_CAP_COLUMN_WIDTH}>
+              <ListHeaderTitle>
+                <Trans>Dynamic cap</Trans>
+              </ListHeaderTitle>
+            </ListColumn>
+          )}
           <ListColumn maxWidth={95} minWidth={95} />
         </ListHeaderWrapper>
       )}
 
       {reservesWithIncentives.map((reserve) =>
         isTableChangedToCards ? (
-          <MarketAssetsListMobileItem {...reserve} key={reserve.id} />
+          <MarketAssetsListMobileItem
+            {...reserve}
+            showDynamicCapColumn={showDynamicCapColumn}
+            key={reserve.id}
+          />
         ) : (
-          <MarketAssetsListItem {...reserve} key={reserve.id} />
+          <MarketAssetsListItem
+            {...reserve}
+            showDynamicCapColumn={showDynamicCapColumn}
+            key={reserve.id}
+          />
         )
       )}
     </>
