@@ -23,6 +23,7 @@ export type CowAdapterEntry = {
   destAmount: string; // raw units
   // Adapter-specific fields for cancellation
   adapterInstanceAddress?: string; // Instance address for adapter-based swaps
+  adapterFactoryAddress?: string; // Factory that created the instance, and the one that can cancel it
   usedAdapter?: boolean; // Whether adapter was used (true for DebtSwap, RepayWithCollateral, and CollateralSwap with flashloan)
 };
 
