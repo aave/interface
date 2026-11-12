@@ -26,7 +26,7 @@ patchedDependencies:
     hash: c5fd86a1767827fe8e4654db1fd2c58ef150d5354d718de12ceea11fc758b219
     path: patches/@funkit__connect@9.28.1.patch
   connectkit@1.9.2:
-    hash: 47cc33987e407328950ecfc097c1e1e235d66dd94829bb4f1f94d0f78c9b98ac
+    hash: 4b4a123e04c70dac4555221e71ac856bec8dbfb7ab5d60d7c134e534d021f286
     path: patches/connectkit@1.9.2.patch
 
 importers:
@@ -152,7 +152,7 @@ importers:
         version: 1.2.0
       connectkit:
         specifier: 1.9.2
-        version: 1.9.2(patch_hash=47cc33987e407328950ecfc097c1e1e235d66dd94829bb4f1f94d0f78c9b98ac)(@babel/core@7.29.7)(@tanstack/react-query@5.101.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@19.2.7)(react@18.3.1)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(wagmi@2.19.5(@tanstack/query-core@5.101.2)(@tanstack/react-query@5.101.2(react@18.3.1))(@types/react@18.3.31)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(zod@3.25.76))
+        version: 1.9.2(patch_hash=4b4a123e04c70dac4555221e71ac856bec8dbfb7ab5d60d7c134e534d021f286)(@babel/core@7.29.7)(@tanstack/react-query@5.101.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@19.2.7)(react@18.3.1)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(wagmi@2.19.5(@tanstack/query-core@5.101.2)(@tanstack/react-query@5.101.2(react@18.3.1))(@types/react@18.3.31)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(zod@3.25.76))
       d3-array:
         specifier: ^3.2.0
         version: 3.2.4
@@ -17586,7 +17586,7 @@ snapshots:
 
   confbox@0.2.4: {}
 
-  connectkit@1.9.2(patch_hash=47cc33987e407328950ecfc097c1e1e235d66dd94829bb4f1f94d0f78c9b98ac)(@babel/core@7.29.7)(@tanstack/react-query@5.101.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@19.2.7)(react@18.3.1)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(wagmi@2.19.5(@tanstack/query-core@5.101.2)(@tanstack/react-query@5.101.2(react@18.3.1))(@types/react@18.3.31)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(zod@3.25.76)):
+  connectkit@1.9.2(patch_hash=4b4a123e04c70dac4555221e71ac856bec8dbfb7ab5d60d7c134e534d021f286)(@babel/core@7.29.7)(@tanstack/react-query@5.101.2(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react-is@19.2.7)(react@18.3.1)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(wagmi@2.19.5(@tanstack/query-core@5.101.2)(@tanstack/react-query@5.101.2(react@18.3.1))(@types/react@18.3.31)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(zod@3.25.76)):
     dependencies:
       '@aave/account': 0.2.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(wagmi@2.19.5(@tanstack/query-core@5.101.2)(@tanstack/react-query@5.101.2(react@18.3.1))(@types/react@18.3.31)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(zod@3.25.76))
       '@tanstack/react-query': 5.101.2(react@18.3.1)
