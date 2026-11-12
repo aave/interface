@@ -188,19 +188,17 @@ To add a new token to the app, the process is pretty simple. All you’ll need t
 
 ## Translations
 
-Aave uses [Crowdin](https://crowdin.com/) for translation management and internationalization. We only update strings within the app. Everything else is downloaded from Crowdin. For more information, such as installing their CLI tool, read their [documentation](https://developer.crowdin.com/api/v2/).
+Aave uses [Lingui](https://lingui.dev/) for internationalization. Translation catalogs live in `src/locales/<locale>/messages.po` and are maintained directly in this repository — `src/locales/en/messages.po` is the source catalog, generated from the `Trans` macros and `t` calls in the code.
 
-To upload strings:
-
-```bash
-crowdin upload sources
-```
-
-To download strings:
+After adding or changing strings in the app, regenerate the catalogs:
 
 ```bash
-crowdin download
+pnpm i18n
 ```
+
+This runs `i18n:extract` (updates `messages.po` for every configured locale with the strings found in the source) followed by `i18n:compile` (builds the `messages.js` files the app loads at runtime). Commit the resulting `.po` changes along with your code.
+
+Translations for non-English locales are filled in by hand in the corresponding `messages.po` file. Any string left with an empty `msgstr` falls back to English.
 
 If you would like to add support for a new language across the app, please [open up an issue](https://github.com/aave/interface/issues/new/choose) and add the `i18n` label to it. This helps us categorize, and it will also help to gauge public interest for the new language. If the community decides to go forward with your preferred language, you may open up a pull request. Please follow the template of [this PR](https://github.com/aave/interface/pull/447#issue-1165545965).
 
