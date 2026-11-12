@@ -1,4 +1,5 @@
 import { useQueries } from '@tanstack/react-query';
+import { withSimulatedPosition } from 'src/modules/dynamic-caps/simulatedWallet';
 import { UserReservesDataHumanized } from 'src/services/UIPoolService';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -16,7 +17,13 @@ export const useUserPoolsReservesHumanized = <T = UserReservesDataHumanized>(
   return useQueries({
     queries: marketsData.map((marketData) => ({
       queryKey: queryKeysFactory.userPoolReservesDataHumanized(user, marketData),
-      queryFn: () => uiPoolService.getUserReservesHumanized(marketData, user),
+      // PREVIEW ONLY: a simulated wallet gets its simulated position; any other user is untouched.
+      queryFn: async () =>
+        withSimulatedPosition(
+          await uiPoolService.getUserReservesHumanized(marketData, user),
+          marketData.market,
+          user
+        ),
       enabled: !!user,
       refetchInterval: POLLING_INTERVAL,
       ...opts,
