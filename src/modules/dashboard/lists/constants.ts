@@ -3,7 +3,6 @@ import { CustomMarket } from 'src/ui-config/marketsConfig';
 export const HIDDEN_ASSETS: Partial<Record<CustomMarket, string[]>> = {
   [CustomMarket.proto_horizon_v3]: [
     '0x17418038ecf73ba4026c4f428547bf099706f27b'.toLowerCase(), // aCRED
-    '0x4e72025984424e52838cf8953e2863eff036b67a'.toLowerCase(), // MWIN
   ],
 };
 

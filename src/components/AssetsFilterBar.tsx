@@ -1,5 +1,6 @@
 import { Trans } from '@lingui/macro';
 import { Box, Button, Switch, Typography } from '@mui/material';
+import { ReactNode } from 'react';
 import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselect';
 import { SearchInput } from 'src/components/SearchInput';
 import { AssetCategory } from 'src/modules/markets/utils/assetCategories';
@@ -12,6 +13,8 @@ interface AssetsFilterBarProps {
   categoriesDisabled?: boolean;
   /** Optional "In Wallet" toggle — omit when there is no connected wallet to filter by. */
   inWallet?: { value: boolean; onChange: (value: boolean) => void };
+  /** Optional trailing control, e.g. a `DisplaySettingsMenu`. */
+  displaySettings?: ReactNode;
 }
 
 export const AssetsFilterBar = ({
@@ -21,6 +24,7 @@ export const AssetsFilterBar = ({
   onCategoriesChange,
   categoriesDisabled = false,
   inWallet,
+  displaySettings,
 }: AssetsFilterBarProps) => {
   return (
     <Box
@@ -70,12 +74,16 @@ export const AssetsFilterBar = ({
           </Button>
         )}
 
-        <AssetCategoryMultiSelect
-          variant="outlined"
-          selectedCategories={selectedCategories}
-          onCategoriesChange={onCategoriesChange}
-          disabled={categoriesDisabled}
-        />
+        {/* Grouped so the space-between on phones keeps the settings button beside categories. */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <AssetCategoryMultiSelect
+            variant="outlined"
+            selectedCategories={selectedCategories}
+            onCategoriesChange={onCategoriesChange}
+            disabled={categoriesDisabled}
+          />
+          {displaySettings}
+        </Box>
       </Box>
     </Box>
   );
