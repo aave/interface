@@ -1,0 +1,30 @@
+src/ui-config/merklConfig.ts
+  s_c38979c6a6ed87::t_6c432004500f79 3-4,667-668
+  s_c38979c6a6ed87::t_4d0e2f9a0607ce 669
+src/hooks/useMerklIncentives.ts
+  s_c38979c6a6ed87::t_6c432004500f79 92-93
+src/components/incentives/MerklIncentivesTooltipContent.tsx
+  s_c38979c6a6ed87::t_6c432004500f79 24-30,149-157
+  s_c38979c6a6ed87::t_c5ebaadcb7c852 158-160
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d927429132f7f8ceb2d05a2318570aee580b5279",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_c38979c6a6ed87": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a13a70-2562-7bd2-9a09-f86973aa3d78",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

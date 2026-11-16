@@ -1,0 +1,29 @@
+src/locales/el/messages.js
+  s_318107b102af38::t_835ca948ae885b 1
+src/locales/en/messages.js
+  s_318107b102af38::t_69f23a52251774 1
+src/locales/en/messages.po
+  s_318107b102af38::t_d659e4b2c674c3 1247-1250,1305-1308
+src/locales/es/messages.js
+  s_318107b102af38::t_20f8aa495c0ad0 1
+src/locales/fr/messages.js
+  s_318107b102af38::t_97442cc758b70e 1
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_318107b102af38::t_72ace47bc39e83 263,265
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ae5a9260e8b5762d4904714575b8f5b663d46659",
+  "prompts": {},
+  "sessions": {
+    "s_318107b102af38": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "123129e0-1c82-4eab-8eee-5c16597d3c47",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

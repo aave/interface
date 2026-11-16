@@ -1,0 +1,19 @@
+.github/actions/cypress/action.yml
+  s_3a87086e3eed81::t_b5a37a6ac147fa 61
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5bd3432f675b01f5fe378521a753dbc48cf116de",
+  "prompts": {},
+  "sessions": {
+    "s_3a87086e3eed81": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "04fa0a82-fec3-4adc-ba4a-139ff167cc78",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

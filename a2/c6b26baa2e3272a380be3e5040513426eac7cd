@@ -1,0 +1,21 @@
+src/components/transactions/FlowCommons/Success.tsx
+  s_69b86bb6c6887e::t_b177529d23c337 21,34,65-70
+src/components/transactions/GovVote/GovVoteModalContent.tsx
+  s_69b86bb6c6887e::t_b177529d23c337 64-73
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a2c6b26baa2e3272a380be3e5040513426eac7cd",
+  "prompts": {},
+  "sessions": {
+    "s_69b86bb6c6887e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "77dc8bda-ce15-4e3e-a9e0-68944c1fe7a4",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

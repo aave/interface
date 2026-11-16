@@ -1,0 +1,59 @@
+src/components/transactions/FunCheckout/funSupplyBridge.ts
+  s_ffc415aab524c0::t_8d0f4b8014df22 4,7,25-26
+src/locales/fr/messages.js
+  s_ffc415aab524c0::t_6d660f0bd8995a 1
+src/components/transactions/FunCheckout/funSupplyAssets.ts
+  s_ffc415aab524c0::t_c1dbb221e13ad9 115-139,141-142
+  s_ffc415aab524c0::t_8d0f4b8014df22 16-19,28,34-35,42,45,80
+  s_ffc415aab524c0::t_d442cbc49dee1c 96
+src/locales/en/messages.js
+  s_ffc415aab524c0::t_6d660f0bd8995a 1
+src/locales/en/messages.po
+  s_ffc415aab524c0::t_6d660f0bd8995a 2758-2759,2762,3518-3520
+  s_ffc415aab524c0::t_dc2c663fee10d3 3521
+src/modules/reserve-overview/ReserveActions.tsx
+  s_ffc415aab524c0::t_72dd83c549416c 314,322-324
+  s_ffc415aab524c0::t_caa1b56309cffe 57,123-125,158,281-282,321
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+  s_ffc415aab524c0::t_e1cd47189fe678 124
+  s_ffc415aab524c0::t_ea63205adb2666 333
+  s_ffc415aab524c0::t_72dd83c549416c 248,250-255,443,445,448-451
+src/components/transactions/FunCheckout/useFunSupplyATokenIcon.tsx
+  s_ffc415aab524c0::t_8d0f4b8014df22 9,12-13,22
+src/components/transactions/FunCheckout/FunDepositOptionsLink.tsx
+  s_ffc415aab524c0::t_33d84960a197dc 62
+  s_ffc415aab524c0::t_5219f5346fcf47 1-20,23-36,38-61,63-70,72-77,79-97
+  s_ffc415aab524c0::t_97a6ba64db7deb 21-22,37,71,78
+src/components/transactions/FunCheckout/useOpenFunSupply.tsx
+  s_ffc415aab524c0::t_2053265f0165e0 1-60
+src/locales/es/messages.js
+  s_ffc415aab524c0::t_6d660f0bd8995a 1
+src/components/transactions/FunCheckout/FunkitCheckout.tsx
+  s_ffc415aab524c0::t_8d0f4b8014df22 36
+src/locales/el/messages.js
+  s_ffc415aab524c0::t_6d660f0bd8995a 1
+patches/@funkit__connect@9.28.1.patch
+  s_ffc415aab524c0::t_650d66aab0e19f 2,14-25
+src/components/transactions/Supply/SupplyModalContent.tsx
+  s_ffc415aab524c0::t_73bb3c5d8c679e 11
+  s_ffc415aab524c0::t_97a6ba64db7deb 362-371
+  s_ffc415aab524c0::t_b425963e752bee 372-373
+pnpm-lock.yaml
+  s_ffc415aab524c0::t_d9154f167ce46f 26,80,12259
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9a5a599150c45477572e7bd9bdfbc5cfcbdd3f0d",
+  "prompts": {},
+  "sessions": {
+    "s_ffc415aab524c0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d5d54de6-ec59-4e9f-b47e-18ce8767833f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

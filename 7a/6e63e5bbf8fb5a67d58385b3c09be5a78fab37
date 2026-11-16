@@ -1,0 +1,23 @@
+.github/actions/build/action.yml
+  s_a036e798aa0758::t_61a38988c78ea8 61
+.github/actions/cypress/action.yml
+  s_a036e798aa0758::t_f1342d2648c100 29
+package.json
+  s_a036e798aa0758::t_009eb5e10de68f 34,36,38,41,57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7a6e63e5bbf8fb5a67d58385b3c09be5a78fab37",
+  "prompts": {},
+  "sessions": {
+    "s_a036e798aa0758": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a15c20-76b6-7d23-9e81-50d78cb4d983",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Sam Skynner <skynnes@gmail.com>"
+    }
+  }
+}

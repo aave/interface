@@ -1,0 +1,19 @@
+src/components/MarketSwitcher.tsx
+  s_7d47a4968ad092::t_8c1498c32bad39 250-252,274,281
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "07f3e6598e6fdaa94acc4b8a6163b125b1cacc9d",
+  "prompts": {},
+  "sessions": {
+    "s_7d47a4968ad092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8a34a738-6fe0-4129-b40c-91c088e786c4",
+        "model": "unknown"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

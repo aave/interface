@@ -1,0 +1,38 @@
+src/locales/fr/messages.js
+  s_5493ef6a8e1bd5::t_0332d9f0dccf3a 1
+src/modules/markets/MarketAssetsListContainer.tsx
+  s_5493ef6a8e1bd5::t_02bca990412a70 20
+  s_5493ef6a8e1bd5::t_1db968484c2201 3,193-217,219,221-223
+  s_5493ef6a8e1bd5::t_f587be5c742d28 132-136,138-145,152-153
+  s_5493ef6a8e1bd5::t_0332d9f0dccf3a 146-148,218,220
+  s_5493ef6a8e1bd5::t_4b17072de2219b 129
+src/locales/en/messages.po
+  s_5493ef6a8e1bd5::t_1db968484c2201 2161-2164
+  s_5493ef6a8e1bd5::t_b51b2a66b11c8e 3511-3513
+  s_5493ef6a8e1bd5::t_40df520204cb2c 3514
+src/locales/el/messages.js
+  s_5493ef6a8e1bd5::t_0332d9f0dccf3a 1
+src/locales/es/messages.js
+  s_5493ef6a8e1bd5::t_0332d9f0dccf3a 1
+src/locales/en/messages.js
+  s_5493ef6a8e1bd5::t_0332d9f0dccf3a 1
+src/modules/markets/MarketAssetsAccordion.tsx
+  s_5493ef6a8e1bd5::t_6ef7b8cbde55d9 2-10,13-17,19-23,27-28,30,33-34,39-40,44,46-47
+  s_5493ef6a8e1bd5::t_4722deb1ee7540 1,11-12,18,24-26,29,31-32,35-38,41-43,45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b34617e090c39762e2b2f196972de6b846f9d5d9",
+  "prompts": {},
+  "sessions": {
+    "s_5493ef6a8e1bd5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1b9b314f-2474-4b8f-89ad-f64233f691a1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

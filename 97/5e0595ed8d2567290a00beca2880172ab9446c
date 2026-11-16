@@ -1,0 +1,27 @@
+src/components/transactions/Swap/helpers/cow/adapters.helpers.ts
+  s_62ca5204a4a57a::t_1bc9a1d2631cf1 8,14-15,22-26,151-184
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+  s_62ca5204a4a57a::t_65f862eeb657d2 29,295-300
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+  s_62ca5204a4a57a::t_feb7b27a7b0946 24-28,251-256
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_62ca5204a4a57a::t_16d8e3e5c55b7c 11-19,25-33,39-47,54-69,71-79
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+  s_62ca5204a4a57a::t_0f41ba02ea0839 28,273-278
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "975e0595ed8d2567290a00beca2880172ab9446c",
+  "prompts": {},
+  "sessions": {
+    "s_62ca5204a4a57a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cba225dd-df41-4a5d-bed3-3b92d7d1f14a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+src/ui-config/merklConfig.ts
+  s_a69e73d27404b3::t_4210fe2d0e367b 52
+src/components/incentives/IncentivesTooltipContent.tsx
+  s_a69e73d27404b3::t_db0b04d19da52e 276-280
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c53043f42705c7cd09cea1b8dfec23774366bae1",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_a69e73d27404b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "af4643f6-68b3-49cc-ab12-4a4474afbfb3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

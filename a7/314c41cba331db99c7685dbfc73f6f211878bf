@@ -1,0 +1,21 @@
+jest.config.js
+  s_20f4380c0c080f::t_18e3958d4056cc 12-13,27-30,32-41
+jest.polyfills.js
+  s_20f4380c0c080f::t_18e3958d4056cc 1-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a7314c41cba331db99c7685dbfc73f6f211878bf",
+  "prompts": {},
+  "sessions": {
+    "s_20f4380c0c080f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f183b60e-fde3-45f5-9355-0e725c206d51",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

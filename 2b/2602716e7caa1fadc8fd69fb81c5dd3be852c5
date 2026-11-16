@@ -1,0 +1,27 @@
+src/components/transactions/Swap/actions/Leverage/LeverageActionsViaCoW.tsx
+  s_ab10332123d478::t_e55374f5b643ea 255
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_ab10332123d478::t_0c754f8b57cd2e 65
+src/components/transactions/Swap/details/LeverageDetails.tsx
+  s_ab10332123d478::t_431ec32918ed8e 83,123,129,142
+src/components/transactions/Swap/errors/shared/BuyTokenCollateralBlockingError.tsx
+  s_ab10332123d478::t_258e82c1504c8b 2,6-11
+src/components/transactions/Swap/inputs/shared/LeverageMultiplierSelector.tsx
+  s_ab10332123d478::t_d4c06ee5d959cf 78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "2b2602716e7caa1fadc8fd69fb81c5dd3be852c5",
+  "prompts": {},
+  "sessions": {
+    "s_ab10332123d478": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c596ad02-962e-4ef0-b54d-7acc7669cb29",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

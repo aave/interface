@@ -1,0 +1,19 @@
+scripts/fixtures/blocked-roots.pem
+  s_a036e798aa0758::t_3931d19004317b 1-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e66a8d795304d735df91603807e7cad0fdafb43d",
+  "prompts": {},
+  "sessions": {
+    "s_a036e798aa0758": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a15c20-76b6-7d23-9e81-50d78cb4d983",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Sam Skynner <skynnes@gmail.com>"
+    }
+  }
+}

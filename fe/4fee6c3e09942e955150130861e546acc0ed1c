@@ -1,0 +1,39 @@
+.github/actions/build/action.yml
+  s_129d46f1003ace::t_742b2970774cc1 61
+.github/actions/cypress/action.yml
+  s_129d46f1003ace::t_c8ab916944abb7 29
+instrumentation.ts
+  s_a036e798aa0758::t_76525282433494 1-5
+package.json
+  s_129d46f1003ace::t_90e1b18f04ad87 34,36,38,41,57-58
+scripts/tls-policy.cjs
+  s_a036e798aa0758::t_bfb5738bcb0398 1-27
+scripts/tls-policy.test.cjs
+  s_a036e798aa0758::t_e503bd8db6b9a8 1-69
+sentry.server.config.ts
+  s_a036e798aa0758::t_461986494d570e 1-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fe4fee6c3e09942e955150130861e546acc0ed1c",
+  "prompts": {},
+  "sessions": {
+    "s_129d46f1003ace": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a15c20-5ce7-79f0-bf37-52f8085609a7",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Sam Skynner <skynnes@gmail.com>"
+    },
+    "s_a036e798aa0758": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a15c20-76b6-7d23-9e81-50d78cb4d983",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "Sam Skynner <skynnes@gmail.com>"
+    }
+  }
+}

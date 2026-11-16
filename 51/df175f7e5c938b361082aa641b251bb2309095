@@ -1,0 +1,35 @@
+src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
+  s_3be6d84dc7a89c::t_e2907eabefc2bf 241
+package.json
+  s_3be6d84dc7a89c::t_6e773eacaf86ed 66-68
+src/components/transactions/Swap/helpers/cow/orders.helpers.ts
+  s_3be6d84dc7a89c::t_4debe4a64a01a0 15,58
+src/components/transactions/Swap/types/quote.types.ts
+  s_3be6d84dc7a89c::t_4debe4a64a01a0 1,85
+src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+  s_3be6d84dc7a89c::t_e5d813eb01e72c 268
+src/components/transactions/Swap/helpers/cow/rates.helpers.ts
+  s_3be6d84dc7a89c::t_21e10a4d8c07eb 199,204,237,242
+src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+  s_3be6d84dc7a89c::t_e5d813eb01e72c 266
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_3be6d84dc7a89c::t_dcb185caf0c734 22,36,50,66
+pnpm-lock.yaml
+  s_3be6d84dc7a89c::t_75ea9c8445fc0d 55-56,58-59,61-62,1266-1267,1278-1279,1284-1285,1287-1288,1290-1291,1293-1294,1300-1301,1303-1304,1306-1307,1309-1310,11497,11551,11553-11559,11567,11569,11574,11576,11578,11583,11585-11586,11588,11590,11595,11597-11602,11608,11610-11611,11618,11620-11623,11627,11629-11634,17662
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "51df175f7e5c938b361082aa641b251bb2309095",
+  "prompts": {},
+  "sessions": {
+    "s_3be6d84dc7a89c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bf502351-8c67-4812-84a0-f06a6d8afde5",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

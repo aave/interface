@@ -1,0 +1,21 @@
+src/ui-config/reservePatches.ts
+  s_134e93872d12b1::t_1a63e6ec803091 307-309
+public/icons/tokens/hinc.svg
+  s_134e93872d12b1::t_1a63e6ec803091 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "da912b8d25896706fee3e2275f393041bb860496",
+  "prompts": {},
+  "sessions": {
+    "s_134e93872d12b1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6b232d8e-2122-48a2-bf1d-b8722f98ab01",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

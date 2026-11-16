@@ -1,0 +1,15 @@
+src/hooks/useEthenaIncentives.ts
+  h_dd1a1ee57491bb 3
+  h_dd1a1ee57491bb 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2dd476b09ef63b92b1853f789fe37cdeeab99635",
+  "prompts": {},
+  "humans": {
+    "h_dd1a1ee57491bb": {
+      "author": "AGMASO <agmguindo@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+cypress/support/steps/main.steps.ts
+  s_1d38c58a067900::t_c2e02477794e85 311,313,394,396
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+  s_1d38c58a067900::t_463ea4b72fb407 2,154,158-162,166-206,208,210-218
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "c32df84e23775b5d95564568b7b09b3224f142be",
+  "prompts": {},
+  "sessions": {
+    "s_1d38c58a067900": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0d9af6bd-c897-44af-9008-d49c9e5cc8c8",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

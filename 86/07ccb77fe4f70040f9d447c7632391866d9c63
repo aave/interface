@@ -1,0 +1,38 @@
+src/components/infoTooltips/BorrowableOnlyInEModeTooltip.tsx
+  s_20f4380c0c080f::t_744022f6daede6 9-11
+  s_20f4380c0c080f::t_07b597948dd847 1-8,12-23
+.gitignore
+  s_20f4380c0c080f::t_674ab9e74b47e3 59
+src/modules/reserve-overview/ReserveConfiguration.tsx
+  s_20f4380c0c080f::t_744022f6daede6 10,19,59-60,147-151
+src/modules/markets/MarketAssetsListMobileItem.tsx
+  s_20f4380c0c080f::t_744022f6daede6 4,52-53,152-154
+  s_20f4380c0c080f::t_cd75461ccab6c0 13
+src/modules/markets/MarketAssetsListItem.tsx
+  s_20f4380c0c080f::t_744022f6daede6 5,60-61,162-164
+  s_20f4380c0c080f::t_cd75461ccab6c0 17
+src/utils/borrowableOnlyInEMode.ts
+  s_20f4380c0c080f::t_dd9d2865833175 1-12,15-22,24
+  s_20f4380c0c080f::t_65372ebb0680ad 13-14,23
+src/utils/__tests__/borrowableOnlyInEMode.spec.ts
+  s_20f4380c0c080f::t_f6832b37e9f5e2 1-90
+src/components/Warnings/BorrowableOnlyInEModeWarning.tsx
+  s_20f4380c0c080f::t_81731c591a0124 1-5,9-16
+  s_20f4380c0c080f::t_744022f6daede6 6-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8607ccb77fe4f70040f9d447c7632391866d9c63",
+  "prompts": {},
+  "sessions": {
+    "s_20f4380c0c080f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f183b60e-fde3-45f5-9355-0e725c206d51",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

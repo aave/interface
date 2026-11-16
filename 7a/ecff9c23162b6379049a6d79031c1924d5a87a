@@ -1,0 +1,21 @@
+patches/@funkit__connect@9.28.1.patch
+  s_ffc415aab524c0::t_8e9e3b9a561a2b 2
+pnpm-lock.yaml
+  s_ffc415aab524c0::t_31ed1a2f3b1907 26,80,12259
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7aecff9c23162b6379049a6d79031c1924d5a87a",
+  "prompts": {},
+  "sessions": {
+    "s_ffc415aab524c0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d5d54de6-ec59-4e9f-b47e-18ce8767833f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+src/ui-config/networksConfig.ts
+  s_7e5813eebc450c::t_f7acd03fe90348 395
+  s_7e5813eebc450c::t_20cd09eef0279f 80,94,114,206,223,239,301,316,346,380
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "64f179cd4650388a004314eb9fe4cc96171e08e7",
+  "prompts": {},
+  "sessions": {
+    "s_7e5813eebc450c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5eea922c-09dd-4850-92ae-371189736098",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
