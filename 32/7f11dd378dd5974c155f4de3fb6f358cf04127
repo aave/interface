@@ -1,0 +1,25 @@
+src/components/transactions/Bridge/BridgeDestinationInput.tsx
+  s_d3f06214dd5512::t_4f25afff1787e1 62
+  s_d3f06214dd5512::t_4f577f51420eff 76
+  s_d3f06214dd5512::t_b7c30f0e1688eb 100
+  s_d3f06214dd5512::t_895c1048ba859c 118-119
+  s_d3f06214dd5512::t_d042867354f4f1 77
+  s_d3f06214dd5512::t_652aaf4575279c 134
+  s_d3f06214dd5512::t_fb7978db3ea23c 35,42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "327f11dd378dd5974c155f4de3fb6f358cf04127",
+  "prompts": {},
+  "sessions": {
+    "s_d3f06214dd5512": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1dc6cfc4-0b59-4abc-a042-d44090264265",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
