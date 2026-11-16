@@ -50,6 +50,8 @@ export const EXTRA_WHITELIST_TOKENS: MerklWhitelistConfig = {
     '0x280a7f6264b55758eea38c1f5efbfaa99d56cf74',
     '0xeffd19f350f11c8e5f60d72effa9b1aa80c2db5b',
     '0xfe2e11bd16f614d79a64d55c79595b76446d2ada',
+    // Ink (Tydro) aInkWlUSDe
+    '0x0cbB691A9C2193DbCc4eD025761574A156CcAd58',
     // END
     '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
     '0x4d5F47FA6A74757f35C14fD3a6Ef8E3C9BC514E8',

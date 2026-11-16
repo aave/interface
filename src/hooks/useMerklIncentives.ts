@@ -144,8 +144,11 @@ export type MerklIncentivesBreakdown = {
   };
 };
 
-const MERKL_ENDPOINT =
-  'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave&items=100&status=LIVE'; // Merkl API
+// Tydro (Ink whitelabel) campaigns are listed under their own protocol id on Merkl
+const MERKL_ENDPOINTS = [
+  'https://api.merkl.xyz/v4/opportunities?mainProtocolId=aave&items=100&status=LIVE',
+  'https://api.merkl.xyz/v4/opportunities?mainProtocolId=tydro&items=100&status=LIVE',
+]; // Merkl API
 const MERKL_OPPORTUNITY_URL = 'https://app.merkl.xyz/opportunities';
 const AAVE_NET_APR_DISTRIBUTION_TYPE = 'AAVE_NET_APR';
 const convertApyToApr = (apy: number) => 12 * ((1 + apy) ** (1 / 12) - 1);
@@ -214,10 +217,12 @@ export const useMerklIncentives = ({
 
   return useQuery({
     queryFn: async () => {
-      const response = await fetch(`${MERKL_ENDPOINT}`);
-      const merklOpportunities: MerklOpportunity[] = await response.json();
+      const responses = await Promise.all(MERKL_ENDPOINTS.map((endpoint) => fetch(endpoint)));
+      const merklOpportunities: MerklOpportunity[][] = await Promise.all(
+        responses.map((response) => response.json())
+      );
 
-      return merklOpportunities;
+      return merklOpportunities.flat();
     },
     queryKey: ['merklIncentives', market],
     staleTime: 1000 * 60 * 5,
