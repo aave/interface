@@ -133,6 +133,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
           {listHeaders.map((col) => (
             <ListColumn
               isRow={col.sortKey === 'underlyingToken.symbol'}
+              minWidth={col.sortKey === 'underlyingToken.symbol' ? 240 : undefined}
               maxWidth={col.sortKey === 'underlyingToken.symbol' ? 280 : undefined}
               key={col.sortKey}
             >
