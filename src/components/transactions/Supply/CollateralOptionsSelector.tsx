@@ -21,7 +21,7 @@ import {
   ComputedReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { figVars } from 'src/utils/figmaColors';
+import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
 
 export interface CollateralOption {
   emodeId: number; // 0 = default (no e-mode), >0 = specific e-mode category
@@ -429,17 +429,16 @@ export const CollateralOptionsSelector = React.memo(
         {selectedEmodeId !== 0 && eModes[selectedEmodeId] && (
           <Accordion
             disableGutters
-            elevation={0}
+            square
             sx={{
               mt: 2,
               '&:before': { display: 'none' },
-              bgcolor: 'transparent',
+              bgcolor: 'bg-2',
+              borderRadius: '8px',
+              boxShadow: figSurfaceShadow('shadow-stroke-1'),
             }}
           >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              sx={{ px: 0, minHeight: 'auto', '& .MuiAccordionSummary-content': { my: 1 } }}
-            >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 3, minHeight: 'auto' }}>
               <Typography variant="description" color="fg-2">
                 <Trans>Category assets</Trans>
               </Typography>
