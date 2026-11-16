@@ -29,6 +29,7 @@ import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
+import { SDK_ENVIRONMENT } from 'src/utils/sdkEnvironment';
 import { WagmiProvider } from 'wagmi';
 
 import createEmotionCache from '../src/createEmotionCache';
@@ -116,7 +117,7 @@ type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-export const client = AaveClient.create();
+export const client = AaveClient.create({ environment: SDK_ENVIRONMENT });
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
