@@ -8,7 +8,10 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
-import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
+import {
+  isBlockedByZeroLTV,
+  useZeroLTVBlockingWithdraw,
+} from 'src/hooks/useZeroLTVBlockingWithdraw';
 import { hasNonZeroEffectiveLtv } from 'src/utils/hfUtils';
 
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
@@ -86,12 +89,7 @@ export const CollateralChangeModalContent = ({
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;
-  if (
-    assetsBlockingWithdraw.length > 0 &&
-    !assetsBlockingWithdraw.some(
-      (r) => r.underlyingAsset.toLowerCase() === poolReserve.underlyingAsset.toLowerCase()
-    )
-  ) {
+  if (isBlockedByZeroLTV(assetsBlockingWithdraw, userReserve)) {
     blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
   } else if (valueToBigNumber(userReserve.underlyingBalance).eq(0)) {
     blockingError = ErrorType.DO_NOT_HAVE_SUPPLIES_IN_THIS_CURRENCY;

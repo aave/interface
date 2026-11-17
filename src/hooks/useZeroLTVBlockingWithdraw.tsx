@@ -41,3 +41,16 @@ export const useZeroLTVBlockingWithdraw = () => {
 
   return zeroLTVBlockingWithdraw;
 };
+
+// Mirrors `validateHFAndLtvzero` in aave-v3-origin: while zero-LTV collateral is
+// enabled, removing collateral is only allowed for a zero-LTV asset. Withdrawing a
+// supply that is not enabled as collateral, or enabling one, never runs the check.
+export const isBlockedByZeroLTV = (
+  blockingReserves: { underlyingAsset: string }[],
+  userReserve: { underlyingAsset: string; usageAsCollateralEnabledOnUser: boolean }
+) =>
+  userReserve.usageAsCollateralEnabledOnUser &&
+  blockingReserves.length > 0 &&
+  !blockingReserves.some(
+    (r) => r.underlyingAsset.toLowerCase() === userReserve.underlyingAsset.toLowerCase()
+  );

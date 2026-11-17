@@ -84,6 +84,7 @@ export const WithdrawModalContent = ({
   const { blockingError, errorComponent } = useWithdrawError({
     assetsBlockingWithdraw,
     poolReserve,
+    userReserve,
     healthFactorAfterWithdraw,
     withdrawAmount,
     user,

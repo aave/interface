@@ -1,5 +1,6 @@
 import { SxProps } from '@mui/material';
-import React, { Dispatch, useEffect } from 'react';
+import React, { Dispatch, useEffect, useMemo } from 'react';
+import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useZeroLTVBlockingWithdraw } from 'src/hooks/useZeroLTVBlockingWithdraw';
 
@@ -19,8 +20,13 @@ const getWithdrawnAsset = (state: SwapState) =>
 
 // Mirrors `validateHFAndLtvzero` in aave-v3-origin SupplyLogic: when the user
 // has any zero-LTV collateral enabled, every withdrawn aToken must itself have
-// zero LTV.
-export const hasZeroLTVBlocking = (state: SwapState, blockingReserves: FormattedUserReserves[]) => {
+// zero LTV. The check only runs when the withdrawn aToken is enabled as
+// collateral for the user (executeWithdraw / finalizeTransfer skip it otherwise).
+export const hasZeroLTVBlocking = (
+  state: SwapState,
+  blockingReserves: FormattedUserReserves[],
+  userReserves: { underlyingAsset: string; usageAsCollateralEnabledOnUser: boolean }[]
+) => {
   if (blockingReserves.length === 0) return false;
   // Direct DEX swaps don't touch Aave; the on-chain check never runs.
   if (state.swapType === SwapType.Swap) return false;
@@ -29,6 +35,10 @@ export const hasZeroLTVBlocking = (state: SwapState, blockingReserves: Formatted
   if (state.swapType === SwapType.DebtSwap) return false;
 
   const withdrawnAsset = getWithdrawnAsset(state);
+  const withdrawnUserReserve = userReserves.find(
+    (userReserve) => userReserve.underlyingAsset.toLowerCase() === withdrawnAsset
+  );
+  if (withdrawnUserReserve && !withdrawnUserReserve.usageAsCollateralEnabledOnUser) return false;
   // Withdrawing the LTV=0 asset itself is allowed by the protocol.
   return !blockingReserves.some(
     (userReserve) => userReserve.underlyingAsset.toLowerCase() === withdrawnAsset
@@ -47,10 +57,12 @@ export const ZeroLTVBlockingGuard = ({
   isSwapFlowSelected: boolean;
 }) => {
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
+  const { user } = useAppDataContext();
+  const userReserves = useMemo(() => user?.userReservesData ?? [], [user?.userReservesData]);
   const withdrawnAsset = getWithdrawnAsset(state);
 
   useEffect(() => {
-    const isBlocking = hasZeroLTVBlocking(state, assetsBlockingWithdraw);
+    const isBlocking = hasZeroLTVBlocking(state, assetsBlockingWithdraw, userReserves);
 
     if (isBlocking) {
       const isAlreadyBlockingError =
@@ -84,9 +96,9 @@ export const ZeroLTVBlockingGuard = ({
         });
       }
     }
-  }, [assetsBlockingWithdraw, withdrawnAsset, state.swapType]);
+  }, [assetsBlockingWithdraw, userReserves, withdrawnAsset, state.swapType]);
 
-  if (hasZeroLTVBlocking(state, assetsBlockingWithdraw)) {
+  if (hasZeroLTVBlocking(state, assetsBlockingWithdraw, userReserves)) {
     return <ZeroLTVBlockingError sx={{ mb: !isSwapFlowSelected ? 0 : 4, ...sx }} />;
   }
 

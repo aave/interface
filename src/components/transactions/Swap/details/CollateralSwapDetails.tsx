@@ -96,6 +96,7 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
     user,
     toAmountAfterSlippage: valueToBigNumber(toAmount || '0'),
     toAssetData: targetReserve,
+    toAssetUserData: userTargetReserve,
     fromAssetType: 'collateral',
     toAssetType: 'collateral',
     eModes,

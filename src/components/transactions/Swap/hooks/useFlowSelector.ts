@@ -191,6 +191,7 @@ const getHFAfterSwapParamsFromSwapType = (
         toAmountAfterSlippage: state.buyAmountFormatted.toString(),
         fromAssetData: state.sourceReserve.reserve,
         toAssetData: state.destinationReserve.reserve,
+        toAssetUserData: toAssetUserReserve,
         fromAssetUserData: fromAssetUserReserve,
         fromAssetType: 'collateral',
         toAssetType: 'collateral',

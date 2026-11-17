@@ -20,6 +20,7 @@ export interface CalculateHFAfterSwapProps {
   fromAssetType: 'collateral' | 'debt' | 'none';
   toAmountAfterSlippage: BigNumberValue;
   toAssetData: ComputedReserveData;
+  toAssetUserData?: ComputedUserReserve;
   user: ExtendedFormattedUser;
   toAssetType: 'collateral' | 'debt' | 'none';
   eModes: Record<number, EmodeCategory>;
@@ -95,6 +96,7 @@ export function calculateHFAfterSwap({
   fromAssetType,
   toAmountAfterSlippage,
   toAssetData,
+  toAssetUserData,
   user,
   toAssetType,
   eModes,
@@ -126,12 +128,18 @@ export function calculateHFAfterSwap({
     emodeEntry: toEmode,
     isEModeIsolated: !!eModes[user.userEmodeCategoryId]?.isolated,
   });
-  const canAddToCollateral =
-    toAssetType === 'collateral' &&
+  const isAutoEnabledOnSupply =
     hasToEffectiveLtv &&
     ((!user.isInIsolationMode && !toAssetData.isIsolated) ||
       (user.isInIsolationMode &&
         user.isolatedReserve?.underlyingAsset === toAssetData.underlyingAsset));
+  // Supply only auto-enables collateral on the first supply; an existing balance
+  // keeps the user's current collateral flag.
+  const hasExistingToSupply =
+    !!toAssetUserData && valueToBigNumber(toAssetUserData.scaledATokenBalance).gt(0);
+  const canAddToCollateral =
+    toAssetType === 'collateral' &&
+    (hasExistingToSupply ? toAssetUserData.usageAsCollateralEnabledOnUser : isAutoEnabledOnSupply);
 
   const withdrawCollateralMR = canWithdrawFromCollateral
     ? valueToBigNumber(fromAmount).multipliedBy(
