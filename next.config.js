@@ -1,6 +1,9 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 
 // eslint-disable-next-line
+const { getCspHeaders } = require('./csp.config');
+
+// eslint-disable-next-line
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -52,6 +55,14 @@ module.exports = withSentryConfig(
     ...(process.env.STATIC_EXPORT === 'true' ? { output: 'export' } : {}),
     trailingSlash: true,
     pageExtensions,
+    // Custom headers aren't applied to a static export, so the IPFS build ships without CSP.
+    ...(process.env.STATIC_EXPORT === 'true'
+      ? {}
+      : {
+          async headers() {
+            return [{ source: '/:path*', headers: getCspHeaders() }];
+          },
+        }),
     // NOTE: Needed for SAFE testing locally
     // async headers() {
     //   return [
