@@ -1,0 +1,21 @@
+src/layouts/MainLayout.tsx
+  s_9a04a7eb687a97::t_5df9809ea37175 6,12-13,16-20,22-25
+  s_9a04a7eb687a97::t_6769c0dabc18ac 15,21
+  s_9a04a7eb687a97::t_066a059524d83b 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f8513a7a1e49b9bc37cd44ccd585f24272c439aa",
+  "prompts": {},
+  "sessions": {
+    "s_9a04a7eb687a97": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aee2f82f-c827-41fe-8bf2-6eaea13dc94a",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
