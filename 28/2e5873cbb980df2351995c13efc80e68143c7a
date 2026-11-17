@@ -1,0 +1,43 @@
+src/components/transactions/Withdraw/WithdrawModalContent.tsx
+  s_71c8bd3fa14900::t_16b000904157ec 87
+src/hooks/useZeroLTVBlockingWithdraw.tsx
+  s_71c8bd3fa14900::t_16b000904157ec 44-56
+src/components/transactions/Swap/details/CollateralSwapDetails.tsx
+  s_71c8bd3fa14900::t_11cf6c7862f81b 99
+src/components/transactions/Swap/errors/shared/__tests__/ZeroLTVBlockingGuard.test.ts
+  s_71c8bd3fa14900::t_dc48e9c36287bb 27-35,52,57,62,71-87
+  s_71c8bd3fa14900::t_84991eda35f0ba 9-11
+src/components/transactions/Withdraw/WithdrawError.tsx
+  s_71c8bd3fa14900::t_16b000904157ec 5,10,21,29,40
+src/utils/__tests__/hfUtils.test.ts
+  s_71c8bd3fa14900::t_a5030a354acd9e 1-69
+src/components/transactions/Swap/hooks/useFlowSelector.ts
+  s_71c8bd3fa14900::t_11cf6c7862f81b 194
+src/utils/hfUtils.ts
+  s_71c8bd3fa14900::t_11cf6c7862f81b 23,99,131,136-142
+src/components/transactions/Swap/errors/shared/ZeroLTVBlockingGuard.tsx
+  s_71c8bd3fa14900::t_af595412ed8ee9 3,23-29,38-41,60,65,99,101
+  s_71c8bd3fa14900::t_84991eda35f0ba 2,61
+src/hooks/__tests__/useZeroLTVBlockingWithdraw.test.ts
+  s_71c8bd3fa14900::t_77713822768426 1-45
+src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+  s_71c8bd3fa14900::t_16b000904157ec 11-14,92
+src/components/transactions/Swap/errors/SwapErrors.tsx
+  s_71c8bd3fa14900::t_af595412ed8ee9 89
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "282e5873cbb980df2351995c13efc80e68143c7a",
+  "prompts": {},
+  "sessions": {
+    "s_71c8bd3fa14900": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "10b16322-99e1-4d17-b6ce-5212960dec25",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
