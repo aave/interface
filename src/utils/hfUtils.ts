@@ -345,6 +345,63 @@ export const calculateHFAfterWithdraw = ({
   return healthFactorAfterWithdraw;
 };
 
+/**
+ * Liquidation threshold the reserve gets under `emodeId`: the e-mode's boosted threshold when
+ * the asset is in that category's collateral bitmap, otherwise its base threshold.
+ */
+export const getReserveLiquidationThresholdInEmode = (
+  poolReserve: ComputedReserveData,
+  emodeId: number
+): string => {
+  const emodeEntry = poolReserve.eModes.find((e) => e.id === emodeId);
+  return emodeId !== 0 && emodeEntry?.collateralEnabled
+    ? emodeEntry.eMode.formattedLiquidationThreshold
+    : poolReserve.formattedReserveLiquidationThreshold;
+};
+
+/**
+ * Whether a supply of `poolReserve` ends up counting as collateral when the user is in
+ * `emodeId` at supply time (their current e-mode, or the one they switch to in the same
+ * multicall, since setUserEMode runs before supply).
+ *
+ * Mirrors SupplyLogic.executeSupply on-chain: the collateral flag is only decided on the
+ * first supply, where validateAutomaticUseAsCollateral auto-enables it when effective LTV > 0
+ * (base LTV outside e-mode, boosted LTV for e-mode collateral without ltvzero). On later
+ * supplies the existing flag is kept as-is: an asset already enabled as collateral keeps
+ * counting toward HF via its liquidation threshold even if its LTV is now 0, and an asset the
+ * user disabled stays disabled.
+ */
+export const supplyCountsAsCollateral = ({
+  user,
+  poolReserve,
+  emodeId,
+  eModes,
+}: {
+  user: ExtendedFormattedUser;
+  poolReserve: ComputedReserveData;
+  emodeId: number;
+  eModes: Record<number, EmodeCategory>;
+}): boolean => {
+  const userReserve = user.userReservesData.find(
+    (r) => r.underlyingAsset.toLowerCase() === poolReserve.underlyingAsset.toLowerCase()
+  );
+  const isFirstSupply = !userReserve || userReserve.scaledATokenBalance === '0';
+
+  if (isFirstSupply) {
+    return hasNonZeroEffectiveLtv({
+      baseLTVasCollateral: poolReserve.baseLTVasCollateral,
+      isInEmode: emodeId !== 0,
+      emodeEntry: poolReserve.eModes.find((e) => e.id === emodeId),
+      isEModeIsolated: !!eModes[emodeId]?.isolated,
+    });
+  }
+
+  return (
+    userReserve.usageAsCollateralEnabledOnUser &&
+    valueToBigNumber(getReserveLiquidationThresholdInEmode(poolReserve, emodeId)).gt(0)
+  );
+};
+
 export const calculateHFAfterSupply = (
   user: ExtendedFormattedUser,
   poolReserve: ComputedReserveData,
@@ -353,39 +410,13 @@ export const calculateHFAfterSupply = (
 ) => {
   let healthFactorAfterDeposit = user ? valueToBigNumber(user.healthFactor) : '-1';
 
-  const userEmode = user
-    ? poolReserve.eModes.find((e) => e.id === user.userEmodeCategoryId)
-    : undefined;
+  const reserveLiquidationThreshold = user
+    ? getReserveLiquidationThresholdInEmode(poolReserve, user.userEmodeCategoryId)
+    : poolReserve.formattedReserveLiquidationThreshold;
 
-  // Use emode-boosted LT when user is in emode and asset is in that category's collateral bitmap.
-  const reserveLiquidationThreshold =
-    user?.isInEmode && userEmode?.collateralEnabled
-      ? userEmode.eMode.formattedLiquidationThreshold
-      : poolReserve.formattedReserveLiquidationThreshold;
-
-  const userReserve = user?.userReservesData.find(
-    (r) => r.underlyingAsset.toLowerCase() === poolReserve.underlyingAsset.toLowerCase()
-  );
-  const isFirstSupply = !userReserve || userReserve.scaledATokenBalance === '0';
-
-  // Mirrors SupplyLogic.executeSupply on-chain: the collateral flag is only decided on the
-  // first supply, where validateAutomaticUseAsCollateral auto-enables it when effective
-  // LTV > 0. Base LTV covers the non-emode path; emode collateral without ltvzero covers the
-  // boosted path (ltvzero assets have 0 LTV and won't be enabled).
-  // On subsequent supplies the existing flag is kept as-is, so an asset already enabled as
-  // collateral keeps counting toward HF (via its liquidation threshold) even if its LTV is
-  // now 0, and an asset the user disabled stays disabled.
-  const countsAsCollateral = !user
-    ? false
-    : isFirstSupply
-    ? hasNonZeroEffectiveLtv({
-        baseLTVasCollateral: poolReserve.baseLTVasCollateral,
-        isInEmode: user.isInEmode,
-        emodeEntry: userEmode,
-        isEModeIsolated: !!eModes[user.userEmodeCategoryId]?.isolated,
-      })
-    : !!userReserve?.usageAsCollateralEnabledOnUser &&
-      valueToBigNumber(reserveLiquidationThreshold).gt(0);
+  const countsAsCollateral = user
+    ? supplyCountsAsCollateral({ user, poolReserve, emodeId: user.userEmodeCategoryId, eModes })
+    : false;
 
   const additionalCollateral = countsAsCollateral ? supplyAmountInEth : valueToBigNumber(0);
 

@@ -5,7 +5,12 @@ import {
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 
-import { calculateHFAfterSupply, calculateHFAfterSwap } from '../hfUtils';
+import {
+  calculateHFAfterSupply,
+  calculateHFAfterSwap,
+  getReserveLiquidationThresholdInEmode,
+  supplyCountsAsCollateral,
+} from '../hfUtils';
 
 jest.mock('src/hooks/app-data-provider/useAppDataProvider', () => ({}));
 
@@ -160,5 +165,96 @@ describe('calculateHFAfterSupply', () => {
 
     // (100 * 0.8 + 10 * 0.95) / 64
     expect(hfAfter(user, reserve)).toBeCloseTo(1.398438, 3);
+  });
+});
+
+/**
+ * The e-mode switch path in SupplyModalContent (setUserEMode + supply in one multicall) uses
+ * these helpers with the *target* e-mode, since setUserEMode runs before supply on-chain.
+ */
+describe('supplyCountsAsCollateral (target e-mode)', () => {
+  // Category 1: asset is collateral with boosted LTV. Category 2: collateral but ltvzero.
+  // Category 3: asset is only borrowable.
+  const reserve = (baseLTVasCollateral: string) =>
+    makeReserve({
+      baseLTVasCollateral,
+      eModes: [
+        {
+          id: 1,
+          collateralEnabled: true,
+          ltvzeroEnabled: false,
+          eMode: { formattedLiquidationThreshold: '0.95' },
+        },
+        {
+          id: 2,
+          collateralEnabled: true,
+          ltvzeroEnabled: true,
+          eMode: { formattedLiquidationThreshold: '0.95' },
+        },
+        {
+          id: 3,
+          collateralEnabled: false,
+          ltvzeroEnabled: false,
+          eMode: { formattedLiquidationThreshold: '0.75' },
+        },
+      ],
+    } as unknown as Partial<ComputedReserveData>);
+
+  const counts = (user: ExtendedFormattedUser, poolReserve: ComputedReserveData, emodeId: number) =>
+    supplyCountsAsCollateral({ user, poolReserve, emodeId, eModes });
+
+  const inEmode1 = { userEmodeCategoryId: 1, isInEmode: true };
+
+  it('first supply: counts when switching to a category with boosted LTV', () => {
+    expect(counts(makeUser(), reserve('0'), 1)).toBe(true);
+  });
+
+  it('first supply: does not count when switching to an ltvzero category', () => {
+    expect(counts(makeUser(), reserve('7500'), 2)).toBe(false);
+  });
+
+  it('first supply: does not count when switching to Default with base LTV 0', () => {
+    expect(counts(makeUser(undefined, inEmode1), reserve('0'), 0)).toBe(false);
+  });
+
+  it('first supply: counts when switching to Default with base LTV > 0', () => {
+    expect(counts(makeUser(undefined, inEmode1), reserve('7500'), 0)).toBe(true);
+  });
+
+  it('existing supply disabled as collateral: never counts, whatever the target', () => {
+    const user = makeUser(
+      { scaledATokenBalance: '1000', usageAsCollateralEnabledOnUser: false },
+      inEmode1
+    );
+
+    expect(counts(user, reserve('7500'), 0)).toBe(false);
+    expect(counts(user, reserve('7500'), 1)).toBe(false);
+  });
+
+  it('existing supply enabled as collateral: keeps counting after the switch', () => {
+    const user = makeUser({ scaledATokenBalance: '1000', usageAsCollateralEnabledOnUser: true });
+
+    expect(counts(user, reserve('7500'), 1)).toBe(true);
+  });
+});
+
+describe('getReserveLiquidationThresholdInEmode', () => {
+  const reserve = makeReserve({
+    eModes: [
+      { id: 1, collateralEnabled: true, eMode: { formattedLiquidationThreshold: '0.95' } },
+      { id: 3, collateralEnabled: false, eMode: { formattedLiquidationThreshold: '0.75' } },
+    ],
+  } as unknown as Partial<ComputedReserveData>);
+
+  it('uses the boosted threshold when the asset is collateral in the category', () => {
+    expect(getReserveLiquidationThresholdInEmode(reserve, 1)).toBe('0.95');
+  });
+
+  it('uses the base threshold when the asset is only borrowable in the category', () => {
+    expect(getReserveLiquidationThresholdInEmode(reserve, 3)).toBe('0.78');
+  });
+
+  it('uses the base threshold for Default', () => {
+    expect(getReserveLiquidationThresholdInEmode(reserve, 0)).toBe('0.78');
   });
 });
