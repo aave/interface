@@ -357,25 +357,37 @@ export const calculateHFAfterSupply = (
     ? poolReserve.eModes.find((e) => e.id === user.userEmodeCategoryId)
     : undefined;
 
-  // Mirrors validateUseAsCollateral on-chain: asset is only auto-enabled as collateral
-  // when effective LTV > 0. Base LTV covers the non-emode path; emode collateral without
-  // ltvzero covers the boosted path (ltvzero assets have 0 LTV and won't be enabled).
-  const hasEffectiveLtv = user
+  // Use emode-boosted LT when user is in emode and asset is in that category's collateral bitmap.
+  const reserveLiquidationThreshold =
+    user?.isInEmode && userEmode?.collateralEnabled
+      ? userEmode.eMode.formattedLiquidationThreshold
+      : poolReserve.formattedReserveLiquidationThreshold;
+
+  const userReserve = user?.userReservesData.find(
+    (r) => r.underlyingAsset.toLowerCase() === poolReserve.underlyingAsset.toLowerCase()
+  );
+  const isFirstSupply = !userReserve || userReserve.scaledATokenBalance === '0';
+
+  // Mirrors SupplyLogic.executeSupply on-chain: the collateral flag is only decided on the
+  // first supply, where validateAutomaticUseAsCollateral auto-enables it when effective
+  // LTV > 0. Base LTV covers the non-emode path; emode collateral without ltvzero covers the
+  // boosted path (ltvzero assets have 0 LTV and won't be enabled).
+  // On subsequent supplies the existing flag is kept as-is, so an asset already enabled as
+  // collateral keeps counting toward HF (via its liquidation threshold) even if its LTV is
+  // now 0, and an asset the user disabled stays disabled.
+  const countsAsCollateral = !user
+    ? false
+    : isFirstSupply
     ? hasNonZeroEffectiveLtv({
         baseLTVasCollateral: poolReserve.baseLTVasCollateral,
         isInEmode: user.isInEmode,
         emodeEntry: userEmode,
         isEModeIsolated: !!eModes[user.userEmodeCategoryId]?.isolated,
       })
-    : false;
+    : !!userReserve?.usageAsCollateralEnabledOnUser &&
+      valueToBigNumber(reserveLiquidationThreshold).gt(0);
 
-  const additionalCollateral = hasEffectiveLtv ? supplyAmountInEth : valueToBigNumber(0);
-
-  // Use emode-boosted LT when user is in emode and asset is in that category's collateral bitmap.
-  const reserveLiquidationThreshold =
-    user?.isInEmode && userEmode?.collateralEnabled
-      ? userEmode.eMode.formattedLiquidationThreshold
-      : poolReserve.formattedReserveLiquidationThreshold;
+  const additionalCollateral = countsAsCollateral ? supplyAmountInEth : valueToBigNumber(0);
 
   const totalCollateralMarketReferenceCurrencyAfter = user
     ? valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(additionalCollateral)
