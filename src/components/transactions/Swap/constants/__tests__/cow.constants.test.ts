@@ -11,13 +11,17 @@ const bps = (from: string, to: string, swapType: SwapType) =>
 
 describe('COW_PARTNER_FEE', () => {
   it.each([
-    [SwapType.Swap, 15, 25],
-    [SwapType.CollateralSwap, 15, 25],
-    [SwapType.WithdrawAndSwap, 15, 25],
-    [SwapType.DebtSwap, 0, 0],
-    [SwapType.RepayWithCollateral, 2, 25],
-  ])('%s charges %i bps correlated and %i bps cross group', (swapType, correlated, different) => {
-    expect(bps('USDC', 'aDAI', swapType)).toBe(correlated);
-    expect(bps('WETH', 'USDC', swapType)).toBe(different);
-  });
+    [SwapType.Swap, 15, 25, 15],
+    [SwapType.CollateralSwap, 15, 25, 15],
+    [SwapType.WithdrawAndSwap, 15, 25, 15],
+    [SwapType.DebtSwap, 0, 0, 0],
+    [SwapType.RepayWithCollateral, 2, 25, 25],
+  ])(
+    '%s charges %i bps correlated, %i bps cross group and %i bps for an unknown pair',
+    (swapType, correlated, different, unknownPair) => {
+      expect(bps('USDC', 'aDAI', swapType)).toBe(correlated);
+      expect(bps('WETH', 'USDC', swapType)).toBe(different);
+      expect(bps('LINK', 'AAVE', swapType)).toBe(unknownPair);
+    }
+  );
 });

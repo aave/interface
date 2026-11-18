@@ -170,11 +170,18 @@ export const COW_PARTNER_FEE = (
   market: CustomMarket
 ) => {
   const swapTypeFee = swapType !== undefined ? PARTNER_FEE_BPS_BY_SWAP_TYPE[swapType] : undefined;
-  const sameGroup = getAssetGroup(tokenFromSymbol) == getAssetGroup(tokenToSymbol);
+  const fromGroup = getAssetGroup(tokenFromSymbol);
+  const toGroup = getAssetGroup(tokenToSymbol);
 
-  const volumeBps = sameGroup
-    ? swapTypeFee?.correlatedBps ?? DEFAULT_PARTNER_FEE_SAME_GROUP_BPS
-    : swapTypeFee?.differentBps ?? DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS;
+  let volumeBps: number;
+  if (fromGroup !== toGroup) {
+    volumeBps = swapTypeFee?.differentBps ?? DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS;
+  } else if (fromGroup === 'unknown') {
+    // Two unlisted tokens are not known to be correlated, so a per-type override uses differentBps
+    volumeBps = swapTypeFee?.differentBps ?? DEFAULT_PARTNER_FEE_SAME_GROUP_BPS;
+  } else {
+    volumeBps = swapTypeFee?.correlatedBps ?? DEFAULT_PARTNER_FEE_SAME_GROUP_BPS;
+  }
 
   return {
     volumeBps,
