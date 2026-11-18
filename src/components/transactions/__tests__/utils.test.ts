@@ -1,14 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 import { parseUnits } from 'ethers/lib/utils';
-import { CollateralType } from 'src/helpers/types';
-import { ComputedUserReserveData } from 'src/hooks/app-data-provider/useAppDataProvider';
 
-import {
-  checkRequiresApproval,
-  getAssetCollateralType,
-  getRepayAmountToApprove,
-  getSafeAmountToRepayAll,
-} from '../utils';
+import { checkRequiresApproval, getRepayAmountToApprove, getSafeAmountToRepayAll } from '../utils';
 
 /**
  * Numbers taken from the cbBTC support report on Aave V3 Ethereum
@@ -106,45 +99,5 @@ describe('getRepayAmountToApprove', () => {
 
   it('does not return exponential notation for dust-sized debts', () => {
     expect(approvalForMaxRepay('0.00000001')).not.toMatch(/e/i);
-  });
-});
-
-describe('getAssetCollateralType', () => {
-  // Arbitrum V3 USDC: base LTV 0 (so UiPoolDataProvider reports usageAsCollateralEnabled=false),
-  // liquidation threshold 78%.
-  const makeUserReserve = (
-    scaledATokenBalance: string,
-    usageAsCollateralEnabledOnUser: boolean,
-    reserve: Record<string, unknown> = {}
-  ) =>
-    ({
-      scaledATokenBalance,
-      usageAsCollateralEnabledOnUser,
-      reserve: {
-        usageAsCollateralEnabled: false,
-        reserveLiquidationThreshold: '7800',
-        ...reserve,
-      },
-    } as unknown as ComputedUserReserveData);
-
-  const collateralType = (userReserve: ComputedUserReserveData) =>
-    getAssetCollateralType(userReserve, '100', false, false);
-
-  it('reports ENABLED for a 0 LTV asset the user already has enabled as collateral', () => {
-    expect(collateralType(makeUserReserve('1000', true))).toBe(CollateralType.ENABLED);
-  });
-
-  it('reports UNAVAILABLE for a first supply of a 0 LTV asset', () => {
-    expect(collateralType(makeUserReserve('0', false))).toBe(CollateralType.UNAVAILABLE);
-  });
-
-  it('reports UNAVAILABLE for a 0 LTV asset the user has disabled as collateral', () => {
-    expect(collateralType(makeUserReserve('1000', false))).toBe(CollateralType.UNAVAILABLE);
-  });
-
-  it('reports UNAVAILABLE when the liquidation threshold is 0', () => {
-    const userReserve = makeUserReserve('1000', true, { reserveLiquidationThreshold: '0' });
-
-    expect(collateralType(userReserve)).toBe(CollateralType.UNAVAILABLE);
   });
 });

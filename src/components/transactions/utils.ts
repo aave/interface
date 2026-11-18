@@ -97,23 +97,13 @@ export const getAssetCollateralType = (
   debtCeilingIsMaxed: boolean
 ) => {
   const poolReserve = userReserve.reserve;
-  const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
 
-  // usageAsCollateralEnabled comes from UiPoolDataProvider as `baseLTV != 0`. A user who
-  // enabled the asset as collateral before its LTV was set to 0 keeps it enabled on-chain
-  // (it still counts toward HF via its liquidation threshold), so reflect that.
   if (!poolReserve.usageAsCollateralEnabled) {
-    if (
-      userHasSuppliedReserve &&
-      userReserve.usageAsCollateralEnabledOnUser &&
-      poolReserve.reserveLiquidationThreshold !== '0'
-    ) {
-      return CollateralType.ENABLED;
-    }
     return CollateralType.UNAVAILABLE;
   }
 
   let collateralType: CollateralType = CollateralType.ENABLED;
+  const userHasSuppliedReserve = userReserve && userReserve.scaledATokenBalance !== '0';
   const userHasCollateral = userTotalCollateralUSD !== '0';
 
   if (poolReserve.isIsolated) {

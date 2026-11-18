@@ -139,7 +139,6 @@ export const SupplyModalContent = React.memo(
   ({
     underlyingAsset,
     poolReserve,
-    userReserve,
     isWrongNetwork,
     nativeBalance,
     tokenBalance,
@@ -271,12 +270,6 @@ export const SupplyModalContent = React.memo(
     // since getAssetCollateralType only considers base config and doesn't account for e-mode
     const effectiveCollateralType = (() => {
       if (!hasEmodeOptions) return collateralType;
-      // Staying in the current e-mode with an existing supply: the on-chain collateral flag
-      // is kept as-is (it's only decided on first supply), and getAssetCollateralType
-      // already reflects it — e.g. a 0 LTV asset the user already has enabled as collateral.
-      if (!needsEmodeSwitch && userReserve && userReserve.scaledATokenBalance !== '0') {
-        return collateralType;
-      }
       const targetEmode = poolReserve.eModes.find((e) => e.id === selectedEmodeId);
       if (selectedEmodeId === 0) {
         // Default / no e-mode — use base config
