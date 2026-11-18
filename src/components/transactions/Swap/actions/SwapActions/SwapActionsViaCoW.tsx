@@ -410,9 +410,6 @@ export const SwapActionsViaCoW = ({
 
   return (
     <TxActionsWrapper
-      sx={{
-        mt: 6,
-      }}
       requiresApprovalReset={requiresApprovalReset}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}

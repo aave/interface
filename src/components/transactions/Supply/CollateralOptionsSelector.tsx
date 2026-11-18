@@ -21,13 +21,23 @@ import {
   ComputedReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { isAssetHidden } from 'src/modules/dashboard/lists/constants';
+import { useRootStore } from 'src/store/root';
+import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { figVars } from 'src/utils/figmaColors';
+import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
+import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
+
+import { CollateralOptionsList } from './CollateralOptionsList';
+import { CollateralOptionTag } from './CollateralOptionTag';
 
 export interface CollateralOption {
   emodeId: number; // 0 = default (no e-mode), >0 = specific e-mode category
+  label: string;
   ltv: number; // as decimal e.g. 0.8 for 80%
+  penalty: number;
   collateralAssets: Array<{ symbol: string; iconSymbol: string }>;
-  borrowableAssets: Array<{ symbol: string; iconSymbol: string }>;
+  borrowableAssets: Array<{ symbol: string; iconSymbol: string; address?: string }>;
   isCurrentEmode: boolean;
   blocked: boolean;
   blockReason?: React.ReactNode;
@@ -41,6 +51,7 @@ interface CollateralOptionsSelectorProps {
   reserves: ComputedReserveData[];
   selectedEmodeId: number;
   onSelect: (emodeId: number) => void;
+  variant?: 'cards' | 'list';
 }
 
 /**
@@ -141,9 +152,13 @@ export function buildCollateralOptions(
   poolReserve: ComputedReserveData,
   eModes: Record<number, EmodeCategory>,
   user: ExtendedFormattedUser,
-  reserves: ComputedReserveData[]
+  reserves: ComputedReserveData[],
+  currentMarket: CustomMarket
 ): CollateralOption[] {
   const options: CollateralOption[] = [];
+  const isVisible = (address: string) => !isAssetHidden(currentMarket, address);
+  const basePenalty = Number(poolReserve.formattedReserveLiquidationBonus);
+  const emodeLabel = (id: number) => replaceUnderscoresWithSpaces(eModes[id]?.label) ?? '';
 
   let currentEmodeIncluded = user.userEmodeCategoryId === 0; // category 0 is always added below
 
@@ -158,7 +173,9 @@ export function buildCollateralOptions(
     if (!globalEmode) return;
 
     const collateralAssets = globalEmode.assets.filter((a) => a.collateral);
-    const borrowableAssets = globalEmode.assets.filter((a) => a.borrowable);
+    const borrowableAssets = globalEmode.assets.filter(
+      (a) => a.borrowable && isVisible(a.underlyingAsset)
+    );
     const blockReason = getBlockReason(reserveEmode.id, user, eModes, reserves);
 
     // Mirrors getUserReserveLtv from the contract:
@@ -175,7 +192,11 @@ export function buildCollateralOptions(
 
     options.push({
       emodeId: reserveEmode.id,
+      label: emodeLabel(reserveEmode.id),
       ltv,
+      penalty: reserveEmode.collateralEnabled
+        ? Math.max(Number(reserveEmode.eMode.formattedLiquidationBonus), 0)
+        : basePenalty,
       collateralAssets: collateralAssets.map((a) => ({
         symbol: a.symbol,
         iconSymbol: a.iconSymbol,
@@ -183,6 +204,7 @@ export function buildCollateralOptions(
       borrowableAssets: borrowableAssets.map((a) => ({
         symbol: a.symbol,
         iconSymbol: a.iconSymbol,
+        address: a.underlyingAsset,
       })),
       isCurrentEmode: isUserCurrentEmode,
       blocked: !!blockReason,
@@ -197,14 +219,17 @@ export function buildCollateralOptions(
     const globalEmode = eModes[user.userEmodeCategoryId];
     options.push({
       emodeId: user.userEmodeCategoryId,
+      label: emodeLabel(user.userEmodeCategoryId),
       ltv: globalEmode?.isolated ? 0 : Number(poolReserve.baseLTVasCollateral) / 10000,
+      penalty: basePenalty,
       collateralAssets: [],
       borrowableAssets: globalEmode
         ? globalEmode.assets
-            .filter((a) => a.borrowable)
+            .filter((a) => a.borrowable && isVisible(a.underlyingAsset))
             .map((a) => ({
               symbol: a.symbol,
               iconSymbol: a.iconSymbol,
+              address: a.underlyingAsset,
             }))
         : [],
       isCurrentEmode: true,
@@ -219,9 +244,17 @@ export function buildCollateralOptions(
   const blockReason = getBlockReason(0, user, eModes, reserves);
   options.push({
     emodeId: 0,
+    label: '',
     ltv: baseLtv,
+    penalty: basePenalty,
     collateralAssets: [],
-    borrowableAssets: [],
+    borrowableAssets: reserves
+      .filter((reserve) => assetCanBeBorrowedByUser(reserve) && isVisible(reserve.underlyingAsset))
+      .map((reserve) => ({
+        symbol: reserve.symbol,
+        iconSymbol: reserve.iconSymbol,
+        address: reserve.underlyingAsset,
+      })),
     isCurrentEmode: user.userEmodeCategoryId === 0,
     blocked: !!blockReason,
     blockReason,
@@ -245,11 +278,53 @@ export const CollateralOptionsSelector = React.memo(
     reserves,
     selectedEmodeId,
     onSelect,
+    variant = 'cards',
   }: CollateralOptionsSelectorProps) => {
-    const options = buildCollateralOptions(poolReserve, eModes, user, reserves);
+    const currentMarket = useRootStore((store) => store.currentMarket);
+    const options = buildCollateralOptions(poolReserve, eModes, user, reserves, currentMarket);
     const [expanded, setExpanded] = useState(false);
 
     if (options.length <= 1) return null;
+
+    const categoryAssets = selectedEmodeId !== 0 && eModes[selectedEmodeId] && (
+      <Accordion
+        disableGutters
+        elevation={0}
+        sx={{
+          mt: 2,
+          '&:before': { display: 'none' },
+          bgcolor: 'transparent',
+        }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          sx={{ px: 0, minHeight: 'auto', '& .MuiAccordionSummary-content': { my: 1 } }}
+        >
+          <Typography variant="description" color="fg-2">
+            <Trans>Category assets</Trans>
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails sx={{ px: 0 }}>
+          <EmodeAssetTable assets={eModes[selectedEmodeId].assets} maxHeight="200px" />
+        </AccordionDetails>
+      </Accordion>
+    );
+
+    if (variant === 'list') {
+      return (
+        <Box sx={{ mt: '1.875rem' }}>
+          <Typography variant="description" color="fg-3" sx={{ mb: '0.75rem' }}>
+            <Trans>Collateral options</Trans>
+          </Typography>
+          <CollateralOptionsList
+            options={options}
+            selectedEmodeId={selectedEmodeId}
+            onSelect={onSelect}
+          />
+          {categoryAssets}
+        </Box>
+      );
+    }
 
     const VISIBLE_COUNT = 2;
     const hasMore = options.length > VISIBLE_COUNT;
@@ -327,72 +402,15 @@ export const CollateralOptionsSelector = React.memo(
                     <Typography variant="subheader1" color="fg-1">
                       <Trans>LTV</Trans>
                     </Typography>
-                    {option.isCurrentEmode && (
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          px: 1,
-                          py: 0.25,
-                          borderRadius: '4px',
-                          bgcolor: 'success.main',
-                          color: '#fff',
-                          fontSize: '10px',
-                        }}
-                      >
-                        <Trans>Active</Trans>
-                      </Typography>
-                    )}
-                    {option.emodeId === 0 && (
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          px: 1,
-                          py: 0.25,
-                          borderRadius: '4px',
-                          bgcolor: 'fg-2',
-                          color: '#fff',
-                          fontSize: '10px',
-                        }}
-                      >
-                        <Trans>Default</Trans>
-                      </Typography>
-                    )}
-                    {option.isolated && (
-                      <Tooltip
-                        title={
-                          <Trans>
-                            Only the listed collateral contributes borrowing power in this category
-                            — other collateral you hold will have 0% LTV while in it.
-                          </Trans>
-                        }
-                        arrow
-                      >
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            px: 1,
-                            py: 0.25,
-                            borderRadius: '4px',
-                            bgcolor: 'warning.main',
-                            color: '#fff',
-                            fontSize: '10px',
-                          }}
-                        >
-                          <Trans>Isolated</Trans>
-                        </Typography>
-                      </Tooltip>
-                    )}
+                    {option.isCurrentEmode && <CollateralOptionTag kind="active" />}
+                    {option.emodeId === 0 && <CollateralOptionTag kind="default" />}
+                    {option.isolated && <CollateralOptionTag kind="isolated" />}
                   </Stack>
                 </Stack>
 
                 {/* Borrowable assets */}
                 {option.borrowableAssets.length > 0 && (
                   <AssetRow label={<Trans>Borrow:</Trans>} assets={option.borrowableAssets} />
-                )}
-                {option.emodeId === 0 && (
-                  <Typography variant="caption" color="fg-2" sx={{ mt: 1, ml: 3.5 }}>
-                    <Trans>Borrow: All eligible assets</Trans>
-                  </Typography>
                 )}
               </ButtonBase>
             );
@@ -426,29 +444,7 @@ export const CollateralOptionsSelector = React.memo(
           )}
         </Stack>
 
-        {selectedEmodeId !== 0 && eModes[selectedEmodeId] && (
-          <Accordion
-            disableGutters
-            elevation={0}
-            sx={{
-              mt: 2,
-              '&:before': { display: 'none' },
-              bgcolor: 'transparent',
-            }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              sx={{ px: 0, minHeight: 'auto', '& .MuiAccordionSummary-content': { my: 1 } }}
-            >
-              <Typography variant="description" color="fg-2">
-                <Trans>Category assets</Trans>
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails sx={{ px: 0 }}>
-              <EmodeAssetTable assets={eModes[selectedEmodeId].assets} maxHeight="200px" />
-            </AccordionDetails>
-          </Accordion>
-        )}
+        {categoryAssets}
       </Box>
     );
   }

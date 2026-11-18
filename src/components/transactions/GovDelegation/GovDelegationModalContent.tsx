@@ -2,9 +2,9 @@ import { DelegationType } from '@aave/contract-helpers';
 import { t, Trans } from '@lingui/macro';
 import { FormControl, TextField, Typography } from '@mui/material';
 import { constants, utils } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
 import { TextWithTooltip } from 'src/components/TextWithTooltip';
+import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useGovernanceTokens } from 'src/hooks/governance/useGovernanceTokens';
 import { usePowers } from 'src/hooks/governance/usePowers';
 import { ModalType, useModalContext } from 'src/hooks/useModal';
@@ -18,7 +18,6 @@ import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { DelegationTokenSelector, DelegationTokenType } from './DelegationTokenSelector';
 import { DelegationTypeSelector } from './DelegationTypeSelector';
@@ -234,10 +233,7 @@ export const GovDelegationModalContent: React.FC<GovDelegationModalContentProps>
           </FormControl>
         </>
       )}
-      <GasStation
-        gasLimit={parseUnits(gasLimit || '0', 'wei')}
-        chainId={governanceV3Config.coreChainId}
-      />
+      <TxModalDetails gasLimit={gasLimit} chainId={governanceV3Config.coreChainId} />
 
       {txError && <GasEstimationError txError={txError} />}
 

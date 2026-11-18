@@ -1,8 +1,8 @@
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { ParentSize } from '@visx/responsive';
 import { type ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
+import { pickFigma } from 'src/utils/figmaColors';
 
-import { GraphLegend } from './GraphLegend';
 import { InterestRateModelGraph } from './InterestRateModelGraph';
 
 type InteresetRateModelGraphContainerProps = {
@@ -17,28 +17,22 @@ export type Fields = { name: Field; color: string; text: string }[];
 export const InterestRateModelGraphContainer = ({
   reserve,
 }: InteresetRateModelGraphContainerProps): JSX.Element => {
-  const CHART_HEIGHT = 155;
+  const { palette } = useTheme();
   const fields: Fields = [
-    { name: 'variableBorrowRate', text: 'Borrow APR, variable', color: '#B6509E' },
+    {
+      name: 'variableBorrowRate',
+      text: 'Borrow APR, variable',
+      color: pickFigma(palette.mode)['data-orange'],
+    },
   ];
 
   return (
-    <Box sx={{ mt: 8, mb: 10 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: 4,
-        }}
-      >
-        <GraphLegend labels={[...fields, { text: 'Utilization Rate', color: '#0062D2' }]} />
-      </Box>
+    <Box sx={{ mt: '2.5rem', height: '15rem' }}>
       <ParentSize>
-        {({ width }) => (
+        {({ width, height }) => (
           <InterestRateModelGraph
             width={width}
-            height={CHART_HEIGHT}
+            height={height}
             fields={fields}
             reserve={{
               baseVariableBorrowRate: String(reserve.borrowInfo?.baseVariableBorrowRate.raw),

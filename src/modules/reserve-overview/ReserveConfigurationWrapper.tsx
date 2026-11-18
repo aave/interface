@@ -1,9 +1,7 @@
-import { Trans } from '@lingui/macro';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { ReserveWithId } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useRootStore } from 'src/store/root';
-import { cardPaddingSx } from 'src/utils/cardStyles';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 type ReserveConfigurationProps = {
@@ -26,30 +24,12 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
   });
 
   return (
-    <Paper variant="card" sx={{ ...cardPaddingSx, pb: 20 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-          flexWrap: 'wrap',
-          mb:
-            reserve.isFrozen ||
-            reserve.underlyingToken.symbol == 'AMPL' ||
-            reserve.underlyingToken.symbol === 'stETH'
-              ? '0px'
-              : '36px',
-        }}
-      >
-        <Typography variant="h3">
-          <Trans>Reserve status &#38; configuration</Trans>
-        </Typography>
-      </Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
       {isGho ? (
         <GhoReserveConfiguration reserve={reserve} />
       ) : (
         <ReserveConfiguration reserve={reserve} />
       )}
-    </Paper>
+    </Box>
   );
 };

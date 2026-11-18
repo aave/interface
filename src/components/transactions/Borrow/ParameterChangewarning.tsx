@@ -7,7 +7,7 @@ export const ParameterChangewarning = ({ underlyingAsset }: { underlyingAsset: s
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   return (
-    <Alert severity="info" data-size="small" sx={{ width: '100%', my: 6 }}>
+    <Alert severity="info" data-size="small" sx={{ width: '100%', mt: '2rem' }}>
       <Trans>
         <Box component="span" sx={{ fontWeight: 500 }}>
           Attention:

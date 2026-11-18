@@ -1,4 +1,5 @@
-import { Box, Container, ContainerProps } from '@mui/material';
+import { Box, Container, ContainerProps, Theme } from '@mui/material';
+import { SystemStyleObject } from '@mui/system';
 import { ReactNode } from 'react';
 import { pageBandSx } from 'src/components/PageHeader/pageBandSx';
 
@@ -8,6 +9,7 @@ interface TopInfoPanelProps extends PageTitleProps {
   children?: ReactNode;
   titleComponent?: ReactNode;
   containerProps?: ContainerProps;
+  bandSx?: SystemStyleObject<Theme>;
 }
 
 export const TopInfoPanel = ({
@@ -19,9 +21,10 @@ export const TopInfoPanel = ({
   bridge,
   children,
   containerProps = {},
+  bandSx,
 }: TopInfoPanelProps) => {
   return (
-    <Box sx={pageBandSx}>
+    <Box sx={{ ...pageBandSx, ...bandSx }}>
       <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>
         <Box>
           {!titleComponent && (

@@ -22,7 +22,6 @@ import {
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { roundToTokenDecimals } from 'src/utils/utils';
 
-import { CapType } from '../../caps/helper';
 import { AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -166,10 +165,9 @@ export const BorrowModalContent = ({
           },
         ]}
         symbol={symbol}
-        capType={CapType.borrowCap}
         isMaxSelected={isMaxSelected}
         maxValue={maxAmountToBorrow}
-        balanceText={<Trans>Available</Trans>}
+        balanceText={<Trans>Available to borrow</Trans>}
         event={{
           eventName: GENERAL.MAX_INPUT_SELECTION,
           eventParams: {
@@ -231,7 +229,6 @@ export const BorrowModalContent = ({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
-        sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>
   );

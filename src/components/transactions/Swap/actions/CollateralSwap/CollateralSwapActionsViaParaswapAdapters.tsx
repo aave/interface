@@ -276,9 +276,6 @@ export const CollateralSwapActionsViaParaswapAdapters = ({
 
   return (
     <TxActionsWrapper
-      sx={{
-        mt: 6,
-      }}
       mainTxState={state.mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={state.isWrongNetwork}
