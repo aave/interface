@@ -1,0 +1,20 @@
+src/layouts/AppFooter.tsx
+  s_b917dd3428772e::t_33ddc8d84edbaa 88
+  s_b917dd3428772e::t_ca069ffc515ea6 83
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5d7585e61a8fc8e7eddf627d5135116534018298",
+  "prompts": {},
+  "sessions": {
+    "s_b917dd3428772e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0fa82274-b193-4ad8-a595-ab2c08e83794",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

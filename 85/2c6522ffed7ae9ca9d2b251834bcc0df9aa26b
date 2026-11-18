@@ -1,0 +1,21 @@
+src/modules/reserve-overview/ReserveEModePanel.tsx
+  s_d3122d9a50da79::t_cb34683575f0aa 12
+  s_d3122d9a50da79::t_24100925d8df0d 80
+  s_d3122d9a50da79::t_abc9623912066f 27-36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "852c6522ffed7ae9ca9d2b251834bcc0df9aa26b",
+  "prompts": {},
+  "sessions": {
+    "s_d3122d9a50da79": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b73fec12-96aa-4367-9190-fd683e5ed086",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+src/store/root.ts
+  s_823a12b1ea150e::t_26cf14d4f7f873 2,76-85
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c86009725b8e54334eba2eebaa30a8034bb177ca",
+  "prompts": {},
+  "sessions": {
+    "s_823a12b1ea150e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8217c92b-569f-4730-abde-9e29f798ef85",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

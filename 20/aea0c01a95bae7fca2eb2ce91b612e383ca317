@@ -1,0 +1,21 @@
+public/icons/tokens/mwin.svg
+  s_55141c4fba29e9::t_16299e1473e9a8 1
+src/ui-config/reservePatches.ts
+  s_55141c4fba29e9::t_27e7a53436305b 304-306
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "20aea0c01a95bae7fca2eb2ce91b612e383ca317",
+  "prompts": {},
+  "sessions": {
+    "s_55141c4fba29e9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "45ffafb2-7983-417a-a9a2-c2204e7c3c8f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}

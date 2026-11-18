@@ -1,0 +1,14 @@
+pages/api/governance/vote-relay/[...path].ts
+  h_6dd45743ed61bc 7-8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "0e2d0efcdaea7d0a1ad672c847bbb33d941e20a6",
+  "prompts": {},
+  "humans": {
+    "h_6dd45743ed61bc": {
+      "author": "Christophe Roberge <robergesoftware@gmail.com>"
+    }
+  }
+}

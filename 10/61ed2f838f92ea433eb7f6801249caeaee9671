@@ -1,0 +1,46 @@
+src/components/ShimmerText/index.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 1-7,95-101,110,116-121,132-169,188-189,207-210
+src/components/lists/ListWrapper.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 31-32,143,232,243
+src/components/transactions/Bridge/BridgeDestinationInput.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 35,42,62,76-77,100,118-119,134
+src/modules/history/TransactionRowItem.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 65
+src/store/analyticsSlice.ts
+  s_08304495e88c91::t_36a3168ec03b6c 24-30,102-113,131,172
+src/modules/reserve-overview/ReservePanels.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 19,27,55
+src/components/transactions/Supply/CollateralOptionsSelector.tsx
+  s_08304495e88c91::t_1f25e0954757a4 292,296-298,301
+  s_08304495e88c91::t_612c0fe23a582e 27
+src/modules/markets/MarketAssetsListItemLoader.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 9
+src/modules/markets/MarketAssetsList.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 136
+src/modules/markets/MarketAssetsAccordion.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 44
+src/modules/markets/MarketAssetsListItem.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 81
+src/layouts/AppFooter.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 83,88
+src/components/ExternalLinkButton/index.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 1,10,15-20,23
+src/layouts/MainLayout.tsx
+  s_08304495e88c91::t_36a3168ec03b6c 6,12-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1061ed2f838f92ea433eb7f6801249caeaee9671",
+  "prompts": {},
+  "sessions": {
+    "s_08304495e88c91": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dc4cbc93-5d00-476a-a734-1d52b8ec3dd5",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

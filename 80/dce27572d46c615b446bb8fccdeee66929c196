@@ -1,0 +1,21 @@
+src/modules/history/TransactionRowItem.tsx
+  s_d3f06214dd5512::t_6d3bd891647d81 65
+src/components/ExternalLinkButton/index.tsx
+  s_d3f06214dd5512::t_9fe6529b9de402 1,10,15-20,23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "80dce27572d46c615b446bb8fccdeee66929c196",
+  "prompts": {},
+  "sessions": {
+    "s_d3f06214dd5512": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1dc6cfc4-0b59-4abc-a042-d44090264265",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
