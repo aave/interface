@@ -1,0 +1,428 @@
+src/components/icons/CheckmarkIcon.tsx
+  s_745f2c121ff6ca::t_648c8d99074bd6 1-17
+cypress/support/commands.ts
+  s_745f2c121ff6ca::t_602f46a8bb06b0 3
+  s_745f2c121ff6ca::t_6653a3c087c17b 66
+src/modules/reserve-overview/graphs/ApyGraph.tsx
+  s_745f2c121ff6ca::t_6a6bb17c99c3a8 17,25
+  s_745f2c121ff6ca::t_c3ffe0d060f828 19,208
+  s_745f2c121ff6ca::t_4adde04ecf63e3 124,126-131,134,136-137
+  s_745f2c121ff6ca::t_a36695f1c18865 18,21,23-24
+  s_745f2c121ff6ca::t_3973207b2388a6 46
+  s_745f2c121ff6ca::t_d6393f7ebe9db5 20,22,178,271-272
+  s_745f2c121ff6ca::t_e90a8c07c8844d 215,250
+  s_745f2c121ff6ca::t_3744d9e434cdda 306
+  s_745f2c121ff6ca::t_476fa49ca70a5e 307
+  s_745f2c121ff6ca::t_39a99db61b589c 329
+  s_745f2c121ff6ca::t_d522573099762e 269
+  s_745f2c121ff6ca::t_55d3fbfa92ddb3 337
+  s_745f2c121ff6ca::t_8f71c4f7fdfe78 81,214,248,251,358
+  s_745f2c121ff6ca::t_e1b3c6db556cea 26
+src/modules/reserve-overview/graphs/InterestRateModelGraphContainer.tsx
+  s_745f2c121ff6ca::t_8d996ab467037d 1,4,20,22-26,30,32,35
+src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/components/ConfigValue/index.tsx
+  s_745f2c121ff6ca::t_200617167e932d 1,3-30
+  s_745f2c121ff6ca::t_810b05514edcda 2
+src/components/caps/CapsCircularStatus.tsx
+  s_745f2c121ff6ca::t_2a31fa8774bde9 69-71,73-74,76-77,89-90,95,97
+  s_745f2c121ff6ca::t_c887b398cdfcc5 63-65
+  s_745f2c121ff6ca::t_64933a35733642 17,25
+src/modules/reserve-overview/ReserveCollectorInfo/index.tsx
+  s_08304495e88c91::t_77bf3e10d7bbea 11
+  s_08304495e88c91::t_b51901f84eb38b 2
+  s_08304495e88c91::t_0cc7fca81329f7 1,3-10,12-66,68-79
+  s_08304495e88c91::t_68a77aa08aa2b6 67
+src/modules/umbrella/StakeCooldownModalContent.tsx
+  s_745f2c121ff6ca::t_d8305e139a3f03 332
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 15
+src/modules/reserve-overview/ReserveConfigurationWrapper.tsx
+  s_08304495e88c91::t_1ed028c1f94b39 1,27,33
+src/modules/reserve-overview/ReserveStat/components/CapTooltipLabel/index.tsx
+  s_745f2c121ff6ca::t_1f3222c761aed3 3,18
+  s_745f2c121ff6ca::t_e133c481fea434 1-2,4-17,19-36
+src/components/ContentContainer.tsx
+  s_745f2c121ff6ca::t_c5c549599c666b 17
+src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+  s_08304495e88c91::t_d9968680bf93bd 32-33
+  s_08304495e88c91::t_8309269a270639 17
+  s_745f2c121ff6ca::t_c20030da44c630 148-149,151,278,288,293-294
+  s_745f2c121ff6ca::t_f4a07f1ff4d3d3 23,266
+  s_08304495e88c91::t_2d2ed311eac554 267-275,282-286
+  s_745f2c121ff6ca::t_e1b0928e9478cf 31,262,295,299,301-302,622,624-643
+  s_08304495e88c91::t_2ab83e02cad41e 620,623
+  s_08304495e88c91::t_d3f3f5c4109e60 621
+src/components/primitives/BasicModal.tsx
+  s_745f2c121ff6ca::t_b2a4a10b79b2eb 40
+  s_745f2c121ff6ca::t_2048b871a87529 78,91
+src/locales/es/messages.js
+  s_08304495e88c91::t_318e232ecf57d3 1
+src/layouts/AppHeader.tsx
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 28
+  s_745f2c121ff6ca::t_bb816a6fd59a44 314
+src/ui-config/reservePatches.ts
+  s_08304495e88c91::t_ce6bcaa2f23dbf 355-359
+src/components/transactions/Borrow/ParameterChangewarning.tsx
+  s_08304495e88c91::t_6b2316bc8db4bc 10
+src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 12
+  s_745f2c121ff6ca::t_d8305e139a3f03 8,341
+src/components/transactions/AmountInputRow/index.tsx
+  s_08304495e88c91::t_64ae4d65a5069b 1-129
+src/components/TopInfoPanel/TopInfoPanel.tsx
+  s_745f2c121ff6ca::t_3ff17aacf6c5b7 1-2,12,24,27
+src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/components/ConfigCard/index.tsx
+  s_08304495e88c91::t_85bf881b5314ef 1,3,15,19,21-25,28,31
+  s_745f2c121ff6ca::t_1cdf2fe80f11c0 2,4-14,16-18,20,26-27,29-30,32
+src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsListItem.tsx
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 17
+  s_745f2c121ff6ca::t_bb816a6fd59a44 305
+src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+  s_745f2c121ff6ca::t_16e347e86511f6 101
+  s_745f2c121ff6ca::t_ee5fecef383873 175,179
+  s_745f2c121ff6ca::t_f3be77c6666969 109
+  s_745f2c121ff6ca::t_a9c719dbc56c1b 176
+  s_745f2c121ff6ca::t_9c1f25bdaa192d 180
+  s_745f2c121ff6ca::t_771856cb8ce4fc 88-92
+  s_745f2c121ff6ca::t_8f5d50efc63d90 2
+  s_08304495e88c91::t_6d930186e30b9f 9
+  s_745f2c121ff6ca::t_73508cd09c75f3 20-24,30
+  s_08304495e88c91::t_05c66d9682e78e 50-53
+  s_745f2c121ff6ca::t_f6f7ceef8baff6 158
+src/modules/reserve-overview/ReserveConfigSection/hooks/useCollateralConfigRows.ts
+  s_745f2c121ff6ca::t_26c32c727bc770 1-4,12-29,47-52,70-74
+  s_745f2c121ff6ca::t_82c415d4f585e1 53-69
+  s_08304495e88c91::t_c3c9987b42e6ec 5-11
+  s_08304495e88c91::t_245a34223ec133 30-46
+src/modules/reserve-overview/ReserveCard/index.tsx
+  s_08304495e88c91::t_b882d2369db581 1-16
+src/components/transactions/Supply/CollateralOptionTag/index.tsx
+  s_08304495e88c91::t_811484a31210b0 1-39,42-49
+  s_08304495e88c91::t_1497b2272f7be1 40-41
+src/modules/reserve-overview/ReserveConfigSection/hooks/useMarketConfigReserves.ts
+  s_745f2c121ff6ca::t_ef116d32d8ac8a 1-20
+src/components/transactions/GasStation/GasStation.tsx
+  s_745f2c121ff6ca::t_1f3222c761aed3 9,102
+  s_745f2c121ff6ca::t_3014f6531be91c 100-101,103-106,108,110,112,114,116
+  s_745f2c121ff6ca::t_b91eee725d70cc 3-4,10,87-97,117
+src/components/transactions/Borrow/BorrowModalContent.tsx
+  s_745f2c121ff6ca::t_da438854af6f3a 170
+src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+  s_745f2c121ff6ca::t_b60512240db6af 1-3,5-9,13-18,20-21,23,25-26,28-29,32-44,46-49,56-75,77-95,97-112,114-128,145-168,170-176,178-179,181-196,200-204,206,208,210-211,213-214
+  s_745f2c121ff6ca::t_b461df9c264104 209
+  s_745f2c121ff6ca::t_55bf8baae206b4 76
+  s_08304495e88c91::t_98a96447a42c4b 10
+  s_745f2c121ff6ca::t_e133c481fea434 27,50-55,113
+  s_08304495e88c91::t_d2f367faf631fe 205,212
+  s_745f2c121ff6ca::t_33363d9bd9edb9 24,30-31
+  s_08304495e88c91::t_74ec05e2c38ed7 129-144
+  s_08304495e88c91::t_a8a1f216de53d7 22
+  s_08304495e88c91::t_9003f561cb92f2 4
+  s_08304495e88c91::t_a6a2c6702db1ed 19
+  s_745f2c121ff6ca::t_1f3222c761aed3 11
+  s_08304495e88c91::t_2df758c8c22df9 45
+  s_745f2c121ff6ca::t_e7ec07b3ded0bb 96
+  s_745f2c121ff6ca::t_602f46a8bb06b0 12
+  s_745f2c121ff6ca::t_e58f383a019a4a 169
+  s_745f2c121ff6ca::t_dd5d0952d7eb54 207
+  s_745f2c121ff6ca::t_207c5f16679477 180
+  s_08304495e88c91::t_e4231977ab4957 177
+  s_745f2c121ff6ca::t_c887b398cdfcc5 197-199
+src/modules/reserve-overview/ReserveStatWithLink/index.tsx
+  s_08304495e88c91::t_9249e2615c001b 1-60
+src/modules/reserve-overview/ReserveActions.tsx
+  s_745f2c121ff6ca::t_8f6c806d540f13 274,279-282,284
+  s_745f2c121ff6ca::t_2b54b11f4b4e71 196,199-200,205,208-209,211,213,218-220,228-230,232,241-246
+  s_745f2c121ff6ca::t_f73b93d6f9ce99 314,319-338,340,343-348,359-360,379-380,382-388,391,395,398,400
+  s_745f2c121ff6ca::t_42a04384ddd775 300-301
+  s_08304495e88c91::t_038bc29b0fb6ff 339,341-342,349-358,363-365,369
+  s_745f2c121ff6ca::t_c03aa59899c467 169
+  s_08304495e88c91::t_606f720068561d 275-278
+  s_745f2c121ff6ca::t_7fa9394320000a 132,142,145
+  s_08304495e88c91::t_2c27bf7f4ae609 315-318
+  s_745f2c121ff6ca::t_d44e9735843a40 195
+src/components/transactions/Supply/CollateralOptionsList/index.tsx
+  s_08304495e88c91::t_4feb8c4da4530f 8
+  s_745f2c121ff6ca::t_7e667b2c463880 19,23,25,30-36,38,56,69-70,91,137-144,150-154,157,164,168-169
+  s_08304495e88c91::t_6dfead1dde0c34 11
+  s_08304495e88c91::t_85c9bf78d6a9a2 75-76
+  s_745f2c121ff6ca::t_3f27014075bd56 2,5,7,158-159,161-162,170-173
+  s_745f2c121ff6ca::t_e89d6b671b088f 1,3-4,6,9-10,12-18,20-22,24,26-29,41-55,57-62,68,71-73,77,86-90,92-95,97,99-104,106-136,145-146,148-149,155-156,160,163,165-167,174-177
+  s_745f2c121ff6ca::t_5e6d63f483f2bd 63-67
+  s_745f2c121ff6ca::t_7225981316e781 74
+  s_08304495e88c91::t_434e3597abb0dc 147
+  s_745f2c121ff6ca::t_2048b871a87529 37,39-40,78-85,96,98,105
+src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+  s_08304495e88c91::t_6d41b38f1c0328 6,8,20-37,49-50
+  s_08304495e88c91::t_6192c41793f555 2,7,19,39
+src/components/PageHeader/pageBandSx.ts
+  s_745f2c121ff6ca::t_e19b0c8d333dbf 1-2
+  s_745f2c121ff6ca::t_7b6ae309debb80 11
+src/components/TextWithTooltip.tsx
+  s_745f2c121ff6ca::t_1f3222c761aed3 77-78
+  s_745f2c121ff6ca::t_bb816a6fd59a44 4,83
+src/components/transactions/AmountBalanceRow/index.tsx
+  s_745f2c121ff6ca::t_1a67ae402d2e90 1-8,10-35,37-80,82-90
+  s_08304495e88c91::t_9b8344b4bd38f7 9,36,81
+src/components/isolationMode/IsolatedBadge.tsx
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 4
+  s_745f2c121ff6ca::t_bb816a6fd59a44 29
+src/locales/fr/messages.js
+  s_08304495e88c91::t_318e232ecf57d3 1
+src/components/transactions/Borrow/BorrowAmountWarning.tsx
+  s_745f2c121ff6ca::t_8e17c230424ad7 19
+src/modules/reserve-overview/ReserveStat/components/ReserveStatAmount/index.tsx
+  s_745f2c121ff6ca::t_dec8268c99f7b5 1-8,10-11,13-15,17-20,22-28,30-31,33-34,36-41
+  s_745f2c121ff6ca::t_0f5ff3ebb50145 29
+  s_745f2c121ff6ca::t_e133c481fea434 9,12,16,21,32,35
+src/components/PageHeader/PageHeaderStat.tsx
+  s_745f2c121ff6ca::t_6fc9cc5a67a744 12-17
+  s_745f2c121ff6ca::t_1defbe664527db 8,11,19
+src/hooks/useReserveActionState.tsx
+  s_745f2c121ff6ca::t_c03aa59899c467 73
+src/modules/reserve-overview/ReserveConfiguration.tsx
+  s_745f2c121ff6ca::t_3d87b5ef085de6 4-6,26-29,33-35
+src/modules/reserve-overview/Gho/GhoReserveTopDetails.tsx
+  s_745f2c121ff6ca::t_f05df92c765a5f 20,31,51
+  s_745f2c121ff6ca::t_8b07bdaaa52fac 19
+  s_745f2c121ff6ca::t_6fc9cc5a67a744 23-27,49
+src/modules/reserve-overview/ReserveTopDetails.tsx
+  s_745f2c121ff6ca::t_8b07bdaaa52fac 34,42,54,58
+  s_745f2c121ff6ca::t_f05df92c765a5f 38,50,55,60
+src/components/transactions/GovRepresentatives/GovRepresentativesModalContent.tsx
+  s_745f2c121ff6ca::t_d8305e139a3f03 5
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 7,180,182
+src/components/AssetIconStack/index.tsx
+  s_745f2c121ff6ca::t_810b05514edcda 1-44
+src/components/transactions/AssetInput.tsx
+  s_745f2c121ff6ca::t_d80f0ad5722f3b 25,73-79
+  s_745f2c121ff6ca::t_32d4c2cb435514 11,21,65,140-174,176-177,179-183,187-189,192-202,205-206,208-212,215-239,241-242,244-248,250-258
+  s_08304495e88c91::t_91ffe274768ed0 132-139
+  s_08304495e88c91::t_bd5810bf99addc 26
+  s_745f2c121ff6ca::t_d709e61718ab53 60-64,66-67,130-131
+  s_08304495e88c91::t_2227d47bf6e0c0 240,243,249
+  s_745f2c121ff6ca::t_2983d51b289a3a 1
+  s_08304495e88c91::t_8dd2d6c6f6797e 15
+  s_745f2c121ff6ca::t_6276be16e3e25c 178,184-186,190
+  s_745f2c121ff6ca::t_597b6938a63cdf 114-121
+  s_745f2c121ff6ca::t_00fc5905e58209 68-72
+  s_745f2c121ff6ca::t_da438854af6f3a 125-126,265
+  s_745f2c121ff6ca::t_8e71b39dafbd2f 80
+src/components/icons/CrossIcon.tsx
+  s_745f2c121ff6ca::t_648c8d99074bd6 1-16
+src/locales/en/messages.js
+  s_08304495e88c91::t_318e232ecf57d3 1
+src/modules/reserve-overview/ReserveConfigSection/components/ConfigFilterButton/index.tsx
+  s_745f2c121ff6ca::t_c03aa59899c467 4
+  s_745f2c121ff6ca::t_a941039c1a517c 41
+  s_745f2c121ff6ca::t_845a3d3e4e3c03 57
+  s_745f2c121ff6ca::t_0fcfd6b40128e7 1-3,5-40,42-56,58-82
+src/components/transactions/PercentSelector/index.tsx
+  s_745f2c121ff6ca::t_eaad5f63564579 50,55
+  s_745f2c121ff6ca::t_9c9fe0594b2363 5-6,39-40,44,51,53-54,56-58
+  s_745f2c121ff6ca::t_535e46a41f33e2 1,3-4,7-11,13-15,17-27,37-38,41-43,45-49,52,59-61
+  s_08304495e88c91::t_692151aa24f876 2,12,16,28-36
+src/components/transactions/FlowCommons/TxModalDetails.tsx
+  s_745f2c121ff6ca::t_4c2cb93e098549 39-44
+  s_745f2c121ff6ca::t_d06b5373d0a773 11
+  s_745f2c121ff6ca::t_82f1f0fda83f44 63,66-71,75,83-84
+  s_745f2c121ff6ca::t_ecf531e7496606 212-213,219-222
+  s_745f2c121ff6ca::t_1f3222c761aed3 12,62,214-218,238,243,246,251
+  s_745f2c121ff6ca::t_ef6530d548a6ec 21
+  s_745f2c121ff6ca::t_4d41d0d0abff9b 45
+src/components/transactions/TxActionsWrapper.tsx
+  s_745f2c121ff6ca::t_e2af17b66889c5 15
+  s_745f2c121ff6ca::t_ef6530d548a6ec 13,99,163
+  s_745f2c121ff6ca::t_8e17c230424ad7 14,16-25
+src/components/incentives/IncentivesCard.tsx
+  s_745f2c121ff6ca::t_e6808da66ec435 27
+src/components/ShowMoreButton/index.tsx
+  s_745f2c121ff6ca::t_f41039727e129d 1-40
+src/utils/theme.tsx
+  s_745f2c121ff6ca::t_2048b871a87529 848
+  s_745f2c121ff6ca::t_cb59af18b6bad8 901-903,1403-1405
+src/modules/umbrella/UnstakeModalContent.tsx
+  s_745f2c121ff6ca::t_d8305e139a3f03 226
+pages/reserve-overview.page.tsx
+  s_745f2c121ff6ca::t_ea61461da95c02 118
+  s_08304495e88c91::t_d33eba86c7fbbb 143
+  s_08304495e88c91::t_f6c9d2e39c3202 129-131
+  s_745f2c121ff6ca::t_8ffaa1392bd42e 132
+  s_745f2c121ff6ca::t_a540a050922783 142
+src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 7
+  s_745f2c121ff6ca::t_d8305e139a3f03 236
+src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/index.tsx
+  s_745f2c121ff6ca::t_6e3ef5207768b0 2,4,9-17,52-53,57,60-61,63-66,88,97-112,114-121,160-163,178,183-184,186-188
+  s_745f2c121ff6ca::t_4199d62964da73 31-32,38,48,54,56,58-59,62,67-75
+  s_745f2c121ff6ca::t_db33e990bccf41 3,8,18-25,33-35,37,39-45,47,49-51,55,76-87,96,122-123,125-159,164-177,179-182,189-192
+  s_08304495e88c91::t_a05318f0695184 46
+  s_745f2c121ff6ca::t_7034a67af7b41d 7
+  s_745f2c121ff6ca::t_854079bc78ced4 5
+  s_08304495e88c91::t_0adf9a4c352abb 26-30,36
+  s_745f2c121ff6ca::t_3f27014075bd56 1,6,89-95,113,185
+  s_08304495e88c91::t_ef2e17b4fb8930 124
+src/components/icons/FilterLinesIcon.tsx
+  s_745f2c121ff6ca::t_a941039c1a517c 6,9-11
+  s_745f2c121ff6ca::t_1310b1cc67a3bc 1-5,7-8,12-13
+src/locales/el/messages.js
+  s_08304495e88c91::t_318e232ecf57d3 1
+src/modules/reserve-overview/ReserveConfigSection/utils/configRows.ts
+  s_745f2c121ff6ca::t_963770fb31f8d6 31-32
+  s_745f2c121ff6ca::t_82c415d4f585e1 35,37-50
+  s_08304495e88c91::t_8ebb66888ac457 52-64,70
+  s_745f2c121ff6ca::t_ae9ac3bcb33f89 1,3-30,33-34,36,51,65-69,71-87
+  s_08304495e88c91::t_9db067745c3803 2
+src/locales/en/messages.po
+  s_745f2c121ff6ca::t_0325f82f3cd6b9 732-735,794-796,4733-4735
+  s_745f2c121ff6ca::t_56def3a9176dff 754
+  s_745f2c121ff6ca::t_cc29cb972bc43c 3046
+  s_08304495e88c91::t_318e232ecf57d3 25,2387,3382-3383,4053
+  s_745f2c121ff6ca::t_c670738ad8cae8 962
+  s_745f2c121ff6ca::t_4fcd33074c1b07 736-739,1470-1472,2093-2096,2228,3101-3103,3552,3849,4585-4587
+  s_08304495e88c91::t_fc92f146f7c78e 1184,1584,3676,3850
+  s_745f2c121ff6ca::t_599a46d16ee011 837,2976
+  s_745f2c121ff6ca::t_7219c80be2e728 26-28
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 1469,3836,4172
+  s_745f2c121ff6ca::t_4336c5c6ee0ff9 229,350,509-510,548,705,803,874,912-916,936-937,1396,1811-1814,2048-2050,2236,2260-2264,2269-2272,2277,2313-2316,2432-2436,2516-2519,2605,2846,2859-2867,3047-3050,3055,3134-3137,3322,3689-3692,3717-3720,3781-3784,3941,4054-4055,4140-4142,4168-4170,4263-4266,4526-4529,4753
+  s_745f2c121ff6ca::t_84f8be55cdc692 567,4167,4752
+  s_08304495e88c91::t_02aa4f196e0e78 797,2051,3104,4143,4588,4736
+src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
+  s_745f2c121ff6ca::t_d14f259f682099 129-130,137-156
+  s_745f2c121ff6ca::t_faf09df426b8de 100-106,109,118
+  s_745f2c121ff6ca::t_378daee6dd4bd7 57
+src/modules/reserve-overview/ReserveStatsRow/index.tsx
+  s_745f2c121ff6ca::t_c1ca5f958f2590 1-2,9-11,18-19
+  s_745f2c121ff6ca::t_854079bc78ced4 12-17
+  s_745f2c121ff6ca::t_8ba436371759cb 3-8,20
+src/components/transactions/Supply/CollateralOptionsSelector.tsx
+  s_745f2c121ff6ca::t_1549d59922be15 24-26,28,40,155,176-178,207,228,232,251,253-257,283-284
+  s_08304495e88c91::t_92f4a89623162d 405-407
+  s_745f2c121ff6ca::t_54fdb024938f4f 252
+  s_08304495e88c91::t_fa334269458d32 32
+  s_745f2c121ff6ca::t_c03aa59899c467 198
+  s_745f2c121ff6ca::t_20cb6579048890 29-31,36,38,54,160-161,195,197,199,222,224,247,249,281,289-314,317-327,447
+  s_08304495e88c91::t_4ed53d35fff139 156,159
+  s_745f2c121ff6ca::t_3e3464ebce3367 315-316
+  s_745f2c121ff6ca::t_64a86e23309d0c 328
+src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
+  s_745f2c121ff6ca::t_c3ffe0d060f828 21,223
+  s_745f2c121ff6ca::t_e90a8c07c8844d 244,247
+  s_745f2c121ff6ca::t_51cf383b4a141a 424
+  s_745f2c121ff6ca::t_97b0a49f925f71 272,278-279,284,291,297-298,303,313
+  s_745f2c121ff6ca::t_854d4e9a996815 17,19,27
+  s_745f2c121ff6ca::t_d6393f7ebe9db5 22,24,274,293,315-316
+  s_745f2c121ff6ca::t_602f46a8bb06b0 226
+  s_745f2c121ff6ca::t_a36695f1c18865 20,23,25-26
+  s_745f2c121ff6ca::t_14cd7a58ceb7ee 349-350
+  s_745f2c121ff6ca::t_f0159367d87457 219-220
+  s_745f2c121ff6ca::t_0e728c2862786f 218,230
+  s_745f2c121ff6ca::t_8f71c4f7fdfe78 128,253,256
+src/components/transactions/SavingsGho/SavingsGhoWithdrawModalContent.tsx
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 6
+  s_745f2c121ff6ca::t_d8305e139a3f03 130
+src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
+  s_745f2c121ff6ca::t_d8305e139a3f03 128
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 6
+src/components/infoTooltips/tooltipLabelProps.ts
+  s_745f2c121ff6ca::t_1f3222c761aed3 1-2
+  s_745f2c121ff6ca::t_82f1f0fda83f44 3-7
+src/modules/reserve-overview/ReserveConfigSection/hooks/useBorrowableConfigRows.ts
+  s_745f2c121ff6ca::t_82c415d4f585e1 58-64
+  s_08304495e88c91::t_4fa4cde65609ec 5-11
+  s_08304495e88c91::t_8f9aa10f7d66b2 34-41
+  s_745f2c121ff6ca::t_19abf0f24240df 1-4,12-33,42-57,65-69
+src/modules/reserve-overview/ReserveStat/index.tsx
+  s_745f2c121ff6ca::t_59e77516583368 11
+  s_745f2c121ff6ca::t_032e3b29feb164 1-10,12-21,23-25
+  s_745f2c121ff6ca::t_5f52006d793c45 22
+src/modules/reserve-overview/graphs/GraphTimeRangeSelector.tsx
+  s_745f2c121ff6ca::t_d0c48b39d914ed 2-3,5-11,20,24-33,35-47
+  s_745f2c121ff6ca::t_3bfd9b33c7a877 34
+src/modules/reserve-overview/ReserveInterestRateCard/index.tsx
+  s_745f2c121ff6ca::t_7b5af12fe88ad9 11
+  s_08304495e88c91::t_260773b167d8d1 8,10,17,23-31,40,44
+  s_08304495e88c91::t_0aea1a9cd448d0 22
+  s_08304495e88c91::t_5a1ebfc8fd2f16 45
+  s_745f2c121ff6ca::t_0446b0ca9f7c07 20
+  s_08304495e88c91::t_6105d49600a767 7
+  s_745f2c121ff6ca::t_1d835eea42e90d 1-6,9,12-16,18-19,21,32-39,41-43,46-47
+src/modules/reserve-overview/ReserveSupplyCard/components/ReserveStatusAlerts/index.tsx
+  s_08304495e88c91::t_1d8232dc46fd61 25,37,47,59
+  s_745f2c121ff6ca::t_1c83584ff658aa 1-24,26-36,38-40,42-46,48-58,60-72
+  s_08304495e88c91::t_e8eacb46802a5a 41
+src/modules/reserve-overview/ReserveConfigSection/index.tsx
+  s_745f2c121ff6ca::t_5ba0ee711fc5b8 130
+  s_745f2c121ff6ca::t_3c837718cfa486 1,3,7-9,11-19,21,23-34,36,38-66,68-85,87,89,91-127,129,131-138
+  s_08304495e88c91::t_22bc839ba7134f 20
+  s_745f2c121ff6ca::t_f903159911a2d1 22
+  s_08304495e88c91::t_c2a74c8912e663 10
+  s_745f2c121ff6ca::t_1ff159c6df7728 37
+  s_745f2c121ff6ca::t_7225981316e781 67
+  s_745f2c121ff6ca::t_648c8d99074bd6 4-5,86,88,90
+  s_08304495e88c91::t_7a029a40ca98ad 35
+  s_08304495e88c91::t_8d336f8435a16f 128
+  s_745f2c121ff6ca::t_26f82f694f21b8 2,6
+src/components/BackButton/index.tsx
+  s_745f2c121ff6ca::t_815f1eeeeef1d6 23
+src/components/icons/InfoCircleIcon.tsx
+  s_745f2c121ff6ca::t_0432240173ff39 1-9
+src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/components/ConfigLabel/index.tsx
+  s_745f2c121ff6ca::t_4d50c60eb0f8da 3-14,16-17
+  s_745f2c121ff6ca::t_7225981316e781 1-2,15
+src/components/transactions/Supply/SupplyModalContent.tsx
+  s_08304495e88c91::t_5052a422a8b2d9 410
+  s_745f2c121ff6ca::t_da438854af6f3a 350
+  s_745f2c121ff6ca::t_9037fade268355 380
+src/modules/reserve-overview/ReserveSupplyCard/index.tsx
+  s_745f2c121ff6ca::t_d56a849ab373d3 1-3,5-17,19-21,23-43,45-46,48-51,56,62-81,83-101,103-128,130-154,156,158,160-186,188-202,204-205
+  s_745f2c121ff6ca::t_e133c481fea434 22,52-55,57-61,102
+  s_08304495e88c91::t_4513224ea89cfe 4
+  s_745f2c121ff6ca::t_4e1b8a23368c6c 155
+  s_08304495e88c91::t_2a8fde394a1bf8 44
+  s_08304495e88c91::t_d317bde662b7e2 157
+  s_08304495e88c91::t_a8a1f216de53d7 18
+  s_745f2c121ff6ca::t_c1227db0e26daa 47
+  s_745f2c121ff6ca::t_e7ec07b3ded0bb 82
+  s_745f2c121ff6ca::t_e58f383a019a4a 129
+  s_745f2c121ff6ca::t_d3db3726d7a181 159
+  s_08304495e88c91::t_b4678222da4061 187
+  s_08304495e88c91::t_9081d2b41f5544 203
+src/modules/reserve-overview/graphs/chartStyles.ts
+  s_745f2c121ff6ca::t_d16d2e1ae03adc 1-3,5-10,40,42,44
+  s_745f2c121ff6ca::t_8f71c4f7fdfe78 11-15,17-21,23-39
+  s_745f2c121ff6ca::t_6ed93aa22bfc01 41,43
+  s_745f2c121ff6ca::t_eb886787f3d43b 4,16,22
+src/components/icons/EModeIcon.tsx
+  s_745f2c121ff6ca::t_7225981316e781 1-3,15-16
+  s_745f2c121ff6ca::t_54fdb024938f4f 4-7
+  s_745f2c121ff6ca::t_2048b871a87529 8-14
+src/components/transactions/UnStake/UnStakeModalContent.tsx
+  s_745f2c121ff6ca::t_d8305e139a3f03 137
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 6
+src/components/transactions/StkGhoMigrate/StkGhoMigrateModalContent.tsx
+  s_745f2c121ff6ca::t_6205f1ac45fbb6 92
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "751d54dc3f26a41369375b41178bb11c00cd81c2",
+  "prompts": {},
+  "sessions": {
+    "s_08304495e88c91": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dc4cbc93-5d00-476a-a734-1d52b8ec3dd5",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_745f2c121ff6ca": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a5386d6e-c9a9-44ef-aa1a-14ebd03f0647",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

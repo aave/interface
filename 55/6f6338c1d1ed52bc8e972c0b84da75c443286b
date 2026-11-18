@@ -1,0 +1,21 @@
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_2626207dfe2062::t_dba4873f7030b4 194-205
+src/components/transactions/Swap/constants/__tests__/cow.constants.test.ts
+  s_2626207dfe2062::t_78889840e779a3 14-27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "556f6338c1d1ed52bc8e972c0b84da75c443286b",
+  "prompts": {},
+  "sessions": {
+    "s_2626207dfe2062": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d368252b-e2ba-42ff-ace3-0bd746787cf1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
