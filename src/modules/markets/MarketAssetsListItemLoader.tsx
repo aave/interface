@@ -6,7 +6,7 @@ import { ListItem } from '../../components/lists/ListItem';
 export const MarketAssetsListItemLoader = () => {
   return (
     <ListItem px={5} minHeight={76}>
-      <ListColumn isRow maxWidth={280}>
+      <ListColumn isRow minWidth={240} maxWidth={280}>
         <Skeleton variant="circular" width={40} height={40} />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
           <Skeleton width={75} height={24} />

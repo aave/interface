@@ -1,5 +1,10 @@
-import { Box, Typography, TypographyProps } from '@mui/material';
-import { AnimationEvent, useEffect, useMemo, useState } from 'react';
+import {
+  Box,
+  Typography,
+  TypographyProps,
+  unstable_useEnhancedEffect as useEnhancedEffect,
+} from '@mui/material';
+import { AnimationEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { figVars } from 'src/utils/figmaColors';
 import { darkScheme } from 'src/utils/theme';
 
@@ -87,6 +92,13 @@ const glintSx = {
 } as const;
 
 const inkTextSx = { position: 'relative', zIndex: 1 } as const;
+const measureSx = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  visibility: 'hidden',
+  whiteSpace: 'pre',
+} as const;
 const letterSx = { position: 'relative', display: 'inline-block', whiteSpace: 'pre' } as const;
 const gaugeSx = { visibility: 'hidden' } as const;
 const inkSx = { position: 'absolute', inset: 0 } as const;
@@ -95,13 +107,18 @@ const inkRunningSx = {
   animation: `${WEIGHT_NAME} ${SWEEP_MS}ms ease-in-out calc(var(--letter-phase) * ${SWEEP_MS}ms) infinite`,
 } as const;
 
-const splitLetters = (text: string, running: boolean) =>
+const splitLetters = (text: string, running: boolean, kerning: number[]) =>
   [...text].map((letter, index, all) => (
     <Box
       key={`${index}-${letter}`}
       component="span"
       sx={letterSx}
-      style={{ '--letter-phase': (index + 0.5) / all.length / 2 - 0.25 - WEIGHT_LEAD } as object}
+      style={
+        {
+          '--letter-phase': (index + 0.5) / all.length / 2 - 0.25 - WEIGHT_LEAD,
+          marginRight: kerning[index] || undefined,
+        } as object
+      }
     >
       <Box component="span" sx={gaugeSx}>
         {letter}
@@ -111,6 +128,44 @@ const splitLetters = (text: string, running: boolean) =>
       </Box>
     </Box>
   ));
+
+const useLetterKerning = (text: string) => {
+  const wordRef = useRef<HTMLSpanElement>(null);
+  const lettersRef = useRef<HTMLSpanElement>(null);
+  const [kerning, setKerning] = useState<number[]>([]);
+
+  useEnhancedEffect(() => {
+    const word = wordRef.current;
+    const letters = lettersRef.current;
+    if (!word || !letters) return;
+
+    const measure = () => {
+      const textNode = word.firstChild;
+      if (!textNode) return;
+      const range = document.createRange();
+      let offset = 0;
+      const starts = [...text].map((letter) => {
+        range.setStart(textNode, offset);
+        offset += letter.length;
+        range.setEnd(textNode, offset);
+        return range.getBoundingClientRect().left;
+      });
+      starts.push(word.getBoundingClientRect().right);
+      const next = Array.from(letters.children, (letter, index) => {
+        const kernedAdvance = starts[index + 1] - starts[index];
+        return Math.round((kernedAdvance - letter.getBoundingClientRect().width) * 100) / 100;
+      });
+      setKerning((prev) => (prev.join() === next.join() ? prev : next));
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(word);
+    return () => observer.disconnect();
+  }, [text]);
+
+  return { wordRef, lettersRef, kerning };
+};
 
 export interface ShimmerTextProps extends Omit<TypographyProps, 'children'> {
   text: string;
@@ -130,7 +185,8 @@ export const ShimmerText = ({ text, active = false, sx, ...props }: ShimmerTextP
     if (!active && event.animationName === SWEEP_NAME) setFinishing(false);
   };
 
-  const letters = useMemo(() => splitLetters(text, running), [text, running]);
+  const { wordRef, lettersRef, kerning } = useLetterKerning(text);
+  const letters = useMemo(() => splitLetters(text, running, kerning), [text, running, kerning]);
   const [bloom, glint] = useMemo(() => {
     const animation = running ? SWEEP_ANIMATION : 'none';
     return [
@@ -148,7 +204,10 @@ export const ShimmerText = ({ text, active = false, sx, ...props }: ShimmerTextP
       {...props}
       sx={[rootSx, ...(Array.isArray(sx) ? sx : [sx])]}
     >
-      <Box component="span" sx={inkTextSx}>
+      <Box component="span" ref={wordRef} sx={measureSx}>
+        {text}
+      </Box>
+      <Box component="span" ref={lettersRef} sx={inkTextSx}>
         {letters}
       </Box>
       <Box component="span" aria-hidden sx={bloom}>

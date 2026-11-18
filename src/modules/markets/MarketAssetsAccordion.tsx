@@ -41,7 +41,7 @@ export const MarketAssetsAccordion = ({
           }}
         />
         <Typography variant="h3" color="inherit">
-          {title} ({count})
+          {title}
         </Typography>
       </ButtonBase>
       <Collapse in={open} unmountOnExit>

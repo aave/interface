@@ -28,6 +28,8 @@ interface ListWrapperProps {
   onCollapseChange?: (collapsed: boolean) => void;
 }
 
+const bandInlinePaddingSx = { pl: { xs: '1rem', xsm: '1.25rem' }, pr: '1rem' };
+
 export const ListWrapper = ({
   children,
   localStorageName,
@@ -123,8 +125,6 @@ export const ListWrapper = ({
             flexDirection: 'column',
             gap: '1.25rem',
             ...cardHeaderBandSx,
-            pl: { xs: '1rem', xsm: '1.25rem' },
-            pr: '1rem',
             borderTopLeftRadius: 'inherit',
             borderTopRightRadius: 'inherit',
             // Empty list: the children box is present but renders nothing.
@@ -140,6 +140,7 @@ export const ListWrapper = ({
               flexWrap: 'wrap',
               alignItems: 'center',
               minHeight: CARD_HEADING_HEIGHT,
+              ...bandInlinePaddingSx,
               // Title type (H4) — scoped to this row, NOT the whole band, or it would flatten the
               // second row's stat typography too. Consumers pass their own heading variant, so
               // neutralise those; control typography (search, selects) keeps its own smaller type.
@@ -228,9 +229,7 @@ export const ListWrapper = ({
           {/* Second header row. Its divider is drawn as this row's own top border rather than a
               sibling <Divider>, so an empty row takes the rule with it — consumers pass topInfo as
               a fragment that can render nothing (e.g. "Your borrows" with nothing borrowed), which
-              is truthy here but produces no DOM. Being a child of the padded band, the rule insets
-              to the band's left/right padding instead of running edge to edge like the bottom
-              hairline. */}
+              is truthy here but produces no DOM. */}
           {topInfo && (
             <Box
               sx={{
@@ -241,6 +240,7 @@ export const ListWrapper = ({
                 borderTop: '1px solid',
                 borderColor: 'border-0',
                 pt: '1.25rem',
+                ...bandInlinePaddingSx,
                 '&:empty': { display: 'none' },
                 overflowX: tooltipOpen ? 'hidden' : 'auto',
               }}
