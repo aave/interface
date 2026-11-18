@@ -78,7 +78,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
       button
       data-cy={`marketListItemListItem_${reserve.underlyingToken.symbol.toUpperCase()}`}
     >
-      <ListColumn isRow maxWidth={280}>
+      <ListColumn isRow minWidth={240} maxWidth={280}>
         <TokenIcon symbol={displayIconSymbol} fontSize="large" />
         <Box sx={{ pl: 3.5, overflow: 'hidden' }}>
           <Typography variant="subheader1" noWrap>

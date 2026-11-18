@@ -62,6 +62,7 @@ function TransactionRowItem({ transaction, stacked }: TransactionRowItemProps) {
       )}
       {explorerLink && (
         <ExternalLinkButton
+          variant="tertiary"
           href={explorerLink}
           onClick={() =>
             trackEvent(GENERAL.EXTERNAL_LINK, { funnel: 'TxHistoy', Link: 'Etherscan' })

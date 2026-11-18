@@ -24,7 +24,7 @@ import {
 import { isAssetHidden } from 'src/modules/dashboard/lists/constants';
 import { useRootStore } from 'src/store/root';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
-import { figVars } from 'src/utils/figmaColors';
+import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { replaceUnderscoresWithSpaces } from 'src/utils/utils';
 
@@ -289,17 +289,16 @@ export const CollateralOptionsSelector = React.memo(
     const categoryAssets = selectedEmodeId !== 0 && eModes[selectedEmodeId] && (
       <Accordion
         disableGutters
-        elevation={0}
+        square
         sx={{
           mt: 2,
           '&:before': { display: 'none' },
-          bgcolor: 'transparent',
+          bgcolor: 'bg-2',
+          borderRadius: '8px',
+          boxShadow: figSurfaceShadow('shadow-stroke-1'),
         }}
       >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          sx={{ px: 0, minHeight: 'auto', '& .MuiAccordionSummary-content': { my: 1 } }}
-        >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 3, minHeight: 'auto' }}>
           <Typography variant="description" color="fg-2">
             <Trans>Category assets</Trans>
           </Typography>

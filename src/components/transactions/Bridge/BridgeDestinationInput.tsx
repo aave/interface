@@ -32,12 +32,14 @@ export const BridgeDestinationInput = ({
   const [useConnectedAccount, setUseConnectedAccount] = useState(true);
   const [destinationAccount, setDestinationAccount] = useState('');
   const [validatingENS, setValidatingENS] = useState(false);
+  const [addressBlurred, setAddressBlurred] = useState(false);
 
   useEffect(() => {
     if (isContractAddress === undefined) {
       return;
     }
 
+    setAddressBlurred(false);
     if (isContractAddress) {
       setUseConnectedAccount(false);
       setDestinationAccount('');
@@ -57,7 +59,7 @@ export const BridgeDestinationInput = ({
       setValidatingENS(false);
     };
 
-    if (!isAddress(destinationAccount)) {
+    if (destinationAccount.includes('.')) {
       checkENS();
     }
   }, [destinationAccount]);
@@ -71,7 +73,8 @@ export const BridgeDestinationInput = ({
     }
   }, [destinationAccount, onInputError, onInputValid]);
 
-  const showWarning = !useConnectedAccount && !isAddress(destinationAccount);
+  const showWarning =
+    addressBlurred && !useConnectedAccount && !validatingENS && !isAddress(destinationAccount);
 
   return (
     <Stack direction="column" gap="0.5rem" width="100%">
@@ -94,6 +97,7 @@ export const BridgeDestinationInput = ({
                   setDestinationAccount('');
                   onInputError();
                 }
+                setAddressBlurred(false);
                 setUseConnectedAccount(newValue);
               }}
             />
@@ -111,6 +115,8 @@ export const BridgeDestinationInput = ({
         value={destinationAccount}
         disabled={useConnectedAccount || fetchingIsContractAddress}
         onChange={(e) => setDestinationAccount(e.target.value)}
+        onFocus={() => setAddressBlurred(false)}
+        onBlur={() => setAddressBlurred(true)}
         placeholder={t`Enter ETH address or ENS`}
         sx={{
           height: '44px',
@@ -125,7 +131,7 @@ export const BridgeDestinationInput = ({
           ) : null
         }
       />
-      {showWarning && !useConnectedAccount && !fetchingIsContractAddress && (
+      {showWarning && !fetchingIsContractAddress && (
         <Typography variant="helperText" color="error.main">
           <Trans>Enter a valid address</Trans>
         </Typography>

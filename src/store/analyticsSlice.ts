@@ -21,6 +21,13 @@ const createAppContextPlugin = (context: string) => ({
 
 const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || '';
 
+// Remote config can be downloaded and partly executed as code, and custom enrichment loads
+// scripts from Amplitude's CDN. Neither is used, so keep them off regardless of SDK defaults.
+const AMPLITUDE_HARDENED_OPTIONS = {
+  fetchRemoteConfig: false,
+  customEnrichment: false,
+} as const;
+
 // Consent version - increment this to force all users to re-consent
 const CONSENT_VERSION = 'v1';
 export const CONSENT_KEY = `userAcceptedAnalytics_${CONSENT_VERSION}`;
@@ -92,7 +99,18 @@ export const createAnalyticsSlice: StateCreator<
         if (!isInitialized) {
           init(AMPLITUDE_API_KEY, {
             // serverZone: 'EU',
-            autocapture: true, // disable if we don't want to capture every click and page view on the site
+            autocapture: {
+              attribution: true,
+              pageViews: true,
+              sessions: true,
+              elementInteractions: false,
+              formInteractions: false,
+              fileDownloads: false,
+              frustrationInteractions: false,
+              networkTracking: false,
+              webVitals: false,
+            },
+            ...AMPLITUDE_HARDENED_OPTIONS,
             trackingOptions: {
               ipAddress: true,
               language: true,
@@ -110,6 +128,7 @@ export const createAnalyticsSlice: StateCreator<
           init(AMPLITUDE_API_KEY, {
             // serverZone: 'EU',
             autocapture: false,
+            ...AMPLITUDE_HARDENED_OPTIONS,
             trackingOptions: {
               ipAddress: false,
               language: false,
@@ -150,6 +169,7 @@ export const createAnalyticsSlice: StateCreator<
           // Initialize minimal tracking just for this one event
           init(AMPLITUDE_API_KEY, {
             autocapture: false,
+            ...AMPLITUDE_HARDENED_OPTIONS,
             trackingOptions: {
               ipAddress: false,
               language: false,
