@@ -175,7 +175,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'ETH',
     wrappedBaseAssetSymbol: 'WETH',
     baseAssetDecimals: 18,
-    explorerLink: 'https://ethscanner.io',
+    explorerLink: 'https://etherscan.io',
     networkLogoPath: '/icons/networks/ethereum.svg',
     wagmiChain: mainnet,
   },
