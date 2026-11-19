@@ -6,7 +6,11 @@ import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import { getAccount, getWalletClient } from 'wagmi/actions';
 
-import { ADAPTER_FACTORY, HOOK_ADAPTER_PER_TYPE } from '../../constants/cow.constants';
+import {
+  ADAPTER_FACTORY,
+  ADAPTER_FACTORY_DOMAIN_NAME,
+  HOOK_ADAPTER_PER_TYPE,
+} from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
 import { SwapState } from '../../types';
 import { COW_ENV } from './orders.helpers';
@@ -42,6 +46,7 @@ export const getCowFlashLoanSdk = async (chainId: number) => {
   return new AaveCollateralSwapSdk({
     hookAdapterPerType: HOOK_ADAPTER_PER_TYPE,
     aaveAdapterFactory: ADAPTER_FACTORY,
+    adapterDomainName: ADAPTER_FACTORY_DOMAIN_NAME,
     hooksGasLimit: {
       pre: BigInt(300000),
       post: BigInt(700000),
