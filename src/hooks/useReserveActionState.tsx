@@ -10,6 +10,8 @@ import {
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { WalletEmptyInfo } from 'src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo';
+import { DynamicCapBorrowNote } from 'src/modules/dynamic-caps/DynamicCapNotices';
+import { getDynamicCap, useReserveVariant } from 'src/modules/dynamic-caps/useDynamicCap';
 import { useRootStore } from 'src/store/root';
 import { assetCanBeBorrowedByUser } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
@@ -42,6 +44,8 @@ export const useReserveActionState = ({
     ])
   );
   const { openFaucet } = useModalContext();
+  const dynamicCap = getDynamicCap(reserve);
+  const [dynamicCapVariant] = useReserveVariant();
 
   const { bridge, name: networkName } = currentNetworkConfig;
 
@@ -162,7 +166,16 @@ export const useReserveActionState = ({
         {maxAmountToSupply === '0' &&
           supplyCap?.determineWarningDisplay({ supplyCap, icon: false, sx: { mb: 0 } })}
         {maxAmountToBorrow === '0' &&
-          borrowCap?.determineWarningDisplay({ borrowCap, icon: false, sx: { mb: 0 } })}
+          (dynamicCap && dynamicCapVariant !== 'today'
+            ? // Only when the cap is what stops the borrow: the alerts above cover the other causes.
+              dynamicCap.isCurrentCapReached && (
+                <DynamicCapBorrowNote
+                  cap={dynamicCap}
+                  symbol={reserve.symbol}
+                  sx={{ width: '100%', mb: 0 }}
+                />
+              )
+            : borrowCap?.determineWarningDisplay({ borrowCap, icon: false, sx: { mb: 0 } }))}
         {reserve.isIsolated &&
           balance !== '0' &&
           user?.totalCollateralUSD !== '0' &&

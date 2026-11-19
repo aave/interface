@@ -26,6 +26,7 @@ import { ComplianceProvider } from 'src/hooks/compliance/compliance';
 import { ModalContextProvider } from 'src/hooks/useModal';
 import { SwapOrdersTrackingProvider } from 'src/hooks/useSwapOrdersTracking';
 import { Web3ContextProvider } from 'src/libs/web3-data-provider/Web3Provider';
+import { DynamicCapsTweaks } from 'src/modules/dynamic-caps/DynamicCapsTweaks';
 import { useRootStore } from 'src/store/root';
 import { SharedDependenciesProvider } from 'src/ui-config/SharedDependenciesProvider';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
@@ -197,6 +198,9 @@ export default function MyApp(props: MyAppProps) {
                                     <DebtSwapModal />
                                     <CancelCowOrderModal />
                                     <CowOrderToast />
+
+                                    {/* Design-review switches: renders nothing outside preview builds */}
+                                    <DynamicCapsTweaks />
                                   </GasStationProvider>
                                 </AppDataProvider>
                               </SharedDependenciesProvider>

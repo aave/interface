@@ -20,6 +20,9 @@ import { getBorrowableOnlyInEModeLabels } from 'src/utils/borrowableOnlyInEMode'
 import { GENERAL } from 'src/utils/events';
 import { useShallow } from 'zustand/shallow';
 
+import { DynamicCapChip } from '../dynamic-caps/DynamicCapChip';
+import { DynamicCapNotice } from '../dynamic-caps/DynamicCapNotices';
+import { useDynamicCap, useReserveVariant } from '../dynamic-caps/useDynamicCap';
 import { BorrowInfo } from './BorrowInfo';
 import { InterestRateModelGraphContainer } from './graphs/InterestRateModelGraphContainer';
 import { ReserveEModePanel } from './ReserveEModePanel';
@@ -55,6 +58,9 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   const { supplyCap, borrowCap, debtCeiling } = useAssetCapsSDK();
   const showSupplyCapStatus: boolean = reserve.supplyInfo.supplyCap.amount.value !== '0';
   const showBorrowCapStatus: boolean = reserve.borrowInfo?.borrowCap.amount.value !== '0';
+
+  const dynamicCap = useDynamicCap(reserve.underlyingToken.address);
+  const [dynamicCapVariant] = useReserveVariant();
 
   const borrowableOnlyInEModeLabels = getBorrowableOnlyInEModeLabels(reserve);
 
@@ -133,7 +139,10 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
         <>
           <Divider sx={{ my: { xs: 6, sm: 10 } }} />
           <PanelRow>
-            <PanelTitle>Borrow info</PanelTitle>
+            <Box sx={{ minWidth: { xs: '170px' }, mr: 4, mb: { xs: 6, md: 0 } }}>
+              <PanelTitle sx={{ minWidth: 0, mr: 0, mb: 0 }}>Borrow info</PanelTitle>
+              {dynamicCap && dynamicCapVariant === 'max-cap' && <DynamicCapChip sx={{ mt: 2 }} />}
+            </Box>
             <Box sx={{ flexGrow: 1, minWidth: 0, maxWidth: '100%', width: '100%' }}>
               {reserve.borrowInfo?.borrowingState !== 'ENABLED' &&
                 !reserve.eModeInfo?.some((eMode) => eMode.canBeBorrowed) && (
@@ -149,6 +158,13 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
                   <BorrowableOnlyInEModeWarning />
                 </Alert>
               )}
+              {dynamicCap &&
+                (dynamicCapVariant === 'notice' || dynamicCapVariant === 'combined') && (
+                  <DynamicCapNotice
+                    cap={dynamicCap}
+                    measuredAgainstMaxCap={dynamicCapVariant === 'combined'}
+                  />
+                )}
               <BorrowInfo
                 reserve={reserve}
                 currentMarketData={currentMarketData}

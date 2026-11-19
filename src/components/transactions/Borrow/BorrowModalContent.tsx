@@ -14,6 +14,8 @@ import {
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
 import { ERC20TokenType } from 'src/libs/web3-data-provider/Web3Provider';
+import { DynamicCapBorrowNote } from 'src/modules/dynamic-caps/DynamicCapNotices';
+import { getDynamicCap, useReserveVariant } from 'src/modules/dynamic-caps/useDynamicCap';
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import {
@@ -61,6 +63,8 @@ export const BorrowModalContent = ({
   const { marketReferencePriceInUsd } = useAppDataContext();
   const currentNetworkConfig = useRootStore((store) => store.currentNetworkConfig);
   const { borrowCap } = useAssetCaps();
+  const dynamicCap = getDynamicCap(poolReserve);
+  const [dynamicCapVariant] = useReserveVariant();
 
   const [amount, setAmount] = useState('');
   const [riskCheckboxAccepted, setRiskCheckboxAccepted] = useState(false);
@@ -152,7 +156,11 @@ export const BorrowModalContent = ({
 
   return (
     <>
-      {borrowCap.determineWarningDisplay({ borrowCap })}
+      {dynamicCap && dynamicCapVariant !== 'today' ? (
+        <DynamicCapBorrowNote cap={dynamicCap} symbol={poolReserve.symbol} />
+      ) : (
+        borrowCap.determineWarningDisplay({ borrowCap })
+      )}
 
       <AssetInput
         value={amount}

@@ -17,7 +17,7 @@ interface ContentWithTooltipProps {
 }
 
 /** Set on the popper to pick the card surface; `PopperProps` has no room for a data attribute. */
-const CARD_CLASS = 'content-tooltip-card';
+export const CARD_CLASS = 'content-tooltip-card';
 
 export const PopperComponent = styled(Popper)(({ theme }) =>
   theme.unstable_sx({

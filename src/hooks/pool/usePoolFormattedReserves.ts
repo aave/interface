@@ -7,6 +7,12 @@ import {
 import { formatReservesAndIncentives } from '@aave/math-utils';
 import dayjs from 'dayjs';
 import memoize from 'micro-memoize';
+import {
+  CapScenario,
+  marketHasDynamicCaps,
+  useCapScenario,
+  withSimulatedDynamicCaps,
+} from 'src/modules/dynamic-caps/simulatedCaps';
 import { reserveSortFn } from 'src/store/poolSelectors';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { fetchIconSymbolAndName, IconMapInterface } from 'src/ui-config/reservePatches';
@@ -23,6 +29,11 @@ export type FormattedReservesAndIncentives = ReturnType<
 >[number] &
   IconMapInterface & {
     isWrappedBaseAsset: boolean;
+    /**
+     * Set when the reserve's borrow cap is dynamic. `borrowCap` is then the current cap, which moves
+     * with borrowing, and `maxCap` is the ceiling it can rise to (token units).
+     */
+    dynamicBorrowCap?: { maxCap: string };
   } & ReserveDataHumanized;
 
 const formatReserves = memoize(
@@ -52,9 +63,16 @@ const formatReserves = memoize(
   }
 );
 
+// PREVIEW ONLY: dynamic caps are simulated until the contracts are deployed (see simulatedCaps.ts).
+const applySimulatedDynamicCaps = memoize(
+  (reserves: FormattedReservesAndIncentives[], market: string, scenario: CapScenario) =>
+    withSimulatedDynamicCaps(reserves, market, scenario)
+);
+
 export const usePoolsFormattedReserves = (
   marketsData: MarketDataType[]
 ): SimplifiedUseQueryResult<FormattedReservesAndIncentives[]>[] => {
+  const [capScenario] = useCapScenario();
   const poolsReservesQueries = usePoolsReservesHumanized(marketsData);
   const poolsReservesIncentivesQueries = usePoolsReservesIncentivesHumanized(marketsData);
   const poolsEModesQueries = usePoolsEModes(marketsData);
@@ -69,7 +87,15 @@ export const usePoolsFormattedReserves = (
       incentivesData: ReservesIncentiveDataHumanized[],
       poolsEModesData: EmodeDataHumanized[]
     ) => {
-      return formatReserves(reservesData, incentivesData, poolsEModesData, networkConfig);
+      const reserves: FormattedReservesAndIncentives[] = formatReserves(
+        reservesData,
+        incentivesData,
+        poolsEModesData,
+        networkConfig
+      );
+      return marketHasDynamicCaps(marketData.market)
+        ? applySimulatedDynamicCaps(reserves, marketData.market, capScenario)
+        : reserves;
     };
     return combineQueries(
       [poolReservesQuery, poolReservesIncentivesQuery, poolEModesQuery] as const,

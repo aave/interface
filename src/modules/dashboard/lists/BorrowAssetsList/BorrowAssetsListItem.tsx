@@ -2,6 +2,8 @@ import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Button } from '@mui/material';
 import { useModalContext } from 'src/hooks/useModal';
+import { DynamicCapChipWithTooltip } from 'src/modules/dynamic-caps/DynamicCapChip';
+import { getDynamicCap, useReserveVariant } from 'src/modules/dynamic-caps/useDynamicCap';
 import { useRootStore } from 'src/store/root';
 import { DashboardReserve } from 'src/utils/dashboardSortUtils';
 import { DASHBOARD } from 'src/utils/events';
@@ -30,8 +32,11 @@ export const BorrowAssetsListItem = ({
   variableDebtTokenAddress,
   underlyingAsset,
   isFreezed,
+  reserve,
 }: DashboardReserve) => {
   const { openBorrow } = useModalContext();
+  const dynamicCap = getDynamicCap(reserve);
+  const [dynamicCapVariant] = useReserveVariant();
 
   const disableBorrow = isFreezed || Number(availableBorrows) <= 0;
 
@@ -65,12 +70,17 @@ export const BorrowAssetsListItem = ({
         disabled={Number(availableBorrows) === 0}
         withTooltip={false}
         capsComponent={
-          <CapsHint
-            capType={CapType.borrowCap}
-            capAmount={borrowCap}
-            totalAmount={totalBorrows}
-            withoutText
-          />
+          // On a dynamic cap, "almost reached" is the normal state: say what the cap is instead.
+          dynamicCap && dynamicCapVariant !== 'today' ? (
+            <DynamicCapChipWithTooltip cap={dynamicCap} compact sx={{ ml: 2 }} />
+          ) : (
+            <CapsHint
+              capType={CapType.borrowCap}
+              capAmount={borrowCap}
+              totalAmount={totalBorrows}
+              withoutText
+            />
+          )
         }
       />
       {isGho ? (

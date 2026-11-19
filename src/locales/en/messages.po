@@ -26,6 +26,10 @@ msgstr "Reward APY at target liquidity"
 msgid "Thank you for submitting your inquiry!"
 msgstr "Thank you for submitting your inquiry!"
 
+#: src/modules/dynamic-caps/DynamicCapChip.tsx
+msgid "Current cap {currentCap}, {availableNow} available now. The cap rises automatically as borrowing grows, up to a maximum of {maxCap}."
+msgstr "Current cap {currentCap}, {availableNow} available now. The cap rises automatically as borrowing grows, up to a maximum of {maxCap}."
+
 #: src/components/incentives/EthenaIncentivesTooltipContent.tsx
 #: src/components/incentives/EtherfiIncentivesTooltipContent.tsx
 #: src/components/incentives/SonicIncentivesTooltipContent.tsx
@@ -377,6 +381,11 @@ msgstr "Watch Wallet"
 msgid "Migrate to {0} v3 Market"
 msgstr "Migrate to {0} v3 Market"
 
+#: src/modules/dynamic-caps/DynamicCapBar.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
+msgid "Current cap"
+msgstr "Current cap"
+
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Voting results"
 msgstr "Voting results"
@@ -515,6 +524,10 @@ msgstr "Spanish"
 msgid "Withdrawing GHO"
 msgstr "Withdrawing GHO"
 
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
+msgid "{availableNow} {symbol} can be borrowed now. This asset's dynamic borrow cap has reached its maximum of {maxCap} and will not rise further."
+msgstr "{availableNow} {symbol} can be borrowed now. This asset's dynamic borrow cap has reached its maximum of {maxCap} and will not rise further."
+
 #: src/components/transactions/DelegationTxsWrapper.tsx
 msgid "Signing"
 msgstr "Signing"
@@ -568,6 +581,10 @@ msgstr "Show less"
 msgid "Switch Network"
 msgstr "Switch Network"
 
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
+msgid "The current borrow cap is fully used, so no {symbol} can be borrowed right now. This is a dynamic cap: it is raised automatically, up to {maxCap}."
+msgstr "The current borrow cap is fully used, so no {symbol} can be borrowed right now. This is a dynamic cap: it is raised automatically, up to {maxCap}."
+
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoSavingsRate.tsx
@@ -585,6 +602,10 @@ msgstr "Total"
 #: src/modules/governance/proposal/ProposalTimeline.tsx
 msgid "Failed"
 msgstr "Failed"
+
+#: src/modules/dynamic-caps/DynamicCapBar.tsx
+msgid "Available now"
+msgstr "Available now"
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
@@ -650,6 +671,10 @@ msgstr "Rewards for legacy Savings GHO have ended. Migrate to continue earning."
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
+
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
+msgid "<0>Borrow caps on this market are dynamic.</0> Each cap rises automatically as borrowing grows, up to a maximum per asset, so a cap near 100% does not mean borrowing is closed."
+msgstr "<0>Borrow caps on this market are dynamic.</0> Each cap rises automatically as borrowing grows, up to a maximum per asset, so a cap near 100% does not mean borrowing is closed."
 
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets."
@@ -807,6 +832,10 @@ msgstr "There is not enough liquidity in {symbol} to complete this swap. Try low
 msgid "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
 msgstr "This is a program initiated by the Aave DAO and implemented by Merkl. Aave Labs does not guarantee the program and accepts no liability."
 
+#: src/modules/reserve-overview/BorrowInfo.tsx
+msgid "available now"
+msgstr "available now"
+
 #: src/modules/staking/BuyWithFiatModal.tsx
 msgid "Choose one of the on-ramp services"
 msgstr "Choose one of the on-ramp services"
@@ -938,6 +967,7 @@ msgstr "You've successfully submitted an order."
 
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+#: src/modules/reserve-overview/BorrowInfo.tsx
 msgid "Max"
 msgstr "Max"
 
@@ -1265,6 +1295,12 @@ msgstr "Read-only mode. Connect to a wallet to perform transactions."
 msgid "ends"
 msgstr "ends"
 
+#: src/modules/dynamic-caps/DynamicCapChip.tsx
+#: src/modules/markets/MarketAssetsList.tsx
+#: src/modules/markets/MarketAssetsListMobileItem.tsx
+msgid "Dynamic cap"
+msgstr "Dynamic cap"
+
 #: src/hooks/useReserveActionState.tsx
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
@@ -1375,6 +1411,10 @@ msgstr "Claiming {symbol}"
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
+#: src/modules/dynamic-caps/DynamicCapChip.tsx
+msgid "Current cap {currentCap}, {availableNow} available now. The cap has reached its maximum and will not rise further."
+msgstr "Current cap {currentCap}, {availableNow} available now. The cap has reached its maximum and will not rise further."
+
 #: src/components/transactions/FlowCommons/TxResultView/index.tsx
 msgid "All done"
 msgstr "All done"
@@ -1393,6 +1433,10 @@ msgstr "This asset is planned to be offboarded due to an Aave Protocol Governanc
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Cooldown period"
 msgstr "Cooldown period"
+
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
+msgid "<0>This asset has a dynamic borrow cap.</0> The current cap rises automatically as borrowing grows, up to a maximum of {maxCap}. Total borrowed below is shown against that maximum."
+msgstr "<0>This asset has a dynamic borrow cap.</0> The current cap rises automatically as borrowing grows, up to a maximum of {maxCap}. Total borrowed below is shown against that maximum."
 
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/migration/HFChange.tsx
@@ -1677,6 +1721,10 @@ msgstr "Expired"
 #: src/components/transactions/Warnings/ParaswapErrorDisplay.tsx
 msgid "Tip: Try increasing slippage or reduce input amount"
 msgstr "Tip: Try increasing slippage or reduce input amount"
+
+#: src/modules/dynamic-caps/DynamicCapChip.tsx
+msgid "Dynamic borrow cap"
+msgstr "Dynamic borrow cap"
 
 #: src/components/transactions/SavingsGho/SavingsGhoWithdrawActions.tsx
 msgid "Activating Cooldown"
@@ -2126,6 +2174,10 @@ msgstr "Liquidation Threshold"
 msgid "Share on X"
 msgstr "Share on X"
 
+#: src/modules/dynamic-caps/DynamicCapBar.tsx
+msgid "Available now {availableNow}"
+msgstr "Available now {availableNow}"
+
 #: src/modules/markets/MarketsTopPanel.tsx
 msgid "Total available"
 msgstr "Total available"
@@ -2398,6 +2450,10 @@ msgstr "Voting"
 #: src/components/transactions/Swap/actions/ActionsSkeleton.tsx
 msgid "Loading quote..."
 msgstr "Loading quote..."
+
+#: src/modules/dynamic-caps/DynamicCapBar.tsx
+msgid "Borrowed {borrowed}"
+msgstr "Borrowed {borrowed}"
 
 #: src/components/infoTooltips/EstimatedCostsForLimitSwap.tsx
 msgid "Estimated Costs & Fees"
@@ -2787,6 +2843,10 @@ msgstr "This is a program initiated and implemented by the Aave Chan Initiative 
 msgid "supply"
 msgstr "supply"
 
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
+msgid "<0>This asset has a dynamic borrow cap.</0> The cap rises automatically as borrowing grows, up to a maximum of {maxCap}. A cap near 100% does not mean borrowing is closed."
+msgstr "<0>This asset has a dynamic borrow cap.</0> The cap rises automatically as borrowing grows, up to a maximum of {maxCap}. A cap near 100% does not mean borrowing is closed."
+
 #: pages/dashboard.page.tsx
 #: src/components/transactions/FunCheckout/FunSupplyButton.tsx
 #: src/components/transactions/Supply/SupplyModal.tsx
@@ -3007,6 +3067,7 @@ msgstr "Bridge GHO"
 msgid "Search markets..."
 msgstr "Search markets..."
 
+#: src/modules/dynamic-caps/DynamicCapBar.tsx
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
@@ -3030,6 +3091,10 @@ msgstr "starts"
 #: src/modules/staking/StakingPanel.tsx
 msgid "Unstake now"
 msgstr "Unstake now"
+
+#: src/modules/dynamic-caps/DynamicCapBar.tsx
+msgid "Max cap {maxCap}"
+msgstr "Max cap {maxCap}"
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 msgid "Net worth"
@@ -3118,6 +3183,10 @@ msgstr "Please connect your wallet to get free testnet assets."
 #: src/components/transactions/TxActionsWrapper.tsx
 msgid "Approve Confirmed"
 msgstr "Approve Confirmed"
+
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
+msgid "<0>This asset has a dynamic borrow cap.</0> The current cap is fully used. It rises automatically as borrowing grows, up to a maximum of {maxCap}."
+msgstr "<0>This asset has a dynamic borrow cap.</0> The current cap is fully used. It rises automatically as borrowing grows, up to a maximum of {maxCap}."
 
 #: src/components/transactions/Swap/warnings/postInputs/ShieldSwapWarning.tsx
 msgid "This swap has a price impact of {0}%, which exceeds the 25% safety threshold. To proceed, disable Aave Shield in the settings menu."
@@ -3467,6 +3536,10 @@ msgstr "Deposit"
 msgid "Supply cap is exceeded"
 msgstr "Supply cap is exceeded"
 
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
+msgid "Borrowing more than this at once?"
+msgstr "Borrowing more than this at once?"
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "{0} collateral would have 0% LTV without E-Mode. Disable {1} as collateral to use this option."
 msgstr "{0} collateral would have 0% LTV without E-Mode. Disable {1} as collateral to use this option."
@@ -3556,6 +3629,10 @@ msgstr "The selected rate is lower than the market price. You might incur a loss
 #: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
 msgid "Blocked by Shield"
 msgstr "Blocked by Shield"
+
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
+msgid "{availableNow} {symbol} can be borrowed now. This asset has a dynamic borrow cap that rises automatically as borrowing grows, up to {maxCap}."
+msgstr "{availableNow} {symbol} can be borrowed now. This asset has a dynamic borrow cap that rises automatically as borrowing grows, up to {maxCap}."
 
 #: src/modules/staking/StakingHeader.tsx
 msgid "Total emission per day"
@@ -3655,6 +3732,10 @@ msgstr "Can be executed"
 #: src/components/transactions/Withdraw/WithdrawError.tsx
 msgid "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
 msgstr "Assets with zero LTV ({0}) must be withdrawn or disabled as collateral to perform this action"
+
+#: src/modules/reserve-overview/BorrowInfo.tsx
+msgid "Max cap"
+msgstr "Max cap"
 
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
 msgid "This asset has 0% LTV, meaning it does not contribute to borrowing power. Existing positions with this asset as collateral still count toward the liquidation threshold and protect your health factor. New positions cannot enable this asset as collateral."
@@ -3891,6 +3972,10 @@ msgstr "Collateral balance after repay"
 msgid "Staked tokens are wrapped and use an exchange rate. You may see fewer token shares, but the value matches your deposit and will grow as yield accrues."
 msgstr "Staked tokens are wrapped and use an exchange rate. You may see fewer token shares, but the value matches your deposit and will grow as yield accrues."
 
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
+msgid "<0>This asset's dynamic borrow cap is at its maximum.</0> The cap of {maxCap} will not rise further."
+msgstr "<0>This asset's dynamic borrow cap is at its maximum.</0> The cap of {maxCap} will not rise further."
+
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
@@ -4108,6 +4193,10 @@ msgstr "The address of the pool addresses provider is invalid"
 msgid "Your voting info"
 msgstr "Your voting info"
 
+#: src/modules/dynamic-caps/DynamicCapBar.tsx
+msgid "Current cap {currentCap}"
+msgstr "Current cap {currentCap}"
+
 #: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
@@ -4310,6 +4399,10 @@ msgstr "Language"
 #: src/components/infoTooltips/CollateralSwitchTooltip.tsx
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
+
+#: src/modules/reserve-overview/BorrowInfo.tsx
+msgid "Borrowed of max cap"
+msgstr "Borrowed of max cap"
 
 #: src/modules/governance/ProposalsV3List.tsx
 msgid "We couldn't find any proposals related to your search."
@@ -4655,6 +4748,8 @@ msgstr "Active {0} borrow is not compatible with this category. Repay your {1} b
 #: src/components/transactions/Warnings/MarketWarning.tsx
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/dynamic-caps/DynamicCapChip.tsx
+#: src/modules/dynamic-caps/DynamicCapNotices.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx
 #: src/modules/reserve-overview/SupplyInfo.tsx

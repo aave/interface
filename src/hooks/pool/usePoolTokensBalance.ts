@@ -1,4 +1,5 @@
 import { useQueries } from '@tanstack/react-query';
+import { withSimulatedBalances } from 'src/modules/dynamic-caps/simulatedWallet';
 import { UserPoolTokensBalances } from 'src/services/WalletBalanceService';
 import { useRootStore } from 'src/store/root';
 import { MarketDataType } from 'src/ui-config/marketsConfig';
@@ -16,7 +17,13 @@ export const usePoolsTokensBalance = <T = UserPoolTokensBalances[]>(
   return useQueries({
     queries: marketsData.map((marketData) => ({
       queryKey: queryKeysFactory.poolTokens(user, marketData),
-      queryFn: () => poolTokensBalanceService.getPoolTokensBalances(marketData, user),
+      // PREVIEW ONLY: a simulated wallet gets its simulated balances; any other user is untouched.
+      queryFn: async () =>
+        withSimulatedBalances(
+          await poolTokensBalanceService.getPoolTokensBalances(marketData, user),
+          marketData.market,
+          user
+        ),
       enabled: !!user,
       refetchInterval: POLLING_INTERVAL,
       ...opts,
