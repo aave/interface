@@ -83,14 +83,18 @@ export const getSwitchProvider = ({
 /**
  * How the bought collateral of a collateral swap reaches the user's position, which decides
  * whether a newly bought asset can become collateral (see CalculateHFAfterSwapProps).
+ * Both providers behave the same way:
  *
- * - CoW simple order: an aToken -> aToken order, so the bought aTokens arrive by transfer.
- * - CoW flash-loan adapter: the adapter supplies the bought asset on the user's behalf
- *   (CollateralSwapAaveV3Adapter.collateralSwapWithFlashLoan -> Pool.supply).
- * - ParaSwap: treated as a supply (unchanged behaviour); its flows have not been audited here.
+ * - Without a flash loan, the swap is a plain aToken -> aToken swap: a CoW order, or a ParaSwap
+ *   Augustus route (SwapActionsViaParaswap). Whoever holds the bought aTokens at the end (CoW
+ *   settlement, or Augustus / its executor, which is the supply recipient in ParaSwap's Aave
+ *   route) transfers them to the user, so they arrive by transfer.
+ *   ParaSwapLiquiditySwapAdapter.swapAndDeposit would supply instead, but the interface hasn't
+ *   used it since #2581 (non-flash collateral swaps became aToken swaps).
+ * - With a flash loan, the adapter supplies the bought asset on the user's behalf
+ *   (CoW CollateralSwapAaveV3Adapter -> Pool.supply, ParaSwapLiquiditySwapAdapter -> Pool.deposit)
+ *   before pulling the sold aTokens.
  */
 export const getCollateralSwapReceivedVia = (
-  provider: SwapProvider | undefined,
   useFlashloan: boolean | undefined
-): 'supply' | 'transfer' =>
-  provider === SwapProvider.COW_PROTOCOL && !useFlashloan ? 'transfer' : 'supply';
+): 'supply' | 'transfer' => (useFlashloan ? 'supply' : 'transfer');

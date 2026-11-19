@@ -147,7 +147,7 @@ export const healthFactorSensibleSwapFlowSelector = ({
       if (!hfParams) return undefined;
       return calculateHFAfterSwap({
         ...hfParams,
-        toAssetReceivedVia: getCollateralSwapReceivedVia(state.provider, useFlashloan),
+        toAssetReceivedVia: getCollateralSwapReceivedVia(useFlashloan),
       }).hfAfterSwap.toString();
     } catch {
       return undefined;

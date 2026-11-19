@@ -98,7 +98,7 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
     toAmountAfterSlippage: valueToBigNumber(toAmount || '0'),
     toAssetData: targetReserve,
     toAssetUserData: userTargetReserve,
-    toAssetReceivedVia: getCollateralSwapReceivedVia(state.provider, state.useFlashloan),
+    toAssetReceivedVia: getCollateralSwapReceivedVia(state.useFlashloan),
     fromAssetType: 'collateral',
     toAssetType: 'collateral',
     eModes,
