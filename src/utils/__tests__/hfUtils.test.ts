@@ -74,6 +74,100 @@ describe('calculateHFAfterSwap', () => {
   });
 });
 
+/**
+ * Bought collateral, CoW collateral swap. Simple order = aToken -> aToken, received by transfer
+ * (transfers never auto-enable collateral since v3.4). Flash-loan adapter = Pool.supply on the
+ * user's behalf (first supply auto-enables when effective LTV > 0).
+ *
+ * Where the bought asset doesn't count, the flash-loan path can revert on-chain: the adapter
+ * then pulls the sold aTokens and the Pool runs validateHFAndLtvzero. The HF below is what
+ * that check sees, so HF < 1 is blocked by the existing IS_LIQUIDATABLE guard.
+ */
+describe('calculateHFAfterSwap: CoW simple order vs flash-loan adapter', () => {
+  const ZERO_LTV = reserve('zero-ltv', '0', '0.78');
+
+  const swapTo = (
+    toAssetData: ComputedReserveData,
+    toAssetReceivedVia: 'supply' | 'transfer',
+    toAssetUserData?: Partial<ComputedUserReserve>
+  ) =>
+    calculateHFAfterSwap({
+      fromAmount: '10',
+      fromAssetData: TBTC,
+      fromAssetUserData: { usageAsCollateralEnabledOnUser: true } as ComputedUserReserve,
+      fromAssetType: 'collateral',
+      toAmountAfterSlippage: '10',
+      toAssetData,
+      toAssetUserData: toAssetUserData as ComputedUserReserve | undefined,
+      toAssetReceivedVia,
+      toAssetType: 'collateral',
+      user,
+      eModes: {},
+    }).hfAfterSwap.toNumber();
+
+  const counted = 1.51; // (90 * 0.75 + 10 * 0.78) / 50
+  const notCounted = 1.35; // 90 * 0.75 / 50
+
+  const heldOn = { scaledATokenBalance: '1', usageAsCollateralEnabledOnUser: true };
+  const heldOff = { scaledATokenBalance: '1', usageAsCollateralEnabledOnUser: false };
+  const notHeld = { scaledATokenBalance: '0', usageAsCollateralEnabledOnUser: false };
+
+  it.each`
+    row                               | toAsset     | userData     | transfer      | supply
+    ${'held, collateral on'}          | ${WBTC}     | ${heldOn}    | ${counted}    | ${counted}
+    ${'held, collateral off'}         | ${WBTC}     | ${heldOff}   | ${notCounted} | ${notCounted}
+    ${'not held, effective LTV > 0'}  | ${WBTC}     | ${notHeld}   | ${notCounted} | ${counted}
+    ${'not held (no entry), LTV > 0'} | ${WBTC}     | ${undefined} | ${notCounted} | ${counted}
+    ${'not held, effective LTV = 0'}  | ${ZERO_LTV} | ${notHeld}   | ${notCounted} | ${notCounted}
+  `(
+    '$row: simple order $transfer, flash-loan adapter $supply',
+    ({ toAsset, userData, transfer, supply }) => {
+      expect(swapTo(toAsset, 'transfer', userData)).toBeCloseTo(transfer);
+      expect(swapTo(toAsset, 'supply', userData)).toBeCloseTo(supply);
+    }
+  );
+
+  it('defaults to supply semantics', () => {
+    expect(
+      calculateHFAfterSwap({
+        fromAmount: '10',
+        fromAssetData: TBTC,
+        fromAssetUserData: { usageAsCollateralEnabledOnUser: true } as ComputedUserReserve,
+        fromAssetType: 'collateral',
+        toAmountAfterSlippage: '10',
+        toAssetData: WBTC,
+        toAssetType: 'collateral',
+        user,
+        eModes: {},
+      }).hfAfterSwap.toNumber()
+    ).toBeCloseTo(counted);
+  });
+
+  it("uses the base threshold for an asset that is only borrowable in the user's e-mode", () => {
+    // WBTC has an e-mode 1 entry that is borrow-only, so on-chain it keeps its 0.78 threshold.
+    const wbtcBorrowOnlyInEmode = {
+      ...WBTC,
+      eModes: [
+        { id: 1, collateralEnabled: false, eMode: { formattedLiquidationThreshold: '0.95' } },
+      ],
+    } as unknown as ComputedReserveData;
+    const hf = calculateHFAfterSwap({
+      fromAmount: '10',
+      fromAssetData: TBTC,
+      fromAssetUserData: { usageAsCollateralEnabledOnUser: true } as ComputedUserReserve,
+      fromAssetType: 'collateral',
+      toAmountAfterSlippage: '10',
+      toAssetData: wbtcBorrowOnlyInEmode,
+      toAssetUserData: heldOn as ComputedUserReserve,
+      toAssetType: 'collateral',
+      user: { ...user, userEmodeCategoryId: 1, isInEmode: true } as ExtendedFormattedUser,
+      eModes: {},
+    }).hfAfterSwap.toNumber();
+
+    expect(hf).toBeCloseTo(counted);
+  });
+});
+
 const USDC = '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48';
 
 /**

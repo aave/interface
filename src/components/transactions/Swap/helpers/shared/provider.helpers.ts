@@ -79,3 +79,18 @@ export const getSwitchProvider = ({
   }
   return undefined;
 };
+
+/**
+ * How the bought collateral of a collateral swap reaches the user's position, which decides
+ * whether a newly bought asset can become collateral (see CalculateHFAfterSwapProps).
+ *
+ * - CoW simple order: an aToken -> aToken order, so the bought aTokens arrive by transfer.
+ * - CoW flash-loan adapter: the adapter supplies the bought asset on the user's behalf
+ *   (CollateralSwapAaveV3Adapter.collateralSwapWithFlashLoan -> Pool.supply).
+ * - ParaSwap: treated as a supply (unchanged behaviour); its flows have not been audited here.
+ */
+export const getCollateralSwapReceivedVia = (
+  provider: SwapProvider | undefined,
+  useFlashloan: boolean | undefined
+): 'supply' | 'transfer' =>
+  provider === SwapProvider.COW_PROTOCOL && !useFlashloan ? 'transfer' : 'supply';
