@@ -150,8 +150,12 @@ export const COW_CREATE_ORDER_ABI =
 
 const DEFAULT_PARTNER_FEE_SAME_GROUP_BPS = 15;
 const DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS = 25;
-const PARTNER_FEE_BPS_BY_SWAP_TYPE: Partial<Record<SwapType, number>> = {
-  [SwapType.DebtSwap]: 0,
+// correlatedBps applies when both tokens share an asset group, differentBps otherwise
+const PARTNER_FEE_BPS_BY_SWAP_TYPE: Partial<
+  Record<SwapType, { correlatedBps: number; differentBps: number }>
+> = {
+  [SwapType.DebtSwap]: { correlatedBps: 0, differentBps: 0 },
+  [SwapType.RepayWithCollateral]: { correlatedBps: 2, differentBps: 25 },
 };
 
 const getPartnerFeeRecipient = (market: CustomMarket): string => {
@@ -165,15 +169,22 @@ export const COW_PARTNER_FEE = (
   swapType: SwapType,
   market: CustomMarket
 ) => {
-  const swapTypeBps = swapType !== undefined ? PARTNER_FEE_BPS_BY_SWAP_TYPE[swapType] : undefined;
+  const swapTypeFee = swapType !== undefined ? PARTNER_FEE_BPS_BY_SWAP_TYPE[swapType] : undefined;
+  const fromGroup = getAssetGroup(tokenFromSymbol);
+  const toGroup = getAssetGroup(tokenToSymbol);
 
-  const defaultBps =
-    getAssetGroup(tokenFromSymbol) == getAssetGroup(tokenToSymbol)
-      ? DEFAULT_PARTNER_FEE_SAME_GROUP_BPS
-      : DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS;
+  let volumeBps: number;
+  if (fromGroup !== toGroup) {
+    volumeBps = swapTypeFee?.differentBps ?? DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS;
+  } else if (fromGroup === 'unknown') {
+    // Two unlisted tokens are not known to be correlated, so a per-type override uses differentBps
+    volumeBps = swapTypeFee?.differentBps ?? DEFAULT_PARTNER_FEE_SAME_GROUP_BPS;
+  } else {
+    volumeBps = swapTypeFee?.correlatedBps ?? DEFAULT_PARTNER_FEE_SAME_GROUP_BPS;
+  }
 
   return {
-    volumeBps: swapTypeBps !== undefined ? swapTypeBps : defaultBps,
+    volumeBps,
     recipient: getPartnerFeeRecipient(market),
   };
 };
