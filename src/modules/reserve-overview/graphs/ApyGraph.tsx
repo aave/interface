@@ -22,7 +22,7 @@ export type FormattedReserveHistoryItem = {
 /**
  * Formats the given date for the specified time range to display in the tooltip.
  *
- * If the provided timeRange is '1m', the date will be formatted as 'MM DD, HH:MM UTC'.
+ * If the provided timeRange is '1d' or '1m', the date will be formatted as 'MM DD, HH:MM UTC'.
  * For example, a date of `Wed Sep 21 2022 18:00:00 GMT-0500 (Central Daylight Time)` will be formatted as `Sep 21, 18:00 UTC-05:00`
  *
  * If the provided timeRange is '6m' or '1y', the date will be formatted as 'MM DD, YYYY'.
@@ -33,7 +33,7 @@ export type FormattedReserveHistoryItem = {
  *
  */
 const formatDate = (d: Date, timeRange: TimeWindow) => {
-  if (timeRange === TimeWindow.LastMonth) {
+  if (timeRange === TimeWindow.LastDay || timeRange === TimeWindow.LastMonth) {
     const formatted = timeFormat('%b %d, %H:%M UTC%Z');
     const date = formatted(d);
     const offsetSign = date.toString().split('UTC')[1].split('')[0];
