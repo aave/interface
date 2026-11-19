@@ -129,21 +129,15 @@ export function calculateHFAfterSwap({
   // Mirrors getUserReserveLtv on-chain: effective LTV is non-zero when base LTV > 0,
   // or when the user is in an e-mode where this asset is collateralEnabled and not
   // in the ltvzeroBitmap. An asset with zero effective LTV is not auto-enabled as
-  // collateral on supply (validateAutomaticUseAsCollateral in <=3.6, validateUseAsCollateral
-  // in 3.7 return false), so it must be excluded from the HF simulation to avoid inflating
-  // the projected HF.
+  // collateral on supply (validateUseAsCollateral returns false), so it must be excluded from
+  // the HF simulation to avoid inflating the projected HF.
   const toEmode = toAssetData.eModes.find((elem) => elem.id === user.userEmodeCategoryId);
-  const hasToEffectiveLtv = hasNonZeroEffectiveLtv({
+  const isAutoEnabledOnSupply = hasNonZeroEffectiveLtv({
     baseLTVasCollateral: toAssetData.baseLTVasCollateral,
     isInEmode: user.isInEmode,
     emodeEntry: toEmode,
     isEModeIsolated: !!eModes[user.userEmodeCategoryId]?.isolated,
   });
-  const isAutoEnabledOnSupply =
-    hasToEffectiveLtv &&
-    ((!user.isInIsolationMode && !toAssetData.isIsolated) ||
-      (user.isInIsolationMode &&
-        user.isolatedReserve?.underlyingAsset === toAssetData.underlyingAsset));
   // An existing balance keeps the user's current collateral flag, however the asset arrives.
   // Without one, only a supply can auto-enable collateral (first supply, eligible asset);
   // an aToken transfer never does.
@@ -375,8 +369,7 @@ export const getReserveLiquidationThresholdInEmode = (
  * multicall, since setUserEMode runs before supply).
  *
  * Mirrors SupplyLogic.executeSupply on-chain: the collateral flag is only decided on the
- * first supply, where validateAutomaticUseAsCollateral (<=3.6) / validateUseAsCollateral (3.7)
- * auto-enables it when effective LTV > 0
+ * first supply, where validateUseAsCollateral auto-enables it when effective LTV > 0
  * (base LTV outside e-mode, boosted LTV for e-mode collateral without ltvzero). On later
  * supplies the existing flag is kept as-is: an asset already enabled as collateral keeps
  * counting toward HF via its liquidation threshold even if its LTV is now 0, and an asset the
@@ -442,12 +435,7 @@ export const calculateHFAfterSupply = (
         .dividedBy(totalCollateralMarketReferenceCurrencyAfter)
     : '-1';
 
-  if (
-    user &&
-    ((!user.isInIsolationMode && !poolReserve.isIsolated) ||
-      (user.isInIsolationMode &&
-        user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset))
-  ) {
+  if (user) {
     healthFactorAfterDeposit = calculateHealthFactorFromBalancesBigUnits({
       collateralBalanceMarketReferenceCurrency: totalCollateralMarketReferenceCurrencyAfter,
       borrowBalanceMarketReferenceCurrency: valueToBigNumber(

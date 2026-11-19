@@ -238,7 +238,6 @@ export const SupplyModalContent = React.memo(
         // Count the new supply as collateral only if it will be after the switch: setUserEMode
         // runs first in the multicall, so the first-supply auto-enable check uses the new
         // e-mode's LTV, and an existing position keeps its current collateral flag.
-        // (Isolation mode is already excluded by hasEmodeOptions.)
         const additionalCollateral = supplyCountsAsCollateral({
           user,
           poolReserve,

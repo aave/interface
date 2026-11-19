@@ -22,7 +22,6 @@ const reserve = (underlyingAsset: string, baseLTVasCollateral: string, lt: strin
     reserveLiquidationThreshold: lt === '0' ? '0' : '7500',
     formattedReserveLiquidationThreshold: lt,
     formattedPriceInMarketReferenceCurrency: '1',
-    isIsolated: false,
     eModes: [],
   } as unknown as ComputedReserveData);
 
@@ -36,7 +35,6 @@ const user = {
   currentLiquidationThreshold: '0.75',
   userEmodeCategoryId: 0,
   isInEmode: false,
-  isInIsolationMode: false,
 } as unknown as ExtendedFormattedUser;
 
 const swapTBTCToWBTC = (toAssetUserData?: Partial<ComputedUserReserve>) =>
@@ -185,7 +183,6 @@ const makeUser = (
     currentLiquidationThreshold: '0.8',
     userEmodeCategoryId: 0,
     isInEmode: false,
-    isInIsolationMode: false,
     userReservesData: usdcReserve ? [{ underlyingAsset: USDC, ...usdcReserve }] : [],
     ...overrides,
   } as unknown as ExtendedFormattedUser);
@@ -196,7 +193,6 @@ const makeReserve = (overrides: Partial<ComputedReserveData> = {}) =>
     baseLTVasCollateral: '0',
     reserveLiquidationThreshold: '7800',
     formattedReserveLiquidationThreshold: '0.78',
-    isIsolated: false,
     eModes: [],
     ...overrides,
   } as unknown as ComputedReserveData);
