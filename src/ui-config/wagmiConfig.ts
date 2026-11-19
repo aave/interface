@@ -13,6 +13,7 @@ import { createConfig, CreateConfigParameters, http } from 'wagmi';
 import { injected, safe } from 'wagmi/connectors';
 
 import { prodNetworkConfig, testnetConfig } from './networksConfig';
+import { withOathWallet } from './oathWallet';
 
 const testnetChains = Object.values(testnetConfig).map((config) => config.wagmiChain) as [
   Chain,
@@ -80,7 +81,7 @@ const connectorConfig = {
   emitter: new Emitter(''),
 };
 
-const connectors = prodCkConfig.connectors
+const connectors = withOathWallet(prodCkConfig.connectors, connectorConfig)
   ?.map((connector) => {
     // initialize the connector with the emitter so we can access the id
     const c = connector(connectorConfig);
