@@ -1,0 +1,25 @@
+src/components/transactions/Swap/helpers/shared/provider.helpers.ts
+  s_dbf4918a42c5c7::t_7adc3ecbd7144b 88-93
+  s_dbf4918a42c5c7::t_e6e5a4b7e9ec7d 94-96
+  s_dbf4918a42c5c7::t_d49e5591d31b75 86,100
+src/components/transactions/Swap/details/CollateralSwapDetails.tsx
+  s_dbf4918a42c5c7::t_c8cd1df89823a6 101
+src/components/transactions/Swap/hooks/useFlowSelector.ts
+  s_dbf4918a42c5c7::t_896662896a9063 150
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fe4ed91f0437e63b89eb5d43d31696c596205082",
+  "prompts": {},
+  "sessions": {
+    "s_dbf4918a42c5c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "716b79be-10d8-4830-b72d-4eb94455ce9f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
