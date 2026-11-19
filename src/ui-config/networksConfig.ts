@@ -209,7 +209,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'AVAX',
     wrappedBaseAssetSymbol: 'WAVAX',
     baseAssetDecimals: 18,
-    explorerLink: 'https://cchain.explorer.avax.network',
+    explorerLink: 'https://snowtrace.io',
     networkLogoPath: '/icons/networks/avalanche.svg',
     bridge: {
       icon: '/icons/bridge/avalanche.svg',
@@ -436,7 +436,7 @@ export const prodNetworkConfig: Record<string, BaseNetworkConfig> = {
     baseAssetSymbol: 'MNT',
     wrappedBaseAssetSymbol: 'WMNT',
     baseAssetDecimals: 18,
-    explorerLink: 'https://mantlescan.xyz',
+    explorerLink: 'https://mantle.routescan.io',
     networkLogoPath: '/icons/networks/mantle.svg',
     wagmiChain: mantle,
   },
