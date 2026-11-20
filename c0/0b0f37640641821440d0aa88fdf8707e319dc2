@@ -1,0 +1,23 @@
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_2626207dfe2062::t_bd806b0b185c6c 172-173,175-177,180
+  s_2626207dfe2062::t_8c11aa8b398607 153-158
+src/components/transactions/Swap/constants/__tests__/cow.constants.test.ts
+  s_2626207dfe2062::t_cab08aef923c9c 1,6-8
+  s_2626207dfe2062::t_bb820ad7abf6ad 2-5,9-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c00b0f37640641821440d0aa88fdf8707e319dc2",
+  "prompts": {},
+  "sessions": {
+    "s_2626207dfe2062": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d368252b-e2ba-42ff-ace3-0bd746787cf1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
