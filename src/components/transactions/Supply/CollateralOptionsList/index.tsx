@@ -145,7 +145,11 @@ export const CollateralOptionsList = ({
 
   return (
     <Box sx={amountBoxSx}>
-      <RadioGroup value={String(selectedEmodeId)} onChange={(_, value) => onSelect(Number(value))}>
+      <RadioGroup
+        value={String(selectedEmodeId)}
+        onChange={(_, value) => onSelect(Number(value))}
+        sx={{ flexWrap: 'nowrap' }}
+      >
         {visibleOptions.map((option, index) => (
           <OptionRow
             key={option.emodeId}
