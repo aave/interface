@@ -74,7 +74,7 @@ describe('calculateHFAfterSwap', () => {
 
 /**
  * Bought collateral, CoW collateral swap. Simple order = aToken -> aToken, received by transfer
- * (transfers never auto-enable collateral since v3.4). Flash-loan adapter = Pool.supply on the
+ * (transfers never auto-enable collateral since v3.6). Flash-loan adapter = Pool.supply on the
  * user's behalf (first supply auto-enables when effective LTV > 0).
  *
  * Where the bought asset doesn't count, the flash-loan path can revert on-chain: the adapter
@@ -346,5 +346,65 @@ describe('getReserveLiquidationThresholdInEmode', () => {
 
   it('uses the base threshold for Default', () => {
     expect(getReserveLiquidationThresholdInEmode(reserve, 0)).toBe('0.78');
+  });
+});
+
+/**
+ * Pools before v3.7 still enforce isolation mode on the first-supply auto-enable (ZKsync and
+ * Metis, v3.6, still list isolated reserves). v3.7+ pools have no isolated reserves, so the
+ * check is a no-op there.
+ */
+describe('isolation mode (pools before v3.7)', () => {
+  const eligible = { baseLTVasCollateral: '7500' } as Partial<ComputedReserveData>;
+
+  it('supply: does not count a first supply of an isolated asset', () => {
+    expect(hfAfter(makeUser(), makeReserve({ ...eligible, isIsolated: true }))).toBeCloseTo(
+      1.25,
+      3
+    );
+  });
+
+  it('supply: does not count a first supply while the user is in isolation mode', () => {
+    const user = makeUser(undefined, { isInIsolationMode: true });
+    expect(hfAfter(user, makeReserve(eligible))).toBeCloseTo(1.25, 3);
+  });
+
+  it('supply: keeps counting an isolated asset already enabled as collateral', () => {
+    const user = makeUser(
+      { scaledATokenBalance: '1000', usageAsCollateralEnabledOnUser: true },
+      { isInIsolationMode: true }
+    );
+    expect(hfAfter(user, makeReserve({ ...eligible, isIsolated: true }))).toBeCloseTo(1.371875, 3);
+  });
+
+  it('supply: e-mode switch path applies the same rule', () => {
+    const user = makeUser(undefined, { isInIsolationMode: true });
+    expect(
+      supplyCountsAsCollateral({ user, poolReserve: makeReserve(eligible), emodeId: 0, eModes })
+    ).toBe(false);
+  });
+
+  const swapInto = (toAssetData: ComputedReserveData, userOverrides = {}) =>
+    calculateHFAfterSwap({
+      fromAmount: '10',
+      fromAssetData: TBTC,
+      fromAssetUserData: { usageAsCollateralEnabledOnUser: true } as ComputedUserReserve,
+      fromAssetType: 'collateral',
+      toAmountAfterSlippage: '10',
+      toAssetData,
+      toAssetUserData: { scaledATokenBalance: '0' } as ComputedUserReserve,
+      toAssetReceivedVia: 'supply',
+      toAssetType: 'collateral',
+      user: { ...user, ...userOverrides } as ExtendedFormattedUser,
+      eModes: {},
+    }).hfAfterSwap.toNumber();
+
+  it('flash-loan swap: does not count a newly bought isolated asset', () => {
+    // 90 * 0.75 / 50
+    expect(swapInto({ ...WBTC, isIsolated: true } as ComputedReserveData)).toBeCloseTo(1.35);
+  });
+
+  it('flash-loan swap: does not count a newly bought asset while in isolation mode', () => {
+    expect(swapInto(WBTC, { isInIsolationMode: true })).toBeCloseTo(1.35);
   });
 });

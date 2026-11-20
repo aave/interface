@@ -1,6 +1,6 @@
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 
-import { isBlockedByZeroLTV } from '../useZeroLTVBlockingWithdraw';
+import { getZeroLTVBlockingReserves, isBlockedByZeroLTV } from '../useZeroLTVBlockingWithdraw';
 
 jest.mock('src/hooks/app-data-provider/useAppDataProvider', () => ({}));
 jest.mock('src/hooks/pool/useExtendedUserSummaryAndIncentives', () => ({}));
@@ -41,5 +41,47 @@ describe('isBlockedByZeroLTV', () => {
     // executeWithdraw only runs validateHFAndLtvzero for collateral, and enabling
     // collateral never runs it.
     expect(isBlockedByZeroLTV(BLOCKING, supply(WBTC, false))).toBe(false);
+  });
+});
+
+describe('getZeroLTVBlockingReserves', () => {
+  const userReserve = (
+    underlyingAsset: string,
+    baseLTVasCollateral: string,
+    usageAsCollateralEnabledOnUser = true
+  ) => ({
+    underlyingAsset: underlyingAsset.toLowerCase(),
+    scaledATokenBalance: '1000',
+    usageAsCollateralEnabledOnUser,
+    reserve: { baseLTVasCollateral, reserveLiquidationThreshold: '7800', eModes: [] },
+  });
+
+  const summary = (totalBorrowsUSD: string) => ({
+    totalBorrowsUSD,
+    isInEmode: false,
+    userEmodeCategoryId: 0,
+    userReservesData: [
+      userReserve(TBTC, '0'),
+      userReserve(WETH, '8000'),
+      userReserve(WBTC, '0', false),
+    ],
+  });
+
+  it('lists zero-LTV collateral that is enabled when the user has debt', () => {
+    expect(getZeroLTVBlockingReserves(summary('100'), {}).map((r) => r.underlyingAsset)).toEqual([
+      TBTC.toLowerCase(),
+    ]);
+  });
+
+  it('returns nothing without debt (withdraw / transfer skip the check)', () => {
+    expect(getZeroLTVBlockingReserves(summary('0'), {})).toEqual([]);
+  });
+
+  it('still lists it without debt when ignoreDebt is set (disabling collateral always checks)', () => {
+    const blocking = getZeroLTVBlockingReserves(summary('0'), {}, { ignoreDebt: true });
+    expect(blocking.map((r) => r.underlyingAsset)).toEqual([TBTC.toLowerCase()]);
+    // Disabling WETH reverts on-chain with LtvValidationFailed; disabling tBTC itself is allowed.
+    expect(isBlockedByZeroLTV(blocking, supply(WETH, true))).toBe(true);
+    expect(isBlockedByZeroLTV(blocking, supply(TBTC, true))).toBe(false);
   });
 });

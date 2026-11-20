@@ -85,7 +85,8 @@ export const CollateralChangeModalContent = ({
     currentLiquidationThreshold: user.currentLiquidationThreshold,
   });
 
-  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
+  // Disabling collateral runs validateHFAndLtvzero even without debt, unlike withdraw.
+  const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw({ ignoreDebt: true });
 
   // error handling
   let blockingError: ErrorType | undefined = undefined;

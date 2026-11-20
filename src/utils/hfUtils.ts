@@ -26,7 +26,7 @@ export interface CalculateHFAfterSwapProps {
    * - 'supply' (default): supplied on the user's behalf (flash-loan adapters). Pool.supply
    *   auto-enables collateral on a first supply when the asset is eligible.
    * - 'transfer': the user receives aTokens by transfer (CoW simple order, aToken -> aToken).
-   *   Since v3.4, aToken transfers never auto-enable collateral for the recipient.
+   *   Since v3.6, aToken transfers never auto-enable collateral for the recipient.
    * In both cases an existing supply keeps the user's current collateral flag.
    */
   toAssetReceivedVia?: 'supply' | 'transfer';
@@ -98,6 +98,20 @@ export function hasNonZeroEffectiveLtv({
   return baseLTVasCollateral !== '0';
 }
 
+/**
+ * Isolation-mode part of the first-supply auto-enable check on pools before v3.7 (removed in
+ * v3.7, which ignores debt ceilings):
+ * - an isolated asset (debt ceiling != 0) is never auto-enabled: v3.6 validateAutomaticUseAsCollateral
+ *   returns false, v3.3-v3.5 require ISOLATED_COLLATERAL_SUPPLIER_ROLE on the caller, which neither
+ *   users nor the swap adapters have;
+ * - while the user is in isolation mode, validateUseAsCollateral rejects any other asset.
+ * No-op on v3.7+ pools, where no reserve is isolated and no user is in isolation mode.
+ */
+const isolationModeAllowsAutoEnable = (
+  user: Pick<ExtendedFormattedUser, 'isInIsolationMode'>,
+  reserve: Pick<ComputedReserveData, 'isIsolated'>
+) => !reserve.isIsolated && !user.isInIsolationMode;
+
 export function calculateHFAfterSwap({
   fromAmount,
   fromAssetData,
@@ -147,7 +161,9 @@ export function calculateHFAfterSwap({
     toAssetType === 'collateral' &&
     (hasExistingToSupply
       ? !!toAssetUserData.usageAsCollateralEnabledOnUser
-      : toAssetReceivedVia === 'supply' && isAutoEnabledOnSupply);
+      : toAssetReceivedVia === 'supply' &&
+        isAutoEnabledOnSupply &&
+        isolationModeAllowsAutoEnable(user, toAssetData));
 
   const withdrawCollateralMR = canWithdrawFromCollateral
     ? valueToBigNumber(fromAmount).multipliedBy(
@@ -370,7 +386,8 @@ export const getReserveLiquidationThresholdInEmode = (
  *
  * Mirrors SupplyLogic.executeSupply on-chain: the collateral flag is only decided on the
  * first supply, where validateUseAsCollateral auto-enables it when effective LTV > 0
- * (base LTV outside e-mode, boosted LTV for e-mode collateral without ltvzero). On later
+ * (base LTV outside e-mode, boosted LTV for e-mode collateral without ltvzero) and, on pools
+ * before v3.7, isolation mode allows it (see isolationModeAllowsAutoEnable). On later
  * supplies the existing flag is kept as-is: an asset already enabled as collateral keeps
  * counting toward HF via its liquidation threshold even if its LTV is now 0, and an asset the
  * user disabled stays disabled.
@@ -392,12 +409,14 @@ export const supplyCountsAsCollateral = ({
   const isFirstSupply = !userReserve || userReserve.scaledATokenBalance === '0';
 
   if (isFirstSupply) {
-    return hasNonZeroEffectiveLtv({
-      baseLTVasCollateral: poolReserve.baseLTVasCollateral,
-      isInEmode: emodeId !== 0,
-      emodeEntry: poolReserve.eModes.find((e) => e.id === emodeId),
-      isEModeIsolated: !!eModes[emodeId]?.isolated,
-    });
+    return (
+      hasNonZeroEffectiveLtv({
+        baseLTVasCollateral: poolReserve.baseLTVasCollateral,
+        isInEmode: emodeId !== 0,
+        emodeEntry: poolReserve.eModes.find((e) => e.id === emodeId),
+        isEModeIsolated: !!eModes[emodeId]?.isolated,
+      }) && isolationModeAllowsAutoEnable(user, poolReserve)
+    );
   }
 
   return (
