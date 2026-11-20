@@ -1,7 +1,7 @@
-import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Alert, Box, SvgIcon, Typography } from '@mui/material';
+import { Alert, Box, Typography } from '@mui/material';
 import { formatUnits } from 'ethers/lib/utils';
+import { ArrowRightIcon } from 'src/components/icons/ArrowRightIcon';
 import {
   StatusCancelledIcon,
   StatusExpiredIcon,
@@ -183,9 +183,7 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
           </Box>
         </Box>
 
-        <SvgIcon sx={{ fontSize: '14px' }}>
-          <ArrowNarrowRightIcon />
-        </SvgIcon>
+        <ArrowRightIcon />
 
         <Box sx={{ display: 'flex', flexDirection: 'column' }} pl={2}>
           <Typography variant="caption" color="fg-2">
@@ -345,9 +343,7 @@ export const ActionDetails = ({ transaction, iconSize = '16px' }: ActionDetailsP
             </Typography>
           </DarkTooltip>
         </Box>
-        <SvgIcon sx={{ fontSize: '14px' }}>
-          <ArrowNarrowRightIcon />
-        </SvgIcon>
+        <ArrowRightIcon />
         <Box sx={{ display: 'flex', alignItems: 'center' }} pl={2}>
           <TokenIcon
             symbol={formattedCowSwapDestToken.symbol}

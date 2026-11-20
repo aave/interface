@@ -1,7 +1,7 @@
-import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
-import { Button, Paper, Stack, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Paper, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
+import { ArrowRightIcon } from 'src/components/icons/ArrowRightIcon';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListHeaderTitle } from 'src/components/lists/ListHeaderTitle';
@@ -96,9 +96,7 @@ export function BridgeWrapper() {
           <ListColumn>
             <ListHeaderTitle>
               <Trans>Source</Trans>
-              <SvgIcon sx={{ fontSize: '13px', mx: 1 }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
+              <ArrowRightIcon sx={{ mx: 1 }} />
               <Trans>Destination</Trans>
             </ListHeaderTitle>
           </ListColumn>

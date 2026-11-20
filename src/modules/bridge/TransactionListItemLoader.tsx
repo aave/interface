@@ -1,5 +1,5 @@
-import { ArrowNarrowRightIcon } from '@heroicons/react/outline';
-import { Skeleton, Stack, SvgIcon } from '@mui/material';
+import { Skeleton, Stack } from '@mui/material';
+import { ArrowRightIcon } from 'src/components/icons/ArrowRightIcon';
 import { ListColumn } from 'src/components/lists/ListColumn';
 import { ListItem } from 'src/components/lists/ListItem';
 
@@ -17,9 +17,7 @@ export const TransactionListItemLoader = () => {
       <ListColumn>
         <Stack direction="row" gap={3} alignItems="center">
           <Skeleton variant="circular" width={28} height={28} />
-          <SvgIcon sx={{ fontSize: '13px' }}>
-            <ArrowNarrowRightIcon />
-          </SvgIcon>
+          <ArrowRightIcon />
           <Skeleton variant="circular" width={28} height={28} />
         </Stack>
       </ListColumn>
@@ -66,9 +64,7 @@ export const TransactionMobileListItemLoader = () => {
           </Stack>
           <Stack direction="row" gap={3} alignItems="center">
             <Skeleton variant="circular" width={28} height={28} />
-            <SvgIcon sx={{ fontSize: '13px' }}>
-              <ArrowNarrowRightIcon />
-            </SvgIcon>
+            <ArrowRightIcon />
             <Skeleton variant="circular" width={28} height={28} />
           </Stack>
         </Stack>

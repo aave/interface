@@ -4,6 +4,7 @@ import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTit
 import { useRootStore } from 'src/store/root';
 import { GENERAL } from 'src/utils/events';
 import { onAccent } from 'src/utils/figmaColors';
+import { healthFactorColor } from 'src/utils/hfUtils';
 
 import { HealthFactorNumber } from '../../../components/HealthFactorNumber';
 import { BasicModal } from '../../../components/primitives/BasicModal';
@@ -30,13 +31,6 @@ export const LiquidationRiskParametresInfoModal = ({
   currentLoanToValue,
   currentLiquidationThreshold,
 }: LiquidationRiskParametresInfoModalProps) => {
-  let healthFactorColor: AlertColor = 'success';
-  const hf = Number(healthFactor);
-  if (hf > 1.1 && hf <= 3) {
-    healthFactorColor = 'warning';
-  } else if (hf <= 1.1) {
-    healthFactorColor = 'error';
-  }
   const trackEvent = useRootStore((store) => store.trackEvent);
 
   let ltvColor: AlertColor = 'success';
@@ -89,7 +83,7 @@ export const LiquidationRiskParametresInfoModal = ({
             triggered.
           </Trans>
         }
-        color={healthFactorColor}
+        color={healthFactorColor(Number(healthFactor))}
       >
         <HFContent healthFactor={healthFactor} />
       </InfoWrapper>
@@ -114,7 +108,7 @@ export const LiquidationRiskParametresInfoModal = ({
             be liquidated.
           </Trans>
         }
-        color={ltvColor}
+        color={`${ltvColor}.main`}
       >
         <LTVContent
           loanToValue={loanToValue}

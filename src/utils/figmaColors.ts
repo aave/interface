@@ -88,6 +88,11 @@ export const figmaLight = {
   danger: '#DC2626',
   // sGHO markets-banner gradient: a data-green wash at 6% fading to the banner's own surface.
   'sgho-banner-green': 'rgba(50, 201, 88, 0.06)',
+  'migration-banner-shadow': 'rgba(155, 153, 255, 0.12)',
+  'migration-banner-ring': 'rgba(3, 0, 109, 0.06)',
+  'hf-mint': '#3BC94B',
+  'hf-parrot': '#9AD700',
+  'hf-red': '#F34366',
   'chain-testnet': '#8594ab',
   'chain-ethereum': '#25292e',
   'chain-polygon': '#8347e5',
@@ -220,6 +225,11 @@ export const figmaDark = {
   danger: '#DC2626',
   // sGHO markets-banner gradient: a data-green wash at 6% fading to the banner's own surface.
   'sgho-banner-green': 'rgba(102, 195, 153, 0.06)',
+  'migration-banner-shadow': 'rgba(155, 153, 255, 0.12)',
+  'migration-banner-ring': 'rgba(255, 255, 255, 0.08)',
+  'hf-mint': '#3BC94B',
+  'hf-parrot': '#9AD700',
+  'hf-red': '#F34366',
   'wallet-modal-more-networks-label': 'rgba(255, 255, 255, 0.4)',
   'chain-testnet': '#bfc6d1',
   'chain-ethereum': '#7e8287',

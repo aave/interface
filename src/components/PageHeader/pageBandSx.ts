@@ -8,7 +8,7 @@ import { darkScheme } from 'src/utils/theme';
  * drift — they have twice been edited in lockstep.
  */
 export const pageBandSx: SxProps<Theme> = {
-  pt: { xs: 10, md: 12 },
+  pt: '2rem',
   pb: { xs: 10, md: 12 },
   color: 'fg-1',
   boxShadow: `0px 1px 0px ${figVars['border-0']}`,

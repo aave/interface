@@ -318,6 +318,10 @@ msgstr "Borrow {symbol}"
 msgid "Total supplied"
 msgstr "Total supplied"
 
+#: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
+msgid "Net borrow APY"
+msgstr "Net borrow APY"
+
 #: src/components/transactions/Swap/details/WithdrawAndSwapDetails.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
@@ -504,6 +508,7 @@ msgstr "All transactions"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
 msgid "Collateral"
 msgstr "Collateral"
 
@@ -589,6 +594,7 @@ msgstr "Failed"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
 msgid "Health factor"
 msgstr "Health factor"
 
@@ -600,6 +606,10 @@ msgstr "The cooldown period is the time required prior to unstaking your tokens 
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Reached"
 msgstr "Reached"
+
+#: src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
+msgid "Earn APY"
+msgstr "Earn APY"
 
 #: src/layouts/AppHeader.tsx
 msgid "Fork mode is ON"
@@ -843,6 +853,10 @@ msgstr "Join the community discussion"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Borrowing power and assets are limited due to Isolation mode."
 msgstr "Borrowing power and assets are limited due to Isolation mode."
+
+#: src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
+msgid "Change in earning"
+msgstr "Change in earning"
 
 #: src/components/infoTooltips/BorrowCapMaxedTooltip.tsx
 msgid "Protocol borrow cap at 100% for this asset. Further borrowing unavailable."
@@ -1503,6 +1517,10 @@ msgstr "Not enough balance on your wallet"
 msgid "Get GHO"
 msgstr "Get GHO"
 
+#: src/modules/v4Migration/V4MigrationPage/index.tsx
+msgid "Choose which positions to migrate into Aave V4."
+msgstr "Choose which positions to migrate into Aave V4."
+
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "Send"
 msgstr "Send"
@@ -1609,6 +1627,7 @@ msgid "Current LTV"
 msgstr "Current LTV"
 
 #: src/components/transactions/Swap/shared/OrderTypeSelector.tsx
+#: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
 msgid "Market"
 msgstr "Market"
 
@@ -1993,6 +2012,10 @@ msgstr "View TX"
 msgid "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 msgstr "The Aave Balancer Pool Token (ABPT) is a liquidity pool token. You can receive ABPT by depositing a combination of AAVE + wstETH in the Balancer liquidity pool. You can then stake your BPT in the Safety Module to secure the protocol and earn Safety Incentives."
 
+#: src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
+msgid "Earn"
+msgstr "Earn"
+
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/ClaimRewards/ClaimRewardsModalContent.tsx
 #: src/components/transactions/ClaimRewards/RewardsSelect.tsx
@@ -2200,6 +2223,7 @@ msgstr "received"
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
 msgid "Borrow"
 msgstr "Borrow"
 
@@ -2752,6 +2776,7 @@ msgstr "Your {symbol} is no longer used as collateral"
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsList.tsx
 #: src/modules/umbrella/UmbrellaAssetsDefault.tsx
+#: src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
 msgid "Asset"
 msgstr "Asset"
 
@@ -3039,6 +3064,10 @@ msgstr "Net worth"
 msgid "Get ABP Token"
 msgstr "Get ABP Token"
 
+#: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
+msgid "Borrowed"
+msgstr "Borrowed"
+
 #: src/components/transactions/Swap/modals/request/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "Received"
@@ -3067,6 +3096,10 @@ msgstr "Balance"
 #: src/components/transactions/Withdraw/WithdrawActions.tsx
 msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
+
+#: src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
+msgid "Supplied"
+msgstr "Supplied"
 
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 msgid "Migrate to stkABPT v2"
@@ -3416,6 +3449,10 @@ msgstr "Unavailable"
 #: src/components/transactions/Borrow/ParameterChangewarning.tsx
 msgid "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
+
+#: src/modules/v4Migration/V4MigrationBanner/index.tsx
+msgid "Migrate to V4"
+msgstr "Migrate to V4"
 
 #: src/components/transactions/ClaimRewards/ClaimRewardsActions.tsx
 msgid "Claim {0}"
@@ -4108,6 +4145,10 @@ msgstr "The address of the pool addresses provider is invalid"
 msgid "Your voting info"
 msgstr "Your voting info"
 
+#: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
+msgid "Net balance"
+msgstr "Net balance"
+
 #: pages/v3-migration.page.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 msgid "Nothing borrowed yet"
@@ -4311,6 +4352,10 @@ msgstr "Language"
 msgid "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 msgstr "Allows you to decide whether to use a supplied asset as collateral. An asset used as collateral will affect your borrowing power and health factor."
 
+#: src/modules/v4Migration/V4MigrationPage/index.tsx
+msgid "Search asset name, symbol, or address"
+msgstr "Search asset name, symbol, or address"
+
 #: src/modules/governance/ProposalsV3List.tsx
 msgid "We couldn't find any proposals related to your search."
 msgstr "We couldn't find any proposals related to your search."
@@ -4483,6 +4528,10 @@ msgstr "APY type change"
 msgid "Collateral usage is limited because of isolation mode."
 msgstr "Collateral usage is limited because of isolation mode."
 
+#: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
+msgid "Chain"
+msgstr "Chain"
+
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
 msgstr "Flashloan is disabled for this asset, hence this position cannot be migrated."
@@ -4490,6 +4539,10 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
+#: src/modules/v4Migration/V4MigrationBanner/index.tsx
+#: src/modules/v4Migration/V4MigrationPage/components/PositionsTable/index.tsx
+#: src/modules/v4Migration/V4MigrationPage/components/PositionsTable/index.tsx
+#: src/modules/v4Migration/V4MigrationPage/index.tsx
 msgid "Migrate"
 msgstr "Migrate"
 

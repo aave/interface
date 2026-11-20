@@ -12,10 +12,10 @@ export const ListHeaderWrapper = ({ px = 4, children, ...rest }: ListHeaderWrapp
       {...rest}
       sx={{
         display: 'flex',
-        alignItems: 'flex-end',
+        alignItems: 'center',
         gap: '1rem',
         px,
-        py: '12.5px',
+        minHeight: '3rem',
         position: 'sticky',
         top: 0,
         zIndex: 100,

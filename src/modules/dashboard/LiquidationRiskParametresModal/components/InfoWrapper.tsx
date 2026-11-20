@@ -1,4 +1,4 @@
-import { AlertColor, Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { figVars } from 'src/utils/figmaColors';
 
@@ -8,7 +8,7 @@ interface InfoWrapperProps {
   topDescription: ReactNode;
   children: ReactNode;
   bottomText: ReactNode;
-  color: AlertColor;
+  color: string;
 }
 
 export const InfoWrapper = ({
@@ -51,7 +51,7 @@ export const InfoWrapper = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            bgcolor: `${color}.main`,
+            bgcolor: color,
           }}
         >
           {topValue}

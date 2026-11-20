@@ -111,6 +111,15 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
       import('../components/TxFinalStatesSection').then((m) => m.TxFinalStatesSection)
     ),
   },
+  {
+    slug: 'migration-banners',
+    label: 'Banners',
+    group: 'Migration',
+    fullBleed: true,
+    Component: dynamic(() =>
+      import('../components/MigrationBannersSection').then((m) => m.MigrationBannersSection)
+    ),
+  },
 ];
 
 // Sections grouped for the sidebar, preserving declaration order.

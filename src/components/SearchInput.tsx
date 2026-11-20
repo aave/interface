@@ -43,6 +43,8 @@ export const SearchInput = ({
         display: 'flex',
         alignItems: 'center',
         gap: 2,
+        pl: '0.875rem',
+        pr: '1.125rem',
         boxShadow: `0px 0px 0px 1px ${figVars['shadow-stroke-2']}`,
         borderRadius: '0.5rem',
         height: '36px',
@@ -58,11 +60,16 @@ export const SearchInput = ({
         ...wrapperSx,
       }}
     >
-      <SearchIcon sx={{ fontSize: 18, color: 'fg-icon', ml: 2, flexShrink: 0 }} />
+      <SearchIcon sx={{ fontSize: 18, color: 'fg-4', flexShrink: 0 }} />
       <InputBase
         autoFocus={sm}
         inputRef={inputEl}
-        sx={{ width: '100%', fontSize: { xs: 16, sm: 14 } }}
+        sx={{
+          width: '100%',
+          typography: 'base',
+          fontSize: { xs: 16, sm: 14 },
+          '& .MuiInputBase-input::placeholder': { color: figVars['fg-4'], opacity: 1 },
+        }}
         placeholder={placeholder}
         value={searchTerm}
         onChange={(e) => {
@@ -74,7 +81,7 @@ export const SearchInput = ({
         }}
       />
       <IconButton
-        sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
+        sx={{ p: 0, display: searchTerm ? 'inline-flex' : 'none' }}
         onClick={() => handleClear()}
       >
         <XCircleIcon height={16} />

@@ -1,11 +1,13 @@
 import { Box, Container, ContainerProps, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { BackButton } from 'src/components/BackButton';
 
 import { pageBandSx } from './pageBandSx';
 
 interface PageHeaderProps {
   title: ReactNode;
   description?: ReactNode;
+  backHref?: string;
   /** Right-aligned `PageHeaderStat` items. Omit on pages that have no stats to show. */
   children?: ReactNode;
   containerProps?: ContainerProps;
@@ -28,6 +30,7 @@ export const PageHeader = ({
   title,
   titleIcon,
   description,
+  backHref,
   children,
   containerProps = {},
   disableTitleTypography = false,
@@ -35,6 +38,11 @@ export const PageHeader = ({
   return (
     <Box sx={pageBandSx}>
       <Container {...containerProps} sx={{ ...containerProps.sx, pb: 0 }}>
+        {backHref && (
+          <Box sx={{ display: 'flex' }}>
+            <BackButton fallbackHref={backHref} />
+          </Box>
+        )}
         <Box
           sx={{
             display: 'flex',

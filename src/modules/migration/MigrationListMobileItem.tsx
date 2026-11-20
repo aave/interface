@@ -1,8 +1,9 @@
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
-import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
+import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import { Box, Button, SvgIcon, Typography, useTheme } from '@mui/material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import { ArrowRightIcon } from 'src/components/icons/ArrowRightIcon';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { MigrationDisabledTooltip } from 'src/components/infoTooltips/MigrationDisabledTooltip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
@@ -21,6 +22,8 @@ import { useShallow } from 'zustand/shallow';
 
 import { MigrationListItemToggler } from './MigrationListItemToggler';
 import { StETHMigrationWarning } from './StETHMigrationWarning';
+
+const ARROW = <ArrowRightIcon sx={{ mx: '0.5rem' }} />;
 
 interface MigrationListMobileItemProps {
   checked: boolean;
@@ -70,7 +73,6 @@ export const MigrationListMobileItem = ({
   const [currentMarket, currentMarketData] = useRootStore(
     useShallow((store) => [store.currentMarket, store.currentMarketData])
   );
-  const theme = useTheme();
   const baseColorSecondary = disabled === undefined ? 'fg-2' : 'fg-3';
   const baseColorPrimary = disabled === undefined ? 'fg-1' : 'fg-3';
 
@@ -179,14 +181,7 @@ export const MigrationListMobileItem = ({
               color={baseColorPrimary}
               market={currentMarket}
             />
-            <SvgIcon sx={{ px: 1.5 }}>
-              <ArrowNarrowRightIcon
-                fontSize="14px"
-                color={
-                  disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                }
-              />
-            </SvgIcon>
+            {ARROW}
             <IncentivesCard
               value={v3APY}
               symbol={userReserve.reserve.symbol}
@@ -218,14 +213,7 @@ export const MigrationListMobileItem = ({
                 <NoData variant="subheader1" color={baseColorSecondary} />
               )}
 
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon
-                  fontSize="14px"
-                  color={
-                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                  }
-                />
-              </SvgIcon>
+              {ARROW}
 
               {showCollateralToggle ? (
                 <MigrationListItemToggler
@@ -277,14 +265,7 @@ export const MigrationListMobileItem = ({
                   {borrowApyType}
                 </Typography>
               </Button>
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon
-                  fontSize="14px"
-                  color={
-                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                  }
-                />
-              </SvgIcon>
+              {ARROW}
               <Button
                 variant="tertiary"
                 size="small"
@@ -322,16 +303,7 @@ export const MigrationListMobileItem = ({
                     variant="subheader1"
                     color={baseColorPrimary}
                   />
-                  <SvgIcon sx={{ px: 1.5 }}>
-                    <ArrowNarrowRightIcon
-                      fontSize="14px"
-                      color={
-                        disabled === undefined
-                          ? theme.palette.text.primary
-                          : theme.palette.text.muted
-                      }
-                    />
-                  </SvgIcon>
+                  {ARROW}
                   <FormattedNumber
                     value={v3Rates?.ltv || 0}
                     percent
@@ -367,16 +339,7 @@ export const MigrationListMobileItem = ({
                     variant="subheader1"
                     color={baseColorPrimary}
                   />
-                  <SvgIcon sx={{ px: 1.5 }}>
-                    <ArrowNarrowRightIcon
-                      fontSize="14px"
-                      color={
-                        disabled === undefined
-                          ? theme.palette.text.primary
-                          : theme.palette.text.muted
-                      }
-                    />
-                  </SvgIcon>
+                  {ARROW}
                   <FormattedNumber
                     value={v3Rates?.liquidationThreshold || 0}
                     percent
