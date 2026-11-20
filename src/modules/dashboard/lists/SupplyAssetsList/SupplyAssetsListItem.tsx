@@ -1,5 +1,4 @@
 import { ProtocolAction } from '@aave/contract-helpers';
-import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Box,
@@ -15,6 +14,7 @@ import {
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
 import { DotsHorizontalIcon } from 'src/components/icons/DotsHorizontalIcon';
+import { InfoCircleIcon } from 'src/components/icons/InfoCircleIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { WrappedTokenTooltipContent } from 'src/components/infoTooltips/WrappedTokenToolTipContent';
@@ -302,7 +302,7 @@ export const SupplyAssetsListItemDesktop = ({
             onClick={onDetailsClick}
           >
             <SvgIcon fontSize="small">
-              <InformationCircleIcon />
+              <InfoCircleIcon />
             </SvgIcon>
             <ListItemText>Details</ListItemText>
           </MenuItem>

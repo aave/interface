@@ -37,7 +37,6 @@ import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
-import { CapType } from '../../caps/helper';
 import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -345,11 +344,10 @@ export const SupplyModalContent = React.memo(
                 : poolReserve.iconSymbol,
             },
           ]}
-          capType={CapType.supplyCap}
           isMaxSelected={isMaxSelected}
           disabled={supplyTxState.loading}
           maxValue={maxAmountToSupply}
-          balanceText={<Trans>Wallet balance</Trans>}
+          balanceText={<Trans>Available to supply</Trans>}
           event={{
             eventName: GENERAL.MAX_INPUT_SELECTION,
             eventParams: {
@@ -379,6 +377,7 @@ export const SupplyModalContent = React.memo(
             reserves={reserves}
             selectedEmodeId={selectedEmodeId}
             onSelect={setSelectedEmodeId}
+            variant="list"
           />
         )}
 
@@ -408,7 +407,7 @@ export const SupplyModalContent = React.memo(
         </TxModalDetails>
 
         {needsEmodeSwitch && (
-          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 2 }}>
+          <Alert severity="info" sx={{ width: '100%', mt: '2rem' }}>
             <AlertTitle>
               <Trans>E-Mode change</Trans>
             </AlertTitle>
@@ -599,7 +598,6 @@ export const SupplyWrappedTokenModalContent = ({
         symbol={tokenToSupply.symbol}
         assets={assets}
         onSelect={setTokenToSupply}
-        capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
         balanceText={<Trans>Wallet balance</Trans>}

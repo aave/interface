@@ -1,7 +1,7 @@
-import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Box, BoxProps, IconButton, SvgIcon, Typography } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import { JSXElementConstructor, ReactElement, ReactNode, useState } from 'react';
+import { InfoCircleIcon } from 'src/components/icons/InfoCircleIcon';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 
@@ -74,13 +74,13 @@ export const TextWithTooltip = ({
           <SvgIcon
             sx={{
               fontSize: iconSize,
-              // On-theme neutrals (was info.main blue): fg-3 at rest, fg-1 when open/active.
-              color: iconColor ? iconColor : open ? 'fg-1' : 'fg-3',
+              // On-theme neutrals (was info.main blue): fg-icon at rest, fg-1 when open/active.
+              color: iconColor ? iconColor : open ? 'fg-1' : 'fg-icon',
               borderRadius: '50%',
               '&:hover': { color: iconColor || 'fg-2' },
             }}
           >
-            {icon || <InformationCircleIcon />}
+            {icon || <InfoCircleIcon />}
           </SvgIcon>
         </IconButton>
       </ContentWithTooltip>

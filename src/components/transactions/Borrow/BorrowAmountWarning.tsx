@@ -16,7 +16,7 @@ export const BorrowAmountWarning = ({
 
   return (
     <>
-      <Alert severity="error" sx={{ width: '100%', my: 6 }}>
+      <Alert severity="error" sx={{ width: '100%', mt: '2rem', mb: '1.5rem' }}>
         <Trans>
           Borrowing this amount will reduce your health factor and increase risk of liquidation.
         </Trans>
@@ -28,7 +28,6 @@ export const BorrowAmountWarning = ({
           justifyContent: 'center',
           alignItems: 'center',
           mx: '24px',
-          mb: '12px',
         }}
       >
         <Checkbox

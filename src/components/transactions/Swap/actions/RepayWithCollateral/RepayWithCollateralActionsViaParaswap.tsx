@@ -269,9 +269,6 @@ export const RepayWithCollateralActionsViaParaswap = ({
 
   return (
     <TxActionsWrapper
-      sx={{
-        mt: 6,
-      }}
       preparingTransactions={state.actionsLoading}
       mainTxState={state.mainTxState}
       approvalTxState={approvalTxState}

@@ -20,7 +20,7 @@ export const BackButton = ({ fallbackHref }: BackButtonProps) => {
         if (history.state?.idx) router.back();
         else router.push(fallbackHref);
       }}
-      sx={{ gap: '0.25rem', mb: '1rem', color: 'fg-3', '&:hover': { color: 'fg-1' } }}
+      sx={{ gap: '0.25rem', mb: '1.25rem', color: 'fg-3', '&:hover': { color: 'fg-1' } }}
     >
       <SvgIcon sx={{ fontSize: '1rem' }} viewBox="0 0 16 16">
         <path

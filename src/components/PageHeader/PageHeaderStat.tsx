@@ -5,12 +5,18 @@ interface PageHeaderStatProps {
   label: ReactNode;
   children: ReactNode;
   loading?: boolean;
+  gap?: string;
 }
 
-/** A single label-over-value stat for `PageHeader` (0.62rem gap between label and value). */
-export const PageHeaderStat = ({ label, children, loading }: PageHeaderStatProps) => {
+/** A single label-over-value stat for `PageHeader` (0.62rem gap between label and value by default). */
+export const PageHeaderStat = ({
+  label,
+  children,
+  loading,
+  gap = '0.62rem',
+}: PageHeaderStatProps) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.62rem' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap }}>
       <Typography
         variant="description"
         component="div"

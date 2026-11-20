@@ -1,4 +1,5 @@
-import { SxProps, Theme } from '@mui/material';
+import { Theme } from '@mui/material';
+import { SystemStyleObject } from '@mui/system';
 import { figVars } from 'src/utils/figmaColors';
 import { darkScheme } from 'src/utils/theme';
 
@@ -7,7 +8,7 @@ import { darkScheme } from 'src/utils/theme';
  * vertical rhythm, ink colour, surface, and the bottom hairline. Defined once so the two can't
  * drift — they have twice been edited in lockstep.
  */
-export const pageBandSx: SxProps<Theme> = {
+export const pageBandSx: SystemStyleObject<Theme> = {
   pt: { xs: 10, md: 12 },
   pb: { xs: 10, md: 12 },
   color: 'fg-1',
