@@ -12,6 +12,7 @@ import {
   LIQUIDATION_DANGER_THRESHOLD,
   LIQUIDATION_SAFETY_THRESHOLD,
 } from '../constants/shared.constants';
+import { getCollateralSwapReceivedVia } from '../helpers/shared/provider.helpers';
 import {
   ActionsBlockedReason,
   isProtocolSwapState,
@@ -109,33 +110,49 @@ export const healthFactorSensibleSwapFlowSelector = ({
     return;
   }
 
-  // Compute HF effect of withdrawing inputAmount (copied from SwitchModalTxDetails)
-  const calculateHfEffectOfFromAmount = () => {
-    try {
-      if (!state.swapRate) return { hfEffectOfFromAmount: '0', hfAfterSwap: undefined };
-
-      const params = getHFAfterSwapParamsFromSwapType(
+  const hfParams = state.swapRate
+    ? getHFAfterSwapParamsFromSwapType(
         state,
         fromAssetUserReserve,
         toAssetUserReserve,
         extendedUser,
         eModes
-      );
+      )
+    : undefined;
 
-      if (!params) return { hfEffectOfFromAmount: '0', hfAfterSwap: undefined };
-
-      const { hfEffectOfFromAmount, hfAfterSwap } = calculateHFAfterSwap(params);
-
-      return {
-        hfEffectOfFromAmount: hfEffectOfFromAmount.toString(),
-        hfAfterSwap: hfAfterSwap.toString(),
-      };
+  // HF effect of withdrawing inputAmount on its own (copied from SwitchModalTxDetails).
+  // It only depends on the sold side, so it can pick the flow before the HF after swap is known.
+  const hfEffectOfFromAmount = (() => {
+    try {
+      return hfParams ? calculateHFAfterSwap(hfParams).hfEffectOfFromAmount.toString() : '0';
     } catch {
-      return { hfEffectOfFromAmount: '0', hfAfterSwap: undefined };
+      return '0';
     }
-  };
+  })();
 
-  const { hfEffectOfFromAmount, hfAfterSwap } = calculateHfEffectOfFromAmount();
+  const forceFlashloanFlow =
+    state.provider === SwapProvider.COW_PROTOCOL &&
+    (state.swapType === SwapType.RepayWithCollateral || state.swapType === SwapType.DebtSwap);
+  const useFlashloan =
+    forceFlashloanFlow ||
+    (extendedUser?.healthFactor !== '-1' &&
+      valueToBigNumber(extendedUser?.healthFactor || 0)
+        .minus(valueToBigNumber(hfEffectOfFromAmount || 0))
+        .lt(LIQUIDATION_SAFETY_THRESHOLD));
+
+  // HF after swap for the flow that will actually run: whether a newly bought collateral counts
+  // depends on how it is received (supply vs aToken transfer).
+  const hfAfterSwap = (() => {
+    try {
+      if (!hfParams) return undefined;
+      return calculateHFAfterSwap({
+        ...hfParams,
+        toAssetReceivedVia: getCollateralSwapReceivedVia(useFlashloan),
+      }).hfAfterSwap.toString();
+    } catch {
+      return undefined;
+    }
+  })();
 
   const isHFLow = () => {
     if (!hfAfterSwap) return false;
@@ -151,16 +168,6 @@ export const healthFactorSensibleSwapFlowSelector = ({
     hfAfterSwap && hfAfterSwap !== '-1'
       ? valueToBigNumber(hfAfterSwap).lt(LIQUIDATION_DANGER_THRESHOLD)
       : false;
-
-  const forceFlashloanFlow =
-    state.provider === SwapProvider.COW_PROTOCOL &&
-    (state.swapType === SwapType.RepayWithCollateral || state.swapType === SwapType.DebtSwap);
-  const useFlashloan =
-    forceFlashloanFlow ||
-    (extendedUser?.healthFactor !== '-1' &&
-      valueToBigNumber(extendedUser?.healthFactor || 0)
-        .minus(valueToBigNumber(hfEffectOfFromAmount || 0))
-        .lt(LIQUIDATION_SAFETY_THRESHOLD));
 
   if (!state.ratesLoading && !!state.provider) {
     setState({

@@ -24,6 +24,7 @@ import {
   TxModalDetails,
 } from '../../FlowCommons/TxModalDetails';
 import { getAssetCollateralType } from '../../utils';
+import { getCollateralSwapReceivedVia } from '../helpers/shared/provider.helpers';
 import { SwapParams, SwapProvider, SwapState } from '../types';
 import { CowCostsDetails } from './CowCostsDetails';
 import { ParaswapCostsDetails } from './ParaswapCostsDetails';
@@ -97,6 +98,7 @@ export const ColalteralSwapDetails = ({ state }: { params: SwapParams; state: Sw
     toAmountAfterSlippage: valueToBigNumber(toAmount || '0'),
     toAssetData: targetReserve,
     toAssetUserData: userTargetReserve,
+    toAssetReceivedVia: getCollateralSwapReceivedVia(state.useFlashloan),
     fromAssetType: 'collateral',
     toAssetType: 'collateral',
     eModes,
