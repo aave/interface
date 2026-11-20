@@ -86,7 +86,7 @@ export const SwapErrors = ({
     );
   }
 
-  if (hasZeroLTVBlocking(state, assetsBlockingWithdraw)) {
+  if (hasZeroLTVBlocking(state, assetsBlockingWithdraw, extendedUser?.userReservesData ?? [])) {
     return (
       <ZeroLTVBlockingGuard
         state={state}
