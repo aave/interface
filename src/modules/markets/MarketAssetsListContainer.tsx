@@ -19,6 +19,7 @@ import { isAssetHidden } from '../dashboard/lists/constants';
 import { SavingsGhoBanner } from './Gho/GhoBanner';
 import { MarketAssetsAccordion } from './MarketAssetsAccordion';
 import { AssetCategory, matchesSelectedCategories } from './utils/assetCategories';
+import { useV4Rates } from './utils/v4Rates';
 
 function shouldDisplayGhoBanner(marketTitle: string, searchTerm: string): boolean {
   // GHO banner is only displayed on markets where new GHO is mintable (i.e. Ethereum)
@@ -54,6 +55,9 @@ export const MarketAssetsListContainer = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<AssetCategory[]>([]);
   const [inWalletOnly, setInWalletOnly] = useState(false);
+  const [showV4Rates, setShowV4Rates] = useState(true);
+  const v4Rates = useV4Rates(currentMarketData.chainId);
+  const visibleV4Rates = showV4Rates ? v4Rates : undefined;
 
   const { breakpoints } = useTheme();
 
@@ -183,6 +187,11 @@ export const MarketAssetsListContainer = () => {
       <AssetsFilterBar
         searchPlaceholder={sm ? 'Search asset' : 'Search asset name, symbol, or address'}
         onSearchTermChange={setSearchTerm}
+        showV4Rates={
+          Object.keys(v4Rates).length > 0
+            ? { value: showV4Rates, onChange: setShowV4Rates }
+            : undefined
+        }
         inWallet={account ? { value: inWalletOnly, onChange: setInWalletOnly } : undefined}
         selectedCategories={selectedCategories}
         onCategoriesChange={setSelectedCategories}
@@ -192,7 +201,7 @@ export const MarketAssetsListContainer = () => {
 
       {(loading || mainReserves.length > 0 || filteredData.length === 0) && (
         <Paper variant="table">
-          <MarketAssetsList reserves={mainReserves} loading={loading} />
+          <MarketAssetsList reserves={mainReserves} loading={loading} v4Rates={visibleV4Rates} />
 
           {/* Show no search results message if nothing hits in any list */}
           {!loading && filteredData.length === 0 && !displayGhoBanner && (
@@ -216,7 +225,11 @@ export const MarketAssetsListContainer = () => {
               </Trans>
             }
           >
-            <MarketAssetsList reserves={frozenOrPausedReserves} loading={false} />
+            <MarketAssetsList
+              reserves={frozenOrPausedReserves}
+              loading={false}
+              v4Rates={visibleV4Rates}
+            />
           </MarketAssetsAccordion>
 
           <MarketAssetsAccordion
@@ -229,7 +242,11 @@ export const MarketAssetsListContainer = () => {
               </Trans>
             }
           >
-            <MarketAssetsList reserves={deprecatedReserves} loading={false} />
+            <MarketAssetsList
+              reserves={deprecatedReserves}
+              loading={false}
+              v4Rates={visibleV4Rates}
+            />
           </MarketAssetsAccordion>
         </>
       )}

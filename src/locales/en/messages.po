@@ -218,6 +218,10 @@ msgstr "Transaction Cancelled"
 msgid "Liquidation <0/> threshold"
 msgstr "Liquidation <0/> threshold"
 
+#: src/components/AssetsFilterBar.tsx
+msgid "Show V4 Rates"
+msgstr "Show V4 Rates"
+
 #: src/layouts/components/ThemeSwitcher/index.tsx
 msgid "Light"
 msgstr "Light"

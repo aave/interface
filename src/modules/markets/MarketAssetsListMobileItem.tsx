@@ -22,6 +22,9 @@ import { Row } from '../../components/primitives/Row';
 import { ListMobileItemWrapper } from '../dashboard/lists/ListMobileItemWrapper';
 import { ReserveWithProtocolIncentives } from './MarketAssetsList';
 import { showBorrowingDisabledNote } from './utils/borrowingDisabled';
+import { V4Rate } from './V4Rate';
+
+const RATES_SX = { display: 'flex', flexDirection: 'column', alignItems: 'flex-end' } as const;
 
 export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIncentives) => {
   const [trackEvent, currentMarket] = useRootStore(
@@ -78,23 +81,26 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
         mb="1rem"
         align="flex-start"
       >
-        <IncentivesCard
-          align="flex-end"
-          value={reserve.supplyInfo.apy.value}
-          incentives={reserve.supplyProtocolIncentives}
-          address={reserve.aToken.address}
-          symbol={reserve.underlyingToken.symbol}
-          variant="h5"
-          tooltip={
-            <>
-              {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
-              {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
-              {externalIncentivesTooltipsSupplySide.kernelPoints && <KernelAirdropTooltip />}
-            </>
-          }
-          market={currentMarket}
-          protocolAction={ProtocolAction.supply}
-        />
+        <Box sx={RATES_SX}>
+          <IncentivesCard
+            align="flex-end"
+            value={reserve.supplyInfo.apy.value}
+            incentives={reserve.supplyProtocolIncentives}
+            address={reserve.aToken.address}
+            symbol={reserve.underlyingToken.symbol}
+            variant="h5"
+            tooltip={
+              <>
+                {externalIncentivesTooltipsSupplySide.superFestRewards && <SuperFestTooltip />}
+                {externalIncentivesTooltipsSupplySide.spkAirdrop && <SpkAirdropTooltip />}
+                {externalIncentivesTooltipsSupplySide.kernelPoints && <KernelAirdropTooltip />}
+              </>
+            }
+            market={currentMarket}
+            protocolAction={ProtocolAction.supply}
+          />
+          <V4Rate value={reserve.v4Rates?.supplyApy} />
+        </Box>
       </Row>
 
       <Divider sx={{ mb: '1rem' }} />
@@ -127,29 +133,32 @@ export const MarketAssetsListMobileItem = ({ ...reserve }: ReserveWithProtocolIn
         mb="1.5rem"
         align="flex-start"
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <IncentivesCard
-            align="flex-end"
-            value={
-              reserve.borrowInfo && Number(reserve.borrowInfo.total.amount.value) > 0
-                ? String(reserve.borrowInfo.apy.value)
-                : '-1'
-            }
-            incentives={reserve.borrowProtocolIncentives}
-            address={reserve.vToken.address}
-            symbol={reserve.underlyingToken.symbol}
-            variant="h5"
-            tooltip={
-              <>
-                {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
-                {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
-              </>
-            }
-            market={currentMarket}
-            protocolAction={ProtocolAction.borrow}
-          />
-          {showBorrowingDisabledNote(reserve) && <ReserveSubheader value={'Disabled'} />}
-          {borrowableOnlyInEModeLabels.length > 0 && <BorrowableOnlyInEModeTooltip />}
+        <Box sx={RATES_SX}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <IncentivesCard
+              align="flex-end"
+              value={
+                reserve.borrowInfo && Number(reserve.borrowInfo.total.amount.value) > 0
+                  ? String(reserve.borrowInfo.apy.value)
+                  : '-1'
+              }
+              incentives={reserve.borrowProtocolIncentives}
+              address={reserve.vToken.address}
+              symbol={reserve.underlyingToken.symbol}
+              variant="h5"
+              tooltip={
+                <>
+                  {externalIncentivesTooltipsBorrowSide.superFestRewards && <SuperFestTooltip />}
+                  {externalIncentivesTooltipsBorrowSide.spkAirdrop && <SpkAirdropTooltip />}
+                </>
+              }
+              market={currentMarket}
+              protocolAction={ProtocolAction.borrow}
+            />
+            {showBorrowingDisabledNote(reserve) && <ReserveSubheader value={'Disabled'} />}
+            {borrowableOnlyInEModeLabels.length > 0 && <BorrowableOnlyInEModeTooltip />}
+          </Box>
+          <V4Rate value={reserve.v4Rates?.borrowApy} />
         </Box>
       </Row>
       <Button

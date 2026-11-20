@@ -28,6 +28,7 @@ import { Link, ROUTES } from '../../components/primitives/Link';
 import { TokenIcon } from '../../components/primitives/TokenIcon';
 import { ReserveWithProtocolIncentives } from './MarketAssetsList';
 import { showBorrowingDisabledNote } from './utils/borrowingDisabled';
+import { V4Rate } from './V4Rate';
 
 export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentives) => {
   const router = useRouter();
@@ -121,6 +122,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
           market={currentMarket}
           protocolAction={ProtocolAction.supply}
         />
+        <V4Rate value={reserve.v4Rates?.supplyApy} />
       </ListColumn>
 
       <ListColumn>
@@ -160,6 +162,7 @@ export const MarketAssetsListItem = ({ ...reserve }: ReserveWithProtocolIncentiv
         />
         {showBorrowingDisabledNote(reserve) && <ReserveSubheader value={'Disabled'} />}
         {borrowableOnlyInEModeLabels.length > 0 && <BorrowableOnlyInEModeTooltip />}
+        <V4Rate value={reserve.v4Rates?.borrowApy} />
       </ListColumn>
 
       <ListColumn align="right" minWidth={95} maxWidth={95}>
