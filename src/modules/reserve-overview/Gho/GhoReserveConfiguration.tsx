@@ -26,13 +26,16 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           </Trans>
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mt: 6 }}>
-          <ExternalLinkButton href="https://github.com/aave/gho/blob/main/techpaper/GHO_Technical_Paper.pdf">
+          <ExternalLinkButton
+            variant="tertiary"
+            href="https://github.com/aave/gho/blob/main/techpaper/GHO_Technical_Paper.pdf"
+          >
             <Trans>Techpaper</Trans>
           </ExternalLinkButton>
-          <ExternalLinkButton href="https://gho.xyz">
+          <ExternalLinkButton variant="tertiary" href="https://gho.xyz">
             <Trans>Website</Trans>
           </ExternalLinkButton>
-          <ExternalLinkButton href="https://docs.gho.xyz/concepts/faq">
+          <ExternalLinkButton variant="tertiary" href="https://docs.gho.xyz/concepts/faq">
             <Trans>FAQ</Trans>
           </ExternalLinkButton>
         </Box>

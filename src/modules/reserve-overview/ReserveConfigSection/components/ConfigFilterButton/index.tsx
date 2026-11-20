@@ -32,7 +32,7 @@ export const ConfigFilterButton = ({
   return (
     <>
       <Button
-        variant="outlined"
+        variant="tertiary"
         onClick={(event) => setAnchorEl(event.currentTarget)}
         disabled={options.length === 0}
         aria-haspopup="true"
