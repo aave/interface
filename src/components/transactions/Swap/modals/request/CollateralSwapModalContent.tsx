@@ -2,6 +2,7 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
+import { EmodeCategory } from 'src/helpers/types';
 import {
   ComputedReserveData,
   useAppDataContext,
@@ -16,9 +17,10 @@ import { useShallow } from 'zustand/shallow';
 import { invalidateAppStateForSwap } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType, TokenType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
+import { canBeCollateralSwapDestination } from './collateralSwapDestination';
 
 export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsset: string }) => {
-  const { user, reserves } = useAppDataContext();
+  const { user, reserves, eModes } = useAppDataContext();
   const [account, chainId, currentMarketName] = useRootStore(
     useShallow((store) => [store.account, store.currentChainId, store.currentMarket])
   );
@@ -36,7 +38,7 @@ export const CollateralSwapModalContent = ({ underlyingAsset }: { underlyingAsse
   });
 
   const tokensFrom = getTokensFrom(user, baseTokens, chainId);
-  const tokensTo = getTokensTo(user, reserves, baseTokens, currentMarketName, chainId);
+  const tokensTo = getTokensTo(user, reserves, baseTokens, currentMarketName, chainId, eModes);
 
   const userSelectedInputToken = tokensFrom.find(
     (token) => token.underlyingAddress.toLowerCase() === underlyingAsset?.toLowerCase()
@@ -211,13 +213,17 @@ const getTokensTo = (
   reserves: ComputedReserveData[],
   baseTokensInfo: TokenInfo[],
   currentMarket: string,
-  chainId: number
+  chainId: number,
+  eModes: Record<number, EmodeCategory>
 ): SwappableToken[] => {
-  // Tokens To should be the potential supply tokens (so we have an aToken)
+  // Tokens To should be the potential supply tokens (so we have an aToken).
+  // A zero-LTV reserve is not a valid destination: it would not be enabled as
+  // collateral after the swap, so offering it invites a swap into dead collateral.
   const tokensToSupply = reserves.filter(
     (reserve: ComputedReserveData) =>
       !(reserve.isFrozen || reserve.isPaused) &&
-      !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket: currentMarket })
+      !displayGhoForMintableMarket({ symbol: reserve.symbol, currentMarket: currentMarket }) &&
+      canBeCollateralSwapDestination(reserve, user, eModes)
   );
 
   const suppliedPositions =
