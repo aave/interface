@@ -31,7 +31,12 @@ export const ReserveConfiguration: React.FC<ReserveConfigurationProps> = ({ rese
   return (
     <>
       <ReserveSupplyCard reserve={reserve} showChart={renderCharts && showBorrowDetails} />
-      <ReserveBorrowCard reserve={reserve} showStats={showBorrowDetails} showChart={renderCharts} />
+      <ReserveBorrowCard
+        reserve={reserve}
+        showStats={showBorrowDetails}
+        showChart={renderCharts}
+        showCollectorInfo
+      />
       {showBorrowDetails && <ReserveInterestRateCard reserve={reserve} />}
     </>
   );

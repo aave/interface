@@ -3,7 +3,7 @@ import { Box, Radio, RadioGroup, Tooltip, Typography } from '@mui/material';
 import { useState } from 'react';
 import { AssetIconStack } from 'src/components/AssetIconStack';
 import { EModeIcon } from 'src/components/icons/EModeIcon';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { flushPercentSx, FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { ShowMoreButton } from 'src/components/ShowMoreButton';
 import { amountBoxSx } from 'src/components/transactions/AssetInput';
 
@@ -35,8 +35,6 @@ const lineSx = {
 };
 
 const valueSx = (gap: string) => ({ display: 'flex', alignItems: 'baseline', gap, flexShrink: 0 });
-
-const flushPercentSx = { '& > .MuiTypography-root': { ml: 0 } };
 
 interface OptionRowProps {
   option: CollateralOption;

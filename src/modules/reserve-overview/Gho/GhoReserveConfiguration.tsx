@@ -49,7 +49,7 @@ export const GhoReserveConfiguration: React.FC<GhoReserveConfigurationProps> = (
           <SavingsGho />
         </Box>
       </PanelRow> */}
-      <ReserveBorrowCard reserve={reserve} showStats showChart={false} />
+      <ReserveBorrowCard reserve={reserve} showStats showChart={false} showCollectorInfo={false} />
       <ReserveCollectorInfo reserve={reserve} variant="card" />
     </>
   );

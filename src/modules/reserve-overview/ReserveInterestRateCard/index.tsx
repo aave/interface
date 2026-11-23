@@ -5,7 +5,6 @@ import { useRootStore } from 'src/store/root';
 
 import { InterestRateModelGraphContainer } from '../graphs/InterestRateModelGraphContainer';
 import { ReserveCard } from '../ReserveCard';
-import { ReserveCollectorInfo } from '../ReserveCollectorInfo';
 import { ReserveStat } from '../ReserveStat';
 import { ReserveStatWithLink } from '../ReserveStatWithLink';
 
@@ -40,8 +39,6 @@ export const ReserveInterestRateCard = ({ reserve }: ReserveInterestRateCardProp
       </ReserveStatWithLink>
 
       <InterestRateModelGraphContainer reserve={reserve} />
-
-      <ReserveCollectorInfo reserve={reserve} variant="section" />
     </ReserveCard>
   );
 };

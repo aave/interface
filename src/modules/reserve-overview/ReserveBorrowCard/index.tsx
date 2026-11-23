@@ -20,6 +20,7 @@ import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 
 import { BorrowApyGraph } from '../graphs/ApyGraphContainer';
 import { ReserveCard } from '../ReserveCard';
+import { ReserveCollectorInfo } from '../ReserveCollectorInfo';
 import { ReserveConfigSection } from '../ReserveConfigSection';
 import { ConfigSort } from '../ReserveConfigSection/components/ConfigTable';
 import { useBorrowableConfigRows } from '../ReserveConfigSection/hooks/useBorrowableConfigRows';
@@ -34,9 +35,15 @@ interface ReserveBorrowCardProps {
   reserve: ReserveWithId;
   showStats: boolean;
   showChart: boolean;
+  showCollectorInfo: boolean;
 }
 
-export const ReserveBorrowCard = ({ reserve, showStats, showChart }: ReserveBorrowCardProps) => {
+export const ReserveBorrowCard = ({
+  reserve,
+  showStats,
+  showChart,
+  showCollectorInfo,
+}: ReserveBorrowCardProps) => {
   const currentMarketData = useRootStore((store) => store.currentMarketData);
   const { borrowCap } = useAssetCapsSDK();
   const borrowableRows = useBorrowableConfigRows(reserve);
@@ -163,6 +170,14 @@ export const ReserveBorrowCard = ({ reserve, showStats, showChart }: ReserveBorr
             chain={currentMarketData.chainId}
             underlyingToken={reserve.underlyingToken.address}
             market={currentMarketData.addresses.LENDING_POOL}
+          />
+        )}
+
+        {showCollectorInfo && (
+          <ReserveCollectorInfo
+            reserve={reserve}
+            variant="row"
+            sx={{ mt: showChart ? '1.0625rem' : '2.5rem' }}
           />
         )}
 

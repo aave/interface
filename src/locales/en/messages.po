@@ -22,10 +22,6 @@ msgstr "If you DO NOT unstake within {0} of unstake window, you will need to act
 msgid "Reward APY at target liquidity"
 msgstr "Reward APY at target liquidity"
 
-#: src/modules/reserve-overview/ReserveCollectorInfo/index.tsx
-msgid "Collector contract"
-msgstr "Collector contract"
-
 #: src/layouts/SupportModal.tsx
 msgid "Thank you for submitting your inquiry!"
 msgstr "Thank you for submitting your inquiry!"
@@ -1816,6 +1812,7 @@ msgstr "No configurations match the selected filters."
 msgid "{remainingCustomMessage}"
 msgstr "{remainingCustomMessage}"
 
+#: src/modules/reserve-overview/ReserveCollectorInfo/index.tsx
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Collector Contract"
 msgstr "Collector Contract"
@@ -3379,7 +3376,6 @@ msgid "This transaction will disable E-Mode. All assets will revert to their bas
 msgstr "This transaction will disable E-Mode. All assets will revert to their base LTV and liquidation thresholds."
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/ReserveCollectorInfo/index.tsx
 #: src/modules/reserve-overview/ReserveCollectorInfo/index.tsx
 msgid "Collector Info"
 msgstr "Collector Info"
