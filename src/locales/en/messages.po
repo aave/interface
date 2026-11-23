@@ -581,6 +581,10 @@ msgstr "Show less"
 msgid "Switch Network"
 msgstr "Switch Network"
 
+#: src/components/BalanceAssets/index.tsx
+msgid "Search assets"
+msgstr "Search assets"
+
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
 #: src/modules/sGho/SGhoSavingsRate.tsx
@@ -964,6 +968,7 @@ msgstr "Techpaper"
 msgid "You've successfully submitted an order."
 msgstr "You've successfully submitted an order."
 
+#: src/components/TokenAmountInput/index.tsx
 #: src/components/transactions/AssetInput.tsx
 #: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
 msgid "Max"
@@ -1010,6 +1015,10 @@ msgstr "{networkName} Faucet"
 #: src/components/incentives/MerklIncentivesTooltipContent.tsx
 msgid "Protocol Incentives"
 msgstr "Protocol Incentives"
+
+#: src/components/BalanceAssets/index.tsx
+msgid "No Results Found for “{trimmed}”"
+msgstr "No Results Found for “{trimmed}”"
 
 #: src/components/WalletConnection/ReadOnlyModal.tsx
 msgid "Watch wallet"
@@ -2337,6 +2346,10 @@ msgstr "Choose how much voting/proposition power to give to someone else by dele
 msgid "Deposited Successfully"
 msgstr "Deposited Successfully"
 
+#: src/components/BalanceAssets/index.tsx
+msgid "Supported Assets"
+msgstr "Supported Assets"
+
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not borrowable in isolation mode"
 msgstr "Asset is not borrowable in isolation mode"
@@ -2749,6 +2762,10 @@ msgstr "Disabling this asset as collateral affects your borrowing power and Heal
 msgid "Price"
 msgstr "Price"
 
+#: src/components/BalanceAssets/index.tsx
+msgid "No assets found"
+msgstr "No assets found"
+
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "E-Mode change"
 msgstr "E-Mode change"
@@ -3129,6 +3146,7 @@ msgstr "Your current loan to value based on your collateral supplied."
 msgid "Preview tx and migrate"
 msgstr "Preview tx and migrate"
 
+#: src/components/TokenAmountInput/index.tsx
 #: src/components/transactions/AssetInput.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -4599,6 +4617,10 @@ msgstr "APY type change"
 msgid "Collateral usage is limited because of isolation mode."
 msgstr "Collateral usage is limited because of isolation mode."
 
+#: src/components/BalanceAssets/index.tsx
+msgid "Try adjusting your search"
+msgstr "Try adjusting your search"
+
 #: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
 msgid "Chain"
 msgstr "Chain"
@@ -4740,6 +4762,10 @@ msgstr "Submission did not work, please try again later or contact wecare@avara.
 #: src/components/transactions/Supply/SupplyModalContent.tsx
 msgid "Supplied Successfully"
 msgstr "Supplied Successfully"
+
+#: src/components/BalanceAssets/index.tsx
+msgid "More Tokens"
+msgstr "More Tokens"
 
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "Filled"

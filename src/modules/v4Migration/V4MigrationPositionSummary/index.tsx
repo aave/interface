@@ -5,9 +5,9 @@ import { ReactNode } from 'react';
 import { ChainBadge } from 'src/components/ChainBadge';
 import { HealthFactorNumber } from 'src/components/HealthFactorNumber';
 import { HubMarketIcon } from 'src/components/HubMarketIcon';
-import { CARD_SURFACE_SX } from 'src/components/OpportunityCard';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TitleWithSubtitle } from 'src/components/TitleWithSubtitle';
+import { CARD_SURFACE_SX } from 'src/utils/figmaColors';
 
 import { getMarketDisplayName } from '../V4MigrationPage/utils/positions';
 

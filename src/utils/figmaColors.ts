@@ -82,6 +82,7 @@ export const figmaLight = {
   'overlay-hover': 'rgba(0, 0, 0, 0.08)',
   'overlay-hover-subtle': 'rgba(0, 0, 0, 0.04)',
   'table-item-hover-1': '#fafafa',
+  'table-item-hover-2': '#f4f4f4',
   'data-green-gho': '#5dff93',
   // Gold for the favourited market star (mode-agnostic; Figma color(display-p3 1 0.7 0)).
   'favourite-star': '#FFB300',
@@ -342,6 +343,14 @@ export const onAccent = '#ffffff';
  */
 export const figSurfaceShadow = (stroke: FigmaColorName = 'shadow-stroke-2'): string =>
   `0px 2px 4px 0px ${figVars['shadow-low']}, 0px 0px 0px 1px ${figVars[stroke]}`;
+
+export const CARD_RADIUS = '0.625rem';
+
+export const CARD_SURFACE_SX = {
+  borderRadius: CARD_RADIUS,
+  bgcolor: 'table-bg',
+  boxShadow: figSurfaceShadow('shadow-stroke-1'),
+} as const;
 
 export const dottedUnderlineSx = {
   backgroundImage: `radial-gradient(circle, ${figVars['fg-4']} 0.6px, transparent 0.75px)`,

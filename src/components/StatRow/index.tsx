@@ -1,8 +1,7 @@
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 import { ReactNode } from 'react';
-import { InfoCircleIcon } from 'src/components/icons/InfoCircleIcon';
+import { InfoLabel } from 'src/components/InfoLabel';
 import { NoData } from 'src/components/primitives/NoData';
-import { TextWithTooltip } from 'src/components/TextWithTooltip';
 
 interface StatRowProps {
   label: ReactNode;
@@ -34,24 +33,7 @@ export const StatRow = ({
   >
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.25rem', minWidth: 0 }}>
       {icon && <Box sx={{ display: 'flex', pr: '0.25rem' }}>{icon}</Box>}
-      {description ? (
-        <TextWithTooltip
-          text={label}
-          variant="base"
-          textColor="fg-3"
-          noWrap
-          icon={<InfoCircleIcon />}
-          iconSize={16}
-          iconColor="fg-4"
-          iconMargin={1}
-        >
-          <>{description}</>
-        </TextWithTooltip>
-      ) : (
-        <Typography variant="base" color="fg-3" noWrap>
-          {label}
-        </Typography>
-      )}
+      <InfoLabel label={label} tooltip={description} iconMargin={1} />
     </Box>
     {loading ? (
       skeleton ?? (

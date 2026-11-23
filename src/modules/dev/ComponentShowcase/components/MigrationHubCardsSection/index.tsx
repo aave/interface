@@ -9,7 +9,7 @@ import {
 } from 'src/modules/v4Migration/V4MigrationHubCard';
 import { MigrationAsset } from 'src/modules/v4Migration/V4MigrationPage/utils/types';
 
-import { HEX_TEXT } from '../../utils/tokenHex';
+import { CodeSnippet } from '../CodeSnippet';
 import { ON_OFF, PropControl } from '../PropControl';
 import { PropRow, PropsTable } from '../PropsTable';
 import { Section } from '../Section';
@@ -230,23 +230,7 @@ const Playground = () => {
         <Box sx={{ flex: `1 1 ${CARD_WIDTH}`, maxWidth: CARD_WIDTH }}>
           <V4MigrationHubCard {...props} />
         </Box>
-        <Box
-          component="pre"
-          sx={{
-            ...HEX_TEXT,
-            flex: '1 1 18rem',
-            m: 0,
-            p: '1rem',
-            borderRadius: '0.5rem',
-            bgcolor: 'bg-4',
-            color: 'fg-2',
-            fontSize: '0.75rem',
-            lineHeight: 1.6,
-            overflowX: 'auto',
-          }}
-        >
-          {snippetFor(props)}
-        </Box>
+        <CodeSnippet>{snippetFor(props)}</CodeSnippet>
       </Box>
     </Box>
   );

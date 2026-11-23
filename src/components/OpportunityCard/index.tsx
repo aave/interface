@@ -5,15 +5,7 @@ import { SparklineDatum } from 'src/components/charts/SparklineChart';
 import { Curator, CuratorBy } from 'src/components/CuratorBy';
 import { Link } from 'src/components/primitives/Link';
 import { TitleWithSubtitle } from 'src/components/TitleWithSubtitle';
-import { figSurfaceShadow } from 'src/utils/figmaColors';
-
-const CARD_RADIUS = '0.625rem';
-
-export const CARD_SURFACE_SX = {
-  borderRadius: CARD_RADIUS,
-  bgcolor: 'table-bg',
-  boxShadow: figSurfaceShadow('shadow-stroke-1'),
-} as const;
+import { CARD_RADIUS, CARD_SURFACE_SX } from 'src/utils/figmaColors';
 
 const STRETCHED_SX = {
   position: 'static',
