@@ -1,0 +1,33 @@
+src/hooks/useZeroLTVBlockingWithdraw.tsx
+  s_8bfbd7bbe54303::t_81349ffee023fd 1,8-21,23-38,42,53,58,60-69,71
+src/hooks/__tests__/useZeroLTVBlockingWithdraw.test.ts
+  s_8bfbd7bbe54303::t_d1ebe17715a162 46-87
+  s_8bfbd7bbe54303::t_3486b5f89691d8 3
+src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
+  s_8bfbd7bbe54303::t_60558a498f24ba 88-89
+src/utils/hfUtils.ts
+  s_8bfbd7bbe54303::t_ff24a83cc258f2 29
+  s_8bfbd7bbe54303::t_d2b72079cf5adc 164-166
+  s_8bfbd7bbe54303::t_1bd6a84dd2bd08 101-114
+  s_8bfbd7bbe54303::t_a0173d3f37a500 412-419
+  s_8bfbd7bbe54303::t_e041382d71a240 389-390
+src/utils/__tests__/hfUtils.test.ts
+  s_8bfbd7bbe54303::t_6bd01a3b744767 77
+  s_8bfbd7bbe54303::t_28458ea4676490 351-410
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b4cd08605c0d74f224bdd6cbd45210cbd4805b5b",
+  "prompts": {},
+  "sessions": {
+    "s_8bfbd7bbe54303": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "00261c08-f228-45a0-a23c-9912af0fb455",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}
