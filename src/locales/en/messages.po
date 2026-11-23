@@ -602,6 +602,7 @@ msgstr "Failed"
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
 #: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
 msgid "Health factor"
 msgstr "Health factor"
@@ -669,6 +670,10 @@ msgstr "Rewards for legacy Savings GHO have ended. Migrate to continue earning."
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
 msgstr "Be careful - You are very close to liquidation. Consider depositing more collateral or paying down some of your borrowed positions"
+
+#: src/modules/v4Migration/V4MigrationPositionSummary/index.tsx
+msgid "Health Factor"
+msgstr "Health Factor"
 
 #: src/modules/dashboard/lists/SupplyAssetsList/WalletEmptyInfo.tsx
 msgid "Your {name} wallet is empty. Purchase or transfer assets."
@@ -1572,6 +1577,10 @@ msgstr "Borrow balance after repay"
 msgid "Supplied assets"
 msgstr "Supplied assets"
 
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "A ratio of your total collateral value to total debt. Below 1.0, your position can be liquidated."
+msgstr "A ratio of your total collateral value to total debt. Below 1.0, your position can be liquidated."
+
 #: src/components/transactions/Warnings/DebtCeilingWarning.tsx
 msgid "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
 msgstr "Protocol debt ceiling is at 100% for this asset. Further borrowing against this asset is unavailable."
@@ -2175,6 +2184,7 @@ msgid "Total available"
 msgstr "Total available"
 
 #: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+#: src/modules/v4Migration/V4MigrationPositionSummary/index.tsx
 msgid "7D avg."
 msgstr "7D avg."
 
@@ -2285,6 +2295,7 @@ msgstr "Available to stake"
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
 
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
 #: src/modules/v4Migration/V4MigrationHubCard/index.tsx
 msgid "{name} Hub"
 msgstr "{name} Hub"
@@ -2422,6 +2433,10 @@ msgstr "Total borrows"
 #: src/modules/governance/proposal/ProposalOverview.tsx
 msgid "Author"
 msgstr "Author"
+
+#: src/components/CuratorBy/index.tsx
+msgid "by"
+msgstr "by"
 
 #: src/modules/governance/VoteBar.tsx
 msgid "YAE"
@@ -3119,6 +3134,7 @@ msgstr "Preview tx and migrate"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SupplyAssetsList/SupplyAssetsList.tsx
+#: src/modules/v4Migration/V4MigrationPositionSummary/index.tsx
 msgid "Balance"
 msgstr "Balance"
 
@@ -3931,6 +3947,10 @@ msgstr "Dark"
 msgid "The caller of this function must be a pool"
 msgstr "The caller of this function must be a pool"
 
+#: src/modules/v4Migration/V4MigrationPositionSummary/index.tsx
+msgid "V3 Protocol"
+msgstr "V3 Protocol"
+
 #: src/components/TopInfoPanel/PageTitle.tsx
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
@@ -3964,6 +3984,11 @@ msgstr "Staked tokens are wrapped and use an exchange rate. You may see fewer to
 #: src/components/transactions/FlowCommons/GasEstimationError.tsx
 msgid "copy the error"
 msgstr "copy the error"
+
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+#: src/modules/v4Migration/V4MigrationPositionSummary/index.tsx
+msgid "{market} Market"
+msgstr "{market} Market"
 
 #: src/components/ConnectWalletPaperStaking.tsx
 msgid "Please connect your wallet to see your supplies, borrowings, and open positions."
@@ -4389,6 +4414,10 @@ msgstr "Allows you to decide whether to use a supplied asset as collateral. An a
 msgid "Search asset name, symbol, or address"
 msgstr "Search asset name, symbol, or address"
 
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "Cheapest APY"
+msgstr "Cheapest APY"
+
 #: src/modules/governance/ProposalsV3List.tsx
 msgid "We couldn't find any proposals related to your search."
 msgstr "We couldn't find any proposals related to your search."
@@ -4429,6 +4458,10 @@ msgstr "You {action} <0/> {symbol}"
 #: pages/500.page.tsx
 msgid "Discord channel"
 msgstr "Discord channel"
+
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "Up to {rate}"
+msgstr "Up to {rate}"
 
 #: src/ui-config/errorMapping.tsx
 msgid "The caller of the function is not an AToken"
@@ -4536,6 +4569,11 @@ msgstr "Across every Aave version and network"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 msgid "Repay with"
 msgstr "Repay with"
+
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+#: src/modules/v4Migration/V4MigrationPositionSummary/index.tsx
+msgid "Position APY"
+msgstr "Position APY"
 
 #: src/components/FaucetButton.tsx
 #: src/modules/faucet/FaucetTopPanel.tsx

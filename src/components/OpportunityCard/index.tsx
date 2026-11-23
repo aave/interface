@@ -2,10 +2,18 @@ import { Box, ButtonBase, Skeleton, Typography } from '@mui/material';
 import { Children, ReactNode } from 'react';
 import { ApySparkline } from 'src/components/charts/ApySparkline';
 import { SparklineDatum } from 'src/components/charts/SparklineChart';
+import { Curator, CuratorBy } from 'src/components/CuratorBy';
 import { Link } from 'src/components/primitives/Link';
+import { TitleWithSubtitle } from 'src/components/TitleWithSubtitle';
 import { figSurfaceShadow } from 'src/utils/figmaColors';
 
 const CARD_RADIUS = '0.625rem';
+
+export const CARD_SURFACE_SX = {
+  borderRadius: CARD_RADIUS,
+  bgcolor: 'table-bg',
+  boxShadow: figSurfaceShadow('shadow-stroke-1'),
+} as const;
 
 const STRETCHED_SX = {
   position: 'static',
@@ -29,6 +37,8 @@ const STRETCHED_SX = {
 
 interface OpportunityCardProps {
   title?: ReactNode;
+  subtitle?: ReactNode;
+  curators?: Curator[];
   leading?: ReactNode;
   trailing?: ReactNode;
   href?: string;
@@ -49,6 +59,8 @@ interface OpportunityCardProps {
 
 export const OpportunityCard = ({
   title,
+  subtitle,
+  curators,
   leading,
   trailing,
   href,
@@ -72,9 +84,7 @@ export const OpportunityCard = ({
     loading || !title ? (
       <Skeleton variant="rectangular" width={140} height={16} sx={{ borderRadius: '0.375rem' }} />
     ) : (
-      <Typography variant="h5" color="fg-1" noWrap>
-        {title}
-      </Typography>
+      <TitleWithSubtitle title={title} subtitle={subtitle} />
     );
 
   const link = !interactive ? (
@@ -156,9 +166,7 @@ export const OpportunityCard = ({
         flexDirection: 'column',
         gap: '1.25rem',
         p: '1.25rem',
-        borderRadius: CARD_RADIUS,
-        bgcolor: 'table-bg',
-        boxShadow: figSurfaceShadow('shadow-stroke-1'),
+        ...CARD_SURFACE_SX,
         opacity: disabled ? 0.5 : 1,
         transition: 'background-color 100ms ease',
         ...(interactive && {
@@ -169,6 +177,11 @@ export const OpportunityCard = ({
       <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         {leading ? <Box sx={{ display: 'flex', flexShrink: 0 }}>{leading}</Box> : null}
         {link}
+        {curators?.length && !loading ? (
+          <Box sx={{ display: 'flex', flexShrink: 0, position: 'relative', zIndex: 2 }}>
+            <CuratorBy curators={curators} />
+          </Box>
+        ) : null}
         {trailing ? (
           <Box sx={{ display: 'flex', flexShrink: 0, ml: 'auto' }}>{trailing}</Box>
         ) : null}

@@ -1,9 +1,17 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Box } from '@mui/material';
+import { useState } from 'react';
 import { SparklineDatum } from 'src/components/charts/SparklineChart';
-import { V4MigrationHubCard } from 'src/modules/v4Migration/V4MigrationHubCard';
+import { Curator } from 'src/components/CuratorBy';
+import {
+  V4MigrationHubCard,
+  V4MigrationHubCardProps,
+} from 'src/modules/v4Migration/V4MigrationHubCard';
 import { MigrationAsset } from 'src/modules/v4Migration/V4MigrationPage/utils/types';
 
+import { HEX_TEXT } from '../../utils/tokenHex';
+import { ON_OFF, PropControl } from '../PropControl';
+import { PropRow, PropsTable } from '../PropsTable';
 import { Section } from '../Section';
 import { Specimen } from '../Specimen';
 
@@ -64,45 +72,321 @@ const makeHistory = (): SparklineDatum[] => {
   });
 };
 
-const HISTORY = makeHistory();
-const AVERAGE = HISTORY.reduce((sum, d) => sum + d.value, 0) / HISTORY.length;
+const average = (history: SparklineDatum[]) =>
+  history.reduce((sum, d) => sum + d.value, 0) / history.length;
 
-const HUB = {
-  hubName: 'Core',
-  chainId: ChainId.mainnet,
-  apy: 0.0618,
-  apyAverage: AVERAGE,
-  apyHistory: HISTORY,
-  hasIncentives: true,
-  totalDepositsUSD: 45_620_000,
-  backingCollateral: BACKING_COLLATERAL,
-  onClick: () => undefined,
+const EARN_APY = 0.0618;
+const BORROW_APY = 0.0041;
+const EARN_HISTORY = makeHistory();
+const BORROW_HISTORY = EARN_HISTORY.map((d) => ({
+  ...d,
+  value: (d.value * BORROW_APY) / EARN_APY,
+}));
+
+const SENTORA: Curator = {
+  name: 'Sentora',
+  icon: '/icons/curators/sentora.webp',
+  tooltip: 'Curator details (placeholder until the copy is designed)',
 };
+
+const RATE_TOOLTIP = 'Rate breakdown (placeholder until the copy is designed)';
+
+const SIDES = [
+  { value: 'earn', label: 'Earn' },
+  { value: 'borrow', label: 'Borrow' },
+] as const;
+
+const STATES = [
+  { value: 'default', label: 'Default' },
+  { value: 'unavailable', label: 'Unavailable' },
+  { value: 'loading', label: 'Loading' },
+] as const;
+
+interface Options {
+  side: (typeof SIDES)[number]['value'];
+  state: (typeof STATES)[number]['value'];
+  bestApy: boolean;
+  curator: boolean;
+  apyTooltip: boolean;
+  incentives: boolean;
+}
+
+const EARN_DESIGN: Options = {
+  side: 'earn',
+  state: 'default',
+  bestApy: true,
+  curator: false,
+  apyTooltip: false,
+  incentives: true,
+};
+
+const BORROW_DESIGN: Options = {
+  side: 'borrow',
+  state: 'default',
+  bestApy: true,
+  curator: true,
+  apyTooltip: true,
+  incentives: false,
+};
+
+const EARN_AVERAGE = average(EARN_HISTORY);
+const BORROW_AVERAGE = average(BORROW_HISTORY);
+
+const propsFor = (options: Options): V4MigrationHubCardProps => {
+  const identity = {
+    hubName: 'Core',
+    chainId: ChainId.mainnet,
+    curators: options.curator ? [SENTORA] : undefined,
+  };
+  const rate = {
+    apyTooltip: options.apyTooltip ? RATE_TOOLTIP : undefined,
+    hasIncentives: options.incentives,
+  };
+  const flags = {
+    bestApy: options.bestApy,
+    unavailable: options.state === 'unavailable',
+    loading: options.state === 'loading',
+    onClick: () => undefined,
+  };
+
+  return options.side === 'borrow'
+    ? {
+        side: 'borrow',
+        marketName: 'Main',
+        ...identity,
+        apy: BORROW_APY,
+        ...rate,
+        apyAverage: BORROW_AVERAGE,
+        apyHistory: BORROW_HISTORY,
+        healthFactor: '5',
+        ...flags,
+      }
+    : {
+        side: 'earn',
+        ...identity,
+        apy: EARN_APY,
+        ...rate,
+        apyAverage: EARN_AVERAGE,
+        apyHistory: EARN_HISTORY,
+        totalDepositsUSD: 45_620_000,
+        backingCollateral: BACKING_COLLATERAL,
+        ...flags,
+      };
+};
+
+const STAND_INS: Record<string, string> = {
+  chainId: 'ChainId.mainnet',
+  curators: '[{ name, icon, tooltip }]',
+  apyTooltip: 'rateBreakdown',
+  apyAverage: 'average',
+  apyHistory: 'history',
+  backingCollateral: 'assets',
+  onClick: 'selectHub',
+};
+
+const snippetFor = (props: V4MigrationHubCardProps) =>
+  [
+    '<V4MigrationHubCard',
+    ...Object.entries(props).flatMap(([key, value]) => {
+      if (value === undefined || value === false) return [];
+      if (value === true) return [`  ${key}`];
+      if (key in STAND_INS) return [`  ${key}={${STAND_INS[key]}}`];
+      return [typeof value === 'string' ? `  ${key}="${value}"` : `  ${key}={${value}}`];
+    }),
+    '/>',
+  ].join('\n');
+
+const TOGGLES = [
+  ['bestApy', 'Best / cheapest'],
+  ['curator', 'Curator'],
+  ['apyTooltip', 'APY tooltip'],
+  ['incentives', 'Incentives'],
+] as const;
+
+const Playground = () => {
+  const [options, setOptions] = useState<Options>(BORROW_DESIGN);
+  const props = propsFor(options);
+  const set =
+    <K extends keyof Options>(key: K) =>
+    (value: Options[K]) =>
+      setOptions((current) => ({ ...current, [key]: value }));
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem 2rem' }}>
+        <PropControl label="Side" value={options.side} options={SIDES} onChange={set('side')} />
+        <PropControl label="State" value={options.state} options={STATES} onChange={set('state')} />
+        {TOGGLES.map(([key, label]) => (
+          <PropControl
+            key={key}
+            label={label}
+            value={options[key]}
+            options={ON_OFF}
+            onChange={set(key)}
+          />
+        ))}
+      </Box>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: '1.5rem' }}>
+        <Box sx={{ flex: `1 1 ${CARD_WIDTH}`, maxWidth: CARD_WIDTH }}>
+          <V4MigrationHubCard {...props} />
+        </Box>
+        <Box
+          component="pre"
+          sx={{
+            ...HEX_TEXT,
+            flex: '1 1 18rem',
+            m: 0,
+            p: '1rem',
+            borderRadius: '0.5rem',
+            bgcolor: 'bg-4',
+            color: 'fg-2',
+            fontSize: '0.75rem',
+            lineHeight: 1.6,
+            overflowX: 'auto',
+          }}
+        >
+          {snippetFor(props)}
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+const PROPS: PropRow[] = [
+  {
+    name: 'side',
+    type: "'earn' | 'borrow'",
+    scope: 'both',
+    description: "Which card to draw. Defaults to 'earn'.",
+  },
+  {
+    name: 'hubName',
+    type: 'string',
+    scope: 'both',
+    description:
+      'A trailing "Hub" is dropped and added back, so "Core" and "Core Hub" both work. The title on earn, the subtitle after the dot on borrow.',
+  },
+  {
+    name: 'marketName',
+    type: 'string',
+    scope: 'borrow',
+    description: 'The title. A trailing "Market" is dropped and added back.',
+  },
+  {
+    name: 'chainId',
+    type: 'ChainId',
+    scope: 'both',
+    description: 'Chain badge on the hub or market icon.',
+  },
+  {
+    name: 'curators',
+    type: '{ name, icon, tooltip? }[]',
+    scope: 'both',
+    description:
+      '"by" plus each curator\'s 16px logo and name, after the title. A curator with a tooltip gets a dotted name that opens it.',
+  },
+  {
+    name: 'apy',
+    type: 'number',
+    scope: 'both',
+    description: 'A fraction: 0.0618 shows as 6.18%. Borrow reads "Up to …".',
+  },
+  {
+    name: 'apyTooltip',
+    type: 'ReactNode',
+    scope: 'both',
+    description: 'Dots the APY and opens this on click.',
+  },
+  {
+    name: 'apyAverage',
+    type: 'number',
+    scope: 'both',
+    description: 'The "7D avg." line under the APY.',
+  },
+  {
+    name: 'apyHistory',
+    type: '{ date, value }[]',
+    scope: 'both',
+    description:
+      'Sparkline data; its mean draws the dashed line. Purple on earn, orange on borrow.',
+  },
+  {
+    name: 'hasIncentives',
+    type: 'boolean',
+    scope: 'both',
+    description: 'Incentives icon after the APY.',
+  },
+  {
+    name: 'bestApy',
+    type: 'boolean',
+    scope: 'both',
+    description: '"Best APY" pill on earn, "Cheapest APY" on borrow.',
+  },
+  {
+    name: 'totalDepositsUSD',
+    type: 'number',
+    scope: 'earn',
+    description: 'Total deposits row, in compact USD.',
+  },
+  {
+    name: 'backingCollateral',
+    type: 'MigrationAsset[]',
+    scope: 'earn',
+    description: 'New Backing Collateral row, as overlapping asset icons.',
+  },
+  {
+    name: 'healthFactor',
+    type: 'string',
+    scope: 'borrow',
+    description: 'Health factor row with the heart, coloured by the health factor scale.',
+  },
+  {
+    name: 'unavailable',
+    type: 'boolean',
+    scope: 'both',
+    description: 'Dims the card to 50% and turns off clicks.',
+  },
+  {
+    name: 'loading',
+    type: 'boolean',
+    scope: 'both',
+    description: 'Skeletons for the title, APY, average, chart and rows.',
+  },
+  {
+    name: 'href / onClick',
+    type: 'string / () => void',
+    scope: 'both',
+    description: 'Makes the whole card a link or a button.',
+  },
+];
 
 export const MigrationHubCardsSection = () => (
   <Section
     title="Migration hub cards"
-    description="V4MigrationHubCard, built on OpportunityCard (ported from Aave Pro), with mock data until the backend lands. Clicking does nothing here. Below 640px the chart moves to its own row."
+    description="V4MigrationHubCard, built on OpportunityCard (ported from Aave Pro), with mock data until the backend lands. Earn cards are hubs to move a deposit into; borrow cards are markets to move a borrow position into. Clicking does nothing here, and below 640px the chart gets its own row."
   >
-    <Specimen label="Best APY" fullWidth>
-      <Box sx={{ width: '100%', maxWidth: CARD_WIDTH }}>
-        <V4MigrationHubCard {...HUB} bestApy />
+    <Specimen label="Playground — the snippet follows your choices" fullWidth>
+      <Playground />
+    </Specimen>
+    <Specimen label="Earn and borrow, as designed" fullWidth>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 26rem), 1fr))',
+          gap: '1.5rem',
+          width: '100%',
+        }}
+      >
+        <Box sx={{ maxWidth: CARD_WIDTH }}>
+          <V4MigrationHubCard {...propsFor(EARN_DESIGN)} />
+        </Box>
+        <Box sx={{ maxWidth: CARD_WIDTH }}>
+          <V4MigrationHubCard {...propsFor(BORROW_DESIGN)} />
+        </Box>
       </Box>
     </Specimen>
-    <Specimen label="Default" fullWidth>
-      <Box sx={{ width: '100%', maxWidth: CARD_WIDTH }}>
-        <V4MigrationHubCard {...HUB} />
-      </Box>
-    </Specimen>
-    <Specimen label="Unavailable" fullWidth>
-      <Box sx={{ width: '100%', maxWidth: CARD_WIDTH }}>
-        <V4MigrationHubCard {...HUB} unavailable />
-      </Box>
-    </Specimen>
-    <Specimen label="Loading" fullWidth>
-      <Box sx={{ width: '100%', maxWidth: CARD_WIDTH }}>
-        <V4MigrationHubCard {...HUB} loading />
-      </Box>
+    <Specimen label="Props" fullWidth>
+      <PropsTable rows={PROPS} />
     </Specimen>
   </Section>
 );

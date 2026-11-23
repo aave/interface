@@ -12,12 +12,14 @@ interface HealthFactorNumberProps extends TypographyProps {
   value: string;
   onInfoClick?: () => void;
   withHeart?: boolean;
+  heartGap?: string;
 }
 
 export const HealthFactorNumber = ({
   value,
   onInfoClick,
   withHeart,
+  heartGap = '0.25rem',
   ...rest
 }: HealthFactorNumberProps) => {
   const isInfinite = value === '-1';
@@ -26,7 +28,7 @@ export const HealthFactorNumber = ({
 
   return (
     <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'HealthFactorTopPannel'}>
-      {withHeart && <HeartIcon sx={{ color, mr: '0.25rem' }} />}
+      {withHeart && <HeartIcon sx={{ color, mr: heartGap }} />}
       {isInfinite ? (
         <Typography variant="h5" color={color}>
           ∞

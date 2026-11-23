@@ -342,3 +342,10 @@ export const onAccent = '#ffffff';
  */
 export const figSurfaceShadow = (stroke: FigmaColorName = 'shadow-stroke-2'): string =>
   `0px 2px 4px 0px ${figVars['shadow-low']}, 0px 0px 0px 1px ${figVars[stroke]}`;
+
+export const dottedUnderlineSx = {
+  backgroundImage: `radial-gradient(circle, ${figVars['fg-4']} 0.6px, transparent 0.75px)`,
+  backgroundSize: '3px 1.5px',
+  backgroundRepeat: 'space no-repeat',
+  backgroundPosition: 'left bottom',
+} as const;

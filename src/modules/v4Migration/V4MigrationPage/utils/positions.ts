@@ -38,3 +38,7 @@ export const getAssetIconSymbol = (asset: MigrationAsset) =>
     symbol: asset.symbol,
     name: asset.name,
   }).iconSymbol;
+
+export const getHubDisplayName = (name: string) => name.replace(/\s+hub$/i, '');
+
+export const getMarketDisplayName = (name: string) => name.replace(/\s+market$/i, '');
