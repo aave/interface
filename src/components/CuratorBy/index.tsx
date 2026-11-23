@@ -44,6 +44,21 @@ const CuratorName = ({ curator }: { curator: Curator }) => {
   );
 };
 
+export const CuratorNames = ({ curators }: { curators: Curator[] }) => (
+  <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
+    {curators.map((curator, index) => (
+      <Fragment key={curator.name}>
+        {index > 0 && (
+          <Typography component="span" variant="base" color="fg-3" sx={{ whiteSpace: 'pre' }}>
+            ,{' '}
+          </Typography>
+        )}
+        <CuratorName curator={curator} />
+      </Fragment>
+    ))}
+  </Box>
+);
+
 export const CuratorBy = ({ curators }: { curators: Curator[] }) =>
   curators.length === 0 ? null : (
     <Box
@@ -53,17 +68,6 @@ export const CuratorBy = ({ curators }: { curators: Curator[] }) =>
       <Typography component="span" variant="base" color="fg-3">
         <Trans>by</Trans>
       </Typography>
-      <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        {curators.map((curator, index) => (
-          <Fragment key={curator.name}>
-            {index > 0 && (
-              <Typography component="span" variant="base" color="fg-3" sx={{ whiteSpace: 'pre' }}>
-                ,{' '}
-              </Typography>
-            )}
-            <CuratorName curator={curator} />
-          </Fragment>
-        ))}
-      </Box>
+      <CuratorNames curators={curators} />
     </Box>
   );

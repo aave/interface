@@ -1,13 +1,16 @@
 import { t, Trans } from '@lingui/macro';
-import { Box, ButtonBase, Skeleton, Theme, Typography } from '@mui/material';
-import { SystemStyleObject } from '@mui/system';
+import { Box, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { ReactNode, useState } from 'react';
+import {
+  AssetList,
+  AssetListGroup,
+  AssetListItem,
+  AssetListItemSkeleton,
+} from 'src/components/AssetListItem';
 import { FormattedNumber, getCompactDecimals } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { SearchInput } from 'src/components/SearchInput';
-import { figVars } from 'src/utils/figmaColors';
-import { insetHighlightActive, insetHighlightBase } from 'src/utils/insetHighlight';
 
 export interface BalanceAsset {
   symbol: string;
@@ -25,63 +28,6 @@ const ROOT_SX = {
   minHeight: 0,
 } as const;
 
-const LIST_SX = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem',
-  flex: 1,
-  minHeight: 0,
-  overflowY: 'auto',
-  mx: '-0.625rem',
-  px: '0.625rem',
-} as const;
-
-const GROUP_LABEL_SX = {
-  display: 'block',
-  mb: '0.25rem',
-  fontSize: '0.6875rem',
-  fontWeight: 600,
-  lineHeight: 1.2,
-  textTransform: 'uppercase',
-  color: 'fg-3',
-} as const;
-
-const rowSx = (theme: Theme): SystemStyleObject<Theme> => ({
-  ...insetHighlightBase({ theme, radius: '0.5rem', left: '-0.625rem', right: '-0.625rem' }),
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  gap: '0.75rem',
-  width: '100%',
-  height: '4rem',
-  textAlign: 'left',
-  '&:hover::before, &.Mui-focusVisible::before': insetHighlightActive(
-    figVars['table-item-hover-2']
-  ),
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    left: '3.5rem',
-    right: 0,
-    bottom: 0,
-    height: '1px',
-    backgroundColor: figVars['border-0'],
-  },
-  '&:last-of-type::after, &:hover::after, &:has(+ :hover)::after': { display: 'none' },
-});
-
-const CONTENT_SX = {
-  flex: 1,
-  minWidth: 0,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: '0.5rem',
-} as const;
-
-const LEFT_SX = { display: 'flex', flexDirection: 'column', gap: '0.375rem', minWidth: 0 } as const;
-const RIGHT_SX = { ...LEFT_SX, alignItems: 'flex-end' } as const;
-
 const matchesQuery = (asset: BalanceAsset, query: string) => {
   const q = query.trim().toLowerCase();
   return !q || asset.symbol.toLowerCase().includes(q) || asset.name.toLowerCase().includes(q);
@@ -98,18 +44,21 @@ const AssetRow = <T extends BalanceAsset>({
   const price = balance.gt(0) ? asset.balanceUSD / balance.toNumber() : 0;
 
   return (
-    <ButtonBase onClick={() => onSelect(asset)} sx={rowSx}>
-      <TokenIcon symbol={asset.iconSymbol ?? asset.symbol} sx={{ fontSize: '2.75rem' }} />
-      <Box sx={CONTENT_SX}>
-        <Box sx={LEFT_SX}>
+    <AssetListItem
+      onClick={() => onSelect(asset)}
+      icon={<TokenIcon symbol={asset.iconSymbol ?? asset.symbol} sx={{ fontSize: '2.75rem' }} />}
+      left={
+        <>
           <Typography component="span" variant="h5" color="fg-1" noWrap>
             {asset.name}
           </Typography>
           <Typography component="span" variant="base" color="fg-3">
             {asset.symbol}
           </Typography>
-        </Box>
-        <Box sx={RIGHT_SX}>
+        </>
+      }
+      right={
+        <>
           <FormattedNumber
             component="span"
             value={balance.toString()}
@@ -125,21 +74,11 @@ const AssetRow = <T extends BalanceAsset>({
             variant="base"
             color="fg-3"
           />
-        </Box>
-      </Box>
-    </ButtonBase>
+        </>
+      }
+    />
   );
 };
-
-const SkeletonRow = () => (
-  <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75rem', height: '4rem' }}>
-    <Skeleton variant="circular" width={44} height={44} />
-    <Box sx={{ ...LEFT_SX, flex: 1 }}>
-      <Skeleton variant="rectangular" width={96} height={14} sx={{ borderRadius: '0.25rem' }} />
-      <Skeleton variant="rectangular" width={48} height={14} sx={{ borderRadius: '0.25rem' }} />
-    </Box>
-  </Box>
-);
 
 interface BalanceAssetsProps<T extends BalanceAsset> {
   supportedAssets: T[];
@@ -173,23 +112,20 @@ export const BalanceAssets = <T extends BalanceAsset>({
         onSearchTermChange={setQuery}
         wrapperSx={{ width: '100%', flexShrink: 0 }}
       />
-      <Box sx={LIST_SX}>
+      <AssetList>
         {loading ? (
           <Box>
-            <SkeletonRow />
-            <SkeletonRow />
-            <SkeletonRow />
+            <AssetListItemSkeleton />
+            <AssetListItemSkeleton />
+            <AssetListItemSkeleton />
           </Box>
         ) : groups.length > 0 ? (
           groups.map((group) => (
-            <Box key={group.key}>
-              <Typography variant="inherit" component="h3" sx={GROUP_LABEL_SX}>
-                {group.label}
-              </Typography>
+            <AssetListGroup key={group.key} label={group.label}>
               {group.assets.map((asset) => (
                 <AssetRow key={asset.symbol} asset={asset} onSelect={onSelect} />
               ))}
-            </Box>
+            </AssetListGroup>
           ))
         ) : (
           <Box
@@ -216,7 +152,7 @@ export const BalanceAssets = <T extends BalanceAsset>({
             )}
           </Box>
         )}
-      </Box>
+      </AssetList>
     </Box>
   );
 };

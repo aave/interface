@@ -18,7 +18,7 @@ const FADE = {
   exit: { opacity: 0 },
 };
 
-const SKELETON = (
+export const SKELETON = (
   <Skeleton variant="rectangular" width={40} height={12} sx={{ borderRadius: '0.5rem' }} />
 );
 

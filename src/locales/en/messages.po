@@ -1448,6 +1448,11 @@ msgstr "Cooldown period"
 msgid "Liquidation at"
 msgstr "Liquidation at"
 
+#: src/modules/v4Migration/V4MigrationPreview/components/PositionName/index.tsx
+#: src/modules/v4Migration/V4MigrationPreview/components/PositionName/index.tsx
+msgid "{hub} Hub"
+msgstr "{hub} Hub"
+
 #: src/modules/markets/Gho/GhoBanner.tsx
 msgid "Migrate your sGHO position"
 msgstr "Migrate your sGHO position"
@@ -1974,6 +1979,10 @@ msgstr "Underlying asset does not exist in {marketName} v3 Market, hence this po
 #: src/components/infoTooltips/LiquidationPenaltyTooltip.tsx
 msgid "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
 msgstr "When a liquidation occurs, liquidators repay up to 50% of the outstanding borrowed amount on behalf of the borrower. In return, they can buy the collateral at a discount and keep the difference (liquidation penalty) as a bonus."
+
+#: src/modules/v4Migration/V4MigrationPreview/components/PositionName/index.tsx
+msgid "Change hub ({hub} Hub)"
+msgstr "Change hub ({hub} Hub)"
 
 #: pages/safety-module.page.tsx
 msgid "Stake ABPT"
@@ -3268,6 +3277,10 @@ msgstr "There was some error. Please try changing the parameters or <0>copy the 
 msgid "Submit"
 msgstr "Submit"
 
+#: src/modules/v4Migration/V4MigrationPreview/components/PositionName/index.tsx
+msgid "Change market ({market} Market)"
+msgstr "Change market ({market} Market)"
+
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Debt Swap"
@@ -4005,6 +4018,7 @@ msgstr "copy the error"
 
 #: src/modules/v4Migration/V4MigrationHubCard/index.tsx
 #: src/modules/v4Migration/V4MigrationPositionSummary/index.tsx
+#: src/modules/v4Migration/V4MigrationPreview/components/PositionName/index.tsx
 msgid "{market} Market"
 msgstr "{market} Market"
 

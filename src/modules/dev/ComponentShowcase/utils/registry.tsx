@@ -150,6 +150,14 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
       import('../components/MigrationAmountSection').then((m) => m.MigrationAmountSection)
     ),
   },
+  {
+    slug: 'migration-preview',
+    label: 'Preview',
+    group: 'Migration',
+    Component: dynamic(() =>
+      import('../components/MigrationPreviewSection').then((m) => m.MigrationPreviewSection)
+    ),
+  },
 ];
 
 // Sections grouped for the sidebar, preserving declaration order.
