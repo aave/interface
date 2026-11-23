@@ -133,7 +133,6 @@ export const SGhoVaultDepositModalContent = () => {
         amount={amount}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
-        sx={{ mt: '48px' }}
       />
     </>
   );

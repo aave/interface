@@ -14,7 +14,7 @@ interface ContentContainerProps {
  * mobile tab switchers, and the asset filter bars on markets/staking — so a leading row sits the
  * same distance from the header hairline as from the content beneath it.
  */
-export const CONTENT_TOP_PADDING = { xs: '1.5rem', xsm: '2rem' };
+export const CONTENT_TOP_PADDING = { xs: '1.5rem', xsm: '3rem' };
 
 export const ContentContainer = ({
   children,

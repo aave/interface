@@ -80,7 +80,6 @@ export const MarketOrderInputs = ({
           balanceTitle={params.inputBalanceTitle}
           assets={swapState.inputAssets}
           value={state.inputAmount}
-          enableHover={true}
           onChange={swapState.handleInputChange}
           onClear={() =>
             setState({
@@ -175,7 +174,6 @@ export const MarketOrderInputs = ({
           assets={swapState.outputAssets}
           title={params.outputInputTitle}
           value={state.outputAmount}
-          enableHover={false}
           usdValue={state.outputAmountUSD || '0'}
           loading={
             state.debouncedInputAmount !== '0' &&

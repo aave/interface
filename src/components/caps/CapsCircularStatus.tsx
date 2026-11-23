@@ -14,6 +14,7 @@ type CapsCircularStatusProps = {
    * whose ring is keyed to the section itself rather than to how full the cap is.
    */
   color?: string;
+  compact?: boolean;
 };
 
 export const CapsCircularStatus = ({
@@ -21,6 +22,7 @@ export const CapsCircularStatus = ({
   tooltipContent,
   onClick,
   color,
+  compact = false,
 }: CapsCircularStatusProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -58,17 +60,21 @@ export const CapsCircularStatus = ({
         if (onClick) onClick(value);
       }}
     >
-      <Box sx={{ position: 'relative', mr: 4 }}>
+      <Box
+        sx={compact ? { position: 'relative', display: 'flex' } : { position: 'relative', mr: 4 }}
+      >
         <CircularProgress
           variant="determinate"
           sx={{
-            color: (theme) => theme.vars.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+            color: compact
+              ? 'border-opaque'
+              : (theme) => theme.vars.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
             position: 'absolute',
-            left: 1.25,
-            top: 1.25,
+            left: compact ? 0 : 1.25,
+            top: compact ? 0 : 1.25,
           }}
-          size={77.5}
-          thickness={2}
+          size={compact ? 56 : 77.5}
+          thickness={compact ? 4 : 2}
           value={100}
         />
         <CircularProgress
@@ -80,14 +86,15 @@ export const CapsCircularStatus = ({
               strokeLinecap: 'round',
             },
           }}
-          size={80}
-          thickness={3}
+          size={compact ? 56 : 80}
+          thickness={compact ? 4 : 3}
           // We show at minimum, 2% color to represent small values
           value={value <= 2 ? 2 : value > 100 ? 100 : value}
         />
         <Typography
-          variant="h5"
+          variant={compact ? 'subheader2' : 'h5'}
           sx={{
+            ...(compact && { fontSize: '0.6875rem', letterSpacing: 0 }),
             position: 'absolute',
             top: 0,
             bottom: 0,

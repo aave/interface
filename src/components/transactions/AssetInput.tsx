@@ -1,62 +1,29 @@
-import { XCircleIcon } from '@heroicons/react/solid';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
   Box,
   BoxProps,
-  Button,
-  CircularProgress,
   FormControl,
-  IconButton,
-  InputBase,
   ListItemText,
   MenuItem,
   Select,
   SelectChangeEvent,
+  SvgIconProps,
   Typography,
   useTheme,
 } from '@mui/material';
-import React, { ReactNode } from 'react';
-import NumberFormat, { NumberFormatProps } from 'react-number-format';
+import { ReactNode } from 'react';
 import { TrackEventProps } from 'src/store/analyticsSlice';
 import { useRootStore } from 'src/store/root';
 import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
-import { bareSelectSx } from 'src/utils/theme';
 
 import { CapType } from '../caps/helper';
+import { ChevronDownIcon } from '../icons/ChevronDownIcon';
 import { AvailableTooltip } from '../infoTooltips/AvailableTooltip';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { TokenIcon } from '../primitives/TokenIcon';
-
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-  value: string;
-}
-
-export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
-  function NumberFormatCustom(props, ref) {
-    const { onChange, ...other } = props;
-
-    return (
-      <NumberFormat
-        {...other}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          if (values.value !== props.value)
-            onChange({
-              target: {
-                name: props.name,
-                value: values.value || '',
-              },
-            });
-        }}
-        thousandSeparator
-        isNumericString
-        allowNegative={false}
-      />
-    );
-  }
-);
+import { AmountBalanceRow } from './AmountBalanceRow';
+import { AmountInputRow } from './AmountInputRow';
 
 export interface Asset {
   balance?: string;
@@ -89,6 +56,27 @@ export interface AssetInputProps<T extends Asset = Asset> {
   sx?: BoxProps;
   exchangeRateComponent?: ReactNode;
 }
+
+export const amountBoxSx = {
+  borderRadius: '0.625rem',
+  boxShadow: figSurfaceShadow('shadow-stroke-1'),
+  overflow: 'hidden',
+  backgroundColor: 'table-bg',
+};
+
+export const tokenSx = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+  minWidth: 0,
+};
+
+export const TokenSelectChevron = ({ sx, ...rest }: SvgIconProps) => (
+  <ChevronDownIcon
+    {...rest}
+    sx={[{ fontSize: '1rem', color: 'fg-chevron' }, ...(Array.isArray(sx) ? sx : [sx])]}
+  />
+);
 
 export const AssetInput = <T extends Asset = Asset>({
   value,
@@ -123,232 +111,158 @@ export const AssetInput = <T extends Asset = Asset>({
     assets.length === 1
       ? assets[0]
       : assets && (assets.find((asset) => asset.symbol === symbol) as T);
+  const singleAsset = !onSelect || assets.length === 1;
+  const balanceLabel = balanceText || <Trans>Balance</Trans>;
+  const handleMax = () => {
+    if (event) {
+      trackEvent(event.eventName, { ...event.eventParams });
+    }
+    onChange?.('-1');
+  };
 
   return (
     <Box {...sx}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: '0.5rem' }}>
-        <Typography color="fg-2">{inputTitle ? inputTitle : <Trans>Amount</Trans>}</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: '0.625rem' }}>
+        <Typography color="fg-3">{inputTitle ? inputTitle : <Trans>Amount</Trans>}</Typography>
         {capType && <AvailableTooltip capType={capType} />}
       </Box>
 
-      <Box
-        sx={{
-          borderRadius: '0.5rem',
-          boxShadow: figSurfaceShadow('shadow-stroke-1'),
-          overflow: 'hidden',
-          backgroundColor: 'bg-2',
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, px: 3, pt: 3, pb: 2 }}>
-          {loading ? (
-            <Box sx={{ flex: 1 }}>
-              <CircularProgress color="inherit" size="16px" />
-            </Box>
-          ) : (
-            <InputBase
-              sx={{ flex: 1 }}
-              placeholder="0.00"
-              disabled={disabled || disableInput}
-              value={value}
-              autoFocus
-              onChange={(e) => {
-                if (!onChange) return;
-                if (Number(e.target.value) > Number(maxValue)) {
-                  onChange('-1');
-                } else {
-                  onChange(e.target.value);
-                }
-              }}
-              inputProps={{
-                'aria-label': 'amount input',
-                style: {
-                  fontSize: '21px',
-                  lineHeight: '28,01px',
-                  padding: 0,
-                  height: '28px',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                },
-              }}
-              // eslint-disable-next-line
-              inputComponent={NumberFormatCustom as any}
-            />
-          )}
-          {value !== '' && !disableInput && (
-            <IconButton
-              sx={{
-                minWidth: 0,
-                p: 0,
-                left: 8,
-                zIndex: 1,
-                color: 'fg-3',
-                '&:hover': {
-                  color: 'fg-2',
-                },
-              }}
-              onClick={() => {
-                onChange && onChange('');
-              }}
-              disabled={disabled}
-            >
-              <XCircleIcon height={16} />
-            </IconButton>
-          )}
-          {!onSelect || assets.length === 1 ? (
-            <Box sx={{ display: 'inline-flex', alignItems: 'center', minWidth: 0 }}>
-              <TokenIcon
-                aToken={asset.aToken}
-                symbol={asset.iconSymbol || asset.symbol}
-                sx={{ mr: 2, ml: 4 }}
-              />
-              <Typography
-                variant="h3"
-                data-cy="inputAsset"
-                title={symbol}
-                sx={{
-                  lineHeight: '28px',
-                  maxWidth: '9ch',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {symbol}
-              </Typography>
-            </Box>
-          ) : (
-            <FormControl>
-              <Select
-                disabled={disabled}
-                value={asset.symbol}
-                onChange={handleSelect}
-                variant="outlined"
-                className="AssetInput__select"
-                data-cy={'assetSelect'}
-                MenuProps={{
-                  sx: {
-                    maxHeight: '240px',
-                    '.MuiPaper-root': {
-                      border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
-                      boxShadow: '0px 2px 10px 0px #0000001A',
-                    },
-                  },
-                }}
-                sx={{
-                  p: 0,
-                  ...bareSelectSx,
-                  '&.AssetInput__select': {
-                    '& .MuiOutlinedInput-input': {
-                      p: 0,
-                      backgroundColor: 'transparent',
-                      pr: '24px !important',
-                    },
-                    '& .MuiOutlinedInput-notchedOutline': { display: 'none' },
-                    '& .MuiSelect-icon': { color: 'fg-1', right: '0%' },
-                  },
-                }}
-                renderValue={(symbol) => {
-                  const asset =
-                    assets.length === 1
-                      ? assets[0]
-                      : assets && (assets.find((asset) => asset.symbol === symbol) as T);
-                  return (
-                    <Box
-                      sx={{ display: 'flex', alignItems: 'center' }}
-                      data-cy={`assetsSelectedOption_${asset.symbol.toUpperCase()}`}
-                    >
-                      <TokenIcon
-                        symbol={asset.iconSymbol || asset.symbol}
-                        aToken={asset.aToken}
-                        sx={{ mr: 2, ml: 4 }}
-                      />
-                      <Typography variant="h4" color="fg-1">
-                        {symbol}
-                      </Typography>
-                    </Box>
-                  );
-                }}
-              >
-                {selectOptionHeader ? selectOptionHeader : undefined}
-                {assets.map((asset) => (
-                  <MenuItem
-                    key={asset.symbol}
-                    value={asset.symbol}
-                    data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
-                  >
-                    {selectOption ? (
-                      selectOption(asset)
-                    ) : (
-                      <>
-                        <TokenIcon
-                          aToken={asset.aToken}
-                          symbol={asset.iconSymbol || asset.symbol}
-                          sx={{ fontSize: '22px', mr: 1 }}
-                        />
-                        <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
-                        {asset.balance && <FormattedNumber value={asset.balance} compact />}
-                      </>
-                    )}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
-        </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', height: '16px', px: 3, mb: 3 }}>
-          {loading ? (
-            <Box sx={{ flex: 1 }} />
-          ) : (
-            <FormattedNumber
-              value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
-              compact
-              symbol="USD"
-              variant="subheader2"
-              color="fg-3"
-              symbolsColor="fg-3"
-              flexGrow={1}
-            />
-          )}
-
-          {asset.balance && onChange && (
-            <>
-              <Typography component="div" variant="subheader2" color="fg-2">
-                {balanceText && balanceText !== '' ? balanceText : <Trans>Balance</Trans>}{' '}
-                <FormattedNumber
-                  value={asset.balance}
-                  compact
-                  variant="subheader2"
-                  color="fg-2"
-                  symbolsColor="fg-4"
+      <Box sx={amountBoxSx}>
+        <Box sx={{ p: '1.25rem' }}>
+          <AmountInputRow
+            value={value}
+            loading={loading}
+            disabled={disabled}
+            disableInput={disableInput}
+            maxValue={maxValue}
+            onChange={onChange}
+          >
+            {singleAsset ? (
+              <Box sx={{ ...tokenSx, flexShrink: 0 }}>
+                <TokenIcon
+                  aToken={asset.aToken}
+                  symbol={asset.iconSymbol || asset.symbol}
+                  sx={{ fontSize: '1.25rem' }}
                 />
-              </Typography>
-              {!disableInput && (
-                <Button
-                  size="small"
-                  sx={{ minWidth: 0, ml: '7px', p: 0 }}
-                  onClick={() => {
-                    if (event) {
-                      trackEvent(event.eventName, { ...event.eventParams });
-                    }
-
-                    onChange('-1');
-                  }}
-                  disabled={disabled || isMaxSelected}
+                <Typography
+                  variant="buttonM"
+                  noWrap
+                  data-cy="inputAsset"
+                  title={symbol}
+                  sx={{ maxWidth: '9ch' }}
                 >
-                  <Trans>Max</Trans>
-                </Button>
-              )}
-            </>
-          )}
+                  {symbol}
+                </Typography>
+              </Box>
+            ) : (
+              <FormControl>
+                <Select
+                  disabled={disabled}
+                  value={asset.symbol}
+                  onChange={handleSelect}
+                  variant="outlined"
+                  className="AssetInput__select"
+                  IconComponent={TokenSelectChevron}
+                  data-cy={'assetSelect'}
+                  MenuProps={{
+                    MenuListProps: { style: { width: '100%' } },
+                    sx: {
+                      maxHeight: '240px',
+                      '.MuiPaper-root': {
+                        border: theme.palette.mode === 'dark' ? '1px solid #EBEBED1F' : 'unset',
+                        boxShadow: '0px 2px 10px 0px #0000001A',
+                      },
+                    },
+                  }}
+                  sx={{
+                    height: '2.25rem',
+                    '&.AssetInput__select': {
+                      '& .MuiOutlinedInput-input': {
+                        display: 'flex',
+                        alignItems: 'center',
+                        minHeight: 0,
+                        py: 0,
+                        pl: '0.625rem',
+                        pr: '2.125rem !important',
+                        backgroundColor: 'transparent',
+                      },
+                      '& .MuiOutlinedInput-notchedOutline': { display: 'none' },
+                      '& .MuiSelect-icon': { right: '0.625rem' },
+                    },
+                  }}
+                  renderValue={(symbol) => {
+                    const asset =
+                      assets.length === 1
+                        ? assets[0]
+                        : assets && (assets.find((asset) => asset.symbol === symbol) as T);
+                    return (
+                      <Box
+                        sx={tokenSx}
+                        data-cy={`assetsSelectedOption_${asset.symbol.toUpperCase()}`}
+                      >
+                        <TokenIcon
+                          symbol={asset.iconSymbol || asset.symbol}
+                          aToken={asset.aToken}
+                          sx={{ fontSize: '1.25rem' }}
+                        />
+                        <Typography variant="buttonM" color="fg-1" noWrap sx={{ maxWidth: '9ch' }}>
+                          {symbol}
+                        </Typography>
+                      </Box>
+                    );
+                  }}
+                >
+                  {selectOptionHeader ? selectOptionHeader : undefined}
+                  {assets.map((asset) => (
+                    <MenuItem
+                      key={asset.symbol}
+                      value={asset.symbol}
+                      data-cy={`assetsSelectOption_${asset.symbol.toUpperCase()}`}
+                    >
+                      {selectOption ? (
+                        selectOption(asset)
+                      ) : (
+                        <>
+                          <TokenIcon
+                            aToken={asset.aToken}
+                            symbol={asset.iconSymbol || asset.symbol}
+                            sx={{ fontSize: '22px', mr: 1 }}
+                          />
+                          <ListItemText sx={{ mr: 6 }}>{asset.symbol}</ListItemText>
+                          {asset.balance && <FormattedNumber value={asset.balance} compact />}
+                        </>
+                      )}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          </AmountInputRow>
+
+          <AmountBalanceRow
+            usdValue={usdValue}
+            loading={loading}
+            balance={onChange ? asset.balance : undefined}
+            balanceLabel={balanceLabel}
+            showControls={!disableInput}
+            disabled={disabled}
+            maxDisabled={isMaxSelected}
+            onPercent={(fraction) =>
+              onChange?.(
+                valueToBigNumber(asset.balance || '0')
+                  .multipliedBy(fraction)
+                  .toFixed()
+              )
+            }
+            onMax={handleMax}
+          />
         </Box>
         {exchangeRateComponent && (
           <Box
             sx={{
               background: figVars['bg-2'],
               borderTop: `1px solid ${figVars['border-2']}`,
-              px: 3,
+              px: '1.25rem',
               py: 2,
             }}
           >

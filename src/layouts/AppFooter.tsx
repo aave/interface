@@ -80,12 +80,12 @@ export function AppFooter() {
       key: 'Privacy',
     },
     {
-      href: 'https://docs.aave.com/hub/',
+      href: 'https://docs.aave.com/',
       label: <Trans>Docs</Trans>,
       key: 'Docs',
     },
     {
-      href: 'https://docs.aave.com/faq/',
+      href: 'https://aave.com/faq/',
       label: <Trans>FAQS</Trans>,
       key: 'FAQS',
     },

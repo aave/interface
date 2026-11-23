@@ -1,6 +1,6 @@
 import 'cypress-wait-until';
-// import { Provider } from '@ethersproject/providers';
 
+// import { Provider } from '@ethersproject/providers';
 import { CustomizedBridge } from './tools/bridge';
 
 declare global {
@@ -63,7 +63,7 @@ declare global {
 }
 
 Cypress.Commands.add('setAmount', (amount: number, max?: boolean) => {
-  cy.get('[data-cy=Modal]').find('button:contains("Enter an amount")').should('be.disabled');
+  cy.get('[data-cy=Modal]').find('button:contains("Enter amount")').should('be.disabled');
   if (max) {
     cy.wait(2000); //there is no way to know when real max amount will upload by UI
     cy.get('[data-cy=Modal]').find('button:contains("Max")').click();

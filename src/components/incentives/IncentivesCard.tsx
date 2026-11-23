@@ -24,7 +24,7 @@ interface IncentivesCardProps {
   value: string | number;
   incentives?: ReserveIncentiveResponse[];
   address?: string;
-  variant?: 'subheader1' | 'h4' | 'h5';
+  variant?: 'subheader1' | 'h2' | 'h4' | 'h5';
   symbolsVariant?: 'h5' | 'secondary16';
   color?: string;
   tooltip?: ReactNode;

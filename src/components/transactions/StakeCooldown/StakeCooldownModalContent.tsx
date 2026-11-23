@@ -5,10 +5,11 @@ import { ArrowNarrowRightIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import { Alert, Box, Checkbox, FormControlLabel, SvgIcon, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import { formatEther, parseUnits } from 'ethers/lib/utils';
+import { formatEther } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -24,7 +25,6 @@ import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeCooldownActions } from './StakeCooldownActions';
 
@@ -338,7 +338,7 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
         </Trans>
       </Alert>
 
-      <GasStation chainId={ChainId.mainnet} gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      <TxModalDetails chainId={ChainId.mainnet} gasLimit={gasLimit} />
 
       <FormControlLabel
         sx={{ mt: 12 }}
@@ -361,7 +361,6 @@ export const StakeCooldownModalContent = ({ stakeAssetName, icon }: StakeCooldow
       {txError && <GasEstimationError txError={txError} />}
 
       <StakeCooldownActions
-        sx={{ mt: '48px' }}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !cooldownCheck}
         selectedToken={stakeAssetName}

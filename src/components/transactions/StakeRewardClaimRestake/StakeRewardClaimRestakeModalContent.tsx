@@ -144,7 +144,6 @@ export const StakeRewardClaimRestakeModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       <StakeRewardClaimRestakeActions
-        sx={{ mt: '48px' }}
         amountToClaim={amount}
         isWrongNetwork={isWrongNetwork}
         symbol={rewardsSymbol}

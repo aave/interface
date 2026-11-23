@@ -14,6 +14,16 @@ import { bisector, extent, max } from 'd3-array';
 import { timeFormat } from 'd3-time-format';
 import React, { Fragment, ReactNode, useCallback, useMemo } from 'react';
 
+import {
+  chartMargin,
+  chartRootSx,
+  dotPatternProps,
+  gridRowsProps,
+  referenceLineProps,
+  yAxisProps,
+  yAxisTickLabelProps,
+} from './chartStyles';
+
 export type FormattedReserveHistoryItem = {
   date: number;
   value: number;
@@ -33,7 +43,7 @@ export type FormattedReserveHistoryItem = {
  *
  */
 const formatDate = (d: Date, timeRange: TimeWindow) => {
-  if (timeRange === TimeWindow.LastMonth) {
+  if (timeRange === TimeWindow.LastMonth || timeRange === TimeWindow.LastDay) {
     const formatted = timeFormat('%b %d, %H:%M UTC%Z');
     const date = formatted(d);
     const offsetSign = date.toString().split('UTC')[1].split('')[0];
@@ -68,7 +78,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
   ({
     width,
     height,
-    margin = { top: 20, right: 10, bottom: 20, left: 40 },
+    margin = chartMargin,
     showTooltip,
     hideTooltip,
     tooltipData,
@@ -111,14 +121,20 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
         }),
       [innerWidth, data]
     );
+    const avg = data.reduce((acc, cur) => acc + cur['value'], 0) / data.length;
     const yValueScale = useMemo(() => {
-      const valueMax = Math.max(max(data, (d) => getData(d, 'value')) as number);
+      const center = avg * 100;
+      const maxDeviation = data.reduce(
+        (deviation, d) => Math.max(deviation, Math.abs(getData(d, 'value') - center)),
+        0
+      );
+      const halfRange = Math.max(center, maxDeviation * 1.1) || 1;
       return scaleLinear({
         range: [innerHeight, 0],
-        domain: [0, (valueMax || 0) * 1.1],
-        nice: true,
+        domain: [center - halfRange, center + halfRange],
       });
-    }, [innerHeight, data]);
+    }, [innerHeight, data, avg]);
+    const yTicks = yValueScale.ticks(3).filter((tick) => tick >= 0);
 
     // tooltip handler
     const handleTooltip = useCallback(
@@ -143,7 +159,6 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
 
     let avgLine: ReactNode = null;
     let avgLabel: ReactNode = null;
-    const avg = data.reduce((acc, cur) => acc + cur['value'], 0) / data.length;
     if (avg > 0) {
       const avgFormatted = (avg * 100).toFixed(2);
       const avgArray = data.map((d) => {
@@ -160,9 +175,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
         <LinePath
           key="avg"
           data={avgArray}
-          strokeDasharray="3,5"
-          stroke="#D2D4DC"
-          strokeWidth={2}
+          {...referenceLineProps}
           x={(d) => dateScale(getDate(d)) ?? 0}
           y={(d) => yValueScale(getData(d, 'value')) ?? 0}
         />
@@ -192,17 +205,14 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
     }
 
     return (
-      <>
+      <Box sx={chartRootSx}>
         <svg width={width} height={height}>
           <Group left={margin.left} top={margin.top}>
-            {/* Horizontal Background Lines */}
             <GridRows
               scale={yValueScale}
               width={innerWidth}
-              strokeDasharray="3,3"
-              stroke={theme.palette.divider}
-              pointerEvents="none"
-              numTicks={3}
+              {...gridRowsProps}
+              tickValues={yTicks}
             />
 
             {avgLine}
@@ -220,7 +230,6 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
 
             {avgLabel}
 
-            {/* X Axis */}
             <AxisBottom
               top={innerHeight - margin.bottom / 4}
               scale={dateScale}
@@ -235,18 +244,11 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
               })}
             />
 
-            {/* Y Axis */}
             <AxisLeft
-              left={0}
+              {...yAxisProps}
               scale={yValueScale}
-              strokeWidth={0}
-              numTicks={3}
-              tickFormat={(value) => `${value}%`}
-              tickLabelProps={() => ({
-                fill: theme.palette.text.muted,
-                fontSize: 10,
-                dx: -margin.left + 10,
-              })}
+              tickValues={yTicks}
+              tickLabelProps={() => ({ ...yAxisTickLabelProps, fill: theme.palette.text.muted })}
             />
 
             {/* Background */}
@@ -264,12 +266,11 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
             {tooltipData && (
               <g>
                 <Line
-                  from={{ x: tooltipLeft, y: margin.top }}
+                  from={{ x: tooltipLeft, y: 0 }}
                   to={{ x: tooltipLeft, y: innerHeight }}
-                  stroke={accentColorDark}
-                  strokeWidth={1}
+                  {...dotPatternProps}
+                  style={{ stroke: accentColorDark }}
                   pointerEvents="none"
-                  strokeDasharray="5,2"
                 />
                 return (
                 <Fragment key={field.name}>
@@ -302,8 +303,8 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
         {tooltipData && (
           <div>
             <TooltipWithBounds
-              top={20}
-              left={tooltipLeft + 40}
+              top={margin.top}
+              left={tooltipLeft + margin.left}
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
               <Typography variant="subheader2" color="fg-2" sx={{ mb: 2, mr: 2, fontWeight: 400 }}>
@@ -325,7 +326,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
             </TooltipWithBounds>
           </div>
         )}
-      </>
+      </Box>
     );
   }
 );
@@ -333,7 +334,7 @@ export const ApyGraph = withTooltip<AreaProps, FormattedReserveHistoryItem>(
 export const PlaceholderChart = ({
   width,
   height,
-  margin = { top: 20, right: 10, bottom: 20, left: 40 },
+  margin = { top: 40, right: 10, bottom: 40, left: 40 },
 }: {
   width: number;
   height: number;
@@ -354,9 +355,7 @@ export const PlaceholderChart = ({
             nice: true,
           })}
           width={innerWidth}
-          strokeDasharray="3,3"
-          stroke={theme.palette.divider}
-          pointerEvents="none"
+          {...gridRowsProps}
           numTicks={3}
         />
 

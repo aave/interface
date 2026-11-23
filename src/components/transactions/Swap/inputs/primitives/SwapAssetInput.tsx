@@ -2,33 +2,25 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { isAddress } from '@ethersproject/address';
 import { formatUnits } from '@ethersproject/units';
 import { ExclamationIcon } from '@heroicons/react/outline';
-import { XCircleIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import LaunchIcon from '@mui/icons-material/Launch';
 import {
   Box,
   Button,
   CircularProgress,
-  IconButton,
-  InputBase,
   MenuItem,
-  Popover,
   SvgIcon,
-  ToggleButton,
-  ToggleButtonGroup,
   Tooltip,
   Typography,
   useTheme,
 } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import NumberFormat, { NumberFormatProps } from 'react-number-format';
+import { useEffect, useRef, useState } from 'react';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 import { Link } from 'src/components/primitives/Link';
 import { textCenterEllipsis } from 'src/helpers/text-center-ellipsis';
 import { useRootStore } from 'src/store/root';
 import { useSharedDependencies } from 'src/ui-config/SharedDependenciesProvider';
-import { figSurfaceShadow, figVars } from 'src/utils/figmaColors';
+import { figVars } from 'src/utils/figmaColors';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { COMMON_SWAPS } from '../../../../../ui-config/TokenList';
@@ -36,39 +28,11 @@ import { BasicModal } from '../../../../primitives/BasicModal';
 import { FormattedNumber } from '../../../../primitives/FormattedNumber';
 import { ExternalTokenIcon } from '../../../../primitives/TokenIcon';
 import { SearchInput } from '../../../../SearchInput';
+import { AmountBalanceRow } from '../../../AmountBalanceRow';
+import { AmountInputRow } from '../../../AmountInputRow';
+import { amountBoxSx, TokenSelectChevron, tokenSx } from '../../../AssetInput';
 import { TxModalTitle } from '../../../FlowCommons/TxModalTitle';
 import { SwappableToken, SwapType, TokenType } from '../../types';
-
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-  value: string;
-}
-
-export const NumberFormatCustom = React.forwardRef<NumberFormatProps, CustomProps>(
-  function NumberFormatCustom(props, ref) {
-    const { onChange, ...other } = props;
-
-    return (
-      <NumberFormat
-        {...other}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          if (values.value !== props.value)
-            onChange({
-              target: {
-                name: props.name,
-                value: values.value || '',
-              },
-            });
-        }}
-        thousandSeparator
-        isNumericString
-        allowNegative={false}
-      />
-    );
-  }
-);
 
 // Both ends of the token list fade into the modal surface instead of cutting off. Each scrim sits
 // over the scroll area's own padding, so with nothing scrolled under it the gradient paints the
@@ -102,7 +66,6 @@ export interface AssetInputProps {
   chainId: number;
   onChange?: (value: string) => void;
   onClear?: () => void;
-  enableHover?: boolean;
   disabled?: boolean;
   disableInput?: boolean;
   onSelect?: (asset: SwappableToken) => void;
@@ -124,7 +87,6 @@ export const SwitchAssetInput = ({
   usdValue,
   onChange,
   onClear,
-  enableHover = false,
   disabled,
   disableInput,
   onSelect,
@@ -183,8 +145,10 @@ export const SwitchAssetInput = ({
   const inputRef = useRef<HTMLDivElement>(null);
   const [pickerHeight, setPickerHeight] = useState<number | undefined>(undefined);
 
+  const isPicker = assets.length > 1;
+
   const handleClick = () => {
-    if (assets.length === 1) return;
+    if (!isPicker) return;
     setOpenModal(true);
   };
 
@@ -295,115 +259,47 @@ export const SwitchAssetInput = ({
       }}
     >
       {title && (
-        <Typography variant="h5" color="fg-2" sx={{ mb: '0.5rem' }}>
+        <Typography color="fg-3" sx={{ mb: '0.625rem' }}>
           {title}
         </Typography>
       )}
-      <Box
-        ref={inputRef}
-        sx={{
-          borderRadius: '0.75rem',
-          boxShadow: figSurfaceShadow('shadow-stroke-1'),
-          overflow: 'hidden',
-          backgroundColor: 'bg-2',
-          px: 3,
-          py: 2,
-          width: '100%',
-          ...(enableHover
-            ? {
-                transition: 'background-color 0.15s ease',
-                '&:hover': {
-                  backgroundColor: 'bg-2',
-                },
-              }
-            : {}),
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {loading ? (
-            <Box sx={{ flex: 1 }}>
-              <CircularProgress color="inherit" size="16px" />
-            </Box>
-          ) : (
-            <InputBase
-              sx={{ flex: 1 }}
-              placeholder="0.00"
-              disabled={disabled || disableInput}
-              value={value}
-              autoFocus
-              onChange={(e) => {
-                if (!onChange) return;
-                if (Number(e.target.value) > Number(maxValue)) {
-                  onChange('-1');
-                } else {
-                  onChange(e.target.value);
-                }
-              }}
-              inputProps={{
-                'aria-label': 'amount input',
-                style: {
-                  width: '100%',
-                  fontSize: '21px',
-                  lineHeight: '28,01px',
-                  padding: 0,
-                  height: '28px',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                },
-              }}
-              // eslint-disable-next-line
-              inputComponent={NumberFormatCustom as any}
-            />
-          )}
-          {value !== '' && !disableInput && (
-            <IconButton
-              sx={{
-                minWidth: 0,
-                p: 0,
-                left: 8,
-                zIndex: 1,
-                color: 'fg-3',
-                '&:hover': {
-                  color: 'fg-2',
-                },
-              }}
-              onClick={() => {
-                if (onClear) {
-                  onClear();
-                } else {
-                  onChange && onChange('');
-                }
-              }}
-              disabled={disabled}
-            >
-              <XCircleIcon height={16} />
-            </IconButton>
-          )}
+      <Box ref={inputRef} sx={{ ...amountBoxSx, p: '1.25rem', width: '100%' }}>
+        <AmountInputRow
+          value={value}
+          loading={loading}
+          disabled={disabled}
+          disableInput={disableInput}
+          maxValue={maxValue}
+          onChange={onChange}
+          onClear={onClear}
+        >
           <Button
             disableRipple
+            variant={isPicker ? 'outlined' : 'text'}
             onClick={handleClick}
             data-cy={`assetSelect`}
             sx={{
-              p: 0,
-              borderRadius: '6px',
-              transition: 'background-color 0.2s',
-              '&:hover': {
-                backgroundColor: 'transparent',
-              },
+              ...tokenSx,
+              flexShrink: 0,
+              ...(isPicker
+                ? { px: '0.625rem', '& .MuiButton-endIcon': { ml: 0, mr: 0 } }
+                : { height: 'auto', p: 0, '&:hover': { backgroundColor: 'transparent' } }),
             }}
-            endIcon={assets.length > 1 ? <ExpandMore /> : undefined}
+            endIcon={isPicker ? <TokenSelectChevron /> : undefined}
           >
             <ExternalTokenIcon
               symbol={selectedAsset.symbol}
               logoURI={selectedAsset.logoURI}
-              sx={{ mr: 2, ml: 3, fontSize: '24px' }}
+              height="1.25rem"
+              width="1.25rem"
+              sx={{ fontSize: '1.25rem' }}
             />
             <Typography
               data-cy={`assetsSelectedOption_${selectedAsset.symbol.toUpperCase()}`}
-              variant="h4"
+              variant="buttonM"
               color="fg-1"
-              sx={{ fontWeight: 500 }}
+              noWrap
+              sx={{ maxWidth: '9ch' }}
             >
               {selectedAsset.symbol}
             </Typography>
@@ -721,150 +617,31 @@ export const SwitchAssetInput = ({
               </Box>
             </Box>
           </BasicModal>
-        </Box>
+        </AmountInputRow>
 
-        <Box sx={{ display: 'flex', alignItems: 'center', height: '20px', mt: 0.5 }}>
-          {loading ? (
-            <Box sx={{ flex: 1 }} />
-          ) : (
-            <FormattedNumber
-              value={isNaN(Number(usdValue)) ? 0 : Number(usdValue)}
-              compact
-              symbol="USD"
-              variant="subheader2"
-              color="fg-3"
-              symbolsColor="fg-3"
-              flexGrow={1}
-            />
-          )}
-
-          {showBalance && selectedAsset.balance && (
-            <>
-              <Typography component="div" variant="subheader2" color="fg-2">
-                <Trans>{balanceTitle || 'Balance'}</Trans>
-                <FormattedNumber
-                  value={selectedAsset.balance}
-                  compact
-                  variant="subheader2"
-                  color="fg-2"
-                  symbolsColor="fg-4"
-                  sx={{ ml: 1 }}
-                />
-              </Typography>
-              {!disableInput && (
-                <PercentSelector
-                  disabled={disabled || Number(selectedAsset.balance) === 0}
-                  onSelectPercent={(fraction) => {
-                    const maxBase = forcedMaxValue || selectedAsset.balance || '0';
-                    const next = valueToBigNumber(maxBase).multipliedBy(fraction).toString();
-                    onChange && onChange(next);
-                  }}
-                />
-              )}
-              {!disableInput && (
-                <Button
-                  size="small"
-                  sx={{ minWidth: 0, ml: '1px', pt: 0, pb: 0, mr: '-5px' }}
-                  onClick={() => {
-                    onChange && onChange(forcedMaxValue || '-1');
-                  }}
-                  disabled={
-                    disabled ||
-                    Number(selectedAsset.balance) === 0 ||
-                    Number(value) === Number(forcedMaxValue) ||
-                    Number(value) === Number(selectedAsset.balance) ||
-                    (!!forcedMaxValue && Number(selectedAsset.balance) < Number(forcedMaxValue))
-                  }
-                >
-                  <Trans>Max</Trans>
-                </Button>
-              )}
-            </>
-          )}
-        </Box>
+        <AmountBalanceRow
+          usdValue={usdValue}
+          loading={loading}
+          balance={showBalance ? selectedAsset.balance : undefined}
+          balanceLabel={<Trans>{balanceTitle || 'Balance'}</Trans>}
+          showControls={!disableInput}
+          disabled={disabled}
+          maxDisabled={
+            Number(selectedAsset.balance) === 0 ||
+            Number(value) === Number(forcedMaxValue) ||
+            Number(value) === Number(selectedAsset.balance) ||
+            (!!forcedMaxValue && Number(selectedAsset.balance) < Number(forcedMaxValue))
+          }
+          onPercent={(fraction) => {
+            const maxBase = forcedMaxValue || selectedAsset.balance || '0';
+            const next = valueToBigNumber(maxBase).multipliedBy(fraction).toString();
+            onChange && onChange(next);
+          }}
+          onMax={() => {
+            onChange && onChange(forcedMaxValue || '-1');
+          }}
+        />
       </Box>
     </Box>
-  );
-};
-
-const PercentSelector = ({
-  disabled,
-  onSelectPercent,
-}: {
-  disabled?: boolean;
-  onSelectPercent: (fraction: number) => void;
-}) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (disabled) return;
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => setAnchorEl(null);
-
-  const handlePick = (fraction: number) => {
-    onSelectPercent(fraction);
-    handleClose();
-  };
-
-  return (
-    <>
-      <Button
-        size="small"
-        sx={{ minWidth: 0, ml: '6px', py: 0, fontSize: '12px' }}
-        onClick={handleOpen}
-        disabled={disabled}
-      >
-        <Trans>%</Trans>
-      </Button>
-      <Popover
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            backgroundColor: 'bg-2',
-            border: '1px solid',
-            borderColor: 'border-2',
-          },
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5 }}>
-          <ToggleButtonGroup
-            exclusive
-            sx={{
-              backgroundColor: 'bg-2',
-              borderRadius: '6px',
-              borderColor: 'bg-2',
-            }}
-            onChange={(_, v) => v && handlePick(v)}
-          >
-            {[0.25, 0.5, 0.75].map((fraction) => (
-              <ToggleButton
-                key={fraction}
-                value={fraction}
-                sx={{
-                  borderRadius: 1,
-                  py: 0.5,
-                  px: 1,
-                  border: 0,
-                  '&.Mui-selected': {
-                    backgroundColor: 'surface-elevated',
-                  },
-                }}
-              >
-                <Typography variant="subheader2" color="primary.main">
-                  {Math.round(fraction * 100)}%
-                </Typography>
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
-        </Box>
-      </Popover>
-    </>
   );
 };
