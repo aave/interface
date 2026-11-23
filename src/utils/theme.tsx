@@ -1470,7 +1470,8 @@ export const createAppTheme = () => {
 
 // --- Display-P3 override layer -------------------------------------------------------------
 
-const isColorValue = (v: string) => v.startsWith('#') || v.startsWith('rgb');
+const isColorValue = (v: string) =>
+  (v.startsWith('#') || v.startsWith('rgb')) && !v.includes('var(');
 
 // Walk a color scheme's palette and, for every solid color leaf, emit a P3 override keyed to
 // the CSS variable MUI generates for it (`--mui-palette-<path joined by '-'>`). Non-color
