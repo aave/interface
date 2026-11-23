@@ -24,7 +24,7 @@ export const ReserveConfigurationWrapper: React.FC<ReserveConfigurationProps> = 
   });
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
       {isGho ? (
         <GhoReserveConfiguration reserve={reserve} />
       ) : (
