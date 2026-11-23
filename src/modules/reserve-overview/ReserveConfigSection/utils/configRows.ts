@@ -11,6 +11,7 @@ export type ConfigAsset = {
 export type ConfigRow = {
   id: string;
   configKey: string;
+  configLabel: string;
   label: string;
   isEMode: boolean;
   supplied?: number;
@@ -39,23 +40,28 @@ type ReserveEModeInfo = NonNullable<ReserveWithId['eModeInfo']>[number];
 export const toEModeRow = (
   eMode: ReserveEModeInfo,
   fields: Pick<ConfigRow, 'maxLTV' | 'assets' | 'supplied'>
-): ConfigRow => ({
-  id: eModeConfigKey(eMode.categoryId),
-  configKey: eModeConfigKey(eMode.categoryId),
-  label: replaceUnderscoresWithSpaces(eMode.label) ?? eMode.label,
-  isEMode: true,
-  liquidationThreshold: Number(eMode.liquidationThreshold.value),
-  liquidationPenalty: Number(eMode.liquidationPenalty.value),
-  ...fields,
-});
+): ConfigRow => {
+  const label = replaceUnderscoresWithSpaces(eMode.label) ?? eMode.label;
+  return {
+    id: eModeConfigKey(eMode.categoryId),
+    configKey: eModeConfigKey(eMode.categoryId),
+    configLabel: label,
+    label,
+    isEMode: true,
+    liquidationThreshold: Number(eMode.liquidationThreshold.value),
+    liquidationPenalty: Number(eMode.liquidationPenalty.value),
+    ...fields,
+  };
+};
 
 export const toStandardRow = (
   source: ReserveWithId,
-  label: string,
+  configLabel: string,
   fields: Pick<ConfigRow, 'id' | 'maxLTV' | 'assets' | 'supplied'>
 ): ConfigRow => ({
   configKey: STANDARD_CONFIG_KEY,
-  label,
+  configLabel,
+  label: `${configLabel} (${source.underlyingToken.symbol})`,
   isEMode: false,
   liquidationThreshold: Number(source.supplyInfo.liquidationThreshold.value),
   liquidationPenalty: Number(source.supplyInfo.liquidationBonus.value),
