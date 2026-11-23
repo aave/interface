@@ -63,7 +63,7 @@ export const ReserveConfigSection = ({
       key: row.configKey,
       label: (
         <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-          {row.label}
+          {row.configLabel}
           {row.isEMode && <EModeIcon />}
         </Box>
       ),
