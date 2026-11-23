@@ -96,6 +96,12 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     ),
   },
   {
+    slug: 'charts',
+    label: 'Charts',
+    group: 'Data & surfaces',
+    Component: dynamic(() => import('../components/ChartsSection').then((m) => m.ChartsSection)),
+  },
+  {
     slug: 'banners',
     label: 'Banners',
     group: 'Data & surfaces',
@@ -118,6 +124,14 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     fullBleed: true,
     Component: dynamic(() =>
       import('../components/MigrationBannersSection').then((m) => m.MigrationBannersSection)
+    ),
+  },
+  {
+    slug: 'migration-hub-cards',
+    label: 'Hub cards',
+    group: 'Migration',
+    Component: dynamic(() =>
+      import('../components/MigrationHubCardsSection').then((m) => m.MigrationHubCardsSection)
     ),
   },
 ];

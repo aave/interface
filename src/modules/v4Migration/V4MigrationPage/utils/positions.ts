@@ -1,3 +1,5 @@
+import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+
 import { MigrationAsset } from './types';
 
 export type SortValue = string | number;
@@ -29,3 +31,10 @@ export const assetMatchesSearch = (asset: MigrationAsset, searchTerm: string) =>
     asset.address.toLowerCase().includes(term)
   );
 };
+
+export const getAssetIconSymbol = (asset: MigrationAsset) =>
+  fetchIconSymbolAndName({
+    underlyingAsset: asset.address,
+    symbol: asset.symbol,
+    name: asset.name,
+  }).iconSymbol;

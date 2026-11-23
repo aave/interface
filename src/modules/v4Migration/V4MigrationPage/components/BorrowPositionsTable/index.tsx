@@ -1,13 +1,14 @@
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
+import { AssetGroup } from 'src/components/AssetGroup';
 import { HealthFactorNumber } from 'src/components/HealthFactorNumber';
 import { MarketLogo } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { NoData } from 'src/components/primitives/NoData';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { getAssetIconSymbol } from '../../utils/positions';
 import { BorrowMigrationPosition } from '../../utils/types';
-import { AssetStack } from '../AssetStack';
 import { PositionsColumn, PositionsTable } from '../PositionsTable';
 import { ValueChange } from '../ValueChange';
 
@@ -57,13 +58,17 @@ const COLUMNS: PositionsColumn<BorrowMigrationPosition>[] = [
     key: 'collateral',
     title: <Trans>Collateral</Trans>,
     getSortValue: (position) => position.collateralUSD,
-    render: (position) => <AssetStack assets={position.collateral} />,
+    render: (position) => (
+      <AssetGroup symbols={position.collateral.map(getAssetIconSymbol)} animated={false} />
+    ),
   },
   {
     key: 'borrowed',
     title: <Trans>Borrowed</Trans>,
     getSortValue: (position) => position.borrowedUSD,
-    render: (position) => <AssetStack assets={position.borrowed} />,
+    render: (position) => (
+      <AssetGroup symbols={position.borrowed.map(getAssetIconSymbol)} animated={false} />
+    ),
   },
   {
     key: 'borrowApy',

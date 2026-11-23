@@ -15,7 +15,7 @@ const ICON_STAGE_SX = {
   overflow: 'hidden',
   isolation: 'isolate',
   borderRadius: '0.75rem',
-  bgcolor: 'surface-elevated',
+  bgcolor: 'table-bg',
 } as const;
 
 export const MigrationBannersSection = () => (

@@ -33,7 +33,7 @@ export const V4MigrationBanner = ({
       minHeight: compact ? undefined : '5.625rem',
       p: compact ? '1rem' : { xs: '1rem', xsm: '1rem 2rem 1rem 1.5rem' },
       borderRadius: '0.75rem',
-      bgcolor: 'surface-elevated',
+      bgcolor: 'table-bg',
       boxShadow: `0 2px 24px 0 ${figVars['migration-banner-shadow']}, 0 0 0 1px ${figVars['migration-banner-ring']}`,
     }}
   >

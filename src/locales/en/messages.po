@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "Total amount deposited for this asset"
+msgstr "Total amount deposited for this asset"
+
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "If you DO NOT unstake within {0} of unstake window, you will need to activate cooldown process again."
@@ -611,6 +615,7 @@ msgstr "The cooldown period is the time required prior to unstaking your tokens 
 msgid "Reached"
 msgstr "Reached"
 
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
 #: src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
 msgid "Earn APY"
 msgstr "Earn APY"
@@ -1161,6 +1166,10 @@ msgstr "Reactivate cooldown period to unstake {0} {stakedToken}"
 msgid "Migrate to v3"
 msgstr "Migrate to v3"
 
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "Best APY"
+msgstr "Best APY"
+
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Get support"
 msgstr "Get support"
@@ -1245,6 +1254,10 @@ msgstr "Sending cancel..."
 msgid "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 msgstr "GHO is a native decentralized, collateral-backed digital asset pegged to USD. It is created by users via borrowing against multiple collateral. When user repays their GHO borrow position, the protocol burns that user's GHO. All the interest payments accrued by minters of GHO would be directly transferred to the AaveDAO treasury."
 
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "New Backing Collateral"
+msgstr "New Backing Collateral"
+
 #: src/components/transactions/Emode/EmodeActions.tsx
 msgid "Switch E-Mode"
 msgstr "Switch E-Mode"
@@ -1269,6 +1282,10 @@ msgstr "Assets"
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "Show <$100k supply"
 msgstr "Show <$100k supply"
+
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "Total deposits"
+msgstr "Total deposits"
 
 #: src/modules/reserve-overview/ReserveTopDetails.tsx
 msgid "Utilization rate"
@@ -2157,6 +2174,10 @@ msgstr "Share on X"
 msgid "Total available"
 msgstr "Total available"
 
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "7D avg."
+msgstr "7D avg."
+
 #: src/components/transactions/Bridge/BridgeModalContent.tsx
 msgid "Fees exceed wallet balance"
 msgstr "Fees exceed wallet balance"
@@ -2263,6 +2284,10 @@ msgstr "Available to stake"
 #: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
+
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "{name} Hub"
+msgstr "{name} Hub"
 
 #: src/modules/markets/MarketAssetsListContainer.tsx
 msgid "show assets under 100k supply"
@@ -3416,6 +3441,10 @@ msgstr "Enabling E-Mode allows you to maximize your borrowing power, however, bo
 #: src/modules/umbrella/UnstakeModalContent.tsx
 msgid "Unstaked Successfully"
 msgstr "Unstaked Successfully"
+
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "Collateral assets that share liquidity and risk within the {name} Hub"
+msgstr "Collateral assets that share liquidity and risk within the {name} Hub"
 
 #: src/components/transactions/Emode/EmodeAssetTable.tsx
 msgid "Boosted LTV"
