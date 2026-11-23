@@ -1,0 +1,19 @@
+src/modules/reserve-overview/ReserveConfigurationWrapper.tsx
+  s_f15ed234cdeae3::t_236386ebc5d191 27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "670f036689ba8d8aac584ad404630565ae50ab02",
+  "prompts": {},
+  "sessions": {
+    "s_f15ed234cdeae3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "27e9928f-fcb8-4e49-a48f-860746a4a4fb",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
