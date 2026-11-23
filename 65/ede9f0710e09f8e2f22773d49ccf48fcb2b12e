@@ -1,0 +1,76 @@
+src/modules/dev/ComponentShowcase/components/PropsTable/index.tsx
+  s_140400f84712a1::t_a8a95d884541e1 1-54
+src/components/HealthFactorNumber.tsx
+  s_140400f84712a1::t_9b8b028242088f 15,22,31
+src/components/icons/DotIcon.tsx
+  s_140400f84712a1::t_28ba4ea75f5f64 1-11
+src/components/TitleWithSubtitle/index.tsx
+  s_140400f84712a1::t_5d269531ec9531 1-25
+src/modules/markets/V4Rate/index.tsx
+  s_140400f84712a1::t_212a2b10a0c6f8 2,15
+src/components/OpportunityCard/index.tsx
+  s_140400f84712a1::t_a8a9276f0952b5 7,12-17,87,169
+  s_140400f84712a1::t_c7c549b8ce3f34 5,40-41,62-63,180-184
+src/utils/figmaColors.ts
+  s_140400f84712a1::t_212a2b10a0c6f8 345-351
+src/modules/dev/ComponentShowcase/components/PropControl/index.tsx
+  s_140400f84712a1::t_8396036683c423 1-41
+src/modules/dev/ComponentShowcase/components/MigrationFlowSection/index.tsx
+  s_140400f84712a1::t_70cb07785a511f 7,11,15-16,29-33,46,69-70,72-76,78-86,88-133,137,142-149
+  s_140400f84712a1::t_1961552137d7a3 2,61-62
+  s_140400f84712a1::t_9b8bb31f97ea0e 10,71,77,87
+src/modules/v4Migration/V4MigrationPositionSummary/index.tsx
+  s_140400f84712a1::t_1e0959e9dcae83 60-66
+  s_140400f84712a1::t_9aef938517fc57 8,10,12-13,26-29,36,41,53,95,103-106,110,119-120,125,128,136,142-148,150
+  s_140400f84712a1::t_8c1273da244511 1-7,9,11,14-25,30-35,37-40,42-52,54-59,67-94,96-102,107-109,111-118,121-124,126-127,129-135,137-141,149,151-155
+src/modules/v4Migration/V4MigrationPage/utils/positions.ts
+  s_140400f84712a1::t_66bcf613b5b448 41-44
+src/components/CuratorBy/index.tsx
+  s_140400f84712a1::t_857beb0e8dbd81 1-40,42-69
+  s_140400f84712a1::t_43ecd8be35754e 41
+src/modules/v4Migration/V4MigrationHubCard/index.tsx
+  s_140400f84712a1::t_43ecd8be35754e 127,159-160
+  s_140400f84712a1::t_a8af1522c0b0eb 3-4,8-10,16,25,28,30,41-71,75-87,92-93,96,115,123,126,128-130,152,155-158,161-164,171-197
+  s_140400f84712a1::t_9b8b028242088f 165-170
+  s_140400f84712a1::t_fa44ff73bd2294 91
+  s_140400f84712a1::t_f207f0008e17c0 18-22,72-73,154
+src/modules/dev/ComponentShowcase/components/MigrationHubCardsSection/index.tsx
+  s_140400f84712a1::t_6f7837c7901a83 6-9,132-135,145,152-174,177-184,187,190-195,199-205,208,219-227,230-232,248,380-385
+  s_140400f84712a1::t_46b4e786c1af35 3,5,12-14,75-80,85-131,146-151,185-186,188-189,196-198,206-207,209-218,228-229,233-247,249-256,263-273,280-292,305-309,318-323,330-341,348-362,366,368-369,371-379,388-389
+  s_140400f84712a1::t_43ecd8be35754e 81-84,257-262,274-279,293-304,310-317,324-329,342-347
+  s_140400f84712a1::t_9b8bb31f97ea0e 136-144
+src/locales/el/messages.js
+  s_9172f87cc8adf2::t_94ee814b4bd1e6 1
+src/locales/en/messages.js
+  s_9172f87cc8adf2::t_dfde3ea7795f3c 1
+src/locales/en/messages.po
+  s_9172f87cc8adf2::t_63f30dfe5699f4 605,674-677,1580-1583,2187,2298,2437-2440,3137,3950-3953,3988-3992,4417-4420,4462-4465,4573-4577
+src/locales/es/messages.js
+  s_9172f87cc8adf2::t_280ea42c6d02fa 1
+src/locales/fr/messages.js
+  s_9172f87cc8adf2::t_12894183fcccb3 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "65ede9f0710e09f8e2f22773d49ccf48fcb2b12e",
+  "prompts": {},
+  "sessions": {
+    "s_140400f84712a1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "49109958-9698-480f-bb8d-25e252218ae7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_9172f87cc8adf2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "84b98d50-f872-49fb-9f22-bb8add41fa3e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
