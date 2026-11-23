@@ -1,4 +1,3 @@
-import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import {
   Badge,
@@ -26,6 +25,7 @@ import { AaveLogo, AaveLogoMark } from 'src/components/icons/AaveLogo';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { BridgeIcon } from 'src/components/icons/BridgeIcon';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
+import { InfoCircleIcon } from 'src/components/icons/InfoCircleIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
 import { AAVE_PRO_URL } from 'src/components/MarketSwitcher';
 import { UserDisplay } from 'src/components/UserDisplay';
@@ -311,7 +311,7 @@ export function AppHeader() {
                 <Button variant="tertiary" size="small" color="primary" sx={envBadgeSx}>
                   FORK
                   <SvgIcon sx={{ marginLeft: '2px', fontSize: '16px' }}>
-                    <InformationCircleIcon />
+                    <InfoCircleIcon />
                   </SvgIcon>
                 </Button>
               </ContentWithTooltip>

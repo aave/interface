@@ -106,7 +106,6 @@ export const LimitOrderInputs = ({
           balanceTitle={params.inputBalanceTitle}
           assets={swapState.inputAssets}
           value={state.inputAmount}
-          enableHover={true}
           loading={
             state.debouncedOutputAmount !== '0' &&
             state.debouncedOutputAmount !== '' &&
@@ -218,7 +217,6 @@ export const LimitOrderInputs = ({
           title={outputInputTitle}
           assets={swapState.outputAssets}
           value={state.outputAmount}
-          enableHover={true}
           usdValue={state.outputAmountUSD || '0'}
           loading={
             state.debouncedInputAmount !== '0' &&

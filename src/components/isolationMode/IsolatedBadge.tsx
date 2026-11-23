@@ -1,7 +1,7 @@
-import { InformationCircleIcon } from '@heroicons/react/outline';
 import { Trans } from '@lingui/macro';
 import { Box, Link, SvgIcon, Typography, TypographyProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
+import { InfoCircleIcon } from 'src/components/icons/InfoCircleIcon';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
 
@@ -26,7 +26,7 @@ const InfoIcon = ({ color }: InfoIconProps) => (
       fontSize: '14px',
     }}
   >
-    <InformationCircleIcon />
+    <InfoCircleIcon />
   </SvgIcon>
 );
 export const IsolatedEnabledBadge = ({

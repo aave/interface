@@ -10,6 +10,19 @@ import { TxAction } from 'src/ui-config/errorMapping';
 import { ApprovalTooltip } from '../infoTooltips/ApprovalTooltip';
 import { RightHelperText } from './FlowCommons/RightHelperText';
 
+const STICKY_ACTIONS_SX = {
+  position: 'sticky',
+  bottom: '-1.5rem',
+  zIndex: 1,
+  mt: 0,
+  mx: '-1.5rem',
+  mb: '-1.5rem',
+  px: '1.5rem',
+  pt: '2rem',
+  pb: '1.5rem',
+  background: 'linear-gradient(to bottom, transparent, var(--modal-surface) 2rem)',
+} as const;
+
 interface TxActionsWrapperProps extends BoxProps {
   actionInProgressText: ReactNode;
   actionText: ReactNode;
@@ -83,7 +96,7 @@ export const TxActionsWrapper = ({
     }
     if (isWrongNetwork) return { disabled: true, content: <Trans>Wrong Network</Trans> };
     if (fetchingData) return { disabled: true, content: <Trans>Fetching data...</Trans> };
-    if (isAmountMissing) return { disabled: true, content: <Trans>Enter an amount</Trans> };
+    if (isAmountMissing) return { disabled: true, content: <Trans>Enter amount</Trans> };
     if (preparingTransactions) return { disabled: true, loading: true };
     // if (hasApprovalError && handleRetry)
     //   return { content: <Trans>Retry with approval</Trans>, handleClick: handleRetry };
@@ -147,7 +160,7 @@ export const TxActionsWrapper = ({
   const { content, disabled, loading, handleClick } = getMainParams();
   const approvalParams = getApprovalParams();
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', mt: 12, ...sx }} {...rest}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', ...STICKY_ACTIONS_SX, ...sx }} {...rest}>
       {approvalParams && !readOnlyModeAddress && (
         // Wraps rather than squeezes: an exact allowance can be a full-precision 18-decimal
         // figure, which does not share a line with the approval method toggle.

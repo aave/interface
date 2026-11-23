@@ -2,8 +2,8 @@ import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { parseUnits } from 'ethers/lib/utils';
 import React, { useRef, useState } from 'react';
+import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -17,7 +17,6 @@ import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { StakeRewardClaimActions } from './StakeRewardClaimActions';
 
@@ -126,12 +125,11 @@ export const StakeRewardClaimModalContent = ({ stakeAssetName, icon }: StakeRewa
         maxValue={maxAmountToClaim.toString()}
         balanceText={<Trans>Amount claimable</Trans>}
       />
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} chainId={ChainId.mainnet} />
+      <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet} />
 
       {txError && <GasEstimationError txError={txError} />}
 
       <StakeRewardClaimActions
-        sx={{ mt: '48px' }}
         amountToClaim={amount}
         isWrongNetwork={isWrongNetwork}
         symbol={rewardsSymbol}

@@ -328,9 +328,6 @@ export const CollateralSwapActionsViaCowAdapters = ({
 
   return (
     <TxActionsWrapper
-      sx={{
-        mt: 6,
-      }}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={state.isWrongNetwork}

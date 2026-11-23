@@ -353,9 +353,6 @@ export const RepayWithCollateralActionsViaCoW = ({
 
   return (
     <TxActionsWrapper
-      sx={{
-        mt: 6,
-      }}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={state.isWrongNetwork}

@@ -115,7 +115,7 @@ export default function ReserveOverview() {
             </StyledTxModalToggleButton>
             <StyledTxModalToggleButton value="actions" disabled={mode === 'actions'}>
               <Typography variant="subheader1">
-                <Trans>Your info</Trans>
+                <Trans>Your Position</Trans>
               </Typography>
             </StyledTxModalToggleButton>
           </StyledTxModalToggleGroup>
@@ -126,8 +126,10 @@ export default function ReserveOverview() {
           <Box
             sx={{
               display: { xs: !isOverview ? 'none' : 'block', lg: 'block' },
-              width: { xs: '100%', lg: 'calc(100% - 432px)' },
-              mr: { xs: 0, lg: 4 },
+              width: { xs: '100%', lg: 'auto' },
+              flex: { lg: 1 },
+              minWidth: { lg: 0 },
+              mr: { xs: 0, lg: '2.5rem' },
             }}
           >
             <ReserveConfigurationWrapper reserve={reserve} />
@@ -137,7 +139,8 @@ export default function ReserveOverview() {
           <Box
             sx={{
               display: { xs: isOverview ? 'none' : 'block', lg: 'block' },
-              width: { xs: '100%', lg: '416px' },
+              width: { xs: '100%', lg: '400px' },
+              flexShrink: 0,
             }}
           >
             {/* Wrapped in AssetCapsProvider to provide the data using legacy method to avoid braking actions */}

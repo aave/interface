@@ -131,7 +131,6 @@ export const SGhoVaultWithdrawModalContent = () => {
         isMaxSelected={isMaxSelected}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined}
-        sx={{ mt: '48px' }}
       />
     </>
   );
