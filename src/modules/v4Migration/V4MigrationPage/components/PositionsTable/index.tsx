@@ -92,7 +92,7 @@ export const PositionsTable = <T extends { id: string }>({
                 </Row>
               ))}
               <Button
-                variant="outlined"
+                variant="tertiary"
                 fullWidth
                 onClick={() => onMigrate?.(position)}
                 sx={{ mt: '0.75rem' }}
@@ -130,7 +130,7 @@ export const PositionsTable = <T extends { id: string }>({
                 </ListColumn>
               ))}
               <ListColumn {...ACTION_COLUMN_LAYOUT} align="right">
-                <Button variant="outlined" size="small" onClick={() => onMigrate?.(position)}>
+                <Button variant="tertiary" size="small" onClick={() => onMigrate?.(position)}>
                   <Trans>Migrate</Trans>
                 </Button>
               </ListColumn>

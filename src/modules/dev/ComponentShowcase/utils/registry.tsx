@@ -134,6 +134,14 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
       import('../components/MigrationHubCardsSection').then((m) => m.MigrationHubCardsSection)
     ),
   },
+  {
+    slug: 'migration-flow',
+    label: 'Flow',
+    group: 'Migration',
+    Component: dynamic(() =>
+      import('../components/MigrationFlowSection').then((m) => m.MigrationFlowSection)
+    ),
+  },
 ];
 
 // Sections grouped for the sidebar, preserving declaration order.
