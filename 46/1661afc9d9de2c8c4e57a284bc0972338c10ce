@@ -1,0 +1,34 @@
+src/modules/v4Migration/V4MigrationPage/components/PositionsTable/index.tsx
+  s_140400f84712a1::t_5ac77a8128dbde 95,133
+src/modules/dev/ComponentShowcase/components/MigrationFlowSection/index.tsx
+  s_140400f84712a1::t_d6f9eba488c1e2 1-5,7-65,67-69,73-100,109-111
+  s_140400f84712a1::t_c29c9120359b9b 102
+  s_140400f84712a1::t_f1619e3a895fa2 6,66,70-72,101,103-108
+src/modules/dev/ComponentShowcase/utils/registry.tsx
+  s_140400f84712a1::t_36fe27c36711f7 137-144
+src/components/SearchInput.tsx
+  s_140400f84712a1::t_23979092e6dbae 16,24,43,103
+  s_140400f84712a1::t_ba9eccada40798 9-15,17-23,25-27,33,41,68,82
+src/modules/dev/ComponentShowcase/components/FormControlsSection/index.tsx
+  s_140400f84712a1::t_c29c9120359b9b 146
+  s_140400f84712a1::t_f1619e3a895fa2 145,147-153
+src/components/FlowHeader/index.tsx
+  s_140400f84712a1::t_57eb1262e434ab 1-18,25-72
+  s_140400f84712a1::t_cb3391da7a07cf 19-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "461661afc9d9de2c8c4e57a284bc0972338c10ce",
+  "prompts": {},
+  "sessions": {
+    "s_140400f84712a1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "49109958-9698-480f-bb8d-25e252218ae7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
