@@ -8,6 +8,8 @@ import {
   CompactableTypography,
   CompactableTypographyProps,
 } from 'src/components/CompactableTypography';
+import { CollateralSwitchTooltip } from 'src/components/infoTooltips/CollateralSwitchTooltip';
+import { tooltipLabelProps } from 'src/components/infoTooltips/tooltipLabelProps';
 import {
   IsolatedDisabledBadge,
   IsolatedEnabledBadge,
@@ -16,7 +18,7 @@ import {
 import { Row } from 'src/components/primitives/Row';
 import { SecondsToString } from 'src/components/SecondsToString';
 import { CollateralType } from 'src/helpers/types';
-import { figSurfaceShadow } from 'src/utils/figmaColors';
+import { figVars } from 'src/utils/figmaColors';
 
 import { HealthFactorNumber } from '../../HealthFactorNumber';
 import { IncentivesButton } from '../../incentives/IncentivesButton';
@@ -34,6 +36,13 @@ export interface TxModalDetailsProps {
   showGasStation?: boolean;
 }
 
+const dashedDividerSx = {
+  height: '1px',
+  backgroundImage: `linear-gradient(to right, ${figVars['border-0']} 50%, transparent 50%)`,
+  backgroundSize: '0.75rem 1px',
+  backgroundRepeat: 'repeat-x',
+};
+
 const ArrowRightIcon = (
   <SvgIcon color="primary" sx={{ fontSize: '14px', mx: 1 }}>
     <ArrowNarrowRightIcon />
@@ -50,25 +59,20 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
   showGasStation = true,
 }) => {
   return (
-    <Box sx={{ pt: '1rem' }}>
-      <Typography sx={{ mb: '0.5rem' }} color="fg-2">
-        <Trans>Transaction overview</Trans>
-      </Typography>
-
+    <Box sx={{ mt: '2rem' }}>
+      <Box sx={dashedDividerSx} />
       <Box
         sx={{
-          p: 3,
-          boxShadow: figSurfaceShadow('shadow-stroke-1'),
-          borderRadius: '0.75rem',
-          '.MuiBox-root:last-of-type': {
-            mb: 0,
-          },
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.875rem',
+          mt: '1.875rem',
+          '& > .MuiBox-root': { mb: 0 },
+          '& .row-caption': { color: 'fg-3' },
         }}
       >
         {children}
-      </Box>
-      {showGasStation && (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        {showGasStation && (
           <GasStation
             chainId={chainId}
             gasLimit={parseUnits(gasLimit || '0', 'wei')}
@@ -76,8 +80,8 @@ export const TxModalDetails: React.FC<TxModalDetailsProps> = ({
             disabled={disabled}
             rightComponent={slippageSelector}
           />
-        </Box>
-      )}
+        )}
+      </Box>
     </Box>
   );
 };
@@ -205,7 +209,17 @@ export interface DetailsCollateralLine {
 
 export const DetailsCollateralLine = ({ collateralType }: DetailsCollateralLine) => {
   return (
-    <Row caption={<Trans>Collateralization</Trans>} captionVariant="description" mb={4}>
+    <Row
+      caption={
+        <CollateralSwitchTooltip
+          {...tooltipLabelProps}
+          iconMargin={1.5}
+          text={<Trans>Collateralization</Trans>}
+        />
+      }
+      captionVariant="description"
+      mb={4}
+    >
       <CollateralState collateralType={collateralType} />
     </Row>
   );
@@ -221,22 +235,20 @@ export const CollateralState = ({ collateralType }: CollateralStateProps) => {
       {
         {
           [CollateralType.ENABLED]: (
-            <Typography variant="description" color="success.main">
+            <Typography variant="h5" color="fg-1">
               <Trans>Enabled</Trans>
             </Typography>
           ),
           [CollateralType.ISOLATED_ENABLED]: (
-            <IsolatedEnabledBadge
-              typographyProps={{ variant: 'description', color: 'warning.main' }}
-            />
+            <IsolatedEnabledBadge typographyProps={{ variant: 'h5', color: 'warning.main' }} />
           ),
           [CollateralType.DISABLED]: (
-            <Typography variant="description" color="error.main">
+            <Typography variant="h5" color="error.main">
               <Trans>Disabled</Trans>
             </Typography>
           ),
           [CollateralType.UNAVAILABLE]: (
-            <Typography variant="description" color="error.main">
+            <Typography variant="h5" color="error.main">
               <Trans>Unavailable</Trans>
             </Typography>
           ),

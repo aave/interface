@@ -37,7 +37,7 @@ export const BasicModalSurface = forwardRef<HTMLDivElement, BasicModalSurfacePro
   function BasicModalSurface(
     {
       withCloseButton = true,
-      contentMaxWidth = 420,
+      contentMaxWidth = 480,
       contentHeight,
       onClose,
       children,
@@ -75,7 +75,7 @@ export const BasicModalSurface = forwardRef<HTMLDivElement, BasicModalSurfacePro
           <IconButton
             sx={{
               position: 'absolute',
-              top: '21px',
+              top: '24px',
               right: '24px',
               zIndex: 5,
               borderRadius: '0.375rem',
@@ -88,7 +88,7 @@ export const BasicModalSurface = forwardRef<HTMLDivElement, BasicModalSurfacePro
             onClick={onClose}
             data-cy={'close-button'}
           >
-            <CloseIcon data-cy={'CloseModalIcon'} sx={{ fontSize: '30px', color: 'fg-3' }} />
+            <CloseIcon data-cy={'CloseModalIcon'} sx={{ fontSize: '1.5rem', color: 'fg-3' }} />
           </IconButton>
         )}
       </Paper>

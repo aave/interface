@@ -14,7 +14,17 @@ import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withToolti
 import { BigNumber } from 'bignumber.js';
 import { bisector, max } from 'd3-array';
 import React, { useCallback, useMemo } from 'react';
+import { figVars } from 'src/utils/figmaColors';
 
+import {
+  chartMargin,
+  chartRootSx,
+  dotPatternProps,
+  gridRowsProps,
+  referenceLineProps,
+  yAxisProps,
+  yAxisTickLabelProps,
+} from './chartStyles';
 import type { Fields } from './InterestRateModelGraphContainer';
 
 type TooltipData = Rate;
@@ -115,7 +125,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
   ({
     width,
     height,
-    margin = { top: 20, right: 10, bottom: 20, left: 40 },
+    margin = chartMargin,
     showTooltip,
     hideTooltip,
     tooltipData,
@@ -205,24 +215,19 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
     ];
 
     const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+    const borrowRateColor = fields.find((field) => field.name === 'variableBorrowRate')?.color;
+    const labelX = (value: number) =>
+      Math.min(Math.max(dateScale(value) ?? 0, 40), innerWidth - 40);
 
     return (
-      <>
+      <Box sx={chartRootSx}>
         <svg width={width} height={height}>
           <Group left={margin.left} top={margin.top}>
-            {/* Horizontal Background Lines */}
-            <GridRows
-              scale={yValueScale}
-              width={innerWidth}
-              strokeDasharray="3,3"
-              stroke={theme.palette.divider}
-              pointerEvents="none"
-              numTicks={3}
-            />
+            <GridRows scale={yValueScale} width={innerWidth} {...gridRowsProps} numTicks={3} />
 
             {/* Variable Borrow APR Line */}
             <LinePath
-              stroke="#B6509E"
+              stroke={borrowRateColor}
               strokeWidth={2}
               data={data}
               x={(d) => dateScale(getDate(d)) ?? 0}
@@ -230,32 +235,25 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               curve={curveMonotoneX}
             />
 
-            {/* X Axis */}
             <AxisBottom
               top={innerHeight}
               scale={dateScale}
               tickValues={[0, 25, 50, 75, 100]}
               strokeWidth={0}
               tickStroke={theme.palette.text.secondary}
-              tickLabelProps={() => ({
+              tickLabelProps={(value) => ({
                 fill: theme.palette.text.muted,
                 fontSize: 10,
-                textAnchor: 'middle',
+                textAnchor: value === 0 ? 'start' : value === 100 ? 'end' : 'middle',
               })}
               tickFormat={(n) => `${n}%`}
             />
 
-            {/* Y Axis */}
             <AxisLeft
+              {...yAxisProps}
               scale={yValueScale}
-              strokeWidth={0}
-              tickLabelProps={() => ({
-                fill: theme.palette.text.muted,
-                fontSize: 8,
-                dx: -margin.left + 10,
-              })}
               numTicks={2}
-              tickFormat={(value) => `${value}%`}
+              tickLabelProps={() => ({ ...yAxisTickLabelProps, fill: theme.palette.text.muted })}
             />
 
             {/* Background */}
@@ -271,42 +269,38 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
 
             {/* Current Utilization Line */}
             <Line
-              from={{ x: dateScale(ticks[1].value), y: margin.top + 24 }}
+              from={{ x: dateScale(ticks[1].value), y: -4 }}
               to={{ x: dateScale(ticks[1].value), y: innerHeight }}
-              stroke="#0062D2"
-              strokeWidth={1}
+              {...referenceLineProps}
               pointerEvents="none"
-              strokeDasharray="5,2"
             />
             <Text
-              x={dateScale(ticks[1].value)}
-              y={margin.top + 16}
+              x={labelX(ticks[1].value)}
+              y={-12}
               width={360}
               textAnchor="middle"
               verticalAnchor="middle"
               fontSize="10px"
-              fill="#62677B"
+              style={{ fill: figVars['fg-3'] }}
             >
               {`Current ${formattedCurrentUtilizationRate}%`}
             </Text>
 
             {/* Optimal Utilization Line */}
             <Line
-              from={{ x: dateScale(ticks[0].value), y: margin.top + 8 }}
+              from={{ x: dateScale(ticks[0].value), y: -20 }}
               to={{ x: dateScale(ticks[0].value), y: innerHeight }}
-              stroke="#0062D2"
-              strokeWidth={1}
+              {...referenceLineProps}
               pointerEvents="none"
-              strokeDasharray="5,2"
             />
             <Text
-              x={dateScale(ticks[0].value)}
-              y={margin.top}
+              x={labelX(ticks[0].value)}
+              y={-28}
               width={360}
               textAnchor="middle"
               verticalAnchor="middle"
               fontSize="10px"
-              fill="#62677B"
+              style={{ fill: figVars['fg-3'] }}
             >
               {`Optimal ${formattedOptimalUtilizationRate}%`}
             </Text>
@@ -316,12 +310,11 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
               <g>
                 {/* Vertical line */}
                 <Line
-                  from={{ x: tooltipLeft, y: margin.top }}
+                  from={{ x: tooltipLeft, y: 0 }}
                   to={{ x: tooltipLeft, y: innerHeight }}
-                  stroke={accentColorDark}
-                  strokeWidth={1}
+                  {...dotPatternProps}
+                  style={{ stroke: accentColorDark }}
                   pointerEvents="none"
-                  strokeDasharray="5,2"
                 />
                 {/* Variable borrow rate circle */}
                 <circle
@@ -353,8 +346,8 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
         {tooltipData && (
           <div>
             <TooltipWithBounds
-              top={20}
-              left={tooltipLeft + 40}
+              top={margin.top}
+              left={tooltipLeft + margin.left}
               style={theme.palette.mode === 'light' ? tooltipStyles : tooltipStylesDark}
             >
               <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
@@ -428,7 +421,7 @@ export const InterestRateModelGraph = withTooltip<AreaProps, TooltipData>(
             </TooltipWithBounds>
           </div>
         )}
-      </>
+      </Box>
     );
   }
 );

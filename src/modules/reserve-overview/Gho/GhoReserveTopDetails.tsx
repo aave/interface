@@ -16,15 +16,19 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) =>
 
   return (
     <>
-      <PageHeaderStat label={<Trans>Total borrowed</Trans>} loading={loading}>
-        <FormattedNumber value={totalBorrowed} symbol="USD" variant="statValue" />
+      <PageHeaderStat label={<Trans>Total borrowed</Trans>} loading={loading} gap="0.75rem">
+        <FormattedNumber value={totalBorrowed} symbol="USD" variant="h2" />
       </PageHeaderStat>
 
-      <PageHeaderStat label={<Trans>Maximum available to borrow</Trans>} loading={loading}>
+      <PageHeaderStat
+        label={<Trans>Maximum available to borrow</Trans>}
+        loading={loading}
+        gap="0.75rem"
+      >
         <FormattedNumber
           value={reserve.borrowInfo?.borrowCap.amount.value ?? '0'}
           symbol="USD"
-          variant="statValue"
+          variant="h2"
         />
       </PageHeaderStat>
 
@@ -42,8 +46,9 @@ export const GhoReserveTopDetails = ({ reserve }: { reserve: ReserveWithId }) =>
           </TextWithTooltip>
         }
         loading={loading}
+        gap="0.75rem"
       >
-        <FormattedNumber value={1} symbol="USD" variant="statValue" />
+        <FormattedNumber value={1} symbol="USD" variant="h2" />
       </PageHeaderStat>
     </>
   );

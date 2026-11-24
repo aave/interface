@@ -31,15 +31,15 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
 
   return (
     <>
-      <PageHeaderStat label={<Trans>Reserve size</Trans>} loading={loading}>
+      <PageHeaderStat label={<Trans>Reserve size</Trans>} loading={loading} gap="0.75rem">
         <FormattedNumber
           value={Math.max(Number(poolReserve?.totalLiquidityUSD), 0)}
           symbol="USD"
-          variant="statValue"
+          variant="h2"
         />
       </PageHeaderStat>
 
-      <PageHeaderStat label={<Trans>Available liquidity</Trans>} loading={loading}>
+      <PageHeaderStat label={<Trans>Available liquidity</Trans>} loading={loading} gap="0.75rem">
         <FormattedNumber
           value={
             poolReserve && assetIsBorrowableOnMarket(poolReserve)
@@ -47,17 +47,17 @@ export const ReserveTopDetails = ({ underlyingAsset }: ReserveTopDetailsProps) =
               : 0
           }
           symbol="USD"
-          variant="statValue"
+          variant="h2"
         />
       </PageHeaderStat>
 
-      <PageHeaderStat label={<Trans>Utilization rate</Trans>} loading={loading}>
-        <FormattedNumber value={poolReserve?.borrowUsageRatio} percent variant="statValue" />
+      <PageHeaderStat label={<Trans>Utilization rate</Trans>} loading={loading} gap="0.75rem">
+        <FormattedNumber value={poolReserve?.borrowUsageRatio} percent variant="h2" />
       </PageHeaderStat>
 
-      <PageHeaderStat label={<Trans>Oracle price</Trans>} loading={loading}>
+      <PageHeaderStat label={<Trans>Oracle price</Trans>} loading={loading} gap="0.75rem">
         <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-          <FormattedNumber value={poolReserve?.priceInUSD} symbol="USD" variant="statValue" />
+          <FormattedNumber value={poolReserve?.priceInUSD} symbol="USD" variant="h2" />
           <ReserveHeaderIconButton tooltipText="View oracle contract" size="1.25rem">
             <Link
               onClick={() =>

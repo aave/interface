@@ -81,7 +81,6 @@ export const GovRepresentativesActions = ({
       actionText={<Trans>Confirm transaction</Trans>}
       actionInProgressText={<Trans>Confirming transaction</Trans>}
       isWrongNetwork={isWrongNetwork}
-      sx={{ mt: 6 }}
     />
   );
 };

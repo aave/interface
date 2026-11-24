@@ -70,6 +70,8 @@ function CompactNumber({ value, visibleDecimals, roundDown }: CompactNumberProps
   );
 }
 
+export const flushPercentSx = { '& > .MuiTypography-root': { ml: 0 } };
+
 export type FormattedNumberProps = TypographyProps<ElementType, { component?: ElementType }> & {
   value: string | number;
   symbol?: string;

@@ -148,7 +148,6 @@ export const StakeModalContent = ({ stakeAssetName, icon }: StakeProps) => {
       {txError && <GasEstimationError txError={txError} />}
 
       <StakeActions
-        sx={{ mt: '48px' }}
         amountToStake={amount}
         isWrongNetwork={isWrongNetwork}
         symbol={nameFormatted}

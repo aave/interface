@@ -238,7 +238,7 @@ msgstr "Show V4 Rates"
 msgid "Light"
 msgstr "Light"
 
-#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
 msgid "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 msgstr "Asset supply is limited to a certain amount to reduce protocol exposure to the asset and to help manage risks involved."
 
@@ -345,8 +345,6 @@ msgstr "Borrow {symbol}"
 
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Total supplied"
 msgstr "Total supplied"
 
@@ -385,8 +383,8 @@ msgstr "Debt sent"
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/modules/migration/MigrationList.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
+#: src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/index.tsx
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Max LTV"
 msgstr "Max LTV"
 
@@ -549,6 +547,8 @@ msgstr "All transactions"
 #: src/components/transactions/Repay/RepayTypeSelector.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
 #: src/modules/v4Migration/utils/copy.tsx
 #: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
 msgid "Collateral"
@@ -588,6 +588,7 @@ msgstr "Voting power"
 msgid "Collateral received"
 msgstr "Collateral received"
 
+#: src/modules/reserve-overview/ReserveConfigSection/index.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Markets"
 msgstr "Markets"
@@ -606,6 +607,7 @@ msgstr "Copy error message"
 msgid "repaid"
 msgstr "repaid"
 
+#: src/components/ShowMoreButton/index.tsx
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 #: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Show less"
@@ -766,7 +768,7 @@ msgid "Balance to revoke"
 msgstr "Balance to revoke"
 
 #: src/modules/reserve-overview/graphs/InterestRateModelGraph.tsx
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveInterestRateCard/index.tsx
 msgid "Utilization Rate"
 msgstr "Utilization Rate"
 
@@ -793,6 +795,14 @@ msgstr "Show"
 msgid "Queued"
 msgstr "Queued"
 
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
+msgid "Borrowable Assets"
+msgstr "Borrowable Assets"
+
+#: src/components/transactions/Supply/CollateralOptionsList/index.tsx
+msgid "penalty"
+msgstr "penalty"
+
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/Gho/SavingsGho.tsx
@@ -807,7 +817,7 @@ msgstr "You are entering Isolation mode"
 msgid "Borrowing is currently unavailable for {0}."
 msgstr "Borrowing is currently unavailable for {0}."
 
-#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+#: src/components/transactions/PercentSelector/index.tsx
 msgid "%"
 msgstr "%"
 
@@ -851,12 +861,16 @@ msgstr "We could not find the page you were looking for."
 msgid "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 msgstr "This asset has reached its supply cap. Nothing is available to be supplied from this market."
 
+#: src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/index.tsx
+msgid "Liq. Penalty"
+msgstr "Liq. Penalty"
+
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Collateral Swap"
 msgstr "Collateral Swap"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/components/ReserveStatusAlerts/index.tsx
 msgid "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
 msgstr "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
 
@@ -890,6 +904,7 @@ msgid "Assets with less than $100k supplied are hidden by default."
 msgstr "Assets with less than $100k supplied are hidden by default."
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
 msgid "Maximum amount available to borrow is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to borrow is <0/> {0} (<1/>)."
 
@@ -934,7 +949,7 @@ msgstr "Protocol borrow cap at 100% for this asset. Further borrowing unavailabl
 msgid "Shares"
 msgstr "Shares"
 
-#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
 msgid "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
 msgstr "stETH supplied as collateral will continue to accrue staking rewards provided by daily rebases."
 
@@ -972,7 +987,11 @@ msgstr "Asset category"
 msgid "Withdraw GHO"
 msgstr "Withdraw GHO"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+msgid "{symbol} can be borrowed against supplied collateral"
+msgstr "{symbol} can be borrowed against supplied collateral"
+
+#: src/modules/reserve-overview/ReserveSupplyCard/components/ReserveStatusAlerts/index.tsx
 msgid "This asset is frozen due to an Aave community decision. <0>More details</0>"
 msgstr "This asset is frozen due to an Aave community decision. <0>More details</0>"
 
@@ -992,8 +1011,8 @@ msgstr "The fee includes the gas cost to complete the transaction on the destina
 #: src/components/caps/DebtCeilingStatus.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/ReserveStat/components/ReserveStatAmount/index.tsx
+#: src/modules/reserve-overview/ReserveStat/components/ReserveStatAmount/index.tsx
 msgid "of"
 msgstr "of"
 
@@ -1023,8 +1042,7 @@ msgid "Block"
 msgstr "Block"
 
 #: src/components/TokenAmountInput/index.tsx
-#: src/components/transactions/AssetInput.tsx
-#: src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+#: src/components/transactions/AmountBalanceRow/index.tsx
 msgid "Max"
 msgstr "Max"
 
@@ -1274,7 +1292,7 @@ msgstr "Legacy Markets"
 msgid "Learn more."
 msgstr "Learn more."
 
-#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+#: src/components/transactions/Supply/CollateralOptionTag/index.tsx
 msgid "Active"
 msgstr "Active"
 
@@ -1321,7 +1339,6 @@ msgid "Linked addresses"
 msgstr "Linked addresses"
 
 #: src/modules/governance/FormattedProposalTime.tsx
-#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
 msgid "on"
 msgstr "on"
 
@@ -1515,6 +1532,7 @@ msgid "Claiming {symbol}"
 msgstr "Claiming {symbol}"
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
 msgid "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 msgstr "Borrowing of this asset is limited to a certain amount to minimize liquidity pool insolvency."
 
@@ -1590,6 +1608,10 @@ msgstr "You have assets with zero LTV that are blocking this operation. Please w
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "{0}"
 msgstr "{0}"
+
+#: src/components/transactions/TxActionsWrapper.tsx
+msgid "Enter amount"
+msgstr "Enter amount"
 
 #: src/components/transactions/Swap/warnings/postInputs/ZeroLTVDestinationWarning.tsx
 msgid "{0} has a Loan-to-Value of 0, so it will not be enabled as collateral automatically after the swap."
@@ -1669,7 +1691,6 @@ msgstr "Send"
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateModalContent.tsx
 #: src/components/transactions/Supply/SupplyModalContent.tsx
-#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/faucet/FaucetAssetsList.tsx
 #: src/modules/umbrella/UmbrellaModalContent.tsx
 msgid "Wallet balance"
@@ -1720,7 +1741,7 @@ msgstr "Network Fee"
 #: src/components/isolationMode/IsolatedBadge.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
-#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+#: src/components/transactions/Supply/CollateralOptionTag/index.tsx
 msgid "Isolated"
 msgstr "Isolated"
 
@@ -1893,10 +1914,6 @@ msgstr "If the health factor goes below 1, the liquidation of your collateral mi
 msgid "You cancelled the transaction."
 msgstr "You cancelled the transaction."
 
-#: src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
-msgid "Borrow info"
-msgstr "Borrow info"
-
 #: src/ui-config/errorMapping.tsx
 msgid "Invalid return value of the flashloan executor function"
 msgstr "Invalid return value of the flashloan executor function"
@@ -1962,10 +1979,15 @@ msgstr "Wallet Balance"
 msgid "Amount claimable"
 msgstr "Amount claimable"
 
+#: src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/index.tsx
+msgid "No configurations match the selected filters."
+msgstr "No configurations match the selected filters."
+
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "{remainingCustomMessage}"
 msgstr "{remainingCustomMessage}"
 
+#: src/modules/reserve-overview/ReserveCollectorInfo/index.tsx
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Collector Contract"
 msgstr "Collector Contract"
@@ -2144,7 +2166,6 @@ msgstr "Participating in staking {symbol} gives annualized rewards. Your wallet 
 #: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation threshold"
 msgstr "Liquidation threshold"
 
@@ -2220,6 +2241,10 @@ msgstr "Auto"
 msgid "Age"
 msgstr "Age"
 
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
+msgid "{symbol} cannot be supplied as collateral"
+msgstr "{symbol} cannot be supplied as collateral"
+
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Disable {symbol} as collateral"
 msgstr "Disable {symbol} as collateral"
@@ -2264,6 +2289,10 @@ msgstr "Cannot switch to this category"
 #: src/ui-config/errorMapping.tsx
 msgid "Asset is not listed"
 msgstr "Asset is not listed"
+
+#: src/components/transactions/Supply/CollateralOptionsList/index.tsx
+msgid "{hiddenEmodeCount, plural, one {Show # other E-Mode category} other {Show # other E-Mode categories}}"
+msgstr "{hiddenEmodeCount, plural, one {Show # other E-Mode category} other {Show # other E-Mode categories}}"
 
 #: src/components/transactions/Stake/StakeModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
@@ -2409,6 +2438,7 @@ msgstr "received"
 
 #: pages/dashboard.page.tsx
 #: src/components/transactions/Borrow/BorrowModal.tsx
+#: src/components/transactions/Supply/CollateralOptionsList/index.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListItem.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -2416,6 +2446,7 @@ msgstr "received"
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
 #: src/modules/v4Migration/utils/copy.tsx
 #: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
 msgid "Borrow"
@@ -2434,7 +2465,6 @@ msgid "Payload {0} created"
 msgstr "Payload {0} created"
 
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Liquidation penalty"
 msgstr "Liquidation penalty"
 
@@ -2442,15 +2472,24 @@ msgstr "Liquidation penalty"
 msgid "Select market"
 msgstr "Select market"
 
+#: src/modules/reserve-overview/ReserveConfigSection/hooks/useBorrowableConfigRows.ts
+#: src/modules/reserve-overview/ReserveConfigSection/hooks/useCollateralConfigRows.ts
+msgid "Standard"
+msgstr "Standard"
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Category assets"
 msgstr "Category assets"
+
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
+msgid "{symbol} can be supplied to earn yield but is not eligible as collateral in any available market or E-Mode configuration."
+msgstr "{symbol} can be supplied to earn yield but is not eligible as collateral in any available market or E-Mode configuration."
 
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 msgid "Available to stake"
 msgstr "Available to stake"
 
-#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
 msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
 
@@ -2503,6 +2542,10 @@ msgstr "Reload the page"
 #: src/components/transactions/GovDelegation/GovDelegationModalContent.tsx
 msgid "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave balance changes, your delegate's voting/proposition power will be automatically adjusted."
 msgstr "Choose how much voting/proposition power to give to someone else by delegating some of your AAVE, stkAAVE or aAave balance. Your tokens will remain in your account, but your delegate will be able to vote or propose on your behalf. If your AAVE, stkAAVE or aAave balance changes, your delegate's voting/proposition power will be automatically adjusted."
+
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+msgid "{symbol} cannot be borrowed against any collateral"
+msgstr "{symbol} cannot be borrowed against any collateral"
 
 #: src/components/transactions/SavingsGho/SavingsGhoModalDepositContent.tsx
 #: src/components/transactions/SGhoVault/SGhoVaultDepositModalContent.tsx
@@ -2583,6 +2626,7 @@ msgstr "No rewards to claim"
 msgid "This reserve can only be borrowed in E-Mode. See below for which categories allow borrowing."
 msgstr "This reserve can only be borrowed in E-Mode. See below for which categories allow borrowing."
 
+#: src/modules/reserve-overview/ReserveCollectorInfo/index.tsx
 #: src/modules/reserve-overview/ReserveFactorOverview.tsx
 msgid "Reserve factor"
 msgstr "Reserve factor"
@@ -2639,6 +2683,11 @@ msgstr "Supply balance after swap"
 msgid "Claiming all merit rewards only"
 msgstr "Claiming all merit rewards only"
 
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
+msgid "Total Deposits"
+msgstr "Total Deposits"
+
 #: src/components/transactions/SGhoVault/SGhoVaultDepositModal.tsx
 msgid "Deposit GHO into sGHO"
 msgstr "Deposit GHO into sGHO"
@@ -2671,10 +2720,6 @@ msgstr "Reserve size"
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "tokens"
 msgstr "tokens"
-
-#: src/modules/reserve-overview/ReserveConfigurationWrapper.tsx
-msgid "Reserve status & configuration"
-msgstr "Reserve status & configuration"
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "restaked"
@@ -2725,6 +2770,10 @@ msgstr "No results found. You can import a custom token with a contract address"
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "To borrow you need to supply any asset to be used as collateral."
 msgstr "To borrow you need to supply any asset to be used as collateral."
+
+#: src/modules/reserve-overview/ReserveInterestRateCard/index.tsx
+msgid "Interest rate model"
+msgstr "Interest rate model"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
@@ -2819,6 +2868,7 @@ msgstr "Merit Program and Self rewards can be claimed"
 msgid "This page only works with live data. Exit test mode to view it."
 msgstr "This page only works with live data. Exit test mode to view it."
 
+#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Collateral options"
 msgstr "Collateral options"
@@ -2996,10 +3046,6 @@ msgstr "from the"
 msgid "An error has occurred fetching the proposal."
 msgstr "An error has occurred fetching the proposal."
 
-#: src/modules/reserve-overview/SupplyInfo.tsx
-msgid "This asset can only be used as collateral in E-Mode: {0}"
-msgstr "This asset can only be used as collateral in E-Mode: {0}"
-
 #: src/modules/markets/MarketAssetsList.tsx
 #: src/modules/markets/MarketAssetsListMobileItem.tsx
 msgid "Borrow APY, variable"
@@ -3089,6 +3135,7 @@ msgstr "Migration preview"
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
 msgid "Supply"
 msgstr "Supply"
 
@@ -3100,6 +3147,15 @@ msgstr "Cannot disable E-Mode"
 #: src/components/MarketSwitcher.tsx
 msgid "Supply and borrow core assets on {network}."
 msgstr "Supply and borrow core assets on {network}."
+
+#: src/modules/reserve-overview/ReserveTopDetailsWrapper.tsx
+msgid "Asset on"
+msgstr "Asset on"
+
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+msgid "Total Borrowed"
+msgstr "Total Borrowed"
 
 #: src/ui-config/errorMapping.tsx
 msgid "Address is not a contract"
@@ -3166,7 +3222,6 @@ msgstr "Bridge {symbol}"
 msgid "Forum discussion"
 msgstr "Forum discussion"
 
-#: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
 msgid "Available"
@@ -3220,7 +3275,7 @@ msgstr "Amount migrated"
 msgid "Transaction history for Plasma is not supported yet, coming soon."
 msgstr "Transaction history for Plasma is not supported yet, coming soon."
 
-#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
 msgid "Maximum amount available to supply is <0/> {0} (<1/>)."
 msgstr "Maximum amount available to supply is <0/> {0} (<1/>)."
 
@@ -3258,10 +3313,6 @@ msgid "Borrowing is disabled due to an Aave community decision. <0>More details<
 msgstr "Borrowing is disabled due to an Aave community decision. <0>More details</0>"
 
 #: src/modules/history/actions/ActionDetails.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
 msgid "Collateral usage"
 msgstr "Collateral usage"
 
@@ -3302,11 +3353,16 @@ msgstr "Amount to unstake"
 msgid "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 msgstr "Slippage is the difference between the quoted and received amounts from changing market conditions between the moment the transaction is submitted and its verification."
 
+#: pages/reserve-overview.page.tsx
+#: src/modules/reserve-overview/ReserveActions.tsx
+msgid "Your Position"
+msgstr "Your Position"
+
 #: src/modules/governance/RepresentativesInfoPanel.tsx
 msgid "Edit"
 msgstr "Edit"
 
-#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
 msgid "Staking Rewards"
 msgstr "Staking Rewards"
@@ -3361,6 +3417,10 @@ msgstr "Choose Asset"
 msgid "Borrowed"
 msgstr "Borrowed"
 
+#: src/components/transactions/Supply/CollateralOptionsList/index.tsx
+msgid "Show more"
+msgstr "Show more"
+
 #: src/components/transactions/Swap/modals/request/WithdrawAndSwapModalContent.tsx
 #: src/components/transactions/Swap/modals/result/SwapResultView.tsx
 msgid "Received"
@@ -3392,6 +3452,7 @@ msgstr "Balance"
 msgid "Withdraw {symbol}"
 msgstr "Withdraw {symbol}"
 
+#: src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/index.tsx
 #: src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
 msgid "Supplied"
 msgstr "Supplied"
@@ -3568,10 +3629,6 @@ msgstr "Borrowing {symbol}"
 msgid "migrated"
 msgstr "migrated"
 
-#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
-msgid "Borrow: All eligible assets"
-msgstr "Borrow: All eligible assets"
-
 #: src/modules/umbrella/UmbrellaHeader.tsx
 msgid "Staked Balance"
 msgstr "Staked Balance"
@@ -3605,6 +3662,7 @@ msgid "You voted {0}"
 msgstr "You voted {0}"
 
 #: src/components/transactions/Emode/EmodeAssetTable.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Borrowable"
 msgstr "Borrowable"
@@ -3630,10 +3688,6 @@ msgstr "Select slippage tolerance"
 #: src/layouts/AppFooter.tsx
 msgid "Get Support"
 msgstr "Get Support"
-
-#: src/components/transactions/TxActionsWrapper.tsx
-msgid "Enter an amount"
-msgstr "Enter an amount"
 
 #: src/components/WalletConnection/ConnectWalletButton.tsx
 #: src/modules/governance/RepresentativesInfoPanel.tsx
@@ -3669,6 +3723,7 @@ msgid "This transaction will disable E-Mode. All assets will revert to their bas
 msgstr "This transaction will disable E-Mode. All assets will revert to their base LTV and liquidation thresholds."
 
 #: src/modules/reserve-overview/BorrowInfo.tsx
+#: src/modules/reserve-overview/ReserveCollectorInfo/index.tsx
 msgid "Collector Info"
 msgstr "Collector Info"
 
@@ -3849,6 +3904,7 @@ msgstr "and about SPK program"
 msgid "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 msgstr "DAI balance will be converted via DSR contracts and then supplied as sDAI. Switching incurs no additional costs and no slippage."
 
+#: src/components/transactions/Supply/CollateralOptionsList/index.tsx
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "LTV"
 msgstr "LTV"
@@ -3980,15 +4036,11 @@ msgstr "Stake AAVE"
 msgid "Savings GHO (sGHO)"
 msgstr "Savings GHO (sGHO)"
 
-#: src/modules/reserve-overview/SupplyInfo.tsx
-msgid "Asset cannot be used as collateral."
-msgstr "Asset cannot be used as collateral."
-
 #: src/ui-config/menu-items/index.tsx
 msgid "Developers"
 msgstr "Developers"
 
-#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+#: src/components/transactions/Supply/CollateralOptionTag/index.tsx
 msgid "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while in it."
 msgstr "Only the listed collateral contributes borrowing power in this category — other collateral you hold will have 0% LTV while in it."
 
@@ -4000,6 +4052,10 @@ msgstr "No eligible assets to swap."
 #: src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
 msgid "Depositing"
 msgstr "Depositing"
+
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+msgid "Borrow Cap"
+msgstr "Borrow Cap"
 
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Interest your deposits earn over a year at the current APY"
@@ -4032,6 +4088,10 @@ msgstr "Proposition"
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "Can be executed"
 msgstr "Can be executed"
+
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
+msgid "{symbol} can be supplied as collateral"
+msgstr "{symbol} can be supplied as collateral"
 
 #: src/components/transactions/CollateralChange/CollateralChangeModalContent.tsx
 #: src/components/transactions/Withdraw/WithdrawError.tsx
@@ -4097,6 +4157,10 @@ msgstr "Debt"
 msgid "Learn more about the Ether.fi program"
 msgstr "Learn more about the Ether.fi program"
 
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+msgid "{symbol} is not available to borrow in any market or E-Mode configuration."
+msgstr "{symbol} is not available to borrow in any market or E-Mode configuration."
+
 #: pages/dashboard.page.tsx
 msgid "View transactions"
 msgstr "View transactions"
@@ -4148,6 +4212,7 @@ msgid "The current incentives period, decided on by the Aave community, has ende
 msgstr "The current incentives period, decided on by the Aave community, has ended. Governance is in the process on renewing, check for updates. <0>Learn more</0>."
 
 #: src/components/caps/CapsHint.tsx
+#: src/components/transactions/Supply/SupplyModalContent.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to supply"
 msgstr "Available to supply"
@@ -4160,7 +4225,8 @@ msgstr "Claiming all protocol rewards and merit rewards together"
 msgid "Voting activated"
 msgstr "Voting activated"
 
-#: src/components/transactions/Supply/CollateralOptionsSelector.tsx
+#: src/components/transactions/Supply/CollateralOptionsList/index.tsx
+#: src/components/transactions/Supply/CollateralOptionTag/index.tsx
 #: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Default"
 msgstr "Default"
@@ -4267,7 +4333,7 @@ msgstr "V3 Protocol"
 msgid "Migrate to V3"
 msgstr "Migrate to V3"
 
-#: src/modules/reserve-overview/ReserveConfiguration.tsx
+#: src/modules/reserve-overview/ReserveInterestRateCard/index.tsx
 msgid "Interest rate strategy"
 msgstr "Interest rate strategy"
 
@@ -4398,7 +4464,9 @@ msgstr "Selected supply assets"
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/markets/Gho/GhoBanner.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
 #: src/modules/stkGho/StkGhoSavingsRate.tsx
 #: src/modules/umbrella/helpers/ApyTooltip.tsx
 #: src/modules/umbrella/StakingApyItem.tsx
@@ -4484,6 +4552,10 @@ msgstr "Review tx"
 msgid "NAY"
 msgstr "NAY"
 
+#: src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/index.tsx
+msgid "Market & E-Mode"
+msgstr "Market & E-Mode"
+
 #: src/modules/history/actions/ActionDetails.tsx
 msgid "for"
 msgstr "for"
@@ -4511,7 +4583,12 @@ msgstr "Migrated Successfully"
 msgid "Hub"
 msgstr "Hub"
 
+#: src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/index.tsx
+msgid "{hiddenCount, plural, one {Show # more configuration} other {Show # more configurations}}"
+msgstr "{hiddenCount, plural, one {Show # more configuration} other {Show # more configurations}}"
+
 #: src/components/caps/CapsHint.tsx
+#: src/components/transactions/Borrow/BorrowModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveActions.tsx
 msgid "Available to borrow"
@@ -4610,6 +4687,10 @@ msgstr "Merit Program rewards can be claimed"
 #: src/modules/sGho/SGhoSavingsRate.tsx
 msgid "APY, fixed rate"
 msgstr "APY, fixed rate"
+
+#: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
+msgid "{symbol} can be borrowed against supported collateral assets. Available collateral and risk parameters vary by market and E-Mode configuration."
+msgstr "{symbol} can be borrowed against supported collateral assets. Available collateral and risk parameters vary by market and E-Mode configuration."
 
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
 #: src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsList.tsx
@@ -4904,6 +4985,10 @@ msgstr "Open for voting"
 msgid "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 msgstr "Selected assets have successfully migrated. Visit the Market Dashboard to see them."
 
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
+msgid "{symbol} can be used as collateral to borrow supported assets. Borrowing power and risk parameters vary by market and E-Mode configuration."
+msgstr "{symbol} can be used as collateral to borrow supported assets. Borrowing power and risk parameters vary by market and E-Mode configuration."
+
 #: src/modules/governance/proposal/VotingResults.tsx
 msgid "Current differential"
 msgstr "Current differential"
@@ -4940,11 +5025,8 @@ msgid "{0} Faucet"
 msgstr "{0} Faucet"
 
 #: pages/governance/index.governance.tsx
-#: pages/reserve-overview.page.tsx
 #: src/modules/governance/UserGovernanceInfo.tsx
 #: src/modules/governance/VotingPowerInfoPanel.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
-#: src/modules/reserve-overview/ReserveActions.tsx
 #: src/modules/sGho/YourInfoSidebar.tsx
 msgid "Your info"
 msgstr "Your info"
@@ -4989,6 +5071,10 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 msgid "Migrate"
 msgstr "Migrate"
 
+#: src/components/transactions/GasStation/GasStation.tsx
+msgid "Network fee"
+msgstr "Network fee"
+
 #: src/components/transactions/CollateralChange/CollateralChangeActions.tsx
 msgid "Enable {symbol} as collateral"
 msgstr "Enable {symbol} as collateral"
@@ -5008,10 +5094,6 @@ msgstr "Executes"
 #: src/components/transactions/Borrow/BorrowModalContent.tsx
 msgid "Borrowed Successfully"
 msgstr "Borrowed Successfully"
-
-#: src/components/transactions/FlowCommons/TxModalDetails.tsx
-msgid "Transaction overview"
-msgstr "Transaction overview"
 
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeActions.tsx
 msgid "Restake {symbol}"
@@ -5154,6 +5236,10 @@ msgstr "Liquidation risk parameters"
 msgid "Unable to Connect"
 msgstr "Unable to Connect"
 
+#: src/modules/reserve-overview/ReserveConfigSection/components/ConfigTable/index.tsx
+msgid "Liq. Threshold"
+msgstr "Liq. Threshold"
+
 #: src/components/transactions/Supply/CollateralOptionsSelector.tsx
 msgid "Active {0} borrow is not compatible with this category. Repay your {1} borrow to use this option."
 msgstr "Active {0} borrow is not compatible with this category. Repay your {1} borrow to use this option."
@@ -5169,8 +5255,8 @@ msgstr "Active {0} borrow is not compatible with this category. Repay your {1} b
 #: src/components/transactions/Warnings/SupplyCapWarning.tsx
 #: src/modules/dashboard/LiquidationRiskParametresModal/LiquidationRiskParametresModal.tsx
 #: src/modules/reserve-overview/BorrowInfo.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
-#: src/modules/reserve-overview/SupplyInfo.tsx
+#: src/modules/reserve-overview/ReserveStat/components/CapTooltipLabel/index.tsx
+#: src/modules/reserve-overview/ReserveSupplyCard/index.tsx
 #: src/modules/umbrella/helpers/ApyTooltip.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
 msgid "Learn more"

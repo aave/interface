@@ -129,7 +129,6 @@ export const SavingsGhoModalDepositContent = () => {
       {txError && <GasEstimationError txError={txError} />}
 
       <SavingsGhoDepositActions
-        sx={{ mt: '48px' }}
         amountToStake={amount}
         isWrongNetwork={isWrongNetwork}
         symbol={nameFormatted}

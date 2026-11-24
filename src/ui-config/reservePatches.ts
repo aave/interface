@@ -352,3 +352,8 @@ export function fetchIconSymbolAndName({ underlyingAsset, symbol, name }: IconSy
     symbol,
   };
 }
+
+export function getDisplayIconSymbol(params: IconSymbolInterface) {
+  const { iconSymbol } = fetchIconSymbolAndName(params);
+  return iconSymbol.toLowerCase() !== params.symbol.toLowerCase() ? iconSymbol : params.symbol;
+}

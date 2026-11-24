@@ -280,7 +280,6 @@ export const UmbrellaModalContent = ({ stakeData, user, userReserve, poolReserve
       {showUSDTResetWarning && <USDTResetWarning />}
 
       <UmbrellaActions
-        sx={{ mt: '48px' }}
         amountToStake={amount || '0'}
         isWrongNetwork={isWrongNetwork}
         symbol={''}
