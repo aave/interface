@@ -1,0 +1,190 @@
+src/utils/figmaColors.ts
+  s_73c193bba46fcd::t_536674b4ca7d30 359,362
+  s_52887d9a8175f9::t_b4236374a7dd55 107,257
+  s_73c193bba46fcd::t_d54b847727e524 105-106,255-256
+src/components/TransactionCard/components/ParticleCanvas/index.tsx
+  s_52887d9a8175f9::t_c38962c3e429de 1-3,5-10,12-69
+  s_73c193bba46fcd::t_d9acbeb6ee8054 4
+  s_73c193bba46fcd::t_d13018dafdc614 11
+src/modules/dev/ComponentShowcase/utils/registry.tsx
+  s_52887d9a8175f9::t_7ef3bf442b154a 161-168
+src/modules/v4Migration/V4MigrationPreview/components/PositionName/index.tsx
+  s_73c193bba46fcd::t_ef23f67d16ea1b 2
+  s_73c193bba46fcd::t_aaa21628681775 1,7,38
+  s_73c193bba46fcd::t_6797c0c4a1f330 36
+src/modules/dev/ComponentShowcase/components/MigrationAmountSection/index.tsx
+  s_73c193bba46fcd::t_255d6f4f57dc80 1
+  s_73c193bba46fcd::t_3d7299f19f057a 3,14,201-202,222
+  s_73c193bba46fcd::t_cba136032ab465 13,59,62,206,568-570
+  s_73c193bba46fcd::t_8166e336fc9126 11,111-112,127-128,139-140,154-155,184-185,199-200,212-213,268-269,279-280,288-289,315-316,325-326,335-336,345-346
+src/utils/motion.ts
+  s_73c193bba46fcd::t_57c3240bd98610 28-31
+  s_73c193bba46fcd::t_ef869448424b4a 11-12
+src/modules/dev/ComponentShowcase/components/MigrationFlowSection/index.tsx
+  s_73c193bba46fcd::t_21e23db8e85efe 15
+  s_73c193bba46fcd::t_57edd12b4d09bd 7-11,45,47,65,104
+  s_73c193bba46fcd::t_3aaae1bebcddda 96
+src/modules/v4Migration/V4MigrationPreview/index.tsx
+  s_73c193bba46fcd::t_c550fb67c7f5b1 141
+  s_73c193bba46fcd::t_1daa827e5f20e3 106
+  s_52887d9a8175f9::t_757bbc2bee5069 2,10,87,218,224,249,268
+  s_52887d9a8175f9::t_12d18736a8e5fb 1,3,6,14,19,28,46-86,88-90,99-105,107-109,122-140,177-217,219-223,225-226,228-248,250-267,269-294,296,298,302-303
+  s_52887d9a8175f9::t_8dbbe9d8eeb758 297
+src/utils/colorToP3.ts
+  s_73c193bba46fcd::t_2755f87e9b057e 16
+src/locales/fr/messages.js
+  s_73c193bba46fcd::t_57828527ef59a3 1
+src/components/DynamicCard/index.tsx
+  s_73c193bba46fcd::t_b496e1849cffab 15
+src/modules/dev/ComponentShowcase/components/MigrationPreviewSection/index.tsx
+  s_73c193bba46fcd::t_1f346cd488e5ee 28,524,575-576
+  s_73c193bba46fcd::t_cba136032ab465 97-102,143,149,164,170,176,182,188,204,409,415,424,462,571,678
+  s_73c193bba46fcd::t_b927f8efb85afa 8-10,14-15,17,132,136,142,148,154,163,169,175,181,187,193,203,209,215,282,559,564,572,577-578,587,591,595,603,661-662,672,703
+  s_73c193bba46fcd::t_08a2db78313a93 111
+  s_52887d9a8175f9::t_8dbbe9d8eeb758 671,685-688
+  s_73c193bba46fcd::t_4eb27ec91e5183 689
+  s_73c193bba46fcd::t_cfda8c241de491 29,616,619-647
+  s_73c193bba46fcd::t_434dc20d959b96 18,604-606,719-721
+  s_52887d9a8175f9::t_ccbd288df8f74b 105-110,112-114,194-199,210-211,221-228
+  s_73c193bba46fcd::t_56145c587a98d5 5,11-13,16,115,117,133,216-217,231-232,235-236,239-277,290-291,294-408,410-414,416-423,425-461,463-493,495-496,499,503-523,525-556,690,722-724,727-729,733,735-741,762,774-778,791
+  s_73c193bba46fcd::t_df1b0005cdf2ea 19-21,278
+src/utils/theme.tsx
+  s_73c193bba46fcd::t_d5284b62d6ffd7 1083
+  s_73c193bba46fcd::t_341bf87b8c7081 20-21,23-27
+  s_73c193bba46fcd::t_21e23db8e85efe 22
+src/modules/dev/ComponentShowcase/components/MigrationHubCardsSection/index.tsx
+  s_73c193bba46fcd::t_21e23db8e85efe 10
+  s_73c193bba46fcd::t_3aaae1bebcddda 11,94,195,199-202,204-207,209-224
+src/components/icons/TypeSwapArrowsIcon.tsx
+  s_73c193bba46fcd::t_510ec5bd563f40 1-20
+src/components/TransactionCard/utils/particleController.ts
+  s_73c193bba46fcd::t_21d9878d2ea6a1 27-28
+  s_52887d9a8175f9::t_af5d6cb8078b1c 1-26,29-171
+src/components/DynamicCard/DescriptionItem/index.tsx
+  s_73c193bba46fcd::t_7bfcf385146bce 25-26
+  s_52887d9a8175f9::t_efd8c496bc5a79 59
+  s_73c193bba46fcd::t_9ad2795dc5d18d 60-62
+src/components/Spinner/index.tsx
+  s_52887d9a8175f9::t_1f97648f5e7419 1,4-19,35-94,97-99,105-122,128-131,133-136
+  s_52887d9a8175f9::t_7ef3bf442b154a 123-127
+  s_73c193bba46fcd::t_e1062fa184975f 2-3
+  s_73c193bba46fcd::t_cc387050d9b918 132
+  s_73c193bba46fcd::t_71a826e7b638be 20-34
+  s_73c193bba46fcd::t_e81adfe0a06847 95-96,100-104
+src/components/TokenAmountInput/index.tsx
+  s_73c193bba46fcd::t_a492a5c702e68d 374,376
+  s_73c193bba46fcd::t_814a4c3863cf56 407-412
+  s_73c193bba46fcd::t_5082a99bb1c8c4 19
+  s_73c193bba46fcd::t_5162f3fa8c7568 104
+  s_73c193bba46fcd::t_b3313c14c27a57 1-11,15-16
+  s_73c193bba46fcd::t_07228ef809fe6c 113,115,126,135-195
+  s_73c193bba46fcd::t_87171130e0f656 196
+src/components/AssetGroup/index.tsx
+  s_73c193bba46fcd::t_3cb60ffb6bf2a1 5
+  s_52887d9a8175f9::t_efd8c496bc5a79 13-14,27-28,49-50
+  s_73c193bba46fcd::t_6bfba7c8f1cdbe 19
+src/modules/v4Migration/utils/copy.tsx
+  s_73c193bba46fcd::t_fc9816927dd096 1-3,5-31,33-34,36-73,77-107,111-149,154-158,186-275
+  s_73c193bba46fcd::t_80672fe7ff0303 150-153,159-185
+  s_73c193bba46fcd::t_4d9ef104d16168 4
+  s_73c193bba46fcd::t_8166e336fc9126 32
+  s_73c193bba46fcd::t_434dc20d959b96 35,74-76,108-110
+src/modules/v4Migration/V4MigrationPage/components/ValueChange/index.tsx
+  s_52887d9a8175f9::t_b4236374a7dd55 1,11,14,16,20
+  s_73c193bba46fcd::t_12cec092450d40 4-6,25-42
+  s_73c193bba46fcd::t_35b9e43d5365a6 43
+src/modules/dev/ComponentShowcase/utils/migrationMocks.tsx
+  s_73c193bba46fcd::t_aeebc349c64b70 1,3,5-6,26-49
+  s_73c193bba46fcd::t_9e9002b6172691 2,4,7-25
+src/locales/el/messages.js
+  s_73c193bba46fcd::t_57828527ef59a3 1
+src/locales/es/messages.js
+  s_73c193bba46fcd::t_57828527ef59a3 1
+src/components/SelectTargetModal/index.tsx
+  s_73c193bba46fcd::t_654ff84dc33b5b 1-9,12,14,21,25-31,38,40,43-83,86-104,106-165,172,175
+  s_73c193bba46fcd::t_150773f7a3482f 84-85
+  s_73c193bba46fcd::t_5ee1f2293a26c3 105
+src/modules/dev/ComponentShowcase/components/MigrationBannersSection/index.tsx
+  s_73c193bba46fcd::t_9df46be7fce536 4,30,33,37,47,50,54,72-74
+src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
+  s_73c193bba46fcd::t_d3d847a3c3b9ae 13
+  s_73c193bba46fcd::t_5a84ba101df3dd 78
+src/components/incentives/IncentivesButton.tsx
+  s_73c193bba46fcd::t_1f346cd488e5ee 346,382
+  s_73c193bba46fcd::t_662e6778cadaa6 28-29,353,366,375
+src/modules/dev/ComponentShowcase/components/MigrationTransactionSection/index.tsx
+  s_52887d9a8175f9::t_7ef3bf442b154a 40-41
+  s_73c193bba46fcd::t_8fbb1df889c33d 24,60,94,210-230
+  s_73c193bba46fcd::t_cba136032ab465 23,49,73,80
+  s_73c193bba46fcd::t_434dc20d959b96 56,184-186
+  s_52887d9a8175f9::t_299003bda030b9 1-14,22,25-39,42-47,50-52,54-55,57-58,61-66,68-71,74-76,78-79,81-82,84-92,95-101,103-106,109-111,113-118,120-123,126-129,131-140,144-146,148-151,154,156-159,161-166,168-171,173-181,183,188-192,194-209,231-322
+  s_73c193bba46fcd::t_1eac9e5d97c8f6 15-20,48,53,59,67,72,77,83,93,102,107-108,112,119,124-125,130,147,155,160,167,182,187,193
+  s_52887d9a8175f9::t_ca72c851b76955 21,141-143,152-153,172
+src/components/TransactionCard/index.tsx
+  s_73c193bba46fcd::t_474c6da4f2ffde 135-144,146
+  s_52887d9a8175f9::t_1988ec362a3fec 1-7,10-13,15-50,52-134,145,147-167,171-185,187-206
+  s_73c193bba46fcd::t_b0576d0b04ff30 8,14
+  s_73c193bba46fcd::t_d9acbeb6ee8054 9,51
+  s_52887d9a8175f9::t_7ef3bf442b154a 168-170
+  s_52887d9a8175f9::t_ca72c851b76955 186
+src/components/BalanceAssets/index.tsx
+  s_73c193bba46fcd::t_6c19298fc7493b 7,131
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_73c193bba46fcd::t_1dc34053b8cbbb 69
+src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
+  s_73c193bba46fcd::t_9c465ab621a1c4 77
+  s_73c193bba46fcd::t_c8f2871527b4f5 71
+  s_73c193bba46fcd::t_021751d2ad566c 10
+src/modules/dev/ComponentShowcase/components/PlaygroundLayout/index.tsx
+  s_73c193bba46fcd::t_594ed103733607 1-37,39-43,45-50
+  s_73c193bba46fcd::t_86bce905469c56 38,44
+src/locales/en/messages.po
+  s_73c193bba46fcd::t_6b24b836bd77a5 150-153,197-200,245-248,290-293,302-305,334-337,376-379,428-431,454,552,643,653-656,662-663,719,819-822,900-903,1021-1024,1051-1054,1170-1172,1218-1221,1234-1237,1281-1284,1328-1331,1399-1402,1444-1447,1646-1649,1691,1716-1719,1747-1750,1780,1842,1920-1923,1978-1981,2202-2209,2239-2242,2369-2371,2419,2466-2469,2474-2477,2486-2490,2528-2531,2556,2618-2621,2712-2715,2753-2756,2789-2792,2851-2854,2902,2958-2961,2970-2973,3016-3019,3081-3084,3187-3190,3202,3214-3218,3273-3276,3293-3296,3355-3359,3434-3437,3478-3481,3490-3493,3507-3510,3538,3754-3757,3856-3859,3868-3871,3910-3913,4004-4011,4041-4044,4196-4198,4237-4240,4292-4295,4338-4341,4370-4374,4407,4510-4513,4520-4523,4541,4653,4657-4664,4685-4688,4774-4778,4816-4819,4931,4957-4959,4973-4976,4984,5036-5038,5074,5120-5123,5183-5186,5190-5193
+  s_73c193bba46fcd::t_57828527ef59a3 1077,1189-1191,1345-1347,1545,2179-2182,2377-2379,2594-2596,3608,4225-4227,4304,4965,5044-5046
+  s_73c193bba46fcd::t_f187b0f47ac77c 1173,1192,1348,2372,2380,2597,4199,4228,4960,5039,5047
+src/components/icons/PercentIcon.tsx
+  s_73c193bba46fcd::t_3b373985154b3c 1-16
+src/modules/dev/ComponentShowcase/components/IconsSection/index.tsx
+  s_73c193bba46fcd::t_1dc34053b8cbbb 125
+  s_73c193bba46fcd::t_1339cb8efedc42 89,94,128,133
+src/components/OpportunityCard/index.tsx
+  s_73c193bba46fcd::t_0b073ef088343c 9
+  s_73c193bba46fcd::t_3cb4c0ef7bf90b 164
+src/components/AssetListItem/index.tsx
+  s_73c193bba46fcd::t_09ff631b73abd6 1,5-6,17-18,21,29-36,66,74-82,87-95,97-115,151-167
+src/locales/en/messages.js
+  s_73c193bba46fcd::t_57828527ef59a3 1
+src/components/HubMarketIcon/index.tsx
+  s_73c193bba46fcd::t_6e235c770ce7a3 13,19-25
+  s_73c193bba46fcd::t_dd2ef086da8bea 62
+src/components/TransactionCard/components/StatusBar/index.tsx
+  s_73c193bba46fcd::t_d9acbeb6ee8054 3
+  s_52887d9a8175f9::t_7ef3bf442b154a 73-74,306-307
+  s_52887d9a8175f9::t_824226cde8ee5f 1-2,4-72,75-305,308-396
+src/components/icons/IncentivesIcon.tsx
+  s_73c193bba46fcd::t_662e6778cadaa6 4-11,13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "00920187943e9774092aff6d5e2491e094ec898b",
+  "prompts": {},
+  "sessions": {
+    "s_52887d9a8175f9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f46bc74f-e571-4d9b-927e-7aef19e85916",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    },
+    "s_73c193bba46fcd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "392a4770-8053-4774-9bee-7a9ce94463d7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
