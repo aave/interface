@@ -4,6 +4,7 @@ import { BigNumber } from 'bignumber.js';
 import { ReactNode, useState } from 'react';
 import {
   AssetList,
+  AssetListEmpty,
   AssetListGroup,
   AssetListItem,
   AssetListItemSkeleton,
@@ -102,7 +103,6 @@ export const BalanceAssets = <T extends BalanceAsset>({
   ]
     .map((group) => ({ ...group, assets: group.assets.filter((a) => matchesQuery(a, query)) }))
     .filter((group) => group.assets.length > 0);
-  const trimmed = query.trim();
 
   return (
     <Box sx={ROOT_SX}>
@@ -128,29 +128,7 @@ export const BalanceAssets = <T extends BalanceAsset>({
             </AssetListGroup>
           ))
         ) : (
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0.5rem',
-              py: '3rem',
-              textAlign: 'center',
-            }}
-          >
-            <Typography variant="h5" color="fg-1">
-              {trimmed ? (
-                <Trans>No Results Found for “{trimmed}”</Trans>
-              ) : (
-                <Trans>No assets found</Trans>
-              )}
-            </Typography>
-            {trimmed && (
-              <Typography variant="base" color="fg-3">
-                <Trans>Try adjusting your search</Trans>
-              </Typography>
-            )}
-          </Box>
+          <AssetListEmpty query={query} fallback={<Trans>No assets found</Trans>} />
         )}
       </AssetList>
     </Box>

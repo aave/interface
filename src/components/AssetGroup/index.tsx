@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import { useId } from 'react';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { motion as motionTokens } from 'src/utils/motion';
 
 export type AssetGroupProps = {
   symbols: string[];
@@ -9,11 +10,13 @@ export type AssetGroupProps = {
   size?: number;
   direction?: 'ltr' | 'rtl';
   animated?: boolean;
+  overlap?: number;
+  cutoutGap?: number;
 };
 
 const OVERLAP = 4;
 const CUTOUT_GAP = 2;
-const TRANSITION = { duration: 0.2, ease: [0.19, 1, 0.22, 1] } as const;
+const TRANSITION = { duration: 0.2, ease: motionTokens.bezier.smooth } as const;
 
 export const AssetGroup = ({
   symbols,
@@ -21,6 +24,8 @@ export const AssetGroup = ({
   size = 24,
   direction = 'ltr',
   animated = true,
+  overlap = OVERLAP,
+  cutoutGap = CUTOUT_GAP,
 }: AssetGroupProps) => {
   const id = useId();
   const unique = symbols.filter(
@@ -41,8 +46,8 @@ export const AssetGroup = ({
         display: 'flex',
         alignItems: 'center',
         gap: '0.375rem',
-        '--margin': `-${OVERLAP}px`,
-        '--stroke': `${CUTOUT_GAP}px`,
+        '--margin': `-${overlap}px`,
+        '--stroke': `${cutoutGap}px`,
         '--size': `${size}px`,
         '& [data-assets]': {
           '--neighbour-x': rtl ? 'calc(-50% - var(--margin))' : 'calc(150% + var(--margin))',

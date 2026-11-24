@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import { HealthFactorNumber } from 'src/components/HealthFactorNumber';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { MIGRATION_BANNER } from 'src/modules/v4Migration/utils/copy';
 import { V4MigrationBanner } from 'src/modules/v4Migration/V4MigrationBanner';
 import { V4MigrationIcon } from 'src/modules/v4Migration/V4MigrationIcon';
 
@@ -26,14 +27,14 @@ export const MigrationBannersSection = () => (
     <Specimen label="Dashboard, positions to migrate — V4MigrationBanner" fullWidth>
       <Box sx={{ width: '100%' }}>
         <V4MigrationBanner
-          description="You have positions across 4 markets eligible to migrate for improved rates and additional features"
+          description={MIGRATION_BANNER.eligibleDescription(4)}
           stats={[
             {
-              label: 'Earn an extra',
+              label: MIGRATION_BANNER.earnExtra,
               value: <FormattedNumber value={420.69} symbol="USD" variant="inherit" />,
             },
             {
-              label: 'Eligible to Migrate',
+              label: MIGRATION_BANNER.eligibleToMigrate,
               value: <FormattedNumber value={19603.53} symbol="USD" variant="inherit" />,
             },
           ]}
@@ -43,14 +44,14 @@ export const MigrationBannersSection = () => (
     <Specimen label="Dashboard, borrow position — V4MigrationBanner" fullWidth>
       <Box sx={{ width: '100%' }}>
         <V4MigrationBanner
-          description="Move your positions to V4 for better rates and more ways to supply and borrow."
+          description={MIGRATION_BANNER.borrowDescription}
           stats={[
             {
-              label: 'APY',
+              label: MIGRATION_BANNER.apy,
               value: <FormattedNumber value={0.029} percent variant="inherit" />,
             },
             {
-              label: 'Health Factor',
+              label: MIGRATION_BANNER.healthFactor,
               value: (
                 <HealthFactorNumber
                   value="3.16"
@@ -68,11 +69,9 @@ export const MigrationBannersSection = () => (
       <Box sx={{ width: '100%', maxWidth: '400px' }}>
         <V4MigrationBanner
           compact
-          description={
-            <>
-              Earn up to <FormattedNumber value={0.0486} percent variant="inherit" /> APY
-            </>
-          }
+          description={MIGRATION_BANNER.earnUpTo(
+            <FormattedNumber value={0.0486} percent variant="inherit" />
+          )}
         />
       </Box>
     </Specimen>

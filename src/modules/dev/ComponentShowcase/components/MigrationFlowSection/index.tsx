@@ -4,9 +4,15 @@ import { ReactNode, useState } from 'react';
 import { ChainIcon } from 'src/components/ChainIcon';
 import { FlowHeader } from 'src/components/FlowHeader';
 import { SearchInput } from 'src/components/SearchInput';
+import {
+  MIGRATE_FLOW,
+  searchEarnHubsPlaceholder,
+  searchMarketsPlaceholder,
+} from 'src/modules/v4Migration/utils/copy';
 import { V4MigrationPositionSummary } from 'src/modules/v4Migration/V4MigrationPositionSummary';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { Side, SIDES } from '../../utils/migrationMocks';
 import { ON_OFF, PropControl } from '../PropControl';
 import { PropRow, PropsTable } from '../PropsTable';
 import { Section } from '../Section';
@@ -26,11 +32,6 @@ const CHAINS = [ChainId.mainnet, ChainId.arbitrum_one, ChainId.base, ChainId.ava
   (chainId) => ({ value: chainId, label: getNetworkConfig(chainId).name })
 );
 
-const SIDES = [
-  { value: 'earn', label: 'Earn' },
-  { value: 'borrow', label: 'Borrow' },
-] as const;
-
 const chainChip = (chainId: ChainId) => (
   <span>
     <ChainIcon chainId={chainId} />
@@ -41,9 +42,9 @@ const chainChip = (chainId: ChainId) => (
 const subheadingFor = (step: Step, chainId: ChainId): ReactNode => {
   switch (step) {
     case 'select-hub':
-      return <>Select a hub to migrate your position on{chainChip(chainId)}</>;
+      return MIGRATE_FLOW.selectHubSubheading(chainChip(chainId));
     case 'review':
-      return <>Review your position migration from Aave V3 to Aave V4 on{chainChip(chainId)}</>;
+      return MIGRATE_FLOW.reviewSubheading(chainChip(chainId));
     case 'loading':
       return (
         <Skeleton variant="rectangular" width={370} height={17} sx={{ borderRadius: '0.5rem' }} />
@@ -61,7 +62,7 @@ const FlowHeaderDemo = () => {
         <PropControl label="Step" value={step} options={STEPS} onChange={setStep} />
         <PropControl label="Chain" value={chainId} options={CHAINS} onChange={setChainId} />
       </Box>
-      <FlowHeader title="Migrate" subheading={subheadingFor(step, chainId)} />
+      <FlowHeader title={MIGRATE_FLOW.title} subheading={subheadingFor(step, chainId)} />
     </Box>
   );
 };
@@ -92,7 +93,7 @@ const PositionSummaryDemo = () => {
 };
 
 const SearchDemo = () => {
-  const [side, setSide] = useState<(typeof SIDES)[number]['value']>('borrow');
+  const [side, setSide] = useState<Side>('borrow');
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%' }}>
@@ -100,7 +101,7 @@ const SearchDemo = () => {
       <SearchInput
         key={side}
         size="large"
-        placeholder={side === 'borrow' ? 'Search markets' : 'Search earn hubs'}
+        placeholder={side === 'borrow' ? searchMarketsPlaceholder() : searchEarnHubsPlaceholder()}
         onSearchTermChange={() => undefined}
         wrapperSx={{ width: '100%', maxWidth: COLUMN_WIDTH }}
       />

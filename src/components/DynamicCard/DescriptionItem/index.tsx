@@ -22,6 +22,8 @@ export const SKELETON = (
   <Skeleton variant="rectangular" width={40} height={12} sx={{ borderRadius: '0.5rem' }} />
 );
 
+const DIVIDER_SX = { borderBottom: '1px solid', borderColor: 'border-0' } as const;
+
 interface DescriptionItemProps {
   label?: ReactNode;
   labelTooltip?: ReactNode;
@@ -54,11 +56,10 @@ export const DescriptionItem = ({
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: '0.25rem',
-          py: '1rem',
-          ...((forceShowDivider || !last) && {
-            borderBottom: '1px solid',
-            borderColor: 'border-0',
-          }),
+          p: 'var(--description-item-padding, 1rem 0)',
+          ...(forceShowDivider || last === false
+            ? DIVIDER_SX
+            : last === undefined && { '*:not(:last-of-type) > &': DIVIDER_SX }),
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>

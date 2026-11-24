@@ -3,7 +3,6 @@ import { figVars } from 'src/utils/figmaColors';
 
 import { HUB_MARKET_GLYPHS, HubMarketKind, tileBorderWidth } from './utils/glyphs';
 
-const GLYPH_OPACITY = 0.6;
 const DARKEST_AT = 0.326923;
 
 const TONES = {
@@ -11,11 +10,19 @@ const TONES = {
     tile: figVars['migration-hub-tile'],
     edge: figVars['migration-glyph-edge'],
     darkest: figVars['migration-glyph-darkest'],
+    opacity: 0.6,
   },
   grey: {
     tile: figVars['bg-5'],
     edge: figVars['migration-glyph-grey-edge'],
     darkest: figVars['migration-glyph-grey-darkest'],
+    opacity: 0.6,
+  },
+  picker: {
+    tile: figVars['bg-3'],
+    edge: figVars['migration-glyph-picker-edge'],
+    darkest: figVars['migration-glyph-picker-darkest'],
+    opacity: 0.5,
   },
 };
 
@@ -52,7 +59,7 @@ export const HubMarketIcon = ({
         strokeWidth={borderWidth}
         style={{ stroke: figVars['border-0'] }}
       />
-      <g opacity={GLYPH_OPACITY}>
+      <g opacity={colors.opacity}>
         {/* Figma's market exports carry this solid copy; only its anti-aliased edge shows */}
         {kind === 'market' ? (
           <path d={glyph.d} style={{ fill: figVars['migration-fg-5'] }} />

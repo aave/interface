@@ -158,6 +158,14 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
       import('../components/MigrationPreviewSection').then((m) => m.MigrationPreviewSection)
     ),
   },
+  {
+    slug: 'migration-transaction',
+    label: 'Transaction',
+    group: 'Migration',
+    Component: dynamic(() =>
+      import('../components/MigrationTransactionSection').then((m) => m.MigrationTransactionSection)
+    ),
+  },
 ];
 
 // Sections grouped for the sidebar, preserving declaration order.

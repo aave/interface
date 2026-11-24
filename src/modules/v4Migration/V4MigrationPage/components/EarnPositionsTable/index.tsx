@@ -7,7 +7,7 @@ import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
 import { EarnMigrationPosition } from '../../utils/types';
 import { PositionsColumn, PositionsTable } from '../PositionsTable';
-import { ValueChange } from '../ValueChange';
+import { NumberChange } from '../ValueChange';
 
 const COLUMNS: PositionsColumn<EarnMigrationPosition>[] = [
   {
@@ -68,35 +68,13 @@ const COLUMNS: PositionsColumn<EarnMigrationPosition>[] = [
     key: 'supplyApy',
     title: <Trans>Earn APY</Trans>,
     getSortValue: (position) => position.supplyApy.after,
-    render: (position) => (
-      <ValueChange
-        current={<FormattedNumber value={position.supplyApy.current} percent variant="inherit" />}
-        after={<FormattedNumber value={position.supplyApy.after} percent variant="inherit" />}
-      />
-    ),
+    render: (position) => <NumberChange value={position.supplyApy} percent />,
   },
   {
     key: 'projectedEarnings',
     title: <Trans>Change in earning</Trans>,
     getSortValue: (position) => position.projectedEarningsUSD.after,
-    render: (position) => (
-      <ValueChange
-        current={
-          <FormattedNumber
-            value={position.projectedEarningsUSD.current}
-            symbol="USD"
-            variant="inherit"
-          />
-        }
-        after={
-          <FormattedNumber
-            value={position.projectedEarningsUSD.after}
-            symbol="USD"
-            variant="inherit"
-          />
-        }
-      />
-    ),
+    render: (position) => <NumberChange value={position.projectedEarningsUSD} symbol="USD" />,
   },
 ];
 

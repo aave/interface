@@ -1,16 +1,17 @@
-import { Box, Switch } from '@mui/material';
+import { Box } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { AssetGroup } from 'src/components/AssetGroup';
 import { DynamicCard } from 'src/components/DynamicCard';
 import { DescriptionItem } from 'src/components/DynamicCard/DescriptionItem';
 import { InputRange } from 'src/components/InputRange';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { SelectAssetModal } from 'src/components/SelectAssetModal';
 import { TokenAmountInput } from 'src/components/TokenAmountInput';
+import { MIGRATE_AMOUNT } from 'src/modules/v4Migration/utils/copy';
 
-import { CodeSnippet } from '../CodeSnippet';
+import { collateralRow, pct, usd } from '../../utils/migrationMocks';
+import { PlaygroundLayout, usePlaygroundOptions } from '../PlaygroundLayout';
 import { ON_OFF, PropControl } from '../PropControl';
 import { PropRow, PropsTable } from '../PropsTable';
 import { Section } from '../Section';
@@ -55,52 +56,11 @@ const PICKER_ASSETS = TOKENS.map((token) => ({
 const EARN_APY = 0.0348;
 const CURRENT_APY = 0.021;
 
-const EARN_APY_TOOLTIP =
-  'Includes the base APY, active rewards, and any estimated underlying yield';
-const COLLATERAL_TOOLTIP =
-  'This asset can be used as collateral and will affect your borrowing power and Health Factor';
-
-const apy = (value: number) => <FormattedNumber value={value} percent variant="inherit" />;
-
-const CollateralSwitch = () => {
+const CollateralRow = () => {
   const [checked, setChecked] = useState(false);
 
-  return (
-    <Switch
-      checked={checked}
-      onChange={(_, next) => setChecked(next)}
-      inputProps={{ 'aria-label': 'Use as Collateral' }}
-    />
-  );
+  return collateralRow(checked, setChecked);
 };
-
-const collateralRow = (
-  <DescriptionItem
-    label="Use as Collateral"
-    labelTooltip={COLLATERAL_TOOLTIP}
-    value={<CollateralSwitch />}
-  />
-);
-
-const PlaygroundLayout = ({
-  controls,
-  width,
-  snippet,
-  children,
-}: {
-  controls: ReactNode;
-  width: string;
-  snippet: string;
-  children: ReactNode;
-}) => (
-  <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%' }}>
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem 2rem' }}>{controls}</Box>
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: '1.5rem' }}>
-      <Box sx={{ flex: `1 1 ${width}`, maxWidth: width }}>{children}</Box>
-      <CodeSnippet>{snippet}</CodeSnippet>
-    </Box>
-  </Box>
-);
 
 const lines = (props: (string | false)[]) =>
   props.filter((prop): prop is string => !!prop).map((prop) => `      ${prop}`);
@@ -148,8 +108,8 @@ const snippetFor = (options: Options) => {
     '  <DynamicCard.Inner>',
     '    <TokenAmountInput',
     ...lines([
-      'title="Amount"',
-      'label="Available to Migrate"',
+      'title={MIGRATE_AMOUNT.title}',
+      'label={MIGRATE_AMOUNT.availableToMigrate}',
       'value={amount}',
       'onValueChange={setAmount}',
       'token={token}',
@@ -164,8 +124,8 @@ const snippetFor = (options: Options) => {
     '    <DynamicCard.Divider />',
     '    <DescriptionItem',
     ...lines([
-      'label="Earn APY"',
-      'labelTooltip={apyTooltip}',
+      'label={MIGRATE_AMOUNT.earnApy.label}',
+      'labelTooltip={MIGRATE_AMOUNT.earnApy.tooltip}',
       'value={apy}',
       options.apyChange && 'prevValue={currentApy}',
       loading && 'isLoading',
@@ -176,8 +136,8 @@ const snippetFor = (options: Options) => {
       ? [
           '    <DescriptionItem',
           ...lines([
-            'label="Use as Collateral"',
-            'labelTooltip={collateralTooltip}',
+            'label={MIGRATE_AMOUNT.useAsCollateral.label}',
+            'labelTooltip={MIGRATE_AMOUNT.useAsCollateral.tooltip}',
             'value={<Switch checked={useAsCollateral} onChange={toggleCollateral} />}',
           ]),
           '    />',
@@ -191,8 +151,8 @@ const snippetFor = (options: Options) => {
           '<SelectAssetModal',
           '  open={pickerOpen}',
           '  setOpen={setPickerOpen}',
-          '  title="Choose Asset"',
-          '  supportedLabel="Available to Migrate"',
+          '  title={MIGRATE_AMOUNT.chooseAsset}',
+          '  supportedLabel={MIGRATE_AMOUNT.availableToMigrate}',
           '  supportedAssets={migratableAssets}',
           '  onSelect={(asset) => {',
           '    setToken(asset);',
@@ -221,8 +181,8 @@ const AmountCard = ({ options }: { options: Options }) => {
       <DynamicCard>
         <DynamicCard.Inner>
           <TokenAmountInput
-            title="Amount"
-            label="Available to Migrate"
+            title={MIGRATE_AMOUNT.title}
+            label={MIGRATE_AMOUNT.availableToMigrate}
             value={amount}
             onValueChange={setAmount}
             token={token}
@@ -236,21 +196,21 @@ const AmountCard = ({ options }: { options: Options }) => {
           />
           <DynamicCard.Divider />
           <DescriptionItem
-            label="Earn APY"
-            labelTooltip={EARN_APY_TOOLTIP}
-            value={apy(EARN_APY)}
-            prevValue={options.apyChange ? apy(CURRENT_APY) : undefined}
+            label={MIGRATE_AMOUNT.earnApy.label}
+            labelTooltip={MIGRATE_AMOUNT.earnApy.tooltip}
+            value={pct(EARN_APY)}
+            prevValue={options.apyChange ? pct(CURRENT_APY) : undefined}
             isLoading={loading}
             isUpdating={options.updating}
           />
-          {options.collateralRow && collateralRow}
+          {options.collateralRow && <CollateralRow />}
         </DynamicCard.Inner>
       </DynamicCard>
       <SelectAssetModal
         open={pickerOpen}
         setOpen={setPickerOpen}
-        title="Choose Asset"
-        supportedLabel="Available to Migrate"
+        title={MIGRATE_AMOUNT.chooseAsset}
+        supportedLabel={MIGRATE_AMOUNT.availableToMigrate}
         supportedAssets={PICKER_ASSETS}
         onSelect={changeToken}
       />
@@ -259,11 +219,7 @@ const AmountCard = ({ options }: { options: Options }) => {
 };
 
 const Playground = () => {
-  const [options, setOptions] = useState(DEFAULT_OPTIONS);
-  const set =
-    <K extends keyof Options>(key: K) =>
-    (value: Options[K]) =>
-      setOptions((current) => ({ ...current, [key]: value }));
+  const [options, set] = usePlaygroundOptions(DEFAULT_OPTIONS);
 
   return (
     <PlaygroundLayout
@@ -303,22 +259,14 @@ const BORROW_POSITION = {
   borrowUSD: 900,
 };
 
-const MIGRATE_AMOUNT_TOOLTIP =
-  'How much of this position moves to V4. Collateral and debt move in the same proportion.';
-const COLLATERAL_MOVING_TOOLTIP = 'The value of the collateral that moves at this amount';
-const BORROW_MOVING_TOOLTIP = 'The value of the debt that moves at this amount';
-const NET_MOVING_TOOLTIP = 'Collateral value moving minus borrow value moving';
-
-const usd = (value: number) => <FormattedNumber value={value} symbol="USD" variant="inherit" />;
-
 const borrowSnippetFor = (disabled: boolean, stops: boolean) =>
   [
     '<DynamicCard>',
     '  <DynamicCard.Inner>',
     '    <InputRange',
     ...lines([
-      'label="Migrate Amount"',
-      'tooltip={migrateAmountTooltip}',
+      'label={MIGRATE_AMOUNT.migrateAmount.label}',
+      'tooltip={MIGRATE_AMOUNT.migrateAmount.tooltip}',
       'value={percent}',
       'onValueChange={setPercent}',
       stops && `stops={[${STOPS.join(', ')}]}`,
@@ -328,8 +276,8 @@ const borrowSnippetFor = (disabled: boolean, stops: boolean) =>
     '    />',
     '    <DynamicCard.Divider />',
     '    <DescriptionItem',
-    '      label="Collateral value moving"',
-    '      labelTooltip={collateralTooltip}',
+    '      label={MIGRATE_AMOUNT.collateralMoving.label}',
+    '      labelTooltip={MIGRATE_AMOUNT.collateralMoving.tooltip}',
     '      value={',
     '        <>',
     '          <AssetGroup symbols={collateralSymbols} size={20} />',
@@ -337,8 +285,8 @@ const borrowSnippetFor = (disabled: boolean, stops: boolean) =>
     '        </>',
     '      }',
     '    />',
-    '    <DescriptionItem label="Borrow value moving" labelTooltip={…} value={…} />',
-    '    <DescriptionItem label="Net balance moving" labelTooltip={…} value={…} />',
+    '    <DescriptionItem label={MIGRATE_AMOUNT.borrowMoving.label} labelTooltip={MIGRATE_AMOUNT.borrowMoving.tooltip} value={…} />',
+    '    <DescriptionItem label={MIGRATE_AMOUNT.netMoving.label} labelTooltip={MIGRATE_AMOUNT.netMoving.tooltip} value={…} />',
     '  </DynamicCard.Inner>',
     '</DynamicCard>',
   ].join('\n');
@@ -364,8 +312,8 @@ const BorrowSide = () => {
       <DynamicCard>
         <DynamicCard.Inner>
           <InputRange
-            label="Migrate Amount"
-            tooltip={MIGRATE_AMOUNT_TOOLTIP}
+            label={MIGRATE_AMOUNT.migrateAmount.label}
+            tooltip={MIGRATE_AMOUNT.migrateAmount.tooltip}
             value={percent}
             onValueChange={setPercent}
             stops={stops ? STOPS : undefined}
@@ -374,8 +322,8 @@ const BorrowSide = () => {
           />
           <DynamicCard.Divider />
           <DescriptionItem
-            label="Collateral value moving"
-            labelTooltip={COLLATERAL_MOVING_TOOLTIP}
+            label={MIGRATE_AMOUNT.collateralMoving.label}
+            labelTooltip={MIGRATE_AMOUNT.collateralMoving.tooltip}
             value={
               <>
                 <AssetGroup symbols={collateral} size={20} />
@@ -384,8 +332,8 @@ const BorrowSide = () => {
             }
           />
           <DescriptionItem
-            label="Borrow value moving"
-            labelTooltip={BORROW_MOVING_TOOLTIP}
+            label={MIGRATE_AMOUNT.borrowMoving.label}
+            labelTooltip={MIGRATE_AMOUNT.borrowMoving.tooltip}
             value={
               <>
                 <TokenIcon symbol={borrowed} sx={{ fontSize: '1.25rem' }} />
@@ -394,8 +342,8 @@ const BorrowSide = () => {
             }
           />
           <DescriptionItem
-            label="Net balance moving"
-            labelTooltip={NET_MOVING_TOOLTIP}
+            label={MIGRATE_AMOUNT.netMoving.label}
+            labelTooltip={MIGRATE_AMOUNT.netMoving.tooltip}
             value={usd((collateralUSD - borrowUSD) * share)}
           />
         </DynamicCard.Inner>
@@ -617,7 +565,9 @@ export const MigrationAmountSection = () => (
       >
         <AmountCard options={DEFAULT_OPTIONS} />
         <DynamicCard>
-          <DynamicCard.Inner>{collateralRow}</DynamicCard.Inner>
+          <DynamicCard.Inner>
+            <CollateralRow />
+          </DynamicCard.Inner>
         </DynamicCard>
       </Box>
     </Specimen>

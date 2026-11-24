@@ -1,10 +1,22 @@
-import { Trans } from '@lingui/macro';
-import { Box, Button, ButtonBase, Skeleton, Typography } from '@mui/material';
+import { t, Trans } from '@lingui/macro';
+import {
+  Box,
+  Button,
+  ButtonBase,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Skeleton,
+  Typography,
+} from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { ReactNode, useId, useState } from 'react';
 import { ChevronDownIcon } from 'src/components/icons/ChevronDownIcon';
+import { PercentIcon } from 'src/components/icons/PercentIcon';
+import { TypeSwapArrowsIcon } from 'src/components/icons/TypeSwapArrowsIcon';
 import { FormattedNumber, getCompactDecimals } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
+import { endIconSizeSx } from 'src/utils/buttonStyles';
 import { figVars } from 'src/utils/figmaColors';
 import { motion } from 'src/utils/motion';
 
@@ -89,7 +101,7 @@ const INPUT_SX = {
 const TOKEN_CHIP_SX = {
   flexShrink: 0,
   '& .MuiButton-endIcon': { color: 'fg-chevron' },
-  '& .MuiButton-endIcon > *:nth-of-type(1)': { fontSize: '1.125rem' },
+  ...endIconSizeSx('1.125rem'),
 } as const;
 
 const STATIC_TOKEN_CHIP_SX = { ...TOKEN_CHIP_SX, pointerEvents: 'none' } as const;
@@ -98,9 +110,9 @@ const CHEVRON = <ChevronDownIcon sx={{ '& path': { strokeWidth: 1.2 } }} />;
 
 const FIAT_TOGGLE_SX = {
   ...TEXT_BUTTON_SX,
-  position: 'relative',
+  gap: '0.25rem',
   color: 'fg-3',
-  '&::after': {
+  '& [data-readout]::after': {
     content: '""',
     position: 'absolute',
     left: 0,
@@ -111,7 +123,7 @@ const FIAT_TOGGLE_SX = {
     opacity: 0,
     transition: `opacity ${motion.duration.hover}ms ${motion.easing.standard}`,
   },
-  '&:hover::after': { opacity: 1 },
+  '&:hover [data-readout]::after': { opacity: 1 },
 } as const;
 
 const MAX_BUTTON_SX = {
@@ -119,6 +131,68 @@ const MAX_BUTTON_SX = {
   color: 'fg-1',
   '&.Mui-disabled': { color: 'fg-3' },
 } as const;
+
+const PERCENT_BUTTON_SX = { ...TEXT_BUTTON_SX, color: 'fg-3' } as const;
+
+const PERCENT_MENU_PAPER = { sx: { '&&': { mt: 0 } } } as const;
+const PERCENT_MENU_LIST = { sx: { display: 'flex' } } as const;
+
+const PERCENTS = [25, 50, 75];
+
+const PercentPicker = ({
+  max,
+  value,
+  decimals,
+  onPick,
+}: {
+  max: BigNumber;
+  value: BigNumber | null;
+  decimals: number;
+  onPick: (amount: BigNumber) => void;
+}) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  return (
+    <>
+      <ButtonBase
+        onClick={(event) => setAnchorEl(event.currentTarget)}
+        aria-label={t`Percentage of available balance`}
+        aria-haspopup="true"
+        aria-expanded={open}
+        sx={PERCENT_BUTTON_SX}
+      >
+        <PercentIcon />
+      </ButtonBase>
+      <Menu
+        open={open}
+        anchorEl={anchorEl}
+        onClose={() => setAnchorEl(null)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        slotProps={{ paper: PERCENT_MENU_PAPER }}
+        MenuListProps={PERCENT_MENU_LIST}
+      >
+        {PERCENTS.map((percent) => {
+          const amount = max.times(percent).div(100).decimalPlaces(decimals, BigNumber.ROUND_DOWN);
+
+          return (
+            <MenuItem
+              key={percent}
+              disabled={!!value?.eq(amount)}
+              onClick={() => {
+                onPick(amount);
+                setAnchorEl(null);
+              }}
+            >
+              <ListItemText sx={{ fontWeight: 500 }}>{percent}%</ListItemText>
+            </MenuItem>
+          );
+        })}
+      </Menu>
+    </>
+  );
+};
 
 const decimalPlacesForSignificantDigit = (value: number) =>
   value === 0 ? 0 : Math.max(0, -Math.floor(Math.log10(Math.abs(value))) + 1);
@@ -297,7 +371,9 @@ export const TokenAmountInput = ({
             />
           ) : (
             <ButtonBase onClick={() => setShowFiat(!fiat)} disabled={inert} sx={FIAT_TOGGLE_SX}>
+              <TypeSwapArrowsIcon />
               <FormattedNumber
+                data-readout
                 component="span"
                 variant="inherit"
                 color="inherit"
@@ -328,6 +404,12 @@ export const TokenAmountInput = ({
               {!inert && (
                 <>
                   <Box sx={BALANCE_DIVIDER_SX} />
+                  <PercentPicker
+                    max={max}
+                    value={value}
+                    decimals={token.decimals}
+                    onPick={(amount) => onValueChange?.(amount)}
+                  />
                   <ButtonBase
                     onClick={() => onValueChange?.(max)}
                     disabled={!!value?.eq(max)}

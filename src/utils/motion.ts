@@ -8,6 +8,8 @@
  * these tokens without importing `theme.tsx`, which would create an import cycle
  * (`theme` → `ScaleFade` → `theme`).
  */
+const SMOOTH = [0.19, 1, 0.22, 1] as const;
+
 export const motion = {
   duration: {
     /** dropdowns, menus, selects, popovers */
@@ -23,6 +25,9 @@ export const motion = {
   },
   easing: {
     standard: 'ease',
-    smooth: 'cubic-bezier(0.19, 1, 0.22, 1)',
+    smooth: `cubic-bezier(${SMOOTH.join(', ')})`,
+  },
+  bezier: {
+    smooth: SMOOTH,
   },
 } as const;

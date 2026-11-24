@@ -1,15 +1,14 @@
 import { ChainId } from '@aave/contract-helpers';
 import { Box } from '@mui/material';
-import { useState } from 'react';
 import { SparklineDatum } from 'src/components/charts/SparklineChart';
-import { Curator } from 'src/components/CuratorBy';
 import {
   V4MigrationHubCard,
   V4MigrationHubCardProps,
 } from 'src/modules/v4Migration/V4MigrationHubCard';
 import { MigrationAsset } from 'src/modules/v4Migration/V4MigrationPage/utils/types';
 
-import { CodeSnippet } from '../CodeSnippet';
+import { SENTORA, Side, SIDES } from '../../utils/migrationMocks';
+import { PlaygroundLayout, usePlaygroundOptions } from '../PlaygroundLayout';
 import { ON_OFF, PropControl } from '../PropControl';
 import { PropRow, PropsTable } from '../PropsTable';
 import { Section } from '../Section';
@@ -83,18 +82,7 @@ const BORROW_HISTORY = EARN_HISTORY.map((d) => ({
   value: (d.value * BORROW_APY) / EARN_APY,
 }));
 
-const SENTORA: Curator = {
-  name: 'Sentora',
-  icon: '/icons/curators/sentora.webp',
-  tooltip: 'Curator details (placeholder until the copy is designed)',
-};
-
 const RATE_TOOLTIP = 'Rate breakdown (placeholder until the copy is designed)';
-
-const SIDES = [
-  { value: 'earn', label: 'Earn' },
-  { value: 'borrow', label: 'Borrow' },
-] as const;
 
 const STATES = [
   { value: 'default', label: 'Default' },
@@ -103,7 +91,7 @@ const STATES = [
 ] as const;
 
 interface Options {
-  side: (typeof SIDES)[number]['value'];
+  side: Side;
   state: (typeof STATES)[number]['value'];
   bestApy: boolean;
   curator: boolean;
@@ -204,35 +192,36 @@ const TOGGLES = [
 ] as const;
 
 const Playground = () => {
-  const [options, setOptions] = useState<Options>(BORROW_DESIGN);
+  const [options, set] = usePlaygroundOptions<Options>(BORROW_DESIGN);
   const props = propsFor(options);
-  const set =
-    <K extends keyof Options>(key: K) =>
-    (value: Options[K]) =>
-      setOptions((current) => ({ ...current, [key]: value }));
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem', width: '100%' }}>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '1rem 2rem' }}>
-        <PropControl label="Side" value={options.side} options={SIDES} onChange={set('side')} />
-        <PropControl label="State" value={options.state} options={STATES} onChange={set('state')} />
-        {TOGGLES.map(([key, label]) => (
+    <PlaygroundLayout
+      controls={
+        <>
+          <PropControl label="Side" value={options.side} options={SIDES} onChange={set('side')} />
           <PropControl
-            key={key}
-            label={label}
-            value={options[key]}
-            options={ON_OFF}
-            onChange={set(key)}
+            label="State"
+            value={options.state}
+            options={STATES}
+            onChange={set('state')}
           />
-        ))}
-      </Box>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: '1.5rem' }}>
-        <Box sx={{ flex: `1 1 ${CARD_WIDTH}`, maxWidth: CARD_WIDTH }}>
-          <V4MigrationHubCard {...props} />
-        </Box>
-        <CodeSnippet>{snippetFor(props)}</CodeSnippet>
-      </Box>
-    </Box>
+          {TOGGLES.map(([key, label]) => (
+            <PropControl
+              key={key}
+              label={label}
+              value={options[key]}
+              options={ON_OFF}
+              onChange={set(key)}
+            />
+          ))}
+        </>
+      }
+      width={CARD_WIDTH}
+      snippet={snippetFor(props)}
+    >
+      <V4MigrationHubCard {...props} />
+    </PlaygroundLayout>
   );
 };
 

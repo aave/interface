@@ -102,6 +102,9 @@ export const figmaLight = {
   'migration-v4-tag-ring': '#8987fa',
   'migration-glyph-grey-edge': '#a8a8a8',
   'migration-glyph-grey-darkest': '#7d7d7d',
+  'migration-glyph-picker-edge': '#eeeeee',
+  'migration-glyph-picker-darkest': '#8c8c8c',
+  'migration-selected-0': 'rgba(0, 0, 0, 0.03)',
   'hf-mint': '#3BC94B',
   'hf-parrot': '#9AD700',
   'hf-red': '#F34366',
@@ -249,6 +252,9 @@ export const figmaDark = {
   'migration-v4-tag-ring': '#9391f7',
   'migration-glyph-grey-edge': '#eeeeee',
   'migration-glyph-grey-darkest': '#8c8c8c',
+  'migration-glyph-picker-edge': '#eeeeee',
+  'migration-glyph-picker-darkest': '#8c8c8c',
+  'migration-selected-0': 'rgba(255, 255, 255, 0.03)',
   'hf-mint': '#3BC94B',
   'hf-parrot': '#9AD700',
   'hf-red': '#F34366',
@@ -350,11 +356,11 @@ export const onAccent = '#ffffff';
 export const figSurfaceShadow = (stroke: FigmaColorName = 'shadow-stroke-2'): string =>
   `0px 2px 4px 0px ${figVars['shadow-low']}, 0px 0px 0px 1px ${figVars[stroke]}`;
 
-export const CARD_RADIUS = '0.625rem';
+export const CARD_RADIUS = '10px';
 
 export const CARD_SURFACE_SX = {
+  backgroundColor: figVars['table-bg'],
   borderRadius: CARD_RADIUS,
-  bgcolor: 'table-bg',
   boxShadow: figSurfaceShadow('shadow-stroke-1'),
 } as const;
 

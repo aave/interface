@@ -10,7 +10,7 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { getAssetIconSymbol } from '../../utils/positions';
 import { BorrowMigrationPosition } from '../../utils/types';
 import { PositionsColumn, PositionsTable } from '../PositionsTable';
-import { ValueChange } from '../ValueChange';
+import { NumberChange, ValueChange } from '../ValueChange';
 
 const COLUMNS: PositionsColumn<BorrowMigrationPosition>[] = [
   {
@@ -75,14 +75,7 @@ const COLUMNS: PositionsColumn<BorrowMigrationPosition>[] = [
     title: <Trans>Net borrow APY</Trans>,
     getSortValue: (position) => position.borrowApy?.after ?? -Infinity,
     render: (position) =>
-      position.borrowApy ? (
-        <ValueChange
-          current={<FormattedNumber value={position.borrowApy.current} percent variant="inherit" />}
-          after={<FormattedNumber value={position.borrowApy.after} percent variant="inherit" />}
-        />
-      ) : (
-        <NoData />
-      ),
+      position.borrowApy ? <NumberChange value={position.borrowApy} percent /> : <NoData />,
   },
   {
     key: 'healthFactor',

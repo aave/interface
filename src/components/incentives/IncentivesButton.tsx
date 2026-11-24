@@ -25,6 +25,8 @@ import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 
 const INFINITY = 'Infinity';
 
+const INCENTIVES_ICON = <IncentivesIcon sx={{ fontSize: '1rem' }} />;
+
 export type IconProps = {
   className?: string;
   width?: string | number;
@@ -341,18 +343,14 @@ const Content = ({
         incentive.rewardTokenSymbol?.toLowerCase().includes('abasgho')
     );
     if (hideValue && hasGhoIncentives) {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <IncentivesIcon sx={{ width: '1rem', height: '1rem' }} />
-        </Box>
-      );
+      return <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>{INCENTIVES_ICON}</Box>;
     }
     if (hasGhoIncentives) {
       if (incentivesNetAPR !== INFINITY && incentivesNetAPR < 10000) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <FormattedNumber value={incentivesNetAPR} percent variant="subheader2" color="fg-2" />
-            <IncentivesIcon sx={{ width: '1rem', height: '1rem' }} />
+            {INCENTIVES_ICON}
           </Box>
         );
       } else if (incentivesNetAPR !== INFINITY && incentivesNetAPR > 9999) {
@@ -365,7 +363,7 @@ const Content = ({
               variant="subheader2"
               color="fg-2"
             />
-            <IncentivesIcon sx={{ width: '1rem', height: '1rem' }} />
+            {INCENTIVES_ICON}
           </Box>
         );
       } else if (incentivesNetAPR === INFINITY) {
@@ -374,18 +372,14 @@ const Content = ({
             <Typography variant="main12" color="fg-2">
               ∞
             </Typography>
-            <IncentivesIcon sx={{ width: '1rem', height: '1rem' }} />
+            {INCENTIVES_ICON}
           </Box>
         );
       }
     }
 
     // Default behavior: show icon for non-GHO incentives
-    return (
-      <>
-        <IncentivesIcon sx={{ width: '1rem', height: '1rem' }} />
-      </>
-    );
+    return <>{INCENTIVES_ICON}</>;
   };
 
   // const iconSize = 12;

@@ -6,6 +6,7 @@ import { Curator, CuratorBy } from 'src/components/CuratorBy';
 import { Link } from 'src/components/primitives/Link';
 import { TitleWithSubtitle } from 'src/components/TitleWithSubtitle';
 import { CARD_RADIUS, CARD_SURFACE_SX } from 'src/utils/figmaColors';
+import { motion } from 'src/utils/motion';
 
 const STRETCHED_SX = {
   position: 'static',
@@ -160,7 +161,7 @@ export const OpportunityCard = ({
         p: '1.25rem',
         ...CARD_SURFACE_SX,
         opacity: disabled ? 0.5 : 1,
-        transition: 'background-color 100ms ease',
+        transition: `background-color ${motion.duration.hover}ms ${motion.easing.standard}`,
         ...(interactive && {
           '&:hover, &:has(:focus-visible)': { bgcolor: 'table-item-hover-1' },
         }),

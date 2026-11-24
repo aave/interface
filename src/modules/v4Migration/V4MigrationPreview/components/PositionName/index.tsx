@@ -1,9 +1,10 @@
-import { t, Trans } from '@lingui/macro';
-import { Box, Button, Typography } from '@mui/material';
+import { t } from '@lingui/macro';
+import { Box, Button } from '@mui/material';
 import { HubMarketIcon } from 'src/components/HubMarketIcon';
 import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { TitleWithSubtitle } from 'src/components/TitleWithSubtitle';
 
+import { hubTitle } from '../../../utils/copy';
 import { getHubDisplayName, getMarketDisplayName } from '../../../V4MigrationPage/utils/positions';
 
 const NAME_SX = {
@@ -32,14 +33,9 @@ export const PositionName = ({
     <Box component="span" sx={NAME_SX}>
       <HubMarketIcon kind={market ? 'market' : 'hub'} size={16} tone="grey" />
       {market ? (
-        <TitleWithSubtitle
-          title={<Trans>{market} Market</Trans>}
-          subtitle={<Trans>{hub} Hub</Trans>}
-        />
+        <TitleWithSubtitle title={market} subtitle={hub} />
       ) : (
-        <Typography component="span" variant="h5" color="fg-1" noWrap>
-          <Trans>{hub} Hub</Trans>
-        </Typography>
+        <TitleWithSubtitle title={hubTitle(hub)} />
       )}
     </Box>
   );

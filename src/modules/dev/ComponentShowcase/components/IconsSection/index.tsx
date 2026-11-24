@@ -86,10 +86,12 @@ import { HeyIcon } from 'src/components/icons/HeyIcon';
 import { IncentivesIcon } from 'src/components/icons/IncentivesIcon';
 import { LensIcon } from 'src/components/icons/LensIcon';
 import { MinusIcon } from 'src/components/icons/MinusIcon';
+import { PercentIcon } from 'src/components/icons/PercentIcon';
 import { SearchIcon } from 'src/components/icons/SearchIcon';
 import { SettingsIcon } from 'src/components/icons/SettingsIcon';
 import { StarIcon } from 'src/components/icons/StarIcon';
 import { SwapIcon } from 'src/components/icons/SwapIcon';
+import { TypeSwapArrowsIcon } from 'src/components/icons/TypeSwapArrowsIcon';
 import { WalletIcon } from 'src/components/icons/WalletIcon';
 import { WalletOutlineIcon } from 'src/components/icons/WalletOutlineIcon';
 import { figVars } from 'src/utils/figmaColors';
@@ -120,13 +122,15 @@ const GROUPS: Group[] = [
       { name: 'CloseIcon', node: <CloseIcon sx={{ fontSize: SIZE }} /> },
       { name: 'DotsHorizontalIcon', node: <DotsHorizontalIcon sx={{ fontSize: SIZE }} /> },
       { name: 'HeyIcon', node: <HeyIcon sx={{ fontSize: SIZE }} /> },
-      { name: 'IncentivesIcon', node: <IncentivesIcon sx={{ width: SIZE, height: SIZE }} /> },
+      { name: 'IncentivesIcon', node: <IncentivesIcon sx={{ fontSize: SIZE }} /> },
       { name: 'LensIcon', node: <LensIcon color="currentColor" /> },
       { name: 'MinusIcon', node: <MinusIcon sx={{ fontSize: SIZE }} /> },
+      { name: 'PercentIcon', node: <PercentIcon sx={{ fontSize: SIZE }} /> },
       { name: 'SearchIcon', node: <SearchIcon sx={{ fontSize: SIZE }} /> },
       { name: 'SettingsIcon', node: <SettingsIcon sx={{ fontSize: SIZE }} /> },
       { name: 'StarIcon', node: <StarIcon sx={{ fontSize: SIZE }} /> },
       { name: 'SwapIcon', node: <SwapIcon sx={{ fontSize: SIZE }} /> },
+      { name: 'TypeSwapArrowsIcon', node: <TypeSwapArrowsIcon sx={{ fontSize: SIZE }} /> },
       { name: 'WalletIcon', node: <WalletIcon sx={{ fontSize: SIZE }} /> },
       { name: 'WalletOutlineIcon', node: <WalletOutlineIcon sx={{ fontSize: SIZE }} /> },
     ],

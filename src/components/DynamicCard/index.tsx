@@ -12,7 +12,7 @@ const INNER_SX = {
   width: '100%',
 } as const;
 
-export const DynamicCardLastItemContext = createContext(false);
+export const DynamicCardLastItemContext = createContext<boolean | undefined>(undefined);
 
 const DynamicCardItem = forwardRef<HTMLDivElement, { last: boolean; children: ReactNode }>(
   function DynamicCardItem({ last, children }, ref) {
