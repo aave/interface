@@ -151,6 +151,10 @@ msgstr "Recent Transactions"
 msgid "Migration Cancelled"
 msgstr "Migration Cancelled"
 
+#: src/modules/v4Migration/V4MigrationPageContainer/index.tsx
+msgid "Nothing to migrate"
+msgstr "Nothing to migrate"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 msgid "Liquidation risk"
 msgstr "Liquidation risk"
@@ -193,6 +197,10 @@ msgstr "Repay {0}"
 #: src/modules/history/PriceUnavailable.tsx
 msgid "Price data is not currently available for this reserve on the protocol subgraph"
 msgstr "Price data is not currently available for this reserve on the protocol subgraph"
+
+#: src/modules/v4Migration/V4MigrationPageContainer/index.tsx
+msgid "We couldn't load your positions. Please try again later."
+msgstr "We couldn't load your positions. Please try again later."
 
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Block number when this transaction was mined"
@@ -874,6 +882,10 @@ msgstr "Liq. Penalty"
 msgid "Collateral Swap"
 msgstr "Collateral Swap"
 
+#: src/modules/v4Migration/V4MigrationPageContainer/index.tsx
+msgid "Please connect your wallet to see the positions you can migrate."
+msgstr "Please connect your wallet to see the positions you can migrate."
+
 #: src/modules/reserve-overview/ReserveSupplyCard/components/ReserveStatusAlerts/index.tsx
 msgid "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
 msgstr "MAI has been paused due to a community decision. Supply, borrows and repays are impacted. <0>More details</0>"
@@ -1174,6 +1186,10 @@ msgstr "Aave total deposits"
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
 msgstr "Asset cannot be migrated to {marketName} V3 Market due to E-mode restrictions. You can disable or manage E-mode categories in your <0>V3 Dashboard</0>"
+
+#: src/modules/v4Migration/V4MigrationPageContainer/index.tsx
+msgid "You have no Aave V3 positions that can move to Aave V4."
+msgstr "You have no Aave V3 positions that can move to Aave V4."
 
 #: src/modules/staking/StakingPanel.tsx
 msgid "Aave per month"
@@ -1804,6 +1820,7 @@ msgstr "Current LTV"
 #: src/components/transactions/Swap/shared/OrderTypeSelector.tsx
 #: src/modules/v4Migration/utils/copy.tsx
 #: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
+#: src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
 msgid "Market"
 msgstr "Market"
 
@@ -4140,6 +4157,7 @@ msgstr "Cancelling order..."
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
+#: src/modules/v4Migration/V4MigrationPageContainer/index.tsx
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
@@ -5081,6 +5099,8 @@ msgstr "Flashloan is disabled for this asset, hence this position cannot be migr
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx
+#: src/layouts/components/MoreMenu.tsx
+#: src/layouts/components/NavItems.tsx
 #: src/modules/stkGho/StkGhoDepositRow.tsx
 #: src/modules/v4Migration/utils/copy.tsx
 #: src/modules/v4Migration/V4MigrationBanner/index.tsx

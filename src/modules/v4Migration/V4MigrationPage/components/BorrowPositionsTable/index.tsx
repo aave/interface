@@ -43,16 +43,19 @@ const COLUMNS: PositionsColumn<BorrowMigrationPosition>[] = [
   {
     key: 'netBalance',
     title: <Trans>Net balance</Trans>,
-    getSortValue: (position) => position.netBalanceUSD,
-    render: (position) => (
-      <FormattedNumber
-        value={position.netBalanceUSD}
-        symbol="USD"
-        compact
-        variant="h5"
-        color="fg-1"
-      />
-    ),
+    getSortValue: (position) => position.netBalanceUSD ?? -Infinity,
+    render: (position) =>
+      position.netBalanceUSD !== undefined ? (
+        <FormattedNumber
+          value={position.netBalanceUSD}
+          symbol="USD"
+          compact
+          variant="h5"
+          color="fg-1"
+        />
+      ) : (
+        <NoData />
+      ),
   },
   {
     key: 'collateral',
@@ -73,26 +76,35 @@ const COLUMNS: PositionsColumn<BorrowMigrationPosition>[] = [
   {
     key: 'borrowApy',
     title: <Trans>Net borrow APY</Trans>,
-    getSortValue: (position) => position.borrowApy?.after ?? -Infinity,
+    getSortValue: (position) =>
+      position.borrowApy?.after ?? position.borrowApy?.current ?? -Infinity,
     render: (position) =>
       position.borrowApy ? <NumberChange value={position.borrowApy} percent /> : <NoData />,
   },
   {
     key: 'healthFactor',
     title: <Trans>Health factor</Trans>,
-    getSortValue: (position) => Number(position.healthFactor.after),
-    render: ({ healthFactor }) => (
-      <ValueChange
-        current={
-          <HealthFactorNumber
-            value={healthFactor.current}
-            variant="inherit"
-            sx={{ color: 'inherit' }}
-          />
-        }
-        after={<HealthFactorNumber value={healthFactor.after} variant="inherit" withHeart />}
-      />
-    ),
+    getSortValue: (position) =>
+      Number(position.healthFactor?.after ?? position.healthFactor?.current ?? -Infinity),
+    render: ({ healthFactor }) =>
+      healthFactor ? (
+        <ValueChange
+          current={
+            <HealthFactorNumber
+              value={healthFactor.current}
+              variant="inherit"
+              sx={{ color: 'inherit' }}
+            />
+          }
+          after={
+            healthFactor.after !== undefined ? (
+              <HealthFactorNumber value={healthFactor.after} variant="inherit" withHeart />
+            ) : undefined
+          }
+        />
+      ) : (
+        <NoData />
+      ),
   },
 ];
 

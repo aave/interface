@@ -39,6 +39,7 @@ export function MoreMenu() {
   const isActive =
     router.pathname === ROUTES.staking ||
     router.pathname === ROUTES.safetyModule ||
+    router.pathname === ROUTES.migrationToolV4 ||
     router.pathname.startsWith(ROUTES.governance);
 
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
@@ -126,6 +127,14 @@ export function MoreMenu() {
           sx={optionSx}
         >
           <Trans>Safety Module</Trans>
+        </MenuItem>
+        <MenuItem
+          component={Link}
+          href={ROUTES.migrationToolV4}
+          onClick={() => handleMenuItemClick('Migrate')}
+          sx={optionSx}
+        >
+          <Trans>Migrate</Trans>
         </MenuItem>
       </Menu>
     </>

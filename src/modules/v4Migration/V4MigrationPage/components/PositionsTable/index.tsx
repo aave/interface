@@ -40,7 +40,7 @@ interface PositionsTableProps<T> {
   onMigrate?: (position: T) => void;
 }
 
-export const PositionsTable = <T extends { id: string }>({
+export const PositionsTable = <T extends { id: string; canMigrate?: boolean }>({
   title,
   positions,
   columns,
@@ -94,6 +94,7 @@ export const PositionsTable = <T extends { id: string }>({
               <Button
                 variant="tertiary"
                 fullWidth
+                disabled={position.canMigrate === false}
                 onClick={() => onMigrate?.(position)}
                 sx={{ mt: '0.75rem' }}
               >
@@ -130,7 +131,12 @@ export const PositionsTable = <T extends { id: string }>({
                 </ListColumn>
               ))}
               <ListColumn {...ACTION_COLUMN_LAYOUT} align="right">
-                <Button variant="tertiary" size="small" onClick={() => onMigrate?.(position)}>
+                <Button
+                  variant="tertiary"
+                  size="small"
+                  disabled={position.canMigrate === false}
+                  onClick={() => onMigrate?.(position)}
+                >
                   <Trans>Migrate</Trans>
                 </Button>
               </ListColumn>

@@ -184,6 +184,7 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                 !moreOpen &&
                   (isActive(ROUTES.staking) ||
                     isActive(ROUTES.safetyModule) ||
+                    isActive(ROUTES.migrationToolV4) ||
                     isActive(ROUTES.governance)) &&
                   activeBarSx,
               ]}
@@ -224,6 +225,13 @@ export const NavItems = ({ setOpen }: NavItemsProps) => {
                   active={isActive(ROUTES.safetyModule)}
                   indent
                   onClick={() => handleClick('Safety Module', true)}
+                />
+                <MobileNavLink
+                  href={ROUTES.migrationToolV4}
+                  label={<Trans>Migrate</Trans>}
+                  active={isActive(ROUTES.migrationToolV4)}
+                  indent
+                  onClick={() => handleClick('Migrate', true)}
                 />
               </Box>
             </Collapse>

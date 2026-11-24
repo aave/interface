@@ -2,6 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Typography } from '@mui/material';
 import { TABLE_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
+import { NoData } from 'src/components/primitives/NoData';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
 
@@ -42,6 +43,17 @@ const COLUMNS: PositionsColumn<EarnMigrationPosition>[] = [
     },
   },
   {
+    key: 'market',
+    title: <Trans>Market</Trans>,
+    flex: 1.13,
+    getSortValue: (position) => position.marketName,
+    render: (position) => (
+      <Typography variant="h5" color="fg-1" noWrap>
+        {position.marketName}
+      </Typography>
+    ),
+  },
+  {
     key: 'supplied',
     title: <Trans>Supplied</Trans>,
     getSortValue: (position) => Number(position.supplied.usd),
@@ -67,14 +79,22 @@ const COLUMNS: PositionsColumn<EarnMigrationPosition>[] = [
   {
     key: 'supplyApy',
     title: <Trans>Earn APY</Trans>,
-    getSortValue: (position) => position.supplyApy.after,
-    render: (position) => <NumberChange value={position.supplyApy} percent />,
+    getSortValue: (position) =>
+      position.supplyApy?.after ?? position.supplyApy?.current ?? -Infinity,
+    render: (position) =>
+      position.supplyApy ? <NumberChange value={position.supplyApy} percent /> : <NoData />,
   },
   {
     key: 'projectedEarnings',
     title: <Trans>Change in earning</Trans>,
-    getSortValue: (position) => position.projectedEarningsUSD.after,
-    render: (position) => <NumberChange value={position.projectedEarningsUSD} symbol="USD" />,
+    getSortValue: (position) =>
+      position.projectedEarningsUSD?.after ?? position.projectedEarningsUSD?.current ?? -Infinity,
+    render: (position) =>
+      position.projectedEarningsUSD ? (
+        <NumberChange value={position.projectedEarningsUSD} symbol="USD" />
+      ) : (
+        <NoData />
+      ),
   },
 ];
 

@@ -7,7 +7,8 @@ import { Variation } from '../../utils/types';
 
 interface ValueChangeProps {
   current: ReactNode;
-  after: ReactNode;
+  /** Omit when there is no migrated value to compare to; only `current` is shown. */
+  after?: ReactNode;
   variant?: TypographyProps['variant'];
 }
 
@@ -20,10 +21,14 @@ export const ValueChange = ({ current, after, variant = 'h5' }: ValueChangeProps
     <Typography variant={variant} color="fg-3" component="div" sx={{ display: 'flex' }}>
       {current}
     </Typography>
-    <ArrowRightIcon />
-    <Typography variant={variant} color="fg-1" component="div" sx={{ display: 'flex' }}>
-      {after}
-    </Typography>
+    {after !== undefined && (
+      <>
+        <ArrowRightIcon />
+        <Typography variant={variant} color="fg-1" component="div" sx={{ display: 'flex' }}>
+          {after}
+        </Typography>
+      </>
+    )}
   </Box>
 );
 
@@ -41,7 +46,9 @@ export const NumberChange = ({
       <FormattedNumber value={value.current} percent={percent} symbol={symbol} variant="inherit" />
     }
     after={
-      <FormattedNumber value={value.after} percent={percent} symbol={symbol} variant="inherit" />
+      value.after !== undefined ? (
+        <FormattedNumber value={value.after} percent={percent} symbol={symbol} variant="inherit" />
+      ) : undefined
     }
   />
 );
