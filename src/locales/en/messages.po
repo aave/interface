@@ -1061,6 +1061,10 @@ msgstr "Techpaper"
 msgid "You've successfully submitted an order."
 msgstr "You've successfully submitted an order."
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+msgid "Read-only mode. Connect a wallet to migrate."
+msgstr "Read-only mode. Connect a wallet to migrate."
+
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Block"
 msgstr "Block"
@@ -2260,6 +2264,10 @@ msgstr "The network fee paid for the transaction"
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "How much of this position moves to V4. Collateral and debt move in the same proportion."
 msgstr "How much of this position moves to V4. Collateral and debt move in the same proportion."
+
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+msgid "Confirm in your wallet"
+msgstr "Confirm in your wallet"
 
 #: src/modules/governance/proposal/VotingResults.tsx
 #: src/modules/governance/proposal/VotingResults.tsx
@@ -3606,6 +3614,10 @@ msgstr "Unavailable Hubs"
 #: src/modules/umbrella/StakeCooldownActions.tsx
 msgid "Activate Cooldown"
 msgstr "Activate Cooldown"
+
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+msgid "The migration couldn't be started. Please try again."
+msgstr "The migration couldn't be started. Please try again."
 
 #: src/modules/dashboard/DashboardTopPanel.tsx
 #: src/modules/umbrella/UmbrellaHeader.tsx

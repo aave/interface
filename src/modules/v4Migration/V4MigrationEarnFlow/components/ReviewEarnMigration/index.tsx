@@ -6,7 +6,7 @@ import {
   useMigrationEarnPreview,
 } from '@aave/react';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Switch } from '@mui/material';
+import { Box, Button, CircularProgress, Switch, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import { ReactNode, useState } from 'react';
 import { AssetGroup } from 'src/components/AssetGroup';
@@ -18,6 +18,7 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenAmountInput } from 'src/components/TokenAmountInput';
 import { useDebouncedValue } from 'src/hooks/useDebouncedValue';
+import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import {
   collateralExposureRow,
@@ -35,8 +36,10 @@ import { getMigrationMarketTitle } from '../../../V4MigrationPage/utils/markets'
 import { getAssetIconSymbol, getHubDisplayName } from '../../../V4MigrationPage/utils/positions';
 import { V4MigrationPreview, V4MigrationPreviewRow } from '../../../V4MigrationPreview';
 import { PositionName } from '../../../V4MigrationPreview/components/PositionName';
+import { useEarnMigration } from '../../hooks/useEarnMigration';
 import { EarnHub } from '../../utils/hubs';
 import { MOCK_V3_COLLATERAL_EXPOSURE } from '../../utils/mocks';
+import { EarnMigrationStatus } from '../EarnMigrationStatus';
 
 type Supply = MigrationOpportunity['supplies'][number];
 
@@ -219,11 +222,36 @@ export const ReviewEarnMigration = ({
   const available = new BigNumber(supply.amount.amount.value);
   const [amount, setAmount] = useState<BigNumber | null>(available);
   const debouncedAmount = useDebouncedValue(amount, PREVIEW_DEBOUNCE_MS);
+  const { readOnlyMode } = useWeb3Context();
+  const { run, migrate, reset } = useEarnMigration();
 
-  const previewAmount =
-    debouncedAmount && debouncedAmount.gt(0) && debouncedAmount.lte(available)
-      ? debouncedAmount.decimalPlaces(currency.decimals, BigNumber.ROUND_DOWN).toFixed()
+  const toRequestAmount = (value: BigNumber | null) =>
+    value && value.gt(0) && value.lte(available)
+      ? value.decimalPlaces(currency.decimals, BigNumber.ROUND_DOWN).toFixed()
       : undefined;
+  const previewAmount = toRequestAmount(debouncedAmount);
+  const migrateAmount = toRequestAmount(amount);
+  const iconSymbol = getAssetIconSymbol(currency);
+
+  const signing = run.status === 'signing';
+
+  if (run.status !== 'idle' && run.status !== 'signing' && migrateAmount) {
+    return (
+      <EarnMigrationStatus
+        status={run.status}
+        chainId={opportunity.market.chain.chainId}
+        txHash={run.txHash}
+        receipt={run.receipt}
+        symbol={currency.symbol}
+        iconSymbol={iconSymbol}
+        amount={migrateAmount}
+        amountUSD={Number(migrateAmount) * Number(supply.amount.usdPerToken)}
+        hubName={hub.name}
+        apy={hub.apy}
+        onRetry={reset}
+      />
+    );
+  }
 
   return (
     <Box sx={STACK_SX}>
@@ -238,10 +266,11 @@ export const ReviewEarnMigration = ({
             token={{
               symbol: currency.symbol,
               decimals: currency.decimals,
-              iconSymbol: getAssetIconSymbol(currency),
+              iconSymbol,
             }}
             fiatRate={Number(supply.amount.usdPerToken)}
             max={available}
+            disabled={signing}
           />
           <DynamicCard.Divider />
           <DescriptionItem
@@ -291,14 +320,48 @@ export const ReviewEarnMigration = ({
       </DynamicCard>
 
       <Box sx={BUTTON_ROW_SX}>
-        <Button component={Link} href={ROUTES.migrationToolV4} variant="outlined" size="large">
+        <Button
+          component={Link}
+          href={ROUTES.migrationToolV4}
+          variant="outlined"
+          size="large"
+          disabled={signing}
+        >
           {MIGRATION_TX_BUTTONS.cancel}
         </Button>
-        {/* TODO: run the migration (signatures, then the transaction). */}
-        <Button variant="contained" size="large" disabled>
-          {MIGRATE_FLOW.title}
+        <Button
+          variant="contained"
+          size="large"
+          disabled={!migrateAmount || readOnlyMode || signing}
+          onClick={() =>
+            migrateAmount &&
+            migrate({
+              user,
+              market: {
+                address: opportunity.market.address,
+                chainId: opportunity.market.chain.chainId,
+              },
+              currency: currency.address,
+              spoke: hub.id,
+              amount: migrateAmount,
+              useAsCollateral: USE_AS_COLLATERAL,
+            })
+          }
+        >
+          {signing && <CircularProgress color="inherit" size="1rem" sx={{ mr: 2 }} />}
+          {signing ? <Trans>Confirm in your wallet</Trans> : MIGRATE_FLOW.title}
         </Button>
       </Box>
+      {run.status === 'idle' && run.error && (
+        <Typography variant="base" color="error.main" sx={{ textAlign: 'center' }}>
+          <Trans>The migration couldn&apos;t be started. Please try again.</Trans>
+        </Typography>
+      )}
+      {readOnlyMode && (
+        <Typography variant="base" color="fg-3" sx={{ textAlign: 'center' }}>
+          <Trans>Read-only mode. Connect a wallet to migrate.</Trans>
+        </Typography>
+      )}
     </Box>
   );
 };
