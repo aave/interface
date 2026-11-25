@@ -1,4 +1,6 @@
+import { Trans } from '@lingui/macro';
 import { Alert, SxProps } from '@mui/material';
+import { ReactNode } from 'react';
 
 import { SwapError, SwapProvider, SwapState } from '../../types';
 import { convertCowProtocolErrorMessage } from '../cow/quote.helpers';
@@ -13,15 +15,28 @@ interface QuoteErrorProps {
   state: SwapState;
 }
 
+// Errors the backend orders API returns as plain messages.
+const convertBackendOrderErrorMessage = (message: string): ReactNode | undefined => {
+  if (/position swaps are not provisioned on market/i.test(message)) {
+    return <Trans>This swap is not available on this market yet.</Trans>;
+  }
+  if (/quote again/i.test(message)) {
+    return <Trans>The quote changed before the order was placed. Getting a new quote.</Trans>;
+  }
+  return undefined;
+};
+
 export const ProviderError = ({ error, sx, provider, state }: QuoteErrorProps) => {
-  let customErrorMessage;
+  let customErrorMessage: ReactNode | undefined;
 
   switch (provider) {
     case SwapProvider.PARASWAP:
       customErrorMessage = convertParaswapErrorMessage(error.message);
       break;
     case SwapProvider.COW_PROTOCOL:
-      customErrorMessage = convertCowProtocolErrorMessage(error.message);
+      customErrorMessage =
+        convertBackendOrderErrorMessage(error.message) ??
+        convertCowProtocolErrorMessage(error.message);
       break;
     default:
       console.error('No provider error mapping found for', provider, error);

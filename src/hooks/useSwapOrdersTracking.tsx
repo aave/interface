@@ -34,7 +34,12 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 import { findTokenSymbol } from 'src/ui-config/TokenList';
 import { GENERAL } from 'src/utils/events';
 import { getProvider } from 'src/utils/marketsAndNetworksConfig';
-import { updateCowOrderStatus, updateParaswapStatus } from 'src/utils/swapAdapterHistory';
+import {
+  historyStatusOf,
+  swapTypeOf,
+  updateCowOrderStatus,
+  updateParaswapStatus,
+} from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/shallow';
 
 import { useTransactionHistory } from './useTransactionHistory';
@@ -92,7 +97,8 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
         .filter((tx: CowSwapSubset) => isOrderLoading(tx.status))
         .filter((tx: CowSwapSubset) => !activeOrders.has(tx.orderId))
         .forEach((tx: CowSwapSubset) => {
-          trackSwapOrderProgress(tx.orderId, tx.chainId);
+          if (tx.viaBackend) trackBackendOrder(tx.orderId, tx.chainId);
+          else trackSwapOrderProgress(tx.orderId, tx.chainId);
         });
     }
   }, [transactions?.pages[0]]);
@@ -293,6 +299,17 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
           return;
         }
         processedOrdersRef.current.add(orderId);
+        // Position orders live in the local history until the backend lists them.
+        updateCowOrderStatus(chainId, account || '', orderId, historyStatusOf(order));
+        const swapType = swapTypeOf(operation);
+        setActiveOrders((prev) => {
+          const current = prev.get(orderId);
+          if (!current || !swapType) return prev;
+          return new Map(prev).set(orderId, {
+            ...current,
+            appCode: APP_CODE_PER_SWAP_TYPE[swapType],
+          });
+        });
         const action = {
           label: 'View',
           onClick: () => window.open(order.explorerUrl, '_blank'),

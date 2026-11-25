@@ -1,8 +1,11 @@
+import { orderStatus } from '@aave/client/actions';
 import {
   chainId,
   evmAddress,
   OrderDirection,
+  OrderId,
   PageSize,
+  useAaveClient,
   useUserTransactionHistory,
 } from '@aave/react';
 import { Cursor } from '@aave/types';
@@ -39,7 +42,9 @@ import { getProvider } from 'src/utils/marketsAndNetworksConfig';
 import {
   CowAdapterEntry,
   getAdapterSwapHistory,
+  historyStatusOf,
   ParaswapAdapterEntry,
+  tradedAmountsOf,
 } from 'src/utils/swapAdapterHistory';
 import { useShallow } from 'zustand/shallow';
 
@@ -138,6 +143,7 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
   );
 
   const { reserves, loading: reservesLoading } = useAppDataContext();
+  const client = useAaveClient();
   const [sdkCursor, setSdkCursor] = useState<Cursor | null>(null);
   const [sdkTransactions, setSdkTransactions] = useState<UserTransactionItem[]>([]);
   const sdkTransactionIds = useRef<Set<string>>(new Set());
@@ -421,8 +427,21 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
           let srcAmount = e.srcAmount;
           let destAmount = e.destAmount;
           let status = e.status;
+          let explorerUrl: string | undefined;
           try {
-            if (isChainIdSupportedByCoWProtocol(chainId)) {
+            if (e.viaBackend) {
+              const result = await orderStatus(client, { id: e.orderId as OrderId });
+              const order = result.isOk() ? result.value : null;
+              if (order) {
+                status = historyStatusOf(order);
+                explorerUrl = order.explorerUrl;
+                const traded = tradedAmountsOf(order.operation);
+                if (traded && order.__typename === 'OrderFulfilled') {
+                  srcAmount = traded.sell;
+                  destAmount = traded.buy;
+                }
+              }
+            } else if (isChainIdSupportedByCoWProtocol(chainId)) {
               const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
               const order = await orderBookApi.getOrder(e.orderId, { chainId });
               // Prefer executed amounts if non-zero
@@ -471,6 +490,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
             chainId: e.chainId,
             adapterInstanceAddress: e.adapterInstanceAddress,
             usedAdapter: e.usedAdapter,
+            viaBackend: e.viaBackend,
+            explorerUrl,
           } as TransactionHistoryItemUnion;
         })
     );

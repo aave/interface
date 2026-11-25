@@ -130,9 +130,12 @@ export const healthFactorSensibleSwapFlowSelector = ({
     }
   })();
 
+  // The backend runs every CoW collateral swap on the flash-loan adapter too.
   const forceFlashloanFlow =
     state.provider === SwapProvider.COW_PROTOCOL &&
-    (state.swapType === SwapType.RepayWithCollateral || state.swapType === SwapType.DebtSwap);
+    (state.swapType === SwapType.RepayWithCollateral ||
+      state.swapType === SwapType.DebtSwap ||
+      state.swapType === SwapType.CollateralSwap);
   const useFlashloan =
     forceFlashloanFlow ||
     (extendedUser?.healthFactor !== '-1' &&

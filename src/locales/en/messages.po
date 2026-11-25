@@ -710,10 +710,9 @@ msgstr "View contract"
 msgid "Please connect your wallet to be able to bridge your tokens."
 msgstr "Please connect your wallet to be able to bridge your tokens."
 
-#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
-#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
+#: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
 msgid "Swap {0} collateral"
 msgstr "Swap {0} collateral"
 
@@ -1294,6 +1293,10 @@ msgstr "Back to App"
 msgid "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
 msgstr "Your health factor after this swap will be critically low and may result in liquidation. Please choose a different asset or reduce the swap amount to stay safe."
 
+#: src/components/transactions/Swap/errors/shared/ProviderError.tsx
+msgid "This swap is not available on this market yet."
+msgstr "This swap is not available on this market yet."
+
 #: src/components/AssetCategoryMultiselect.tsx
 msgid "{selectedCount} Categories"
 msgstr "{selectedCount} Categories"
@@ -1302,8 +1305,8 @@ msgstr "{selectedCount} Categories"
 msgid "{tooltipText}"
 msgstr "{tooltipText}"
 
-#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
+#: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
 msgid "Swapping {0} collateral"
 msgstr "Swapping {0} collateral"
 
@@ -1489,7 +1492,8 @@ msgid "Unstaking {symbol}"
 msgstr "Unstaking {symbol}"
 
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
-#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaBackend.tsx
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
 msgid "Swapping"
 msgstr "Swapping"
@@ -3604,13 +3608,13 @@ msgstr "Learn more in our <0>FAQ guide</0>"
 msgid "The selected rate is lower than the market price. You might incur a loss if you proceed."
 msgstr "The selected rate is lower than the market price. You might incur a loss if you proceed."
 
-#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
+#: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
-#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaBackend.tsx
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/WithdrawAndSwap/WithdrawAndSwapActionsViaParaswap.tsx
 msgid "Blocked by Shield"
@@ -3640,9 +3644,6 @@ msgstr "E-Mode increases your LTV for a selected category of assets. <0>Learn mo
 msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
 msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
 
-#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
-#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
-#: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaCoWAdapters.tsx
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
@@ -3912,6 +3913,10 @@ msgstr "Voting is on"
 #: src/components/transactions/GovRepresentatives/GovRepresentativesActions.tsx
 msgid "Confirming transaction"
 msgstr "Confirming transaction"
+
+#: src/components/transactions/Swap/errors/shared/ProviderError.tsx
+msgid "The quote changed before the order was placed. Getting a new quote."
+msgstr "The quote changed before the order was placed. Getting a new quote."
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
@@ -4353,8 +4358,9 @@ msgstr "Insufficient collateral to cover new borrow position. Wallet must have b
 #: src/components/transactions/Swap/actions/ActionsBlocked.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
-#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
-#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaBackend.tsx
+#: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaBackend.tsx
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
 #: src/layouts/MobileMenu.tsx

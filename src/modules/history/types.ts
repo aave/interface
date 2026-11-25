@@ -58,6 +58,9 @@ export type CowSwapSubset = SwapSubset & {
   orderId: string;
   adapterInstanceAddress?: string; // Instance address for adapter-based swaps
   usedAdapter?: boolean; // Whether adapter was used
+  // orderId is a backend order id: status, explorer link and cancel come from the backend.
+  viaBackend?: boolean;
+  explorerUrl?: string;
 };
 
 export type SwapActionFields = {
@@ -154,6 +157,7 @@ export const isSwapTransaction = (
 export const getCancellableCowOrder = (transaction: TransactionHistoryItemUnion) =>
   isSwapTransaction(transaction) &&
   isCowSwapSubset(transaction) &&
+  !transaction.viaBackend &&
   transaction.status === OrderStatus.OPEN
     ? transaction
     : undefined;

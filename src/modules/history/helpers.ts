@@ -96,6 +96,7 @@ export const getExplorerLink = (
 ) => {
   if (isSwapTransaction(transaction) && currentNetworkConfig.wagmiChain.id) {
     if (isCowSwapSubset(transaction)) {
+      if (transaction.viaBackend) return transaction.explorerUrl;
       return generateCoWExplorerLink(currentNetworkConfig.wagmiChain.id, transaction.orderId);
     }
     return currentNetworkConfig.explorerLinkBuilder({ tx: transaction.txHash });

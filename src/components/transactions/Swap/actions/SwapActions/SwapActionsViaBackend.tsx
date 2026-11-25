@@ -39,7 +39,7 @@ import {
   SwapState,
 } from '../../types';
 
-const signTypedDataWith = (
+export const signTypedDataWith = (
   walletClient: WalletClient,
   data: OrderTypedData | PermitTypedDataResponse
 ): ResultAsync<OrderHandlerResult, OrderHandlerError> => {
@@ -58,11 +58,12 @@ const signTypedDataWith = (
   ).map(signatureFrom);
 };
 
+export const toLimitAmount = (token: SwappableToken, amount: string) =>
+  bigDecimal(BigNumber(amount).decimalPlaces(token.decimals, BigNumber.ROUND_DOWN).toFixed());
+
 // The user's limit amounts, before fees: the backend applies them when it quotes the limit order.
 const toLimitTokenInput = (token: SwappableToken, amount: string) => {
-  const value = bigDecimal(
-    BigNumber(amount).decimalPlaces(token.decimals, BigNumber.ROUND_DOWN).toFixed()
-  );
+  const value = toLimitAmount(token, amount);
   return isNativeToken(token.addressToSwap)
     ? { native: value }
     : { erc20: { address: evmAddress(token.addressToSwap), value } };

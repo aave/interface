@@ -14,6 +14,7 @@ import { useModalContext } from 'src/hooks/useModal';
 import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { findByChainId } from 'src/ui-config/marketsConfig';
 import { networkConfigs } from 'src/ui-config/networksConfig';
+import { tradedAmountsOf } from 'src/utils/swapAdapterHistory';
 import { parseUnits } from 'viem';
 
 import { TxResultDetails, TxResultRow } from '../../../FlowCommons/TxResultDetails';
@@ -278,8 +279,9 @@ export const SwapTxSuccessView = ({
       const order = result.value;
       if (!order) return;
       setBackendExplorerUrl(order.explorerUrl);
-      if (order.__typename === 'OrderFulfilled' && order.operation.__typename === 'TokenSwap') {
-        onFilled(order.operation.sell.amount.raw, order.operation.buy.amount.raw);
+      const traded = tradedAmountsOf(order.operation);
+      if (order.__typename === 'OrderFulfilled' && traded) {
+        onFilled(traded.sell, traded.buy);
       } else if (order.__typename === 'OrderCancelled' || order.__typename === 'OrderExpired') {
         onClosed(order.__typename === 'OrderExpired' ? 'expired' : 'failed');
       }

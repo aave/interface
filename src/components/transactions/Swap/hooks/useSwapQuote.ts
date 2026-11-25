@@ -1,12 +1,15 @@
-import { tokenSwapQuote } from '@aave/client/actions';
+import { supplySwapQuote, tokenSwapQuote, withdrawSwapQuote } from '@aave/client/actions';
 import { normalize, normalizeBN } from '@aave/math-utils';
 import {
   AaveClient,
   bigDecimal,
   chainId as sdkChainId,
   evmAddress,
+  reserveId,
   TokenSwapKind,
   useAaveClient,
+  userBorrowItemId,
+  userSupplyItemId,
 } from '@aave/react';
 import { useQuery } from '@tanstack/react-query';
 import { BigNumber } from 'bignumber.js';
@@ -105,8 +108,138 @@ const getSwapMarketPool = (chainId: number, currentMarketData: MarketDataType) =
   )?.addresses.LENDING_POOL;
 };
 
-const toSwapTokenInput = (address: string) =>
+export const toSwapTokenInput = (address: string) =>
   isNativeToken(address) ? { native: true as const } : { erc20: evmAddress(address) };
+
+// The backend leaves wallet swap legs unpriced, so USD values still come from CoW's price feed.
+const getUsdPrices = async (
+  chainId: number,
+  srcToken: string,
+  destToken: string,
+  setError?: (error: Error) => void
+) => {
+  const prices = new CoWProtocolPricesService();
+  const priceAddress = (token: string) =>
+    isNativeToken(token) ? getWrappedNativeAddress(chainId) ?? token : token;
+  const [srcTokenPriceUsd, destTokenPriceUsd] = await Promise.all([
+    prices.getTokenUsdPrice(chainId, priceAddress(srcToken)),
+    prices.getTokenUsdPrice(chainId, priceAddress(destToken)),
+  ]);
+  if (!srcTokenPriceUsd || !destTokenPriceUsd) {
+    const error = new Error('No price found for token, please try another token');
+    setError?.(error);
+    throw error;
+  }
+  return { srcTokenPriceUsd, destTokenPriceUsd };
+};
+
+const usdOf = (value: string, price: string) => BigNumber(value).multipliedBy(price).toString();
+
+/** Ids of the position legs a position swap quote or limit order names. */
+export const positionSwapLegs = (state: SwapState, pool: string) => {
+  const ids = { chainId: sdkChainId(state.chainId), market: evmAddress(pool) };
+  const user = evmAddress(state.user);
+  const source = evmAddress(state.sourceToken.underlyingAddress);
+  const destination = evmAddress(state.destinationToken.underlyingAddress);
+  return {
+    user,
+    sourceSupply: userSupplyItemId({ ...ids, user, underlyingToken: source }),
+    sourceBorrow: userBorrowItemId({ ...ids, user, underlyingToken: source }),
+    destinationSupply: userSupplyItemId({ ...ids, user, underlyingToken: destination }),
+    destinationReserve: reserveId({ ...ids, underlyingToken: destination }),
+  };
+};
+
+const fetchPositionSwapQuote = (
+  client: AaveClient,
+  state: SwapState,
+  pool: string,
+  amount: string,
+  selectedSlippage?: string
+) => {
+  const legs = positionSwapLegs(state, pool);
+  const common = {
+    amount: bigDecimal(amount),
+    user: legs.user,
+    selectedSlippage: selectedSlippage ? bigDecimal(selectedSlippage) : undefined,
+  };
+  switch (state.swapType) {
+    case SwapType.CollateralSwap:
+      return supplySwapQuote(client, {
+        market: { ...common, sellPosition: legs.sourceSupply, buyReserve: legs.destinationReserve },
+      });
+    case SwapType.WithdrawAndSwap:
+      return withdrawSwapQuote(client, {
+        market: {
+          ...common,
+          sellPosition: legs.sourceSupply,
+          buyToken: toSwapTokenInput(state.destinationToken.addressToSwap),
+        },
+      });
+    default:
+      throw new Error(`Position swap ${state.swapType} is not placed through the backend`);
+  }
+};
+
+/**
+ * A position swap quoted by the backend, normalized to the UI's orientation: src is the source
+ * position. Debt swaps and repays sell the destination leg, so their quote legs are flipped.
+ */
+const getBackendPositionSwapRates = async ({
+  client,
+  pool,
+  state,
+  selectedSlippage,
+  setError,
+}: {
+  client: AaveClient;
+  pool: string;
+  state: SwapState;
+  selectedSlippage?: string;
+  setError: (error: Error) => void;
+}): Promise<BackendRatesType> => {
+  const inverted = swapTypesThatRequiresInvertedQuote.includes(state.swapType);
+  const fixesDestination = state.side === 'buy';
+  const amount = fixesDestination ? state.debouncedOutputAmount : state.debouncedInputAmount;
+  const decimals = fixesDestination ? state.destinationToken.decimals : state.sourceToken.decimals;
+  const roundedAmount = BigNumber(amount).decimalPlaces(decimals, BigNumber.ROUND_DOWN).toFixed();
+
+  const srcToken = state.sourceToken.underlyingAddress;
+  const destToken = state.destinationToken.underlyingAddress;
+  const [result, { srcTokenPriceUsd, destTokenPriceUsd }] = await Promise.all([
+    fetchPositionSwapQuote(client, state, pool, roundedAmount, selectedSlippage),
+    getUsdPrices(state.chainId, srcToken, destToken, setError),
+  ]);
+  if (result.isErr()) {
+    setError(result.error);
+    throw result.error;
+  }
+  const quote = result.value.quote;
+  const srcLeg = inverted ? quote.buy : quote.sell;
+  const destLeg = inverted ? quote.sell : quote.buy;
+  // The backend solves the leg the user did not fix.
+  const afterFees = inverted !== fixesDestination ? quote.finalSell : quote.finalBuy;
+  const afterFeesPrice = fixesDestination ? srcTokenPriceUsd : destTokenPriceUsd;
+
+  return {
+    srcToken,
+    srcSpotAmount: srcLeg.amount.raw,
+    srcSpotUSD: usdOf(srcLeg.amount.value, srcTokenPriceUsd),
+    srcDecimals: state.sourceToken.decimals,
+    destToken,
+    destSpotAmount: destLeg.amount.raw,
+    destSpotUSD: usdOf(destLeg.amount.value, destTokenPriceUsd),
+    destDecimals: state.destinationToken.decimals,
+    afterFeesAmount: afterFees.amount.raw,
+    afterFeesUSD: usdOf(afterFees.amount.value, afterFeesPrice),
+    srcTokenPriceUsd: Number(srcTokenPriceUsd),
+    destTokenPriceUsd: Number(destTokenPriceUsd),
+    provider: SwapProvider.COW_PROTOCOL,
+    suggestedSlippage: BigNumber(quote.suggestedSlippage.value).multipliedBy(100).toNumber(),
+    backendQuote: quote,
+    market: pool,
+  };
+};
 
 const getBackendTokenSwapRates = async ({
   client,
@@ -143,22 +276,15 @@ const getBackendTokenSwapRates = async ({
     throw result.error;
   }
   const quote = result.value.quote;
+  const { srcTokenPriceUsd, destTokenPriceUsd } = await getUsdPrices(
+    chainId,
+    srcToken,
+    destToken,
+    setError
+  );
 
-  // The backend leaves wallet swap legs unpriced, so USD values still come from CoW's price feed.
-  const prices = new CoWProtocolPricesService();
-  const priceAddress = (token: string) =>
-    isNativeToken(token) ? getWrappedNativeAddress(chainId) ?? token : token;
-  const [srcTokenPriceUsd, destTokenPriceUsd] = await Promise.all([
-    prices.getTokenUsdPrice(chainId, priceAddress(srcToken)),
-    prices.getTokenUsdPrice(chainId, priceAddress(destToken)),
-  ]);
-  if (!srcTokenPriceUsd || !destTokenPriceUsd) {
-    const error = new Error('No price found for token, please try another token');
-    setError?.(error);
-    throw error;
-  }
-
-  const usd = (value: string, price: string) => BigNumber(value).multipliedBy(price).toString();
+  const usd = usdOf;
+  // Sell orders solve the buy leg, buy orders the sell leg.
   const finalLeg = side === 'buy' ? quote.finalSell : quote.finalBuy;
   return {
     srcToken,
@@ -211,7 +337,6 @@ export const useSwapQuote = ({
       assetFrom: state.sourceToken.addressToSwap,
       assetTo: state.destinationToken.addressToSwap,
       swapType: params.swapType,
-      shouldUseFlashloan: state.useFlashloan,
     });
   }, [
     state.mainTxState.success,
@@ -220,7 +345,6 @@ export const useSwapQuote = ({
     state.sourceToken.addressToSwap,
     state.destinationToken.addressToSwap,
     params.swapType,
-    state.useFlashloan,
   ]);
 
   const requiresQuoteInverted = useMemo(
@@ -469,6 +593,15 @@ const useMultiProviderSwapQuoteQuery = ({
             if (!pool) {
               setError(new Error('No market found in the selected chain for this pair'));
               return null;
+            }
+            if (params.swapType !== SwapType.Swap) {
+              return await getBackendPositionSwapRates({
+                client,
+                pool,
+                state,
+                selectedSlippage,
+                setError,
+              });
             }
             return await getBackendTokenSwapRates({
               client,
