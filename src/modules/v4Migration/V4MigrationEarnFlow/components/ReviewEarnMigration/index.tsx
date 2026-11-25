@@ -8,7 +8,7 @@ import {
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Switch, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { AssetGroup } from 'src/components/AssetGroup';
 import { CuratorNames } from 'src/components/CuratorBy';
 import { DynamicCard } from 'src/components/DynamicCard';
@@ -36,7 +36,7 @@ import { getMigrationMarketTitle } from '../../../V4MigrationPage/utils/markets'
 import { getAssetIconSymbol, getHubDisplayName } from '../../../V4MigrationPage/utils/positions';
 import { V4MigrationPreview, V4MigrationPreviewRow } from '../../../V4MigrationPreview';
 import { PositionName } from '../../../V4MigrationPreview/components/PositionName';
-import { useEarnMigration } from '../../hooks/useEarnMigration';
+import { FlashLoanUnavailableError, useEarnMigration } from '../../hooks/useEarnMigration';
 import { EarnHub } from '../../utils/hubs';
 import { MOCK_V3_COLLATERAL_EXPOSURE } from '../../utils/mocks';
 import { EarnMigrationStatus } from '../EarnMigrationStatus';
@@ -49,10 +49,6 @@ const BUTTON_ROW_SX = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1
 
 const PREVIEW_DEBOUNCE_MS = 400;
 
-// An earn position backs no debt on V3, and collateral on V4 means picking a market to borrow in,
-// which this flow does not do yet. So the supply always moves as a plain deposit.
-const USE_AS_COLLATERAL = false;
-
 const pct = (value: number) => <FormattedNumber value={value} percent variant="inherit" />;
 
 const usd = (value: number) => <FormattedNumber value={value} symbol="USD" variant="inherit" />;
@@ -60,13 +56,14 @@ const usd = (value: number) => <FormattedNumber value={value} symbol="USD" varia
 /** A before/after cell, or nothing when the API has no figure for either side. */
 const change = (
   variation: { current: string | null; after: string | null } | undefined,
-  format: 'percent' | 'usd'
+  format: 'percent' | 'usd' | 'number'
 ): ReactNode => {
   if (!variation || variation.current === null) return undefined;
   const value = {
     current: Number(variation.current),
     after: variation.after === null ? undefined : Number(variation.after),
   };
+  if (format === 'number') return <NumberChange value={value} />;
   return format === 'percent' ? (
     <NumberChange value={value} percent />
   ) : (
@@ -79,11 +76,13 @@ const previewRows = ({
   hub,
   preview,
   loading,
+  useAsCollateral,
 }: {
   opportunity: MigrationOpportunity;
   hub: EarnHub;
   preview?: MigrationPreview;
   loading: boolean;
+  useAsCollateral: boolean;
 }): V4MigrationPreviewRow[] => {
   const source = preview?.source;
   const target = preview?.target;
@@ -109,8 +108,10 @@ const previewRows = ({
       loading,
     },
     {
+      // As collateral the supply joins the user's position on the spoke, and the API then reports
+      // that whole position's APY rather than the deposit's own.
       id: 'apy',
-      ...PREVIEW_ROWS.earnApy,
+      ...(useAsCollateral ? PREVIEW_ROWS.positionApy : PREVIEW_ROWS.earnApy),
       v3: change(
         source && {
           current: source.current.apy?.value ?? null,
@@ -134,6 +135,28 @@ const previewRows = ({
       v4: earnings === undefined || earnings === null ? undefined : usd(Number(earnings)),
       loading,
     },
+    ...(useAsCollateral
+      ? [
+          {
+            id: 'collateralValue',
+            ...PREVIEW_ROWS.collateralValue,
+            v4: change(target?.collateralUsd ?? undefined, 'usd'),
+            loading,
+          },
+          {
+            id: 'borrowingPower',
+            ...PREVIEW_ROWS.borrowingPower,
+            v4: change(target?.borrowingPowerUsd ?? undefined, 'usd'),
+            loading,
+          },
+          {
+            id: 'healthFactor',
+            ...PREVIEW_ROWS.healthFactor,
+            v4: change(target?.healthFactor ?? undefined, 'number'),
+            loading,
+          },
+        ]
+      : []),
     {
       // Mocked: the API does not say which assets share risk on either side yet.
       id: 'exposure',
@@ -144,20 +167,25 @@ const previewRows = ({
   ];
 };
 
+/** Identifies one preview request, so a confirmation is never applied to a different amount. */
+const previewKey = (amount: string, useAsCollateral: boolean) => `${amount}:${useAsCollateral}`;
+
 interface PreviewProps {
   opportunity: MigrationOpportunity;
   hub: EarnHub;
+  useAsCollateral: boolean;
 }
 
 const Preview = ({
   opportunity,
   hub,
+  useAsCollateral,
   preview,
   loading = false,
 }: PreviewProps & { preview?: MigrationPreview; loading?: boolean }) => (
   <V4MigrationPreview
     title={PREVIEW_TITLES.earn}
-    rows={previewRows({ opportunity, hub, preview, loading })}
+    rows={previewRows({ opportunity, hub, preview, loading, useAsCollateral })}
   />
 );
 
@@ -165,10 +193,18 @@ const Preview = ({
 const LivePreview = ({
   opportunity,
   hub,
+  useAsCollateral,
   user,
   supply,
   amount,
-}: PreviewProps & { user: string; supply: Supply; amount: string }) => {
+  onPreviewed,
+}: PreviewProps & {
+  user: string;
+  supply: Supply;
+  amount: string;
+  /** Called once the API confirms this amount, with this collateral setting, can be migrated. */
+  onPreviewed: (key: string) => void;
+}) => {
   const { data, loading, error } = useMigrationEarnPreview({
     user: evmAddress(user),
     market: {
@@ -178,8 +214,14 @@ const LivePreview = ({
     currency: supply.currency.address,
     spoke: evmAddress(hub.id),
     amount: bigDecimal(amount),
-    useAsCollateral: USE_AS_COLLATERAL,
+    useAsCollateral,
   });
+
+  // The hook returns no data while it loads, so data here is always for the current request.
+  const previewed = data?.target.status === 'PREVIEWED';
+  useEffect(() => {
+    if (previewed) onPreviewed(previewKey(amount, useAsCollateral));
+  }, [previewed, amount, useAsCollateral, onPreviewed]);
 
   if (error) {
     return (
@@ -201,7 +243,15 @@ const LivePreview = ({
     );
   }
 
-  return <Preview opportunity={opportunity} hub={hub} preview={data} loading={loading} />;
+  return (
+    <Preview
+      opportunity={opportunity}
+      hub={hub}
+      useAsCollateral={useAsCollateral}
+      preview={data}
+      loading={loading}
+    />
+  );
 };
 
 interface ReviewEarnMigrationProps {
@@ -224,6 +274,21 @@ export const ReviewEarnMigration = ({
   const debouncedAmount = useDebouncedValue(amount, PREVIEW_DEBOUNCE_MS);
   const { readOnlyMode } = useWeb3Context();
   const { run, migrate, reset } = useEarnMigration();
+  const [useAsCollateral, setUseAsCollateral] = useState(false);
+  // The opportunities list never says whether the hub takes this asset as collateral, so ask the
+  // preview once with the flag on: it only answers PREVIEWED when it does.
+  const collateralProbe = useMigrationEarnPreview({
+    user: evmAddress(user),
+    market: {
+      address: opportunity.market.address,
+      chainId: opportunity.market.chain.chainId,
+    },
+    currency: currency.address,
+    spoke: evmAddress(hub.id),
+    amount: bigDecimal(available.decimalPlaces(currency.decimals, BigNumber.ROUND_DOWN).toFixed()),
+    useAsCollateral: true,
+  });
+  const canUseAsCollateral = collateralProbe.data?.target.status === 'PREVIEWED';
 
   const toRequestAmount = (value: BigNumber | null) =>
     value && value.gt(0) && value.lte(available)
@@ -234,6 +299,9 @@ export const ReviewEarnMigration = ({
   const iconSymbol = getAssetIconSymbol(currency);
 
   const signing = run.status === 'signing';
+  // Migrate stays off until the preview confirms exactly what is about to be sent.
+  const [previewedKey, setPreviewedKey] = useState<string>();
+  const canMigrate = !!migrateAmount && previewedKey === previewKey(migrateAmount, useAsCollateral);
 
   if (run.status !== 'idle' && run.status !== 'signing' && migrateAmount) {
     return (
@@ -288,8 +356,9 @@ export const ReviewEarnMigration = ({
             labelTooltip={MIGRATE_AMOUNT.useAsCollateral.tooltip}
             value={
               <Switch
-                checked={USE_AS_COLLATERAL}
-                disabled
+                checked={useAsCollateral}
+                onChange={(_, checked) => setUseAsCollateral(checked)}
+                disabled={!canUseAsCollateral || signing}
                 inputProps={{ 'aria-label': MIGRATE_AMOUNT.useAsCollateral.ariaLabel() }}
               />
             }
@@ -301,12 +370,14 @@ export const ReviewEarnMigration = ({
         <LivePreview
           opportunity={opportunity}
           hub={hub}
+          useAsCollateral={useAsCollateral}
           user={user}
           supply={supply}
           amount={previewAmount}
+          onPreviewed={setPreviewedKey}
         />
       ) : (
-        <Preview opportunity={opportunity} hub={hub} />
+        <Preview opportunity={opportunity} hub={hub} useAsCollateral={useAsCollateral} />
       )}
 
       <DynamicCard>
@@ -332,7 +403,7 @@ export const ReviewEarnMigration = ({
         <Button
           variant="contained"
           size="large"
-          disabled={!migrateAmount || readOnlyMode || signing}
+          disabled={!canMigrate || readOnlyMode || signing}
           onClick={() =>
             migrateAmount &&
             migrate({
@@ -344,7 +415,7 @@ export const ReviewEarnMigration = ({
               currency: currency.address,
               spoke: hub.id,
               amount: migrateAmount,
-              useAsCollateral: USE_AS_COLLATERAL,
+              useAsCollateral,
             })
           }
         >
@@ -354,7 +425,14 @@ export const ReviewEarnMigration = ({
       </Box>
       {run.status === 'idle' && run.error && (
         <Typography variant="base" color="error.main" sx={{ textAlign: 'center' }}>
-          <Trans>The migration couldn&apos;t be started. Please try again.</Trans>
+          {run.error instanceof FlashLoanUnavailableError ? (
+            <Trans>
+              There isn&apos;t enough liquidity to migrate this amount right now. Try a smaller
+              amount or come back later.
+            </Trans>
+          ) : (
+            <Trans>The migration couldn&apos;t be started. Please try again.</Trans>
+          )}
         </Typography>
       )}
       {readOnlyMode && (

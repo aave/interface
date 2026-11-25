@@ -3692,6 +3692,10 @@ msgstr "migrated"
 msgid "Staked Balance"
 msgstr "Staked Balance"
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+msgid "There isn't enough liquidity to migrate this amount right now. Try a smaller amount or come back later."
+msgstr "There isn't enough liquidity to migrate this amount right now. Try a smaller amount or come back later."
+
 #: src/components/transactions/Swap/inputs/shared/ExpirySelector.tsx
 msgid "Expires in"
 msgstr "Expires in"

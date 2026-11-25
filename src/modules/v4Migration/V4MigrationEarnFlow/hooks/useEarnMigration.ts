@@ -54,6 +54,14 @@ const MAX_STEPS = 5;
 // How long the app takes to re-render on the new chain after the wallet switches.
 const NETWORK_SWITCH_SETTLE_MS = 1000;
 
+/** The migration moves funds with a flash loan, and there is not enough to borrow right now. */
+export class FlashLoanUnavailableError extends Error {
+  constructor() {
+    super('Not enough flash loan liquidity to migrate');
+    this.name = 'FlashLoanUnavailableError';
+  }
+}
+
 const USER_DENIED = /user (denied|rejected)|rejected the request|cancelled the transaction/i;
 
 /** The document as `eth_signTypedData_v4` takes it: without GraphQL's extras or empty fields. */
@@ -174,7 +182,7 @@ export const useEarnMigration = () => {
             }
 
             case 'MigrationFlashLoanUnavailable':
-              throw new Error('Migration is not available right now');
+              throw new FlashLoanUnavailableError();
           }
         }
 
