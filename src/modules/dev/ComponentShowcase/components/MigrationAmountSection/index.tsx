@@ -109,7 +109,7 @@ const snippetFor = (options: Options) => {
     '    <TokenAmountInput',
     ...lines([
       'title={MIGRATE_AMOUNT.title}',
-      'label={MIGRATE_AMOUNT.availableToMigrate}',
+      'label={MIGRATE_AMOUNT.balanceLabel}',
       'value={amount}',
       'onValueChange={setAmount}',
       'token={token}',
@@ -182,7 +182,7 @@ const AmountCard = ({ options }: { options: Options }) => {
         <DynamicCard.Inner>
           <TokenAmountInput
             title={MIGRATE_AMOUNT.title}
-            label={MIGRATE_AMOUNT.availableToMigrate}
+            label={MIGRATE_AMOUNT.balanceLabel}
             value={amount}
             onValueChange={setAmount}
             token={token}
@@ -436,7 +436,8 @@ const TOKEN_AMOUNT_INPUT_PROPS: PropRow[] = [
   {
     name: 'label',
     type: 'ReactNode',
-    description: 'The text before the max, e.g. "Available to Migrate". Defaults to "Balance".',
+    description:
+      'The text before the max. Defaults to "Balance". MIGRATE_AMOUNT.balanceLabel reads "Available to Migrate", shortened to "Available" below 640px so the row fits on a phone.',
   },
   {
     name: 'allowExceedMax',

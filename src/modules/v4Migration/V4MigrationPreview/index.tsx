@@ -1,10 +1,11 @@
-import { Box, ButtonBase, Typography } from '@mui/material';
+import { Box, ButtonBase, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { AnimatePresence, motion } from 'motion/react';
 import { MouseEvent, ReactNode, useId, useState } from 'react';
 import { SKELETON } from 'src/components/DynamicCard/DescriptionItem';
 import { AaveLogo } from 'src/components/icons/AaveLogo';
 import { ChevronRightIcon } from 'src/components/icons/ChevronRightIcon';
 import { InfoLabel } from 'src/components/InfoLabel';
+import { LIST_CARDS_BELOW } from 'src/components/lists/listBreakpoints';
 import { NoData } from 'src/components/primitives/NoData';
 import { CARD_SURFACE_SX, figVars } from 'src/utils/figmaColors';
 import { motion as motionTokens } from 'src/utils/motion';
@@ -19,9 +20,12 @@ export interface V4MigrationPreviewRow {
   details?: V4MigrationPreviewRow[];
 }
 
+export type V4MigrationPreviewLayout = 'table' | 'cards';
+
 export interface V4MigrationPreviewProps {
   rows: V4MigrationPreviewRow[];
   title?: ReactNode;
+  layout?: V4MigrationPreviewLayout;
 }
 
 const INSET = '1.25rem';
@@ -43,18 +47,22 @@ const TITLE_SX = {
 
 const CARD_SX = { ...CARD_SURFACE_SX, overflowX: 'auto' } as const;
 
+const CARDS_SX = { display: 'flex', flexDirection: 'column', gap: '1rem' } as const;
+
 const TABLE_SX = {
   display: 'flex',
   flexDirection: 'column',
   minWidth: 'max-content',
   '--label-inset': INSET,
+  '--row-height': '3.125rem',
   '&[data-gutter="true"]': { '--label-inset': `calc(${INSET} + ${GUTTER})` },
+  '&[data-layout="cards"]': { '--row-height': '3rem' },
 } as const;
 
 const ROW_SX = {
   position: 'relative',
   display: 'flex',
-  height: '3.125rem',
+  height: 'var(--row-height)',
   '&[data-header]': { height: '3rem' },
   '&[data-detail]': { height: '3.25rem' },
   '&[data-divider]::after': {
@@ -138,6 +146,27 @@ const V4_CELL_SX = {
   '[data-divider] > &::before': { bottom: '1px' },
 } as const;
 
+const CARD_CELL_SX = { ...VALUE_SX, flex: 'none', pl: '1rem', pr: INSET } as const;
+
+type ColumnKey = 'v3' | 'v4';
+
+interface PreviewColumn {
+  key: ColumnKey;
+  sx: typeof V3_CELL_SX | typeof V4_CELL_SX | typeof CARD_CELL_SX;
+}
+
+const TABLE_COLUMNS: PreviewColumn[] = [
+  { key: 'v3', sx: V3_CELL_SX },
+  { key: 'v4', sx: V4_CELL_SX },
+];
+
+const CARD_COLUMNS: PreviewColumn[][] = [
+  [{ key: 'v3', sx: CARD_CELL_SX }],
+  [{ key: 'v4', sx: CARD_CELL_SX }],
+];
+
+const VERSIONS = { v3: 'V3', v4: 'V4' } as const;
+
 const EXPAND_TRANSITION = { duration: 0.25, ease: motionTokens.bezier.smooth } as const;
 
 const LOGO_SX = { display: 'flex', alignItems: 'center', gap: '0.375rem', color: 'fg-1' } as const;
@@ -176,11 +205,13 @@ const Cell = ({ value, loading }: { value: ReactNode; loading?: boolean }) =>
 
 const PreviewRow = ({
   row,
+  columns,
   gutter,
   divider,
   detail,
 }: {
   row: V4MigrationPreviewRow;
+  columns: PreviewColumn[];
   gutter: boolean;
   divider: boolean;
   detail?: boolean;
@@ -230,12 +261,11 @@ const PreviewRow = ({
           <InfoLabel id={`${id}label`} label={row.label} tooltip={row.tooltip} iconMargin={2} />
         ) : null}
       </Box>
-      <Box role="cell" sx={V3_CELL_SX}>
-        <Cell value={row.v3} loading={row.loading} />
-      </Box>
-      <Box role="cell" sx={V4_CELL_SX}>
-        <Cell value={row.v4} loading={row.loading} />
-      </Box>
+      {columns.map((column) => (
+        <Box key={column.key} role="cell" sx={column.sx}>
+          <Cell value={row[column.key]} loading={row.loading} />
+        </Box>
+      ))}
     </Box>
   );
 
@@ -260,6 +290,7 @@ const PreviewRow = ({
               <PreviewRow
                 key={item.id}
                 row={item}
+                columns={columns}
                 gutter={gutter}
                 divider={index < details.length - 1}
                 detail
@@ -272,7 +303,44 @@ const PreviewRow = ({
   );
 };
 
-export const V4MigrationPreview = ({ rows, title }: V4MigrationPreviewProps) => {
+const PreviewTable = ({
+  rows,
+  columns,
+  gutter,
+  layout,
+}: {
+  rows: V4MigrationPreviewRow[];
+  columns: PreviewColumn[];
+  gutter: boolean;
+  layout: V4MigrationPreviewLayout;
+}) => (
+  <Box sx={CARD_SX}>
+    <Box role="table" data-gutter={gutter} data-layout={layout} sx={TABLE_SX}>
+      <Box role="row" data-header data-divider sx={ROW_SX}>
+        <Box role="columnheader" sx={LABEL_CELL_SX} />
+        {columns.map((column) => (
+          <Box key={column.key} role="columnheader" sx={column.sx}>
+            <VersionLogo version={VERSIONS[column.key]} />
+          </Box>
+        ))}
+      </Box>
+      {rows.map((row, index) => (
+        <PreviewRow
+          key={row.id}
+          row={row}
+          columns={columns}
+          gutter={gutter}
+          divider={index < rows.length - 1}
+        />
+      ))}
+    </Box>
+  </Box>
+);
+
+export const V4MigrationPreview = ({ rows, title, layout }: V4MigrationPreviewProps) => {
+  const theme = useTheme();
+  const narrow = useMediaQuery(theme.breakpoints.down(LIST_CARDS_BELOW));
+  const cards = layout ? layout === 'cards' : narrow;
   const gutter = rows.some((row) => row.details?.length);
 
   return (
@@ -282,22 +350,21 @@ export const V4MigrationPreview = ({ rows, title }: V4MigrationPreviewProps) => 
           {title}
         </Typography>
       ) : null}
-      <Box sx={CARD_SX}>
-        <Box role="table" data-gutter={gutter} sx={TABLE_SX}>
-          <Box role="row" data-header data-divider sx={ROW_SX}>
-            <Box role="columnheader" sx={LABEL_CELL_SX} />
-            <Box role="columnheader" sx={V3_CELL_SX}>
-              <VersionLogo version="V3" />
-            </Box>
-            <Box role="columnheader" sx={V4_CELL_SX}>
-              <VersionLogo version="V4" />
-            </Box>
-          </Box>
-          {rows.map((row, index) => (
-            <PreviewRow key={row.id} row={row} gutter={gutter} divider={index < rows.length - 1} />
+      {cards ? (
+        <Box sx={CARDS_SX}>
+          {CARD_COLUMNS.map((columns) => (
+            <PreviewTable
+              key={columns[0].key}
+              rows={rows}
+              columns={columns}
+              gutter={gutter}
+              layout="cards"
+            />
           ))}
         </Box>
-      </Box>
+      ) : (
+        <PreviewTable rows={rows} columns={TABLE_COLUMNS} gutter={gutter} layout="table" />
+      )}
     </Box>
   );
 };

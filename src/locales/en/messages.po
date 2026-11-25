@@ -3006,6 +3006,7 @@ msgid "Price"
 msgstr "Price"
 
 #: src/modules/v4Migration/utils/copy.tsx
+#: src/modules/v4Migration/utils/copy.tsx
 msgid "Available to Migrate"
 msgstr "Available to Migrate"
 
@@ -3224,6 +3225,7 @@ msgstr "Forum discussion"
 
 #: src/components/transactions/Withdraw/WithdrawModalContent.tsx
 #: src/modules/dashboard/lists/BorrowAssetsList/BorrowAssetsList.tsx
+#: src/modules/v4Migration/utils/copy.tsx
 msgid "Available"
 msgstr "Available"
 

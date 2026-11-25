@@ -21,6 +21,7 @@ import {
 } from 'src/modules/v4Migration/V4MigrationPage/components/ValueChange';
 import {
   V4MigrationPreview,
+  V4MigrationPreviewLayout,
   V4MigrationPreviewRow,
 } from 'src/modules/v4Migration/V4MigrationPreview';
 import { PositionName } from 'src/modules/v4Migration/V4MigrationPreview/components/PositionName';
@@ -34,7 +35,7 @@ import { Specimen } from '../Specimen';
 
 const EARN_WIDTH = '33rem';
 const BORROW_WIDTH = '38.75rem';
-const NARROW_WIDTH = '20rem';
+const MOBILE_WIDTH = '22.5625rem';
 
 interface MockHub {
   id: string;
@@ -79,8 +80,8 @@ const HUBS: MockHub[] = [
 ];
 
 const WIDTHS = [
-  { value: 'figma', label: 'Figma' },
-  { value: 'narrow', label: 'Narrow' },
+  { value: 'desktop', label: 'Desktop' },
+  { value: 'mobile', label: 'Mobile' },
 ] as const;
 
 interface Options {
@@ -280,6 +281,7 @@ const PreviewDemo = ({ options }: { options: Options }) => {
     <>
       <V4MigrationPreview
         title={options.title ? PREVIEW_TITLES[options.side] : undefined}
+        layout={options.width === 'mobile' ? 'cards' : undefined}
         rows={rowsFor(
           options.side,
           target,
@@ -443,7 +445,7 @@ const collateralRowsFor = (market: MockMarket, marketCell: ReactNode): V4Migrati
 
 const STACK_SX = { display: 'flex', flexDirection: 'column', gap: '2rem' } as const;
 
-const CollateralPreviewDemo = () => {
+const CollateralPreviewDemo = ({ layout }: { layout?: V4MigrationPreviewLayout }) => {
   const [useAsCollateral, setUseAsCollateral] = useState(true);
   const [market, setMarket] = useState<MockMarket | undefined>(MARKETS[0]);
   const [hub, setHub] = useState(HUBS[0]);
@@ -463,6 +465,7 @@ const CollateralPreviewDemo = () => {
       </DynamicCard>
       <V4MigrationPreview
         title={PREVIEW_TITLES.earn}
+        layout={layout}
         rows={
           market
             ? collateralRowsFor(
@@ -558,13 +561,13 @@ const EARN_DESIGN: Options = {
   side: 'earn',
   title: true,
   loading: false,
-  width: 'figma',
+  width: 'desktop',
 };
 
 const BORROW_DESIGN: Options = { ...EARN_DESIGN, side: 'borrow' };
 
 const widthFor = (options: Options) =>
-  options.width === 'narrow' ? NARROW_WIDTH : options.side === 'earn' ? EARN_WIDTH : BORROW_WIDTH;
+  options.width === 'mobile' ? MOBILE_WIDTH : options.side === 'earn' ? EARN_WIDTH : BORROW_WIDTH;
 
 const SNIPPET_ROWS: Record<Side, string[]> = {
   earn: [
@@ -652,8 +655,13 @@ const PREVIEW_PROPS: PropRow[] = [
   {
     name: 'rows',
     type: 'V4MigrationPreviewRow[]',
+    description: 'The rows under the V3 | V4 header, in order. Fields below.',
+  },
+  {
+    name: 'layout',
+    type: "'table' | 'cards'",
     description:
-      'The rows under the V3 | V4 header, in order. Fields below. The card scrolls sideways when it is narrower than its content.',
+      "Leave it out: from 640px up the preview is one V3 | V4 table, and below 640px (LIST_CARDS_BELOW) it is two stacked cards, V3 then V4, each with every label and 48px rows. Pass it only to force one, e.g. in a narrow panel. A card scrolls sideways only if a value still doesn't fit.",
   },
   {
     name: 'title',
@@ -759,7 +767,7 @@ const CURATOR_NAMES_PROPS: PropRow[] = [
 export const MigrationPreviewSection = () => (
   <Section
     title="Migration preview"
-    description="The review step's V3 → V4 comparison card. Rows are generic: each takes a label, a tooltip and any two cells, so the earn and borrow cards are the same component. The hub button opens the hub picker modal, as Aave Pro's flows do. On the borrow card, click the Collateral row to expand it. With Use as Collateral on, the earn card shows the chosen market and its borrow rows; turning it on opens the market picker, and closing that without a pick turns it back off. Mock data only."
+    description="The review step's V3 → V4 comparison card. Rows are generic: each takes a label, a tooltip and any two cells, so the earn and borrow cards are the same component. The hub button opens the hub picker modal, as Aave Pro's flows do. On the borrow card, click the Collateral row to expand it. With Use as Collateral on, the earn card shows the chosen market and its borrow rows; turning it on opens the market picker, and closing that without a pick turns it back off. Below 640px the table becomes two cards, V3 then V4 (As designed — mobile). Mock data only."
   >
     <Specimen label="As designed — earn" fullWidth>
       <Box sx={{ width: '100%', maxWidth: EARN_WIDTH }}>
@@ -775,6 +783,11 @@ export const MigrationPreviewSection = () => (
       <PlaygroundLayout width={EARN_WIDTH} snippet={COLLATERAL_SNIPPET}>
         <CollateralPreviewDemo />
       </PlaygroundLayout>
+    </Specimen>
+    <Specimen label="As designed — mobile, earn used as collateral (393px phone)" fullWidth>
+      <Box sx={{ width: '100%', maxWidth: MOBILE_WIDTH }}>
+        <CollateralPreviewDemo layout="cards" />
+      </Box>
     </Specimen>
     <Specimen label="Playground — the snippet follows your choices" fullWidth>
       <Playground />

@@ -14,12 +14,25 @@ export const MIGRATE_FLOW = {
   ),
 };
 
+const WIDE_ONLY_SX = { display: { xs: 'none', xsm: 'inline' } } as const;
+const NARROW_ONLY_SX = { display: { xs: 'inline', xsm: 'none' } } as const;
+
 export const searchEarnHubsPlaceholder = () => t`Search earn hubs`;
 export const searchMarketsPlaceholder = () => t`Search markets`;
 
 export const MIGRATE_AMOUNT = {
   title: <Trans>Amount</Trans>,
   availableToMigrate: <Trans>Available to Migrate</Trans>,
+  balanceLabel: (
+    <>
+      <Box component="span" sx={WIDE_ONLY_SX}>
+        <Trans>Available to Migrate</Trans>
+      </Box>
+      <Box component="span" sx={NARROW_ONLY_SX}>
+        <Trans>Available</Trans>
+      </Box>
+    </>
+  ),
   chooseAsset: <Trans>Choose Asset</Trans>,
   earnApy: {
     label: <Trans>Earn APY</Trans>,

@@ -31,7 +31,11 @@ export const FlowHeader = ({ title, subheading }: { title: ReactNode; subheading
     <Typography
       variant="h2"
       component="h1"
-      sx={{ fontSize: { xs: '1.5rem', xsm: '1.875rem' }, lineHeight: '2.125rem', color: 'fg-1' }}
+      sx={{
+        fontSize: { xs: '1.5rem', xsm: '1.875rem' },
+        lineHeight: { xs: 1.2, xsm: '2.125rem' },
+        color: 'fg-1',
+      }}
     >
       {title}
     </Typography>
@@ -47,19 +51,16 @@ export const FlowHeader = ({ title, subheading }: { title: ReactNode; subheading
           variant="base"
           component="div"
           sx={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            gap: '0.375rem',
             minHeight: '1lh',
             lineHeight: 1.35,
             color: 'fg-3',
-            whiteSpace: 'nowrap',
             '& strong': { color: 'fg-1', fontWeight: 500 },
-            '& span': {
-              display: 'flex',
+            '& > span:not(.MuiSkeleton-root)': {
+              display: 'inline-flex',
               alignItems: 'center',
               gap: '0.375rem',
+              ml: '0.125rem',
+              verticalAlign: 'top',
               whiteSpace: 'nowrap',
             },
           }}

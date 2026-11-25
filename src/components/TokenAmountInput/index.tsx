@@ -108,9 +108,11 @@ const STATIC_TOKEN_CHIP_SX = { ...TOKEN_CHIP_SX, pointerEvents: 'none' } as cons
 
 const CHEVRON = <ChevronDownIcon sx={{ '& path': { strokeWidth: 1.2 } }} />;
 
+const SWAP_ICON = <TypeSwapArrowsIcon sx={{ fontSize: '1.25rem' }} />;
+
 const FIAT_TOGGLE_SX = {
   ...TEXT_BUTTON_SX,
-  gap: '0.25rem',
+  gap: '0.375rem',
   color: 'fg-3',
   '& [data-readout]::after': {
     content: '""',
@@ -371,7 +373,7 @@ export const TokenAmountInput = ({
             />
           ) : (
             <ButtonBase onClick={() => setShowFiat(!fiat)} disabled={inert} sx={FIAT_TOGGLE_SX}>
-              <TypeSwapArrowsIcon />
+              {SWAP_ICON}
               <FormattedNumber
                 data-readout
                 component="span"
