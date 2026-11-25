@@ -19,6 +19,7 @@ import { TokenAmountInput } from 'src/components/TokenAmountInput';
 import { useDebouncedValue } from 'src/hooks/useDebouncedValue';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
+import { FlashLoanUnavailableError, useMigration } from '../../../hooks/useMigration';
 import {
   collateralExposureRow,
   marketTitle,
@@ -35,7 +36,6 @@ import { getMigrationMarketTitle } from '../../../V4MigrationPage/utils/markets'
 import { getAssetIconSymbol, getHubDisplayName } from '../../../V4MigrationPage/utils/positions';
 import { V4MigrationPreview, V4MigrationPreviewRow } from '../../../V4MigrationPreview';
 import { PositionName } from '../../../V4MigrationPreview/components/PositionName';
-import { FlashLoanUnavailableError, useEarnMigration } from '../../hooks/useEarnMigration';
 import { EarnHub } from '../../utils/hubs';
 import { MOCK_V3_COLLATERAL_EXPOSURE } from '../../utils/mocks';
 import { EarnMigrationStatus } from '../EarnMigrationStatus';
@@ -250,7 +250,7 @@ export const ReviewEarnMigration = ({
   const [amount, setAmount] = useState<BigNumber | null>(available);
   const debouncedAmount = useDebouncedValue(amount, PREVIEW_DEBOUNCE_MS);
   const { readOnlyMode } = useWeb3Context();
-  const { run, migrate, reset } = useEarnMigration();
+  const { run, migrate, reset } = useMigration();
   const [useAsCollateral, setUseAsCollateral] = useState(false);
   // The opportunities list never says whether the hub takes this asset as collateral, so ask the
   // preview once with the flag on: it only answers PREVIEWED when it does.
@@ -389,10 +389,13 @@ export const ReviewEarnMigration = ({
                 address: opportunity.market.address,
                 chainId: opportunity.market.chain.chainId,
               },
-              currency: currency.address,
               spoke: hub.id,
-              amount: migrateAmount,
-              useAsCollateral,
+              position: {
+                kind: 'earn',
+                currency: currency.address,
+                amount: migrateAmount,
+                useAsCollateral,
+              },
             })
           }
         >

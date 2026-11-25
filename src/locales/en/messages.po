@@ -1063,6 +1063,7 @@ msgstr "Techpaper"
 msgid "You've successfully submitted an order."
 msgstr "You've successfully submitted an order."
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 msgid "Read-only mode. Connect a wallet to migrate."
 msgstr "Read-only mode. Connect a wallet to migrate."
@@ -2268,6 +2269,7 @@ msgstr "The network fee paid for the transaction"
 msgid "How much of this position moves to V4. Collateral and debt move in the same proportion."
 msgstr "How much of this position moves to V4. Collateral and debt move in the same proportion."
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 msgid "Confirm in your wallet"
 msgstr "Confirm in your wallet"
@@ -3626,6 +3628,7 @@ msgstr "Unavailable Hubs"
 msgid "Activate Cooldown"
 msgstr "Activate Cooldown"
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 msgid "The migration couldn't be started. Please try again."
 msgstr "The migration couldn't be started. Please try again."
@@ -3703,6 +3706,7 @@ msgstr "migrated"
 msgid "Staked Balance"
 msgstr "Staked Balance"
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 msgid "There isn't enough liquidity to migrate this amount right now. Try a smaller amount or come back later."
 msgstr "There isn't enough liquidity to migrate this amount right now. Try a smaller amount or come back later."

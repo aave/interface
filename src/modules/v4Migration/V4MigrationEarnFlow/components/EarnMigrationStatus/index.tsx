@@ -9,6 +9,7 @@ import { endIconSizeSx } from 'src/utils/buttonStyles';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { formatUnits } from 'viem';
 
+import { MigrationReceipt } from '../../../hooks/useMigration';
 import {
   hubTitle,
   MIGRATION_TX_BUTTONS,
@@ -16,7 +17,6 @@ import {
   migrationTxTitle,
 } from '../../../utils/copy';
 import { getHubDisplayName } from '../../../V4MigrationPage/utils/positions';
-import { EarnMigrationReceipt } from '../../hooks/useEarnMigration';
 
 const BUTTON_ROW_SX = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' } as const;
 
@@ -32,7 +32,7 @@ interface EarnMigrationStatusProps {
   chainId: number;
   txHash?: string;
   /** Set once the migration is mined. */
-  receipt?: EarnMigrationReceipt;
+  receipt?: MigrationReceipt;
   symbol: string;
   iconSymbol: string;
   /** In whole tokens. */

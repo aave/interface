@@ -12,18 +12,30 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getBlock, waitForTransactionReceipt } from 'wagmi/actions';
 
-export interface EarnMigrationRequest {
+/** What moves: an amount of one supply that backs no debt, or a share of a whole borrow position. */
+export type MigrationPositionRequest =
+  | {
+      kind: 'earn';
+      currency: string;
+      /** In whole tokens. */
+      amount: string;
+      useAsCollateral: boolean;
+    }
+  | {
+      kind: 'borrow';
+      /** Above 0 and up to 100, with at most two decimals. */
+      percentage: number;
+    };
+
+export interface MigrationRequest {
   user: string;
   market: { address: string; chainId: number };
-  currency: string;
   spoke: string;
-  /** In whole tokens. */
-  amount: string;
-  useAsCollateral: boolean;
+  position: MigrationPositionRequest;
 }
 
 /** What the chain says about the migration once it is mined. */
-export interface EarnMigrationReceipt {
+export interface MigrationReceipt {
   blockNumber: bigint;
   /** Unix seconds. Missing when the block could not be read. */
   timestamp?: number;
@@ -35,13 +47,13 @@ export interface EarnMigrationReceipt {
  * `idle` and `signing` are before anything is sent: the user is still on the form, answering the
  * wallet's prompts. From `pending` on, the transaction is out and `txHash` names it.
  */
-export type EarnMigrationRun =
+export type MigrationRun =
   | { status: 'idle'; error?: Error }
   | { status: 'signing' }
   | {
       status: Extract<TxStatus, 'pending' | 'success' | 'error'>;
       txHash: string;
-      receipt?: EarnMigrationReceipt;
+      receipt?: MigrationReceipt;
       error?: Error;
     };
 
@@ -80,20 +92,20 @@ const toSignable = ({ types, primaryType, domain, message }: MigrationTypedData)
   });
 
 /**
- * Runs an earn migration from start to finish: the API asks for signatures, then for the
+ * Runs a migration, earn or borrow, from start to finish: the API asks for signatures, then for the
  * signature of the Safe the migration runs in, then answers the transaction to send.
  */
-export const useEarnMigration = () => {
+export const useMigration = () => {
   const web3 = useWeb3Context();
   // The wallet helpers are bound to the chain the wallet was on when they were created, so after
   // a network switch the run has to pick up the ones from the next render.
   const latestWeb3 = useRef(web3);
   latestWeb3.current = web3;
   const [migratePosition] = useMigratePosition();
-  const [run, setRun] = useState<EarnMigrationRun>({ status: 'idle' });
+  const [run, setRun] = useState<MigrationRun>({ status: 'idle' });
 
   const migrate = useCallback(
-    async (request: EarnMigrationRequest) => {
+    async (request: MigrationRequest) => {
       setRun({ status: 'signing' });
       let sentHash: string | undefined;
 
@@ -119,13 +131,16 @@ export const useEarnMigration = () => {
               chainId: request.market.chainId as MigratePositionRequest['market']['chainId'],
             },
             spoke: evmAddress(request.spoke),
-            position: {
-              earn: {
-                currency: evmAddress(request.currency),
-                amount: bigDecimal(request.amount),
-                useAsCollateral: request.useAsCollateral,
-              },
-            },
+            position:
+              request.position.kind === 'earn'
+                ? {
+                    earn: {
+                      currency: evmAddress(request.position.currency),
+                      amount: bigDecimal(request.position.amount),
+                      useAsCollateral: request.position.useAsCollateral,
+                    },
+                  }
+                : { borrow: { percentage: bigDecimal(String(request.position.percentage)) } },
             signed,
           });
           if (result.isErr()) throw result.error;
@@ -189,7 +204,7 @@ export const useEarnMigration = () => {
         throw new Error('Migration did not reach a transaction');
       } catch (cause) {
         const error = cause instanceof Error ? cause : new Error(String(cause));
-        console.error('Earn migration failed', error);
+        console.error('Migration failed', error);
         if (sentHash) {
           setRun({ status: 'error', txHash: sentHash, error });
         } else {
