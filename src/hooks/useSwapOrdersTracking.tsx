@@ -1,3 +1,5 @@
+import { orderStatus } from '@aave/client/actions';
+import { OrderId, useAaveClient } from '@aave/react';
 import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -20,6 +22,7 @@ import {
   isOrderLoading,
 } from 'src/components/transactions/Swap/helpers/cow';
 import { invalidateAppStateForSwap } from 'src/components/transactions/Swap/helpers/shared';
+import { SwapType } from 'src/components/transactions/Swap/types';
 import {
   CowSwapSubset,
   isCowSwapSubset,
@@ -46,6 +49,8 @@ interface OrderDetails {
 
 interface SwapOrdersTrackingContextType {
   trackSwapOrderProgress: (orderId: string, chainId: number) => void;
+  /** Polls the backend's order status for an order id the backend issued. */
+  trackBackendOrder: (orderId: string, chainId: number) => void;
   trackParaswapTx: (txHash: string, chainId: number, sellTokenAddress?: string) => void;
   stopTracking: (orderId: string) => void;
   hasActiveOrders: boolean;
@@ -64,6 +69,7 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
   const { data: transactions } = useTransactionHistory({ isFilterActive: false });
   const [hasActiveOrders, setHasActiveOrders] = useState(false);
   const queryClient = useQueryClient();
+  const client = useAaveClient();
   const { account, currentMarketData, trackEvent } = useRootStore(
     useShallow((store) => ({
       account: store.account,
@@ -253,6 +259,82 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
     [stopTracking]
   );
 
+  const trackBackendOrder = useCallback(
+    (orderId: string, chainId: number) => {
+      stopTracking(orderId);
+
+      const interval = setInterval(async () => {
+        // Hidden tabs skip the poll; the first tick after the tab returns catches up.
+        if (document.hidden) return;
+        const result = await orderStatus(client, { id: orderId as OrderId });
+        if (result.isErr()) {
+          console.error('Error checking order status:', result.error);
+          return;
+        }
+        const order = result.value;
+        if (!order || processedOrdersRef.current.has(orderId)) return;
+
+        const operation = order.operation;
+        const sellCurrency = operation.__typename === 'TokenSwap' ? operation.sellCurrency : null;
+        if (sellCurrency?.__typename === 'Currency') {
+          setActiveOrders((prev) => {
+            const current = prev.get(orderId);
+            if (!current || current.sellToken === sellCurrency.address) return prev;
+            return new Map(prev).set(orderId, { ...current, sellToken: sellCurrency.address });
+          });
+        }
+
+        const fulfilled = order.__typename === 'OrderFulfilled';
+        if (
+          !fulfilled &&
+          order.__typename !== 'OrderCancelled' &&
+          order.__typename !== 'OrderExpired'
+        ) {
+          return;
+        }
+        processedOrdersRef.current.add(orderId);
+        const action = {
+          label: 'View',
+          onClick: () => window.open(order.explorerUrl, '_blank'),
+        };
+        if (fulfilled) {
+          toast.success('Swap completed successfully.', { action });
+        } else {
+          toast.error(
+            order.__typename === 'OrderExpired'
+              ? 'Swap order expired.'
+              : 'Swap could not be completed.',
+            { action }
+          );
+        }
+        stopTracking(orderId);
+        queryClient.invalidateQueries({
+          queryKey: queryKeysFactory.transactionHistory(account, currentMarketData),
+        });
+        trackEvent(fulfilled ? GENERAL.SWAP_COMPLETED : GENERAL.SWAP_FAILED, {
+          chainId,
+          orderId,
+          ...(operation.__typename === 'TokenSwap' && {
+            inputSymbol: operation.sellCurrency.symbol,
+            outputSymbol: operation.buyCurrency.symbol,
+            executedAmount: fulfilled ? operation.buy.amount.raw : undefined,
+          }),
+        });
+      }, 10000);
+
+      setActiveOrders((prev) =>
+        new Map(prev).set(orderId, {
+          orderId,
+          chainId,
+          interval,
+          appCode: APP_CODE_PER_SWAP_TYPE[SwapType.Swap],
+        })
+      );
+      setHasActiveOrders(true);
+    },
+    [stopTracking, client, account, currentMarketData, queryClient, trackEvent]
+  );
+
   const trackParaswapTx = useCallback(
     (txHash: string, chainId: number, sellTokenAddress?: string) => {
       // Clear any existing interval for this hash
@@ -312,6 +394,7 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
     <SwapOrdersTrackingContext.Provider
       value={{
         trackSwapOrderProgress,
+        trackBackendOrder,
         trackParaswapTx,
         stopTracking,
         hasActiveOrders,

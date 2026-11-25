@@ -1,4 +1,4 @@
-import { CowEnv, OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
+import { OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
 import { AaveFlashLoanType } from '@cowprotocol/sdk-flash-loans';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { marketsData } from 'src/utils/marketsAndNetworksConfig';
@@ -138,15 +138,6 @@ export const isChainIdSupportedByCoWProtocol = (chainId: number): chainId is Sup
 };
 
 export const COW_EVM_RECIPIENT = '0xC542C2F197c4939154017c802B0583C596438380';
-export const COW_PROTOCOL_ETH_FLOW_ADDRESS = '0xbA3cB449bD2B4ADddBc894D8697F5170800EAdeC';
-export const COW_PROTOCOL_ETH_FLOW_ADDRESS_STAGING = '0x04501b9b1D52e67f6862d157E00D13419D2D6E95';
-
-export const COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV = (env: CowEnv) => {
-  return env === 'staging' ? COW_PROTOCOL_ETH_FLOW_ADDRESS_STAGING : COW_PROTOCOL_ETH_FLOW_ADDRESS;
-};
-
-export const COW_CREATE_ORDER_ABI =
-  'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
 
 const DEFAULT_PARTNER_FEE_SAME_GROUP_BPS = 15;
 const DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS = 25;

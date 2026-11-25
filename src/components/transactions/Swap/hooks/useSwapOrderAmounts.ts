@@ -5,6 +5,7 @@ import { useRootStore } from 'src/store/root';
 
 import { COW_PARTNER_FEE } from '../constants/cow.constants';
 import {
+  isBackendRates,
   isCowProtocolRates,
   OrderType,
   SwapParams,
@@ -82,7 +83,7 @@ export const useSwapOrderAmounts = ({
     // Track costs to expose them in state (unified across details views)
     let networkFeeAmountInSellFormatted = '0';
     let networkFeeAmountInBuyFormatted = '0';
-    const partnetFeeBps =
+    let partnetFeeBps =
       state.provider === SwapProvider.COW_PROTOCOL
         ? COW_PARTNER_FEE(
             state.sourceToken.symbol,
@@ -91,7 +92,7 @@ export const useSwapOrderAmounts = ({
             currentMarket
           ).volumeBps
         : 0;
-    const partnerFeeAmount =
+    let partnerFeeAmount =
       state.side === 'sell'
         ? valueToBigNumber(state.outputAmount).multipliedBy(partnetFeeBps).dividedBy(10000)
         : valueToBigNumber(state.inputAmount).multipliedBy(partnetFeeBps).dividedBy(10000);
@@ -312,6 +313,27 @@ export const useSwapOrderAmounts = ({
       }
     }
 
+    // The backend places the order with its own final amounts and costs, so show exactly those.
+    if (isBackendRates(state.swapRate) && state.orderType === OrderType.MARKET) {
+      const { finalSell, finalBuy, sell, buy, costs } = state.swapRate.backendQuote;
+      sellAmountFormatted = finalSell.amount.value;
+      buyAmountFormatted = finalBuy.amount.value;
+      networkFeeAmountInSellFormatted = costs.networkCosts.amount.value;
+      networkFeeAmountInBuyFormatted = valueToBigNumber(sell.amount.value).isZero()
+        ? '0'
+        : valueToBigNumber(costs.networkCosts.amount.value)
+            .multipliedBy(buy.amount.value)
+            .dividedBy(sell.amount.value)
+            .toFixed();
+      partnerFeeAmount = valueToBigNumber(costs.partnerFee.amount.value);
+      const feeBase = valueToBigNumber(
+        state.side === 'sell' ? buy.amount.value : sell.amount.value
+      );
+      partnetFeeBps = feeBase.isZero()
+        ? 0
+        : partnerFeeAmount.dividedBy(feeBase).multipliedBy(10000).decimalPlaces(2).toNumber();
+    }
+
     if (
       buyAmountFormatted == undefined ||
       sellAmountFormatted == undefined ||
@@ -374,5 +396,6 @@ export const useSwapOrderAmounts = ({
     state.orderType,
     state.useFlashloan,
     resolvedFlashLoanFeeBps,
+    state.swapRate,
   ]);
 };

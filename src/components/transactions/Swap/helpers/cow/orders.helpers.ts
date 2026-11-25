@@ -1,33 +1,25 @@
 import { API_ETH_MOCK_ADDRESS } from '@aave/contract-helpers';
 import {
-  BuyTokenDestination,
   CowEnv,
   OrderBookApi,
   OrderClass,
   OrderKind,
   OrderStatus,
   QuoteAndPost,
-  SellTokenSource,
   SigningScheme,
   SlippageToleranceRequest,
   SlippageToleranceResponse,
   SupportedChainId,
   UnsignedOrder,
-  WRAPPED_NATIVE_CURRENCIES,
 } from '@cowprotocol/cow-sdk';
-import { AnyAppDataDocVersion, AppDataParams, MetadataApi } from '@cowprotocol/sdk-app-data';
+import { AppDataParams } from '@cowprotocol/sdk-app-data';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber, ethers, PopulatedTransaction } from 'ethers';
 import { isSmartContractWallet } from 'src/helpers/provider';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 
 import { SignedParams } from '../../actions/approval/useSwapTokenApproval';
-import {
-  COW_APP_DATA,
-  COW_CREATE_ORDER_ABI,
-  COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV,
-  isChainIdSupportedByCoWProtocol,
-} from '../../constants/cow.constants';
+import { COW_APP_DATA, isChainIdSupportedByCoWProtocol } from '../../constants/cow.constants';
 import { OrderType, SwapState, SwapType } from '../../types';
 import { getCowTradingSdkByChainIdAndAppCode } from './env.helpers';
 
@@ -284,148 +276,6 @@ export const isNativeToken = (token?: string) => {
   return token?.toLowerCase() === API_ETH_MOCK_ADDRESS.toLowerCase();
 };
 
-// TODO: make object param
-export const getUnsignerOrder = async ({
-  sellAmount,
-  buyAmount,
-  dstToken,
-  user,
-  chainId,
-  tokenFromSymbol,
-  tokenToSymbol,
-  slippageBps,
-  smartSlippage,
-  appCode,
-  orderType,
-  validTo,
-  srcToken,
-  receiver,
-  swapType,
-  market,
-}: {
-  sellAmount: string;
-  buyAmount: string;
-  dstToken: string;
-  user: string;
-  chainId: number;
-  tokenFromSymbol: string;
-  tokenToSymbol: string;
-  slippageBps: number;
-  smartSlippage: boolean;
-  appCode: string;
-  orderType: OrderType;
-  validTo: number;
-  srcToken?: string;
-  receiver?: string;
-  swapType: SwapType;
-  market: CustomMarket;
-}) => {
-  const metadataApi = new MetadataApi();
-  const { appDataHex } = await metadataApi.getAppDataInfo(
-    COW_APP_DATA(
-      tokenFromSymbol,
-      tokenToSymbol,
-      slippageBps,
-      smartSlippage,
-      orderType,
-      appCode,
-      swapType,
-      market
-    )
-  );
-
-  return {
-    buyToken: dstToken,
-    receiver: receiver || user,
-    sellAmount,
-    buyAmount,
-    appData: appDataHex,
-    feeAmount: '0',
-    validTo: validTo,
-    partiallyFillable: false,
-    kind: OrderKind.SELL,
-    sellToken: srcToken
-      ? srcToken.toLowerCase()
-      : WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId].address.toLowerCase(),
-    buyTokenBalance: BuyTokenDestination.ERC20,
-    sellTokenBalance: SellTokenSource.ERC20,
-  };
-};
-
-export const hashAppData = async (appData: AnyAppDataDocVersion) => {
-  const metadataApi = new MetadataApi();
-  const { appDataHex } = await metadataApi.getAppDataInfo(appData);
-  return appDataHex;
-};
-
-export const populateEthFlowTx = async (
-  sellAmount: string,
-  buyAmount: string,
-  dstToken: string,
-  user: string,
-  validTo: number,
-  tokenFromSymbol: string,
-  tokenToSymbol: string,
-  slippageBps: number,
-  smartSlippage: boolean,
-  appCode: string,
-  orderType: OrderType,
-  swapType: SwapType,
-  market: CustomMarket,
-  quoteId?: number
-): Promise<PopulatedTransaction> => {
-  const appDataHex = await hashAppData(
-    COW_APP_DATA(
-      tokenFromSymbol,
-      tokenToSymbol,
-      slippageBps,
-      smartSlippage,
-      orderType,
-      appCode,
-      swapType,
-      market
-    )
-  );
-
-  const orderData = {
-    buyToken: dstToken,
-    receiver: user,
-    sellAmount,
-    buyAmount,
-    appData: appDataHex,
-    feeAmount: '0',
-    validTo,
-    partiallyFillable: false,
-    quoteId: quoteId || 0,
-  };
-
-  const value = BigNumber.from(sellAmount);
-
-  // Create the contract interface
-  const iface = new ethers.utils.Interface([COW_CREATE_ORDER_ABI]);
-
-  // Encode the function call
-  const data = iface.encodeFunctionData('createOrder', [
-    [
-      orderData.buyToken,
-      orderData.receiver,
-      orderData.sellAmount,
-      orderData.buyAmount,
-      orderData.appData,
-      orderData.feeAmount,
-      orderData.validTo,
-      orderData.partiallyFillable,
-      orderData.quoteId,
-    ],
-  ]);
-
-  return {
-    to: COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV(COW_ENV),
-    value,
-    data,
-  };
-};
-
 export const getRecommendedSlippage = (srcUSD: string) => {
   try {
     if (Number(srcUSD) <= 0) {
@@ -444,12 +294,6 @@ export const getRecommendedSlippage = (srcUSD: string) => {
   } catch (e) {
     return Number(0.5);
   }
-};
-
-export const uploadAppData = async (orderId: string, appDataHex: string, chainId: number) => {
-  const orderBookApi = new OrderBookApi({ chainId, env: COW_ENV });
-
-  return orderBookApi.uploadAppData(orderId, appDataHex);
 };
 
 export const generateCoWExplorerLink = (chainId: SupportedChainId, orderId?: string) => {

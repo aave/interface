@@ -1,7 +1,9 @@
 import { Dispatch } from 'react';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
+import { isSwapViaBackend } from '../../helpers/shared/provider.helpers';
 import { SwapParams, SwapProvider, SwapState } from '../../types';
+import { SwapActionsViaBackend } from './SwapActionsViaBackend';
 import { SwapActionsViaCoW } from './SwapActionsViaCoW';
 import { SwapActionsViaParaswap } from './SwapActionsViaParaswap';
 
@@ -18,7 +20,14 @@ export const SwapActions = ({
 }) => {
   switch (state.provider) {
     case SwapProvider.COW_PROTOCOL:
-      return (
+      return isSwapViaBackend(state.provider, params.swapType, state.orderType) ? (
+        <SwapActionsViaBackend
+          params={params}
+          state={state}
+          setState={setState}
+          trackingHandlers={trackingHandlers}
+        />
+      ) : (
         <SwapActionsViaCoW
           params={params}
           state={state}

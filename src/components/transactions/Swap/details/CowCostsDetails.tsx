@@ -12,12 +12,13 @@ import { Row } from 'src/components/primitives/Row';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 
 import { calculateFlashLoanAmounts } from '../helpers/cow/adapters.helpers';
-import { isCowProtocolRates, OrderType, SwapState } from '../types';
+import { isBackendRates, isCowProtocolRates, OrderType, SwapState } from '../types';
 
 export const CowCostsDetails = ({ state }: { state: SwapState }) => {
   const [costBreakdownExpanded, setCostBreakdownExpanded] = useState(false);
 
-  if (!state.swapRate || !isCowProtocolRates(state.swapRate)) return null;
+  // Backend quote costs reach state through useSwapOrderAmounts, so both read the same fields.
+  if (!isCowProtocolRates(state.swapRate) && !isBackendRates(state.swapRate)) return null;
 
   // Prefer unified values exported on state; fall back to raw swapRate if missing
   const networkFeeFormatted = state.networkFeeAmountInSellFormatted || '0';

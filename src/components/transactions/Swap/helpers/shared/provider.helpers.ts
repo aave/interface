@@ -3,7 +3,20 @@ import {
   isChainIdSupportedByCoWProtocol,
 } from '../../constants/cow.constants';
 import { ParaswapSupportedNetworks } from '../../constants/paraswap.constants';
-import { SwapProvider, SwapType } from '../../types';
+import { OrderType, SwapProvider, SwapType } from '../../types';
+
+/**
+ * Token swaps routed to CoW are quoted and placed by the Aave backend; position flows still post
+ * to CoW from the browser.
+ */
+export const isSwapViaBackend = (
+  provider: SwapProvider | undefined,
+  swapType: SwapType,
+  orderType: OrderType
+) =>
+  provider === SwapProvider.COW_PROTOCOL &&
+  swapType === SwapType.Swap &&
+  orderType === OrderType.MARKET;
 
 /**
  * Returns whether CoW Protocol can handle the given pair/swapType on the chain.

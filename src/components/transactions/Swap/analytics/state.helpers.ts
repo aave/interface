@@ -1,6 +1,6 @@
 import { TrackEventProperties } from 'src/store/analyticsSlice';
 
-import { isCowProtocolRates, SwapError, SwapQuoteType, SwapState } from '../types';
+import { isBackendRates, isCowProtocolRates, SwapError, SwapQuoteType, SwapState } from '../types';
 import { SwapInputChanges } from './constants';
 
 export const swapStateToAnalyticsEventParams = (state: SwapState): TrackEventProperties => {
@@ -72,6 +72,10 @@ export const swapQuoteToAnalyticsEventParams = (
     ...(isCowProtocolRates(swapQuote)
       ? {
           quoteQuoteId: swapQuote.quoteId,
+        }
+      : isBackendRates(swapQuote)
+      ? {
+          quoteQuoteId: swapQuote.backendQuote.quoteId,
         }
       : {
           // any?

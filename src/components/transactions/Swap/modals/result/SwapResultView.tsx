@@ -1,4 +1,6 @@
+import { orderStatus as fetchOrderStatus } from '@aave/client/actions';
 import { normalize } from '@aave/math-utils';
+import { OrderId, useAaveClient } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { CircularProgress, Typography } from '@mui/material';
 import { BigNumber } from 'ethers';
@@ -26,6 +28,7 @@ import {
   isOrderFilled,
   isOrderLoading,
 } from '../../helpers/cow';
+import { isSwapViaBackend } from '../../helpers/shared/provider.helpers';
 import { SwapParams, SwapProvider, SwapState } from '../../types';
 
 type OrderResultStatus = 'succeed' | 'failed' | 'expired' | 'open';
@@ -93,6 +96,8 @@ export type SwapTxSuccessViewProps = {
   iconUri?: string;
   outIconUri?: string;
   provider?: SwapProvider;
+  /** The id is a backend order id, polled through the backend instead of CoW. */
+  viaBackend?: boolean;
   chainId: number;
   buyDecimals: number;
   sellDecimals: number;
@@ -161,6 +166,7 @@ export const SwapResultView = ({
       iconUri={state.sourceToken.logoURI}
       outIconUri={state.destinationToken.logoURI}
       provider={state.provider}
+      viaBackend={isSwapViaBackend(state.provider, params.swapType, state.orderType)}
       chainId={state.chainId}
       buyDecimals={state.buyAmountToken?.decimals ?? 18}
       sellDecimals={state.sellAmountToken?.decimals ?? 18}
@@ -184,6 +190,7 @@ export const SwapTxSuccessView = ({
   iconUri,
   outIconUri,
   provider,
+  viaBackend,
   chainId,
   buyDecimals,
   sellDecimals,
@@ -194,8 +201,10 @@ export const SwapTxSuccessView = ({
   previewOrder,
   trackingHandlers,
 }: SwapTxSuccessViewProps & { trackingHandlers?: TrackAnalyticsHandlers }) => {
-  const { trackSwapOrderProgress, setHasActiveOrders } = useSwapOrdersTracking();
+  const { trackSwapOrderProgress, trackBackendOrder, setHasActiveOrders } = useSwapOrdersTracking();
   const { close } = useModalContext();
+  const client = useAaveClient();
+  const [backendExplorerUrl, setBackendExplorerUrl] = useState<string>();
 
   // Do polling each 10 seconds until the order get's filled
   const [orderStatus, setOrderStatus] = useState<OrderResultStatus>(previewOrder?.status ?? 'open');
@@ -211,7 +220,9 @@ export const SwapTxSuccessView = ({
   // Start tracking the order when the component mounts
   useEffect(() => {
     if (previewOrder) return;
-    if (provider === 'cowprotocol' && txHashOrOrderId) {
+    if (provider === 'cowprotocol' && txHashOrOrderId && viaBackend) {
+      trackBackendOrder(txHashOrOrderId, chainId);
+    } else if (provider === 'cowprotocol' && txHashOrOrderId) {
       trackSwapOrderProgress(txHashOrOrderId, chainId);
     } else if (provider === 'cowprotocol' && orderStatus === 'open') {
       // If the order is open, force the spinner to show, waiting for order details e.g. eth flow
@@ -221,47 +232,64 @@ export const SwapTxSuccessView = ({
 
   // Poll the order status for UI updates
   const interval = useRef<NodeJS.Timeout | null>(null);
+  const onFilled = (executedSellAmount: string, executedBuyAmount: string) => {
+    setOrderStatus('succeed');
+    setSurplus(
+      BigNumber.from(isInvertedSwap ? executedSellAmount : executedBuyAmount)
+        .sub(
+          BigNumber.from(
+            !isInvertedSwap
+              ? parseUnits(outAmount, buyDecimals)
+              : parseUnits(inAmount, sellDecimals)
+          )
+        )
+        .toBigInt()
+    );
+    setOutFinalAmount(
+      !isInvertedSwap
+        ? normalize(executedBuyAmount, buyDecimals)
+        : normalize(executedSellAmount, sellDecimals)
+    );
+    setInAmount(
+      !isInvertedSwap
+        ? normalize(executedSellAmount, sellDecimals)
+        : normalize(executedBuyAmount, buyDecimals)
+    );
+    if (interval.current) {
+      clearInterval(interval.current);
+    }
+    invalidateAppState();
+    trackingHandlers?.trackSwapFilled(executedSellAmount, executedBuyAmount);
+  };
+  const onClosed = (status: 'expired' | 'failed') => {
+    setOrderStatus(status);
+    if (interval.current) {
+      clearInterval(interval.current);
+    }
+    invalidateAppState();
+    trackingHandlers?.trackSwapFailed();
+  };
+
   const pollOrder = async () => {
-    if (provider === 'cowprotocol' && txHashOrOrderId) {
+    if (document.hidden) return;
+    if (provider === 'cowprotocol' && txHashOrOrderId && viaBackend) {
+      const result = await fetchOrderStatus(client, { id: txHashOrOrderId as OrderId });
+      if (result.isErr()) return console.error(result.error);
+      const order = result.value;
+      if (!order) return;
+      setBackendExplorerUrl(order.explorerUrl);
+      if (order.__typename === 'OrderFulfilled' && order.operation.__typename === 'TokenSwap') {
+        onFilled(order.operation.sell.amount.raw, order.operation.buy.amount.raw);
+      } else if (order.__typename === 'OrderCancelled' || order.__typename === 'OrderExpired') {
+        onClosed(order.__typename === 'OrderExpired' ? 'expired' : 'failed');
+      }
+    } else if (provider === 'cowprotocol' && txHashOrOrderId) {
       getOrder(txHashOrOrderId, chainId)
         .then((order) => {
           if (isOrderFilled(order.status)) {
-            setOrderStatus('succeed');
-            setSurplus(
-              BigNumber.from(isInvertedSwap ? order.executedSellAmount : order.executedBuyAmount)
-                .sub(
-                  BigNumber.from(
-                    !isInvertedSwap
-                      ? parseUnits(outAmount, buyDecimals)
-                      : parseUnits(inAmount, sellDecimals)
-                  )
-                )
-                .toBigInt()
-            );
-            setOutFinalAmount(
-              !isInvertedSwap
-                ? normalize(order.executedBuyAmount, buyDecimals)
-                : normalize(order.executedSellAmount, sellDecimals)
-            );
-            setInAmount(
-              !isInvertedSwap
-                ? normalize(order.executedSellAmount, sellDecimals)
-                : normalize(order.executedBuyAmount, buyDecimals)
-            );
-            if (interval.current) {
-              clearInterval(interval.current);
-            }
-            invalidateAppState();
-            // Analytics: CoW order filled
-            trackingHandlers?.trackSwapFilled(order.executedSellAmount, order.executedBuyAmount);
+            onFilled(order.executedSellAmount, order.executedBuyAmount);
           } else if (isOrderCancelled(order.status) || isOrderExpired(order.status)) {
-            setOrderStatus(isOrderExpired(order.status) ? 'expired' : 'failed');
-            if (interval.current) {
-              clearInterval(interval.current);
-            }
-            invalidateAppState();
-            // Analytics: CoW order failed
-            trackingHandlers?.trackSwapFailed();
+            onClosed(isOrderExpired(order.status) ? 'expired' : 'failed');
           } else if (isOrderLoading(order.status)) {
             setOrderStatus('open');
           }
@@ -280,6 +308,8 @@ export const SwapTxSuccessView = ({
       buyDecimals &&
       interval.current === null
     ) {
+      // The explorer link comes from the status, so fetch it right away.
+      if (viaBackend) pollOrder();
       interval.current = setInterval(pollOrder, 10000);
     }
   }, [txHashOrOrderId, chainId, provider, buyDecimals, previewOrder]);
@@ -297,14 +327,15 @@ export const SwapTxSuccessView = ({
   const titleItems = resultScreenTitleItems || <Trans>tokens</Trans>;
 
   const customExplorerLink = useMemo(() => {
+    if (viaBackend) return backendExplorerUrl;
     return provider === 'cowprotocol'
       ? generateCoWExplorerLink(chainId, txHashOrOrderId)
       : `${networkConfig}/tx/${txHashOrOrderId}`;
-  }, [provider, chainId, txHashOrOrderId]);
+  }, [provider, chainId, txHashOrOrderId, viaBackend, backendExplorerUrl]);
 
   const customExplorerLinkText = useMemo(() => {
     return provider === 'cowprotocol' ? (
-      txHashOrOrderId ? (
+      txHashOrOrderId && (!viaBackend || backendExplorerUrl) ? (
         <Trans>View details</Trans>
       ) : (
         <>
@@ -319,7 +350,7 @@ export const SwapTxSuccessView = ({
         </>
       )
     ) : undefined;
-  }, [provider, txHashOrOrderId]);
+  }, [provider, txHashOrOrderId, viaBackend, backendExplorerUrl]);
 
   return (
     <TxResultView

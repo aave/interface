@@ -1,12 +1,10 @@
 import {
-  calculateUniqueOrderId,
   COW_PROTOCOL_VAULT_RELAYER_ADDRESS,
   OrderKind,
   SupportedChainId,
 } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { BigNumber } from 'ethers';
-import stringify from 'json-stringify-deterministic';
 import { Dispatch, useMemo } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { isSmartContractWallet } from 'src/helpers/provider';
@@ -20,16 +18,8 @@ import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import { COW_APP_DATA } from '../../constants/cow.constants';
 import { APP_CODE_PER_SWAP_TYPE } from '../../constants/shared.constants';
-import {
-  getPreSignTransaction,
-  getUnsignerOrder,
-  isNativeToken,
-  populateEthFlowTx,
-  sendOrder,
-  uploadAppData,
-} from '../../helpers/cow';
+import { getPreSignTransaction, sendOrder } from '../../helpers/cow';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
@@ -44,10 +34,11 @@ import {
 import { useSwapTokenApproval } from '../approval/useSwapTokenApproval';
 
 /**
- * Asset swap via CoW Protocol (Limit/Market orders).
+ * aToken swap via CoW Protocol (Limit/Market orders), used by collateral swap without flash loan
+ * and withdraw and swap. Token swaps go through SwapActionsViaBackend.
  *
  * Process:
- * 1) Ensure token approval (with permit when possible) for the CoW Relayer. Handles smart contract wallets and native token flows.
+ * 1) Ensure token approval (with permit when possible) for the CoW Relayer. Handles smart contract wallets.
  * 2) For tokens requiring approval, attempts onchain approval and reacts to possible failures or pending states.
  * 3) For ERC-20s supporting permit, attempts signature path unless already approved.
  * 4) Handles both normal EOA users and smart contract wallets (e.g. Gnosis Safe) with pre-sign or off-chain signatures as needed.
@@ -177,28 +168,48 @@ export const SwapActionsViaCoW = ({
         const smartSlippage = state.swapRate.suggestedSlippage == Number(slippageInPercent);
         const appCode = APP_CODE_PER_SWAP_TYPE[params.swapType];
 
-        // If srcToken is native, we need to use the eth-flow instead of the orderbook
-        if (isNativeToken(state.sourceToken.addressToSwap)) {
-          const ethFlowTx = await populateEthFlowTx(
-            sellAmountAccountingCosts.toString(),
-            buyAmountAccountingCosts.toString(),
-            state.destinationToken.addressToSwap,
-            user,
-            validTo,
-            state.sourceToken.symbol,
-            state.destinationToken.symbol,
-            slippageBps,
-            smartSlippage,
-            appCode,
-            state.orderType,
-            params.swapType,
-            currentMarket,
-            state.swapRate.quoteId
-          );
-          const txWithGasEstimation = await estimateGasLimit(ethFlowTx, state.chainId);
-          let response;
-          try {
-            response = await sendTx(txWithGasEstimation);
+        // Callers sell aTokens only; native token swaps go through the backend.
+        let orderId;
+        try {
+          if (await isSmartContractWallet(user, provider)) {
+            const preSignTransaction = await getPreSignTransaction({
+              provider,
+              validTo,
+              tokenDest: state.destinationToken.addressToSwap,
+              chainId: state.chainId,
+              user,
+              sellAmount: sellAmountAccountingCosts.toString(),
+              buyAmount: buyAmountAccountingCosts.toString(),
+              tokenSrc: state.sourceToken.addressToSwap,
+              tokenSrcDecimals: state.sourceToken.decimals,
+              tokenDestDecimals: state.destinationToken.decimals,
+              slippageBps,
+              smartSlippage,
+              inputSymbol: state.sourceToken.symbol,
+              outputSymbol: state.destinationToken.symbol,
+              quote: state.swapRate?.order,
+              appCode,
+              orderBookQuote: state.swapRate?.orderBookQuote,
+              orderType: state.orderType,
+              swapType: params.swapType,
+              market: currentMarket,
+              kind:
+                state.orderType === OrderType.MARKET
+                  ? OrderKind.SELL
+                  : state.side === 'buy'
+                  ? OrderKind.BUY
+                  : OrderKind.SELL,
+              signatureParams, // TODO: Test permit for smart contract wallets?
+              estimateGasLimit,
+            });
+
+            const response = await sendTx({
+              data: preSignTransaction.data,
+              to: preSignTransaction.to,
+              value: BigNumber.from(preSignTransaction.value),
+              gasLimit: BigNumber.from(preSignTransaction.gasLimit),
+            });
+
             addTransaction(
               response.hash,
               {
@@ -212,176 +223,56 @@ export const SwapActionsViaCoW = ({
             setMainTxState({
               loading: false,
               success: true,
+              txHash: preSignTransaction.orderId,
             });
-
-            const unsignerOrder = await getUnsignerOrder({
+          } else {
+            orderId = await sendOrder({
+              validTo,
+              tokenSrc: state.sourceToken.addressToSwap,
+              tokenSrcDecimals: state.sourceToken.decimals,
+              tokenDest: state.destinationToken.addressToSwap,
+              tokenDestDecimals: state.destinationToken.decimals,
+              quote: state.swapRate?.order,
               sellAmount: sellAmountAccountingCosts.toString(),
               buyAmount: buyAmountAccountingCosts.toString(),
-              dstToken: state.destinationToken.addressToSwap,
-              user,
-              chainId: state.chainId,
-              tokenFromSymbol: state.sourceToken.symbol,
-              tokenToSymbol: state.destinationToken.symbol,
               slippageBps,
               smartSlippage,
-              appCode,
               orderType: state.orderType,
-              validTo,
               swapType: params.swapType,
               market: currentMarket,
+              kind:
+                state.orderType === OrderType.MARKET
+                  ? OrderKind.SELL
+                  : state.side === 'buy'
+                  ? OrderKind.BUY
+                  : OrderKind.SELL,
+              chainId: state.chainId,
+              user,
+              provider,
+              inputSymbol: state.sourceToken.symbol,
+              outputSymbol: state.destinationToken.symbol,
+              appCode,
+              orderBookQuote: state.swapRate?.orderBookQuote,
+              signatureParams,
+              estimateGasLimit,
             });
-            const calculatedOrderId = await calculateUniqueOrderId(state.chainId, unsignerOrder);
-
-            await uploadAppData(
-              calculatedOrderId,
-              stringify(
-                COW_APP_DATA(
-                  state.sourceToken.symbol,
-                  state.destinationToken.symbol,
-                  slippageBps,
-                  smartSlippage,
-                  state.orderType,
-                  APP_CODE_PER_SWAP_TYPE[params.swapType],
-                  params.swapType,
-                  currentMarket
-                )
-              ),
-              state.chainId
-            );
-
-            // CoW takes some time to index the order for 'eth-flow' orders
-            setTimeout(() => {
-              setMainTxState({
-                loading: false,
-                success: true,
-                txHash: calculatedOrderId,
-              });
-            }, 1000 * 30); // 30 seconds - if we set less than 30 seconds, the order is not indexed yet and CoW explorer will not find the order
-          } catch (error) {
-            setTxError(getErrorTextFromError(error, TxAction.MAIN_ACTION, false));
             setMainTxState({
-              txHash: response?.hash,
               loading: false,
-            });
-            setState({
-              actionsLoading: false,
-            });
-            if (response?.hash) {
-              addTransaction(
-                response?.hash,
-                {
-                  txState: 'failed',
-                },
-                { chainId: state.chainId }
-              );
-            }
-          }
-        } else {
-          let orderId;
-          try {
-            if (await isSmartContractWallet(user, provider)) {
-              const preSignTransaction = await getPreSignTransaction({
-                provider,
-                validTo,
-                tokenDest: state.destinationToken.addressToSwap,
-                chainId: state.chainId,
-                user,
-                sellAmount: sellAmountAccountingCosts.toString(),
-                buyAmount: buyAmountAccountingCosts.toString(),
-                tokenSrc: state.sourceToken.addressToSwap,
-                tokenSrcDecimals: state.sourceToken.decimals,
-                tokenDestDecimals: state.destinationToken.decimals,
-                slippageBps,
-                smartSlippage,
-                inputSymbol: state.sourceToken.symbol,
-                outputSymbol: state.destinationToken.symbol,
-                quote: state.swapRate?.order,
-                appCode,
-                orderBookQuote: state.swapRate?.orderBookQuote,
-                orderType: state.orderType,
-                swapType: params.swapType,
-                market: currentMarket,
-                kind:
-                  state.orderType === OrderType.MARKET
-                    ? OrderKind.SELL
-                    : state.side === 'buy'
-                    ? OrderKind.BUY
-                    : OrderKind.SELL,
-                signatureParams, // TODO: Test permit for smart contract wallets?
-                estimateGasLimit,
-              });
-
-              const response = await sendTx({
-                data: preSignTransaction.data,
-                to: preSignTransaction.to,
-                value: BigNumber.from(preSignTransaction.value),
-                gasLimit: BigNumber.from(preSignTransaction.gasLimit),
-              });
-
-              addTransaction(
-                response.hash,
-                {
-                  txState: 'success',
-                },
-                {
-                  chainId: state.chainId,
-                }
-              );
-
-              setMainTxState({
-                loading: false,
-                success: true,
-                txHash: preSignTransaction.orderId,
-              });
-            } else {
-              orderId = await sendOrder({
-                validTo,
-                tokenSrc: state.sourceToken.addressToSwap,
-                tokenSrcDecimals: state.sourceToken.decimals,
-                tokenDest: state.destinationToken.addressToSwap,
-                tokenDestDecimals: state.destinationToken.decimals,
-                quote: state.swapRate?.order,
-                sellAmount: sellAmountAccountingCosts.toString(),
-                buyAmount: buyAmountAccountingCosts.toString(),
-                slippageBps,
-                smartSlippage,
-                orderType: state.orderType,
-                swapType: params.swapType,
-                market: currentMarket,
-                kind:
-                  state.orderType === OrderType.MARKET
-                    ? OrderKind.SELL
-                    : state.side === 'buy'
-                    ? OrderKind.BUY
-                    : OrderKind.SELL,
-                chainId: state.chainId,
-                user,
-                provider,
-                inputSymbol: state.sourceToken.symbol,
-                outputSymbol: state.destinationToken.symbol,
-                appCode,
-                orderBookQuote: state.swapRate?.orderBookQuote,
-                signatureParams,
-                estimateGasLimit,
-              });
-              setMainTxState({
-                loading: false,
-                success: true,
-                txHash: orderId ?? undefined,
-              });
-            }
-          } catch (error) {
-            console.error('SwapActionsViaCoW error', error);
-            const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
-            setTxError(parsedError);
-            setMainTxState({
-              success: false,
-              loading: false,
-            });
-            setState({
-              actionsLoading: false,
+              success: true,
+              txHash: orderId ?? undefined,
             });
           }
+        } catch (error) {
+          console.error('SwapActionsViaCoW error', error);
+          const parsedError = getErrorTextFromError(error, TxAction.MAIN_ACTION, false);
+          setTxError(parsedError);
+          setMainTxState({
+            success: false,
+            loading: false,
+          });
+          setState({
+            actionsLoading: false,
+          });
         }
       } catch (error) {
         console.error(error);

@@ -1,19 +1,36 @@
-import { normalizeBN } from '@aave/math-utils';
+import { tokenSwapQuote } from '@aave/client/actions';
+import { normalize, normalizeBN } from '@aave/math-utils';
+import {
+  AaveClient,
+  bigDecimal,
+  chainId as sdkChainId,
+  evmAddress,
+  TokenSwapKind,
+  useAaveClient,
+} from '@aave/react';
 import { useQuery } from '@tanstack/react-query';
+import { BigNumber } from 'bignumber.js';
 import { Dispatch, useEffect, useMemo } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
+import { CoWProtocolPricesService } from 'src/services/CoWProtocolPricesService';
 import { useRootStore } from 'src/store/root';
 import { isTxErrorType, TxErrorType } from 'src/ui-config/errorMapping';
+import { MarketDataType } from 'src/ui-config/marketsConfig';
 import { queryKeysFactory } from 'src/ui-config/queries';
+import { marketsData } from 'src/utils/marketsAndNetworksConfig';
+import { useShallow } from 'zustand/shallow';
 
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
-import { APP_CODE_PER_SWAP_TYPE } from '../constants/shared.constants';
+import { APP_CODE_PER_SWAP_TYPE, getWrappedNativeAddress } from '../constants/shared.constants';
 import { hasFlashLoanDisabled } from '../errors/shared/FlashLoanDisabledBlockingGuard';
 import { hasInsufficientBalance } from '../errors/shared/InsufficientBalanceGuard';
-import { getCowProtocolSellRates } from '../helpers/cow';
+import { getCowProtocolSellRates, isNativeToken } from '../helpers/cow';
 import { getParaswapSellRates, getParaswapSlippage } from '../helpers/paraswap';
-import { getSwitchProvider } from '../helpers/shared/provider.helpers';
+import { getSwitchProvider, isSwapViaBackend } from '../helpers/shared/provider.helpers';
 import {
+  BackendRatesType,
+  isBackendRates,
+  ProviderRatesParams,
   SwapParams,
   SwapProvider,
   SwapQuoteType as SwapQuoteType,
@@ -79,6 +96,88 @@ const getTokenSelectionForQuote = (
 };
 
 export const QUOTE_REFETCH_INTERVAL = 30000; // 30 seconds
+
+const getSwapMarketPool = (chainId: number, currentMarketData: MarketDataType) => {
+  if (currentMarketData.chainId === chainId) return currentMarketData.addresses.LENDING_POOL;
+  return Object.values(marketsData).find(
+    (market) => market.chainId === chainId && market.enabledFeatures?.switch
+  )?.addresses.LENDING_POOL;
+};
+
+const toSwapTokenInput = (address: string) =>
+  isNativeToken(address) ? { native: true as const } : { erc20: evmAddress(address) };
+
+const getBackendTokenSwapRates = async ({
+  client,
+  pool,
+  chainId,
+  user,
+  srcToken,
+  destToken,
+  srcDecimals,
+  destDecimals,
+  amount,
+  side = 'sell',
+  selectedSlippage,
+  setError,
+}: ProviderRatesParams & {
+  client: AaveClient;
+  pool: string;
+  selectedSlippage?: string;
+}): Promise<BackendRatesType> => {
+  const result = await tokenSwapQuote(client, {
+    market: {
+      market: evmAddress(pool),
+      chainId: sdkChainId(chainId),
+      sell: toSwapTokenInput(srcToken),
+      buy: toSwapTokenInput(destToken),
+      amount: bigDecimal(normalize(amount, side === 'sell' ? srcDecimals : destDecimals)),
+      kind: side === 'buy' ? TokenSwapKind.Buy : TokenSwapKind.Sell,
+      user: evmAddress(user),
+      selectedSlippage: selectedSlippage ? bigDecimal(selectedSlippage) : undefined,
+    },
+  });
+  if (result.isErr()) {
+    setError?.(result.error);
+    throw result.error;
+  }
+  const quote = result.value.quote;
+
+  // The backend leaves wallet swap legs unpriced, so USD values still come from CoW's price feed.
+  const prices = new CoWProtocolPricesService();
+  const priceAddress = (token: string) =>
+    isNativeToken(token) ? getWrappedNativeAddress(chainId) ?? token : token;
+  const [srcTokenPriceUsd, destTokenPriceUsd] = await Promise.all([
+    prices.getTokenUsdPrice(chainId, priceAddress(srcToken)),
+    prices.getTokenUsdPrice(chainId, priceAddress(destToken)),
+  ]);
+  if (!srcTokenPriceUsd || !destTokenPriceUsd) {
+    const error = new Error('No price found for token, please try another token');
+    setError?.(error);
+    throw error;
+  }
+
+  const usd = (value: string, price: string) => BigNumber(value).multipliedBy(price).toString();
+  const finalLeg = side === 'buy' ? quote.finalSell : quote.finalBuy;
+  return {
+    srcToken,
+    srcSpotAmount: quote.sell.amount.raw,
+    srcSpotUSD: usd(quote.sell.amount.value, srcTokenPriceUsd),
+    srcDecimals,
+    destToken,
+    destSpotAmount: quote.buy.amount.raw,
+    destSpotUSD: usd(quote.buy.amount.value, destTokenPriceUsd),
+    destDecimals,
+    afterFeesAmount: finalLeg.amount.raw,
+    afterFeesUSD: usd(finalLeg.amount.value, side === 'buy' ? srcTokenPriceUsd : destTokenPriceUsd),
+    srcTokenPriceUsd: Number(srcTokenPriceUsd),
+    destTokenPriceUsd: Number(destTokenPriceUsd),
+    provider: SwapProvider.COW_PROTOCOL,
+    suggestedSlippage: BigNumber(quote.suggestedSlippage.value).multipliedBy(100).toNumber(),
+    backendQuote: quote,
+    market: pool,
+  };
+};
 
 /**
  * React hook that orchestrates quoting logic across providers.
@@ -163,7 +262,11 @@ export const useSwapQuote = ({
 
     let slippage = state.slippage;
     let autoSlippage = state.autoSlippage;
-    if (quote.provider === 'cowprotocol' && quote?.suggestedSlippage !== undefined) {
+    if (isBackendRates(quote)) {
+      const selected = quote.backendQuote.selectedSlippage;
+      autoSlippage = quote.suggestedSlippage.toString();
+      slippage = selected ? BigNumber(selected.value).multipliedBy(100).toFixed() : autoSlippage;
+    } else if (quote.provider === 'cowprotocol' && quote?.suggestedSlippage !== undefined) {
       slippage = quote.suggestedSlippage.toString();
       autoSlippage = quote.suggestedSlippage.toString();
     } else if (quote.provider === 'paraswap') {
@@ -276,7 +379,16 @@ const useMultiProviderSwapQuoteQuery = ({
   requiresQuoteInverted: boolean;
 }) => {
   const { approvalTxState } = useModalContext();
-  const currentMarket = useRootStore((state) => state.currentMarket);
+  const [currentMarket, currentMarketData] = useRootStore(
+    useShallow((state) => [state.currentMarket, state.currentMarketData])
+  );
+  const client = useAaveClient();
+  const viaBackend = isSwapViaBackend(provider, params.swapType, state.orderType);
+  // Sent only once the user moves off the suggested value, so the quote carries their choice.
+  const selectedSlippage =
+    viaBackend && state.autoSlippage && state.slippage !== state.autoSlippage
+      ? state.slippage
+      : undefined;
 
   // Amount to quote depends on side (sell uses input amount, buy uses output amount)
   const amount = useMemo(() => {
@@ -347,6 +459,30 @@ const useMultiProviderSwapQuoteQuery = ({
 
       switch (provider) {
         case SwapProvider.COW_PROTOCOL:
+          if (viaBackend) {
+            const pool = getSwapMarketPool(state.chainId, currentMarketData);
+            if (!pool) {
+              setError(new Error('No market found in the selected chain for this pair'));
+              return null;
+            }
+            return await getBackendTokenSwapRates({
+              client,
+              pool,
+              selectedSlippage,
+              swapType: state.swapType,
+              chainId: state.chainId,
+              amount,
+              srcToken,
+              destToken,
+              user: state.user,
+              srcDecimals,
+              destDecimals,
+              appCode,
+              market: currentMarket,
+              setError,
+              side,
+            });
+          }
           return await getCowProtocolSellRates({
             swapType: state.swapType,
             chainId: state.chainId,
@@ -388,16 +524,20 @@ const useMultiProviderSwapQuoteQuery = ({
           return null;
       }
     },
-    queryKey: queryKeysFactory.swapQuote(
-      state.chainId,
-      provider,
-      amount,
-      requiresQuoteInverted,
-      srcToken,
-      destToken,
-      state.user,
-      currentMarket
-    ),
+    queryKey: [
+      ...queryKeysFactory.swapQuote(
+        state.chainId,
+        provider,
+        amount,
+        requiresQuoteInverted,
+        srcToken,
+        destToken,
+        state.user,
+        currentMarket
+      ),
+      viaBackend,
+      selectedSlippage,
+    ],
     enabled: (() => {
       // Allow fetch when user has entered a positive amount, even if normalization rounded to '0'
       const hasPositiveUserAmount =

@@ -3,7 +3,7 @@ import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
 import { Dispatch } from 'react';
 
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
-import { isCowProtocolRates, SwapParams, SwapProvider, SwapState } from '../types';
+import { isParaswapRates, SwapParams, SwapProvider, SwapState } from '../types';
 import { SwitchAssetInput } from './primitives/SwapAssetInput';
 import { NetworkSelector } from './shared/NetworkSelector';
 import { QuoteProgressRing } from './shared/QuoteProgressRing';
@@ -197,7 +197,7 @@ export const MarketOrderInputs = ({
             rates={state.swapRate}
             srcSymbol={state.sourceToken.symbol}
             destSymbol={state.destinationToken.symbol}
-            showPriceImpact={!isCowProtocolRates(state.swapRate)}
+            showPriceImpact={isParaswapRates(state.swapRate)}
           />
         </>
       )}
