@@ -1,0 +1,20 @@
+src/components/transactions/Swap/inputs/SwapInputs.tsx
+  s_ae3045cbc2fcc5::t_e6d84533e0e20a 16
+  s_ae3045cbc2fcc5::t_b0b5c93eba8ef8 568-571
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f63e8f32d5865c278f90a2cbbdd6b4c3ddf25c18",
+  "prompts": {},
+  "sessions": {
+    "s_ae3045cbc2fcc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bddec105-b2fb-4868-938b-6eb1943b6617",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
