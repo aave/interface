@@ -1,0 +1,37 @@
+src/components/FlowHeader/index.tsx
+  s_73c193bba46fcd::t_954533b87f85c0 58-59,62-63
+  s_73c193bba46fcd::t_581d271759c887 34-38
+src/locales/en/messages.po
+  s_73c193bba46fcd::t_21d05036203a73 3008
+  s_73c193bba46fcd::t_272e630ccb4e44 3228
+src/modules/v4Migration/V4MigrationPreview/index.tsx
+  s_73c193bba46fcd::t_f1707563cb2e29 1,8,23-24,28,50-51,57,59,65,149-169,208,214,264-268,293,306-342,353-362,365-367
+  s_73c193bba46fcd::t_6e3f47c47ab24d 343
+src/modules/dev/ComponentShowcase/components/MigrationAmountSection/index.tsx
+  s_73c193bba46fcd::t_0d39d3ee8d0cb3 112,185
+  s_73c193bba46fcd::t_b11ad28ef4f73f 439-440
+src/modules/dev/ComponentShowcase/components/MigrationPreviewSection/index.tsx
+  s_73c193bba46fcd::t_ae00f6a055d49d 24,38,83-84,284,448,468,564,570,661-662,770,787-790
+  s_73c193bba46fcd::t_2a37fb9620db08 658,664
+  s_73c193bba46fcd::t_28223eeca6655e 659-660,791
+src/modules/v4Migration/utils/copy.tsx
+  s_73c193bba46fcd::t_0d39d3ee8d0cb3 17-19,26-35
+src/components/TokenAmountInput/index.tsx
+  s_73c193bba46fcd::t_a28c66238d1b16 111-112,115,376
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "241f26680feba37168eb99dd45d6c021990939c4",
+  "prompts": {},
+  "sessions": {
+    "s_73c193bba46fcd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "392a4770-8053-4774-9bee-7a9ce94463d7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

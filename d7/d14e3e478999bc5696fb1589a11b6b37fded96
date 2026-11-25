@@ -1,0 +1,19 @@
+src/hooks/app-data-provider/useMarketsData.ts
+  s_ed5822491f928e::t_a8cc108c5547c3 2,4,8-35,53-57
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d7d14e3e478999bc5696fb1589a11b6b37fded96",
+  "prompts": {},
+  "sessions": {
+    "s_ed5822491f928e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a20e9048-dfe3-4664-b027-3a7433721bcc",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

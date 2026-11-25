@@ -1,0 +1,45 @@
+src/components/transactions/Swap/actions/SwapActions/SwapActionsViaBackend.tsx
+  s_ae3045cbc2fcc5::t_764152396ad8b6 20,26
+  s_ae3045cbc2fcc5::t_7f04540a9f0b3f 64-107
+  s_ae3045cbc2fcc5::t_2868242a7ae680 137-138,152
+  s_ae3045cbc2fcc5::t_17775b92a2f68e 6
+  s_ae3045cbc2fcc5::t_6269b5fb96edb2 182-207
+src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
+  s_ae3045cbc2fcc5::t_cc502a720452b5 39-45,47-50
+  s_ae3045cbc2fcc5::t_495406823911fc 102,104-105
+  s_ae3045cbc2fcc5::t_2acd6916cb18ae 119
+src/hooks/useSwapOrdersTracking.tsx
+  s_ae3045cbc2fcc5::t_3e8ab035ac1893 100-101
+  s_ae3045cbc2fcc5::t_59895d522397de 58,270,349-350
+src/components/transactions/Swap/modals/result/SwapResultView.tsx
+  s_ae3045cbc2fcc5::t_e5782d8bdcdb7b 101-102,172,197,228,321-328
+src/components/transactions/Swap/errors/shared/ProviderError.tsx
+  s_ae3045cbc2fcc5::t_01c1a4c7b293fa 20
+src/ui-config/queries.ts
+  s_ae3045cbc2fcc5::t_8ed8260ba8560c 137-138,148
+src/components/transactions/Swap/hooks/useSwapOrderAmounts.ts
+  s_ae3045cbc2fcc5::t_77cec314e5b32e 97,99-101,103,106-107
+  s_ae3045cbc2fcc5::t_05f2fa978ba5c0 270-274
+  s_ae3045cbc2fcc5::t_09e3bc9c9f4b17 11-18
+  s_ae3045cbc2fcc5::t_e740e8beeee4bb 95,102
+src/components/transactions/Swap/hooks/useSwapQuote.ts
+  s_ae3045cbc2fcc5::t_8ed8260ba8560c 284-303,305-310,409-413,681-682
+src/hooks/useTransactionHistory.tsx
+  s_ae3045cbc2fcc5::t_5290b0311df71f 413-414,555-556
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "78fcbb5a292ebbde837e242ded4edca20767d080",
+  "prompts": {},
+  "sessions": {
+    "s_ae3045cbc2fcc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bddec105-b2fb-4868-938b-6eb1943b6617",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}

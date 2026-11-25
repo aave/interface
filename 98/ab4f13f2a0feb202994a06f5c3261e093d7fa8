@@ -1,0 +1,36 @@
+src/modules/v4Migration/V4MigrationBanner/index.tsx
+  s_73c193bba46fcd::t_a6a2b9cfee0789 4,8-15,20,25-97,104-106,108-109,117-135,137-154
+src/locales/el/messages.js
+  s_73c193bba46fcd::t_a6a2b9cfee0789 1
+src/locales/fr/messages.js
+  s_73c193bba46fcd::t_a6a2b9cfee0789 1
+src/locales/en/messages.po
+  s_73c193bba46fcd::t_a6a2b9cfee0789 569-572,3839,3856-3859,4158-4161,4616-4619,4753-4755
+  s_73c193bba46fcd::t_3cef672dd42971 4756
+src/locales/en/messages.js
+  s_73c193bba46fcd::t_a6a2b9cfee0789 1
+src/locales/es/messages.js
+  s_73c193bba46fcd::t_a6a2b9cfee0789 1
+src/modules/v4Migration/utils/copy.tsx
+  s_73c193bba46fcd::t_a6a2b9cfee0789 283-292
+src/modules/dev/ComponentShowcase/components/MigrationBannersSection/index.tsx
+  s_73c193bba46fcd::t_a6a2b9cfee0789 1-2,6-9,12,16-51,66,109-130
+src/modules/v4Migration/V4MigrationPage/components/ValueChange/index.tsx
+  s_73c193bba46fcd::t_a6a2b9cfee0789 14-17,19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "98ab4f13f2a0feb202994a06f5c3261e093d7fa8",
+  "prompts": {},
+  "sessions": {
+    "s_73c193bba46fcd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "392a4770-8053-4774-9bee-7a9ce94463d7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
