@@ -1,5 +1,4 @@
 import { BigNumberValue, normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
-import { WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { useQueryClient } from '@tanstack/react-query';
 import { Dispatch, useEffect, useMemo } from 'react';
 import { useModalContext } from 'src/hooks/useModal';
@@ -8,7 +7,7 @@ import { queryKeysFactory } from 'src/ui-config/queries';
 
 import { SwapInputChanges } from '../analytics/constants';
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
-import { SESSION_STORAGE_EXPIRY_MS } from '../constants/shared.constants';
+import { getWrappedNativeAddress, SESSION_STORAGE_EXPIRY_MS } from '../constants/shared.constants';
 import {
   OrderType,
   SwappableToken,
@@ -616,16 +615,11 @@ export const SwapInputs = ({
         !(
           state.destinationToken.tokenType === TokenType.NATIVE &&
           typeof state.chainId === 'number' &&
-          token.addressToSwap.toLowerCase() ===
-            WRAPPED_NATIVE_CURRENCIES[
-              state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
-            ]?.address.toLowerCase()
+          token.addressToSwap.toLowerCase() === getWrappedNativeAddress(state.chainId)
         ) &&
         !(
           state.destinationToken.addressToSwap.toLowerCase() ===
-            WRAPPED_NATIVE_CURRENCIES[
-              state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
-            ]?.address.toLowerCase() && token.tokenType === TokenType.NATIVE
+            getWrappedNativeAddress(state.chainId) && token.tokenType === TokenType.NATIVE
         )
     );
 
@@ -656,16 +650,11 @@ export const SwapInputs = ({
         !(
           state.sourceToken.tokenType === TokenType.NATIVE &&
           typeof state.chainId === 'number' &&
-          token.addressToSwap.toLowerCase() ===
-            WRAPPED_NATIVE_CURRENCIES[
-              state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
-            ]?.address.toLowerCase()
+          token.addressToSwap.toLowerCase() === getWrappedNativeAddress(state.chainId)
         ) &&
         !(
           state.sourceToken.addressToSwap.toLowerCase() ===
-            WRAPPED_NATIVE_CURRENCIES[
-              state.chainId as keyof typeof WRAPPED_NATIVE_CURRENCIES
-            ]?.address.toLowerCase() && token.tokenType === TokenType.NATIVE
+            getWrappedNativeAddress(state.chainId) && token.tokenType === TokenType.NATIVE
         )
     );
 

@@ -1,5 +1,4 @@
 import { valueToBigNumber } from '@aave/math-utils';
-import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -13,6 +12,7 @@ import { TOKEN_LIST, TokenInfo } from 'src/ui-config/TokenList';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
+import { getWrappedNativeAddress } from '../../constants/shared.constants';
 import { invalidateAppStateForSwap } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType, TokenType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
@@ -150,8 +150,7 @@ const getTokensFrom = (
       );
       if (baseToken) {
         // Prefer showing native symbol (e.g., ETH) instead of WETH when applicable, but keep underlying address
-        const wrappedNative =
-          WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address?.toLowerCase();
+        const wrappedNative = getWrappedNativeAddress(chainId);
         const isWrappedNative =
           wrappedNative && position.reserve.underlyingAsset.toLowerCase() === wrappedNative;
         const nativeToken = isWrappedNative
@@ -239,8 +238,7 @@ const getTokensTo = (
         )?.underlyingBalance ?? '0';
 
       // Prefer showing native symbol (e.g., ETH) instead of WETH when applicable, but keep underlying address
-      const wrappedNative =
-        WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address?.toLowerCase();
+      const wrappedNative = getWrappedNativeAddress(chainId);
       const isWrappedNative =
         wrappedNative && reserve.underlyingAsset.toLowerCase() === wrappedNative;
       const nativeToken = isWrappedNative
