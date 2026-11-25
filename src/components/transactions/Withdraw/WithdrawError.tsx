@@ -2,10 +2,12 @@ import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import {
   ComputedReserveData,
+  ComputedUserReserveData,
   ExtendedFormattedUser,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { FormattedUserReserves } from 'src/hooks/pool/useUserSummaryAndIncentives';
 import { useModalContext } from 'src/hooks/useModal';
+import { isBlockedByZeroLTV } from 'src/hooks/useZeroLTVBlockingWithdraw';
 
 enum ErrorType {
   CAN_NOT_WITHDRAW_THIS_AMOUNT,
@@ -16,6 +18,7 @@ enum ErrorType {
 interface WithdrawErrorProps {
   assetsBlockingWithdraw: FormattedUserReserves[];
   poolReserve: ComputedReserveData;
+  userReserve: ComputedUserReserveData;
   healthFactorAfterWithdraw: BigNumber;
   withdrawAmount: string;
   user: ExtendedFormattedUser;
@@ -23,6 +26,7 @@ interface WithdrawErrorProps {
 export const useWithdrawError = ({
   assetsBlockingWithdraw,
   poolReserve,
+  userReserve,
   healthFactorAfterWithdraw,
   withdrawAmount,
   user,
@@ -33,12 +37,7 @@ export const useWithdrawError = ({
   const unborrowedLiquidity = valueToBigNumber(poolReserve.unborrowedLiquidity);
 
   if (!withdrawTxState.success && !withdrawTxState.txHash) {
-    if (
-      assetsBlockingWithdraw.length > 0 &&
-      !assetsBlockingWithdraw.some(
-        (r) => r.underlyingAsset.toLowerCase() === poolReserve.underlyingAsset.toLowerCase()
-      )
-    ) {
+    if (isBlockedByZeroLTV(assetsBlockingWithdraw, userReserve)) {
       blockingError = ErrorType.ZERO_LTV_WITHDRAW_BLOCKED;
     } else if (
       healthFactorAfterWithdraw.lt('1') &&
