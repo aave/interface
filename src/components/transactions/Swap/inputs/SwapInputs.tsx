@@ -13,6 +13,7 @@ import {
   SwappableToken,
   swappableTokenToTokenInfo,
   SwapParams,
+  SwapProvider,
   SwapState,
   SwapType,
   TokenType,
@@ -564,7 +565,10 @@ export const SwapInputs = ({
 
   const setSlippage = (value: string) => {
     setState({ slippage: value });
-    if (state.slippage !== state.autoSlippage) {
+    if (state.provider === SwapProvider.COW_PROTOCOL) {
+      // Backend market quotes carry the slippage, so every change needs a matching quote id.
+      if (state.orderType === OrderType.MARKET) setState({ quoteRefreshPaused: false });
+    } else if (state.slippage !== state.autoSlippage) {
       // Pause automatic quote refresh only in market orders when slippage is edited by user
       setState({ quoteRefreshPaused: true });
     }
