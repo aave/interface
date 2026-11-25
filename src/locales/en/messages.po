@@ -625,6 +625,10 @@ msgstr "repaid"
 msgid "Show less"
 msgstr "Show less"
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+msgid "Go back to the migrate page and pick a position to move."
+msgstr "Go back to the migrate page and pick a position to move."
+
 #: src/components/transactions/Warnings/ChangeNetworkWarning.tsx
 msgid "Switch Network"
 msgstr "Switch Network"
@@ -2638,6 +2642,10 @@ msgstr "You'll need to wait {0} before you can unstake your tokens. This cooldow
 msgid "collateral"
 msgstr "collateral"
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+msgid "Hubs this position can't be migrated to"
+msgstr "Hubs this position can't be migrated to"
+
 #: src/components/transactions/StakeRewardClaim/StakeRewardClaimModalContent.tsx
 #: src/components/transactions/StakeRewardClaimRestake/StakeRewardClaimRestakeModalContent.tsx
 msgid "No rewards to claim"
@@ -3415,6 +3423,10 @@ msgstr "The collateral balance is 0"
 msgid "Available on"
 msgstr "Available on"
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+msgid "We couldn't load the hubs. Please try again later."
+msgstr "We couldn't load the hubs. Please try again later."
+
 #: src/modules/governance/FormattedProposalTime.tsx
 msgid "starts"
 msgstr "starts"
@@ -4019,6 +4031,10 @@ msgstr "Total emission per day"
 msgid "or use a card, exchanges or swaps to deposit"
 msgstr "or use a card, exchanges or swaps to deposit"
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+msgid "Please connect your wallet to migrate your position."
+msgstr "Please connect your wallet to migrate your position."
+
 #: src/components/transactions/MigrateV3/MigrateV3ModalContent.tsx
 msgid "Selected borrow assets"
 msgstr "Selected borrow assets"
@@ -4157,6 +4173,7 @@ msgstr "Cancelling order..."
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
+#: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
 #: src/modules/v4Migration/V4MigrationPageContainer/index.tsx
 msgid "Something went wrong"
 msgstr "Something went wrong"
@@ -5096,6 +5113,10 @@ msgstr "Estimated annual earnings based on your current position and market cond
 #: src/components/infoTooltips/MigrationDisabledTooltip.tsx
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
 msgstr "Flashloan is disabled for this asset, hence this position cannot be migrated."
+
+#: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+msgid "Position not found"
+msgstr "Position not found"
 
 #: src/components/transactions/MigrateV3/MigrateV3Actions.tsx
 #: src/components/transactions/StakingMigrate/StakingMigrateActions.tsx

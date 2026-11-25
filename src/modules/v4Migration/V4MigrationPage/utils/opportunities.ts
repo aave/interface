@@ -38,6 +38,17 @@ export const parsePositionId = (id: string) => {
   return { chainId: Number(chainId), market, asset };
 };
 
+/** The earn opportunity a row of the earn table was built from. */
+export const findEarnOpportunity = (opportunities: MigrationOpportunity[], id: string) =>
+  opportunities.find((opportunity) => {
+    const supply = opportunity.supplies[0];
+    return (
+      opportunity.kind === 'EARN' &&
+      !!supply &&
+      positionId(opportunity, supply.currency.address.toLowerCase()) === id
+    );
+  });
+
 const toEarnPosition = (opportunity: MigrationOpportunity): EarnMigrationPosition | undefined => {
   const supply = opportunity.supplies[0];
   if (!supply) return undefined;
