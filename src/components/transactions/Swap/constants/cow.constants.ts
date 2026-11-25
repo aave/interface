@@ -158,10 +158,10 @@ const PARTNER_FEE_BPS_BY_SWAP_TYPE: Partial<Record<SwapType, number>> = {
 const getPartnerFeeRecipient = (market: CustomMarket, chainId: number): string => {
   const selected = marketsData[market];
   const onChain =
-    selected?.chainId === chainId
+    selected?.chainId === chainId && selected.addresses?.COLLECTOR
       ? selected
       : Object.values(marketsData).find(
-          (m) => m.chainId === chainId && m.v3 && m.addresses.COLLECTOR
+          (m) => m.chainId === chainId && m.v3 && m.addresses?.COLLECTOR
         );
   return onChain?.addresses?.COLLECTOR || COW_EVM_RECIPIENT;
 };
