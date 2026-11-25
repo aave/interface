@@ -37,6 +37,14 @@ src/modules/v4Migration/V4MigrationPage/components/ValueChange/index.tsx
   s_36fe408f2b1273::t_e318af571083d1 10-11,24-31,49-51
 src/modules/v4Migration/V4MigrationPage/index.tsx
   s_36fe408f2b1273::t_c37b06258b8bdf 3,20-24,32,55-56
+src/locales/en/messages.js
+  s_36fe408f2b1273::t_223edb60e377be 1
+src/locales/fr/messages.js
+  s_36fe408f2b1273::t_223edb60e377be 1
+src/locales/es/messages.js
+  s_36fe408f2b1273::t_223edb60e377be 1
+src/locales/el/messages.js
+  s_36fe408f2b1273::t_223edb60e377be 1
 ---
 {
   "schema_version": "authorship/3.0.0",
