@@ -3,6 +3,7 @@ import {
   bigDecimal,
   chainId as sdkChainId,
   dateTime,
+  Erc20Approval,
   evmAddress,
   OrderHandlerError,
   OrderHandlerResult,
@@ -16,11 +17,13 @@ import {
   useTokenSwapOrder,
 } from '@aave/react';
 import { Trans } from '@lingui/macro';
+import { useQueryClient } from '@tanstack/react-query';
 import { BigNumber } from 'bignumber.js';
 import { errAsync, ResultAsync } from 'neverthrow';
 import { Dispatch } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { useModalContext } from 'src/hooks/useModal';
+import { useSwapOrdersTracking } from 'src/hooks/useSwapOrdersTracking';
 import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { TypedData, TypedDataDomain, WalletClient } from 'viem';
 import { useWalletClient } from 'wagmi';
@@ -58,6 +61,50 @@ export const signTypedDataWith = (
   ).map(signatureFrom);
 };
 
+/** Signs the permit unless an open order already holds one on this token, whose nonce it would burn. */
+export const approveWith = (
+  walletClient: WalletClient,
+  plan: Erc20Approval,
+  permitInUse: boolean
+): ResultAsync<OrderHandlerResult, OrderHandlerError> =>
+  plan.byPermit && !permitInUse
+    ? signTypedDataWith(walletClient, plan.byPermit)
+    : sendTransactionAndWait(walletClient, plan.byTransaction);
+
+/** Whether an open order sells the same token, matching how tracked orders key their sell token. */
+export const useIsPermitInUse = (state: SwapState) => {
+  const { hasActiveOrderForSellToken } = useSwapOrdersTracking();
+  return hasActiveOrderForSellToken(
+    state.chainId,
+    state.sellAmountToken?.underlyingAddress || state.sourceToken.addressToSwap
+  );
+};
+
+// The fee or route the quote priced moved before submit; a fresh quote fixes it.
+const isStaleQuoteError = (error: unknown) =>
+  error instanceof Error && /quote again/i.test(error.message);
+
+/** Resets the action after a failed order; a stale quote shows the re-quote notice and refetches. */
+export const useBackendOrderErrorHandler = (setState: Dispatch<Partial<SwapState>>) => {
+  const { setMainTxState, setTxError } = useModalContext();
+  const queryClient = useQueryClient();
+  return (error: unknown) => {
+    console.error('Backend order error', error);
+    setMainTxState({ loading: false, success: false });
+    if (isStaleQuoteError(error)) {
+      // Shows the re-quote notice until the fresh quote replaces it.
+      setState({
+        actionsLoading: false,
+        error: { rawError: error as Error, message: (error as Error).message, actionBlocked: true },
+      });
+      queryClient.invalidateQueries({ predicate: (query) => query.queryKey.includes('swapQuote') });
+      return;
+    }
+    setTxError(getErrorTextFromError(error as Error, TxAction.MAIN_ACTION, false));
+    setState({ actionsLoading: false });
+  };
+};
+
 export const toLimitAmount = (token: SwappableToken, amount: string) =>
   bigDecimal(BigNumber(amount).decimalPlaces(token.decimals, BigNumber.ROUND_DOWN).toFixed());
 
@@ -87,6 +134,8 @@ export const SwapActionsViaBackend = ({
   const { mainTxState, loadingTxns, setMainTxState, setTxError, approvalTxState } =
     useModalContext();
   const { data: walletClient } = useWalletClient({ chainId: state.chainId });
+  const permitInUse = useIsPermitInUse(state);
+  const onError = useBackendOrderErrorHandler(setState);
 
   useSwapGasEstimation({
     state,
@@ -100,9 +149,7 @@ export const SwapActionsViaBackend = ({
     if (!walletClient) return errAsync(UnexpectedError.from('Wallet is not connected'));
     switch (plan.__typename) {
       case 'Erc20Approval':
-        return plan.byPermit
-          ? signTypedDataWith(walletClient, plan.byPermit)
-          : sendTransactionAndWait(walletClient, plan.byTransaction);
+        return approveWith(walletClient, plan, permitInUse);
       case 'OrderTypedData':
         return signTypedDataWith(walletClient, plan);
       case 'OrderTransactionRequest':
@@ -132,31 +179,32 @@ export const SwapActionsViaBackend = ({
     setMainTxState({ ...mainTxState, loading: true });
 
     const market = evmAddress(state.swapRate.market);
-    const result = await placeOrder(
-      isLimit
-        ? {
-            limit: {
-              market,
-              chainId: sdkChainId(state.chainId),
-              sell: toLimitTokenInput(state.sourceToken, state.inputAmount),
-              buy: toLimitTokenInput(state.destinationToken, state.outputAmount),
-              user: evmAddress(state.user),
-              kind: state.side === 'buy' ? TokenSwapKind.Buy : TokenSwapKind.Sell,
-              deadline: dateTime(
-                new Date(Date.now() + ExpiryToSecondsMap[state.expiry] * 1000).toISOString()
-              ),
-            },
-          }
-        : { fromQuote: { market, quoteId: state.swapRate.backendQuote.quoteId } }
-    );
-
-    if (result.isErr()) {
-      console.error('SwapActionsViaBackend error', result.error);
-      setTxError(getErrorTextFromError(result.error, TxAction.MAIN_ACTION, false));
-      setMainTxState({ loading: false, success: false });
-      setState({ actionsLoading: false });
-    } else {
-      setMainTxState({ loading: false, success: true, txHash: result.value.orderId });
+    try {
+      const result = await placeOrder(
+        isLimit
+          ? {
+              limit: {
+                market,
+                chainId: sdkChainId(state.chainId),
+                sell: toLimitTokenInput(state.sourceToken, state.inputAmount),
+                buy: toLimitTokenInput(state.destinationToken, state.outputAmount),
+                user: evmAddress(state.user),
+                kind: state.side === 'buy' ? TokenSwapKind.Buy : TokenSwapKind.Sell,
+                deadline: dateTime(
+                  new Date(Date.now() + ExpiryToSecondsMap[state.expiry] * 1000).toISOString()
+                ),
+              },
+            }
+          : { fromQuote: { market, quoteId: state.swapRate.backendQuote.quoteId } }
+      );
+      if (result.isErr()) {
+        onError(result.error);
+      } else {
+        setMainTxState({ loading: false, success: true, txHash: result.value.orderId });
+      }
+    } catch (error) {
+      // @aave/core throws on GraphQL errors (a geo refusal, a stale quote) instead of returning Err.
+      onError(error);
     }
 
     trackingHandlers.trackSwap();

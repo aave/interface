@@ -281,29 +281,33 @@ const getBackendTokenSwapRates = async ({
   pool: string;
   selectedSlippage?: string;
 }): Promise<BackendRatesType> => {
-  const result = await tokenSwapQuote(client, {
-    market: {
-      market: evmAddress(pool),
-      chainId: sdkChainId(chainId),
-      sell: toSwapTokenInput(srcToken),
-      buy: toSwapTokenInput(destToken),
-      amount: bigDecimal(normalize(amount, side === 'sell' ? srcDecimals : destDecimals)),
-      kind: side === 'buy' ? TokenSwapKind.Buy : TokenSwapKind.Sell,
-      user: evmAddress(user),
-      selectedSlippage: selectedSlippage ? bigDecimal(selectedSlippage) : undefined,
-    },
-  });
-  if (result.isErr()) {
-    setError?.(result.error);
-    throw result.error;
+  const [result, prices] = await Promise.allSettled([
+    tokenSwapQuote(client, {
+      market: {
+        market: evmAddress(pool),
+        chainId: sdkChainId(chainId),
+        sell: toSwapTokenInput(srcToken),
+        buy: toSwapTokenInput(destToken),
+        amount: bigDecimal(normalize(amount, side === 'sell' ? srcDecimals : destDecimals)),
+        kind: side === 'buy' ? TokenSwapKind.Buy : TokenSwapKind.Sell,
+        user: evmAddress(user),
+        selectedSlippage: selectedSlippage ? bigDecimal(selectedSlippage) : undefined,
+      },
+    }),
+    getUsdPrices(chainId, srcToken, destToken),
+  ]);
+  // The quote's error wins over a price error.
+  if (result.status === 'rejected') throw result.reason;
+  if (result.value.isErr()) {
+    setError?.(result.value.error);
+    throw result.value.error;
   }
-  const quote = result.value.quote;
-  const { srcTokenPriceUsd, destTokenPriceUsd } = await getUsdPrices(
-    chainId,
-    srcToken,
-    destToken,
-    setError
-  );
+  if (prices.status === 'rejected') {
+    setError?.(prices.reason);
+    throw prices.reason;
+  }
+  const quote = result.value.value.quote;
+  const { srcTokenPriceUsd, destTokenPriceUsd } = prices.value;
 
   const usd = usdOf;
   // Sell orders solve the buy leg, buy orders the sell leg.
@@ -402,7 +406,11 @@ export const useSwapQuote = ({
       state.inputAmount == nextInputAmount &&
       state.outputAmount == nextOutputAmount &&
       state.inputAmountUSD == nextInputAmountUSD &&
-      state.outputAmountUSD == nextOutputAmountUSD
+      state.outputAmountUSD == nextOutputAmountUSD &&
+      // A backend quote id fixes the order and its slippage, so a new id must reach state.
+      (!isBackendRates(quote) ||
+        (isBackendRates(state.swapRate) &&
+          state.swapRate.backendQuote.quoteId === quote.backendQuote.quoteId))
     ) {
       return;
     }
@@ -670,9 +678,9 @@ const useMultiProviderSwapQuoteQuery = ({
         srcToken,
         destToken,
         state.user,
-        currentMarket
+        currentMarket,
+        selectedSlippage
       ),
-      selectedSlippage,
     ],
     enabled: (() => {
       // Allow fetch when user has entered a positive amount, even if normalization rounded to '0'

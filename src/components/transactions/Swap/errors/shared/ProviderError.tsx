@@ -17,7 +17,7 @@ interface QuoteErrorProps {
 
 // Errors the backend orders API returns as plain messages.
 const convertBackendOrderErrorMessage = (message: string): ReactNode | undefined => {
-  if (/position swaps are not provisioned on market/i.test(message)) {
+  if (/swaps are not (provisioned|offered) on market/i.test(message)) {
     return <Trans>This swap is not available on this market yet.</Trans>;
   }
   if (/quote again/i.test(message)) {

@@ -410,7 +410,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
 
     // Merge in locally stored adapter entries (CoW + ParaSwap) for this account/chain
     // This is needed because Paraswap txs are not included in the subgraph yet and CoW adapters orders are sent by the adapters instances therefore not returned by asking for the user's trades.
-    const localEntries = getAdapterSwapHistory(chainId, account || '');
+    // Only the first page carries them, like the SDK rows, so later pages never repeat them.
+    const localEntries = skip === 0 ? getAdapterSwapHistory(chainId, account || '') : [];
 
     // Build a set of CoW orderIds returned by API to dedupe
     const apiCowIds = new Set(
@@ -551,7 +552,8 @@ export const useTransactionHistory = ({ isFilterActive }: { isFilterActive: bool
       lastPage: TransactionHistoryItemUnion[],
       allPages: TransactionHistoryItemUnion[][]
     ) => {
-      const moreDataAvailable = lastPage.length === PAGE_SIZE;
+      // The first page adds local entries on top of the API page, so it can exceed the page size.
+      const moreDataAvailable = lastPage.length >= PAGE_SIZE;
       if (!moreDataAvailable) {
         return undefined;
       }

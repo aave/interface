@@ -14,12 +14,10 @@ import {
 } from '@aave/react';
 import { OrderStatus } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
-import { useQueryClient } from '@tanstack/react-query';
 import { errAsync } from 'neverthrow';
 import { Dispatch } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
 import { useModalContext } from 'src/hooks/useModal';
-import { getErrorTextFromError, TxAction } from 'src/ui-config/errorMapping';
 import { saveCowOrderToUserHistory } from 'src/utils/swapAdapterHistory';
 import { useWalletClient } from 'wagmi';
 
@@ -38,13 +36,18 @@ import {
   SwapState,
   SwapType,
 } from '../types';
-import { signTypedDataWith, toLimitAmount } from './SwapActions/SwapActionsViaBackend';
+import {
+  approveWith,
+  signTypedDataWith,
+  toLimitAmount,
+  useBackendOrderErrorHandler,
+  useIsPermitInUse,
+} from './SwapActions/SwapActionsViaBackend';
 
-// The fee or route the quote priced moved before submit; a fresh quote fixes it.
-const isStaleQuoteError = (error: unknown) =>
-  error instanceof Error && /quote again/i.test(error.message);
-
-/** Order ids owned by an adapter instance, which the CoW owner query never lists. */
+/**
+ * Order ids owned by an adapter instance, which the CoW owner query never lists. A withdraw and
+ * swap has no adapter: the user owns that order, so the owner query lists it.
+ */
 const ADAPTER_SWAP_TYPES = [
   SwapType.CollateralSwap,
   SwapType.DebtSwap,
@@ -96,10 +99,10 @@ export const PositionSwapActionsViaBackend = ({
   setState: Dispatch<Partial<SwapState>>;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  const { mainTxState, loadingTxns, setMainTxState, setTxError, approvalTxState } =
-    useModalContext();
+  const { mainTxState, loadingTxns, setMainTxState, approvalTxState } = useModalContext();
   const { data: walletClient } = useWalletClient({ chainId: state.chainId });
-  const queryClient = useQueryClient();
+  const permitInUse = useIsPermitInUse(state);
+  const onError = useBackendOrderErrorHandler(setState);
 
   useSwapGasEstimation({
     state,
@@ -113,9 +116,7 @@ export const PositionSwapActionsViaBackend = ({
     if (!walletClient) return errAsync(UnexpectedError.from('Wallet is not connected'));
     switch (plan.__typename) {
       case 'Erc20Approval':
-        return plan.byPermit
-          ? signTypedDataWith(walletClient, plan.byPermit)
-          : sendTransactionAndWait(walletClient, plan.byTransaction);
+        return approveWith(walletClient, plan, permitInUse);
       case 'PositionSwapAdapterContractApproval':
         return signTypedDataWith(walletClient, plan.bySignature);
       case 'PositionSwapAdapterTransactionApproval':
@@ -235,22 +236,6 @@ export const PositionSwapActionsViaBackend = ({
       srcAmount: (state.sellAmountBigInt ?? BigInt(0)).toString(),
       destAmount: (state.buyAmountBigInt ?? BigInt(0)).toString(),
     });
-  };
-
-  const onError = (error: unknown) => {
-    console.error('PositionSwapActionsViaBackend error', error);
-    setMainTxState({ loading: false, success: false });
-    if (isStaleQuoteError(error)) {
-      // Shows the re-quote notice until the fresh quote replaces it.
-      setState({
-        actionsLoading: false,
-        error: { rawError: error as Error, message: (error as Error).message, actionBlocked: true },
-      });
-      queryClient.invalidateQueries({ predicate: (query) => query.queryKey.includes('swapQuote') });
-      return;
-    }
-    setTxError(getErrorTextFromError(error as Error, TxAction.MAIN_ACTION, false));
-    setState({ actionsLoading: false });
   };
 
   const action = async () => {

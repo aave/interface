@@ -55,7 +55,7 @@ interface OrderDetails {
 interface SwapOrdersTrackingContextType {
   trackSwapOrderProgress: (orderId: string, chainId: number) => void;
   /** Polls the backend's order status for an order id the backend issued. */
-  trackBackendOrder: (orderId: string, chainId: number) => void;
+  trackBackendOrder: (orderId: string, chainId: number, sellToken?: string) => void;
   trackParaswapTx: (txHash: string, chainId: number, sellTokenAddress?: string) => void;
   stopTracking: (orderId: string) => void;
   hasActiveOrders: boolean;
@@ -97,7 +97,8 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
         .filter((tx: CowSwapSubset) => isOrderLoading(tx.status))
         .filter((tx: CowSwapSubset) => !activeOrders.has(tx.orderId))
         .forEach((tx: CowSwapSubset) => {
-          if (tx.viaBackend) trackBackendOrder(tx.orderId, tx.chainId);
+          if (tx.viaBackend)
+            trackBackendOrder(tx.orderId, tx.chainId, tx.underlyingSrcToken.underlyingAsset);
           else trackSwapOrderProgress(tx.orderId, tx.chainId);
         });
     }
@@ -266,7 +267,7 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
   );
 
   const trackBackendOrder = useCallback(
-    (orderId: string, chainId: number) => {
+    (orderId: string, chainId: number, sellToken?: string) => {
       stopTracking(orderId);
 
       const interval = setInterval(async () => {
@@ -345,6 +346,8 @@ export const SwapOrdersTrackingProvider: React.FC<PropsWithChildren> = ({ childr
           chainId,
           interval,
           appCode: APP_CODE_PER_SWAP_TYPE[SwapType.Swap],
+          // Position operations carry no sell currency, so the permit guard needs it up front.
+          sellToken,
         })
       );
       setHasActiveOrders(true);

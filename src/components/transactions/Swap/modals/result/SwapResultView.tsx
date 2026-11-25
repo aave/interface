@@ -98,6 +98,8 @@ export type SwapTxSuccessViewProps = {
   provider?: SwapProvider;
   /** The id is a backend order id, polled through the backend instead of CoW. */
   viaBackend?: boolean;
+  /** Underlying sell token, so open orders keep later permits on it from reusing the nonce. */
+  sellToken?: string;
   chainId: number;
   buyDecimals: number;
   sellDecimals: number;
@@ -167,6 +169,7 @@ export const SwapResultView = ({
       outIconUri={state.destinationToken.logoURI}
       provider={state.provider}
       viaBackend={state.provider === SwapProvider.COW_PROTOCOL}
+      sellToken={state.sellAmountToken?.underlyingAddress}
       chainId={state.chainId}
       buyDecimals={state.buyAmountToken?.decimals ?? 18}
       sellDecimals={state.sellAmountToken?.decimals ?? 18}
@@ -191,6 +194,7 @@ export const SwapTxSuccessView = ({
   outIconUri,
   provider,
   viaBackend,
+  sellToken,
   chainId,
   buyDecimals,
   sellDecimals,
@@ -221,7 +225,7 @@ export const SwapTxSuccessView = ({
   useEffect(() => {
     if (previewOrder) return;
     if (provider === 'cowprotocol' && txHashOrOrderId && viaBackend) {
-      trackBackendOrder(txHashOrOrderId, chainId);
+      trackBackendOrder(txHashOrOrderId, chainId, sellToken);
     } else if (provider === 'cowprotocol' && txHashOrOrderId) {
       trackSwapOrderProgress(txHashOrOrderId, chainId);
     } else if (provider === 'cowprotocol' && orderStatus === 'open') {
@@ -314,6 +318,14 @@ export const SwapTxSuccessView = ({
       interval.current = setInterval(pollOrder, 10000);
     }
   }, [txHashOrOrderId, chainId, provider, buyDecimals, previewOrder]);
+  // The provider keeps tracking the order after the modal closes; this view's poll stops with it.
+  useEffect(
+    () => () => {
+      if (interval.current) clearInterval(interval.current);
+      interval.current = null;
+    },
+    []
+  );
 
   const status = provider === 'cowprotocol' ? ORDER_RESULT_STATUS[orderStatus] : 'success';
   const sending =

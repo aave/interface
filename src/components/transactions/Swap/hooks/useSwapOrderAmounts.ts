@@ -8,6 +8,14 @@ import { PARASWAP_FLASH_LOAN_FEE_BPS } from '../constants/paraswap.constants';
 import { isBackendRates, OrderType, SwapParams, SwapProvider, SwapState, SwapType } from '../types';
 import { swapTypesThatRequiresInvertedQuote } from './useSwapQuote';
 
+/** A backend cost as bps of the quote's sell leg; every backend cost is in the sell token. */
+const backendFeeBps = (fee: string | undefined, sell: string) => {
+  const base = valueToBigNumber(sell);
+  return !fee || base.isZero()
+    ? 0
+    : valueToBigNumber(fee).dividedBy(base).multipliedBy(10000).toNumber();
+};
+
 const marketOrderKindPerSwapType: Record<SwapType, OrderKind> = {
   [SwapType.Swap]: OrderKind.SELL,
   [SwapType.CollateralSwap]: OrderKind.SELL,
@@ -84,15 +92,19 @@ export const useSwapOrderAmounts = ({
         : valueToBigNumber(state.inputAmount).multipliedBy(partnetFeeBps).dividedBy(10000);
     // const partnerFeeToken = state.side === 'sell' ? state.destinationToken : state.sourceToken;
 
-    // Backend quotes carry their own flash-loan fee.
+    const backendQuote = isBackendRates(state.swapRate) ? state.swapRate.backendQuote : undefined;
     const usingFlashloan =
-      !isBackendRates(state.swapRate) &&
-      isPositionSwap(state.swapType, state.useFlashloan ?? false);
+      !backendQuote && isPositionSwap(state.swapType, state.useFlashloan ?? false);
     const flashLoanFeeBps = usingFlashloan ? PARASWAP_FLASH_LOAN_FEE_BPS : 0;
+    // Backend quotes price the flash loan themselves. Limit previews take its rate from the
+    // reference quote, since the backend charges it again when it quotes the limit order.
+    const flashLoanFeeRateBps = backendQuote
+      ? backendFeeBps(backendQuote.costs.flashloanFee?.amount.value, backendQuote.sell.amount.value)
+      : flashLoanFeeBps;
     let flashLoanFeeAmount =
       state.side == 'sell'
-        ? valueToBigNumber(state.outputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000)
-        : valueToBigNumber(state.inputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000);
+        ? valueToBigNumber(state.outputAmount).multipliedBy(flashLoanFeeRateBps).dividedBy(10000)
+        : valueToBigNumber(state.inputAmount).multipliedBy(flashLoanFeeRateBps).dividedBy(10000);
 
     if (!isInvertedSwap) {
       // on classic swaps, minimum is calculated from the output token and sent amount is from the input token
@@ -255,10 +267,11 @@ export const useSwapOrderAmounts = ({
       // Every backend cost is in the sell token.
       partnerFeeAmount = valueToBigNumber(costs.partnerFee.amount.value);
       flashLoanFeeAmount = valueToBigNumber(costs.flashloanFee?.amount.value ?? '0');
-      const feeBase = valueToBigNumber(sell.amount.value);
-      partnetFeeBps = feeBase.isZero()
-        ? 0
-        : partnerFeeAmount.dividedBy(feeBase).multipliedBy(10000).decimalPlaces(2).toNumber();
+      partnetFeeBps = valueToBigNumber(
+        backendFeeBps(costs.partnerFee.amount.value, sell.amount.value)
+      )
+        .decimalPlaces(2)
+        .toNumber();
     }
 
     if (
