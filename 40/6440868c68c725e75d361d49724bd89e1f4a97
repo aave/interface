@@ -1,0 +1,24 @@
+src/utils/sdkEnvironment.ts
+  s_de7a6cfdbdd8ff::t_45a43c4eeb1708 1-17
+pages/_app.page.tsx
+  s_de7a6cfdbdd8ff::t_05a8443280d33f 120
+  s_de7a6cfdbdd8ff::t_b9e5268d52c355 32
+.env.example
+  s_de7a6cfdbdd8ff::t_05a8443280d33f 14-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "406440868c68c725e75d361d49724bd89e1f4a97",
+  "prompts": {},
+  "sessions": {
+    "s_de7a6cfdbdd8ff": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "668e6a41-7262-4969-967d-7d8639122ce2",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

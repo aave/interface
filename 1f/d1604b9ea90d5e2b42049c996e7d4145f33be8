@@ -1,0 +1,24 @@
+src/utils/hfUtils.ts
+  s_d0a8042cc62523::t_973008d9607821 360-380,387-388,390
+src/utils/__tests__/hfUtils.test.ts
+  s_d0a8042cc62523::t_22cdab9240b5f1 2-7,71-107,109,111-116,118-120,122-127,129-133,135-140,142-161,163-164
+  s_d0a8042cc62523::t_1dca3a6ed100da 108,110,117,121,128,134,141,162
+src/components/transactions/Supply/SupplyModalContent.tsx
+  s_d0a8042cc62523::t_58d4f806e5bc35 142,274-279
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1fd1604b9ea90d5e2b42049c996e7d4145f33be8",
+  "prompts": {},
+  "sessions": {
+    "s_d0a8042cc62523": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "80669707-e5bd-43a8-bbc1-5c6c26f93591",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Mark Grothe <grothem@gmail.com>"
+    }
+  }
+}

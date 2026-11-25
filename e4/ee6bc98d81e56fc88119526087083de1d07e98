@@ -1,0 +1,19 @@
+src/components/transactions/Supply/CollateralOptionsList/index.tsx
+  s_08304495e88c91::t_b782f44947fcc3 148-152
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e4ee6bc98d81e56fc88119526087083de1d07e98",
+  "prompts": {},
+  "sessions": {
+    "s_08304495e88c91": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dc4cbc93-5d00-476a-a734-1d52b8ec3dd5",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

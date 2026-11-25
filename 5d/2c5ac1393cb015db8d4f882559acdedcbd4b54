@@ -1,0 +1,21 @@
+src/modules/reserve-overview/ReserveConfigSection/components/ConfigFilterButton/index.tsx
+  s_08304495e88c91::t_63621bc152dfa1 35
+src/modules/reserve-overview/Gho/GhoReserveConfiguration.tsx
+  s_08304495e88c91::t_2dec9281deba0a 29-32,35,38
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "5d2c5ac1393cb015db8d4f882559acdedcbd4b54",
+  "prompts": {},
+  "sessions": {
+    "s_08304495e88c91": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dc4cbc93-5d00-476a-a734-1d52b8ec3dd5",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

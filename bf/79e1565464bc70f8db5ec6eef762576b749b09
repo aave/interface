@@ -1,0 +1,123 @@
+src/modules/dev/ComponentShowcase/components/ChartsSection/index.tsx
+  s_140400f84712a1::t_e3046aa39a43c0 1-50
+src/modules/v4Migration/V4MigrationHubCard/index.tsx
+  s_140400f84712a1::t_d9d53152db104a 55
+  s_140400f84712a1::t_5e7ab2b2dc4f04 91,98
+  s_140400f84712a1::t_8ede8637db7e59 92-97
+  s_140400f84712a1::t_c89c91c003c5a7 1-2,4-7,9-22,24-38,40-48,50-54,56-86,88-90,99,101-105,107-129
+  s_140400f84712a1::t_02f3443157be1f 3
+  s_140400f84712a1::t_953deed48b3892 49,100,106
+  s_140400f84712a1::t_b2a33ce9da5cf0 8,23,39,87
+src/locales/es/messages.js
+  s_140400f84712a1::t_092bb07fefa396 1
+src/components/charts/ApySparkline/index.tsx
+  s_140400f84712a1::t_d94b6886e152e0 1-25,38-39
+  s_140400f84712a1::t_f0de1c20057306 26-37
+src/components/charts/utils/resample.ts
+  s_140400f84712a1::t_32c1c8ad329181 1-31
+src/locales/el/messages.js
+  s_140400f84712a1::t_fca19735475f4e 1
+src/components/icons/IncentivesIcon.tsx
+  s_140400f84712a1::t_b2a33ce9da5cf0 1-27
+src/components/charts/MotionLinePath/index.tsx
+  s_140400f84712a1::t_6109a4d984d642 1-54
+src/locales/en/messages.po
+  s_140400f84712a1::t_391a474ebf6649 16-19,618,1169-1172,1257-1260,1286-1289,2177-2180,2288-2291,3445-3448
+src/components/icons/InfoCircleIcon.tsx
+  s_140400f84712a1::t_2082b617e087f8 1-9
+src/components/OpportunityCard/index.tsx
+  s_140400f84712a1::t_f0de1c20057306 165
+  s_140400f84712a1::t_b42739b0da5886 172-174
+  s_140400f84712a1::t_ed7b157712c41f 186
+  s_140400f84712a1::t_b31e8aaa53bf70 97-132
+  s_140400f84712a1::t_bab974ab2c401e 154
+  s_140400f84712a1::t_e4cf113bf1c1d3 1-96,133-153,155-164,166-171,175-185,187-208
+src/components/HubMarketIcon/utils/glyphs.ts
+  s_140400f84712a1::t_a67b4a1d6933d8 1-19
+src/components/charts/ChartEndDot/index.tsx
+  s_140400f84712a1::t_3c5709365cdac9 1-34
+src/components/ChainBadge/index.tsx
+  s_140400f84712a1::t_7f68fecb2b8134 1,3-4,7-14,27-28,30,38-39,41
+  s_140400f84712a1::t_4784a19c44af5f 15-26,29,31-37,40
+src/components/AssetGroup/index.tsx
+  s_140400f84712a1::t_5037e086ff7e44 1-29,31,33-122
+  s_140400f84712a1::t_f0de1c20057306 30,32
+src/modules/dev/ComponentShowcase/utils/registry.tsx
+  s_140400f84712a1::t_d63d3256a3dc40 135
+  s_140400f84712a1::t_601f8f297f2dd6 98-103,129-134,136
+src/modules/dev/ComponentShowcase/components/MigrationHubCardsSection/index.tsx
+  s_140400f84712a1::t_030d4eae521f7e 1-75,77-108
+  s_140400f84712a1::t_b2a33ce9da5cf0 76
+pnpm-lock.yaml
+  s_140400f84712a1::t_12719b354933a5 189-191
+src/modules/dev/ComponentShowcase/components/IconsSection/index.tsx
+  s_140400f84712a1::t_ce280e9666bb22 75-76,219-221
+  s_140400f84712a1::t_b2a33ce9da5cf0 86,123
+src/modules/stkGho/StkGhoDepositRow.tsx
+  s_140400f84712a1::t_b2a33ce9da5cf0 5,69
+src/utils/figmaColors.ts
+  s_140400f84712a1::t_cf77c7f6ef06b5 238-239,241-242,244
+  s_140400f84712a1::t_790773cf5cf6eb 94-95,100
+  s_140400f84712a1::t_21bfcaa9f117d9 96-99,240,243
+  s_140400f84712a1::t_f0de1c20057306 84
+package.json
+  s_140400f84712a1::t_095f45bae65339 111
+src/modules/v4Migration/V4MigrationBanner/index.tsx
+  s_140400f84712a1::t_d9d53152db104a 36
+src/components/incentives/IncentivesButton.tsx
+  s_140400f84712a1::t_b2a33ce9da5cf0 17,346,355,368,377,386
+src/components/charts/SparklineChart/index.tsx
+  s_140400f84712a1::t_f0de1c20057306 153-161,176-183,199-200,208-209,239
+  s_140400f84712a1::t_7ef73547116111 36,115,185-196,198
+  s_140400f84712a1::t_338b95aa3512f4 252
+  s_140400f84712a1::t_37312f7595270a 169,174
+  s_140400f84712a1::t_607f70654cc94e 197
+  s_140400f84712a1::t_d5829143504cc8 1-35,37-114,116-152,162-168,170-173,175,184,201-207,210-238,240-241,243-251,253-268
+  s_140400f84712a1::t_e7916464b32c34 242
+src/modules/dev/ComponentShowcase/components/MigrationBannersSection/index.tsx
+  s_140400f84712a1::t_d9d53152db104a 18
+src/components/charts/AxisLegendLeftFade/index.tsx
+  s_140400f84712a1::t_c67bbe965da28d 1-77
+src/modules/v4Migration/V4MigrationPage/utils/positions.ts
+  s_140400f84712a1::t_546eac54b932ad 1-2
+  s_140400f84712a1::t_811208c3a6f100 34-40
+src/components/charts/hooks/useElementWidth.ts
+  s_140400f84712a1::t_c415aa2e21c336 1-16
+src/components/StatRow/index.tsx
+  s_140400f84712a1::t_89ab60325274ce 1-2,4-42,44-76
+  s_140400f84712a1::t_f0de1c20057306 3,43
+src/locales/fr/messages.js
+  s_140400f84712a1::t_05c087d2a52e76 1
+src/components/ChainIcon/index.tsx
+  s_140400f84712a1::t_f0de1c20057306 3,24-45
+  s_140400f84712a1::t_342622cf201267 1-2,4-14,19-23
+  s_140400f84712a1::t_b42739b0da5886 15-18
+src/locales/en/messages.js
+  s_140400f84712a1::t_216024104811f0 1
+src/components/HubMarketIcon/index.tsx
+  s_140400f84712a1::t_21bfcaa9f117d9 12
+  s_140400f84712a1::t_e94c26f4e5e923 31
+  s_140400f84712a1::t_27dda9cf519e52 1-11,13-30,32-57
+src/modules/dev/ComponentShowcase/components/DataPrimitivesSection/index.tsx
+  s_140400f84712a1::t_601f8f297f2dd6 3,53-56
+  s_140400f84712a1::t_08ccda1dfabcc8 57-58
+src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
+  s_140400f84712a1::t_43abab2217ebec 3,10
+  s_140400f84712a1::t_f0de1c20057306 61-63,69-71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "bf79e1565464bc70f8db5ec6eef762576b749b09",
+  "prompts": {},
+  "sessions": {
+    "s_140400f84712a1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "49109958-9698-480f-bb8d-25e252218ae7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}

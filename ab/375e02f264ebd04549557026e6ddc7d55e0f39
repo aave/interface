@@ -1,0 +1,19 @@
+src/utils/theme.tsx
+  s_140400f84712a1::t_e30300582f2cdd 1473-1474
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ab375e02f264ebd04549557026e6ddc7d55e0f39",
+  "prompts": {},
+  "sessions": {
+    "s_140400f84712a1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "49109958-9698-480f-bb8d-25e252218ae7",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Abhijeet Singh <abhijeetsinghmain@gmail.com>"
+    }
+  }
+}
