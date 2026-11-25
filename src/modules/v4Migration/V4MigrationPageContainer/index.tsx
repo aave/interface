@@ -1,9 +1,11 @@
 import { evmAddress, useMigrationOpportunities } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
+import { useRouter } from 'next/router';
 import { ReactNode, useEffect, useMemo } from 'react';
 import { ConnectWalletPaper } from 'src/components/ConnectWalletPaper';
 import { EmptyStatePaper } from 'src/components/EmptyStatePaper';
+import { ROUTES } from 'src/components/primitives/Link';
 import { Spinner } from 'src/components/Spinner';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
@@ -41,6 +43,7 @@ export const V4MigrationPageContainer = () => {
 };
 
 const ConnectedV4MigrationPage = ({ user }: { user: string }) => {
+  const router = useRouter();
   const { data, loading, error } = useMigrationOpportunities({
     markets: MIGRATION_MARKETS,
     user: evmAddress(user),
@@ -80,6 +83,11 @@ const ConnectedV4MigrationPage = ({ user }: { user: string }) => {
     );
   }
 
-  // TODO: pass `onMigrateEarn` / `onMigrateBorrow` once the migration flow is wired up.
-  return <V4MigrationPage {...positions} />;
+  // TODO: pass `onMigrateBorrow` once the borrow flow exists.
+  return (
+    <V4MigrationPage
+      {...positions}
+      onMigrateEarn={(position) => router.push(ROUTES.migrationEarnV4(position.id))}
+    />
+  );
 };

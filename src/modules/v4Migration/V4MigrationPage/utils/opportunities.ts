@@ -31,6 +31,13 @@ const positionId = (opportunity: MigrationOpportunity, suffix?: string) =>
     .filter(Boolean)
     .join(':');
 
+/** Reads a position id back into the V3 market, and for an earn position the supplied asset. */
+export const parsePositionId = (id: string) => {
+  const [chainId, market, asset] = id.split(':');
+  if (!Number(chainId) || !market) return undefined;
+  return { chainId: Number(chainId), market, asset };
+};
+
 const toEarnPosition = (opportunity: MigrationOpportunity): EarnMigrationPosition | undefined => {
   const supply = opportunity.supplies[0];
   if (!supply) return undefined;

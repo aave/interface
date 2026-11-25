@@ -5192,6 +5192,7 @@ msgstr "Add to Favourites"
 
 #: src/components/transactions/FlowCommons/Error.tsx
 #: src/components/transactions/FlowCommons/PermissionView.tsx
+#: src/layouts/FlowLayout.tsx
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Close"
 msgstr "Close"

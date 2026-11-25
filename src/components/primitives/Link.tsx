@@ -131,6 +131,8 @@ export const ROUTES = {
   faucet: '/faucet',
   migrationTool: '/v3-migration',
   migrationToolV4: '/migrate',
+  migrationEarnV4: (positionId: string) =>
+    `/migrate/earn/?position=${encodeURIComponent(positionId)}`,
   marketMigrationTool: (marketName: CustomMarket) => `/v3-migration/?market=${marketName}`,
   dynamicRenderedProposal: (proposalId: number) =>
     `/governance/v3/proposal?proposalId=${proposalId}`,
