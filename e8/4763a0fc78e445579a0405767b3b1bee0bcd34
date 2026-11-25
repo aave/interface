@@ -1,0 +1,31 @@
+src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
+  s_36fe408f2b1273::t_133ee10bc930b6 9-10,18,21,45,263-268,275-281,292-296,339-359,373,410,427-433,436-450,453-469
+src/modules/v4Migration/V4MigrationBorrowFlow/components/BorrowMigrationStatus/index.tsx
+  s_36fe408f2b1273::t_133ee10bc930b6 1-193
+src/modules/v4Migration/V4MigrationEarnFlow/components/EarnMigrationStatus/index.tsx
+  s_36fe408f2b1273::t_2c31ed28359e0a 12
+  s_36fe408f2b1273::t_133ee10bc930b6 35
+src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+  s_36fe408f2b1273::t_2c31ed28359e0a 22
+  s_36fe408f2b1273::t_133ee10bc930b6 253,393-398
+src/modules/v4Migration/hooks/useMigration.ts
+  s_36fe408f2b1273::t_133ee10bc930b6 1-222
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_2c31ed28359e0a 1066,2272,3631,3709
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e84763a0fc78e445579a0405767b3b1bee0bcd34",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
