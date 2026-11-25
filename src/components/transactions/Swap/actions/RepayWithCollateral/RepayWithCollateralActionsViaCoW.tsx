@@ -237,7 +237,8 @@ export const RepayWithCollateralActionsViaCoW = ({
           state.sellAmountToken.symbol,
           state.buyAmountToken.symbol,
           state.swapType,
-          currentMarket
+          currentMarket,
+          state.chainId
         ),
       };
 
@@ -353,9 +354,6 @@ export const RepayWithCollateralActionsViaCoW = ({
 
   return (
     <TxActionsWrapper
-      sx={{
-        mt: 6,
-      }}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={state.isWrongNetwork}

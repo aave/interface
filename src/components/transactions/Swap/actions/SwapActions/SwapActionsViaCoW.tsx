@@ -193,6 +193,7 @@ export const SwapActionsViaCoW = ({
             state.orderType,
             params.swapType,
             currentMarket,
+            state.chainId,
             state.swapRate.quoteId
           );
           const txWithGasEstimation = await estimateGasLimit(ethFlowTx, state.chainId);
@@ -243,7 +244,8 @@ export const SwapActionsViaCoW = ({
                   state.orderType,
                   APP_CODE_PER_SWAP_TYPE[params.swapType],
                   params.swapType,
-                  currentMarket
+                  currentMarket,
+                  state.chainId
                 )
               ),
               state.chainId
@@ -410,9 +412,6 @@ export const SwapActionsViaCoW = ({
 
   return (
     <TxActionsWrapper
-      sx={{
-        mt: 6,
-      }}
       requiresApprovalReset={requiresApprovalReset}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}

@@ -1,12 +1,12 @@
 import { Trans } from '@lingui/macro';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Skeleton, Typography, useTheme } from '@mui/material';
 import { BackButton } from 'src/components/BackButton';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { getMarketInfoById, MarketLogo } from 'src/components/MarketSwitcher';
 import { ROUTES } from 'src/components/primitives/Link';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
-import { fetchIconSymbolAndName } from 'src/ui-config/reservePatches';
+import { getDisplayIconSymbol } from 'src/ui-config/reservePatches';
 import { displayGhoForMintableMarket } from 'src/utils/ghoUtilities';
 import { useShallow } from 'zustand/shallow';
 
@@ -17,11 +17,17 @@ import { GhoReserveTopDetails } from './Gho/GhoReserveTopDetails';
 import { ReserveTopDetails } from './ReserveTopDetails';
 import { TokenLinkDropdown } from './TokenLinkDropdown';
 
+const HEADER_BAND_SX = {
+  pt: { xs: '2rem', md: '3rem' },
+  pb: { xs: '2rem', md: '3rem' },
+};
+
 interface ReserveTopDetailsProps {
   underlyingAsset: string;
 }
 
 export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsProps) => {
+  const { breakpoints } = useTheme();
   const { supplyReserves, loading } = useAppDataContext();
   const [currentMarket, currentChainId] = useRootStore(
     useShallow((state) => [state.currentMarket, state.currentChainId])
@@ -41,16 +47,11 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   if (!poolReserve) {
     return null;
   }
-  const { iconSymbol } = fetchIconSymbolAndName({
-    underlyingAsset: poolReserve!.underlyingToken.address,
-    symbol: poolReserve!.underlyingToken.symbol,
-    name: poolReserve!.underlyingToken.name,
+  const displayIconSymbol = getDisplayIconSymbol({
+    underlyingAsset: poolReserve.underlyingToken.address,
+    symbol: poolReserve.underlyingToken.symbol,
+    name: poolReserve.underlyingToken.name,
   });
-
-  const displayIconSymbol =
-    iconSymbol?.toLowerCase() !== poolReserve!.underlyingToken.symbol.toLowerCase()
-      ? iconSymbol
-      : poolReserve!.underlyingToken.symbol;
 
   const reserveIcon = (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -84,7 +85,11 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
   });
 
   return (
-    <TopInfoPanel titleComponent={<BackButton fallbackHref={ROUTES.markets} />}>
+    <TopInfoPanel
+      titleComponent={<BackButton fallbackHref={ROUTES.markets} />}
+      bandSx={HEADER_BAND_SX}
+      containerProps={{ sx: { [breakpoints.down('xsm')]: { px: '1.25rem' } } }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -93,7 +98,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           alignItems: { xs: 'flex-start', md: 'flex-end' },
           // Stacked on mobile, so this is the gap under the title block rather than between two
           // columns; it needs more room there than the 1rem that separates them side by side.
-          gap: { xs: '1.5rem', md: '1rem' },
+          gap: { xs: '2.25rem', md: '1rem' },
           width: '100%',
         }}
       >
@@ -101,7 +106,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           sx={{ display: 'flex', alignItems: 'center', gap: '1rem', minWidth: 0, maxWidth: '100%' }}
         >
           {reserveIcon}
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', minWidth: 0 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: 0 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
               <Box
                 sx={{
@@ -150,7 +155,7 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
                 variant="description"
                 sx={{ color: 'fg-3', lineHeight: '0.875rem', letterSpacing: 0 }}
               >
-                <Trans>on</Trans>
+                <Trans>Asset on</Trans>
               </Typography>
               <MarketLogo size={16} logo={logo} sx={{ mr: 0 }} />
               <Typography
@@ -167,10 +172,12 @@ export const ReserveTopDetailsWrapper = ({ underlyingAsset }: ReserveTopDetailsP
           sx={{
             display: 'flex',
             alignItems: 'flex-start',
-            columnGap: '2.5rem',
-            rowGap: '1rem',
+            columnGap: '2.75rem',
+            rowGap: '2.5rem',
             flexWrap: { xs: 'wrap', md: 'nowrap' },
             flexShrink: 0,
+            position: 'relative',
+            top: { md: '0.125rem' },
           }}
         >
           {isGho ? (

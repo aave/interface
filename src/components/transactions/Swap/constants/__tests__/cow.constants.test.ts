@@ -7,7 +7,7 @@ jest.mock('src/utils/marketsAndNetworksConfig', () => ({ marketsData: {} }));
 
 const market = 'proto_mainnet_v3' as CustomMarket;
 const bps = (from: string, to: string, swapType: SwapType) =>
-  COW_PARTNER_FEE(from, to, swapType, market).volumeBps;
+  COW_PARTNER_FEE(from, to, swapType, market, 1).volumeBps;
 
 describe('COW_PARTNER_FEE', () => {
   it.each([

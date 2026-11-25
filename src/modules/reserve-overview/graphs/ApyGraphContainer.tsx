@@ -13,7 +13,6 @@ import { useState } from 'react';
 import { pickFigma } from 'src/utils/figmaColors';
 
 import { ApyGraph, FormattedReserveHistoryItem, PlaceholderChart } from './ApyGraph';
-import { GraphLegend } from './GraphLegend';
 import { GraphTimeRangeSelector } from './GraphTimeRangeSelector';
 
 type ApyGraphContainerProps = {
@@ -55,7 +54,7 @@ export const SupplyApyGraph = ({ chain, underlyingToken, market }: ApyGraphProps
   return (
     <ApyGraphContainer
       label="Supply APR"
-      color={pickFigma(palette.mode)['data-green']}
+      color={pickFigma(palette.mode)['purple-2']}
       data={transformApyData(data)}
       loading={loading}
       error={error || false}
@@ -98,20 +97,16 @@ const ApyGraphContainer = ({
   selectedTimeRange,
   onSelectedTimeRangeChanged,
 }: ApyGraphContainerProps): JSX.Element => {
-  const CHART_HEIGHT = 155;
-  const CHART_HEIGHT_LOADING_FIX = 3;
+  const statusSx = {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
 
   const graphLoading = (
-    <Box
-      sx={{
-        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
-        width: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    <Box sx={statusSx}>
       <CircularProgress size={20} sx={{ mb: 2, opacity: 0.5 }} />
       <Typography variant="subheader1" color="fg-3">
         <Trans>Loading data...</Trans>
@@ -120,16 +115,7 @@ const ApyGraphContainer = ({
   );
 
   const graphError = (
-    <Box
-      sx={{
-        height: CHART_HEIGHT + CHART_HEIGHT_LOADING_FIX,
-        width: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    <Box sx={statusSx}>
       <Typography variant="subheader1">
         <Trans>Something went wrong</Trans>
       </Typography>
@@ -140,42 +126,34 @@ const ApyGraphContainer = ({
   );
 
   return (
-    <Box sx={{ mt: 10, mb: 4 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          mb: 4,
-        }}
-      >
-        <GraphLegend labels={[{ text: label, color }]} />
+    <Box sx={{ mt: '2.5rem', height: '15rem', position: 'relative' }}>
+      <Box sx={{ position: 'absolute', top: '0.75rem', right: 0, zIndex: 1 }}>
         <GraphTimeRangeSelector
           disabled={loading}
           timeRange={selectedTimeRange}
           onTimeRangeChanged={onSelectedTimeRangeChanged}
         />
       </Box>
-      {loading && graphLoading}
-      {error && graphError}
-      {!loading && !error && (
-        <ParentSize>
-          {({ width }) =>
-            data.length > 0 ? (
-              <ApyGraph
-                width={width}
-                height={CHART_HEIGHT}
-                data={data}
-                field={{ name: 'value', color, text: label }}
-                selectedTimeRange={selectedTimeRange}
-              />
-            ) : (
-              /* Placeholder chart in the case where there is no rate data available yet */
-              <PlaceholderChart height={CHART_HEIGHT} width={width} />
-            )
-          }
-        </ParentSize>
-      )}
+      <ParentSize>
+        {({ width, height }) =>
+          loading ? (
+            graphLoading
+          ) : error ? (
+            graphError
+          ) : data.length > 0 ? (
+            <ApyGraph
+              width={width}
+              height={height}
+              data={data}
+              field={{ name: 'value', color, text: label }}
+              selectedTimeRange={selectedTimeRange}
+            />
+          ) : (
+            /* Placeholder chart in the case where there is no rate data available yet */
+            <PlaceholderChart height={height} width={width} />
+          )
+        }
+      </ParentSize>
     </Box>
   );
 };

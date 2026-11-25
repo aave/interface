@@ -28,7 +28,12 @@ import {
   getMaxAmountAvailableToSupply,
   remainingCap,
 } from 'src/utils/getMaxAmountAvailableToSupply';
-import { calculateHFAfterSupply, getEmodeAdjustedReserves } from 'src/utils/hfUtils';
+import {
+  calculateHFAfterSupply,
+  getEmodeAdjustedReserves,
+  getReserveLiquidationThresholdInEmode,
+  supplyCountsAsCollateral,
+} from 'src/utils/hfUtils';
 import { isFeatureEnabled } from 'src/utils/marketsAndNetworksConfig';
 import { replaceUnderscoresWithSpaces, roundToTokenDecimals } from 'src/utils/utils';
 import { useShallow } from 'zustand/shallow';
@@ -37,7 +42,6 @@ import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from '../../../hooks/app-data-provider/useAppDataProvider';
-import { CapType } from '../../caps/helper';
 import { Asset, AssetInput } from '../AssetInput';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { ModalWrapperProps } from '../FlowCommons/ModalWrapper';
@@ -230,14 +234,17 @@ export const SupplyModalContent = React.memo(
           marketReferencePriceInUsd,
         });
 
-        // Only count the new supply as collateral if isolation mode rules allow it
-        // (mirrors the guard in calculateHFAfterSupply)
-        const supplyCountsAsCollateral =
-          (!user.isInIsolationMode && !poolReserve.isIsolated) ||
-          (user.isInIsolationMode &&
-            user.isolatedReserve?.underlyingAsset === poolReserve.underlyingAsset);
-
-        const additionalCollateral = supplyCountsAsCollateral ? amountInEth : valueToBigNumber(0);
+        // Count the new supply as collateral only if it will be after the switch: setUserEMode
+        // runs first in the multicall, so the first-supply auto-enable check uses the new
+        // e-mode's LTV, and an existing position keeps its current collateral flag.
+        const additionalCollateral = supplyCountsAsCollateral({
+          user,
+          poolReserve,
+          emodeId: selectedEmodeId,
+          eModes,
+        })
+          ? amountInEth
+          : valueToBigNumber(0);
 
         const newTotalCollateral = valueToBigNumber(
           newSummary.totalCollateralMarketReferenceCurrency
@@ -247,12 +254,9 @@ export const SupplyModalContent = React.memo(
           return valueToBigNumber('-1');
         }
 
-        // Find the liquidation threshold for this asset under the new e-mode
-        const selectedEmode = poolReserve.eModes.find((e) => e.id === selectedEmodeId);
-        const reserveLT =
-          selectedEmodeId !== 0 && selectedEmode
-            ? selectedEmode.eMode.formattedLiquidationThreshold
-            : poolReserve.formattedReserveLiquidationThreshold;
+        // Liquidation threshold for this asset under the new e-mode (boosted only when it's
+        // in that category's collateral bitmap)
+        const reserveLT = getReserveLiquidationThresholdInEmode(poolReserve, selectedEmodeId);
 
         const newLTWeighted = valueToBigNumber(newSummary.totalCollateralMarketReferenceCurrency)
           .multipliedBy(newSummary.currentLiquidationThreshold)
@@ -345,11 +349,10 @@ export const SupplyModalContent = React.memo(
                 : poolReserve.iconSymbol,
             },
           ]}
-          capType={CapType.supplyCap}
           isMaxSelected={isMaxSelected}
           disabled={supplyTxState.loading}
           maxValue={maxAmountToSupply}
-          balanceText={<Trans>Wallet balance</Trans>}
+          balanceText={<Trans>Available to supply</Trans>}
           event={{
             eventName: GENERAL.MAX_INPUT_SELECTION,
             eventParams: {
@@ -379,6 +382,7 @@ export const SupplyModalContent = React.memo(
             reserves={reserves}
             selectedEmodeId={selectedEmodeId}
             onSelect={setSelectedEmodeId}
+            variant="list"
           />
         )}
 
@@ -408,7 +412,7 @@ export const SupplyModalContent = React.memo(
         </TxModalDetails>
 
         {needsEmodeSwitch && (
-          <Alert severity="info" sx={{ mb: 6, width: '100%', mt: 2 }}>
+          <Alert severity="info" sx={{ width: '100%', mt: '2rem' }}>
             <AlertTitle>
               <Trans>E-Mode change</Trans>
             </AlertTitle>
@@ -599,7 +603,6 @@ export const SupplyWrappedTokenModalContent = ({
         symbol={tokenToSupply.symbol}
         assets={assets}
         onSelect={setTokenToSupply}
-        capType={CapType.supplyCap}
         isMaxSelected={isMaxSelected}
         disabled={supplyTxState.loading}
         balanceText={<Trans>Wallet balance</Trans>}

@@ -89,11 +89,7 @@ export const StkGhoMigrateModalContent = () => {
         />
       </TxModalDetails>
 
-      <StkGhoMigrateActions
-        isWrongNetwork={isWrongNetwork}
-        blocked={+stkGhoBalance <= 0}
-        sx={{ mt: '48px' }}
-      />
+      <StkGhoMigrateActions isWrongNetwork={isWrongNetwork} blocked={+stkGhoBalance <= 0} />
     </>
   );
 };

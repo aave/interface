@@ -5,7 +5,6 @@ import { Trans } from '@lingui/macro';
 import { Alert, Box, Checkbox, FormControlLabel, Stack, SvgIcon, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
 import dayjs from 'dayjs';
-import { parseUnits } from 'ethers/lib/utils';
 import React, { useState } from 'react';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link } from 'src/components/primitives/Link';
@@ -13,8 +12,8 @@ import { TokenIcon } from 'src/components/primitives/TokenIcon';
 import { TxErrorView } from 'src/components/transactions/FlowCommons/Error';
 import { GasEstimationError } from 'src/components/transactions/FlowCommons/GasEstimationError';
 import { TxSuccessView } from 'src/components/transactions/FlowCommons/Success';
+import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { TxModalTitle } from 'src/components/transactions/FlowCommons/TxModalTitle';
-import { GasStation } from 'src/components/transactions/GasStation/GasStation';
 import { ChangeNetworkWarning } from 'src/components/transactions/Warnings/ChangeNetworkWarning';
 import { timeMessage } from 'src/helpers/timeHelper';
 import { MergedStakeData } from 'src/hooks/stake/useUmbrellaSummary';
@@ -330,7 +329,7 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
         </Trans>
       </Alert>
 
-      <GasStation chainId={currentChainId} gasLimit={parseUnits(gasLimit || '0', 'wei')} />
+      <TxModalDetails chainId={currentChainId} gasLimit={gasLimit} />
 
       <FormControlLabel
         sx={{ mt: 12 }}
@@ -353,7 +352,6 @@ export const StakeCooldownModalContent = ({ stakeData }: { stakeData: MergedStak
       {txError && <GasEstimationError txError={txError} />}
 
       <StakeCooldownActions
-        sx={{ mt: '48px' }}
         isWrongNetwork={isWrongNetwork}
         blocked={blockingError !== undefined || !cooldownCheck}
         selectedToken={stakeData.tokenAddress}

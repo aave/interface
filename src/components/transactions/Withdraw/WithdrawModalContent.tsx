@@ -84,6 +84,7 @@ export const WithdrawModalContent = ({
   const { blockingError, errorComponent } = useWithdrawError({
     assetsBlockingWithdraw,
     poolReserve,
+    userReserve,
     healthFactorAfterWithdraw,
     withdrawAmount,
     user,
@@ -234,7 +235,6 @@ export const WithdrawModalContent = ({
         isWrongNetwork={isWrongNetwork}
         symbol={symbol}
         blocked={blockingError !== undefined || (displayRiskCheckbox && !riskCheckboxAccepted)}
-        sx={displayRiskCheckbox ? { mt: 0 } : {}}
       />
     </>
   );

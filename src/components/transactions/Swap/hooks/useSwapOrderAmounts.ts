@@ -88,7 +88,8 @@ export const useSwapOrderAmounts = ({
             state.sourceToken.symbol,
             state.destinationToken.symbol,
             state.swapType,
-            currentMarket
+            currentMarket,
+            state.chainId
           ).volumeBps
         : 0;
     const partnerFeeAmount =

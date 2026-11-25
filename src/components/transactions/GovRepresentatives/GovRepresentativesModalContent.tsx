@@ -2,8 +2,9 @@ import { ChainId } from '@aave/contract-helpers';
 import { t, Trans } from '@lingui/macro';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Box, Checkbox, FormControlLabel, OutlinedInput, Stack, Typography } from '@mui/material';
-import { isAddress, parseUnits } from 'ethers/lib/utils';
+import { isAddress } from 'ethers/lib/utils';
 import { useState } from 'react';
+import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useModalContext } from 'src/hooks/useModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ZERO_ADDRESS } from 'src/modules/governance/utils/formatProposal';
@@ -16,7 +17,6 @@ import { useShallow } from 'zustand/shallow';
 import { BaseSuccessView } from '../FlowCommons/BaseSuccess';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxModalTitle } from '../FlowCommons/TxModalTitle';
-import { GasStation } from '../GasStation/GasStation';
 import { ChangeNetworkWarning } from '../Warnings/ChangeNetworkWarning';
 import { GovRepresentativesActions } from './GovRepresentativesActions';
 
@@ -177,9 +177,9 @@ export const GovRepresentativesContent = ({
         ))}
       </Stack>
       <Box sx={{ px: 3, pb: 3 }}>
-        <GasStation
+        <TxModalDetails
           disabled={blocked || !isDirty}
-          gasLimit={parseUnits('1000000', 'wei')}
+          gasLimit="1000000"
           chainId={governanceV3Config.coreChainId}
         />
         {txError && <GasEstimationError txError={txError} />}

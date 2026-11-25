@@ -17,7 +17,6 @@ import {
   DetailsUnwrapSwitch,
   TxModalDetails,
 } from 'src/components/transactions/FlowCommons/TxModalDetails';
-import { GasStation } from 'src/components/transactions/GasStation/GasStation';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { ExtendedFormattedUser } from 'src/hooks/pool/useExtendedUserSummaryAndIncentives';
 import { FormattedReservesAndIncentives } from 'src/hooks/pool/usePoolFormattedReserves';
@@ -224,7 +223,7 @@ export const UnStakeModalContent = ({
           )}
         </TxModalDetails>
       ) : (
-        <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} chainId={ChainId.mainnet} />
+        <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet} />
       )}
 
       {/* {blockingError !== undefined && (
@@ -236,7 +235,6 @@ export const UnStakeModalContent = ({
       {txError && <GasEstimationError txError={txError} />}
 
       <UnStakeActions
-        sx={{ mt: '48px' }}
         amountToUnStake={amountToRedeem || '0'}
         isWrongNetwork={isWrongNetwork}
         symbol={symbolFormatted}

@@ -239,7 +239,8 @@ export const DebtSwapActionsViaCoW = ({
           state.sellAmountToken.symbol,
           state.buyAmountToken.symbol,
           state.swapType,
-          currentMarket
+          currentMarket,
+          state.chainId
         ),
       };
 
@@ -355,9 +356,6 @@ export const DebtSwapActionsViaCoW = ({
 
   return (
     <TxActionsWrapper
-      sx={{
-        mt: 6,
-      }}
       mainTxState={mainTxState}
       approvalTxState={approvalTxState}
       isWrongNetwork={state.isWrongNetwork}

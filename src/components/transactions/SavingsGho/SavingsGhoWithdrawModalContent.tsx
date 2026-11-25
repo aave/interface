@@ -2,8 +2,8 @@ import { ChainId, Stake } from '@aave/contract-helpers';
 import { normalize, valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import { Typography } from '@mui/material';
-import { parseUnits } from 'ethers/lib/utils';
 import React, { useRef, useState } from 'react';
+import { TxModalDetails } from 'src/components/transactions/FlowCommons/TxModalDetails';
 import { useGeneralStakeUiData } from 'src/hooks/stake/useGeneralStakeUiData';
 import { useUserStakeUiData } from 'src/hooks/stake/useUserStakeUiData';
 import { useModalContext } from 'src/hooks/useModal';
@@ -15,7 +15,6 @@ import { AssetInput } from '../AssetInput';
 import { TxErrorView } from '../FlowCommons/Error';
 import { GasEstimationError } from '../FlowCommons/GasEstimationError';
 import { TxSuccessView } from '../FlowCommons/Success';
-import { GasStation } from '../GasStation/GasStation';
 import { SavingsGhoWithdrawActions } from './SavingsGhoWithdrawActions';
 
 export type UnStakeProps = {
@@ -128,12 +127,11 @@ export const SavingsGhoModalWithdrawContent = ({ icon }: UnStakeProps) => {
           {handleBlocked()}
         </Typography>
       )}
-      <GasStation gasLimit={parseUnits(gasLimit || '0', 'wei')} chainId={ChainId.mainnet} />
+      <TxModalDetails gasLimit={gasLimit} chainId={ChainId.mainnet} />
 
       {txError && <GasEstimationError txError={txError} />}
 
       <SavingsGhoWithdrawActions
-        sx={{ mt: '48px' }}
         amountToUnStake={amount}
         isWrongNetwork={isWrongNetwork}
         symbol={nameFormatted}

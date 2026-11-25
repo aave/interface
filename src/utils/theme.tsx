@@ -845,7 +845,7 @@ export function getThemedComponents(theme: AppTheme) {
           icon: <Box sx={{ ...selectionControlResting, borderRadius: '50%' }} />,
           checkedIcon: (
             <Box sx={{ ...selectionControlChecked, borderRadius: '50%' }}>
-              <Box sx={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: onAccent }} />
+              <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: onAccent }} />
             </Box>
           ),
         },
@@ -897,6 +897,9 @@ export function getThemedComponents(theme: AppTheme) {
             style: {
               minWidth: 240,
             },
+          },
+          MenuListProps: {
+            style: { width: '100%' },
           },
         },
         styleOverrides: {
@@ -1397,6 +1400,9 @@ export function getThemedComponents(theme: AppTheme) {
       },
       MuiSelect: {
         defaultProps: {
+          MenuProps: {
+            MenuListProps: { style: { width: '100%' } },
+          },
           IconComponent: (props) => (
             <ChevronUpDownIcon {...props} sx={{ fontSize: '18px', color: figVars['fg-3'] }} />
           ),
