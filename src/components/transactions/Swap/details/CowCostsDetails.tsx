@@ -28,17 +28,24 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
     (!state.isInvertedSwap ? state.swapRate.srcTokenPriceUsd : state.swapRate.destTokenPriceUsd);
   const networkFeeToken = !state.isInvertedSwap ? state.sourceToken : state.destinationToken;
 
+  const backendQuote = isBackendRates(state.swapRate) ? state.swapRate.backendQuote : undefined;
+  const sellTokenPriceUnitUsd =
+    state.sellAmountFormatted == '0'
+      ? 0
+      : valueToBigNumber(state.sellAmountUSD ?? '0')
+          .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
+          .toNumber();
+
   // If using flash-loan via CoW we need to account for the flash-loan fee
-  const flashloanFeeFormatted = normalize(
-    calculateFlashLoanAmounts(state).flashLoanFeeAmount.toString(),
-    state.sellAmountToken?.decimals ?? 18
-  );
-  const flashLoanFeeTokenPriceUnitUsd = valueToBigNumber(state.sellAmountUSD ?? '0')
-    .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
-    .toNumber();
-  const flashloanFeeUsd = Number(flashloanFeeFormatted) * flashLoanFeeTokenPriceUnitUsd;
+  const flashloanFeeFormatted = backendQuote
+    ? state.flashLoanFeeAmountFormatted ?? '0'
+    : normalize(
+        calculateFlashLoanAmounts(state).flashLoanFeeAmount.toString(),
+        state.sellAmountToken?.decimals ?? 18
+      );
+  const flashloanFeeUsd = Number(flashloanFeeFormatted) * sellTokenPriceUnitUsd;
   const flashloanFeeToken = state.sellAmountToken;
-  const isFlashloanUsed = state.useFlashloan;
+  const isFlashloanUsed = backendQuote ? !!backendQuote.costs.flashloanFee : state.useFlashloan;
 
   if (!state.buyAmountToken || !state.sellAmountToken) return null;
 
@@ -46,20 +53,15 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
   // - For sell orders: fee in buy token (destinationToken), deducted from buy amount
   // - For buy orders: fee in sell token (sourceToken), added to sell amount
   // For Debt and Repay with collateral, the swap is inverted to our UI
-  const invertedSide = state.processedSide;
+  // Backend quotes fold every fee into the sell token on both sides.
+  const invertedSide = backendQuote ? 'buy' : state.processedSide;
   let partnerFeeFormatted: string,
     partnerFeeUsd: number,
     partnerFeeToken: typeof state.buyAmountToken | typeof state.sellAmountToken;
   if (invertedSide === 'buy') {
     // Fee in destination token (buy token)
     partnerFeeFormatted = state.partnerFeeAmountFormatted ?? '0';
-    const partnerFeeAmountPriceUnitUsd =
-      state.sellAmountFormatted == '0'
-        ? 0
-        : valueToBigNumber(state.sellAmountUSD ?? '0')
-            .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
-            .toNumber();
-    partnerFeeUsd = Number(partnerFeeFormatted) * partnerFeeAmountPriceUnitUsd;
+    partnerFeeUsd = Number(partnerFeeFormatted) * sellTokenPriceUnitUsd;
     partnerFeeToken = state.sellAmountToken;
   } else {
     // Fee in source token (sell token)

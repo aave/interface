@@ -105,7 +105,7 @@ export const useSwapOrderAmounts = ({
       return;
     }
     const flashLoanFeeBps = usingFlashloan ? (resolvedFlashLoanFeeBps as number) : 0;
-    const flashLoanFeeAmount =
+    let flashLoanFeeAmount =
       state.side == 'sell'
         ? valueToBigNumber(state.outputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000)
         : valueToBigNumber(state.inputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000);
@@ -325,10 +325,10 @@ export const useSwapOrderAmounts = ({
             .multipliedBy(buy.amount.value)
             .dividedBy(sell.amount.value)
             .toFixed();
+      // Every backend cost is in the sell token.
       partnerFeeAmount = valueToBigNumber(costs.partnerFee.amount.value);
-      const feeBase = valueToBigNumber(
-        state.side === 'sell' ? buy.amount.value : sell.amount.value
-      );
+      flashLoanFeeAmount = valueToBigNumber(costs.flashloanFee?.amount.value ?? '0');
+      const feeBase = valueToBigNumber(sell.amount.value);
       partnetFeeBps = feeBase.isZero()
         ? 0
         : partnerFeeAmount.dividedBy(feeBase).multipliedBy(10000).decimalPlaces(2).toNumber();
