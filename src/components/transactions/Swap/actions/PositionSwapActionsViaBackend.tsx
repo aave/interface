@@ -1,9 +1,13 @@
 import { sendTransactionAndWait } from '@aave/client/viem';
 import {
+  BorrowSwapKind,
   dateTime,
   PositionSwapOrderPlan,
+  RepayWithSupplyKind,
   SupplySwapKind,
   UnexpectedError,
+  useBorrowSwapOrder,
+  useRepayWithSupplyOrder,
   useSupplySwapOrder,
   useWithdrawSwapOrder,
   WithdrawSwapKind,
@@ -53,6 +57,24 @@ const actionTexts = (state: SwapState) => {
       return {
         action: <Trans>Swap {state.sourceToken.symbol} collateral</Trans>,
         inProgress: <Trans>Swapping {state.sourceToken.symbol} collateral</Trans>,
+      };
+    case SwapType.DebtSwap:
+      return {
+        action: <Trans>Swap {state.sourceToken.symbol} debt</Trans>,
+        inProgress: <Trans>Swapping {state.sourceToken.symbol} debt</Trans>,
+      };
+    case SwapType.RepayWithCollateral:
+      return {
+        action: (
+          <Trans>
+            Repay {state.sourceToken.symbol} with {state.destinationToken.symbol}
+          </Trans>
+        ),
+        inProgress: (
+          <Trans>
+            Repaying {state.sourceToken.symbol} with {state.destinationToken.symbol}
+          </Trans>
+        ),
       };
     default:
       return { action: <Trans>Swap</Trans>, inProgress: <Trans>Swapping</Trans> };
@@ -106,6 +128,8 @@ export const PositionSwapActionsViaBackend = ({
   };
   const [placeSupplySwap] = useSupplySwapOrder(handler);
   const [placeWithdrawSwap] = useWithdrawSwapOrder(handler);
+  const [placeBorrowSwap] = useBorrowSwapOrder(handler);
+  const [placeRepayWithSupply] = useRepayWithSupplyOrder(handler);
 
   const placeOrder = (rates: BackendRatesType) => {
     const legs = positionSwapLegs(state, rates.market);
@@ -146,6 +170,38 @@ export const PositionSwapActionsViaBackend = ({
                   buyAmount: destinationAmount,
                   user: legs.user,
                   kind: fixesDestination ? WithdrawSwapKind.Buy : WithdrawSwapKind.Withdraw,
+                  deadline,
+                },
+              }
+            : { fromQuote }
+        );
+      case SwapType.DebtSwap:
+        return placeBorrowSwap(
+          limit
+            ? {
+                limit: {
+                  currentPosition: legs.sourceBorrow,
+                  currentAmount: sourceAmount,
+                  newReserve: legs.destinationReserve,
+                  newAmount: destinationAmount,
+                  user: legs.user,
+                  kind: BorrowSwapKind.Current,
+                  deadline,
+                },
+              }
+            : { fromQuote }
+        );
+      case SwapType.RepayWithCollateral:
+        return placeRepayWithSupply(
+          limit
+            ? {
+                limit: {
+                  repayPosition: legs.sourceBorrow,
+                  repayAmount: sourceAmount,
+                  supplyPosition: legs.destinationSupply,
+                  supplyAmount: destinationAmount,
+                  user: legs.user,
+                  kind: fixesDestination ? RepayWithSupplyKind.Supply : RepayWithSupplyKind.Repay,
                   deadline,
                 },
               }

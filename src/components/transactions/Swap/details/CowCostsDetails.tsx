@@ -1,4 +1,4 @@
-import { normalize, valueToBigNumber } from '@aave/math-utils';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Box } from '@mui/material';
@@ -11,14 +11,13 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 
-import { calculateFlashLoanAmounts } from '../helpers/cow/adapters.helpers';
-import { isBackendRates, isCowProtocolRates, OrderType, SwapState } from '../types';
+import { isBackendRates, OrderType, SwapState } from '../types';
 
 export const CowCostsDetails = ({ state }: { state: SwapState }) => {
   const [costBreakdownExpanded, setCostBreakdownExpanded] = useState(false);
 
-  // Backend quote costs reach state through useSwapOrderAmounts, so both read the same fields.
-  if (!isCowProtocolRates(state.swapRate) && !isBackendRates(state.swapRate)) return null;
+  // Backend quote costs reach state through useSwapOrderAmounts.
+  if (!isBackendRates(state.swapRate)) return null;
 
   // Prefer unified values exported on state; fall back to raw swapRate if missing
   const networkFeeFormatted = state.networkFeeAmountInSellFormatted || '0';
@@ -28,7 +27,7 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
     (!state.isInvertedSwap ? state.swapRate.srcTokenPriceUsd : state.swapRate.destTokenPriceUsd);
   const networkFeeToken = !state.isInvertedSwap ? state.sourceToken : state.destinationToken;
 
-  const backendQuote = isBackendRates(state.swapRate) ? state.swapRate.backendQuote : undefined;
+  const backendQuote = state.swapRate.backendQuote;
   const sellTokenPriceUnitUsd =
     state.sellAmountFormatted == '0'
       ? 0
@@ -36,25 +35,17 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
           .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
           .toNumber();
 
-  // If using flash-loan via CoW we need to account for the flash-loan fee
-  const flashloanFeeFormatted = backendQuote
-    ? state.flashLoanFeeAmountFormatted ?? '0'
-    : normalize(
-        calculateFlashLoanAmounts(state).flashLoanFeeAmount.toString(),
-        state.sellAmountToken?.decimals ?? 18
-      );
+  // Backend quotes put the flash-loan fee, like every cost, in the sell token.
+  const flashloanFeeFormatted = state.flashLoanFeeAmountFormatted ?? '0';
   const flashloanFeeUsd = Number(flashloanFeeFormatted) * sellTokenPriceUnitUsd;
   const flashloanFeeToken = state.sellAmountToken;
-  const isFlashloanUsed = backendQuote ? !!backendQuote.costs.flashloanFee : state.useFlashloan;
+  const isFlashloanUsed = !!backendQuote.costs.flashloanFee;
 
   if (!state.buyAmountToken || !state.sellAmountToken) return null;
 
-  // Partner fee is applied to the surplus token:
-  // - For sell orders: fee in buy token (destinationToken), deducted from buy amount
-  // - For buy orders: fee in sell token (sourceToken), added to sell amount
-  // For Debt and Repay with collateral, the swap is inverted to our UI
-  // Backend quotes fold every fee into the sell token on both sides.
-  const invertedSide = backendQuote ? 'buy' : state.processedSide;
+  // Market quotes fold the partner fee into the sell token. Limit previews estimate it on the
+  // surplus token: the buy token for sell orders, the sell token for buy orders.
+  const invertedSide = state.orderType === OrderType.MARKET ? 'buy' : state.processedSide;
   let partnerFeeFormatted: string,
     partnerFeeUsd: number,
     partnerFeeToken: typeof state.buyAmountToken | typeof state.sellAmountToken;

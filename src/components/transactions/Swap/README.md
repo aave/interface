@@ -36,17 +36,17 @@
 - `actions/`
   - The submit/CTA area and transaction execution.
   - Flow containers: `SwapActions`, `CollateralSwapActions`, `DebtSwapActions`, `RepayWithCollateralActions`, `WithdrawAndSwapActions`.
-  - Provider adapters implement the same surface per flow, e.g. `SwapActionsViaCoW.tsx`, `SwapActionsViaParaswap.tsx`, and their flow equivalents under each subfolder.
+  - Provider adapters implement the same surface per flow: CoW swaps are quoted and placed by the Aave backend (`SwapActionsViaBackend.tsx` for token swaps, `PositionSwapActionsViaBackend.tsx` for position swaps), ParaSwap ones in the browser (`SwapActionsViaParaswap.tsx` and its flow equivalents under each subfolder).
   - `approval/useSwapTokenApproval.ts` handles allowance flows when needed.
 
 - `hooks/`
-  - `useSwapQuote` retrieves and normalizes quotes (CoW/ParaSwap) and writes into `SwapState`.
+  - `useSwapQuote` retrieves and normalizes quotes (Aave backend for CoW, ParaSwap) and writes into `SwapState`.
   - `useFlowSelector` computes health‑factor effects and decides when to use flash‑loans.
   - Other utilities: `useSwapOrderAmounts`, `useSwapGasEstimation`, `useSlippageSelector`, `useMaxNativeAmount`, `useProtocolReserves`, `useUserContext`.
 
 - `helpers/`
   - `shared/` contains provider‑agnostic logic (provider selection, formatting, misc) and `gasEstimation.helpers.ts`.
-  - `cow/` and `paraswap/` contain provider integrations (rates, order helpers, misc).
+  - `cow/` keeps the CoW order book reads for orders placed before the backend; `paraswap/` contains the ParaSwap integration (rates, order helpers, misc).
 
 - `errors/`
   - UI components and mapping/helpers for error presentation; organized by provider and shared concerns.

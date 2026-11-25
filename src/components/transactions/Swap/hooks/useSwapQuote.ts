@@ -1,10 +1,17 @@
-import { supplySwapQuote, tokenSwapQuote, withdrawSwapQuote } from '@aave/client/actions';
+import {
+  borrowSwapQuote,
+  repayWithSupplyQuote,
+  supplySwapQuote,
+  tokenSwapQuote,
+  withdrawSwapQuote,
+} from '@aave/client/actions';
 import { normalize, normalizeBN } from '@aave/math-utils';
 import {
   AaveClient,
   bigDecimal,
   chainId as sdkChainId,
   evmAddress,
+  RepayWithSupplyKind,
   reserveId,
   TokenSwapKind,
   useAaveClient,
@@ -27,9 +34,9 @@ import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
 import { APP_CODE_PER_SWAP_TYPE, getWrappedNativeAddress } from '../constants/shared.constants';
 import { hasFlashLoanDisabled } from '../errors/shared/FlashLoanDisabledBlockingGuard';
 import { hasInsufficientBalance } from '../errors/shared/InsufficientBalanceGuard';
-import { getCowProtocolSellRates, isNativeToken } from '../helpers/cow';
+import { isNativeToken } from '../helpers/cow';
 import { getParaswapSellRates, getParaswapSlippage } from '../helpers/paraswap';
-import { getSwitchProvider, isSwapViaBackend } from '../helpers/shared/provider.helpers';
+import { getSwitchProvider } from '../helpers/shared/provider.helpers';
 import {
   BackendRatesType,
   isBackendRates,
@@ -155,6 +162,7 @@ const fetchPositionSwapQuote = (
   state: SwapState,
   pool: string,
   amount: string,
+  fixesDestination: boolean,
   selectedSlippage?: string
 ) => {
   const legs = positionSwapLegs(state, pool);
@@ -174,6 +182,19 @@ const fetchPositionSwapQuote = (
           ...common,
           sellPosition: legs.sourceSupply,
           buyToken: toSwapTokenInput(state.destinationToken.addressToSwap),
+        },
+      });
+    case SwapType.DebtSwap:
+      return borrowSwapQuote(client, {
+        market: { ...common, debtPosition: legs.sourceBorrow, buyReserve: legs.destinationReserve },
+      });
+    case SwapType.RepayWithCollateral:
+      return repayWithSupplyQuote(client, {
+        market: {
+          ...common,
+          debtPosition: legs.sourceBorrow,
+          repayWithReserve: legs.destinationReserve,
+          kind: fixesDestination ? RepayWithSupplyKind.Supply : RepayWithSupplyKind.Repay,
         },
       });
     default:
@@ -199,7 +220,8 @@ const getBackendPositionSwapRates = async ({
   setError: (error: Error) => void;
 }): Promise<BackendRatesType> => {
   const inverted = swapTypesThatRequiresInvertedQuote.includes(state.swapType);
-  const fixesDestination = state.side === 'buy';
+  // Only a repay with collateral is quoted from either leg; the rest fix the source position.
+  const fixesDestination = state.swapType === SwapType.RepayWithCollateral && state.side === 'buy';
   const amount = fixesDestination ? state.debouncedOutputAmount : state.debouncedInputAmount;
   const decimals = fixesDestination ? state.destinationToken.decimals : state.sourceToken.decimals;
   const roundedAmount = BigNumber(amount).decimalPlaces(decimals, BigNumber.ROUND_DOWN).toFixed();
@@ -207,7 +229,7 @@ const getBackendPositionSwapRates = async ({
   const srcToken = state.sourceToken.underlyingAddress;
   const destToken = state.destinationToken.underlyingAddress;
   const [result, { srcTokenPriceUsd, destTokenPriceUsd }] = await Promise.all([
-    fetchPositionSwapQuote(client, state, pool, roundedAmount, selectedSlippage),
+    fetchPositionSwapQuote(client, state, pool, roundedAmount, fixesDestination, selectedSlippage),
     getUsdPrices(state.chainId, srcToken, destToken, setError),
   ]);
   if (result.isErr()) {
@@ -391,9 +413,6 @@ export const useSwapQuote = ({
       const selected = quote.backendQuote.selectedSlippage;
       autoSlippage = quote.suggestedSlippage.toString();
       slippage = selected ? BigNumber(selected.value).multipliedBy(100).toFixed() : autoSlippage;
-    } else if (quote.provider === 'cowprotocol' && quote?.suggestedSlippage !== undefined) {
-      slippage = quote.suggestedSlippage.toString();
-      autoSlippage = quote.suggestedSlippage.toString();
     } else if (quote.provider === 'paraswap') {
       const paraswapSlippage = getParaswapSlippage(
         state.sourceToken.symbol || '',
@@ -508,11 +527,10 @@ const useMultiProviderSwapQuoteQuery = ({
     useShallow((state) => [state.currentMarket, state.currentMarketData])
   );
   const client = useAaveClient();
-  const viaBackend = isSwapViaBackend(provider, params.swapType);
   // Sent only once the user moves off the suggested value, so the quote carries their choice.
   // Limit orders zero the slippage and only use this quote as a price reference.
   const selectedSlippage =
-    viaBackend &&
+    provider === SwapProvider.COW_PROTOCOL &&
     state.orderType === OrderType.MARKET &&
     state.autoSlippage &&
     state.slippage !== state.autoSlippage
@@ -539,18 +557,17 @@ const useMultiProviderSwapQuoteQuery = ({
 
   const appCode = APP_CODE_PER_SWAP_TYPE[params.swapType];
 
-  const { srcToken, destToken, srcDecimals, destDecimals, inputSymbol, outputSymbol, side } =
-    useMemo(
-      () => getTokenSelectionForQuote(requiresQuoteInverted, provider, state),
-      [
-        provider,
-        state.sourceToken,
-        state.destinationToken,
-        state.side,
-        requiresQuoteInverted,
-        state.useFlashloan,
-      ]
-    );
+  const { srcToken, destToken, srcDecimals, destDecimals, side } = useMemo(
+    () => getTokenSelectionForQuote(requiresQuoteInverted, provider, state),
+    [
+      provider,
+      state.sourceToken,
+      state.destinationToken,
+      state.side,
+      requiresQuoteInverted,
+      state.useFlashloan,
+    ]
+  );
 
   return useQuery<SwapQuoteType | null>({
     queryFn: async () => {
@@ -587,41 +604,25 @@ const useMultiProviderSwapQuoteQuery = ({
       };
 
       switch (provider) {
-        case SwapProvider.COW_PROTOCOL:
-          if (viaBackend) {
-            const pool = getSwapMarketPool(state.chainId, currentMarketData);
-            if (!pool) {
-              setError(new Error('No market found in the selected chain for this pair'));
-              return null;
-            }
-            if (params.swapType !== SwapType.Swap) {
-              return await getBackendPositionSwapRates({
-                client,
-                pool,
-                state,
-                selectedSlippage,
-                setError,
-              });
-            }
-            return await getBackendTokenSwapRates({
+        case SwapProvider.COW_PROTOCOL: {
+          const pool = getSwapMarketPool(state.chainId, currentMarketData);
+          if (!pool) {
+            setError(new Error('No market found in the selected chain for this pair'));
+            return null;
+          }
+          if (params.swapType !== SwapType.Swap) {
+            return await getBackendPositionSwapRates({
               client,
               pool,
+              state,
               selectedSlippage,
-              swapType: state.swapType,
-              chainId: state.chainId,
-              amount,
-              srcToken,
-              destToken,
-              user: state.user,
-              srcDecimals,
-              destDecimals,
-              appCode,
-              market: currentMarket,
               setError,
-              side,
             });
           }
-          return await getCowProtocolSellRates({
+          return await getBackendTokenSwapRates({
+            client,
+            pool,
+            selectedSlippage,
             swapType: state.swapType,
             chainId: state.chainId,
             amount,
@@ -630,14 +631,12 @@ const useMultiProviderSwapQuoteQuery = ({
             user: state.user,
             srcDecimals,
             destDecimals,
-            inputSymbol,
-            outputSymbol,
             appCode,
             market: currentMarket,
             setError,
             side,
-            invertedQuoteRoute: requiresQuoteInverted,
           });
+        }
         case SwapProvider.PARASWAP:
           return await getParaswapSellRates({
             swapType: state.swapType,
@@ -673,7 +672,6 @@ const useMultiProviderSwapQuoteQuery = ({
         state.user,
         currentMarket
       ),
-      viaBackend,
       selectedSlippage,
     ],
     enabled: (() => {

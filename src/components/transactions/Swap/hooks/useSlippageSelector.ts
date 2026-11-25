@@ -1,14 +1,7 @@
 import { Dispatch, useEffect, useRef } from 'react';
 
 import { validateSlippage, ValidationSeverity } from '../helpers/shared/slippage.helpers';
-import {
-  isBackendRates,
-  isCowProtocolRates,
-  OrderType,
-  SwapParams,
-  SwapState,
-  TokenType,
-} from '../types';
+import { isBackendRates, OrderType, SwapParams, SwapState, TokenType } from '../types';
 
 /**
 /**
@@ -54,7 +47,7 @@ export const useSlippageSelector = ({
     const timeout = setTimeout(() => {
       setState({
         showSlippageWarning:
-          (isCowProtocolRates(state.swapRate) || isBackendRates(state.swapRate)) &&
+          isBackendRates(state.swapRate) &&
           Number(state.slippage) < state.swapRate?.suggestedSlippage,
       });
     }, 500);

@@ -937,8 +937,7 @@ msgstr "of"
 msgid "Your balance of assets that are available to stake"
 msgstr "Your balance of assets that are available to stake"
 
-#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
-#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
 msgid "Repay {0} with {1}"
 msgstr "Repay {0} with {1}"
 
@@ -1129,7 +1128,7 @@ msgstr "None"
 msgid "Unknown"
 msgstr "Unknown"
 
-#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
 msgid "Swapping {0} debt"
 msgstr "Swapping {0} debt"
 
@@ -3609,10 +3608,8 @@ msgid "The selected rate is lower than the market price. You might incur a loss 
 msgstr "The selected rate is lower than the market price. You might incur a loss if you proceed."
 
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
-#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
-#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
 #: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaParaswap.tsx
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaBackend.tsx
 #: src/components/transactions/Swap/actions/SwapActions/SwapActionsViaParaswap.tsx
@@ -3645,12 +3642,6 @@ msgid "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0
 msgstr "Your {name} wallet is empty. Purchase or transfer assets or use <0>{0}</0> to transfer your {network} assets."
 
 #: src/components/transactions/Swap/actions/CollateralSwap/CollateralSwapActionsViaParaswapAdapters.tsx
-#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
-#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
-#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
-#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
-#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
-#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
 msgid "Checking approval"
 msgstr "Checking approval"
 
@@ -4001,7 +3992,7 @@ msgstr "Invalid amount to burn"
 msgid "Your order amounts are {0} less favorable by {1}% to the liquidity provider than recommended. This order may not be executed."
 msgstr "Your order amounts are {0} less favorable by {1}% to the liquidity provider than recommended. This order may not be executed."
 
-#: src/components/transactions/Swap/actions/RepayWithCollateral/RepayWithCollateralActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
 msgid "Repaying {0} with {1}"
 msgstr "Repaying {0} with {1}"
 
@@ -4307,8 +4298,7 @@ msgstr "Tip: Try improving your order parameters"
 msgid "Migrating"
 msgstr "Migrating"
 
-#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
-#: src/components/transactions/Swap/actions/DebtSwap/DebtSwapActionsViaCoW.tsx
+#: src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
 msgid "Swap {0} debt"
 msgstr "Swap {0} debt"
 

@@ -1,19 +1,11 @@
-import { normalize, normalizeBN, valueToBigNumber } from '@aave/math-utils';
+import { normalizeBN, valueToBigNumber } from '@aave/math-utils';
 import { OrderKind } from '@cowprotocol/cow-sdk';
 import { Dispatch, useEffect } from 'react';
 import { useRootStore } from 'src/store/root';
 
 import { COW_PARTNER_FEE } from '../constants/cow.constants';
-import {
-  isBackendRates,
-  isCowProtocolRates,
-  OrderType,
-  SwapParams,
-  SwapProvider,
-  SwapState,
-  SwapType,
-} from '../types';
-import { useFlashLoanFeeBps } from './useFlashLoanFeeBps';
+import { PARASWAP_FLASH_LOAN_FEE_BPS } from '../constants/paraswap.constants';
+import { isBackendRates, OrderType, SwapParams, SwapProvider, SwapState, SwapType } from '../types';
 import { swapTypesThatRequiresInvertedQuote } from './useSwapQuote';
 
 const marketOrderKindPerSwapType: Record<SwapType, OrderKind> = {
@@ -47,12 +39,6 @@ export const useSwapOrderAmounts = ({
   setState: Dispatch<Partial<SwapState>>;
 }) => {
   const currentMarket = useRootStore((state) => state.currentMarket);
-  const currentMarketData = useRootStore((store) => store.currentMarketData);
-  const resolvedFlashLoanFeeBps = useFlashLoanFeeBps({
-    provider: state.provider,
-    swapType: state.swapType,
-    marketData: currentMarketData,
-  });
 
   useEffect(() => {
     if (
@@ -102,12 +88,7 @@ export const useSwapOrderAmounts = ({
     const usingFlashloan =
       !isBackendRates(state.swapRate) &&
       isPositionSwap(state.swapType, state.useFlashloan ?? false);
-    if (usingFlashloan && resolvedFlashLoanFeeBps === undefined) {
-      // Clear any stale fee from a previous render so submit handlers see the loading state.
-      if (state.flashLoanFeeBps !== undefined) setState({ flashLoanFeeBps: undefined });
-      return;
-    }
-    const flashLoanFeeBps = usingFlashloan ? (resolvedFlashLoanFeeBps as number) : 0;
+    const flashLoanFeeBps = usingFlashloan ? PARASWAP_FLASH_LOAN_FEE_BPS : 0;
     let flashLoanFeeAmount =
       state.side == 'sell'
         ? valueToBigNumber(state.outputAmount).multipliedBy(flashLoanFeeBps).dividedBy(10000)
@@ -124,34 +105,9 @@ export const useSwapOrderAmounts = ({
         .dividedBy(valueToBigNumber(state.outputAmount))
         .toNumber();
 
-      let networkFeeAmountFormattedInSell = isCowProtocolRates(state.swapRate)
-        ? normalize(
-            state.swapRate.amountAndCosts.costs.networkFee.amountInSellCurrency.toString(),
-            sellAmountToken.decimals
-          )
-        : '0';
-      let networkFeeAmountFormattedInBuy = isCowProtocolRates(state.swapRate)
-        ? normalize(
-            state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
-            buyAmountToken.decimals
-          )
-        : '0';
-
-      // Trick waiting for CoW solvers precise hook simulation - TODO: remove once it's solved on CoW's BFF
-      if (
-        state.swapType === SwapType.RepayWithCollateral ||
-        state.swapType === SwapType.DebtSwap ||
-        state.swapType === SwapType.CollateralSwap
-      ) {
-        networkFeeAmountFormattedInSell = valueToBigNumber(networkFeeAmountFormattedInSell)
-          .multipliedBy(3)
-          .toFixed();
-        networkFeeAmountFormattedInBuy = valueToBigNumber(networkFeeAmountFormattedInBuy)
-          .multipliedBy(3)
-          .toFixed();
-      }
-      networkFeeAmountInSellFormatted = networkFeeAmountFormattedInSell;
-      networkFeeAmountInBuyFormatted = networkFeeAmountFormattedInBuy;
+      // ParaSwap quotes carry no network fee; backend market quotes override these below.
+      const networkFeeAmountFormattedInSell = networkFeeAmountInSellFormatted;
+      const networkFeeAmountFormattedInBuy = networkFeeAmountInBuyFormatted;
 
       if (state.orderType === OrderType.MARKET) {
         // On a classic sell market order, we send the input amount and receive the amount after partner fees and slippage
@@ -223,40 +179,8 @@ export const useSwapOrderAmounts = ({
         .dividedBy(valueToBigNumber(state.inputAmount))
         .toNumber();
 
-      let networkFeeAmountFormattedInSell = isCowProtocolRates(state.swapRate)
-        ? normalize(
-            state.swapRate.amountAndCosts.costs.networkFee.amountInSellCurrency.toString(),
-            sellAmountToken.decimals
-          )
-        : '0';
-      let networkFeeAmountFormattedInBuy = isCowProtocolRates(state.swapRate)
-        ? normalize(
-            state.swapRate.amountAndCosts.costs.networkFee.amountInBuyCurrency.toString(),
-            buyAmountToken.decimals
-          )
-        : '0';
-
-      // console.debug('networkFeeAmountFormattedInSell', networkFeeAmountFormattedInSell);
-      // console.debug('networkFeeAmountFormattedInBuy', networkFeeAmountFormattedInBuy);
-
-      // Trick waiting for CoW solvers precise hook simulation - TODO: remove once it's solved on CoW's BFF
-      if (
-        state.swapType === SwapType.RepayWithCollateral ||
-        state.swapType === SwapType.DebtSwap ||
-        state.swapType === SwapType.CollateralSwap
-      ) {
-        networkFeeAmountFormattedInSell = valueToBigNumber(networkFeeAmountFormattedInSell)
-          .multipliedBy(3)
-          .toFixed();
-        networkFeeAmountFormattedInBuy = valueToBigNumber(networkFeeAmountFormattedInBuy)
-          .multipliedBy(3)
-          .toFixed();
-      }
-
-      // console.debug('networkFeeAmountFormattedInSell after trick', networkFeeAmountFormattedInSell);
-      // console.debug('networkFeeAmountFormattedInBuy after trick', networkFeeAmountFormattedInBuy);
-      networkFeeAmountInSellFormatted = networkFeeAmountFormattedInSell;
-      networkFeeAmountInBuyFormatted = networkFeeAmountFormattedInBuy;
+      const networkFeeAmountFormattedInSell = networkFeeAmountInSellFormatted;
+      const networkFeeAmountFormattedInBuy = networkFeeAmountInBuyFormatted;
 
       if (state.orderType === OrderType.MARKET) {
         // on a classic inverted sell market order, we send the output amount and receive the input amount after partner fees and slippage
@@ -398,7 +322,6 @@ export const useSwapOrderAmounts = ({
     state.swapType,
     state.orderType,
     state.useFlashloan,
-    resolvedFlashLoanFeeBps,
     state.swapRate,
   ]);
 };

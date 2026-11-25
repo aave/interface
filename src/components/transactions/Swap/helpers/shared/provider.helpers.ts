@@ -5,15 +5,6 @@ import {
 import { ParaswapSupportedNetworks } from '../../constants/paraswap.constants';
 import { SwapProvider, SwapType } from '../../types';
 
-const SWAP_TYPES_VIA_BACKEND = [SwapType.Swap, SwapType.CollateralSwap, SwapType.WithdrawAndSwap];
-
-/**
- * Swaps routed to CoW are quoted and placed by the Aave backend, except debt swaps and repays
- * with collateral, which still post to CoW from the browser.
- */
-export const isSwapViaBackend = (provider: SwapProvider | undefined, swapType: SwapType) =>
-  provider === SwapProvider.COW_PROTOCOL && SWAP_TYPES_VIA_BACKEND.includes(swapType);
-
 /**
  * Returns whether CoW Protocol can handle the given pair/swapType on the chain.
  * Checks chain support and a per-flow unsupported assets list.

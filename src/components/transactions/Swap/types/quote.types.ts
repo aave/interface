@@ -1,5 +1,4 @@
 import { SwapQuote } from '@aave/react';
-import { QuoteAmountsAndCosts, QuoteAndPost, UnsignedOrder } from '@cowprotocol/cow-sdk';
 import { OptimalRate } from '@paraswap/core';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -74,19 +73,7 @@ export type ParaswapRatesType = BaseSwitchRates & {
   suggestedSlippage?: number;
 };
 
-/** CoW Protocol-specific extension of BaseSwitchRates. */
-export type CowProtocolRatesType = BaseSwitchRates & {
-  provider: SwapProvider.COW_PROTOCOL;
-
-  suggestedSlippage: number;
-  amountAndCosts: QuoteAmountsAndCosts;
-
-  order: UnsignedOrder;
-  quoteId?: number;
-  orderBookQuote: QuoteAndPost;
-};
-
-/** Token swap quoted by the Aave backend, which places the CoW order. */
+/** Swap quoted by the Aave backend, which places the CoW order. */
 export type BackendRatesType = BaseSwitchRates & {
   provider: SwapProvider.COW_PROTOCOL;
 
@@ -100,13 +87,9 @@ export const isParaswapRates = (rates?: SwapQuoteType): rates is ParaswapRatesTy
   return rates?.provider === SwapProvider.PARASWAP;
 };
 
-export const isCowProtocolRates = (rates?: SwapQuoteType): rates is CowProtocolRatesType => {
-  return rates?.provider === SwapProvider.COW_PROTOCOL && 'orderBookQuote' in rates;
-};
-
 export const isBackendRates = (rates?: SwapQuoteType): rates is BackendRatesType => {
   return rates?.provider === SwapProvider.COW_PROTOCOL && 'backendQuote' in rates;
 };
 
 /** Union of all provider quote types consumed by the UI. */
-export type SwapQuoteType = ParaswapRatesType | CowProtocolRatesType | BackendRatesType;
+export type SwapQuoteType = ParaswapRatesType | BackendRatesType;

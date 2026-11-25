@@ -29,7 +29,6 @@ import {
   isOrderFilled,
   isOrderLoading,
 } from '../../helpers/cow';
-import { isSwapViaBackend } from '../../helpers/shared/provider.helpers';
 import { SwapParams, SwapProvider, SwapState } from '../../types';
 
 type OrderResultStatus = 'succeed' | 'failed' | 'expired' | 'open';
@@ -167,7 +166,7 @@ export const SwapResultView = ({
       iconUri={state.sourceToken.logoURI}
       outIconUri={state.destinationToken.logoURI}
       provider={state.provider}
-      viaBackend={isSwapViaBackend(state.provider, params.swapType)}
+      viaBackend={state.provider === SwapProvider.COW_PROTOCOL}
       chainId={state.chainId}
       buyDecimals={state.buyAmountToken?.decimals ?? 18}
       sellDecimals={state.sellAmountToken?.decimals ?? 18}
