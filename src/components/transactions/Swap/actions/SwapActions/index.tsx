@@ -20,7 +20,7 @@ export const SwapActions = ({
 }) => {
   switch (state.provider) {
     case SwapProvider.COW_PROTOCOL:
-      return isSwapViaBackend(state.provider, params.swapType, state.orderType) ? (
+      return isSwapViaBackend(state.provider, params.swapType) ? (
         <SwapActionsViaBackend
           params={params}
           state={state}

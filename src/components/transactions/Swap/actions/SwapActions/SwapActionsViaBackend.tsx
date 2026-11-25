@@ -1,5 +1,8 @@
 import { sendTransactionAndWait } from '@aave/client/viem';
 import {
+  bigDecimal,
+  chainId as sdkChainId,
+  dateTime,
   evmAddress,
   OrderHandlerError,
   OrderHandlerResult,
@@ -7,11 +10,13 @@ import {
   PermitTypedDataResponse,
   signatureFrom,
   SigningError,
+  TokenSwapKind,
   TokenSwapOrderPlan,
   UnexpectedError,
   useTokenSwapOrder,
 } from '@aave/react';
 import { Trans } from '@lingui/macro';
+import { BigNumber } from 'bignumber.js';
 import { errAsync, ResultAsync } from 'neverthrow';
 import { Dispatch } from 'react';
 import { TxActionsWrapper } from 'src/components/transactions/TxActionsWrapper';
@@ -21,11 +26,15 @@ import { TypedData, TypedDataDomain, WalletClient } from 'viem';
 import { useWalletClient } from 'wagmi';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
+import { isNativeToken } from '../../helpers/cow';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
   areActionsBlocked,
+  ExpiryToSecondsMap,
   isBackendRates,
   isShieldBlocked,
+  OrderType,
+  SwappableToken,
   SwapParams,
   SwapState,
 } from '../../types';
@@ -49,9 +58,20 @@ const signTypedDataWith = (
   ).map(signatureFrom);
 };
 
+// The user's limit amounts, before fees: the backend applies them when it quotes the limit order.
+const toLimitTokenInput = (token: SwappableToken, amount: string) => {
+  const value = bigDecimal(
+    BigNumber(amount).decimalPlaces(token.decimals, BigNumber.ROUND_DOWN).toFixed()
+  );
+  return isNativeToken(token.addressToSwap)
+    ? { native: value }
+    : { erc20: { address: evmAddress(token.addressToSwap), value } };
+};
+
 /**
  * Token swap placed through the Aave backend: it runs the quote's approvals (permit or
  * transaction), then signs the order or, for native sells, sends the order transaction.
+ * Market orders execute the quote shown; limit orders are quoted at the user's price on submit.
  */
 export const SwapActionsViaBackend = ({
   state,
@@ -92,15 +112,42 @@ export const SwapActionsViaBackend = ({
   const action = async () => {
     if (!isBackendRates(state.swapRate) || !walletClient) return;
 
+    const isLimit = state.orderType === OrderType.LIMIT;
+    if (isLimit && isNativeToken(state.sourceToken.addressToSwap)) {
+      // A native limit sell would lock the funds in eth-flow until it fills or expires.
+      setTxError(
+        getErrorTextFromError(
+          new Error(
+            'Native sell token is not supported in limit orders. Please use the wrapped token.'
+          ),
+          TxAction.MAIN_ACTION,
+          true
+        )
+      );
+      return;
+    }
+
     // Loading also pauses the quote refresh, so the quote id stays the one shown.
     setMainTxState({ ...mainTxState, loading: true });
 
-    const result = await placeOrder({
-      fromQuote: {
-        market: evmAddress(state.swapRate.market),
-        quoteId: state.swapRate.backendQuote.quoteId,
-      },
-    });
+    const market = evmAddress(state.swapRate.market);
+    const result = await placeOrder(
+      isLimit
+        ? {
+            limit: {
+              market,
+              chainId: sdkChainId(state.chainId),
+              sell: toLimitTokenInput(state.sourceToken, state.inputAmount),
+              buy: toLimitTokenInput(state.destinationToken, state.outputAmount),
+              user: evmAddress(state.user),
+              kind: state.side === 'buy' ? TokenSwapKind.Buy : TokenSwapKind.Sell,
+              deadline: dateTime(
+                new Date(Date.now() + ExpiryToSecondsMap[state.expiry] * 1000).toISOString()
+              ),
+            },
+          }
+        : { fromQuote: { market, quoteId: state.swapRate.backendQuote.quoteId } }
+    );
 
     if (result.isErr()) {
       console.error('SwapActionsViaBackend error', result.error);

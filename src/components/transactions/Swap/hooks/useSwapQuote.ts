@@ -30,6 +30,7 @@ import { getSwitchProvider, isSwapViaBackend } from '../helpers/shared/provider.
 import {
   BackendRatesType,
   isBackendRates,
+  OrderType,
   ProviderRatesParams,
   SwapParams,
   SwapProvider,
@@ -383,10 +384,14 @@ const useMultiProviderSwapQuoteQuery = ({
     useShallow((state) => [state.currentMarket, state.currentMarketData])
   );
   const client = useAaveClient();
-  const viaBackend = isSwapViaBackend(provider, params.swapType, state.orderType);
+  const viaBackend = isSwapViaBackend(provider, params.swapType);
   // Sent only once the user moves off the suggested value, so the quote carries their choice.
+  // Limit orders zero the slippage and only use this quote as a price reference.
   const selectedSlippage =
-    viaBackend && state.autoSlippage && state.slippage !== state.autoSlippage
+    viaBackend &&
+    state.orderType === OrderType.MARKET &&
+    state.autoSlippage &&
+    state.slippage !== state.autoSlippage
       ? state.slippage
       : undefined;
 
