@@ -11,8 +11,12 @@ interface ValueChangeProps {
   variant?: TypographyProps['variant'];
 }
 
+const ROW_SX = { display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0 } as const;
+
+const H3_ROW_SX = { ...ROW_SX, gap: '0.625rem' } as const;
+
 export const ValueChange = ({ current, after, variant = 'h5' }: ValueChangeProps) => (
-  <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minWidth: 0 }}>
+  <Box sx={variant === 'h3' ? H3_ROW_SX : ROW_SX}>
     <Typography variant={variant} color="fg-3" component="div" sx={{ display: 'flex' }}>
       {current}
     </Typography>

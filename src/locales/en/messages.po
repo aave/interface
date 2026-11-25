@@ -566,6 +566,10 @@ msgstr "Withdrawing GHO"
 msgid "Signing"
 msgstr "Signing"
 
+#: src/modules/v4Migration/utils/copy.tsx
+msgid "Lower your borrow rate."
+msgstr "Lower your borrow rate."
+
 #: src/components/transactions/Repay/RepayActions.tsx
 msgid "Repay {symbol}"
 msgstr "Repay {symbol}"
@@ -3833,6 +3837,7 @@ msgid "<0>Attention:</0> Parameter changes via governance can alter your account
 msgstr "<0>Attention:</0> Parameter changes via governance can alter your account health factor and risk of liquidation. Follow the <1>Aave governance forum</1> for updates."
 
 #: src/modules/v4Migration/V4MigrationBanner/index.tsx
+#: src/modules/v4Migration/V4MigrationBanner/index.tsx
 msgid "Migrate to V4"
 msgstr "Migrate to V4"
 
@@ -3847,6 +3852,10 @@ msgstr "Price impact"
 #: src/modules/umbrella/StakeAssets/UmbrellaAssetsListMobileItem.tsx
 msgid "Available to claim"
 msgstr "Available to claim"
+
+#: src/modules/v4Migration/utils/copy.tsx
+msgid "Annual rate charged for borrowing this asset"
+msgstr "Annual rate charged for borrowing this asset"
 
 #: src/modules/migration/MigrationMobileList.tsx
 msgid "{numSelected}/{numAvailable} assets selected"
@@ -3964,10 +3973,6 @@ msgstr "Repay with Collateral"
 #: src/layouts/components/LanguageSwitcher.tsx
 msgid "English"
 msgstr "English"
-
-#: src/modules/v4Migration/utils/copy.tsx
-msgid "Earn up to {apy} APY"
-msgstr "Earn up to {apy} APY"
 
 #: src/components/isolationMode/IsolatedBadge.tsx
 msgid "Learn more in our <0>FAQ guide</0>"
@@ -4149,6 +4154,10 @@ msgstr "Your health factor and loan to value determine the assurance of your col
 #: src/ui-config/errorMapping.tsx
 msgid "AToken supply is not zero"
 msgstr "AToken supply is not zero"
+
+#: src/modules/v4Migration/utils/copy.tsx
+msgid "Borrow APY"
+msgstr "Borrow APY"
 
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsList.tsx
 #: src/modules/dashboard/lists/BorrowedPositionsList/BorrowedPositionsListItem.tsx
@@ -4604,6 +4613,10 @@ msgstr "The hub where your position is held."
 msgid "Health factor is not below the threshold"
 msgstr "Health factor is not below the threshold"
 
+#: src/modules/v4Migration/utils/copy.tsx
+msgid "Earn more and borrow at a lower rate."
+msgstr "Earn more and borrow at a lower rate."
+
 #: src/modules/governance/proposal/ProposalTopPanel.tsx
 #: src/modules/migration/MigrationTopPanel.tsx
 msgid "Go Back"
@@ -4736,6 +4749,10 @@ msgstr "Tip: Try improving your order parameters"
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Migrating"
 msgstr "Migrating"
+
+#: src/modules/v4Migration/utils/copy.tsx
+msgid "Earn more on your supply."
+msgstr "Earn more on your supply."
 
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Sponsored by Aave"

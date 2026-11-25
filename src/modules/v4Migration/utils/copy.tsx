@@ -280,7 +280,16 @@ export const MIGRATION_BANNER = {
   borrowDescription: (
     <Trans>Move your positions to V4 for better rates and more ways to supply and borrow.</Trans>
   ),
-  earnUpTo: (apy: ReactNode) => <Trans>Earn up to {apy} APY</Trans>,
+  compact: {
+    earn: <Trans>Earn more on your supply.</Trans>,
+    borrow: <Trans>Lower your borrow rate.</Trans>,
+    earnAndBorrow: <Trans>Earn more and borrow at a lower rate.</Trans>,
+  },
+  earnApy: PREVIEW_ROWS.earnApy,
+  borrowApy: {
+    label: <Trans>Borrow APY</Trans>,
+    tooltip: <Trans>Annual rate charged for borrowing this asset</Trans>,
+  },
   earnExtra: <Trans>Earn an extra</Trans>,
   eligibleToMigrate: <Trans>Eligible to Migrate</Trans>,
   apy: <Trans>APY</Trans>,
