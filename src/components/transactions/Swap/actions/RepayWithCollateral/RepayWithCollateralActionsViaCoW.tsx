@@ -237,7 +237,8 @@ export const RepayWithCollateralActionsViaCoW = ({
           state.sellAmountToken.symbol,
           state.buyAmountToken.symbol,
           state.swapType,
-          currentMarket
+          currentMarket,
+          state.chainId
         ),
       };
 
