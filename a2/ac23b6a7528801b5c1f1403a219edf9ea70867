@@ -1,0 +1,37 @@
+src/modules/v4Migration/V4MigrationEarnFlow/components/SelectEarnHub/index.tsx
+  s_36fe408f2b1273::t_8fc6e1df898da5 1-88
+src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+  s_36fe408f2b1273::t_8fc6e1df898da5 1-304
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_87305005861760 476-479,2195-2198,2653,3269-3272,4188
+src/locales/fr/messages.js
+  s_36fe408f2b1273::t_87305005861760 1
+src/components/primitives/Link.tsx
+  s_36fe408f2b1273::t_8fc6e1df898da5 134-135
+src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+  s_36fe408f2b1273::t_8fc6e1df898da5 3,5,10,14,17-19,21-22,24-27,31-32,35-50,53,59-64,79,83,88,90,96-100,111,113-117,119-121,124-128
+src/modules/v4Migration/V4MigrationEarnFlow/utils/mocks.ts
+  s_36fe408f2b1273::t_8fc6e1df898da5 32-34
+src/locales/en/messages.js
+  s_36fe408f2b1273::t_87305005861760 1
+src/locales/el/messages.js
+  s_36fe408f2b1273::t_87305005861760 1
+src/locales/es/messages.js
+  s_36fe408f2b1273::t_87305005861760 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a2ac23b6a7528801b5c1f1403a219edf9ea70867",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
