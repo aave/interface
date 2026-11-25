@@ -8,13 +8,12 @@ import {
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Switch, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AssetGroup } from 'src/components/AssetGroup';
 import { CuratorNames } from 'src/components/CuratorBy';
 import { DynamicCard } from 'src/components/DynamicCard';
 import { DescriptionItem } from 'src/components/DynamicCard/DescriptionItem';
 import { EmptyStatePaper } from 'src/components/EmptyStatePaper';
-import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenAmountInput } from 'src/components/TokenAmountInput';
 import { useDebouncedValue } from 'src/hooks/useDebouncedValue';
@@ -31,7 +30,7 @@ import {
   PREVIEW_TITLES,
   SPONSORED_BY_AAVE,
 } from '../../../utils/copy';
-import { NumberChange } from '../../../V4MigrationPage/components/ValueChange';
+import { change, pct, usd } from '../../../utils/previewCells';
 import { getMigrationMarketTitle } from '../../../V4MigrationPage/utils/markets';
 import { getAssetIconSymbol, getHubDisplayName } from '../../../V4MigrationPage/utils/positions';
 import { V4MigrationPreview, V4MigrationPreviewRow } from '../../../V4MigrationPreview';
@@ -48,28 +47,6 @@ const STACK_SX = { display: 'flex', flexDirection: 'column', gap: '1.5rem' } as 
 const BUTTON_ROW_SX = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' } as const;
 
 const PREVIEW_DEBOUNCE_MS = 400;
-
-const pct = (value: number) => <FormattedNumber value={value} percent variant="inherit" />;
-
-const usd = (value: number) => <FormattedNumber value={value} symbol="USD" variant="inherit" />;
-
-/** A before/after cell, or nothing when the API has no figure for either side. */
-const change = (
-  variation: { current: string | null; after: string | null } | undefined,
-  format: 'percent' | 'usd' | 'number'
-): ReactNode => {
-  if (!variation || variation.current === null) return undefined;
-  const value = {
-    current: Number(variation.current),
-    after: variation.after === null ? undefined : Number(variation.after),
-  };
-  if (format === 'number') return <NumberChange value={value} />;
-  return format === 'percent' ? (
-    <NumberChange value={value} percent />
-  ) : (
-    <NumberChange value={value} symbol="USD" />
-  );
-};
 
 const previewRows = ({
   opportunity,

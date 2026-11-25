@@ -16,8 +16,7 @@ interface SelectBorrowMarketProps {
   chainId: number;
   /** Missing while the position is loading. */
   markets?: BorrowMarket[];
-  /** Leave out while there is no next step to go to: the cards are then not clickable. */
-  onSelect?: (market: BorrowMarket) => void;
+  onSelect: (market: BorrowMarket) => void;
 }
 
 /** First step of the borrow flow: the V4 markets the position can move to. */
@@ -43,7 +42,7 @@ export const SelectBorrowMarket = ({ chainId, markets, onSelect }: SelectBorrowM
       bestApy={market.best}
       unavailable={market.unavailable}
       healthFactor={market.healthFactor}
-      onClick={market.unavailable || !onSelect ? undefined : () => onSelect(market)}
+      onClick={market.unavailable ? undefined : () => onSelect(market)}
     />
   );
 

@@ -473,6 +473,7 @@ msgstr "For swapping safety module assets please unstake your position <0>here</
 msgid "High price impact (<0>{0}%</0>)! This route will return {1} due to low liquidity or small order size."
 msgstr "High price impact (<0>{0}%</0>)! This route will return {1} due to low liquidity or small order size."
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 msgid "This migration isn't available"
 msgstr "This migration isn't available"
@@ -2197,6 +2198,7 @@ msgstr "Fee"
 msgid "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 msgstr "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 msgid "We couldn't load the preview. Please try again later."
 msgstr "We couldn't load the preview. Please try again later."
@@ -2824,6 +2826,10 @@ msgstr "Interest rate model"
 #: src/components/transactions/FlowCommons/Error.tsx
 msgid "Copy error text"
 msgstr "Copy error text"
+
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
+msgid "The market can't take this share of the position right now. Try another amount or market."
+msgstr "The market can't take this share of the position right now. Try another amount or market."
 
 #: src/modules/governance/proposal/ProposalPayloads.tsx
 msgid "Controller"
@@ -4211,6 +4217,7 @@ msgstr "Cancelling order..."
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationBorrowFlow/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
