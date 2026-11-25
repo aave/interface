@@ -49,6 +49,12 @@ export const findEarnOpportunity = (opportunities: MigrationOpportunity[], id: s
     );
   });
 
+/** The borrow opportunity a row of the borrow table was built from: one per V3 market. */
+export const findBorrowOpportunity = (opportunities: MigrationOpportunity[], id: string) =>
+  opportunities.find(
+    (opportunity) => opportunity.kind === 'BORROW' && positionId(opportunity) === id
+  );
+
 const toEarnPosition = (opportunity: MigrationOpportunity): EarnMigrationPosition | undefined => {
   const supply = opportunity.supplies[0];
   if (!supply) return undefined;

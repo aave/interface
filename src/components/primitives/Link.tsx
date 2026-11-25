@@ -133,6 +133,10 @@ export const ROUTES = {
   migrationToolV4: '/migrate',
   migrationEarnV4: (positionId: string, hub?: string) =>
     `/migrate/earn/?position=${encodeURIComponent(positionId)}${hub ? `&hub=${hub}` : ''}`,
+  migrationBorrowV4: (positionId: string, market?: string) =>
+    `/migrate/borrow/?position=${encodeURIComponent(positionId)}${
+      market ? `&market=${market}` : ''
+    }`,
   marketMigrationTool: (marketName: CustomMarket) => `/v3-migration/?market=${marketName}`,
   dynamicRenderedProposal: (proposalId: number) =>
     `/governance/v3/proposal?proposalId=${proposalId}`,

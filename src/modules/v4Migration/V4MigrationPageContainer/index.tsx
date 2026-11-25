@@ -83,11 +83,11 @@ const ConnectedV4MigrationPage = ({ user }: { user: string }) => {
     );
   }
 
-  // TODO: pass `onMigrateBorrow` once the borrow flow exists.
   return (
     <V4MigrationPage
       {...positions}
       onMigrateEarn={(position) => router.push(ROUTES.migrationEarnV4(position.id))}
+      onMigrateBorrow={(position) => router.push(ROUTES.migrationBorrowV4(position.id))}
     />
   );
 };

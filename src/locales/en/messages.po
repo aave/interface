@@ -629,6 +629,7 @@ msgstr "repaid"
 msgid "Show less"
 msgstr "Show less"
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
 msgid "Go back to the migrate page and pick a position to move."
 msgstr "Go back to the migrate page and pick a position to move."
@@ -3388,6 +3389,10 @@ msgstr "This transaction will enable E-Mode ({0}). Borrowing will be restricted 
 msgid "Top 10 addresses"
 msgstr "Top 10 addresses"
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/index.tsx
+msgid "We couldn't load the markets. Please try again later."
+msgstr "We couldn't load the markets. Please try again later."
+
 #: src/ui-config/errorMapping.tsx
 msgid "Action requires an active reserve"
 msgstr "Action requires an active reserve"
@@ -4059,6 +4064,7 @@ msgstr "Total emission per day"
 msgid "or use a card, exchanges or swaps to deposit"
 msgstr "or use a card, exchanges or swaps to deposit"
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
 msgid "Please connect your wallet to migrate your position."
 msgstr "Please connect your wallet to migrate your position."
@@ -4120,6 +4126,10 @@ msgstr "No eligible assets to swap."
 #: src/components/transactions/SGhoVault/SGhoVaultDepositActions.tsx
 msgid "Depositing"
 msgstr "Depositing"
+
+#: src/modules/v4Migration/utils/copy.tsx
+msgid "Markets this position can't be migrated to"
+msgstr "Markets this position can't be migrated to"
 
 #: src/modules/reserve-overview/ReserveBorrowCard/index.tsx
 msgid "Borrow Cap"
@@ -4201,6 +4211,7 @@ msgstr "Cancelling order..."
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
+#: src/modules/v4Migration/V4MigrationBorrowFlow/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
 #: src/modules/v4Migration/V4MigrationPageContainer/index.tsx
@@ -4382,6 +4393,10 @@ msgstr "Total value of your supplied assets minus your outstanding debt"
 #: src/components/transactions/GovRepresentatives/GovRepresentativesActions.tsx
 msgid "Confirming transaction"
 msgstr "Confirming transaction"
+
+#: src/modules/v4Migration/utils/copy.tsx
+msgid "Unavailable Markets"
+msgstr "Unavailable Markets"
 
 #: src/components/transactions/StakeCooldown/StakeCooldownModalContent.tsx
 #: src/modules/umbrella/StakeCooldownModalContent.tsx
@@ -5143,6 +5158,7 @@ msgstr "Estimated annual earnings based on your current position and market cond
 msgid "Flashloan is disabled for this asset, hence this position cannot be migrated."
 msgstr "Flashloan is disabled for this asset, hence this position cannot be migrated."
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
 msgid "Position not found"
 msgstr "Position not found"

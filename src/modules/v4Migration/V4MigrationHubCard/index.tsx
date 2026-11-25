@@ -44,10 +44,12 @@ interface EarnProps extends CommonProps {
   backingCollateral: MigrationAsset[];
 }
 
+/** `hubName` may be empty here: the market is the title, and the hub line is then left out. */
 interface BorrowProps extends CommonProps {
   side: 'borrow';
   marketName: string;
-  healthFactor: string;
+  /** Leave out when there is none to report: a dash is shown. */
+  healthFactor?: string;
 }
 
 export type V4MigrationHubCardProps = EarnProps | BorrowProps;
@@ -89,7 +91,7 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
   return (
     <OpportunityCard
       title={borrow ? <Trans>{market} Market</Trans> : <Trans>{name} Hub</Trans>}
-      subtitle={borrow ? <Trans>{name} Hub</Trans> : undefined}
+      subtitle={borrow && name ? <Trans>{name} Hub</Trans> : undefined}
       curators={curators}
       leading={
         <ChainBadge chainId={chainId} size={24}>
@@ -162,12 +164,16 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
           }
           loading={loading}
         >
-          <HealthFactorNumber
-            value={props.healthFactor}
-            variant="inherit"
-            withHeart
-            heartGap="0.375rem"
-          />
+          {props.healthFactor === undefined ? (
+            '—'
+          ) : (
+            <HealthFactorNumber
+              value={props.healthFactor}
+              variant="inherit"
+              withHeart
+              heartGap="0.375rem"
+            />
+          )}
         </StatRow>
       ) : (
         <>

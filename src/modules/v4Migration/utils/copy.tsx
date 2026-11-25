@@ -188,6 +188,8 @@ export const MARKET_PICKER = {
       Markets that accept {symbol} as collateral. Migrating opens a new position in that market.
     </Trans>
   ),
+  unavailableMarkets: <Trans>Unavailable Markets</Trans>,
+  unavailableMarketsTooltip: <Trans>Markets this position can&apos;t be migrated to</Trans>,
   borrowable: <Trans>Borrowable</Trans>,
   collateralFactor: (factor: number) => (
     <Box component="span" sx={COLLATERAL_FACTOR_SX}>
