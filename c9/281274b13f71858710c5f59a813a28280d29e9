@@ -1,0 +1,48 @@
+src/components/transactions/Swap/modals/request/CollateralSwapModalContent.tsx
+  s_ae3045cbc2fcc5::t_d3c1dc3d4402fd 241
+  s_ae3045cbc2fcc5::t_f092496e5e67f4 15
+  s_ae3045cbc2fcc5::t_2b3a0c0d537cb3 153
+src/components/transactions/Swap/constants/shared.constants.ts
+  s_ae3045cbc2fcc5::t_c3f283080debf9 1-14,17-33
+  s_7dc6c1464bb543::t_70d9bb0e70a427 34
+src/components/transactions/Swap/modals/request/WithdrawAndSwapModalContent.tsx
+  s_ae3045cbc2fcc5::t_f51e8e8265290a 12
+  s_ae3045cbc2fcc5::t_ddf231df13123c 135
+src/components/transactions/Swap/inputs/SwapInputs.tsx
+  s_ae3045cbc2fcc5::t_5369ded2aae6e4 653
+  s_ae3045cbc2fcc5::t_494de21c0ac28f 657
+  s_ae3045cbc2fcc5::t_366d36161e3b0c 618,622
+  s_ae3045cbc2fcc5::t_9c9d1cce8dfbb2 10
+src/components/transactions/Swap/modals/request/DebtSwapModalContent.tsx
+  s_ae3045cbc2fcc5::t_383cdfb086a528 23
+  s_ae3045cbc2fcc5::t_937a9ab430011f 121
+  s_ae3045cbc2fcc5::t_f60b52d5f2fd66 183
+src/components/transactions/Swap/modals/request/RepayWithCollateralModalContent.tsx
+  s_ae3045cbc2fcc5::t_643c8020099551 16
+  s_ae3045cbc2fcc5::t_e66025f5689313 145
+  s_ae3045cbc2fcc5::t_da740b0e1acd94 202
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c9281274b13f71858710c5f59a813a28280d29e9",
+  "prompts": {},
+  "sessions": {
+    "s_7dc6c1464bb543": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dc46cfc5-5dab-4065-bed2-fe981aa233e4",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    },
+    "s_ae3045cbc2fcc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bddec105-b2fb-4868-938b-6eb1943b6617",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
