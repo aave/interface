@@ -29,6 +29,9 @@ export const MOCK_BACKING_COLLATERAL: MigrationAsset[] = [
   },
 ];
 
+/** The V3 market's side of the preview's "Collateral Exposure" row. */
+export const MOCK_V3_COLLATERAL_EXPOSURE: MigrationAsset[] = MOCK_BACKING_COLLATERAL.slice(0, 2);
+
 const HOURS = 7 * 24;
 const HOUR_MS = 60 * 60 * 1000;
 // Fixed, so the chart does not change between renders.

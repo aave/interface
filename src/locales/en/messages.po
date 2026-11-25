@@ -473,6 +473,10 @@ msgstr "For swapping safety module assets please unstake your position <0>here</
 msgid "High price impact (<0>{0}%</0>)! This route will return {1} due to low liquidity or small order size."
 msgstr "High price impact (<0>{0}%</0>)! This route will return {1} due to low liquidity or small order size."
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+msgid "This migration isn't available"
+msgstr "This migration isn't available"
+
 #: src/components/infoTooltips/SwapFeeTooltip.tsx
 msgid "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
 msgstr "Fees help support the user experience and security of the Aave application. <0>Learn more.</0>"
@@ -2188,6 +2192,10 @@ msgstr "Fee"
 msgid "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 msgstr "Participating in staking {symbol} gives annualized rewards. Your wallet balance is the sum of your aTokens and underlying assets. The breakdown to stake is below"
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+msgid "We couldn't load the preview. Please try again later."
+msgstr "We couldn't load the preview. Please try again later."
+
 #: src/components/transactions/Swap/details/CollateralSwapDetails.tsx
 #: src/modules/migration/MigrationListMobileItem.tsx
 #: src/modules/reserve-overview/ReserveEModePanel.tsx
@@ -2642,7 +2650,7 @@ msgstr "You'll need to wait {0} before you can unstake your tokens. This cooldow
 msgid "collateral"
 msgstr "collateral"
 
-#: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/SelectEarnHub/index.tsx
 msgid "Hubs this position can't be migrated to"
 msgstr "Hubs this position can't be migrated to"
 
@@ -3257,6 +3265,10 @@ msgstr "Forum discussion"
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Available"
 msgstr "Available"
+
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+msgid "The hub can't take this amount right now. Try another amount or hub."
+msgstr "The hub can't take this amount right now. Try another amount or hub."
 
 #: src/modules/governance/proposal/VoteInfo.tsx
 msgid "You did not participate in this proposal"
@@ -4173,6 +4185,7 @@ msgstr "Cancelling order..."
 #: pages/500.page.tsx
 #: src/modules/reserve-overview/graphs/ApyGraphContainer.tsx
 #: src/modules/reserve-overview/graphs/MeritApyGraphContainer.tsx
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
 #: src/modules/v4Migration/V4MigrationPageContainer/index.tsx
 msgid "Something went wrong"
