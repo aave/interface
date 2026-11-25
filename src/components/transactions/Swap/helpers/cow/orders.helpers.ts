@@ -132,7 +132,8 @@ export const getPreSignTransaction = async ({
         orderType,
         appCode,
         swapType,
-        market
+        market,
+        chainId
       ),
       additionalParams: {
         signingScheme: SigningScheme.PRESIGN,
@@ -210,6 +211,7 @@ export const sendOrder = async ({
     appCode,
     swapType,
     market,
+    chainId,
     hooks
   );
 
@@ -330,7 +332,8 @@ export const getUnsignerOrder = async ({
       orderType,
       appCode,
       swapType,
-      market
+      market,
+      chainId
     )
   );
 
@@ -372,6 +375,7 @@ export const populateEthFlowTx = async (
   orderType: OrderType,
   swapType: SwapType,
   market: CustomMarket,
+  chainId: number,
   quoteId?: number
 ): Promise<PopulatedTransaction> => {
   const appDataHex = await hashAppData(
@@ -383,7 +387,8 @@ export const populateEthFlowTx = async (
       orderType,
       appCode,
       swapType,
-      market
+      market,
+      chainId
     )
   );
 

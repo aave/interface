@@ -84,7 +84,8 @@ export const calculateInstanceAddress = async ({
       state.sellAmountToken.symbol,
       state.buyAmountToken.symbol,
       state.swapType,
-      market
+      market,
+      state.chainId
     ),
   };
 

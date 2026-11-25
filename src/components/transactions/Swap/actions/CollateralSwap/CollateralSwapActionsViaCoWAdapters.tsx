@@ -212,7 +212,8 @@ export const CollateralSwapActionsViaCowAdapters = ({
           state.sellAmountToken.symbol,
           state.buyAmountToken.symbol,
           state.swapType,
-          currentMarket
+          currentMarket,
+          state.chainId
         ),
       };
 

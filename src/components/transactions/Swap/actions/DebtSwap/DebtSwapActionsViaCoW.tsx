@@ -239,7 +239,8 @@ export const DebtSwapActionsViaCoW = ({
           state.sellAmountToken.symbol,
           state.buyAmountToken.symbol,
           state.swapType,
-          currentMarket
+          currentMarket,
+          state.chainId
         ),
       };
 

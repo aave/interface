@@ -154,16 +154,24 @@ const PARTNER_FEE_BPS_BY_SWAP_TYPE: Partial<Record<SwapType, number>> = {
   [SwapType.DebtSwap]: 0,
 };
 
-const getPartnerFeeRecipient = (market: CustomMarket): string => {
-  const collector = marketsData[market]?.addresses?.COLLECTOR;
-  return collector || COW_EVM_RECIPIENT;
+// A plain swap can run on another chain than the selected market's.
+const getPartnerFeeRecipient = (market: CustomMarket, chainId: number): string => {
+  const selected = marketsData[market];
+  const onChain =
+    selected?.chainId === chainId && selected.addresses?.COLLECTOR
+      ? selected
+      : Object.values(marketsData).find(
+          (m) => m.chainId === chainId && m.v3 && m.addresses?.COLLECTOR
+        );
+  return onChain?.addresses?.COLLECTOR || COW_EVM_RECIPIENT;
 };
 
 export const COW_PARTNER_FEE = (
   tokenFromSymbol: string,
   tokenToSymbol: string,
   swapType: SwapType,
-  market: CustomMarket
+  market: CustomMarket,
+  chainId: number
 ) => {
   const swapTypeBps = swapType !== undefined ? PARTNER_FEE_BPS_BY_SWAP_TYPE[swapType] : undefined;
 
@@ -174,7 +182,7 @@ export const COW_PARTNER_FEE = (
 
   return {
     volumeBps: swapTypeBps !== undefined ? swapTypeBps : defaultBps,
-    recipient: getPartnerFeeRecipient(market),
+    recipient: getPartnerFeeRecipient(market, chainId),
   };
 };
 
@@ -189,6 +197,7 @@ export const COW_APP_DATA = (
   appCode: string,
   swapType: SwapType,
   market: CustomMarket,
+  chainId: number,
   hooks?: Record<string, unknown>
 ) => ({
   appCode: appCode,
@@ -201,7 +210,7 @@ export const COW_APP_DATA = (
       ? { quote: { slippageBips, smartSlippage } }
       : // Slippage is not used in limit orders
         {}),
-    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol, swapType, market),
+    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol, swapType, market, chainId),
     hooks,
   },
 });
