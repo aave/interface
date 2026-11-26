@@ -1,0 +1,54 @@
+src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+  s_36fe408f2b1273::t_096af09c13b49e 102-103,106-107
+  s_36fe408f2b1273::t_225f422d178e6e 14,101,104-105,108
+src/locales/es/messages.js
+  s_36fe408f2b1273::t_6f6a71afc5a446 1
+src/modules/v4Migration/V4MigrationEarnFlow/utils/hubs.ts
+  s_36fe408f2b1273::t_096af09c13b49e 7,9,14,19-25,30-32,34-44,46,48,50-55
+  s_36fe408f2b1273::t_225f422d178e6e 3,15,27-29,45,47,49
+src/modules/v4Migration/V4MigrationEarnFlow/components/SelectEarnHub/index.tsx
+  s_36fe408f2b1273::t_9e479b9d914669 9,18-32,34-37,39-48,79
+  s_36fe408f2b1273::t_1504e4129df69b 33,38,66
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_6f6a71afc5a446 2364-2367
+src/locales/el/messages.js
+  s_36fe408f2b1273::t_6f6a71afc5a446 1
+src/modules/v4Migration/hooks/useV4Reserves.ts
+  s_36fe408f2b1273::t_108c9157fd87f4 1-2,4-10,13-14,16-19,21-22,24-36,38-41,50-52,68,70-72,74-93,101,110,114-115,117,119,121-124,126-127,132,134,136-148,150-155,160-161,163-164,166-170,172,174-176,178-179,216,242-243,245,249,253,255,258-259,261-263,275,280,287-299,301-307,309-314
+  s_36fe408f2b1273::t_f39b7806d99545 3,11-12,20,23,53-67,111-113,118,120,128-131,149,158-159,177,180-215,217-219,221-224,227,230-232,239-241,244,246-248,250-252,254,256-257,260,264-274
+  s_36fe408f2b1273::t_ea6a8cad8f531f 37,171,300,308
+  s_36fe408f2b1273::t_acc3d3d8ea8384 42-49,94-100,102-109,125,173,220,237
+  s_36fe408f2b1273::t_225f422d178e6e 73,135,165
+  s_36fe408f2b1273::t_096af09c13b49e 69,133,162
+  s_36fe408f2b1273::t_fc71d7b3b353a6 15,116,156-157,225-226,228-229,233-236,238,276-279,281-286
+src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+  s_36fe408f2b1273::t_225f422d178e6e 142
+src/locales/fr/messages.js
+  s_36fe408f2b1273::t_6f6a71afc5a446 1
+.env.example
+  s_36fe408f2b1273::t_6f6a71afc5a446 14
+src/modules/v4Migration/V4MigrationEarnFlow/utils/mocks.ts
+  s_36fe408f2b1273::t_6f6a71afc5a446 6-8,11
+src/locales/en/messages.js
+  s_36fe408f2b1273::t_6f6a71afc5a446 1
+src/modules/v4Migration/V4MigrationHubCard/index.tsx
+  s_36fe408f2b1273::t_f39b7806d99545 25
+  s_36fe408f2b1273::t_1504e4129df69b 45
+  s_36fe408f2b1273::t_225f422d178e6e 26,39-40,48-49,75,143,158,191,194,203-207,210,212-216
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "73e48c58e88493e9264d808127ea902f0be9bab0",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
