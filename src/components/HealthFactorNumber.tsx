@@ -1,39 +1,42 @@
 import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
-import { Box, Button, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { TypographyProps } from '@mui/material/Typography';
 import { BigNumber } from 'bignumber.js';
+import { HeartIcon } from 'src/components/icons/HeartIcon';
+import { healthFactorColor } from 'src/utils/hfUtils';
 
 import { FormattedNumber } from './primitives/FormattedNumber';
 
 interface HealthFactorNumberProps extends TypographyProps {
   value: string;
   onInfoClick?: () => void;
+  withHeart?: boolean;
+  heartGap?: string;
 }
 
-export const HealthFactorNumber = ({ value, onInfoClick, ...rest }: HealthFactorNumberProps) => {
-  const theme = useTheme();
-
+export const HealthFactorNumber = ({
+  value,
+  onInfoClick,
+  withHeart,
+  heartGap = '0.25rem',
+  ...rest
+}: HealthFactorNumberProps) => {
+  const isInfinite = value === '-1';
   const formattedHealthFactor = Number(valueToBigNumber(value).toFixed(2, BigNumber.ROUND_DOWN));
-  let healthFactorColor = '';
-  if (formattedHealthFactor >= 3) {
-    healthFactorColor = theme.vars.palette.success.main;
-  } else if (formattedHealthFactor < 1.1) {
-    healthFactorColor = theme.vars.palette.error.main;
-  } else {
-    healthFactorColor = theme.vars.palette.warning.main;
-  }
+  const color = healthFactorColor(isInfinite ? Infinity : formattedHealthFactor);
 
   return (
     <Box sx={{ display: 'inline-flex', alignItems: 'center' }} data-cy={'HealthFactorTopPannel'}>
-      {value === '-1' ? (
-        <Typography variant="h5" color="success.main">
+      {withHeart && <HeartIcon sx={{ color, mr: heartGap }} />}
+      {isInfinite ? (
+        <Typography variant="h5" color={color}>
           ∞
         </Typography>
       ) : (
         <FormattedNumber
           value={formattedHealthFactor}
-          sx={{ color: healthFactorColor, ...rest.sx }}
+          sx={{ color, ...rest.sx }}
           visibleDecimals={2}
           compact
           {...rest}

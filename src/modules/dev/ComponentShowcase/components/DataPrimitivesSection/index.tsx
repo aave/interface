@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
+import { AssetGroup } from 'src/components/AssetGroup';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -47,6 +48,12 @@ export const DataPrimitivesSection = () => (
       <TokenIcon symbol="USDC" aToken sx={{ fontSize: '32px' }} />
       <TokenIcon symbol="USDC" waToken sx={{ fontSize: '32px' }} />
       <TokenIcon symbol="AAVE_ETH" sx={{ fontSize: '32px' }} />
+    </Specimen>
+
+    <Specimen label="AssetGroup — 20px / 24px / max 3">
+      <AssetGroup symbols={['wstETH', 'weETH', 'WETH']} size={20} />
+      <AssetGroup symbols={['wstETH', 'weETH', 'WETH']} />
+      <AssetGroup symbols={TOKENS} max={3} />
     </Specimen>
 
     <Specimen label="Row" fullWidth>

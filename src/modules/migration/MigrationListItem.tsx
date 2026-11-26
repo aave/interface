@@ -1,7 +1,8 @@
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
-import { ArrowNarrowRightIcon, CheckIcon } from '@heroicons/react/solid';
+import { CheckIcon } from '@heroicons/react/solid';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { Box, Button, SvgIcon, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { ArrowRightIcon } from 'src/components/icons/ArrowRightIcon';
 import { IncentivesCard } from 'src/components/incentives/IncentivesCard';
 import { MigrationDisabledTooltip } from 'src/components/infoTooltips/MigrationDisabledTooltip';
 import { IsolatedEnabledBadge } from 'src/components/isolationMode/IsolatedBadge';
@@ -21,6 +22,8 @@ import { useShallow } from 'zustand/shallow';
 import { MigrationListItemToggler } from './MigrationListItemToggler';
 import { MigrationListMobileItem } from './MigrationListMobileItem';
 import { StETHMigrationWarning } from './StETHMigrationWarning';
+
+const ARROW = <ArrowRightIcon sx={{ mx: '0.5rem' }} />;
 
 interface MigrationListItemProps {
   checked: boolean;
@@ -171,14 +174,7 @@ export const MigrationListItem = ({
               color={baseColor}
               market={currentMarket}
             />
-            <SvgIcon sx={{ px: 1.5 }}>
-              <ArrowNarrowRightIcon
-                fontSize="14px"
-                color={
-                  disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                }
-              />
-            </SvgIcon>
+            {ARROW}
             <IncentivesCard
               value={v3APY}
               symbol={userReserve.reserve.symbol}
@@ -200,14 +196,7 @@ export const MigrationListItem = ({
                 <NoData variant="subheader1" color={baseColorSecondary} />
               )}
 
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon
-                  fontSize="14px"
-                  color={
-                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                  }
-                />
-              </SvgIcon>
+              {ARROW}
 
               {showCollateralToggle ? (
                 <MigrationListItemToggler
@@ -250,14 +239,7 @@ export const MigrationListItem = ({
                   variant="h5"
                   color={baseColor}
                 />
-                <SvgIcon sx={{ px: 1.5 }}>
-                  <ArrowNarrowRightIcon
-                    fontSize="14px"
-                    color={
-                      disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                    }
-                  />
-                </SvgIcon>
+                {ARROW}
                 <FormattedNumber value={v3Rates?.ltv || 0} percent variant="h5" color={baseColor} />
               </Box>
             </ListColumn>
@@ -276,14 +258,7 @@ export const MigrationListItem = ({
                   {borrowApyType}
                 </Typography>
               </Button>
-              <SvgIcon sx={{ px: 1.5 }}>
-                <ArrowNarrowRightIcon
-                  fontSize="14px"
-                  color={
-                    disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                  }
-                />
-              </SvgIcon>
+              {ARROW}
               <Button
                 variant="tertiary"
                 size="small"
@@ -312,14 +287,7 @@ export const MigrationListItem = ({
                   variant="h5"
                   color={baseColor}
                 />
-                <SvgIcon sx={{ px: 1.5 }}>
-                  <ArrowNarrowRightIcon
-                    fontSize="14px"
-                    color={
-                      disabled === undefined ? theme.palette.text.primary : theme.palette.text.muted
-                    }
-                  />
-                </SvgIcon>
+                {ARROW}
                 <FormattedNumber
                   value={v3Rates?.liquidationThreshold ?? -1}
                   percent

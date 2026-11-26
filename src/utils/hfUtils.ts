@@ -466,3 +466,10 @@ export const calculateHFAfterSupply = (
 
   return healthFactorAfterDeposit;
 };
+
+export const healthFactorColor = (healthFactor: number) => {
+  if (healthFactor >= 3) return 'hf-mint';
+  if (healthFactor >= 1.5) return 'hf-parrot';
+  if (healthFactor >= 1.1) return 'warning.main';
+  return 'hf-red';
+};

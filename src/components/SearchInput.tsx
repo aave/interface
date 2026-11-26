@@ -6,11 +6,31 @@ import { SearchIcon } from 'src/components/icons/SearchIcon';
 import { figVars } from 'src/utils/figmaColors';
 import { motion } from 'src/utils/motion';
 
+const SIZES = {
+  medium: {
+    height: '36px',
+    pl: '0.875rem',
+    pr: '1.125rem',
+    boxShadow: `0px 0px 0px 1px ${figVars['shadow-stroke-2']}`,
+    iconSize: 18,
+    clearMr: 0,
+  },
+  large: {
+    height: '2.75rem',
+    pl: '0.75rem',
+    pr: '0.5rem',
+    boxShadow: `inset 0px 0px 0px 1px ${figVars['border-1']}`,
+    iconSize: 20,
+    clearMr: '0.25rem',
+  },
+};
+
 interface SearchInputProps {
   onSearchTermChange: (value: string) => void;
   wrapperSx?: BoxProps;
   placeholder: string;
   disableFocus?: boolean;
+  size?: keyof typeof SIZES;
 }
 
 export const SearchInput = ({
@@ -18,7 +38,9 @@ export const SearchInput = ({
   wrapperSx,
   placeholder,
   disableFocus,
+  size = 'medium',
 }: SearchInputProps) => {
+  const { iconSize, clearMr, ...sizeSx } = SIZES[size];
   const inputEl = useRef<HTMLInputElement>(null);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -43,9 +65,8 @@ export const SearchInput = ({
         display: 'flex',
         alignItems: 'center',
         gap: 2,
-        boxShadow: `0px 0px 0px 1px ${figVars['shadow-stroke-2']}`,
+        ...sizeSx,
         borderRadius: '0.5rem',
-        height: '36px',
         // Wrapping <label> so clicking anywhere in the field (the search icon, the padding) focuses
         // the input, not just the input box itself.
         cursor: 'text',
@@ -58,11 +79,16 @@ export const SearchInput = ({
         ...wrapperSx,
       }}
     >
-      <SearchIcon sx={{ fontSize: 18, color: 'fg-icon', ml: 2, flexShrink: 0 }} />
+      <SearchIcon sx={{ fontSize: iconSize, color: 'fg-4', flexShrink: 0 }} />
       <InputBase
         autoFocus={sm}
         inputRef={inputEl}
-        sx={{ width: '100%', fontSize: { xs: 16, sm: 14 } }}
+        sx={{
+          width: '100%',
+          typography: 'base',
+          fontSize: { xs: 16, sm: 14 },
+          '& .MuiInputBase-input::placeholder': { color: figVars['fg-4'], opacity: 1 },
+        }}
         placeholder={placeholder}
         value={searchTerm}
         onChange={(e) => {
@@ -74,7 +100,7 @@ export const SearchInput = ({
         }}
       />
       <IconButton
-        sx={{ p: 0, mr: 2, visibility: searchTerm ? 'visible' : 'hidden' }}
+        sx={{ p: 0, mr: clearMr, display: searchTerm ? 'inline-flex' : 'none' }}
         onClick={() => handleClear()}
       >
         <XCircleIcon height={16} />

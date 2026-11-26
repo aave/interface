@@ -142,5 +142,14 @@ export const FormControlsSection = () => (
         wrapperSx={{ width: { xs: '100%', sm: 320 } }}
       />
     </Specimen>
+
+    <Specimen label="SearchInput — large (44px)" fullWidth>
+      <SearchInput
+        size="large"
+        placeholder="Search earn hubs"
+        onSearchTermChange={() => undefined}
+        wrapperSx={{ width: { xs: '100%', sm: 320 } }}
+      />
+    </Specimen>
   </Section>
 );

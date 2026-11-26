@@ -1,5 +1,5 @@
 import { ChainId } from '@aave/contract-helpers';
-import { ArrowNarrowRightIcon, XIcon } from '@heroicons/react/outline';
+import { XIcon } from '@heroicons/react/outline';
 import { CheckIcon } from '@heroicons/react/solid';
 import { Trans } from '@lingui/macro';
 import {
@@ -18,6 +18,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { formatUnits } from 'ethers/lib/utils';
 import { useEffect, useState } from 'react';
+import { ArrowRightIcon } from 'src/components/icons/ArrowRightIcon';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
 import { DarkTooltip } from 'src/components/infoTooltips/DarkTooltip';
 import { ListColumn } from 'src/components/lists/ListColumn';
@@ -128,9 +129,7 @@ export const BridgeTransactionListItem = ({
             size={28}
             logo={networkConfigs[sourceChainId].networkLogoPath}
           />
-          <SvgIcon sx={{ fontSize: '13px' }}>
-            <ArrowNarrowRightIcon />
-          </SvgIcon>
+          <ArrowRightIcon />
           <MarketLogo size={28} logo={networkConfigs[destinationChainId].networkLogoPath} />
         </Stack>
       </ListColumn>
@@ -225,9 +224,7 @@ const BridgeTransactionMobileListItem = ({
                 size={28}
                 logo={networkConfigs[sourceChainId].networkLogoPath}
               />
-              <SvgIcon sx={{ fontSize: '13px' }}>
-                <ArrowNarrowRightIcon />
-              </SvgIcon>
+              <ArrowRightIcon />
               <MarketLogo size={28} logo={networkConfigs[destinationChainId].networkLogoPath} />
             </Stack>
           </Stack>

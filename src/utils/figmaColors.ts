@@ -81,6 +81,8 @@ export const figmaLight = {
   'button-hover': 'rgba(0, 0, 0, 0.025)',
   'overlay-hover': 'rgba(0, 0, 0, 0.08)',
   'overlay-hover-subtle': 'rgba(0, 0, 0, 0.04)',
+  'table-item-hover-1': '#fafafa',
+  'table-item-hover-2': '#f4f4f4',
   'data-green-gho': '#5dff93',
   // Gold for the favourited market star (mode-agnostic; Figma color(display-p3 1 0.7 0)).
   'favourite-star': '#FFB300',
@@ -88,6 +90,24 @@ export const figmaLight = {
   danger: '#DC2626',
   // sGHO markets-banner gradient: a data-green wash at 6% fading to the banner's own surface.
   'sgho-banner-green': 'rgba(50, 201, 88, 0.06)',
+  'migration-banner-shadow': 'rgba(155, 153, 255, 0.12)',
+  'migration-banner-ring': 'rgba(3, 0, 109, 0.06)',
+  'migration-best-apy': '#9391f7',
+  'migration-best-apy-bg': 'rgba(147, 145, 247, 0.12)',
+  'migration-hub-tile': '#ffffff',
+  'migration-glyph-edge': '#bbbbbb',
+  'migration-glyph-darkest': '#bbbbbb',
+  'migration-chain-badge-ring': '#1a1919',
+  'migration-fg-5': '#b2b2b2',
+  'migration-v4-tag-ring': '#8987fa',
+  'migration-glyph-grey-edge': '#a8a8a8',
+  'migration-glyph-grey-darkest': '#7d7d7d',
+  'migration-glyph-picker-edge': '#eeeeee',
+  'migration-glyph-picker-darkest': '#8c8c8c',
+  'migration-selected-0': 'rgba(0, 0, 0, 0.03)',
+  'hf-mint': '#3BC94B',
+  'hf-parrot': '#9AD700',
+  'hf-red': '#F34366',
   'chain-testnet': '#8594ab',
   'chain-ethereum': '#25292e',
   'chain-polygon': '#8347e5',
@@ -220,6 +240,24 @@ export const figmaDark = {
   danger: '#DC2626',
   // sGHO markets-banner gradient: a data-green wash at 6% fading to the banner's own surface.
   'sgho-banner-green': 'rgba(102, 195, 153, 0.06)',
+  'migration-banner-shadow': 'rgba(155, 153, 255, 0.12)',
+  'migration-banner-ring': 'rgba(255, 255, 255, 0.08)',
+  'migration-best-apy': '#9391f7',
+  'migration-best-apy-bg': 'rgba(147, 145, 247, 0.12)',
+  'migration-hub-tile': '#393737',
+  'migration-glyph-edge': '#eeeeee',
+  'migration-glyph-darkest': '#8c8c8c',
+  'migration-chain-badge-ring': '#1a1919',
+  'migration-fg-5': '#484747',
+  'migration-v4-tag-ring': '#9391f7',
+  'migration-glyph-grey-edge': '#eeeeee',
+  'migration-glyph-grey-darkest': '#8c8c8c',
+  'migration-glyph-picker-edge': '#eeeeee',
+  'migration-glyph-picker-darkest': '#8c8c8c',
+  'migration-selected-0': 'rgba(255, 255, 255, 0.03)',
+  'hf-mint': '#3BC94B',
+  'hf-parrot': '#9AD700',
+  'hf-red': '#F34366',
   'wallet-modal-more-networks-label': 'rgba(255, 255, 255, 0.4)',
   'chain-testnet': '#bfc6d1',
   'chain-ethereum': '#7e8287',
@@ -317,3 +355,18 @@ export const onAccent = '#ffffff';
  */
 export const figSurfaceShadow = (stroke: FigmaColorName = 'shadow-stroke-2'): string =>
   `0px 2px 4px 0px ${figVars['shadow-low']}, 0px 0px 0px 1px ${figVars[stroke]}`;
+
+export const CARD_RADIUS = '10px';
+
+export const CARD_SURFACE_SX = {
+  backgroundColor: figVars['table-bg'],
+  borderRadius: CARD_RADIUS,
+  boxShadow: figSurfaceShadow('shadow-stroke-1'),
+} as const;
+
+export const dottedUnderlineSx = {
+  backgroundImage: `radial-gradient(circle, ${figVars['fg-4']} 0.6px, transparent 0.75px)`,
+  backgroundSize: '3px 1.5px',
+  backgroundRepeat: 'space no-repeat',
+  backgroundPosition: 'left bottom',
+} as const;

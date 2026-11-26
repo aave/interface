@@ -13,6 +13,7 @@ export const colorToP3 = (color: string): string => {
   if (!color.startsWith('#') && !color.startsWith('rgb')) return color;
   // decomposeColor parses #nnn / #nnnnnn / rgb() / rgba() → { values: [r, g, b, a?] } (r,g,b 0-255).
   const [r, g, b, a] = decomposeColor(color).values;
+  if (![r, g, b, a ?? 1].every(Number.isFinite)) return color;
   const channels = `${r / 255} ${g / 255} ${b / 255}`;
   return a === undefined ? `color(display-p3 ${channels})` : `color(display-p3 ${channels} / ${a})`;
 };

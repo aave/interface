@@ -14,6 +14,7 @@ import { DASHBOARD } from 'src/utils/events';
 import { convertAprToApy } from 'src/utils/utils';
 
 import { ContentWithTooltip } from '../ContentWithTooltip';
+import { IncentivesIcon } from '../icons/IncentivesIcon';
 import { FormattedNumber } from '../primitives/FormattedNumber';
 import { EthenaAirdropTooltipContent } from './EthenaIncentivesTooltipContent';
 import { EtherFiAirdropTooltipContent } from './EtherfiIncentivesTooltipContent';
@@ -23,6 +24,8 @@ import { MerklIncentivesTooltipContent } from './MerklIncentivesTooltipContent';
 import { SonicAirdropTooltipContent } from './SonicIncentivesTooltipContent';
 
 const INFINITY = 'Infinity';
+
+const INCENTIVES_ICON = <IncentivesIcon sx={{ fontSize: '1rem' }} />;
 
 export type IconProps = {
   className?: string;
@@ -76,39 +79,6 @@ interface IncentivesButtonProps {
   protocolAction?: ProtocolAction;
   protocolAPY?: number;
   address?: string;
-}
-
-export function IncentivesIcon(props: IconProps) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      {...props}
-      viewBox="0 0 16 16"
-      className={props.className}
-      style={{
-        display: 'flex',
-        flexShrink: 0,
-        ...props.style,
-      }}
-    >
-      <circle
-        cx="7.2"
-        cy="7.2"
-        r="7.2"
-        stroke="#9391F7"
-        strokeWidth="1.5"
-        transform="matrix(1 0 0 -1 .8 15.2)"
-      />
-      <path
-        stroke="#BCBBFF"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.5"
-        d="m4.557 8.082.891 1.132a1 1 0 0 0 1.591-.026l1.75-2.376a1 1 0 0 1 1.591-.026l1.064 1.35"
-      />
-    </svg>
-  );
 }
 
 const BlankIncentives = () => {
@@ -373,18 +343,14 @@ const Content = ({
         incentive.rewardTokenSymbol?.toLowerCase().includes('abasgho')
     );
     if (hideValue && hasGhoIncentives) {
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
-        </Box>
-      );
+      return <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>{INCENTIVES_ICON}</Box>;
     }
     if (hasGhoIncentives) {
       if (incentivesNetAPR !== INFINITY && incentivesNetAPR < 10000) {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             <FormattedNumber value={incentivesNetAPR} percent variant="subheader2" color="fg-2" />
-            <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
+            {INCENTIVES_ICON}
           </Box>
         );
       } else if (incentivesNetAPR !== INFINITY && incentivesNetAPR > 9999) {
@@ -397,7 +363,7 @@ const Content = ({
               variant="subheader2"
               color="fg-2"
             />
-            <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
+            {INCENTIVES_ICON}
           </Box>
         );
       } else if (incentivesNetAPR === INFINITY) {
@@ -406,18 +372,14 @@ const Content = ({
             <Typography variant="main12" color="fg-2">
               ∞
             </Typography>
-            <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
+            {INCENTIVES_ICON}
           </Box>
         );
       }
     }
 
     // Default behavior: show icon for non-GHO incentives
-    return (
-      <>
-        <IncentivesIcon style={{ width: '0.875rem', height: '0.875rem' }} />
-      </>
-    );
+    return <>{INCENTIVES_ICON}</>;
   };
 
   // const iconSize = 12;

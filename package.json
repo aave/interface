@@ -108,6 +108,7 @@
     "immer": "^9.0.15",
     "json-stringify-deterministic": "^1.0.12",
     "micro-memoize": "^4.1.2",
+    "motion": "^12.42.2",
     "next": "15.5.28",
     "react": "^18.3.1",
     "react-cookie-consent": "^8.0.1",

@@ -17,7 +17,14 @@ import { ChevronUpDownIcon } from 'src/components/icons/ChevronUpDownIcon';
 import { ScaleFade } from 'src/components/primitives/transitions/ScaleFade';
 
 import { colorToP3 } from './colorToP3';
-import { type FigmaColorName, figSurfaceShadow, figVars, onAccent, pickFigma } from './figmaColors';
+import {
+  type FigmaColorName,
+  CARD_SURFACE_SX,
+  figSurfaceShadow,
+  figVars,
+  onAccent,
+  pickFigma,
+} from './figmaColors';
 import { insetHighlightActive, insetHighlightBase } from './insetHighlight';
 import { motion } from './motion';
 
@@ -1076,11 +1083,7 @@ export function getThemedComponents(theme: AppTheme) {
             // the standalone asset tables. Only differs from `card` in dark mode, so a table left on
             // `card` by mistake is invisible in light and wrong in dark.
             props: { variant: 'table' },
-            style: {
-              backgroundColor: figVars['table-bg'],
-              borderRadius: '10px',
-              boxShadow: figSurfaceShadow('shadow-stroke-1'),
-            },
+            style: CARD_SURFACE_SX,
           },
         ],
       },
@@ -1476,7 +1479,8 @@ export const createAppTheme = () => {
 
 // --- Display-P3 override layer -------------------------------------------------------------
 
-const isColorValue = (v: string) => v.startsWith('#') || v.startsWith('rgb');
+const isColorValue = (v: string) =>
+  (v.startsWith('#') || v.startsWith('rgb')) && !v.includes('var(');
 
 // Walk a color scheme's palette and, for every solid color leaf, emit a P3 override keyed to
 // the CSS variable MUI generates for it (`--mui-palette-<path joined by '-'>`). Non-color

@@ -2,7 +2,7 @@ import { Trans } from '@lingui/macro';
 import { Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import { ContentWithTooltip } from 'src/components/ContentWithTooltip';
-import { IncentivesIcon } from 'src/components/incentives/IncentivesButton';
+import { IncentivesIcon } from 'src/components/icons/IncentivesIcon';
 import { MeritIncentivesTooltipContent } from 'src/components/incentives/MeritIncentivesTooltipContent';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -66,7 +66,7 @@ export const StkGhoDepositRow = ({
       </Typography>
       <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
         <FormattedNumber value={apr} percent variant="h4" visibleDecimals={2} />
-        {meritIncentives && <IncentivesIcon width="16" height="16" />}
+        {meritIncentives && <IncentivesIcon sx={{ fontSize: '1.125rem' }} />}
       </Box>
     </Box>
   );

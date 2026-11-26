@@ -2,6 +2,8 @@ import { MenuIcon } from '@heroicons/react/outline';
 import { Box, Container, Drawer, IconButton, SvgIcon, Typography } from '@mui/material';
 import { ReactNode, useState } from 'react';
 import { Link } from 'src/components/primitives/Link';
+import { figVars } from 'src/utils/figmaColors';
+import { insetHighlightActive, insetHighlightBase } from 'src/utils/insetHighlight';
 
 import { SHOWCASE_GROUPS, SHOWCASE_SECTIONS } from '../../utils/registry';
 import { ThemeControl } from '../ThemeControl';
@@ -51,18 +53,23 @@ export const ShowcaseLayout = ({ activeSlug, children }: ShowcaseLayoutProps) =>
                 href={`/dev/components/${section.slug}`}
                 variant="buttonM"
                 onClick={() => setMobileNavOpen(false)}
-                sx={{
+                sx={(theme) => ({
                   display: 'block',
                   py: 1,
                   px: 2,
                   borderRadius: '8px',
                   color: active ? 'fg-1' : 'fg-2',
-                  backgroundColor: active ? 'selected' : 'transparent',
-                  '&:hover': {
-                    color: 'fg-1',
-                    backgroundColor: active ? 'selected' : 'button-hover',
-                  },
-                }}
+                  ...insetHighlightBase({
+                    theme,
+                    radius: '8px',
+                    bottom: '1px',
+                    restFill: active ? figVars.selected : undefined,
+                  }),
+                  '&:hover': { color: 'fg-1' },
+                  '&:hover::before': insetHighlightActive(
+                    active ? figVars.selected : figVars['button-hover']
+                  ),
+                })}
               >
                 {section.label}
               </Link>

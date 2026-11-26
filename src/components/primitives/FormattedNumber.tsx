@@ -6,6 +6,7 @@ import type {
   TypographyPropsVariantOverrides,
 } from '@mui/material/Typography/Typography';
 import type { OverridableStringUnion } from '@mui/types';
+import { BigNumber } from 'bignumber.js';
 import type { ElementType } from 'react';
 
 interface CompactNumberProps {
@@ -46,6 +47,16 @@ export const compactNumber = ({
   }).format(formattedValue);
 
   return { prefix, postfix };
+};
+
+export const getCompactDecimals = (amount: BigNumber, priceUSD: number) => {
+  if (amount.eq(0) || amount.abs().gte(1000) || !(priceUSD > 0)) return 2;
+
+  const decimals = Math.min(6, Math.max(2, Math.ceil(Math.log10(priceUSD))));
+  if (amount.decimalPlaces(decimals, BigNumber.ROUND_HALF_UP).eq(0)) return decimals;
+
+  const fraction = amount.toFixed(decimals).split('.')[1] ?? '';
+  return Math.max(2, fraction.replace(/0+$/, '').length);
 };
 
 function CompactNumber({ value, visibleDecimals, roundDown }: CompactNumberProps) {

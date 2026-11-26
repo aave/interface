@@ -96,6 +96,12 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     ),
   },
   {
+    slug: 'charts',
+    label: 'Charts',
+    group: 'Data & surfaces',
+    Component: dynamic(() => import('../components/ChartsSection').then((m) => m.ChartsSection)),
+  },
+  {
     slug: 'banners',
     label: 'Banners',
     group: 'Data & surfaces',
@@ -109,6 +115,55 @@ export const SHOWCASE_SECTIONS: ShowcaseSection[] = [
     fullBleed: true,
     Component: dynamic(() =>
       import('../components/TxFinalStatesSection').then((m) => m.TxFinalStatesSection)
+    ),
+  },
+  {
+    slug: 'migration-banners',
+    label: 'Banners',
+    group: 'Migration',
+    fullBleed: true,
+    Component: dynamic(() =>
+      import('../components/MigrationBannersSection').then((m) => m.MigrationBannersSection)
+    ),
+  },
+  {
+    slug: 'migration-hub-cards',
+    label: 'Hub cards',
+    group: 'Migration',
+    Component: dynamic(() =>
+      import('../components/MigrationHubCardsSection').then((m) => m.MigrationHubCardsSection)
+    ),
+  },
+  {
+    slug: 'migration-flow',
+    label: 'Flow',
+    group: 'Migration',
+    Component: dynamic(() =>
+      import('../components/MigrationFlowSection').then((m) => m.MigrationFlowSection)
+    ),
+  },
+  {
+    slug: 'migration-amount',
+    label: 'Amount',
+    group: 'Migration',
+    Component: dynamic(() =>
+      import('../components/MigrationAmountSection').then((m) => m.MigrationAmountSection)
+    ),
+  },
+  {
+    slug: 'migration-preview',
+    label: 'Preview',
+    group: 'Migration',
+    Component: dynamic(() =>
+      import('../components/MigrationPreviewSection').then((m) => m.MigrationPreviewSection)
+    ),
+  },
+  {
+    slug: 'migration-transaction',
+    label: 'Transaction',
+    group: 'Migration',
+    Component: dynamic(() =>
+      import('../components/MigrationTransactionSection').then((m) => m.MigrationTransactionSection)
     ),
   },
 ];

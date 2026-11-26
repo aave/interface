@@ -5,17 +5,46 @@ import { AssetCategoryMultiSelect } from 'src/components/AssetCategoryMultiselec
 import { SearchInput } from 'src/components/SearchInput';
 import { AssetCategory } from 'src/modules/markets/utils/assetCategories';
 
+interface ToggleState {
+  value: boolean;
+  onChange: (value: boolean) => void;
+}
+
 interface AssetsFilterBarProps {
   searchPlaceholder: string;
   onSearchTermChange: (value: string) => void;
   selectedCategories: AssetCategory[];
   onCategoriesChange: (categories: AssetCategory[]) => void;
   categoriesDisabled?: boolean;
+  showV4Rates?: ToggleState;
   /** Optional "In Wallet" toggle — omit when there is no connected wallet to filter by. */
-  inWallet?: { value: boolean; onChange: (value: boolean) => void };
+  inWallet?: ToggleState;
   /** Optional trailing control, e.g. a `DisplaySettingsMenu`. */
   displaySettings?: ReactNode;
 }
+
+const FilterToggle = ({ label, value, onChange }: ToggleState & { label: ReactNode }) => (
+  // The whole pill flips the filter; the Switch just mirrors its state.
+  <Button
+    variant="outlined"
+    onClick={() => onChange(!value)}
+    aria-pressed={value}
+    sx={{
+      gap: 2,
+      textTransform: 'none',
+      justifyContent: 'space-between',
+    }}
+  >
+    <Typography variant="buttonM" sx={{ whiteSpace: 'nowrap' }}>
+      {label}
+    </Typography>
+    <Switch
+      checked={value}
+      inputProps={{ readOnly: true, tabIndex: -1, 'aria-hidden': true }}
+      sx={{ pointerEvents: 'none' }}
+    />
+  </Button>
+);
 
 export const AssetsFilterBar = ({
   searchPlaceholder,
@@ -23,6 +52,7 @@ export const AssetsFilterBar = ({
   selectedCategories,
   onCategoriesChange,
   categoriesDisabled = false,
+  showV4Rates,
   inWallet,
   displaySettings,
 }: AssetsFilterBarProps) => {
@@ -45,33 +75,18 @@ export const AssetsFilterBar = ({
       <Box
         sx={{
           display: 'flex',
+          flexWrap: { xs: 'wrap', sm: 'nowrap' },
           alignItems: 'center',
           justifyContent: { xs: 'space-between' },
           gap: 2,
           width: { xs: '100%', sm: 'auto' },
         }}
       >
-        {inWallet && (
-          // The whole pill flips the filter; the Switch just mirrors its state.
-          <Button
-            variant="outlined"
-            onClick={() => inWallet.onChange(!inWallet.value)}
-            aria-pressed={inWallet.value}
-            sx={{
-              gap: 2,
-              textTransform: 'none',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant="buttonM" sx={{ whiteSpace: 'nowrap' }}>
-              <Trans>In Wallet</Trans>
-            </Typography>
-            <Switch
-              checked={inWallet.value}
-              inputProps={{ readOnly: true, tabIndex: -1, 'aria-hidden': true }}
-              sx={{ pointerEvents: 'none' }}
-            />
-          </Button>
+        {(showV4Rates || inWallet) && (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            {showV4Rates && <FilterToggle label={<Trans>Show V4 Rates</Trans>} {...showV4Rates} />}
+            {inWallet && <FilterToggle label={<Trans>In Wallet</Trans>} {...inWallet} />}
+          </Box>
         )}
 
         {/* Grouped so the space-between on phones keeps the settings button beside categories. */}

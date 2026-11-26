@@ -13,6 +13,7 @@ import { MarketAssetsListItem } from './MarketAssetsListItem';
 import { MarketAssetsListItemLoader } from './MarketAssetsListItemLoader';
 import { MarketAssetsListMobileItem } from './MarketAssetsListMobileItem';
 import { MarketAssetsListMobileItemLoader } from './MarketAssetsListMobileItemLoader';
+import { V4Rates } from './utils/v4Rates';
 
 const listHeaders = [
   {
@@ -46,13 +47,15 @@ const listHeaders = [
 type MarketAssetsListProps = {
   reserves: ReserveWithId[];
   loading: boolean;
+  v4Rates?: Record<string, V4Rates>;
 };
 export type ReserveWithProtocolIncentives = ReserveWithId & {
   supplyProtocolIncentives: ReturnType<typeof mapAaveProtocolIncentives>;
   borrowProtocolIncentives: ReturnType<typeof mapAaveProtocolIncentives>;
+  v4Rates?: V4Rates;
 };
 
-export default function MarketAssetsList({ reserves, loading }: MarketAssetsListProps) {
+export default function MarketAssetsList({ reserves, loading, v4Rates }: MarketAssetsListProps) {
   const theme = useTheme();
   const isTableChangedToCards = useMediaQuery(theme.breakpoints.down(TABLE_CARDS_BELOW));
   const [sortName, setSortName] = useState('');
@@ -104,6 +107,7 @@ export default function MarketAssetsList({ reserves, loading }: MarketAssetsList
     ...reserve,
     supplyProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'supply'),
     borrowProtocolIncentives: mapAaveProtocolIncentives(reserve.incentives, 'borrow'),
+    v4Rates: v4Rates?.[reserve.underlyingToken.address.toLowerCase()],
   }));
   // Show loading state when loading
   if (loading) {
