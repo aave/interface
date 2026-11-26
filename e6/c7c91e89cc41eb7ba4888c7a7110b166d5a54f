@@ -1,0 +1,19 @@
+src/layouts/MainLayout.tsx
+  s_f05aad5df9c016::t_44d5fea7470ea9 14,21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "e6c7c91e89cc41eb7ba4888c7a7110b166d5a54f",
+  "prompts": {},
+  "sessions": {
+    "s_f05aad5df9c016": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "92ab4629-69c6-4031-98c0-4004bba1aab6",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
