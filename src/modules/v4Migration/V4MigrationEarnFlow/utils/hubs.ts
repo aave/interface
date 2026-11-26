@@ -1,52 +1,55 @@
 import { MigrationOpportunity } from '@aave/react';
-import { SparklineDatum } from 'src/components/charts/SparklineChart';
 
+import { findV4Reserve, V4SupplyReserve } from '../../hooks/useV4Reserves';
 import { listsPosition } from '../../V4MigrationPage/utils/opportunities';
-import { MigrationAsset } from '../../V4MigrationPage/utils/types';
-import {
-  average,
-  MOCK_BACKING_COLLATERAL,
-  MOCK_HAS_INCENTIVES,
-  MOCK_TOTAL_DEPOSITS_USD,
-  mockApyHistory,
-} from './mocks';
 
 export interface EarnHub {
-  /** The V4 spoke's address. */
+  /** The address of the V4 spoke the position moves through. */
   id: string;
+  /** The hub's name; the spoke's when the V4 API could not tell which hub it belongs to. */
   name: string;
   apy: number;
   bestApy: boolean;
   unavailable: boolean;
-  apyAverage: number;
-  apyHistory: SparklineDatum[];
-  hasIncentives: boolean;
-  totalDepositsUSD: number;
-  backingCollateral: MigrationAsset[];
+  /** The V4 reserve the position lands in, with the hub behind it. Missing as `name` says. */
+  reserve?: V4SupplyReserve;
 }
 
 /**
- * The V4 hubs that list an earn position's asset, highest APY first. The API returns each hub's name,
- * APY and eligibility; the rest of the card is mocked for now (see `./mocks`).
+ * The V4 hubs an earn position can move to, highest APY first. The migration API returns one
+ * target per spoke, and several spokes can lead to the same hub at the same APY, so a hub is shown
+ * once: through the first of its spokes in the API's order, which puts eligible spokes first.
+ *
+ * TODO: product has to say which spoke a hub is entered through; between spokes that tie, the API's
+ * order is by address. `reserves`, from the V4 API, say which hub a spoke belongs to; without them
+ * every spoke is listed on its own.
  */
-export const toEarnHubs = (opportunity: MigrationOpportunity): EarnHub[] =>
-  opportunity.targets
-    .filter(listsPosition)
-    .map((target, index) => {
-      const apy = Number(target.apy?.value ?? 0);
-      const apyHistory = mockApyHistory(apy, index + 1);
+export const toEarnHubs = (
+  opportunity: MigrationOpportunity,
+  reserves?: V4SupplyReserve[]
+): EarnHub[] => {
+  const best = opportunity.bestTarget?.spoke.address;
+  const hubs = new Map<string, EarnHub>();
 
-      return {
-        id: target.spoke.address,
-        name: target.spoke.name,
-        apy,
-        bestApy: target.spoke.address === opportunity.bestTarget?.spoke.address,
-        unavailable: !target.eligible,
-        apyAverage: average(apyHistory),
-        apyHistory,
-        hasIncentives: MOCK_HAS_INCENTIVES,
-        totalDepositsUSD: MOCK_TOTAL_DEPOSITS_USD,
-        backingCollateral: MOCK_BACKING_COLLATERAL,
-      };
-    })
-    .sort((a, b) => b.apy - a.apy);
+  for (const target of opportunity.targets.filter(listsPosition)) {
+    const reserve = findV4Reserve(reserves, target.spoke.address);
+    const key = reserve?.hubId ?? target.spoke.address;
+    const bestApy = target.spoke.address === best;
+    const shown = hubs.get(key);
+
+    if (shown) {
+      shown.bestApy ||= bestApy;
+      continue;
+    }
+    hubs.set(key, {
+      id: target.spoke.address,
+      name: reserve?.hubName ?? target.spoke.name,
+      apy: Number(target.apy?.value ?? 0),
+      bestApy,
+      unavailable: !target.eligible,
+      reserve,
+    });
+  }
+
+  return Array.from(hubs.values()).sort((a, b) => b.apy - a.apy);
+};

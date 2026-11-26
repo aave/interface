@@ -139,7 +139,7 @@ const previewRows = ({
       id: 'exposure',
       ...collateralExposureRow(getHubDisplayName(hub.name)),
       v3: <AssetGroup symbols={MOCK_V3_COLLATERAL_EXPOSURE.map(getAssetIconSymbol)} size={20} />,
-      v4: <AssetGroup symbols={hub.backingCollateral.map(getAssetIconSymbol)} size={20} />,
+      v4: <AssetGroup symbols={(hub.reserve?.exposure ?? []).map(getAssetIconSymbol)} size={20} />,
     },
   ];
 };

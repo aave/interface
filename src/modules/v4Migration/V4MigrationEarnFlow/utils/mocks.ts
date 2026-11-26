@@ -3,15 +3,12 @@ import { SparklineDatum } from 'src/components/charts/SparklineChart';
 import { MigrationAsset } from '../../V4MigrationPage/utils/types';
 
 /**
- * Hub figures the migration API does not return yet. Everything in this file is made up and has to
- * be replaced with real data before the flow ships.
+ * Figures neither API returns yet: the V3 side of the collateral exposure, and a borrow market's
+ * 7-day position APY. Everything in this file is made up and has to be replaced before the flow
+ * ships.
  */
 
-export const MOCK_TOTAL_DEPOSITS_USD = 45_620_000;
-
-export const MOCK_HAS_INCENTIVES = true;
-
-export const MOCK_BACKING_COLLATERAL: MigrationAsset[] = [
+const MOCK_BACKING_COLLATERAL: MigrationAsset[] = [
   {
     symbol: 'wstETH',
     name: 'Wrapped liquid staked Ether 2.0',

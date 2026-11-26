@@ -6,6 +6,7 @@ import { EmptyStatePaper } from 'src/components/EmptyStatePaper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { SearchInput } from 'src/components/SearchInput';
 
+import { useV4SupplyApyHistory } from '../../../hooks/useV4Reserves';
 import { HUB_PICKER, searchEarnHubsPlaceholder } from '../../../utils/copy';
 import { V4MigrationHubCard } from '../../../V4MigrationHubCard';
 import { EarnHub } from '../../utils/hubs';
@@ -13,6 +14,37 @@ import { EarnHub } from '../../utils/hubs';
 const LIST_SX = { display: 'flex', flexDirection: 'column', gap: '1.5rem' } as const;
 
 const LOADING_CARDS = 3;
+
+const EarnHubCard = ({
+  chainId,
+  hub,
+  onSelect,
+}: {
+  chainId: number;
+  hub: EarnHub;
+  onSelect: (hub: EarnHub) => void;
+}) => {
+  const { reserve } = hub;
+  const history = useV4SupplyApyHistory(reserve?.id);
+
+  return (
+    <V4MigrationHubCard
+      chainId={chainId}
+      hubName={hub.name}
+      curators={reserve?.curator ? [reserve.curator] : undefined}
+      apy={hub.apy}
+      apyAverage={reserve?.supplyApyAverage}
+      apyHistory={history.data}
+      historyLoading={history.isLoading}
+      hasIncentives={reserve?.hasIncentives}
+      bestApy={hub.bestApy}
+      unavailable={hub.unavailable}
+      totalDepositsUSD={reserve?.suppliedUSD}
+      backingCollateral={reserve?.exposure}
+      onClick={hub.unavailable ? undefined : () => onSelect(hub)}
+    />
+  );
+};
 
 interface SelectEarnHubProps {
   chainId: number;
@@ -31,20 +63,7 @@ export const SelectEarnHub = ({ chainId, hubs, onSelect }: SelectEarnHubProps) =
   const unavailable = matching.filter((hub) => hub.unavailable);
 
   const renderHub = (hub: EarnHub) => (
-    <V4MigrationHubCard
-      key={hub.id}
-      chainId={chainId}
-      hubName={hub.name}
-      apy={hub.apy}
-      apyAverage={hub.apyAverage}
-      apyHistory={hub.apyHistory}
-      hasIncentives={hub.hasIncentives}
-      bestApy={hub.bestApy}
-      unavailable={hub.unavailable}
-      totalDepositsUSD={hub.totalDepositsUSD}
-      backingCollateral={hub.backingCollateral}
-      onClick={hub.unavailable ? undefined : () => onSelect(hub)}
-    />
+    <EarnHubCard key={hub.id} chainId={chainId} hub={hub} onSelect={onSelect} />
   );
 
   return (
@@ -57,15 +76,7 @@ export const SelectEarnHub = ({ chainId, hubs, onSelect }: SelectEarnHubProps) =
       />
       {!hubs ? (
         Array.from({ length: LOADING_CARDS }, (_, index) => (
-          <V4MigrationHubCard
-            key={index}
-            loading
-            chainId={chainId}
-            hubName=""
-            apy={0}
-            totalDepositsUSD={0}
-            backingCollateral={[]}
-          />
+          <V4MigrationHubCard key={index} loading chainId={chainId} hubName="" apy={0} />
         ))
       ) : hubs.length === 0 ? (
         <EmptyStatePaper

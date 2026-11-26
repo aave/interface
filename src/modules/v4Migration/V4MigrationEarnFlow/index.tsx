@@ -11,6 +11,7 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { useV4SupplyReserves } from '../hooks/useV4Reserves';
 import { MIGRATE_FLOW } from '../utils/copy';
 import { MIGRATION_MARKETS } from '../V4MigrationPage/utils/markets';
 import { findEarnOpportunity, parsePositionId } from '../V4MigrationPage/utils/opportunities';
@@ -97,7 +98,14 @@ const EarnFlowSteps = ({
     () => (data ? findEarnOpportunity(data, positionId) : undefined),
     [data, positionId]
   );
-  const hubs = useMemo(() => (opportunity ? toEarnHubs(opportunity) : undefined), [opportunity]);
+  const supply = opportunity?.supplies[0];
+  // The V4 API says which hub each spoke belongs to, so the hubs wait for it. If it fails they are
+  // listed spoke by spoke, and the position can still be moved.
+  const reserves = useV4SupplyReserves(chainId, supply?.currency.address);
+  const hubs = useMemo(
+    () => (opportunity && !reserves.isLoading ? toEarnHubs(opportunity, reserves.data) : undefined),
+    [opportunity, reserves.isLoading, reserves.data]
+  );
 
   if (error) {
     return (
@@ -110,7 +118,6 @@ const EarnFlowSteps = ({
 
   if (!loading && !opportunity) return <PositionNotFound />;
 
-  const supply = opportunity?.supplies[0];
   // A hub that is not in the list, or that cannot take the position, falls back to the list.
   const hub = hubId
     ? hubs?.find((item) => item.id.toLowerCase() === hubId.toLowerCase() && !item.unavailable)

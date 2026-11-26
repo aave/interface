@@ -2361,6 +2361,10 @@ msgstr "Health factor is lesser than the liquidation threshold"
 msgid "stkGHO is now Savings GHO"
 msgstr "stkGHO is now Savings GHO"
 
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "Collateral assets that share liquidity and risk within the hub"
+msgstr "Collateral assets that share liquidity and risk within the hub"
+
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/Emode/EmodeModalContent.tsx
 #: src/components/transactions/FlowCommons/TxModalDetails.tsx
