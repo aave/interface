@@ -11,14 +11,14 @@ import TopBarNotify from './TopBarNotify';
 
 // Shown on every supported chain. Bump bannerVersion to re-show it to users who dismissed it.
 const globalCampaign = {
-  notifyText: 'The Aave mobile app is now available on Android.',
+  notifyText: 'The Aave mobile app is now available on iOS and Android',
   buttonText: 'Get the app',
   buttonAction: {
     type: 'url' as const,
     value: 'https://aave.com/app',
     target: '_blank' as const,
   },
-  bannerVersion: 'aave-app-android-v1',
+  bannerVersion: 'aave-app-ios-android-v1',
 };
 
 const getCampaignConfigs = () =>
