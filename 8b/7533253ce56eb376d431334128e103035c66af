@@ -1,0 +1,38 @@
+src/locales/en/messages.js
+  s_36fe408f2b1273::t_1444de0ecaece5 1
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_1444de0ecaece5 2268-2271,3661-3664,4098-4101,4310-4312
+  s_36fe408f2b1273::t_dd491c86de6a0e 4313
+src/locales/fr/messages.js
+  s_36fe408f2b1273::t_1444de0ecaece5 1
+src/modules/v4Migration/V4MigrationPage/utils/opportunities.ts
+  s_36fe408f2b1273::t_1444de0ecaece5 41-50
+src/locales/el/messages.js
+  s_36fe408f2b1273::t_1444de0ecaece5 1
+src/locales/es/messages.js
+  s_36fe408f2b1273::t_1444de0ecaece5 1
+src/modules/v4Migration/V4MigrationBorrowFlow/components/SelectBorrowMarket/index.tsx
+  s_36fe408f2b1273::t_1444de0ecaece5 1,5,71-75
+src/modules/v4Migration/V4MigrationEarnFlow/components/SelectEarnHub/index.tsx
+  s_36fe408f2b1273::t_1444de0ecaece5 5,70-74
+src/modules/v4Migration/V4MigrationBorrowFlow/utils/markets.ts
+  s_36fe408f2b1273::t_1444de0ecaece5 5,23,29
+src/modules/v4Migration/V4MigrationEarnFlow/utils/hubs.ts
+  s_36fe408f2b1273::t_1444de0ecaece5 4,29,34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8b7533253ce56eb376d431334128e103035c66af",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
