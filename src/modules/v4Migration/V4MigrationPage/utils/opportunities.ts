@@ -38,6 +38,16 @@ export const parsePositionId = (id: string) => {
   return { chainId: Number(chainId), market, asset };
 };
 
+type Target = MigrationOpportunity['targets'][number];
+
+/**
+ * Whether the V4 spoke lists every asset of the position, in the role the position holds it. The
+ * API returns a target for every spoke on the chain; the ones that fail this have nothing to do
+ * with the position, so they are not worth showing even as unavailable.
+ */
+export const listsPosition = (target: Target) =>
+  !target.criteria.some((result) => result.criterion === 'ASSET_SUPPORTED' && !result.met);
+
 /** The earn opportunity a row of the earn table was built from. */
 export const findEarnOpportunity = (opportunities: MigrationOpportunity[], id: string) =>
   opportunities.find((opportunity) => {

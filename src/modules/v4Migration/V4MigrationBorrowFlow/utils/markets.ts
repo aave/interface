@@ -2,6 +2,7 @@ import { MigrationOpportunity } from '@aave/react';
 import { SparklineDatum } from 'src/components/charts/SparklineChart';
 
 import { average, mockApyHistory } from '../../V4MigrationEarnFlow/utils/mocks';
+import { listsPosition } from '../../V4MigrationPage/utils/opportunities';
 
 export interface BorrowMarket {
   /** The V4 spoke's address. */
@@ -19,12 +20,13 @@ export interface BorrowMarket {
 }
 
 /**
- * The V4 markets a borrow position could move to: the API's pick first, then by net APY. The API
+ * The V4 markets that list every asset of a borrow position: the API's pick first, then by net APY. The API
  * returns each market's name, APY, health factor and eligibility; the 7-day figures are mocked
  * for now, and the hub and curator are not returned at all.
  */
 export const toBorrowMarkets = (opportunity: MigrationOpportunity): BorrowMarket[] =>
   opportunity.targets
+    .filter(listsPosition)
     .map((target, index) => {
       const apy = Number(target.apy?.value ?? 0);
       const apyHistory = mockApyHistory(apy, index + 1);

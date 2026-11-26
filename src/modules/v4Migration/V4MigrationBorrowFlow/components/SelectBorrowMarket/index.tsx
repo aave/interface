@@ -1,6 +1,8 @@
+import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import { AssetListGroup } from 'src/components/AssetListItem';
+import { EmptyStatePaper } from 'src/components/EmptyStatePaper';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { SearchInput } from 'src/components/SearchInput';
 
@@ -66,6 +68,11 @@ export const SelectBorrowMarket = ({ chainId, markets, onSelect }: SelectBorrowM
             apy={0}
           />
         ))
+      ) : markets.length === 0 ? (
+        <EmptyStatePaper
+          title={<Trans>No markets for this position</Trans>}
+          description={<Trans>No Aave V4 market lists every asset of this position yet.</Trans>}
+        />
       ) : matching.length === 0 ? (
         <NoSearchResults searchTerm={searchTerm} />
       ) : (

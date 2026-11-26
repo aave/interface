@@ -1,6 +1,7 @@
 import { MigrationOpportunity } from '@aave/react';
 import { SparklineDatum } from 'src/components/charts/SparklineChart';
 
+import { listsPosition } from '../../V4MigrationPage/utils/opportunities';
 import { MigrationAsset } from '../../V4MigrationPage/utils/types';
 import {
   average,
@@ -25,11 +26,12 @@ export interface EarnHub {
 }
 
 /**
- * The V4 hubs an earn position could move to, highest APY first. The API returns each hub's name,
+ * The V4 hubs that list an earn position's asset, highest APY first. The API returns each hub's name,
  * APY and eligibility; the rest of the card is mocked for now (see `./mocks`).
  */
 export const toEarnHubs = (opportunity: MigrationOpportunity): EarnHub[] =>
   opportunity.targets
+    .filter(listsPosition)
     .map((target, index) => {
       const apy = Number(target.apy?.value ?? 0);
       const apyHistory = mockApyHistory(apy, index + 1);

@@ -2265,6 +2265,10 @@ msgstr "Execution fee"
 msgid "The network fee paid for the transaction"
 msgstr "The network fee paid for the transaction"
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/SelectBorrowMarket/index.tsx
+msgid "No Aave V4 market lists every asset of this position yet."
+msgstr "No Aave V4 market lists every asset of this position yet."
+
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "How much of this position moves to V4. Collateral and debt move in the same proportion."
 msgstr "How much of this position moves to V4. Collateral and debt move in the same proportion."
@@ -3654,6 +3658,10 @@ msgstr "Submit"
 msgid "Change market ({market} Market)"
 msgstr "Change market ({market} Market)"
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/SelectEarnHub/index.tsx
+msgid "No Aave V4 hub lists this asset yet."
+msgstr "No Aave V4 hub lists this asset yet."
+
 #: src/modules/history/actions/ActionDetails.tsx
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Debt Swap"
@@ -4087,6 +4095,10 @@ msgstr "Selected borrow assets"
 msgid "Balancer Pool"
 msgstr "Balancer Pool"
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/SelectEarnHub/index.tsx
+msgid "No hubs for this asset"
+msgstr "No hubs for this asset"
+
 #: src/modules/dashboard/DashboardEModeButton.tsx
 msgid "E-Mode increases your LTV for a selected category of assets. <0>Learn more</0>"
 msgstr "E-Mode increases your LTV for a selected category of assets. <0>Learn more</0>"
@@ -4294,6 +4306,10 @@ msgstr "Staking this asset will earn the underlying asset supply yield in additi
 #: src/components/infoTooltips/StableAPYTooltip.tsx
 msgid "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
 msgstr "Stable interest rate will <0>stay the same</0> for the duration of your loan. Recommended for long-term loan periods and for users who prefer predictability."
+
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/SelectBorrowMarket/index.tsx
+msgid "No markets for this position"
+msgstr "No markets for this position"
 
 #: src/modules/staking/GhoStakingPanel.tsx
 #: src/modules/staking/StakingPanel.tsx
