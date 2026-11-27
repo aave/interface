@@ -54,6 +54,7 @@ export const CapsCircularStatus = ({
   return (
     <ContentWithTooltip
       tooltipContent={<>{tooltipContent}</>}
+      placement="bottom"
       open={open}
       setOpen={(value) => {
         setOpen(value);
