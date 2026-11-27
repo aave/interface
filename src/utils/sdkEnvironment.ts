@@ -1,17 +1,7 @@
-import { local, production, staging } from '@aave/react';
+import { staging } from '@aave/react';
 
-const SDK_ENVIRONMENT_PRESET = (() => {
-  switch (process.env.NEXT_PUBLIC_BACKEND_ENVIRONMENT) {
-    case 'local':
-      return local;
-    case 'staging':
-      return staging;
-    default:
-      return production;
-  }
-})();
-
+// Preview branch only: always origin staging, whatever the Vercel env says.
 export const SDK_ENVIRONMENT = {
-  ...SDK_ENVIRONMENT_PRESET,
-  backend: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || SDK_ENVIRONMENT_PRESET.backend,
+  ...staging,
+  backend: 'https://api.origin.staging.aave.com/v3/graphql',
 };

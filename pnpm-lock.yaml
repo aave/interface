@@ -20,6 +20,10 @@ overrides:
   rollup: ^2.80.0
   sharp: ^0.35.0
   tmp: ^0.2.6
+  '@aave/client@0.12.0': file:vendor/aave-sdk/aave-client-0.12.0.tgz
+  '@aave/core@0.1.1': file:vendor/aave-sdk/aave-core-0.1.1.tgz
+  '@aave/graphql@0.13.0': file:vendor/aave-sdk/aave-graphql-0.13.0.tgz
+  '@aave/types@0.3.0': file:vendor/aave-sdk/aave-types-0.3.0.tgz
 
 patchedDependencies:
   '@funkit/connect@9.28.1':
@@ -40,14 +44,14 @@ importers:
         specifier: 1.38.0
         version: 1.38.0(bignumber.js@9.3.1)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(reflect-metadata@0.1.14)(tslib@2.8.1)
       '@aave/graphql':
-        specifier: 0.13.0
-        version: 0.13.0(typescript@5.9.3)
+        specifier: file:vendor/aave-sdk/aave-graphql-0.13.0.tgz
+        version: file:vendor/aave-sdk/aave-graphql-0.13.0.tgz(typescript@5.9.3)
       '@aave/math-utils':
         specifier: 1.38.0
         version: 1.38.0(bignumber.js@9.3.1)(tslib@2.8.1)
       '@aave/react':
-        specifier: 0.10.0
-        version: 0.10.0(57bad105c19865684bed9e74d28d38fb)
+        specifier: file:vendor/aave-sdk/aave-react-0.10.0.tgz
+        version: file:vendor/aave-sdk/aave-react-0.10.0.tgz(57bad105c19865684bed9e74d28d38fb)
       '@amplitude/analytics-browser':
         specifier: ^2.13.0
         version: 2.44.5
@@ -388,8 +392,23 @@ packages:
       wagmi:
         optional: true
 
-  '@aave/client@0.12.0':
-    resolution: {integrity: sha512-5X9g6iyBEsbdnPANG4GLTE/HtOL47FG6CrVI3r/JACo+lofPjxvcgDaSqXZIV5IDq1VWqG8y6NnpsoDD0+3MvA==}
+  '@aave/client@0.9.3':
+    resolution: {integrity: sha512-kD+emaiO63Sg3SpzWxWlqUwnB1CJNcVcwEPm2q9R14hHHhii4EJ21T3PxFt4k7HFFrybC7Fsactc9nTd1PfsRQ==}
+    peerDependencies:
+      ethers: ^6.14.4
+      thirdweb: ^5.105.25
+      viem: ^2.31.6
+    peerDependenciesMeta:
+      ethers:
+        optional: true
+      thirdweb:
+        optional: true
+      viem:
+        optional: true
+
+  '@aave/client@file:vendor/aave-sdk/aave-client-0.12.0.tgz':
+    resolution: {integrity: sha512-iO1LLqm4p4+QM/mKcD4cKXlgeBLvuBGmX8HoUyV/h/f4sB0u5XT5tSSNHiEWtHTdsCUP5MMn5VYpQ5ll9quq0g==, tarball: file:vendor/aave-sdk/aave-client-0.12.0.tgz}
+    version: 0.12.0
     peerDependencies:
       '@privy-io/server-auth': ^1.32.5
       ethers: ^6.14.4
@@ -398,20 +417,6 @@ packages:
     peerDependenciesMeta:
       '@privy-io/server-auth':
         optional: true
-      ethers:
-        optional: true
-      thirdweb:
-        optional: true
-      viem:
-        optional: true
-
-  '@aave/client@0.9.3':
-    resolution: {integrity: sha512-kD+emaiO63Sg3SpzWxWlqUwnB1CJNcVcwEPm2q9R14hHHhii4EJ21T3PxFt4k7HFFrybC7Fsactc9nTd1PfsRQ==}
-    peerDependencies:
-      ethers: ^6.14.4
-      thirdweb: ^5.105.25
-      viem: ^2.31.6
-    peerDependenciesMeta:
       ethers:
         optional: true
       thirdweb:
@@ -430,14 +435,16 @@ packages:
   '@aave/core@0.1.0':
     resolution: {integrity: sha512-c+QsD/XO7y1pr6hGqufWAbAVI5w2E4s8IzEI545HbWa+Qqe4EhfRZ67P+yXBayfjUROU33AgIuI0Fq+7qMdHMA==}
 
-  '@aave/core@0.1.1':
-    resolution: {integrity: sha512-deodQFHklDHopXA489zAjXbVf1eNXds7YLllIFR2MJZ2070xV0xGQULaXPQ3Sy9yVD0AjQgAprxNZR61aEeq7A==}
+  '@aave/core@file:vendor/aave-sdk/aave-core-0.1.1.tgz':
+    resolution: {integrity: sha512-MVXq5yFB3o4BDz6f7bLJmCRMHccu+wHh1N07H65R0DTx0uiJudNzYQzp+R+POawf7UV7fFuhmwq0bpWWV6wJ1Q==, tarball: file:vendor/aave-sdk/aave-core-0.1.1.tgz}
+    version: 0.1.1
 
   '@aave/graphql@0.11.1':
     resolution: {integrity: sha512-kMldPrDNPSYCfBKBKzweQxjv2jKDmiYS0AiEjGqV6kxPVz/R+S9ckiBby2r7gNshORwlbqg6YfAJOKkYnsxSmw==}
 
-  '@aave/graphql@0.13.0':
-    resolution: {integrity: sha512-4ALYysI3qdVtzSbaBjbp8Ja9S+hSHtgCXBxP37yMwWDO0qYTN8GMDpHjBEFiOijpJxM9hUnbWxwp/hjculeVKA==}
+  '@aave/graphql@file:vendor/aave-sdk/aave-graphql-0.13.0.tgz':
+    resolution: {integrity: sha512-PCtiB1h9tcK2FWgeCJqKhyfeMQ2gEMYOe3vMR0l3H+bOZfG6w/ak2hqUezqMEbulR5FPRYGkNDMqjs49vdwFcg==, tarball: file:vendor/aave-sdk/aave-graphql-0.13.0.tgz}
+    version: 0.13.0
 
   '@aave/math-utils@1.38.0':
     resolution: {integrity: sha512-Zeq2Dpflb5zst3OZKHA7UMVI4wcfpxbxA8tXZyVTmw313Q7oF1oOctrEF3JnfyjcyusmU91qdJRrCAXQrQtyXA==}
@@ -445,8 +452,9 @@ packages:
       bignumber.js: ^9.3.1
       tslib: ^2.4.x
 
-  '@aave/react@0.10.0':
-    resolution: {integrity: sha512-wLC0okVuC6ssnZz9xiOScCZIEEPbIEutBy7D0qa2IgkdWnDCQu/bFidwEukcVLsbHVCD9TWRALVIgqqreQihtg==}
+  '@aave/react@file:vendor/aave-sdk/aave-react-0.10.0.tgz':
+    resolution: {integrity: sha512-xiWLEQD4vMDPbdW+s9blcRi3fX88fKG6F8wlPfmAjYo+Ix1Qu590cqRc3L3BZXCE+2ArzztuhKlRk6tuBau3wA==, tarball: file:vendor/aave-sdk/aave-react-0.10.0.tgz}
+    version: 0.10.0
     peerDependencies:
       '@privy-io/react-auth': ^2.20.0
       '@types/react': ^18.3.30
@@ -467,8 +475,9 @@ packages:
   '@aave/types@0.2.0':
     resolution: {integrity: sha512-T2iYj1bA5xYhtewptcmcwypsvRIkNW31oJQZD2MpZLzclUTY28v9i/sVZXcrMIgqaxQfdjzNGAFEwhbSS8pMtw==}
 
-  '@aave/types@0.3.0':
-    resolution: {integrity: sha512-KwPYuf1T+CRurLS5hwG2BZuk9t1IISPxHzYI02VycE8bINizDJKYZKGApEVLYuJc5Y3CWMM5caxXqLLy0FS6LQ==}
+  '@aave/types@file:vendor/aave-sdk/aave-types-0.3.0.tgz':
+    resolution: {integrity: sha512-Z1xfBlBjuK5iR8rqe+knC42qYHlxtzaJJwLtdAQAgRuP2fJx8XEFgkRKjN7usNWPjk/CY79Jq9gvWC+c9t/9nA==, tarball: file:vendor/aave-sdk/aave-types-0.3.0.tgz}
+    version: 0.3.0
 
   '@adobe/css-tools@4.5.0':
     resolution: {integrity: sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q==}
@@ -5047,6 +5056,7 @@ packages:
 
   axios-retry@4.5.0:
     resolution: {integrity: sha512-aR99oXhpEDGo0UuAlYcn2iGRds30k366Zfa05XWScR9QaQD4JYiP3/1Qt1u7YlefUOK+cn0CcwoL1oefavQUlQ==}
+    deprecated: axios-retry is no longer maintained. See https://github.com/softonic/axios-retry for alternatives.
     peerDependencies:
       axios: ^1.18.0
 
@@ -10287,23 +10297,6 @@ snapshots:
       viem: 2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)
       wagmi: 2.19.5(@tanstack/query-core@5.101.2)(@tanstack/react-query@5.101.2(react@18.3.1))(@types/react@18.3.31)(bufferutil@4.1.0)(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react@18.3.1)(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))(zod@3.25.76)
 
-  '@aave/client@0.12.0(@privy-io/server-auth@1.32.5(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(thirdweb@5.120.1(@hey-api/openapi-ts@0.99.0(typescript@5.9.3))(@solana/sysvars@5.5.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.101.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@6.0.6)(ws@8.18.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)))(typescript@5.9.3)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))':
-    dependencies:
-      '@aave/core': 0.1.1
-      '@aave/graphql': 0.13.0(typescript@5.9.3)
-      '@aave/types': 0.3.0
-      '@urql/core': 5.2.0(graphql@16.14.2)
-      graphql: 16.14.2
-    optionalDependencies:
-      '@privy-io/server-auth': 1.32.5(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
-      ethers: 5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
-      thirdweb: 5.120.1(@hey-api/openapi-ts@0.99.0(typescript@5.9.3))(@solana/sysvars@5.5.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.101.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@6.0.6)(ws@8.18.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))
-      viem: 2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)
-    transitivePeerDependencies:
-      - '@gql.tada/svelte-support'
-      - '@gql.tada/vue-support'
-      - typescript
-
   '@aave/client@0.9.3(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(thirdweb@5.120.1(@hey-api/openapi-ts@0.99.0(typescript@5.9.3))(@solana/sysvars@5.5.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.101.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@6.0.6)(ws@8.18.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)))(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))':
     dependencies:
       '@aave/core': 0.1.0
@@ -10324,6 +10317,23 @@ snapshots:
       - typescript
       - utf-8-validate
 
+  '@aave/client@file:vendor/aave-sdk/aave-client-0.12.0.tgz(@privy-io/server-auth@1.32.5(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(thirdweb@5.120.1(@hey-api/openapi-ts@0.99.0(typescript@5.9.3))(@solana/sysvars@5.5.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.101.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@6.0.6)(ws@8.18.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)))(typescript@5.9.3)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))':
+    dependencies:
+      '@aave/core': file:vendor/aave-sdk/aave-core-0.1.1.tgz
+      '@aave/graphql': file:vendor/aave-sdk/aave-graphql-0.13.0.tgz(typescript@5.9.3)
+      '@aave/types': file:vendor/aave-sdk/aave-types-0.3.0.tgz
+      '@urql/core': 5.2.0(graphql@16.14.2)
+      graphql: 16.14.2
+    optionalDependencies:
+      '@privy-io/server-auth': 1.32.5(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
+      ethers: 5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
+      thirdweb: 5.120.1(@hey-api/openapi-ts@0.99.0(typescript@5.9.3))(@solana/sysvars@5.5.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.101.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@6.0.6)(ws@8.18.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))
+      viem: 2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)
+    transitivePeerDependencies:
+      - '@gql.tada/svelte-support'
+      - '@gql.tada/vue-support'
+      - typescript
+
   '@aave/contract-helpers@1.38.0(bignumber.js@9.3.1)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(reflect-metadata@0.1.14)(tslib@2.8.1)':
     dependencies:
       bignumber.js: 9.3.1
@@ -10340,9 +10350,9 @@ snapshots:
       '@urql/core': 5.2.0(graphql@16.14.2)
       graphql: 16.14.2
 
-  '@aave/core@0.1.1':
+  '@aave/core@file:vendor/aave-sdk/aave-core-0.1.1.tgz':
     dependencies:
-      '@aave/types': 0.3.0
+      '@aave/types': file:vendor/aave-sdk/aave-types-0.3.0.tgz
       '@urql/core': 5.2.0(graphql@16.14.2)
       graphql: 16.14.2
 
@@ -10357,9 +10367,9 @@ snapshots:
       - '@gql.tada/vue-support'
       - typescript
 
-  '@aave/graphql@0.13.0(typescript@5.9.3)':
+  '@aave/graphql@file:vendor/aave-sdk/aave-graphql-0.13.0.tgz(typescript@5.9.3)':
     dependencies:
-      '@aave/types': 0.3.0
+      '@aave/types': file:vendor/aave-sdk/aave-types-0.3.0.tgz
       gql.tada: 1.11.2(graphql@16.14.2)(typescript@5.9.3)
       graphql: 16.14.2
       type-fest: 4.41.0
@@ -10373,11 +10383,11 @@ snapshots:
       bignumber.js: 9.3.1
       tslib: 2.8.1
 
-  '@aave/react@0.10.0(57bad105c19865684bed9e74d28d38fb)':
+  '@aave/react@file:vendor/aave-sdk/aave-react-0.10.0.tgz(57bad105c19865684bed9e74d28d38fb)':
     dependencies:
-      '@aave/client': 0.12.0(@privy-io/server-auth@1.32.5(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(thirdweb@5.120.1(@hey-api/openapi-ts@0.99.0(typescript@5.9.3))(@solana/sysvars@5.5.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.101.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@6.0.6)(ws@8.18.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)))(typescript@5.9.3)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
-      '@aave/graphql': 0.13.0(typescript@5.9.3)
-      '@aave/types': 0.3.0
+      '@aave/client': file:vendor/aave-sdk/aave-client-0.12.0.tgz(@privy-io/server-auth@1.32.5(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(typescript@5.9.3)(utf-8-validate@6.0.6)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76)))(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(thirdweb@5.120.1(@hey-api/openapi-ts@0.99.0(typescript@5.9.3))(@solana/sysvars@5.5.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.101.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@6.0.6)(ws@8.18.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)))(typescript@5.9.3)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@3.25.76))
+      '@aave/graphql': file:vendor/aave-sdk/aave-graphql-0.13.0.tgz(typescript@5.9.3)
+      '@aave/types': file:vendor/aave-sdk/aave-types-0.3.0.tgz
       react: 18.3.1
       thirdweb: 5.120.1(@hey-api/openapi-ts@0.99.0(typescript@5.9.3))(@solana/sysvars@5.5.1(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.9.3))(@tanstack/query-core@5.101.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(bufferutil@4.1.0)(ethers@5.8.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(fastestsmallesttextencoderdecoder@1.0.22)(immer@9.0.21)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@18.3.1))(utf-8-validate@6.0.6)(ws@8.18.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))
       urql: 4.2.2(@urql/core@5.2.0(graphql@16.14.2))(react@18.3.1)
@@ -10397,7 +10407,7 @@ snapshots:
       neverthrow: 8.2.0
       type-fest: 4.41.0
 
-  '@aave/types@0.3.0':
+  '@aave/types@file:vendor/aave-sdk/aave-types-0.3.0.tgz':
     dependencies:
       neverthrow: 8.2.0
       type-fest: 4.41.0
@@ -11482,7 +11492,7 @@ snapshots:
       '@types/node': 20.5.1
       chalk: 4.1.2
       cosmiconfig: 8.3.6(typescript@5.9.3)
-      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@26.1.1)(typescript@5.9.3))(typescript@5.9.3)
+      cosmiconfig-typescript-loader: 4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.9.3))(typescript@5.9.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -17635,7 +17645,7 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@26.1.1)(typescript@5.9.3))(typescript@5.9.3):
+  cosmiconfig-typescript-loader@4.4.0(@types/node@20.5.1)(cosmiconfig@8.3.6(typescript@5.9.3))(ts-node@10.9.2(@types/node@20.5.1)(typescript@5.9.3))(typescript@5.9.3):
     dependencies:
       '@types/node': 20.5.1
       cosmiconfig: 8.3.6(typescript@5.9.3)
