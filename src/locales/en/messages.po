@@ -606,6 +606,7 @@ msgid "Collateral received"
 msgstr "Collateral received"
 
 #: src/modules/reserve-overview/ReserveConfigSection/index.tsx
+#: src/modules/v4Migration/utils/copy.tsx
 #: src/ui-config/menu-items/index.tsx
 msgid "Markets"
 msgstr "Markets"
@@ -3560,6 +3561,7 @@ msgstr "FAQS"
 msgid "Voted NAY"
 msgstr "Voted NAY"
 
+#: src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
 #: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
 msgid "Smart contract wallets can't migrate yet. Connect a wallet that signs with its own key."
 msgstr "Smart contract wallets can't migrate yet. Connect a wallet that signs with its own key."

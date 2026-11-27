@@ -8,6 +8,7 @@ import { DescriptionItem } from 'src/components/DynamicCard/DescriptionItem';
 import { EmptyStatePaper } from 'src/components/EmptyStatePaper';
 import { InputRange } from 'src/components/InputRange';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+import { SelectTargetModal } from 'src/components/SelectTargetModal';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ValueChange } from 'src/modules/v4Migration/V4MigrationPage/components/ValueChange';
 
@@ -17,7 +18,9 @@ import {
   MigrationPreview,
   useMigrationBorrowPreview,
 } from '../../../hooks/useMigrationApi';
+import { useSignsWithOwnKey } from '../../../hooks/useSignsWithOwnKey';
 import {
+  MARKET_PICKER,
   marketTitle,
   MIGRATE_AMOUNT,
   MIGRATE_FLOW,
@@ -36,7 +39,11 @@ import {
   usd,
 } from '../../../utils/previewCells';
 import { getMigrationMarketTitle } from '../../../V4MigrationPage/utils/markets';
-import { getAssetIconSymbol } from '../../../V4MigrationPage/utils/positions';
+import {
+  getAssetIconSymbol,
+  getHubDisplayName,
+  getMarketDisplayName,
+} from '../../../V4MigrationPage/utils/positions';
 import { V4MigrationPreview, V4MigrationPreviewRow } from '../../../V4MigrationPreview';
 import { PositionName } from '../../../V4MigrationPreview/components/PositionName';
 import { BorrowMarket } from '../../utils/markets';
@@ -121,15 +128,21 @@ const previewRows = ({
   market,
   preview,
   loading,
+  onChangeMarket,
 }: {
   opportunity: MigrationOpportunity;
   market: BorrowMarket;
   preview?: MigrationPreview;
   loading: boolean;
+  onChangeMarket?: () => void;
 }): V4MigrationPreviewRow[] => {
   const source = preview?.source;
   const target = preview?.target;
-  const hub = target?.hubs[0];
+  // The hubs the position's assets sit in, known before any preview from the V4 API; the
+  // preview's own are the fallback if that call failed.
+  const hubs = (market.hubs.length ? market.hubs : target?.hubs ?? [])
+    .map((hub) => getHubDisplayName(hub.name))
+    .join(', ');
   const curators = (target?.hubs ?? [])
     .map((targetHub) => targetHub.externalCurator)
     .filter((curator): curator is NonNullable<typeof curator> => !!curator)
@@ -147,9 +160,7 @@ const previewRows = ({
       id: 'market',
       ...PREVIEW_ROWS.market,
       v3: marketTitle(`V3 ${getMigrationMarketTitle(opportunity.market)}`),
-      // The hub comes with the preview; the opportunities list only names the market.
-      // TODO: pass `onClick` to let the market be changed from here (SelectTargetModal).
-      v4: <PositionName hubName={hub?.name ?? ''} marketName={market.name} />,
+      v4: <PositionName hubName={hubs} marketName={market.name} onClick={onChangeMarket} />,
     },
     {
       id: 'curator',
@@ -244,22 +255,26 @@ const previewRows = ({
 interface PreviewProps {
   opportunity: MigrationOpportunity;
   market: BorrowMarket;
+  /** Opens the list of markets. Missing when there is no other market to move to. */
+  onChangeMarket?: () => void;
 }
 
 const Preview = ({
   opportunity,
   market,
+  onChangeMarket,
   preview,
   loading = false,
 }: PreviewProps & { preview?: MigrationPreview; loading?: boolean }) => (
   <V4MigrationPreview
     title={PREVIEW_TITLES.borrow}
-    rows={previewRows({ opportunity, market, preview, loading })}
+    rows={previewRows({ opportunity, market, preview, loading, onChangeMarket })}
   />
 );
 
-/** A preview the API answered `PREVIEWED` for, and the share of the position it was asked for. */
+/** A preview the API answered `PREVIEWED` for, and the market and share it was asked for. */
 interface ConfirmedPreview {
+  marketId: string;
   percentage: number;
   preview: MigrationPreview;
 }
@@ -268,6 +283,7 @@ interface ConfirmedPreview {
 const LivePreview = ({
   opportunity,
   market,
+  onChangeMarket,
   user,
   percentage,
   onPreviewed,
@@ -289,8 +305,10 @@ const LivePreview = ({
 
   // The hook returns no data while it loads, so data here is always for the current request.
   useEffect(() => {
-    if (data?.target.status === 'PREVIEWED') onPreviewed({ percentage, preview: data });
-  }, [data, percentage, onPreviewed]);
+    if (data?.target.status === 'PREVIEWED') {
+      onPreviewed({ marketId: market.id, percentage, preview: data });
+    }
+  }, [data, market.id, percentage, onPreviewed]);
 
   if (error) {
     return (
@@ -315,13 +333,24 @@ const LivePreview = ({
     );
   }
 
-  return <Preview opportunity={opportunity} market={market} preview={data} loading={loading} />;
+  return (
+    <Preview
+      opportunity={opportunity}
+      market={market}
+      onChangeMarket={onChangeMarket}
+      preview={data}
+      loading={loading}
+    />
+  );
 };
 
 interface ReviewBorrowMigrationProps {
   user: string;
   opportunity: MigrationOpportunity;
   market: BorrowMarket;
+  /** Every market that lists the position's assets, the picked one included. */
+  markets: BorrowMarket[];
+  onChangeMarket: (market: BorrowMarket) => void;
 }
 
 /** Second step of the borrow flow: how much of the position to move, and what that changes. */
@@ -329,6 +358,8 @@ export const ReviewBorrowMigration = ({
   user,
   opportunity,
   market,
+  markets,
+  onChangeMarket,
 }: ReviewBorrowMigrationProps) => {
   const [percent, setPercent] = useState(100);
   // The slider reports every pixel of a drag; the preview only follows where it comes to rest.
@@ -338,9 +369,13 @@ export const ReviewBorrowMigration = ({
   const { run, migrate, reset } = useMigration();
   // Migrate stays off until the preview confirms exactly the share that is about to be sent.
   const [confirmed, setConfirmed] = useState<ConfirmedPreview>();
-  const canMigrate = percent > 0 && confirmed?.percentage === percent;
+  const canMigrate =
+    percent > 0 && confirmed?.marketId === market.id && confirmed.percentage === percent;
   const signing = run.status === 'signing';
   const chainId = opportunity.market.chain.chainId;
+  // Permits authorise the move, and a contract wallet cannot sign them.
+  const contractWallet = useSignsWithOwnKey(user, chainId).data === false;
+  const [marketPickerOpen, setMarketPickerOpen] = useState(false);
 
   if (run.status !== 'idle' && run.status !== 'signing' && confirmed) {
     return (
@@ -358,8 +393,39 @@ export const ReviewBorrowMigration = ({
     );
   }
 
+  const marketOptions = markets.map((item) => ({
+    id: item.id,
+    kind: 'market' as const,
+    name: marketTitle(getMarketDisplayName(item.name)),
+    apy: item.apy,
+    disabled: item.unavailable,
+    market: item,
+  }));
+  const openMarketPicker =
+    markets.length > 1 && !signing ? () => setMarketPickerOpen(true) : undefined;
+
   return (
     <Box sx={STACK_SX}>
+      <SelectTargetModal
+        open={marketPickerOpen}
+        setOpen={setMarketPickerOpen}
+        title={MARKET_PICKER.title}
+        groups={[
+          {
+            label: MARKET_PICKER.markets,
+            options: marketOptions.filter((option) => !option.disabled),
+          },
+          {
+            label: MARKET_PICKER.unavailableMarkets,
+            tooltip: MARKET_PICKER.unavailableMarketsTooltip,
+            options: marketOptions.filter((option) => option.disabled),
+          },
+        ]}
+        onSelect={(option) => {
+          setMarketPickerOpen(false);
+          if (option.id !== market.id) onChangeMarket(option.market);
+        }}
+      />
       <DynamicCard>
         <DynamicCard.Inner>
           <InputRange
@@ -405,12 +471,13 @@ export const ReviewBorrowMigration = ({
         <LivePreview
           opportunity={opportunity}
           market={market}
+          onChangeMarket={openMarketPicker}
           user={user}
           percentage={previewPercent}
           onPreviewed={setConfirmed}
         />
       ) : (
-        <Preview opportunity={opportunity} market={market} />
+        <Preview opportunity={opportunity} market={market} onChangeMarket={openMarketPicker} />
       )}
 
       <DynamicCard>
@@ -436,7 +503,7 @@ export const ReviewBorrowMigration = ({
         <Button
           variant="contained"
           size="large"
-          disabled={!canMigrate || readOnlyMode || signing}
+          disabled={!canMigrate || readOnlyMode || contractWallet || signing}
           onClick={() =>
             migrate({
               user,
@@ -460,6 +527,14 @@ export const ReviewBorrowMigration = ({
           ) : (
             <Trans>The migration couldn&apos;t be started. Please try again.</Trans>
           )}
+        </Typography>
+      )}
+      {contractWallet && (
+        <Typography variant="base" color="fg-3" sx={{ textAlign: 'center' }}>
+          <Trans>
+            Smart contract wallets can&apos;t migrate yet. Connect a wallet that signs with its own
+            key.
+          </Trans>
         </Typography>
       )}
       {readOnlyMode && (

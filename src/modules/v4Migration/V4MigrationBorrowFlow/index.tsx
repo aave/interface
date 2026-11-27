@@ -135,8 +135,17 @@ const BorrowFlowSteps = ({
     ? markets?.find((item) => item.id.toLowerCase() === marketId.toLowerCase() && !item.unavailable)
     : undefined;
 
-  if (opportunity && market) {
-    return <ReviewBorrowMigration user={user} opportunity={opportunity} market={market} />;
+  if (opportunity && market && markets) {
+    return (
+      <ReviewBorrowMigration
+        user={user}
+        opportunity={opportunity}
+        market={market}
+        markets={markets}
+        // Replaced, so that going back still leads to the list of markets.
+        onChangeMarket={(picked) => router.replace(ROUTES.migrationBorrowV4(positionId, picked.id))}
+      />
+    );
   }
 
   return (
