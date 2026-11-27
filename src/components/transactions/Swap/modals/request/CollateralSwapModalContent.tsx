@@ -133,7 +133,7 @@ const getDefaultOutputToken = (
   return undefined;
 };
 
-const getTokensFrom = (
+export const getTokensFrom = (
   user: ExtendedFormattedUser | undefined,
   baseTokensInfo: TokenInfo[],
   chainId: number

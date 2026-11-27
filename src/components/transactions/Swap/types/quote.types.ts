@@ -1,4 +1,4 @@
-import { SwapQuote } from '@aave/react';
+import { OrderQuote, SwapQuote } from '@aave/react';
 import { OptimalRate } from '@paraswap/core';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -73,15 +73,28 @@ export type ParaswapRatesType = BaseSwitchRates & {
   suggestedSlippage?: number;
 };
 
+/** Multiplier range a leverage quote returns, and the multiplier it was priced at. */
+export type LeverageQuoteRange = {
+  minMultiplier: number;
+  maxSafeMultiplier: number;
+  // Undefined when the backend picked a safe multiplier itself.
+  multiplier?: number;
+};
+
 /** Swap quoted by the Aave backend, which places the CoW order. */
 export type BackendRatesType = BaseSwitchRates & {
   provider: SwapProvider.COW_PROTOCOL;
 
   suggestedSlippage: number;
-  backendQuote: SwapQuote;
+  // Leverage is quoted as an order, every other flow as a swap.
+  backendQuote: SwapQuote | OrderQuote;
   // Pool address the quote was made on, needed to execute it.
   market: string;
+  leverage?: LeverageQuoteRange;
 };
+
+export const isSwapQuote = (quote: SwapQuote | OrderQuote): quote is SwapQuote =>
+  quote.__typename === 'SwapQuote';
 
 export const isParaswapRates = (rates?: SwapQuoteType): rates is ParaswapRatesType => {
   return rates?.provider === SwapProvider.PARASWAP;

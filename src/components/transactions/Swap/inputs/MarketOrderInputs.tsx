@@ -3,7 +3,7 @@ import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
 import { Dispatch } from 'react';
 
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
-import { isParaswapRates, SwapParams, SwapProvider, SwapState } from '../types';
+import { isParaswapRates, SwapParams, SwapProvider, SwapState, SwapType } from '../types';
 import { SwitchAssetInput } from './primitives/SwapAssetInput';
 import { NetworkSelector } from './shared/NetworkSelector';
 import { QuoteProgressRing } from './shared/QuoteProgressRing';
@@ -28,6 +28,7 @@ export const MarketOrderInputs = ({
   setState: Dispatch<Partial<SwapState>>;
   customProps?: SwapInputsCustomProps;
 }) => {
+  const isLeverage = params.swapType === SwapType.Leverage;
   return (
     <>
       <Box
@@ -105,6 +106,9 @@ export const MarketOrderInputs = ({
           allowCustomTokens={params.allowCustomTokens}
           swapType={params.swapType}
           side="input"
+          // A leverage is sized by its multiplier, both amounts come from the quote.
+          disableInput={isLeverage}
+          loading={isLeverage && state.ratesLoading && !state.error}
         />
 
         {params.showSwitchInputAndOutputAssetsButton ? (
@@ -176,8 +180,8 @@ export const MarketOrderInputs = ({
           value={state.outputAmount}
           usdValue={state.outputAmountUSD || '0'}
           loading={
-            state.debouncedInputAmount !== '0' &&
-            state.debouncedInputAmount !== '' &&
+            (isLeverage ||
+              (state.debouncedInputAmount !== '0' && state.debouncedInputAmount !== '')) &&
             state.ratesLoading &&
             !state.error
           }

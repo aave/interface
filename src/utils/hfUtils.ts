@@ -240,6 +240,58 @@ export function calculateHFAfterSwap({
   return { hfEffectOfFromAmount, hfAfterSwap };
 }
 
+/**
+ * Health factor after a leverage, which supplies the bought collateral and draws the sold debt:
+ * no `calculateHFAfterSwap` asset type pair raises both sides.
+ */
+export function calculateHFAfterLeverage({
+  collateralAmount,
+  collateralAssetData,
+  collateralUserData,
+  debtAmount,
+  debtAssetData,
+  user,
+}: {
+  collateralAmount: BigNumberValue;
+  collateralAssetData: ComputedReserveData;
+  collateralUserData: Pick<ComputedUserReserve, 'usageAsCollateralEnabledOnUser'>;
+  debtAmount: BigNumberValue;
+  debtAssetData: ComputedReserveData;
+  user: ExtendedFormattedUser;
+}) {
+  // The bought collateral joins an existing supply, which keeps the user's collateral flag.
+  const addCollateralMR = collateralUserData.usageAsCollateralEnabledOnUser
+    ? valueToBigNumber(collateralAmount).multipliedBy(
+        collateralAssetData.formattedPriceInMarketReferenceCurrency
+      )
+    : valueToBigNumber('0');
+  const addDebtMR = valueToBigNumber(debtAmount).multipliedBy(
+    debtAssetData.formattedPriceInMarketReferenceCurrency
+  );
+  const newCollateral = valueToBigNumber(user.totalCollateralMarketReferenceCurrency).plus(
+    addCollateralMR
+  );
+  if (newCollateral.lte(0)) return valueToBigNumber('-1');
+
+  const ltAfter = valueToBigNumber(user.totalCollateralMarketReferenceCurrency)
+    .multipliedBy(user.currentLiquidationThreshold)
+    .plus(
+      addCollateralMR.multipliedBy(
+        getReserveLiquidationThresholdInEmode(collateralAssetData, user.userEmodeCategoryId)
+      )
+    )
+    .div(newCollateral)
+    .toFixed(4);
+
+  return calculateHealthFactorFromBalancesBigUnits({
+    collateralBalanceMarketReferenceCurrency: newCollateral,
+    borrowBalanceMarketReferenceCurrency: valueToBigNumber(
+      user.totalBorrowsMarketReferenceCurrency
+    ).plus(addDebtMR),
+    currentLiquidationThreshold: ltAfter,
+  });
+}
+
 export const calculateHFAfterRepay = ({
   user,
   amountToReceiveAfterSwap,

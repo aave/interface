@@ -6,6 +6,8 @@ import { ActionsBlockedReason, SwapError, SwapState, SwapType } from '../../type
 import { BalanceLowerThanInput } from './BalanceLowerThanInput';
 
 export const hasInsufficientBalance = (state: SwapState) => {
+  // A leverage pays with a flash loan of the debt it draws; the backend sizes it to the position.
+  if (state.swapType === SwapType.Leverage) return false;
   // Determine which token pays and which amount to compare.
   // - Default: sell side pays.
   // - Inverted flows (e.g., RepayWithCollateral) use destination token.

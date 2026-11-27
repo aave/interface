@@ -22,6 +22,8 @@ const marketOrderKindPerSwapType: Record<SwapType, OrderKind> = {
   [SwapType.DebtSwap]: OrderKind.BUY,
   [SwapType.RepayWithCollateral]: OrderKind.BUY,
   [SwapType.WithdrawAndSwap]: OrderKind.SELL,
+  // Backend leverage quotes override these amounts with their final legs.
+  [SwapType.Leverage]: OrderKind.BUY,
 };
 
 const isPositionSwap = (swapType: SwapType, usingFlashloan: boolean) => {

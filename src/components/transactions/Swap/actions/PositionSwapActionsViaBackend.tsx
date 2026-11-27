@@ -2,11 +2,13 @@ import { sendTransactionAndWait } from '@aave/client/viem';
 import {
   BorrowSwapKind,
   dateTime,
+  OrderPlan,
   PositionSwapOrderPlan,
   RepayWithSupplyKind,
   SupplySwapKind,
   UnexpectedError,
   useBorrowSwapOrder,
+  useLeverage,
   useRepayWithSupplyOrder,
   useSupplySwapOrder,
   useWithdrawSwapOrder,
@@ -30,6 +32,7 @@ import {
   ExpiryToSecondsMap,
   isBackendRates,
   isShieldBlocked,
+  isSwapQuote,
   OrderType,
   ProtocolSwapParams,
   ProtocolSwapState,
@@ -52,6 +55,7 @@ const ADAPTER_SWAP_TYPES = [
   SwapType.CollateralSwap,
   SwapType.DebtSwap,
   SwapType.RepayWithCollateral,
+  SwapType.Leverage,
 ];
 
 const actionTexts = (state: SwapState) => {
@@ -78,6 +82,11 @@ const actionTexts = (state: SwapState) => {
             Repaying {state.sourceToken.symbol} with {state.destinationToken.symbol}
           </Trans>
         ),
+      };
+    case SwapType.Leverage:
+      return {
+        action: <Trans>Leverage {state.sourceToken.symbol}</Trans>,
+        inProgress: <Trans>Leveraging {state.sourceToken.symbol}</Trans>,
       };
     default:
       return { action: <Trans>Swap</Trans>, inProgress: <Trans>Swapping</Trans> };
@@ -131,10 +140,29 @@ export const PositionSwapActionsViaBackend = ({
   const [placeWithdrawSwap] = useWithdrawSwapOrder(handler);
   const [placeBorrowSwap] = useBorrowSwapOrder(handler);
   const [placeRepayWithSupply] = useRepayWithSupplyOrder(handler);
+  const [placeLeverage] = useLeverage((plan: OrderPlan) => {
+    if (!walletClient) return errAsync(UnexpectedError.from('Wallet is not connected'));
+    switch (plan.__typename) {
+      case 'OrderErc20Approval':
+        return approveWith(walletClient, plan, permitInUse);
+      case 'OrderAdapterApproval':
+        return signTypedDataWith(walletClient, plan.bySignature);
+      case 'OrderAdapterTransactionApproval':
+        return sendTransactionAndWait(walletClient, plan.byTransaction);
+      case 'OrderTypedData':
+        return signTypedDataWith(walletClient, plan);
+      case 'OrderTransactionRequest':
+        return sendTransactionAndWait(walletClient, plan.transaction);
+    }
+  });
 
   const placeOrder = (rates: BackendRatesType) => {
+    const quote = rates.backendQuote;
+    // Market only: the shown quote is the order, the hook re-quotes from its id.
+    if (!isSwapQuote(quote)) return placeLeverage({ fromQuote: { quoteId: quote.quoteId } });
+
     const legs = positionSwapLegs(state, rates.market);
-    const fromQuote = { quoteId: rates.backendQuote.quoteId };
+    const fromQuote = { quoteId: quote.quoteId };
     const limit = state.orderType === OrderType.LIMIT;
     const fixesDestination = state.side === 'buy';
     const sourceAmount = toLimitAmount(state.sourceToken, state.inputAmount);
@@ -261,6 +289,19 @@ export const PositionSwapActionsViaBackend = ({
   };
 
   const texts = actionTexts(state);
+  // A leverage quote sized without the user's multiplier is the backend's proposal, never the order.
+  const awaitingMultiplier =
+    state.swapType === SwapType.Leverage &&
+    (state.leverageMultiplier === undefined ||
+      !isBackendRates(state.swapRate) ||
+      state.swapRate.leverage?.multiplier !== state.leverageMultiplier);
+  const blocked = areActionsBlocked(state) || awaitingMultiplier;
+  const blockedText =
+    awaitingMultiplier && state.leverageMultiplier === undefined ? (
+      <Trans>Choose a multiplier</Trans>
+    ) : isShieldBlocked(state) ? (
+      <Trans>Blocked by Shield</Trans>
+    ) : undefined;
   return (
     <TxActionsWrapper
       mainTxState={mainTxState}
@@ -275,13 +316,13 @@ export const PositionSwapActionsViaBackend = ({
       actionInProgressText={texts.inProgress}
       errorParams={{
         loading: false,
-        disabled: areActionsBlocked(state),
+        disabled: blocked,
         content: texts.action,
         handleClick: action,
       }}
       fetchingData={state.actionsLoading}
-      blocked={areActionsBlocked(state)}
-      blockedText={isShieldBlocked(state) ? <Trans>Blocked by Shield</Trans> : undefined}
+      blocked={blocked}
+      blockedText={blockedText}
     />
   );
 };

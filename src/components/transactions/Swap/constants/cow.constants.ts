@@ -128,4 +128,5 @@ export const COW_PROTOCOL_GAS_LIMITS: Record<SwapType, number> = {
   [SwapType.DebtSwap]: 0,
   [SwapType.RepayWithCollateral]: 0,
   [SwapType.WithdrawAndSwap]: 0,
+  [SwapType.Leverage]: 0,
 };

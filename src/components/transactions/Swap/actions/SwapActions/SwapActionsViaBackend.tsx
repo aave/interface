@@ -5,6 +5,7 @@ import {
   dateTime,
   Erc20Approval,
   evmAddress,
+  OrderErc20Approval,
   OrderHandlerError,
   OrderHandlerResult,
   OrderTypedData,
@@ -37,6 +38,7 @@ import {
   ExpiryToSecondsMap,
   isBackendRates,
   isShieldBlocked,
+  isSwapQuote,
   OrderType,
   SwappableToken,
   SwapParams,
@@ -65,7 +67,7 @@ export const signTypedDataWith = (
 /** Signs the permit unless an open order already holds one on this token, whose nonce it would burn. */
 export const approveWith = (
   walletClient: WalletClient,
-  plan: Erc20Approval,
+  plan: Erc20Approval | OrderErc20Approval,
   permitInUse: boolean
 ): ResultAsync<OrderHandlerResult, OrderHandlerError> =>
   plan.byPermit && !permitInUse
@@ -172,6 +174,8 @@ export const SwapActionsViaBackend = ({
 
   const action = async () => {
     if (!isBackendRates(state.swapRate) || !walletClient) return;
+    const quote = state.swapRate.backendQuote;
+    if (!isSwapQuote(quote)) return;
 
     const isLimit = state.orderType === OrderType.LIMIT;
     if (isLimit && isNativeToken(state.sourceToken.addressToSwap)) {
@@ -208,7 +212,7 @@ export const SwapActionsViaBackend = ({
                 ),
               },
             }
-          : { fromQuote: { market, quoteId: state.swapRate.backendQuote.quoteId } }
+          : { fromQuote: { market, quoteId: quote.quoteId } }
       );
       if (result.isErr()) {
         onError(result.error);
