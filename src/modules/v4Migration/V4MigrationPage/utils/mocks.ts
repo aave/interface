@@ -53,6 +53,7 @@ export const EARN_POSITIONS: EarnMigrationPosition[] = [
   {
     id: 'earn-ethereum-usdc',
     asset: USDC,
+    marketName: 'Main',
     supplied: { amount: '425.5', usd: '425.5' },
     supplyApy: { current: 0.0384, after: 0.0426 },
     projectedEarningsUSD: { current: 100, after: 200 },
@@ -60,6 +61,7 @@ export const EARN_POSITIONS: EarnMigrationPosition[] = [
   {
     id: 'earn-avalanche-avax',
     asset: AVAX,
+    marketName: 'Core',
     supplied: { amount: '8.25', usd: '198' },
     supplyApy: { current: 0.0162, after: 0.0214 },
     projectedEarningsUSD: { current: 3.21, after: 4.24 },
@@ -67,6 +69,7 @@ export const EARN_POSITIONS: EarnMigrationPosition[] = [
   {
     id: 'earn-ethereum-usdt',
     asset: USDT,
+    marketName: 'Core',
     supplied: { amount: '180.75', usd: '180.75' },
     supplyApy: { current: 0.0357, after: 0.0403 },
     projectedEarningsUSD: { current: 6.45, after: 7.28 },

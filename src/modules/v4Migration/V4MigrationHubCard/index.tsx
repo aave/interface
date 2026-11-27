@@ -22,6 +22,8 @@ import {
 } from '../V4MigrationPage/utils/positions';
 import { MigrationAsset } from '../V4MigrationPage/utils/types';
 
+const MAX_BACKING_COLLATERAL = 4;
+
 interface CommonProps {
   hubName: string;
   chainId: ChainId;
@@ -34,20 +36,27 @@ interface CommonProps {
   bestApy?: boolean;
   unavailable?: boolean;
   loading?: boolean;
+  /** The 7-day figures are still on their way; the rest of the card is shown. */
+  historyLoading?: boolean;
   href?: string;
   onClick?: () => void;
 }
 
+/** The hub's own figures are optional: a dash is shown for the ones left out. */
 interface EarnProps extends CommonProps {
   side?: 'earn';
-  totalDepositsUSD: number;
-  backingCollateral: MigrationAsset[];
+  totalDepositsUSD?: number;
+  backingCollateral?: MigrationAsset[];
 }
 
+/** `hubName` may be empty here: the market is the title, and the hub line is then left out. */
 interface BorrowProps extends CommonProps {
   side: 'borrow';
   marketName: string;
-  healthFactor: string;
+  /** The hubs the market draws from, when there can be more than one. Used instead of `hubName`. */
+  hubNames?: string[];
+  /** Leave out when there is none to report: a dash is shown. */
+  healthFactor?: string;
 }
 
 export type V4MigrationHubCardProps = EarnProps | BorrowProps;
@@ -65,12 +74,22 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
     bestApy = false,
     unavailable = false,
     loading,
+    historyLoading,
     href,
     onClick,
   } = props;
   const borrow = props.side === 'borrow';
   const name = getHubDisplayName(hubName);
   const market = borrow ? getMarketDisplayName(props.marketName) : undefined;
+  const hubs = borrow
+    ? (props.hubNames ?? (name ? [name] : [])).map(getHubDisplayName).join(', ')
+    : '';
+  const hubCount = borrow ? props.hubNames?.length ?? 1 : 0;
+  const hubLine = !hubs ? undefined : hubCount > 1 ? (
+    <Trans>{hubs} Hubs</Trans>
+  ) : (
+    <Trans>{hubs} Hub</Trans>
+  );
   const averageLabel = <Trans>7D avg.</Trans>;
   const rate = <FormattedNumber value={apy} percent variant="inherit" />;
 
@@ -89,7 +108,7 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
   return (
     <OpportunityCard
       title={borrow ? <Trans>{market} Market</Trans> : <Trans>{name} Hub</Trans>}
-      subtitle={borrow ? <Trans>{name} Hub</Trans> : undefined}
+      subtitle={hubLine}
       curators={curators}
       leading={
         <ChainBadge chainId={chainId} size={24}>
@@ -132,7 +151,7 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
         </>
       }
       apyAverage={
-        loading ? (
+        loading || historyLoading ? (
           <Skeleton
             variant="rectangular"
             width={88}
@@ -147,6 +166,7 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
         ) : undefined
       }
       history={apyHistory}
+      historyLoading={historyLoading}
       historyBaselineLabel={averageLabel}
       historyFadeLeft
       chartColor={figVars[borrow ? 'data-orange' : 'data-purple']}
@@ -162,12 +182,16 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
           }
           loading={loading}
         >
-          <HealthFactorNumber
-            value={props.healthFactor}
-            variant="inherit"
-            withHeart
-            heartGap="0.375rem"
-          />
+          {props.healthFactor === undefined ? (
+            '—'
+          ) : (
+            <HealthFactorNumber
+              value={props.healthFactor}
+              variant="inherit"
+              withHeart
+              heartGap="0.375rem"
+            />
+          )}
         </StatRow>
       ) : (
         <>
@@ -175,9 +199,10 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
             label={<Trans>Total deposits</Trans>}
             description={<Trans>Total amount deposited for this asset</Trans>}
             loading={loading}
+            empty={props.totalDepositsUSD === undefined}
           >
             <FormattedNumber
-              value={props.totalDepositsUSD}
+              value={props.totalDepositsUSD ?? 0}
               symbol="USD"
               compact
               variant="inherit"
@@ -186,12 +211,20 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
           <StatRow
             label={<Trans>New Backing Collateral</Trans>}
             description={
-              <Trans>Collateral assets that share liquidity and risk within the {name} Hub</Trans>
+              name ? (
+                <Trans>Collateral assets that share liquidity and risk within the {name} Hub</Trans>
+              ) : (
+                <Trans>Collateral assets that share liquidity and risk within the hub</Trans>
+              )
             }
             loading={loading}
-            empty={props.backingCollateral.length === 0}
+            empty={!props.backingCollateral?.length}
           >
-            <AssetGroup symbols={props.backingCollateral.map(getAssetIconSymbol)} size={20} />
+            <AssetGroup
+              symbols={(props.backingCollateral ?? []).map(getAssetIconSymbol)}
+              max={MAX_BACKING_COLLATERAL}
+              size={20}
+            />
           </StatRow>
         </>
       )}

@@ -1,6 +1,6 @@
 import { t, Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { ContentContainer } from 'src/components/ContentContainer';
 import { NoSearchResults } from 'src/components/NoSearchResults';
 import { PageHeader } from 'src/components/PageHeader/PageHeader';
@@ -17,6 +17,11 @@ interface V4MigrationPageProps {
   borrowPositions: BorrowMigrationPosition[];
   onMigrateEarn?: (position: EarnMigrationPosition) => void;
   onMigrateBorrow?: (position: BorrowMigrationPosition) => void;
+  /**
+   * Shown under the header in place of the search and tables: the wallet prompt, and the loading,
+   * error and empty states.
+   */
+  placeholder?: ReactNode;
 }
 
 export const V4MigrationPage = ({
@@ -24,6 +29,7 @@ export const V4MigrationPage = ({
   borrowPositions,
   onMigrateEarn,
   onMigrateBorrow,
+  placeholder,
 }: V4MigrationPageProps) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -46,7 +52,8 @@ export const V4MigrationPage = ({
         description={<Trans>Choose which positions to migrate into Aave V4.</Trans>}
       />
       <ContentContainer>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        {placeholder}
+        <Box sx={{ display: placeholder ? 'none' : 'flex', flexDirection: 'column', gap: '2rem' }}>
           <SearchInput
             placeholder={t`Search asset name, symbol, or address`}
             onSearchTermChange={setSearchTerm}
