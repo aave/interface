@@ -44,7 +44,7 @@ export const swapTypeOf = (operation: OrderOperation): SwapType | undefined => {
     case 'RepayWithSupply':
       return SwapType.RepayWithCollateral;
     case 'Leverage':
-      return undefined;
+      return SwapType.Leverage;
   }
 };
 

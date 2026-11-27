@@ -3,7 +3,14 @@ import { Box, IconButton, SvgIcon, Typography } from '@mui/material';
 import { Dispatch } from 'react';
 
 import { QUOTE_REFETCH_INTERVAL } from '../hooks/useSwapQuote';
-import { isParaswapRates, SwapParams, SwapProvider, SwapState } from '../types';
+import {
+  isLeverageQuoteUnchosen,
+  isParaswapRates,
+  SwapParams,
+  SwapProvider,
+  SwapState,
+  SwapType,
+} from '../types';
 import { SwitchAssetInput } from './primitives/SwapAssetInput';
 import { NetworkSelector } from './shared/NetworkSelector';
 import { QuoteProgressRing } from './shared/QuoteProgressRing';
@@ -28,6 +35,14 @@ export const MarketOrderInputs = ({
   setState: Dispatch<Partial<SwapState>>;
   customProps?: SwapInputsCustomProps;
 }) => {
+  const isLeverage = params.swapType === SwapType.Leverage;
+  // Amounts the backend sized for a multiplier the user never chose stay hidden.
+  const hideAmounts = isLeverageQuoteUnchosen(state);
+  const leverageLoading =
+    isLeverage &&
+    state.leverageMultiplier !== undefined &&
+    (state.ratesLoading || hideAmounts) &&
+    !state.error;
   return (
     <>
       <Box
@@ -79,7 +94,7 @@ export const MarketOrderInputs = ({
           chainId={state.chainId}
           balanceTitle={params.inputBalanceTitle}
           assets={swapState.inputAssets}
-          value={state.inputAmount}
+          value={hideAmounts ? '' : state.inputAmount}
           onChange={swapState.handleInputChange}
           onClear={() =>
             setState({
@@ -98,13 +113,16 @@ export const MarketOrderInputs = ({
               autoSlippage: '',
             })
           }
-          usdValue={state.inputAmountUSD.toString() || '0'}
+          usdValue={hideAmounts ? '0' : state.inputAmountUSD.toString() || '0'}
           onSelect={swapState.handleSelectedInputToken}
           selectedAsset={state.sourceToken}
           forcedMaxValue={state.forcedMaxValue}
           allowCustomTokens={params.allowCustomTokens}
           swapType={params.swapType}
           side="input"
+          // A leverage is sized by its multiplier, both amounts come from the quote.
+          disableInput={isLeverage}
+          loading={leverageLoading}
         />
 
         {params.showSwitchInputAndOutputAssetsButton ? (
@@ -173,13 +191,15 @@ export const MarketOrderInputs = ({
           balanceTitle={params.outputBalanceTitle}
           assets={swapState.outputAssets}
           title={params.outputInputTitle}
-          value={state.outputAmount}
-          usdValue={state.outputAmountUSD || '0'}
+          value={hideAmounts ? '' : state.outputAmount}
+          usdValue={hideAmounts ? '0' : state.outputAmountUSD || '0'}
           loading={
-            state.debouncedInputAmount !== '0' &&
-            state.debouncedInputAmount !== '' &&
-            state.ratesLoading &&
-            !state.error
+            isLeverage
+              ? leverageLoading
+              : state.debouncedInputAmount !== '0' &&
+                state.debouncedInputAmount !== '' &&
+                state.ratesLoading &&
+                !state.error
           }
           onSelect={swapState.handleSelectedOutputToken}
           disableInput={true}
@@ -191,7 +211,7 @@ export const MarketOrderInputs = ({
         />
       </Box>
 
-      {state.swapRate && state.isSwapFlowSelected && (
+      {state.swapRate && state.isSwapFlowSelected && !hideAmounts && (
         <>
           <SwitchRates
             rates={state.swapRate}

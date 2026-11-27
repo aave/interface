@@ -4,7 +4,7 @@ import { TxStateType } from 'src/hooks/useModal';
 import { Expiry } from '../constants/limitOrders.constants';
 import { ValidationData } from '../helpers/shared/slippage.helpers';
 import { SwapParams } from './params.types';
-import { SwapQuoteType } from './quote.types';
+import { isBackendRates, SwapQuoteType } from './quote.types';
 import {
   OrderType,
   SwapError,
@@ -27,6 +27,7 @@ export enum ActionsBlockedReason {
   IS_LIQUIDATABLE = 'IS_LIQUIDATABLE',
   INSUFFICIENT_BORROW_POWER = 'INSUFFICIENT_BORROW_POWER',
   SHIELD_BLOCKED = 'SHIELD_BLOCKED',
+  BUY_TOKEN_NOT_COLLATERAL = 'BUY_TOKEN_NOT_COLLATERAL',
 }
 
 /**
@@ -176,6 +177,14 @@ export type TokensSwapState = {
   /** True if user is connected to the wrong network. */
   isWrongNetwork: boolean;
   showChangeNetworkWarning: boolean;
+
+  // Leverage
+  /** Target multiplier the user picked; undefined until one above the current is chosen. */
+  leverageMultiplier?: number;
+  /** Debounced target multiplier sent with the leverage quote. */
+  debouncedLeverageMultiplier?: number;
+  /** Last multiplier range a leverage quote returned, kept through a failed quote. */
+  leverageRange?: { min: number; max: number };
 };
 
 /**
@@ -193,6 +202,13 @@ export const isShieldBlocked = (state: SwapState): boolean => {
   return state.actionsBlocked[ActionsBlockedReason.SHIELD_BLOCKED] === true;
 };
 
+/** A leverage whose quote is not priced at the user's multiplier: the backend's own pick is never shown or placed. */
+export const isLeverageQuoteUnchosen = (state: SwapState): boolean =>
+  state.swapType === SwapType.Leverage &&
+  (state.leverageMultiplier === undefined ||
+    !isBackendRates(state.swapRate) ||
+    state.swapRate.leverage?.multiplier !== state.leverageMultiplier);
+
 /**
  * State for protocol-aware flows. Includes reserve context for computing
  * HF effects, borrow/collateral semantics, and determining flashloan usage.
@@ -202,7 +218,8 @@ export type ProtocolSwapState = Omit<TokensSwapState, 'swapType'> & {
     | SwapType.DebtSwap
     | SwapType.CollateralSwap
     | SwapType.RepayWithCollateral
-    | SwapType.WithdrawAndSwap;
+    | SwapType.WithdrawAndSwap
+    | SwapType.Leverage;
 
   sourceReserve: FormattedUserReserves;
   destinationReserve: FormattedUserReserves;
@@ -215,7 +232,8 @@ export const isProtocolSwapState = (state: SwapState): state is ProtocolSwapStat
     ('swapType' in state && state.swapType === SwapType.DebtSwap) ||
     state.swapType === SwapType.CollateralSwap ||
     state.swapType === SwapType.RepayWithCollateral ||
-    state.swapType === SwapType.WithdrawAndSwap
+    state.swapType === SwapType.WithdrawAndSwap ||
+    state.swapType === SwapType.Leverage
   );
 };
 

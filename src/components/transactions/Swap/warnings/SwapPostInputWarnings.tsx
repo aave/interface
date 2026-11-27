@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React, { Dispatch } from 'react';
 
-import { SwapParams, SwapState } from '../types';
+import { isLeverageQuoteUnchosen, SwapParams, SwapState } from '../types';
 import {
   CowAdapterApprovalInfo,
   CustomTokenWarning,
@@ -28,7 +28,7 @@ export const SwapPostInputWarnings = ({
   setState: Dispatch<Partial<SwapState>>;
 }) => {
   // If errors, we don't show warnings as those have priority and are action blockers
-  if (state.error) {
+  if (state.error || isLeverageQuoteUnchosen(state)) {
     return null;
   }
 

@@ -158,7 +158,7 @@ const getTokensFrom = (
 };
 
 // Tokens to are all potential borrow assets
-const getTokensTo = (
+export const getTokensTo = (
   user: ExtendedFormattedUser | undefined,
   reserves: ComputedReserveData[],
   chainId: number,

@@ -6,7 +6,11 @@ import {
   ExtendedFormattedUser,
   useAppDataContext,
 } from 'src/hooks/app-data-provider/useAppDataProvider';
-import { calculateHFAfterSwap, CalculateHFAfterSwapProps } from 'src/utils/hfUtils';
+import {
+  calculateHFAfterLeverage,
+  calculateHFAfterSwap,
+  CalculateHFAfterSwapProps,
+} from 'src/utils/hfUtils';
 
 import {
   LIQUIDATION_DANGER_THRESHOLD,
@@ -135,7 +139,8 @@ export const healthFactorSensibleSwapFlowSelector = ({
     state.provider === SwapProvider.COW_PROTOCOL &&
     (state.swapType === SwapType.RepayWithCollateral ||
       state.swapType === SwapType.DebtSwap ||
-      state.swapType === SwapType.CollateralSwap);
+      state.swapType === SwapType.CollateralSwap ||
+      state.swapType === SwapType.Leverage);
   const useFlashloan =
     forceFlashloanFlow ||
     (extendedUser?.healthFactor !== '-1' &&
@@ -147,6 +152,16 @@ export const healthFactorSensibleSwapFlowSelector = ({
   // depends on how it is received (supply vs aToken transfer).
   const hfAfterSwap = (() => {
     try {
+      if (state.swapType === SwapType.Leverage) {
+        return calculateHFAfterLeverage({
+          collateralAmount: state.buyAmountFormatted,
+          collateralAssetData: state.sourceReserve.reserve,
+          collateralUserData: fromAssetUserReserve,
+          debtAmount: state.sellAmountFormatted,
+          debtAssetData: state.destinationReserve.reserve,
+          user: extendedUser,
+        }).toString();
+      }
       if (!hfParams) return undefined;
       return calculateHFAfterSwap({
         ...hfParams,

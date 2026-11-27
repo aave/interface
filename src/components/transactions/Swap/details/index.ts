@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  isLeverageQuoteUnchosen,
   isProtocolSwapParams,
   isProtocolSwapState,
   isTokensSwapParams,
@@ -12,6 +13,7 @@ import {
 import { ColalteralSwapDetails } from './CollateralSwapDetails';
 import { DebtSwapDetails } from './DebtSwapDetails';
 import { DetailsSkeleton } from './DetailsSkeleton';
+import { LeverageDetails } from './LeverageDetails';
 import { RepayWithCollateralDetails } from './RepayWithCollateralDetails';
 import { SwapDetails } from './SwapDetails';
 import { WithdrawAndSwapDetails } from './WithdrawAndSwapDetails';
@@ -21,6 +23,12 @@ import { WithdrawAndSwapDetails } from './WithdrawAndSwapDetails';
  * Renders a skeleton while rates load and hides the section if no quote is present.
  */
 export const BaseSwapDetails = ({ params, state }: { params: SwapParams; state: SwapState }) => {
+  if (isLeverageQuoteUnchosen(state)) {
+    return state.leverageMultiplier !== undefined && !state.error
+      ? React.createElement(DetailsSkeleton, { state })
+      : null;
+  }
+
   if (state.ratesLoading) {
     return React.createElement(DetailsSkeleton, { state });
   }
@@ -39,6 +47,8 @@ export const BaseSwapDetails = ({ params, state }: { params: SwapParams; state: 
         return React.createElement(DebtSwapDetails, { params, state });
       case SwapType.RepayWithCollateral:
         return React.createElement(RepayWithCollateralDetails, { params, state });
+      case SwapType.Leverage:
+        return React.createElement(LeverageDetails, { params, state });
       case SwapType.WithdrawAndSwap:
         return React.createElement(WithdrawAndSwapDetails, { params, state });
       default:
