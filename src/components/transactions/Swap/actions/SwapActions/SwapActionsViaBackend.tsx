@@ -29,6 +29,7 @@ import { TypedData, TypedDataDomain, WalletClient } from 'viem';
 import { useWalletClient } from 'wagmi';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
+import { isBackendValidationError } from '../../errors/shared/ProviderError';
 import { isNativeToken } from '../../helpers/cow';
 import { useSwapGasEstimation } from '../../hooks/useSwapGasEstimation';
 import {
@@ -98,6 +99,18 @@ export const useBackendOrderErrorHandler = (setState: Dispatch<Partial<SwapState
         error: { rawError: error as Error, message: (error as Error).message, actionBlocked: true },
       });
       queryClient.invalidateQueries({ predicate: (query) => query.queryKey.includes('swapQuote') });
+      return;
+    }
+    if (isBackendValidationError(error)) {
+      // A refusal such as amount too small: shown inline, the user can change the inputs and retry.
+      setState({
+        actionsLoading: false,
+        error: {
+          rawError: error as Error,
+          message: (error as Error).message,
+          actionBlocked: false,
+        },
+      });
       return;
     }
     setTxError(getErrorTextFromError(error as Error, TxAction.MAIN_ACTION, false));

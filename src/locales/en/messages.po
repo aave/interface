@@ -1284,6 +1284,10 @@ msgstr "ends"
 msgid "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 msgstr "Borrowing is unavailable because you’ve enabled Efficiency Mode (E-Mode) for {0} category. To manage E-Mode categories visit your <0>Dashboard</0>."
 
+#: src/components/transactions/Swap/errors/shared/ProviderError.tsx
+msgid "Insufficient liquidity for this swap."
+msgstr "Insufficient liquidity for this swap."
+
 #: pages/404.page.tsx
 msgid "Back to App"
 msgstr "Back to App"
@@ -2784,6 +2788,10 @@ msgstr "Available to withdraw"
 msgid "Cooldown"
 msgstr "Cooldown"
 
+#: src/components/transactions/Swap/errors/shared/ProviderError.tsx
+msgid "Insufficient balance for this swap."
+msgstr "Insufficient balance for this swap."
+
 #: src/components/transactions/SGhoVault/SGhoVaultWithdrawModal.tsx
 msgid "Withdraw sGHO"
 msgstr "Withdraw sGHO"
@@ -4074,6 +4082,10 @@ msgstr "E-Mode"
 #: src/layouts/AppFooter.tsx
 msgid "Privacy"
 msgstr "Privacy"
+
+#: src/components/transactions/Swap/errors/shared/ProviderError.tsx
+msgid "This amount is too small to cover swap fees."
+msgstr "This amount is too small to cover swap fees."
 
 #: src/components/WalletConnection/ReadOnlyModal.tsx
 msgid "Watch a wallet balance in read-only mode"
