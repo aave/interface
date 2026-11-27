@@ -4,6 +4,7 @@ import { Trans } from '@lingui/macro';
 import { Button, ListItemText, Menu, MenuItem, SvgIcon } from '@mui/material';
 import { useState } from 'react';
 import { DotsHorizontalIcon } from 'src/components/icons/DotsHorizontalIcon';
+import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swap/constants/cow.constants';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useModalContext } from 'src/hooks/useModal';
@@ -55,8 +56,11 @@ export const SuppliedPositionsListItem = ({
     : false;
 
   const disableSwap = !isActive || isPaused || reserve.symbol == 'stETH';
-  // The backend only leverages a position that already counts as collateral.
-  const showLeverageButton = showSwitchButton && usageAsCollateralEnabledOnUser;
+  // The backend only leverages a position that already counts as collateral, and only through CoW.
+  const showLeverageButton =
+    showSwitchButton &&
+    usageAsCollateralEnabledOnUser &&
+    isChainIdSupportedByCoWProtocol(currentMarketData.chainId);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const extraActionsOpen = Boolean(anchorEl);

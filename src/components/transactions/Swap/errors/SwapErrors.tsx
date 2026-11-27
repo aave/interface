@@ -92,7 +92,11 @@ export const SwapErrors = ({
     );
   }
 
-  if (hasBuyTokenNotUsedAsCollateral(state, collateralEnabledByAddress)) {
+  // Stays mounted while its flag is set, so it clears the block once collateral is enabled.
+  if (
+    hasBuyTokenNotUsedAsCollateral(state, collateralEnabledByAddress) ||
+    state.actionsBlocked?.[ActionsBlockedReason.BUY_TOKEN_NOT_COLLATERAL]
+  ) {
     return (
       <BuyTokenCollateralBlockingGuard
         state={state}

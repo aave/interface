@@ -9,11 +9,11 @@ import {
   SwapState,
   SwapType,
 } from '../../types';
-import { isProtocolSwapState } from '../../types/state.types';
+import { isLeverageQuoteUnchosen, isProtocolSwapState } from '../../types/state.types';
 import { SupplyCapBlockingError } from './SupplyCapBlockingError';
 
 export const hasSupplyCapBlocking = (state: SwapState) => {
-  if (!isProtocolSwapState(state)) return false;
+  if (!isProtocolSwapState(state) || isLeverageQuoteUnchosen(state)) return false;
   if (state.swapType !== SwapType.CollateralSwap && state.swapType !== SwapType.Leverage) {
     return false;
   }

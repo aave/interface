@@ -1,5 +1,5 @@
 import { SxProps } from '@mui/material';
-import React, { Dispatch, useEffect } from 'react';
+import React, { Dispatch, useEffect, useMemo } from 'react';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 
 import { ActionsBlockedReason, SwapError, SwapState, SwapType } from '../../types';
@@ -10,11 +10,15 @@ const BLOCKING_ERROR_MESSAGE = 'BuyTokenCollateralBlockingError';
 /** Underlying address (lowercased) -> whether the user has it enabled as collateral. */
 export const useCollateralEnabledByAddress = () => {
   const userReserves = useAppDataContext().user?.userReservesData;
-  return new Map<string, boolean>(
-    (userReserves ?? []).map((userReserve) => [
-      userReserve.reserve.underlyingAsset.toLowerCase(),
-      userReserve.usageAsCollateralEnabledOnUser,
-    ])
+  return useMemo(
+    () =>
+      new Map<string, boolean>(
+        (userReserves ?? []).map((userReserve) => [
+          userReserve.reserve.underlyingAsset.toLowerCase(),
+          userReserve.usageAsCollateralEnabledOnUser,
+        ])
+      ),
+    [userReserves]
   );
 };
 

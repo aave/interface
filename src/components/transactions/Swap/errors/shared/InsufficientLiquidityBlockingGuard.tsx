@@ -11,7 +11,7 @@ import {
   SwapState,
   SwapType,
 } from '../../types';
-import { isProtocolSwapState } from '../../types/state.types';
+import { isLeverageQuoteUnchosen, isProtocolSwapState } from '../../types/state.types';
 import { InsufficientLiquidityBlockingError } from './InsufficientLiquidityBlockingError';
 
 // The cow-swap-adapter flash-loans `_sellToken` for every position swap
@@ -22,7 +22,7 @@ import { InsufficientLiquidityBlockingError } from './InsufficientLiquidityBlock
 // from the lender on-chain.
 export const hasInsufficientLiquidity = (state: SwapState) => {
   // isProtocolSwapState narrows out SwapType.Swap (direct DEX, no Aave call).
-  if (!isProtocolSwapState(state)) return false;
+  if (!isProtocolSwapState(state) || isLeverageQuoteUnchosen(state)) return false;
   // Don't gate on `state.useFlashloan`: several protocol paths flash-loan
   // unconditionally regardless of the flag (CoW DebtSwap / RepayWithCollateral
   // via forceFlashloanFlow, ParaSwap DebtSwap via DebtSwitchAdapter, ParaSwap
@@ -41,11 +41,11 @@ export const hasInsufficientLiquidity = (state: SwapState) => {
 
   const liquidity = BigNumber.max(valueToBigNumber(reserve.formattedAvailableLiquidity), 0);
 
-  // Borrow cap only matters for DebtSwap, which leaves the user holding new
+  // Borrow cap only matters for DebtSwap and Leverage, which leave the user holding new
   // debt in the flash-loaned asset. Other flash-loan flows repay the loan
   // in-flight and never touch the borrow cap.
   const borrowCapRoom =
-    state.swapType === SwapType.DebtSwap
+    state.swapType === SwapType.DebtSwap || state.swapType === SwapType.Leverage
       ? reserve.borrowCap === '0'
         ? valueToBigNumber(ethers.constants.MaxUint256.toString())
         : valueToBigNumber(reserve.borrowCap).minus(valueToBigNumber(reserve.totalDebt))

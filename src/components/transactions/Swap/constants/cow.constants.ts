@@ -32,6 +32,9 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
   [SwapType.RepayWithCollateral]: {
     [SupportedChainId.SEPOLIA]: 'ALL',
   },
+  [SwapType.Leverage]: {
+    [SupportedChainId.SEPOLIA]: 'ALL',
+  },
 
   // Specific assets that are not supported for certain chains across all swap types
   ['ALL']: {

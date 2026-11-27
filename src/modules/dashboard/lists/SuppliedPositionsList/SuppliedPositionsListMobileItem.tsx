@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swap/constants/cow.constants';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
@@ -162,17 +163,19 @@ export const SuppliedPositionsListMobileItem = ({
         </Button>
       </Box>
 
-      {isSwapButton && usageAsCollateralEnabledOnUser && (
-        <Button
-          disabled={disableSwap}
-          variant="outlined"
-          onClick={() => openLeverage(underlyingAsset)}
-          sx={{ mt: 1.5 }}
-          fullWidth
-        >
-          <Trans>Leverage</Trans>
-        </Button>
-      )}
+      {isSwapButton &&
+        usageAsCollateralEnabledOnUser &&
+        isChainIdSupportedByCoWProtocol(currentMarketData.chainId) && (
+          <Button
+            disabled={disableSwap}
+            variant="outlined"
+            onClick={() => openLeverage(underlyingAsset)}
+            sx={{ mt: 1.5 }}
+            fullWidth
+          >
+            <Trans>Leverage</Trans>
+          </Button>
+        )}
     </ListMobileItemWrapper>
   );
 };
