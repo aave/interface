@@ -36,8 +36,9 @@ export const SelectBorrowMarket = ({ chainId, markets, onSelect }: SelectBorrowM
       side="borrow"
       chainId={chainId}
       marketName={market.name}
-      // The API does not say which hub a market draws from yet.
       hubName=""
+      hubNames={market.hubs.map((hub) => hub.name)}
+      curators={market.hubs.flatMap((hub) => (hub.curator ? [hub.curator] : []))}
       apy={market.apy}
       apyAverage={market.apyAverage}
       apyHistory={market.apyHistory}

@@ -11,6 +11,7 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
 import { useMigrationOpportunities } from '../hooks/useMigrationApi';
+import { useV4Reserves } from '../hooks/useV4Reserves';
 import { MIGRATE_FLOW } from '../utils/copy';
 import { getMigrationMarketTitle, MIGRATION_MARKETS } from '../V4MigrationPage/utils/markets';
 import { findBorrowOpportunity, parsePositionId } from '../V4MigrationPage/utils/opportunities';
@@ -110,9 +111,12 @@ const BorrowFlowSteps = ({
     () => (data ? findBorrowOpportunity(data, positionId) : undefined),
     [data, positionId]
   );
+  // The hubs and curators come from the V4 API. The cards don't wait for it: they are filled in
+  // once it answers, and stay without a hub line if it fails.
+  const reserves = useV4Reserves(chainId);
   const markets = useMemo(
-    () => (opportunity ? toBorrowMarkets(opportunity) : undefined),
-    [opportunity]
+    () => (opportunity ? toBorrowMarkets(opportunity, reserves.data) : undefined),
+    [opportunity, reserves.data]
   );
 
   if (error) {

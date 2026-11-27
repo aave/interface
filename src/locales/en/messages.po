@@ -2548,7 +2548,6 @@ msgid "Asset can only be used as collateral in isolation mode only."
 msgstr "Asset can only be used as collateral in isolation mode only."
 
 #: src/modules/v4Migration/V4MigrationHubCard/index.tsx
-#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
 msgid "{name} Hub"
 msgstr "{name} Hub"
 
@@ -2963,6 +2962,10 @@ msgstr "Stake token shares"
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Collateral value moving minus borrow value moving"
 msgstr "Collateral value moving minus borrow value moving"
+
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "{hubs} Hub"
+msgstr "{hubs} Hub"
 
 #: src/components/transactions/Swap/inputs/shared/SwitchSlippageSelector.tsx
 msgid "Default slippage"
@@ -5184,6 +5187,10 @@ msgstr "Try adjusting your search"
 #: src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
 msgid "Chain"
 msgstr "Chain"
+
+#: src/modules/v4Migration/V4MigrationHubCard/index.tsx
+msgid "{hubs} Hubs"
+msgstr "{hubs} Hubs"
 
 #: src/modules/v4Migration/utils/copy.tsx
 msgid "Estimated annual earnings based on your current position and market conditions"

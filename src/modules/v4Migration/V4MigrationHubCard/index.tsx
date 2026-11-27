@@ -53,6 +53,8 @@ interface EarnProps extends CommonProps {
 interface BorrowProps extends CommonProps {
   side: 'borrow';
   marketName: string;
+  /** The hubs the market draws from, when there can be more than one. Used instead of `hubName`. */
+  hubNames?: string[];
   /** Leave out when there is none to report: a dash is shown. */
   healthFactor?: string;
 }
@@ -79,6 +81,15 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
   const borrow = props.side === 'borrow';
   const name = getHubDisplayName(hubName);
   const market = borrow ? getMarketDisplayName(props.marketName) : undefined;
+  const hubs = borrow
+    ? (props.hubNames ?? (name ? [name] : [])).map(getHubDisplayName).join(', ')
+    : '';
+  const hubCount = borrow ? props.hubNames?.length ?? 1 : 0;
+  const hubLine = !hubs ? undefined : hubCount > 1 ? (
+    <Trans>{hubs} Hubs</Trans>
+  ) : (
+    <Trans>{hubs} Hub</Trans>
+  );
   const averageLabel = <Trans>7D avg.</Trans>;
   const rate = <FormattedNumber value={apy} percent variant="inherit" />;
 
@@ -97,7 +108,7 @@ export const V4MigrationHubCard = (props: V4MigrationHubCardProps) => {
   return (
     <OpportunityCard
       title={borrow ? <Trans>{market} Market</Trans> : <Trans>{name} Hub</Trans>}
-      subtitle={borrow && name ? <Trans>{name} Hub</Trans> : undefined}
+      subtitle={hubLine}
       curators={curators}
       leading={
         <ChainBadge chainId={chainId} size={24}>

@@ -163,6 +163,7 @@ export interface V4SupplyReserve {
   hubName: string;
   /** Missing when the hub is not run by an external curator. */
   curator?: { name: string; icon: string };
+  canSupply: boolean;
   canUseAsCollateral: boolean;
   /** 0 to 1. */
   collateralFactor: number;
@@ -214,14 +215,13 @@ const toHubExposures = (reserves: ReserveResponse[]) => {
   return exposures;
 };
 
-/** The reserves that take a supply, each with its hub's collateral assets. */
-const toSupplyReserves = ({ reserves }: ReservesResponse): V4SupplyReserve[] => {
+/** Every reserve, each with its hub's collateral assets. */
+const toReserves = ({ reserves }: ReservesResponse): V4SupplyReserve[] => {
   const exposures = toHubExposures(reserves);
   const now = Date.now();
 
-  return reserves
-    .filter((reserve) => reserve.canSupply)
-    .map(({ id, onChainId, spoke, canUseAsCollateral, settings, summary, asset }) => ({
+  return reserves.map(
+    ({ id, onChainId, spoke, canSupply, canUseAsCollateral, settings, summary, asset }) => ({
       id,
       onChainId: Number(onChainId),
       token: asset.underlying.address,
@@ -230,6 +230,7 @@ const toSupplyReserves = ({ reserves }: ReservesResponse): V4SupplyReserve[] => 
       hubId: asset.hub.id,
       hubName: asset.hub.name,
       curator: asset.hub.externalCurator ?? undefined,
+      canSupply,
       canUseAsCollateral,
       collateralFactor: Number(settings.collateralFactor.value),
       supplyApy: Number(summary.supplyApy.value),
@@ -237,18 +238,16 @@ const toSupplyReserves = ({ reserves }: ReservesResponse): V4SupplyReserve[] => 
       hasIncentives: summary.rewards.some((reward) => isActiveSupplyReward(reward, now)),
       suppliedUSD: Number(summary.supplied.exchange.value),
       exposure: exposures.get(asset.hub.id) ?? [],
-    }));
+    })
+  );
 };
 
 /**
- * The V4 reserves on `chainId` that take `token` as a supply. Join them to a migration target on
- * the spoke address with `findV4Reserve`.
- *
- * Every reserve of the chain is fetched, once for all tokens: a hub's collateral assets can only
+ * Every V4 reserve on `chainId`, fetched once for all tokens: a hub's collateral assets can only
  * be told from all of its reserves.
  */
-export const useV4SupplyReserves = (chainId: number | undefined, token: string | undefined) => {
-  const query = useQuery({
+export const useV4Reserves = (chainId: number | undefined) =>
+  useQuery({
     queryKey: ['v4', 'reserves', chainId],
     queryFn: ({ signal }) =>
       request<ReservesResponse>({
@@ -259,13 +258,22 @@ export const useV4SupplyReserves = (chainId: number | undefined, token: string |
       }),
     enabled: chainId !== undefined,
     staleTime: 60_000,
-    select: toSupplyReserves,
+    select: toReserves,
   });
+
+const sameAddress = (a: string, b: string) => a.toLowerCase() === b.toLowerCase();
+
+/**
+ * The V4 reserves on `chainId` that take `token` as a supply. Join them to a migration target on
+ * the spoke address with `findV4Reserve`.
+ */
+export const useV4SupplyReserves = (chainId: number | undefined, token: string | undefined) => {
+  const query = useV4Reserves(chainId);
 
   const data = useMemo(
     () =>
       token
-        ? query.data?.filter((reserve) => reserve.token.toLowerCase() === token.toLowerCase())
+        ? query.data?.filter((reserve) => reserve.canSupply && sameAddress(reserve.token, token))
         : undefined,
     [query.data, token]
   );
@@ -277,9 +285,18 @@ export const useV4SupplyReserves = (chainId: number | undefined, token: string |
  * The reserve a migration to `spokeAddress` lands in. A spoke can list an asset through more than
  * one hub; the migration API then takes the reserve with the lowest on-chain id, and so do we.
  */
-export const findV4Reserve = (reserves: V4SupplyReserve[] | undefined, spokeAddress: string) =>
+export const findV4Reserve = (
+  reserves: V4SupplyReserve[] | undefined,
+  spokeAddress: string,
+  /** Needed when `reserves` holds more than one token's. */
+  token?: string
+) =>
   reserves
-    ?.filter((reserve) => reserve.spokeAddress.toLowerCase() === spokeAddress.toLowerCase())
+    ?.filter(
+      (reserve) =>
+        sameAddress(reserve.spokeAddress, spokeAddress) &&
+        (!token || sameAddress(reserve.token, token))
+    )
     .reduce<V4SupplyReserve | undefined>(
       (lowest, reserve) => (lowest && lowest.onChainId <= reserve.onChainId ? lowest : reserve),
       undefined
