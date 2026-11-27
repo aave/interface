@@ -15,8 +15,24 @@ interface QuoteErrorProps {
   state: SwapState;
 }
 
-// Errors the backend orders API returns as plain messages.
-const convertBackendOrderErrorMessage = (message: string): ReactNode | undefined => {
+// The SDK returns typed quote and order refusals as a ValidationError carrying the backend result.
+const validationCause = (error: unknown): string | undefined => {
+  if (!(error instanceof Error) || error.name !== 'ValidationError') return undefined;
+  const cause = error.cause as { __typename?: string } | undefined;
+  return cause?.__typename;
+};
+
+export const isBackendValidationError = (error: unknown) => validationCause(error) !== undefined;
+
+const convertBackendOrderError = ({ rawError, message }: SwapError): ReactNode | undefined => {
+  switch (validationCause(rawError)) {
+    case 'AmountTooSmallError':
+      return <Trans>This amount is too small to cover swap fees.</Trans>;
+    case 'InsufficientLiquidityError':
+      return <Trans>Insufficient liquidity for this swap.</Trans>;
+    case 'InsufficientBalanceError':
+      return <Trans>Insufficient balance for this swap.</Trans>;
+  }
   if (/swaps are not (provisioned|offered) on market/i.test(message)) {
     return <Trans>This swap is not available on this market yet.</Trans>;
   }
@@ -35,8 +51,7 @@ export const ProviderError = ({ error, sx, provider, state }: QuoteErrorProps) =
       break;
     case SwapProvider.COW_PROTOCOL:
       customErrorMessage =
-        convertBackendOrderErrorMessage(error.message) ??
-        convertCowProtocolErrorMessage(error.message);
+        convertBackendOrderError(error) ?? convertCowProtocolErrorMessage(error.message);
       break;
     default:
       console.error('No provider error mapping found for', provider, error);
