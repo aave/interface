@@ -1,0 +1,33 @@
+src/locales/en/messages.po
+  s_14291185827ef4::t_824582e065e056 4263-4266
+  s_14291185827ef4::t_7a623f32a87ff6 130-133,456-458
+  s_14291185827ef4::t_5dbcd315273a8e 459
+src/locales/el/messages.js
+  s_14291185827ef4::t_824582e065e056 1
+src/locales/fr/messages.js
+  s_14291185827ef4::t_824582e065e056 1
+src/locales/en/messages.js
+  s_14291185827ef4::t_824582e065e056 1
+src/locales/es/messages.js
+  s_14291185827ef4::t_824582e065e056 1
+src/modules/governance/proposal/ProposalOverview.tsx
+  s_14291185827ef4::t_aa9d30ca3ebb7c 299-316
+src/modules/governance/ProposalsV3List.tsx
+  s_14291185827ef4::t_f174de78eba412 60-70
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "faa08bdf9c351acd4d5cc477fb63a8cd644fb1c4",
+  "prompts": {},
+  "sessions": {
+    "s_14291185827ef4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2e45f1c5-5930-49b8-b769-ef67f9ae326f",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Sam Mason de Caires <sam.m@aave.com>"
+    }
+  }
+}
