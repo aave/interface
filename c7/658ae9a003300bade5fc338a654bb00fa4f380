@@ -1,0 +1,53 @@
+src/modules/v4Migration/V4MigrationEarnFlow/components/EarnMigrationStatus/index.tsx
+  s_36fe408f2b1273::t_4579add45b5bf2 3,33-35,53-54,136
+src/modules/v4Migration/hooks/useSignsWithOwnKey.ts
+  s_36fe408f2b1273::t_9076ade7930714 1-21
+src/modules/v4Migration/V4MigrationPage/utils/markets.ts
+  s_36fe408f2b1273::t_9076ade7930714 30-37
+src/modules/v4Migration/V4MigrationEarnFlow/utils/hubs.ts
+  s_36fe408f2b1273::t_9076ade7930714 14-15,52-58
+src/modules/v4Migration/V4MigrationBorrowFlow/components/BorrowMigrationStatus/index.tsx
+  s_36fe408f2b1273::t_4579add45b5bf2 5,62-64,78-79,156
+src/components/MarketSwitcher.tsx
+  s_36fe408f2b1273::t_4579add45b5bf2 255-261
+  s_36fe408f2b1273::t_9509c85db9f501 30
+src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+  s_36fe408f2b1273::t_3c5e7a0fe0f33c 18,27-28,66,73,91,168-170,176-177,184,190,199,226-227,254,266-268,277-278,286-289,304-305,327-336,339-354,389,403,410-415
+  s_36fe408f2b1273::t_9076ade7930714 24,39-42,46,58,83-84,150-151,154-163,290-291,390,441,476-481
+  s_36fe408f2b1273::t_4579add45b5bf2 312-313
+  s_36fe408f2b1273::t_0d5904a3f9f934 59,482-483
+src/locales/fr/messages.js
+  s_36fe408f2b1273::t_07cd400e7d39a3 1
+src/modules/v4Migration/V4MigrationPreview/components/V3CollateralExposure/index.tsx
+  s_36fe408f2b1273::t_07cd400e7d39a3 1-35
+src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+  s_36fe408f2b1273::t_3c5e7a0fe0f33c 126-137
+src/locales/es/messages.js
+  s_36fe408f2b1273::t_07cd400e7d39a3 1
+src/modules/v4Migration/V4MigrationEarnFlow/utils/mocks.ts
+  s_36fe408f2b1273::t_07cd400e7d39a3 4-5
+src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
+  s_36fe408f2b1273::t_b7343921429c99 352-353
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_07cd400e7d39a3 3560-3563
+src/locales/el/messages.js
+  s_36fe408f2b1273::t_07cd400e7d39a3 1
+src/locales/en/messages.js
+  s_36fe408f2b1273::t_07cd400e7d39a3 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "c7658ae9a003300bade5fc338a654bb00fa4f380",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
