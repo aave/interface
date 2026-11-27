@@ -1,0 +1,151 @@
+src/components/transactions/Swap/inputs/MarketOrderInputs.tsx
+  s_ae3045cbc2fcc5::t_e6104032a5e74a 183-184
+  s_ae3045cbc2fcc5::t_01bca99da59aeb 109-111
+  s_ae3045cbc2fcc5::t_6540b691a31a3a 6
+  s_ae3045cbc2fcc5::t_8ba97ff789a8a0 31
+src/utils/hfUtils.ts
+  s_ae3045cbc2fcc5::t_8aa6bfdf39eff1 243-294
+src/components/transactions/Swap/hooks/useFlowSelector.ts
+  s_ae3045cbc2fcc5::t_971ff8f770385f 155-164
+  s_ae3045cbc2fcc5::t_bdf7add2b466cb 9-13
+  s_ae3045cbc2fcc5::t_0412e507b3742d 142-143
+src/components/transactions/Swap/modals/request/CollateralSwapModalContent.tsx
+  s_ae3045cbc2fcc5::t_738fd1641b0704 136
+src/ui-config/queries.ts
+  s_ae3045cbc2fcc5::t_3827081d5728be 138-139,150
+src/components/transactions/Swap/helpers/shared/invalidation.helpers.ts
+  s_ae3045cbc2fcc5::t_256f1fc1326c73 38
+cypress/support/steps/main.steps.ts
+  s_ae3045cbc2fcc5::t_e32c785e414f1c 394,396
+  s_ae3045cbc2fcc5::t_cf2be5fc3f9bc0 311,313
+src/hooks/useModal.tsx
+  s_ae3045cbc2fcc5::t_1063b4fe8ba0ce 379-383
+  s_ae3045cbc2fcc5::t_7e572b82e7e8ab 48
+  s_ae3045cbc2fcc5::t_310ae34ff9e109 141
+src/components/transactions/Swap/hooks/useSwapOrderAmounts.ts
+  s_ae3045cbc2fcc5::t_e0c37526396003 25-26
+src/components/transactions/Swap/errors/shared/ZeroLTVBlockingGuard.tsx
+  s_ae3045cbc2fcc5::t_9523cd554d354d 36-37
+src/components/transactions/Swap/modals/request/LeverageModalContent.tsx
+  s_ae3045cbc2fcc5::t_369a20b26f8e10 1-93
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+  s_ae3045cbc2fcc5::t_fe7bc6e45cacf1 31-32
+  s_ae3045cbc2fcc5::t_29b9dc0b0d7fb8 164-175
+src/utils/swapAdapterHistory.ts
+  s_ae3045cbc2fcc5::t_d6848b9c0ff5d8 47
+src/components/transactions/Swap/errors/shared/SupplyCapBlockingGuard.tsx
+  s_ae3045cbc2fcc5::t_8607faaf168e6b 16-19
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_ae3045cbc2fcc5::t_34527e9b28ca5b 131
+src/components/transactions/Swap/details/index.ts
+  s_ae3045cbc2fcc5::t_d5d496d71550f8 43-44
+  s_ae3045cbc2fcc5::t_db9d2f3309f7da 15
+src/components/transactions/Swap/errors/SwapErrors.tsx
+  s_ae3045cbc2fcc5::t_566b7e3fbe402f 95-104
+  s_ae3045cbc2fcc5::t_8e3bacf640bb8f 9-13
+  s_ae3045cbc2fcc5::t_147ddb26a9d994 50
+pages/_app.page.tsx
+  s_ae3045cbc2fcc5::t_29063947cf26bb 204
+  s_ae3045cbc2fcc5::t_7ec298384a403e 49-54
+src/components/transactions/Swap/actions/PositionSwapActionsViaBackend.tsx
+  s_ae3045cbc2fcc5::t_579c0b8839b198 143-157,160-163,165
+  s_ae3045cbc2fcc5::t_55ee7ee45fa031 35
+  s_ae3045cbc2fcc5::t_1538485d0dc345 58
+  s_ae3045cbc2fcc5::t_e9825b48619109 5,11
+  s_ae3045cbc2fcc5::t_ad7c5b67521a58 86-90
+  s_ae3045cbc2fcc5::t_f0824559fd252a 292-304
+  s_ae3045cbc2fcc5::t_ad116763009e4d 319,324-325
+src/locales/en/messages.po
+  s_ae3045cbc2fcc5::t_c8a230c674bead 51-54,793-796,965,1246-1249,1283-1286,1612-1617,2013-2016,2336-2339,2658-2661,3205-3208,3276,3282-3285,3333-3336,3666-3669,3948-3950
+  s_ae3045cbc2fcc5::t_08d62113ee91e1 3951
+src/components/transactions/Swap/shared/SwapModalTitle.tsx
+  s_ae3045cbc2fcc5::t_1b51f71db44393 2,5-6,9
+src/components/transactions/Swap/errors/shared/BuyTokenCollateralBlockingGuard.tsx
+  s_ae3045cbc2fcc5::t_47249cc1d45663 1-79
+src/locales/el/messages.js
+  s_ae3045cbc2fcc5::t_c8a230c674bead 1
+src/locales/fr/messages.js
+  s_ae3045cbc2fcc5::t_c8a230c674bead 1
+src/locales/en/messages.js
+  s_ae3045cbc2fcc5::t_c8a230c674bead 1
+src/components/transactions/Swap/errors/shared/BuyTokenCollateralBlockingError.tsx
+  s_ae3045cbc2fcc5::t_e4260448df6922 1-13
+src/components/transactions/Swap/inputs/shared/LeverageMultiplierSelector.tsx
+  s_ae3045cbc2fcc5::t_79adadc303f98e 1-52,55-133
+  s_ae3045cbc2fcc5::t_adf83a77bb0950 53-54
+src/components/transactions/Swap/types/params.types.ts
+  s_ae3045cbc2fcc5::t_e5f1977a0796db 92-93
+  s_ae3045cbc2fcc5::t_3bd7184c857872 111-112
+src/components/transactions/Swap/errors/shared/InsufficientBalanceGuard.tsx
+  s_ae3045cbc2fcc5::t_4457f7a8150e75 9-10
+src/components/transactions/Swap/actions/SwapActions/SwapActionsViaBackend.tsx
+  s_ae3045cbc2fcc5::t_4adc0872148825 70
+  s_ae3045cbc2fcc5::t_adbddc5a58bc75 177-178
+  s_ae3045cbc2fcc5::t_c4461c357106fc 8
+  s_ae3045cbc2fcc5::t_c43ea59d20072d 215
+  s_ae3045cbc2fcc5::t_8ebb06f38a4782 41
+src/components/transactions/Swap/actions/Leverage/LeverageActions.tsx
+  s_ae3045cbc2fcc5::t_ec0b457c4b8c65 1-29
+src/components/transactions/Swap/modals/request/BaseSwapModalContent.tsx
+  s_ae3045cbc2fcc5::t_7160d0029b1b87 17
+  s_ae3045cbc2fcc5::t_197d59084f1fa4 184-187
+src/components/transactions/Swap/inputs/primitives/SwapAssetInput.tsx
+  s_ae3045cbc2fcc5::t_385788621ca3db 131-138
+src/components/transactions/Swap/modals/request/DebtSwapModalContent.tsx
+  s_ae3045cbc2fcc5::t_db8228617ab4b3 161
+src/components/transactions/Swap/details/LeverageDetails.tsx
+  s_ae3045cbc2fcc5::t_17d679632309b1 1-188
+src/components/transactions/Swap/modals/LeverageModal.tsx
+  s_ae3045cbc2fcc5::t_aca5be160ad627 1-34
+src/components/transactions/Swap/types/state.types.ts
+  s_ae3045cbc2fcc5::t_6d4b1af43c3fe8 180-187
+  s_ae3045cbc2fcc5::t_ad5460fda267ee 214-215
+  s_ae3045cbc2fcc5::t_612e1621ec4479 228-229
+  s_ae3045cbc2fcc5::t_7c1043c1859eee 30
+src/components/transactions/Swap/types/quote.types.ts
+  s_ae3045cbc2fcc5::t_aeaedc0e4a908e 76-83,89-90,93
+  s_ae3045cbc2fcc5::t_1d95a63efacea4 1
+  s_ae3045cbc2fcc5::t_a0dc9af6b62747 96-98
+src/components/transactions/Swap/types/shared.types.ts
+  s_ae3045cbc2fcc5::t_2cfec6a80a68ee 8
+src/components/transactions/Swap/constants/shared.constants.ts
+  s_ae3045cbc2fcc5::t_429fd157e242e9 55
+src/locales/es/messages.js
+  s_ae3045cbc2fcc5::t_c8a230c674bead 1
+src/components/transactions/Swap/hooks/useSwapQuote.ts
+  s_ae3045cbc2fcc5::t_154e4834302ca2 636-639
+  s_ae3045cbc2fcc5::t_f8d4efbd7e8857 693-702
+  s_ae3045cbc2fcc5::t_1d0c96b6163d06 758-759,765-766
+  s_ae3045cbc2fcc5::t_9bf2e8d61175d4 269-333
+  s_ae3045cbc2fcc5::t_520e0c8885827c 66-67
+  s_ae3045cbc2fcc5::t_1d82242b3d10d0 3
+  s_ae3045cbc2fcc5::t_2649826f07f82b 771-777
+src/components/transactions/Swap/actions/index.ts
+  s_ae3045cbc2fcc5::t_93159cbd05af45 17
+  s_ae3045cbc2fcc5::t_78d4dbb3a858f4 66-72
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+  s_ae3045cbc2fcc5::t_a1858f0dc6b9cb 58-62
+  s_ae3045cbc2fcc5::t_84b286608369d1 153-154,157-161,163,165-217
+  s_ae3045cbc2fcc5::t_d768446e59b636 2,4-6,11
+  s_ae3045cbc2fcc5::t_b54fac54537c5c 34-35
+src/components/transactions/Swap/helpers/shared/provider.helpers.ts
+  s_ae3045cbc2fcc5::t_bcd30cadf77c83 68-70
+src/components/transactions/Swap/constants/paraswap.constants.ts
+  s_ae3045cbc2fcc5::t_9de563464fec19 27-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fdb07234f8b17b4a22e63a35a89313927f13ed92",
+  "prompts": {},
+  "sessions": {
+    "s_ae3045cbc2fcc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bddec105-b2fb-4868-938b-6eb1943b6617",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
