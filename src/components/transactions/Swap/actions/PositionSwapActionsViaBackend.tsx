@@ -32,6 +32,7 @@ import {
   ExpiryToSecondsMap,
   isBackendRates,
   isLeverageQuoteUnchosen,
+  isMarketQuoteOutdated,
   isShieldBlocked,
   isSwapQuote,
   OrderType,
@@ -268,7 +269,7 @@ export const PositionSwapActionsViaBackend = ({
   };
 
   const action = async () => {
-    if (!isBackendRates(state.swapRate) || !walletClient) return;
+    if (!isBackendRates(state.swapRate) || !walletClient || isMarketQuoteOutdated(state)) return;
 
     // Loading also pauses the quote refresh, so the quote id stays the one shown.
     setMainTxState({ ...mainTxState, loading: true });
@@ -316,7 +317,7 @@ export const PositionSwapActionsViaBackend = ({
         content: texts.action,
         handleClick: action,
       }}
-      fetchingData={state.actionsLoading}
+      fetchingData={state.actionsLoading || isMarketQuoteOutdated(state)}
       blocked={blocked}
       blockedText={blockedText}
     />

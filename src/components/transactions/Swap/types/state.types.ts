@@ -202,6 +202,16 @@ export const isShieldBlocked = (state: SwapState): boolean => {
   return state.actionsBlocked[ActionsBlockedReason.SHIELD_BLOCKED] === true;
 };
 
+/** A market quote priced for an amount the user has since edited: still debouncing or re-quoting. */
+export const isMarketQuoteOutdated = (state: SwapState): boolean =>
+  state.orderType === OrderType.MARKET &&
+  // A leverage is sized by its multiplier, checked by isLeverageQuoteUnchosen.
+  state.swapType !== SwapType.Leverage &&
+  (state.ratesLoading ||
+    (state.side === 'buy'
+      ? state.outputAmount !== state.debouncedOutputAmount
+      : state.inputAmount !== state.debouncedInputAmount));
+
 /** A leverage whose quote is not priced at the user's multiplier: the backend's own pick is never shown or placed. */
 export const isLeverageQuoteUnchosen = (state: SwapState): boolean =>
   state.swapType === SwapType.Leverage &&

@@ -37,6 +37,7 @@ import {
   areActionsBlocked,
   ExpiryToSecondsMap,
   isBackendRates,
+  isMarketQuoteOutdated,
   isShieldBlocked,
   isSwapQuote,
   OrderType,
@@ -173,7 +174,7 @@ export const SwapActionsViaBackend = ({
   });
 
   const action = async () => {
-    if (!isBackendRates(state.swapRate) || !walletClient) return;
+    if (!isBackendRates(state.swapRate) || !walletClient || isMarketQuoteOutdated(state)) return;
     const quote = state.swapRate.backendQuote;
     if (!isSwapQuote(quote)) return;
 
@@ -245,7 +246,8 @@ export const SwapActionsViaBackend = ({
         content: <Trans>Swap</Trans>,
         handleClick: action,
       }}
-      fetchingData={state.actionsLoading}
+      // A quote for the amount before an edit would place that amount.
+      fetchingData={state.actionsLoading || isMarketQuoteOutdated(state)}
       blocked={areActionsBlocked(state)}
       blockedText={isShieldBlocked(state) ? <Trans>Blocked by Shield</Trans> : undefined}
     />
