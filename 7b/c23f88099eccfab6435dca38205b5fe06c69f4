@@ -1,0 +1,45 @@
+src/modules/v4Migration/V4MigrationPage/utils/opportunities.ts
+  s_36fe408f2b1273::t_b5d1480ed444c8 1
+src/modules/v4Migration/V4MigrationBorrowFlow/index.tsx
+  s_36fe408f2b1273::t_b5d1480ed444c8 13,106
+src/modules/v4Migration/V4MigrationBorrowFlow/components/BorrowMigrationStatus/index.tsx
+  s_36fe408f2b1273::t_b5d1480ed444c8 13
+src/modules/v4Migration/V4MigrationEarnFlow/utils/hubs.ts
+  s_36fe408f2b1273::t_b5d1480ed444c8 1
+src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+  s_36fe408f2b1273::t_b5d1480ed444c8 13,94
+src/modules/v4Migration/hooks/useMigrationApi.ts
+  s_36fe408f2b1273::t_b5d1480ed444c8 12-13
+  s_36fe408f2b1273::t_5cae8107139774 547
+  s_36fe408f2b1273::t_2fc2374215846d 1-11,14-546,548-599
+src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+  s_36fe408f2b1273::t_b5d1480ed444c8 17-21,210,216-217
+src/modules/v4Migration/V4MigrationPage/utils/markets.ts
+  s_36fe408f2b1273::t_b5d1480ed444c8 4-5,17-18
+src/modules/v4Migration/hooks/useMigration.ts
+  s_36fe408f2b1273::t_b5d1480ed444c8 1,8-14,104,113,127-128,130-131,133,138-139,143,149,185-191,221
+.env.example
+  s_36fe408f2b1273::t_c49bf6521261df 15
+src/modules/v4Migration/V4MigrationPageContainer/index.tsx
+  s_36fe408f2b1273::t_b5d1480ed444c8 12,49
+src/modules/v4Migration/V4MigrationBorrowFlow/utils/markets.ts
+  s_36fe408f2b1273::t_b5d1480ed444c8 3
+src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
+  s_36fe408f2b1273::t_b5d1480ed444c8 15-19,281,286-287
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7bc23f88099eccfab6435dca38205b5fe06c69f4",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

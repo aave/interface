@@ -1,0 +1,64 @@
+src/modules/v4Migration/V4MigrationPage/utils/mocks.ts
+  s_36fe408f2b1273::t_1d2802fd3dc5d8 56,64,72
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_2bce28436c1efc 154,201,881,1186,4153
+  s_36fe408f2b1273::t_56457af835064e 155-157,202-204,882-883,1187-1189,5083-5084
+  s_36fe408f2b1273::t_796ec73890523e 884
+  s_36fe408f2b1273::t_8a0ad718f4e434 1819
+src/locales/en/messages.js
+  s_36fe408f2b1273::t_56457af835064e 1
+src/modules/v4Migration/V4MigrationPageContainer/index.tsx
+  s_36fe408f2b1273::t_0400bab7984181 1-85
+src/layouts/components/NavItems.tsx
+  s_36fe408f2b1273::t_d17f2bcd04c931 229-235
+  s_36fe408f2b1273::t_aeb3a2470ff8e6 187
+pages/migrate.page.tsx
+  s_36fe408f2b1273::t_0400bab7984181 2,5
+src/components/primitives/Link.tsx
+  s_36fe408f2b1273::t_d904684a8fabb6 133
+src/locales/es/messages.js
+  s_36fe408f2b1273::t_56457af835064e 1
+src/modules/v4Migration/V4MigrationPage/components/BorrowPositionsTable/index.tsx
+  s_36fe408f2b1273::t_0400bab7984181 79-80,87
+  s_36fe408f2b1273::t_85afe6781211e4 46-58,88-107
+src/locales/el/messages.js
+  s_36fe408f2b1273::t_56457af835064e 1
+src/layouts/components/MoreMenu.tsx
+  s_36fe408f2b1273::t_0a88b5921c9f23 138
+  s_36fe408f2b1273::t_d17f2bcd04c931 42,131-137
+src/modules/v4Migration/V4MigrationPage/utils/markets.ts
+  s_36fe408f2b1273::t_0400bab7984181 1-35
+src/locales/fr/messages.js
+  s_36fe408f2b1273::t_56457af835064e 1
+src/modules/v4Migration/V4MigrationPage/utils/types.ts
+  s_36fe408f2b1273::t_1d2802fd3dc5d8 18
+  s_36fe408f2b1273::t_f7b30c674f86cf 3-4,15-16,20-21,26-27,30,36
+src/modules/v4Migration/V4MigrationPage/components/EarnPositionsTable/index.tsx
+  s_36fe408f2b1273::t_1d2802fd3dc5d8 46-55
+  s_36fe408f2b1273::t_0bcba83a7a90df 5,45,82-85,90-97
+src/modules/v4Migration/V4MigrationPage/utils/opportunities.ts
+  s_36fe408f2b1273::t_1d2802fd3dc5d8 43
+  s_36fe408f2b1273::t_0400bab7984181 1-42,44-84
+src/modules/v4Migration/V4MigrationPage/components/PositionsTable/index.tsx
+  s_36fe408f2b1273::t_fecf0734a20c40 43,97,134-139
+src/modules/v4Migration/V4MigrationPage/components/ValueChange/index.tsx
+  s_36fe408f2b1273::t_e318af571083d1 10-11,20-27,45-47
+src/modules/v4Migration/V4MigrationPage/index.tsx
+  s_36fe408f2b1273::t_c37b06258b8bdf 3,20-24,32,55-56
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "400eb7edea5c6660057ecb89aeeb3150cafd5e97",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+src/modules/v4Migration/utils/copy.tsx
+  s_36fe408f2b1273::t_bba527cfcc46c6 191
+src/modules/v4Migration/V4MigrationBorrowFlow/components/ReviewBorrowMigration/index.tsx
+  s_36fe408f2b1273::t_bba527cfcc46c6 11,21,23,42-46,131,137,141-145,163,258-259,265,271,275,277,286,308-311,336-344,351-353,361-362,372-373,376-378,396-406,409-428,474,480,506,532-537
+  s_36fe408f2b1273::t_4bd48e908ce2e1 538-539
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_bba527cfcc46c6 609,3564
+src/modules/v4Migration/V4MigrationBorrowFlow/index.tsx
+  s_36fe408f2b1273::t_bba527cfcc46c6 138-148
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "207c09694ae9a232a641b875094b52b989465430",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

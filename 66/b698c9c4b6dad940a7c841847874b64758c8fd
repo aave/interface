@@ -1,0 +1,34 @@
+src/locales/en/messages.js
+  s_36fe408f2b1273::t_22f31c653ee879 1
+src/modules/v4Migration/V4MigrationEarnFlow/hooks/useEarnMigration.ts
+  s_36fe408f2b1273::t_22f31c653ee879 57-64,185
+src/locales/el/messages.js
+  s_36fe408f2b1273::t_22f31c653ee879 1
+src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+  s_36fe408f2b1273::t_22f31c653ee879 39,428-435
+  s_36fe408f2b1273::t_595fc5b96c8074 59,66,79,85,111-112,114,138-159,176,182,188,196,217,246-254,277-291,359-361,373,380,418
+  s_36fe408f2b1273::t_ce3236bbabe337 11,170-172,200-207,220-224,302-304,377,406
+  s_36fe408f2b1273::t_a7d41ee98e38b9 225
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_22f31c653ee879 3695-3698
+src/locales/es/messages.js
+  s_36fe408f2b1273::t_22f31c653ee879 1
+src/locales/fr/messages.js
+  s_36fe408f2b1273::t_22f31c653ee879 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "66b698c9c4b6dad940a7c841847874b64758c8fd",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}

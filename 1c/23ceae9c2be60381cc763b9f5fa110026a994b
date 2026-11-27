@@ -1,0 +1,32 @@
+src/modules/v4Migration/V4MigrationEarnFlow/index.tsx
+  s_36fe408f2b1273::t_6b2fa72f7617c4 8
+  s_36fe408f2b1273::t_cde4eef3c9d61b 1-7,9-33
+src/layouts/FlowLayout.tsx
+  s_36fe408f2b1273::t_b5d12ebdd1811e 1-90
+src/components/primitives/Link.tsx
+  s_36fe408f2b1273::t_6b2fa72f7617c4 134-135
+pages/migrate/earn.page.tsx
+  s_36fe408f2b1273::t_cde4eef3c9d61b 1-11
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_6b2fa72f7617c4 5195
+src/modules/v4Migration/V4MigrationPage/utils/opportunities.ts
+  s_36fe408f2b1273::t_6b2fa72f7617c4 34-40
+src/modules/v4Migration/V4MigrationPageContainer/index.tsx
+  s_36fe408f2b1273::t_6b2fa72f7617c4 4,8,46,86-92
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1c23ceae9c2be60381cc763b9f5fa110026a994b",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
