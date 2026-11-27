@@ -1,0 +1,41 @@
+src/utils/swapAdapterHistory.ts
+  s_ae3045cbc2fcc5::t_74658862bdbee7 16
+  s_ae3045cbc2fcc5::t_e04408d237ab49 30-33
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListMobileItem.tsx
+  s_ae3045cbc2fcc5::t_e04408d237ab49 169-178
+  s_ae3045cbc2fcc5::t_6ef2a9487f989d 166-168
+  s_ae3045cbc2fcc5::t_34d6e3724bdea4 4
+src/modules/dashboard/lists/SuppliedPositionsList/SuppliedPositionsListItem.tsx
+  s_ae3045cbc2fcc5::t_936377268d6ab5 59-63
+  s_ae3045cbc2fcc5::t_ba50a3fc93ab33 7
+src/components/transactions/Swap/hooks/useSwapQuote.ts
+  s_ae3045cbc2fcc5::t_3934c122436dbe 814-815
+  s_ae3045cbc2fcc5::t_7a0a39d19789ca 813
+src/components/transactions/Swap/errors/shared/SupplyCapBlockingGuard.tsx
+  s_ae3045cbc2fcc5::t_7a0a39d19789ca 12,16
+src/components/transactions/Swap/errors/shared/InsufficientLiquidityBlockingGuard.tsx
+  s_ae3045cbc2fcc5::t_7a0a39d19789ca 14,25,44,48
+src/components/transactions/Swap/errors/shared/BuyTokenCollateralBlockingGuard.tsx
+  s_ae3045cbc2fcc5::t_7a0a39d19789ca 2,13-21
+src/components/transactions/Swap/constants/cow.constants.ts
+  s_ae3045cbc2fcc5::t_5d77914dc88ca9 35-36
+  s_ae3045cbc2fcc5::t_f2f15f316ba38f 34
+src/components/transactions/Swap/errors/SwapErrors.tsx
+  s_ae3045cbc2fcc5::t_7a0a39d19789ca 95-99
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2e34de6d1ef7d67c2ca126ce47aeb0ca4565d05f",
+  "prompts": {},
+  "sessions": {
+    "s_ae3045cbc2fcc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bddec105-b2fb-4868-938b-6eb1943b6617",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
