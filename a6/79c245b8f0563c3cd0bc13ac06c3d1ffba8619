@@ -1,0 +1,24 @@
+src/utils/sdkEnvironment.ts
+  s_ae3045cbc2fcc5::t_6c52b44f759305 1,3,5-6
+package.json
+  s_ae3045cbc2fcc5::t_3123e20e16611d 66,68
+  s_ae3045cbc2fcc5::t_5a778cc381f553 26-30
+pnpm-lock.yaml
+  s_ae3045cbc2fcc5::t_6d156bc35774bc 23-26,47-48,53-54,395-396,409-411,413,418-419,438-440,445-447,455-457,478-480,5059,10300,10302-10305,10315-10316,10318,10320,10322-10324,10328,10353,10355,10370,10372,10386,10388-10390,10410,11495,17648
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "a679c245b8f0563c3cd0bc13ac06c3d1ffba8619",
+  "prompts": {},
+  "sessions": {
+    "s_ae3045cbc2fcc5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bddec105-b2fb-4868-938b-6eb1943b6617",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Martin Grabina <mgrabina@itba.edu.ar>"
+    }
+  }
+}
