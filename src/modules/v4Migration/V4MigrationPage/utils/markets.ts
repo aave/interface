@@ -27,6 +27,14 @@ const titlesByMarket = new Map(
   ])
 );
 
+const dataByMarket = new Map(
+  v3Markets.map((market) => [marketKey(market.addresses.LENDING_POOL, market.chainId), market])
+);
+
+/** The interface's own configuration of a V3 market, if it lists it. */
+export const getMigrationMarketData = (market: { address: string; chain: { chainId: number } }) =>
+  dataByMarket.get(marketKey(market.address, market.chain.chainId));
+
 /** The interface's own name for a V3 market ("Core", "Prime"…), falling back to the API's. */
 export const getMigrationMarketTitle = (market: {
   address: string;

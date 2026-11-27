@@ -15,13 +15,17 @@ import { DynamicCard } from 'src/components/DynamicCard';
 import { DescriptionItem } from 'src/components/DynamicCard/DescriptionItem';
 import { EmptyStatePaper } from 'src/components/EmptyStatePaper';
 import { Link, ROUTES } from 'src/components/primitives/Link';
+import { SelectTargetModal } from 'src/components/SelectTargetModal';
 import { TokenAmountInput } from 'src/components/TokenAmountInput';
 import { useDebouncedValue } from 'src/hooks/useDebouncedValue';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { FlashLoanUnavailableError, useMigration } from '../../../hooks/useMigration';
+import { useSignsWithOwnKey } from '../../../hooks/useSignsWithOwnKey';
 import {
   collateralExposureRow,
+  HUB_PICKER,
+  hubTitle,
   marketTitle,
   MIGRATE_AMOUNT,
   MIGRATE_FLOW,
@@ -32,12 +36,15 @@ import {
   SPONSORED_BY_AAVE,
 } from '../../../utils/copy';
 import { change, pct, usd } from '../../../utils/previewCells';
-import { getMigrationMarketTitle } from '../../../V4MigrationPage/utils/markets';
+import {
+  getMigrationMarketData,
+  getMigrationMarketTitle,
+} from '../../../V4MigrationPage/utils/markets';
 import { getAssetIconSymbol, getHubDisplayName } from '../../../V4MigrationPage/utils/positions';
 import { V4MigrationPreview, V4MigrationPreviewRow } from '../../../V4MigrationPreview';
 import { PositionName } from '../../../V4MigrationPreview/components/PositionName';
+import { V3CollateralExposure } from '../../../V4MigrationPreview/components/V3CollateralExposure';
 import { EarnHub } from '../../utils/hubs';
-import { MOCK_V3_COLLATERAL_EXPOSURE } from '../../utils/mocks';
 import { EarnMigrationStatus } from '../EarnMigrationStatus';
 
 type Supply = MigrationOpportunity['supplies'][number];
@@ -48,18 +55,22 @@ const BUTTON_ROW_SX = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1
 
 const PREVIEW_DEBOUNCE_MS = 400;
 
+const MAX_EXPOSURE_ASSETS = 4;
+
 const previewRows = ({
   opportunity,
   hub,
   preview,
   loading,
   useAsCollateral,
+  onChangeHub,
 }: {
   opportunity: MigrationOpportunity;
   hub: EarnHub;
   preview?: MigrationPreview;
   loading: boolean;
   useAsCollateral: boolean;
+  onChangeHub?: () => void;
 }): V4MigrationPreviewRow[] => {
   const source = preview?.source;
   const target = preview?.target;
@@ -69,14 +80,15 @@ const previewRows = ({
     .map(({ name, icon }) => ({ name, icon }));
   const apy = target?.apy?.after?.value;
   const earnings = target?.yearlyEarningsUsd?.after;
+  const v3Market = getMigrationMarketData(opportunity.market);
+  const exposure = hub.reserve?.exposure ?? [];
 
   return [
     {
       id: 'market',
       ...PREVIEW_ROWS.market,
       v3: marketTitle(getMigrationMarketTitle(opportunity.market)),
-      // TODO: pass `onClick` to let the hub be changed from here (SelectTargetModal).
-      v4: <PositionName hubName={hub.name} />,
+      v4: <PositionName hubName={hub.name} onClick={onChangeHub} />,
     },
     {
       id: 'curator',
@@ -135,34 +147,47 @@ const previewRows = ({
         ]
       : []),
     {
-      // Mocked: the API does not say which assets share risk on either side yet.
+      // Neither migration query says which assets share risk: the V3 side is read from the market's
+      // own reserves, the V4 side from the V4 API.
       id: 'exposure',
       ...collateralExposureRow(getHubDisplayName(hub.name)),
-      v3: <AssetGroup symbols={MOCK_V3_COLLATERAL_EXPOSURE.map(getAssetIconSymbol)} size={20} />,
-      v4: <AssetGroup symbols={(hub.reserve?.exposure ?? []).map(getAssetIconSymbol)} size={20} />,
+      v3: v3Market ? (
+        <V3CollateralExposure market={v3Market} max={MAX_EXPOSURE_ASSETS} />
+      ) : undefined,
+      v4: exposure.length ? (
+        <AssetGroup
+          symbols={exposure.map(getAssetIconSymbol)}
+          max={MAX_EXPOSURE_ASSETS}
+          size={20}
+        />
+      ) : undefined,
     },
   ];
 };
 
-/** Identifies one preview request, so a confirmation is never applied to a different amount. */
-const previewKey = (amount: string, useAsCollateral: boolean) => `${amount}:${useAsCollateral}`;
+/** Identifies one preview request, so a confirmation is never applied to a different one. */
+const previewKey = (hubId: string, amount: string, useAsCollateral: boolean) =>
+  `${hubId}:${amount}:${useAsCollateral}`;
 
 interface PreviewProps {
   opportunity: MigrationOpportunity;
   hub: EarnHub;
   useAsCollateral: boolean;
+  /** Opens the list of hubs. Missing when there is no other hub to move to. */
+  onChangeHub?: () => void;
 }
 
 const Preview = ({
   opportunity,
   hub,
   useAsCollateral,
+  onChangeHub,
   preview,
   loading = false,
 }: PreviewProps & { preview?: MigrationPreview; loading?: boolean }) => (
   <V4MigrationPreview
     title={PREVIEW_TITLES.earn}
-    rows={previewRows({ opportunity, hub, preview, loading, useAsCollateral })}
+    rows={previewRows({ opportunity, hub, preview, loading, useAsCollateral, onChangeHub })}
   />
 );
 
@@ -171,6 +196,7 @@ const LivePreview = ({
   opportunity,
   hub,
   useAsCollateral,
+  onChangeHub,
   user,
   supply,
   amount,
@@ -197,8 +223,8 @@ const LivePreview = ({
   // The hook returns no data while it loads, so data here is always for the current request.
   const previewed = data?.target.status === 'PREVIEWED';
   useEffect(() => {
-    if (previewed) onPreviewed(previewKey(amount, useAsCollateral));
-  }, [previewed, amount, useAsCollateral, onPreviewed]);
+    if (previewed) onPreviewed(previewKey(hub.id, amount, useAsCollateral));
+  }, [previewed, hub.id, amount, useAsCollateral, onPreviewed]);
 
   if (error) {
     return (
@@ -225,6 +251,7 @@ const LivePreview = ({
       opportunity={opportunity}
       hub={hub}
       useAsCollateral={useAsCollateral}
+      onChangeHub={onChangeHub}
       preview={data}
       loading={loading}
     />
@@ -236,6 +263,9 @@ interface ReviewEarnMigrationProps {
   opportunity: MigrationOpportunity;
   supply: Supply;
   hub: EarnHub;
+  /** Every hub the position's asset is listed on, the picked one included. */
+  hubs: EarnHub[];
+  onChangeHub: (hub: EarnHub) => void;
 }
 
 /** Second step of the earn flow: how much to move to the picked hub, and what that changes. */
@@ -244,6 +274,8 @@ export const ReviewEarnMigration = ({
   opportunity,
   supply,
   hub,
+  hubs,
+  onChangeHub,
 }: ReviewEarnMigrationProps) => {
   const { currency } = supply;
   const available = new BigNumber(supply.amount.amount.value);
@@ -251,21 +283,12 @@ export const ReviewEarnMigration = ({
   const debouncedAmount = useDebouncedValue(amount, PREVIEW_DEBOUNCE_MS);
   const { readOnlyMode } = useWeb3Context();
   const { run, migrate, reset } = useMigration();
-  const [useAsCollateral, setUseAsCollateral] = useState(false);
-  // The opportunities list never says whether the hub takes this asset as collateral, so ask the
-  // preview once with the flag on: it only answers PREVIEWED when it does.
-  const collateralProbe = useMigrationEarnPreview({
-    user: evmAddress(user),
-    market: {
-      address: opportunity.market.address,
-      chainId: opportunity.market.chain.chainId,
-    },
-    currency: currency.address,
-    spoke: evmAddress(hub.id),
-    amount: bigDecimal(available.decimalPlaces(currency.decimals, BigNumber.ROUND_DOWN).toFixed()),
-    useAsCollateral: true,
-  });
-  const canUseAsCollateral = collateralProbe.data?.target.status === 'PREVIEWED';
+  const [wantsCollateral, setWantsCollateral] = useState(false);
+  // The choice is kept across hubs, and only applies on one that takes the asset as collateral.
+  const useAsCollateral = wantsCollateral && hub.canUseAsCollateral;
+  const [hubPickerOpen, setHubPickerOpen] = useState(false);
+  // Permits authorise the move, and a contract wallet cannot sign them.
+  const contractWallet = useSignsWithOwnKey(user, opportunity.market.chain.chainId).data === false;
 
   const toRequestAmount = (value: BigNumber | null) =>
     value && value.gt(0) && value.lte(available)
@@ -278,13 +301,16 @@ export const ReviewEarnMigration = ({
   const signing = run.status === 'signing';
   // Migrate stays off until the preview confirms exactly what is about to be sent.
   const [previewedKey, setPreviewedKey] = useState<string>();
-  const canMigrate = !!migrateAmount && previewedKey === previewKey(migrateAmount, useAsCollateral);
+  const canMigrate =
+    !!migrateAmount && previewedKey === previewKey(hub.id, migrateAmount, useAsCollateral);
 
   if (run.status !== 'idle' && run.status !== 'signing' && migrateAmount) {
     return (
       <EarnMigrationStatus
         status={run.status}
         chainId={opportunity.market.chain.chainId}
+        user={user}
+        spokeAddress={hub.id}
         txHash={run.txHash}
         receipt={run.receipt}
         symbol={currency.symbol}
@@ -298,8 +324,34 @@ export const ReviewEarnMigration = ({
     );
   }
 
+  const hubOptions = hubs.map((item) => ({
+    id: item.id,
+    kind: 'hub' as const,
+    name: hubTitle(getHubDisplayName(item.name)),
+    apy: item.apy,
+    disabled: item.unavailable,
+    hub: item,
+  }));
+  const openHubPicker = hubs.length > 1 && !signing ? () => setHubPickerOpen(true) : undefined;
+
   return (
     <Box sx={STACK_SX}>
+      <SelectTargetModal
+        open={hubPickerOpen}
+        setOpen={setHubPickerOpen}
+        title={HUB_PICKER.title}
+        groups={[
+          { label: HUB_PICKER.earnHubs, options: hubOptions.filter((option) => !option.disabled) },
+          {
+            label: HUB_PICKER.unavailableHubs,
+            options: hubOptions.filter((option) => option.disabled),
+          },
+        ]}
+        onSelect={(option) => {
+          setHubPickerOpen(false);
+          if (option.id !== hub.id) onChangeHub(option.hub);
+        }}
+      />
       <DynamicCard>
         <DynamicCard.Inner>
           {/* TODO: pass `onChangeToken` to let the asset be changed from here (SelectAssetModal). */}
@@ -334,8 +386,8 @@ export const ReviewEarnMigration = ({
             value={
               <Switch
                 checked={useAsCollateral}
-                onChange={(_, checked) => setUseAsCollateral(checked)}
-                disabled={!canUseAsCollateral || signing}
+                onChange={(_, checked) => setWantsCollateral(checked)}
+                disabled={!hub.canUseAsCollateral || signing}
                 inputProps={{ 'aria-label': MIGRATE_AMOUNT.useAsCollateral.ariaLabel() }}
               />
             }
@@ -348,13 +400,19 @@ export const ReviewEarnMigration = ({
           opportunity={opportunity}
           hub={hub}
           useAsCollateral={useAsCollateral}
+          onChangeHub={openHubPicker}
           user={user}
           supply={supply}
           amount={previewAmount}
           onPreviewed={setPreviewedKey}
         />
       ) : (
-        <Preview opportunity={opportunity} hub={hub} useAsCollateral={useAsCollateral} />
+        <Preview
+          opportunity={opportunity}
+          hub={hub}
+          useAsCollateral={useAsCollateral}
+          onChangeHub={openHubPicker}
+        />
       )}
 
       <DynamicCard>
@@ -380,7 +438,7 @@ export const ReviewEarnMigration = ({
         <Button
           variant="contained"
           size="large"
-          disabled={!canMigrate || readOnlyMode || signing}
+          disabled={!canMigrate || readOnlyMode || contractWallet || signing}
           onClick={() =>
             migrateAmount &&
             migrate({
@@ -413,6 +471,14 @@ export const ReviewEarnMigration = ({
           ) : (
             <Trans>The migration couldn&apos;t be started. Please try again.</Trans>
           )}
+        </Typography>
+      )}
+      {contractWallet && (
+        <Typography variant="base" color="fg-3" sx={{ textAlign: 'center' }}>
+          <Trans>
+            Smart contract wallets can&apos;t migrate yet. Connect a wallet that signs with its own
+            key.
+          </Trans>
         </Typography>
       )}
       {readOnlyMode && (

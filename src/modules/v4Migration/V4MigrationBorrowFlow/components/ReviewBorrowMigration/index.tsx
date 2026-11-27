@@ -349,6 +349,8 @@ export const ReviewBorrowMigration = ({
       <BorrowMigrationStatus
         status={run.status}
         chainId={chainId}
+        user={user}
+        spokeAddress={market.id}
         txHash={run.txHash}
         receipt={run.receipt}
         preview={confirmed.preview}

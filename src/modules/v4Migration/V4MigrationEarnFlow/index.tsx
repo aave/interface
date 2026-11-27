@@ -123,8 +123,18 @@ const EarnFlowSteps = ({
     ? hubs?.find((item) => item.id.toLowerCase() === hubId.toLowerCase() && !item.unavailable)
     : undefined;
 
-  if (opportunity && supply && hub) {
-    return <ReviewEarnMigration user={user} opportunity={opportunity} supply={supply} hub={hub} />;
+  if (opportunity && supply && hub && hubs) {
+    return (
+      <ReviewEarnMigration
+        user={user}
+        opportunity={opportunity}
+        supply={supply}
+        hub={hub}
+        hubs={hubs}
+        // Replaced, so that going back still leads to the list of hubs.
+        onChangeHub={(picked) => router.replace(ROUTES.migrationEarnV4(positionId, picked.id))}
+      />
+    );
   }
 
   return (

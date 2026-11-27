@@ -2,7 +2,7 @@ import { MigrationPreview } from '@aave/react';
 import { Box, Button } from '@mui/material';
 import { AssetGroup } from 'src/components/AssetGroup';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
-import { AAVE_PRO_URL } from 'src/components/MarketSwitcher';
+import { getAaveProPositionUrl } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TransactionCard, TransactionCardRow, TxStatus } from 'src/components/TransactionCard';
@@ -59,6 +59,9 @@ const amounts = (holdings: Holding[]) =>
 interface BorrowMigrationStatusProps {
   status: TxStatus;
   chainId: number;
+  user: string;
+  /** The V4 spoke the position was moved to. */
+  spokeAddress: string;
   txHash?: string;
   /** Set once the migration is mined. */
   receipt?: MigrationReceipt;
@@ -72,6 +75,8 @@ interface BorrowMigrationStatusProps {
 export const BorrowMigrationStatus = ({
   status,
   chainId,
+  user,
+  spokeAddress,
   txHash,
   receipt,
   preview,
@@ -146,10 +151,9 @@ export const BorrowMigrationStatus = ({
     footer = (
       <Box sx={BUTTON_ROW_SX}>
         {close}
-        {/* TODO: link to the position itself once we know Aave Pro's position URL. */}
         <Button
           component={Link}
-          href={AAVE_PRO_URL}
+          href={getAaveProPositionUrl(chainId, spokeAddress, user)}
           variant="outlined"
           size="large"
           endIcon={<ArrowUpRightIcon sx={{ color: 'fg-chevron' }} />}

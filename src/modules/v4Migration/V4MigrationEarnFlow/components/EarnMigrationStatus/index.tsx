@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
-import { AAVE_PRO_URL } from 'src/components/MarketSwitcher';
+import { getAaveProPositionUrl } from 'src/components/MarketSwitcher';
 import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Link, ROUTES } from 'src/components/primitives/Link';
 import { TokenIcon } from 'src/components/primitives/TokenIcon';
@@ -30,6 +30,9 @@ const TOKENS_SX = { display: 'inline-flex', alignItems: 'center', gap: '0.5rem' 
 interface EarnMigrationStatusProps {
   status: TxStatus;
   chainId: number;
+  user: string;
+  /** The V4 spoke the position was moved to. */
+  spokeAddress: string;
   txHash?: string;
   /** Set once the migration is mined. */
   receipt?: MigrationReceipt;
@@ -47,6 +50,8 @@ interface EarnMigrationStatusProps {
 export const EarnMigrationStatus = ({
   status,
   chainId,
+  user,
+  spokeAddress,
   txHash,
   receipt,
   symbol,
@@ -126,10 +131,9 @@ export const EarnMigrationStatus = ({
     footer = (
       <Box sx={BUTTON_ROW_SX}>
         {close}
-        {/* TODO: link to the position itself once we know Aave Pro's position URL. */}
         <Button
           component={Link}
-          href={AAVE_PRO_URL}
+          href={getAaveProPositionUrl(chainId, spokeAddress, user)}
           variant="outlined"
           size="large"
           endIcon={<ArrowUpRightIcon sx={{ color: 'fg-chevron' }} />}

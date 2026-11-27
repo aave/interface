@@ -3557,6 +3557,10 @@ msgstr "FAQS"
 msgid "Voted NAY"
 msgstr "Voted NAY"
 
+#: src/modules/v4Migration/V4MigrationEarnFlow/components/ReviewEarnMigration/index.tsx
+msgid "Smart contract wallets can't migrate yet. Connect a wallet that signs with its own key."
+msgstr "Smart contract wallets can't migrate yet. Connect a wallet that signs with its own key."
+
 #: src/components/infoTooltips/SuperFestTooltip.tsx
 msgid "about SuperFest."
 msgstr "about SuperFest."

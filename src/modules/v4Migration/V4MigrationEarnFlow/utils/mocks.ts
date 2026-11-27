@@ -1,33 +1,9 @@
 import { SparklineDatum } from 'src/components/charts/SparklineChart';
 
-import { MigrationAsset } from '../../V4MigrationPage/utils/types';
-
 /**
- * Figures neither API returns yet: the V3 side of the collateral exposure, and a borrow market's
- * 7-day position APY. Everything in this file is made up and has to be replaced before the flow
- * ships.
+ * A figure neither API returns yet: a borrow market's 7-day position APY. Everything in this file
+ * is made up and has to be replaced before the flow ships.
  */
-
-const MOCK_BACKING_COLLATERAL: MigrationAsset[] = [
-  {
-    symbol: 'wstETH',
-    name: 'Wrapped liquid staked Ether 2.0',
-    address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
-  },
-  {
-    symbol: 'weETH',
-    name: 'Wrapped eETH',
-    address: '0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee',
-  },
-  {
-    symbol: 'WETH',
-    name: 'Wrapped Ether',
-    address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-  },
-];
-
-/** The V3 market's side of the preview's "Collateral Exposure" row. */
-export const MOCK_V3_COLLATERAL_EXPOSURE: MigrationAsset[] = MOCK_BACKING_COLLATERAL.slice(0, 2);
 
 const HOURS = 7 * 24;
 const HOUR_MS = 60 * 60 * 1000;

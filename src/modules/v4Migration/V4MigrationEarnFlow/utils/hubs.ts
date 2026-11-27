@@ -11,6 +11,8 @@ export interface EarnHub {
   apy: number;
   bestApy: boolean;
   unavailable: boolean;
+  /** Whether the spoke takes the asset as collateral. False when the V4 API could not tell. */
+  canUseAsCollateral: boolean;
   /** The V4 reserve the position lands in, with the hub behind it. Missing as `name` says. */
   reserve?: V4SupplyReserve;
 }
@@ -47,6 +49,13 @@ export const toEarnHubs = (
       apy: Number(target.apy?.value ?? 0),
       bestApy,
       unavailable: !target.eligible,
+      // As collateral the position lands in the spoke's lowest reserve that takes it as such, which
+      // need not be `reserve`.
+      canUseAsCollateral: !!reserves?.some(
+        (candidate) =>
+          candidate.canUseAsCollateral &&
+          candidate.spokeAddress.toLowerCase() === target.spoke.address.toLowerCase()
+      ),
       reserve,
     });
   }

@@ -27,6 +27,7 @@ import { figVars, onAccent } from 'src/utils/figmaColors';
 import { insetHighlightActive, insetHighlightBase } from 'src/utils/insetHighlight';
 import { motion } from 'src/utils/motion';
 import { darkScheme } from 'src/utils/theme';
+import { getAddress } from 'viem';
 import { useShallow } from 'zustand/shallow';
 
 import {
@@ -250,6 +251,13 @@ export const AAVE_PRO_URL = 'https://pro.aave.com/';
 // Aave Pro's hub page. Pro's hub ids are base64 of `<chainId>::<hubAddress>`.
 const getAaveProHubUrl = (chainId: number, hubAddress: string) =>
   `${AAVE_PRO_URL}explore/hub/${encodeURIComponent(btoa(`${chainId}::${hubAddress}`))}`;
+
+// A user's position on a spoke in Aave Pro. Its id is base64 of `<chainId>::<spoke>::<user>`, with
+// both addresses checksummed.
+export const getAaveProPositionUrl = (chainId: number, spokeAddress: string, user: string) =>
+  `${AAVE_PRO_URL}position/${encodeURIComponent(
+    btoa(`${chainId}::${getAddress(spokeAddress)}::${getAddress(user)}`)
+  )}`;
 
 type V4Link = {
   id: string;
