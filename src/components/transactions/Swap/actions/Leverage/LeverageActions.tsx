@@ -1,10 +1,10 @@
 import { Dispatch } from 'react';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
-import { ProtocolSwapParams, ProtocolSwapState, SwapState } from '../../types';
-import { SwapActionsViaCoW } from '../SwapActions/SwapActionsViaCoW';
+import { ProtocolSwapParams, ProtocolSwapState, SwapProvider, SwapState } from '../../types';
+import { PositionSwapActionsViaBackend } from '../PositionSwapActionsViaBackend';
 
-export const WithdrawAndSwapActionsViaCoW = ({
+export const LeverageActions = ({
   params,
   state,
   setState,
@@ -15,10 +15,11 @@ export const WithdrawAndSwapActionsViaCoW = ({
   setState: Dispatch<Partial<SwapState>>;
   trackingHandlers: TrackAnalyticsHandlers;
 }) => {
-  // Essentially an aToken to token swap without a flashloan
+  // Only the backend places a leverage; ParaSwap has no equivalent route.
+  if (state.provider !== SwapProvider.COW_PROTOCOL) return null;
 
   return (
-    <SwapActionsViaCoW
+    <PositionSwapActionsViaBackend
       params={params}
       state={state}
       setState={setState}

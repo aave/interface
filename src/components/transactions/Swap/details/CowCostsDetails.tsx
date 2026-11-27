@@ -1,4 +1,4 @@
-import { normalize, valueToBigNumber } from '@aave/math-utils';
+import { valueToBigNumber } from '@aave/math-utils';
 import { Trans } from '@lingui/macro';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Box } from '@mui/material';
@@ -11,13 +11,13 @@ import { FormattedNumber } from 'src/components/primitives/FormattedNumber';
 import { Row } from 'src/components/primitives/Row';
 import { ExternalTokenIcon } from 'src/components/primitives/TokenIcon';
 
-import { calculateFlashLoanAmounts } from '../helpers/cow/adapters.helpers';
-import { isCowProtocolRates, OrderType, SwapState } from '../types';
+import { isBackendRates, OrderType, SwapState } from '../types';
 
 export const CowCostsDetails = ({ state }: { state: SwapState }) => {
   const [costBreakdownExpanded, setCostBreakdownExpanded] = useState(false);
 
-  if (!state.swapRate || !isCowProtocolRates(state.swapRate)) return null;
+  // Backend quote costs reach state through useSwapOrderAmounts.
+  if (!isBackendRates(state.swapRate)) return null;
 
   // Prefer unified values exported on state; fall back to raw swapRate if missing
   const networkFeeFormatted = state.networkFeeAmountInSellFormatted || '0';
@@ -27,38 +27,32 @@ export const CowCostsDetails = ({ state }: { state: SwapState }) => {
     (!state.isInvertedSwap ? state.swapRate.srcTokenPriceUsd : state.swapRate.destTokenPriceUsd);
   const networkFeeToken = !state.isInvertedSwap ? state.sourceToken : state.destinationToken;
 
-  // If using flash-loan via CoW we need to account for the flash-loan fee
-  const flashloanFeeFormatted = normalize(
-    calculateFlashLoanAmounts(state).flashLoanFeeAmount.toString(),
-    state.sellAmountToken?.decimals ?? 18
-  );
-  const flashLoanFeeTokenPriceUnitUsd = valueToBigNumber(state.sellAmountUSD ?? '0')
-    .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
-    .toNumber();
-  const flashloanFeeUsd = Number(flashloanFeeFormatted) * flashLoanFeeTokenPriceUnitUsd;
+  const backendQuote = state.swapRate.backendQuote;
+  const sellTokenPriceUnitUsd =
+    state.sellAmountFormatted == '0'
+      ? 0
+      : valueToBigNumber(state.sellAmountUSD ?? '0')
+          .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
+          .toNumber();
+
+  // Backend quotes put the flash-loan fee, like every cost, in the sell token.
+  const flashloanFeeFormatted = state.flashLoanFeeAmountFormatted ?? '0';
+  const flashloanFeeUsd = Number(flashloanFeeFormatted) * sellTokenPriceUnitUsd;
   const flashloanFeeToken = state.sellAmountToken;
-  const isFlashloanUsed = state.useFlashloan;
+  const isFlashloanUsed = !!backendQuote.costs.flashloanFee;
 
   if (!state.buyAmountToken || !state.sellAmountToken) return null;
 
-  // Partner fee is applied to the surplus token:
-  // - For sell orders: fee in buy token (destinationToken), deducted from buy amount
-  // - For buy orders: fee in sell token (sourceToken), added to sell amount
-  // For Debt and Repay with collateral, the swap is inverted to our UI
-  const invertedSide = state.processedSide;
+  // Market quotes fold the partner fee into the sell token. Limit previews estimate it on the
+  // surplus token: the buy token for sell orders, the sell token for buy orders.
+  const invertedSide = state.orderType === OrderType.MARKET ? 'buy' : state.processedSide;
   let partnerFeeFormatted: string,
     partnerFeeUsd: number,
     partnerFeeToken: typeof state.buyAmountToken | typeof state.sellAmountToken;
   if (invertedSide === 'buy') {
     // Fee in destination token (buy token)
     partnerFeeFormatted = state.partnerFeeAmountFormatted ?? '0';
-    const partnerFeeAmountPriceUnitUsd =
-      state.sellAmountFormatted == '0'
-        ? 0
-        : valueToBigNumber(state.sellAmountUSD ?? '0')
-            .dividedBy(valueToBigNumber(state.sellAmountFormatted ?? '0'))
-            .toNumber();
-    partnerFeeUsd = Number(partnerFeeFormatted) * partnerFeeAmountPriceUnitUsd;
+    partnerFeeUsd = Number(partnerFeeFormatted) * sellTokenPriceUnitUsd;
     partnerFeeToken = state.sellAmountToken;
   } else {
     // Fee in source token (sell token)

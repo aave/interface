@@ -1,55 +1,9 @@
-import { CowEnv, OrderClass, SupportedChainId } from '@cowprotocol/cow-sdk';
-import { AaveFlashLoanType } from '@cowprotocol/sdk-flash-loans';
+import { SupportedChainId } from '@cowprotocol/cow-sdk';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { marketsData } from 'src/utils/marketsAndNetworksConfig';
 
 import { getAssetGroup } from '../helpers/shared/assetCorrelation.helpers';
-import { OrderType, SwapType } from '../types';
-
-export const HOOK_ADAPTER_PER_TYPE: Record<AaveFlashLoanType, Record<SupportedChainId, string>> = {
-  [AaveFlashLoanType.CollateralSwap]: {
-    [SupportedChainId.MAINNET]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
-    [SupportedChainId.GNOSIS_CHAIN]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
-    [SupportedChainId.ARBITRUM_ONE]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
-    [SupportedChainId.AVALANCHE]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
-    [SupportedChainId.BNB]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
-    [SupportedChainId.POLYGON]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
-    [SupportedChainId.BASE]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
-    [SupportedChainId.LINEA]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
-    [SupportedChainId.PLASMA]: '0x029d584E847373B6373b01dfaD1a0C9BfB916382',
-    [SupportedChainId.SEPOLIA]: '',
-    [SupportedChainId.INK]: '',
-    [SupportedChainId.SOLANA]: '',
-  },
-  [AaveFlashLoanType.DebtSwap]: {
-    [SupportedChainId.MAINNET]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
-    [SupportedChainId.GNOSIS_CHAIN]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
-    [SupportedChainId.ARBITRUM_ONE]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
-    [SupportedChainId.AVALANCHE]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
-    [SupportedChainId.BNB]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
-    [SupportedChainId.POLYGON]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
-    [SupportedChainId.BASE]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
-    [SupportedChainId.LINEA]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
-    [SupportedChainId.PLASMA]: '0x73e7aF13Ef172F13d8FEfEbfD90C7A6530096344',
-    [SupportedChainId.SEPOLIA]: '',
-    [SupportedChainId.INK]: '',
-    [SupportedChainId.SOLANA]: '',
-  },
-  [AaveFlashLoanType.RepayCollateral]: {
-    [SupportedChainId.MAINNET]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
-    [SupportedChainId.GNOSIS_CHAIN]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
-    [SupportedChainId.ARBITRUM_ONE]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
-    [SupportedChainId.AVALANCHE]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
-    [SupportedChainId.BNB]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
-    [SupportedChainId.POLYGON]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
-    [SupportedChainId.BASE]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
-    [SupportedChainId.LINEA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
-    [SupportedChainId.PLASMA]: '0xAc27F3f86e78B14721d07C4f9CE999285f9AAa06',
-    [SupportedChainId.SEPOLIA]: '',
-    [SupportedChainId.INK]: '',
-    [SupportedChainId.SOLANA]: '',
-  },
-};
+import { SwapType } from '../types';
 
 export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
   [SupportedChainId.MAINNET]: '0xdeCC46a4b09162F5369c5C80383AAa9159bCf192',
@@ -66,8 +20,6 @@ export const ADAPTER_FACTORY: Record<SupportedChainId, string> = {
   [SupportedChainId.SOLANA]: '',
 };
 
-export const DUST_PROTECTION_MULTIPLIER = 1.0003; // 3 BPS
-
 export const COW_UNSUPPORTED_ASSETS: Partial<
   Record<SwapType | 'ALL', Partial<Record<SupportedChainId, string[] | 'ALL'>>>
 > = {
@@ -78,6 +30,9 @@ export const COW_UNSUPPORTED_ASSETS: Partial<
     [SupportedChainId.SEPOLIA]: 'ALL',
   },
   [SwapType.RepayWithCollateral]: {
+    [SupportedChainId.SEPOLIA]: 'ALL',
+  },
+  [SwapType.Leverage]: {
     [SupportedChainId.SEPOLIA]: 'ALL',
   },
 
@@ -138,15 +93,6 @@ export const isChainIdSupportedByCoWProtocol = (chainId: number): chainId is Sup
 };
 
 export const COW_EVM_RECIPIENT = '0xC542C2F197c4939154017c802B0583C596438380';
-export const COW_PROTOCOL_ETH_FLOW_ADDRESS = '0xbA3cB449bD2B4ADddBc894D8697F5170800EAdeC';
-export const COW_PROTOCOL_ETH_FLOW_ADDRESS_STAGING = '0x04501b9b1D52e67f6862d157E00D13419D2D6E95';
-
-export const COW_PROTOCOL_ETH_FLOW_ADDRESS_BY_ENV = (env: CowEnv) => {
-  return env === 'staging' ? COW_PROTOCOL_ETH_FLOW_ADDRESS_STAGING : COW_PROTOCOL_ETH_FLOW_ADDRESS;
-};
-
-export const COW_CREATE_ORDER_ABI =
-  'function createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)) returns (bytes32)';
 
 const DEFAULT_PARTNER_FEE_SAME_GROUP_BPS = 15;
 const DEFAULT_PARTNER_FEE_CROSS_GROUP_BPS = 25;
@@ -178,34 +124,6 @@ export const COW_PARTNER_FEE = (
   };
 };
 
-export const FLASH_LOAN_FEE_BPS = 5;
-
-export const COW_APP_DATA = (
-  tokenFromSymbol: string,
-  tokenToSymbol: string,
-  slippageBips: number,
-  smartSlippage: boolean,
-  orderType: OrderType,
-  appCode: string,
-  swapType: SwapType,
-  market: CustomMarket,
-  hooks?: Record<string, unknown>
-) => ({
-  appCode: appCode,
-  version: '1.4.0',
-  metadata: {
-    orderClass: {
-      orderClass: orderType === OrderType.LIMIT ? OrderClass.LIMIT : OrderClass.MARKET,
-    }, // for CoW Swap UI & Analytics
-    ...(orderType === OrderType.MARKET
-      ? { quote: { slippageBips, smartSlippage } }
-      : // Slippage is not used in limit orders
-        {}),
-    partnerFee: COW_PARTNER_FEE(tokenFromSymbol, tokenToSymbol, swapType, market),
-    hooks,
-  },
-});
-
 // TODO: Optimize CoW Values
 export const COW_PROTOCOL_GAS_LIMITS: Record<SwapType, number> = {
   [SwapType.Swap]: 1000000, // only eth-flow and smart contract wallets
@@ -213,4 +131,5 @@ export const COW_PROTOCOL_GAS_LIMITS: Record<SwapType, number> = {
   [SwapType.DebtSwap]: 0,
   [SwapType.RepayWithCollateral]: 0,
   [SwapType.WithdrawAndSwap]: 0,
+  [SwapType.Leverage]: 0,
 };

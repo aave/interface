@@ -134,7 +134,9 @@ export const queryKeysFactory = {
     srcToken: string,
     destToken: string,
     user: string,
-    market?: string
+    market?: string,
+    selectedSlippage?: string,
+    leverageMultiplier?: string
   ) => [
     ...queryKeysFactory.user(user),
     chainId,
@@ -144,6 +146,8 @@ export const queryKeysFactory = {
     srcToken,
     destToken,
     market,
+    selectedSlippage,
+    leverageMultiplier,
     'swapQuote',
   ],
   gasPrices: (chainId: number) => [chainId, 'gasPrices'],

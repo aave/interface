@@ -1,4 +1,4 @@
-import { QuoteAmountsAndCosts, QuoteAndPost, UnsignedOrder } from '@cowprotocol/cow-sdk';
+import { OrderQuote, SwapQuote } from '@aave/react';
 import { OptimalRate } from '@paraswap/core';
 import { TxErrorType } from 'src/ui-config/errorMapping';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
@@ -73,25 +73,36 @@ export type ParaswapRatesType = BaseSwitchRates & {
   suggestedSlippage?: number;
 };
 
-/** CoW Protocol-specific extension of BaseSwitchRates. */
-export type CowProtocolRatesType = BaseSwitchRates & {
+/** Multiplier range a leverage quote returns, and the multiplier it was priced at. */
+export type LeverageQuoteRange = {
+  minMultiplier: number;
+  maxSafeMultiplier: number;
+  // Undefined when the backend picked a safe multiplier itself.
+  multiplier?: number;
+};
+
+/** Swap quoted by the Aave backend, which places the CoW order. */
+export type BackendRatesType = BaseSwitchRates & {
   provider: SwapProvider.COW_PROTOCOL;
 
   suggestedSlippage: number;
-  amountAndCosts: QuoteAmountsAndCosts;
-
-  order: UnsignedOrder;
-  quoteId?: number;
-  orderBookQuote: QuoteAndPost;
+  // Leverage is quoted as an order, every other flow as a swap.
+  backendQuote: SwapQuote | OrderQuote;
+  // Pool address the quote was made on, needed to execute it.
+  market: string;
+  leverage?: LeverageQuoteRange;
 };
+
+export const isSwapQuote = (quote: SwapQuote | OrderQuote): quote is SwapQuote =>
+  quote.__typename === 'SwapQuote';
 
 export const isParaswapRates = (rates?: SwapQuoteType): rates is ParaswapRatesType => {
   return rates?.provider === SwapProvider.PARASWAP;
 };
 
-export const isCowProtocolRates = (rates?: SwapQuoteType): rates is CowProtocolRatesType => {
-  return rates?.provider === SwapProvider.COW_PROTOCOL;
+export const isBackendRates = (rates?: SwapQuoteType): rates is BackendRatesType => {
+  return rates?.provider === SwapProvider.COW_PROTOCOL && 'backendQuote' in rates;
 };
 
 /** Union of all provider quote types consumed by the UI. */
-export type SwapQuoteType = ParaswapRatesType | CowProtocolRatesType;
+export type SwapQuoteType = ParaswapRatesType | BackendRatesType;

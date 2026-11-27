@@ -2,7 +2,7 @@ import { Dispatch } from 'react';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { SwapParams, SwapProvider, SwapState } from '../../types';
-import { SwapActionsViaCoW } from './SwapActionsViaCoW';
+import { SwapActionsViaBackend } from './SwapActionsViaBackend';
 import { SwapActionsViaParaswap } from './SwapActionsViaParaswap';
 
 export const SwapActions = ({
@@ -19,7 +19,7 @@ export const SwapActions = ({
   switch (state.provider) {
     case SwapProvider.COW_PROTOCOL:
       return (
-        <SwapActionsViaCoW
+        <SwapActionsViaBackend
           params={params}
           state={state}
           setState={setState}

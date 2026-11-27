@@ -14,6 +14,7 @@ import { useSlippageSelector } from '../../hooks/useSlippageSelector';
 import { useSwapOrderAmounts } from '../../hooks/useSwapOrderAmounts';
 import { useSwapQuote } from '../../hooks/useSwapQuote';
 import { useUserContext } from '../../hooks/useUserContext';
+import { LeverageMultiplierSelector } from '../../inputs/shared/LeverageMultiplierSelector';
 import { SwapInputs } from '../../inputs/SwapInputs';
 import { OrderTypeSelector } from '../../shared/OrderTypeSelector';
 import { SwapModalTitle } from '../../shared/SwapModalTitle';
@@ -179,6 +180,10 @@ export const BaseSwapModalContent = ({
         state={state}
         // read-only
       />
+
+      {state.swapType === SwapType.Leverage && (
+        <LeverageMultiplierSelector state={state} setState={setState} />
+      )}
 
       <SwapInputs
         params={params}

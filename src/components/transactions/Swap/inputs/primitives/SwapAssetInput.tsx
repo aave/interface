@@ -128,6 +128,14 @@ export const SwitchAssetInput = ({
         return asset.variableBorrowAPY
           ? { label: 'Borrow APY', value: Number(asset.variableBorrowAPY) }
           : undefined;
+      case SwapType.Leverage:
+        return side === 'input'
+          ? asset.supplyAPY
+            ? { label: 'Supply APY', value: Number(asset.supplyAPY) }
+            : undefined
+          : asset.variableBorrowAPY
+          ? { label: 'Borrow APY', value: Number(asset.variableBorrowAPY) }
+          : undefined;
       case SwapType.Swap:
       default:
         return undefined;

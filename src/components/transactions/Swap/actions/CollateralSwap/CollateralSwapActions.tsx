@@ -2,9 +2,8 @@ import { Dispatch } from 'react';
 
 import { TrackAnalyticsHandlers } from '../../analytics/useTrackAnalytics';
 import { ProtocolSwapParams, ProtocolSwapState, SwapProvider, SwapState } from '../../types';
-import { SwapActionsViaCoW } from '../SwapActions/SwapActionsViaCoW';
+import { PositionSwapActionsViaBackend } from '../PositionSwapActionsViaBackend';
 import { SwapActionsViaParaswap } from '../SwapActions/SwapActionsViaParaswap';
-import { CollateralSwapActionsViaCowAdapters } from './CollateralSwapActionsViaCoWAdapters';
 import { CollateralSwapActionsViaParaswapAdapters } from './CollateralSwapActionsViaParaswapAdapters';
 
 export const CollateralSwapActions = ({
@@ -20,26 +19,14 @@ export const CollateralSwapActions = ({
 }) => {
   switch (state.provider) {
     case SwapProvider.COW_PROTOCOL:
-      if (state.useFlashloan) {
-        return (
-          <CollateralSwapActionsViaCowAdapters
-            params={params}
-            state={state}
-            setState={setState}
-            trackingHandlers={trackingHandlers}
-          />
-        );
-      } else {
-        // Essentially traditional aTokens swap
-        return (
-          <SwapActionsViaCoW
-            params={params}
-            state={state}
-            setState={setState}
-            trackingHandlers={trackingHandlers}
-          />
-        );
-      }
+      return (
+        <PositionSwapActionsViaBackend
+          params={params}
+          state={state}
+          setState={setState}
+          trackingHandlers={trackingHandlers}
+        />
+      );
     case SwapProvider.PARASWAP:
       if (state.useFlashloan) {
         return (

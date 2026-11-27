@@ -35,6 +35,7 @@ export const invalidateAppStateForSwap = ({
       invalidateTransactionHistory({ account, queryClient, marketDataType });
       break;
     case SwapType.RepayWithCollateral:
+    case SwapType.Leverage:
       invalidateUserPoolBalances({ account, queryClient, marketDataType });
       invalidateTransactionHistory({ account, queryClient, marketDataType });
       break;

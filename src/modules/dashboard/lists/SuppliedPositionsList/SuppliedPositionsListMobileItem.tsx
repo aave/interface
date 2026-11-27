@@ -1,6 +1,7 @@
 import { ProtocolAction } from '@aave/contract-helpers';
 import { Trans } from '@lingui/macro';
 import { Box, Button } from '@mui/material';
+import { isChainIdSupportedByCoWProtocol } from 'src/components/transactions/Swap/constants/cow.constants';
 import { useAppDataContext } from 'src/hooks/app-data-provider/useAppDataProvider';
 import { useAssetCaps } from 'src/hooks/useAssetCaps';
 import { useRootStore } from 'src/store/root';
@@ -28,7 +29,8 @@ export const SuppliedPositionsListMobileItem = ({
   const [currentMarketData, currentMarket] = useRootStore(
     useShallow((state) => [state.currentMarketData, state.currentMarket])
   );
-  const { openSupply, openCollateralSwap, openWithdraw, openCollateralChange } = useModalContext();
+  const { openSupply, openCollateralSwap, openWithdraw, openCollateralChange, openLeverage } =
+    useModalContext();
   const { debtCeiling } = useAssetCaps();
   const isSwapButton = isFeatureEnabled.liquiditySwap(currentMarketData);
   const {
@@ -160,6 +162,20 @@ export const SuppliedPositionsListMobileItem = ({
           <Trans>Withdraw</Trans>
         </Button>
       </Box>
+
+      {isSwapButton &&
+        usageAsCollateralEnabledOnUser &&
+        isChainIdSupportedByCoWProtocol(currentMarketData.chainId) && (
+          <Button
+            disabled={disableSwap}
+            variant="outlined"
+            onClick={() => openLeverage(underlyingAsset)}
+            sx={{ mt: 1.5 }}
+            fullWidth
+          >
+            <Trans>Leverage</Trans>
+          </Button>
+        )}
     </ListMobileItemWrapper>
   );
 };

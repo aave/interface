@@ -46,6 +46,12 @@ const CollateralSwapModal = dynamic(() =>
   )
 );
 
+const LeverageModal = dynamic(() =>
+  import('src/components/transactions/Swap/modals/LeverageModal').then(
+    (module) => module.LeverageModal
+  )
+);
+
 const DebtSwapModal = dynamic(() =>
   import('src/components/transactions/Swap/modals/DebtSwapModal').then(
     (module) => module.DebtSwapModal
@@ -195,6 +201,7 @@ export default function MyApp(props: MyAppProps) {
                                     {/* Swap Modals */}
                                     <SwapModal />
                                     <CollateralSwapModal />
+                                    <LeverageModal />
                                     <DebtSwapModal />
                                     <CancelCowOrderModal />
                                     <CowOrderToast />

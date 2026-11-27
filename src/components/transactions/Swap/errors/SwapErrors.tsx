@@ -6,6 +6,11 @@ import { useModalContext } from '../../../../hooks/useModal';
 import { TrackAnalyticsHandlers } from '../analytics/useTrackAnalytics';
 import { SwapError, SwapParams, SwapState, SwapType } from '../types';
 import { ActionsBlockedReason, isProtocolSwapState } from '../types/state.types';
+import {
+  BuyTokenCollateralBlockingGuard,
+  hasBuyTokenNotUsedAsCollateral,
+  useCollateralEnabledByAddress,
+} from './shared/BuyTokenCollateralBlockingGuard';
 import { errorToConsole } from './shared/console.helpers';
 import {
   FlashLoanDisabledBlockingGuard,
@@ -42,6 +47,7 @@ export const SwapErrors = ({
 }) => {
   const { txError } = useModalContext();
   const assetsBlockingWithdraw = useZeroLTVBlockingWithdraw();
+  const collateralEnabledByAddress = useCollateralEnabledByAddress();
   const { user: extendedUser } = useAppDataContext();
 
   useEffect(() => {
@@ -79,6 +85,20 @@ export const SwapErrors = ({
   if (insufficientBalance || state.actionsBlocked?.[ActionsBlockedReason.INSUFFICIENT_BALANCE]) {
     return (
       <InsufficientBalanceGuard
+        state={state}
+        setState={setState}
+        isSwapFlowSelected={state.isSwapFlowSelected}
+      />
+    );
+  }
+
+  // Stays mounted while its flag is set, so it clears the block once collateral is enabled.
+  if (
+    hasBuyTokenNotUsedAsCollateral(state, collateralEnabledByAddress) ||
+    state.actionsBlocked?.[ActionsBlockedReason.BUY_TOKEN_NOT_COLLATERAL]
+  ) {
+    return (
+      <BuyTokenCollateralBlockingGuard
         state={state}
         setState={setState}
         isSwapFlowSelected={state.isSwapFlowSelected}

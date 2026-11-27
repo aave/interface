@@ -1,5 +1,4 @@
 import { API_ETH_MOCK_ADDRESS, InterestRate } from '@aave/contract-helpers';
-import { SupportedChainId, WRAPPED_NATIVE_CURRENCIES } from '@cowprotocol/cow-sdk';
 import { Trans } from '@lingui/macro';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -21,6 +20,7 @@ import {
 } from 'src/utils/getMaxAmountAvailableToBorrow';
 import { useShallow } from 'zustand/shallow';
 
+import { getWrappedNativeAddress } from '../../constants/shared.constants';
 import { invalidateAppStateForSwap } from '../../helpers/shared';
 import { SwappableToken, SwapParams, SwapType } from '../../types';
 import { BaseSwapModalContent } from './BaseSwapModalContent';
@@ -118,8 +118,7 @@ const getTokensFrom = (
 
       // Prefer showing native symbol if it matches and available
       const isWrappedNative =
-        WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address?.toLowerCase() ===
-        borrowPosition.reserve.underlyingAsset.toLowerCase();
+        getWrappedNativeAddress(chainId) === borrowPosition.reserve.underlyingAsset.toLowerCase();
       const nativeToken = isWrappedNative
         ? TOKEN_LIST.tokens.find(
             (t) => (t as TokenInfoWithBalance).extensions?.isNative && t.chainId === chainId
@@ -159,7 +158,7 @@ const getTokensFrom = (
 };
 
 // Tokens to are all potential borrow assets
-const getTokensTo = (
+export const getTokensTo = (
   user: ExtendedFormattedUser | undefined,
   reserves: ComputedReserveData[],
   chainId: number,
@@ -181,8 +180,7 @@ const getTokensTo = (
       );
 
       const isWrappedNative =
-        WRAPPED_NATIVE_CURRENCIES[chainId as SupportedChainId]?.address?.toLowerCase() ===
-        reserve.underlyingAsset.toLowerCase();
+        getWrappedNativeAddress(chainId) === reserve.underlyingAsset.toLowerCase();
       const nativeToken = isWrappedNative
         ? TOKEN_LIST.tokens.find(
             (t) => (t as TokenInfoWithBalance).extensions?.isNative && t.chainId === chainId
