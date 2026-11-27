@@ -810,7 +810,9 @@ const useMultiProviderSwapQuoteQuery = ({
         !approvalTxState?.loading &&
         !approvalTxState?.success &&
         !isInsufficientBalance &&
-        !isFlashloanDisabled
+        !isFlashloanDisabled &&
+        // Before a pick the quote only reports the multiplier range: one that arrived is enough.
+        !(isLeverage && leverageMultiplier === undefined && state.leverageRange)
         ? QUOTE_REFETCH_INTERVAL
         : false;
     })(),

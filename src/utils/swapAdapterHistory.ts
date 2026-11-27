@@ -13,7 +13,7 @@ const BACKEND_ORDER_STATUS: Record<BackendOrderStatus['__typename'], OrderStatus
 export const historyStatusOf = (order: BackendOrderStatus) =>
   BACKEND_ORDER_STATUS[order.__typename];
 
-/** Raw amounts the order sold and bought on CoW; debt swaps sell the new debt. */
+/** Raw amounts the order sold and bought on CoW; debt swaps and leverage sell the new debt. */
 export const tradedAmountsOf = (operation: OrderOperation) => {
   switch (operation.__typename) {
     case 'TokenSwap':
@@ -27,7 +27,10 @@ export const tradedAmountsOf = (operation: OrderOperation) => {
     case 'RepayWithSupply':
       return { sell: operation.supply.amount.amount.raw, buy: operation.repay.amount.amount.raw };
     case 'Leverage':
-      return undefined;
+      return {
+        sell: operation.debt.amount.amount.raw,
+        buy: operation.collateral.amount.amount.raw,
+      };
   }
 };
 
