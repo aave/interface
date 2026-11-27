@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  isLeverageQuoteUnchosen,
   isProtocolSwapParams,
   isProtocolSwapState,
   isTokensSwapParams,
@@ -22,6 +23,12 @@ import { WithdrawAndSwapDetails } from './WithdrawAndSwapDetails';
  * Renders a skeleton while rates load and hides the section if no quote is present.
  */
 export const BaseSwapDetails = ({ params, state }: { params: SwapParams; state: SwapState }) => {
+  if (isLeverageQuoteUnchosen(state)) {
+    return state.leverageMultiplier !== undefined && !state.error
+      ? React.createElement(DetailsSkeleton, { state })
+      : null;
+  }
+
   if (state.ratesLoading) {
     return React.createElement(DetailsSkeleton, { state });
   }

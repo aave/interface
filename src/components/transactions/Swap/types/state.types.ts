@@ -4,7 +4,7 @@ import { TxStateType } from 'src/hooks/useModal';
 import { Expiry } from '../constants/limitOrders.constants';
 import { ValidationData } from '../helpers/shared/slippage.helpers';
 import { SwapParams } from './params.types';
-import { SwapQuoteType } from './quote.types';
+import { isBackendRates, SwapQuoteType } from './quote.types';
 import {
   OrderType,
   SwapError,
@@ -201,6 +201,13 @@ export const actionsBlockedReasonsAmount = (state: SwapState): number => {
 export const isShieldBlocked = (state: SwapState): boolean => {
   return state.actionsBlocked[ActionsBlockedReason.SHIELD_BLOCKED] === true;
 };
+
+/** A leverage whose quote is not priced at the user's multiplier: the backend's own pick is never shown or placed. */
+export const isLeverageQuoteUnchosen = (state: SwapState): boolean =>
+  state.swapType === SwapType.Leverage &&
+  (state.leverageMultiplier === undefined ||
+    !isBackendRates(state.swapRate) ||
+    state.swapRate.leverage?.multiplier !== state.leverageMultiplier);
 
 /**
  * State for protocol-aware flows. Includes reserve context for computing

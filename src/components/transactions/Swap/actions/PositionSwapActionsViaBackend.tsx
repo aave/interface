@@ -31,6 +31,7 @@ import {
   BackendRatesType,
   ExpiryToSecondsMap,
   isBackendRates,
+  isLeverageQuoteUnchosen,
   isShieldBlocked,
   isSwapQuote,
   OrderType,
@@ -289,12 +290,7 @@ export const PositionSwapActionsViaBackend = ({
   };
 
   const texts = actionTexts(state);
-  // A leverage quote sized without the user's multiplier is the backend's proposal, never the order.
-  const awaitingMultiplier =
-    state.swapType === SwapType.Leverage &&
-    (state.leverageMultiplier === undefined ||
-      !isBackendRates(state.swapRate) ||
-      state.swapRate.leverage?.multiplier !== state.leverageMultiplier);
+  const awaitingMultiplier = isLeverageQuoteUnchosen(state);
   const blocked = areActionsBlocked(state) || awaitingMultiplier;
   const blockedText =
     awaitingMultiplier && state.leverageMultiplier === undefined ? (
