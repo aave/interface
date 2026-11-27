@@ -1,4 +1,3 @@
-import { MigrationPreview } from '@aave/react';
 import { Box, Button } from '@mui/material';
 import { AssetGroup } from 'src/components/AssetGroup';
 import { ArrowUpRightIcon } from 'src/components/icons/ArrowUpRightIcon';
@@ -11,6 +10,7 @@ import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 import { formatUnits } from 'viem';
 
 import { MigrationReceipt } from '../../../hooks/useMigration';
+import { MigrationPreview } from '../../../hooks/useMigrationApi';
 import { MIGRATION_TX_BUTTONS, MIGRATION_TX_ROWS, migrationTxTitle } from '../../../utils/copy';
 import { pct, tokens, usd } from '../../../utils/previewCells';
 import { getAssetIconSymbol } from '../../../V4MigrationPage/utils/positions';

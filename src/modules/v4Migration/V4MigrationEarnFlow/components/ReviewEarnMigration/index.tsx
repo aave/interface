@@ -1,10 +1,3 @@
-import {
-  bigDecimal,
-  evmAddress,
-  MigrationOpportunity,
-  MigrationPreview,
-  useMigrationEarnPreview,
-} from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Switch, Typography } from '@mui/material';
 import { BigNumber } from 'bignumber.js';
@@ -21,6 +14,11 @@ import { useDebouncedValue } from 'src/hooks/useDebouncedValue';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 
 import { FlashLoanUnavailableError, useMigration } from '../../../hooks/useMigration';
+import {
+  MigrationOpportunity,
+  MigrationPreview,
+  useMigrationEarnPreview,
+} from '../../../hooks/useMigrationApi';
 import { useSignsWithOwnKey } from '../../../hooks/useSignsWithOwnKey';
 import {
   collateralExposureRow,
@@ -209,14 +207,14 @@ const LivePreview = ({
   onPreviewed: (key: string) => void;
 }) => {
   const { data, loading, error } = useMigrationEarnPreview({
-    user: evmAddress(user),
+    user: user,
     market: {
       address: opportunity.market.address,
       chainId: opportunity.market.chain.chainId,
     },
     currency: supply.currency.address,
-    spoke: evmAddress(hub.id),
-    amount: bigDecimal(amount),
+    spoke: hub.id,
+    amount: amount,
     useAsCollateral,
   });
 

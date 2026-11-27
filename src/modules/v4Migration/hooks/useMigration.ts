@@ -1,16 +1,16 @@
-import {
-  bigDecimal,
-  evmAddress,
-  MigratePositionRequest,
-  MigrationTypedData,
-  Signature,
-  useMigratePosition,
-} from '@aave/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useRef, useState } from 'react';
 import type { TxStatus } from 'src/components/TransactionCard';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { wagmiConfig } from 'src/ui-config/wagmiConfig';
 import { getBlock, waitForTransactionReceipt } from 'wagmi/actions';
+
+import {
+  migratePosition,
+  MigratePositionRequest,
+  migrationOpportunitiesKey,
+  MigrationTypedData,
+} from './useMigrationApi';
 
 /** What moves: an amount of one supply that backs no debt, or a share of a whole borrow position. */
 export type MigrationPositionRequest =
@@ -101,7 +101,7 @@ export const useMigration = () => {
   // a network switch the run has to pick up the ones from the next render.
   const latestWeb3 = useRef(web3);
   latestWeb3.current = web3;
-  const [migratePosition] = useMigratePosition();
+  const queryClient = useQueryClient();
   const [run, setRun] = useState<MigrationRun>({ status: 'idle' });
 
   const migrate = useCallback(
@@ -110,7 +110,7 @@ export const useMigration = () => {
       let sentHash: string | undefined;
 
       const sign = async (typedData: MigrationTypedData) =>
-        (await latestWeb3.current.signTxData(toSignable(typedData))) as unknown as Signature;
+        (await latestWeb3.current.signTxData(toSignable(typedData))) as unknown as string;
 
       try {
         if (latestWeb3.current.chainId !== request.market.chainId) {
@@ -124,31 +124,29 @@ export const useMigration = () => {
         let signed: SignedPlan | undefined;
 
         for (let step = 0; step < MAX_STEPS; step++) {
-          const result = await migratePosition({
-            user: evmAddress(request.user),
+          const plan = await migratePosition({
+            user: request.user,
             market: {
-              address: evmAddress(request.market.address),
-              chainId: request.market.chainId as MigratePositionRequest['market']['chainId'],
+              address: request.market.address,
+              chainId: request.market.chainId,
             },
-            spoke: evmAddress(request.spoke),
+            spoke: request.spoke,
             position:
               request.position.kind === 'earn'
                 ? {
                     earn: {
-                      currency: evmAddress(request.position.currency),
-                      amount: bigDecimal(request.position.amount),
+                      currency: request.position.currency,
+                      amount: request.position.amount,
                       useAsCollateral: request.position.useAsCollateral,
                     },
                   }
-                : { borrow: { percentage: bigDecimal(String(request.position.percentage)) } },
+                : { borrow: { percentage: String(request.position.percentage) } },
             signed,
           });
-          if (result.isErr()) throw result.error;
-          const plan = result.value;
 
           switch (plan.__typename) {
             case 'MigrationSignaturesRequired': {
-              const signatures: Signature[] = [];
+              const signatures: string[] = [];
               // One wallet prompt at a time, in the order the API listed them.
               for (const { typedData } of plan.signatures) signatures.push(await sign(typedData));
               signed = { plan: plan.plan, signatures };
@@ -184,6 +182,13 @@ export const useMigration = () => {
                 chainId: request.market.chainId,
               }).catch(() => undefined);
 
+              // The position is still shown by the outcome screen, so the list is only marked out
+              // of date: the migrate page reads it again when the user gets back to it.
+              queryClient.invalidateQueries({
+                queryKey: migrationOpportunitiesKey,
+                refetchType: 'none',
+              });
+
               setRun({
                 status: 'success',
                 txHash: hash,
@@ -213,7 +218,7 @@ export const useMigration = () => {
         }
       }
     },
-    [migratePosition]
+    [queryClient]
   );
 
   const reset = useCallback(() => setRun({ status: 'idle' }), []);

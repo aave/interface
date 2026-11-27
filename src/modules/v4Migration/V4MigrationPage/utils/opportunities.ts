@@ -1,5 +1,4 @@
-import { MigrationOpportunity } from '@aave/react';
-
+import { MigrationOpportunity } from '../../hooks/useMigrationApi';
 import { getMigrationMarketTitle } from './markets';
 import { BorrowMigrationPosition, EarnMigrationPosition, MigrationAsset, Variation } from './types';
 

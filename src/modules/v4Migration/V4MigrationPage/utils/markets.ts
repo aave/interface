@@ -1,6 +1,7 @@
-import { chainId, evmAddress, MigrationOpportunitiesRequest } from '@aave/react';
 import { CustomMarket } from 'src/ui-config/marketsConfig';
 import { availableMarkets, marketsData } from 'src/utils/marketsAndNetworksConfig';
+
+import { MigrationOpportunitiesRequest } from '../../hooks/useMigrationApi';
 
 const EVM_ADDRESS = /^0x[a-fA-F0-9]{40}$/;
 
@@ -13,8 +14,8 @@ const v3Markets = availableMarkets
 /** Every V3 market the interface lists, in the shape `migrationOpportunities` takes. */
 export const MIGRATION_MARKETS: MigrationOpportunitiesRequest['markets'] = v3Markets.map(
   (market) => ({
-    address: evmAddress(market.addresses.LENDING_POOL),
-    chainId: chainId(market.chainId),
+    address: market.addresses.LENDING_POOL,
+    chainId: market.chainId,
   })
 );
 

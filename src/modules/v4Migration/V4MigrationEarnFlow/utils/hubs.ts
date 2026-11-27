@@ -1,5 +1,4 @@
-import { MigrationOpportunity } from '@aave/react';
-
+import { MigrationOpportunity } from '../../hooks/useMigrationApi';
 import { findV4Reserve, V4SupplyReserve } from '../../hooks/useV4Reserves';
 import { listsPosition } from '../../V4MigrationPage/utils/opportunities';
 

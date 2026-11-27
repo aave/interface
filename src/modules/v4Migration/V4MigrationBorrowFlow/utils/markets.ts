@@ -1,6 +1,6 @@
-import { MigrationOpportunity } from '@aave/react';
 import { SparklineDatum } from 'src/components/charts/SparklineChart';
 
+import { MigrationOpportunity } from '../../hooks/useMigrationApi';
 import { average, mockApyHistory } from '../../V4MigrationEarnFlow/utils/mocks';
 import { listsPosition } from '../../V4MigrationPage/utils/opportunities';
 

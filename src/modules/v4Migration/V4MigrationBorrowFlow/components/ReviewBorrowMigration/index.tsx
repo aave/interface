@@ -1,10 +1,3 @@
-import {
-  bigDecimal,
-  evmAddress,
-  MigrationOpportunity,
-  MigrationPreview,
-  useMigrationBorrowPreview,
-} from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -19,6 +12,11 @@ import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { ValueChange } from 'src/modules/v4Migration/V4MigrationPage/components/ValueChange';
 
 import { FlashLoanUnavailableError, useMigration } from '../../../hooks/useMigration';
+import {
+  MigrationOpportunity,
+  MigrationPreview,
+  useMigrationBorrowPreview,
+} from '../../../hooks/useMigrationApi';
 import {
   marketTitle,
   MIGRATE_AMOUNT,
@@ -280,13 +278,13 @@ const LivePreview = ({
   onPreviewed: (confirmed: ConfirmedPreview) => void;
 }) => {
   const { data, loading, error } = useMigrationBorrowPreview({
-    user: evmAddress(user),
+    user: user,
     market: {
       address: opportunity.market.address,
       chainId: opportunity.market.chain.chainId,
     },
-    spoke: evmAddress(market.id),
-    percentage: bigDecimal(String(percentage)),
+    spoke: market.id,
+    percentage: String(percentage),
   });
 
   // The hook returns no data while it loads, so data here is always for the current request.

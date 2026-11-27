@@ -1,4 +1,3 @@
-import { evmAddress, useMigrationOpportunities } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box, Skeleton } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -11,6 +10,7 @@ import { ROUTES } from 'src/components/primitives/Link';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { getNetworkConfig } from 'src/utils/marketsAndNetworksConfig';
 
+import { useMigrationOpportunities } from '../hooks/useMigrationApi';
 import { MIGRATE_FLOW } from '../utils/copy';
 import { getMigrationMarketTitle, MIGRATION_MARKETS } from '../V4MigrationPage/utils/markets';
 import { findBorrowOpportunity, parsePositionId } from '../V4MigrationPage/utils/opportunities';
@@ -103,7 +103,7 @@ const BorrowFlowSteps = ({
   const router = useRouter();
   const { data, loading, error } = useMigrationOpportunities({
     markets: MIGRATION_MARKETS,
-    user: evmAddress(user),
+    user: user,
   });
 
   const opportunity = useMemo(

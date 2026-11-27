@@ -1,4 +1,3 @@
-import { evmAddress, useMigrationOpportunities } from '@aave/react';
 import { Trans } from '@lingui/macro';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
@@ -10,6 +9,7 @@ import { Spinner } from 'src/components/Spinner';
 import { useWeb3Context } from 'src/libs/hooks/useWeb3Context';
 import { useRootStore } from 'src/store/root';
 
+import { useMigrationOpportunities } from '../hooks/useMigrationApi';
 import { V4MigrationPage } from '../V4MigrationPage';
 import { MIGRATION_MARKETS } from '../V4MigrationPage/utils/markets';
 import { toMigrationPositions } from '../V4MigrationPage/utils/opportunities';
@@ -46,7 +46,7 @@ const ConnectedV4MigrationPage = ({ user }: { user: string }) => {
   const router = useRouter();
   const { data, loading, error } = useMigrationOpportunities({
     markets: MIGRATION_MARKETS,
-    user: evmAddress(user),
+    user: user,
   });
 
   const positions = useMemo(() => toMigrationPositions(data ?? []), [data]);
