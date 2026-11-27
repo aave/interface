@@ -1,0 +1,38 @@
+src/locales/en/messages.po
+  s_36fe408f2b1273::t_81551c1f24d9d4 2966-2969,5191-5193
+  s_36fe408f2b1273::t_6d8624f47f5dd0 5194
+src/modules/v4Migration/V4MigrationBorrowFlow/components/SelectBorrowMarket/index.tsx
+  s_36fe408f2b1273::t_81551c1f24d9d4 40-41
+src/modules/v4Migration/V4MigrationBorrowFlow/utils/markets.ts
+  s_36fe408f2b1273::t_81551c1f24d9d4 4,21-22,25-50,54,56-59,75
+src/modules/v4Migration/V4MigrationHubCard/index.tsx
+  s_36fe408f2b1273::t_81551c1f24d9d4 56-57,84-92,111
+src/locales/en/messages.js
+  s_36fe408f2b1273::t_81551c1f24d9d4 1
+src/modules/v4Migration/hooks/useV4Reserves.ts
+  s_36fe408f2b1273::t_81551c1f24d9d4 166,218-219,223-224,233,241-242,246,249-250,261,264-272,276,288-293,295-299
+src/modules/v4Migration/V4MigrationBorrowFlow/index.tsx
+  s_36fe408f2b1273::t_81551c1f24d9d4 14,114-116,118-119
+src/locales/es/messages.js
+  s_36fe408f2b1273::t_81551c1f24d9d4 1
+src/locales/fr/messages.js
+  s_36fe408f2b1273::t_81551c1f24d9d4 1
+src/locales/el/messages.js
+  s_36fe408f2b1273::t_81551c1f24d9d4 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "767bfe7e1faa8581881ff383fd1c0822d5d824c3",
+  "prompts": {},
+  "sessions": {
+    "s_36fe408f2b1273": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e0eff099-3798-439e-a9c3-93a9b5db1e0f",
+        "model": "claude-fable-5-2"
+      },
+      "human_author": "Joaquin Battilana <battilanajn@gmail.com>"
+    }
+  }
+}
