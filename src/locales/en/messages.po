@@ -127,6 +127,10 @@ msgstr "Total worth"
 msgid "User did not borrow the specified currency"
 msgstr "User did not borrow the specified currency"
 
+#: src/modules/governance/ProposalsV3List.tsx
+msgid "Author: {0}"
+msgstr "Author: {0}"
+
 #: src/modules/history/HistoryFilterMenu.tsx
 msgid "Rate change"
 msgstr "Rate change"
@@ -448,6 +452,10 @@ msgstr "Debt ceiling limits the amount possible to borrow against this asset by 
 #: src/components/caps/CapsTooltip.tsx
 msgid "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
 msgstr "This asset has almost reached its supply cap. There can only be {messageValue} supplied to this market."
+
+#: src/modules/governance/ProposalsV3List.tsx
+msgid "Proposal ID: {0}"
+msgstr "Proposal ID: {0}"
 
 #: src/components/transactions/Swap/warnings/postInputs/ShieldSwapWarning.tsx
 msgid "Aave Shield: Transaction blocked"
@@ -4251,6 +4259,10 @@ msgstr "Please, connect your wallet"
 #: src/components/incentives/MeritIncentivesTooltipContent.tsx
 msgid "Merit Program rewards can be claimed"
 msgstr "Merit Program rewards can be claimed"
+
+#: src/modules/governance/proposal/ProposalOverview.tsx
+msgid "Proposal ID"
+msgstr "Proposal ID"
 
 #: src/modules/sGho/SGhoSavingsRate.tsx
 msgid "APY, fixed rate"

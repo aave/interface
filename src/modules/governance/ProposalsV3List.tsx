@@ -57,11 +57,17 @@ const ProposalListItemRow = ({ proposal }: { proposal: ProposalListItem }) => {
         <Typography variant="h3" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {proposal.title}
         </Typography>
-        {proposal.author && (
-          <Typography variant="caption" color="fg-2">
-            Author: {proposal.author.replace(/^@/, '')}
-          </Typography>
-        )}
+        {/* The on-chain proposal ID (as in the proposal URL), not a payload ID: SPs and auditors
+            coordinate by this number. */}
+        <Typography variant="caption" color="fg-2">
+          <Trans>Proposal ID: {proposal.id}</Trans>
+          {proposal.author && (
+            <>
+              {' · '}
+              <Trans>Author: {proposal.author.replace(/^@/, '')}</Trans>
+            </>
+          )}
+        </Typography>
         {proposal.shortDescription && (
           <Typography
             variant="description"

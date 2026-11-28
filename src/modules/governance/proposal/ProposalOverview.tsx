@@ -296,12 +296,24 @@ export const ProposalOverview = ({ proposal, loading, error }: ProposalOverviewP
               <Skeleton />
             </Typography>
           )}
-          {proposal?.author && (
-            <Box sx={{ mt: 6, mb: 2 }}>
-              <Typography variant="subheader1">
-                <Trans>Author</Trans>
-              </Typography>
-              <Typography variant="description">{proposal.author}</Typography>
+          {proposal && (
+            <Box sx={{ mt: 6, mb: 2, display: 'flex', flexWrap: 'wrap', columnGap: 12, rowGap: 4 }}>
+              {/* The on-chain proposal ID (as in the URL), not a payload ID: SPs and auditors
+                  coordinate by this number. */}
+              <Box>
+                <Typography variant="subheader1">
+                  <Trans>Proposal ID</Trans>
+                </Typography>
+                <Typography variant="description">{proposal.id}</Typography>
+              </Box>
+              {proposal.author && (
+                <Box>
+                  <Typography variant="subheader1">
+                    <Trans>Author</Trans>
+                  </Typography>
+                  <Typography variant="description">{proposal.author}</Typography>
+                </Box>
+              )}
             </Box>
           )}
           {proposal ? (
